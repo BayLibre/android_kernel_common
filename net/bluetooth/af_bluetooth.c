@@ -113,6 +113,11 @@ static int bt_sock_create(struct net *net, struct socket *sock, int proto,
 {
 	int err;
 
+#ifdef CONFIG_ANDROID_PARANOID_NETWORK
+	if (!current_euid())
+		return -EPERM;
+#endif
+
 	if (net != &init_net)
 		return -EAFNOSUPPORT;
 
