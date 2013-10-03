@@ -111,6 +111,17 @@ static int jtcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			p->sport = inet->inet_sport;
 			p->daddr = inet->inet_daddr;
 			p->dport = inet->inet_dport;
+				memset(&p->src.v6, 0, sizeof(p->src.v6));
+				memset(&p->dst.v6, 0, sizeof(p->dst.v6));
+#if IS_ENABLED(CONFIG_IPV6)
+				p->src.v6.sin6_family = AF_INET6;
+				p->src.v6.sin6_port = inet->inet_sport;
+				p->src.v6.sin6_addr = inet6_sk(sk)->saddr;
+
+				p->dst.v6.sin6_family = AF_INET6;
+				p->dst.v6.sin6_port = inet->inet_dport;
+				p->dst.v6.sin6_addr = sk->sk_v6_daddr;
+#endif
 			p->length = skb->len;
 			p->snd_nxt = tp->snd_nxt;
 			p->snd_una = tp->snd_una;
