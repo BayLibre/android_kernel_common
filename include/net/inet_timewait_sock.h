@@ -138,18 +138,6 @@ struct inet_timewait_sock {
 };
 #define tw_tclass tw_tos
 
-static inline void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
-				      struct hlist_nulls_head *list)
-{
-	hlist_nulls_add_head_rcu(&tw->tw_node, list);
-}
-
-static inline void inet_twsk_add_bind_node(struct inet_timewait_sock *tw,
-					   struct hlist_head *list)
-{
-	hlist_add_head(&tw->tw_bind_node, list);
-}
-
 static inline int inet_twsk_dead_hashed(const struct inet_timewait_sock *tw)
 {
 	return !hlist_unhashed(&tw->tw_death_node);
@@ -195,6 +183,7 @@ static inline __be32 sk_rcv_saddr(const struct sock *sk)
 	return sk->__sk_common.skc_rcv_saddr;
 }
 
+void inet_twsk_free(struct inet_timewait_sock *tw);
 extern void inet_twsk_put(struct inet_timewait_sock *tw);
 
 extern int inet_twsk_unhash(struct inet_timewait_sock *tw);
