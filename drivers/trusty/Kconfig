@@ -56,6 +56,40 @@ config TRUSTY_VIRTIO
 
 	  If you build this as a module, it will be called trusty-virtio.
 
+config TRUSTY_VIRTIO_IPC
+	tristate "Trusty Virtio IPC driver"
+	depends on TRUSTY_VIRTIO
+	default y
+	help
+	  Enable support for communicating with Trusty services.
+
+	  If you build this as a module, it will be called trusty-ipc.
+
+config TRUSTY_DMA_BUF_FFA_TAG
+	bool "Availability of trusty_dma_buf_get_ffa_tag"
+	default n
+	help
+	  Whether trusty_dma_buf_get_ffa_tag is provided on this platform.
+	  Providing this function will allow the platform to select what tag
+	  should be passed to the SPM when attempting to transfer the buffer
+	  to secure world. The value passed here is implementation defined and
+	  may depend on your SPM.
+
+	  If set to N, a default implementation which returns 0 will be used.
+
+config TRUSTY_DMA_BUF_SHARED_MEM_ID
+	bool "Availability of trusty_dma_buf_get_shared_mem_id"
+	default n
+	help
+	  Whether trusty_dma_buf_get_shared_mem_id is provided on this platform.
+	  Providing this function allows the platform to manage memory
+	  transaction life cycle of DMA bufs independently of Trusty IPC driver.
+	  The latter can query trusty_shared_mem_id_t value allocated for a
+	  given DMA buf using trusty_dma_buf_get_shared_mem_id interface.
+
+	  If set to N, a default implementation which does not allocate any IDs
+	  will be used.
+
 endif # TRUSTY
 
 endmenu

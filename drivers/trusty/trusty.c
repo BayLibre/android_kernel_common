@@ -226,6 +226,15 @@ int trusty_share_memory(struct device *dev, u64 *id,
 			struct scatterlist *sglist, unsigned int nents,
 			pgprot_t pgprot)
 {
+	return trusty_transfer_memory(dev, id, sglist, nents, pgprot, 0,
+				      false);
+}
+EXPORT_SYMBOL(trusty_share_memory);
+
+int trusty_transfer_memory(struct device *dev, u64 *id,
+			   struct scatterlist *sglist, unsigned int nents,
+			   pgprot_t pgprot, u64 tag, bool lend)
+{
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
 	int ret;
 	struct ns_mem_page_info pg_inf;
@@ -288,7 +297,7 @@ int trusty_share_memory(struct device *dev, u64 *id,
 	mtd->reserved_3 = 0;
 	mtd->flags = 0;
 	mtd->handle = 0;
-	mtd->tag = 0;
+	mtd->tag = tag;
 	mtd->reserved_24_27 = 0;
 	mtd->emad_count = endpoint_count;
 	for (i = 0; i < endpoint_count; i++) {
@@ -321,8 +330,10 @@ int trusty_share_memory(struct device *dev, u64 *id,
 		}
 		count -= lcount;
 		if (cons_mrd_offset) {
+			u32 smc = lend ? SMC_FC_FFA_MEM_LEND :
+					 SMC_FC_FFA_MEM_SHARE;
 			/* First fragment */
-			smc_ret = trusty_smc8(SMC_FC_FFA_MEM_SHARE, total_len,
+			smc_ret = trusty_smc8(smc, total_len,
 					      fragment_len, 0, 0, 0, 0, 0);
 		} else {
 			smc_ret = trusty_smc8(SMC_FC_FFA_MEM_FRAG_TX,
@@ -388,7 +399,7 @@ err_encode_page_info:
 	dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
 	return ret;
 }
-EXPORT_SYMBOL(trusty_share_memory);
+EXPORT_SYMBOL(trusty_transfer_memory);
 
 /*
  * trusty_share_memory_compat - trusty_share_memory wrapper for old apis
