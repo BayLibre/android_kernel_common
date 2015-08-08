@@ -2081,27 +2081,6 @@ out:
 }
 
 /*
- * Shutdown callback
- */
-static int mmc_shutdown(struct mmc_host *host)
-{
-	int err = 0;
-
-	/*
-	 * In a specific case for poweroff notify, we need to resume the card
-	 * before we can shutdown it properly.
-	 */
-	if (mmc_can_poweroff_notify(host->card) &&
-		!(host->caps2 & MMC_CAP2_FULL_PWR_CYCLE))
-		err = _mmc_resume(host);
-
-	if (!err)
-		err = _mmc_suspend(host, false);
-
-	return err;
-}
-
-/*
  * Callback for resume.
  */
 static int mmc_resume(struct mmc_host *host)
@@ -2186,7 +2165,6 @@ static const struct mmc_bus_ops mmc_ops = {
 	.runtime_suspend = mmc_runtime_suspend,
 	.runtime_resume = mmc_runtime_resume,
 	.alive = mmc_alive,
-	.shutdown = mmc_shutdown,
 	.hw_reset = _mmc_hw_reset,
 };
 
