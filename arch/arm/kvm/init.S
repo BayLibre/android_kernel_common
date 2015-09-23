@@ -82,7 +82,7 @@ __do_hyp_init:
 	ldr	r2, =HTCR_MASK
 	bic	r0, r0, r2
 	mrc	p15, 0, r1, c2, c0, 2	@ TTBCR
-	and	r1, r1, #(HTCR_MASK & ~TTBCR_T0SZ)
+	and	r1, r1, #(HTCR_MASK & ~TTBCR_T0SZ_MASK)
 	orr	r0, r0, r1
 	mcr	p15, 4, r0, c2, c0, 2	@ HTCR
 

@@ -89,21 +89,8 @@
 #define HSCTLR_MASK	(HSCTLR_M | HSCTLR_A | HSCTLR_C | HSCTLR_I | \
 			 HSCTLR_WXN | HSCTLR_FI | HSCTLR_EE | HSCTLR_TE)
 
-/* TTBCR and HTCR Registers bits */
-#define TTBCR_EAE	(1 << 31)
-#define TTBCR_IMP	(1 << 30)
-#define TTBCR_SH1	(3 << 28)
-#define TTBCR_ORGN1	(3 << 26)
-#define TTBCR_IRGN1	(3 << 24)
-#define TTBCR_EPD1	(1 << 23)
-#define TTBCR_A1	(1 << 22)
-#define TTBCR_T1SZ	(7 << 16)
-#define TTBCR_SH0	(3 << 12)
-#define TTBCR_ORGN0	(3 << 10)
-#define TTBCR_IRGN0	(3 << 8)
-#define TTBCR_EPD0	(1 << 7)
-#define TTBCR_T0SZ	(7 << 0)
-#define HTCR_MASK	(TTBCR_T0SZ | TTBCR_IRGN0 | TTBCR_ORGN0 | TTBCR_SH0)
+/* HTCR Register bits */
+#define HTCR_MASK	(TTBCR_T0SZ_MASK | TTBCR_IRGN0_MASK | TTBCR_ORGN0_MASK | TTBCR_SH0_MASK)
 
 /* Hyp System Trap Register */
 #define HSTR_T(x)	(1 << x)
