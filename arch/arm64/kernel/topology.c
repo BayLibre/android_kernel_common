@@ -181,6 +181,46 @@ static int __init parse_cluster(struct device_node *cluster, int depth)
 	return 0;
 }
 
+struct cpu_efficiency {
+	const char *compatible;
+	unsigned long efficiency;
+};
+
+/*
+ * Table of relative efficiency of each processors
+ * The efficiency value must fit in 20bit and the final
+ * cpu_scale value must be in the range
+ *   0 < cpu_scale < 3*SCHED_CAPACITY_SCALE/2
+ * in order to return at most 1 when DIV_ROUND_CLOSEST
+ * is used to compute the capacity of a CPU.
+ * Processors that are not defined in the table,
+ * use the default SCHED_CAPACITY_SCALE value for cpu_scale.
+ */
+static const struct cpu_efficiency table_efficiency[] = {
+	{ NULL, },
+};
+
+static unsigned long *__cpu_capacity;
+#define cpu_capacity(cpu)	__cpu_capacity[cpu]
+
+static unsigned long middle_capacity = 1;
+
+static DEFINE_PER_CPU(unsigned long, cpu_efficiency) = SCHED_CAPACITY_SCALE;
+
+unsigned long arch_get_cpu_efficiency(int cpu)
+{
+	return per_cpu(cpu_efficiency, cpu);
+}
+EXPORT_SYMBOL(arch_get_cpu_efficiency);
+
+/*
+ * Iterate all CPUs' descriptor in DT and compute the efficiency
+ * (as per table_efficiency). Also calculate a middle efficiency
+ * as close as possible to  (max{eff_i} - min{eff_i}) / 2
+ * This is later used to scale the cpu_power field such that an
+ * 'average' CPU is of middle power. Also see the comments near
+ * table_efficiency[] and update_cpu_power().
+ */
 static int __init parse_dt_topology(void)
 {
 	struct device_node *cn, *map;
