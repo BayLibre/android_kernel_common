@@ -376,6 +376,7 @@ tsk	.req	x28		// current thread_info
 /*
  * Exception vectors.
  */
+	.pushsection ".entry.text", "ax"
 
 	.align	11
 ENTRY(vectors)
