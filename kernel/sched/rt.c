@@ -1578,6 +1578,21 @@ static void yield_task_rt(struct rq *rq)
 #ifdef CONFIG_SMP
 static int find_lowest_rq(struct task_struct *task);
 
+#ifdef CONFIG_RT_SOFTINT_OPTIMIZATION
+/*
+ * Return whether the task on the given cpu is currently non-preemptible
+ * while handling a softirq or is likely to block preemptions soon because
+ * it is a ksoftirq thread.
+ */
+bool
+task_may_not_preempt(struct task_struct *task, int cpu)
+{
+	struct task_struct *cpu_ksoftirqd = per_cpu(ksoftirqd, cpu);
+	return (task_thread_info(task)->preempt_count & SOFTIRQ_MASK) ||
+	       task == cpu_ksoftirqd;
+}
+#endif /* CONFIG_RT_SOFTINT_OPTIMIZATION */
+
 static int
 select_task_rq_rt(struct task_struct *p, int cpu, int flags)
 {
@@ -1588,6 +1603,7 @@ select_task_rq_rt(struct task_struct *p, int cpu, int flags)
 	int target_cpu = -1;
 	bool sync = !!(flags & WF_SYNC);
 	int this_cpu;
+	bool may_not_preempt;
 
 	trace_android_rvh_select_task_rq_rt(p, cpu, flags & 0xF,
 					flags, &target_cpu);
@@ -1606,7 +1622,12 @@ select_task_rq_rt(struct task_struct *p, int cpu, int flags)
 	this_cpu_rq = cpu_rq(this_cpu);
 
 	/*
-	 * If the current task on @p's runqueue is an RT task, then
+	 * If the current task on @p's runqueue is a softirq task,
+	 * it may run without preemption for a time that is
+	 * ill-suited for a waiting RT task. Therefore, try to
+	 * wake this RT task on another runqueue.
+	 *
+	 * Also, if the current task on @p's runqueue is an RT task, then
 	 * try to see if we can wake this RT task up on another
 	 * runqueue. Otherwise simply start this RT task
 	 * on its current runqueue.
@@ -1631,9 +1652,10 @@ select_task_rq_rt(struct task_struct *p, int cpu, int flags)
 	 * requirement of the task - which is only important on heterogeneous
 	 * systems like big.LITTLE.
 	 */
-	test = curr &&
-	       unlikely(rt_task(curr)) &&
-	       (curr->nr_cpus_allowed < 2 || curr->prio <= p->prio);
+	may_not_preempt = task_may_not_preempt(curr, cpu);
+	test = (curr && (may_not_preempt ||
+			 (unlikely(rt_task(curr)) &&
+			  (curr->nr_cpus_allowed < 2 || curr->prio <= p->prio))));
 
 	/*
 	 * Respect the sync flag as long as the task can run on this CPU.
@@ -1655,11 +1677,14 @@ select_task_rq_rt(struct task_struct *p, int cpu, int flags)
 			goto out_unlock;
 
 		/*
-		 * Don't bother moving it if the destination CPU is
+		 * If cpu is non-preemptible, prefer remote cpu
+		 * even if it's running a higher-prio task.
+		 * Otherwise: Don't bother moving it if the destination CPU is
 		 * not running a lower priority task.
 		 */
 		if (target != -1 &&
-		    p->prio < cpu_rq(target)->rt.highest_prio.curr)
+		    (may_not_preempt ||
+		     p->prio < cpu_rq(target)->rt.highest_prio.curr))
 			cpu = target;
 	}
 
