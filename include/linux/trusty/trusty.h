@@ -65,4 +65,20 @@ struct ns_mem_page_info {
 int trusty_encode_page_info(struct ns_mem_page_info *inf,
 			    struct page *page, pgprot_t pgprot);
 
+struct trusty_nop {
+	struct list_head node;
+	u32 args[3];
+};
+
+static inline void trusty_nop_init(struct trusty_nop *nop,
+				   u32 arg0, u32 arg1, u32 arg2) {
+	INIT_LIST_HEAD(&nop->node);
+	nop->args[0] = arg0;
+	nop->args[1] = arg1;
+	nop->args[2] = arg2;
+}
+
+void trusty_enqueue_nop(struct device *dev, struct trusty_nop *nop);
+void trusty_dequeue_nop(struct device *dev, struct trusty_nop *nop);
+
 #endif
