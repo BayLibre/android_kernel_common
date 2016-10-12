@@ -265,7 +265,7 @@ sync_nodes:
 	}
 
 	if (need_inode_block_update(sbi, ino)) {
-		f2fs_mark_inode_dirty_sync(inode);
+		f2fs_mark_inode_dirty_sync(inode, true);
 		f2fs_write_inode(inode, NULL);
 		goto sync_nodes;
 	}
@@ -632,8 +632,8 @@ int f2fs_truncate(struct inode *inode)
 	if (err)
 		return err;
 
-	inode->i_mtime = inode->i_ctime = CURRENT_TIME;
-	f2fs_mark_inode_dirty_sync(inode);
+	inode->i_mtime = inode->i_ctime = current_time(inode);
+	f2fs_mark_inode_dirty_sync(inode, false);
 	return 0;
 }
 
@@ -695,7 +695,6 @@ int f2fs_setattr(struct dentry *dentry, struct iattr *attr)
 			err = f2fs_truncate(inode);
 			if (err)
 				return err;
-			f2fs_balance_fs(F2FS_I_SB(inode), true);
 		} else {
 			/*
 			 * do not trim all blocks after i_size if target size is
@@ -709,7 +708,7 @@ int f2fs_setattr(struct dentry *dentry, struct iattr *attr)
 				if (err)
 					return err;
 			}
-			inode->i_mtime = inode->i_ctime = CURRENT_TIME;
+			inode->i_mtime = inode->i_ctime = current_time(inode);
 		}
 	}
 
@@ -723,7 +722,12 @@ int f2fs_setattr(struct dentry *dentry, struct iattr *attr)
 		}
 	}
 
-	f2fs_mark_inode_dirty_sync(inode);
+	/* update attributes only */
+	f2fs_mark_inode_dirty_sync(inode, false);
+
+	/* inode change will produce dirty node pages flushed by checkpoint */
+	f2fs_balance_fs(F2FS_I_SB(inode), true);
+
 	return err;
 }
 
@@ -971,7 +975,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
 				new_size = (dst + i) << PAGE_SHIFT;
 				if (dst_inode->i_size < new_size)
 					f2fs_i_size_write(dst_inode, new_size);
-			} while ((do_replace[i] || blkaddr[i] == NULL_ADDR) && --ilen);
+			} while (--ilen && (do_replace[i] || blkaddr[i] == NULL_ADDR));
 
 			f2fs_put_dnode(&dn);
 		} else {
@@ -1222,6 +1226,9 @@ static int f2fs_zero_range(struct inode *inode, loff_t offset, loff_t len,
 			ret = f2fs_do_zero_range(&dn, index, end);
 			f2fs_put_dnode(&dn);
 			f2fs_unlock_op(sbi);
+
+			f2fs_balance_fs(sbi, dn.node_changed);
+
 			if (ret)
 				goto out;
 
@@ -1396,8 +1403,8 @@ static long f2fs_fallocate(struct file *file, int mode,
 	}
 
 	if (!ret) {
-		inode->i_mtime = inode->i_ctime = CURRENT_TIME;
-		f2fs_mark_inode_dirty_sync(inode);
+		inode->i_mtime = inode->i_ctime = current_time(inode);
+		f2fs_mark_inode_dirty_sync(inode, false);
 		f2fs_update_time(F2FS_I_SB(inode), REQ_TIME);
 	}
 
@@ -1488,7 +1495,7 @@ static int f2fs_ioc_setflags(struct file *filp, unsigned long arg)
 	fi->i_flags = flags;
 	inode_unlock(inode);
 
-	inode->i_ctime = CURRENT_TIME;
+	inode->i_ctime = current_time(inode);
 	f2fs_set_inode_flags(inode);
 out:
 	mnt_drop_write_file(filp);
