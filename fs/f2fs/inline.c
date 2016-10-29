@@ -128,7 +128,8 @@ int f2fs_convert_inline_page(struct dnode_of_data *dn, struct page *page)
 	struct f2fs_io_info fio = {
 		.sbi = F2FS_I_SB(dn->inode),
 		.type = DATA,
-		.rw = WRITE_SYNC | REQ_PRIO,
+		.op = REQ_OP_WRITE,
+		.op_flags = REQ_SYNC | REQ_NOIDLE | REQ_PRIO,
 		.page = page,
 		.encrypted_page = NULL,
 	};
@@ -629,6 +630,7 @@ int f2fs_read_inline_dir(struct file *file, struct dir_context *ctx,
 	struct f2fs_inline_dentry *inline_dentry = NULL;
 	struct page *ipage = NULL;
 	struct f2fs_dentry_ptr d;
+	int err;
 
 	if (ctx->pos == NR_INLINE_DENTRY)
 		return 0;
@@ -641,11 +643,12 @@ int f2fs_read_inline_dir(struct file *file, struct dir_context *ctx,
 
 	make_dentry_ptr(inode, &d, (void *)inline_dentry, 2);
 
-	if (!f2fs_fill_dentries(ctx, &d, 0, fstr))
+	err = f2fs_fill_dentries(ctx, &d, 0, fstr);
+	if (!err)
 		ctx->pos = NR_INLINE_DENTRY;
 
 	f2fs_put_page(ipage, 1);
-	return 0;
+	return err < 0 ? err : 0;
 }
 
 int f2fs_inline_data_fiemap(struct inode *inode,
