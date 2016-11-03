@@ -140,6 +140,9 @@ static void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 	if (!tsk)
 		tsk = current;
 
+	if (!try_get_task_stack(tsk))
+		return;
+
 	if (regs) {
 		frame.fp = regs->regs[29];
 		frame.sp = regs->sp;
@@ -167,6 +170,8 @@ static void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 			break;
 		dump_backtrace_entry(where, frame.sp);
 	}
+
+	put_task_stack(tsk);
 }
 
 void show_stack(struct task_struct *tsk, unsigned long *sp)
