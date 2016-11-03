@@ -68,7 +68,6 @@ void notrace walk_stackframe(struct stackframe *frame,
 			break;
 	}
 }
-EXPORT_SYMBOL(walk_stackframe);
 
 #ifdef CONFIG_STACKTRACE
 struct stack_trace_data {
