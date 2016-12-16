@@ -8,6 +8,9 @@ config TRUSTY
 	tristate "Trusty"
 	default n
 
+config TRUSTY_CUSTOM_SMC
+	bool
+
 config TRUSTY_FIQ
 	tristate
 	depends on TRUSTY
