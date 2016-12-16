@@ -1,15 +1,6 @@
+// SPDX-License-Identifier: GPL-2.0
 /*
- * Copyright (C) 2013 Google, Inc.
- *
- * This software is licensed under the terms of the GNU General Public
- * License version 2, as published by the Free Software Foundation, and
- * may be copied, distributed, and modified under those terms.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * Copyright (C) 2013-2019 Google, Inc.
  */
 
 #include <asm/compiler.h>
@@ -24,6 +15,7 @@
 #include <linux/trusty/smcall.h>
 #include <linux/trusty/sm_err.h>
 #include <linux/trusty/trusty.h>
+#include <linux/trusty/trusty_custom_smc.h>
 
 struct trusty_state;
 
@@ -39,6 +31,9 @@ struct trusty_state {
 	char *version_str;
 	u32 api_version;
 	struct device *dev;
+#ifdef CONFIG_TRUSTY_CUSTOM_SMC
+	struct trusty_custom_smc *smc;
+#endif
 	struct workqueue_struct *nop_wq;
 	struct trusty_work __percpu *nop_works;
 	struct list_head nop_queue;
@@ -62,7 +57,8 @@ struct trusty_state {
 #define SMC_REGISTERS_TRASHED	"ip"
 #endif
 
-static inline ulong smc(ulong r0, ulong r1, ulong r2, ulong r3)
+static inline ulong smc_instr(ulong r0, ulong r1, ulong r2, ulong r3,
+			      struct trusty_custom_smc *dummy_smc)
 {
 	register ulong _r0 asm(SMC_ARG0) = r0;
 	register ulong _r1 asm(SMC_ARG1) = r1;
@@ -86,6 +82,24 @@ static inline ulong smc(ulong r0, ulong r1, ulong r2, ulong r3)
 	return _r0;
 }
 
+#ifdef CONFIG_TRUSTY_CUSTOM_SMC
+struct trusty_custom_smc std_smc = {
+	.smc = smc_instr,
+};
+
+static inline ulong smc(ulong r0, ulong r1, ulong r2, ulong r3,
+			struct trusty_state *s)
+{
+	return s->smc->smc(r0, r1, r2, r3, s->smc);
+}
+#else
+static inline ulong smc(ulong r0, ulong r1, ulong r2, ulong r3,
+			struct trusty_state *s)
+{
+	return smc_instr(r0, r1, r2, r3, NULL);
+}
+#endif
+
 s32 trusty_fast_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 {
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
@@ -94,7 +108,7 @@ s32 trusty_fast_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 	BUG_ON(!SMC_IS_FASTCALL(smcnr));
 	BUG_ON(SMC_IS_SMC64(smcnr));
 
-	return smc(smcnr, a0, a1, a2);
+	return smc(smcnr, a0, a1, a2, s);
 }
 EXPORT_SYMBOL(trusty_fast_call32);
 
@@ -107,22 +121,23 @@ s64 trusty_fast_call64(struct device *dev, u64 smcnr, u64 a0, u64 a1, u64 a2)
 	BUG_ON(!SMC_IS_FASTCALL(smcnr));
 	BUG_ON(!SMC_IS_SMC64(smcnr));
 
-	return smc(smcnr, a0, a1, a2);
+	return smc(smcnr, a0, a1, a2, s);
 }
 #endif
 
 static ulong trusty_std_call_inner(struct device *dev, ulong smcnr,
 				   ulong a0, ulong a1, ulong a2)
 {
+	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
 	ulong ret;
 	int retry = 5;
 
 	dev_dbg(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx)\n",
 		__func__, smcnr, a0, a1, a2);
 	while (true) {
-		ret = smc(smcnr, a0, a1, a2);
+		ret = smc(smcnr, a0, a1, a2, s);
 		while ((s32)ret == SM_ERR_FIQ_INTERRUPTED)
-			ret = smc(SMC_SC_RESTART_FIQ, 0, 0, 0);
+			ret = smc(SMC_SC_RESTART_FIQ, 0, 0, 0, s);
 		if ((int)ret != SM_ERR_BUSY || !retry)
 			break;
 
@@ -433,6 +448,40 @@ void trusty_dequeue_nop(struct device *dev, struct trusty_nop *nop)
 }
 EXPORT_SYMBOL(trusty_dequeue_nop);
 
+#ifdef CONFIG_TRUSTY_CUSTOM_SMC
+static int trusty_init_custom_smc(struct trusty_state *s,
+				  struct platform_device *pdev,
+				  const struct of_device_id *id)
+{
+	if (id->data)
+		s->smc = trusty_custom_smc_get_drvdata(pdev->dev.parent);
+	else
+		s->smc = &std_smc;
+
+	if (WARN_ON(!s->smc))
+		return -EINVAL;
+	if (WARN_ON(!s->smc->smc))
+		return -EINVAL;
+
+	return 0;
+}
+#else
+static inline int trusty_init_custom_smc(struct trusty_state *s,
+					 struct platform_device *pdev,
+					 const struct of_device_id *id)
+{
+	return 0;
+}
+#endif
+
+static const struct of_device_id trusty_of_match[] = {
+	{ .compatible = "android,trusty-smc-v1", },
+#ifdef CONFIG_TRUSTY_CUSTOM_SMC
+	{ .compatible = "android,trusty-custom-smc-v1", .data = (void *)true},
+#endif
+	{},
+};
+
 static int trusty_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -440,11 +489,16 @@ static int trusty_probe(struct platform_device *pdev)
 	work_func_t work_func;
 	struct trusty_state *s;
 	struct device_node *node = pdev->dev.of_node;
+	const struct of_device_id *id;
 
 	if (!node) {
 		dev_err(&pdev->dev, "of_node required\n");
 		return -EINVAL;
 	}
+
+	id = of_match_device(of_match_ptr(trusty_of_match), &pdev->dev);
+	if (!id)
+		return -EINVAL;
 
 	s = kzalloc(sizeof(*s), GFP_KERNEL);
 	if (!s) {
@@ -458,6 +512,9 @@ static int trusty_probe(struct platform_device *pdev)
 	mutex_init(&s->smc_lock);
 	ATOMIC_INIT_NOTIFIER_HEAD(&s->notifier);
 	init_completion(&s->cpu_idle_completion);
+	ret = trusty_init_custom_smc(s, pdev, id);
+	if (ret < 0)
+		goto err_init_custom_smc;
 	platform_set_drvdata(pdev, s);
 
 	trusty_init_version(s, &pdev->dev);
@@ -516,6 +573,7 @@ err_api_version:
 		kfree(s->version_str);
 	}
 	device_for_each_child(&pdev->dev, NULL, trusty_remove_child);
+err_init_custom_smc:
 	mutex_destroy(&s->smc_lock);
 	kfree(s);
 err_allocate_state:
@@ -545,11 +603,6 @@ static int trusty_remove(struct platform_device *pdev)
 	kfree(s);
 	return 0;
 }
-
-static const struct of_device_id trusty_of_match[] = {
-	{ .compatible = "android,trusty-smc-v1", },
-	{},
-};
 
 static struct platform_driver trusty_driver = {
 	.probe = trusty_probe,
