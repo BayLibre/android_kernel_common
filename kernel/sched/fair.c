@@ -6350,7 +6350,14 @@ find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this
 static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p,
 				  int cpu, int prev_cpu, int sd_flag)
 {
+	int wu = sd_flag & SD_BALANCE_WAKE;
+	int cas_cpu = -1;
 	int new_cpu = cpu;
+
+	if (wu) {
+		schedstat_inc(p->se.statistics.nr_wakeups_cas_attempts);
+		schedstat_inc(this_rq()->eas_stats.cas_attempts);
+	}
 
 	if (!cpumask_intersects(sched_domain_span(sd), &p->cpus_allowed))
 		return prev_cpu;
@@ -6359,6 +6366,9 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
 		struct sched_group *group;
 		struct sched_domain *tmp;
 		int weight;
+
+		if (wu)
+			schedstat_inc(sd->eas_stats.cas_attempts);
 
 		if (!(sd->flags & sd_flag)) {
 			sd = sd->child;
@@ -6379,7 +6389,7 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
 		}
 
 		/* Now try balancing at a lower domain level of new_cpu */
-		cpu = new_cpu;
+		cpu = cas_cpu = new_cpu;
 		weight = sd->span_weight;
 		sd = NULL;
 		for_each_domain(cpu, tmp) {
@@ -6389,6 +6399,11 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
 				sd = tmp;
 		}
 		/* while loop will break here if sd == NULL */
+	}
+
+	if (wu && (cas_cpu >= 0)) {
+		schedstat_inc(p->se.statistics.nr_wakeups_cas_count);
+		schedstat_inc(this_rq()->eas_stats.cas_count);
 	}
 
 	return new_cpu;
@@ -6580,14 +6595,20 @@ static inline int __select_idle_sibling(struct task_struct *p, int prev, int tar
 	struct sched_domain *sd;
 	int i;
 
-	if (idle_cpu(target))
+	if (idle_cpu(target)) {
+		schedstat_inc(p->se.statistics.nr_wakeups_sis_idle);
+		schedstat_inc(this_rq()->eas_stats.sis_idle);
 		return target;
+	}
 
 	/*
 	 * If the previous cpu is cache affine and idle, don't be stupid.
 	 */
-	if (prev != target && cpus_share_cache(prev, target) && idle_cpu(prev))
+	if (prev != target && cpus_share_cache(prev, target) && idle_cpu(prev)) {
+		schedstat_inc(p->se.statistics.nr_wakeups_sis_cache_affine);
+		schedstat_inc(this_rq()->eas_stats.sis_cache_affine);
 		return prev;
+	}
 
 	sd = rcu_dereference(per_cpu(sd_llc, target));
 	if (!sd)
@@ -6647,6 +6668,9 @@ static inline int select_idle_sibling_cstate_aware(struct task_struct *p, int pr
 				 * intended to use this CPU, just proceed
 				 */
 				if (i == target && new_usage <= capacity_curr_of(target)) {
+					schedstat_inc(p->se.statistics.nr_wakeups_sis_suff_cap);
+					schedstat_inc(this_rq()->eas_stats.sis_suff_cap);
+					schedstat_inc(sd->eas_stats.sis_suff_cap);
 					return target;
 				}
 
@@ -6675,10 +6699,18 @@ static inline int select_idle_sibling_cstate_aware(struct task_struct *p, int pr
 
 static int select_idle_sibling(struct task_struct *p, int prev, int target)
 {
-	if (!sysctl_sched_cstate_aware)
-		return __select_idle_sibling(p, prev, target);
+	schedstat_inc(p->se.statistics.nr_wakeups_sis_attempts);
+	schedstat_inc(this_rq()->eas_stats.sis_attempts);
 
-	return select_idle_sibling_cstate_aware(p, prev, target);
+	if (!sysctl_sched_cstate_aware)
+		target = __select_idle_sibling(p, prev, target);
+	else
+		target = select_idle_sibling_cstate_aware(p, prev, target);
+
+	schedstat_inc(p->se.statistics.nr_wakeups_sis_count);
+	schedstat_inc(this_rq()->eas_stats.sis_count);
+
+	return target;
 }
 
 static inline unsigned long task_util(struct task_struct *p)
@@ -6820,8 +6852,13 @@ static int find_energy_efficient_cpu(struct sched_domain *sd, struct task_struct
 	unsigned long max_spare = 0;
 	struct energy_env *eenv;
 
+	schedstat_inc(p->se.statistics.nr_wakeups_secb_attempts);
+	schedstat_inc(this_rq()->eas_stats.secb_attempts);
+
 	if (sysctl_sched_sync_hint_enable && sync) {
 		if (cpumask_test_cpu(cpu, &p->cpus_allowed)) {
+			schedstat_inc(p->se.statistics.nr_wakeups_secb_sync);
+			schedstat_inc(this_rq()->eas_stats.secb_sync);
 			return cpu;
 		}
 	}
@@ -6857,6 +6894,19 @@ static int find_energy_efficient_cpu(struct sched_domain *sd, struct task_struct
 	energy_cpu = eenv->cpu[eas_cpu_idx].cpu_id;
 
 out:
+	if (energy_cpu == prev_cpu && !cpu_overutilized(prev_cpu)) {
+		schedstat_inc(p->se.statistics.nr_wakeups_secb_no_nrg_sav);
+		schedstat_inc(this_rq()->eas_stats.secb_no_nrg_sav);
+	}
+
+	if (energy_cpu != prev_cpu) {
+		schedstat_inc(p->se.statistics.nr_wakeups_secb_nrg_sav);
+		schedstat_inc(this_rq()->eas_stats.secb_nrg_sav);
+	} else {
+		schedstat_inc(p->se.statistics.nr_wakeups_secb_count);
+		schedstat_inc(this_rq()->eas_stats.secb_count);
+	}
+
 	return energy_cpu;
 }
 
@@ -6895,8 +6945,11 @@ static inline int wake_energy(struct task_struct *p, int prev_cpu, int sd_flag, 
 		 * Force prefer-idle tasks into the slow path, this may not happen
 		 * if none of the sd flags matched.
 		 */
-		if (schedtune_prefer_idle(p) > 0 && !sync)
+		if (schedtune_prefer_idle(p) > 0 && !sync) {
+			schedstat_inc(p->se.statistics.nr_wakeups_cas_prefer_idle);
+			schedstat_inc(this_rq()->eas_stats.cas_prefer_idle);
 			return false;
+		}
 	}
 	return true;
 }
