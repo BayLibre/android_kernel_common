@@ -374,7 +374,10 @@ enum bpf_func_id {
 	 * Return: 0 on success or negative error
 	 */
 	BPF_FUNC_probe_write_user,
+
 	BPF_FUNC_get_socket_cookie,
+
+	BPF_FUNC_get_socket_uid,
 
 	__BPF_FUNC_MAX_ID,
 };
