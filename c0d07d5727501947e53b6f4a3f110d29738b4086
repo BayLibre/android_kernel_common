@@ -22,6 +22,30 @@
       "revId": "c0d07d5727501947e53b6f4a3f110d29738b4086",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fb1b588f_85680643",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-03-27T21:17:48Z",
+      "side": 1,
+      "message": "Actually, all of these are incorrect, since DEVCONF_ACCEPT_RA_RT_TABLE is in the enum but is not upstream.",
+      "parentUuid": "36de3f3f_c2b9384a",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 33
+      },
+      "revId": "c0d07d5727501947e53b6f4a3f110d29738b4086",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
