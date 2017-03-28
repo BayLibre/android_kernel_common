@@ -46,6 +46,30 @@
       "revId": "c0d07d5727501947e53b6f4a3f110d29738b4086",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dda533b6_3675b0ec",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1121773
+      },
+      "writtenOn": "2017-03-28T01:33:24Z",
+      "side": 1,
+      "message": "You make a very good point. I can fix some of the mangling in this merge, but DEVCONF_ACCEPT_RA_RT_TABLE really throws everything off.\n\nDo you have any suggestions? IIUC we only need to be consistent within a build?",
+      "parentUuid": "fb1b588f_85680643",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 33
+      },
+      "revId": "c0d07d5727501947e53b6f4a3f110d29738b4086",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
