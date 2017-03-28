@@ -54,14 +54,17 @@ ifeq ($(CONFIG_GENERIC_COMPAT_VDSO), y)
   CROSS_COMPILE_ARM32 ?= $(CONFIG_CROSS_COMPILE_COMPAT_VDSO:"%"=%)
 
   ifeq ($(CROSS_COMPILE_ARM32),)
-    $(warning CROSS_COMPILE_ARM32 not defined or empty, the compat vDSO will not be built)
+    $(error CROSS_COMPILE_ARM32 not defined or empty, the compat vDSO will not be built)
+  else ifeq ($(cc-name),clang)
+    export CLANG_TRIPLE_ARM32 ?= $(CROSS_COMPILE_ARM32)
+    export CLANG_TARGET_ARM32 := --target=$(notdir $(CLANG_TRIPLE_ARM32:%-=%))
   else ifeq ($(shell which $(CROSS_COMPILE_ARM32)gcc 2> /dev/null),)
     $(error $(CROSS_COMPILE_ARM32)gcc not found, check CROSS_COMPILE_ARM32)
   else
     export CROSS_COMPILE_ARM32
-    export CONFIG_COMPAT_VDSO := y
-    compat_vdso := -DCONFIG_COMPAT_VDSO=1
   endif
+  export CONFIG_COMPAT_VDSO := y
+  compat_vdso := -DCONFIG_COMPAT_VDSO=1
 endif
 
 ifeq ($(cc-name),clang)
