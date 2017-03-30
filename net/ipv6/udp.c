@@ -1037,6 +1037,7 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 	ipc6.hlimit = -1;
 	ipc6.tclass = -1;
 	ipc6.dontfrag = -1;
+	sockc.tsflags = sk->sk_tsflags;
 
 	/* destination address check */
 	if (sin6) {
@@ -1156,8 +1157,11 @@ do_udp_sendmsg:
 		fl6.flowi6_oif = np->sticky_pktinfo.ipi6_ifindex;
 
 	fl6.flowi6_mark = sk->sk_mark;
+<<<<<<< HEAD   (6bf53d Merge 4.9.18 into android-4.9)
 	fl6.flowi6_uid = sk->sk_uid;
 	sockc.tsflags = sk->sk_tsflags;
+=======
+>>>>>>> BRANCH (c8e131 Linux 4.9.19)
 
 	if (msg->msg_controllen) {
 		opt = &opt_space;
