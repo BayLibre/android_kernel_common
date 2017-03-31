@@ -67,6 +67,7 @@
 #include <linux/atomic.h>
 #include <net/dst.h>
 #include <net/checksum.h>
+#include <net/tcp_states.h>
 #include <linux/net_tstamp.h>
 #include <net/tcp_states.h>
 
@@ -2278,11 +2279,18 @@ static inline struct sock *skb_steal_sock(struct sk_buff *skb)
 
 /* This helper checks if a socket is a full socket,
  * ie _not_ a timewait or request socket.
+<<<<<<< HEAD   (20384e Merge 3.18.16 into android-3.18)
  * TODO: Check for TCPF_NEW_SYN_RECV when that starts to exist.
  */
 static inline bool sk_fullsock(const struct sock *sk)
 {
 	return (1 << sk->sk_state) & ~(TCPF_TIME_WAIT);
+=======
+ */
+static inline bool sk_fullsock(const struct sock *sk)
+{
+	return (1 << sk->sk_state) & ~(TCPF_TIME_WAIT | TCPF_NEW_SYN_RECV);
+>>>>>>> BRANCH (ea5dd3 Linux 3.18.17)
 }
 
 void sock_enable_timestamp(struct sock *sk, int flag);
