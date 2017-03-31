@@ -2051,7 +2051,7 @@ static int ext4_add_entry(handle_t *handle, struct dentry *dentry,
 			  struct inode *inode)
 {
 	struct inode *dir = dentry->d_parent->d_inode;
-	struct buffer_head *bh;
+	struct buffer_head *bh = NULL;
 	struct ext4_dir_entry_2 *de;
 	struct ext4_dir_entry_tail *t;
 	struct super_block *sb;
@@ -2081,14 +2081,14 @@ static int ext4_add_entry(handle_t *handle, struct dentry *dentry,
 			goto out;
 		if (retval == 1) {
 			retval = 0;
-			return retval;
+			goto out;
 		}
 	}
 
 	if (is_dx(dir)) {
 		retval = ext4_dx_add_entry(handle, &fname, dentry, inode);
 		if (!retval || (retval != ERR_BAD_DX_DIR))
-			return retval;
+			goto out;
 		ext4_clear_inode_flag(dir, EXT4_INODE_INDEX);
 		dx_fallback++;
 		ext4_mark_inode_dirty(handle, dir);
@@ -2096,11 +2096,20 @@ static int ext4_add_entry(handle_t *handle, struct dentry *dentry,
 	blocks = dir->i_size >> sb->s_blocksize_bits;
 	for (block = 0; block < blocks; block++) {
 		bh = ext4_read_dirblock(dir, block, DIRENT);
+<<<<<<< HEAD   (91b5f5 Merge 3.18.13 into android-3.18)
 		if (IS_ERR(bh)) {
 			retval = PTR_ERR(bh);
 			bh = NULL;
 			goto out;
 		}
+=======
+		if (IS_ERR(bh))
+			return PTR_ERR(bh);
+
+		retval = add_dirent_to_buf(handle, dentry, inode, NULL, bh);
+		if (retval != -ENOSPC)
+			goto out;
+>>>>>>> BRANCH (51af81 Linux 3.18.14)
 
 		retval = add_dirent_to_buf(handle, &fname, dir, inode,
 					   NULL, bh);
@@ -2109,8 +2118,12 @@ static int ext4_add_entry(handle_t *handle, struct dentry *dentry,
 
 		if (blocks == 1 && !dx_fallback &&
 		    EXT4_HAS_COMPAT_FEATURE(sb, EXT4_FEATURE_COMPAT_DIR_INDEX)) {
+<<<<<<< HEAD   (91b5f5 Merge 3.18.13 into android-3.18)
 			retval = make_indexed_dir(handle, &fname, dentry,
 						  inode, bh);
+=======
+			retval = make_indexed_dir(handle, dentry, inode, bh);
+>>>>>>> BRANCH (51af81 Linux 3.18.14)
 			bh = NULL; /* make_indexed_dir releases bh */
 			goto out;
 		}
@@ -2131,9 +2144,14 @@ static int ext4_add_entry(handle_t *handle, struct dentry *dentry,
 		initialize_dirent_tail(t, blocksize);
 	}
 
+<<<<<<< HEAD   (91b5f5 Merge 3.18.13 into android-3.18)
 	retval = add_dirent_to_buf(handle, &fname, dir, inode, de, bh);
 out:
 	ext4_fname_free_filename(&fname);
+=======
+	retval = add_dirent_to_buf(handle, dentry, inode, de, bh);
+out:
+>>>>>>> BRANCH (51af81 Linux 3.18.14)
 	brelse(bh);
 	if (retval == 0)
 		ext4_set_inode_state(inode, EXT4_STATE_NEWENTRY);

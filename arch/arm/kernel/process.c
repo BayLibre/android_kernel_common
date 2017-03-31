@@ -42,7 +42,11 @@
 #include <asm/system_misc.h>
 #include <asm/mach/time.h>
 #include <asm/tls.h>
+<<<<<<< HEAD   (91b5f5 Merge 3.18.13 into android-3.18)
 #include <asm/vdso.h>
+=======
+#include "reboot.h"
+>>>>>>> BRANCH (51af81 Linux 3.18.14)
 
 #ifdef CONFIG_CC_STACKPROTECTOR
 #include <linux/stackprotector.h>
@@ -134,7 +138,7 @@ static void __soft_restart(void *addr)
 	BUG();
 }
 
-void soft_restart(unsigned long addr)
+void _soft_restart(unsigned long addr, bool disable_l2)
 {
 	u64 *stack = soft_restart_stack + ARRAY_SIZE(soft_restart_stack);
 
@@ -143,7 +147,7 @@ void soft_restart(unsigned long addr)
 	local_fiq_disable();
 
 	/* Disable the L2 if we're the last man standing. */
-	if (num_online_cpus() == 1)
+	if (disable_l2)
 		outer_disable();
 
 	/* Change to the new stack and continue with the reset. */
@@ -151,6 +155,11 @@ void soft_restart(unsigned long addr)
 
 	/* Should never get here. */
 	BUG();
+}
+
+void soft_restart(unsigned long addr)
+{
+	_soft_restart(addr, num_online_cpus() == 1);
 }
 
 /*

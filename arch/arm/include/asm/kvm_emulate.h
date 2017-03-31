@@ -38,6 +38,7 @@ static inline void vcpu_reset_hcr(struct kvm_vcpu *vcpu)
 	vcpu->arch.hcr = HCR_GUEST_MASK;
 }
 
+<<<<<<< HEAD   (91b5f5 Merge 3.18.13 into android-3.18)
 static inline unsigned long vcpu_get_hcr(struct kvm_vcpu *vcpu)
 {
 	return vcpu->arch.hcr;
@@ -48,6 +49,8 @@ static inline void vcpu_set_hcr(struct kvm_vcpu *vcpu, unsigned long hcr)
 	vcpu->arch.hcr = hcr;
 }
 
+=======
+>>>>>>> BRANCH (51af81 Linux 3.18.14)
 static inline bool vcpu_mode_is_32bit(struct kvm_vcpu *vcpu)
 {
 	return 1;
