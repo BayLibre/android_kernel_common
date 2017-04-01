@@ -272,8 +272,13 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
 	int try_loading_module = 0;
 	int err;
 
+<<<<<<< HEAD   (55d282 Merge 3.18.25 into android-3.18)
 	if (!current_has_network())
 		return -EACCES;
+=======
+	if (protocol < 0 || protocol >= IPPROTO_MAX)
+		return -EINVAL;
+>>>>>>> BRANCH (707e84 Linux 3.18.26)
 
 	sock->state = SS_UNCONNECTED;
 
