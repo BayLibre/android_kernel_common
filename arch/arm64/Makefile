@@ -20,7 +20,12 @@ LIBGCC 		:= $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
 KBUILD_DEFCONFIG := defconfig
 
 KBUILD_CFLAGS	+= -mgeneral-regs-only
+<<<<<<< HEAD   (af3ea0 Merge 3.18.30 into android-3.18)
 KBUILD_CFLAGS	+= -fno-pic
+=======
+KBUILD_CFLAGS	+= $(call cc-option, -mpc-relative-literal-loads)
+
+>>>>>>> BRANCH (f151e7 Linux 3.18.31)
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
 KBUILD_CPPFLAGS	+= -mbig-endian
 AS		+= -EB
