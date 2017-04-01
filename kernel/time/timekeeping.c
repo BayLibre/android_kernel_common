@@ -211,8 +211,31 @@ static inline s64 timekeeping_get_ns(struct tk_read_base *tkr)
 	/* calculate the delta since the last update_wall_time: */
 	delta = clocksource_delta(cycle_now, tkr->cycle_last, tkr->mask);
 
+<<<<<<< HEAD   (11512e Merge 3.18.26 into android-3.18)
 	nsec = delta * tkr->mult + tkr->xtime_nsec;
 	nsec >>= tkr->shift;
+=======
+	nsec = (delta * tkr->mult + tkr->xtime_nsec) >> tkr->shift;
+
+	/* If arch requires, add in get_arch_timeoffset() */
+	return nsec + arch_gettimeoffset();
+}
+
+static inline s64 timekeeping_get_ns_raw(struct timekeeper *tk)
+{
+	struct clocksource *clock = tk->tkr.clock;
+	cycle_t cycle_now, delta;
+	s64 nsec;
+
+	/* read clocksource: */
+	cycle_now = tk->tkr.read(clock);
+
+	/* calculate the delta since the last update_wall_time: */
+	delta = clocksource_delta(cycle_now, tk->tkr.cycle_last, tk->tkr.mask);
+
+	/* convert delta to nanoseconds. */
+	nsec = clocksource_cyc2ns(delta, clock->mult, clock->shift);
+>>>>>>> BRANCH (2c0705 Linux 3.18.27)
 
 	/* If arch requires, add in get_arch_timeoffset() */
 	return nsec + arch_gettimeoffset();
