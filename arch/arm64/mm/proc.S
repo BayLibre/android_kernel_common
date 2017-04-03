@@ -148,8 +148,14 @@ ENTRY(__cpu_setup)
 
 	mov	x0, #3 << 20
 	msr	cpacr_el1, x0			// Enable FP/ASIMD
+<<<<<<< HEAD   (82a230 Merge 3.18.39 into android-3.18)
 	mov	x0, #1 << 12			// Reset mdscr_el1 and disable
 	msr	mdscr_el1, x0			// access to the DCC from EL0
+=======
+	msr	mdscr_el1, xzr			// Reset mdscr_el1
+	isb					// Unmask debug exceptions now,
+	enable_dbg				// since this is per-cpu
+>>>>>>> BRANCH (d45da7 Linux 3.18.40)
 	/*
 	 * Memory region attributes for LPAE:
 	 *
