@@ -94,6 +94,13 @@ config SECURITY_SELINUX_CHECKREQPROT_VALUE
 
 	  If you are unsure how to answer this question, answer 1.
 
+config SECURITY_SELINUX_LOAD_ONCE
+	bool "NSA SELinux allow policy to be loaded only once"
+	depends on SECURITY_SELINUX
+	default n
+	help
+	  This option allows policy to be loaded only once.
+
 config SECURITY_SELINUX_POLICYDB_VERSION_MAX
 	bool "NSA SELinux maximum supported policy format version"
 	depends on SECURITY_SELINUX
