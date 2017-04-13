@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7e01c5c_76412aa0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1004277
+      },
+      "writtenOn": "2017-04-13T01:51:27Z",
+      "side": 1,
+      "message": "This is modified from upstream, maybe add:\n\n[fenc@google.com: short description of change]\n\nnear the bottom?\n\nOr, if this really needs to be a separate fix on top of what\u0027s already committed upstream then spin the #ifdef CONFIG_NET_NS check off as a separate patch.",
+      "revId": "618ff85cf7e1675f872e647a3809e90b486e75fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fb658ac7_953865ff",
+        "filename": "net/ipv4/tcp_input.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5977,
+      "author": {
+        "id": 1004277
+      },
+      "writtenOn": "2017-04-13T01:51:27Z",
+      "side": 1,
+      "message": "Is this also needed for upstream?  If so, spin this off as a fix on top of what\u0027s in upstream?",
+      "range": {
+        "startLine": 5977,
+        "startChar": 8,
+        "endLine": 5977,
+        "endChar": 20
+      },
+      "revId": "618ff85cf7e1675f872e647a3809e90b486e75fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
