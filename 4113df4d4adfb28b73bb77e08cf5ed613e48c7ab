@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "512d65c4_e377a7ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-19T22:42:45Z",
+      "side": 1,
+      "message": "I don\u0027t see this in the patch",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae52e08b_f988933c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-19T22:42:45Z",
+      "side": 1,
+      "message": "binder_alloc_buffer_size?",
+      "range": {
+        "startLine": 581,
+        "startChar": 14,
+        "endLine": 581,
+        "endChar": 32
+      },
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8887891_9e6c7872",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3472,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-19T22:42:45Z",
+      "side": 1,
+      "message": "what does this barrier do?",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d27bbf72_45f79916",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3507,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-19T22:42:45Z",
+      "side": 1,
+      "message": "Are you sure this is safe? You seem to hold the same lock when calling binder_update_page_range which locks the mmap_sem and this lock in the opposite order than here.",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09c55171_d22ba8cc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3620,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-19T22:42:45Z",
+      "side": 1,
+      "message": "why is this different from proc-\u003etsk?",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a86831f0_431a8d4b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3775,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-19T22:42:45Z",
+      "side": 1,
+      "message": "this is removing cleanup code. That code may longer be needed, but that change should not be hidden in this patch (which does not claim to make any functional changes).",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
