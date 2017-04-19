@@ -370,13 +370,12 @@ put_name:
 	lower_dentry = d_lookup(lower_dir_dentry, &dname);
 	if (lower_dentry)
 		goto setup_lower;
-
-	lower_dentry = d_alloc(lower_dir_dentry, &dname);
-	if (!lower_dentry) {
-		err = -ENOMEM;
-		goto out;
-	}
-	d_add(lower_dentry, NULL); /* instantiate and hash */
+	/* We called vfs_path_lookup earlier, and did not get a negative
+	 * dentry then. Don't confuse the lower filesystem by forcing one
+	 * on it now...
+	 */
+	err = -ENOENT;
+	goto out;
 
 setup_lower:
 	lower_path.dentry = lower_dentry;
