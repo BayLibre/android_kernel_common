@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c529292f_096431fe",
+        "filename": "fs/sdcardfs/lookup.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1051712
+      },
+      "writtenOn": "2017-04-19T19:39:02Z",
+      "side": 1,
+      "message": "maybe this is cleaner.\n\nif (!lower_dentry) {\n    err \u003d -ENOENT;\n    goto out;\n}",
+      "revId": "997f1974842e2e2fcc326f88166365422c0ed324",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
