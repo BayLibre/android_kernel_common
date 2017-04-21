@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fe54bfba_560b4ca3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-04-21T17:32:24Z",
+      "side": 1,
+      "message": "Oops, I moved that back to where the c file was split out. Will change the comment.",
+      "parentUuid": "512d65c4_e377a7ca",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ae52e08b_f988933c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 5
@@ -30,6 +48,30 @@
       "writtenOn": "2017-04-19T22:42:45Z",
       "side": 1,
       "message": "binder_alloc_buffer_size?",
+      "range": {
+        "startLine": 581,
+        "startChar": 14,
+        "endLine": 581,
+        "endChar": 32
+      },
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72e5a110_8600e09a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-04-21T17:32:24Z",
+      "side": 1,
+      "message": "changed.",
+      "parentUuid": "ae52e08b_f988933c",
       "range": {
         "startLine": 581,
         "startChar": 14,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "adfa2f63_f20c0ffc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3472,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-04-21T17:32:24Z",
+      "side": 1,
+      "message": "Well, the idea is that the new alloc-\u003evma should be visible ASAP to other threads possibly doing an allocation, but clearly the other thread could win the race prior to the barrier, so I suppose it doesn\u0027t really help at all.\n\nAlso, in the case where the other thread gets there first, I think get_task_mm() will already be returning NULL, so there is no harm.\n\nI\u0027ll remove it.",
+      "parentUuid": "f8887891_9e6c7872",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d27bbf72_45f79916",
         "filename": "drivers/android/binder.c",
         "patchSetId": 5
@@ -70,6 +130,24 @@
       "writtenOn": "2017-04-19T22:42:45Z",
       "side": 1,
       "message": "Are you sure this is safe? You seem to hold the same lock when calling binder_update_page_range which locks the mmap_sem and this lock in the opposite order than here.",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0dd94d2b_fe601e16",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3507,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-04-21T17:32:24Z",
+      "side": 1,
+      "message": "Yes, you are right. I\u0027ll bring back the binder_mmap_lock.",
+      "parentUuid": "d27bbf72_45f79916",
       "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "b22b83f9_37bbbc39",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3620,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-04-21T17:32:24Z",
+      "side": 1,
+      "message": "It should be the same (group_leader)",
+      "parentUuid": "09c55171_d22ba8cc",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a86831f0_431a8d4b",
         "filename": "drivers/android/binder.c",
         "patchSetId": 5
@@ -104,6 +200,24 @@
       "writtenOn": "2017-04-19T22:42:45Z",
       "side": 1,
       "message": "this is removing cleanup code. That code may longer be needed, but that change should not be hidden in this patch (which does not claim to make any functional changes).",
+      "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0860d5ae_d85fbbec",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3775,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-04-21T17:32:24Z",
+      "side": 1,
+      "message": "Ok, I\u0027ll put it back in this patch",
+      "parentUuid": "a86831f0_431a8d4b",
       "revId": "4113df4d4adfb28b73bb77e08cf5ed613e48c7ab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
