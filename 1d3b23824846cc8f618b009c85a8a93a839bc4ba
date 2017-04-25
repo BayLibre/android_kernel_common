@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "585663f9_faa6f121",
+        "filename": "fs/sdcardfs/derived_perm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1006166
+      },
+      "writtenOn": "2017-04-25T22:46:40Z",
+      "side": 1,
+      "message": "Actually, could you leave this as AID_MEDIA_RW in all cases?\n\n(The manual logic in installd completely skips traversing the /sdcard/Android/ directories when measuring size based on file extensions, so counting these files against the file type quotas would be create inconsistencies and probably CTS failures.)",
+      "range": {
+        "startLine": 221,
+        "startChar": 41,
+        "endLine": 221,
+        "endChar": 55
+      },
+      "revId": "1d3b23824846cc8f618b009c85a8a93a839bc4ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "055940b8_bc9f4895",
+        "filename": "fs/sdcardfs/derived_perm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1006166
+      },
+      "writtenOn": "2017-04-25T22:46:40Z",
+      "side": 1,
+      "message": "Ditto, AID_MEDIA_RW.",
+      "range": {
+        "startLine": 227,
+        "startChar": 41,
+        "endLine": 227,
+        "endChar": 54
+      },
+      "revId": "1d3b23824846cc8f618b009c85a8a93a839bc4ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
