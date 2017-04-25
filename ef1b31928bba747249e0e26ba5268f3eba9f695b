@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "eb301104_90571e28",
+        "filename": "drivers/md/dm-verity-avb.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-04-25T18:45:31Z",
+      "side": 1,
+      "message": "OK, split into two so keeping the braces.",
+      "parentUuid": "877097b6_00edfdae",
+      "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "117fc944_8be0f414",
         "filename": "drivers/md/dm-verity-avb.c",
         "patchSetId": 9
@@ -47,6 +65,24 @@
       "writtenOn": "2017-04-25T17:52:48Z",
       "side": 1,
       "message": "Are you using DMERR through here because this coded path is so rare?  Normally DMINFO/DMDEBUG might be better for success cases.",
+      "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6c0e2f32_773b4121",
+        "filename": "drivers/md/dm-verity-avb.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-04-25T18:45:31Z",
+      "side": 1,
+      "message": "Good catch, I\u0027ll use DMINFO.",
+      "parentUuid": "117fc944_8be0f414",
       "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "fcb67258_280af36c",
+        "filename": "drivers/md/dm-verity-avb.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-04-25T18:45:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91da1f17_1b662581",
+      "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "94b5ec45_aef9a98f",
         "filename": "drivers/md/dm-verity-avb.c",
         "patchSetId": 9
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "7ebbe18b_5293f5f8",
+        "filename": "drivers/md/dm-verity-avb.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-04-25T18:45:31Z",
+      "side": 1,
+      "message": "Makes sense. This actually fits in 80. Fixed.",
+      "parentUuid": "94b5ec45_aef9a98f",
+      "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f7a302b7_5de64216",
         "filename": "drivers/md/dm-verity-avb.c",
         "patchSetId": 9
@@ -98,6 +170,24 @@
       "writtenOn": "2017-04-25T17:52:48Z",
       "side": 1,
       "message": "one less space",
+      "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93da0eb7_f1e24eb6",
+        "filename": "drivers/md/dm-verity-avb.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-04-25T18:45:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7a302b7_5de64216",
       "revId": "ef1b31928bba747249e0e26ba5268f3eba9f695b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
