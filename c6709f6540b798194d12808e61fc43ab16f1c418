@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "13da92d8_76a227c5",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-04-27T14:11:13Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to check the UID here, you\u0027ve already checked it above. Maybe something like:\n\n    if (!filp \u0026\u0026\n        ((info-\u003ematch ^ info-\u003einvert) \u0026 XT_QTAGUID_GID)) {\n        atomic64_inc(\u0026qtu_events.match_no_sk_gid);\n        goto put_sock_ret_res;\n    }",
+      "range": {
+        "startLine": 1779,
+        "startChar": 0,
+        "endLine": 1784,
+        "endChar": 3
+      },
+      "revId": "c6709f6540b798194d12808e61fc43ab16f1c418",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "76ff8ea2_edb021fb",
+        "filename": "net/netfilter/xt_qtaguid_internal.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-04-27T14:11:13Z",
+      "side": 1,
+      "message": "and we couldn\u0027t get the socket GID.",
+      "range": {
+        "startLine": 292,
+        "startChar": 46,
+        "endLine": 292,
+        "endChar": 47
+      },
+      "revId": "c6709f6540b798194d12808e61fc43ab16f1c418",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
