@@ -4937,6 +4937,7 @@ static int find_new_capacity(struct energy_env *eenv,
 static int group_idle_state(struct sched_group *sg)
 {
 	int i, state = INT_MAX;
+	const struct sched_group_energy *sge = sg->sge;
 
 	/* Find the shallowest idle state in the sched group. */
 	for_each_cpu(i, sched_group_cpus(sg))
@@ -4944,6 +4945,14 @@ static int group_idle_state(struct sched_group *sg)
 
 	/* Take non-cpuidle idling into account (active idle/arch_cpu_idle()) */
 	state++;
+
+	if (WARN_ONCE(state >= sge->nr_idle_states,
+		      "CPUs %*pbl in idle state (%d) too deep for idle_states "
+		      "vector (length %d). sched_group_energy idle_states length "
+		      "should equal cpuidle_driver.state_count + 1.",
+		      cpumask_pr_args(sched_group_cpus(sg)),
+		      state, sge->nr_idle_states))
+		state = sge->nr_idle_states - 1;
 
 	return state;
 }
