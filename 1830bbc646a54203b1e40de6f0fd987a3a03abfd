@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d08d8df7_b4ad1171",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-04-29T01:03:32Z",
+      "side": 1,
+      "message": "I don\u0027t think you need READ_ONCE here. If you call this while user_buffer_offset can change, the BUG_ON(!alloc-\u003evma) would almost always trigger.",
+      "range": {
+        "startLine": 491,
+        "startChar": 8,
+        "endLine": 491,
+        "endChar": 17
+      },
+      "revId": "1830bbc646a54203b1e40de6f0fd987a3a03abfd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
