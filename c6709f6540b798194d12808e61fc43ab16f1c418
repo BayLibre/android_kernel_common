@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bb539e76_19714567",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1121354
+      },
+      "writtenOn": "2017-05-02T00:58:44Z",
+      "side": 1,
+      "message": "I think you are talking about GID here right? since we can only reach here if info-\u003ematch \u0026 XT_QTAGUID_GID. And if we don\u0027t have filp at here we will have to return false anyway I guess....",
+      "parentUuid": "13da92d8_76a227c5",
+      "range": {
+        "startLine": 1779,
+        "startChar": 0,
+        "endLine": 1784,
+        "endChar": 3
+      },
+      "revId": "c6709f6540b798194d12808e61fc43ab16f1c418",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "76ff8ea2_edb021fb",
         "filename": "net/netfilter/xt_qtaguid_internal.h",
         "patchSetId": 1
