@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "9df6e979_f67b4c58",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-05-02T13:01:28Z",
+      "side": 1,
+      "message": "I don\u0027t think we can just always return false here if filp is NULL. The current code doesn\u0027t do that, it returns ((info-\u003ematch ^ info-\u003einvert) \u0026 (XT_QTAGUID_UID | XT_QTAGUID_GID)).\n\nI think what that means is:\n\n1. If the user specified --uid-owner or --gid-owner (or both), return false.\n2. If the user specified  no --uid-owner or --gid owner, or if all the UID/GID\n   matches are inverted (e.g., just ! --uid-owner, or just ! --gid-owner, or\n   both ! --uid-owner and ! --gid-owner), return true.\n\nI think #2 is so that if you configure a rule to \"allow all packets that are not UID 1000\", then a packet on a closed socket (that doesn\u0027t have a UID) is allowed. That\u0027s because the socket doesn\u0027t have UID 1000 - it doesn\u0027t have any UID.\n\nWith that in mind: if I\u0027m reading the code correctly, if we get here then sk is not null, and if there was a UID match, then that match accepted the packet. So all we need to do is check whether a GID match was specified. More specifically:\n\n- If there\u0027s a GID match, return false.\n- If there\u0027s an inverted GID match, return true.\n\nI think that means:\n\n\tres \u003d ((info-\u003ematch ^ info-\u003einvert) \u0026 XT_QTAGUID_GID) \u003d\u003d 0;\n\nDoes that sound correct?",
+      "parentUuid": "bb539e76_19714567",
+      "range": {
+        "startLine": 1779,
+        "startChar": 0,
+        "endLine": 1784,
+        "endChar": 3
+      },
+      "revId": "c6709f6540b798194d12808e61fc43ab16f1c418",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "76ff8ea2_edb021fb",
         "filename": "net/netfilter/xt_qtaguid_internal.h",
         "patchSetId": 1
