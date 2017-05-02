@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3178968_5c863374",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-02T20:27:46Z",
+      "side": 1,
+      "message": "nit: could use tsk-\u003epid to get this",
+      "range": {
+        "startLine": 376,
+        "startChar": 5,
+        "endLine": 376,
+        "endChar": 8
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "91143252_f2d2c963",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-02T20:27:46Z",
+      "side": 1,
+      "message": "the only place where this is safe to call without the lock held is during initialization, where presumably the barrier() makes sure you see things in the right order? Could you call this with the lock held even from binder_alloc_mmap_handler(), so you can rename this and new callers of this function will know they need to hold the lock? Then you could also use \u0027binder_alloc_buffer_size_locked\u0027",
+      "range": {
+        "startLine": 588,
+        "startChar": 12,
+        "endLine": 588,
+        "endChar": 37
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e4091879_8b494de3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-02T20:27:46Z",
+      "side": 1,
+      "message": "this is always called with the lock held, so _locked?",
+      "range": {
+        "startLine": 621,
+        "startChar": 12,
+        "endLine": 621,
+        "endChar": 42
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e1f4ffb8_6ea3da2c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3557,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-02T20:27:46Z",
+      "side": 1,
+      "message": "where is the paired barrier here? Is it implicit because you acquire the lock before reading from alloc going forward?",
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
