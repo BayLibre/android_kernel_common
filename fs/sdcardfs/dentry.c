@@ -173,5 +173,10 @@ const struct dentry_operations sdcardfs_ci_dops = {
 	.d_hash	= sdcardfs_hash_ci,
 	.d_compare	= sdcardfs_cmp_ci,
 	.d_canonical_path = sdcardfs_canonical_path,
+/* dentry_kill(dentry_iput) is always executed when d_count of
+   a dentry reaches 0 by dput. this way is widely used for
+   in-memory filesystem. no 0 d_count negative dentry exists
+   and we use it for sync separate views */
+	.d_delete = always_delete_dentry
 };
 
