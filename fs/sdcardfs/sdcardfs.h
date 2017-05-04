@@ -463,6 +463,9 @@ static inline void sdcardfs_put_real_lower(const struct dentry *dent,
 extern struct mutex sdcardfs_super_list_lock;
 extern struct list_head sdcardfs_super_list;
 
+void sdcardfs_drop_shared_icache(struct super_block *, struct inode *);
+void sdcardfs_drop_sb_icache(struct super_block *, unsigned long);
+
 /* for packagelist.c */
 extern appid_t get_appid(const char *app_name);
 extern appid_t get_ext_gid(const char *app_name);

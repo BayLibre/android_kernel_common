@@ -208,6 +208,54 @@ out_eacces:
 	return err;
 }
 
+static inline int d_revalidate(struct dentry *dentry, unsigned int flags)
+{
+	return dentry->d_op->d_revalidate(dentry, flags);
+}
+
+static int __drop_sb_icache_match(struct inode * inode,
+	unsigned long ino,void *data)
+{
+	(void)data;
+	if (inode->i_ino != ino)
+		return 0;
+	spin_lock(&inode->i_lock);
+	/* if inode->i_state & (I_FREEING | I_WILL_FREE),
+	   it is on the 'evict' way, so there is no need
+	   to do with again (d_invalidate) */
+	if (inode->i_state & (I_FREEING | I_WILL_FREE)) {
+		spin_unlock(&inode->i_lock);
+		return -1;
+	}
+	__iget(inode);
+	spin_unlock(&inode->i_lock);
+	return 1;
+}
+
+/* drop all shared dentries from other superblocks */
+void sdcardfs_drop_sb_icache(struct super_block *sb, unsigned long ino)
+{
+	struct inode *inode = find_inode_nowait(sb, ino,
+		__drop_sb_icache_match, NULL);
+	struct dentry *dentry, *dir_dentry;
+
+	if (!inode)
+		return;
+
+	dentry = d_find_any_alias(inode);
+
+	if (dentry != NULL) {
+		dir_dentry = lock_parent(dentry);
+
+		if (d_revalidate(dentry, 0) == 0)
+			d_invalidate(dentry);
+		unlock_dir(dir_dentry);
+		dput(dentry);
+	}
+
+	iput(inode);
+}
+
 #if 0
 static int sdcardfs_symlink(struct inode *dir, struct dentry *dentry,
 			  const char *symname)

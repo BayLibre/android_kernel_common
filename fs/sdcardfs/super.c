@@ -155,6 +155,23 @@ static void sdcardfs_copy_mnt_data(void *data, void *newdata)
 	old->mask = new->mask;
 }
 
+static void sdcardfs_drop_shared_icache(struct super_block *sb,
+	unsigned long lower_ino)
+{
+	struct list_head *p;
+	struct sdcardfs_sb_info *sbi;
+
+	mutex_lock(&sdcardfs_super_list_lock);
+	list_for_each_entry(sbi, &sdcardfs_super_list, list) {
+		if (sbi->s_sb == sb)
+			continue;
+		mutex_unlock(&sdcardfs_super_list_lock);
+		sdcardfs_drop_sb_icache(sbi->s_sb, lower_ino);
+		mutex_lock(&sdcardfs_super_list_lock);
+	}
+	mutex_unlock(&sdcardfs_super_list_lock);
+}
+
 /*
  * Called by iput() when the inode reference count reached zero
  * and the inode is not hashed anywhere.  Used to clear anything
@@ -163,6 +180,8 @@ static void sdcardfs_copy_mnt_data(void *data, void *newdata)
  */
 static void sdcardfs_evict_inode(struct inode *inode)
 {
+	int drop_shared;
+	unsigned long ino;
 	struct inode *lower_inode;
 
 	truncate_inode_pages(&inode->i_data, 0);
@@ -172,9 +191,19 @@ static void sdcardfs_evict_inode(struct inode *inode)
 	 * by our read_inode when it was created initially.
 	 */
 	lower_inode = sdcardfs_lower_inode(inode);
+	BUG_ON(!lower_inode);
 	sdcardfs_set_lower_inode(inode, NULL);
 	set_top(SDCARDFS_I(inode), inode);
+
+	drop_shared = !lower_inode->i_nlink;
+	ino = lower_inode->i_ino;
+
 	iput(lower_inode);
+
+	if (drop_shared) {
+		BUG_ON(ino != inode->i_ino);
+		sdcardfs_drop_shared_icache(inode->i_sb, ino);
+	}
 }
 
 static struct inode *sdcardfs_alloc_inode(struct super_block *sb)
