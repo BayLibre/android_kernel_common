@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "996ae0d1_2d3ba340",
+        "filename": "drivers/leds/led-triggers.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1015340
+      },
+      "writtenOn": "2017-05-05T15:22:27Z",
+      "side": 1,
+      "message": "This skips the kfree(event) below and leaks the memory allocated at line 117.",
+      "range": {
+        "startLine": 141,
+        "startChar": 10,
+        "endLine": 141,
+        "endChar": 28
+      },
+      "revId": "c1e36edc7a495a16804f692b864bd9fcb0a3f7e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
