@@ -3208,7 +3208,10 @@ static int handle_pte_fault(struct mm_struct *mm,
 			if (vma->vm_ops)
 				return do_linear_fault(mm, vma, address,
 						pte, pmd, flags, entry);
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
 
+=======
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 			return do_anonymous_page(mm, vma, address,
 						 pte, pmd, flags);
 		}

@@ -321,7 +321,10 @@ static int v9fs_xattr_set_acl(struct dentry *dentry, const char *name,
 		name = POSIX_ACL_XATTR_ACCESS;
 		if (acl) {
 			struct iattr iattr;
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
 			struct posix_acl *old_acl = acl;
+=======
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 
 			retval = posix_acl_update_mode(inode, &iattr.ia_mode, &acl);
 			if (retval)
@@ -332,7 +335,10 @@ static int v9fs_xattr_set_acl(struct dentry *dentry, const char *name,
 				 * by the mode bits. So don't
 				 * update ACL.
 				 */
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
 				posix_acl_release(old_acl);
+=======
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 				value = NULL;
 				size = 0;
 			}

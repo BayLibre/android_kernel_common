@@ -60,6 +60,30 @@
 #include <asm/psci.h>
 #include <asm/efi.h>
 
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
+=======
+unsigned int processor_id;
+EXPORT_SYMBOL(processor_id);
+
+unsigned long elf_hwcap __read_mostly;
+EXPORT_SYMBOL_GPL(elf_hwcap);
+
+#ifdef CONFIG_COMPAT
+#define COMPAT_ELF_HWCAP_DEFAULT	\
+				(COMPAT_HWCAP_HALF|COMPAT_HWCAP_THUMB|\
+				 COMPAT_HWCAP_FAST_MULT|COMPAT_HWCAP_EDSP|\
+				 COMPAT_HWCAP_TLS|COMPAT_HWCAP_VFP|\
+				 COMPAT_HWCAP_VFPv3|COMPAT_HWCAP_VFPv4|\
+				 COMPAT_HWCAP_NEON|COMPAT_HWCAP_IDIV|\
+				 COMPAT_HWCAP_LPAE)
+unsigned int compat_elf_hwcap __read_mostly = COMPAT_ELF_HWCAP_DEFAULT;
+unsigned int compat_elf_hwcap2 __read_mostly;
+#endif
+
+DECLARE_BITMAP(cpu_hwcaps, ARM64_NCAPS);
+
+static const char *cpu_name;
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 phys_addr_t __fdt_pointer __initdata;
 
 /*

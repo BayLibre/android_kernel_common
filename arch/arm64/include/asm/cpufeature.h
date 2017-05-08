@@ -30,10 +30,15 @@
 #define ARM64_HAS_UAO				5
 #define ARM64_ALT_PAN_NOT_UAO			6
 
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
 #define ARM64_NCAPS				7
+=======
+#define ARM64_NCAPS				3
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 
 #ifndef __ASSEMBLY__
 
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
 #include <linux/kernel.h>
 
 /* CPU feature register tracking */
@@ -92,6 +97,8 @@ struct arm64_cpu_capabilities {
 	};
 };
 
+=======
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 extern DECLARE_BITMAP(cpu_hwcaps, ARM64_NCAPS);
 
 static inline bool cpu_have_feature(unsigned int num)

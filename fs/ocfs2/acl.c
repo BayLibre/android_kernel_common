@@ -241,10 +241,19 @@ int ocfs2_set_acl(handle_t *handle,
 	case ACL_TYPE_ACCESS:
 		name_index = OCFS2_XATTR_INDEX_POSIX_ACL_ACCESS;
 		if (acl) {
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
 			umode_t mode = inode->i_mode;
+=======
+			umode_t mode;
+
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 			ret = posix_acl_update_mode(inode, &mode, &acl);
 			if (ret)
 				return ret;
+<<<<<<< HEAD   (f48352 ANDROID: android-base.cfg: remove USB_OTG_WAKELOCK)
+=======
+
+>>>>>>> BRANCH (68e50d Linux 3.18.52)
 			ret = ocfs2_acl_set_mode(inode, di_bh,
 						 handle, mode);
 			if (ret)
