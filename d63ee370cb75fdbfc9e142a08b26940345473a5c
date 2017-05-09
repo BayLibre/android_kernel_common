@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "8bbf6399_40128759",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "you still need to make sure the node cannot get freed before reading those fields. Are there locks added later that cover this?",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2040ee03_b4eddfc6",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "lock?",
+      "range": {
+        "startLine": 290,
+        "startChar": 12,
+        "endLine": 290,
+        "endChar": 21
+      },
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "53931747_ed66285d",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -46,6 +86,97 @@
       "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3400b523_4140e895",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "is this needed? if target_list is not NULL, how can proc be NULL?",
+      "range": {
+        "startLine": 705,
+        "startChar": 6,
+        "endLine": 705,
+        "endChar": 14
+      },
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff2d1135_7d87e7c2",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "move this to patch that added proc?",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e24fffd4_97e8dedf",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "return true?",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1fac53e7_c8c73888",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1453,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "what does the lock protect here?",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "02f12b2c_bc9eb809",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1706,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-09T23:39:46Z",
+      "side": 1,
+      "message": "you are not using the node here, why not unlock before the if",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
