@@ -22,6 +22,30 @@
       "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "853d4d3d_fdd40451",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-09T22:24:38Z",
+      "side": 1,
+      "message": "Correct. All the BUG_ONs are a bug in kernel code. There should be no way for userspace to trigger any of them.",
+      "parentUuid": "53931747_ed66285d",
+      "range": {
+        "startLine": 689,
+        "startChar": 1,
+        "endLine": 689,
+        "endChar": 7
+      },
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
