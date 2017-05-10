@@ -46,6 +46,30 @@
       "revId": "8f51e492a656853243a3fcfa828f681302d1e520",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "39d235a7_ec7e9d44",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-05-10T19:40:57Z",
+      "side": 1,
+      "message": "I did consider just using whitespace and then changing the number of parameters in libavb... but this is going to break if/when we change the dm\u003d\"...\" syntax.\n\nSince this is going to be more a case of \"when\" than \"if\" - see https://lkml.org/lkml/2017/4/18/501 - I figured this is a lot more future-proof! I also think it\u0027s fine to just keep it as a vendor patch... although if you insist I\u0027ll try to get it upstream!",
+      "parentUuid": "6d8ed8b8_f7f4369b",
+      "range": {
+        "startLine": 35,
+        "startChar": 28,
+        "endLine": 35,
+        "endChar": 52
+      },
+      "revId": "8f51e492a656853243a3fcfa828f681302d1e520",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
