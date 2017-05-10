@@ -94,6 +94,30 @@
       "revId": "8f51e492a656853243a3fcfa828f681302d1e520",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "53a3330b_226087ad",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-05-10T19:54:40Z",
+      "side": 1,
+      "message": "OK, I\u0027ll look into that. Other paths we could take include introducing a \u0027nop\u0027 option or making the parser just ignore unknown options. I also considered just using \u0027ignore_zero_blocks\u0027 since it\u0027s legal to repeat options and we always want it anyway :-)",
+      "parentUuid": "96343c55_40d7eb17",
+      "range": {
+        "startLine": 35,
+        "startChar": 28,
+        "endLine": 35,
+        "endChar": 52
+      },
+      "revId": "8f51e492a656853243a3fcfa828f681302d1e520",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
