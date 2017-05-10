@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "88cea75c_0452c031",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "Yes, there is a patch coming that prevents free-while-in-use.",
+      "parentUuid": "8bbf6399_40128759",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2040ee03_b4eddfc6",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2017-05-09T23:39:46Z",
       "side": 1,
       "message": "lock?",
+      "range": {
+        "startLine": 290,
+        "startChar": 12,
+        "endLine": 290,
+        "endChar": 21
+      },
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28be03fe_fcfa4658",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "Will do.",
+      "parentUuid": "2040ee03_b4eddfc6",
       "range": {
         "startLine": 290,
         "startChar": 12,
@@ -112,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "c49041d6_931b543a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "3400b523_4140e895",
+      "range": {
+        "startLine": 705,
+        "startChar": 6,
+        "endLine": 705,
+        "endChar": 14
+      },
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ff2d1135_7d87e7c2",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -123,6 +189,24 @@
       "writtenOn": "2017-05-09T23:39:46Z",
       "side": 1,
       "message": "move this to patch that added proc?",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec1f5f81_8bd756e9",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff2d1135_7d87e7c2",
       "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
@@ -146,6 +230,24 @@
     },
     {
       "key": {
+        "uuid": "e7bc9c1c_06db86ab",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e24fffd4_97e8dedf",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1fac53e7_c8c73888",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -163,6 +265,24 @@
     },
     {
       "key": {
+        "uuid": "1e0cf3b5_c6b7e727",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1453,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "node-\u003eaccept_fds is a bitfield so this is an extract/deposit operation that needs protection against other bitfield mods.",
+      "parentUuid": "1fac53e7_c8c73888",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "02f12b2c_bc9eb809",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -174,6 +294,24 @@
       "writtenOn": "2017-05-09T23:39:46Z",
       "side": 1,
       "message": "you are not using the node here, why not unlock before the if",
+      "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08678169_67107e1e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1706,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-10T00:25:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02f12b2c_bc9eb809",
       "revId": "d63ee370cb75fdbfc9e142a08b26940345473a5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
