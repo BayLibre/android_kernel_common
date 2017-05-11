@@ -141,6 +141,30 @@
       "revId": "8f51e492a656853243a3fcfa828f681302d1e520",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "167c0358_bc006b16",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1076971
+      },
+      "writtenOn": "2017-05-11T17:33:32Z",
+      "side": 1,
+      "message": "OK, so I\u0027ll prepare a patch for upstream and we\u0027ll see how that works. So for now I\u0027ll remove the \u0027return_eio_on_corruption\u0027 for now and will just use \u0027ignore_zero_blocks\u0027 in libavb with a TODO to change it to \u0027return_eio_on_corruption\u0027 when that\u0027s landed. Is that OK with you?",
+      "parentUuid": "53a3330b_226087ad",
+      "range": {
+        "startLine": 35,
+        "startChar": 28,
+        "endLine": 35,
+        "endChar": 52
+      },
+      "revId": "8f51e492a656853243a3fcfa828f681302d1e520",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
