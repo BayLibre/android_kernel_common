@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b5524829_78019c71",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-11T17:35:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6201579f_f647da94",
+      "range": {
+        "startLine": 746,
+        "startChar": 6,
+        "endLine": 746,
+        "endChar": 14
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6c171f36_de32dc65",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "2700c830_7ffeb498",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-11T17:35:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c171f36_de32dc65",
+      "range": {
+        "startLine": 823,
+        "startChar": 7,
+        "endLine": 823,
+        "endChar": 10
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a343aac2_8c31ffce",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2017-05-11T02:36:08Z",
       "side": 1,
       "message": "I don\u0027t know if this is covered in another patch, but if you drop the global lock this could fail if another thread drops the strong ref you had when this function was entered.",
+      "range": {
+        "startLine": 1856,
+        "startChar": 2,
+        "endLine": 1856,
+        "endChar": 17
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52649386_ff63b09f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1856,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-11T17:35:45Z",
+      "side": 1,
+      "message": "There is a patch coming that will guarantee that the node stays alive to here.",
+      "parentUuid": "a343aac2_8c31ffce",
       "range": {
         "startLine": 1856,
         "startChar": 2,
