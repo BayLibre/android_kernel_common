@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6201579f_f647da94",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-11T02:36:08Z",
+      "side": 1,
+      "message": "If proc and target_list NULL you now return 0 instead of -EINVAL. Is that intentional?",
+      "range": {
+        "startLine": 746,
+        "startChar": 6,
+        "endLine": 746,
+        "endChar": 14
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6c171f36_de32dc65",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-11T02:36:08Z",
+      "side": 1,
+      "message": "this cannot fail. Perhaps it should be changed to return void (not necessarily in this patch)",
+      "range": {
+        "startLine": 823,
+        "startChar": 7,
+        "endLine": 823,
+        "endChar": 10
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a343aac2_8c31ffce",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1856,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-11T02:36:08Z",
+      "side": 1,
+      "message": "I don\u0027t know if this is covered in another patch, but if you drop the global lock this could fail if another thread drops the strong ref you had when this function was entered.",
+      "range": {
+        "startLine": 1856,
+        "startChar": 2,
+        "endLine": 1856,
+        "endChar": 17
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
