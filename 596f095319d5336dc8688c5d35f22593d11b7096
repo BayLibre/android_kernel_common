@@ -140,6 +140,52 @@
       "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "22fbebde_c8f48246",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2458,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-12T22:44:59Z",
+      "side": 1,
+      "message": "need lock here since another thread can set proc to NULL?",
+      "range": {
+        "startLine": 2458,
+        "startChar": 8,
+        "endLine": 2458,
+        "endChar": 23
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5e7215a_8e78eff4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3212,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-12T22:44:59Z",
+      "side": 1,
+      "message": "do you need to hold the lock for these initial modifications? As soon as binder_context_mgr_node is assigned, it will be visible to other threads.",
+      "range": {
+        "startLine": 3204,
+        "startChar": 1,
+        "endLine": 3212,
+        "endChar": 52
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
