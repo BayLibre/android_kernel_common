@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "4e9e698c_bd391bef",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-16T20:55:46Z",
+      "side": 1,
+      "message": "I had it that way and Arve pointed out a possible deadlock since mmap is called while holding mmap_sem and in some of the binder_alloc routines, we acquire mmap_sem holding the this mutex. So now we rely on the barrier as you point out.",
+      "parentUuid": "91143252_f2d2c963",
+      "range": {
+        "startLine": 588,
+        "startChar": 12,
+        "endLine": 588,
+        "endChar": 37
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e4091879_8b494de3",
         "filename": "drivers/android/binder.c",
         "patchSetId": 11
@@ -59,6 +83,30 @@
       "writtenOn": "2017-05-02T20:27:46Z",
       "side": 1,
       "message": "this is always called with the lock held, so _locked?",
+      "range": {
+        "startLine": 621,
+        "startChar": 12,
+        "endLine": 621,
+        "endChar": 42
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65f3ac73_1d2e94ea",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-16T20:55:46Z",
+      "side": 1,
+      "message": "good point.",
+      "parentUuid": "e4091879_8b494de3",
       "range": {
         "startLine": 621,
         "startChar": 12,
