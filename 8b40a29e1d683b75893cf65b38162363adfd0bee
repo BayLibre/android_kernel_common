@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96aa64b8_17053655",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-17T02:48:46Z",
+      "side": 1,
+      "message": "why are you double tracking references from the ref struct to the node?",
+      "revId": "8b40a29e1d683b75893cf65b38162363adfd0bee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52a284b9_7322a7f1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-17T02:48:46Z",
+      "side": 1,
+      "message": "why did this move, and why do you allow invalid internal increments?",
+      "revId": "8b40a29e1d683b75893cf65b38162363adfd0bee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
