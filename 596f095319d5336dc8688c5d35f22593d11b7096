@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "05f3e9dc_187bf1ae",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1856,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-17T03:27:36Z",
+      "side": 1,
+      "message": "You also need a strong ref. You are not allowed to add a strong reference to a node unless you already have one, or you pass a target list that lets binder_inc_node request one.",
+      "parentUuid": "52649386_ff63b09f",
+      "range": {
+        "startLine": 1856,
+        "startChar": 2,
+        "endLine": 1856,
+        "endChar": 17
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "22fbebde_c8f48246",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
