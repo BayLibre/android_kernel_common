@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4b2e2b6b_711007f6",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-18T00:36:20Z",
+      "side": 1,
+      "message": "the idea is that internal_weak_refs is the sum of the ref structs and the internal references from binder_get_node(). We can\u0027t tell here whether or not there is a corresponding ref -- but if this is non-zero (even if there are no refs), we know we can\u0027t free the node.\n\nWith this binder_put_node() can just call binder_dec_node(node, 0, 1) to undo this internal ref.",
+      "parentUuid": "96aa64b8_17053655",
+      "revId": "8b40a29e1d683b75893cf65b38162363adfd0bee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52a284b9_7322a7f1",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2017-05-17T02:48:46Z",
       "side": 1,
       "message": "why did this move, and why do you allow invalid internal increments?",
+      "revId": "8b40a29e1d683b75893cf65b38162363adfd0bee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2188354e_4caee8da",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-18T00:36:20Z",
+      "side": 1,
+      "message": "This was also part of using binder_inc_node from binder_get_node_from_refs(), but it isn\u0027t necessary. I changed this back.",
+      "parentUuid": "52a284b9_7322a7f1",
       "revId": "8b40a29e1d683b75893cf65b38162363adfd0bee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
