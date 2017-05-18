@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b41bb150_903dc705",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-18T01:21:00Z",
+      "side": 1,
+      "message": "I think this is fixed in the latest.",
+      "parentUuid": "087a474a_42569fd8",
+      "range": {
+        "startLine": 820,
+        "startChar": 6,
+        "endLine": 820,
+        "endChar": 14
+      },
+      "revId": "6e2855d7d0962a7a883b66a5d662df707d84ae85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "97def37b_9101a664",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2017-05-17T03:27:36Z",
       "side": 1,
       "message": "why is the return value not checked here?",
+      "range": {
+        "startLine": 2577,
+        "startChar": 3,
+        "endLine": 2577,
+        "endChar": 25
+      },
+      "revId": "6e2855d7d0962a7a883b66a5d662df707d84ae85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52964d59_56c22990",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2577,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-18T01:21:00Z",
+      "side": 1,
+      "message": "The return value indicates whether or not to delete the node, but we know it will be false since we have an internal reference (which will be decr by the binder_put_node at line 2584).",
+      "parentUuid": "97def37b_9101a664",
       "range": {
         "startLine": 2577,
         "startChar": 3,
