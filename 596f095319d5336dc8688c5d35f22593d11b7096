@@ -191,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "411767ea_6a84cc7c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1856,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-19T22:50:47Z",
+      "side": 1,
+      "message": "You are not allowed to do that unless you already have another strong reference. Without the global lock that reference could go away before you get here.",
+      "parentUuid": "6bd2d5e5_3dd744c1",
+      "range": {
+        "startLine": 1856,
+        "startChar": 2,
+        "endLine": 1856,
+        "endChar": 17
+      },
+      "revId": "596f095319d5336dc8688c5d35f22593d11b7096",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "22fbebde_c8f48246",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
