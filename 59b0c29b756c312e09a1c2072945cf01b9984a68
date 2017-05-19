@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ad21a3b_99900107",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-05-19T17:50:26Z",
+      "side": 1,
+      "message": "Either:\n\nBACKPORT: Add a eBPF helper function to retrieve socket uid\n\nor\n\nBACKPORT: UPSTREAM: Add a eBPF helper function to retrieve socket uid",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 70
+      },
+      "revId": "59b0c29b756c312e09a1c2072945cf01b9984a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ac9cb68_9b0fcd00",
+        "filename": "net/core/filter.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2651,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-05-19T17:50:26Z",
+      "side": 1,
+      "message": "Missing?\n\n\tcase BPF_FUNC_get_socket_uid:\n\t\treturn \u0026bpf_get_socket_uid_proto;",
+      "range": {
+        "startLine": 2651,
+        "startChar": 36,
+        "endLine": 2651,
+        "endChar": 37
+      },
+      "revId": "59b0c29b756c312e09a1c2072945cf01b9984a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1eef209d_69e3663d",
+        "filename": "tools/include/uapi/linux/bpf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-05-19T17:50:26Z",
+      "side": 1,
+      "message": "(this also applies to get_socket_cookie in previous patch)\n\ncomment missing:\n\n/**\n * u32 bpf_get_socket_uid(skb)\n *     Get the owner uid of the socket stored inside sk_buff.\n *     @skb: pointer to skb\n *     Return: uid of the socket owner on success or overflowuid if failed.\n */",
+      "range": {
+        "startLine": 380,
+        "startChar": 1,
+        "endLine": 380,
+        "endChar": 2
+      },
+      "revId": "59b0c29b756c312e09a1c2072945cf01b9984a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
