@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "077f8b9c_438f3198",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2710,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-20T20:12:46Z",
+      "side": 1,
+      "message": "If you protect this state with the inner lock in addition to the node lock you should be able to avoid the node lock here and keep the inner lock locked instead. If you don\u0027t want to lock the inner lock as often, you can move the (need_)strong/weak calculation to inc/dec-node and only lock the inner lock when the result changes (where you usually need the inner lock anyway to queue the work).",
+      "revId": "03d4c48040706d3f2d0b3cb4ec3f44a50ed4180c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
