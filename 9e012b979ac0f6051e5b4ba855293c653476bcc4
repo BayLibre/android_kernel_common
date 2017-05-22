@@ -157,6 +157,24 @@
       "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fba7167_97908d49",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3557,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-22T21:39:15Z",
+      "side": 1,
+      "message": "Still curious about how this works. barrier() is really a compiler barrier only, so the CPU is still free to reorder these writes. So could another CPU still see alloc-\u003evma being set before say alloc-\u003efree_async_space?",
+      "parentUuid": "e1f4ffb8_6ea3da2c",
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
