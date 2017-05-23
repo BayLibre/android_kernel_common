@@ -143,6 +143,29 @@
     },
     {
       "key": {
+        "uuid": "46d93533_fba8782d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-05-23T01:20:20Z",
+      "side": 1,
+      "message": "this should be checked after the check for alloc-\u003evma \u003d\u003d NULL (and I think we also need a memory barrier to make this effective).",
+      "range": {
+        "startLine": 788,
+        "startChar": 21,
+        "endLine": 788,
+        "endChar": 48
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e1f4ffb8_6ea3da2c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 11
