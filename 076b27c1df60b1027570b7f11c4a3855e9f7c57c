@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4876ef07_cd257bcb",
+        "filename": "fs/sdcardfs/dentry.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2017-05-23T00:17:13Z",
+      "side": 1,
+      "message": "Thanks.",
+      "parentUuid": "54b21dea_b225c9fc",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 9
+      },
+      "revId": "076b27c1df60b1027570b7f11c4a3855e9f7c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "240a50b4_4bb84b12",
         "filename": "fs/sdcardfs/dentry.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2017-05-23T00:08:30Z",
       "side": 1,
       "message": "Do we want to data_put(data) if it is abandoned?",
+      "range": {
+        "startLine": 120,
+        "startChar": 3,
+        "endLine": 120,
+        "endChar": 11
+      },
+      "revId": "076b27c1df60b1027570b7f11c4a3855e9f7c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "abf78a6a_5fbb2ff6",
+        "filename": "fs/sdcardfs/dentry.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2017-05-23T00:17:13Z",
+      "side": 1,
+      "message": "Abandoned refers to the inode that originally had it no longer existing. Others may still have active references to it. The object still exists, and we need to put the reference we took, or we leak memory.",
+      "parentUuid": "240a50b4_4bb84b12",
       "range": {
         "startLine": 120,
         "startChar": 3,
