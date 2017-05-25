@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac7785c5_12119a34",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-25T02:58:06Z",
+      "side": 1,
+      "message": "can the suffix specify which lock should be held? e.g. _ilocked/_nlocked/_olocked/_nilocked?",
+      "range": {
+        "startLine": 710,
+        "startChar": 26,
+        "endLine": 710,
+        "endChar": 33
+      },
+      "revId": "b9577a2a4454b0a201077376c6a1c1c70ff26ca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e632f551_42699632",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-25T02:58:06Z",
+      "side": 1,
+      "message": "this could be a BUG_ON as holding wrong lock is just as bad as not holding a lock. (although I don\u0027t think the proc pointer in the target_list is needed as this should be impossible to hit).",
+      "range": {
+        "startLine": 745,
+        "startChar": 3,
+        "endLine": 745,
+        "endChar": 10
+      },
+      "revId": "b9577a2a4454b0a201077376c6a1c1c70ff26ca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0070db10_1ab310cc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 811,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-25T02:58:06Z",
+      "side": 1,
+      "message": "has this lock be created?",
+      "revId": "b9577a2a4454b0a201077376c6a1c1c70ff26ca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba9d85c5_2b7eb82f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2807,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-25T02:58:06Z",
+      "side": 1,
+      "message": "I don\u0027t think it is safe to drop the lock here (see pg 822946)",
+      "revId": "b9577a2a4454b0a201077376c6a1c1c70ff26ca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1940c73c_36784f05",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3468,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-25T02:58:06Z",
+      "side": 1,
+      "message": "why did this move into the if?",
+      "revId": "b9577a2a4454b0a201077376c6a1c1c70ff26ca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
