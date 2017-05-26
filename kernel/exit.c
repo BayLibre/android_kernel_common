@@ -55,6 +55,7 @@
 #include <linux/shm.h>
 
 #include "sched/tune.h"
+#include "sched/sched.h"
 
 #include <asm/uaccess.h>
 #include <asm/unistd.h>
@@ -702,6 +703,7 @@ void do_exit(long code)
 
 	exit_signals(tsk);  /* sets PF_EXITING */
 
+	walt_exit_task(tsk);
 	schedtune_exit_task(tsk);
 
 	/*
