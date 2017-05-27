@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e268731e_a1a23878",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-27T01:55:59Z",
+      "side": 1,
+      "message": "This seem to always be followed by \"hlist_add_head(\u0026tmp_ref-\u003enode_entry, \u0026node-\u003erefs);\". Can that be done here instead?",
+      "revId": "de8d548dee2eb722994fa59cb183d3f41bfcb3fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9375822f_df7fa3b1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-27T01:55:59Z",
+      "side": 1,
+      "message": "This code is almost the same as binder_dec_node, and does not seem to have sufficient locking when node-\u003eproc is NULL. It might make sense to call a single helper function where tmp_ref is added as an optional argument in addition to the current binder_dec_node args (assuming they need the same locking changes in later patches)?",
+      "revId": "de8d548dee2eb722994fa59cb183d3f41bfcb3fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2fb6daa1_f935d1b8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1714,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-27T01:55:59Z",
+      "side": 1,
+      "message": "goto err?",
+      "revId": "de8d548dee2eb722994fa59cb183d3f41bfcb3fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
