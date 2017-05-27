@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1f7f530_6060ec01",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 856,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-27T02:28:00Z",
+      "side": 1,
+      "message": "this is duplicated many other places. Should binder_node_lock always to to lock the inner lock, or should we add binder_node_inner_lock and binder_inner_node_unlock helpers?",
+      "range": {
+        "startLine": 854,
+        "startChar": 0,
+        "endLine": 856,
+        "endChar": 37
+      },
+      "revId": "8c652a20779bd4d0daf44d5111c30449ca6d02a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b68f71b_22e018d4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-05-27T02:28:00Z",
+      "side": 1,
+      "message": "I think you need to read this from the node after locking the node (here and many places below)",
+      "range": {
+        "startLine": 1079,
+        "startChar": 5,
+        "endLine": 1079,
+        "endChar": 14
+      },
+      "revId": "8c652a20779bd4d0daf44d5111c30449ca6d02a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
