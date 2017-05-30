@@ -22,6 +22,30 @@
       "revId": "93235acaf23f1d3f0ffe99f5aee55ae1aba7d27e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "445698f4_b30e324b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-05-30T21:55:36Z",
+      "side": 1,
+      "message": "Yes, we can just drop the BUG_ON since this means that the proc is dying while we are initiating a transaction that will ultimately fail with a dead reply.",
+      "parentUuid": "ace8fb0d_0f62aefb",
+      "range": {
+        "startLine": 490,
+        "startChar": 1,
+        "endLine": 490,
+        "endChar": 21
+      },
+      "revId": "93235acaf23f1d3f0ffe99f5aee55ae1aba7d27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
