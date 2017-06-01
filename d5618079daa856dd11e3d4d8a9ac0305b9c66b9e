@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ac3cfcea_e6af13fa",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-01T17:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "048b6a73_4ffeb5fe",
+      "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "033aca6b_8786d8bd",
         "filename": "drivers/android/binder.c",
         "patchSetId": 9
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "3cdea577_b08776ec",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-01T17:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "033aca6b_8786d8bd",
+      "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "18c76f75_f398b437",
         "filename": "drivers/android/binder.c",
         "patchSetId": 9
@@ -47,6 +83,24 @@
       "writtenOn": "2017-06-01T02:49:05Z",
       "side": 1,
       "message": "What does this lock protect? The node is already visible to binder_get_node so it is too late to lock it here.",
+      "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "95e29900_7b70c665",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1925,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-01T17:25:54Z",
+      "side": 1,
+      "message": "Well, it was protecting the writes to the bitfields min_priority and accept_fds, but agreed it should happen during binder_new_node so the node isn\u0027t exposed with other values for these.",
+      "parentUuid": "18c76f75_f398b437",
       "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
