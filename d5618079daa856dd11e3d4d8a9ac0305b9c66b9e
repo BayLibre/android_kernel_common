@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "048b6a73_4ffeb5fe",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-01T02:49:05Z",
+      "side": 1,
+      "message": "wrong patch?",
+      "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "033aca6b_8786d8bd",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-01T02:49:05Z",
+      "side": 1,
+      "message": "wrong patch?",
+      "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "18c76f75_f398b437",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1925,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-01T02:49:05Z",
+      "side": 1,
+      "message": "What does this lock protect? The node is already visible to binder_get_node so it is too late to lock it here.",
+      "revId": "d5618079daa856dd11e3d4d8a9ac0305b9c66b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
