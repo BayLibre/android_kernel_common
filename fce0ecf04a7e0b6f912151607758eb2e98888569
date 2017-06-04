@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab9b96b6_c503f81e",
+        "filename": "kernel/sched/stats.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1113735
+      },
+      "writtenOn": "2017-06-04T05:58:05Z",
+      "side": 1,
+      "message": "I think its sufficient to just guard the caller? GCC doesn\u0027t warn for unused inline functions and optimizes it out.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 1
+      },
+      "revId": "fce0ecf04a7e0b6f912151607758eb2e98888569",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
