@@ -16,6 +16,24 @@
       "revId": "a5d21e10672a962a9997852e0bd9230b58a2e333",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f4f7972f_9de17945",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 4723,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-05T17:18:19Z",
+      "side": 1,
+      "message": "Fixed by adding acq/rel of dead_nodes_lock to inc/dec node (if !node-\u003eproc)",
+      "parentUuid": "8722315a_e7b7b5d4",
+      "revId": "a5d21e10672a962a9997852e0bd9230b58a2e333",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
