@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc17ea44_a732369d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-06-06T21:32:13Z",
+      "side": 1,
+      "message": "(braces not needed here)",
+      "range": {
+        "startLine": 546,
+        "startChar": 7,
+        "endLine": 548,
+        "endChar": 3
+      },
+      "revId": "4dd9f34224b969044bbbcefbd8b8c97ca4eb334c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9e51b2ac_73e72477",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-06-06T21:32:13Z",
+      "side": 1,
+      "message": "All of the calls to binder_inc_node()/binder_dec_node() are becoming hard to read.\n\nMaybe binder_inc_node_tmpref() and binder_dec_node_tmpref(), where the latter calls a function to clean up the node if needed (which can be also be called by binder_dec_node()?)\n\nNot sure how easy this is with the locking later on.",
+      "range": {
+        "startLine": 575,
+        "startChar": 1,
+        "endLine": 576,
+        "endChar": 19
+      },
+      "revId": "4dd9f34224b969044bbbcefbd8b8c97ca4eb334c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9f2daf1_1ccd57d3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2803,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-06-06T21:32:13Z",
+      "side": 1,
+      "message": "whitespace",
+      "range": {
+        "startLine": 2803,
+        "startChar": 29,
+        "endLine": 2803,
+        "endChar": 30
+      },
+      "revId": "4dd9f34224b969044bbbcefbd8b8c97ca4eb334c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
