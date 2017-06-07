@@ -16,6 +16,24 @@
       "revId": "8f6b94316d962d2d25c49673b2708dbcbdec7385",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "370d3090_e9a5fd71",
+        "filename": "fs/dcache.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2813,
+      "author": {
+        "id": 1051712
+      },
+      "writtenOn": "2017-06-07T22:15:23Z",
+      "side": 1,
+      "message": "seems fixed in 4.9 as a side effect of this patch.\n\ncommit a03e283bf5c3d4851b4998122196ce9f849e6dfb\nAuthor: Eric W. Biederman \u003cebiederm@xmission.com\u003e\nDate:   Sat Aug 15 13:36:41 2015 -0500\n\n    dcache: Reduce the scope of i_lock in d_splice_alias",
+      "parentUuid": "295b0ccb_cc1f4975",
+      "revId": "8f6b94316d962d2d25c49673b2708dbcbdec7385",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
