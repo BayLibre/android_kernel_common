@@ -606,6 +606,7 @@ struct binder_thread {
 	struct binder_stats stats;
 	atomic_t txn_in_progress;
 	bool is_dead;
+	struct task_struct *task;
 };
 
 struct binder_transaction {
@@ -627,6 +628,7 @@ struct binder_transaction {
 	unsigned int	flags;
 	struct binder_priority	priority;
 	struct binder_priority	saved_priority;
+	bool    set_priority_called;
 	kuid_t	sender_euid;
 };
 
@@ -1156,6 +1158,31 @@ static void binder_set_priority(struct task_struct *task,
 	}
 	if (is_fair_policy(policy))
 		set_user_nice(task, priority);
+}
+
+static void binder_transaction_priority(struct task_struct *task,
+					struct binder_transaction *t,
+					struct binder_priority node_prio)
+{
+	struct binder_priority desired_prio;
+
+	desired_prio.prio = t->priority.prio;
+	desired_prio.sched_policy = t->priority.sched_policy;
+
+	t->saved_priority.sched_policy = task->policy;
+	t->saved_priority.prio = task->normal_prio;
+	if (t->set_priority_called)
+		return;
+
+	t->set_priority_called = true;
+
+	if (node_prio.prio < t->priority.prio ||
+	    (node_prio.prio == t->priority.prio &&
+	     node_prio.sched_policy == SCHED_FIFO)) {
+		desired_prio = node_prio;
+	}
+
+	binder_set_priority(task, desired_prio);
 }
 
 static struct binder_node *binder_get_node_ilocked(struct binder_proc *proc,
@@ -2494,6 +2521,7 @@ static int binder_fixup_parent(struct binder_transaction *t,
  * @t:		transaction to send
  * @proc:	process to send the transaction to
  * @thread:	thread in @proc to send the transaction to (may be NULL)
+ * @node_prio:	minimum priority for the node
  *
  * This function queues a transaction to the specified process. It will try
  * to find a thread in the target process to handle the transaction and
@@ -2506,7 +2534,8 @@ static int binder_fixup_parent(struct binder_transaction *t,
  */
 static void binder_proc_transaction(struct binder_transaction *t,
 				    struct binder_proc *proc,
-				    struct binder_thread *thread)
+				    struct binder_thread *thread,
+				    struct binder_priority node_prio)
 {
 	struct binder_worklist *target_list = NULL;
 	wait_queue_head_t *target_wait = NULL;
@@ -2521,6 +2550,7 @@ static void binder_proc_transaction(struct binder_transaction *t,
 	if (thread) {
 		target_list = &thread->todo;
 		target_wait = &thread->wait;
+		binder_transaction_priority(thread->task, t, node_prio);
 	} else {
 		target_list = &proc->todo;
 	}
@@ -2554,6 +2584,7 @@ static void binder_transaction(struct binder_proc *proc,
 	struct binder_buffer_object *last_fixup_obj = NULL;
 	binder_size_t last_fixup_min_off = 0;
 	struct binder_context *context = proc->context;
+	struct binder_priority node_prio;
 
 	e = binder_transaction_log_add(&binder_transaction_log);
 	e->call_type = reply ? 2 : !!(tr->flags & TF_ONE_WAY);
@@ -2592,7 +2623,6 @@ static void binder_transaction(struct binder_proc *proc,
 		}
 		thread->transaction_stack = in_reply_to->to_parent;
 		binder_inner_proc_unlock(proc);
-		binder_set_priority(current, in_reply_to->saved_priority);
 		if (in_reply_to->from_invalid) {
 			return_error = BR_DEAD_REPLY;
 			return_error_line = __LINE__;
@@ -2667,6 +2697,8 @@ static void binder_transaction(struct binder_proc *proc,
 			goto err_dead_binder;
 		}
 		atomic_inc(&target_proc->txn_in_progress);
+		node_prio.sched_policy = target_node->sched_policy;
+		node_prio.prio = target_node->min_priority;
 		binder_node_unlock(target_node);
 		if (security_binder_transaction(proc->tsk,
 						target_proc->tsk) < 0) {
@@ -2993,6 +3025,7 @@ static void binder_transaction(struct binder_proc *proc,
 		binder_enqueue_work_ilocked(&t->work, &target_thread->todo);
 		binder_inner_proc_unlock(target_proc);
 		wake_up_interruptible_sync(&target_thread->wait);
+		binder_set_priority(current, in_reply_to->saved_priority);
 		binder_free_transaction(in_reply_to);
 	} else if (!(t->flags & TF_ONE_WAY)) {
 		BUG_ON(t->buffer->async_transaction != 0);
@@ -3001,7 +3034,8 @@ static void binder_transaction(struct binder_proc *proc,
 		t->from_parent = thread->transaction_stack;
 		thread->transaction_stack = t;
 		binder_inner_proc_unlock(proc);
-		binder_proc_transaction(t, target_proc, target_thread);
+		binder_proc_transaction(t, target_proc, target_thread,
+					node_prio);
 	} else {
 		BUG_ON(target_node == NULL);
 		BUG_ON(t->buffer->async_transaction != 1);
@@ -3015,8 +3049,9 @@ static void binder_transaction(struct binder_proc *proc,
 			binder_enqueue_work(target_proc, &t->work,
 					    &target_node->async_todo);
 		} else {
+			binder_proc_transaction(t, target_proc, NULL,
+						node_prio);
 			target_node->has_async_transaction = 1;
-			binder_proc_transaction(t, target_proc, NULL);
 		}
 		binder_node_unlock(target_node);
 	}
@@ -3072,6 +3107,7 @@ err_no_context_mgr_node:
 	binder_proc_lock(thread->proc);
 	BUG_ON(thread->return_error.cmd != BR_OK);
 	if (in_reply_to) {
+		binder_set_priority(current, in_reply_to->saved_priority);
 		thread->return_error.cmd = BR_TRANSACTION_COMPLETE;
 		binder_enqueue_work(thread->proc,
 				    &thread->return_error.work,
@@ -3884,21 +3920,15 @@ retry:
 		BUG_ON(t->buffer == NULL);
 		if (t->buffer->target_node) {
 			struct binder_node *target_node = t->buffer->target_node;
-			struct binder_priority prio = t->priority;
+			struct binder_priority node_prio;
 
 			tr.target.ptr = target_node->ptr;
 			tr.cookie =  target_node->cookie;
-			t->saved_priority.sched_policy = current->policy;
-			t->saved_priority.prio = current->normal_prio;
 			binder_node_lock(target_node);
-			if (target_node->min_priority < t->priority.prio ||
-			    (target_node->min_priority == t->priority.prio &&
-			     target_node->sched_policy == SCHED_FIFO)) {
-				prio.sched_policy = target_node->sched_policy;
-				prio.prio = target_node->min_priority;
-			}
+			node_prio.sched_policy = target_node->sched_policy;
+			node_prio.prio = target_node->min_priority;
 			binder_node_unlock(target_node);
-			binder_set_priority(current, prio);
+			binder_transaction_priority(current, t, node_prio);
 			cmd = BR_TRANSACTION;
 		} else {
 			tr.target.ptr = 0;
@@ -4072,6 +4102,8 @@ static struct binder_thread *binder_get_thread_ilocked(
 	binder_stats_created(BINDER_STAT_THREAD);
 	thread->proc = proc;
 	thread->pid = current->pid;
+	get_task_struct(current);
+	thread->task = current;
 	atomic_set(&thread->txn_in_progress, 0);
 	init_waitqueue_head(&thread->wait);
 	binder_init_worklist(proc, &thread->todo);
@@ -4166,6 +4198,7 @@ static int binder_free_thread(struct binder_proc *proc,
 		binder_send_failed_reply(send_reply, BR_DEAD_REPLY);
 	if (free_thread) {
 		binder_release_work(proc, &thread->todo);
+		put_task_struct(thread->task);
 		kfree(thread);
 		binder_stats_deleted(BINDER_STAT_THREAD);
 	}
