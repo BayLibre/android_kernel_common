@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "47d31728_a563a281",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-09T00:23:43Z",
+      "side": 1,
+      "message": "This is only called from one place, while most call sites manually increment tmp_refs.",
+      "revId": "5b92d194b58e893d90fe005d58f04e805fb2a46c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "631a5029_ce8e1d78",
         "filename": "drivers/android/binder.c",
         "patchSetId": 12
