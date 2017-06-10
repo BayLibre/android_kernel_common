@@ -48,6 +48,53 @@
     },
     {
       "key": {
+        "uuid": "4c5b5d9f_dd21f7c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1113735
+      },
+      "writtenOn": "2017-06-10T23:07:19Z",
+      "side": 1,
+      "message": "Disregard comment, you are right here.",
+      "parentUuid": "4786a5c8_57cb79cb",
+      "range": {
+        "startLine": 11,
+        "startChar": 3,
+        "endLine": 11,
+        "endChar": 12
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ce1b8f0_9bd850d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1113735
+      },
+      "writtenOn": "2017-06-10T23:07:19Z",
+      "side": 1,
+      "message": "I feel the commit message is a bit confusing. Do you think its Ok if you can clarify in the beginning of the commit message for the benefit of other reviewers as well that \"Schedtune filtering is always enabled at the moment without this patch. Here we introduce a new SCHED_FEAT with which we can turn it off so that it uses a \u0027Pure energy diff\u0027 function.\"\n\nThis patch also has the affect of turning off the schedtune filtering (which is always enabled at the moment without this patch) so I feel that it should be made clear in the commit message as well - that the patch has a side effect of turning it off by default.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 59
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4e80b2f8_9d171583",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
