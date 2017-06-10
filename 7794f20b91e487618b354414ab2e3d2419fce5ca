@@ -115,6 +115,29 @@
       "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0bb9203f_e5bf7d40",
+        "filename": "kernel/sched/features.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1113735
+      },
+      "writtenOn": "2017-06-10T23:16:38Z",
+      "side": 1,
+      "message": "Even better IMO might be, to keep this option true here and then turn it off in a subsequent patch. That way its more clear that this patch introduces the option (without changing the current behavior) and a subsequent patch turns it off by default for the reasons you mentioned.",
+      "range": {
+        "startLine": 87,
+        "startChar": 26,
+        "endLine": 87,
+        "endChar": 31
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
