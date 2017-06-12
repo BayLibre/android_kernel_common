@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1292ecc1_009e7066",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-06-12T08:49:54Z",
+      "side": 1,
+      "message": "In the (original) SchedTune documentation we used to call it Performance/Energy Space, where we plot Performance (y) variations wrt Energy (E) variation to evaluated the trade-off depending on the boost value.",
+      "parentUuid": "597298d2_8802e0c7",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4786a5c8_57cb79cb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "df27e4ad_e498fcf5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-06-12T08:49:54Z",
+      "side": 1,
+      "message": "NO, by disabling. Disabling: NO_ENERGY_FILTER. When we disable the energy filter it means that we do not care about evaluating the E-vs-P trade-off.",
+      "parentUuid": "4786a5c8_57cb79cb",
+      "range": {
+        "startLine": 11,
+        "startChar": 3,
+        "endLine": 11,
+        "endChar": 12
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ce1b8f0_9bd850d3",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -95,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "ef3fe139_a55ce91d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-06-12T08:49:54Z",
+      "side": 1,
+      "message": "The default (should be) ON, i.e. use the energy filter.\n\nI\u0027ve originally added this patch to disable the energy filtering while the performance index definition was broken.\nBut not, the following patches are fixing right that thus the intent was to keep this flag as a tuning mainly for experimenting and comparing w/-w/o...\n\nThus, definitively I need to update the commit message as well as the default initialisation. Or perhaps, to make it more clear, I can add a further patch after the performance index fixup which re-enable by default this feature.\n\nHowever, I agree with you this commit message at least is a bit confusing. Will post an update along your suggestion.",
+      "parentUuid": "7ce1b8f0_9bd850d3",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 59
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4e80b2f8_9d171583",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -106,6 +178,30 @@
       "writtenOn": "2017-06-10T22:57:47Z",
       "side": 1,
       "message": "s/deafult/default/",
+      "range": {
+        "startLine": 27,
+        "startChar": 30,
+        "endLine": 27,
+        "endChar": 37
+      },
+      "revId": "7794f20b91e487618b354414ab2e3d2419fce5ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47b5a32a_91c36509",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-06-12T08:49:54Z",
+      "side": 1,
+      "message": "Right ;-)",
+      "parentUuid": "4e80b2f8_9d171583",
       "range": {
         "startLine": 27,
         "startChar": 30,
