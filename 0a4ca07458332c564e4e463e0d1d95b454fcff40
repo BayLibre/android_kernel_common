@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea43b6c5_13c6c32c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 1092,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-12T23:58:44Z",
+      "side": 1,
+      "message": "wrong patch?",
+      "range": {
+        "startLine": 1092,
+        "startChar": 4,
+        "endLine": 1092,
+        "endChar": 31
+      },
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a52ad655_01712da5",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-12T23:58:44Z",
+      "side": 1,
+      "message": "tmp_refs can change while only binder_dead_nodes_lock is held, so it needs to be checked again.",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f4c66e08_b355bc6b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 2419,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-12T23:58:44Z",
+      "side": 1,
+      "message": "wrong patch?",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b7b2d28_cd73039c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 2995,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-12T23:58:44Z",
+      "side": 1,
+      "message": "free_node \u003d ... WARN_ON(free_node)?",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "616a2fa5_18a0ef5c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 4827,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-12T23:58:44Z",
+      "side": 1,
+      "message": "you can do this without allocating an array by getting a tmp_ref to 1 node (or n nodes) while holding the lock, then locking the lock again before proceeding to the next node. A node cannot be deleted from the list while tmp_refs is non-zero. (assuming the rest of the code is structured so incrementing tmp_refs while holding only binder_dead_nodes_lock is safe)",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
