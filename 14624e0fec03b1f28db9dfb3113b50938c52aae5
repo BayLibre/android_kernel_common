@@ -16,6 +16,24 @@
       "revId": "14624e0fec03b1f28db9dfb3113b50938c52aae5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7f570ba8_690196c8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4842,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T19:42:40Z",
+      "side": 1,
+      "message": "misstated the issue (this was the issue in another wip print case). The issue here is that we put the node and it might disappear, but we still need it for the next node. Will have a fix soon.",
+      "parentUuid": "9c68e422_c8e49b43",
+      "revId": "14624e0fec03b1f28db9dfb3113b50938c52aae5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
