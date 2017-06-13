@@ -16,6 +16,24 @@
       "revId": "078fddb5facbe817ead44e0dfd74c8ed1c5e183b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "177e3aa1_ad1c007d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 4710,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T15:28:47Z",
+      "side": 1,
+      "message": "Trying to rework this. The tricky part is that when we dec the tmp_ref we might need to free the node (no locks held). I\u0027ll try to get a new version of this tonight.",
+      "parentUuid": "1f70fa1b_80d53686",
+      "revId": "078fddb5facbe817ead44e0dfd74c8ed1c5e183b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
