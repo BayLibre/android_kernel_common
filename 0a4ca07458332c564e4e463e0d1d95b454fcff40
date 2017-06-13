@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5c64d711_0840ab90",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 1092,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T01:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea43b6c5_13c6c32c",
+      "range": {
+        "startLine": 1092,
+        "startChar": 4,
+        "endLine": 1092,
+        "endChar": 31
+      },
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a52ad655_01712da5",
         "filename": "drivers/android/binder.c",
         "patchSetId": 16
@@ -36,6 +60,24 @@
       "writtenOn": "2017-06-12T23:58:44Z",
       "side": 1,
       "message": "tmp_refs can change while only binder_dead_nodes_lock is held, so it needs to be checked again.",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aee0ec72_6bd085a0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T01:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a52ad655_01712da5",
       "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "e73f4720_0b0286e8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 2419,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T01:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4c66e08_b355bc6b",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b7b2d28_cd73039c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 16
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "0fc043c8_655bd4b8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 2995,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T01:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b7b2d28_cd73039c",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "616a2fa5_18a0ef5c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 16
@@ -87,6 +165,24 @@
       "writtenOn": "2017-06-12T23:58:44Z",
       "side": 1,
       "message": "you can do this without allocating an array by getting a tmp_ref to 1 node (or n nodes) while holding the lock, then locking the lock again before proceeding to the next node. A node cannot be deleted from the list while tmp_refs is non-zero. (assuming the rest of the code is structured so incrementing tmp_refs while holding only binder_dead_nodes_lock is safe)",
+      "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3973b2eb_cdf045fa",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 4827,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T01:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "616a2fa5_18a0ef5c",
       "revId": "0a4ca07458332c564e4e463e0d1d95b454fcff40",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
