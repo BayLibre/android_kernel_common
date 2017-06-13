@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c68e422_c8e49b43",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4842,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-13T19:27:13Z",
+      "side": 1,
+      "message": "This isn\u0027t quite right since we might need to free the node, so can\u0027t hold a lock for binder_put_node. Hopefully get a fixed version up tomorrow.",
+      "revId": "14624e0fec03b1f28db9dfb3113b50938c52aae5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
