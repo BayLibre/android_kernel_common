@@ -34,6 +34,24 @@
       "revId": "14624e0fec03b1f28db9dfb3113b50938c52aae5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dbe69100_95daca77",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4842,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-13T22:50:55Z",
+      "side": 1,
+      "message": "Calling binder_put_node on the last node instead should fix that (either here or before binder_node_lock@4838, and after the loop).",
+      "parentUuid": "7f570ba8_690196c8",
+      "revId": "14624e0fec03b1f28db9dfb3113b50938c52aae5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
