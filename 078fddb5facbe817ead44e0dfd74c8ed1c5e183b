@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f70fa1b_80d53686",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 4710,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-13T00:52:37Z",
+      "side": 1,
+      "message": "can you grab the outer lock to prevent the process from dying? If so, you can drop the inner lock after getting the tmp_ref and relock before moving to the next entry.",
+      "revId": "078fddb5facbe817ead44e0dfd74c8ed1c5e183b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
