@@ -34,6 +34,24 @@
       "revId": "078fddb5facbe817ead44e0dfd74c8ed1c5e183b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "966221b4_d6cbb34b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 4710,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-14T15:26:17Z",
+      "side": 1,
+      "message": "actually, we don\u0027t need the outer lock to prevent the process from dying since the caller is holding the binder_procs_lock mutex which prevents proc from being released",
+      "parentUuid": "177e3aa1_ad1c007d",
+      "revId": "078fddb5facbe817ead44e0dfd74c8ed1c5e183b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
