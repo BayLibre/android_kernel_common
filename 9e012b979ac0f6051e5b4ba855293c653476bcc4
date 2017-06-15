@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a468aa86_7d248590",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2017-06-15T06:06:41Z",
+      "side": 1,
+      "message": "Should be of type pid_t, right?",
+      "parentUuid": "d3178968_5c863374",
+      "range": {
+        "startLine": 376,
+        "startChar": 5,
+        "endLine": 376,
+        "endChar": 8
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91143252_f2d2c963",
         "filename": "drivers/android/binder.c",
         "patchSetId": 11
@@ -216,6 +240,29 @@
       "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b46c3d87_f444be39",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3621,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2017-06-15T06:06:41Z",
+      "side": 1,
+      "message": "does this work properly with pid namespaces?  Don\u0027t you have to call get_task_pid() and friends?",
+      "range": {
+        "startLine": 3620,
+        "startChar": 1,
+        "endLine": 3621,
+        "endChar": 41
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
