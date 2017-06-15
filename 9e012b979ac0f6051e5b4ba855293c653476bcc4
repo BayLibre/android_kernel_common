@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "e11261c9_44866463",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-15T17:21:13Z",
+      "side": 1,
+      "message": "Yes, but this is not the right patch to fix it in since the same issue exists already in struct_proc and binder_open(). See response below.",
+      "parentUuid": "a468aa86_7d248590",
+      "range": {
+        "startLine": 376,
+        "startChar": 5,
+        "endLine": 376,
+        "endChar": 8
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91143252_f2d2c963",
         "filename": "drivers/android/binder.c",
         "patchSetId": 11
@@ -254,6 +278,30 @@
       "writtenOn": "2017-06-15T06:06:41Z",
       "side": 1,
       "message": "does this work properly with pid namespaces?  Don\u0027t you have to call get_task_pid() and friends?",
+      "range": {
+        "startLine": 3620,
+        "startChar": 1,
+        "endLine": 3621,
+        "endChar": 41
+      },
+      "revId": "9e012b979ac0f6051e5b4ba855293c653476bcc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1072b5a1_6068daa2",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3621,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-15T17:21:13Z",
+      "side": 1,
+      "message": "It doesn\u0027t, but I don\u0027t think this patch is where it should be fixed. This is just mirroring the proc-\u003epid / proc-\u003etsk fields which are set up in binder_open() -- so the fix is beyond the scope of this patch. The bug exists already in the upstream and common versions.\n\nHow about this:\n\n- in this patch, binder_open will pass \"tsk\" as a parameter to fill in these fields so we aren\u0027t repeating this in two places\n- since fixing this pid namespace bug is not really part of fine-grained-locking, we file a bug and I\u0027ll submit a patch on top of this patch set to fix it\n- I\u0027ll get that patch submitted here next week on top of Martijn\u0027s patches\n\nDoes that sound ok?",
+      "parentUuid": "b46c3d87_f444be39",
       "range": {
         "startLine": 3620,
         "startChar": 1,
