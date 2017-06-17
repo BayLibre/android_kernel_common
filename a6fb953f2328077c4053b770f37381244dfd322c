@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45a1e48a_f9c4663e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3537,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-17T01:00:36Z",
+      "side": 1,
+      "message": "This code looks like is broke a long time ago, as user_buffer_offset is calculated before vma-\u003evm_start is adjusted. Do we want to drop support for ARMv6 or fix it?",
+      "revId": "a6fb953f2328077c4053b770f37381244dfd322c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
