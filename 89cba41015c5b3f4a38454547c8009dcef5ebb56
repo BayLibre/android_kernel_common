@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9cc83e94_03a52297",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T00:33:09Z",
+      "side": 1,
+      "message": "Are all other call sites that release the locks in the opposite order all safe?\n\nI see one place where the node can get freed without first locking the node. You could probably lock the node there instead.",
+      "revId": "89cba41015c5b3f4a38454547c8009dcef5ebb56",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
