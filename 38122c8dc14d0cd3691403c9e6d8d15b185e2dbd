@@ -22,6 +22,30 @@
       "revId": "38122c8dc14d0cd3691403c9e6d8d15b185e2dbd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88bf8e93_f5780d76",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-20T23:46:48Z",
+      "side": 1,
+      "message": "It\u0027s true, but it\u0027s perhaps too simple. During binder_node_release when node-\u003eproc is set to NULL, it is the node lock that is protecting it. After the release the dead_nodes_lock is protecting it. Maybe instead:\n\n\"protected by proc-\u003einner_lock while node-\u003eproc is valid, protected by node-\u003elock when being released and node-\u003eproc is being cleared, and by binder_dead_nodes_lock when node-\u003eproc is NULL and the node is on the dead_nodes list\"",
+      "parentUuid": "db877e73_f12705dd",
+      "range": {
+        "startLine": 324,
+        "startChar": 66,
+        "endLine": 325,
+        "endChar": 36
+      },
+      "revId": "38122c8dc14d0cd3691403c9e6d8d15b185e2dbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
