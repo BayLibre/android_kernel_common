@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b059257f_e398d6c6",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T23:08:20Z",
+      "side": 1,
+      "message": "-\u003e",
+      "range": {
+        "startLine": 431,
+        "startChar": 36,
+        "endLine": 431,
+        "endChar": 37
+      },
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f90a5619_f3b51a60",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 2147,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T23:08:20Z",
+      "side": 1,
+      "message": "you could avoid this by moving accept_fds out of the bit-field protected by the node lock.",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5343c2d_7a48df46",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 2429,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T23:08:20Z",
+      "side": 1,
+      "message": "the node lock does not protect proc-\u003etmp_ref",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e797b4bb_db08ca87",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 2744,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T23:08:20Z",
+      "side": 1,
+      "message": "I would move this down two lines to make it more clear that is is not related to the binder_enqueue_work call there.",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bda8fa31_81aafc9e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 3640,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T23:08:20Z",
+      "side": 1,
+      "message": "I don\u0027t think this is needed if you move min_priority",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "db14613b_4dd11774",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 4351,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-20T23:08:20Z",
+      "side": 1,
+      "message": "why did this move?",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
