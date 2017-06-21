@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "abf00f8b_2e1166f1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-21T21:08:41Z",
+      "side": 1,
+      "message": "Changed to:\n\n* @tmp_refs:             temporary kernel refs\n*                        (protected by @proc-\u003einner_lock while @proc\n *                        is valid, and by binder_dead_nodes_lock\n *                        @proc is NULL. During inc/dec and node release\n *                        it is also protected by @lock to provide safety\n *                        as the node dies and @proc becomes NULL)\n\nDoes that answer your \"when/while/if\"?",
+      "parentUuid": "a601ed27_f7e71dee",
+      "revId": "cc83bcfd899a0ecd5c43b9fa605af115e9477d48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e82bd0d2_3533e4ac",
         "filename": "drivers/android/binder.c",
         "patchSetId": 21
@@ -30,6 +48,30 @@
       "writtenOn": "2017-06-21T20:16:27Z",
       "side": 1,
       "message": "these are supposed to be invariant",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 384,
+        "endChar": 18
+      },
+      "revId": "cc83bcfd899a0ecd5c43b9fa605af115e9477d48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e2fe41b_0f43ce22",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-21T21:08:41Z",
+      "side": 1,
+      "message": "dang. I made the change in the wrong patch to take these out of bitfields so we don\u0027t need to lock them. Fixed.",
+      "parentUuid": "e82bd0d2_3533e4ac",
       "range": {
         "startLine": 383,
         "startChar": 0,
