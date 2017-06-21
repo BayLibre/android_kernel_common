@@ -16,6 +16,24 @@
       "revId": "c0e08de0830f720bae6bd060c914b49f24a2e4ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "789c348b_d22c6844",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-21T20:54:38Z",
+      "side": 1,
+      "message": "We talked about moving accept_fds/min_priority out of the bitmap so they don\u0027t need a lock. That left only has_async_transaction, so it seemed like we might as well move it out too.",
+      "parentUuid": "34bd0ed1_8316bfde",
+      "revId": "c0e08de0830f720bae6bd060c914b49f24a2e4ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
