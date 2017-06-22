@@ -6639,11 +6639,13 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 	sync_entity_load_avg(&p->se);
 
 	sd = rcu_dereference(per_cpu(sd_ea, prev_cpu));
-	/* Find a cpu with sufficient capacity */
-	tmp_target = find_best_target(p, &tmp_backup, boosted, prefer_idle);
 
 	if (!sd)
 		goto unlock;
+
+	/* Find a cpu with sufficient capacity */
+	tmp_target = find_best_target(p, &tmp_backup, boosted, prefer_idle);
+
 	if (tmp_target >= 0) {
 		target_cpu = tmp_target;
 		if (prefer_idle || (boosted && idle_cpu(target_cpu))) {
