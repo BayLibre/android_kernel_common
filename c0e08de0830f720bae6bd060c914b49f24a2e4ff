@@ -52,6 +52,24 @@
       "revId": "c0e08de0830f720bae6bd060c914b49f24a2e4ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "68a4eeba_52d41ef4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-23T23:05:54Z",
+      "side": 1,
+      "message": "Not only that, I suggested moving accept_fds/min_priority out of the same bitfield struct that is protected by the locks, not convert all the bits to u8. The struct you have here is the same size as the old struct, but with the later patches that add more fields that is not always the case.",
+      "parentUuid": "e153adc7_ebdc6cdd",
+      "revId": "c0e08de0830f720bae6bd060c914b49f24a2e4ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
