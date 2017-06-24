@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "438aa777_a507f06b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2431,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-24T00:12:21Z",
+      "side": 1,
+      "message": "There is a later patch that moves it down, but that\u0027s only so adding the inner lock around the tmp_ref is slightly less expensive (preempt disabled).",
+      "parentUuid": "0694ced9_bbb7c78d",
+      "revId": "9afeddb5d1b85feec84dd0ad0494ce8465b37399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c949b64d_1d277061",
         "filename": "drivers/android/binder.c",
         "patchSetId": 23
