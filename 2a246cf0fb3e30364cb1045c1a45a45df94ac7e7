@@ -155,6 +155,24 @@
     },
     {
       "key": {
+        "uuid": "5e8d9faa_7cc7baca",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 2429,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-26T19:03:16Z",
+      "side": 1,
+      "message": "Yes, but you cannot safely lock the inner_lock here without holding the node lock.",
+      "parentUuid": "aa6c5c05_b726c281",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e797b4bb_db08ca87",
         "filename": "drivers/android/binder.c",
         "patchSetId": 21
