@@ -92,6 +92,30 @@
       "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ebc57ad9_c662701f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-06-26T23:04:19Z",
+      "side": 1,
+      "message": "I don\u0027t think that is strictly true. If tmp_refs is the only reference to a node, user-space must also have a local reference to the node before another reference can be added in the driver.",
+      "parentUuid": "c5cb3ca3_81d11a9e",
+      "range": {
+        "startLine": 2922,
+        "startChar": 5,
+        "endLine": 2922,
+        "endChar": 19
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
