@@ -137,6 +137,24 @@
     },
     {
       "key": {
+        "uuid": "aa6c5c05_b726c281",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 2429,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-26T18:33:55Z",
+      "side": 1,
+      "message": "Well, that\u0027s true if this were the end of the locking, but target_proc-\u003etmp_ref is going to be protected by the inner lock in a later patch (which would also keep target_proc safe).\n\nI do move it back in a later patch anyway (not to protect tmp_ref, but to nest the acq of the inner lock to make it slightly less expensive).\n\nI went ahead and moved it after here since it is going to be after later in the series and it does protect target_proc until that future patch.",
+      "parentUuid": "17f399eb_57511d27",
+      "revId": "2a246cf0fb3e30364cb1045c1a45a45df94ac7e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e797b4bb_db08ca87",
         "filename": "drivers/android/binder.c",
         "patchSetId": 21
