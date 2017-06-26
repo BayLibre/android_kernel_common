@@ -68,6 +68,30 @@
       "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5cb3ca3_81d11a9e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-26T22:58:55Z",
+      "side": 1,
+      "message": "the point of tmp_refs is to prevent weak from going to 0 prematurely -- it needs to keep the node alive. So the user doesn\u0027t need to be notified if tmp_refs is inc/dec, but user space must not be told that all references are gone if tmp_refs !\u003d 0.",
+      "parentUuid": "07e72345_809dbfdd",
+      "range": {
+        "startLine": 2922,
+        "startChar": 5,
+        "endLine": 2922,
+        "endChar": 19
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
