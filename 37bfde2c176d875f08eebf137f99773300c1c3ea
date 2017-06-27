@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2da625f2_e4d78942",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-27T18:10:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "643d076e_f8aed3c0",
+      "range": {
+        "startLine": 693,
+        "startChar": 46,
+        "endLine": 693,
+        "endChar": 49
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5f224544_fc76b1c8",
         "filename": "drivers/android/binder.c",
         "patchSetId": 23
@@ -36,6 +60,30 @@
       "writtenOn": "2017-06-26T22:27:35Z",
       "side": 1,
       "message": "I don\u0027t think this is a showstopper, but it would be nice to have the cleanup in a separate function to avoid depending on this behavior in binder_dec_node().",
+      "range": {
+        "startLine": 696,
+        "startChar": 1,
+        "endLine": 696,
+        "endChar": 16
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3589aef3_278e6ad1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-27T18:10:28Z",
+      "side": 1,
+      "message": "I\u0027d like to leave this one for now and avoid any significant refactoring.",
+      "parentUuid": "5f224544_fc76b1c8",
       "range": {
         "startLine": 696,
         "startChar": 1,
@@ -107,6 +155,30 @@
       "side": 1,
       "message": "I don\u0027t think that is strictly true. If tmp_refs is the only reference to a node, user-space must also have a local reference to the node before another reference can be added in the driver.",
       "parentUuid": "c5cb3ca3_81d11a9e",
+      "range": {
+        "startLine": 2922,
+        "startChar": 5,
+        "endLine": 2922,
+        "endChar": 19
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7fbf0316_10ab91d7",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-06-27T18:10:28Z",
+      "side": 1,
+      "message": "True. We could remove tmp_refs from this calculation of weak and add it to the condition for deleting the node (line 2942). userspace could be notified, but node must not be deleted.\n\nI don\u0027t think it matters at all though so I\u0027d prefer to leave it as is.",
+      "parentUuid": "ebc57ad9_c662701f",
       "range": {
         "startLine": 2922,
         "startChar": 5,
