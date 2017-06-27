@@ -22,6 +22,30 @@
       "revId": "afe586046d93488165db7d892834a58719b30ab1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8926ae89_c844658c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1185,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-06-27T23:09:25Z",
+      "side": 1,
+      "message": "This is the current behavior on our device kernels, but it does seem cleaner to run at MIN_NICE in this case.\n\nPhilip, Joel, do you have any concerns with running incoming synchronous transactions from RT threads at nice -20 in the framework binder domain?",
+      "parentUuid": "d3f7f8e7_47b3f62e",
+      "range": {
+        "startLine": 1185,
+        "startChar": 35,
+        "endLine": 1185,
+        "endChar": 36
+      },
+      "revId": "afe586046d93488165db7d892834a58719b30ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
