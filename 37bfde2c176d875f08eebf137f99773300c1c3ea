@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "26d9cec0_f6f6ee6f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-06-27T23:11:58Z",
+      "side": 1,
+      "message": "Works for me.",
+      "parentUuid": "3589aef3_278e6ad1",
+      "range": {
+        "startLine": 696,
+        "startChar": 1,
+        "endLine": 696,
+        "endChar": 16
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "07e72345_809dbfdd",
         "filename": "drivers/android/binder.c",
         "patchSetId": 23
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "True. We could remove tmp_refs from this calculation of weak and add it to the condition for deleting the node (line 2942). userspace could be notified, but node must not be deleted.\n\nI don\u0027t think it matters at all though so I\u0027d prefer to leave it as is.",
       "parentUuid": "ebc57ad9_c662701f",
+      "range": {
+        "startLine": 2922,
+        "startChar": 5,
+        "endLine": 2922,
+        "endChar": 19
+      },
+      "revId": "37bfde2c176d875f08eebf137f99773300c1c3ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7049f57d_95edf198",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-06-27T23:11:58Z",
+      "side": 1,
+      "message": "Ok, I think I finally understand this and am ok with the current solution.",
+      "parentUuid": "7fbf0316_10ab91d7",
       "range": {
         "startLine": 2922,
         "startChar": 5,
