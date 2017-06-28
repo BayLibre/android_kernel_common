@@ -65,6 +65,17 @@ static int convert_prio(int prio)
 }
 
 #ifdef CONFIG_RT_SOFTINT_OPTIMIZATION
+/*
+ * cpupri_check_rt - check if CPU has a RT task
+ * should be called from rcu-sched read section.
+ */
+bool cpupri_check_rt(void)
+{
+	int cpu = raw_smp_processor_id();
+
+	return cpu_rq(cpu)->rd->cpupri.cpu_to_pri[cpu] > CPUPRI_NORMAL;
+}
+
 /**
  * drop_nopreempt_cpus - remove likely nonpreemptible cpus from the mask
  * @lowest_mask: mask with selected CPUs (non-NULL)
