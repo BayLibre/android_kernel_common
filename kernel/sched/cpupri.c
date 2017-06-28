@@ -64,6 +64,19 @@ static int convert_prio(int prio)
 	return cpupri;
 }
 
+#ifdef CONFIG_RT_SOFTINT_OPTIMIZATION
+/*
+ * cpupri_check_rt - check if CPU has a RT task
+ * should be called from rcu-sched read section.
+ */
+bool cpupri_check_rt(void)
+{
+	int cpu = raw_smp_processor_id();
+
+	return cpu_rq(cpu)->rd->cpupri.cpu_to_pri[cpu] > CPUPRI_NORMAL;
+}
+#endif
+
 static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
 				struct cpumask *lowest_mask, int idx)
 {
