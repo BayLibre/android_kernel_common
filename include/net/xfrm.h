@@ -159,6 +159,7 @@ struct xfrm_state {
 		int		header_len;
 		int		trailer_len;
 		u32		extra_flags;
+		u32		tmpl_mark;
 	} props;
 
 	struct xfrm_lifetime_cfg lft;
@@ -288,10 +289,12 @@ struct xfrm_policy_afinfo {
 	struct dst_entry	*(*dst_lookup)(struct net *net,
 					       int tos, int oif,
 					       const xfrm_address_t *saddr,
-					       const xfrm_address_t *daddr);
+					       const xfrm_address_t *daddr,
+					       u32 mark);
 	int			(*get_saddr)(struct net *net, int oif,
 					     xfrm_address_t *saddr,
-					     xfrm_address_t *daddr);
+					     xfrm_address_t *daddr,
+					     u32 mark);
 	void			(*decode_session)(struct sk_buff *skb,
 						  struct flowi *fl,
 						  int reverse);
@@ -500,6 +503,9 @@ struct xfrm_tmpl {
 	u32			aalgos;
 	u32			ealgos;
 	u32			calgos;
+
+/* Socket mark to use for packets originated by this transform. */
+	u32			mark;
 };
 
 #define XFRM_MAX_DEPTH		6
