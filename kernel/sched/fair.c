@@ -6187,7 +6187,8 @@ static int start_cpu(bool boosted)
 	return boosted ? rd->max_cap_orig_cpu : rd->min_cap_orig_cpu;
 }
 
-static inline int find_best_target(struct task_struct *p, bool boosted, bool prefer_idle)
+static inline int find_best_target(struct task_struct *p, int prev_cpu,
+				   bool boosted, bool prefer_idle)
 {
 	unsigned long best_idle_min_cap_orig = ULONG_MAX;
 	unsigned long min_util = boosted_task_util(p);
@@ -6344,6 +6345,20 @@ static inline int find_best_target(struct task_struct *p, bool boosted, bool pre
 			 */
 			if ((new_util * capacity_margin) > \
 			    (capacity_orig * SCHED_CAPACITY_SCALE))
+				continue;
+
+			/*
+			 * Enforce energy_diff
+			 *
+			 * For non latency sensitive tasks, skip the task's
+			 * previous CPU.
+			 *
+			 * The goal here is to try hard to find another
+			 * possible candidate and use energy_diff to find out
+			 * if it's more energy efficient to move the task
+			 * there.
+			 */
+			if (i == prev_cpu)
 				continue;
 
 			/*
@@ -6520,7 +6535,7 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 
 	sd = rcu_dereference(per_cpu(sd_ea, prev_cpu));
 	/* Find a cpu with sufficient capacity */
-	tmp_target = find_best_target(p, boosted, prefer_idle);
+	tmp_target = find_best_target(p, prev_cpu, boosted, prefer_idle);
 
 	if (!sd)
 		goto unlock;
