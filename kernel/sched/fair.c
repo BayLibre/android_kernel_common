@@ -5396,9 +5396,10 @@ static int find_new_capacity(struct energy_env *eenv,
 	return idx;
 }
 
-static int group_idle_state(struct sched_group *sg)
+static int group_idle_state(struct energy_env *eenv, struct sched_group *sg)
 {
 	int i, state = INT_MAX;
+	long grp_util = 0;
 
 	/* Find the shallowest idle state in the sched group. */
 	for_each_cpu(i, sched_group_cpus(sg))
@@ -5407,6 +5408,63 @@ static int group_idle_state(struct sched_group *sg)
 	/* Take non-cpuidle idling into account (active idle/arch_cpu_idle()) */
 	state++;
 
+	/*
+	 * Try to estimate if a deeper idle state is
+	 * achievable when we move the task.
+	 */
+
+	for_each_cpu(i, sched_group_cpus(sg))
+		grp_util += cpu_util(i);
+
+	if (cpumask_test_cpu(eenv->src_cpu, sched_group_cpus(sg)))
+		if (cpumask_test_cpu(eenv->dst_cpu, sched_group_cpus(sg))) {
+			/* both cpus under consideration
+			 * are in the same group, use the
+			 * current idle state for before/after
+			 * comparisons.
+			 */
+			goto end;
+		} else {
+			/* src_cpu is in this group, remove
+			 * util_delta when estimating idle state
+			 */
+			grp_util -= eenv->util_delta;
+		}
+	else if (cpumask_test_cpu(eenv->dst_cpu, sched_group_cpus(sg))) {
+		/* only the destination CPU is in this group,
+		 * add the util_delta when estimating idle state
+		 */
+		grp_util += eenv->util_delta;
+	} else {
+		/* neither src or dst are in this group,
+		 * use the current state.
+		 */
+		goto end;
+	}
+
+	if (grp_util <=
+		((long)sg->sgc->max_capacity * (int)sg->group_weight)) {
+		/* after moving, this group is only partly
+		 * occupied, so it is will definitely have
+		 * some idle time. Allocate it proportionally
+		 */
+		int max_idle_state_idx = sg->sge->nr_idle_states - 2;
+		int new_state = grp_util * max_idle_state_idx;
+		if (grp_util <= 0)
+			new_state = max_idle_state_idx + 1;
+		else {
+			new_state = min(max_idle_state_idx, (int)
+					(new_state / sg->sgc->max_capacity));
+			new_state = max_idle_state_idx - new_state;
+		}
+		state = new_state;
+	} else {
+		/* After moving, the group will be fully occupied
+		 * so assume it will not be idle at all.
+		 */
+		state = 0;
+	}
+end:
 	return state;
 }
 
@@ -5479,8 +5537,9 @@ static int sched_group_energy(struct energy_env *eenv)
 					}
 				}
 
-				idle_idx = group_idle_state(sg);
+				idle_idx = group_idle_state(eenv, sg);
 				group_util = group_norm_util(eenv, sg);
+
 				sg_busy_energy = (group_util * sg->sge->cap_states[cap_idx].power)
 								>> SCHED_CAPACITY_SHIFT;
 				sg_idle_energy = ((SCHED_LOAD_SCALE-group_util)
