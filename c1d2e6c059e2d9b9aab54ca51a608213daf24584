@@ -16,6 +16,24 @@
       "revId": "c1d2e6c059e2d9b9aab54ca51a608213daf24584",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4a07ff92_faac55cf",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8106,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-12T07:59:50Z",
+      "side": 1,
+      "message": "This fn is only called for newidle balance, which means it only gets called from one path.\n\npick_next_task_fair -\u003e\n idle_balance -\u003e\n  load_balance -\u003e\n   find_busiest_group -\u003e\n    update_sd_lb_stats -\u003e\n     update_sg_lb_stats -\u003e\n      update_cpu_stats_if_tickless\n\nin pick_next_task_fair, we do this:\nidle:\n\trq-\u003emisfit_task \u003d 0;\n\t/*\n\t * This is OK, because current is on_cpu, which avoids it being picked\n\t * for load-balance and preemption/IRQs are still disabled avoiding\n\t * further scheduler activity on it and we\u0027re being very careful to\n\t * re-start the picking loop.\n\t */\n\tlockdep_unpin_lock(\u0026rq-\u003elock);\n\tnew_tasks \u003d idle_balance(rq);\n\tlockdep_pin_lock(\u0026rq-\u003elock);\n\nSo, because we are only doing this in NEWIDLE, we have an extra guarantee that Vincent doesn\u0027t have due to the location of the updates in his version and the locks are correct.",
+      "parentUuid": "ad603f74_4d7323cd",
+      "revId": "c1d2e6c059e2d9b9aab54ca51a608213daf24584",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
