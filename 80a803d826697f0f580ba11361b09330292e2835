@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "11a4be87_807af7f2",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-07-13T03:10:47Z",
+      "side": 1,
+      "message": "Hmm, one suggestion - this in the fast path. Since we\u0027re already storing PID and sched_switch already does such a copy, its sufficient to just store the PID and refer to the sched_switch for the name. But its not a show stopper to me (hency my +1), just that the I feel the trace overhead shouldn\u0027t change the test behavior.",
+      "range": {
+        "startLine": 904,
+        "startChar": 0,
+        "endLine": 904,
+        "endChar": 50
+      },
+      "revId": "80a803d826697f0f580ba11361b09330292e2835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
