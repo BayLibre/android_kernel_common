@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9dd2a0d6_fbf016cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-07-13T02:52:50Z",
+      "side": 1,
+      "message": "s/millie/milli/",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 11
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88b99a99_5d9b158e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-07-13T02:52:50Z",
+      "side": 1,
+      "message": "Maybe I missed something but couldn\u0027t this be fixed by just setting CAPACITY_MARGIN high enough? Or is your concern for the case where CAPACITY_MARGIN is changed to be something more border-line?\n\nAlso new_util should have some idea already about the util of the task right, so if its going to run for a while, shouldn\u0027t that already be factored in?\n\nI didn\u0027t really like the addition of more magic numbers. (How could we know 10ms is the correct number, etc..)\nMaybe this can instead be a tunable set to 0 by default which can use in your testing? But I still feel IMHO that ACK should only contain mostly tested / proven stuff.",
+      "range": {
+        "startLine": 6190,
+        "startChar": 0,
+        "endLine": 6198,
+        "endChar": 29
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
