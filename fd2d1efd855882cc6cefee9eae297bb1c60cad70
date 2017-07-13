@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d79f107a_3ee2a218",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6344,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-07-13T03:29:01Z",
+      "side": 1,
+      "message": "This probably in another patch but can be condensed as well IMHO.\n * Try harder to prevent pusing a CPU into overutilized,\n * for non-latency sensitive (!prefer_idle) cases. This\n * helps remain in EAS mode as much as possible.",
+      "range": {
+        "startLine": 6338,
+        "startChar": 0,
+        "endLine": 6344,
+        "endChar": 47
+      },
+      "revId": "fd2d1efd855882cc6cefee9eae297bb1c60cad70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "204c9a15_aa6101f6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6359,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-07-13T03:29:01Z",
+      "side": 1,
+      "message": "Again I feel why do we have 9 lines for a comment that can be easily condensed, it doesn\u0027t make it easier to read IMO. How about something like:\n \n * Try to run energe_diff more often by skipping the task\u0027s\n * previous CPU and finding a different candidate which is\n * more energy efficient than the previous CPU the task is\n * running on. Do this only for non-latency sensitive tasks\n\nThat\u0027s just 4 lines.",
+      "range": {
+        "startLine": 6351,
+        "startChar": 0,
+        "endLine": 6359,
+        "endChar": 12
+      },
+      "revId": "fd2d1efd855882cc6cefee9eae297bb1c60cad70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ed1ef00_665ce9df",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6362,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-07-13T03:29:01Z",
+      "side": 1,
+      "message": "Just curious if this increases the number of times energy diff runs and increases the total migrations?\n\nOther than the comment change request above, patch LGTM.",
+      "range": {
+        "startLine": 6362,
+        "startChar": 0,
+        "endLine": 6362,
+        "endChar": 13
+      },
+      "revId": "fd2d1efd855882cc6cefee9eae297bb1c60cad70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
