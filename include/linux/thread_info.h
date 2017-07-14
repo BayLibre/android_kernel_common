@@ -26,6 +26,10 @@
 
 #ifdef __KERNEL__
 
+#ifndef THREAD_ALIGN
+#define THREAD_ALIGN	THREAD_SIZE
+#endif
+
 #define THREADINFO_GFP	(GFP_KERNEL_ACCOUNT | __GFP_NOTRACK | __GFP_ZERO)
 
 /*
