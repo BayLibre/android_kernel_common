@@ -91,6 +91,30 @@
       "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51e41740_5d8946c3",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-14T10:50:32Z",
+      "side": 1,
+      "message": "Not quite. CAPACITY_MARGIN is the limit for overutilization. What we are trying to do here is to avoid putting tasks on CPUs which will become overutilized as soon as the task starts to run - this pushes all the fbt heuristics and energy model calculations out of scope until we recover from the overutilization event.\n\nConsider the case where we have a task which is approaching the overutilized threshold from above and is small enough for us to consider putting it on a lower capacity CPU. The only threshold we currently have is that overutilized trigger point. If we wait until the task has only just decayed enough to pass the test, as soon as it runs on the lower-capacity CPU it is going to cause the whole system to become overutilized. So we should have some amount of hysteresis, not least because this is at wakeup so it is guaranteed that the task we are placing is going to increase the utilization signal.\n\nWithout this hysteresis in place, you can easily see placement oscillation for non-top-app tasks, which is not a good idea for energy or performance. It\u0027s better to leave a task where it is than to put it on a CPU which is going to look overutilized and turn off energy awareness for a while.\n\nI agree that the precise number is a tricky selection but given that we\u0027re mostly looking for stuff to happen on a frame basis, I think the number should be \u003e\u003d1 and \u003c16ms. What we want to do is to avoid placing a task and then having to move it before the next frame is complete.",
+      "parentUuid": "88b99a99_5d9b158e",
+      "range": {
+        "startLine": 6190,
+        "startChar": 0,
+        "endLine": 6198,
+        "endChar": 29
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
