@@ -109,6 +109,8 @@
 
 #define IRQ_STACK_SIZE		THREAD_SIZE
 
+#define OVERFLOW_STACK_SIZE	SZ_4K
+
 /*
  * By aligning VMAP'd stacks to 2 * THREAD_SIZE, we can detect overflow by
  * checking sp & (1 << THREAD_SHIFT), which we can do cheaply in the entry
