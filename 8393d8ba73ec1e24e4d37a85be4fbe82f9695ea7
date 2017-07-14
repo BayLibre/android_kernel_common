@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "a0134ba1_0bb8162e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-14T10:40:02Z",
+      "side": 1,
+      "message": "I had to change this since I wanted to include capacity_margin (or it\u0027s value at least) into the static definition of migration_capacity_margin, so I could not refer to the variable but needed a const value. There is no intention to change the overutilized capacity margin here.",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 34
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "88b99a99_5d9b158e",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -45,6 +68,29 @@
       "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bbbea348_4a1b080e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-14T10:40:02Z",
+      "side": 1,
+      "message": "Ideally this would calculate what the capacity margin should be to allow the chosen amount of runtime before reaching overutilized.\n\nThat\u0027s not at all what this calculation does, here it is simply adding an additional 10240/47724 (21%) headroom for down migrations.\n\nI think this patch is still wrong though - SCHED_CAPACITY_MARGIN * MIGRATION_TARGET_CAPACITY should I think be (SCHED_CAPACITY_MARGIN + MIGRATION_TARGET_CAPACITY).\n\nThe intention is to replace this in a later patch with something which calculates the correct value. We can also replace the original margin with a time-based expression as well if that is easier to understand.",
+      "range": {
+        "startLine": 6192,
+        "startChar": 0,
+        "endLine": 6198,
+        "endChar": 29
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
