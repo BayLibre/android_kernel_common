@@ -3,6 +3,7 @@
 
 #include <asm/cpufeature.h>
 #include <asm/io.h>
+#include <asm/memory.h>
 #include <asm/mmu_context.h>
 #include <asm/neon.h>
 #include <asm/ptrace.h>
@@ -47,6 +48,8 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
  */
 #define EFI_FDT_ALIGN	SZ_2M   /* used by allocate_new_fdt_and_exit_boot() */
 #define MAX_FDT_OFFSET	SZ_512M
+
+#define EFI_KIMG_ALIGN	SEGMENT_ALIGN
 
 #define efi_call_early(f, ...)		sys_table_arg->boottime->f(__VA_ARGS__)
 #define __efi_call_early(f, ...)	f(__VA_ARGS__)
