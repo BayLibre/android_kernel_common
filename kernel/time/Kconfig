@@ -195,3 +195,33 @@ config HIGH_RES_TIMERS
 
 endmenu
 endif
+
+config RTC_SHOW_TIME
+	bool
+
+choice
+	prompt "choose a clock for rtc_show_time"
+	config RTC_SHOW_TIME_NONE
+		bool "not activated"
+	config RTC_SHOW_TIME_REALTIME
+		bool "realtime"
+		select RTC_SHOW_TIME
+	config RTC_SHOW_TIME_MONOTONIC
+		bool "monotonic"
+		select RTC_SHOW_TIME
+	config RTC_SHOW_TIME_BOOTTIME
+		bool "boottime"
+		select RTC_SHOW_TIME
+	help
+	  Activate optional rtc_show_time(const char *msg) wall clock
+	  time instrumentation.
+
+	  The primary use of the instrumentation is to aid field
+	  analysis of Battery and Power usage.  The instrumentation
+	  may also help triage and synchronize kernel logs and user
+	  space activity logs at key displacements.  For instance
+	  CLOCK_MONOTONIC stops while suspended, while CLOCK_REALTIME
+	  continues, and the timestamps help re-orient post-analysis.
+
+	  Select the appropriate RTC_SHOW_TIME_<type>
+endchoice
