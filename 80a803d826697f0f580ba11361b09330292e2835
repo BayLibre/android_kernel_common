@@ -22,6 +22,30 @@
       "revId": "80a803d826697f0f580ba11361b09330292e2835",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a0d5480_6dbf8b7b",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-07-17T10:53:30Z",
+      "side": 1,
+      "message": "Good point, in general I like to have tracepoints which are consumable by their own, not sure if this is also a kind of requirement for mainline.\n\nHowever, it\u0027s true that in this case we quite likely always use this tracepoint in conjunction with others e.g. \"sched_wakeup\" and/or \"sched_switch\"... thus, what you propose makes sense to me. Probably we should to the same optimisation also for the many other tracepoints we have in the fastpath, namely:\n- sched_load_avg_task\n- sched_tune_tasks_update\n- sched_boost_task\n- sched_energy_diff\n- walt_update_task_ravg\n\nMaybe, since there are so many tracepoints \"duplicating\" the task name, it could make sense to merge this patch as is and add a dedicated patch on to which explicitly does this optimisation by removing the duplication in one go from all the above tracepoints. At least it would provide a consisted and documented update across the full set of scheduler tracepoints.\n\nWhat do you think?",
+      "parentUuid": "11a4be87_807af7f2",
+      "range": {
+        "startLine": 904,
+        "startChar": 0,
+        "endLine": 904,
+        "endChar": 50
+      },
+      "revId": "80a803d826697f0f580ba11361b09330292e2835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
