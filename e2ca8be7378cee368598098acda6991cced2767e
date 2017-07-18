@@ -22,6 +22,30 @@
       "revId": "e2ca8be7378cee368598098acda6991cced2767e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "007bbcc0_4eda4b87",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8074,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-18T14:37:39Z",
+      "side": 1,
+      "message": "We could do, I don\u0027t think it will win us much except perhaps avoiding rq lock waits if the other CPU happens to be in the middle of waking up. I have no evidence this happens so far but I don\u0027t feel strongly about it.",
+      "parentUuid": "fc1a3d94_510368f2",
+      "range": {
+        "startLine": 8073,
+        "startChar": 0,
+        "endLine": 8074,
+        "endChar": 27
+      },
+      "revId": "e2ca8be7378cee368598098acda6991cced2767e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
