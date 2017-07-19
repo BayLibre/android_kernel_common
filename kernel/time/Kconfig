@@ -212,6 +212,10 @@ choice
 	config RTC_SHOW_TIME_BOOTTIME
 		bool "boottime"
 		select RTC_SHOW_TIME
+	config RTC_SHOW_TIME_RTC
+		bool "realtime in wall clock format"
+		select RTC_SHOW_TIME
+		select RTC_LIB
 	help
 	  Activate optional rtc_show_time(const char *msg) wall clock
 	  time instrumentation.

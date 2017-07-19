@@ -24,8 +24,20 @@ void rtc_show_time(const char *prefix_msg)
 	struct timespec64 ts;
 
 	getnstimeofday64(&ts);
+#if defined(CONFIG_RTC_SHOW_TIME_RTC)
+	{
+		struct rtc_time tm;
+
+		rtc_time64_to_tm(ts.tv_sec, &tm);
+		pr_info("%s %d-%02d-%02d %02d:%02d:%02d.%09lu UTC\n",
+			prefix_msg ? prefix_msg : "Time:",
+			tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+			tm.tm_hour, tm.tm_min, tm.tm_sec, ts.tv_nsec);
+	}
+#else
 	pr_info("%s %lu.%09lu UTC\n",
 		prefix_msg ? prefix_msg : "Time:", ts.tv_sec, ts.tv_nsec);
+#endif
 #endif
 }
 EXPORT_SYMBOL(rtc_show_time);
