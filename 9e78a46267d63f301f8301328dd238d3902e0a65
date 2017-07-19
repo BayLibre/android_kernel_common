@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "c63ed1c6_583c73e1",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9824,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-07-19T14:12:14Z",
+      "side": 1,
+      "message": "When !energy_aware(), we want to return true when rq-\u003enr_running \u003e\u003d 2, as mainline does.\n\nhttp://elixir.free-electrons.com/linux/v4.13-rc1/source/kernel/sched/fair.c#L8843",
+      "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4a8e0a0_cdaac917",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
