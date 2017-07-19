@@ -43,11 +43,6 @@ static void set_capacity_scale(unsigned int cpu, unsigned long capacity)
 	per_cpu(cpu_scale, cpu) = capacity;
 }
 
-static void set_power_scale(unsigned int cpu, unsigned long power)
-{
-	per_cpu(cpu_scale, cpu) = power;
-}
-
 static int __init get_cpu_for_node(struct device_node *node)
 {
 	struct device_node *cpu_node;
@@ -504,12 +499,12 @@ static void __init parse_dt_cpu_power(void)
 				>> (SCHED_CAPACITY_SHIFT-1)) + 1;
 }
 
-static void __init reset_cpu_power(void)
+static void __init reset_cpu_capacity(void)
 {
 	unsigned int cpu;
 
 	for_each_possible_cpu(cpu)
-		set_power_scale(cpu, SCHED_CAPACITY_SCALE);
+		set_capacity_scale(cpu, SCHED_CAPACITY_SCALE);
 }
 
 void __init init_cpu_topology(void)
@@ -525,7 +520,10 @@ void __init init_cpu_topology(void)
 	else
 		set_sched_topology(arm64_topology);
 
-	reset_cpu_power();
+	/* reset cpu capacity. store_cpu_topology is called after
+	 * init_cpu_topology from smp_prepare_cpus as we come up.
+	 */
+	reset_cpu_capacity();
 	parse_dt_cpu_power();
 	init_sched_energy_costs();
 }
