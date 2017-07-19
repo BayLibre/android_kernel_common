@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4a8e0a0_cdaac917",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9825,
+      "author": {
+        "id": 1120758
+      },
+      "writtenOn": "2017-07-19T14:10:16Z",
+      "side": 1,
+      "message": "Don\u0027t think this is correct.\n\nI guess we want to return true here even when we are !energy_aware() but rq-\u003enr_running \u003e\u003d2 ?\n\nNote that mainline (without Morten\u0027s patch) has\n\nif (rq-\u003enr_running \u003e\u003d 2)\n     return true;",
+      "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
