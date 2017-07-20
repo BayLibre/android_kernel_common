@@ -16,6 +16,24 @@
       "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bccace60_46ef9b9a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 8078,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-20T08:32:14Z",
+      "side": 1,
+      "message": "While I think we should be keeping the two in sync, I have a couple of issues with updating this patch with WALT changes.  Firstly this is part of a patch set that is intended to go upstream in combination with some others. This is the absolute minimum bit we need for mobile, I think, and it misses out quite a lot of other cases where we should update plus it only hits the rq signals so we don\u0027t fix up group signals (they will catch up later as every entity has its own update timestamp, but potentially shares can be distorted when you have lots of nohz time). This is not an issue we\u0027ve noticed impacting on Android workloads but is probably huge for other kernel users. I intend to backport the whole thing once its approved upstream but I don\u0027t want us to struggle with the worst problems while that happens, hence this reduced patch.\n\n\nIf we need to update WALT signals for nohz-idle CPUs, I\u0027d really like to do it in a separate patch.\n\nI had a look and I can\u0027t see how to do this for WALT so easily, I think we use rq-\u003ecumulative_runnable_avg for that signal (or we will once we merge later stuff) and the only options available to me for updating WALT signals look like they require a task or are a +/- delta option.\n\nIf I understand what we have now it looks like the CPU signal is a sum of the demand for all the tasks enqueued on a rq, and I\u0027m not sure how we would represent decaying that signal without breaking it completely when the task wakes up either there or on another CPU. There are BUG_ONs that we would definitely trigger if we mess with the sum there. Either we have enqueued tasks (which are skipping idle windows) and we have a sum which we need to maintain so we don\u0027t go negative when they dequeue, or we have dequeued those tasks and they are no longer represented. If we want to have a signal which decays when the CPU is idle, I think we would need something with a different relationship to tasks than we have now.\n\nThere might be a different issue for WALT if a CPU is fully utilized with a single task and the tick is turned off (CONFIG_NO_HZ_FULL) but we don\u0027t have that turned on and I don\u0027t think we would want to do that either. I couldn\u0027t say if PELT would work properly in that case either, it\u0027s intended for HPC so I think attempting to use EAS for wakeups on those systems would be unlikely. In those systems, load and shares balancing is probably the primary driver rather than util and capacity.\n\nIn short, it looks pretty complex to do the right thing for WALT here :) Can you or Joonwoo put this on your plate to look at for a later patch? Or at least have a think about what\u0027s needed or possible.\n\n\nIt might well be a good optimisation to skip updates as the utilization drops - it\u0027d be nice to update them frequently when their utilization is high and slow down as it drops and the signal changes more slowly. I\u0027ll have a think about that :) Again though, I would probably add it as a subsequent patch.",
+      "parentUuid": "fb811e4d_9e6acaa5",
+      "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
