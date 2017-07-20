@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a7bf7d1f_e84cf001",
+        "filename": "include/linux/rtc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-07-20T19:36:56Z",
+      "side": 1,
+      "message": "to disappear, requested that this should not be rtc library related. move to pr_info_show_time() or some such makes this easy.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 6
+      },
+      "revId": "35cdf6a68494d91dfa69c4426f52b3a6dbf4a5e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e1daf212_d20d2736",
         "filename": "kernel/time/Kconfig",
         "patchSetId": 4
@@ -18,6 +41,29 @@
         "startChar": 0,
         "endLine": 226,
         "endChar": 46
+      },
+      "revId": "35cdf6a68494d91dfa69c4426f52b3a6dbf4a5e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "35b77d8d_1879e7fa",
+        "filename": "kernel/time/rtc_show_time.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-07-20T19:36:56Z",
+      "side": 1,
+      "message": "upstream ideas move this towards this function moving to pr_info_show_time(), so never disable, remove it from rtc, and handle varargs.\n\ntglx@ (primary person annoyed with this) needs to provide some feedback before I can move further.\n\nThe timestamp is likely to move to a prefix rather than a suffix:\n\n[ 0.0000000 ] [ 1500506554.123456789 ] message\n\nNeed feedback on how to designate if the time is REALTIME or BOOTTIME; whereas it is considered obvious that MONOTONIC time is as-is and unadorned.",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 42
       },
       "revId": "35cdf6a68494d91dfa69c4426f52b3a6dbf4a5e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
