@@ -51,6 +51,24 @@
       "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "76adecee_04f5bef3",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9825,
+      "author": {
+        "id": 1209348
+      },
+      "writtenOn": "2017-07-20T17:34:04Z",
+      "side": 1,
+      "message": "Combination of baseline confusion and breaking (!energy_aware())\n\n\nThis should be correct fix but untested.\n\ndiff --git a/kernel/sched/fair.c b/kernel/sched/fair.c\nindex ec8963f..aa647f9 100644\n--- a/kernel/sched/fair.c\n+++ b/kernel/sched/fair.c\n@@ -9826,8 +9826,8 @@ static inline bool nohz_kick_needed(struct rq *rq)\n                return true;\n \n        /* Do idle load balance if there have misfit task */\n-       if (energy_aware() \u0026\u0026 rq-\u003emisfit_task)\n-               return true;\n+       if (energy_aware())\n+               return rq-\u003emisfit_task;\n \n        rcu_read_lock();\n        sd \u003d rcu_dereference(per_cpu(sd_busy, cpu));",
+      "parentUuid": "8c00a85a_44ce9c1b",
+      "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
