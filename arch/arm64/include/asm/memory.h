@@ -97,6 +97,8 @@
 
 #define THREAD_SIZE		(UL(1) << THREAD_SHIFT)
 
+#define IRQ_STACK_SIZE		THREAD_SIZE
+
 /*
  * Physical vs virtual RAM address space conversion.  These are
  * private definitions which should NOT be used outside memory.h

@@ -16,7 +16,11 @@
 #ifndef __ASM_STACKTRACE_H
 #define __ASM_STACKTRACE_H
 
-struct task_struct;
+#include <linux/percpu.h>
+#include <linux/sched.h>
+
+#include <asm/memory.h>
+#include <asm/ptrace.h>
 
 struct stackframe {
 	unsigned long fp;
@@ -30,5 +34,23 @@ struct stackframe {
 extern int unwind_frame(struct task_struct *tsk, struct stackframe *frame);
 extern void walk_stackframe(struct task_struct *tsk, struct stackframe *frame,
 			    int (*fn)(struct stackframe *, void *), void *data);
+
+DECLARE_PER_CPU(unsigned long [IRQ_STACK_SIZE/sizeof(long)], irq_stack);
+
+static inline bool on_irq_stack(unsigned long sp)
+{
+	unsigned long low = (unsigned long)raw_cpu_ptr(irq_stack);
+	unsigned long high = low + IRQ_STACK_SIZE;
+
+	return (low <= sp && sp < high);
+}
+
+static inline bool on_task_stack(struct task_struct *tsk, unsigned long sp)
+{
+	unsigned long low = (unsigned long)task_stack_page(tsk);
+	unsigned long high = low + THREAD_SIZE;
+
+	return (low <= sp && sp < high);
+}
 
 #endif	/* __ASM_STACKTRACE_H */
