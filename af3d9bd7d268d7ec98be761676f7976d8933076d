@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb811e4d_9e6acaa5",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 8078,
+      "author": {
+        "id": 1093953
+      },
+      "writtenOn": "2017-07-20T06:03:53Z",
+      "side": 1,
+      "message": "this is neat, like a tick simulator for idle CPUs - Chris would you mind adding an update to the WALT stats as well? If a CPU goes idle without rolling its window over its utilization will be stuck high just as PELT\u0027s load/util_avg would be.\n\nFor PELT, would it be a sensible optimization be to not do anything if PELT value has decayed to a large extent? Otherwise we\u0027ll be calling these updates forever for all other CPUs in say an mp3 playback usecase where only one cpu is used intermittently? Same would apply to WALT.",
+      "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
