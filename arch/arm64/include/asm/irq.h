@@ -2,7 +2,6 @@
 #define __ASM_IRQ_H
 
 #define IRQ_STACK_SIZE			THREAD_SIZE
-#define IRQ_STACK_START_SP		THREAD_START_SP
 
 #ifndef __ASSEMBLER__
 
@@ -51,9 +50,9 @@ static inline bool on_irq_stack(unsigned long sp)
 {
 	/* variable names the same as kernel/stacktrace.c */
 	unsigned long low = (unsigned long)raw_cpu_ptr(irq_stack);
-	unsigned long high = low + IRQ_STACK_START_SP;
+	unsigned long high = low + IRQ_STACK_SIZE;
 
-	return (low <= sp && sp <= high);
+	return (low <= sp && sp < high);
 }
 
 #endif /* !__ASSEMBLER__ */
