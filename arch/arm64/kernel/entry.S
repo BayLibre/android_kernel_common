@@ -345,7 +345,7 @@ alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
 	cbnz	x25, 9998f
 
 	adr_this_cpu x25, irq_stack, x26
-	mov	x26, #IRQ_STACK_START_SP
+	mov	x26, #IRQ_STACK_SIZE
 	add	x26, x25, x26
 
 	/* switch to the irq stack */
