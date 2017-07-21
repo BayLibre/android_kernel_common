@@ -89,7 +89,17 @@
 #define KASAN_SHADOW_SIZE	(0)
 #endif
 
-#define THREAD_SHIFT		14
+#define MIN_THREAD_SHIFT	14
+
+/*
+ * VMAP'd stacks are allocated at page granularity, so we must ensure that such
+ * stacks are a multiple of page size.
+ */
+#if defined(CONFIG_VMAP_STACK) && (MIN_THREAD_SHIFT < PAGE_SHIFT)
+#define THREAD_SHIFT		PAGE_SHIFT
+#else
+#define THREAD_SHIFT		MIN_THREAD_SHIFT
+#endif
 
 #if THREAD_SHIFT >= PAGE_SHIFT
 #define THREAD_SIZE_ORDER	(THREAD_SHIFT - PAGE_SHIFT)
@@ -98,6 +108,17 @@
 #define THREAD_SIZE		(UL(1) << THREAD_SHIFT)
 
 #define IRQ_STACK_SIZE		THREAD_SIZE
+
+/*
+ * By aligning VMAP'd stacks to 2 * THREAD_SIZE, we can detect overflow by
+ * checking sp & (1 << THREAD_SHIFT), which we can do cheaply in the entry
+ * assembly.
+ */
+#ifdef CONFIG_VMAP_STACK
+#define THREAD_ALIGN		(2 * THREAD_SIZE)
+#else
+#define THREAD_ALIGN		THREAD_SIZE
+#endif
 
 /*
  * Physical vs virtual RAM address space conversion.  These are
