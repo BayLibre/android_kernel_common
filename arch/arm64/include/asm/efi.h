@@ -49,7 +49,12 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
 #define EFI_FDT_ALIGN	SZ_2M   /* used by allocate_new_fdt_and_exit_boot() */
 #define MAX_FDT_OFFSET	SZ_512M
 
-#define EFI_KIMG_ALIGN	SEGMENT_ALIGN
+/*
+ * In some configurations (e.g. VMAP_STACK && 64K pages), stacks built into the
+ * kernel need greater alignment than we require the segments to be padded to.
+ */
+#define EFI_KIMG_ALIGN	\
+	(SEGMENT_ALIGN > THREAD_ALIGN ? SEGMENT_ALIGN : THREAD_ALIGN)
 
 #define efi_call_early(f, ...)		sys_table_arg->boottime->f(__VA_ARGS__)
 #define __efi_call_early(f, ...)	f(__VA_ARGS__)
