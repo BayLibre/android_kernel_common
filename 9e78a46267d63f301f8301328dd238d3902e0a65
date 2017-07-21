@@ -92,6 +92,30 @@
       "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3874cc50_aba81b4f",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9828,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-07-21T12:56:55Z",
+      "side": 1,
+      "message": "\u003e rq-\u003emisfit_task won\u0027t guarantee rd-\u003eoverutilized \u003d true\n\nCan you explain this in more detail? They both take RT pressure into account (because they use capacity_of), and IIUC overutilized will always get updated in task_tick_fair before we get to nohz_kick_needed. I might be missing something here.",
+      "parentUuid": "ed83e932_416ffa29",
+      "range": {
+        "startLine": 9828,
+        "startChar": 23,
+        "endLine": 9828,
+        "endChar": 38
+      },
+      "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
