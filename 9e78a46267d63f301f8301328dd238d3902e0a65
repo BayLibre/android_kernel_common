@@ -116,6 +116,30 @@
       "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0df3b472_fd7f1d38",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9828,
+      "author": {
+        "id": 1209348
+      },
+      "writtenOn": "2017-07-21T20:55:51Z",
+      "side": 1,
+      "message": "My bad.  I was on the baseline with https://android-review.googlesource.com/#/c/426451/4 which makes cpu_overutilzed() to use capacity_orig_of().\nI\u0027m proposing to drop the change for now.  So we\u0027re good.",
+      "parentUuid": "3874cc50_aba81b4f",
+      "range": {
+        "startLine": 9828,
+        "startChar": 23,
+        "endLine": 9828,
+        "endChar": 38
+      },
+      "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
