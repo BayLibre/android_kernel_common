@@ -69,6 +69,29 @@
       "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ed83e932_416ffa29",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9828,
+      "author": {
+        "id": 1209348
+      },
+      "writtenOn": "2017-07-21T00:06:20Z",
+      "side": 1,
+      "message": "This portion wasn\u0027t in the baseline I was on.  So assume it\u0027s added recently.  Wonder how this works.  rq-\u003emisfit_task won\u0027t guarantee rd-\u003eoverutilzed \u003d true.  \nFor the same example - small task under the RT pressure case (https://android-review.googlesource.com/#/c/426451/4), in that case we might be kicking nohz CPU and the woken up CPU does nothing?",
+      "range": {
+        "startLine": 9828,
+        "startChar": 23,
+        "endLine": 9828,
+        "endChar": 38
+      },
+      "revId": "9e78a46267d63f301f8301328dd238d3902e0a65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
