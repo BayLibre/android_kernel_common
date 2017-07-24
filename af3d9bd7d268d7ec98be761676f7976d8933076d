@@ -52,6 +52,24 @@
       "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6478813e_a54f875b",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 8078,
+      "author": {
+        "id": 1093953
+      },
+      "writtenOn": "2017-07-24T21:09:44Z",
+      "side": 1,
+      "message": "Actually ignore the second portion about schedutil.. it seems the irq-work will be queued on the newly_idle cpu. Apart from not letting it enter idle for a bit longer since it has to process irq-works this is fine.",
+      "parentUuid": "5bfc2655_6c6f73bd",
+      "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
