@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "d9f060ec_194001ec",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2017-07-24T23:51:06Z",
+      "side": 1,
+      "message": "Sure will do.",
+      "parentUuid": "e92d5e95_35e00e08",
+      "range": {
+        "startLine": 815,
+        "startChar": 12,
+        "endLine": 815,
+        "endChar": 30
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aef8a248_a13bb757",
         "filename": "drivers/usb/gadget/function/f_accessory.c",
         "patchSetId": 1
@@ -82,6 +106,30 @@
       "writtenOn": "2017-07-24T23:27:52Z",
       "side": 1,
       "message": "checkpatch.pl: Block comments use a trailing */ on a separate line\n\n{\n    /*\n     * Default no-op function when nothing needs to be done\n     * for the setup request\n     */\n}",
+      "range": {
+        "startLine": 817,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 13
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c23d8b83_9fd4e8b4",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2017-07-24T23:51:06Z",
+      "side": 1,
+      "message": "Will fix in my next patch",
+      "parentUuid": "aef8a248_a13bb757",
       "range": {
         "startLine": 817,
         "startChar": 0,
@@ -158,6 +206,30 @@
     },
     {
       "key": {
+        "uuid": "1140c116_20266ccd",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2017-07-24T23:51:06Z",
+      "side": 1,
+      "message": "The control requests are usually handled by composite.c driver. I could move the default initialization to the beginning of this block, but, that would override the value being already set in the req-\u003ecomplete pointer. Which I would have to store and restore to the contents of req-\u003ecomplete to prevent making any assumptions of when this function is going to be called. Is that worthwhile ?",
+      "parentUuid": "c38503ba_257f3387",
+      "range": {
+        "startLine": 880,
+        "startChar": 3,
+        "endLine": 880,
+        "endChar": 58
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41858b09_c5208f16",
         "filename": "drivers/usb/gadget/function/f_accessory.c",
         "patchSetId": 1
@@ -193,6 +265,30 @@
       "side": 1,
       "message": "I think the right behavior for the else case would be to clear the setup function. I don\u0027t think any case depends on that function being persisted.",
       "parentUuid": "41858b09_c5208f16",
+      "range": {
+        "startLine": 909,
+        "startChar": 1,
+        "endLine": 909,
+        "endChar": 2
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e21e81c_368376f0",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2017-07-24T23:51:06Z",
+      "side": 1,
+      "message": "In the else case, f_accessory should not be the recipient of the transfer therefore it should not be touching the contents of req-\u003ecomplete. It\u0027s the responsibility of the the driver which is serving the request to set the right callback.",
+      "parentUuid": "a5e10f11_7f029fdb",
       "range": {
         "startLine": 909,
         "startChar": 1,
