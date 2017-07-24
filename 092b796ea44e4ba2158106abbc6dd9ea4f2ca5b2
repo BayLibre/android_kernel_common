@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af2f15a5_c4aa98a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-07-24T23:27:52Z",
+      "side": 1,
+      "message": "overridden",
+      "range": {
+        "startLine": 11,
+        "startChar": 6,
+        "endLine": 11,
+        "endChar": 15
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa9c2cc7_d0c06e7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-07-24T23:27:52Z",
+      "side": 1,
+      "message": "checkpatch.pl complains. Footer must be:\n\nSigned-off-by: Badhri Jagan Sridharan \u003cBadhri@google.com\u003e\nBug: 63867169\nChange-Id: I78c1602e9a044b8718b270b8a068cf5afc83f984",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 57
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e92d5e95_35e00e08",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-07-24T23:27:52Z",
+      "side": 1,
+      "message": "acc_complete_setup_noop\n\nmight be clearer, especially if you add others.",
+      "range": {
+        "startLine": 815,
+        "startChar": 12,
+        "endLine": 815,
+        "endChar": 30
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aef8a248_a13bb757",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-07-24T23:27:52Z",
+      "side": 1,
+      "message": "checkpatch.pl: Block comments use a trailing */ on a separate line\n\n{\n    /*\n     * Default no-op function when nothing needs to be done\n     * for the setup request\n     */\n}",
+      "range": {
+        "startLine": 817,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 13
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
