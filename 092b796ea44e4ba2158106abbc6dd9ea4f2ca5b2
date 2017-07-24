@@ -134,6 +134,30 @@
     },
     {
       "key": {
+        "uuid": "c38503ba_257f3387",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 1113594
+      },
+      "writtenOn": "2017-07-24T23:38:26Z",
+      "side": 1,
+      "message": "how so? it would just overwrite the previous value of acc_complete_setup",
+      "parentUuid": "faf2e3bf_6b12df35",
+      "range": {
+        "startLine": 880,
+        "startChar": 3,
+        "endLine": 880,
+        "endChar": 58
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41858b09_c5208f16",
         "filename": "drivers/usb/gadget/function/f_accessory.c",
         "patchSetId": 1
@@ -145,6 +169,30 @@
       "writtenOn": "2017-07-24T23:36:03Z",
       "side": 1,
       "message": "And the missing } else case here too.",
+      "range": {
+        "startLine": 909,
+        "startChar": 1,
+        "endLine": 909,
+        "endChar": 2
+      },
+      "revId": "092b796ea44e4ba2158106abbc6dd9ea4f2ca5b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5e10f11_7f029fdb",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1113594
+      },
+      "writtenOn": "2017-07-24T23:38:26Z",
+      "side": 1,
+      "message": "I think the right behavior for the else case would be to clear the setup function. I don\u0027t think any case depends on that function being persisted.",
+      "parentUuid": "41858b09_c5208f16",
       "range": {
         "startLine": 909,
         "startChar": 1,
