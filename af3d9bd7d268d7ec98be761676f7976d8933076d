@@ -34,6 +34,24 @@
       "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bfc2655_6c6f73bd",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 8078,
+      "author": {
+        "id": 1093953
+      },
+      "writtenOn": "2017-07-24T17:29:28Z",
+      "side": 1,
+      "message": "Fair enough - thank you for thinking so deep about it! It\u0027s really just one line for WALT - TASK_UPDATE and the update_task_ravg_function. There\u0027s no decay, we just have to transfer the current window stats to the previous window and set current-window to zero. With the rq-lock held, WALT can deal with a task or the idle-task on the rq. It does the usual task-update (as if there was a tick) if rq-\u003ecurr is true, otherwise it\u0027ll deal with the idle task. \n\nI would also test this with Viresh\u0027s schedutil patch to allow remote CPUs to change frequency - because now we will end up waking up CPUs since cpufreq_update_util will kick in for every PELT change I believe - and scheduling an irq_work on the target CPU is a wakeup afaik.",
+      "parentUuid": "bccace60_46ef9b9a",
+      "revId": "af3d9bd7d268d7ec98be761676f7976d8933076d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
