@@ -16,6 +16,24 @@
       "revId": "f36f7afcfc6914f93b07a59d007cccb05eb255ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "07df5120_8a11d84c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1209348
+      },
+      "writtenOn": "2017-07-28T18:36:36Z",
+      "side": 1,
+      "message": "No. The subsequent updates will make window_start +\u003d 20ms.\n\nIdeally, the initial window_start is better to be 0 to be aligned perfectly with tick.  But WALT internally uses 0 as uninitilized. and 1ns skew is nothing so we set this to 1 as a starting point.",
+      "parentUuid": "2087a2d7_3d9a9920",
+      "revId": "f36f7afcfc6914f93b07a59d007cccb05eb255ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
