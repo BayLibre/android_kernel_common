@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96eac549_2e672fb2",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6435,
+      "author": {
+        "id": 1118133
+      },
+      "writtenOn": "2017-07-28T01:31:05Z",
+      "side": 1,
+      "message": "do we really need to run energy diff when the prev_cpu is already the cpu with smaller capacity and maximum spare capacity (passing the checks in 6511 and 6515)?",
+      "revId": "45e7f82f51f90564a804d737146d19e9b8984db6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
