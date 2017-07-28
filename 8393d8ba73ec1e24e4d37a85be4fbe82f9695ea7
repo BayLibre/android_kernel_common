@@ -115,6 +115,30 @@
       "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7d3956ed_79cb2bf1",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1118133
+      },
+      "writtenOn": "2017-07-28T01:15:40Z",
+      "side": 1,
+      "message": "I agree with adding a margin, but can you explain how the time translation from the 10ns within LOAD_AVG_MAX to the margin applies?  Does this calculates the additional util in 10ns if the new task keeps running?",
+      "parentUuid": "51e41740_5d8946c3",
+      "range": {
+        "startLine": 6190,
+        "startChar": 0,
+        "endLine": 6198,
+        "endChar": 29
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
