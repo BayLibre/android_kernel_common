@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "327a1d00_ede3d452",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 5477,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-07-31T09:51:41Z",
+      "side": 1,
+      "message": "While you are at modifying this line, maybe we can get the change to move this int cpu declaration within the while loop at line 5486?\n\nwhile (!cpumask_empty(\u0026visit_cpus)) {\n    struct sched_group *sg_shared_cap \u003d NULL;\n    int struct sched_group *sg_shared_cap \u003d NULL;\n    //...\n}",
+      "revId": "1e519c661d7d6a5088d079d741cdd254dba4f9a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
