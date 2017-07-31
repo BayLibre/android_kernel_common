@@ -139,6 +139,53 @@
       "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "486d6501_9deef154",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-31T14:27:28Z",
+      "side": 1,
+      "message": "That was the intention, but this version is very broken :( I have a couple of solutions in progress - In both I turn the number of periods to run for into a utilization threshold by using decay_load appropriately, they differ only in that the first version uses a single preset time threshold (like this) and the second (which is not complete yet) uses a sysfs control to let us experiment with it.",
+      "parentUuid": "7d3956ed_79cb2bf1",
+      "range": {
+        "startLine": 6190,
+        "startChar": 0,
+        "endLine": 6198,
+        "endChar": 29
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9711acbe_46e19102",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6359,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-07-31T14:27:28Z",
+      "side": 1,
+      "message": "We should probably move this below the case underneath, as that is much simpler to check.",
+      "range": {
+        "startLine": 6347,
+        "startChar": 0,
+        "endLine": 6359,
+        "endChar": 4
+      },
+      "revId": "8393d8ba73ec1e24e4d37a85be4fbe82f9695ea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
