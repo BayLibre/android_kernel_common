@@ -5313,6 +5313,32 @@ struct energy_env {
 };
 
 static int cpu_util_wake(int cpu, struct task_struct *p);
+static unsigned long task_util(struct task_struct *p);
+
+#ifdef CONFIG_SCHED_WALT
+static unsigned long cpu_util_energy_wake(int cpu, struct task_struct *p)
+{
+	unsigned long util, capacity;
+
+	if (!walt_disabled && sysctl_sched_use_walt_cpu_util) {
+		util = walt_cpu_util_cum(cpu);
+		if (walt_task_in_cum_window_demand(cpu_rq(cpu), p))
+			util -= task_util(p);
+		/*
+		 * walt_cpu_util_cum(cpu) is always equal or greater than
+		 * task_util(p) when p is in cumulative window demand.
+		 */
+		capacity = capacity_orig_of(cpu);
+
+		return (util >= capacity) ? capacity : util;
+	}
+
+	/* cpu_util_wake() already set ceiling to capacity_orig_of() */
+	return cpu_util_wake(cpu, p);
+}
+#else
+#define cpu_util_energy_wake(cpu, p) cpu_util_wake(cpu, p)
+#endif
 
 /*
  * __cpu_norm_util() returns the cpu util relative to a specific capacity,
@@ -5344,7 +5370,7 @@ static unsigned long group_max_util(struct energy_env *eenv)
 	int cpu;
 
 	for_each_cpu(cpu, sched_group_cpus(eenv->sg_cap)) {
-		util = cpu_util_wake(cpu, eenv->task);
+		util = cpu_util_energy_wake(cpu, eenv->task);
 
 		/*
 		 * If we are looking at the target CPU specified by the eenv,
@@ -5379,7 +5405,7 @@ long group_norm_util(struct energy_env *eenv, struct sched_group *sg)
 	int cpu;
 
 	for_each_cpu(cpu, sched_group_cpus(sg)) {
-		util = cpu_util_wake(cpu, eenv->task);
+		util = cpu_util_energy_wake(cpu, eenv->task);
 
 		/*
 		 * If we are looking at the target CPU specified by the eenv,
@@ -5585,8 +5611,6 @@ static inline bool cpu_in_sg(struct sched_group *sg, int cpu)
 {
 	return cpu != -1 && cpumask_test_cpu(cpu, sched_group_cpus(sg));
 }
-
-static unsigned long task_util(struct task_struct *p);
 
 /*
  * energy_diff(): Estimate the energy impact of changing the utilization
