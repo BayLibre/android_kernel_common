@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "fcd182dc_92aa38d7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6537,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-04T02:03:07Z",
+      "side": 1,
+      "message": "Also, replace with:\nif (target_cpu \u003d\u003d -1)\n    target_cpu \u003d best_active_cpu;\n\n(..and below too)",
+      "range": {
+        "startLine": 6535,
+        "startChar": 0,
+        "endLine": 6537,
+        "endChar": 21
+      },
+      "revId": "eac2495b80146d64786e163d6ff093eff0140653",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "34f4c313_dd3b3921",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
