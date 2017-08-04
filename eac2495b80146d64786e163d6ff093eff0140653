@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "5c4d39dc_60c354e2",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6538,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-08-04T08:51:07Z",
+      "side": 1,
+      "message": "Not really, this is still a:\n    prefer_idle \u0026\u0026 idle_cpu(target_cpu)\nthus we completely skip the energy_diff.\n\nWe certainly go for target_cpu, but you right that the backup_cpu is not user and thus it\u0027s better not set it here.",
+      "parentUuid": "34f4c313_dd3b3921",
+      "range": {
+        "startLine": 6538,
+        "startChar": 0,
+        "endLine": 6538,
+        "endChar": 32
+      },
+      "revId": "eac2495b80146d64786e163d6ff093eff0140653",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67c13f23_2578ad62",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -82,6 +106,30 @@
       "writtenOn": "2017-08-04T01:53:59Z",
       "side": 1,
       "message": "same here.",
+      "range": {
+        "startLine": 6548,
+        "startChar": 0,
+        "endLine": 6548,
+        "endChar": 32
+      },
+      "revId": "eac2495b80146d64786e163d6ff093eff0140653",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2dc3666b_76efca09",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6548,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-08-04T08:51:07Z",
+      "side": 1,
+      "message": "Agree",
+      "parentUuid": "67c13f23_2578ad62",
       "range": {
         "startLine": 6548,
         "startChar": 0,
