@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "076fa0f4_5ceca5ca",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-08-09T05:51:53Z",
+      "side": 1,
+      "message": "After more discussion: PS1 was incorrect in the following circumstances:\n\n1. The rule specifies a UID match (positive or inverted) and the match succeeded.\n2. The socket is closed.\n3. The rule specifies an inverted GID match.\n\nLooks like the code is correct now.\n\nIf desired we can add a test for this combination in the code that you have already written wrote to verify that after this CL we can match closed sockets.\n\nWe cannot have test coverage for this case at the moment because in the current code such a test would always fail. Before this change, UID matches can never succeed if the socket is closed, and thus it is not possible for #1 and #2 to happen at the same time.",
+      "parentUuid": "2df91c57_b929bbbb",
+      "range": {
+        "startLine": 1779,
+        "startChar": 0,
+        "endLine": 1784,
+        "endChar": 3
+      },
+      "revId": "c6709f6540b798194d12808e61fc43ab16f1c418",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "76ff8ea2_edb021fb",
         "filename": "net/netfilter/xt_qtaguid_internal.h",
         "patchSetId": 1
