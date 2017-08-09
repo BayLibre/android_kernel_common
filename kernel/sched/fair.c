@@ -5380,11 +5380,10 @@ long group_norm_util(struct energy_env *eenv, struct sched_group *sg)
 	return util_sum;
 }
 
-static int find_new_capacity(struct energy_env *eenv,
-	const struct sched_group_energy * const sge)
+static int find_new_capacity(const struct sched_group_energy const *sge,
+			     unsigned long util)
 {
 	int idx;
-	unsigned long util = group_max_util(eenv);
 
 	for (idx = 0; idx < sge->nr_cap_states; idx++) {
 		if (sge->cap_states[idx].cap * 1024 > util * capacity_margin)
@@ -5394,8 +5393,6 @@ static int find_new_capacity(struct energy_env *eenv,
 	/* Fixup for maximum capacity index */
 	if (idx == sge->nr_cap_states)
 		idx = idx - 1;
-
-	eenv->cap_idx = idx;
 
 	return idx;
 }
@@ -5516,7 +5513,8 @@ static int sched_group_energy(struct energy_env *eenv)
 				else
 					eenv->sg_cap = sg;
 
-				cap_idx = find_new_capacity(eenv, sg->sge);
+				cap_idx = find_new_capacity(sg->sge, group_max_util(eenv));
+				eenv->cap_idx = cap_idx;
 
 				if (sg->group_weight == 1) {
 					/* Remove capacity of src CPU (before task move) */
