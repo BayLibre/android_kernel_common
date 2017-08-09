@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47c0e141_e5dd0327",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1735,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-08-09T03:00:07Z",
+      "side": 1,
+      "message": "Do these two lines together fit within 80 characters? If so, merge them into one line.",
+      "range": {
+        "startLine": 1734,
+        "startChar": 0,
+        "endLine": 1735,
+        "endChar": 17
+      },
+      "revId": "d92b9ccc30a3244b6b09db0c358546c25df91bde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4dd7d33f_74c41957",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1775,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2017-08-09T03:00:07Z",
+      "side": 1,
+      "message": "Before merging this CL, can we check that the code compiles and doesn\u0027t crash if debugging is turned on?\n\nAs a matter of general code hygiene, we should try not to introduce any compile errors or crashes in this CL even when debugging is turned on.\n\nIf the existing code before this CL already doesn\u0027t build, or already crashes, then we don\u0027t necessarily need to fix it in this CL.",
+      "range": {
+        "startLine": 1775,
+        "startChar": 2,
+        "endLine": 1775,
+        "endChar": 10
+      },
+      "revId": "d92b9ccc30a3244b6b09db0c358546c25df91bde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
