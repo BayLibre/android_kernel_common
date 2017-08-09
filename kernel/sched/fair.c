@@ -6251,6 +6251,8 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 	unsigned long best_idle_max_spare_cap = 0;
 	unsigned long best_active_util = ULONG_MAX;
 	int best_idle_cstate = INT_MAX;
+	int best_idle_cap_idx = INT_MAX;
+	int target_cpu_cap_idx = INT_MAX;
 	struct sched_domain *sd;
 	struct sched_group *sg;
 	int best_active_cpu = -1;
@@ -6437,6 +6439,7 @@ choose_idle:
 				best_idle_min_cap_orig = capacity_orig;
 				best_idle_cstate = idle_idx;
 				best_idle_cpu = i;
+				best_idle_cap_idx = find_new_capacity(sg->sge, new_util);
 				continue;
 			}
 
@@ -6471,6 +6474,7 @@ choose_idle:
 			target_max_spare_cap = capacity_orig - new_util;
 			target_capacity = capacity_orig;
 			target_cpu = i;
+			target_cpu_cap_idx = find_new_capacity(sg->sge, new_util);
 		}
 
 	} while (sg = sg->next, sg != sd->groups);
@@ -6503,6 +6507,9 @@ choose_idle:
 		*backup_cpu = prefer_idle
 		? best_active_cpu
 		: best_idle_cpu;
+
+	if (best_idle_cap_idx < target_cpu_cap_idx)
+		target_cpu = best_idle_cpu;
 
 	trace_sched_find_best_target(p, prefer_idle, min_util, cpu,
 				     best_idle_cpu, best_active_cpu,
