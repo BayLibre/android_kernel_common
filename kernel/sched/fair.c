@@ -6248,6 +6248,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 	unsigned long target_capacity = ULONG_MAX;
 	unsigned long min_wake_util = ULONG_MAX;
 	unsigned long target_max_spare_cap = 0;
+	unsigned long best_idle_max_spare_cap = 0;
 	unsigned long best_active_util = ULONG_MAX;
 	int best_idle_cstate = INT_MAX;
 	struct sched_domain *sd;
@@ -6423,10 +6424,16 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 				 * shallow idle big CPU.
 				 */
 				if (sysctl_sched_cstate_aware &&
-				    best_idle_cstate <= idle_idx)
+				    best_idle_cstate > idle_idx)
+					goto choose_idle;
+
+				/* Favor CPUs with maximum spare capacity */
+				if ((capacity_orig - new_util) < best_idle_max_spare_cap)
 					continue;
 
+choose_idle:
 				/* Keep track of best idle CPU */
+				best_idle_max_spare_cap = capacity_orig - new_util;
 				best_idle_min_cap_orig = capacity_orig;
 				best_idle_cstate = idle_idx;
 				best_idle_cpu = i;
