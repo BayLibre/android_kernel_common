@@ -6230,14 +6230,18 @@ static int cpu_util_wake(int cpu, struct task_struct *p)
 	return (util >= capacity) ? capacity : util;
 }
 
-static int start_cpu(bool boosted)
+static int start_cpu(unsigned long min_util)
 {
 	struct root_domain *rd = cpu_rq(smp_processor_id())->rd;
+	unsigned long min_cap = capacity_orig_of(rd->min_cap_orig_cpu);
 
 	RCU_LOCKDEP_WARN(rcu_read_lock_sched_held(),
 			   "sched RCU must be held");
 
-	return boosted ? rd->max_cap_orig_cpu : rd->min_cap_orig_cpu;
+	if (min_cap * 1024 > min_util * capacity_margin)
+		return rd->min_cap_orig_cpu;
+	else
+		return rd->max_cap_orig_cpu;
 }
 
 static inline int find_best_target(struct task_struct *p, int *backup_cpu,
@@ -6266,7 +6270,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 	schedstat_inc(this_rq(), eas_stats.fbt_attempts);
 
 	/* Find start CPU based on boost value */
-	cpu = start_cpu(boosted);
+	cpu = start_cpu(min_util);
 	if (cpu < 0) {
 		schedstat_inc(p, se.statistics.nr_wakeups_fbt_no_cpu);
 		schedstat_inc(this_rq(), eas_stats.fbt_no_cpu);
