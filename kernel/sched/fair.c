@@ -6587,7 +6587,7 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 		goto unlock;
 	if (tmp_target >= 0) {
 		target_cpu = tmp_target;
-		if ((boosted || prefer_idle) && idle_cpu(target_cpu)) {
+		if (prefer_idle || (boosted && idle_cpu(target_cpu))) {
 			schedstat_inc(p, se.statistics.nr_wakeups_secb_idle_bt);
 			schedstat_inc(this_rq(), eas_stats.secb_idle_bt);
 			goto unlock;
