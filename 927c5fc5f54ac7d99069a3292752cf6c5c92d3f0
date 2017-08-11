@@ -70,6 +70,30 @@
       "revId": "927c5fc5f54ac7d99069a3292752cf6c5c92d3f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4dd24756_182c5471",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5387,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-11T16:54:24Z",
+      "side": 1,
+      "message": "then again I was testing constant multiplies.. unless the constant is known ahead at compile time, it will cause a multiply... which brings an interesting point, if capacity_margin is really a constant, then we should declare it as a macro instead of a global variable to let the compiler know its value at compile time.",
+      "parentUuid": "d9c9869a_9fb5c53c",
+      "range": {
+        "startLine": 5387,
+        "startChar": 22,
+        "endLine": 5387,
+        "endChar": 43
+      },
+      "revId": "927c5fc5f54ac7d99069a3292752cf6c5c92d3f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
