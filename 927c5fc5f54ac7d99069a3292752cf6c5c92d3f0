@@ -46,6 +46,30 @@
       "revId": "927c5fc5f54ac7d99069a3292752cf6c5c92d3f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9c9869a_9fb5c53c",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5387,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-11T16:48:10Z",
+      "side": 1,
+      "message": "note that the multiplication really translates to adds/shifts in the loop so its not that haeavy. I tested both arm and x86 gcc.\n\n X * 1280 compiles to:\n (X \u003c\u003c 10) + (X \u003c\u003c 8)\n\nalthough agreed that its best to do it just once outside the loop than do it every iteration. thanks,",
+      "parentUuid": "6ae9eac8_75351e29",
+      "range": {
+        "startLine": 5387,
+        "startChar": 22,
+        "endLine": 5387,
+        "endChar": 43
+      },
+      "revId": "927c5fc5f54ac7d99069a3292752cf6c5c92d3f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
