@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a9889d4_e616c5a4",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5857,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-14T17:06:34Z",
+      "side": 1,
+      "message": "minor nit:\n\nThis changes the behavior of the code. In cmp_capacity_margin you have \ncapacity * capacity_margin \u003c max_capacity * 1024, changing that to ! means now you have\ncapacity * capacity_margin \u003e\u003d max_capacity * 1024.\n\nWhile I don\u0027t think its a problem, it does change the code to mean that the task is fitting after adding the margin but we still return true.\n\nAlso I think adding this function makes the reader unclear about the semantic of this function IMO and needs them to dig into the function definition to know what its doing.\n\nProbably something like this sounds better:\n\ncapacity_greater_than(cpu, util)\n\nAnd then inside the capacity_greater_than, you add the 20% margin to util.",
+      "range": {
+        "startLine": 5857,
+        "startChar": 0,
+        "endLine": 5857,
+        "endChar": 50
+      },
+      "revId": "34b2b5beed35940c80ea5891436af85721d4b659",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
