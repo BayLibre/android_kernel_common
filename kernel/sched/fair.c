@@ -5843,7 +5843,7 @@ static inline bool __task_fits(struct task_struct *p, int cpu, int util)
 
 	util += boosted_task_util(p);
 
-	return (capacity * 1024) > (util * capacity_margin);
+	return cmp_capacity_margin(capacity, util);
 }
 
 static inline bool task_fits_max(struct task_struct *p, int cpu)
@@ -5854,7 +5854,7 @@ static inline bool task_fits_max(struct task_struct *p, int cpu)
 	if (capacity == max_capacity)
 		return true;
 
-	if (capacity * capacity_margin > max_capacity * 1024)
+	if (!cmp_capacity_margin(max_capacity, capacity))
 		return true;
 
 	return __task_fits(p, cpu, 0);
@@ -5862,7 +5862,7 @@ static inline bool task_fits_max(struct task_struct *p, int cpu)
 
 static bool cpu_overutilized(int cpu)
 {
-	return (capacity_of(cpu) * 1024) < (cpu_util(cpu) * capacity_margin);
+	return (!cmp_capacity_margin(capacity_of(cpu), cpu_util(cpu)));
 }
 
 #ifdef CONFIG_SCHED_TUNE
@@ -6530,7 +6530,7 @@ static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
 	/* Bring task utilization in sync with prev_cpu */
 	sync_entity_load_avg(&p->se);
 
-	return min_cap * 1024 < task_util(p) * capacity_margin;
+	return (!cmp_capacity_margin(min_cap, task_util(p)));
 }
 
 static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync)
