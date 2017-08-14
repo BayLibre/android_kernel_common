@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "d8b1e679_5361abac",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1121354
+      },
+      "writtenOn": "2017-08-14T22:40:03Z",
+      "side": 1,
+      "message": "With further investigation, it seems the XT_QTAGUID_UID have no effect on the code here, since when the program reaches this section, XT_QTAGUID_GID must be true, so (XT_QTAGUID_UID | XT_QTAGUID_GID) will always be true no matter how XT_QTAGUID_UID changes. And if there is a inverted gid match, the packet from a closed socket should be dropped since the gid of that packet is null and only packet with a specific gid could pass for a inverted rule.",
+      "parentUuid": "076fa0f4_5ceca5ca",
+      "range": {
+        "startLine": 1779,
+        "startChar": 0,
+        "endLine": 1784,
+        "endChar": 3
+      },
+      "revId": "c6709f6540b798194d12808e61fc43ab16f1c418",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "76ff8ea2_edb021fb",
         "filename": "net/netfilter/xt_qtaguid_internal.h",
         "patchSetId": 1
