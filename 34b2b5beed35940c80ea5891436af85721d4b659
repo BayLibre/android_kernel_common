@@ -22,6 +22,30 @@
       "revId": "34b2b5beed35940c80ea5891436af85721d4b659",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d098a865_66abbd56",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5857,
+      "author": {
+        "id": 1118600
+      },
+      "writtenOn": "2017-08-14T23:58:46Z",
+      "side": 1,
+      "message": "\u003e minor nit:\n \u003e \n \u003e This changes the behavior of the code. In cmp_capacity_margin you\n \u003e have\n \u003e capacity * capacity_margin \u003c max_capacity * 1024, changing that to\n \u003e ! means now you have\n \u003e capacity * capacity_margin \u003e\u003d max_capacity * 1024.\n \u003e \n \u003e While I don\u0027t think its a problem, it does change the code to mean\n \u003e that the task is fitting after adding the margin but we still\n \u003e return true.\n\nYeah, I will add comments for the new function to explain this.\n\n \u003e Also I think adding this function makes the reader unclear about\n \u003e the semantic of this function IMO and needs them to dig into the\n \u003e function definition to know what its doing.\n \u003e \n \u003e Probably something like this sounds better:\n \u003e \n \u003e capacity_greater_than(cpu, util)\n\nYeah, the function name is better. But I will use different parameters for capacity_greater_than(cap1, cap2); this can be used by sequential patches.\n\nThanks for reviewing! \n\n \u003e And then inside the capacity_greater_than, you add the 20% margin\n \u003e to util.",
+      "parentUuid": "7a9889d4_e616c5a4",
+      "range": {
+        "startLine": 5857,
+        "startChar": 0,
+        "endLine": 5857,
+        "endChar": 50
+      },
+      "revId": "34b2b5beed35940c80ea5891436af85721d4b659",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
