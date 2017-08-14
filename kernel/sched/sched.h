@@ -1555,6 +1555,13 @@ static inline unsigned long capacity_orig_of(int cpu)
 	return cpu_rq(cpu)->cpu_capacity_orig;
 }
 
+extern unsigned int capacity_margin;
+
+static inline bool cmp_capacity_margin(unsigned long val1, unsigned long val2)
+{
+	return (val1 * SCHED_CAPACITY_SCALE > val2 * capacity_margin);
+}
+
 extern unsigned int sysctl_sched_use_walt_cpu_util;
 extern unsigned int walt_ravg_window;
 extern unsigned int walt_disabled;
@@ -1612,7 +1619,6 @@ static inline unsigned long cpu_util(int cpu)
 
 #ifdef CONFIG_CPU_FREQ_GOV_SCHED
 #define capacity_max SCHED_CAPACITY_SCALE
-extern unsigned int capacity_margin;
 extern struct static_key __sched_freq;
 
 static inline bool sched_freq(void)
