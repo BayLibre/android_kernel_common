@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1458e68c_eae0291e",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 1592,
+      "author": {
+        "id": 1118133
+      },
+      "writtenOn": "2017-08-15T22:33:52Z",
+      "side": 1,
+      "message": "util is added to delta which is an int.  It seems we just need the extra accuracy for the WALT case (util_avg is unsigned int), and even there after changing \u003c\u003c SCHED_LOAD_SHIFT to \u003e\u003e SCHED_LOAD_SHIFT in the denominator the 64 bits division seems unnecessary.  If we need to keep range that high, the change to u64 can be kept within the ifdef.",
+      "revId": "0c3fd758cc207ff9281497fec2885c3a95ce12a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1be29e93_d7f24500",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 1118133
+      },
+      "writtenOn": "2017-08-15T22:33:52Z",
+      "side": 1,
+      "message": "idem",
+      "revId": "0c3fd758cc207ff9281497fec2885c3a95ce12a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
