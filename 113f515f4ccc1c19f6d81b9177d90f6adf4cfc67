@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a02f49c_bdd462c6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 6428,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-16T18:41:07Z",
+      "side": 1,
+      "message": "can we change this to multiply and shifts instead of divide to bring down the cost?",
+      "range": {
+        "startLine": 6428,
+        "startChar": 3,
+        "endLine": 6428,
+        "endChar": 21
+      },
+      "revId": "113f515f4ccc1c19f6d81b9177d90f6adf4cfc67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "349ecd66_b96d9c16",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 6432,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-16T18:41:07Z",
+      "side": 1,
+      "message": "Sorry if its a silly question - IIRC sgc-\u003emax_capacity takes into account the RT pressure. however if we assume no RT pressure, then max_capacity can cpu_capacity_orig which will not change for that particular CPU. Then in that case the entire tgt_capacity calculation is a constant for a particular CPU type (big/little).\n\nI am trying to understand better what is variable here. I think that if we can make sysctl_sched_migration_target_runtime_periods a constant once a suitable value is found, then then entire tgt_capacity can be a constant and decay approach is not needed then.",
+      "range": {
+        "startLine": 6431,
+        "startChar": 3,
+        "endLine": 6432,
+        "endChar": 45
+      },
+      "revId": "113f515f4ccc1c19f6d81b9177d90f6adf4cfc67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
