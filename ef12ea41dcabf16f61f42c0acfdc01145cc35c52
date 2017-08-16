@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "41885c6a_58c09dcc",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 6501,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-16T19:39:18Z",
+      "side": 1,
+      "message": "Does this have more chance of causing oscillations of placement between difference CPUs that may have similar energy, and also cause the energy diff to happen much more often? I also feel like this will cause more spreading.\n\nIs there a specific issue you found that this helps?",
+      "revId": "ef12ea41dcabf16f61f42c0acfdc01145cc35c52",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
