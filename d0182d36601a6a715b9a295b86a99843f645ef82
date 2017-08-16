@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "170ecf02_419dda84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-16T19:57:55Z",
+      "side": 1,
+      "message": "you mean find_new_capacity here?",
+      "range": {
+        "startLine": 14,
+        "startChar": 48,
+        "endLine": 14,
+        "endChar": 65
+      },
+      "revId": "d0182d36601a6a715b9a295b86a99843f645ef82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47919401_81a93cc6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5433,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-16T19:57:55Z",
+      "side": 1,
+      "message": "why not do this calculation in the beginning here?\n\nIt seems we\u0027re looping through all the cap_states twice, and we can just possible do it once in the beginning here.",
+      "range": {
+        "startLine": 5429,
+        "startChar": 0,
+        "endLine": 5433,
+        "endChar": 2
+      },
+      "revId": "d0182d36601a6a715b9a295b86a99843f645ef82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
