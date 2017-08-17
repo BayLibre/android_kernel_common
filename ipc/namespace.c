@@ -16,6 +16,10 @@
 
 #include "util.h"
 
+static DEFINE_MUTEX(per_ipc_ops_mutex);
+static HLIST_HEAD(per_ipc_ops_list);
+static int ipc_priv_token_count;
+
 static struct ucounts *inc_ipc_namespaces(struct user_namespace *ns)
 {
 	return inc_ucount(ns, current_euid(), UCOUNT_IPC_NAMESPACES);
@@ -24,6 +28,59 @@ static struct ucounts *inc_ipc_namespaces(struct user_namespace *ns)
 static void dec_ipc_namespaces(struct ucounts *ucounts)
 {
 	dec_ucount(ucounts, UCOUNT_IPC_NAMESPACES);
+}
+
+/*
+ * Call each registered ipc mechanism's function to initialize its
+ * private data.
+ */
+static int init_per_ipc_data(struct ipc_namespace *ns)
+{
+	int ret = 0;
+	struct ipc_priv_ops_entry *entry;
+	struct ipc_priv_data *priv_data;
+
+	mutex_lock(&per_ipc_ops_mutex);
+	INIT_HLIST_HEAD(&ns->ipc_priv_data_list);
+	hlist_for_each_entry(entry, &per_ipc_ops_list, hlist) {
+		priv_data = kzalloc(sizeof(*priv_data), GFP_KERNEL);
+		if (!priv_data) {
+			ret = -ENOMEM;
+			break;
+		}
+		priv_data->token = entry->token;
+		hlist_add_head(&priv_data->hlist, &ns->ipc_priv_data_list);
+		ret = entry->ops->init(ns, entry->token);
+		if (ret != 0)
+			break;
+	}
+	mutex_unlock(&per_ipc_ops_mutex);
+	return ret;
+}
+
+
+/*
+ * Call each registered ipc mechanism's function to destroy
+ * its private data.
+ */
+static void exit_per_ipc_data(struct ipc_namespace *ns)
+{
+	struct ipc_priv_ops_entry *entry;
+	struct ipc_priv_data *data;
+	struct hlist_node *tmp;
+
+	mutex_lock(&per_ipc_ops_mutex);
+	hlist_for_each_entry(entry, &per_ipc_ops_list, hlist) {
+		hlist_for_each_entry_safe(data, tmp,
+				&ns->ipc_priv_data_list, hlist) {
+			if (entry->token == data->token) {
+				entry->ops->exit(ns, entry->token);
+				hlist_del(&data->hlist);
+				kfree(data);
+			}
+		}
+	}
+	mutex_unlock(&per_ipc_ops_mutex);
 }
 
 static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
@@ -49,6 +106,11 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
 	ns->ns.ops = &ipcns_operations;
 
 	atomic_set(&ns->count, 1);
+
+	err = init_per_ipc_data(ns);
+	if (err)
+		goto fail_per_ipc;
+
 	ns->user_ns = get_user_ns(user_ns);
 	ns->ucounts = ucounts;
 
@@ -65,6 +127,8 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
 fail_put:
 	put_user_ns(ns->user_ns);
 	ns_free_inum(&ns->ns);
+fail_per_ipc:
+	exit_per_ipc_data(ns);
 fail_free:
 	kfree(ns);
 fail_dec:
@@ -117,6 +181,7 @@ static void free_ipc_ns(struct ipc_namespace *ns)
 	sem_exit_ns(ns);
 	msg_exit_ns(ns);
 	shm_exit_ns(ns);
+	exit_per_ipc_data(ns);
 
 	dec_ipc_namespaces(ns->ucounts);
 	put_user_ns(ns->user_ns);
@@ -191,6 +256,140 @@ static int ipcns_install(struct nsproxy *nsproxy, struct ns_common *new)
 static struct user_namespace *ipcns_owner(struct ns_common *ns)
 {
 	return to_ipc_ns(ns)->user_ns;
+}
+
+int register_ipc_priv_ops(struct ipc_priv_ops *ops)
+{
+	int ret = -EBUSY;
+	struct ipc_priv_ops_entry *entry;
+	struct ipc_priv_data *priv_data;
+
+	/* The register is only allowed in the init IPC namespace */
+	if (&init_ipc_ns != current->nsproxy->ipc_ns) {
+		pr_err("%s(): Being called from a non-init namespace.\n",
+			__func__);
+		return -EINVAL;
+	}
+
+	if (!ops)
+		return -EINVAL;
+
+	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+	if (!entry)
+		return -ENOMEM;
+
+	entry->ops = ops;
+	entry->token = ipc_priv_token_count;
+
+	mutex_lock(&per_ipc_ops_mutex);
+	hlist_add_head(&entry->hlist, &per_ipc_ops_list);
+
+	/* Create the ipc_priv_data for this IPC */
+	priv_data = kzalloc(sizeof(*priv_data), GFP_KERNEL);
+	if (!priv_data) {
+		ret = -ENOMEM;
+		goto priv_data_err;
+	}
+	priv_data->token = entry->token;
+	hlist_add_head(&priv_data->hlist, &init_ipc_ns.ipc_priv_data_list);
+
+	ret = entry->ops->init(&init_ipc_ns, ipc_priv_token_count);
+	if (ret < 0) {
+		goto init_err;
+	} else {
+		ret = ipc_priv_token_count++;
+		goto success;
+	}
+
+init_err:
+	hlist_del(&priv_data->hlist);
+	kfree(priv_data);
+priv_data_err:
+	hlist_del(&entry->hlist);
+	kfree(entry);
+success:
+	mutex_unlock(&per_ipc_ops_mutex);
+	return ret;
+}
+
+void unregister_per_ipc_ops(int token)
+{
+	struct ipc_priv_ops_entry *entry;
+	struct ipc_priv_data *data;
+	bool found = false;
+
+	/* The un-register is only allowed in the init IPC namespace */
+	if (&init_ipc_ns != current->nsproxy->ipc_ns) {
+		pr_err("%s(): Being called from a non-init namespace.\n",
+			__func__);
+		return;
+	}
+
+	mutex_lock(&per_ipc_ops_mutex);
+
+	/* First, remove the operations from the per_ipc_ops_list. */
+	hlist_for_each_entry(entry, &per_ipc_ops_list, hlist) {
+		if (entry->token == token) {
+			found = true;
+			break;
+		}
+	}
+	if (found) {
+		entry->ops->exit(&init_ipc_ns, token);
+		hlist_del(&entry->hlist);
+		kfree(entry);
+	}
+
+	found = false;
+	hlist_for_each_entry(data, &init_ipc_ns.ipc_priv_data_list, hlist) {
+		if (data->token == token) {
+			found = true;
+			break;
+		}
+	}
+	if (found) {
+		hlist_del(&data->hlist);
+		kfree(data);
+	}
+
+	mutex_unlock(&per_ipc_ops_mutex);
+}
+
+void ipc_assign_generic_locked(struct ipc_namespace *ns, void *data, int token)
+{
+	struct ipc_priv_data *entry;
+
+	hlist_for_each_entry(entry, &ns->ipc_priv_data_list, hlist) {
+		if (entry->token == token) {
+			entry->gen = data;
+			break;
+		}
+	}
+}
+
+void *ipc_access_generic_locked(struct ipc_namespace *ns, int token)
+{
+	struct ipc_priv_data *entry;
+	void *ret = NULL;
+
+	hlist_for_each_entry(entry, &ns->ipc_priv_data_list, hlist) {
+		if (entry->token == token) {
+			ret = entry->gen;
+			break;
+		}
+	}
+	return ret;
+}
+
+void *ipc_access_generic(struct ipc_namespace *ns, int token)
+{
+	void *ret = NULL;
+
+	mutex_lock(&per_ipc_ops_mutex);
+	ret = ipc_access_generic_locked(ns, token);
+	mutex_unlock(&per_ipc_ops_mutex);
+
+	return ret;
 }
 
 const struct proc_ns_operations ipcns_operations = {

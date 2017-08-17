@@ -18,6 +18,18 @@ struct ipc_ids {
 	int next_id;
 };
 
+/*
+ * Used to store namespace-specific data for each
+ * registered ipc driver.
+ * |token| must be the same value that was returned
+ * to the driver via register_per_ipc_ops().
+ */
+struct ipc_priv_data {
+	struct hlist_node hlist;
+	int	token;
+	void	*gen;
+};
+
 struct ipc_namespace {
 	atomic_t	count;
 	struct ipc_ids	ids[3];
@@ -61,7 +73,58 @@ struct ipc_namespace {
 	struct ucounts *ucounts;
 
 	struct ns_common ns;
+
+	/*
+	 * Per-ipc data that a specific IPC mechanism
+	 * may want to store. This can only be accessed
+	 * through helper functions specified in
+	 * util.h.
+	 */
+	struct hlist_head ipc_priv_data_list;
 };
+
+/*
+ * Entry used to store ipc_priv_ops structure, and |token|
+ * metadata which was provided during registration.
+ *
+ * There will be one entry of this struct per ipc driver
+ * that registered to store ipc_priv_data.
+ */
+struct ipc_priv_ops_entry {
+	struct hlist_node hlist;
+	int token;
+	struct ipc_priv_ops *ops;
+};
+
+/*
+ * Functions used to initialize and remove ipc-specific data.
+ */
+struct ipc_priv_ops {
+	int (*init)(struct ipc_namespace *, int token);
+	void (*exit)(struct ipc_namespace *, int token);
+};
+
+/*
+ * Register an ipc mechanism's ipc_priv_ops to manage ipc_priv_data.
+ *
+ * Will also initialize the ipc-specific data for this ipc in the
+ * init ipc namespace.
+ * NOTE: Should *only* be called from the init namespace.
+ *
+ * Returns:
+ *	integer token used to look-up IPC data and functions on success
+ *	negative errno otherwise
+ */
+int register_ipc_priv_ops(struct ipc_priv_ops *ops);
+
+/*
+ * Un-register an IPC mechanism from managing ipc_priv_data.
+ *
+ * Will also remove the corresponding entries from the init ipc namespace
+ * NOTE: should *only* be called from the init namespace.
+ *
+ */
+void unregister_per_ipc_ops(int token);
 
 extern struct ipc_namespace init_ipc_ns;
 extern spinlock_t mq_lock;
@@ -156,4 +219,9 @@ static inline struct ctl_table_header *mq_register_sysctl_table(void)
 }
 
 #endif /* CONFIG_POSIX_MQUEUE_SYSCTL */
+
+void ipc_assign_generic_locked(struct ipc_namespace *ns, void *data, int token);
+void *ipc_access_generic(struct ipc_namespace *ns, int token);
+void *ipc_access_generic_locked(struct ipc_namespace *ns, int token);
+
 #endif
