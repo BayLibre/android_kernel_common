@@ -1057,6 +1057,7 @@ static int sysvipc_msg_proc_show(struct seq_file *s, void *it)
 void __init msg_init(void)
 {
 	msg_init_ns(&init_ipc_ns);
+	INIT_HLIST_HEAD(&init_ipc_ns.ipc_priv_data_list);
 
 	ipc_init_proc_interface("sysvipc/msg",
 				"       key      msqid perms      cbytes       qnum lspid lrpid   uid   gid  cuid  cgid      stime      rtime      ctime\n",
