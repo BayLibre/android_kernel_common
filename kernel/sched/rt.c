@@ -1366,6 +1366,25 @@ static void dequeue_rt_entity(struct sched_rt_entity *rt_se, unsigned int flags)
 }
 
 /*
+ * Keep track of whether each cpu has an RT task that will
+ * soon schedule on that core. The problem this is intended
+ * to address is that we want to avoid entering a non-preemptible
+ * softirq handler if we are about to schedule a real-time
+ * task on that core. Ideally, we could just check whether
+ * the RT runqueue on that core had a runnable task, but the
+ * window between choosing to schedule a real-time task
+ * on a core and actually enqueueing it on that run-queue
+ * is large enough to lose races at an unacceptably high rate.
+ *
+ * This variable attempts to reduce that window by indicating
+ * when we have decided to schedule an RT task on a core
+ * but not yet enqueued it.
+ * This variable is a heuristic only: it is not guaranteed
+ * to be correct and may be updated without synchronization.
+ */
+DEFINE_PER_CPU(bool, incoming_rt_task);
+
+/*
  * Adding/removing a task to/from a priority array:
  */
 static void
@@ -1380,6 +1399,8 @@ enqueue_task_rt(struct rq *rq, struct task_struct *p, int flags)
 
 	if (!task_current(rq, p) && p->nr_cpus_allowed > 1)
 		enqueue_pushable_task(rq, p);
+
+	*per_cpu_ptr(&incoming_rt_task, cpu_of(rq)) = false;
 }
 
 static void dequeue_task_rt(struct rq *rq, struct task_struct *p, int flags)
@@ -1426,14 +1447,27 @@ static void yield_task_rt(struct rq *rq)
 	requeue_task_rt(rq, rq->curr, 0);
 }
 
+/*
+ * Return whether the given cpu has (or will shortly have) an RT task
+ * ready to run. NB: This is a heuristic and is subject to races.
+ */
+bool
+cpu_has_rt_task(int cpu)
+{
+	struct rq *rq = cpu_rq(cpu);
+	return rq->rt.rt_nr_running > 0 || per_cpu(incoming_rt_task, cpu);
+}
+
 #ifdef CONFIG_SMP
 static int find_lowest_rq(struct task_struct *task);
 
 /*
  * Return whether the task on the given cpu is currently non-preemptible
  * while handling a potentially long softint, or if the task is likely
- * to block preemptions soon because it is a ksoftirq thread that is
- * handling slow softints.
+ * to block preemptions soon because (a) it is a ksoftirq thread that is
+ * handling slow softints, (b) it is idle and therefore likely to start
+ * processing the irq's immediately, (c) the cpu is currently handling
+ * hard irq's and will soon move on to the softirq handler.
  */
 bool
 task_may_not_preempt(struct task_struct *task, int cpu)
@@ -1442,14 +1476,15 @@ task_may_not_preempt(struct task_struct *task, int cpu)
 			 __IRQ_STAT(cpu, __softirq_pending);
 	struct task_struct *cpu_ksoftirqd = per_cpu(ksoftirqd, cpu);
 	return ((softirqs & LONG_SOFTIRQ_MASK) &&
-		(task == cpu_ksoftirqd ||
-		 task_thread_info(task)->preempt_count & SOFTIRQ_MASK));
+		(task == cpu_ksoftirqd || is_idle_task(task) ||
+		 (task_thread_info(task)->preempt_count &
+		  (HARDIRQ_MASK | SOFTIRQ_MASK))));
 }
 
 static int
 select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
 {
-	struct task_struct *curr;
+	struct task_struct *curr, *tgt_task;
 	struct rq *rq;
 	bool test;
 	int target_cpu = -1;
@@ -1501,6 +1536,19 @@ select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
 	 * systems like big.LITTLE.
 	 */
 	may_not_preempt = task_may_not_preempt(curr, cpu);
+	target_cpu = find_lowest_rq(p);
+
+	/*
+	 * Check once for losing a race with the other core's irq handler.
+	 * This does not happen frequently, but it can avoid delaying
+	 * the execution of the RT task in those cases.
+	 */
+	if (target_cpu != -1) {
+		tgt_task = READ_ONCE(cpu_rq(target_cpu)->curr);
+		if (task_may_not_preempt(tgt_task, target_cpu))
+			target_cpu = find_lowest_rq(p);
+	}
+
 	test = (curr && (may_not_preempt ||
 			 (unlikely(rt_task(curr)) &&
 			  (curr->nr_cpus_allowed < 2 || curr->prio <= p->prio))));
@@ -1526,6 +1574,7 @@ select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
 		     p->prio < cpu_rq(target)->rt.highest_prio.curr))
 			cpu = target;
 	}
+	*per_cpu_ptr(&incoming_rt_task, cpu) = true;
 
 out_unlock:
 	rcu_read_unlock();
