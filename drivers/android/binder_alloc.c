@@ -833,6 +833,31 @@ void binder_alloc_print_allocated(struct seq_file *m,
 }
 
 /**
+ * binder_alloc_print_pages() - print page usage
+ * @m:     seq_file for output via seq_printf()
+ * @alloc: binder_laloc for this proc
+ */
+void binder_alloc_print_pages(struct seq_file *m,
+			      struct binder_alloc *alloc)
+{
+	struct binder_lru_page *page;
+	int i, active = 0, lru = 0, free = 0;
+
+	mutex_lock(&alloc->mutex);
+	for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
+		page = &alloc->pages[i];
+		if (!page->page_ptr)
+			free++;
+		else if (list_empty(&page->lru))
+			active++;
+		else
+			lru++;
+	}
+	seq_printf(m, "  pages: %d:%d:%d\n", active, lru, free);
+	mutex_unlock(&alloc->mutex);
+}
+
+/**
  * binder_alloc_get_allocated_count() - return count of buffers
  * @alloc: binder_alloc for this proc
  *
