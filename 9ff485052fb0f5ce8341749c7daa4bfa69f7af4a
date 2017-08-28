@@ -22,6 +22,30 @@
       "revId": "9ff485052fb0f5ce8341749c7daa4bfa69f7af4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "62ec5602_c0c40957",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2089,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-08-28T19:54:30Z",
+      "side": 1,
+      "message": "Other than Pavankumar\u0027s comment, LGTM, thanks.\n\nI wonder if we should just abstract the walt disable/enable into a function in kernel/sched.h, its otherwise getting a bit messy.\nWould it be possible for you to post a patch to do that?",
+      "parentUuid": "06393016_06f548f9",
+      "range": {
+        "startLine": 2089,
+        "startChar": 7,
+        "endLine": 2089,
+        "endChar": 24
+      },
+      "revId": "9ff485052fb0f5ce8341749c7daa4bfa69f7af4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
