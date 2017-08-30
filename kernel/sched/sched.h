@@ -2085,6 +2085,8 @@ DECLARE_PER_CPU(struct update_util_data *, cpufreq_update_util_data);
 static inline void cpufreq_update_util(struct rq *rq, unsigned int flags)
 {
         struct update_util_data *data;
+	int walt_exception_flags = SCHED_CPUFREQ_INTERCLUSTER_MIG |
+				   SCHED_CPUFREQ_SCHEDTUNE_UPDATE;
 
 #ifdef CONFIG_SCHED_WALT
 	/*
@@ -2093,7 +2095,7 @@ static inline void cpufreq_update_util(struct rq *rq, unsigned int flags)
 	 * migration.
 	 */
 	if (rq->window_start == rq->load_reported_window &&
-	    !(flags & SCHED_CPUFREQ_INTERCLUSTER_MIG))
+	    !(flags & walt_exception_flags))
 		return;
 	rq->load_reported_window = rq->window_start;
 #endif
