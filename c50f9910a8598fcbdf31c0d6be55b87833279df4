@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4949d666_728853d9",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5459,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2017-09-04T17:11:12Z",
+      "side": 1,
+      "message": "cpu_util_wake here as well ? Otherwise I think we won\u0027t decrease the src cpu util when estimating the idle state.",
+      "range": {
+        "startLine": 5459,
+        "startChar": 14,
+        "endLine": 5459,
+        "endChar": 22
+      },
+      "revId": "c50f9910a8598fcbdf31c0d6be55b87833279df4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
