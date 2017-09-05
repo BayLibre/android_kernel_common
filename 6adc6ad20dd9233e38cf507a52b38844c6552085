@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "92e84d31_60b3240b",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5658,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2017-09-05T14:57:19Z",
+      "side": 0,
+      "message": "This bit (and the one for energy_after) is somehow missing because eenv-\u003eenergy is reassigned (and not increased) in sched_group_energy() with this patch. The result is that we do an energy_diff that only accounts for the latest visited group. This is fixed by the following energy_diff refactoring patch so I\u0027m not sure if this is an issue really. Should we care about those \"transient\" broken state between two patches ?",
+      "range": {
+        "startLine": 5658,
+        "startChar": 3,
+        "endLine": 5658,
+        "endChar": 38
+      },
+      "revId": "6adc6ad20dd9233e38cf507a52b38844c6552085",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
