@@ -46,6 +46,30 @@
       "revId": "67648055df78a22ef7a1b793be1b2d0650158915",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f11c9ae6_5c706bdc",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 6480,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2017-09-08T10:11:15Z",
+      "side": 1,
+      "message": "Yes that sounds good to me. It\u0027s just the \"energy_diff\" name that can be a little bit confusing if the function is not there anymore so anything that does not explicitly mention this specific name is fine really",
+      "parentUuid": "68d8fd0a_a27aebdb",
+      "range": {
+        "startLine": 6480,
+        "startChar": 14,
+        "endLine": 6480,
+        "endChar": 25
+      },
+      "revId": "67648055df78a22ef7a1b793be1b2d0650158915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
