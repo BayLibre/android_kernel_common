@@ -22,6 +22,30 @@
       "revId": "67648055df78a22ef7a1b793be1b2d0650158915",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "68d8fd0a_a27aebdb",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 6480,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-09-08T09:24:06Z",
+      "side": 1,
+      "message": "Good point, we should probably use a more generic name.\nWhat about \"Enforce energy comparisons\"?\n\nThan we can explain in the following comment that we aim at finding an alternative to prev_cpu in order to evaluate performance/energy impacts.",
+      "parentUuid": "6aa6a9bc_f8b9f827",
+      "range": {
+        "startLine": 6480,
+        "startChar": 14,
+        "endLine": 6480,
+        "endChar": 25
+      },
+      "revId": "67648055df78a22ef7a1b793be1b2d0650158915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
