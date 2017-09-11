@@ -117,12 +117,18 @@ xt_socket_get_sock_v4(struct net *net, const u8 protocol,
 		      const __be16 sport, const __be16 dport,
 		      const struct net_device *in)
 {
+	struct rtable *rt;
+
 	switch (protocol) {
 	case IPPROTO_TCP:
 		return __inet_lookup(net, &tcp_hashinfo,
 				     saddr, sport, daddr, dport,
 				     in->ifindex);
 	case IPPROTO_UDP:
+		rt = skb_rtable(skb);
+		if (rt->rt_flags & (RTCF_BROADCAST|RTCF_MULTICAST))
+			return NULL;
+
 		return udp4_lib_lookup(net, saddr, sport, daddr, dport,
 				       in->ifindex);
 	}
