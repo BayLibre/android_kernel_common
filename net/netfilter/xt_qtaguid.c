@@ -1586,6 +1586,7 @@ static struct sock *qtaguid_find_sk(const struct sk_buff *skb,
 {
 	struct sock *sk;
 	unsigned int hook_mask = (1 << par->hooknum);
+	struct rtable *rt;
 
 	MT_DEBUG("qtaguid[%d]: find_sk(skb=%p) family=%d\n",
 		 par->hooknum, skb, par->family);
@@ -1595,6 +1596,10 @@ static struct sock *qtaguid_find_sk(const struct sk_buff *skb,
 	 * return garbage SKs.
 	 */
 	if (!(hook_mask & XT_SOCKET_SUPPORTED_HOOKS))
+		return NULL;
+
+	rt = skb_rtable(skb);
+	if (rt->rt_flags & (RTCF_BROADCAST|RTCF_MULTICAST))
 		return NULL;
 
 	switch (par->family) {
