@@ -1586,6 +1586,7 @@ static struct sock *qtaguid_find_sk(const struct sk_buff *skb,
 {
 	struct sock *sk;
 	unsigned int hook_mask = (1 << par->hooknum);
+	struct rtable *rt;
 
 	MT_DEBUG("qtaguid[%d]: find_sk(skb=%p) family=%d\n",
 		 par->hooknum, skb, par->family);
@@ -1602,6 +1603,10 @@ static struct sock *qtaguid_find_sk(const struct sk_buff *skb,
 		sk = xt_socket_lookup_slow_v6(dev_net(skb->dev), skb, par->in);
 		break;
 	case NFPROTO_IPV4:
+		rt = skb_rtable(skb);
+		if (rt->rt_flags & (RTCF_BROADCAST|RTCF_MULTICAST))
+			return NULL;
+
 		sk = xt_socket_lookup_slow_v4(dev_net(skb->dev), skb, par->in);
 		break;
 	default:
