@@ -5410,6 +5410,9 @@ static int group_idle_state(struct energy_env *eenv, struct sched_group *sg)
 	/* Take non-cpuidle idling into account (active idle/arch_cpu_idle()) */
 	state++;
 
+	/* The state idx of cpu is more accurate than estimate before moving */
+	if (sg->group_weight == 1 && eenv->util_delta == 0)
+		goto end;
 	/*
 	 * Try to estimate if a deeper idle state is
 	 * achievable when we move the task.
@@ -5447,7 +5450,7 @@ static int group_idle_state(struct energy_env *eenv, struct sched_group *sg)
 			 * reality, but an indication of what might happen.
 			 */
 			new_state = min(max_idle_state_idx, (int)
-					(new_state / sg->sgc->max_capacity));
+					(new_state / (sg->sgc->max_capacity * sg->group_weight)));
 			new_state = max_idle_state_idx - new_state;
 		}
 		state = new_state;
