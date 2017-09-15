@@ -5580,6 +5580,7 @@ static inline int __energy_diff(struct energy_env *eenv)
 	struct sched_group *sg;
 	int sd_cpu = -1, energy_before = 0, energy_after = 0;
 	int diff, margin;
+	int boost = schedtune_task_boost(eenv->task);
 
 	struct energy_env eenv_before = {
 		.util_delta	= 0,
@@ -5591,6 +5592,19 @@ static inline int __energy_diff(struct energy_env *eenv)
 
 	if (eenv->src_cpu == eenv->dst_cpu)
 		return 0;
+
+	/*
+	 * When task util and boost margin both are zero, then it's pointless
+	 * to calculate the energy and PE filter. So select CPU with smaller
+	 * capacity and bail out.
+	 */
+	if (!eenv->util_delta && !boost) {
+		if (capacity_orig_of(eenv->src_cpu) <=
+		    capacity_orig_of(eenv->dst_cpu))
+			return 0;
+		else
+			return -1;
+	}
 
 	sd_cpu = (eenv->src_cpu != -1) ? eenv->src_cpu : eenv->dst_cpu;
 	sd = rcu_dereference(per_cpu(sd_ea, sd_cpu));
