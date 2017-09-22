@@ -844,7 +844,6 @@ extern int usb_stop_endpoint(struct usb_device *dev,
 
 extern dma_addr_t usb_get_sec_event_ring_dma_addr(struct usb_device *dev,
 	unsigned int intr_num);
-extern dma_addr_t usb_get_dcba_dma_addr(struct usb_device *dev);
 extern dma_addr_t usb_get_xfer_ring_dma_addr(struct usb_device *dev,
 	struct usb_host_endpoint *ep);
 
