@@ -2744,6 +2744,36 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	return true;
 }
 
+/**
+ * binder_get_node_refs_for_txn() - Get required refs on node for txn
+ * @node:         struct binder_node for which to get refs
+ *
+ * To perform a transaction on a target node, we need to take a strong
+ * local ref to guarantee the node survives until it is completed and
+ * a node tmpref to guarantee that if the proc dies before we send
+ * the transaction, the node can be cleaned up (since the node release
+ * will clear the strong local ref)
+ *
+ * Given a node, get the refs if the proc hasn't already died.
+ *
+ * Return: The target_node with refs or NULL if no proc
+ */
+static struct binder_node *binder_get_node_refs_for_txn(
+		struct binder_node *node)
+{
+	struct binder_node *target_node = NULL;
+
+	binder_node_inner_lock(node);
+	if (node->proc) {
+		target_node = node;
+		binder_inc_node_nilocked(node, 1, 0, NULL);
+		binder_inc_node_tmpref_ilocked(node);
+	}
+	binder_node_inner_unlock(node);
+
+	return target_node;
+}
+
 static void binder_transaction(struct binder_proc *proc,
 			       struct binder_thread *thread,
 			       struct binder_transaction_data *tr, int reply,
@@ -2845,10 +2875,9 @@ static void binder_transaction(struct binder_proc *proc,
 			binder_proc_lock(proc);
 			ref = binder_get_ref_olocked(proc, tr->target.handle,
 						     true);
-			if (ref) {
-				binder_inc_node(ref->node, 1, 0, NULL);
-				target_node = ref->node;
-			}
+			if (ref)
+				target_node = binder_get_node_refs_for_txn(
+						ref->node);
 			binder_proc_unlock(proc);
 			if (target_node == NULL) {
 				binder_user_error("%d:%d got transaction to invalid handle\n",
@@ -2859,16 +2888,19 @@ static void binder_transaction(struct binder_proc *proc,
 				goto err_invalid_target_handle;
 			}
 		} else {
+			struct binder_node *tmpnode;
+
 			mutex_lock(&context->context_mgr_node_lock);
-			target_node = context->binder_context_mgr_node;
-			if (target_node == NULL) {
+			tmpnode = context->binder_context_mgr_node;
+			if (tmpnode)
+				target_node = binder_get_node_refs_for_txn(
+						tmpnode);
+			mutex_unlock(&context->context_mgr_node_lock);
+			if (!target_node) {
 				return_error = BR_DEAD_REPLY;
-				mutex_unlock(&context->context_mgr_node_lock);
 				return_error_line = __LINE__;
 				goto err_no_context_mgr_node;
 			}
-			binder_inc_node(target_node, 1, 0, NULL);
-			mutex_unlock(&context->context_mgr_node_lock);
 		}
 		e->to_node = target_node->debug_id;
 		binder_node_lock(target_node);
@@ -3241,6 +3273,8 @@ static void binder_transaction(struct binder_proc *proc,
 	if (target_thread)
 		binder_thread_dec_tmpref(target_thread);
 	binder_proc_dec_tmpref(target_proc);
+	if (target_node)
+		binder_dec_node_tmpref(target_node);
 	/*
 	 * write barrier to synchronize with initialization
 	 * of log entry
@@ -3260,6 +3294,7 @@ err_bad_parent:
 err_copy_data_failed:
 	trace_binder_transaction_failed_buffer_release(t->buffer);
 	binder_transaction_buffer_release(target_proc, t->buffer, offp);
+	binder_dec_node_tmpref(target_node);
 	target_node = NULL;
 	t->buffer->transaction = NULL;
 	binder_alloc_free_buf(&target_proc->alloc, t->buffer);
@@ -3279,8 +3314,10 @@ err_no_context_mgr_node:
 		binder_thread_dec_tmpref(target_thread);
 	if (target_proc)
 		binder_proc_dec_tmpref(target_proc);
-	if (target_node)
+	if (target_node) {
 		binder_dec_node(target_node, 1, 0);
+		binder_dec_node_tmpref(target_node);
+	}
 
 	binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
 		     "%d:%d transaction failed %d/%d, size %lld-%lld line %d\n",
