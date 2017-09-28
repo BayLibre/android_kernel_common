@@ -87,12 +87,23 @@ EXPORT_SYMBOL(strcasecmp);
 char *strcpy(char *dest, const char *src)
 {
 	char *tmp = dest;
-
 	while ((*dest++ = *src++) != '\0')
 		/* nothing */;
 	return tmp;
 }
 EXPORT_SYMBOL(strcpy);
+#endif
+
+#if defined CONFIG_FORTIFY_SOURCE && defined __clang__
+char *safe_strcpy(char *p, const char *q, size_t p_size, size_t q_size)
+{
+	if (p_size == (size_t)-1 && q_size == (size_t)-1)
+		return __builtin_strcpy(p, q);
+	if (strscpy(p, q, p_size < q_size ? p_size : q_size) < 0)
+		fortify_panic(__func__);
+	return p;
+}
+EXPORT_SYMBOL(safe_strcpy);
 #endif
 
 #ifndef __HAVE_ARCH_STRNCPY
@@ -124,6 +135,16 @@ char *strncpy(char *dest, const char *src, size_t count)
 EXPORT_SYMBOL(strncpy);
 #endif
 
+#if defined CONFIG_FORTIFY_SOURCE && defined __clang__
+char *safe_strncpy(char *p, const char *q, __kernel_size_t size, size_t p_size)
+{
+	if (p_size < size)
+		fortify_panic(__func__);
+	return __builtin_strncpy(p, q, size);
+}
+EXPORT_SYMBOL(safe_strncpy);
+#endif
+
 #ifndef __HAVE_ARCH_STRLCPY
 /**
  * strlcpy - Copy a C-string into a sized buffer
@@ -149,6 +170,31 @@ size_t strlcpy(char *dest, const char *src, size_t size)
 }
 EXPORT_SYMBOL(strlcpy);
 #endif
+
+size_t safe_strlcpy(char *p, const char *q, size_t size,
+		    size_t p_size, size_t q_size)
+{
+	size_t ret;
+	if (p_size == (size_t)-1 && q_size == (size_t)-1)
+		return __real_strlcpy(p, q, size);
+	ret = strlen(q);
+	if (size) {
+		size_t len = (ret >= size) ? size - 1 : ret;
+
+		/* This copied from GCC, but cannot work here.
+		 * Kept as a reminder to try to implement later
+		if (__builtin_constant_p(len) && len >= p_size)
+			__write_overflow();
+		 */
+		if (len >= p_size)
+			fortify_panic(__func__);
+		__builtin_memcpy(p, q, len);
+		p[len] = '\0';
+	}
+	return ret;
+}
+EXPORT_SYMBOL(safe_strlcpy);
+
 
 #ifndef __HAVE_ARCH_STRSCPY
 /**
@@ -255,6 +301,43 @@ char *strcat(char *dest, const char *src)
 EXPORT_SYMBOL(strcat);
 #endif
 
+#if defined CONFIG_FORTIFY_SOURCE && defined __clang__
+char *safe_strcat(char *p, const char *q, size_t p_size)
+{
+	if (p_size == (size_t)-1)
+		return __builtin_strcat(p, q);
+	if (strlcat(p, q, p_size) >= p_size)
+		fortify_panic(__func__);
+	return p;
+}
+EXPORT_SYMBOL(safe_strcat);
+#endif
+
+#if defined CONFIG_FORTIFY_SOURCE && defined __clang__
+__kernel_size_t safe_strlen(const char* p, size_t p_size)
+{
+	__kernel_size_t ret;
+	if (p_size == (size_t)-1)
+		return __builtin_strlen(p);
+	ret = strnlen(p, p_size);
+	if (p_size <= ret)
+		fortify_panic(__func__);
+	return ret;
+}
+EXPORT_SYMBOL(safe_strlen);
+#endif
+
+__kernel_size_t safe_strnlen(const char *p, __kernel_size_t maxlen,
+			     size_t p_size)
+{
+	__kernel_size_t ret = __real_strnlen(p, maxlen < p_size ? maxlen :
+								  p_size);
+	if (p_size <= ret && maxlen != ret)
+		fortify_panic(__func__);
+	return ret;
+}
+EXPORT_SYMBOL(safe_strnlen);
+
 #ifndef __HAVE_ARCH_STRNCAT
 /**
  * strncat - Append a length-limited, C-string to another
@@ -283,6 +366,22 @@ char *strncat(char *dest, const char *src, size_t count)
 }
 EXPORT_SYMBOL(strncat);
 #endif
+
+char *safe_strncat(char *p, const char *q, __kernel_size_t count,
+		   size_t p_size, size_t q_size)
+{
+	size_t p_len, copy_len;
+	if (p_size == (size_t)-1 && q_size == (size_t)-1)
+		return __builtin_strncat(p, q, count);
+	p_len = strlen(p);
+	copy_len = strnlen(q, count);
+	if (p_size < p_len + copy_len + 1)
+		fortify_panic(__func__);
+	__builtin_memcpy(p + p_len, q, copy_len);
+	p[p_len + copy_len] = '\0';
+	return p;
+}
+EXPORT_SYMBOL(safe_strncat);
 
 #ifndef __HAVE_ARCH_STRLCAT
 /**

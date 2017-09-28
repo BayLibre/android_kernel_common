@@ -7,6 +7,7 @@
 #include <linux/stddef.h>	/* for NULL */
 #include <stdarg.h>
 #include <uapi/linux/string.h>
+#include <linux/kernel.h>
 
 extern char *strndup_user(const char __user *, long);
 extern void *memdup_user(const void __user *, size_t);
@@ -175,66 +176,108 @@ void __read_overflow2(void) __compiletime_error("detected read beyond size of ob
 void __write_overflow(void) __compiletime_error("detected write beyond size of object passed as 1st parameter");
 
 #if !defined(__NO_FORTIFY) && defined(__OPTIMIZE__) && defined(CONFIG_FORTIFY_SOURCE)
+extern char* safe_strcpy(char *p, const char *q, size_t p_size, size_t q_size);
+
 __FORTIFY_INLINE char *strcpy(char *p, const char *q)
 {
 	size_t p_size = __builtin_object_size(p, 0);
 	size_t q_size = __builtin_object_size(q, 0);
+
+#ifdef __clang__
+	return safe_strcpy(p, q, p_size, q_size);
+#else
 	if (p_size == (size_t)-1 && q_size == (size_t)-1)
 		return __builtin_strcpy(p, q);
 	if (strscpy(p, q, p_size < q_size ? p_size : q_size) < 0)
 		fortify_panic(__func__);
 	return p;
+#endif
 }
 
+extern char* safe_strncpy(char *p, const char *q, __kernel_size_t size,
+			  size_t p_size);
+
 __FORTIFY_INLINE char *strncpy(char *p, const char *q, __kernel_size_t size)
+  __attribute__((diagnose_if(__builtin_object_size(p, 0) < size,
+			     "Buffer overflow", "error")))
 {
 	size_t p_size = __builtin_object_size(p, 0);
+
+#ifdef __clang__
+	return safe_strncpy(p, q, size, p_size);
+#else
 	if (__builtin_constant_p(size) && p_size < size)
 		__write_overflow();
 	if (p_size < size)
 		fortify_panic(__func__);
 	return __builtin_strncpy(p, q, size);
+#endif
 }
+
+extern char* safe_strcat(char *p, const char *q, size_t p_size);
 
 __FORTIFY_INLINE char *strcat(char *p, const char *q)
 {
 	size_t p_size = __builtin_object_size(p, 0);
+#ifdef __clang__
+	return safe_strcat(p, q, p_size);
+#else
 	if (p_size == (size_t)-1)
 		return __builtin_strcat(p, q);
 	if (strlcat(p, q, p_size) >= p_size)
 		fortify_panic(__func__);
 	return p;
+#endif
 }
+
+extern __kernel_size_t safe_strlen(const char* p, size_t p_size);
 
 __FORTIFY_INLINE __kernel_size_t strlen(const char *p)
 {
-	__kernel_size_t ret;
 	size_t p_size = __builtin_object_size(p, 0);
+#ifdef __clang__
+	return safe_strlen(p, p_size);
+#else
+	__kernel_size_t ret;
 	if (p_size == (size_t)-1)
 		return __builtin_strlen(p);
 	ret = strnlen(p, p_size);
 	if (p_size <= ret)
 		fortify_panic(__func__);
 	return ret;
+#endif
 }
 
 extern __kernel_size_t __real_strnlen(const char *, __kernel_size_t) __RENAME(strnlen);
+extern __kernel_size_t safe_strnlen(const char *p, __kernel_size_t maxlen,
+				    size_t p_size);
+
 __FORTIFY_INLINE __kernel_size_t strnlen(const char *p, __kernel_size_t maxlen)
 {
 	size_t p_size = __builtin_object_size(p, 0);
+#ifdef __clang__
+	return safe_strnlen(p, maxlen, p_size);
+#else
 	__kernel_size_t ret = __real_strnlen(p, maxlen < p_size ? maxlen : p_size);
 	if (p_size <= ret && maxlen != ret)
 		fortify_panic(__func__);
 	return ret;
+#endif
 }
 
 /* defined after fortified strlen to reuse it */
 extern size_t __real_strlcpy(char *, const char *, size_t) __RENAME(strlcpy);
+extern size_t safe_strlcpy(char *p, const char *q, size_t size,
+			   size_t p_size, size_t q_size);
+
 __FORTIFY_INLINE size_t strlcpy(char *p, const char *q, size_t size)
 {
-	size_t ret;
 	size_t p_size = __builtin_object_size(p, 0);
 	size_t q_size = __builtin_object_size(q, 0);
+#ifdef __clang__
+	return safe_strlcpy(p, q, size, p_size, q_size);
+#else
+	size_t ret;
 	if (p_size == (size_t)-1 && q_size == (size_t)-1)
 		return __real_strlcpy(p, q, size);
 	ret = strlen(q);
@@ -248,14 +291,21 @@ __FORTIFY_INLINE size_t strlcpy(char *p, const char *q, size_t size)
 		p[len] = '\0';
 	}
 	return ret;
+#endif
 }
 
 /* defined after fortified strlen and strnlen to reuse them */
+extern char *safe_strncat(char *p, const char *q, __kernel_size_t count,
+			  size_t p_size, size_t q_size);
+
 __FORTIFY_INLINE char *strncat(char *p, const char *q, __kernel_size_t count)
 {
-	size_t p_len, copy_len;
 	size_t p_size = __builtin_object_size(p, 0);
 	size_t q_size = __builtin_object_size(q, 0);
+#ifdef __clang__
+	return safe_strncat(p, q, count, p_size, q_size);
+#else
+	size_t p_len, copy_len;
 	if (p_size == (size_t)-1 && q_size == (size_t)-1)
 		return __builtin_strncat(p, q, count);
 	p_len = strlen(p);
@@ -265,6 +315,7 @@ __FORTIFY_INLINE char *strncat(char *p, const char *q, __kernel_size_t count)
 	__builtin_memcpy(p + p_len, q, copy_len);
 	p[p_len + copy_len] = '\0';
 	return p;
+#endif
 }
 
 __FORTIFY_INLINE void *memset(void *p, int c, __kernel_size_t size)
