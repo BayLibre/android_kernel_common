@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b03c9a86_1cdc4eed",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 8879,
+      "author": {
+        "id": 1201522
+      },
+      "writtenOn": "2017-10-06T14:07:03Z",
+      "side": 1,
+      "message": "Why should we keep the capacity_of()-based comparison here in this case? capacity_orig_of()-based comparison gives up little-\u003ebig direction and the additional cpu_overutilzed() checks below tell us about the cfs point of view utilisation.\nDo you want to make sure that dst_cpu\u0027s capacity is not reduced by rt/irq too? In this case, it would be nice to describe this intention in the patch header.",
+      "range": {
+        "startLine": 8878,
+        "startChar": 0,
+        "endLine": 8879,
+        "endChar": 75
+      },
+      "revId": "1507f06220a40e038f5795a44806b35f84e229ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
