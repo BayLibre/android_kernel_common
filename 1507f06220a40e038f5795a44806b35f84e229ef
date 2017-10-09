@@ -22,6 +22,30 @@
       "revId": "1507f06220a40e038f5795a44806b35f84e229ef",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5130a86_3d0746ca",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 8879,
+      "author": {
+        "id": 1209348
+      },
+      "writtenOn": "2017-10-09T18:53:01Z",
+      "side": 1,
+      "message": "\u003e Do you want to make sure that dst_cpu\u0027s capacity is not reduced by rt/irq too? In this case, it would be nice to describe this intention in the patch header.\n\nYes. That\u0027s the intention so that we can preserve the idea that active migrate from highly pressured CPU to lower *within* the same cluster along with new behaviour that prevents intercluter down (big to little) active migration due to instantaneous high rt/irq pressure.\nAgreed.  We should be better with change log explaining about it.",
+      "parentUuid": "b03c9a86_1cdc4eed",
+      "range": {
+        "startLine": 8878,
+        "startChar": 0,
+        "endLine": 8879,
+        "endChar": 75
+      },
+      "revId": "1507f06220a40e038f5795a44806b35f84e229ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
