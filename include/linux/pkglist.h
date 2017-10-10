@@ -1,0 +1,41 @@
+#ifndef _PKGLIST_H_
+#define _PKGLIST_H_
+
+#include <linux/dcache.h>
+
+struct hashtable_entry {
+	struct hlist_node hlist;
+	struct hlist_node dlist; /* for deletion cleanup */
+	struct qstr key;
+	atomic_t value;
+};
+
+static inline bool str_case_eq(const char *s1, const char *s2)
+{
+	return !strcasecmp(s1, s2);
+}
+
+static inline bool str_n_case_eq(const char *s1, const char *s2, size_t len)
+{
+	return !strncasecmp(s1, s2, len);
+}
+
+static inline bool qstr_case_eq(const struct qstr *q1, const struct qstr *q2)
+{
+	return q1->len == q2->len && str_case_eq(q1->name, q2->name);
+}
+
+#define BY_NAME		(1 << 0)
+#define BY_USERID	(1 << 1)
+
+struct pkg_list {
+	struct list_head list;
+	void (*update)(int flags, const struct qstr *name, unsigned int userid);
+};
+kuid_t get_appid(const char *key);
+kgid_t get_ext_gid(const char *key);
+bool is_excluded(const char *key, uid_t user);
+kuid_t get_allowed_appid(const char *key, uid_t user);
+void pkglist_register_update_listener(struct pkg_list *pkg);
+void pkglist_unregister_update_listener(struct pkg_list *pkg);
+#endif
