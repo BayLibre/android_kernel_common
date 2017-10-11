@@ -218,6 +218,8 @@ enum req_flag_bits {
 	__REQ_META,		/* metadata io request */
 	__REQ_PRIO,		/* boost priority in cfq */
 	__REQ_NOMERGE,		/* don't touch this for merging */
+	__REQ_NOENCRYPT,	/* ok to not encrypt (already encrypted at fs
+				   level) */
 	__REQ_IDLE,		/* anticipate more IO after this one */
 	__REQ_INTEGRITY,	/* I/O includes block integrity payload */
 	__REQ_FUA,		/* forced unit access */
@@ -245,6 +247,7 @@ enum req_flag_bits {
 #define REQ_PREFLUSH		(1ULL << __REQ_PREFLUSH)
 #define REQ_RAHEAD		(1ULL << __REQ_RAHEAD)
 #define REQ_BACKGROUND		(1ULL << __REQ_BACKGROUND)
+#define REQ_NOENCRYPT		(1ULL << __REQ_NOENCRYPT)
 
 #define REQ_NOUNMAP		(1ULL << __REQ_NOUNMAP)
 #define REQ_NOWAIT		(1ULL << __REQ_NOWAIT)
