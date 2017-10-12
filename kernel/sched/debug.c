@@ -998,14 +998,11 @@ void proc_sched_show_task(struct task_struct *p, struct seq_file *m)
 		P_SCHEDSTAT(se.statistics.nr_wakeups_secb_nrg_sav);
 		P_SCHEDSTAT(se.statistics.nr_wakeups_secb_count);
 		/* find_best_target() */
-		P_SCHEDSTAT(se.statistics.nr_wakeups_fbt_attempts);
-		P_SCHEDSTAT(se.statistics.nr_wakeups_fbt_no_cpu);
-		P_SCHEDSTAT(se.statistics.nr_wakeups_fbt_no_sd);
-		P_SCHEDSTAT(se.statistics.nr_wakeups_fbt_pref_idle);
 		P_SCHEDSTAT(se.statistics.nr_wakeups_fbt_count);
 		/* cas */
 		/* select_task_rq_fair() */
 		P_SCHEDSTAT(se.statistics.nr_wakeups_cas_attempts);
+		P_SCHEDSTAT(se.statistics.nr_wakeups_cas_prefer_idle);
 		P_SCHEDSTAT(se.statistics.nr_wakeups_cas_count);
  
 		avg_atom = p->se.sum_exec_runtime;
