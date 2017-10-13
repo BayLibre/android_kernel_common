@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db09fbca_5cff2337",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6733,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-10-13T10:57:34Z",
+      "side": 1,
+      "message": "Feels a bit silly but maybe we should keep these as cases B and C and just have no \"case A\", to avoid confusion in discussions? Could have a comment saying \"There used to be a case A but it\u0027s now handled by the caller\"...",
+      "revId": "c4106ca2bcfe186755dee7b9081f34ebb575aded",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
