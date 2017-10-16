@@ -86,6 +86,7 @@ static unsigned long lowmem_scan(struct shrinker *s, struct shrink_control *sc)
 	unsigned long rem = 0;
 	int tasksize;
 	int i;
+	int unevictable_anon = 0;
 	short min_score_adj = OOM_SCORE_ADJ_MAX + 1;
 	int minfree = 0;
 	int selected_tasksize = 0;
@@ -94,8 +95,20 @@ static unsigned long lowmem_scan(struct shrinker *s, struct shrink_control *sc)
 	int other_free = global_page_state(NR_FREE_PAGES) - totalreserve_pages;
 	int other_file = global_page_state(NR_FILE_PAGES) -
 						global_page_state(NR_SHMEM) -
-						global_page_state(NR_UNEVICTABLE) -
 						total_swapcache_pages();
+
+	unevictable_anon = global_page_state(NR_ANON_PAGES) +
+			    global_page_state(NR_SHMEM) +
+			    total_swapcache_pages() / 2 -
+			    global_page_state(NR_INACTIVE_ANON) -
+			    global_page_state(NR_ACTIVE_ANON);
+
+	if (unevictable_anon < 0)
+		unevictable_anon = 0;
+
+	other_file = other_file -
+			global_page_state(NR_UNEVICTABLE) +
+			unevictable_anon;
 
 	if (lowmem_adj_size < array_size)
 		array_size = lowmem_adj_size;
