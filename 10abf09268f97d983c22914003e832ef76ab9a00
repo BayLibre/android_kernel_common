@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b7b080b_7668e820",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1201522
+      },
+      "writtenOn": "2017-10-17T15:48:42Z",
+      "side": 1,
+      "message": "We should clarify that the \u0027slow path\u0027 is actually faster than the \u0027really slow\u0027 energy aware path. Otherwise, long term people might get confused why latency-sensitive tasks (prefer idle) want to got through the slow path. The mainline fast-path is select_idle_sibling() which is not possible for \u0027prefer idle and !sync) tasks.",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "476009d2_2dc4a166",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6317,
+      "author": {
+        "id": 1201522
+      },
+      "writtenOn": "2017-10-17T15:48:42Z",
+      "side": 1,
+      "message": "Forcing \u0027prefer idle and !sync) tasks through the slow path means that now all SD_BALANCE_WAKE tasks are CAS related. Again, the statistics counter would need some overhauling.",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "22057351_91048320",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6692,
+      "author": {
+        "id": 1201522
+      },
+      "writtenOn": "2017-10-17T15:48:42Z",
+      "side": 1,
+      "message": "Why do you want to start from a min cap cpu now unconditionally? The whole search via sched_groups in the sd_ea becomes pointless, now that we don\u0027t use rd-\u003emax_cap_orig_cpu anymore. Wouldn\u0027t be a flat search over all cpus (starting from cpu \u003d smp+processor_id()) more appropriate? In this case we could rip out the whole rd min/max_cap_orig_cpu infrastructure?",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4318e76c_ef9376fe",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6694,
+      "author": {
+        "id": 1201522
+      },
+      "writtenOn": "2017-10-17T15:48:42Z",
+      "side": 1,
+      "message": "If we get rid of the start cpu thing, this statistic counter has to go away as well. I don\u0027t think that the counters are already part of the API (used in a tool)?",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
