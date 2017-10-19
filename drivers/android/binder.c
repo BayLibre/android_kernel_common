@@ -601,6 +601,8 @@ enum {
  *                        (protected by @proc->inner_lock)
  * @todo:                 list of work to do for this thread
  *                        (protected by @proc->inner_lock)
+ * @todo_nowake:          work still to do that we don't wake up the thread for
+ *                        (protected by @proc->inner_lock)
  * @return_error:         transaction errors reported by this thread
  *                        (only accessed by this thread)
  * @reply_error:          transaction errors reported by target thread
@@ -627,6 +629,7 @@ struct binder_thread {
 	bool looper_need_return; /* can be written by other thread */
 	struct binder_transaction *transaction_stack;
 	struct list_head todo;
+	struct list_head todo_nowake;
 	struct binder_error return_error;
 	struct binder_error reply_error;
 	wait_queue_head_t wait;
@@ -2412,6 +2415,7 @@ static int binder_translate_binder(struct flat_binder_object *fp,
 	struct binder_node *node;
 	struct binder_proc *proc = thread->proc;
 	struct binder_proc *target_proc = t->to_proc;
+	struct list_head *target_list;
 	struct binder_ref_data rdata;
 	int ret = 0;
 
@@ -2434,9 +2438,14 @@ static int binder_translate_binder(struct flat_binder_object *fp,
 		goto done;
 	}
 
+	if (t->flags & TF_ONE_WAY)
+		target_list = &thread->todo;
+	else /* The reply will wake us up, so queue to _nowake */
+		target_list = &thread->todo_nowake;
+
 	ret = binder_inc_ref_for_node(target_proc, node,
 			fp->hdr.type == BINDER_TYPE_BINDER,
-			&thread->todo, &rdata);
+			target_list, &rdata);
 	if (ret)
 		goto done;
 
@@ -3258,10 +3267,10 @@ static void binder_transaction(struct binder_proc *proc,
 		}
 	}
 	tcomplete->type = BINDER_WORK_TRANSACTION_COMPLETE;
-	binder_enqueue_work(proc, tcomplete, &thread->todo);
 	t->work.type = BINDER_WORK_TRANSACTION;
 
 	if (reply) {
+		binder_enqueue_work(proc, tcomplete, &thread->todo);
 		binder_inner_proc_lock(target_proc);
 		if (target_thread->is_dead) {
 			binder_inner_proc_unlock(target_proc);
@@ -3277,6 +3286,8 @@ static void binder_transaction(struct binder_proc *proc,
 	} else if (!(t->flags & TF_ONE_WAY)) {
 		BUG_ON(t->buffer->async_transaction != 0);
 		binder_inner_proc_lock(proc);
+		BUG_ON(!binder_worklist_empty_ilocked(&thread->todo));
+		binder_enqueue_work_ilocked(tcomplete, &thread->todo_nowake);
 		t->need_reply = 1;
 		t->from_parent = thread->transaction_stack;
 		thread->transaction_stack = t;
@@ -3288,6 +3299,7 @@ static void binder_transaction(struct binder_proc *proc,
 			goto err_dead_proc_or_thread;
 		}
 	} else {
+		binder_enqueue_work(proc, tcomplete, &thread->todo);
 		BUG_ON(target_node == NULL);
 		BUG_ON(t->buffer->async_transaction != 1);
 		if (!binder_proc_transaction(t, target_proc, NULL))
@@ -3977,7 +3989,9 @@ retry:
 		struct binder_thread *t_from;
 
 		binder_inner_proc_lock(proc);
-		if (!binder_worklist_empty_ilocked(&thread->todo))
+		if (!binder_worklist_empty_ilocked(&thread->todo_nowake))
+			list = &thread->todo_nowake;
+		else if (!binder_worklist_empty_ilocked(&thread->todo))
 			list = &thread->todo;
 		else if (!binder_worklist_empty_ilocked(&proc->todo) &&
 			   wait_for_proc_work)
@@ -4355,6 +4369,7 @@ static struct binder_thread *binder_get_thread_ilocked(
 	atomic_set(&thread->tmp_ref, 0);
 	init_waitqueue_head(&thread->wait);
 	INIT_LIST_HEAD(&thread->todo);
+	INIT_LIST_HEAD(&thread->todo_nowake);
 	rb_link_node(&thread->rb_node, parent, p);
 	rb_insert_color(&thread->rb_node, &proc->threads);
 	thread->looper_need_return = true;
