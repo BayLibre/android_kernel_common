@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a13fdbd6_1b75e260",
+        "filename": "kernel/sched/walt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1093953
+      },
+      "writtenOn": "2017-10-19T08:57:47Z",
+      "side": 1,
+      "message": "Fixed this in next patchset. shifting delta may result in a zero value for small deltas. First multiply, then shift.",
+      "range": {
+        "startLine": 194,
+        "startChar": 42,
+        "endLine": 194,
+        "endChar": 49
+      },
+      "revId": "613f9e6d3f185a79a7738b6d481457edddd68d53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
