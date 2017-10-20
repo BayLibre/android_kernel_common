@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9f167a3e_d263eadf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-10-20T20:43:48Z",
+      "side": 1,
+      "message": "Ok, I\u0027ll clarify this in the commit message.\n\nSlightly unrelated: I also removed fbt_attempts because find_best_target only has 1 exit point now, so makes sense to have only 1 counter for attempts/count.",
+      "parentUuid": "4b7b080b_7668e820",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "476009d2_2dc4a166",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 7
@@ -30,6 +48,24 @@
       "writtenOn": "2017-10-17T15:48:42Z",
       "side": 1,
       "message": "Forcing \u0027prefer idle and !sync) tasks through the slow path means that now all SD_BALANCE_WAKE tasks are CAS related. Again, the statistics counter would need some overhauling.",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8768d237_e685a731",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6317,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-10-20T20:43:48Z",
+      "side": 1,
+      "message": "Maybe I can just add a stats counter \u0027cas_prefer_idle\u0027 ?",
+      "parentUuid": "476009d2_2dc4a166",
       "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "2e5895aa_331c98be",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6692,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-10-20T20:43:48Z",
+      "side": 1,
+      "message": "sure, yes I agree we can get rid of the complexity, and start from waker\u0027s CPU. I\u0027ll make these changes. I\u0027ll revert the min_cap_orig_cpu infrastructure in a separate patch if that\u0027s Ok",
+      "parentUuid": "22057351_91048320",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4318e76c_ef9376fe",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 7
@@ -64,6 +118,24 @@
       "writtenOn": "2017-10-17T15:48:42Z",
       "side": 1,
       "message": "If we get rid of the start cpu thing, this statistic counter has to go away as well. I don\u0027t think that the counters are already part of the API (used in a tool)?",
+      "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3538469a_f49dd028",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6694,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-10-20T20:43:48Z",
+      "side": 1,
+      "message": "I\u0027ll get rid of this counter. I don\u0027t think its a part of a tool (atleast none from our side)",
+      "parentUuid": "4318e76c_ef9376fe",
       "revId": "10abf09268f97d983c22914003e832ef76ab9a00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
