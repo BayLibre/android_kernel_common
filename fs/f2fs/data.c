@@ -1960,7 +1960,12 @@ repeat:
 	 * Do not use grab_cache_page_write_begin() to avoid deadlock due to
 	 * wait_for_stable_page. Will wait that below with our IO control.
 	 */
+<<<<<<< HEAD   (18b484 trace: sched: Fix util_avg_walt in sched_load_avg_cpu trace)
 	page = grab_cache_page(mapping, index);
+=======
+	page = pagecache_get_page(mapping, index,
+				FGP_LOCK | FGP_WRITE | FGP_CREAT, GFP_NOFS);
+>>>>>>> BRANCH (af9a9a Linux 4.4.94)
 	if (!page) {
 		err = -ENOMEM;
 		goto fail;
