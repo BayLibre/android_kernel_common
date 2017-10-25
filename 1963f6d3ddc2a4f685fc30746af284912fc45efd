@@ -70,6 +70,30 @@
       "revId": "1963f6d3ddc2a4f685fc30746af284912fc45efd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b13e3d66_b2344626",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-10-25T18:27:39Z",
+      "side": 1,
+      "message": "We are not inserting the same entry twice, we are inserting two entries with the same key value. Inserting the same entry twice would corrupt the tree.",
+      "parentUuid": "d4a5176b_202f50d8",
+      "range": {
+        "startLine": 97,
+        "startChar": 2,
+        "endLine": 100,
+        "endChar": 25
+      },
+      "revId": "1963f6d3ddc2a4f685fc30746af284912fc45efd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
