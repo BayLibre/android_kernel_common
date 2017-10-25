@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1cf99365_8291179e",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 1225053
+      },
+      "writtenOn": "2017-10-25T23:49:03Z",
+      "side": 1,
+      "message": "Maybe this high watermark information could be put onto its own line? Currently, \"  pages: %d:%d:%d\\n\" represents the memory usage when the report is run.  This high watermark is not computed from the loop above and does not correspond to the current highest allocated index, but represents the highest index ever reached. It could be misleading if this information is mixed in with the current memory usage I think.",
+      "range": {
+        "startLine": 860,
+        "startChar": 1,
+        "endLine": 860,
+        "endChar": 11
+      },
+      "revId": "d6e17d98329a1596f005fbf94f83ebef8a372417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
