@@ -46,6 +46,30 @@
       "revId": "8d70dcae08c64bc5bbd897b035e582fadeb4cb04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a162ade_3eb63acf",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-10-25T21:14:42Z",
+      "side": 1,
+      "message": "I didn\u0027t put it there initially because you\u0027d have to unwind on errors, but I guess technically we did allocate up to there, so I\u0027ll change it.",
+      "parentUuid": "5acfd35b_17e7ecf5",
+      "range": {
+        "startLine": 289,
+        "startChar": 1,
+        "endLine": 289,
+        "endChar": 67
+      },
+      "revId": "8d70dcae08c64bc5bbd897b035e582fadeb4cb04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
