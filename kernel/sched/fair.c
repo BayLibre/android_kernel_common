@@ -6499,6 +6499,7 @@ unlock:
 static inline int wake_energy(struct task_struct *p, int prev_cpu, int sd_flag, int wake_flags)
 {
 	struct sched_domain *sd = NULL;
+	int sync = wake_flags & WF_SYNC;
 
 	rcu_read_lock();
 	sd = rcu_dereference_sched(cpu_rq(prev_cpu)->sd);
@@ -6515,6 +6516,14 @@ static inline int wake_energy(struct task_struct *p, int prev_cpu, int sd_flag, 
 	if (sd_overutilized(sd))
 		return false;
 
+	if(sched_feat(MAINLINE_PREFER_IDLE)){
+		/*
+		 * Force prefer-idle tasks into the slow path, this may not happen
+		 * if none of the sd flags matched.
+		 */
+		if (schedtune_prefer_idle(p) > 0 && !sync)
+			return false;
+	}
 	return true;
 }
 
