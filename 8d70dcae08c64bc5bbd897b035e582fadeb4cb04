@@ -22,6 +22,30 @@
       "revId": "8d70dcae08c64bc5bbd897b035e582fadeb4cb04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5acfd35b_17e7ecf5",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-10-25T19:14:29Z",
+      "side": 1,
+      "message": "It might be easier to put it inside the loop after an lru miss. The high watermark cannot change on a lru hit, and you are already in the slow path after the lru miss. You could also make the high watermark exclusive so that an initial value of 0 works.",
+      "parentUuid": "cfc04a26_8e61b88f",
+      "range": {
+        "startLine": 289,
+        "startChar": 1,
+        "endLine": 289,
+        "endChar": 67
+      },
+      "revId": "8d70dcae08c64bc5bbd897b035e582fadeb4cb04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
