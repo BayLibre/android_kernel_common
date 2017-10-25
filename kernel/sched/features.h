@@ -95,3 +95,11 @@ SCHED_FEAT(ENERGY_AWARE, true)
 #else
 SCHED_FEAT(ENERGY_AWARE, false)
 #endif
+
+/*
+ * Energy aware scheduling algorithm choices:
+ * MAINLINE_PREFER_IDLE
+ *   Direct tasks in a schedtune.prefer_idle=1 group through
+ *   the mainline slow path for wakeup task placement.
+ */
+SCHED_FEAT(MAINLINE_PREFER_IDLE, false)
