@@ -46,6 +46,30 @@
       "revId": "1963f6d3ddc2a4f685fc30746af284912fc45efd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4a5176b_202f50d8",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-10-25T18:24:02Z",
+      "side": 1,
+      "message": "Documentation/rbtree.txt rejects the equals case in their insert() sample.\n\nhttps://lwn.net/Articles/184495/ says \"There is an important assumption built into the above example: the new value being inserted into the tree is not already present there. If that assumption is not warranted, a corrupted tree could result. If the possibility of a duplicated insertion exists, the code must be careful to test for an exact match (as is done in the search case) and stop (without inserting the node) if that match is found.\"\n\nI realize this is probably plain wrong (since the binder code doesn\u0027t seem to have corrupt trees), it\u0027s just surprising to me that it\u0027s clearly documented either way.",
+      "parentUuid": "31f154d3_3084b157",
+      "range": {
+        "startLine": 97,
+        "startChar": 2,
+        "endLine": 100,
+        "endChar": 25
+      },
+      "revId": "1963f6d3ddc2a4f685fc30746af284912fc45efd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
