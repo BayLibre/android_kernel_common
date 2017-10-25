@@ -6695,6 +6695,38 @@ static inline bool nohz_kick_needed(struct rq *rq, bool only_update);
 static void nohz_balancer_kick(bool only_update);
 
 /*
+ * wake_energy: Make the decision if we want to use an energy-aware
+ * wakeup task placement or not. This is limited to situations where
+ * we cannot use energy-awareness right now.
+ *
+ * Returns TRUE if we should attempt energy-aware wakeup, FALSE if not.
+ *
+ * Should only be called from select_task_rq_fair outside the RCU
+ * read-side critical section.
+ */
+static inline int wake_energy(struct task_struct *p, int prev_cpu, int sd_flag, int wake_flags)
+{
+	struct sched_domain *sd = NULL;
+
+	rcu_read_lock();
+	sd = rcu_dereference_sched(cpu_rq(prev_cpu)->sd);
+	rcu_read_unlock();
+	/*
+	 * Check all definite no-energy-awareness conditions
+	 */
+	if (!energy_aware())
+		return false;
+
+	if (!sd)
+		return false;
+
+	if (sd_overutilized(sd))
+		return false;
+
+	return true;
+}
+
+/*
  * select_task_rq_fair: Select target runqueue for the waking task in domains
  * that have the 'sd_flag' flag set. In practice, this is SD_BALANCE_WAKE,
  * SD_BALANCE_FORK, or SD_BALANCE_EXEC.
@@ -6722,14 +6754,15 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
 			      && cpumask_test_cpu(cpu, &p->cpus_allowed);
 	}
 
-	rcu_read_lock();
-	sd = rcu_dereference(cpu_rq(prev_cpu)->sd);
-	if (energy_aware() && sd && !sd_overutilized(sd)) {
+	if (wake_energy(p, prev_cpu, sd_flag, wake_flags)) {
+
+		rcu_read_lock();
+
 		new_cpu = select_energy_cpu_brute(p, prev_cpu, sync);
 		goto unlock;
 	}
 
-	sd = NULL;
+	rcu_read_lock();
 
 	for_each_domain(cpu, tmp) {
 		if (!(tmp->flags & SD_LOAD_BALANCE))
