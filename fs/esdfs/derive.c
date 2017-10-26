@@ -133,8 +133,9 @@ void esdfs_derive_perms(struct dentry *dentry)
 	case ESDFS_TREE_ANDROID_DATA:
 	case ESDFS_TREE_ANDROID_OBB:
 	case ESDFS_TREE_ANDROID_MEDIA:
-		inode_i->appid = get_allowed_appid(dentry->d_name.name,
-					inode_i->userid).val;
+		inode_i->appid = esdfs_from_kuid(ESDFS_SB(dentry->d_sb),
+					get_allowed_appid(dentry->d_name.name,
+							inode_i->userid));
 		inode_i->tree = ESDFS_TREE_ANDROID_APP;
 		break;
 	case ESDFS_TREE_ANDROID_APP:
@@ -157,15 +158,15 @@ void esdfs_set_derived_perms(struct inode *inode)
 	struct esdfs_inode_info *inode_i = ESDFS_I(inode);
 	gid_t gid = sbi->upper_perms.gid;
 
-	i_uid_write(inode, sbi->upper_perms.uid);
+	esdfs_i_uid_write(inode, sbi->upper_perms.uid);
 	inode->i_mode &= S_IFMT;
 	if (ESDFS_RESTRICT_PERMS(sbi))
-		i_gid_write(inode, gid);
+		esdfs_i_gid_write(inode, gid);
 	else {
 		if (gid == AID_SDCARD_RW)
-			i_gid_write(inode, AID_SDCARD_RW);
+			esdfs_i_gid_write(inode, AID_SDCARD_RW);
 		else
-			i_gid_write(inode, derive_uid(inode_i, gid));
+			esdfs_i_gid_write(inode, derive_uid(inode_i, gid));
 		inode->i_mode |= sbi->upper_perms.dmask;
 	}
 
@@ -182,7 +183,7 @@ void esdfs_set_derived_perms(struct inode *inode)
 	case ESDFS_TREE_NONE:
 	case ESDFS_TREE_ROOT:
 		if (ESDFS_RESTRICT_PERMS(sbi)) {
-			i_gid_write(inode, AID_SDCARD_R);
+			esdfs_i_gid_write(inode, AID_SDCARD_R);
 			inode->i_mode |= sbi->upper_perms.dmask;
 		} else if (test_opt(sbi, DERIVE_PUBLIC) &&
 			   test_opt(ESDFS_SB(inode->i_sb), DERIVE_CONFINE)) {
@@ -193,7 +194,7 @@ void esdfs_set_derived_perms(struct inode *inode)
 
 	case ESDFS_TREE_MEDIA:
 		if (ESDFS_RESTRICT_PERMS(sbi)) {
-			i_gid_write(inode, AID_SDCARD_R);
+			esdfs_i_gid_write(inode, AID_SDCARD_R);
 			inode->i_mode |= 0770;
 		}
 		break;
@@ -209,14 +210,15 @@ void esdfs_set_derived_perms(struct inode *inode)
 	case ESDFS_TREE_ANDROID_APP:
 	case ESDFS_TREE_ANDROID_APP_CACHE:
 		if (inode_i->appid)
-			i_uid_write(inode, derive_uid(inode_i, inode_i->appid));
+			esdfs_i_uid_write(inode, derive_uid(inode_i,
+							inode_i->appid));
 		if (ESDFS_RESTRICT_PERMS(sbi))
 			inode->i_mode |= 0770;
 		break;
 
 	case ESDFS_TREE_ANDROID_USER:
 		if (ESDFS_RESTRICT_PERMS(sbi)) {
-			i_gid_write(inode, AID_SDCARD_ALL);
+			esdfs_i_gid_write(inode, AID_SDCARD_ALL);
 			inode->i_mode |= 0770;
 		}
 		inode->i_mode |= 0770;
@@ -434,8 +436,8 @@ void esdfs_derive_lower_ownership(struct dentry *dentry, const char *name)
 	}
 	esdfs_get_lower_path(dentry, &path);
 	inode = path.dentry->d_inode;
-	kuid = make_kuid(&init_user_ns, uid);
-	kgid = make_kgid(&init_user_ns, gid);
+	kuid = esdfs_make_kuid(sbi, uid);
+	kgid = esdfs_make_kgid(sbi, gid);
 	if (!gid_eq(path.dentry->d_inode->i_gid, kgid)
 		|| !uid_eq(path.dentry->d_inode->i_uid, kuid)) {
 retry_deleg:
