@@ -36,7 +36,7 @@ static int esdfs_create(struct inode *dir, struct dentry *dentry,
 	if (test_opt(ESDFS_SB(dir->i_sb), ACCESS_DISABLE))
 		return -ENOENT;
 
-	creds = esdfs_override_creds(ESDFS_SB(dir->i_sb), &mask);
+	creds = esdfs_override_creds(ESDFS_SB(dir->i_sb), ESDFS_I(dir), &mask);
 	if (!creds)
 		return -ENOMEM;
 
@@ -56,6 +56,7 @@ static int esdfs_create(struct inode *dir, struct dentry *dentry,
 		goto out;
 	fsstack_copy_attr_times(dir, esdfs_lower_inode(dir));
 	fsstack_copy_inode_size(dir, lower_parent_dentry->d_inode);
+	esdfs_derive_lower_ownership(dentry, dentry->d_name.name);
 
 out:
 	unlock_dir(lower_parent_dentry);
@@ -73,7 +74,7 @@ static int esdfs_unlink(struct inode *dir, struct dentry *dentry)
 	struct path lower_path;
 	const struct cred *creds;
 
-	creds = esdfs_override_creds(ESDFS_SB(dir->i_sb), NULL);
+	creds = esdfs_override_creds(ESDFS_SB(dir->i_sb), ESDFS_I(dir), NULL);
 	if (!creds)
 		return -ENOMEM;
 
@@ -171,7 +172,8 @@ static int esdfs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 	struct path lower_path;
 	int mask;
 	const struct cred *creds =
-			esdfs_override_creds(ESDFS_SB(dir->i_sb), &mask);
+			esdfs_override_creds(ESDFS_SB(dir->i_sb),
+					ESDFS_I(dir), &mask);
 	if (!creds)
 		return -ENOMEM;
 
@@ -199,6 +201,7 @@ static int esdfs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 	fsstack_copy_inode_size(dir, lower_parent_dentry->d_inode);
 	/* update number of links on parent directory */
 	set_nlink(dir, esdfs_lower_inode(dir)->i_nlink);
+	esdfs_derive_lower_ownership(dentry, dentry->d_name.name);
 
 	if (ESDFS_DERIVE_PERMS(ESDFS_SB(dir->i_sb)))
 		err = esdfs_derive_mkdir_contents(dentry);
@@ -217,7 +220,8 @@ static int esdfs_rmdir(struct inode *dir, struct dentry *dentry)
 	int err;
 	struct path lower_path;
 	const struct cred *creds =
-			esdfs_override_creds(ESDFS_SB(dir->i_sb), NULL);
+			esdfs_override_creds(ESDFS_SB(dir->i_sb),
+					ESDFS_I(dir), NULL);
 	if (!creds)
 		return -ENOMEM;
 
@@ -272,7 +276,8 @@ static int esdfs_rename(struct inode *old_dir, struct dentry *old_dentry,
 	struct path lower_old_path, lower_new_path;
 	int mask;
 	const struct cred *creds =
-			esdfs_override_creds(ESDFS_SB(old_dir->i_sb), &mask);
+			esdfs_override_creds(ESDFS_SB(old_dir->i_sb),
+					ESDFS_I(new_dir), &mask);
 	if (!creds)
 		return -ENOMEM;
 
@@ -329,6 +334,7 @@ static int esdfs_rename(struct inode *old_dir, struct dentry *old_dentry,
 		d_drop(old_dentry);
 	if (ESDFS_DENTRY_HAS_STUB(new_dentry))
 		d_drop(new_dentry);
+	esdfs_derive_lower_ownership(old_dentry, new_dentry->d_name.name);
 out:
 	unlock_rename(lower_old_dir_dentry, lower_new_dir_dentry);
 	esdfs_put_lower_parent(old_dentry, &lower_old_dir_dentry);
@@ -341,7 +347,6 @@ out:
 
 static int esdfs_permission(struct inode *inode, int mask)
 {
-	struct esdfs_sb_info *sbi = ESDFS_SB(inode->i_sb);
 	struct inode *lower_inode;
 	int err;
 
@@ -350,9 +355,7 @@ static int esdfs_permission(struct inode *inode, int mask)
 
 	/* Basic checking of the lower inode (can't override creds here) */
 	lower_inode = esdfs_lower_inode(inode);
-	if (i_uid_read(lower_inode) != sbi->lower_perms.uid ||
-	    i_gid_read(lower_inode) != sbi->lower_perms.gid ||
-	    S_ISSOCK(lower_inode->i_mode) ||
+	if (S_ISSOCK(lower_inode->i_mode) ||
 	    S_ISLNK(lower_inode->i_mode) ||
 	    S_ISBLK(lower_inode->i_mode) ||
 	    S_ISCHR(lower_inode->i_mode) ||
@@ -397,7 +400,8 @@ static int esdfs_setattr(struct dentry *dentry, struct iattr *ia)
 	if (err)
 		return err;
 
-	creds = esdfs_override_creds(ESDFS_SB(dentry->d_inode->i_sb), NULL);
+	creds = esdfs_override_creds(ESDFS_SB(dentry->d_inode->i_sb),
+				ESDFS_I(inode), NULL);
 	if (!creds)
 		return -ENOMEM;
 
@@ -488,7 +492,8 @@ static int esdfs_getattr(struct vfsmount *mnt, struct dentry *dentry,
 	struct inode *lower_inode;
 	struct inode *inode = dentry->d_inode;
 	const struct cred *creds =
-			esdfs_override_creds(ESDFS_SB(inode->i_sb), NULL);
+			esdfs_override_creds(ESDFS_SB(inode->i_sb),
+						ESDFS_I(inode), NULL);
 	if (!creds)
 		return -ENOMEM;
 
