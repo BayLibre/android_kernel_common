@@ -28,7 +28,7 @@ CFLAGS_REMOVE_vgettimeofday.o = -pg -Os
 ifeq ($(c-gettimeofday-y),)
 CFLAGS_vgettimeofday.o = -O2 -mcmodel=tiny
 else
-CFLAGS_vgettimeofday.o = -O2 -mcmodel=tiny -include $(c-gettimeofday-y)
+CFLAGS_vgettimeofday.o = -DVDSO_HAS_TIME -O2 -mcmodel=tiny -include $(c-gettimeofday-y)
 endif
 
 # Disable gcov profiling for VDSO code
