@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e8ceb357_b8f22eca",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2017-10-31T13:14:30Z",
+      "side": 1,
+      "message": "Its a bit hard to read to me. Maybe this should be computed in a \u0027unevictable_file\u0027 variable?\n\nunevictable_file \u003d global_page_state(NR_UNEVICTABLE) - unevictable_anon;\n\nother_file \u003d global_page_state(NR_FILE_PAGES) -unevictable_file (...minus other things)\n\nAlso you\u0027re adding NR_SHMEM to other_file first, and then subtracting it later as a part of unevictable. Can we just not add it in the first place?",
+      "range": {
+        "startLine": 110,
+        "startChar": 3,
+        "endLine": 111,
+        "endChar": 20
+      },
+      "revId": "11ce7e10d985fdf9a90fe57294379eea7c8b40b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
