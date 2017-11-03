@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d420dd58_7db050b9",
+        "filename": "include/uapi/linux/hrtimer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-03T21:49:26Z",
+      "side": 1,
+      "message": "This is duplicate defined in linux/ktime.h. I weighed this and decided to duplicate rather than add uapi/linux/ktime.h.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 6
+      },
+      "revId": "11eb14a7d16c4ea655fea39ad792c8e14c46da51",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
