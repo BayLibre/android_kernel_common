@@ -5928,6 +5928,8 @@ void __init sched_init(void)
 #ifdef CONFIG_NO_HZ_FULL
 		rq->last_sched_tick = 0;
 #endif
+		/* init per-cpu eenv cache */
+		init_energy_aware_data(i);
 #endif /* CONFIG_SMP */
 		init_rq_hrtick(rq);
 		atomic_set(&rq->nr_iowait, 0);
