@@ -5563,10 +5563,10 @@ struct energy_env {
 		int	cap;
 
 		/* Estimated system energy */
-		unsigned int energy;
+		unsigned long energy;
 
 		/* Estimated energy variation wrt EAS_CPU_PRV */
-		int	nrg_delta;
+		long nrg_delta;
 
 	} cpu[EAS_CPU_CNT];
 
@@ -5740,12 +5740,11 @@ end:
 static void calc_sg_energy(struct energy_env *eenv)
 {
 	struct sched_group *sg = eenv->sg;
-	int busy_energy, idle_energy;
-	unsigned int busy_power;
-	unsigned int idle_power;
+	unsigned long busy_energy, idle_energy;
+	unsigned int busy_power, idle_power;
+	unsigned long total_energy = 0;
 	unsigned long sg_util;
 	int cap_idx, idle_idx;
-	int total_energy = 0;
 	int cpu_idx;
 
 	for (cpu_idx = EAS_CPU_PRV; cpu_idx < eenv->max_cpu_count; ++cpu_idx) {
@@ -5763,7 +5762,6 @@ static void calc_sg_energy(struct energy_env *eenv)
 		sg_util = group_norm_util(eenv, cpu_idx);
 
 		busy_energy   = sg_util * busy_power;
-		busy_energy >>= SCHED_CAPACITY_SHIFT;
 
 		/* Compute IDLE energy */
 		idle_idx = group_idle_state(eenv, cpu_idx);
@@ -5771,7 +5769,6 @@ static void calc_sg_energy(struct energy_env *eenv)
 
 		idle_energy   = SCHED_CAPACITY_SCALE - sg_util;
 		idle_energy  *= idle_power;
-		idle_energy >>= SCHED_CAPACITY_SHIFT;
 
 		total_energy = busy_energy + idle_energy;
 		eenv->cpu[cpu_idx].energy += total_energy;
@@ -5896,6 +5893,7 @@ static inline int select_energy_cpu_idx(struct energy_env *eenv)
 		if (compute_energy(eenv) == -EINVAL)
 			return EAS_CPU_PRV;
 	} while (sg = sg->next, sg != sd->groups);
+	/* remember - eenv energy values are unscaled */
 
 	/*
 	 * Compute the dead-zone margin used to prevent too many task
