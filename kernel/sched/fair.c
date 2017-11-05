@@ -5914,21 +5914,43 @@ static inline int select_energy_cpu_idx(struct energy_env *eenv)
 	 * Compare the other CPU candidates to find a CPU which can be
 	 * more energy efficient then EAS_CPU_PRV
 	 */
-	for (cpu_idx = EAS_CPU_NXT; cpu_idx < eenv->max_cpu_count; cpu_idx++) {
-		/* Skip not valid scheduled candidates */
-		if (eenv->cpu[cpu_idx].cpu_id < 0)
-			continue;
-		/* Compute energy delta wrt EAS_CPU_PRV */
-		eenv->cpu[cpu_idx].nrg_delta =
-			eenv->cpu[cpu_idx].energy -
-			eenv->cpu[EAS_CPU_PRV].energy;
-		/* filter energy variations within the dead-zone margin */
-		if (abs(eenv->cpu[cpu_idx].nrg_delta) < margin)
-			eenv->cpu[cpu_idx].nrg_delta = 0;
-		/* update the schedule candidate with min(nrg_delta) */
-		if (eenv->cpu[cpu_idx].nrg_delta <
-		    eenv->cpu[eenv->next_idx].nrg_delta)
-			eenv->next_idx = cpu_idx;
+	if(sched_feat(FIND_BEST_TARGET) && sched_feat(FBT_STRICT_ORDER)) {
+		/* if EAS_CPU_NXT saves energy, use that,
+		 * otherwise check EAS_CPU_BKP.
+		 */
+		for(cpu_idx = EAS_CPU_NXT; cpu_idx <= EAS_CPU_BKP; cpu_idx++) {
+			if (eenv->cpu[cpu_idx].cpu_id >= 0) {
+				eenv->cpu[cpu_idx].nrg_delta = eenv->cpu[cpu_idx].energy -
+						eenv->cpu[EAS_CPU_PRV].energy;
+
+				/* filter energy variations within the dead-zone margin */
+				if (abs(eenv->cpu[cpu_idx].nrg_delta) < margin)
+					eenv->cpu[cpu_idx].nrg_delta = 0;
+				/* update the schedule candidate with min(nrg_delta) */
+				if (eenv->cpu[cpu_idx].nrg_delta <
+					eenv->cpu[eenv->next_idx].nrg_delta) {
+					eenv->next_idx = cpu_idx;
+					break;
+				}
+			}
+		}
+	} else {
+		for (cpu_idx = EAS_CPU_NXT; cpu_idx < eenv->max_cpu_count; cpu_idx++) {
+			/* Skip not valid scheduled candidates */
+			if (eenv->cpu[cpu_idx].cpu_id < 0)
+				continue;
+			/* Compute energy delta wrt EAS_CPU_PRV */
+			eenv->cpu[cpu_idx].nrg_delta =
+				eenv->cpu[cpu_idx].energy -
+				eenv->cpu[EAS_CPU_PRV].energy;
+			/* filter energy variations within the dead-zone margin */
+			if (abs(eenv->cpu[cpu_idx].nrg_delta) < margin)
+				eenv->cpu[cpu_idx].nrg_delta = 0;
+			/* update the schedule candidate with min(nrg_delta) */
+			if (eenv->cpu[cpu_idx].nrg_delta <
+				eenv->cpu[eenv->next_idx].nrg_delta)
+				eenv->next_idx = cpu_idx;
+		}
 	}
 
 	return eenv->next_idx;
@@ -6730,6 +6752,297 @@ static inline int task_fits_capacity(struct task_struct *p, long capacity)
 	return capacity * 1024 > boosted_task_util(p) * capacity_margin;
 }
 
+static int start_cpu(bool boosted)
+{
+	struct root_domain *rd = cpu_rq(smp_processor_id())->rd;
+
+	return boosted ? rd->max_cap_orig_cpu : rd->min_cap_orig_cpu;
+}
+/* until WALT is included */
+#define walt_cpu_high_irqload(a) 0
+
+static inline int find_best_target(struct task_struct *p, int *backup_cpu,
+				   bool boosted, bool prefer_idle)
+{
+	unsigned long best_idle_min_cap_orig = ULONG_MAX;
+	unsigned long min_util = boosted_task_util(p);
+	unsigned long target_capacity = ULONG_MAX;
+	unsigned long min_wake_util = ULONG_MAX;
+	unsigned long target_max_spare_cap = 0;
+	unsigned long target_util = ULONG_MAX;
+	unsigned long best_active_util = ULONG_MAX;
+	int best_idle_cstate = INT_MAX;
+	struct sched_domain *sd;
+	struct sched_group *sg;
+	int best_active_cpu = -1;
+	int best_idle_cpu = -1;
+	int target_cpu = -1;
+	int cpu, i;
+
+	*backup_cpu = -1;
+
+	schedstat_inc(p->se.statistics.nr_wakeups_fbt_attempts);
+	schedstat_inc(this_rq()->eas_stats.fbt_attempts);
+
+	/* Find start CPU based on boost value */
+	cpu = start_cpu(boosted);
+	if (cpu < 0) {
+		schedstat_inc(p->se.statistics.nr_wakeups_fbt_no_cpu);
+		schedstat_inc(this_rq()->eas_stats.fbt_no_cpu);
+		return -1;
+	}
+
+	/* Find SD for the start CPU */
+	sd = rcu_dereference(per_cpu(sd_ea, cpu));
+	if (!sd) {
+		schedstat_inc(p->se.statistics.nr_wakeups_fbt_no_sd);
+		schedstat_inc(this_rq()->eas_stats.fbt_no_sd);
+		return -1;
+	}
+
+	/* Scan CPUs in all SDs */
+	sg = sd->groups;
+	do {
+		for_each_cpu_and(i, &p->cpus_allowed, sched_group_span(sg)) {
+			unsigned long capacity_curr = capacity_curr_of(i);
+			unsigned long capacity_orig = capacity_orig_of(i);
+			unsigned long wake_util, new_util;
+
+			if (!cpu_online(i))
+				continue;
+
+			if (walt_cpu_high_irqload(i))
+				continue;
+
+			/*
+			 * p's blocked utilization is still accounted for on prev_cpu
+			 * so prev_cpu will receive a negative bias due to the double
+			 * accounting. However, the blocked utilization may be zero.
+			 */
+			wake_util = cpu_util_wake(i, p);
+			new_util = wake_util + task_util(p);
+
+			/*
+			 * Ensure minimum capacity to grant the required boost.
+			 * The target CPU can be already at a capacity level higher
+			 * than the one required to boost the task.
+			 */
+			new_util = max(min_util, new_util);
+			if (new_util > capacity_orig)
+				continue;
+
+			/*
+			 * Case A) Latency sensitive tasks
+			 *
+			 * Unconditionally favoring tasks that prefer idle CPU to
+			 * improve latency.
+			 *
+			 * Looking for:
+			 * - an idle CPU, whatever its idle_state is, since
+			 *   the first CPUs we explore are more likely to be
+			 *   reserved for latency sensitive tasks.
+			 * - a non idle CPU where the task fits in its current
+			 *   capacity and has the maximum spare capacity.
+			 * - a non idle CPU with lower contention from other
+			 *   tasks and running at the lowest possible OPP.
+			 *
+			 * The last two goals tries to favor a non idle CPU
+			 * where the task can run as if it is "almost alone".
+			 * A maximum spare capacity CPU is favoured since
+			 * the task already fits into that CPU's capacity
+			 * without waiting for an OPP chance.
+			 *
+			 * The following code path is the only one in the CPUs
+			 * exploration loop which is always used by
+			 * prefer_idle tasks. It exits the loop with wither a
+			 * best_active_cpu or a target_cpu which should
+			 * represent an optimal choice for latency sensitive
+			 * tasks.
+			 */
+			if (prefer_idle) {
+
+				/*
+				 * Case A.1: IDLE CPU
+				 * Return the first IDLE CPU we find.
+				 */
+				if (idle_cpu(i)) {
+					schedstat_inc(p->se.statistics.nr_wakeups_fbt_pref_idle);
+					schedstat_inc(this_rq()->eas_stats.fbt_pref_idle);
+
+					trace_sched_find_best_target(p,
+							prefer_idle, min_util,
+							cpu, best_idle_cpu,
+							best_active_cpu, i);
+
+					return i;
+				}
+
+				/*
+				 * Case A.2: Target ACTIVE CPU
+				 * Favor CPUs with max spare capacity.
+				 */
+				if ((capacity_curr > new_util) &&
+					(capacity_orig - new_util > target_max_spare_cap)) {
+					target_max_spare_cap = capacity_orig - new_util;
+					target_cpu = i;
+					continue;
+				}
+				if (target_cpu != -1)
+					continue;
+
+
+				/*
+				 * Case A.3: Backup ACTIVE CPU
+				 * Favor CPUs with:
+				 * - lower utilization due to other tasks
+				 * - lower utilization with the task in
+				 */
+				if (wake_util > min_wake_util)
+					continue;
+				if (new_util > best_active_util)
+					continue;
+				min_wake_util = wake_util;
+				best_active_util = new_util;
+				best_active_cpu = i;
+				continue;
+			}
+
+			/*
+			 * Enforce EAS mode
+			 *
+			 * For non latency sensitive tasks, skip CPUs that
+			 * will be overutilized by moving the task there.
+			 *
+			 * The goal here is to remain in EAS mode as long as
+			 * possible at least for !prefer_idle tasks.
+			 */
+			if ((new_util * capacity_margin) >
+			    (capacity_orig * SCHED_CAPACITY_SCALE))
+				continue;
+
+			/*
+			 * Case B) Non latency sensitive tasks on IDLE CPUs.
+			 *
+			 * Find an optimal backup IDLE CPU for non latency
+			 * sensitive tasks.
+			 *
+			 * Looking for:
+			 * - minimizing the capacity_orig,
+			 *   i.e. preferring LITTLE CPUs
+			 * - favoring shallowest idle states
+			 *   i.e. avoid to wakeup deep-idle CPUs
+			 *
+			 * The following code path is used by non latency
+			 * sensitive tasks if IDLE CPUs are available. If at
+			 * least one of such CPUs are available it sets the
+			 * best_idle_cpu to the most suitable idle CPU to be
+			 * selected.
+			 *
+			 * If idle CPUs are available, favour these CPUs to
+			 * improve performances by spreading tasks.
+			 * Indeed, the energy_diff() computed by the caller
+			 * will take care to ensure the minimization of energy
+			 * consumptions without affecting performance.
+			 */
+			if (idle_cpu(i)) {
+				int idle_idx = idle_get_state_idx(cpu_rq(i));
+
+				/* Select idle CPU with lower cap_orig */
+				if (capacity_orig > best_idle_min_cap_orig)
+					continue;
+
+				/*
+				 * Skip CPUs in deeper idle state, but only
+				 * if they are also less energy efficient.
+				 * IOW, prefer a deep IDLE LITTLE CPU vs a
+				 * shallow idle big CPU.
+				 */
+				if (sysctl_sched_cstate_aware &&
+				    best_idle_cstate <= idle_idx)
+					continue;
+
+				/* Keep track of best idle CPU */
+				best_idle_min_cap_orig = capacity_orig;
+				best_idle_cstate = idle_idx;
+				best_idle_cpu = i;
+				continue;
+			}
+
+			/*
+			 * Case C) Non latency sensitive tasks on ACTIVE CPUs.
+			 *
+			 * Pack tasks in the most energy efficient capacities.
+			 *
+			 * This task packing strategy prefers more energy
+			 * efficient CPUs (i.e. pack on smaller maximum
+			 * capacity CPUs) while also trying to spread tasks to
+			 * run them all at the lower OPP.
+			 *
+			 * This assumes for example that it's more energy
+			 * efficient to run two tasks on two CPUs at a lower
+			 * OPP than packing both on a single CPU but running
+			 * that CPU at an higher OPP.
+			 *
+			 * Thus, this case keep track of the CPU with the
+			 * smallest maximum capacity and highest spare maximum
+			 * capacity.
+			 */
+
+			/* Favor CPUs with smaller capacity */
+			if (capacity_orig > target_capacity)
+				continue;
+
+			/* Favor CPUs with maximum spare capacity */
+			if ((capacity_orig - new_util) < target_max_spare_cap)
+				continue;
+
+			target_max_spare_cap = capacity_orig - new_util;
+			target_capacity = capacity_orig;
+			target_util = new_util;
+			target_cpu = i;
+		}
+
+	} while (sg = sg->next, sg != sd->groups);
+
+	/*
+	 * For non latency sensitive tasks, cases B and C in the previous loop,
+	 * we pick the best IDLE CPU only if we was not able to find a target
+	 * ACTIVE CPU.
+	 *
+	 * Policies priorities:
+	 *
+	 * - prefer_idle tasks:
+	 *
+	 *   a) IDLE CPU available, we return immediately
+	 *   b) ACTIVE CPU where task fits and has the bigger maximum spare
+	 *      capacity (i.e. target_cpu)
+	 *   c) ACTIVE CPU with less contention due to other tasks
+	 *      (i.e. best_active_cpu)
+	 *
+	 * - NON prefer_idle tasks:
+	 *
+	 *   a) ACTIVE CPU: target_cpu
+	 *   b) IDLE CPU: best_idle_cpu
+	 */
+	if (target_cpu == -1)
+		target_cpu = prefer_idle
+			? best_active_cpu
+			: best_idle_cpu;
+	else
+		*backup_cpu = prefer_idle
+		? best_active_cpu
+		: best_idle_cpu;
+
+	trace_sched_find_best_target(p, prefer_idle, min_util, cpu,
+				     best_idle_cpu, best_active_cpu,
+				     target_cpu);
+
+	schedstat_inc(p->se.statistics.nr_wakeups_fbt_count);
+	schedstat_inc(this_rq()->eas_stats.fbt_count);
+
+	return target_cpu;
+}
+
 /*
  * Disable WAKE_AFFINE in the case where task @p doesn't fit in the
  * capacity of either the waking CPU @cpu or the previous CPU @prev_cpu.
@@ -6805,6 +7118,7 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 {
 	int cpu_iter, eas_cpu_idx = EAS_CPU_NXT;
 	int energy_cpu = prev_cpu, spare_cpu = prev_cpu;
+	int use_fbt = sched_feat(FIND_BEST_TARGET);
 	unsigned long max_spare = 0;
 	struct sched_domain *sd;
 	struct energy_env *eenv;
@@ -6835,34 +7149,56 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 	if (eenv->max_cpu_count < 2)
 		goto no_possible_energy_placement;
 
-	for_each_cpu_and(cpu_iter, &p->cpus_allowed, sched_domain_span(sd)) {
-		unsigned long spare;
+	if(!use_fbt) {
+		for_each_cpu_and(cpu_iter, &p->cpus_allowed, sched_domain_span(sd)) {
+			unsigned long spare;
 
-		/* prev_cpu already in list */
-		if (cpu_iter == prev_cpu)
-			continue;
+			/* prev_cpu already in list */
+			if (cpu_iter == prev_cpu)
+				continue;
 
-		spare = capacity_spare_wake(cpu_iter, p);
-		if (spare > max_spare) {
-			max_spare = spare;
-			spare_cpu = cpu_iter;
+			spare = capacity_spare_wake(cpu_iter, p);
+			if (spare > max_spare) {
+				max_spare = spare;
+				spare_cpu = cpu_iter;
+			}
+
+			if (spare * 1024 < capacity_margin * task_util(p))
+				continue;
+
+			/* Add CPU candidate */
+			eenv->cpu[eas_cpu_idx++].cpu_id = cpu_iter;
+			eenv->max_cpu_count = eas_cpu_idx;
+
+			/* stop adding CPUs if we have no space left */
+			if (eas_cpu_idx >= EAS_CPU_CNT)
+				break;
 		}
+	} else {
+		int boosted = (schedtune_task_boost(p) > 0);
+		int prefer_idle;
 
-		if (spare * 1024 < capacity_margin * task_util(p))
-			continue;
+		/* give compiler a hint that if sched_features
+		 * cannot be changed, it is safe to optimise out
+		 * all if(prefer_idle) blocks.
+		 */
+		prefer_idle = sched_feat(MAINLINE_PREFER_IDLE) ?
+				0 : (schedtune_prefer_idle(p) > 0);
 
-		/* Add CPU candidate */
-		eenv->cpu[eas_cpu_idx++].cpu_id = cpu_iter;
-		eenv->max_cpu_count = eas_cpu_idx;
-
-		/* stop adding CPUs if we have no space left */
-		if (eas_cpu_idx >= EAS_CPU_CNT)
-			break;
+		/* Find a cpu with sufficient capacity */
+		eenv->cpu[EAS_CPU_NXT].cpu_id = find_best_target(p,
+				&eenv->cpu[EAS_CPU_BKP].cpu_id,
+				boosted, prefer_idle);
+		eenv->max_cpu_count = EAS_CPU_BKP+1;
 	}
 
 	/* find most energy-efficient CPU */
 	eas_cpu_idx = select_energy_cpu_idx(eenv);
 	energy_cpu = eenv->cpu[eas_cpu_idx].cpu_id;
+
+	/* setup return value for brute approach */
+	if (!use_fbt)
+		energy_cpu = energy_cpu != prev_cpu ? energy_cpu : spare_cpu;
 
 no_possible_energy_placement:
 	/* release our per-cpu data structure */
@@ -6883,7 +7219,7 @@ unlock:
 		schedstat_inc(this_rq()->eas_stats.secb_count);
 	}
 
-	return energy_cpu != prev_cpu ? energy_cpu : spare_cpu;
+	return energy_cpu;
 }
 
 /*

@@ -101,5 +101,14 @@ SCHED_FEAT(ENERGY_AWARE, false)
  * MAINLINE_PREFER_IDLE
  *   Direct tasks in a schedtune.prefer_idle=1 group through
  *   the mainline slow path for wakeup task placement.
+ * FIND_BEST_TARGET
+ *   Limit the number of placement options for which we calculate
+ *   energy by using heuristics to select 'best idle' and
+ *   'best active' cpu options.
+ * FBT_STRICT_ORDER
+ *   ON: If the target CPU saves any energy, use that.
+ *   OFF: Use whichever of target or backup saves most.
  */
 SCHED_FEAT(MAINLINE_PREFER_IDLE, false)
+SCHED_FEAT(FIND_BEST_TARGET, true)
+SCHED_FEAT(FBT_STRICT_ORDER, true)
