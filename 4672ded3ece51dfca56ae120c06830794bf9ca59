@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "336bc518_eb4e1d7e",
+        "filename": "include/uapi/linux/bpf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "What about putting the common definition here for the masks needed elsewhere?",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 31
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a31b0b3_c640670a",
+        "filename": "kernel/bpf/arraymap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "why the wrap?",
+      "range": {
+        "startLine": 19,
+        "startChar": 31,
+        "endLine": 19,
+        "endChar": 32
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1349bcd4_cbafd710",
+        "filename": "kernel/bpf/arraymap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "Another common definition.",
+      "range": {
+        "startLine": 19,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f5f4ddb_05719671",
+        "filename": "kernel/bpf/hashtab.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "this is also a common definition and mask.",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 49
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f838a741_5d188dbc",
+        "filename": "kernel/bpf/stackmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "why the wrap?",
+      "range": {
+        "startLine": 14,
+        "startChar": 31,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "18069a76_b9a3c5c7",
+        "filename": "kernel/bpf/stackmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "In syscall.c you have\n\n#define BPF_OBJ_FLAG_MASK (BPF_F_RDONLY | BPF_F_WRONLY)\n\nShould we consider making this a common definition in a header?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dfd4a6b_1c8a138a",
+        "filename": "kernel/bpf/syscall.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2017-11-07T22:58:47Z",
+      "side": 1,
+      "message": "Finer points of optimization.\n\nCompiler optimization may or may not help you. I believe this will result in always checking the least likely case (failure) in every check. You should consider to prioritize the successful paths.\n\nunlikely() may be the answer, look at assembler code produced from the compiler. The coded way of deprioritizing the failed case is:\n\nif (flags \u0026 BPF_F_RDONLY)\n    return (flags \u0026 BPF_F_WRONLY) ? -EINVAL : O_RDONLY;\nif (flags \u0026 BPF_F_WRONLY)\n    return O_WRONLY;\nreturn O_RDWR;\n\nIn any case, look at the disassembled code for this fragment.\n\nThis function may behave better in the context of an inline, since it will break-out with a return or variable assignment.",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 18
+      },
+      "revId": "4672ded3ece51dfca56ae120c06830794bf9ca59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
