@@ -7214,6 +7214,8 @@ static inline int wake_energy(struct task_struct *p, int prev_cpu, int sd_flag, 
 	struct sched_domain *sd = NULL;
 	int sync = wake_flags & WF_SYNC;
 
+	/* CHECK LOCKING HERE */
+
 	rcu_read_lock();
 	sd = rcu_dereference_sched(cpu_rq(prev_cpu)->sd);
 	rcu_read_unlock();
@@ -10488,6 +10490,8 @@ static inline bool nohz_kick_needed(struct rq *rq, bool only_update)
 	/* Do idle load balance if there have misfit task */
 	if (energy_aware())
 		return rq->misfit_task;
+	/* old version only stops if misfit, otherwise continues */
+	/* check what we should do here */
 
 	rcu_read_lock();
 	sds = rcu_dereference(per_cpu(sd_llc_shared, cpu));
