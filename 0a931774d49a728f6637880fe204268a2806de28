@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4352b7ca_82cdf703",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6674,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T21:56:43Z",
+      "side": 1,
+      "message": "Are there plans to use this function for other cases? With only the one case, wouldn\u0027t it be better to just add this logic to capacity_spare_wake() above? Eg:\n\n  static unsigned long capacity_spare_wake(int cpu, struct task_struct *p)\n  {\n        unsigned long util \u003d cpu_util_wake(cpu, p);\n\n\treturn capacity_orig_of(cpu) - schedtune_cpu_martin(util) - util;\n  }",
+      "revId": "0a931774d49a728f6637880fe204268a2806de28",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
