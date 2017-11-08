@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68418f10_9f71ea9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:35:32Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 23
+      },
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cdfe19e_ebedf2d6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6696,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:35:32Z",
+      "side": 1,
+      "message": "I\u0027d prefer keeping the whitespace changes separate (I know it\u0027s hard to look at and not fix, but fixing it here in an unrelated change adds confusion and potential merge conflicts)",
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c3ff407_77bcb311",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9905,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:35:32Z",
+      "side": 1,
+      "message": "else clear_bit(NOHZ_STATS_KICK,...) ?\n\nSeems like any time this is called with false, we should stop inhibiting rebalance.",
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a686fd5_4bfa1f93",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 10315,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:35:32Z",
+      "side": 1,
+      "message": "If nohz_balancer_kick(false) was called since NOHZ_STATS_KICK was set, shouldn\u0027t we go ahead and rebalance here? In fact, shouldn\u0027t a nohz_balancer_kick(false) cause NOHZ_STATS_KICK to be cleared?",
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
