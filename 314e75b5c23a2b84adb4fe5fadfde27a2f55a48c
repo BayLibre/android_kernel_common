@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "698106cf_33a7ff33",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:54:28Z",
+      "side": 1,
+      "message": "Is there another tracepoint that indicates \"prefer_idle\" cases scheduled via the slow (but faster than ea wake) case?",
+      "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e8301cf_543463dc",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6689,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:54:28Z",
+      "side": 1,
+      "message": "The indentation looks off here (and below). 1 extra tab?",
+      "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c314933b_11a1d99b",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6718,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:54:28Z",
+      "side": 1,
+      "message": "\"upstream\" doesn\u0027t feel like the right word in this context. Maybe \"The prefer_idle case is handled by the caller\" ?",
+      "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8032005_fe9412a7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6963,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-08T22:54:28Z",
+      "side": 1,
+      "message": "for \"boosted\" tasks, are we still preferring big cpus?",
+      "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
