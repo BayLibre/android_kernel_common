@@ -7117,9 +7117,8 @@ static void put_eenv(struct energy_env *eenv)
 static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync)
 {
 	int cpu_iter, eas_cpu_idx = EAS_CPU_NXT;
-	int energy_cpu = prev_cpu, spare_cpu = prev_cpu;
+	int energy_cpu = prev_cpu;
 	int use_fbt = sched_feat(FIND_BEST_TARGET);
-	unsigned long max_spare = 0;
 	struct sched_domain *sd;
 	struct energy_env *eenv;
 
@@ -7158,11 +7157,6 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 				continue;
 
 			spare = capacity_spare_wake(cpu_iter, p);
-			if (spare > max_spare) {
-				max_spare = spare;
-				spare_cpu = cpu_iter;
-			}
-
 			if (spare * 1024 < capacity_margin * task_util(p))
 				continue;
 
@@ -7195,10 +7189,6 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 	/* find most energy-efficient CPU */
 	eas_cpu_idx = select_energy_cpu_idx(eenv);
 	energy_cpu = eenv->cpu[eas_cpu_idx].cpu_id;
-
-	/* setup return value for brute approach */
-	if (!use_fbt)
-		energy_cpu = energy_cpu != prev_cpu ? energy_cpu : spare_cpu;
 
 no_possible_energy_placement:
 	/* release our per-cpu data structure */
