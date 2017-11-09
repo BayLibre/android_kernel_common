@@ -46,6 +46,30 @@
       "revId": "11ce7e10d985fdf9a90fe57294379eea7c8b40b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "753ae9ad_b804e5f1",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2017-11-09T00:49:10Z",
+      "side": 1,
+      "message": "Looks like this patch changes:\n\n\nother_file\u003dNR_FILE_PAGES-NR_SHMEM-total_swapcache_pages-NR_UNEVICTABLE\n\n\ninto:\n\n\nother_file\u003dNR_FILE_PAGES-NR_SHMEM-total_swapcache_pages-NR_UNEVICTABLE+\nmax(0,NR_ANON_PAGES+NR_SHMEM+total_swapcache_pages/2-NR_INACTIVE_ANON-NR_ACTIVE_ANON)\n\n\nNote that the first part of the calculation is unchanged. So effectively it can be simplified into adding this line:\n\n\nother_file +\u003d max(0,NR_ANON_PAGES+NR_SHMEM+total_swapcache_pages/2-NR_INACTIVE_ANON-NR_ACTIVE_ANON)\n\n\nafter unmodified original other_file calculation, hence minimizing changes to the original code.\n\nBesides I think a comment would be useful to explain this calculation, for example why total_swapcache_pages/2 is added back after total_swapcache_pages was subtracted.",
+      "parentUuid": "c710601a_9b8d8c00",
+      "range": {
+        "startLine": 110,
+        "startChar": 3,
+        "endLine": 111,
+        "endChar": 20
+      },
+      "revId": "11ce7e10d985fdf9a90fe57294379eea7c8b40b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
