@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5fc0135a_a957e3ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-11-09T12:43:22Z",
+      "side": 1,
+      "message": "Thanks, will fix",
+      "parentUuid": "68418f10_9f71ea9d",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 23
+      },
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7cdfe19e_ebedf2d6",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -36,6 +60,24 @@
       "writtenOn": "2017-11-08T22:35:32Z",
       "side": 1,
       "message": "I\u0027d prefer keeping the whitespace changes separate (I know it\u0027s hard to look at and not fix, but fixing it here in an unrelated change adds confusion and potential merge conflicts)",
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f4923a8_f843b1c8",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6696,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-11-09T12:43:22Z",
+      "side": 1,
+      "message": "Oop, sorry this must have leaked in when I was cherry-picking the upstream patch. Will remove.",
+      "parentUuid": "7cdfe19e_ebedf2d6",
       "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "65071fcf_8b2667b0",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9905,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-11-09T12:43:22Z",
+      "side": 1,
+      "message": "Hmm... interesting one. The CPU we are kicking will clear the bit itself once it has finished the update (at the end of run_rebalance_domains). \n\nSo, I guess you are saying that where two CPUs are concurrently in nohz_balancer_kick, one with only_update\u003d1 and one with only_update\u003d0, the former should not prevent the latter from triggering a full load balance? (I\u0027m assuming they both have the same value for ilb_cpu).\n\nThe problem is that only one of those CPUs can get to this line of code, because of the test_and_set_bit above. I think we can solve that problem by having \"if (!only_update) clear_bit(...)\" in the \"if (test_and_set_bit(...))\".\n\nIt would be great if we could echo this conversation on LKML to show that there is interest in this feature.. could you post this comment there? Or if you prefer I can echo it for you?",
+      "parentUuid": "1c3ff407_77bcb311",
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a686fd5_4bfa1f93",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -70,6 +130,24 @@
       "writtenOn": "2017-11-08T22:35:32Z",
       "side": 1,
       "message": "If nohz_balancer_kick(false) was called since NOHZ_STATS_KICK was set, shouldn\u0027t we go ahead and rebalance here? In fact, shouldn\u0027t a nohz_balancer_kick(false) cause NOHZ_STATS_KICK to be cleared?",
+      "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e744e1a_a711e7b8",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 10315,
+      "author": {
+        "id": 1124443
+      },
+      "writtenOn": "2017-11-09T12:43:22Z",
+      "side": 1,
+      "message": "I think I\u0027ve responded to this on the other comment.",
+      "parentUuid": "2a686fd5_4bfa1f93",
       "revId": "d49244fa90231234dfe78b7326d458d0a25e3748",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
