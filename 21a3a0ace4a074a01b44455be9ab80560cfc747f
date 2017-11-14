@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f52242c4_c354fcd7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 10166,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-11-14T15:57:20Z",
+      "side": 1,
+      "message": "By changing this, we lose the opportunity to do anything further when energy_aware() - I think this is OK since if we are energy_aware() when we run rebalance_domains (if the kick goes that far), we will not balance anything if we are not overutilized. Having a misfit task means that the current CPU is overutilized. Just wanted to explain the logic a bit.",
+      "range": {
+        "startLine": 10160,
+        "startChar": 0,
+        "endLine": 10166,
+        "endChar": 0
+      },
+      "revId": "21a3a0ace4a074a01b44455be9ab80560cfc747f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
