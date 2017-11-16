@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a98c3c2d_3374005a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6282,
+      "author": {
+        "id": 1130863
+      },
+      "writtenOn": "2017-11-16T02:57:42Z",
+      "side": 1,
+      "message": "In check_for_migration() path, condition \"p-\u003estate \u003d\u003d TASK_WAKING\" will make cpu_util_cum() be skipped.\nWe need to handle this path which also do energy cost estimation.",
+      "range": {
+        "startLine": 6282,
+        "startChar": 4,
+        "endLine": 6282,
+        "endChar": 28
+      },
+      "revId": "19f7ca1c490f6835831677dea0cec0dc55abaed0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
