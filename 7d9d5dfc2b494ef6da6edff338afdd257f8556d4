@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "911ce607_c2945d8c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4820,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-20T22:43:51Z",
+      "side": 0,
+      "message": "Arve- is there a reason the proc-\u003efiles cleanup needs to be scheduled here? Can we just keep proc-\u003efiles until we free the binder_proc (when all refs on binder_proc are gone)? Why was it done here before instead of as part of binder_deferred_release()?",
+      "revId": "7d9d5dfc2b494ef6da6edff338afdd257f8556d4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
