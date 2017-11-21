@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "f362d473_55115c25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2017-11-21T12:12:34Z",
+      "side": 1,
+      "message": "You can keep the original commit message and just append a BACKPORT section to it explaining what\u0027s the delta with respect to the original patch.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 41
+      },
+      "revId": "8ea0917874aad9395c7f631241f54aecd3322571",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4ef85a37_04e8cfad",
         "filename": "kernel/sched/cpufreq_schedutil.c",
         "patchSetId": 3
@@ -37,6 +60,30 @@
       "side": 1,
       "message": "Because this block isn\u0027t there in mainline, i.e. separate up/down tunables aren\u0027t in mainline but only in Android.",
       "parentUuid": "4ef85a37_04e8cfad",
+      "range": {
+        "startLine": 132,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "8ea0917874aad9395c7f631241f54aecd3322571",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d93ee51c_ac9eb657",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2017-11-21T12:12:34Z",
+      "side": 1,
+      "message": "Oh right, I wasn\u0027t think carefully, makes sense. Sorry for the noise.",
+      "parentUuid": "e290dd40_69489b5e",
       "range": {
         "startLine": 132,
         "startChar": 1,
