@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25c9ed41_82590ced",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4877,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-11-21T00:05:28Z",
+      "side": 1,
+      "message": "The mmem is already held here. Have you checked that it is never needed in the other code-patch that hold this lock?",
+      "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
