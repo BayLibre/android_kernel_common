@@ -34,6 +34,24 @@
       "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf0d6a05_843b7666",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4877,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-21T01:09:40Z",
+      "side": 1,
+      "message": "(and for the benefit of other reviewers, \"mmsem\" is \"mmap_sem\" which is held on entry to binder_mmap, so we don\u0027t want any cases where it is acquired while we hold this new mutex)",
+      "parentUuid": "ea63d843_587afeab",
+      "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
