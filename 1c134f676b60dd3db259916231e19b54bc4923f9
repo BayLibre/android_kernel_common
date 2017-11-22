@@ -52,6 +52,24 @@
       "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d740e241_dc7f5106",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4877,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-22T00:38:26Z",
+      "side": 1,
+      "message": "I don\u0027t see any path where mmap_sem is acquired while files_lock is held. I think it is safe (and bunch of testing with lockdep also indicates no OOO acquisitions)",
+      "parentUuid": "bf0d6a05_843b7666",
+      "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
