@@ -70,6 +70,29 @@
       "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0331646c_6ff769e6",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4877,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2017-11-22T16:57:38Z",
+      "side": 1,
+      "message": "Is this lock really needed here?  proc-\u003efiles is only tested to be NULL or not everywhere else under this lock, and the lock isn\u0027t going to change that here (it\u0027s either NULL or not)  I see that it can\u0027t really hurt, it just feels like it might not be needed, so I guess it\u0027s best to be safe :)",
+      "range": {
+        "startLine": 4877,
+        "startChar": 0,
+        "endLine": 4877,
+        "endChar": 31
+      },
+      "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
