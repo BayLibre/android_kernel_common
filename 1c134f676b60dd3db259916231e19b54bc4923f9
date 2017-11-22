@@ -93,6 +93,30 @@
       "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "051b58dc_1ae7f843",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4877,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-11-22T17:40:38Z",
+      "side": 1,
+      "message": "I\u0027ve been going back and forth on that. I think it would be safe to remove the lock (and probably add a barrier so the proc-\u003efiles null to non-null transition is visible after the vma init). It would be similar to how alloc-\u003evma is done in binder_alloc_mmap_handler().\n\nI also think it is safe as-is, however I\u0027m not sure I can be confident that an acq of mmap_sem might not be added somewhere in a patch where this mutex is held.\n\nPreferences?",
+      "parentUuid": "0331646c_6ff769e6",
+      "range": {
+        "startLine": 4877,
+        "startChar": 0,
+        "endLine": 4877,
+        "endChar": 31
+      },
+      "revId": "1c134f676b60dd3db259916231e19b54bc4923f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
