@@ -410,6 +410,7 @@ int fscrypt_initialize(unsigned int cop_flags)
 {
 	int i, res = -ENOMEM;
 
+<<<<<<< HEAD   (5311c7 UPSTREAM: time: Clean up CLOCK_MONOTONIC_RAW time handling)
 	/*
 	 * No need to allocate a bounce page pool if there already is one or
 	 * this FS won't use it.
@@ -417,6 +418,8 @@ int fscrypt_initialize(unsigned int cop_flags)
 	if (cop_flags & FS_CFLG_OWN_PAGES || fscrypt_bounce_page_pool)
 		return 0;
 
+=======
+>>>>>>> BRANCH (8743ce Linux 4.9.66)
 	mutex_lock(&fscrypt_init_mutex);
 	if (fscrypt_bounce_page_pool)
 		goto already_initialized;

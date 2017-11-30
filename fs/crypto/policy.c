@@ -80,6 +80,11 @@ int fscrypt_ioctl_set_policy(struct file *filp, const void __user *arg)
 	if (ret == -ENODATA) {
 		if (!S_ISDIR(inode->i_mode))
 			ret = -ENOTDIR;
+<<<<<<< HEAD   (5311c7 UPSTREAM: time: Clean up CLOCK_MONOTONIC_RAW time handling)
+=======
+		else if (!inode->i_sb->s_cop->empty_dir)
+			ret = -EOPNOTSUPP;
+>>>>>>> BRANCH (8743ce Linux 4.9.66)
 		else if (!inode->i_sb->s_cop->empty_dir(inode))
 			ret = -ENOTEMPTY;
 		else
