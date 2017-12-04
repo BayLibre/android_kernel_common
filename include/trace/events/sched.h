@@ -1201,6 +1201,26 @@ TRACE_EVENT(sched_group_energy,
 		  __entry->sg_idle_energy, __entry->total_energy)
 );
 
+/*
+ * Tracepoint for energy calculation duration
+ */
+TRACE_EVENT(sched_energy_calc_duration,
+
+	TP_PROTO(int duration),
+
+	TP_ARGS(duration),
+
+	TP_STRUCT__entry(
+		__field( int,		duration		)
+	),
+
+	TP_fast_assign(
+		__entry->duration	= duration;
+	),
+
+	TP_printk("duration=%d", __entry->duration)
+);
+
 #endif /* CONFIG_SMP */
 
 #endif /* _TRACE_SCHED_H */

@@ -5856,9 +5856,14 @@ energy_diff(struct energy_env *eenv)
 {
 	int boost = schedtune_task_boost(eenv->task);
 	int nrg_delta;
+	s64 kt1, kt2;
 
 	/* Conpute "absolute" energy diff */
+	kt1 = ktime_get_ns();
 	__energy_diff(eenv);
+	kt2 = ktime_get_ns();
+
+	trace_sched_energy_calc_duration(kt2 - kt1);
 
 	/* Return energy diff when boost margin is 0 */
 	if (boost == 0) {
