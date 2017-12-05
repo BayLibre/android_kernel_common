@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "0924dc75_acd41f13",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T19:21:47Z",
+      "side": 1,
+      "message": "I don\u0027t think you can easily link the node before the thread calls into the driver in every case. Adding a register-node-thread would work, but it may not be needed. Registering a looper should fail if that thread is already handling a node, and setting a looper thread as the handler for a node should fail. I think you have enough information with the existing calls to enforce this.",
+      "parentUuid": "caf8bef7_02bdc92b",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d5f7be2_4031183b",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
