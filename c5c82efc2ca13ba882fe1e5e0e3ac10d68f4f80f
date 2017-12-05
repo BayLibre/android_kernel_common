@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3b660da5_d82961ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-05T19:09:13Z",
+      "side": 1,
+      "message": "Agree. So how about a new command specifically for registering \"node threads?\" Something like BC_REGISTER_NODE_THREAD. We could then have a new thread-\u003elooper flag instead of thread-\u003eis_node_dedicated",
+      "parentUuid": "8bec5661_bbca18b0",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d5f7be2_4031183b",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2017-12-05T18:49:40Z",
       "side": 1,
       "message": "use container_of?",
+      "range": {
+        "startLine": 1419,
+        "startChar": 17,
+        "endLine": 1419,
+        "endChar": 54
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57b462c3_6ab24ebd",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1419,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-05T19:09:13Z",
+      "side": 1,
+      "message": "ack",
+      "parentUuid": "3d5f7be2_4031183b",
       "range": {
         "startLine": 1419,
         "startChar": 17,
@@ -105,6 +147,30 @@
     },
     {
       "key": {
+        "uuid": "b2049081_b035926d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2872,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-05T19:09:13Z",
+      "side": 1,
+      "message": "Don\u0027t remember, I can unnest it.",
+      "parentUuid": "9bc70b92_43070e54",
+      "range": {
+        "startLine": 2872,
+        "startChar": 2,
+        "endLine": 2872,
+        "endChar": 19
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fa16576e_9b436fab",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 1
@@ -140,6 +206,30 @@
       "side": 1,
       "message": "Why not nest the structures:\nstruct flat_binder_object_thread {\n    struct flat_binder_object flat_binder_object;\n    pid_t thread;\n};",
       "parentUuid": "fa16576e_9b436fab",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be31cb6c_335bdf9d",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-05T19:09:13Z",
+      "side": 1,
+      "message": "yeah, can do.",
+      "parentUuid": "10e1e78a_7ef5ffcb",
       "range": {
         "startLine": 135,
         "startChar": 0,
