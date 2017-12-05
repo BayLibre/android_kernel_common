@@ -2,6 +2,63 @@
   "comments": [
     {
       "key": {
+        "uuid": "8bec5661_bbca18b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T18:49:40Z",
+      "side": 1,
+      "message": "I don\u0027t think we should allow stealing looper threads for this purpose. This would require requesting a new thread for the thread pool every time a thread becomes unavailable for process work.",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d5f7be2_4031183b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1419,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T18:49:40Z",
+      "side": 1,
+      "message": "use container_of?",
+      "range": {
+        "startLine": 1419,
+        "startChar": 17,
+        "endLine": 1419,
+        "endChar": 54
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d3cd7b7_17016d47",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T18:49:40Z",
+      "side": 1,
+      "message": "you also need to check that thread matches node-\u003ethread if both are set.",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9de0636b_f842d774",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -25,6 +82,29 @@
     },
     {
       "key": {
+        "uuid": "9bc70b92_43070e54",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2872,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T18:49:40Z",
+      "side": 1,
+      "message": "why are you nesting this?",
+      "range": {
+        "startLine": 2872,
+        "startChar": 2,
+        "endLine": 2872,
+        "endChar": 19
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fa16576e_9b436fab",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 1
@@ -36,6 +116,30 @@
       "writtenOn": "2017-12-05T16:23:45Z",
       "side": 1,
       "message": "technically we don\u0027t need a new structure - we could move \u0027thread\u0027 in flat_binder_object, and just store the \u0027old\u0027 size of flat_binder_object. Then new userspace could use flat_binder_object with thread by default, and:\n\nnew kernel, old userspace: kernel sees FLAT_BINDER_FLAG_THREAD not set, uses old size\n\nold kernel, new userspace: kernel always uses old size, this is OK because there can always be gaps in the data buffer - in this case the gap is just the additional 4 bytes of the thread.\n\nnew kernel, new userspace: kernels sees FLAT_BINDER_FLAG_THREAD set, uses new size and accesses thread field safely.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "10e1e78a_7ef5ffcb",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T18:49:40Z",
+      "side": 1,
+      "message": "Why not nest the structures:\nstruct flat_binder_object_thread {\n    struct flat_binder_object flat_binder_object;\n    pid_t thread;\n};",
+      "parentUuid": "fa16576e_9b436fab",
       "range": {
         "startLine": 135,
         "startChar": 0,
