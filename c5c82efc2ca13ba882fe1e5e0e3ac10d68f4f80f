@@ -138,6 +138,40 @@
     },
     {
       "key": {
+        "uuid": "2f36f8a7_569daedc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1419,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-12-05T20:16:14Z",
+      "side": 1,
+      "message": "Since we are using pids for more than just debugging, do you think maintainers might want us to implement pid namespaces?",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "826ec820_2c458faf",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2535,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-12-05T20:16:14Z",
+      "side": 1,
+      "message": "return error for this case?\n\n  if (node \u0026\u0026\n       (!node-\u003ethread \u0026\u0026 (fp-\u003eflags \u0026 FLAT_BINDER_FLAG_THREAD)) ||\n       (node-\u003ethread \u0026\u0026 !(fp-\u003eflags \u0026 FLAT_BINDER_FLAG_THREAD))\n\n(node already exists, but node-\u003ethread not consistent with FLAG_BINDER_FLAG_THREAD)\n\nOr should we allow a thread to be associated/disassociated after initial creation of the node?",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8d3cd7b7_17016d47",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -255,6 +289,23 @@
         "endLine": 2872,
         "endChar": 19
       },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ff0e7ec_c8b53782",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3707,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2017-12-05T20:16:14Z",
+      "side": 1,
+      "message": "remember to deal with this...",
       "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
