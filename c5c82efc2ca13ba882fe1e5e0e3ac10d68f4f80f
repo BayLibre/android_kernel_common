@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9de0636b_f842d774",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2854,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-05T16:23:45Z",
+      "side": 1,
+      "message": "I wonder if we should only use node-\u003ethread for async transactions, or make it configurable whether it\u0027s used for async or both async and sync. Just using it for async allows userspace to still have multiple threads for an interface in the threadpool with RT prio inheritance (using rt_mutex), and at the same time have a dedicated RT thread for handling async transactions (which are anyway serialized).",
+      "range": {
+        "startLine": 2844,
+        "startChar": 1,
+        "endLine": 2854,
+        "endChar": 2
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa16576e_9b436fab",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-05T16:23:45Z",
+      "side": 1,
+      "message": "technically we don\u0027t need a new structure - we could move \u0027thread\u0027 in flat_binder_object, and just store the \u0027old\u0027 size of flat_binder_object. Then new userspace could use flat_binder_object with thread by default, and:\n\nnew kernel, old userspace: kernel sees FLAT_BINDER_FLAG_THREAD not set, uses old size\n\nold kernel, new userspace: kernel always uses old size, this is OK because there can always be gaps in the data buffer - in this case the gap is just the additional 4 bytes of the thread.\n\nnew kernel, new userspace: kernels sees FLAT_BINDER_FLAG_THREAD set, uses new size and accesses thread field safely.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
