@@ -173,6 +173,24 @@
     },
     {
       "key": {
+        "uuid": "3d711c77_ef5342a2",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-05T19:49:05Z",
+      "side": 1,
+      "message": "If a nested transaction calls back into a process but the node it call has a thread set, the thread may not match the original thread in that process.",
+      "parentUuid": "635bf6b9_cd14675f",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9de0636b_f842d774",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
