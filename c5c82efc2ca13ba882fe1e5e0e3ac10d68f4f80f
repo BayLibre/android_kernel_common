@@ -279,6 +279,24 @@
     },
     {
       "key": {
+        "uuid": "dda81752_d06159a3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-06T15:48:38Z",
+      "side": 1,
+      "message": "I\u0027m actually not sure what\u0027s the best thing to do if they don\u0027t match:\n1) Reject the transaction (don\u0027t support nested transactions for nodes with a dedicated thread)\n2) Use passed-in thread - keeps binder semantics but violates \"node thread\" semantics\n3) Use node thread - violates binder semantics, and requires fixing up t-\u003eto_thread, maybe more nastiness.\n\nAlso the reverse case - if a transaction passed through a node with dedicated thread, and it makes a transaction to the same process, it would be handled by the node thread, even if the node it makes a call on doesn\u0027t have a dedicated thread assigned.",
+      "parentUuid": "2c6b33e0_b94ebbdf",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9de0636b_f842d774",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
