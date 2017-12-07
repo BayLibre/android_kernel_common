@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4112056b_b3819a37",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1392,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T20:56:05Z",
+      "side": 1,
+      "message": "Do you think we should reject the transaction for this? It seems nice to handle this gracefully, although I guess a transaction failure is noticed quicker than a binder_user_error.",
+      "parentUuid": "af8b265d_3d4eb1db",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cb8685e9_b78d2262",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -59,6 +77,24 @@
     },
     {
       "key": {
+        "uuid": "854201fd_33c843e0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2864,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T20:56:05Z",
+      "side": 1,
+      "message": "I\u0027m going to have to rework this a bit then...",
+      "parentUuid": "17f0d072_d0c48d0f",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9f4031bc_5bdfc71d",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -70,6 +106,30 @@
       "writtenOn": "2017-12-07T19:55:58Z",
       "side": 1,
       "message": "this name is a little confusing as nodes also have a todo list. This seems more like a transactions todo list.",
+      "range": {
+        "startLine": 2912,
+        "startChar": 16,
+        "endLine": 2912,
+        "endChar": 25
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0b28078_8526daae",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2912,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T20:56:05Z",
+      "side": 1,
+      "message": "ok, I\u0027ll make it transaction_todo",
+      "parentUuid": "9f4031bc_5bdfc71d",
       "range": {
         "startLine": 2912,
         "startChar": 16,
@@ -129,6 +189,30 @@
     },
     {
       "key": {
+        "uuid": "11c80103_7f2362bf",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3820,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T20:56:05Z",
+      "side": 1,
+      "message": "Right now thread-\u003elooper doesn\u0027t need to be protected by a lock though as it\u0027s only accessed from its own thread, and that would change if this became a looper flag.",
+      "parentUuid": "3d7330a8_df3c278c",
+      "range": {
+        "startLine": 3818,
+        "startChar": 4,
+        "endLine": 3820,
+        "endChar": 29
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "63b12fe7_05398c10",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -163,6 +247,24 @@
       "writtenOn": "2017-12-07T19:55:58Z",
       "side": 1,
       "message": "how does the old driver fail when run with user-space using this feature?",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0017409_64448dd4",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T20:56:05Z",
+      "side": 1,
+      "message": "Does it fail? I think it would never touch the part of the struct containing the thread. Though technically the min_offset it will calculate for the next object is smaller than it should be. Thinking about whether that\u0027s a security problem...",
+      "parentUuid": "eccea8da_fad6300f",
       "revId": "74350afce20edae70c697dff613f357606eb5e48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
