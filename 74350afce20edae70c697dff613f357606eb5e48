@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "af8b265d_3d4eb1db",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1392,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-07T19:55:58Z",
+      "side": 1,
+      "message": "this error is not propagated",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cb8685e9_b78d2262",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -22,6 +39,46 @@
       "revId": "74350afce20edae70c697dff613f357606eb5e48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "17f0d072_d0c48d0f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2864,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-07T19:55:58Z",
+      "side": 1,
+      "message": "according to the kerneldoc for this function false means the target is dead.",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f4031bc_5bdfc71d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2912,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-07T19:55:58Z",
+      "side": 1,
+      "message": "this name is a little confusing as nodes also have a todo list. This seems more like a transactions todo list.",
+      "range": {
+        "startLine": 2912,
+        "startChar": 16,
+        "endLine": 2912,
+        "endChar": 25
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     },
     {
       "key": {
@@ -48,6 +105,30 @@
     },
     {
       "key": {
+        "uuid": "3d7330a8_df3c278c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3820,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-07T19:55:58Z",
+      "side": 1,
+      "message": "Should is_node_dedicated be a looper flag?",
+      "parentUuid": "2ce4a204_75c9bdc0",
+      "range": {
+        "startLine": 3818,
+        "startChar": 4,
+        "endLine": 3820,
+        "endChar": 29
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "63b12fe7_05398c10",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -68,6 +149,23 @@
       "revId": "74350afce20edae70c697dff613f357606eb5e48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eccea8da_fad6300f",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-07T19:55:58Z",
+      "side": 1,
+      "message": "how does the old driver fail when run with user-space using this feature?",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
