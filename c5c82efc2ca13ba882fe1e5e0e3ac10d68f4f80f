@@ -173,6 +173,24 @@
     },
     {
       "key": {
+        "uuid": "173df3a4_bbdc5126",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1419,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "Done, PS2 uses container_of.",
+      "parentUuid": "62e698fc_57e35a06",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "826ec820_2c458faf",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -315,6 +333,24 @@
     },
     {
       "key": {
+        "uuid": "454260a4_c50dae73",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "PS2 rejects the case you described, but allows the \"reverse case\". I think it\u0027s reasonable to allow it because in this case the node itself made a call that resulted in a nested call back into its own process.",
+      "parentUuid": "1d6abfd6_bf03b4aa",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9de0636b_f842d774",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -326,6 +362,30 @@
       "writtenOn": "2017-12-05T16:23:45Z",
       "side": 1,
       "message": "I wonder if we should only use node-\u003ethread for async transactions, or make it configurable whether it\u0027s used for async or both async and sync. Just using it for async allows userspace to still have multiple threads for an interface in the threadpool with RT prio inheritance (using rt_mutex), and at the same time have a dedicated RT thread for handling async transactions (which are anyway serialized).",
+      "range": {
+        "startLine": 2844,
+        "startChar": 1,
+        "endLine": 2854,
+        "endChar": 2
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7fb2ace1_9dbdc430",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2854,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "PS2 allows userspace to specify with a separate flag.",
+      "parentUuid": "9de0636b_f842d774",
       "range": {
         "startLine": 2844,
         "startChar": 1,
@@ -385,6 +445,30 @@
     },
     {
       "key": {
+        "uuid": "392cf799_84235d9c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2872,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2049081_b035926d",
+      "range": {
+        "startLine": 2872,
+        "startChar": 2,
+        "endLine": 2872,
+        "endChar": 19
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2ff0e7ec_c8b53782",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -396,6 +480,24 @@
       "writtenOn": "2017-12-05T20:16:14Z",
       "side": 1,
       "message": "remember to deal with this...",
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6e13b54_b190303d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3707,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "Done. Technically this entire branch isn\u0027t needed if node-\u003ethread is set, but it becomes rather messy with the nesting and locking. Now it\u0027s more or less a noop.",
+      "parentUuid": "2ff0e7ec_c8b53782",
       "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
@@ -461,6 +563,30 @@
       "side": 1,
       "message": "yeah, can do.",
       "parentUuid": "10e1e78a_7ef5ffcb",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "c5c82efc2ca13ba882fe1e5e0e3ac10d68f4f80f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "585cdc74_0e273ccd",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be31cb6c_335bdf9d",
       "range": {
         "startLine": 135,
         "startChar": 0,

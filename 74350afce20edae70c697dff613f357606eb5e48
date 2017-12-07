@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb8685e9_b78d2262",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2860,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "wrong proc, will fix later",
+      "range": {
+        "startLine": 2860,
+        "startChar": 6,
+        "endLine": 2860,
+        "endChar": 15
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ce4a204_75c9bdc0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3820,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "note this still sets the REGISTERED flag as well, like the previous error branches. The code should still do the correct think, because we don\u0027t pick up any proc work when thread-\u003eis_node_dedicated is set.",
+      "range": {
+        "startLine": 3818,
+        "startChar": 4,
+        "endLine": 3820,
+        "endChar": 29
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "63b12fe7_05398c10",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4439,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-07T12:40:25Z",
+      "side": 1,
+      "message": "leftover from debugging, will remove in PS3",
+      "range": {
+        "startLine": 4439,
+        "startChar": 3,
+        "endLine": 4439,
+        "endChar": 50
+      },
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
