@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3b7a80b2_808cfef6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6761,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-08T18:36:46Z",
+      "side": 1,
+      "message": "Here we have a change to fix the commit by adding the missing part. What about this:\n\n  utilization of each (online) CPU is below the\n  predefined threshold defined by high_cpu_util.",
+      "revId": "76d0b49dc9e08637964f3b47b5595f3772c275a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4c2bc803_bee1057e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6817,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-08T18:36:46Z",
+      "side": 1,
+      "message": "s/att/all/",
+      "range": {
+        "startLine": 6817,
+        "startChar": 34,
+        "endLine": 6817,
+        "endChar": 37
+      },
+      "revId": "76d0b49dc9e08637964f3b47b5595f3772c275a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc822239_951a91fa",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6841,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-08T18:36:46Z",
+      "side": 1,
+      "message": "This seems already covered above in L6827-L6833, isn\u0027t it?",
+      "range": {
+        "startLine": 6835,
+        "startChar": 0,
+        "endLine": 6841,
+        "endChar": 12
+      },
+      "revId": "76d0b49dc9e08637964f3b47b5595f3772c275a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47fa0569_63ae060a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6843,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-08T18:36:46Z",
+      "side": 1,
+      "message": "Here is where we favour more \"energy efficient CPUs\" when in !low_util_mode. If that\u0027s the case, maybe we can add a better comment. What about:\n\n   Favour CPUs with smaller capacity, assuming they are more \n   energy efficient",
+      "range": {
+        "startLine": 6843,
+        "startChar": 8,
+        "endLine": 6843,
+        "endChar": 40
+      },
+      "revId": "76d0b49dc9e08637964f3b47b5595f3772c275a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
