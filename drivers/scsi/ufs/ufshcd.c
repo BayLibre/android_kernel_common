@@ -500,6 +500,14 @@ static void ufshcd_print_tmrs(struct ufs_hba *hba, unsigned long bitmap)
 static void ufshcd_print_host_state(struct ufs_hba *hba)
 {
 	dev_err(hba->dev, "UFS Host state=%d\n", hba->ufshcd_state);
+	if (hba->sdev_ufs_device) {
+		dev_err(hba->dev, " vendor = %.8s\n",
+					hba->sdev_ufs_device->vendor);
+		dev_err(hba->dev, " model = %.16s\n",
+					hba->sdev_ufs_device->model);
+		dev_err(hba->dev, " rev = %.4s\n",
+					hba->sdev_ufs_device->rev);
+	}
 	dev_err(hba->dev, "outstanding reqs=0x%lx tasks=0x%lx\n",
 		hba->outstanding_reqs, hba->outstanding_tasks);
 	dev_err(hba->dev, "saved_err=0x%x, saved_uic_err=0x%x\n",
