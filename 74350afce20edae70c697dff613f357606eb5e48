@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "494346fe_5ab2d949",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1392,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2017-12-12T22:47:23Z",
+      "side": 1,
+      "message": "Yes the transaction should be rejected. If user-space asks for all calls on a node to be handled by a thread and the driver cannot do this because the thread is already used for the thread pool, we should not allow transactions on this node to occur on other threads (which may happen if we allow the transaction to succeed but ignore the request to tie the node to a specific thread).",
+      "parentUuid": "4112056b_b3819a37",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cb8685e9_b78d2262",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
