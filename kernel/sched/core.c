@@ -3063,7 +3063,7 @@ void scheduler_tick(void)
 
 	rq_lock(rq, &rf);
 
-	walt_set_window_start(rq);
+	walt_set_window_start(rq, &rf);
 	walt_update_task_ravg(rq->curr, rq, TASK_UPDATE,
 			walt_ktime_clock(), 0);
 	update_rq_clock(rq);
