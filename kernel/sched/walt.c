@@ -791,22 +791,21 @@ void walt_mark_task_starting(struct task_struct *p)
 	p->ravg.mark_start = wallclock;
 }
 
-void walt_set_window_start(struct rq *rq)
+void walt_set_window_start(struct rq *rq, struct rq_flags *rf)
 {
-	int cpu = cpu_of(rq);
-	struct rq *sync_rq = cpu_rq(sync_cpu);
-
 	if (likely(rq->window_start))
 		return;
 
-	if (cpu == sync_cpu) {
+	if (cpu_of(rq) == sync_cpu) {
 		rq->window_start = 1;
 	} else {
-		raw_spin_unlock(&rq->lock);
-		double_rq_lock(rq, sync_rq);
-		rq->window_start = cpu_rq(sync_cpu)->window_start;
+		struct rq *sync_rq = cpu_rq(sync_cpu);
+		rq_unpin_lock(rq, rf);
+		double_lock_balance(rq, sync_rq);
+		rq->window_start = sync_rq->window_start;
 		rq->curr_runnable_sum = rq->prev_runnable_sum = 0;
 		raw_spin_unlock(&sync_rq->lock);
+		rq_repin_lock(rq, rf);
 	}
 
 	rq->curr->ravg.mark_start = rq->window_start;
