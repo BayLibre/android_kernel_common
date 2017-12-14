@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "14ea2909_1179bc26",
+        "filename": "arch/x86/kernel/smpboot.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-14T16:45:21Z",
+      "side": 1,
+      "message": "There isn\u0027t a config which tells you if energy awareness is compiled in or not, this only decides if the sched_feature ENERGY_AWARE is set to true or false. EAS code is always present if SMP is, so I think probably it ought to be referenced unconditionally here?",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 44
+      },
+      "revId": "d7c0289523af4f1b57755decf51613b4333be840",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a8a046a_ef555cac",
+        "filename": "arch/x86/kernel/smpboot.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-14T16:45:21Z",
+      "side": 1,
+      "message": "Same here",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 44
+      },
+      "revId": "d7c0289523af4f1b57755decf51613b4333be840",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "75598fcd_0cfd39d6",
+        "filename": "arch/x86/kernel/smpboot.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-14T16:45:21Z",
+      "side": 1,
+      "message": "Same here. Maybe you want to add an \u0027x86_ENERGY_AWARE\u0027 KConfig entry somewhere?",
+      "range": {
+        "startLine": 500,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 44
+      },
+      "revId": "d7c0289523af4f1b57755decf51613b4333be840",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
