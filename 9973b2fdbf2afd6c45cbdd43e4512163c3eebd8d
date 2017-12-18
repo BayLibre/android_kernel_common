@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc64c0b0_acf8f37e",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T12:53:25Z",
+      "side": 1,
+      "message": "This makes me suspect that the current SchedTune accounting can be almost completely broken, because it\u0027s based on:\n1) schedtune_exit_task, which should be called from do_exit but it\u0027s not\n2) we bail out in schedtune_dequeue_task when PF_EXITING is set.\n\nI remember there was a race condition on v3.18 because when tasks was exiting they was moved to the root CGroups in the to_exit path.\nHere is the original patch:\nhttps://android.googlesource.com/kernel/common/+/e7ce26f0c8064d970d49acc1dfb8c24504300008\n\n\nAFAIR, this is not more happening in mainline, thus I would say that it should be safe to:\n1) remove this function\n2) remove all the return when \"if (p-\u003eflags \u0026 PF_EXITING)\" is checked in this file\n\nI have an accouting test we can use to verify that it\u0027s working as expected...",
+      "range": {
+        "startLine": 363,
+        "startChar": 5,
+        "endLine": 363,
+        "endChar": 24
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa40f908_8ca76247",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T12:53:25Z",
+      "side": 1,
+      "message": "Just notice that this tracepoint is almost useless, and it actually is because it has been properly forward ported from v3.18, into v4.4... and finally here (likely from v4.9).\n\nHere is the original patch:\nhttps://android.googlesource.com/kernel/common/+/0c34a39445ef52bcf07d79d62ea569d10e5bc958%5E%21/\n\ncan we try to bring in this API? Otherwise it\u0027s better to remove it, since LISA will be anyway broken and like that it\u0027s anyway useless.",
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
