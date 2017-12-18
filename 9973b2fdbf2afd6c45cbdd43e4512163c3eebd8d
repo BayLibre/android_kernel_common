@@ -140,6 +140,29 @@
     },
     {
       "key": {
+        "uuid": "e2f2c23a_e2869918",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5740,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:21:56Z",
+      "side": 1,
+      "message": "Should we initialise also:\n\t\t.payoff\t\t\u003d 0,\n\t\t.nrg\t\t\u003d { 0, 0, 0, 0},\n\t\t.cap\t\t\u003d { 0, 0, 0 },\n?",
+      "range": {
+        "startLine": 5740,
+        "startChar": 0,
+        "endLine": 5740,
+        "endChar": 2
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7115df74_3680c91a",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 5
@@ -179,6 +202,29 @@
         "startChar": 0,
         "endLine": 5970,
         "endChar": 30
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c091e8f_9ab2a4b9",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6608,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:21:56Z",
+      "side": 1,
+      "message": "Same here, should we initialise also:\n\t\t.payoff\t\t\u003d 0,\n\t\t.nrg\t\t\u003d { 0, 0, 0, 0},\n\t\t.cap\t\t\u003d { 0, 0, 0 },\n?",
+      "range": {
+        "startLine": 6608,
+        "startChar": 0,
+        "endLine": 6608,
+        "endChar": 4
       },
       "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
