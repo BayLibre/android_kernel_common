@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c68c00c6_ccb3baf7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5929,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "Cannot we have just a check for sched_feat(FBT_STRICT_ORDER) here?\n\nI mean, I guess we can assume that people will set FBT_STRICT_ORDER only if \nFIND_BEST_TARGET has been set also... otherwise they deserve it...\n\nOtherwise, it\u0027s likely still more run-time efficient something like:\n\nif (sched_feat(FIND_BEST_TARGET))\n        if (sched_feat(FBT_STRICT_ORDER))\n                last_cpu_idx \u003d EAS_CPU_BKP;",
+      "range": {
+        "startLine": 5929,
+        "startChar": 5,
+        "endLine": 5929,
+        "endChar": 15
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c802b0af_8bab7801",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5932,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "This can be moved in the above declaration... thus removing the else case.",
+      "range": {
+        "startLine": 5932,
+        "startChar": 2,
+        "endLine": 5932,
+        "endChar": 41
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "424236f1_8ad69c0e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5938,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "nit-pick:\n\n                eenv-\u003ecpu[cpu_idx].nrg_delta \u003d\n                        eenv-\u003ecpu[cpu_idx].energy -\n\t                eenv-\u003ecpu[EAS_CPU_PRV].energy;",
+      "range": {
+        "startLine": 5937,
+        "startChar": 2,
+        "endLine": 5938,
+        "endChar": 34
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "414710cd_b26f8ce3",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5948,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "Isn\u0027t this just a:\n\n    if (sched_feat(FBT_STRICT_ORDER))",
+      "range": {
+        "startLine": 5948,
+        "startChar": 7,
+        "endLine": 5948,
+        "endChar": 17
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1700a477_a64e8e8d",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6759,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "This WALT stuff... here... why?\nWALT has not yet been introduced so far... can we move it in the following patches and remove the call to walt_cpu_high_irqload(a)?",
+      "range": {
+        "startLine": 6758,
+        "startChar": 0,
+        "endLine": 6759,
+        "endChar": 34
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7722e0d7_8ca95c7f",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6812,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "This... should be moved to the patch which introduces WALT... so that it will be easier to completely remove it when the time will come. ;-)",
+      "range": {
+        "startLine": 6810,
+        "startChar": 0,
+        "endLine": 6812,
+        "endChar": 13
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7c77c7d_8b6c1ab4",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 7155,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T20:27:12Z",
+      "side": 1,
+      "message": "A declaration up here at least invalidate the usage of a jump-lable to skip some code in the following branch... Why not moving it in the if which uses it?",
+      "range": {
+        "startLine": 7155,
+        "startChar": 5,
+        "endLine": 7155,
+        "endChar": 44
+      },
+      "revId": "6f213c191bd40bb785a9b8b78d8d7fa5bceeece0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
