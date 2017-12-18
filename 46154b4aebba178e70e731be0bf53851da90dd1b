@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b72e4c7_2ddd21ad",
+        "filename": "kernel/sched/debug.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1059,
+      "author": {
+        "id": 1260195
+      },
+      "writtenOn": "2017-12-18T11:19:40Z",
+      "side": 1,
+      "message": "select_energy_cpu_brute() doesn\u0027t exist anymore. The _secb_ (which is an abbreviation for this function name) in the name of the statistic counters has to be changed to something meaningful.",
+      "range": {
+        "startLine": 1052,
+        "startChar": 2,
+        "endLine": 1059,
+        "endChar": 51
+      },
+      "revId": "46154b4aebba178e70e731be0bf53851da90dd1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa3a18f7_7caac383",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6949,
+      "author": {
+        "id": 1260195
+      },
+      "writtenOn": "2017-12-18T11:19:40Z",
+      "side": 1,
+      "message": "To set slow_prefer_idle here is OK but then slow_cas_attempts and slow_cas_count will be set for those as well. This is a mistake. We probably have to move cas related counter slow_cas_attempts() into wake_cap() and remove slow_cas_count.\n\nThat said slow_prefer_idle is really a slow_prefer_idle_attempt as well",
+      "revId": "46154b4aebba178e70e731be0bf53851da90dd1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
