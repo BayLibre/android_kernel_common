@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "04bc516e_8b909151",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1392,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-18T09:25:59Z",
+      "side": 1,
+      "message": "Done. This may be a bit cleaner if I move this check in binder_new_node(), on the other hand I think it\u0027s good to keep all the node initialization code together.",
+      "parentUuid": "494346fe_5ab2d949",
+      "revId": "74350afce20edae70c697dff613f357606eb5e48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cb8685e9_b78d2262",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
