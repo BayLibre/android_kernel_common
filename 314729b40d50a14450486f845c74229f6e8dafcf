@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "692f1670_4949b1f6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6635,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "nit-pcik: checkpatch would complain about the comment format.\nShould be\n\n/*\n * Needs to...",
+      "range": {
+        "startLine": 6635,
+        "startChar": 0,
+        "endLine": 6635,
+        "endChar": 3
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2747fa98_f85e80e1",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6635,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "rcu_read_lock",
+      "range": {
+        "startLine": 6635,
+        "startChar": 29,
+        "endLine": 6635,
+        "endChar": 42
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3986b7bc_a487e2f7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6637,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "Confused: not really clear what you mean here?",
+      "range": {
+        "startLine": 6637,
+        "startChar": 3,
+        "endLine": 6637,
+        "endChar": 75
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9224fec_25285772",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6639,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "nit-pick:\nstatic int find_energy_efficient_cpu(struct sched_domain *sd,\n                                     struct task_struct *p,\n                                     int cpu, int prev_cpu,\n                                     int sync)",
+      "range": {
+        "startLine": 6639,
+        "startChar": 0,
+        "endLine": 6639,
+        "endChar": 117
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2adeaa72_237b39c2",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6716,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "This is more a feature change then just a refactoring, isn\u0027t it?\n\nAnyway, two notes:\n\n1) with EAS still we should be able to prefer a LITTLE CPU, at least for non prefer_idle tasks instead here we go for an IDLE CPU and thus there are chances to wakeup an idle cluster if all LITTLEs are currently busy.\n\nIf we agree that FBT is potentially more energy efficient, cannot we move this early bail out after FBT but before computing the energy_model?\n\n2) nit-pick: the comment format is not checkpatch compliant",
+      "range": {
+        "startLine": 6713,
+        "startChar": 1,
+        "endLine": 6716,
+        "endChar": 4
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "036a202f_1855adc3",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6718,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "It would be nice also to have a stat counter to check how many times we hit this branch... in any case, I would say that:\n\n        if (unlikely(!task_util(p))\n\ncan still be worth to have.",
+      "range": {
+        "startLine": 6717,
+        "startChar": 1,
+        "endLine": 6718,
+        "endChar": 15
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b67fe35c_9eb53b23",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6750,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "nit-pick: what about moving this to a new line, i.e.\n        int want_affine \u003d 0;\n        int want_energy \u003d 0;",
+      "range": {
+        "startLine": 6750,
+        "startChar": 1,
+        "endLine": 6750,
+        "endChar": 38
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35683351_2de7979d",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6756,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "nit-pick: I would explicitly add a comment which calls out that want_affine is disabled if we wanna go for an energy_aware wakeup.\nIs that true, right?\nHow does this play with Joel\u0027s patch to use the slow-path for prefer_idle tasks... still have to better investigate...",
+      "range": {
+        "startLine": 6756,
+        "startChar": 16,
+        "endLine": 6756,
+        "endChar": 28
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f9ebc4c_a734c279",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6758,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "nit-pick: maybe we can improve readability by having one condition per line?\n\n\t\twant_affine \u003d !want_energy \u0026\u0026\n                              !wake_wide(p, sibling_count_hint) \u0026\u0026\n\t\t\t      !wake_cap(p, cpu, prev_cpu) \u0026\u0026\n\t\t\t      cpumask_test_cpu(cpu, \u0026p-\u003ecpus_allowed);",
+      "range": {
+        "startLine": 6756,
+        "startChar": 0,
+        "endLine": 6758,
+        "endChar": 49
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cfa8319_fbaa36c7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6786,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "nit-pick: same here, what about\n\n                if (want_energy \u0026\u0026\n                    !sd_overutilized(sd) \u0026\u0026\n                    cpumask_test_cpu(prev_cpu, sched_domain_span(tmp)))\n\nor, at least:\n\n                if (want_energy \u0026\u0026 !sd_overutilized(sd) \u0026\u0026\n                    cpumask_test_cpu(prev_cpu, sched_domain_span(tmp)))",
+      "range": {
+        "startLine": 6785,
+        "startChar": 2,
+        "endLine": 6786,
+        "endChar": 55
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75f7d14d_a0587cb7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6787,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "Actually, I\u0027m also thinking that perhaps we could break here and have\n\n        if (energy_sd)\n                find_energy_efficient(energy_df, p, cpu, prev_cpu, sync)\n\nat L6794, i.e. right after this for_each_domain() and before the pre-existing mainline code which goes for select_idle_sibling or find_idlest_cpu\n\nThis will make more clear that, when we want_energy, energy awareness has priority over the performance boosting features of the mainline code, which is also clear since we force \"want_affine \u003d !want_energy \u0026\u0026 ...\" at L6756.\n\n\nIf this is a non-sense, still I think that if we should move this IF block right after the next IF (which sets sd \u003d tmp), it should be possible to break directly thus returning a valid pair of df and energy_df...",
+      "range": {
+        "startLine": 6787,
+        "startChar": 4,
+        "endLine": 6787,
+        "endChar": 20
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe7c2041_b10def5e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6792,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T19:11:37Z",
+      "side": 1,
+      "message": "This was already so confusing... can we at least come up with a bit of documentation by doing something like:\n\n                /* Update SD matching required sd_flags */\n                if (tmp-\u003eflags \u0026 sd_flags)\n                        sd \u003d tmp;\n\n                /* \n                 * Here is where I was proposing above to move the\n                 * check for want_energy (L6785)...\n                 * but I like better the idea of better the other\n                 * idea described before.\n                 */\n\n                /* Keep looking for an energy_sd */\n                if (want_energy)\n                        continue;\n\n                /* Keep looking for an affine_sd */\n                if (want_affine)\n                        continue;\n\n                /* Return the first SD matching all criteria */\n                break;\n        }",
+      "range": {
+        "startLine": 6791,
+        "startChar": 0,
+        "endLine": 6792,
+        "endChar": 9
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
