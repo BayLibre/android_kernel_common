@@ -2,6 +2,190 @@
   "comments": [
     {
       "key": {
+        "uuid": "2f7e9df9_f5cdea4d",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "This can be removed... or updated, according to comments for tune.c",
+      "range": {
+        "startLine": 740,
+        "startChar": 12,
+        "endLine": 740,
+        "endChar": 29
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "959a7890_37b3bfb6",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "nit-pick: can we add one more tab for all the data in the second column?",
+      "range": {
+        "startLine": 767,
+        "startChar": 2,
+        "endLine": 769,
+        "endChar": 27
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d2c2549_1527a089",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "nit-pick: this space can be removed",
+      "range": {
+        "startLine": 796,
+        "startChar": 17,
+        "endLine": 796,
+        "endChar": 18
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2c84d3a_8d39b901",
+        "filename": "include/trace/events/sched.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 856,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "nit-pick: can we use just tabs instead of spaces?",
+      "range": {
+        "startLine": 856,
+        "startChar": 0,
+        "endLine": 856,
+        "endChar": 39
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22df0f11_cd64b4a6",
+        "filename": "init/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "This depends on kernel/sched/tune.c::BOOSTGROUPS_COUNT\n\nWhat about exposing that value via an actual KConfig option which depends on CONFIG_SCHED_TUNE and allows to easily change the number of boost groups?",
+      "range": {
+        "startLine": 975,
+        "startChar": 21,
+        "endLine": 975,
+        "endChar": 46
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cd79da2_b2f3bbe7",
+        "filename": "init/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "Should be say explicitely if schedutil governor is in place?\n\nMoreover, should we explicitely make SCHED_TUNE depending on CPUFREQ_SCHEDUTIL? Otherwise it can be used for tasks placement only... but I\u0027m not entirely sure it really works (never tested in such a configuration) and/or if it can be really useful...",
+      "range": {
+        "startLine": 980,
+        "startChar": 56,
+        "endLine": 981,
+        "endChar": 52
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7115df74_3680c91a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5920,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "Based on checkpatch, here we should better add {} for the else case.",
+      "range": {
+        "startLine": 5919,
+        "startChar": 7,
+        "endLine": 5920,
+        "endChar": 27
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1968c4b5_73e6ec8a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5970,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:58:54Z",
+      "side": 1,
+      "message": "Maybe we can move these two definitions to kernel/sched/tune.h, in the\n!CONFIG_SCHED_TUNE case, as:\n\n#define schedtune_cpu_margin(util, cpu) 0\n#define schedtune_task_margin(util, cpu) 0\n\njust to further reduce codelines from fair.c",
+      "range": {
+        "startLine": 5956,
+        "startChar": 0,
+        "endLine": 5970,
+        "endChar": 30
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0f13793a_5b0037ba",
         "filename": "kernel/sched/tune.c",
         "patchSetId": 5
