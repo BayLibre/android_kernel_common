@@ -2,6 +2,98 @@
   "comments": [
     {
       "key": {
+        "uuid": "0f13793a_5b0037ba",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "Maybe we can move this above, at declaration time?",
+      "range": {
+        "startLine": 118,
+        "startChar": 1,
+        "endLine": 118,
+        "endChar": 38
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d40f3f6_254044fd",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "This should be:\n\nif (unlikely(!schedtune_initialized))",
+      "range": {
+        "startLine": 212,
+        "startChar": 5,
+        "endLine": 212,
+        "endChar": 37
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19c83d38_4696932a",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "This should be:\n\nif (unlikely(!schedtune_initialized))",
+      "range": {
+        "startLine": 253,
+        "startChar": 1,
+        "endLine": 253,
+        "endChar": 38
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88801d93_f823a49e",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "This should be:\n\nif (unlikely(!schedtune_initialized))",
+      "range": {
+        "startLine": 333,
+        "startChar": 1,
+        "endLine": 333,
+        "endChar": 38
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc64c0b0_acf8f37e",
         "filename": "kernel/sched/tune.c",
         "patchSetId": 5
@@ -18,6 +110,121 @@
         "startChar": 5,
         "endLine": 363,
         "endChar": 24
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a534f6e7_345011ad",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "This should be:\n\nif (unlikely(!schedtune_initialized))",
+      "range": {
+        "startLine": 371,
+        "startChar": 1,
+        "endLine": 371,
+        "endChar": 38
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6a3703f_3afc3d3c",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "This should be:\n\nif (unlikely(!schedtune_initialized))",
+      "range": {
+        "startLine": 399,
+        "startChar": 1,
+        "endLine": 399,
+        "endChar": 38
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e5ae779_910af7a4",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "This should be:\n\nif (unlikely(!schedtune_initialized))",
+      "range": {
+        "startLine": 416,
+        "startChar": 1,
+        "endLine": 416,
+        "endChar": 38
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce5157cb_df13ee87",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "I think for this function we are missing this fix:\nhttps://android.googlesource.com/kernel/common/+/f30530caf33c5993375dd8edd6a6548e3215fa32",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 11
+      },
+      "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2985cb88_35d0bf2a",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T14:34:48Z",
+      "side": 1,
+      "message": "Since in this version we do not support negative boosting: maybe we should better check for:\n\n   \tif (boost \u003c 0 || boost \u003e 100)",
+      "range": {
+        "startLine": 460,
+        "startChar": 5,
+        "endLine": 460,
+        "endChar": 17
       },
       "revId": "9973b2fdbf2afd6c45cbdd43e4512163c3eebd8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
