@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4f35fa5_7b03b77d",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6707,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T17:54:42Z",
+      "side": 1,
+      "message": "nit-pick:\n\t\nstatic inline int wake_energy(struct task_struct *p, int prev_cpu,\n                              int sd_flag, int wake_flags)",
+      "range": {
+        "startLine": 6707,
+        "startChar": 0,
+        "endLine": 6707,
+        "endChar": 95
+      },
+      "revId": "d8f140321245e826728fa29771d2e839288e1267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fde48d39_21470910",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6713,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T17:54:42Z",
+      "side": 1,
+      "message": "Should not this be moved after the last usage of *sd at line 6723?",
+      "range": {
+        "startLine": 6713,
+        "startChar": 1,
+        "endLine": 6713,
+        "endChar": 19
+      },
+      "revId": "d8f140321245e826728fa29771d2e839288e1267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "410f2231_4f3167e0",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6721,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T17:54:42Z",
+      "side": 1,
+      "message": "Should not this better comes right after the rcu_dereference_sched() above?",
+      "range": {
+        "startLine": 6720,
+        "startChar": 0,
+        "endLine": 6721,
+        "endChar": 15
+      },
+      "revId": "d8f140321245e826728fa29771d2e839288e1267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "512fdf38_4716941a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6726,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T17:54:42Z",
+      "side": 1,
+      "message": "Maybe we can save a branch here by using:\n\n        return !sd_overutilized(sd);\n\nalthough maybe the compiler is smart enough to fold these lase lines...",
+      "range": {
+        "startLine": 6723,
+        "startChar": 1,
+        "endLine": 6726,
+        "endChar": 13
+      },
+      "revId": "d8f140321245e826728fa29771d2e839288e1267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56a9d28c_1b4ba3dc",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6765,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-18T17:54:42Z",
+      "side": 1,
+      "message": "Why not moving the previous if statement within the already defined read critical section?\n\n\trcu_read_lock();\n\n\tif (wake_energy(p, prev_cpu, sd_flag, wake_flags)) {\n\t\tnew_cpu \u003d select_energy_cpu_brute(p, prev_cpu, sync);\n\t\tgoto unlock;\n\t}\n\t// ...\n\nunlock:\n\trcu_read_unlock();",
+      "range": {
+        "startLine": 6765,
+        "startChar": 1,
+        "endLine": 6765,
+        "endChar": 17
+      },
+      "revId": "d8f140321245e826728fa29771d2e839288e1267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
