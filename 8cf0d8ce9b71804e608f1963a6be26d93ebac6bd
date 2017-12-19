@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d024acca_c86dddfd",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-19T16:03:25Z",
+      "side": 1,
+      "message": "Ok.",
+      "parentUuid": "691262c7_e46d6424",
+      "range": {
+        "startLine": 1038,
+        "startChar": 4,
+        "endLine": 1041,
+        "endChar": 58
+      },
+      "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e63be583_ca4dd8fc",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
@@ -36,6 +60,24 @@
       "writtenOn": "2017-12-18T19:56:51Z",
       "side": 1,
       "message": "fix alignment",
+      "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd9799fe_72bf2270",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-19T16:03:25Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "e63be583_ca4dd8fc",
       "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "5177f29d_1786d0ac",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2861,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-19T16:03:25Z",
+      "side": 1,
+      "message": "Do you mean move this to the kerneldoc of binder_proc_transaction() ?",
+      "parentUuid": "ff5d3911_f5bc828d",
+      "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a9409452_a6fa0390",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "2de03b6d_92ac0c8f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3153,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-19T16:03:25Z",
+      "side": 1,
+      "message": "The next time we take that lock (in case of new nested call) is inside binder_proc_transaction(), where I moved it out of in PS2 because of different possible return errors (dead vs wrong nested).\n\nSince this lock is taken for nested transactions only I would hope the perf hit isn\u0027t too bad, but I could also move it back inside binder_proc_transaction and have that return an \u0027int\u0027 to differentiate the two possible error paths.",
+      "parentUuid": "a9409452_a6fa0390",
+      "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2e81e588_922230a6",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
@@ -87,6 +165,24 @@
       "writtenOn": "2017-12-18T19:56:51Z",
       "side": 1,
       "message": "Should this be a helper function? This is not the only place you need to select this.",
+      "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba1cae16_0a2f4ab4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 4137,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2017-12-19T16:03:25Z",
+      "side": 1,
+      "message": "Yeah, I can make it a helper.",
+      "parentUuid": "2e81e588_922230a6",
       "revId": "8cf0d8ce9b71804e608f1963a6be26d93ebac6bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
