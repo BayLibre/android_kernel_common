@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "15fe65a1_fc6c0cbd",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6635,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2747fa98_f85e80e1",
+      "range": {
+        "startLine": 6635,
+        "startChar": 29,
+        "endLine": 6635,
+        "endChar": 42
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb3f8406_16462740",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6635,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "692f1670_4949b1f6",
+      "range": {
+        "startLine": 6635,
+        "startChar": 0,
+        "endLine": 6635,
+        "endChar": 3
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3986b7bc_a487e2f7",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -68,6 +116,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b4e38c1_d5cd8af2",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6637,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "I\u0027ll remove this from the comment, it should be obvious that we should\nnot pass anything in sync if not waking up, i.e. the concept of a sync\nwakeup doesn\u0027t mean anything.\n\nThis is only here because in a later patch we haven\u0027t pushed yet\n(upmigrate misfit tasks immediately) we will call find_energy_efficient_cpu\noutside wakeup context to decide where we should push a misfit task so that\nwe can continue to do energy-aware placement on it. As it happens, integrating\nthat turns out to be a bit more complex in 4.14 than it was in 4.9, so I\ndidn\u0027t bring that feature forward yet.",
+      "parentUuid": "3986b7bc_a487e2f7",
+      "range": {
+        "startLine": 6637,
+        "startChar": 3,
+        "endLine": 6637,
+        "endChar": 75
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "0449ae7a_7755e5d0",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6639,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9224fec_25285772",
+      "range": {
+        "startLine": 6639,
+        "startChar": 0,
+        "endLine": 6639,
+        "endChar": 117
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2adeaa72_237b39c2",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "ea34619d_8dbfe38d",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6716,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "We don\u0027t have FBT at this point in the stack - I agree that when we are using FBT, we can still maybe benefit from the heuristics even if we have 0 task util, so I\u0027ll guard this with if(!sched_feat(FIND_BEST_TARGET)) when we add it.",
+      "parentUuid": "2adeaa72_237b39c2",
+      "range": {
+        "startLine": 6713,
+        "startChar": 1,
+        "endLine": 6716,
+        "endChar": 4
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "036a202f_1855adc3",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -137,6 +257,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92458238_8d0c599f",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6718,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "036a202f_1855adc3",
+      "range": {
+        "startLine": 6717,
+        "startChar": 1,
+        "endLine": 6718,
+        "endChar": 15
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -186,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "e3d883b1_2526f2da",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6756,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "We disable want_affine because we\u0027re going to do an energy_aware placement, where we will use the highest sched domain which is not overutilized. The biggest thing that brings us is the ability to continue to use energy-awareness in non-overutilized groups, for example if we have a big task overutilizing a big CPU, we would have a non-overutilized little group where we will try to place a small task, and per-sd overutilized flags allow us to recognise this.\n\nIn regard to Joel\u0027s patch, this should be fine - the slow path (MAINLINE_PREFER_IDLE) placement code can never return true from wake_energy if it\u0027s needed, so wake_affine setting should be unchanged.\n\nI will keep this the same.",
+      "parentUuid": "35683351_2de7979d",
+      "range": {
+        "startLine": 6756,
+        "startChar": 16,
+        "endLine": 6756,
+        "endChar": 28
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9f9ebc4c_a734c279",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -206,6 +374,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd8af820_06457e69",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6758,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f9ebc4c_a734c279",
+      "range": {
+        "startLine": 6756,
+        "startChar": 0,
+        "endLine": 6758,
+        "endChar": 49
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -232,6 +424,30 @@
     },
     {
       "key": {
+        "uuid": "5fe3a597_defc7b01",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6786,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cfa8319_fbaa36c7",
+      "range": {
+        "startLine": 6785,
+        "startChar": 2,
+        "endLine": 6786,
+        "endChar": 55
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "75f7d14d_a0587cb7",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -255,6 +471,30 @@
     },
     {
       "key": {
+        "uuid": "4eee76c9_a2367205",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6787,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "We want to keep looking to see if there is a higher domain available to look inside, the idea is that we would use the sd_ea domain pretty much all the time but when the per-sd overutilized flag is set on one domain we should still be able to do energy-aware placement inside the other.",
+      "parentUuid": "75f7d14d_a0587cb7",
+      "range": {
+        "startLine": 6787,
+        "startChar": 4,
+        "endLine": 6787,
+        "endChar": 20
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe7c2041_b10def5e",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -275,6 +515,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b4cb3e4_478cfa56",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6792,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2017-12-19T19:33:31Z",
+      "side": 1,
+      "message": "I don\u0027t think this is quite the same - in the original version, we would keep searching if tmp-\u003eflags \u0026 sd_flags is true, but your version would stop. Let\u0027s keep this the same for now and we can revisit it later..",
+      "parentUuid": "fe7c2041_b10def5e",
+      "range": {
+        "startLine": 6791,
+        "startChar": 0,
+        "endLine": 6792,
+        "endChar": 9
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
