@@ -614,6 +614,8 @@ struct xfrm_tunnel_skb_cb {
 	} header;
 
 	union {
+		int (*lookup)(struct sk_buff *skb, int nexthdr, __be32 spi,
+			      __be32 seq, struct xfrm_state **x);
 		struct ip_tunnel *ip4;
 		struct ip6_tnl *ip6;
 	} tunnel;
@@ -1453,6 +1455,10 @@ struct xfrm_state *xfrm_state_lookup_byaddr(struct net *net, u32 mark,
 					    const xfrm_address_t *saddr,
 					    u8 proto,
 					    unsigned short family);
+struct xfrm_state *xfrm_state_lookup_loose(struct net *net, u32 mark,
+					   const xfrm_address_t *daddr,
+					   __be32 spi, u8 proto,
+					   unsigned short family);
 #ifdef CONFIG_XFRM_SUB_POLICY
 int xfrm_tmpl_sort(struct xfrm_tmpl **dst, struct xfrm_tmpl **src, int n,
 		   unsigned short family, struct net *net);
@@ -1533,10 +1539,8 @@ int xfrm4_tunnel_deregister(struct xfrm_tunnel *handler, unsigned short family);
 void xfrm4_local_error(struct sk_buff *skb, u32 mtu);
 int xfrm6_extract_header(struct sk_buff *skb);
 int xfrm6_extract_input(struct xfrm_state *x, struct sk_buff *skb);
-int xfrm6_rcv_spi(struct sk_buff *skb, int nexthdr, __be32 spi,
-		  struct ip6_tnl *t);
+int xfrm6_rcv_spi(struct sk_buff *skb, int nexthdr, __be32 spi);
 int xfrm6_transport_finish(struct sk_buff *skb, int async);
-int xfrm6_rcv_tnl(struct sk_buff *skb, struct ip6_tnl *t);
 int xfrm6_rcv(struct sk_buff *skb);
 int xfrm6_input_addr(struct sk_buff *skb, xfrm_address_t *daddr,
 		     xfrm_address_t *saddr, u8 proto);

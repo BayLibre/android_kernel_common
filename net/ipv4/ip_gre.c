@@ -177,7 +177,7 @@ static void ipgre_err(struct sk_buff *skb, u32 info,
 		itn = net_generic(net, ipgre_net_id);
 
 	iph = (const struct iphdr *)(icmp_hdr(skb) + 1);
-	t = ip_tunnel_lookup(itn, skb->dev->ifindex, tpi->flags,
+	t = ip_tunnel_lookup(itn, skb->dev->ifindex, tpi->flags, 0,
 			     iph->daddr, iph->saddr, tpi->key);
 
 	if (!t)
@@ -254,7 +254,7 @@ static int __ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
 	struct ip_tunnel *tunnel;
 
 	iph = ip_hdr(skb);
-	tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, tpi->flags,
+	tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, tpi->flags, 0,
 				  iph->saddr, iph->daddr, tpi->key);
 
 	if (tunnel) {

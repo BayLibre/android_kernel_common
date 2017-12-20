@@ -167,7 +167,7 @@ static int ipip_err(struct sk_buff *skb, u32 info)
 		goto out;
 	}
 
-	t = ip_tunnel_lookup(itn, skb->dev->ifindex, TUNNEL_NO_KEY,
+	t = ip_tunnel_lookup(itn, skb->dev->ifindex, TUNNEL_NO_KEY, 0,
 			     iph->daddr, iph->saddr, 0);
 	if (!t) {
 		err = -ENOENT;
@@ -224,8 +224,8 @@ static int ipip_tunnel_rcv(struct sk_buff *skb, u8 ipproto)
 	const struct iphdr *iph;
 
 	iph = ip_hdr(skb);
-	tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, TUNNEL_NO_KEY,
-			iph->saddr, iph->daddr, 0);
+	tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, TUNNEL_NO_KEY, 0,
+				  iph->saddr, iph->daddr, 0);
 	if (tunnel) {
 		const struct tnl_ptk_info *tpi;
 

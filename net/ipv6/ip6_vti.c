@@ -77,11 +77,28 @@ struct vti6_net {
 #define for_each_vti6_tunnel_rcu(start) \
 	for (t = rcu_dereference(start); t; t = rcu_dereference(t->next))
 
+static bool vti6_match_key(const struct ip6_tnl *t, __be32 key, bool in)
+{
+	__be16 tunnel_key = in ? t->parms.i_key : t->parms.o_key;
+	__be16 flags = in ? t->parms.i_flags : t->parms.o_flags;
+
+	return !(flags & TUNNEL_KEY) || tunnel_key == key;
+}
+
+static bool vti6_match_tunnel(const struct ip6_tnl *t, struct __ip6_tnl_parm *p)
+{
+	return !(t->parms.i_flags & TUNNEL_KEY) ||
+	       !(p->i_flags & TUNNEL_KEY) ||
+	       vti6_match_key(t, p->i_key, true);
+}
+
 /**
- * vti6_tnl_lookup - fetch tunnel matching the end-point addresses
+ * vti6_tnl_lookup - fetch tunnel matching the end-point addresses and key
  *   @net: network namespace
  *   @remote: the address of the tunnel exit-point
  *   @local: the address of the tunnel entry-point
+ *   @key: the key of the tunnel
+ *   @in: whether to match i_key or i_key
  *
  * Return:
  *   tunnel matching given end-points if found,
@@ -90,7 +107,7 @@ struct vti6_net {
  **/
 static struct ip6_tnl *
 vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
-		const struct in6_addr *local)
+		const struct in6_addr *local, __be32 key, bool in)
 {
 	unsigned int hash = HASH(remote, local);
 	struct ip6_tnl *t;
@@ -100,6 +117,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
 		    ipv6_addr_equal(remote, &t->parms.raddr) &&
+		    vti6_match_key(t, key, in) &&
 		    (t->dev->flags & IFF_UP))
 			return t;
 	}
@@ -108,6 +126,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
 	hash = HASH(&any, local);
 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
+		    vti6_match_key(t, key, in) &&
 		    (t->dev->flags & IFF_UP))
 			return t;
 	}
@@ -115,6 +134,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
 	hash = HASH(remote, &any);
 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
 		if (ipv6_addr_equal(remote, &t->parms.raddr) &&
+		    vti6_match_key(t, key, in) &&
 		    (t->dev->flags & IFF_UP))
 			return t;
 	}
@@ -269,7 +289,8 @@ static struct ip6_tnl *vti6_locate(struct net *net, struct __ip6_tnl_parm *p,
 	     (t = rtnl_dereference(*tp)) != NULL;
 	     tp = &t->next) {
 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
-		    ipv6_addr_equal(remote, &t->parms.raddr)) {
+		    ipv6_addr_equal(remote, &t->parms.raddr) &&
+		    vti6_match_tunnel(t, p)) {
 			if (create)
 				return NULL;
 
@@ -300,13 +321,43 @@ static void vti6_dev_uninit(struct net_device *dev)
 	dev_put(dev);
 }
 
-static int vti6_rcv(struct sk_buff *skb)
+static struct ip6_tnl *
+vti6_find_tunnel(struct sk_buff *skb, __be32 spi, struct xfrm_state **x)
 {
-	struct ip6_tnl *t;
 	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+	struct net *net = dev_net(skb->dev);
+	struct ip6_tnl *t;
+
+	t = vti6_tnl_lookup(net, &ipv6h->saddr, &ipv6h->daddr, 0, true);
+	if (t) {
+		*x = xfrm_state_lookup(net, be32_to_cpu(t->parms.i_key),
+				       (xfrm_address_t *)&ipv6h->daddr,
+				       spi, ipv6h->nexthdr, AF_INET6);
+	} else {
+		*x = xfrm_state_lookup_loose(net, skb->mark,
+					     (xfrm_address_t *)&ipv6h->daddr,
+					     spi, ipv6h->nexthdr, AF_INET6);
+		if (!*x)
+			return NULL;
+		t =  vti6_tnl_lookup(net, &ipv6h->saddr, &ipv6h->daddr,
+				     cpu_to_be32((*x)->mark.v), true);
+		if (!t)
+			xfrm_state_put(*x);
+	}
+
+	return t;
+}
+
+static int
+vti6_lookup(struct sk_buff *skb, int nexthdr, __be32 spi, __be32 seq,
+	    struct xfrm_state **x)
+{
+	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+	struct net *net = dev_net(skb->dev);
+	struct ip6_tnl *t;
 
 	rcu_read_lock();
-	t = vti6_tnl_lookup(dev_net(skb->dev), &ipv6h->saddr, &ipv6h->daddr);
+	t = vti6_find_tunnel(skb, spi, x);
 	if (t) {
 		if (t->parms.proto != IPPROTO_IPV6 && t->parms.proto != 0) {
 			rcu_read_unlock();
@@ -315,7 +366,7 @@ static int vti6_rcv(struct sk_buff *skb)
 
 		if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
 			rcu_read_unlock();
-			return 0;
+			goto discard;
 		}
 
 		if (!ip6_tnl_rcv_ctl(t, &ipv6h->daddr, &ipv6h->saddr)) {
@@ -324,15 +375,36 @@ static int vti6_rcv(struct sk_buff *skb)
 			goto discard;
 		}
 
+		if (!*x) {
+			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+			xfrm_audit_state_notfound(skb, AF_INET6, spi, seq);
+			t->dev->stats.rx_errors++;
+			t->dev->stats.rx_dropped++;
+			rcu_read_unlock();
+			goto discard;
+		}
+
 		rcu_read_unlock();
 
-		return xfrm6_rcv_tnl(skb, t);
+		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
+
+		return 0;
 	}
 	rcu_read_unlock();
 	return -EINVAL;
 discard:
+	if (*x)
+		xfrm_state_put(*x);
 	kfree_skb(skb);
-	return 0;
+	return -ESRCH;
+}
+
+static int vti6_rcv(struct sk_buff *skb)
+{
+	int nexthdr = skb_network_header(skb)[IP6CB(skb)->nhoff];
+
+	XFRM_TUNNEL_SKB_CB(skb)->tunnel.lookup = vti6_lookup;
+	return xfrm6_rcv_spi(skb, nexthdr, 0);
 }
 
 static int vti6_rcv_cb(struct sk_buff *skb, int err)
@@ -345,6 +417,8 @@ static int vti6_rcv_cb(struct sk_buff *skb, int err)
 	struct ip6_tnl *t = XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6;
 	u32 orig_mark = skb->mark;
 	int ret;
+
+	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
 
 	if (!t)
 		return 1;
@@ -573,7 +647,6 @@ static int vti6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
 		    u8 type, u8 code, int offset, __be32 info)
 {
 	__be32 spi;
-	__u32 mark;
 	struct xfrm_state *x;
 	struct ip6_tnl *t;
 	struct ip_esp_hdr *esph;
@@ -582,12 +655,6 @@ static int vti6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
 	struct net *net = dev_net(skb->dev);
 	const struct ipv6hdr *iph = (const struct ipv6hdr *)skb->data;
 	int protocol = iph->nexthdr;
-
-	t = vti6_tnl_lookup(dev_net(skb->dev), &iph->daddr, &iph->saddr);
-	if (!t)
-		return -1;
-
-	mark = be32_to_cpu(t->parms.o_key);
 
 	switch (protocol) {
 	case IPPROTO_ESP:
@@ -610,19 +677,35 @@ static int vti6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
 	    type != NDISC_REDIRECT)
 		return 0;
 
-	x = xfrm_state_lookup(net, mark, (const xfrm_address_t *)&iph->daddr,
-			      spi, protocol, AF_INET6);
-	if (!x)
-		return 0;
+	t = vti6_tnl_lookup(net, &iph->daddr, &iph->saddr, 0, false);
+	if (t) {
+		x = xfrm_state_lookup(net, be32_to_cpu(t->parms.o_key),
+				      (xfrm_address_t *)&iph->daddr,
+				      spi, protocol, AF_INET6);
+	} else {
+		x = xfrm_state_lookup_loose(net, skb->mark,
+					    (xfrm_address_t *)&iph->daddr,
+					    spi, protocol, AF_INET6);
+		if (!x)
+			goto out;
+		t = vti6_tnl_lookup(net, &iph->daddr, &iph->saddr,
+				    cpu_to_be32(x->mark.v), false);
+	}
+
+	if (!t || !x)
+		goto out;
 
 	if (type == NDISC_REDIRECT)
 		ip6_redirect(skb, net, skb->dev->ifindex, 0,
 			     sock_net_uid(net, NULL));
 	else
 		ip6_update_pmtu(skb, net, info, 0, 0, sock_net_uid(net, NULL));
-	xfrm_state_put(x);
 
-	return 0;
+out:
+	if (x)
+		xfrm_state_put(x);
+
+	return t ? 0 : -1;
 }
 
 static void vti6_link_config(struct ip6_tnl *t)
@@ -929,9 +1012,21 @@ static int vti6_validate(struct nlattr *tb[], struct nlattr *data[])
 	return 0;
 }
 
+static __be16 vti_flags_to_tnl_flags(__u16 i_flags)
+{
+	return VTI_ISVTI | ((i_flags & VTI_KEYED) ? TUNNEL_KEY : 0);
+}
+
+static __u16 tnl_flags_to_vti_flags(__be16 i_flags)
+{
+	return (i_flags & TUNNEL_KEY) ? VTI_KEYED : 0;
+}
+
 static void vti6_netlink_parms(struct nlattr *data[],
 			       struct __ip6_tnl_parm *parms)
 {
+	__u16 flags = 0;
+
 	memset(parms, 0, sizeof(*parms));
 
 	if (!data)
@@ -954,6 +1049,11 @@ static void vti6_netlink_parms(struct nlattr *data[],
 
 	if (data[IFLA_VTI_FWMARK])
 		parms->fwmark = nla_get_u32(data[IFLA_VTI_FWMARK]);
+
+	if (data[IFLA_VTI_FLAGS])
+		flags = nla_get_u16(data[IFLA_VTI_FLAGS]);
+
+	parms->i_flags = vti_flags_to_tnl_flags(flags);
 }
 
 static int vti6_newlink(struct net *src_net, struct net_device *dev,
@@ -1021,6 +1121,8 @@ static size_t vti6_get_size(const struct net_device *dev)
 		nla_total_size(4) +
 		/* IFLA_VTI_FWMARK */
 		nla_total_size(4) +
+		/* IFLA_VTI_FLAGS */
+		nla_total_size(2) +
 		0;
 }
 
@@ -1034,7 +1136,9 @@ static int vti6_fill_info(struct sk_buff *skb, const struct net_device *dev)
 	    nla_put_in6_addr(skb, IFLA_VTI_REMOTE, &parm->raddr) ||
 	    nla_put_be32(skb, IFLA_VTI_IKEY, parm->i_key) ||
 	    nla_put_be32(skb, IFLA_VTI_OKEY, parm->o_key) ||
-	    nla_put_u32(skb, IFLA_VTI_FWMARK, parm->fwmark))
+	    nla_put_u32(skb, IFLA_VTI_FWMARK, parm->fwmark) ||
+	    nla_put_u16(skb, IFLA_VTI_FLAGS,
+			tnl_flags_to_vti_flags(parm->i_flags)))
 		goto nla_put_failure;
 	return 0;
 
@@ -1049,6 +1153,7 @@ static const struct nla_policy vti6_policy[IFLA_VTI_MAX + 1] = {
 	[IFLA_VTI_IKEY]		= { .type = NLA_U32 },
 	[IFLA_VTI_OKEY]		= { .type = NLA_U32 },
 	[IFLA_VTI_FWMARK]	= { .type = NLA_U32 },
+	[IFLA_VTI_FLAGS]	= { .type = NLA_U16 },
 };
 
 static struct rtnl_link_ops vti6_link_ops __read_mostly = {

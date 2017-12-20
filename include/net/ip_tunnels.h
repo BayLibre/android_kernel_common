@@ -153,6 +153,10 @@ struct ip_tunnel {
 
 #define TUNNEL_OPTIONS_PRESENT	(TUNNEL_GENEVE_OPT | TUNNEL_VXLAN_OPT)
 
+/* Flags for ip_tunnel_lookup. */
+#define TUNNEL_LOOKUP_NO_KEY	0x01
+#define TUNNEL_LOOKUP_OKEY	0x02
+
 struct tnl_ptk_info {
 	__be16 flags;
 	__be16 proto;
@@ -265,7 +269,7 @@ int ip_tunnel_change_mtu(struct net_device *dev, int new_mtu);
 struct rtnl_link_stats64 *ip_tunnel_get_stats64(struct net_device *dev,
 						struct rtnl_link_stats64 *tot);
 struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
-				   int link, __be16 flags,
+				   int link, __be16 flags, u8 lookup_flags,
 				   __be32 remote, __be32 local,
 				   __be32 key);
 

@@ -70,16 +70,26 @@ static unsigned int ip_tunnel_hash(__be32 key, __be32 remote)
 }
 
 static bool ip_tunnel_key_match(const struct ip_tunnel_parm *p,
-				__be16 flags, __be32 key)
+				__be32 flags, u8 lookup_flags, __be32 key)
 {
+	__be32 tunnel_key = (lookup_flags & TUNNEL_LOOKUP_OKEY) ? p->o_key :
+								  p->i_key;
 	if (p->i_flags & TUNNEL_KEY) {
 		if (flags & TUNNEL_KEY)
-			return key == p->i_key;
+			return key == tunnel_key;
 		else
 			/* key expected, none present */
 			return false;
 	} else
 		return !(flags & TUNNEL_KEY);
+}
+
+static bool ip_tunnel_match(const struct ip_tunnel_parm *p,
+			    __be32 flags, u8 lookup_flags, __be32 key)
+{
+	return ip_tunnel_key_match(p, flags, lookup_flags, key) ||
+	       ((p->i_flags & flags & VTI_ISVTI) &&
+		!(p->i_flags & flags & TUNNEL_KEY));
 }
 
 /* Fallback tunnel: no source, no destination, no key, no options
@@ -94,15 +104,17 @@ static bool ip_tunnel_key_match(const struct ip_tunnel_parm *p,
    Given src, dst and key, find appropriate for input tunnel.
 */
 struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
-				   int link, __be16 flags,
+				   int link, __be16 flags, u8 lookup_flags,
 				   __be32 remote, __be32 local,
 				   __be32 key)
 {
 	unsigned int hash;
 	struct ip_tunnel *t, *cand = NULL;
 	struct hlist_head *head;
+	__be32 hash_key;
 
-	hash = ip_tunnel_hash(key, remote);
+	hash_key = (lookup_flags & TUNNEL_LOOKUP_NO_KEY) ? 0 : key;
+	hash = ip_tunnel_hash(hash_key, remote);
 	head = &itn->tunnels[hash];
 
 	hlist_for_each_entry_rcu(t, head, hash_node) {
@@ -111,7 +123,7 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
 		    !(t->dev->flags & IFF_UP))
 			continue;
 
-		if (!ip_tunnel_key_match(&t->parms, flags, key))
+		if (!ip_tunnel_key_match(&t->parms, flags, lookup_flags, key))
 			continue;
 
 		if (t->parms.link == link)
@@ -126,7 +138,7 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
 		    !(t->dev->flags & IFF_UP))
 			continue;
 
-		if (!ip_tunnel_key_match(&t->parms, flags, key))
+		if (!ip_tunnel_key_match(&t->parms, flags, lookup_flags, key))
 			continue;
 
 		if (t->parms.link == link)
@@ -135,7 +147,7 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
 			cand = t;
 	}
 
-	hash = ip_tunnel_hash(key, 0);
+	hash = ip_tunnel_hash(hash_key, 0);
 	head = &itn->tunnels[hash];
 
 	hlist_for_each_entry_rcu(t, head, hash_node) {
@@ -146,7 +158,7 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
 		if (!(t->dev->flags & IFF_UP))
 			continue;
 
-		if (!ip_tunnel_key_match(&t->parms, flags, key))
+		if (!ip_tunnel_key_match(&t->parms, flags, lookup_flags, key))
 			continue;
 
 		if (t->parms.link == link)
@@ -198,7 +210,7 @@ static struct hlist_head *ip_bucket(struct ip_tunnel_net *itn,
 	else
 		remote = 0;
 
-	if (!(parms->i_flags & TUNNEL_KEY) && (parms->i_flags & VTI_ISVTI))
+	if (parms->i_flags & VTI_ISVTI)
 		i_key = 0;
 
 	h = ip_tunnel_hash(i_key, remote);
@@ -238,7 +250,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
 		    remote == t->parms.iph.daddr &&
 		    link == t->parms.link &&
 		    type == t->dev->type &&
-		    ip_tunnel_key_match(&t->parms, flags, key))
+		    ip_tunnel_match(&t->parms, flags, 0, key))
 			break;
 	}
 	return t;
