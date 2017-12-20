@@ -96,6 +96,54 @@
     },
     {
       "key": {
+        "uuid": "dc7b099b_61138c49",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6635,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cb3f8406_16462740",
+      "range": {
+        "startLine": 6635,
+        "startChar": 0,
+        "endLine": 6635,
+        "endChar": 3
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "51aec93a_91294194",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6635,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "15fe65a1_fc6c0cbd",
+      "range": {
+        "startLine": 6635,
+        "startChar": 29,
+        "endLine": 6635,
+        "endChar": 42
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3986b7bc_a487e2f7",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -131,6 +179,30 @@
       "side": 1,
       "message": "I\u0027ll remove this from the comment, it should be obvious that we should\nnot pass anything in sync if not waking up, i.e. the concept of a sync\nwakeup doesn\u0027t mean anything.\n\nThis is only here because in a later patch we haven\u0027t pushed yet\n(upmigrate misfit tasks immediately) we will call find_energy_efficient_cpu\noutside wakeup context to decide where we should push a misfit task so that\nwe can continue to do energy-aware placement on it. As it happens, integrating\nthat turns out to be a bit more complex in 4.14 than it was in 4.9, so I\ndidn\u0027t bring that feature forward yet.",
       "parentUuid": "3986b7bc_a487e2f7",
+      "range": {
+        "startLine": 6637,
+        "startChar": 3,
+        "endLine": 6637,
+        "endChar": 75
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5164f5bc_150a8fbf",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6637,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2b4e38c1_d5cd8af2",
       "range": {
         "startLine": 6637,
         "startChar": 3,
@@ -190,6 +262,30 @@
     },
     {
       "key": {
+        "uuid": "2f9b83d0_757ebafb",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6639,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0449ae7a_7755e5d0",
+      "range": {
+        "startLine": 6639,
+        "startChar": 0,
+        "endLine": 6639,
+        "endChar": 117
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2adeaa72_237b39c2",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -234,6 +330,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c50a31e5_4d00ef23",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6716,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Still thinking we should consider moving this after FBT in such a way that we can pick an energy-efficient CPU but skip the energy_diff.\nI\u0027ll keep this as a not for a future investigation.",
+      "parentUuid": "ea34619d_8dbfe38d",
+      "range": {
+        "startLine": 6713,
+        "startChar": 1,
+        "endLine": 6716,
+        "endChar": 4
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     },
     {
       "key": {
@@ -284,6 +404,30 @@
     },
     {
       "key": {
+        "uuid": "c3797e7f_99a635ef",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6718,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "92458238_8d0c599f",
+      "range": {
+        "startLine": 6717,
+        "startChar": 1,
+        "endLine": 6718,
+        "endChar": 15
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b67fe35c_9eb53b23",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -304,6 +448,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f52d4851_5e70916f",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6750,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b67fe35c_9eb53b23",
+      "range": {
+        "startLine": 6750,
+        "startChar": 1,
+        "endLine": 6750,
+        "endChar": 38
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -354,6 +522,30 @@
     },
     {
       "key": {
+        "uuid": "ca8b2f25_ad632688",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6756,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Right, I agree... I was suggesting that add such a similar comment/explanation in the code, just above L6779.",
+      "parentUuid": "e3d883b1_2526f2da",
+      "range": {
+        "startLine": 6756,
+        "startChar": 16,
+        "endLine": 6756,
+        "endChar": 28
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9f9ebc4c_a734c279",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -401,6 +593,30 @@
     },
     {
       "key": {
+        "uuid": "a58e0df1_a5934c02",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6758,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bd8af820_06457e69",
+      "range": {
+        "startLine": 6756,
+        "startChar": 0,
+        "endLine": 6758,
+        "endChar": 49
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8cfa8319_fbaa36c7",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
@@ -436,6 +652,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "8cfa8319_fbaa36c7",
+      "range": {
+        "startLine": 6785,
+        "startChar": 2,
+        "endLine": 6786,
+        "endChar": 55
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3889c775_79c68fd8",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6786,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5fe3a597_defc7b01",
       "range": {
         "startLine": 6785,
         "startChar": 2,
@@ -539,6 +779,30 @@
       "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "77df98c0_c75f53cd",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6792,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2017-12-20T11:59:46Z",
+      "side": 1,
+      "message": "Mmm... this is just proposing to swap the:\n   if (want_energy \u0026\u0026\nwith the\n   if (tmp-\u003eflags \u0026 sd_flag)\n\nSine these two are sequential basic blocks which do not have dependencies.\nOr I\u0027m missing something?\n\nThe rest is just switching from an:\n\n  IF (!CONDITION)\n    break\n\nto a sequence of\n\n  IF (CONDITION)\n    continue\n\nWhich is easier to read... but that \"else\" at L6791... maybe that\u0027s the culprit... I\u0027ll keep a note to have a look in the future if this can be made more clear.",
+      "parentUuid": "6b4cb3e4_478cfa56",
+      "range": {
+        "startLine": 6791,
+        "startChar": 0,
+        "endLine": 6792,
+        "endChar": 9
+      },
+      "revId": "314729b40d50a14450486f845c74229f6e8dafcf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
