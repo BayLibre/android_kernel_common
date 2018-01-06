@@ -58,6 +58,7 @@
 #include <linux/tsacct_kern.h>
 #include <linux/cn_proc.h>
 #include <linux/freezer.h>
+#include <linux/kaiser.h>
 #include <linux/delayacct.h>
 #include <linux/taskstats_kern.h>
 #include <linux/random.h>
@@ -169,9 +170,14 @@ static unsigned long *alloc_thread_stack_node(struct task_struct *tsk,
 
 static inline void free_thread_stack(unsigned long *stack)
 {
+<<<<<<< HEAD   (e76962 Merge 4.4.109 into android-4.4-o)
 	struct page *page = virt_to_page(stack);
 
 	__free_kmem_pages(page, THREAD_SIZE_ORDER);
+=======
+	kaiser_unmap_thread_stack(ti);
+	free_kmem_pages((unsigned long)ti, THREAD_SIZE_ORDER);
+>>>>>>> BRANCH (b3e3db Linux 4.4.110)
 }
 # else
 static struct kmem_cache *thread_stack_cache;
@@ -353,7 +359,15 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
 	if (err)
 		goto free_stack;
 
+<<<<<<< HEAD   (e76962 Merge 4.4.109 into android-4.4-o)
 	tsk->stack = stack;
+=======
+	tsk->stack = ti;
+
+	err = kaiser_map_thread_stack(tsk->stack);
+	if (err)
+		goto free_ti;
+>>>>>>> BRANCH (b3e3db Linux 4.4.110)
 #ifdef CONFIG_SECCOMP
 	/*
 	 * We must handle setting up seccomp filters once we're under
