@@ -22,6 +22,30 @@
       "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f307bfdc_0d101e4b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-01-08T22:42:16Z",
+      "side": 1,
+      "message": "I think if the first transaction had been successfully queued to the target, the 2nd would have failed at line 3026 test in binder_transaction():\n\n  if (tmp-\u003eto_thread !\u003d thread) {\n\nsince this would have been false (thread would have matched tmp-\u003efrom_thread).\n\nIn this case, the first transaction failed and binder_send_failed_reply() was called to set the reply error, but there is no transaction in flight. However, the current thread is never going to look at the return error (since it isn\u0027t being handled correctly for a sync transaction), so we can get this 2nd error.\n\nWe could fail a transaction up-front if the reply error is already set, but I don\u0027t think there is other mayhem to worry about, so this seems simpler. Can you think of any mayhem in this case?",
+      "parentUuid": "f8fb39ad_058e3855",
+      "range": {
+        "startLine": 2150,
+        "startChar": 5,
+        "endLine": 2155,
+        "endChar": 7
+      },
+      "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
