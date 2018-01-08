@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8fb39ad_058e3855",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-01-08T10:44:47Z",
+      "side": 1,
+      "message": "LGTM, but I wonder if multiple sync transactions from the same thread couldn\u0027t cause more mayhem - shouldn\u0027t we bail out in the calling process when that happens? It looks like the current code would allow it when the destination of the second transaction has the same target process as the first.",
+      "range": {
+        "startLine": 2150,
+        "startChar": 5,
+        "endLine": 2155,
+        "endChar": 7
+      },
+      "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
