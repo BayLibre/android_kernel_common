@@ -46,6 +46,30 @@
       "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "61cc51ee_823e6230",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2018-01-09T00:07:46Z",
+      "side": 1,
+      "message": "The comment could probably be improved here. If you send multiple synchronous transactions and only the first one is accepted, then you would not hit this error case.",
+      "parentUuid": "f307bfdc_0d101e4b",
+      "range": {
+        "startLine": 2150,
+        "startChar": 5,
+        "endLine": 2155,
+        "endChar": 7
+      },
+      "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
