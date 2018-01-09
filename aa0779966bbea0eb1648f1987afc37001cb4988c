@@ -70,6 +70,30 @@
       "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9699d41b_b92deae7",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-01-09T00:40:09Z",
+      "side": 1,
+      "message": "Yes, my message makes it sound simpler to hit than it is. The syzkall reproducer does all kinds of random stuff and eventually hits it. I could see from the logs that from the thread\u0027s point-of-view it did two transactions in succession and the response to the 2nd hit this case, but I don\u0027t know the full sequence of events. I\u0027ll take some more time (when I have it) and give a more precise message.",
+      "parentUuid": "61cc51ee_823e6230",
+      "range": {
+        "startLine": 2150,
+        "startChar": 5,
+        "endLine": 2155,
+        "endChar": 7
+      },
+      "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
