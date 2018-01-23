@@ -166,6 +166,7 @@ static inline struct thread_info *current_thread_info(void)
 	return (struct thread_info *)(current_top_of_stack() - THREAD_SIZE);
 }
 
+<<<<<<< HEAD   (3fc428 ANDROID: sdcardfs: Move default_normal to superblock)
 static inline unsigned long current_stack_pointer(void)
 {
 	unsigned long sp;
@@ -221,6 +222,8 @@ static inline int arch_within_stack_frames(const void * const stack,
 #endif
 }
 
+=======
+>>>>>>> BRANCH (f0d0a9 Linux 4.4.113)
 #else /* !__ASSEMBLY__ */
 
 #ifdef CONFIG_X86_64
