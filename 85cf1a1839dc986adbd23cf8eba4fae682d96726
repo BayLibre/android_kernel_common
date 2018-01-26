@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7974d5fd_6d81adfd",
+        "filename": "drivers/cpufreq/cpufreq_times.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1003665
+      },
+      "writtenOn": "2018-01-26T23:35:39Z",
+      "side": 1,
+      "message": "Are you making this atomic so that acct_update_power() can access this without spinlocks?",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 33
+      },
+      "revId": "85cf1a1839dc986adbd23cf8eba4fae682d96726",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "179e8011_a23b0762",
+        "filename": "drivers/cpufreq/cpufreq_times.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1003665
+      },
+      "writtenOn": "2018-01-26T23:35:39Z",
+      "side": 1,
+      "message": "Why do we need these WRITE_ONCE() macros? Similar to requiring comments for \"why\" for every use of memory barriers, I think it might be good to have comments explaining why we need to use this macro.",
+      "range": {
+        "startLine": 61,
+        "startChar": 1,
+        "endLine": 61,
+        "endChar": 11
+      },
+      "revId": "85cf1a1839dc986adbd23cf8eba4fae682d96726",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "014b5b0b_e891a30f",
+        "filename": "drivers/cpufreq/cpufreq_times.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1003665
+      },
+      "writtenOn": "2018-01-26T23:35:39Z",
+      "side": 1,
+      "message": "When I was reading the earlier gerrits in this series, I was expecting this gerrit to do something very different that what it\u0027s doing here. If an acct_update_power() doesn\u0027t account for all the CPU freq transitions between calls to acct_update_power() I don\u0027t see any reason for maintaining per-freq time in state stats for each CPU in this file.",
+      "revId": "85cf1a1839dc986adbd23cf8eba4fae682d96726",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6684306_25182f41",
+        "filename": "drivers/cpufreq/cpufreq_times.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1003665
+      },
+      "writtenOn": "2018-01-26T23:35:39Z",
+      "side": 1,
+      "message": "It looks to me like you are completely ignoring any cpufreq transitions between calls to acct_update_power() and assuming the entire time between those calls was spent at a particular frequency. I\u0027m making this assumption because it doesn\u0027t look like this function is called when the CPU frequency transitions.",
+      "range": {
+        "startLine": 157,
+        "startChar": 53,
+        "endLine": 157,
+        "endChar": 63
+      },
+      "revId": "85cf1a1839dc986adbd23cf8eba4fae682d96726",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "299de433_f3ab3275",
+        "filename": "include/linux/cpufreq.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1003665
+      },
+      "writtenOn": "2018-01-26T23:35:39Z",
+      "side": 1,
+      "message": "I think you should just create a separate header file for cpufreq_times.h and include it in cpufreq.c when you make calls to the transition and policy call backs. Especially if you go with the approach I suggested of maintaining cpufreq_times struct independent of the policy create/destroy.",
+      "range": {
+        "startLine": 717,
+        "startChar": 7,
+        "endLine": 717,
+        "endChar": 8
+      },
+      "revId": "85cf1a1839dc986adbd23cf8eba4fae682d96726",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
