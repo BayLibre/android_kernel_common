@@ -4661,6 +4661,8 @@ static void ext4_umount_end(struct super_block *sb, int flags)
 						flags);
 		clear_opt(sb, ERRORS_PANIC);
 		set_opt(sb, ERRORS_RO);
+		if (!(sb->s_flags & MS_RDONLY))
+			ext4_commit_super(sb, 1);
 	}
 }
 
