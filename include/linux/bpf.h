@@ -36,7 +36,10 @@ struct bpf_map_ops {
 };
 
 struct bpf_map {
-	atomic_t refcnt;
+	/* 1st cacheline with read-mostly members of which some
+	 * are also accessed in fast-path (e.g. ops, max_entries).
+	 */
+	const struct bpf_map_ops *ops ____cacheline_aligned;
 	enum bpf_map_type map_type;
 	u32 key_size;
 	u32 value_size;
@@ -44,13 +47,21 @@ struct bpf_map {
 	u32 map_flags;
 	u32 pages;
 	bool unpriv_array;
-	struct user_struct *user;
-	const struct bpf_map_ops *ops;
-	struct work_struct work;
+	/* 7 bytes hole */
+
+	/* 2nd cacheline with misc members to avoid false sharing
+	 * particularly with refcounting.
+	 */
+	struct user_struct *user ____cacheline_aligned;
+	atomic_t refcnt;
 	atomic_t usercnt;
+<<<<<<< HEAD   (7be198 ANDROID: sched: EAS: check energy_aware() before calling sel)
 #ifdef CONFIG_SECURITY
 	void *security;
 #endif
+=======
+	struct work_struct work;
+>>>>>>> BRANCH (6c6f92 Linux 4.9.79)
 };
 
 struct bpf_map_type_list {
