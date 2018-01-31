@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "629ed95a_2975eef9",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6693,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2018-01-31T15:02:03Z",
+      "side": 1,
+      "message": "nit pick. initialization is redundant.",
+      "revId": "440966e40f2be2c9af6bcf438d5b71b960c7add0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43b2b8f1_4d970284",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6826,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2018-01-31T15:02:03Z",
+      "side": 1,
+      "message": "target_cpu is updated at Case A.2 also. would that interfere with this logic? target_capacity is not set at Case A.2.",
+      "range": {
+        "startLine": 6826,
+        "startChar": 9,
+        "endLine": 6826,
+        "endChar": 19
+      },
+      "revId": "440966e40f2be2c9af6bcf438d5b71b960c7add0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
