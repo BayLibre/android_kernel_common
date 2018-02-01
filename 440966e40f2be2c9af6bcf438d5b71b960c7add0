@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4388507e_4c8c179d",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6693,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2018-02-01T11:35:18Z",
+      "side": 1,
+      "message": "Right, I\u0027ll fix that.",
+      "parentUuid": "629ed95a_2975eef9",
+      "revId": "440966e40f2be2c9af6bcf438d5b71b960c7add0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "43b2b8f1_4d970284",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2018-01-31T15:02:03Z",
       "side": 1,
       "message": "target_cpu is updated at Case A.2 also. would that interfere with this logic? target_capacity is not set at Case A.2.",
+      "range": {
+        "startLine": 6826,
+        "startChar": 9,
+        "endLine": 6826,
+        "endChar": 19
+      },
+      "revId": "440966e40f2be2c9af6bcf438d5b71b960c7add0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f24a601_1be5040f",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6826,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2018-02-01T11:35:18Z",
+      "side": 1,
+      "message": "Good catch! Indeed there is a corner case which is not yet covered with this version. I have a fix which is being tested right now. I\u0027ll post the new version as soon as I\u0027m convinced that everything is fine.\n\nThanks!",
+      "parentUuid": "43b2b8f1_4d970284",
       "range": {
         "startLine": 6826,
         "startChar": 9,
