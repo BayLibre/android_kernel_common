@@ -67,6 +67,29 @@
       "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d723f1e1_7395587d",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6972,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2018-02-02T10:35:49Z",
+      "side": 1,
+      "message": "I think I kind of agree with Brendan\u0027s idea of using select_idle_sibling as well. You could maybe just add a \"\u0026\u0026 !schedtune_prefer_idle(p) || sync\" to this condition and let wake_cap() figure out whether we should take the slow or the fast path ... What do you think ?",
+      "range": {
+        "startLine": 6972,
+        "startChar": 1,
+        "endLine": 6972,
+        "endChar": 61
+      },
+      "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
