@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a8fc563_9e59d8e3",
+        "filename": "drivers/staging/android/ashmem.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1015340
+      },
+      "writtenOn": "2018-02-05T18:25:15Z",
+      "side": 1,
+      "message": "You\u0027re assuming the initial assignment to asma-\u003efile is atomic (i.e., if a concurrent thread is writing to asma-\u003efile, this CPU reading from asma-\u003efile will only observe 0 or a valid pointer).  AFAIK this is true for aligned writes on all platforms that Android supports, but I don\u0027t know if it\u0027s generally true on all platforms that Linux supports.",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 46
+      },
+      "revId": "8da4b2b902ab4fd1193f13742e0ccccf3e9477ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
