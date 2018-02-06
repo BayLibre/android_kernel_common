@@ -94,6 +94,30 @@
       "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d08cf082_60b755a5",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-02-06T02:26:42Z",
+      "side": 1,
+      "message": "Ok, I got back to this, and actually there is a very simple reproducer which sends back-to-back \"synchronous\" transactions without checking for any responses in the thread\u0027s todo list:\n\n    bwr.write_buffer \u003d (uintptr_t)\u0026bc1;\n    bwr.write_size \u003d sizeof(bc1);\n    bwr.read_buffer \u003d (uintptr_t)\u0026br;\n    bwr.read_size \u003d 0;\n    ioctl(fd, BINDER_WRITE_READ, \u0026bwr);\n    sleep(1);\n    bwr2.write_buffer \u003d (uintptr_t)\u0026bc2;\n    bwr2.write_size \u003d sizeof(bc2);\n    bwr2.read_buffer \u003d (uintptr_t)\u0026br;\n    bwr2.read_size \u003d 0;\n    ioctl(fd, BINDER_WRITE_READ, \u0026bwr2);\n    sleep(1);\n\nThe first transaction is sent to the servicemanager and the reply fails because no VMA is set up by this client. After binder_send_failed_reply() is called, the BINDER_WORK_RETURN_ERROR is sitting on the thread\u0027s todo list since the read_size was 0 and the client is not waiting for a response.\n\nThe 2nd transaction is sent and the BINDER_WORK_RETURN_ERROR has not been consumed, so the thread\u0027s reply_error.cmd is still set (normally cleared when the BINDER_WORK_RETURN_ERROR is handled). Therefore when the servicemanager attempts to reply to the 2nd failed transaction, the error is already set and it triggers this warning.\n\nThis reproduces every time.\n\nI think my proposed fix would be fine. We can just continue to ignore failed transactions until a read is issued to handle the BINDER_WORK_RETURN_ERROR.\n\nAn alternate fix would be what Martijn suggested -- fail the attempt to start a new transaction if there is an unhandled error pending.\n\nPreferences?",
+      "parentUuid": "9699d41b_b92deae7",
+      "range": {
+        "startLine": 2150,
+        "startChar": 5,
+        "endLine": 2155,
+        "endChar": 7
+      },
+      "revId": "aa0779966bbea0eb1648f1987afc37001cb4988c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
