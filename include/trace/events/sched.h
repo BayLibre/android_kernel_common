@@ -702,6 +702,12 @@ extern bool walt_disabled;
 	do_div(sum, walt_ravg_window);\
 	util_var = (typeof(util_var))sum;\
 	}
+
+#ifdef CONFIG_FAIR_GROUP_SCHED
+#define entity_is_task(se) (!se->my_q)
+#else
+#define entity_is_task(se) (1)
+#endif
 #endif
 
 /*
@@ -777,7 +783,7 @@ TRACE_EVENT(sched_load_se,
 		__entry->util_pelt  = __entry->util;
 		__entry->util_walt  = 0;
 #ifdef CONFIG_SCHED_WALT
-		if (!se->my_q) {
+		if (entity_is_task(se)) {
 			struct task_struct *p = container_of(se, struct task_struct, se);
 			walt_util(__entry->util_walt, p->ravg.demand);
 			if (!walt_disabled && sysctl_sched_use_walt_task_util)
