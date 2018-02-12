@@ -773,7 +773,12 @@ TRACE_EVENT(sched_load_se,
 		__entry->util_pelt  = __entry->util;
 		__entry->util_walt  = 0;
 #ifdef CONFIG_SCHED_WALT
+#ifdef CONFIG_FAIR_GROUP_SCHED
 		if (!se->my_q) {
+#else
+		/* if !CONFIG_FAIR_GROUP_SCHED, entity is always a task */
+		{
+#endif
 			struct task_struct *p = container_of(se, struct task_struct, se);
 			__entry->util_walt = p->ravg.demand;
 			do_div(__entry->util_walt, walt_ravg_window >> SCHED_CAPACITY_SHIFT);
