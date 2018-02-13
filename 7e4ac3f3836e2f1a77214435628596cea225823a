@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "1adb9e3b_406a7388",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1096713
+      },
+      "writtenOn": "2018-02-13T18:34:47Z",
+      "side": 1,
+      "message": "\"unsigned\" seems wrong here.  \u0027io-\u003eblock\u0027 is a sector_t, which is an unsigned long (or if CONFIG_LBDAF is set, a u64).  We\u0027re also sizing \u0027v-\u003evalidated_pages\u0027 off of \u0027ti-\u003elen\u0027, which is a sector_t as well.  It seems like we should use a sector_t here.  It also looks like verify_hash_for_block is taking a sector_t.\n\nSo I think \u0027cur_block\u0027 should be a sector_t.",
+      "revId": "7e4ac3f3836e2f1a77214435628596cea225823a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c30ee65e_4144438a",
         "filename": "drivers/md/dm-verity-target.c",
         "patchSetId": 1
@@ -45,6 +62,29 @@
       "revId": "7e4ac3f3836e2f1a77214435628596cea225823a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2bbf870_14666629",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1096713
+      },
+      "writtenOn": "2018-02-13T18:34:47Z",
+      "side": 1,
+      "message": "nit: kfree(NULL) is a valid call, so there\u0027s no need to check for NULL prior to calling.",
+      "range": {
+        "startLine": 758,
+        "startChar": 0,
+        "endLine": 759,
+        "endChar": 28
+      },
+      "revId": "7e4ac3f3836e2f1a77214435628596cea225823a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
