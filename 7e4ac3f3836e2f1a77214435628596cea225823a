@@ -111,6 +111,30 @@
     },
     {
       "key": {
+        "uuid": "953d77ae_00a9461c",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 1060907
+      },
+      "writtenOn": "2018-02-13T18:40:00Z",
+      "side": 1,
+      "message": "I would guess that if we were going to upstream this, it would have to be off by default even if the kernel option is enabled, and switched on at runtime with some flag. But maybe that doesn\u0027t need to be in this CL!",
+      "parentUuid": "f5ffa616_4a84ff61",
+      "range": {
+        "startLine": 1091,
+        "startChar": 44,
+        "endLine": 1091,
+        "endChar": 51
+      },
+      "revId": "7e4ac3f3836e2f1a77214435628596cea225823a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "51f259cc_7d5d39d1",
         "filename": "drivers/md/dm-verity.h",
         "patchSetId": 1
