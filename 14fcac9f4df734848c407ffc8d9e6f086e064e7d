@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c2231d77_a4da86eb",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2018-02-13T23:15:15Z",
+      "side": 1,
+      "message": "static inline void",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 402,
+        "endChar": 4
+      },
+      "revId": "14fcac9f4df734848c407ffc8d9e6f086e064e7d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "764f91dd_5e97c1a5",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2018-02-13T23:15:15Z",
+      "side": 1,
+      "message": "Can we replace this with simply bio_advance_iter(bio, iter, 1 \u003c\u003c v-\u003edata_dev_block_bits)?",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 418,
+        "endChar": 16
+      },
+      "revId": "14fcac9f4df734848c407ffc8d9e6f086e064e7d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
