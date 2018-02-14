@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0cce2cd6_51eab09c",
+        "filename": "drivers/md/Kconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1162034
+      },
+      "writtenOn": "2018-02-14T23:40:38Z",
+      "side": 1,
+      "message": "To make it easier for OEMs to pick the change up, I\u0027m happy to add an config option when trying to get this upstream (for now it\u0027s probably best to just have as kernel config option, and migrate to have both kernel option and config option)\n\nat most once sounds good for me, you are right that it explains what we are trying to do better.",
+      "parentUuid": "574a01be_71024584",
+      "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "296b8877_e17ac29e",
         "filename": "drivers/md/dm-verity-target.c",
         "patchSetId": 6
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "c474c2ef_7c3961b4",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1162034
+      },
+      "writtenOn": "2018-02-14T23:40:38Z",
+      "side": 1,
+      "message": "agree",
+      "parentUuid": "296b8877_e17ac29e",
+      "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ee62b17b_9cff981b",
         "filename": "drivers/md/dm-verity-target.c",
         "patchSetId": 6
@@ -47,6 +83,24 @@
       "writtenOn": "2018-02-14T23:34:59Z",
       "side": 1,
       "message": "This can be a large allocation which means kmalloc is not appropriate, since kmalloc requires physically contiguous \"low\" memory and is also limited to KMALLOC_MAX_SIZE.  kvzalloc() and kvfree() would be better on kernels which have them, and vzalloc() and vfree() on older kernels that don\u0027t.",
+      "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "033b8131_212ccb84",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1162034
+      },
+      "writtenOn": "2018-02-14T23:40:38Z",
+      "side": 1,
+      "message": "thanks - my kernel skills isn\u0027t great so I\u0027ll add that - I don\u0027t think 3.18 do have kvzalloc",
+      "parentUuid": "ee62b17b_9cff981b",
       "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
