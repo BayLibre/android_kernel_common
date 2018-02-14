@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8cbb15f9_bb466773",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2018-02-14T17:55:22Z",
+      "side": 1,
+      "message": "nit: verity_bv_skip_block or something more descriptive?\n\nAlso, please run this CL through scripts/checkpatch.pl to check coding style and other related issues.",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 24
+      },
+      "revId": "54a99e5b7db720dd9bf3356a2d0009857ec3bcb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b806efb9_dad19c2b",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2018-02-14T17:55:22Z",
+      "side": 1,
+      "message": "sector_t is u64 and test_bit accepts an int. Any concerns with overflows? Should there be a sanity check here that cur_block is not too large?",
+      "range": {
+        "startLine": 429,
+        "startChar": 15,
+        "endLine": 429,
+        "endChar": 24
+      },
+      "revId": "54a99e5b7db720dd9bf3356a2d0009857ec3bcb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
