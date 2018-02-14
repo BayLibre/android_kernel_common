@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "574a01be_71024584",
+        "filename": "drivers/md/Kconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2018-02-14T23:34:59Z",
+      "side": 1,
+      "message": "Why is this a config option instead of an optional parameter for the device-mapper target?  See: verity_parse_opt_args().  There are already other optional parameters such as \"ignore_corruption\" and \"restart_on_corruption\".  It\u0027s generally frowned on to put policy in the kernel instead of in userspace.  I think it will be hard to get this change upstream as a config option.\n\nThe \"at least once\" verbiage is also confusing; it really should be \"at most once\", shouldn\u0027t it?  I understand that due to races the verification might actually happen multiple times for a particular block, but \"at most once\" would seem to better describe the intent.  And blocks that are never read are still not verified at all, are they?",
+      "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "296b8877_e17ac29e",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2018-02-14T23:34:59Z",
+      "side": 1,
+      "message": "Well, it advances by one data block.  \"Moves to the end\" is not clear.",
+      "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee62b17b_9cff981b",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2018-02-14T23:34:59Z",
+      "side": 1,
+      "message": "This can be a large allocation which means kmalloc is not appropriate, since kmalloc requires physically contiguous \"low\" memory and is also limited to KMALLOC_MAX_SIZE.  kvzalloc() and kvfree() would be better on kernels which have them, and vzalloc() and vfree() on older kernels that don\u0027t.",
+      "revId": "8dc7e00b86bc36bbf552e32d6c83fcf3b6908a43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
