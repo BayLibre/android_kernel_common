@@ -25,7 +25,6 @@
 #include <linux/bitops.h>
 #include <linux/slab.h>
 #include <linux/io.h>
-#include <linux/goldfish.h>
 #include <linux/mm.h>
 #include <linux/acpi.h>
 
@@ -73,7 +72,7 @@ struct goldfish_pipe_dev {
 
 	/* Pointers to the buffers host uses for interaction with this driver */
 	struct goldfish_pipe_dev_buffers *buffers;
-
+	
 	/* Head of a doubly linked list of signalled pipes */
 	struct goldfish_pipe *first_signalled_pipe;
 
@@ -84,8 +83,14 @@ struct goldfish_pipe_dev {
 
 	/* v1-specific access parameters */
 	struct access_params *aps;
+
+	/* DMA info */
+	u64 dma_alloc_total;
+
+	/* ptr to platform device's device struct */
+	struct device *pdev_dev;
 };
 
-extern struct goldfish_pipe_dev pipe_dev[1];
+extern struct goldfish_pipe_dev goldfish_pipe_dev[1];
 
 #endif /* GOLDFISH_PIPE_H */
