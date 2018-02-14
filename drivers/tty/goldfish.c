@@ -15,6 +15,7 @@
  */
 
 #include <linux/console.h>
+#include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
 #include <linux/tty.h>
@@ -27,19 +28,24 @@
 #include <linux/dma-mapping.h>
 #include <linux/serial_core.h>
 
-/* Goldfish tty register's offsets */
-#define	GOLDFISH_TTY_REG_BYTES_READY	0x04
-#define	GOLDFISH_TTY_REG_CMD		0x08
-#define	GOLDFISH_TTY_REG_DATA_PTR	0x10
-#define	GOLDFISH_TTY_REG_DATA_LEN	0x14
-#define	GOLDFISH_TTY_REG_DATA_PTR_HIGH	0x18
-#define	GOLDFISH_TTY_REG_VERSION	0x20
+enum {
+        /* Goldfish tty register's offsets */
+	GOLDFISH_TTY_REG_PUT_CHAR       = 0x00,
+	GOLDFISH_TTY_REG_BYTES_READY    = 0x04,
+	GOLDFISH_TTY_REG_CMD            = 0x08,
+	GOLDFISH_TTY_REG_DATA_PTR       = 0x10,
+	GOLDFISH_TTY_REG_DATA_LEN       = 0x14,
+#ifdef CONFIG_64BIT
+	GOLDFISH_TTY_REG_DATA_PTR_HIGH  = 0x18,
+#endif
+        GOLDFISH_TTY_REG_VERSION        = 0x20,
 
-/* Goldfish tty commands */
-#define	GOLDFISH_TTY_CMD_INT_DISABLE	0
-#define	GOLDFISH_TTY_CMD_INT_ENABLE	1
-#define	GOLDFISH_TTY_CMD_WRITE_BUFFER	2
-#define	GOLDFISH_TTY_CMD_READ_BUFFER	3
+        /* Goldfish tty commands */
+	GOLDFISH_TTY_CMD_INT_DISABLE    = 0,
+	GOLDFISH_TTY_CMD_INT_ENABLE     = 1,
+	GOLDFISH_TTY_CMD_WRITE_BUFFER   = 2,
+	GOLDFISH_TTY_CMD_READ_BUFFER    = 3,
+};
 
 struct goldfish_tty {
 	struct tty_port port;
@@ -58,7 +64,7 @@ static u32 goldfish_tty_line_count = 8;
 static u32 goldfish_tty_current_line_count;
 static struct goldfish_tty *goldfish_ttys;
 
-static void do_rw_io(struct goldfish_tty *qtty,
+static inline void do_rw_io(struct goldfish_tty *qtty,
 		     unsigned long address,
 		     unsigned int count,
 		     int is_write)
@@ -324,7 +330,6 @@ static int goldfish_tty_probe(struct platform_device *pdev)
 	if (!r) {
 		pr_err("goldfish_tty: No IRQ resource available!\n");
 		goto err_unmap;
-	}
 
 	irq = r->start;
 
@@ -393,7 +398,7 @@ static int goldfish_tty_probe(struct platform_device *pdev)
 	}
 
 	ttydev = tty_port_register_device(&qtty->port, goldfish_tty_driver,
-					  line, &pdev->dev);
+							line, &pdev->dev);
 	if (IS_ERR(ttydev)) {
 		ret = PTR_ERR(ttydev);
 		goto err_tty_register_device_failed;
