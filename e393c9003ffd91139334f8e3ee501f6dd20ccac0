@@ -2,6 +2,167 @@
   "comments": [
     {
       "key": {
+        "uuid": "0a5de897_83f5d5c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "you do a lot more here than just this.  It seems you are reverting a bunch of changes from upstream, for no obvious reason.  Please always be specific, _AND_ only do one thing per patch.  This one does 2 different things according to this sentence.  So at the least, it should be two different patches.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c85ae39_a3905595",
+        "filename": "drivers/staging/goldfish/goldfish_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "why guard off these enums now?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bebbf72_bc334d2c",
+        "filename": "drivers/staging/goldfish/goldfish_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "why the extra whitespace here, and below?",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 0
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "718d2847_f8b11e1c",
+        "filename": "drivers/staging/goldfish/goldfish_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "please do not mix whitespace changes with actual logic changes, as it\u0027s impossible to review that way.  This change wasn\u0027t needed at all, right?",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 0
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2491b80_0167b16b",
+        "filename": "drivers/staging/goldfish/goldfish_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "very odd indentation :(",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 0
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "296fc66c_10d315c7",
+        "filename": "drivers/staging/goldfish/goldfish_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "is this a bugfix?\n\nAnd you really keep an open_count?  Why?  \n\nAnd the else { } isn\u0027t even needed here, you didn\u0027t run checkpatch on this change, did you?",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 0
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26a5809d_3defd29c",
+        "filename": "drivers/staging/goldfish/goldfish_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:20:20Z",
+      "side": 1,
+      "message": "again, checkpatch would have told you that you are adding issues here.  Don\u0027t revert changes that were made in the past for good reasons.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 0
+      },
+      "revId": "e393c9003ffd91139334f8e3ee501f6dd20ccac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e4aeeca4_2c7f755a",
         "filename": "drivers/staging/goldfish/goldfish_audio.c",
         "patchSetId": 1
