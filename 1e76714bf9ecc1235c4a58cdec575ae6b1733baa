@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0f50da66_96c66919",
+        "filename": "drivers/platform/goldfish/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-02-15T21:14:05Z",
+      "side": 1,
+      "message": "You just changed the output module names :(\n\nDoes this really work as-is?  Does the build not break?\n\nAnd why keep _v2, why not just drop the old one and have just one pipe driver?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 65
+      },
+      "revId": "1e76714bf9ecc1235c4a58cdec575ae6b1733baa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
