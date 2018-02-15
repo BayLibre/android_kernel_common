@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "488803ea_7ef0339e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6948,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-02-15T18:58:15Z",
+      "side": 1,
+      "message": "Seems that the \"Favor CPUs with smaller capacity\" heuristics is something which makes sense for both ACTIVE and IDLE CPUs for non-latency sensitive task.\n\nShould not we then just move this block (with its comment) before case B and remove its duplicate above at lines 6900-6901?",
+      "revId": "79aab32202acbe432855c7caa4e5cf09ae2d81a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
