@@ -1183,6 +1183,10 @@ static const char *f2fs_encrypted_follow_link(struct dentry *dentry, void **cook
 	if (IS_ERR(cpage))
 		return ERR_CAST(cpage);
 	caddr = page_address(cpage);
+<<<<<<< HEAD   (55a366 BACKPORT: xfrm: Fix return value check of copy_sec_ctx.)
+=======
+	caddr[size] = 0;
+>>>>>>> BRANCH (0f48bd Linux 4.4.116)
 
 	/* Symlink is encrypted */
 	sd = (struct fscrypt_symlink_data *)caddr;
@@ -1219,11 +1223,21 @@ static const char *f2fs_encrypted_follow_link(struct dentry *dentry, void **cook
 	/* Null-terminate the name */
 	paddr[pstr.len] = '\0';
 
+<<<<<<< HEAD   (55a366 BACKPORT: xfrm: Fix return value check of copy_sec_ctx.)
 	put_page(cpage);
+=======
+	page_cache_release(cpage);
+>>>>>>> BRANCH (0f48bd Linux 4.4.116)
 	return *cookie = paddr;
 errout:
+<<<<<<< HEAD   (55a366 BACKPORT: xfrm: Fix return value check of copy_sec_ctx.)
 	fscrypt_fname_free_buffer(&pstr);
 	put_page(cpage);
+=======
+	kfree(cstr.name);
+	f2fs_fname_crypto_free_buffer(&pstr);
+	page_cache_release(cpage);
+>>>>>>> BRANCH (0f48bd Linux 4.4.116)
 	return ERR_PTR(res);
 }
 
