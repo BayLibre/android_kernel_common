@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "652338e6_a8554cf8",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1096713
+      },
+      "writtenOn": "2018-02-22T16:53:23Z",
+      "side": 1,
+      "message": "nit: Now that we\u0027ve split out having an argument for this into a separate CL, this \u0027if\u0027 check is unnecessary.  It doesn\u0027t hurt, and it does allow a clean future merge with a CL adding the argument.  So I\u0027m not opposed to this, but I don\u0027t know if this is likely to get called out on an upstream review, and thus should be changed now.",
+      "revId": "201dd8e85468d4c375ec304b870f94b54fbfdbd6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
