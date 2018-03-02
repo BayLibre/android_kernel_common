@@ -123,11 +123,11 @@ static void afs_file_readpage_read_complete(struct page *page,
 /*
  * read page from file, directory or symlink, given a key to use
  */
-int afs_page_filler(void *data, struct page *page)
+int afs_page_filler(struct file *data, struct page *page)
 {
 	struct inode *inode = page->mapping->host;
 	struct afs_vnode *vnode = AFS_FS_I(inode);
-	struct key *key = data;
+	struct key *key = (struct key *)data;
 	size_t len;
 	off_t offset;
 	int ret;
