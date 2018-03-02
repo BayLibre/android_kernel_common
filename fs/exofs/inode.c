@@ -377,9 +377,9 @@ err:
  * and will start a new collection. Eventually caller must submit the last
  * segment if present.
  */
-static int readpage_strip(void *data, struct page *page)
+static int readpage_strip(struct file *data, struct page *page)
 {
-	struct page_collect *pcol = data;
+	struct page_collect *pcol = (struct file *)data;
 	struct inode *inode = pcol->inode;
 	struct exofs_i_info *oi = exofs_i(inode);
 	loff_t i_size = i_size_read(inode);
