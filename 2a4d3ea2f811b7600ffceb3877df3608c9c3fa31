@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5652c29a_a36e9bb2",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-06T08:44:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2aea8826_ef90d07c",
+      "range": {
+        "startLine": 1030,
+        "startChar": 23,
+        "endLine": 1030,
+        "endChar": 24
+      },
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fedc0208_0e56ba11",
         "filename": "drivers/android/binder.c",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2018-03-06T01:12:10Z",
       "side": 1,
       "message": "attach to variable, not type",
+      "range": {
+        "startLine": 1042,
+        "startChar": 17,
+        "endLine": 1042,
+        "endChar": 19
+      },
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c639bce8_f95e54bd",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-06T08:44:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fedc0208_0e56ba11",
       "range": {
         "startLine": 1042,
         "startChar": 17,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "78bfa474_12c33069",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1361,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-06T08:44:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7ac1dc7_ad0d7034",
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dde8d581_52d95faa",
         "filename": "drivers/android/binder.c",
         "patchSetId": 9
@@ -76,6 +142,30 @@
       "writtenOn": "2018-03-06T01:12:10Z",
       "side": 1,
       "message": "\"!\u003d 0\" is not needed is you want to check if fbt-\u003ethread is non-0, but why do you have this if statement at all?",
+      "range": {
+        "startLine": 1463,
+        "startChar": 17,
+        "endLine": 1463,
+        "endChar": 22
+      },
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc377f82_235d2438",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1463,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-06T08:44:20Z",
+      "side": 1,
+      "message": "I had meant for pid \u003d 0 to be \"don\u0027t tie this node to a thread\", and in that case it seemed like a waste to try and look it up. I guess pid 0 may even be assigned to some kernel task, which we definitely don\u0027t want to link here.",
+      "parentUuid": "dde8d581_52d95faa",
       "range": {
         "startLine": 1463,
         "startChar": 17,
@@ -105,6 +195,24 @@
     },
     {
       "key": {
+        "uuid": "43af7305_a44cc18f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-06T08:44:20Z",
+      "side": 1,
+      "message": "good catch, added.",
+      "parentUuid": "384460de_5c350293",
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7909f4fb_1e4d794c",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 9
@@ -116,6 +224,30 @@
       "writtenOn": "2018-03-06T01:12:10Z",
       "side": 1,
       "message": "is this used for anything?",
+      "range": {
+        "startLine": 147,
+        "startChar": 67,
+        "endLine": 147,
+        "endChar": 77
+      },
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52b86f87_b8e1a7c3",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-06T08:44:20Z",
+      "side": 1,
+      "message": "it\u0027s used to indicate no thread is assigned. I guess we could also say userspace should use the old structure in that case, but this allows userspace to simply always use the new structure. I\u0027ll clarify this a bit.",
+      "parentUuid": "7909f4fb_1e4d794c",
       "range": {
         "startLine": 147,
         "startChar": 67,
