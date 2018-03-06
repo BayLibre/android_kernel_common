@@ -48,6 +48,29 @@
     },
     {
       "key": {
+        "uuid": "a07cd799_cfd5509b",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6760,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2018-03-06T12:37:56Z",
+      "side": 1,
+      "message": "Changing this by:\n  cpu \u003d start_cpu(prefer_idle);\nshould have no impact as of today since all boosted tasks are prefer-idle (and vice versa). What should be done with non-prefer-idle boosted tasks (if we eventually have to deal with them) isn\u0027t clear so it\u0027s probably a good idea to manage them exactly like the non-boosted and non-prefer-idle tasks for now, for consistency.",
+      "range": {
+        "startLine": 6760,
+        "startChar": 1,
+        "endLine": 6760,
+        "endChar": 26
+      },
+      "revId": "3a883fa8d589e3ba1af9991730a26c7c64bf0103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "89e28205_1a39e643",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 4
