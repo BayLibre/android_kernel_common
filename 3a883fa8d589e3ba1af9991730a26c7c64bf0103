@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cdb739cc_f1521fe9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-03-06T12:21:40Z",
+      "side": 1,
+      "message": "This should be extended to include \"non boosted\" tasks as well, since this patch does not completely solve the issue reported in case of boosted tasks.",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "3a883fa8d589e3ba1af9991730a26c7c64bf0103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3cc48e4_deea1e9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-03-06T12:21:40Z",
+      "side": 1,
+      "message": "Exactly for that reason, also with this fix in we can still prefer a big CPU over a LITTLE one.\n\nIn this case, the main issue I think boils down to understand if we really want boosted tasks to prefer big CPUs... since this seems what we imply by visiting CPUs starting from from big ones. Otherwise, we should also change the start_cpu definition to consider just \"prefer_idle\" tasks.",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "3a883fa8d589e3ba1af9991730a26c7c64bf0103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e28205_1a39e643",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6907,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-03-06T12:21:40Z",
+      "side": 1,
+      "message": "What about being a bit more explicit:\n\n\n/*\n * For non latency sensitive tasks, favour CPUs with\n * smaller capacity, under the assumption they are\n * also more energy efficient.\n */",
+      "range": {
+        "startLine": 6906,
+        "startChar": 6,
+        "endLine": 6907,
+        "endChar": 22
+      },
+      "revId": "3a883fa8d589e3ba1af9991730a26c7c64bf0103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4ebee63_a91c5658",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6943,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-03-06T12:21:40Z",
+      "side": 1,
+      "message": "If all LITTLE CPUs are IDLE, and even just one big is IDLE too, this patch still do not fix the issue for boosted tasks. Indeed. the above condition will still end up favouring the big IDLE CPUs over all the little CPUs.\n\nIndeed, when min_capped_util \u003d 0 for non capped CPUs:\n\n    (capacity_orig - min_capped_util)\n\nwill always be bigger for big CPUs, and we skip all the LITTLE CPUs as soon as we find an IDLE big one.\n\nThis wrong behaviour has been reported by Viresh Kumar \u003cviresh.kumar@linaro.org\u003e and Leo Yan \u003cleo.yan@linaro.org\u003e.",
+      "range": {
+        "startLine": 6942,
+        "startChar": 5,
+        "endLine": 6943,
+        "endChar": 31
+      },
+      "revId": "3a883fa8d589e3ba1af9991730a26c7c64bf0103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b8507a8_004bf7bc",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6953,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-03-06T12:21:40Z",
+      "side": 1,
+      "message": "Same problem described above happens in sysctl_sched_cstate_aware systems when the big CPU is in a shallow idle state then all LITTLE CPUs.\n\nUnless we fix also the CPUs visiting ordering and start from big only for prefer_idle. This will allow to visit before LITTLE cpus and then the fix proposed by this patch will be complete in favouring them over a big CPU in a shallow IDLE state.",
+      "range": {
+        "startLine": 6952,
+        "startChar": 4,
+        "endLine": 6953,
+        "endChar": 37
+      },
+      "revId": "3a883fa8d589e3ba1af9991730a26c7c64bf0103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
