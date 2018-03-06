@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1c58116f_810546b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-03-06T03:36:47Z",
+      "side": 1,
+      "message": "what do you mean by \"save latency\"?\n\nSpecific numbers / details would be best.\n\nAlso, changelog text is good to have, not just a single line for the subject.  Upstream will usually reject patches like this as you need to describe _why_ your patch is needed, not just what it does.",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 74
+      },
+      "revId": "bbd57db29002ae87c7059610a66db95c14b63678",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fb8158b_c6c90a14",
+        "filename": "drivers/staging/goldfish/goldfish_nand.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-03-06T03:36:47Z",
+      "side": 1,
+      "message": "irqsave to replace a mutex?  You were grabbing a mutex in interrupt context before?  How was that working?",
+      "range": {
+        "startLine": 83,
+        "startChar": 1,
+        "endLine": 83,
+        "endChar": 18
+      },
+      "revId": "bbd57db29002ae87c7059610a66db95c14b63678",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
