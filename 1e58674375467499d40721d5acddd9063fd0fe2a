@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "478b4602_f2abafe9",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6874,
+      "author": {
+        "id": 1274562
+      },
+      "writtenOn": "2018-03-08T07:19:29Z",
+      "side": 1,
+      "message": "Let’s trace how new_util is got.\n\nunsigned long min_util \u003d boosted_task_util(p)\nunsigned long wake_util, new_util;\nwake_util \u003d cpu_util_wake(i, p);\nnew_util \u003d wake_util + task_util(p);\nnew_util \u003d max(min_util, new_util);\n\nDoes it make sense to use “new_util” to check overutilization. \n“new_util” may be boosted task utilization instead of real task utilization.\nHow about taking “wake_util + task_util(p)” to check overutilization?",
+      "range": {
+        "startLine": 6874,
+        "startChar": 8,
+        "endLine": 6874,
+        "endChar": 16
+      },
+      "revId": "1e58674375467499d40721d5acddd9063fd0fe2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
