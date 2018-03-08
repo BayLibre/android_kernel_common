@@ -22,6 +22,30 @@
       "revId": "1e58674375467499d40721d5acddd9063fd0fe2a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6a055cd0_b677f793",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6874,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-03-08T14:07:44Z",
+      "side": 1,
+      "message": "Good point, I think originally we was not factoring in the boosted task utilization...\n\nHowever, it seems not correct to check against a new_util value which factors in the min_util. That\u0027s because we do not flag overutilized a system based on the boosted utilization, but only the actual utilization.\n\nI agree that this check should be done right after L6778, but only for !prefer_idle tasks... or we should probably better refactor the meaning new_util to be just \"wake_util + task_util(p)\", while at L6785 we should use the max clamping to update the value of \"min_util\" itself... and then fix all the usages in the code we have by checking to use the proper variable.",
+      "parentUuid": "478b4602_f2abafe9",
+      "range": {
+        "startLine": 6874,
+        "startChar": 8,
+        "endLine": 6874,
+        "endChar": 16
+      },
+      "revId": "1e58674375467499d40721d5acddd9063fd0fe2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
