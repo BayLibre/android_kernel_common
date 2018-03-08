@@ -21,22 +21,22 @@
  *
  * Usage from the guest is simply the following (error handling simplified):
  *
- *    int  fd = open("/dev/qemu_pipe",O_RDWR);
- *    .... write() or read() through the pipe.
+ *	int fd = open("/dev/qemu_pipe",O_RDWR);
+ *	.... write() or read() through the pipe.
  *
  * This driver doesn't deal with the exact protocol used during the session.
  * It is intended to be as simple as something like:
  *
- *    // do this _just_ after opening the fd to connect to a specific
- *    // emulator service.
- *    const char*  msg = "<pipename>";
- *    if (write(fd, msg, strlen(msg)+1) < 0) {
- *       ... could not connect to <pipename> service
- *       close(fd);
- *    }
+ *	// do this _just_ after opening the fd to connect to a specific
+ *	// emulator service.
+ *	const char*  msg = "<pipename>";
+ *	if (write(fd, msg, strlen(msg)+1) < 0) {
+ *		... could not connect to <pipename> service
+ *		close(fd);
+ *	}
  *
- *    // after this, simply read() and write() to communicate with the
- *    // service. Exact protocol details left as an exercise to the reader.
+ *	// after this, simply read() and write() to communicate with the
+ *	// service. Exact protocol details left as an exercise to the reader.
  *
  * This driver is very fast because it doesn't copy any data through
  * intermediate buffers, since the emulator is capable of translating
@@ -329,7 +329,7 @@ static void populate_rw_params(
 	command->rw_params.buffers_count = buffer_idx + 1;
 }
 
-static int transfer_max_buffers(struct goldfish_pipe* pipe,
+static int transfer_max_buffers(struct goldfish_pipe *pipe,
 	unsigned long address, unsigned long address_end, int is_write,
 	unsigned long last_page, unsigned int last_page_size,
 	s32 *consumed_size, int *status)
@@ -808,12 +808,12 @@ static int goldfish_pipe_device_init_v2(struct platform_device *pdev)
 	 * is to just allocate a page and place the buffers in it.
 	 */
 	BUG_ON(sizeof(*dev->buffers) > PAGE_SIZE);
-	page = (char*)__get_free_page(GFP_KERNEL);
+	page = (char *)__get_free_page(GFP_KERNEL);
 	if (!page) {
 		kfree(dev->pipes);
 		return -ENOMEM;
 	}
-	dev->buffers = (struct goldfish_pipe_dev_buffers*)page;
+	dev->buffers = (struct goldfish_pipe_dev_buffers *)page;
 
 	/* Send the buffer addresses to the host */
 	{

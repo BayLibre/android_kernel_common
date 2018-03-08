@@ -265,8 +265,8 @@ static ssize_t goldfish_pipe_read_write(struct file *filp, char __user *buffer,
 		if (requested_pages > MAX_PAGES_TO_GRAB) {
 			requested_pages = MAX_PAGES_TO_GRAB;
 		}
-		ret = get_user_pages_fast(first_page, requested_pages,
-				!is_write, pages);
+		ret = get_user_pages_fast(first_page,
+				requested_pages, !is_write, pages);
 
 		pr_debug("%s: requested pages: %d %ld %p\n", __func__, ret,
 			requested_pages, (void*)first_page);
