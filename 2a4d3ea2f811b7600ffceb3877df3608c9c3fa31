@@ -178,6 +178,30 @@
     },
     {
       "key": {
+        "uuid": "88483f36_e49451af",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1463,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2018-03-08T22:49:17Z",
+      "side": 1,
+      "message": "Why are you setting FLAT_BINDER_FLAG_THREAD in that case? There are other pids that can be kernel tasks or non-existing tasks, so there is no need treat pid 0 any different from the drivers point of view.",
+      "parentUuid": "dc377f82_235d2438",
+      "range": {
+        "startLine": 1463,
+        "startChar": 17,
+        "endLine": 1463,
+        "endChar": 22
+      },
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "384460de_5c350293",
         "filename": "drivers/android/binder.c",
         "patchSetId": 9
