@@ -202,6 +202,30 @@
     },
     {
       "key": {
+        "uuid": "c0c6147d_2fc24b56",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1463,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-03-09T06:37:56Z",
+      "side": 1,
+      "message": "See my comment in the UAPI header, I thought it would be easy if userspace could always use the new structure even without assigning a thread. But I guess it could also use the new structure without setting the flag - the kernel won\u0027t access the field in that case.",
+      "parentUuid": "88483f36_e49451af",
+      "range": {
+        "startLine": 1463,
+        "startChar": 17,
+        "endLine": 1463,
+        "endChar": 22
+      },
+      "revId": "2a4d3ea2f811b7600ffceb3877df3608c9c3fa31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "384460de_5c350293",
         "filename": "drivers/android/binder.c",
         "patchSetId": 9
