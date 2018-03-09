@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "782e7c80_40c32417",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6791,
+      "author": {
+        "id": 1125654
+      },
+      "writtenOn": "2018-03-09T17:43:36Z",
+      "side": 1,
+      "message": "Due to the way that these conditions are cascaded, the order in which you consider CPUs is still important. For example, if you start with a big CPU, there is a chance you will end up selecting a big CPU, if its spare capacity is higher than the one of smaller CPUs encountered later. If you start with a smaller CPU, later conditions will not even be evaluated for bigger CPUs.\n\nBefore this patch, the order was determined by the task being boosted or not. Now, the behaviour is inconsistent depending on the current CPU, which determines the CPU you start with. This applies for this case C) and for case B) as well; there is a possibility you\u0027ll select a higher capacity CPU with a more shallow idle state, despite there being a lower capacity CPU with a deeper idle state (if sysctl_sched_cstate_aware).\n\nThe removal of the prefer_idle case makes the solution for this easier, if we agree on the selection of lower capacity CPUs as a priority over other conditions (equivalent with always starting with little CPUs) for these non-latency sensitive tasks. I believe it should be the case, and in my opinion the solution (without considering order) should be to only evaluate spare capacity or idle state only for CPUs that are found to have the same capacity_orig as the one with the minimum found so far.",
+      "revId": "314e75b5c23a2b84adb4fe5fadfde27a2f55a48c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f8032005_fe9412a7",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 9
