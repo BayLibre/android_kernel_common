@@ -6694,7 +6694,7 @@ done:
 
 	return target;
 }
- 
+
 /*
  * cpu_util_wake: Compute cpu utilization with any contributions from
  * the waking task p removed.  check_for_migration() looks for a better CPU of
@@ -6779,7 +6779,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 		for_each_cpu_and(i, tsk_cpus_allowed(p), sched_group_cpus(sg)) {
 			unsigned long capacity_curr = capacity_curr_of(i);
 			unsigned long capacity_orig = capacity_orig_of(i);
-			unsigned long wake_util, new_util, min_capped_util;
+			unsigned long wake_util, new_util, real_util, min_capped_util;
 
 			if (!cpu_online(i))
 				continue;
@@ -6793,14 +6793,14 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 			 * accounting. However, the blocked utilization may be zero.
 			 */
 			wake_util = cpu_util_wake(i, p);
-			new_util = wake_util + task_util(p);
+			real_util = wake_util + task_util(p);
 
 			/*
 			 * Ensure minimum capacity to grant the required boost.
 			 * The target CPU can be already at a capacity level higher
 			 * than the one required to boost the task.
 			 */
-			new_util = max(min_util, new_util);
+			new_util = max(min_util, real_util);
 
 			/*
 			 * Include minimum capacity constraint:
@@ -6899,7 +6899,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 			 * The goal here is to remain in EAS mode as long as
 			 * possible at least for !prefer_idle tasks.
 			 */
-			if ((new_util * capacity_margin) >
+			if ((real_util * capacity_margin) >
 			    (capacity_orig * SCHED_CAPACITY_SCALE))
 				continue;
 
@@ -7038,7 +7038,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 /*
  * Disable WAKE_AFFINE in the case where task @p doesn't fit in the
  * capacity of either the waking CPU @cpu or the previous CPU @prev_cpu.
- * 
+ *
  * In that case WAKE_AFFINE doesn't make sense and we'll let
  * BALANCE_WAKE sort things out.
  */
