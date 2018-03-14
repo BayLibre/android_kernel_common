@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68b9bfdf_d05c9acb",
+        "filename": "include/linux/bpf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2018-03-14T18:22:02Z",
+      "side": 1,
+      "message": "To reduce chances of future conflicts, perhaps add a Vertical Space before the #else.\n\n\u003cnit tossing coin in air\u003e and _maybe_ add /* !CONFIG_BPF_SYSCALL */ to #else introduced in commit 9c270af37bb62e708e3e4415d653ce73e713df02 to help reduce conflicts (NB: 9c270 introduces that change as one fragment, so it is an easy conflict to resolve).\n\nstruct bpf_prog *bpf_prog_get_type_path(const char *name, enum bpf_prog_type type);\n\n#else",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 311,
+        "endChar": 5
+      },
+      "revId": "180917d5dd242f8ae2804973394d3bd18acd8d3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
