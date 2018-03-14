@@ -62,12 +62,12 @@ struct ns_mem_page_info {
 	uint64_t attr;
 };
 
-int trusty_encode_page_info(struct ns_mem_page_info *inf,
-			    struct page *page, pgprot_t pgprot);
+int trusty_encode_page_info(struct ns_mem_page_info *inf, struct page *page,
+			    pgprot_t pgprot, bool writable);
 
 int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 			  struct page *page,  u32 size,
-			  pgprot_t pgprot);
+			  pgprot_t pgprot, bool writable);
 
 struct trusty_nop {
 	struct list_head node;
