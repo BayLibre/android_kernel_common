@@ -165,7 +165,7 @@ static int trusty_load_device_descr(struct trusty_ctx *tctx,
 
 	ret = trusty_call32_mem_buf(tctx->dev->parent,
 				    SMC_SC_VIRTIO_GET_DESCR,
-				    virt_to_page(va), sz, PAGE_KERNEL);
+				    virt_to_page(va), sz, PAGE_KERNEL, true);
 	if (ret < 0) {
 		dev_err(tctx->dev, "%s: virtio get descr returned (%d)\n",
 			__func__, ret);
@@ -181,7 +181,7 @@ static void trusty_virtio_stop(struct trusty_ctx *tctx, void *va, size_t sz)
 	dev_dbg(tctx->dev, "%s: %zu bytes @ %p\n", __func__, sz, va);
 
 	ret = trusty_call32_mem_buf(tctx->dev->parent, SMC_SC_VIRTIO_STOP,
-				    virt_to_page(va), sz, PAGE_KERNEL);
+				    virt_to_page(va), sz, PAGE_KERNEL, false);
 	if (ret) {
 		dev_err(tctx->dev, "%s: virtio done returned (%d)\n",
 			__func__, ret);
@@ -197,7 +197,7 @@ static int trusty_virtio_start(struct trusty_ctx *tctx,
 	dev_dbg(tctx->dev, "%s: %zu bytes @ %p\n", __func__, sz, va);
 
 	ret = trusty_call32_mem_buf(tctx->dev->parent, SMC_SC_VIRTIO_START,
-				    virt_to_page(va), sz, PAGE_KERNEL);
+				    virt_to_page(va), sz, PAGE_KERNEL, false);
 	if (ret) {
 		dev_err(tctx->dev, "%s: virtio start returned (%d)\n",
 			__func__, ret);
