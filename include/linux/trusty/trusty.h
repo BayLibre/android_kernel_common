@@ -17,7 +17,7 @@
 #include <linux/kernel.h>
 #include <linux/trusty/sm_err.h>
 #include <linux/device.h>
-#include <linux/pagemap.h>
+#include <linux/mm.h>
 
 
 #ifdef CONFIG_TRUSTY
@@ -62,12 +62,12 @@ struct ns_mem_page_info {
 	uint64_t attr;
 };
 
-int trusty_encode_page_info(struct ns_mem_page_info *inf,
-			    struct page *page, pgprot_t pgprot);
+int trusty_encode_page_info(struct ns_mem_page_info *inf, struct page *page,
+			    pgprot_t pgprot, vm_flags_t vm_flags);
 
 int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 			  struct page *page,  u32 size,
-			  pgprot_t pgprot);
+			  pgprot_t pgprot, vm_flags_t vm_flags);
 
 struct trusty_nop {
 	struct list_head node;

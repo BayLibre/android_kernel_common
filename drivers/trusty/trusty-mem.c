@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Google, Inc.
+ * Copyright (C) 2015-2019 Google, Inc.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -12,23 +12,41 @@
  *
  */
 
-#include <linux/types.h>
+#include <linux/bits.h>
+#include <linux/mm.h>
 #include <linux/printk.h>
+#include <linux/types.h>
 #include <linux/trusty/trusty.h>
 #include <linux/trusty/smcall.h>
 
-static int get_mem_attr(struct page *page, pgprot_t pgprot)
+#define TRUSTY_PTE_USER   BIT(6)
+#define TRUSTY_PTE_RDONLY BIT(7)
+
+#define TRUSTY_PTE_INNER_SHAREABLE (3UL << 8)
+
+static u64 mk_ns_attr(u64 pte, u64 mair)
 {
+	return (pte & 0x0000FFFFFFFFFFFFull) | (mair << 48);
+}
+
 #if defined(CONFIG_ARM64)
-	uint64_t mair;
-	uint attr_index = (pgprot_val(pgprot) & PTE_ATTRINDX_MASK) >> 2;
+static int encode_page_inf(struct ns_mem_page_info *inf, pte_t pte)
+{
+	u64 mair;
+	uint attr_index = (pte_val(pte) & PTE_ATTRINDX_MASK) >> 2;
 
 	asm ("mrs %0, mair_el1\n" : "=&r" (mair));
-	return (mair >> (attr_index * 8)) & 0xff;
+	mair = (mair >> (attr_index * 8)) & 0xff;
 
+	inf->attr = mk_ns_attr(pte_val(pte), mair);
+	return 0;
+}
 #elif defined(CONFIG_ARM_LPAE)
-	uint32_t mair;
-	uint attr_index = ((pgprot_val(pgprot) & L_PTE_MT_MASK) >> 2);
+static int encode_page_inf(struct ns_mem_page_info *inf, pte_t pte)
+{
+	u32 mair;
+	u64 val;
+	uint attr_index = ((pte_val(pte) & L_PTE_MT_MASK) >> 2);
 
 	if (attr_index >= 4) {
 		attr_index -= 4;
@@ -36,80 +54,103 @@ static int get_mem_attr(struct page *page, pgprot_t pgprot)
 	} else {
 		asm volatile("mrc p15, 0, %0, c10, c2, 0\n" : "=&r" (mair));
 	}
-	return (mair >> (attr_index * 8)) & 0xff;
+	mair = (mair >> (attr_index * 8)) & 0xff;
 
+	/*
+	 * Patch RDONLY attribute as linux pte format for LPAE does not match
+	 * format that Trusty expects. The rest of bits are compatible.
+	 */
+	val = pte_val(pte);
+	if (val & L_PTE_RDONLY)
+		val |= TRUSTY_PTE_RDONLY;
+	else
+		val &= ~TRUSTY_PTE_RDONLY;
+
+	inf->attr = mk_ns_attr(val, mair);
+	return 0;
+}
 #elif defined(CONFIG_ARM)
+static int encode_page_inf(struct ns_mem_page_info *inf, pte_t pte)
+{
+	u32 mair;
+	u64 val = page_to_phys(pte_page(pte));
+
 	/* check memory type */
-	switch (pgprot_val(pgprot) & L_PTE_MT_MASK) {
+	switch (pte_val(pte) & L_PTE_MT_MASK) {
 	case L_PTE_MT_WRITEALLOC:
 		/* Normal: write back write allocate */
-		return 0xFF;
+		mair = 0xFF;
+		break;
 
 	case L_PTE_MT_BUFFERABLE:
 		/* Normal: non-cacheble */
-		return 0x44;
+		mair = 0x44;
+		break;
 
 	case L_PTE_MT_WRITEBACK:
 		/* Normal: writeback, read allocate */
-		return 0xEE;
+		mair = 0xEE;
+		break;
 
 	case L_PTE_MT_WRITETHROUGH:
 		/* Normal: write through */
-		return 0xAA;
+		mair = 0xAA;
+		break;
 
 	case L_PTE_MT_UNCACHED:
 		/* strongly ordered */
-		return 0x00;
+		mair = 0x00;
+		break;
 
 	case L_PTE_MT_DEV_SHARED:
 	case L_PTE_MT_DEV_NONSHARED:
 		/* device */
-		return 0x04;
+		mair = 0x04;
+		break;
 
 	default:
 		return -EINVAL;
 	}
-#else
-	return 0;
-#endif
-}
 
-int trusty_encode_page_info(struct ns_mem_page_info *inf,
-			    struct page *page, pgprot_t pgprot)
+	/* add other attributes */
+	if (pte_val(pte) & L_PTE_USER)
+		val |= TRUSTY_PTE_USER;
+
+	if (pte_val(pte) & L_PTE_RDONLY)
+		val |= TRUSTY_PTE_RDONLY;
+
+	if (pte_val(pte) & L_PTE_SHARED)
+		val |= TRUSTY_PTE_INNER_SHAREABLE;
+
+	inf->attr = mk_ns_attr(val, mair);
+	return 0;
+}
+#else
+static int encode_page_inf(struct ns_mem_page_info *inf, u64 pte,
+			   pgprot_t pgprot, vm_flags_t vm_flags)
 {
-	int mem_attr;
-	uint64_t pte;
+	return -EINVAL;
+}
+#endif
+
+int trusty_encode_page_info(struct ns_mem_page_info *inf, struct page *page,
+			    pgprot_t pgprot, vm_flags_t vm_flags)
+{
+	pte_t pte;
 
 	if (!inf || !page)
 		return -EINVAL;
 
-	/* get physical address */
-	pte = (uint64_t) page_to_phys(page);
+	pte = mk_pte(page, pgprot);
+	if (vm_flags & VM_WRITE)
+		pte = pte_mkwrite(pte);
 
-	/* get memory attributes */
-	mem_attr = get_mem_attr(page, pgprot);
-	if (mem_attr < 0)
-		return mem_attr;
-
-	/* add other attributes */
-#if defined(CONFIG_ARM64) || defined(CONFIG_ARM_LPAE)
-	pte |= pgprot_val(pgprot);
-#elif defined(CONFIG_ARM)
-	if (pgprot_val(pgprot) & L_PTE_USER)
-		pte |= (1 << 6);
-	if (pgprot_val(pgprot) & L_PTE_RDONLY)
-		pte |= (1 << 7);
-	if (pgprot_val(pgprot) & L_PTE_SHARED)
-		pte |= (3 << 8); /* inner sharable */
-#endif
-
-	inf->attr = (pte & 0x0000FFFFFFFFFFFFull) | ((uint64_t)mem_attr << 48);
-	return 0;
+	return encode_page_inf(inf, pte);
 }
 
 int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 			  struct page *page,  u32 size,
-			  pgprot_t pgprot)
+			  pgprot_t pgprot, vm_flags_t vm_flags)
 {
 	int ret;
 	struct ns_mem_page_info pg_inf;
@@ -117,7 +158,7 @@ int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 	if (!dev || !page)
 		return -EINVAL;
 
-	ret = trusty_encode_page_info(&pg_inf, page, pgprot);
+	ret = trusty_encode_page_info(&pg_inf, page, pgprot, vm_flags);
 	if (ret)
 		return ret;
 
@@ -131,4 +172,3 @@ int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 					 (u32)(pg_inf.attr >> 32), size);
 	}
 }
-
