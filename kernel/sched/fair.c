@@ -6875,16 +6875,10 @@ static inline int task_fits_capacity(struct task_struct *p, long capacity)
 	return capacity * 1024 > boosted_task_util(p) * capacity_margin;
 }
 
-static int start_cpu(bool boosted)
-{
-	struct root_domain *rd = cpu_rq(smp_processor_id())->rd;
-
-	return boosted ? rd->max_cap_orig_cpu : rd->min_cap_orig_cpu;
-}
-
 static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 				   bool boosted, bool prefer_idle)
 {
+	struct root_domain *rd = cpu_rq(smp_processor_id())->rd;
 	unsigned long min_util = boosted_task_util(p);
 	unsigned long target_capacity = ULONG_MAX;
 	unsigned long min_wake_util = ULONG_MAX;
@@ -6897,7 +6891,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 	int best_active_cpu = -1;
 	int best_idle_cpu = -1;
 	int target_cpu = -1;
-	int cpu, i;
+	int start_cpu, i;
 
 	*backup_cpu = -1;
 
@@ -6913,13 +6907,18 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 	if (prefer_idle && boosted)
 		target_capacity = 0;
 
-	/* Find start CPU based on boost value */
-	cpu = start_cpu(boosted);
-	if (cpu < 0)
+	/*
+	 * Start from the first maximum capacity CPU.
+	 * This will increase the chances to select a reserved CPU for
+	 * prefer_idle and boosted tasks while not impacting the selection
+	 * of the most energy efficient CPUs in the other cases.
+	 */
+	start_cpu = rd->max_cap_orig_cpu;
+	if (start_cpu < 0)
 		return -1;
 
 	/* Find SD for the start CPU */
-	sd = rcu_dereference(per_cpu(sd_ea, cpu));
+	sd = rcu_dereference(per_cpu(sd_ea, start_cpu));
 	if (!sd)
 		return -1;
 
@@ -7173,9 +7172,9 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 	 */
 
 	if (prefer_idle && (best_idle_cpu != -1)) {
-		trace_sched_find_best_target(p, prefer_idle, min_util, cpu,
-					     best_idle_cpu, best_active_cpu,
-					     best_idle_cpu);
+		trace_sched_find_best_target(p, prefer_idle, min_util,
+					     start_cpu, best_idle_cpu,
+					     best_active_cpu, best_idle_cpu);
 
 		return best_idle_cpu;
 	}
@@ -7189,9 +7188,9 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 		? best_active_cpu
 		: best_idle_cpu;
 
-	trace_sched_find_best_target(p, prefer_idle, min_util, cpu,
-				     best_idle_cpu, best_active_cpu,
-				     target_cpu);
+	trace_sched_find_best_target(p, prefer_idle, min_util,
+				     start_cpu, best_idle_cpu,
+				     best_active_cpu, target_cpu);
 
 	/* it is possible for target and backup
 	 * to select same CPU - if so, drop backup
