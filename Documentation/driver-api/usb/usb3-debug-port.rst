@@ -98,3 +98,71 @@ you to check the sanity of the setup.
 	cat /dev/ttyUSB0
 	done
 	===== end of bash scripts ===============
+
+Serial TTY
+==========
+
+DbC has also been designed for a serial TTY device at runtime.
+One use of this is running a login service on the debug target.
+Hence it can be remote accessed by the debug host. Another use
+can probably be found in servers. It provides a peer-to-peer USB
+link between two host-only machines. This provides a reasonable
+out-of-band communication method between two servers.
+
+In order to use this, you need to make sure your kernel has been
+configured to support USB_XHCI_DBGCAP. A sysfs attribute under
+the xHCI device node is used to enable or disable DbC. By default,
+DbC is disabled::
+
+	root@target:/sys/bus/pci/devices/0000:00:14.0# cat dbc
+	disabled
+
+Enable DbC with the following command::
+
+	root@target:/sys/bus/pci/devices/0000:00:14.0# echo enable > dbc
+
+You can check the DbC state at anytime::
+
+	root@target:/sys/bus/pci/devices/0000:00:14.0# cat dbc
+	enabled
+
+Connect the debug target to the debug host with a USB 3.0 super-
+speed A-to-A debugging cable. You can see the /dev/ttyDBC0 created
+on the debug target. You will see below kernel message lines::
+
+	root@target: tail -f /var/log/kern.log
+	[  182.730103] xhci_hcd 0000:00:14.0: DbC connected
+	[  191.169420] xhci_hcd 0000:00:14.0: DbC configured
+	[  191.169597] xhci_hcd 0000:00:14.0: DbC now attached to /dev/ttyDBC0
+
+Accordingly, the DbC state has been brought up to::
+
+	root@host:/sys/bus/pci/devices/0000:00:14.0# cat dbc
+	configured
+
+On the debug host, you will see the debug device has been enumerated.
+You will see below kernel message lines::
+
+	root@host: tail -f /var/log/kern.log
+	[   79.454780] usb 2-2.1: new SuperSpeed USB device number 3 using xhci_hcd
+	[   79.475003] usb 2-2.1: LPM exit latency is zeroed, disabling LPM.
+	[   79.475389] usb 2-2.1: New USB device found, idVendor=1d6b, idProduct=0004
+	[   79.475390] usb 2-2.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+	[   79.475391] usb 2-2.1: Product: Remote GDB
+	[   79.475392] usb 2-2.1: Manufacturer: Linux
+	[   79.475393] usb 2-2.1: SerialNumber: 0001
+	[   79.660368] usb_debug 2-2.1:1.0: xhci_dbc converter detected
+	[   79.660439] usb 2-2.1: xhci_dbc converter now attached to ttyUSB0
+
+You can simply verify whether it works by::
+
+	# On target side
+	root@target: echo "Hello world" > /dev/ttyDBC0
+
+	# On host side
+	root@host: cat /dev/ttyUSB0
+	Hello world
+
+	# vice versa
+
+You have a workable serial link over USB now.

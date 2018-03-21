@@ -32,6 +32,7 @@
 #include "xhci.h"
 #include "xhci-trace.h"
 #include "xhci-mtk.h"
+#include "xhci-dbgcap.h"
 
 #define DRIVER_AUTHOR "Sarah Sharp"
 #define DRIVER_DESC "'eXtensible' Host Controller (xHC) Driver"
@@ -632,6 +633,9 @@ int xhci_run(struct usb_hcd *hcd)
 	}
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
 			"Finished xhci_run for USB2 roothub");
+
+	dbc_create_sysfs_file(xhci);
+
 	return 0;
 }
 EXPORT_SYMBOL_GPL(xhci_run);
@@ -659,6 +663,8 @@ static void xhci_stop(struct usb_hcd *hcd)
 		mutex_unlock(&xhci->mutex);
 		return;
 	}
+
+	dbc_remove_sysfs_file(xhci);
 
 	spin_lock_irq(&xhci->lock);
 	xhci->xhc_state |= XHCI_STATE_HALTED;
@@ -876,6 +882,8 @@ int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup)
 			xhci->shared_hcd->state != HC_STATE_SUSPENDED)
 		return -EINVAL;
 
+	xhci_dbc_suspend(xhci);
+
 	/* Clear root port wake on bits if wakeup not allowed. */
 	if (!do_wakeup)
 		xhci_disable_port_wake_on_bits(xhci);
@@ -1073,6 +1081,8 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 	 */
 
 	spin_unlock_irq(&xhci->lock);
+
+	xhci_dbc_resume(xhci);
 
  done:
 	if (retval == 0) {
@@ -1706,8 +1716,7 @@ static int xhci_add_endpoint(struct usb_hcd *hcd, struct usb_device *udev,
 	if (xhci->quirks & XHCI_MTK_HOST) {
 		ret = xhci_mtk_add_ep_quirk(hcd, udev, ep);
 		if (ret < 0) {
-			xhci_ring_free(xhci, virt_dev->eps[ep_index].new_ring);
-			virt_dev->eps[ep_index].new_ring = NULL;
+			xhci_free_endpoint_ring(xhci, virt_dev, ep_index);
 			return ret;
 		}
 	}
@@ -4807,8 +4816,7 @@ int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks)
 		 */
 		hcd->has_tt = 1;
 	} else {
-		/* Some 3.1 hosts return sbrn 0x30, can't rely on sbrn alone */
-		if (xhci->sbrn == 0x31 || xhci->usb3_rhub.min_rev >= 1) {
+		if (xhci->sbrn == 0x31) {
 			xhci_info(xhci, "Host supports USB 3.1 Enhanced SuperSpeed\n");
 			hcd->speed = HCD_USB31;
 			hcd->self.root_hub->speed = USB_SPEED_SUPER_PLUS;

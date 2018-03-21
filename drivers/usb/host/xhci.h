@@ -311,19 +311,12 @@ struct xhci_op_regs {
  */
 #define PORT_PLS_MASK	(0xf << 5)
 #define XDEV_U0		(0x0 << 5)
-#define XDEV_U1		(0x1 << 5)
 #define XDEV_U2		(0x2 << 5)
 #define XDEV_U3		(0x3 << 5)
-#define XDEV_DISABLED	(0x4 << 5)
-#define XDEV_RXDETECT	(0x5 << 5)
 #define XDEV_INACTIVE	(0x6 << 5)
 #define XDEV_POLLING	(0x7 << 5)
-#define XDEV_RECOVERY	(0x8 << 5)
-#define XDEV_HOT_RESET	(0x9 << 5)
-#define XDEV_COMP_MODE	(0xa << 5)
-#define XDEV_TEST_MODE	(0xb << 5)
+#define XDEV_COMP_MODE  (0xa << 5)
 #define XDEV_RESUME	(0xf << 5)
-
 /* true: port has power (see HCC_PPC) */
 #define PORT_POWER	(1 << 9)
 /* bits 10:13 indicate device speed:
@@ -736,8 +729,6 @@ struct xhci_ep_ctx {
 #define CTX_TO_EP_MAXPSTREAMS(p)	(((p) & EP_MAXPSTREAMS_MASK) >> 10)
 /* Endpoint is set up with a Linear Stream Array (vs. Secondary Stream Array) */
 #define	EP_HAS_LSA		(1 << 15)
-/* hosts with LEC=1 use bits 31:24 as ESIT high bits. */
-#define CTX_TO_MAX_ESIT_PAYLOAD_HI(p)	(((p) >> 24) & 0xff)
 
 /* ep_info2 bitmasks */
 /*
@@ -1684,7 +1675,7 @@ struct xhci_bus_state {
 
 static inline unsigned int hcd_index(struct usb_hcd *hcd)
 {
-	if (hcd->speed >= HCD_USB3)
+	if (hcd->speed == HCD_USB3)
 		return 0;
 	else
 		return 1;
@@ -1829,7 +1820,7 @@ struct xhci_hcd {
 /* For controller with a broken Port Disable implementation */
 #define XHCI_BROKEN_PORT_PED	(1 << 25)
 #define XHCI_LIMIT_ENDPOINT_INTERVAL_7	(1 << 26)
-/* Reserved. It was XHCI_U2_DISABLE_WAKE */
+#define XHCI_U2_DISABLE_WAKE	(1 << 27)
 #define XHCI_ASMEDIA_MODIFY_FLOWCONTROL	(1 << 28)
 #define XHCI_SUSPEND_DELAY	(1 << 30)
 
@@ -1861,6 +1852,7 @@ struct xhci_hcd {
 /* Compliance Mode Timer Triggered every 2 seconds */
 #define COMP_MODE_RCVRY_MSECS 2000
 
+	void			*dbc;
 	/* platform-specific data -- must come last */
 	unsigned long		priv[0] __aligned(sizeof(s64));
 };
@@ -1970,9 +1962,17 @@ void xhci_slot_copy(struct xhci_hcd *xhci,
 int xhci_endpoint_init(struct xhci_hcd *xhci, struct xhci_virt_device *virt_dev,
 		struct usb_device *udev, struct usb_host_endpoint *ep,
 		gfp_t mem_flags);
+struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci,
+		unsigned int num_segs, unsigned int cycle_state,
+		enum xhci_ring_type type, unsigned int max_packet, gfp_t flags);
 void xhci_ring_free(struct xhci_hcd *xhci, struct xhci_ring *ring);
 int xhci_ring_expansion(struct xhci_hcd *xhci, struct xhci_ring *ring,
-				unsigned int num_trbs, gfp_t flags);
+		unsigned int num_trbs, gfp_t flags);
+int xhci_alloc_erst(struct xhci_hcd *xhci,
+		struct xhci_ring *evt_ring,
+		struct xhci_erst *erst,
+		gfp_t flags);
+void xhci_free_erst(struct xhci_hcd *xhci, struct xhci_erst *erst);
 void xhci_free_endpoint_ring(struct xhci_hcd *xhci,
 		struct xhci_virt_device *virt_dev,
 		unsigned int ep_index);
@@ -2002,6 +2002,10 @@ struct xhci_command *xhci_alloc_command(struct xhci_hcd *xhci,
 void xhci_urb_free_priv(struct urb_priv *urb_priv);
 void xhci_free_command(struct xhci_hcd *xhci,
 		struct xhci_command *command);
+struct xhci_container_ctx *xhci_alloc_container_ctx(struct xhci_hcd *xhci,
+		int type, gfp_t flags);
+void xhci_free_container_ctx(struct xhci_hcd *xhci,
+		struct xhci_container_ctx *ctx);
 
 /* xHCI host controller glue */
 typedef void (*xhci_get_quirks_t)(struct device *, struct xhci_hcd *);
@@ -2076,6 +2080,8 @@ void xhci_handle_command_timeout(struct work_struct *work);
 void xhci_ring_ep_doorbell(struct xhci_hcd *xhci, unsigned int slot_id,
 		unsigned int ep_index, unsigned int stream_id);
 void xhci_cleanup_command_queue(struct xhci_hcd *xhci);
+void inc_deq(struct xhci_hcd *xhci, struct xhci_ring *ring);
+unsigned int count_trbs(u64 addr, u64 len);
 
 /* xHCI roothub code */
 void xhci_set_link_state(struct xhci_hcd *xhci, __le32 __iomem **port_array,
@@ -2403,87 +2409,6 @@ static inline const char *xhci_decode_slot_context(u32 info, u32 info2,
 	return str;
 }
 
-
-static inline const char *xhci_portsc_link_state_string(u32 portsc)
-{
-	switch (portsc & PORT_PLS_MASK) {
-	case XDEV_U0:
-		return "U0";
-	case XDEV_U1:
-		return "U1";
-	case XDEV_U2:
-		return "U2";
-	case XDEV_U3:
-		return "U3";
-	case XDEV_DISABLED:
-		return "Disabled";
-	case XDEV_RXDETECT:
-		return "RxDetect";
-	case XDEV_INACTIVE:
-		return "Inactive";
-	case XDEV_POLLING:
-		return "Polling";
-	case XDEV_RECOVERY:
-		return "Recovery";
-	case XDEV_HOT_RESET:
-		return "Hot Reset";
-	case XDEV_COMP_MODE:
-		return "Compliance mode";
-	case XDEV_TEST_MODE:
-		return "Test mode";
-	case XDEV_RESUME:
-		return "Resume";
-	default:
-		break;
-	}
-	return "Unknown";
-}
-
-static inline const char *xhci_decode_portsc(u32 portsc)
-{
-	static char str[256];
-	int ret;
-
-	ret = sprintf(str, "%s %s %s Link:%s ",
-		      portsc & PORT_POWER	? "Powered" : "Powered-off",
-		      portsc & PORT_CONNECT	? "Connected" : "Not-connected",
-		      portsc & PORT_PE		? "Enabled" : "Disabled",
-		      xhci_portsc_link_state_string(portsc));
-
-	if (portsc & PORT_OC)
-		ret += sprintf(str + ret, "OverCurrent ");
-	if (portsc & PORT_RESET)
-		ret += sprintf(str + ret, "In-Reset ");
-
-	ret += sprintf(str + ret, "Change: ");
-	if (portsc & PORT_CSC)
-		ret += sprintf(str + ret, "CSC ");
-	if (portsc & PORT_PEC)
-		ret += sprintf(str + ret, "PEC ");
-	if (portsc & PORT_WRC)
-		ret += sprintf(str + ret, "WRC ");
-	if (portsc & PORT_OCC)
-		ret += sprintf(str + ret, "OCC ");
-	if (portsc & PORT_RC)
-		ret += sprintf(str + ret, "PRC ");
-	if (portsc & PORT_PLC)
-		ret += sprintf(str + ret, "PLC ");
-	if (portsc & PORT_CEC)
-		ret += sprintf(str + ret, "CEC ");
-	if (portsc & PORT_CAS)
-		ret += sprintf(str + ret, "CAS ");
-
-	ret += sprintf(str + ret, "Wake: ");
-	if (portsc & PORT_WKCONN_E)
-		ret += sprintf(str + ret, "WCE ");
-	if (portsc & PORT_WKDISC_E)
-		ret += sprintf(str + ret, "WDE ");
-	if (portsc & PORT_WKOC_E)
-		ret += sprintf(str + ret, "WOE ");
-
-	return str;
-}
-
 static inline const char *xhci_ep_state_string(u8 state)
 {
 	switch (state) {
@@ -2545,8 +2470,8 @@ static inline const char *xhci_decode_ep_context(u32 info, u32 info2, u64 deq,
 	bool lsa;
 	bool hid;
 
-	esit = CTX_TO_MAX_ESIT_PAYLOAD_HI(info) << 16 |
-		CTX_TO_MAX_ESIT_PAYLOAD(tx_info);
+	esit = EP_MAX_ESIT_PAYLOAD_HI(info) << 16 |
+		EP_MAX_ESIT_PAYLOAD_LO(tx_info);
 
 	ep_state = info & EP_STATE_MASK;
 	max_pstr = CTX_TO_EP_MAXPSTREAMS(info);
