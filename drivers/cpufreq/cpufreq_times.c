@@ -289,7 +289,6 @@ int proc_time_in_state_show(struct seq_file *m, struct pid_namespace *ns,
 	unsigned int cpu, i;
 	cputime_t cputime;
 	unsigned long flags;
-	u64 *times;
 	struct cpu_freqs *freqs;
 	struct cpu_freqs *last_freqs = NULL;
 
@@ -307,7 +306,7 @@ int proc_time_in_state_show(struct seq_file *m, struct pid_namespace *ns,
 			cputime = 0;
 			if (freqs->offset + i < p->max_state &&
 			    p->time_in_state)
-				cputime = times[freqs->offset + i];
+				cputime = p->time_in_state[freqs->offset + i];
 			seq_printf(m, "%u %lu\n", freqs->freq_table[i],
 				   (unsigned long)cputime_to_clock_t(cputime));
 		}
@@ -401,6 +400,7 @@ void cpufreq_task_times_remove_uids(uid_t uid_start, uid_t uid_end)
 
 	spin_unlock_irqrestore(&uid_lock, flags);
 }
+
 
 void cpufreq_times_record_transition(struct cpufreq_freqs *freq)
 {
