@@ -49,7 +49,12 @@
 #include <linux/kdebug.h>
 #include <linux/kallsyms.h>
 #include <linux/ftrace.h>
+<<<<<<< HEAD   (64bc01 Replace #define with enum for better compilation errors.)
 #include <linux/kasan.h>
+=======
+#include <linux/moduleloader.h>
+
+>>>>>>> BRANCH (2cad7a Linux 4.4.127)
 #include <asm/cacheflush.h>
 #include <asm/desc.h>
 #include <asm/pgtable.h>
@@ -400,6 +405,14 @@ int __copy_instruction(u8 *dest, u8 *src)
 	}
 #endif
 	return length;
+}
+
+/* Recover page to RW mode before releasing it */
+void free_insn_page(void *page)
+{
+	set_memory_nx((unsigned long)page & PAGE_MASK, 1);
+	set_memory_rw((unsigned long)page & PAGE_MASK, 1);
+	module_memfree(page);
 }
 
 static int arch_copy_kprobe(struct kprobe *p)
