@@ -425,7 +425,11 @@ static int __init map_entry_trampoline(void)
 {
 	extern char __entry_tramp_text_start[];
 
+<<<<<<< HEAD   (4fb542 ANDROID: fuse: Add null terminator to path in canonical path)
 	pgprot_t prot = PAGE_KERNEL_EXEC;
+=======
+	pgprot_t prot = rodata_enabled ? PAGE_KERNEL_ROX : PAGE_KERNEL_EXEC;
+>>>>>>> BRANCH (d32da5 Linux 4.9.93)
 	phys_addr_t pa_start = __pa_symbol(__entry_tramp_text_start);
 
 	/* The trampoline is always mapped and can therefore be global */

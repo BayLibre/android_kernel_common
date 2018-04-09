@@ -16,9 +16,13 @@
 #ifndef __ASM_MMU_H
 #define __ASM_MMU_H
 
+<<<<<<< HEAD   (4fb542 ANDROID: fuse: Add null terminator to path in canonical path)
 
 #define USER_ASID_FLAG	(UL(1) << 48)
 #define TTBR_ASID_MASK	(UL(0xffff) << 48)
+=======
+#define USER_ASID_FLAG	(UL(1) << 48)
+>>>>>>> BRANCH (d32da5 Linux 4.9.93)
 
 #ifndef __ASSEMBLY__
 

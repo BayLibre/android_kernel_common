@@ -60,7 +60,11 @@ jiffies = jiffies_64;
 #define TRAMP_TEXT					\
 	. = ALIGN(PAGE_SIZE);				\
 	VMLINUX_SYMBOL(__entry_tramp_text_start) = .;	\
+<<<<<<< HEAD   (4fb542 ANDROID: fuse: Add null terminator to path in canonical path)
 	KEEP(*(.entry.tramp.text))			\
+=======
+	*(.entry.tramp.text)				\
+>>>>>>> BRANCH (d32da5 Linux 4.9.93)
 	. = ALIGN(PAGE_SIZE);				\
 	VMLINUX_SYMBOL(__entry_tramp_text_end) = .;
 #else
@@ -228,11 +232,14 @@ SECTIONS
 	swapper_pg_dir = .;
 	. += SWAPPER_DIR_SIZE;
 
+<<<<<<< HEAD   (4fb542 ANDROID: fuse: Add null terminator to path in canonical path)
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 	reserved_ttbr0 = .;
 	. += RESERVED_TTBR0_SIZE;
 #endif
 
+=======
+>>>>>>> BRANCH (d32da5 Linux 4.9.93)
 #ifdef CONFIG_UNMAP_KERNEL_AT_EL0
 	tramp_pg_dir = .;
 	. += PAGE_SIZE;
