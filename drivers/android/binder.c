@@ -4086,6 +4086,7 @@ retry:
 			struct binder_error *e = container_of(
 					w, struct binder_error, work);
 
+			cmd = e->cmd;
 			WARN_ON(e->cmd == BR_OK);
 			binder_inner_proc_unlock(proc);
 			if (put_user(e->cmd, (uint32_t __user *)ptr))
