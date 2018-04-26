@@ -78,6 +78,7 @@
 #include <uapi/linux/android/binder.h>
 #include "binder_alloc.h"
 #include "binder_trace.h"
+#include "../../include/uapi/linux/android/binder.h"
 
 static HLIST_HEAD(binder_deferred_list);
 static DEFINE_MUTEX(binder_deferred_lock);
@@ -4086,6 +4087,7 @@ retry:
 			struct binder_error *e = container_of(
 					w, struct binder_error, work);
 
+			cmd = e->cmd;
 			WARN_ON(e->cmd == BR_OK);
 			binder_inner_proc_unlock(proc);
 			if (put_user(e->cmd, (uint32_t __user *)ptr))
