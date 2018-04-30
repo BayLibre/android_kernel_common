@@ -367,15 +367,8 @@ static int transfer_max_buffers(struct goldfish_pipe *pipe,
 	return 0;
 }
 
-static int wait_for_host_signal(struct goldfish_pipe *pipe, int is_write)
+static int goldfish_pipe_wait_event(u32 wakeBit, struct goldfish_pipe *pipe)
 {
-	u32 wakeBit = is_write ? BIT_WAKE_ON_WRITE : BIT_WAKE_ON_READ;
-	set_bit(wakeBit, &pipe->flags);
-
-	/* Tell the emulator we're going to wait for a wake event */
-	goldfish_pipe_cmd(pipe,
-			is_write ? PIPE_CMD_WAKE_ON_WRITE : PIPE_CMD_WAKE_ON_READ);
-
 	while (test_bit(wakeBit, &pipe->flags)) {
 		if (wait_event_interruptible(
 				pipe->wake_queue,
@@ -385,8 +378,21 @@ static int wait_for_host_signal(struct goldfish_pipe *pipe, int is_write)
 		if (test_bit(BIT_CLOSED_ON_HOST, &pipe->flags))
 			return -EIO;
 	}
-
 	return 0;
+}
+
+static int wait_for_host_signal(struct goldfish_pipe *pipe, int is_write)
+{
+	u32 wakeBit = is_write ? BIT_WAKE_ON_WRITE : BIT_WAKE_ON_READ;
+
+	set_bit(wakeBit, &pipe->flags);
+
+	/* Tell the emulator we're going to wait for a wake event */
+	goldfish_pipe_cmd(
+		pipe,
+		is_write ? PIPE_CMD_WAKE_ON_WRITE : PIPE_CMD_WAKE_ON_READ);
+
+	return goldfish_pipe_wait_event(wakeBit, pipe);
 }
 
 static ssize_t goldfish_pipe_read_write(struct file *filp,
