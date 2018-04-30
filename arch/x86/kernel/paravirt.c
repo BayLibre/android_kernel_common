@@ -312,8 +312,20 @@ struct pv_time_ops pv_time_ops = {
 	.steal_clock = native_steal_clock,
 };
 
+#ifdef __clang__
+asmlinkage unsigned long paravirt_save_fl(void)
+{
+	return native_save_fl();
+}
+PV_CALLEE_SAVE_REGS_THUNK(paravirt_save_fl);
+#endif
+
 __visible struct pv_irq_ops pv_irq_ops = {
+#ifdef __clang__
+	.save_fl = PV_CALLEE_SAVE(paravirt_save_fl),
+#else
 	.save_fl = __PV_IS_CALLEE_SAVE(native_save_fl),
+#endif
 	.restore_fl = __PV_IS_CALLEE_SAVE(native_restore_fl),
 	.irq_disable = __PV_IS_CALLEE_SAVE(native_irq_disable),
 	.irq_enable = __PV_IS_CALLEE_SAVE(native_irq_enable),
