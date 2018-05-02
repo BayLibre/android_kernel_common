@@ -264,6 +264,10 @@ struct ftrace_likely_data {
 #define __nocfi
 #endif
 
+#ifndef __noscs
+#define __noscs
+#endif
+
 /*
  * Force always-inline if the user requests it so via the .config.
  * GCC does not warn about unused static inline functions for
