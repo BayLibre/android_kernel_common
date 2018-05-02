@@ -29,10 +29,15 @@
 #include <linux/irqchip.h>
 #include <linux/seq_file.h>
 #include <linux/vmalloc.h>
+#include <linux/scs.h>
 
 unsigned long irq_err_count;
 
 DEFINE_PER_CPU(unsigned long *, irq_stack_ptr);
+
+#ifdef CONFIG_SHADOW_CALL_STACK
+DEFINE_PER_CPU(unsigned long *, irq_shadow_call_stack_ptr);
+#endif
 
 int arch_show_interrupts(struct seq_file *p, int prec)
 {
@@ -70,18 +75,37 @@ static void init_irq_stacks(void)
 					 __builtin_return_address(0));
 
 		per_cpu(irq_stack_ptr, cpu) = p;
+
+#ifdef CONFIG_SHADOW_CALL_STACK
+		p = __vmalloc_node_range(SCS_SIZE, SCS_SIZE,
+					 VMALLOC_START, VMALLOC_END,
+					 THREADINFO_GFP, PAGE_KERNEL,
+					 0, cpu_to_node(cpu),
+					 __builtin_return_address(0));
+
+		per_cpu(irq_shadow_call_stack_ptr, cpu) = p;
+#endif
 	}
 }
 #else
 /* irq stack only needs to be 16 byte aligned - not IRQ_STACK_SIZE aligned. */
 DEFINE_PER_CPU_ALIGNED(unsigned long [IRQ_STACK_SIZE/sizeof(long)], irq_stack);
 
+#ifdef CONFIG_SHADOW_CALL_STACK
+DEFINE_PER_CPU_ALIGNED(unsigned long [SCS_SIZE/sizeof(long)], irq_shadow_call_stack);
+#endif
+
 static void init_irq_stacks(void)
 {
 	int cpu;
 
-	for_each_possible_cpu(cpu)
+	for_each_possible_cpu(cpu) {
 		per_cpu(irq_stack_ptr, cpu) = per_cpu(irq_stack, cpu);
+#ifdef CONFIG_SHADOW_CALL_STACK
+		per_cpu(irq_shadow_call_stack_ptr, cpu) =
+			per_cpu(irq_shadow_call_stack, cpu);
+#endif
+	}
 }
 #endif
 
