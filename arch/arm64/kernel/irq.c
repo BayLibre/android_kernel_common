@@ -29,6 +29,7 @@
 #include <linux/irqchip.h>
 #include <linux/seq_file.h>
 #include <linux/vmalloc.h>
+#include <linux/scs.h>
 
 unsigned long irq_err_count;
 
@@ -70,6 +71,7 @@ static void init_irq_stacks(void)
 					 __builtin_return_address(0));
 
 		per_cpu(irq_stack_ptr, cpu) = p;
+
 	}
 }
 #else
@@ -88,6 +90,7 @@ static void init_irq_stacks(void)
 void __init init_IRQ(void)
 {
 	init_irq_stacks();
+	scs_init_irq();
 	irqchip_init();
 	if (!handle_arch_irq)
 		panic("No interrupt controller found.");
