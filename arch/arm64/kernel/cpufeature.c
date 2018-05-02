@@ -28,6 +28,7 @@
 #include <asm/cpufeature.h>
 #include <asm/cpu_ops.h>
 #include <asm/processor.h>
+#include <asm/scs.h>
 #include <asm/sysreg.h>
 
 unsigned long elf_hwcap __read_mostly;
