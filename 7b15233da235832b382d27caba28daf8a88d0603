@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2fbbc8e_cfed749b",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7256,
+      "author": {
+        "id": 1125654
+      },
+      "writtenOn": "2018-05-08T11:25:55Z",
+      "side": 1,
+      "message": "This comment should be changed as the piece of code below no longer calculates CPU and group capacities.",
+      "range": {
+        "startLine": 7256,
+        "startChar": 4,
+        "endLine": 7256,
+        "endChar": 26
+      },
+      "revId": "7b15233da235832b382d27caba28daf8a88d0603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "908d5c27_2cc10ce3",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7286,
+      "author": {
+        "id": 1125654
+      },
+      "writtenOn": "2018-05-08T11:25:55Z",
+      "side": 1,
+      "message": "This for loop can be merged in the one above. In my opinion there is no reason to keep it separate.",
+      "range": {
+        "startLine": 7286,
+        "startChar": 1,
+        "endLine": 7286,
+        "endChar": 27
+      },
+      "revId": "7b15233da235832b382d27caba28daf8a88d0603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
