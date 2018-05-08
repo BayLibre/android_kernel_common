@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4dfc04fb_64b50a12",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1401,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T01:38:18Z",
+      "side": 1,
+      "message": "Does this have the potential to create an SA that is exactly identical to another SA, including having the same mark? Example:\n\n1. Create SA A with mark 1234/0xffffffff.\n2. Create identical SA B with mark 0/0.\n3. Update SA A to have mark 1234/0xffffffff.\n\nThat seems like a problem.\n\nIf the sequence above doesn\u0027t cause the problem, then I suspect that a situation where there are two threads racing to update the two SAs will still result in a duplicate.",
+      "range": {
+        "startLine": 1401,
+        "startChar": 3,
+        "endLine": 1401,
+        "endChar": 49
+      },
+      "revId": "d19755f2b7f438a4b738e65710d2e972c090bfe2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
