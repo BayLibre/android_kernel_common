@@ -22,6 +22,30 @@
       "revId": "d19755f2b7f438a4b738e65710d2e972c090bfe2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab993cf7_771c5bb8",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1401,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T03:50:21Z",
+      "side": 1,
+      "message": "Both are possible, and it\u0027s a fundamental problem with xfrm_state_lookup() (called by xfrm_state_locate()). Because the mark match is done on an existing SA, you can always end up in a situation where the mark finds the \"zero\" SA. I\u0027ve uploaded a test that demonstrates why someone doing what you suggest is already borked.\n\nhttps://android-review.googlesource.com/#/c/kernel/tests/+/680958",
+      "parentUuid": "4dfc04fb_64b50a12",
+      "range": {
+        "startLine": 1401,
+        "startChar": 3,
+        "endLine": 1401,
+        "endChar": 49
+      },
+      "revId": "d19755f2b7f438a4b738e65710d2e972c090bfe2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
