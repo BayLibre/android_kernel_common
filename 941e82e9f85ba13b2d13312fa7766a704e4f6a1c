@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c5862c1f_3fec98e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T01:15:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1add5b03_bae964fa",
+      "range": {
+        "startLine": 10,
+        "startChar": 30,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "742ef6a2_d39cc5a7",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2018-05-08T00:30:12Z",
       "side": 1,
       "message": "Have you considered restricting this change to this specific case? That might make it feel less hacky. The position of this patch could then be \"this patch allows updating the mark if it is not set. it could be generalized to support updating any mark to a stricter subset for itself, but that seems like it could be confusing to userspace, since some updates will possible and others will not\".",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ab5b0f7_d98dde80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T01:15:30Z",
+      "side": 1,
+      "message": "I did consider that, but it seemed like an unnecessary restriction. I don\u0027t think it\u0027s the common case, but if someone wanted to partition all their routing with marks and thus set a default non-zero mark before doing this there\u0027s no harm in it.",
+      "parentUuid": "742ef6a2_d39cc5a7",
       "range": {
         "startLine": 12,
         "startChar": 10,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "90605d12_76bee3a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T01:15:30Z",
+      "side": 1,
+      "message": "I changed the code and went with the \"only update if non-zero\" approach since it\u0027s more consistent with the existing code, but in general I\u0027d prefer unconditional since it suffers from inconsistency but not ambiguity. Which do you think is more likely to be accepted upstream?",
+      "parentUuid": "a15f1190_26badee6",
+      "range": {
+        "startLine": 17,
+        "startChar": 22,
+        "endLine": 17,
+        "endChar": 46
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "79556c50_4f52bd4c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -82,6 +154,30 @@
       "writtenOn": "2018-05-08T00:30:12Z",
       "side": 1,
       "message": "It may not be obvious to readers that routing decisions depend on the output mark. Maybe add the words \"in systems that use mark-based routing\"?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 24
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27c1d873_2bfb09fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T01:15:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79556c50_4f52bd4c",
       "range": {
         "startLine": 18,
         "startChar": 0,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "05a181b1_85de90e2",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T01:15:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fcd682e_c1248f20",
+      "range": {
+        "startLine": 1383,
+        "startChar": 26,
+        "endLine": 1383,
+        "endChar": 27
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "69de85eb_456c0f21",
         "filename": "net/xfrm/xfrm_state.c",
         "patchSetId": 4
@@ -128,6 +248,30 @@
       "writtenOn": "2018-05-08T00:30:12Z",
       "side": 1,
       "message": "Is it safe to take this lock while holding x1-\u003elock?",
+      "range": {
+        "startLine": 1398,
+        "startChar": 2,
+        "endLine": 1398,
+        "endChar": 14
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce20f0e9_95fa03bb",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1398,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2018-05-08T01:15:30Z",
+      "side": 1,
+      "message": "It\u0027s a really tricky, but yes I believe I need to nest the locks since the SA shouldn\u0027t be allowed to change state during the update, and they need to be in this order to avoid a deadlock due to the locking order of the timer expiry function (first lock the sa, then lock the xfrm_state_lock).\n\nIf you go look at some slightly older versions of the patch set, I had tried to refactor this and clean it up, but it used the opposite locking order, which made it less feasible.\n\nThere are relatively few places that actually take the SA lock rather than the xfrm_state_lock, but take a look at xfrm_timer_handler(): the entire function is locked by x-\u003elock, and it calls __xfrm_state_delete(), which in turn locks xfrm_state_lock.",
+      "parentUuid": "69de85eb_456c0f21",
       "range": {
         "startLine": 1398,
         "startChar": 2,
