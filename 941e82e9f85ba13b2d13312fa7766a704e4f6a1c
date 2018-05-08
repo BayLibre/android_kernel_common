@@ -2,6 +2,144 @@
   "comments": [
     {
       "key": {
+        "uuid": "1add5b03_bae964fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T00:30:12Z",
+      "side": 1,
+      "message": "I think this should also explain why it\u0027s not possible to update the mark in to make it less specific, and what happens if userspace tries to do that (ENOENT?).\n\nI think the answer is that this operation is fundamentally ambiguous because the mark attribute coming from userspace is used both to find the existing SA and as the new value to set in the SA. That suggests that it\u0027s actually possible to update the mark in the general case, but it would require adding a new netlink attribute.\n\nThat makes this approach feel a little hacky, but seems it would be better to have the hackiness be explicit and addressed in the commit message as a known issue that was considered than left for reviewers to notice.",
+      "range": {
+        "startLine": 10,
+        "startChar": 30,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "742ef6a2_d39cc5a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T00:30:12Z",
+      "side": 1,
+      "message": "Have you considered restricting this change to this specific case? That might make it feel less hacky. The position of this patch could then be \"this patch allows updating the mark if it is not set. it could be generalized to support updating any mark to a stricter subset for itself, but that seems like it could be confusing to userspace, since some updates will possible and others will not\".",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a15f1190_26badee6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T00:30:12Z",
+      "side": 1,
+      "message": "Are the semantics here any more complicated than simply \"the new output mark overrides the old output mark\"? For example, is zero treated specially? Can zero be used to clear the existing mark?\n\nIt seems like that would be dangerous/incorrect unless the code can distinguish \"application did not pass in an XFRMA_OUTPUT_MARK attribute\" from \"application passed in an XFRMA_OUTPUT_MARK attribute and its value was zero. As far as I can tell the code can\u0027t do that.\n\nRegardless, this should be explained here.",
+      "range": {
+        "startLine": 17,
+        "startChar": 22,
+        "endLine": 17,
+        "endChar": 46
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79556c50_4f52bd4c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T00:30:12Z",
+      "side": 1,
+      "message": "It may not be obvious to readers that routing decisions depend on the output mark. Maybe add the words \"in systems that use mark-based routing\"?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 24
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fcd682e_c1248f20",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T00:30:12Z",
+      "side": 1,
+      "message": "Style guide says blank line after here.",
+      "range": {
+        "startLine": 1383,
+        "startChar": 26,
+        "endLine": 1383,
+        "endChar": 27
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69de85eb_456c0f21",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1398,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-05-08T00:30:12Z",
+      "side": 1,
+      "message": "Is it safe to take this lock while holding x1-\u003elock?",
+      "range": {
+        "startLine": 1398,
+        "startChar": 2,
+        "endLine": 1398,
+        "endChar": 14
+      },
+      "revId": "941e82e9f85ba13b2d13312fa7766a704e4f6a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5e43c067_e0fe2ec0",
         "filename": "net/xfrm/xfrm_state.c",
         "patchSetId": 4
