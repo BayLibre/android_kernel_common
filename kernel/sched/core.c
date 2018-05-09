@@ -7295,6 +7295,15 @@ static int build_sched_domains(const struct cpumask *cpu_map,
 	}
 	rcu_read_unlock();
 
+	/* update group capacity again after cpu_attach_domain() */
+	for (i = nr_cpumask_bits-1; i >= 0; i--) {
+		if (!cpumask_test_cpu(i, cpu_map))
+			continue;
+
+		for (sd = *per_cpu_ptr(d.sd, i); sd; sd = sd->parent)
+			update_group_capacity(sd, i);
+	}
+
 	ret = 0;
 error:
 	__free_domain_allocs(&d, alloc_state, cpu_map);
