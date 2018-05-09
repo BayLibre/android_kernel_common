@@ -574,6 +574,7 @@ static int map_get_next_key(union bpf_attr *attr)
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 
+<<<<<<< HEAD   (9731a2 UPSTREAM: f2fs: clear PageError on writepage - part 2)
 	if (!(f.file->f_mode & FMODE_CAN_READ)) {
 		err = -EPERM;
 		goto err_put;
@@ -583,10 +584,20 @@ static int map_get_next_key(union bpf_attr *attr)
 	key = kmalloc(map->key_size, GFP_USER);
 	if (!key)
 		goto err_put;
+=======
+	if (ukey) {
+		err = -ENOMEM;
+		key = kmalloc(map->key_size, GFP_USER);
+		if (!key)
+			goto err_put;
+>>>>>>> BRANCH (04cd74 Linux 4.9.99)
 
-	err = -EFAULT;
-	if (copy_from_user(key, ukey, map->key_size) != 0)
-		goto free_key;
+		err = -EFAULT;
+		if (copy_from_user(key, ukey, map->key_size) != 0)
+			goto free_key;
+	} else {
+		key = NULL;
+	}
 
 	err = -ENOMEM;
 	next_key = kmalloc(map->key_size, GFP_USER);
