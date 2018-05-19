@@ -1140,7 +1140,11 @@ int tcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
 	lock_sock(sk);
 
 	flags = msg->msg_flags;
+<<<<<<< HEAD   (e14d1a ANDROID: sdcardfs: Don't d_drop in d_revalidate)
 	if (unlikely(flags & MSG_FASTOPEN || inet_sk(sk)->defer_connect)) {
+=======
+	if ((flags & MSG_FASTOPEN) && !tp->repair) {
+>>>>>>> BRANCH (6ba89b Linux 4.9.101)
 		err = tcp_sendmsg_fastopen(sk, msg, &copied_syn, size);
 		if (err == -EINPROGRESS && copied_syn > 0)
 			goto out;
