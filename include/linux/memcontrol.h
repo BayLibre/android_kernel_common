@@ -45,6 +45,9 @@ enum memcg_stat_item {
 	MEMCG_SOCK,
 	/* XXX: why are these zone and not node counters? */
 	MEMCG_KERNEL_STACK_KB,
+#ifdef CONFIG_SHADOW_CALL_STACK
+	MEMCG_KERNEL_SCS_KB,
+#endif
 	MEMCG_NR_STAT,
 };
 
