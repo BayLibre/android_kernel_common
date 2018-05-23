@@ -6,8 +6,10 @@
 
 #include <linux/cpuhotplug.h>
 #include <linux/mm.h>
+#include <linux/mmzone.h>
 #include <linux/slab.h>
 #include <linux/scs.h>
+#include <linux/vmstat.h>
 
 #include <asm/scs.h>
 
@@ -37,6 +39,11 @@ void __init scs_init(void)
 	BUG_ON(!scs_cache);
 }
 
+static struct page *__scs_page(struct task_struct *tsk)
+{
+	return virt_to_page(__scs_base(tsk));
+}
+
 static inline unsigned long *scs_magic(struct task_struct *tsk)
 {
 	return (unsigned long *)(__scs_base(tsk) + SCS_SIZE - sizeof(long));
@@ -64,6 +71,12 @@ void scs_set_init_magic(struct task_struct *tsk)
 	scs_load(tsk);
 }
 
+static void scs_account(struct task_struct *tsk, int account)
+{
+	mod_zone_page_state(page_zone(__scs_page(tsk)), NR_KERNEL_SCS_BYTES,
+		account * SCS_SIZE);
+}
+
 int scs_prepare(struct task_struct *tsk, int node)
 {
 	void *s;
@@ -74,6 +87,7 @@ int scs_prepare(struct task_struct *tsk, int node)
 
 	task_set_scs(tsk, s);
 	scs_set_magic(tsk);
+	scs_account(tsk, 1);
 
 	return 0;
 }
@@ -88,6 +102,7 @@ void scs_release(struct task_struct *tsk)
 
 	BUG_ON(*scs_magic(tsk) != SCS_END_MAGIC);
 
+	scs_account(tsk, -1);
 	scs_task_init(tsk);
 	scs_free(s);
 }
