@@ -294,8 +294,12 @@ static int f2fs_create(struct inode *dir, struct dentry *dentry, umode_t mode,
 
 	alloc_nid_done(sbi, ino);
 
+<<<<<<< HEAD   (7fd407 UPSTREAM: sched/fair: Consider RT/IRQ pressure in capacity_s)
 	unlock_new_inode(inode);
 	d_instantiate(dentry, inode);
+=======
+	d_instantiate_new(dentry, inode);
+>>>>>>> BRANCH (5b90d5 Linux 4.9.104)
 
 	if (IS_DIRSYNC(dir))
 		f2fs_sync_fs(sbi->sb, 1);
@@ -597,8 +601,12 @@ static int f2fs_symlink(struct inode *dir, struct dentry *dentry,
 	err = page_symlink(inode, disk_link.name, disk_link.len);
 
 err_out:
+<<<<<<< HEAD   (7fd407 UPSTREAM: sched/fair: Consider RT/IRQ pressure in capacity_s)
 	unlock_new_inode(inode);
 	d_instantiate(dentry, inode);
+=======
+	d_instantiate_new(dentry, inode);
+>>>>>>> BRANCH (5b90d5 Linux 4.9.104)
 
 	/*
 	 * Let's flush symlink data in order to avoid broken symlink as much as
@@ -661,8 +669,12 @@ static int f2fs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 
 	alloc_nid_done(sbi, inode->i_ino);
 
+<<<<<<< HEAD   (7fd407 UPSTREAM: sched/fair: Consider RT/IRQ pressure in capacity_s)
 	unlock_new_inode(inode);
 	d_instantiate(dentry, inode);
+=======
+	d_instantiate_new(dentry, inode);
+>>>>>>> BRANCH (5b90d5 Linux 4.9.104)
 
 	if (IS_DIRSYNC(dir))
 		f2fs_sync_fs(sbi->sb, 1);
@@ -713,8 +725,12 @@ static int f2fs_mknod(struct inode *dir, struct dentry *dentry,
 
 	alloc_nid_done(sbi, inode->i_ino);
 
+<<<<<<< HEAD   (7fd407 UPSTREAM: sched/fair: Consider RT/IRQ pressure in capacity_s)
 	unlock_new_inode(inode);
 	d_instantiate(dentry, inode);
+=======
+	d_instantiate_new(dentry, inode);
+>>>>>>> BRANCH (5b90d5 Linux 4.9.104)
 
 	if (IS_DIRSYNC(dir))
 		f2fs_sync_fs(sbi->sb, 1);
