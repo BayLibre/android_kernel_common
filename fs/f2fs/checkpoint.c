@@ -1406,6 +1406,9 @@ int write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 	trace_f2fs_write_checkpoint(sbi->sb, cpc->reason, "start block_ops");
 
+	//if (test_opt(sbi, DISABLE_CHECKPOINT))
+	//	WARN(1, "Taking Checkpoint, but checkpoint=pause!!\n");
+
 	err = block_operations(sbi);
 	if (err)
 		goto out;

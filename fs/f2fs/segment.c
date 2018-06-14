@@ -177,6 +177,8 @@ bool need_SSR(struct f2fs_sb_info *sbi)
 
 	if (test_opt(sbi, LFS))
 		return false;
+	if (test_opt(sbi, DISABLE_CHECKPOINT))
+		return true;
 	if (sbi->gc_thread && sbi->gc_thread->gc_urgent)
 		return true;
 
@@ -470,7 +472,8 @@ void f2fs_balance_fs(struct f2fs_sb_info *sbi, bool need)
 	 * We should do GC or end up with checkpoint, if there are so many dirty
 	 * dir/node pages without enough free segments.
 	 */
-	if (has_not_enough_free_secs(sbi, 0, 0)) {
+	if (has_not_enough_free_secs(sbi, 0, 0) &&
+			!test_opt(sbi, DISABLE_CHECKPOINT)) {
 		mutex_lock(&sbi->gc_mutex);
 		f2fs_gc(sbi, false, false, NULL_SEGNO);
 	}
@@ -507,8 +510,10 @@ void f2fs_balance_fs_bg(struct f2fs_sb_info *sbi)
 			sync_dirty_inodes(sbi, FILE_INODE);
 			blk_finish_plug(&plug);
 		}
-		f2fs_sync_fs(sbi->sb, true);
-		stat_inc_bg_cp_count(sbi->stat_info);
+		if (!test_opt(sbi, DISABLE_CHECKPOINT)) {
+			f2fs_sync_fs(sbi->sb, true);
+			stat_inc_bg_cp_count(sbi->stat_info);
+		}
 	}
 }
 
@@ -723,52 +728,6 @@ int f2fs_flush_device_cache(struct f2fs_sb_info *sbi)
 	return ret;
 }
 
-static void __locate_dirty_segment(struct f2fs_sb_info *sbi, unsigned int segno,
-		enum dirty_type dirty_type)
-{
-	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
-
-	/* need not be added */
-	if (IS_CURSEG(sbi, segno))
-		return;
-
-	if (!test_and_set_bit(segno, dirty_i->dirty_segmap[dirty_type]))
-		dirty_i->nr_dirty[dirty_type]++;
-
-	if (dirty_type == DIRTY) {
-		struct seg_entry *sentry = get_seg_entry(sbi, segno);
-		enum dirty_type t = sentry->type;
-
-		if (unlikely(t >= DIRTY)) {
-			f2fs_bug_on(sbi, 1);
-			return;
-		}
-		if (!test_and_set_bit(segno, dirty_i->dirty_segmap[t]))
-			dirty_i->nr_dirty[t]++;
-	}
-}
-
-static void __remove_dirty_segment(struct f2fs_sb_info *sbi, unsigned int segno,
-		enum dirty_type dirty_type)
-{
-	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
-
-	if (test_and_clear_bit(segno, dirty_i->dirty_segmap[dirty_type]))
-		dirty_i->nr_dirty[dirty_type]--;
-
-	if (dirty_type == DIRTY) {
-		struct seg_entry *sentry = get_seg_entry(sbi, segno);
-		enum dirty_type t = sentry->type;
-
-		if (test_and_clear_bit(segno, dirty_i->dirty_segmap[t]))
-			dirty_i->nr_dirty[t]--;
-
-		if (get_valid_blocks(sbi, segno, true) == 0)
-			clear_bit(GET_SEC_FROM_SEG(sbi, segno),
-						dirty_i->victim_secmap);
-	}
-}
-
 /*
  * Should not occur error such as -ENOMEM.
  * Adding dirty entry into seglist is not critical operation.
@@ -777,7 +736,7 @@ static void __remove_dirty_segment(struct f2fs_sb_info *sbi, unsigned int segno,
 static void locate_dirty_segment(struct f2fs_sb_info *sbi, unsigned int segno)
 {
 	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
-	unsigned short valid_blocks;
+	unsigned short valid_blocks, ckpt_valid_blocks;
 
 	if (segno == NULL_SEGNO || IS_CURSEG(sbi, segno))
 		return;
@@ -785,8 +744,10 @@ static void locate_dirty_segment(struct f2fs_sb_info *sbi, unsigned int segno)
 	mutex_lock(&dirty_i->seglist_lock);
 
 	valid_blocks = get_valid_blocks(sbi, segno, false);
+	ckpt_valid_blocks = get_ckpt_valid_blocks(sbi, segno);
 
-	if (valid_blocks == 0) {
+	if (valid_blocks == 0 && (ckpt_valid_blocks == sbi->blocks_per_seg ||
+					!test_opt(sbi, DISABLE_CHECKPOINT))) {
 		__locate_dirty_segment(sbi, segno, PRE);
 		__remove_dirty_segment(sbi, segno, DIRTY);
 	} else if (valid_blocks < sbi->blocks_per_seg) {
@@ -1900,7 +1861,7 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
 			sbi->discard_blks--;
 
 		/* don't overwrite by SSR to keep node chain */
-		if (IS_NODESEG(se->type)) {
+		if (IS_NODESEG(se->type) && !test_opt(sbi, DISABLE_CHECKPOINT)) {
 			if (!f2fs_test_and_set_bit(offset, se->ckpt_valid_map))
 				se->ckpt_valid_blocks++;
 		}
@@ -1922,6 +1883,24 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
 			f2fs_bug_on(sbi, 1);
 			se->valid_blocks++;
 			del = 0;
+		} else {
+			/* If checkpoints are off, we must not reuse data that
+			 * was used in the previous checkpoint. If it was used
+			 * before, we must track that to know how much space
+			 * we really have */
+			if (f2fs_test_bit(offset, se->ckpt_valid_map)) {
+				spin_lock(&sbi->stat_lock);
+				sbi->unusable_block_count++;
+				spin_unlock(&sbi->stat_lock);
+			} else {
+				spin_lock(&sbi->stat_lock);
+				if (IS_DATASEG(se->type))
+					sbi->free_ssr_data_block++;
+				else
+					sbi->free_ssr_node_block++;
+				spin_unlock(&sbi->stat_lock);
+			}
+
 		}
 
 		if (f2fs_discard_en(sbi) &&
@@ -2209,7 +2188,8 @@ static unsigned int __get_next_segno(struct f2fs_sb_info *sbi, int type)
 		return SIT_I(sbi)->last_victim[ALLOC_NEXT];
 
 	/* find segments from 0 to reuse freed segments */
-	if (F2FS_OPTION(sbi).alloc_mode == ALLOC_MODE_REUSE)
+	if (F2FS_OPTION(sbi).alloc_mode == ALLOC_MODE_REUSE
+			|| test_opt(sbi, DISABLE_CHECKPOINT))
 		return 0;
 
 	return CURSEG_I(sbi, type)->segno;
@@ -2361,7 +2341,8 @@ static void allocate_segment_by_default(struct f2fs_sb_info *sbi,
 	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
 					type == CURSEG_WARM_NODE)
 		new_curseg(sbi, type, false);
-	else if (curseg->alloc_type == LFS && is_next_segment_free(sbi, type))
+	else if (curseg->alloc_type == LFS && is_next_segment_free(sbi, type) &&
+			!test_opt(sbi, DISABLE_CHECKPOINT))
 		new_curseg(sbi, type, false);
 	else if (need_SSR(sbi) && get_ssr_segment(sbi, type))
 		change_curseg(sbi, type);
@@ -3502,6 +3483,9 @@ void flush_sit_entries(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 			sit_i->dirty_sentries--;
 			ses->entry_cnt--;
 		}
+		spin_lock(&sbi->stat_lock);
+		sbi->unusable_block_count = 0;
+		spin_unlock(&sbi->stat_lock);
 
 		if (to_journal)
 			up_write(&curseg->journal_rwsem);
