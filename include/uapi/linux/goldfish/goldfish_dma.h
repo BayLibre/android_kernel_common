@@ -65,6 +65,25 @@ struct goldfish_dma_ioctl_info {
 	__u64 size;
 };
 
+/*
+ * The main data structure tracking state is
+ * struct goldfish_dma_context, which is included
+ * as an extra pointer field in struct goldfish_pipe.
+ * Each such context is associated with possibly
+ * one physical address and size describing the
+ * allocated DMA region, and only one allocation
+ * is allowed for each pipe fd. Further allocations
+ * require more open()'s of pipe fd's.
+ */
+struct goldfish_dma_context {
+	__u64 dma_vaddr;	/* kernel vaddr of dma region */
+	__u64 dma_size;		/* size of dma region */
+	__u64 phys_begin;	/* paddr of dma region */
+	__u64 phys_end;		/* paddr of dma region + dma_size */
+	__s32 fd;		/* used by the user space */
+	__s32 fd_paddings;	/* not used, for alignment */
+} __attribute__ ((packed));
+
 /* There is an ioctl associated with goldfish dma driver.
  * Make it conflict with ioctls that are not likely to be used
  * in the emulator.
