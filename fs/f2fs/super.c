@@ -133,6 +133,7 @@ enum {
 	Opt_alloc,
 	Opt_fsync,
 	Opt_test_dummy_encryption,
+	Opt_checkpoint,
 	Opt_err,
 };
 
@@ -190,6 +191,7 @@ static match_table_t f2fs_tokens = {
 	{Opt_alloc, "alloc_mode=%s"},
 	{Opt_fsync, "fsync_mode=%s"},
 	{Opt_test_dummy_encryption, "test_dummy_encryption"},
+	{Opt_checkpoint, "checkpoint=%s"},
 	{Opt_err, NULL},
 };
 
@@ -370,6 +372,7 @@ static int parse_options(struct super_block *sb, char *options)
 	int ret;
 #endif
 
+	f2fs_msg(sb, KERN_INFO,	"DROSEN TEST!!!!!!!!!!!!!!!!!!!!!!!!!\nopt:%s", options);
 	if (!options)
 		return 0;
 
@@ -765,6 +768,23 @@ static int parse_options(struct super_block *sb, char *options)
 					"Test dummy encryption mount option ignored");
 #endif
 			break;
+		case Opt_checkpoint:
+			name = match_strdup(&args[0]);
+			if (!name)
+				return -ENOMEM;
+
+			if (strlen(name) == 6 &&
+					!strncmp(name, "enable", 6)) {
+				clear_opt(sbi, DISABLE_CHECKPOINT);
+			} else if (strlen(name) == 7 &&
+					!strncmp(name, "disable", 7)) {
+				set_opt(sbi, DISABLE_CHECKPOINT);
+			} else {
+				kfree(name);
+				return -EINVAL;
+			}
+			kfree(name);
+			break;
 		default:
 			f2fs_msg(sb, KERN_ERR,
 				"Unrecognized mount option \"%s\" or missing value",
@@ -808,6 +828,11 @@ static int parse_options(struct super_block *sb, char *options)
 					"inline xattr size is out of range");
 			return -EINVAL;
 		}
+	}
+
+	if (test_opt(sbi, DISABLE_CHECKPOINT) && test_opt(sbi, LFS)) {
+		f2fs_msg(sb, KERN_ERR,
+				"LFS not compatible with checkpoint=disable\n");
 	}
 
 	/* Not pass down write hints if the number of active logs is lesser
@@ -998,8 +1023,9 @@ static void f2fs_put_super(struct super_block *sb)
 	 * But, the previous checkpoint was not done by umount, it needs to do
 	 * clean checkpoint again.
 	 */
-	if (is_sbi_flag_set(sbi, SBI_IS_DIRTY) ||
-			!is_set_ckpt_flags(sbi, CP_UMOUNT_FLAG)) {
+	if ((is_sbi_flag_set(sbi, SBI_IS_DIRTY) ||
+			!is_set_ckpt_flags(sbi, CP_UMOUNT_FLAG)) &&
+			!test_opt(sbi, DISABLE_CHECKPOINT)) {
 		struct cp_control cpc = {
 			.reason = CP_UMOUNT,
 		};
@@ -1009,7 +1035,8 @@ static void f2fs_put_super(struct super_block *sb)
 	/* be sure to wait for any on-going discard commands */
 	dropped = f2fs_wait_discard_bios(sbi);
 
-	if (f2fs_discard_en(sbi) && !sbi->discard_blks && !dropped) {
+	if (f2fs_discard_en(sbi) && !sbi->discard_blks && !dropped &&
+			!test_opt(sbi, DISABLE_CHECKPOINT)) {
 		struct cp_control cpc = {
 			.reason = CP_UMOUNT | CP_TRIMMED,
 		};
@@ -1066,6 +1093,8 @@ int f2fs_sync_fs(struct super_block *sb, int sync)
 	int err = 0;
 
 	if (unlikely(f2fs_cp_error(sbi)))
+		return 0;
+	if (test_opt(sbi, DISABLE_CHECKPOINT))
 		return 0;
 
 	trace_f2fs_sync_fs(sb, sync);
@@ -1165,7 +1194,8 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
 
 	buf->f_blocks = total_count - start_count;
 	buf->f_bfree = user_block_count - valid_user_blocks(sbi) -
-						sbi->current_reserved_blocks;
+						sbi->current_reserved_blocks -
+						sbi->unusable_block_count;
 	if (buf->f_bfree > F2FS_OPTION(sbi).root_reserved_blocks)
 		buf->f_bavail = buf->f_bfree -
 				F2FS_OPTION(sbi).root_reserved_blocks;
@@ -1341,6 +1371,9 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
 	else if (F2FS_OPTION(sbi).alloc_mode == ALLOC_MODE_REUSE)
 		seq_printf(seq, ",alloc_mode=%s", "reuse");
 
+	if (test_opt(sbi, DISABLE_CHECKPOINT))
+		seq_puts(seq, ",checkpoint=disable");
+
 	if (F2FS_OPTION(sbi).fsync_mode == FSYNC_MODE_POSIX)
 		seq_printf(seq, ",fsync_mode=%s", "posix");
 	else if (F2FS_OPTION(sbi).fsync_mode == FSYNC_MODE_STRICT)
@@ -1365,6 +1398,8 @@ static void default_options(struct f2fs_sb_info *sbi)
 	set_opt(sbi, INLINE_DENTRY);
 	set_opt(sbi, EXTENT_CACHE);
 	set_opt(sbi, NOHEAP);
+	f2fs_msg(sbi->sb, KERN_INFO,"Clearing DISABLE_CHECKPOINT?");
+	clear_opt(sbi, DISABLE_CHECKPOINT);
 	sbi->sb->s_flags |= MS_LAZYTIME;
 	set_opt(sbi, FLUSH_MERGE);
 	if (f2fs_sb_has_blkzoned(sbi->sb)) {
@@ -1389,6 +1424,60 @@ static void default_options(struct f2fs_sb_info *sbi)
 #ifdef CONFIG_QUOTA
 static int f2fs_enable_quotas(struct super_block *sb);
 #endif
+
+static void f2fs_disable_checkpoint(struct f2fs_sb_info *sbi)
+{
+	struct cp_control cpc;
+	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
+	unsigned int segno;
+	int type;
+
+	set_sbi_flag(sbi, SBI_CP_DISABLED);
+
+	cpc.reason = CP_PAUSE;
+
+	mutex_lock(&sbi->gc_mutex);
+	write_checkpoint(sbi, &cpc);
+	mutex_unlock(&sbi->gc_mutex);
+
+	mutex_lock(&dirty_i->seglist_lock);
+	for (type = 0; type < NR_CURSEG_TYPE; type++) {
+		for_each_set_bit(segno, dirty_i->dirty_segmap[type],
+							MAIN_SEGS(sbi)) {
+			if (IS_DATASEG(type))
+				sbi->free_ssr_data_block +=
+					get_valid_blocks(sbi, segno, false);
+			else
+				sbi->free_ssr_node_block +=
+					get_valid_blocks(sbi, segno, false);
+		}
+	}
+	sbi->free_segments = FREE_I(sbi)->free_segments;
+	mutex_unlock(&dirty_i->seglist_lock);
+}
+
+static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
+{
+	struct super_block *sb = sbi->sb;
+	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
+
+	clear_sbi_flag(sbi, SBI_CP_DISABLED);
+	writeback_inodes_sb(sb, WB_REASON_SYNC);
+	sync_inodes_sb(sb);
+
+	mutex_lock(&dirty_i->seglist_lock);
+	dirty_to_prefree(sbi);
+	sbi->free_segments = 0;
+	sbi->free_ssr_data_block = 0;
+	sbi->free_ssr_node_block = 0;
+	mutex_unlock(&dirty_i->seglist_lock);
+
+	set_sbi_flag(sbi, SBI_IS_DIRTY);
+	set_sbi_flag(sbi, SBI_IS_CLOSE);
+	f2fs_sync_fs(sb, 1);
+	clear_sbi_flag(sbi, SBI_IS_CLOSE);
+}
+
 static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 {
 	struct f2fs_sb_info *sbi = F2FS_SB(sb);
@@ -1398,6 +1487,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 	bool need_restart_gc = false;
 	bool need_stop_gc = false;
 	bool no_extent_cache = !test_opt(sbi, EXTENT_CACHE);
+	bool disable_checkpoint = test_opt(sbi, DISABLE_CHECKPOINT);
 #ifdef CONFIG_QUOTA
 	int i, j;
 #endif
@@ -1493,7 +1583,8 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 	}
 
 	if (*flags & MS_RDONLY ||
-		F2FS_OPTION(sbi).whint_mode != org_mount_opt.whint_mode) {
+		F2FS_OPTION(sbi).whint_mode != org_mount_opt.whint_mode ||
+		disable_checkpoint != test_opt(sbi, DISABLE_CHECKPOINT)) {
 		writeback_inodes_sb(sb, WB_REASON_SYNC);
 		sync_inodes_sb(sb);
 
@@ -1501,6 +1592,14 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 		set_sbi_flag(sbi, SBI_IS_CLOSE);
 		f2fs_sync_fs(sb, 1);
 		clear_sbi_flag(sbi, SBI_IS_CLOSE);
+	}
+
+	if (disable_checkpoint != test_opt(sbi, DISABLE_CHECKPOINT)) {
+		if (test_opt(sbi, DISABLE_CHECKPOINT)) {
+			f2fs_disable_checkpoint(sbi);
+		} else {
+			f2fs_enable_checkpoint(sbi);
+		}
 	}
 
 	/*
@@ -2893,7 +2992,8 @@ try_onemore:
 		goto free_meta;
 
 	/* recover fsynced data */
-	if (!test_opt(sbi, DISABLE_ROLL_FORWARD)) {
+	if (!test_opt(sbi, DISABLE_ROLL_FORWARD) &&
+			!is_sbi_flag_set(sbi, SBI_CP_DISABLED)) {
 		/*
 		 * mount should be failed, when device has readonly mode, and
 		 * previous checkpoint was not done by clean system shutdown.
@@ -2959,6 +3059,13 @@ skip_recovery:
 				cur_cp_version(F2FS_CKPT(sbi)));
 	f2fs_update_time(sbi, CP_TIME);
 	f2fs_update_time(sbi, REQ_TIME);
+
+	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
+		f2fs_disable_checkpoint(sbi);
+	} else if (is_sbi_flag_set(sbi, SBI_CP_DISABLED)) {
+		f2fs_enable_checkpoint(sbi);
+	}
+
 	return 0;
 
 free_meta:

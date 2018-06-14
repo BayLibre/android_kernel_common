@@ -98,6 +98,7 @@ extern char *fault_name[FAULT_MAX];
 #define F2FS_MOUNT_QUOTA		0x00400000
 #define F2FS_MOUNT_INLINE_XATTR_SIZE	0x00800000
 #define F2FS_MOUNT_RESERVE_ROOT		0x01000000
+#define F2FS_MOUNT_DISABLE_CHECKPOINT	0x02000000
 
 #define F2FS_OPTION(sbi)	((sbi)->mount_opt)
 #define clear_opt(sbi, option)	(F2FS_OPTION(sbi).opt &= ~F2FS_MOUNT_##option)
@@ -237,6 +238,7 @@ enum {
 #define	CP_RECOVERY	0x00000008
 #define	CP_DISCARD	0x00000010
 #define CP_TRIMMED	0x00000020
+#define CP_PAUSE	0x00000040
 
 #define MAX_DISCARD_BLOCKS(sbi)		BLKS_PER_SEC(sbi)
 #define DEF_MAX_DISCARD_REQUEST		8	/* issue 8 discards per round */
@@ -1115,6 +1117,7 @@ enum {
 	SBI_POR_DOING,				/* recovery is doing or not */
 	SBI_NEED_SB_WRITE,			/* need to recover superblock */
 	SBI_NEED_CP,				/* need to checkpoint */
+	SBI_CP_DISABLED,			/* CP was disabled last mount */
 };
 
 enum {
@@ -1230,6 +1233,12 @@ struct f2fs_sb_info {
 	block_t last_valid_block_count;		/* for recovery */
 	block_t reserved_blocks;		/* configurable reserved blocks */
 	block_t current_reserved_blocks;	/* current reserved blocks */
+
+	/* Additional tracking for no checkpoint mode */
+	block_t unusable_block_count;		/* # of blocks saved by last cp */
+	block_t free_ssr_data_block;
+	block_t free_ssr_node_block;
+	block_t free_segments;
 
 	unsigned int nquota_files;		/* # of quota sysfile */
 
@@ -1694,7 +1703,7 @@ static inline void f2fs_i_blocks_write(struct inode *, block_t, bool, bool);
 static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
 				 struct inode *inode, blkcnt_t *count)
 {
-	blkcnt_t diff = 0, release = 0;
+	blkcnt_t diff = 0, release = 0, seg_diff = 0, seg_rel = 0;
 	block_t avail_user_block_count;
 	int ret;
 
@@ -1722,6 +1731,8 @@ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
 
 	if (!__allow_reserved_blocks(sbi, inode, true))
 		avail_user_block_count -= F2FS_OPTION(sbi).root_reserved_blocks;
+	if (test_opt(sbi, DISABLE_CHECKPOINT))
+		avail_user_block_count -= sbi->unusable_block_count;
 
 	if (unlikely(sbi->total_valid_block_count > avail_user_block_count)) {
 		diff = sbi->total_valid_block_count - avail_user_block_count;
@@ -1732,18 +1743,51 @@ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
 		sbi->total_valid_block_count -= diff;
 		if (!*count) {
 			spin_unlock(&sbi->stat_lock);
-			percpu_counter_sub(&sbi->alloc_valid_block_count, diff);
 			goto enospc;
 		}
 	}
+	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
+		if (unlikely(*count) > sbi->free_ssr_data_block) {
+			/* We'll need to pull from free. */
+			blkcnt_t needed = *count - sbi->free_ssr_data_block;
+			blkcnt_t new_segs = ((needed - 1) >>
+						sbi->log_blocks_per_seg) + 1;
+
+			/* Check if we have enough free */
+			if (unlikely(new_segs > sbi->free_segments)) {
+				seg_diff = new_segs - sbi->free_segments;
+
+				seg_rel = ((needed - 1) %
+						sbi->log_blocks_per_seg) + 1;
+				seg_rel += (seg_diff - 1) <<
+							sbi->log_blocks_per_seg;
+				new_segs -= seg_diff;
+				*count -= seg_rel;
+				release += seg_rel;
+				if (!*count) {
+					spin_unlock(&sbi->stat_lock);
+					goto enospc;
+				}
+			}
+
+			sbi->free_segments -= new_segs;
+			sbi->free_ssr_data_block += new_segs <<
+							sbi->log_blocks_per_seg;
+
+		}
+		sbi->free_ssr_data_block -= *count;
+	}
 	spin_unlock(&sbi->stat_lock);
 
-	if (unlikely(release))
+	if (unlikely(release)) {
+		percpu_counter_sub(&sbi->alloc_valid_block_count, release);
 		dquot_release_reservation_block(inode, release);
+	}
 	f2fs_i_blocks_write(inode, *count, true, true);
 	return 0;
 
 enospc:
+	percpu_counter_sub(&sbi->alloc_valid_block_count, release);
 	dquot_release_reservation_block(inode, release);
 	return -ENOSPC;
 }
@@ -1929,6 +1973,8 @@ static inline int inc_valid_node_count(struct f2fs_sb_info *sbi,
 
 	if (!__allow_reserved_blocks(sbi, inode, false))
 		valid_block_count += F2FS_OPTION(sbi).root_reserved_blocks;
+	if (test_opt(sbi, DISABLE_CHECKPOINT))
+		valid_block_count += sbi->unusable_block_count;
 
 	if (unlikely(valid_block_count > sbi->user_block_count)) {
 		spin_unlock(&sbi->stat_lock);
@@ -1939,6 +1985,17 @@ static inline int inc_valid_node_count(struct f2fs_sb_info *sbi,
 	if (unlikely(valid_node_count > sbi->total_node_count)) {
 		spin_unlock(&sbi->stat_lock);
 		goto enospc;
+	}
+
+	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
+		if (unlikely(!sbi->free_ssr_node_block)) {
+			if (unlikely(!sbi->free_segments)) {
+				spin_unlock(&sbi->stat_lock);
+				goto enospc;
+			}
+			sbi->free_segments--;
+		}
+		sbi->free_ssr_node_block--;
 	}
 
 	sbi->total_valid_node_count++;
