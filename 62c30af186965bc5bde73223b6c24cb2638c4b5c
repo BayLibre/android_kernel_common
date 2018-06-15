@@ -46,6 +46,30 @@
       "revId": "62c30af186965bc5bde73223b6c24cb2638c4b5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46925a45_e1d85ff6",
+        "filename": "net/netfilter/xt_qtaguid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1121354
+      },
+      "writtenOn": "2018-06-15T01:02:57Z",
+      "side": 0,
+      "message": "Either is fine to me. Actually in Android 4.4 we have a patch to deleted this part, but it didn\u0027t flow through to the new kernel branches somehow, I can forward port that patch here instead, which does exactly the same thing as you did here. No need to merge this change.",
+      "parentUuid": "6df93c9e_39fa86fe",
+      "range": {
+        "startLine": 1197,
+        "startChar": 16,
+        "endLine": 1197,
+        "endChar": 30
+      },
+      "revId": "62c30af186965bc5bde73223b6c24cb2638c4b5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
