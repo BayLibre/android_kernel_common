@@ -1934,7 +1934,7 @@ static int qtaguid_ctrl_proc_show(struct seq_file *m, void *v)
 			 uid,
 			 sock_tag_entry->pid
 			);
-		sk_ref_count = refcount_read(
+		sk_ref_count = atomic_read(
 			&sock_tag_entry->sk->sk_refcnt);
 		seq_printf(m, "sock=%pK tag=0x%llx (uid=%u) pid=%u "
 			   "f_count=%d\n",
@@ -2239,7 +2239,7 @@ static int ctrl_cmd_tag(const char *input)
 		goto err;
 	}
 	CT_DEBUG("qtaguid: ctrl_tag(%s): socket->...->sk_refcnt=%d ->sk=%p\n",
-		 input, refcount_read(&el_socket->sk->sk_refcnt),
+		 input, atomic_read(&el_socket->sk->sk_refcnt),
 		 el_socket->sk);
 	if (argc < 3) {
 		acct_tag = make_atag_from_value(0);
@@ -2287,7 +2287,7 @@ static int ctrl_cmd_tag(const char *input)
 		CT_DEBUG("qtaguid: ctrl_tag(%s): retag for sk=%p "
 			 "st@%p ...->sk_refcnt=%d\n",
 			 input, el_socket->sk, sock_tag_entry,
-			 refcount_read(&el_socket->sk->sk_refcnt));
+			 atomic_read(&el_socket->sk->sk_refcnt));
 		prev_tag_ref_entry = lookup_tag_ref(sock_tag_entry->tag,
 						    &uid_tag_data_entry);
 		BUG_ON(IS_ERR_OR_NULL(prev_tag_ref_entry));
@@ -2346,13 +2346,13 @@ static int ctrl_cmd_tag(const char *input)
 	/* We keep the ref to the sk until it is untagged */
 	CT_DEBUG("qtaguid: ctrl_tag(%s): done st@%p ...->sk_refcnt=%d\n",
 		 input, sock_tag_entry,
-		 refcount_read(&el_socket->sk->sk_refcnt));
+		 atomic_read(&el_socket->sk->sk_refcnt));
 	sockfd_put(el_socket);
 	return 0;
 
 err_put:
 	CT_DEBUG("qtaguid: ctrl_tag(%s): done. ...->sk_refcnt=%d\n",
-		 input, refcount_read(&el_socket->sk->sk_refcnt) - 1);
+		 input, atomic_read(&el_socket->sk->sk_refcnt) - 1);
 	/* Release the sock_fd that was grabbed by sockfd_lookup(). */
 	sockfd_put(el_socket);
 	return res;
@@ -2451,7 +2451,7 @@ int qtaguid_untag(struct socket *el_socket, bool kernel)
 	sock_put(sock_tag_entry->sk);
 	CT_DEBUG("qtaguid: done. st@%p ...->sk_refcnt=%d\n",
 		 sock_tag_entry,
-		 refcount_read(&el_socket->sk->sk_refcnt));
+		 atomic_read(&el_socket->sk->sk_refcnt));
 
 	kfree(sock_tag_entry);
 	atomic64_inc(&qtu_events.sockets_untagged);
