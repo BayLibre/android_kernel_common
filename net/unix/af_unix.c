@@ -2822,7 +2822,7 @@ static int unix_seq_show(struct seq_file *seq, void *v)
 
 		seq_printf(seq, "%pK: %08X %08X %08X %04X %02X %5lu",
 			s,
-			refcount_read(&s->sk_refcnt),
+			atomic_read(&s->sk_refcnt),
 			0,
 			s->sk_state == TCP_LISTEN ? __SO_ACCEPTCON : 0,
 			s->sk_type,

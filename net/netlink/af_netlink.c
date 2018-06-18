@@ -578,7 +578,7 @@ static void netlink_remove(struct sock *sk)
 	table = &nl_table[sk->sk_protocol];
 	if (!rhashtable_remove_fast(&table->hash, &nlk_sk(sk)->node,
 				    netlink_rhashtable_params)) {
-		WARN_ON(refcount_read(&sk->sk_refcnt) == 1);
+		WARN_ON(atomic_read(&sk->sk_refcnt) == 1);
 		__sock_put(sk);
 	}
 
@@ -697,7 +697,7 @@ static void deferred_put_nlk_sk(struct rcu_head *head)
 	kfree(nlk->groups);
 	nlk->groups = NULL;
 
-	if (!refcount_dec_and_test(&sk->sk_refcnt))
+	if (!atomic_dec_and_test(&sk->sk_refcnt))
 		return;
 
 	if (nlk->cb_running && nlk->cb.done) {
@@ -2596,7 +2596,7 @@ static int netlink_seq_show(struct seq_file *seq, void *v)
 			   sk_rmem_alloc_get(s),
 			   sk_wmem_alloc_get(s),
 			   nlk->cb_running,
-			   refcount_read(&s->sk_refcnt),
+			   atomic_read(&s->sk_refcnt),
 			   atomic_read(&s->sk_drops),
 			   sock_i_ino(s)
 			);
