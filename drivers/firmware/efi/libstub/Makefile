@@ -23,6 +23,7 @@ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
 
 GCOV_PROFILE			:= n
 KASAN_SANITIZE			:= n
+PGO_CLANG_INSTRUMENT		:= n
 
 # Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
 KCOV_INSTRUMENT			:= n
