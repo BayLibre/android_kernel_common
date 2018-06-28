@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aa96ff3_f71266c9",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5711,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-06-28T13:53:18Z",
+      "side": 1,
+      "message": "From the backport, here we are missing a the condition:\n\n   p-\u003estate \u003d\u003d TASK_WAKING\n\nis that intentional?",
+      "range": {
+        "startLine": 5711,
+        "startChar": 5,
+        "endLine": 5711,
+        "endChar": 61
+      },
+      "revId": "6798be07318d5804ffee85529d878907f271e27b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}

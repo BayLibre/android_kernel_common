@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8db5c134_a4a7eed6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5723,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-06-28T13:53:18Z",
+      "side": 1,
+      "message": "This is missing a forward declaration, which makes the series not bisect-able.\nWe need to anticipate the forward declaration before the function is moved by the following patch of this series.",
+      "range": {
+        "startLine": 5723,
+        "startChar": 35,
+        "endLine": 5723,
+        "endChar": 48
+      },
+      "revId": "649ea7d83ad9dc2c86acf181b208a26d2c56f413",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
