@@ -12,10 +12,26 @@
 #include <linux/buffer_head.h>
 #include "page_actor.h"
 
+static struct kmem_cache *squashfs_page_actor_cachep;
+
+int __init init_page_actor_cache(void)
+{
+	squashfs_page_actor_cachep = kmem_cache_create("squashfs_page_actor_cache",
+		sizeof(struct squashfs_page_actor), 0,
+		SLAB_HWCACHE_ALIGN|SLAB_RECLAIM_ACCOUNT, NULL);
+
+	return squashfs_page_actor_cachep ? 0 : -ENOMEM;
+}
+
+void destroy_page_actor_cache(void)
+{
+	kmem_cache_destroy(squashfs_page_actor_cachep);
+}
+
 struct squashfs_page_actor *squashfs_page_actor_init(struct page **page,
 	int pages, int length, void (*release_pages)(struct page **, int, int))
 {
-	struct squashfs_page_actor *actor = kmalloc(sizeof(*actor), GFP_KERNEL);
+	struct squashfs_page_actor *actor = kmem_cache_alloc(squashfs_page_actor_cachep, GFP_NOFS);
 
 	if (actor == NULL)
 		return NULL;
@@ -36,7 +52,7 @@ void squashfs_page_actor_free(struct squashfs_page_actor *actor, int error)
 
 	if (actor->release_pages)
 		actor->release_pages(actor->page, actor->pages, error);
-	kfree(actor);
+	kmem_cache_free(squashfs_page_actor_cachep, actor);
 }
 
 void squashfs_actor_to_buf(struct squashfs_page_actor *actor, void *buf,

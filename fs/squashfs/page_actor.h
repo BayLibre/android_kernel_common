@@ -27,6 +27,8 @@ extern void squashfs_bh_to_actor(struct buffer_head **, int,
 	struct squashfs_page_actor *, int, int, int);
 extern void squashfs_bh_to_buf(struct buffer_head **, int, void *, int, int,
 	int);
+extern int __init init_page_actor_cache(void);
+extern void destroy_page_actor_cache(void);
 
 /*
  * Calling code should avoid sleeping between calls to squashfs_first_page()
