@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3bed675a_481b0835",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9244,
+      "author": {
+        "id": 1173283
+      },
+      "writtenOn": "2018-06-29T16:08:04Z",
+      "side": 1,
+      "message": "That\u0027s busted, we no longer initialize prefer_sibling - my bad.\nYou\u0027ll probably want to pick Morten\u0027s patch that clears SD_PREFER_SIBLING at MC level and my updated patch that doesn\u0027t mess this up.",
+      "revId": "6345f254e1720c5e0917575e79b9c2806cdb9ec0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
