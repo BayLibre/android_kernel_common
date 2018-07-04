@@ -98,7 +98,10 @@ static inline void scatterwalk_pagedone(struct scatter_walk *walk, int out,
 	if (out) {
 		struct page *page;
 
-		page = sg_page(walk->sg) + ((walk->offset - 1) >> PAGE_SHIFT);
+		if (likely(walk->offset))
+			page = sg_page(walk->sg) + ((walk->offset - 1) >> PAGE_SHIFT);
+		else
+			page = sg_page(walk->sg);
 		/* Test ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE first as
 		 * PageSlab cannot be optimised away per se due to
 		 * use of volatile pointer.
