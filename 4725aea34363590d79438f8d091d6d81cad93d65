@@ -22,6 +22,30 @@
       "revId": "4725aea34363590d79438f8d091d6d81cad93d65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3744bdc1_66e7273e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1173283
+      },
+      "writtenOn": "2018-07-09T17:48:37Z",
+      "side": 1,
+      "message": "Not entirely. What this means is that imbalances of type \"group_misfit_task\" are of lesser priority than imbalances of types \"group_overloaded\" or \"group_imbalanced\" - if you look at \"update_sd_pick_busiest()\", the busiest group must have the highest group_type value, and \"group_misfit_task\" is defined as the second lowest.\n\nYou\u0027re right that the last patch on the stack slightly changes the active_balance logic when the imbalance is \"group_overloaded\", and sort of considers it as a \"group_misfit_task\". But that last patch isn\u0027t part of the LKML posting, so this commit message is valid from that point of view.",
+      "parentUuid": "d2fea122_483d5c64",
+      "range": {
+        "startLine": 20,
+        "startChar": 35,
+        "endLine": 21,
+        "endChar": 31
+      },
+      "revId": "4725aea34363590d79438f8d091d6d81cad93d65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
