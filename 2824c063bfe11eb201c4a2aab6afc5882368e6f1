@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4d2463e_eb122ba7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6290,
+      "author": {
+        "id": 1060750
+      },
+      "writtenOn": "2018-07-11T14:02:00Z",
+      "side": 1,
+      "message": "I thought the final utilization used would be max(measured, boost).\nUsing max() would take advantage of the fact the bottom of the frequency vs power curve\nis fairly flat. So there would be very little impact on power consumption.\n\nIf we ADD the boost value then we may be pushing up into the steeper part of the curve than we need and consuming more power.",
+      "range": {
+        "startLine": 6290,
+        "startChar": 41,
+        "endLine": 6290,
+        "endChar": 53
+      },
+      "revId": "2824c063bfe11eb201c4a2aab6afc5882368e6f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
