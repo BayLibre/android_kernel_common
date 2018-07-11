@@ -22,6 +22,30 @@
       "revId": "2824c063bfe11eb201c4a2aab6afc5882368e6f1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb3b67a5_97ccc346",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6290,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2018-07-11T17:51:49Z",
+      "side": 1,
+      "message": "No, that\u0027s not how it works. Its not a simple max function but an indirect one.\n\nOnce the util is calculated above, the addition of the margin below results in the max function max( util, boost * max_util)\n\nSo if the boost is 30%, max_util is 1024, and say the util is 100, then the boosted_cpu_util will be max(100, 30% * 1024) ~\u003d 300\n\nYou have to go through the schedtune code to understand this.\n\nAlso the addition mentioned above has nothing to do with boost, its just aggregating the utilization of all the scheduler classes, that\u0027s all.",
+      "parentUuid": "c4d2463e_eb122ba7",
+      "range": {
+        "startLine": 6290,
+        "startChar": 41,
+        "endLine": 6290,
+        "endChar": 53
+      },
+      "revId": "2824c063bfe11eb201c4a2aab6afc5882368e6f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
