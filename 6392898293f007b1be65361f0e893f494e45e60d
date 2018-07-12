@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd0588e5_72a60e87",
+        "filename": "kernel/fork.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2018-07-12T19:41:48Z",
+      "side": 1,
+      "message": "is the #ifdef really needed?  Shouldn\u0027t the .h file have instances for when it is not enabled and provides an \"empty\" function?  Putting #ifdef in .c code is not the kernel style.\n\nSame for the other instances in this file.",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 28
+      },
+      "revId": "6392898293f007b1be65361f0e893f494e45e60d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
