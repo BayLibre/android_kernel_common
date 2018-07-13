@@ -22,6 +22,30 @@
       "revId": "6392898293f007b1be65361f0e893f494e45e60d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1802c67c_6789f024",
+        "filename": "kernel/fork.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1327778
+      },
+      "writtenOn": "2018-07-13T18:36:35Z",
+      "side": 1,
+      "message": "Since the #ifdef was already there prior to this commit, I think the best way to go about this would be to create a separate commit adding static inline functions into the header to eliminate the #ifdefs from the .c files, and then to refactor this commit on top of that.",
+      "parentUuid": "fd0588e5_72a60e87",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 28
+      },
+      "revId": "6392898293f007b1be65361f0e893f494e45e60d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
