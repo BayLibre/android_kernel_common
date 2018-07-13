@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1bd98547_35ea97e5",
+        "filename": "kernel/fork.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1115183
+      },
+      "writtenOn": "2018-07-13T21:10:03Z",
+      "side": 1,
+      "message": "Agreed, I\u0027ll add a preceding patch fixing this.",
+      "parentUuid": "1802c67c_6789f024",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 28
+      },
+      "revId": "6392898293f007b1be65361f0e893f494e45e60d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6f02b721_364f3034",
         "filename": "kernel/fork.c",
         "patchSetId": 2
@@ -60,6 +84,24 @@
       "writtenOn": "2018-07-13T19:02:33Z",
       "side": 1,
       "message": "This cpufreq_task_times_alloc() occurs after the cpufreq_task_times_init() in copy_process(). Looking at the content of cpufreq_task_times_alloc(), it appears to overwrite everything that cpufreq_task_times_init() does. The task_struct instance copied inside copy_process() will be freed on the error path if copy_process() returns an error, so you don\u0027t need to concern yourself with cleaning out the copied task_struct\u0027s cpufreq-times pointer when that happens. The copied process will be destroyed if copy_process() fails, and it will get a fresh cpufreq-times allocation via cpufreq_task_times_alloc() upon copy_process()\u0027s success. What you\u0027re doing here with the cpufreq_task_times_init() decoupling is unnecessary.\n\nIn summary, undo the changes you\u0027ve made to drivers/cpufreq/cpufreq_times.c and include/linux/cpufreq_times.h, and change this cpufreq_task_times_alloc() call to cpufreq_task_times_init().",
+      "revId": "6392898293f007b1be65361f0e893f494e45e60d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3dd2120_5ba9347c",
+        "filename": "kernel/fork.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2067,
+      "author": {
+        "id": 1115183
+      },
+      "writtenOn": "2018-07-13T21:10:03Z",
+      "side": 1,
+      "message": "If we allocate in copy_process() we unnecessarily allocate a time_in_state array for idle threads through the path:\nidle_init() -\u003e fork_idle() -\u003e copy_process()\n\nBut we do need to clear p-\u003etime_in_state in copy_process() to avoid a double free if the bad_fork_free error path is taken. Decoupling lets us do each of these operations only when necessary.",
+      "parentUuid": "6f02b721_364f3034",
       "revId": "6392898293f007b1be65361f0e893f494e45e60d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
