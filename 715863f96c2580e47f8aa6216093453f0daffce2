@@ -193,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "4dad2acc_5782a384",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-07-19T12:09:49Z",
+      "side": 1,
+      "message": "Yes, Patrick has it right. We are increasing the boost, so we need the timestamp for this boost level cached. When we next check after it has expired, we will re-evaluate to see what the next highest boost level is.",
+      "parentUuid": "0d5e3257_4dfe0148",
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0d8e4933_af870ed4",
         "filename": "kernel/sched/tune.c",
         "patchSetId": 2
