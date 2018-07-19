@@ -2,6 +2,144 @@
   "comments": [
     {
       "key": {
+        "uuid": "8db7ad36_11eeead5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "applies?",
+      "range": {
+        "startLine": 22,
+        "startChar": 34,
+        "endLine": 22,
+        "endChar": 41
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "900e8e9f_86c5bbae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "the CPU timestamp ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 36,
+        "endChar": 16
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d45fa62_a5b21e0b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "boostgroup ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 32,
+        "endLine": 38,
+        "endChar": 37
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17922aea_c62f21da",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Since boost_ts is updated, in the same loop body, when also boost_max is update... what about initialising them both before the loop itself, i.e.\n\n    struct boost_groups *bg \u003d \u0026per_cpu(cpu_boost_groups, cpu);\n    int boost_max;\n    u64 boost_ts;\n    int idx;\n\n    /* The root boost group is always active */\n    boost_ts \u003d now;\n    boost_max \u003d bg-\u003egroup[0].boost;\n    for (idx \u003d 1; idx \u003c BOOSTGROUPS_COUNT; ++idx) {",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 136,
+        "endChar": 15
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98aadad5_8769b7f8",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Capital T ?",
+      "range": {
+        "startLine": 150,
+        "startChar": 5,
+        "endLine": 150,
+        "endChar": 6
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e7b9498_1b2dad0d",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Can we fit the comment into a single line ? (no need of final \u0027.\u0027 too)\n\nI would also like to switch the two lines above, i.e.\n\n    /* Check if this update increase current max */\n    now \u003d sched_clock_cpu(cpu);\n    if (...",
+      "range": {
+        "startLine": 190,
+        "startChar": 2,
+        "endLine": 192,
+        "endChar": 5
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2087e348_999a4c9a",
         "filename": "kernel/sched/tune.c",
         "patchSetId": 2
@@ -31,6 +169,116 @@
       "side": 1,
       "message": "hm, I think that shouldn\u0027t be a problem, since it\u0027ll just mean we\u0027ll timeout later",
       "parentUuid": "2087e348_999a4c9a",
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d5e3257_4dfe0148",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Yes, moreover this overwrite happens only if we are increasing the required boost value (L193), in which case it make sense to always forward the timemout.",
+      "parentUuid": "6e7a006e_ee591902",
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d8e4933_af870ed4",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Maybe an empty line before the comment?",
+      "range": {
+        "startLine": 236,
+        "startChar": 1,
+        "endLine": 236,
+        "endChar": 32
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57301297_5d4c85ee",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Maybe we can move the definition of now here?\n\n    if (task_count \u003e 0) {\n       u64 now \u003d sched_clock_cpu(cpu);\n       ...\n    }",
+      "range": {
+        "startLine": 238,
+        "startChar": 2,
+        "endLine": 238,
+        "endChar": 29
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9031156d_a8a86484",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "What about keeping hold related code after the previous chunk ?, i.e.\n\n    /* Move task from src to dst boost group */\n    tasks \u003d bg-\u003egroup[src_bg].tasks - 1;\n    bg-\u003egroup[src_bg].tasks \u003d max(0, tasks);\n    bg-\u003egroup[dst_bg].tasks +\u003d 1;\n\n    /* Update boost hold (start) for this boostgroup */\n    now \u003d sched_clock_cpu(cpu);\n    bg-\u003egroup[dst_bg].ts \u003d now;\n\n    /* Force boostgroups re-evaluation next time someone asks */\n    bg-\u003eboost_ts \u003d now - SCHEDTUNE_BOOST_HOLD_NS;",
+      "range": {
+        "startLine": 339,
+        "startChar": 2,
+        "endLine": 348,
+        "endChar": 47
+      },
+      "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bab067d_52bf1948",
+        "filename": "kernel/sched/tune.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-19T09:18:28Z",
+      "side": 1,
+      "message": "Capital C ?",
+      "range": {
+        "startLine": 403,
+        "startChar": 4,
+        "endLine": 403,
+        "endChar": 5
+      },
       "revId": "715863f96c2580e47f8aa6216093453f0daffce2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
