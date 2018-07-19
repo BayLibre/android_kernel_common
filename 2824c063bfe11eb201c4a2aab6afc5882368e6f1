@@ -70,6 +70,30 @@
       "revId": "2824c063bfe11eb201c4a2aab6afc5882368e6f1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93cb3f11_a8cd6d44",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6290,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-07-19T09:01:16Z",
+      "side": 1,
+      "message": "This particular change is because we are now including rt tasks in schedtune groups, so I thought we needed a way to include their boost in the resulting total.\n\nIf we don\u0027t change this function what happens is that we will enable the boost group when an rt-task is available, but the boosted utilisation percentage will be based upon the utilisation reported by cfs. The overall outcome of that might be fine - with the proportional boost used in schedtune, a 50% boost gives you 50% of the remaining util so if the cfs util is low, we\u0027d apply a large boost, but it feels like that would make it hard to reason about the boost settings which should be applied.\n\nThe choice I made here was to aggregate the reported rt and cfs utilisation, and then apply the boost, which is likely to result in lower boost application but should be consistent.\n\nPatrick made a different choice in his utilclamp set on mainline, he boosts both signals independently and then uses max(boosted_rt, boosted_cfs, cfs+rt).\n\nI think it\u0027s a matter of interpretation what we actually do here, all options result in boost being applied, but I\u0027m trying to get to an implementation where the result is predictable. I think Patrick\u0027s version might be more intuitive than this one, so I\u0027d happily change this. Using something closer to utilclamp also has the benefit that any change in functionality is a bit easier to understand when we eventually switch over in future android kernels.\n\nAre you happy with the way it is now Phil or would you like to change it?",
+      "parentUuid": "8e87f92f_871e0332",
+      "range": {
+        "startLine": 6290,
+        "startChar": 41,
+        "endLine": 6290,
+        "endChar": 53
+      },
+      "revId": "2824c063bfe11eb201c4a2aab6afc5882368e6f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
