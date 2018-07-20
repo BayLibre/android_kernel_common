@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "edfbd21f_5a637742",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2018-07-20T11:01:49Z",
+      "side": 1,
+      "message": "If we wanna align SchedTune with UtilClamp, and thus independently boost the utilization, we can probably get a cleaner solution by avoid using the (CFS specific) boosted_cpu_util() and use instead schedtune_cpu_margin(util, cpu) directly here, i.e.\n\n   /* Boost RT tasks */\n   rt_util  \u003d sched_get_rt_rq_util(cpu)\n   rt_util +\u003d schedtune_cpu_margin(rt_util, cpu);\n\n   /* Boost CFS tasks */\n   cfs_util  \u003d cpu_util_freq(cpu);\n   cfs_util +\u003d schedtune_cpu_margin(cfs_util, cpu);\n\n   *util \u003d rt_util + cfs_util;\n\nThis will give use something quite aligned with the mainline proposal:\n   https://lore.kernel.org/lkml/20180716082906.6061-7-patrick.bellasi@arm.com/\n\nWhere, RT and CFS utilization are clamped, according to the current CPU\nconstrains. They are individually clamped to ensure fairness across\nclasses, meaning that CFS always gets (if possible) the (minimum)\nrequired bandwidth on top of that required by higher priority\nclasses.",
+      "range": {
+        "startLine": 219,
+        "startChar": 9,
+        "endLine": 219,
+        "endChar": 35
+      },
+      "revId": "8e266aebf737262aeca9662254a3e61ccc7f8dec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
