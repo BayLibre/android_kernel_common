@@ -22,6 +22,30 @@
       "revId": "c662b0e5b94895799d91fedd3db253f909d1ccef",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a03f253a_d7e7a3e7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 3614,
+      "author": {
+        "id": 1173283
+      },
+      "writtenOn": "2018-07-24T22:51:19Z",
+      "side": 1,
+      "message": "Misfit tasks are by definition tasks that could use more compute capacity than what their current CPU provides. The usual scenario is that some other CPU in the system can provide more compute capacity - because it\u0027s a big and the task is running on a LITTLE.\n\nHowever, it can also happen that the current CPU is a heavily-constrained big, i.e. it\u0027s also handling IRQs and/or running rt tasks (or even, is thermally constrained - but all of the bigs will be capped equally unless the system has finer-grain frequency domains, see DynamIQ). In those cases it\u0027s beneficial to migrate the task to a less-constrained big, if there is one.",
+      "parentUuid": "0b1e952e_69719376",
+      "range": {
+        "startLine": 3614,
+        "startChar": 27,
+        "endLine": 3614,
+        "endChar": 38
+      },
+      "revId": "c662b0e5b94895799d91fedd3db253f909d1ccef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
