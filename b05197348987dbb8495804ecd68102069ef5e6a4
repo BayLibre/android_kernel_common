@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e707c2b3_85a734d5",
+        "filename": "net/ipv4/tcp_input.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4688,
+      "author": {
+        "id": 1105204
+      },
+      "writtenOn": "2018-07-27T10:50:44Z",
+      "side": 1,
+      "message": "Here you need to add :\n\n   range_truesize - skb-\u003etruesize;",
+      "range": {
+        "startLine": 4688,
+        "startChar": 3,
+        "endLine": 4688,
+        "endChar": 34
+      },
+      "revId": "b05197348987dbb8495804ecd68102069ef5e6a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
