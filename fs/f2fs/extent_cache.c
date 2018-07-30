@@ -49,6 +49,7 @@ static struct rb_entry *__lookup_rb_tree_slow(struct rb_root *root,
 	return NULL;
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 struct rb_entry *__lookup_rb_tree(struct rb_root *root,
 				struct rb_entry *cached_re, unsigned int ofs)
 {
@@ -160,6 +161,119 @@ lookup_neighbors:
 }
 
 bool __check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+=======
+struct rb_entry *f2fs_lookup_rb_tree(struct rb_root *root,
+				struct rb_entry *cached_re, unsigned int ofs)
+{
+	struct rb_entry *re;
+
+	re = __lookup_rb_tree_fast(cached_re, ofs);
+	if (!re)
+		return __lookup_rb_tree_slow(root, ofs);
+
+	return re;
+}
+
+struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+				struct rb_root *root, struct rb_node **parent,
+				unsigned int ofs)
+{
+	struct rb_node **p = &root->rb_node;
+	struct rb_entry *re;
+
+	while (*p) {
+		*parent = *p;
+		re = rb_entry(*parent, struct rb_entry, rb_node);
+
+		if (ofs < re->ofs)
+			p = &(*p)->rb_left;
+		else if (ofs >= re->ofs + re->len)
+			p = &(*p)->rb_right;
+		else
+			f2fs_bug_on(sbi, 1);
+	}
+
+	return p;
+}
+
+/*
+ * lookup rb entry in position of @ofs in rb-tree,
+ * if hit, return the entry, otherwise, return NULL
+ * @prev_ex: extent before ofs
+ * @next_ex: extent after ofs
+ * @insert_p: insert point for new extent at ofs
+ * in order to simpfy the insertion after.
+ * tree must stay unchanged between lookup and insertion.
+ */
+struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root *root,
+				struct rb_entry *cached_re,
+				unsigned int ofs,
+				struct rb_entry **prev_entry,
+				struct rb_entry **next_entry,
+				struct rb_node ***insert_p,
+				struct rb_node **insert_parent,
+				bool force)
+{
+	struct rb_node **pnode = &root->rb_node;
+	struct rb_node *parent = NULL, *tmp_node;
+	struct rb_entry *re = cached_re;
+
+	*insert_p = NULL;
+	*insert_parent = NULL;
+	*prev_entry = NULL;
+	*next_entry = NULL;
+
+	if (RB_EMPTY_ROOT(root))
+		return NULL;
+
+	if (re) {
+		if (re->ofs <= ofs && re->ofs + re->len > ofs)
+			goto lookup_neighbors;
+	}
+
+	while (*pnode) {
+		parent = *pnode;
+		re = rb_entry(*pnode, struct rb_entry, rb_node);
+
+		if (ofs < re->ofs)
+			pnode = &(*pnode)->rb_left;
+		else if (ofs >= re->ofs + re->len)
+			pnode = &(*pnode)->rb_right;
+		else
+			goto lookup_neighbors;
+	}
+
+	*insert_p = pnode;
+	*insert_parent = parent;
+
+	re = rb_entry(parent, struct rb_entry, rb_node);
+	tmp_node = parent;
+	if (parent && ofs > re->ofs)
+		tmp_node = rb_next(parent);
+	*next_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
+
+	tmp_node = parent;
+	if (parent && ofs < re->ofs)
+		tmp_node = rb_prev(parent);
+	*prev_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
+	return NULL;
+
+lookup_neighbors:
+	if (ofs == re->ofs || force) {
+		/* lookup prev node for merging backward later */
+		tmp_node = rb_prev(&re->rb_node);
+		*prev_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
+	}
+	if (ofs == re->ofs + re->len - 1 || force) {
+		/* lookup next node for merging frontward later */
+		tmp_node = rb_next(&re->rb_node);
+		*next_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
+	}
+	return re;
+}
+
+bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 						struct rb_root *root)
 {
 #ifdef CONFIG_F2FS_CHECK_FS
@@ -390,7 +504,11 @@ static bool f2fs_lookup_extent_tree(struct inode *inode, pgoff_t pgofs,
 		goto out;
 	}
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	en = (struct extent_node *)__lookup_rb_tree(&et->root,
+=======
+	en = (struct extent_node *)f2fs_lookup_rb_tree(&et->root,
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 				(struct rb_entry *)et->cached_en, pgofs);
 	if (!en)
 		goto out;
@@ -470,7 +588,11 @@ static struct extent_node *__insert_extent_tree(struct inode *inode,
 		goto do_insert;
 	}
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	p = __lookup_rb_tree_for_insert(sbi, &et->root, &parent, ei->fofs);
+=======
+	p = f2fs_lookup_rb_tree_for_insert(sbi, &et->root, &parent, ei->fofs);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 do_insert:
 	en = __attach_extent_node(sbi, et, ei, parent, p);
 	if (!en)
@@ -520,7 +642,11 @@ static void f2fs_update_extent_tree_range(struct inode *inode,
 	__drop_largest_extent(inode, fofs, len);
 
 	/* 1. lookup first extent node in range [fofs, fofs + len - 1] */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	en = (struct extent_node *)__lookup_rb_tree_ret(&et->root,
+=======
+	en = (struct extent_node *)f2fs_lookup_rb_tree_ret(&et->root,
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 					(struct rb_entry *)et->cached_en, fofs,
 					(struct rb_entry **)&prev_en,
 					(struct rb_entry **)&next_en,
@@ -773,7 +899,7 @@ void f2fs_update_extent_cache(struct dnode_of_data *dn)
 	else
 		blkaddr = dn->data_blkaddr;
 
-	fofs = start_bidx_of_node(ofs_of_node(dn->node_page), dn->inode) +
+	fofs = f2fs_start_bidx_of_node(ofs_of_node(dn->node_page), dn->inode) +
 								dn->ofs_in_node;
 	f2fs_update_extent_tree_range(dn->inode, fofs, blkaddr, 1);
 }
@@ -788,7 +914,7 @@ void f2fs_update_extent_cache_range(struct dnode_of_data *dn,
 	f2fs_update_extent_tree_range(dn->inode, fofs, blkaddr, len);
 }
 
-void init_extent_cache_info(struct f2fs_sb_info *sbi)
+void f2fs_init_extent_cache_info(struct f2fs_sb_info *sbi)
 {
 	INIT_RADIX_TREE(&sbi->extent_tree_root, GFP_NOIO);
 	mutex_init(&sbi->extent_tree_lock);
@@ -800,7 +926,7 @@ void init_extent_cache_info(struct f2fs_sb_info *sbi)
 	atomic_set(&sbi->total_ext_node, 0);
 }
 
-int __init create_extent_cache(void)
+int __init f2fs_create_extent_cache(void)
 {
 	extent_tree_slab = f2fs_kmem_cache_create("f2fs_extent_tree",
 			sizeof(struct extent_tree));
@@ -815,7 +941,7 @@ int __init create_extent_cache(void)
 	return 0;
 }
 
-void destroy_extent_cache(void)
+void f2fs_destroy_extent_cache(void)
 {
 	kmem_cache_destroy(extent_node_slab);
 	kmem_cache_destroy(extent_tree_slab);

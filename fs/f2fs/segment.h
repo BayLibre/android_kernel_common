@@ -85,7 +85,11 @@
 	(GET_SEGOFF_FROM_SEG0(sbi, blk_addr) & ((sbi)->blocks_per_seg - 1))
 
 #define GET_SEGNO(sbi, blk_addr)					\
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	((((blk_addr) == NULL_ADDR) || ((blk_addr) == NEW_ADDR)) ?	\
+=======
+	((!is_valid_blkaddr(blk_addr)) ?			\
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	NULL_SEGNO : GET_L2R_SEGNO(FREE_I(sbi),			\
 		GET_SEGNO_FROM_SEG0(sbi, blk_addr)))
 #define BLKS_PER_SEC(sbi)					\
@@ -214,6 +218,11 @@ struct segment_allocation {
 		(page_private(page) == (unsigned long)ATOMIC_WRITTEN_PAGE)
 #define IS_DUMMY_WRITTEN_PAGE(page)			\
 		(page_private(page) == (unsigned long)DUMMY_WRITTEN_PAGE)
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
+=======
+
+#define MAX_SKIP_ATOMIC_COUNT			16
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
 struct inmem_pages {
 	struct list_head list;
@@ -375,6 +384,10 @@ static inline void seg_info_to_sit_page(struct f2fs_sb_info *sbi,
 	int i;
 
 	raw_sit = (struct f2fs_sit_block *)page_address(page);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
+=======
+	memset(raw_sit, 0, PAGE_SIZE);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	for (i = 0; i < end - start; i++) {
 		rs = &raw_sit->entries[i];
 		se = get_seg_entry(sbi, start + i);
@@ -742,12 +755,29 @@ static inline void set_to_next_sit(struct sit_info *sit_i, unsigned int start)
 #endif
 }
 
-static inline unsigned long long get_mtime(struct f2fs_sb_info *sbi)
+static inline unsigned long long get_mtime(struct f2fs_sb_info *sbi,
+						bool base_time)
 {
 	struct sit_info *sit_i = SIT_I(sbi);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	time64_t now = ktime_get_real_seconds();
 
 	return sit_i->elapsed_time + now - sit_i->mounted_time;
+=======
+	time64_t diff, now = ktime_get_real_seconds();
+
+	if (now >= sit_i->mounted_time)
+		return sit_i->elapsed_time + now - sit_i->mounted_time;
+
+	/* system time is set to the past */
+	if (!base_time) {
+		diff = sit_i->mounted_time - now;
+		if (sit_i->elapsed_time >= diff)
+			return sit_i->elapsed_time - diff;
+		return 0;
+	}
+	return sit_i->elapsed_time;
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 }
 
 static inline void set_summary(struct f2fs_summary *sum, nid_t nid,
@@ -771,6 +801,7 @@ static inline block_t sum_blk_addr(struct f2fs_sb_info *sbi, int base, int type)
 				- (base + 1) + type;
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 static inline bool no_fggc_candidate(struct f2fs_sb_info *sbi,
 						unsigned int secno)
 {
@@ -780,6 +811,8 @@ static inline bool no_fggc_candidate(struct f2fs_sb_info *sbi,
 	return false;
 }
 
+=======
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 static inline bool sec_usage_check(struct f2fs_sb_info *sbi, unsigned int secno)
 {
 	if (IS_CURSEC(sbi, secno) || (sbi->cur_victim_sec == secno))

@@ -67,6 +67,7 @@ static inline void fscrypt_restore_control_page(struct page *page)
 	return;
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 static inline void fscrypt_set_d_op(struct dentry *dentry)
 {
 	return;
@@ -77,6 +78,8 @@ static inline void fscrypt_set_encrypted_dentry(struct dentry *dentry)
 	return;
 }
 
+=======
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 /* policy.c */
 static inline int fscrypt_ioctl_set_policy(struct file *filp,
 					   const void __user *arg)

@@ -147,6 +147,7 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
 		int len = 0, i;
 
 		len += snprintf(buf + len, PAGE_SIZE - len,
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 						"cold file extenstion:\n");
 		for (i = 0; i < cold_count; i++)
 			len += snprintf(buf + len, PAGE_SIZE - len, "%s\n",
@@ -351,6 +352,246 @@ F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_max_sleep_time, max_sleep_time);
 F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_no_gc_sleep_time, no_gc_sleep_time);
 F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_idle, gc_idle);
 F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_urgent, gc_urgent);
+=======
+						"cold file extension:\n");
+		for (i = 0; i < cold_count; i++)
+			len += snprintf(buf + len, PAGE_SIZE - len, "%s\n",
+								extlist[i]);
+
+		len += snprintf(buf + len, PAGE_SIZE - len,
+						"hot file extension:\n");
+		for (i = cold_count; i < cold_count + hot_count; i++)
+			len += snprintf(buf + len, PAGE_SIZE - len, "%s\n",
+								extlist[i]);
+		return len;
+	}
+
+	ui = (unsigned int *)(ptr + a->offset);
+
+	return snprintf(buf, PAGE_SIZE, "%u\n", *ui);
+}
+
+static ssize_t __sbi_store(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi,
+			const char *buf, size_t count)
+{
+	unsigned char *ptr;
+	unsigned long t;
+	unsigned int *ui;
+	ssize_t ret;
+
+	ptr = __struct_ptr(sbi, a->struct_type);
+	if (!ptr)
+		return -EINVAL;
+
+	if (!strcmp(a->attr.name, "extension_list")) {
+		const char *name = strim((char *)buf);
+		bool set = true, hot;
+
+		if (!strncmp(name, "[h]", 3))
+			hot = true;
+		else if (!strncmp(name, "[c]", 3))
+			hot = false;
+		else
+			return -EINVAL;
+
+		name += 3;
+
+		if (*name == '!') {
+			name++;
+			set = false;
+		}
+
+		if (strlen(name) >= F2FS_EXTENSION_LEN)
+			return -EINVAL;
+
+		down_write(&sbi->sb_lock);
+
+		ret = f2fs_update_extension_list(sbi, name, hot, set);
+		if (ret)
+			goto out;
+
+		ret = f2fs_commit_super(sbi, false);
+		if (ret)
+			f2fs_update_extension_list(sbi, name, hot, !set);
+out:
+		up_write(&sbi->sb_lock);
+		return ret ? ret : count;
+	}
+
+	ui = (unsigned int *)(ptr + a->offset);
+
+	ret = kstrtoul(skip_spaces(buf), 0, &t);
+	if (ret < 0)
+		return ret;
+#ifdef CONFIG_F2FS_FAULT_INJECTION
+	if (a->struct_type == FAULT_INFO_TYPE && t >= (1 << FAULT_MAX))
+		return -EINVAL;
+#endif
+	if (a->struct_type == RESERVED_BLOCKS) {
+		spin_lock(&sbi->stat_lock);
+		if (t > (unsigned long)(sbi->user_block_count -
+				F2FS_OPTION(sbi).root_reserved_blocks)) {
+			spin_unlock(&sbi->stat_lock);
+			return -EINVAL;
+		}
+		*ui = t;
+		sbi->current_reserved_blocks = min(sbi->reserved_blocks,
+				sbi->user_block_count - valid_user_blocks(sbi));
+		spin_unlock(&sbi->stat_lock);
+		return count;
+	}
+
+	if (!strcmp(a->attr.name, "discard_granularity")) {
+		if (t == 0 || t > MAX_PLIST_NUM)
+			return -EINVAL;
+		if (t == *ui)
+			return count;
+		*ui = t;
+		return count;
+	}
+
+	if (!strcmp(a->attr.name, "trim_sections"))
+		return -EINVAL;
+
+	if (!strcmp(a->attr.name, "gc_urgent")) {
+		if (t >= 1) {
+			sbi->gc_mode = GC_URGENT;
+			if (sbi->gc_thread) {
+				wake_up_interruptible_all(
+					&sbi->gc_thread->gc_wait_queue_head);
+				wake_up_discard_thread(sbi, true);
+			}
+		} else {
+			sbi->gc_mode = GC_NORMAL;
+		}
+		return count;
+	}
+	if (!strcmp(a->attr.name, "gc_idle")) {
+		if (t == GC_IDLE_CB)
+			sbi->gc_mode = GC_IDLE_CB;
+		else if (t == GC_IDLE_GREEDY)
+			sbi->gc_mode = GC_IDLE_GREEDY;
+		else
+			sbi->gc_mode = GC_NORMAL;
+		return count;
+	}
+
+	*ui = t;
+
+	if (!strcmp(a->attr.name, "iostat_enable") && *ui == 0)
+		f2fs_reset_iostat(sbi);
+	return count;
+}
+
+static ssize_t f2fs_sbi_store(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi,
+			const char *buf, size_t count)
+{
+	ssize_t ret;
+	bool gc_entry = (!strcmp(a->attr.name, "gc_urgent") ||
+					a->struct_type == GC_THREAD);
+
+	if (gc_entry)
+		down_read(&sbi->sb->s_umount);
+	ret = __sbi_store(a, sbi, buf, count);
+	if (gc_entry)
+		up_read(&sbi->sb->s_umount);
+
+	return ret;
+}
+
+static ssize_t f2fs_attr_show(struct kobject *kobj,
+				struct attribute *attr, char *buf)
+{
+	struct f2fs_sb_info *sbi = container_of(kobj, struct f2fs_sb_info,
+								s_kobj);
+	struct f2fs_attr *a = container_of(attr, struct f2fs_attr, attr);
+
+	return a->show ? a->show(a, sbi, buf) : 0;
+}
+
+static ssize_t f2fs_attr_store(struct kobject *kobj, struct attribute *attr,
+						const char *buf, size_t len)
+{
+	struct f2fs_sb_info *sbi = container_of(kobj, struct f2fs_sb_info,
+									s_kobj);
+	struct f2fs_attr *a = container_of(attr, struct f2fs_attr, attr);
+
+	return a->store ? a->store(a, sbi, buf, len) : 0;
+}
+
+static void f2fs_sb_release(struct kobject *kobj)
+{
+	struct f2fs_sb_info *sbi = container_of(kobj, struct f2fs_sb_info,
+								s_kobj);
+	complete(&sbi->s_kobj_unregister);
+}
+
+enum feat_id {
+	FEAT_CRYPTO = 0,
+	FEAT_BLKZONED,
+	FEAT_ATOMIC_WRITE,
+	FEAT_EXTRA_ATTR,
+	FEAT_PROJECT_QUOTA,
+	FEAT_INODE_CHECKSUM,
+	FEAT_FLEXIBLE_INLINE_XATTR,
+	FEAT_QUOTA_INO,
+	FEAT_INODE_CRTIME,
+	FEAT_LOST_FOUND,
+};
+
+static ssize_t f2fs_feature_show(struct f2fs_attr *a,
+		struct f2fs_sb_info *sbi, char *buf)
+{
+	switch (a->id) {
+	case FEAT_CRYPTO:
+	case FEAT_BLKZONED:
+	case FEAT_ATOMIC_WRITE:
+	case FEAT_EXTRA_ATTR:
+	case FEAT_PROJECT_QUOTA:
+	case FEAT_INODE_CHECKSUM:
+	case FEAT_FLEXIBLE_INLINE_XATTR:
+	case FEAT_QUOTA_INO:
+	case FEAT_INODE_CRTIME:
+	case FEAT_LOST_FOUND:
+		return snprintf(buf, PAGE_SIZE, "supported\n");
+	}
+	return 0;
+}
+
+#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset) \
+static struct f2fs_attr f2fs_attr_##_name = {			\
+	.attr = {.name = __stringify(_name), .mode = _mode },	\
+	.show	= _show,					\
+	.store	= _store,					\
+	.struct_type = _struct_type,				\
+	.offset = _offset					\
+}
+
+#define F2FS_RW_ATTR(struct_type, struct_name, name, elname)	\
+	F2FS_ATTR_OFFSET(struct_type, name, 0644,		\
+		f2fs_sbi_show, f2fs_sbi_store,			\
+		offsetof(struct struct_name, elname))
+
+#define F2FS_GENERAL_RO_ATTR(name) \
+static struct f2fs_attr f2fs_attr_##name = __ATTR(name, 0444, name##_show, NULL)
+
+#define F2FS_FEATURE_RO_ATTR(_name, _id)			\
+static struct f2fs_attr f2fs_attr_##_name = {			\
+	.attr = {.name = __stringify(_name), .mode = 0444 },	\
+	.show	= f2fs_feature_show,				\
+	.id	= _id,						\
+}
+
+F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_urgent_sleep_time,
+							urgent_sleep_time);
+F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_min_sleep_time, min_sleep_time);
+F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_max_sleep_time, max_sleep_time);
+F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_no_gc_sleep_time, no_gc_sleep_time);
+F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, gc_idle, gc_mode);
+F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, gc_urgent, gc_mode);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 F2FS_RW_ATTR(SM_INFO, f2fs_sm_info, reclaim_segments, rec_prefree_segments);
 F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, max_small_discards, max_discards);
 F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_granularity, discard_granularity);

@@ -18,17 +18,30 @@
 
 static struct crypto_shash *essiv_hash_tfm;
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 /**
  * derive_key_aes() - Derive a key using AES-128-ECB
  * @deriving_key: Encryption key used for derivation.
  * @source_key:   Source key to which to apply derivation.
  * @derived_raw_key:  Derived raw key.
+=======
+/*
+ * Key derivation function.  This generates the derived key by encrypting the
+ * master key with AES-128-ECB using the inode's nonce as the AES key.
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
  *
- * Return: Zero on success; non-zero otherwise.
+ * The master key must be at least as long as the derived key.  If the master
+ * key is longer, then only the first 'derived_keysize' bytes are used.
  */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 static int derive_key_aes(u8 deriving_key[FS_AES_128_ECB_KEY_SIZE],
 				const struct fscrypt_key *source_key,
 				u8 derived_raw_key[FS_MAX_KEY_SIZE])
+=======
+static int derive_key_aes(const u8 *master_key,
+			  const struct fscrypt_context *ctx,
+			  u8 *derived_key, unsigned int derived_keysize)
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 {
 	int res = 0;
 	struct skcipher_request *req = NULL;
@@ -50,14 +63,24 @@ static int derive_key_aes(u8 deriving_key[FS_AES_128_ECB_KEY_SIZE],
 	skcipher_request_set_callback(req,
 			CRYPTO_TFM_REQ_MAY_BACKLOG | CRYPTO_TFM_REQ_MAY_SLEEP,
 			crypto_req_done, &wait);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	res = crypto_skcipher_setkey(tfm, deriving_key,
 					FS_AES_128_ECB_KEY_SIZE);
+=======
+	res = crypto_skcipher_setkey(tfm, ctx->nonce, sizeof(ctx->nonce));
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	if (res < 0)
 		goto out;
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	sg_init_one(&src_sg, source_key->raw, source_key->size);
 	sg_init_one(&dst_sg, derived_raw_key, source_key->size);
 	skcipher_request_set_crypt(req, &src_sg, &dst_sg, source_key->size,
+=======
+	sg_init_one(&src_sg, master_key, derived_keysize);
+	sg_init_one(&dst_sg, derived_key, derived_keysize);
+	skcipher_request_set_crypt(req, &src_sg, &dst_sg, derived_keysize,
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 				   NULL);
 	res = crypto_wait_req(crypto_skcipher_encrypt(req), &wait);
 out:
@@ -66,34 +89,78 @@ out:
 	return res;
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 static int validate_user_key(struct fscrypt_info *crypt_info,
 			struct fscrypt_context *ctx, u8 *raw_key,
 			const char *prefix, int min_keysize)
+=======
+/*
+ * Search the current task's subscribed keyrings for a "logon" key with
+ * description prefix:descriptor, and if found acquire a read lock on it and
+ * return a pointer to its validated payload in *payload_ret.
+ */
+static struct key *
+find_and_lock_process_key(const char *prefix,
+			  const u8 descriptor[FS_KEY_DESCRIPTOR_SIZE],
+			  unsigned int min_keysize,
+			  const struct fscrypt_key **payload_ret)
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 {
 	char *description;
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	struct key *keyring_key;
 	struct fscrypt_key *master_key;
+=======
+	struct key *key;
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	const struct user_key_payload *ukp;
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	int res;
+=======
+	const struct fscrypt_key *payload;
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
 	description = kasprintf(GFP_NOFS, "%s%*phN", prefix,
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 				FS_KEY_DESCRIPTOR_SIZE,
 				ctx->master_key_descriptor);
 	if (!description)
 		return -ENOMEM;
+=======
+				FS_KEY_DESCRIPTOR_SIZE, descriptor);
+	if (!description)
+		return ERR_PTR(-ENOMEM);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	keyring_key = request_key(&key_type_logon, description, NULL);
 	kfree(description);
 	if (IS_ERR(keyring_key))
 		return PTR_ERR(keyring_key);
 	down_read(&keyring_key->sem);
+=======
+	key = request_key(&key_type_logon, description, NULL);
+	kfree(description);
+	if (IS_ERR(key))
+		return key;
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
-	if (keyring_key->type != &key_type_logon) {
-		printk_once(KERN_WARNING
-				"%s: key type must be logon\n", __func__);
-		res = -ENOKEY;
-		goto out;
+	down_read(&key->sem);
+	ukp = user_key_payload_locked(key);
+
+	if (!ukp) /* was the key revoked before we acquired its semaphore? */
+		goto invalid;
+
+	payload = (const struct fscrypt_key *)ukp->data;
+
+	if (ukp->datalen != sizeof(struct fscrypt_key) ||
+	    payload->size < 1 || payload->size > FS_MAX_KEY_SIZE) {
+		fscrypt_warn(NULL,
+			     "key with description '%s' has invalid payload",
+			     key->description);
+		goto invalid;
 	}
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	ukp = user_key_payload_locked(keyring_key);
 	if (!ukp) {
 		/* key was revoked before we acquired its semaphore */
@@ -106,7 +173,10 @@ static int validate_user_key(struct fscrypt_info *crypt_info,
 	}
 	master_key = (struct fscrypt_key *)ukp->data;
 	BUILD_BUG_ON(FS_AES_128_ECB_KEY_SIZE != FS_KEY_DERIVATION_NONCE_SIZE);
+=======
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	if (master_key->size < min_keysize || master_key->size > FS_MAX_KEY_SIZE
 	    || master_key->size % AES_BLOCK_SIZE != 0) {
 		printk_once(KERN_WARNING
@@ -114,14 +184,33 @@ static int validate_user_key(struct fscrypt_info *crypt_info,
 				__func__, master_key->size);
 		res = -ENOKEY;
 		goto out;
+=======
+	if (payload->size < min_keysize) {
+		fscrypt_warn(NULL,
+			     "key with description '%s' is too short (got %u bytes, need %u+ bytes)",
+			     key->description, payload->size, min_keysize);
+		goto invalid;
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	}
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	res = derive_key_aes(ctx->nonce, master_key, raw_key);
 out:
 	up_read(&keyring_key->sem);
 	key_put(keyring_key);
 	return res;
+=======
+
+	*payload_ret = payload;
+	return key;
+
+invalid:
+	up_read(&key->sem);
+	key_put(key);
+	return ERR_PTR(-ENOKEY);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 static const struct {
 	const char *cipher_str;
 	int keysize;
@@ -140,7 +229,14 @@ static const struct {
 
 static int determine_cipher_type(struct fscrypt_info *ci, struct inode *inode,
 				 const char **cipher_str_ret, int *keysize_ret)
+=======
+/* Find the master key, then derive the inode's actual encryption key */
+static int find_and_derive_key(const struct inode *inode,
+			       const struct fscrypt_context *ctx,
+			       u8 *derived_key, unsigned int derived_keysize)
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 {
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	u32 mode;
 
 	if (!fscrypt_valid_enc_modes(ci->ci_data_mode, ci->ci_filename_mode)) {
@@ -158,11 +254,92 @@ static int determine_cipher_type(struct fscrypt_info *ci, struct inode *inode,
 		WARN_ONCE(1, "fscrypt: filesystem tried to load encryption info for inode %lu, which is not encryptable (file type %d)\n",
 			  inode->i_ino, (inode->i_mode & S_IFMT));
 		return -EINVAL;
+=======
+	struct key *key;
+	const struct fscrypt_key *payload;
+	int err;
+
+	key = find_and_lock_process_key(FS_KEY_DESC_PREFIX,
+					ctx->master_key_descriptor,
+					derived_keysize, &payload);
+	if (key == ERR_PTR(-ENOKEY) && inode->i_sb->s_cop->key_prefix) {
+		key = find_and_lock_process_key(inode->i_sb->s_cop->key_prefix,
+						ctx->master_key_descriptor,
+						derived_keysize, &payload);
+	}
+	if (IS_ERR(key))
+		return PTR_ERR(key);
+	err = derive_key_aes(payload->raw, ctx, derived_key, derived_keysize);
+	up_read(&key->sem);
+	key_put(key);
+	return err;
+}
+
+static struct fscrypt_mode {
+	const char *friendly_name;
+	const char *cipher_str;
+	int keysize;
+	bool logged_impl_name;
+} available_modes[] = {
+	[FS_ENCRYPTION_MODE_AES_256_XTS] = {
+		.friendly_name = "AES-256-XTS",
+		.cipher_str = "xts(aes)",
+		.keysize = 64,
+	},
+	[FS_ENCRYPTION_MODE_AES_256_CTS] = {
+		.friendly_name = "AES-256-CTS-CBC",
+		.cipher_str = "cts(cbc(aes))",
+		.keysize = 32,
+	},
+	[FS_ENCRYPTION_MODE_AES_128_CBC] = {
+		.friendly_name = "AES-128-CBC",
+		.cipher_str = "cbc(aes)",
+		.keysize = 16,
+	},
+	[FS_ENCRYPTION_MODE_AES_128_CTS] = {
+		.friendly_name = "AES-128-CTS-CBC",
+		.cipher_str = "cts(cbc(aes))",
+		.keysize = 16,
+	},
+	[FS_ENCRYPTION_MODE_SPECK128_256_XTS] = {
+		.friendly_name = "Speck128/256-XTS",
+		.cipher_str = "xts(speck128)",
+		.keysize = 64,
+	},
+	[FS_ENCRYPTION_MODE_SPECK128_256_CTS] = {
+		.friendly_name = "Speck128/256-CTS-CBC",
+		.cipher_str = "cts(cbc(speck128))",
+		.keysize = 32,
+	},
+};
+
+static struct fscrypt_mode *
+select_encryption_mode(const struct fscrypt_info *ci, const struct inode *inode)
+{
+	if (!fscrypt_valid_enc_modes(ci->ci_data_mode, ci->ci_filename_mode)) {
+		fscrypt_warn(inode->i_sb,
+			     "inode %lu uses unsupported encryption modes (contents mode %d, filenames mode %d)",
+			     inode->i_ino, ci->ci_data_mode,
+			     ci->ci_filename_mode);
+		return ERR_PTR(-EINVAL);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	}
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	*cipher_str_ret = available_modes[mode].cipher_str;
 	*keysize_ret = available_modes[mode].keysize;
 	return 0;
+=======
+	if (S_ISREG(inode->i_mode))
+		return &available_modes[ci->ci_data_mode];
+
+	if (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode))
+		return &available_modes[ci->ci_filename_mode];
+
+	WARN_ONCE(1, "fscrypt: filesystem tried to load encryption info for inode %lu, which is not encryptable (file type %d)\n",
+		  inode->i_ino, (inode->i_mode & S_IFMT));
+	return ERR_PTR(-EINVAL);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 }
 
 static void put_crypt_info(struct fscrypt_info *ci)
@@ -185,8 +362,14 @@ static int derive_essiv_salt(const u8 *key, int keysize, u8 *salt)
 
 		tfm = crypto_alloc_shash("sha256", 0, 0);
 		if (IS_ERR(tfm)) {
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 			pr_warn_ratelimited("fscrypt: error allocating SHA-256 transform: %ld\n",
 					    PTR_ERR(tfm));
+=======
+			fscrypt_warn(NULL,
+				     "error allocating SHA-256 transform: %ld",
+				     PTR_ERR(tfm));
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 			return PTR_ERR(tfm);
 		}
 		prev_tfm = cmpxchg(&essiv_hash_tfm, NULL, tfm);
@@ -246,8 +429,7 @@ int fscrypt_get_encryption_info(struct inode *inode)
 	struct fscrypt_info *crypt_info;
 	struct fscrypt_context ctx;
 	struct crypto_skcipher *ctfm;
-	const char *cipher_str;
-	int keysize;
+	struct fscrypt_mode *mode;
 	u8 *raw_key = NULL;
 	int res;
 
@@ -291,19 +473,22 @@ int fscrypt_get_encryption_info(struct inode *inode)
 	memcpy(crypt_info->ci_master_key, ctx.master_key_descriptor,
 				sizeof(crypt_info->ci_master_key));
 
-	res = determine_cipher_type(crypt_info, inode, &cipher_str, &keysize);
-	if (res)
+	mode = select_encryption_mode(crypt_info, inode);
+	if (IS_ERR(mode)) {
+		res = PTR_ERR(mode);
 		goto out;
+	}
 
 	/*
 	 * This cannot be a stack buffer because it is passed to the scatterlist
 	 * crypto API as part of key derivation.
 	 */
 	res = -ENOMEM;
-	raw_key = kmalloc(FS_MAX_KEY_SIZE, GFP_NOFS);
+	raw_key = kmalloc(mode->keysize, GFP_NOFS);
 	if (!raw_key)
 		goto out;
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	res = validate_user_key(crypt_info, &ctx, raw_key, FS_KEY_DESC_PREFIX,
 				keysize);
 	if (res && inode->i_sb->s_cop->key_prefix) {
@@ -333,15 +518,55 @@ int fscrypt_get_encryption_info(struct inode *inode)
 	 * keysize bytes of the derived key only
 	 */
 	res = crypto_skcipher_setkey(ctfm, raw_key, keysize);
+=======
+	res = find_and_derive_key(inode, &ctx, raw_key, mode->keysize);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	if (res)
 		goto out;
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	if (S_ISREG(inode->i_mode) &&
 	    crypt_info->ci_data_mode == FS_ENCRYPTION_MODE_AES_128_CBC) {
 		res = init_essiv_generator(crypt_info, raw_key, keysize);
 		if (res) {
 			pr_debug("%s: error %d (inode %lu) allocating essiv tfm\n",
 				 __func__, res, inode->i_ino);
+=======
+	ctfm = crypto_alloc_skcipher(mode->cipher_str, 0, 0);
+	if (IS_ERR(ctfm)) {
+		res = PTR_ERR(ctfm);
+		fscrypt_warn(inode->i_sb,
+			     "error allocating '%s' transform for inode %lu: %d",
+			     mode->cipher_str, inode->i_ino, res);
+		goto out;
+	}
+	if (unlikely(!mode->logged_impl_name)) {
+		/*
+		 * fscrypt performance can vary greatly depending on which
+		 * crypto algorithm implementation is used.  Help people debug
+		 * performance problems by logging the ->cra_driver_name the
+		 * first time a mode is used.  Note that multiple threads can
+		 * race here, but it doesn't really matter.
+		 */
+		mode->logged_impl_name = true;
+		pr_info("fscrypt: %s using implementation \"%s\"\n",
+			mode->friendly_name,
+			crypto_skcipher_alg(ctfm)->base.cra_driver_name);
+	}
+	crypt_info->ci_ctfm = ctfm;
+	crypto_skcipher_set_flags(ctfm, CRYPTO_TFM_REQ_WEAK_KEY);
+	res = crypto_skcipher_setkey(ctfm, raw_key, mode->keysize);
+	if (res)
+		goto out;
+
+	if (S_ISREG(inode->i_mode) &&
+	    crypt_info->ci_data_mode == FS_ENCRYPTION_MODE_AES_128_CBC) {
+		res = init_essiv_generator(crypt_info, raw_key, mode->keysize);
+		if (res) {
+			fscrypt_warn(inode->i_sb,
+				     "error initializing ESSIV generator for inode %lu: %d",
+				     inode->i_ino, res);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 			goto out;
 		}
 	}

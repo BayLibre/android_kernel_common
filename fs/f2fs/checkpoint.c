@@ -24,7 +24,7 @@
 #include <trace/events/f2fs.h>
 
 static struct kmem_cache *ino_entry_slab;
-struct kmem_cache *inode_entry_slab;
+struct kmem_cache *f2fs_inode_entry_slab;
 
 void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io)
 {
@@ -36,7 +36,7 @@ void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io)
 /*
  * We guarantee no failure on the returned page.
  */
-struct page *grab_meta_page(struct f2fs_sb_info *sbi, pgoff_t index)
+struct page *f2fs_grab_meta_page(struct f2fs_sb_info *sbi, pgoff_t index)
 {
 	struct address_space *mapping = META_MAPPING(sbi);
 	struct page *page = NULL;
@@ -100,24 +100,27 @@ repeat:
 	 * readonly and make sure do not write checkpoint with non-uptodate
 	 * meta page.
 	 */
-	if (unlikely(!PageUptodate(page)))
+	if (unlikely(!PageUptodate(page))) {
+		memset(page_address(page), 0, PAGE_SIZE);
 		f2fs_stop_checkpoint(sbi, false);
+	}
 out:
 	return page;
 }
 
-struct page *get_meta_page(struct f2fs_sb_info *sbi, pgoff_t index)
+struct page *f2fs_get_meta_page(struct f2fs_sb_info *sbi, pgoff_t index)
 {
 	return __get_meta_page(sbi, index, true);
 }
 
 /* for POR only */
-struct page *get_tmp_page(struct f2fs_sb_info *sbi, pgoff_t index)
+struct page *f2fs_get_tmp_page(struct f2fs_sb_info *sbi, pgoff_t index)
 {
 	return __get_meta_page(sbi, index, false);
 }
 
-bool is_valid_blkaddr(struct f2fs_sb_info *sbi, block_t blkaddr, int type)
+bool f2fs_is_valid_meta_blkaddr(struct f2fs_sb_info *sbi,
+					block_t blkaddr, int type)
 {
 	switch (type) {
 	case META_NAT:
@@ -151,7 +154,7 @@ bool is_valid_blkaddr(struct f2fs_sb_info *sbi, block_t blkaddr, int type)
 /*
  * Readahead CP/NAT/SIT/SSA pages
  */
-int ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
+int f2fs_ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
 							int type, bool sync)
 {
 	struct page *page;
@@ -173,7 +176,7 @@ int ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
 	blk_start_plug(&plug);
 	for (; nrpages-- > 0; blkno++) {
 
-		if (!is_valid_blkaddr(sbi, blkno, type))
+		if (!f2fs_is_valid_meta_blkaddr(sbi, blkno, type))
 			goto out;
 
 		switch (type) {
@@ -217,7 +220,7 @@ out:
 	return blkno - start;
 }
 
-void ra_meta_pages_cond(struct f2fs_sb_info *sbi, pgoff_t index)
+void f2fs_ra_meta_pages_cond(struct f2fs_sb_info *sbi, pgoff_t index)
 {
 	struct page *page;
 	bool readahead = false;
@@ -228,7 +231,11 @@ void ra_meta_pages_cond(struct f2fs_sb_info *sbi, pgoff_t index)
 	f2fs_put_page(page, 0);
 
 	if (readahead)
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 		ra_meta_pages(sbi, index, BIO_MAX_PAGES, META_POR, true);
+=======
+		f2fs_ra_meta_pages(sbi, index, BIO_MAX_PAGES, META_POR, true);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 }
 
 static int __f2fs_write_meta_page(struct page *page,
@@ -249,7 +256,11 @@ static int __f2fs_write_meta_page(struct page *page,
 	if (wbc->for_reclaim && page->index < GET_SUM_BLOCK(sbi, 0))
 		goto redirty_out;
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	write_meta_page(sbi, page, io_type);
+=======
+	f2fs_do_write_meta_page(sbi, page, io_type);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	dec_page_count(sbi, F2FS_DIRTY_META);
 
 	if (wbc->for_reclaim)
@@ -294,7 +305,11 @@ static int f2fs_write_meta_pages(struct address_space *mapping,
 
 	trace_f2fs_writepages(mapping->host, wbc, META);
 	diff = nr_pages_to_write(sbi, META, wbc);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	written = sync_meta_pages(sbi, META, wbc->nr_to_write, FS_META_IO);
+=======
+	written = f2fs_sync_meta_pages(sbi, META, wbc->nr_to_write, FS_META_IO);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	mutex_unlock(&sbi->cp_mutex);
 	wbc->nr_to_write = max((long)0, wbc->nr_to_write - written - diff);
 	return 0;
@@ -305,13 +320,18 @@ skip_write:
 	return 0;
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 long sync_meta_pages(struct f2fs_sb_info *sbi, enum page_type type,
+=======
+long f2fs_sync_meta_pages(struct f2fs_sb_info *sbi, enum page_type type,
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 				long nr_to_write, enum iostat_type io_type)
 {
 	struct address_space *mapping = META_MAPPING(sbi);
-	pgoff_t index = 0, end = ULONG_MAX, prev = ULONG_MAX;
+	pgoff_t index = 0, prev = ULONG_MAX;
 	struct pagevec pvec;
 	long nwritten = 0;
+	int nr_pages;
 	struct writeback_control wbc = {
 		.for_reclaim = 0,
 	};
@@ -321,13 +341,9 @@ long sync_meta_pages(struct f2fs_sb_info *sbi, enum page_type type,
 
 	blk_start_plug(&plug);
 
-	while (index <= end) {
-		int i, nr_pages;
-		nr_pages = pagevec_lookup_tag(&pvec, mapping, &index,
-				PAGECACHE_TAG_DIRTY,
-				min(end - index, (pgoff_t)PAGEVEC_SIZE-1) + 1);
-		if (unlikely(nr_pages == 0))
-			break;
+	while ((nr_pages = pagevec_lookup_tag(&pvec, mapping, &index,
+				PAGECACHE_TAG_DIRTY))) {
+		int i;
 
 		for (i = 0; i < nr_pages; i++) {
 			struct page *page = pvec.pages[i];
@@ -458,20 +474,20 @@ static void __remove_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
 	spin_unlock(&im->ino_lock);
 }
 
-void add_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
+void f2fs_add_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
 {
 	/* add new dirty ino entry into list */
 	__add_ino_entry(sbi, ino, 0, type);
 }
 
-void remove_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
+void f2fs_remove_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
 {
 	/* remove dirty ino entry from list */
 	__remove_ino_entry(sbi, ino, type);
 }
 
 /* mode should be APPEND_INO or UPDATE_INO */
-bool exist_written_data(struct f2fs_sb_info *sbi, nid_t ino, int mode)
+bool f2fs_exist_written_data(struct f2fs_sb_info *sbi, nid_t ino, int mode)
 {
 	struct inode_management *im = &sbi->im[mode];
 	struct ino_entry *e;
@@ -482,7 +498,7 @@ bool exist_written_data(struct f2fs_sb_info *sbi, nid_t ino, int mode)
 	return e ? true : false;
 }
 
-void release_ino_entry(struct f2fs_sb_info *sbi, bool all)
+void f2fs_release_ino_entry(struct f2fs_sb_info *sbi, bool all)
 {
 	struct ino_entry *e, *tmp;
 	int i;
@@ -501,6 +517,7 @@ void release_ino_entry(struct f2fs_sb_info *sbi, bool all)
 	}
 }
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 void set_dirty_device(struct f2fs_sb_info *sbi, nid_t ino,
 					unsigned int devidx, int type)
 {
@@ -523,6 +540,30 @@ bool is_dirty_device(struct f2fs_sb_info *sbi, nid_t ino,
 }
 
 int acquire_orphan_inode(struct f2fs_sb_info *sbi)
+=======
+void f2fs_set_dirty_device(struct f2fs_sb_info *sbi, nid_t ino,
+					unsigned int devidx, int type)
+{
+	__add_ino_entry(sbi, ino, devidx, type);
+}
+
+bool f2fs_is_dirty_device(struct f2fs_sb_info *sbi, nid_t ino,
+					unsigned int devidx, int type)
+{
+	struct inode_management *im = &sbi->im[type];
+	struct ino_entry *e;
+	bool is_dirty = false;
+
+	spin_lock(&im->ino_lock);
+	e = radix_tree_lookup(&im->ino_root, ino);
+	if (e && f2fs_test_bit(devidx, (char *)&e->dirty_device))
+		is_dirty = true;
+	spin_unlock(&im->ino_lock);
+	return is_dirty;
+}
+
+int f2fs_acquire_orphan_inode(struct f2fs_sb_info *sbi)
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 {
 	struct inode_management *im = &sbi->im[ORPHAN_INO];
 	int err = 0;
@@ -545,7 +586,7 @@ int acquire_orphan_inode(struct f2fs_sb_info *sbi)
 	return err;
 }
 
-void release_orphan_inode(struct f2fs_sb_info *sbi)
+void f2fs_release_orphan_inode(struct f2fs_sb_info *sbi)
 {
 	struct inode_management *im = &sbi->im[ORPHAN_INO];
 
@@ -555,14 +596,18 @@ void release_orphan_inode(struct f2fs_sb_info *sbi)
 	spin_unlock(&im->ino_lock);
 }
 
-void add_orphan_inode(struct inode *inode)
+void f2fs_add_orphan_inode(struct inode *inode)
 {
 	/* add new orphan ino entry into list */
 	__add_ino_entry(F2FS_I_SB(inode), inode->i_ino, 0, ORPHAN_INO);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	update_inode_page(inode);
+=======
+	f2fs_update_inode_page(inode);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 }
 
-void remove_orphan_inode(struct f2fs_sb_info *sbi, nid_t ino)
+void f2fs_remove_orphan_inode(struct f2fs_sb_info *sbi, nid_t ino)
 {
 	/* remove orphan entry from orphan list */
 	__remove_ino_entry(sbi, ino, ORPHAN_INO);
@@ -572,7 +617,7 @@ static int recover_orphan_inode(struct f2fs_sb_info *sbi, nid_t ino)
 {
 	struct inode *inode;
 	struct node_info ni;
-	int err = acquire_orphan_inode(sbi);
+	int err = f2fs_acquire_orphan_inode(sbi);
 
 	if (err)
 		goto err_out;
@@ -590,16 +635,24 @@ static int recover_orphan_inode(struct f2fs_sb_info *sbi, nid_t ino)
 	}
 
 	err = dquot_initialize(inode);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	if (err)
 		goto err_out;
 
 	dquot_initialize(inode);
+=======
+	if (err) {
+		iput(inode);
+		goto err_out;
+	}
+
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	clear_nlink(inode);
 
 	/* truncate all the data during iput */
 	iput(inode);
 
-	get_node_info(sbi, ino, &ni);
+	f2fs_get_node_info(sbi, ino, &ni);
 
 	/* ENOMEM was fully retried in f2fs_evict_inode. */
 	if (ni.blk_addr != NULL_ADDR) {
@@ -617,7 +670,7 @@ err_out:
 	return err;
 }
 
-int recover_orphan_inodes(struct f2fs_sb_info *sbi)
+int f2fs_recover_orphan_inodes(struct f2fs_sb_info *sbi)
 {
 	block_t start_blk, orphan_blocks, i, j;
 	unsigned int s_flags = sbi->sb->s_flags;
@@ -645,10 +698,10 @@ int recover_orphan_inodes(struct f2fs_sb_info *sbi)
 	start_blk = __start_cp_addr(sbi) + 1 + __cp_payload(sbi);
 	orphan_blocks = __start_sum_addr(sbi) - 1 - __cp_payload(sbi);
 
-	ra_meta_pages(sbi, start_blk, orphan_blocks, META_CP, true);
+	f2fs_ra_meta_pages(sbi, start_blk, orphan_blocks, META_CP, true);
 
 	for (i = 0; i < orphan_blocks; i++) {
-		struct page *page = get_meta_page(sbi, start_blk + i);
+		struct page *page = f2fs_get_meta_page(sbi, start_blk + i);
 		struct f2fs_orphan_block *orphan_blk;
 
 		orphan_blk = (struct f2fs_orphan_block *)page_address(page);
@@ -698,7 +751,7 @@ static void write_orphan_inodes(struct f2fs_sb_info *sbi, block_t start_blk)
 	/* loop for each orphan inode entry and write them in Jornal block */
 	list_for_each_entry(orphan, head, list) {
 		if (!page) {
-			page = grab_meta_page(sbi, start_blk++);
+			page = f2fs_grab_meta_page(sbi, start_blk++);
 			orphan_blk =
 				(struct f2fs_orphan_block *)page_address(page);
 			memset(orphan_blk, 0, sizeof(*orphan_blk));
@@ -740,7 +793,7 @@ static int get_checkpoint_version(struct f2fs_sb_info *sbi, block_t cp_addr,
 	size_t crc_offset = 0;
 	__u32 crc = 0;
 
-	*cp_page = get_meta_page(sbi, cp_addr);
+	*cp_page = f2fs_get_meta_page(sbi, cp_addr);
 	*cp_block = (struct f2fs_checkpoint *)page_address(*cp_page);
 
 	crc_offset = le32_to_cpu((*cp_block)->checksum_offset);
@@ -793,7 +846,7 @@ invalid_cp1:
 	return NULL;
 }
 
-int get_valid_checkpoint(struct f2fs_sb_info *sbi)
+int f2fs_get_valid_checkpoint(struct f2fs_sb_info *sbi)
 {
 	struct f2fs_checkpoint *cp_block;
 	struct f2fs_super_block *fsb = sbi->raw_super;
@@ -805,7 +858,12 @@ int get_valid_checkpoint(struct f2fs_sb_info *sbi)
 	block_t cp_blk_no;
 	int i;
 
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	sbi->ckpt = f2fs_kzalloc(sbi, cp_blks * blk_size, GFP_KERNEL);
+=======
+	sbi->ckpt = f2fs_kzalloc(sbi, array_size(blk_size, cp_blks),
+				 GFP_KERNEL);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	if (!sbi->ckpt)
 		return -ENOMEM;
 	/*
@@ -837,7 +895,11 @@ int get_valid_checkpoint(struct f2fs_sb_info *sbi)
 	memcpy(sbi->ckpt, cp_block, blk_size);
 
 	/* Sanity checking of checkpoint */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	if (sanity_check_ckpt(sbi))
+=======
+	if (f2fs_sanity_check_ckpt(sbi))
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 		goto free_fail_no_cp;
 
 	if (cur_page == cp1)
@@ -856,7 +918,7 @@ int get_valid_checkpoint(struct f2fs_sb_info *sbi)
 		void *sit_bitmap_ptr;
 		unsigned char *ckpt = (unsigned char *)sbi->ckpt;
 
-		cur_page = get_meta_page(sbi, cp_blk_no + i);
+		cur_page = f2fs_get_meta_page(sbi, cp_blk_no + i);
 		sit_bitmap_ptr = page_address(cur_page);
 		memcpy(ckpt + i * blk_size, sit_bitmap_ptr, blk_size);
 		f2fs_put_page(cur_page, 1);
@@ -901,7 +963,7 @@ static void __remove_dirty_inode(struct inode *inode, enum inode_type type)
 	stat_dec_dirty_inode(F2FS_I_SB(inode), type);
 }
 
-void update_dirty_page(struct inode *inode, struct page *page)
+void f2fs_update_dirty_page(struct inode *inode, struct page *page)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
 	enum inode_type type = S_ISDIR(inode->i_mode) ? DIR_INODE : FILE_INODE;
@@ -920,7 +982,7 @@ void update_dirty_page(struct inode *inode, struct page *page)
 	f2fs_trace_pid(page);
 }
 
-void remove_dirty_inode(struct inode *inode)
+void f2fs_remove_dirty_inode(struct inode *inode)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
 	enum inode_type type = S_ISDIR(inode->i_mode) ? DIR_INODE : FILE_INODE;
@@ -937,7 +999,7 @@ void remove_dirty_inode(struct inode *inode)
 	spin_unlock(&sbi->inode_lock[type]);
 }
 
-int sync_dirty_inodes(struct f2fs_sb_info *sbi, enum inode_type type)
+int f2fs_sync_dirty_inodes(struct f2fs_sb_info *sbi, enum inode_type type)
 {
 	struct list_head *head;
 	struct inode *inode;
@@ -1020,7 +1082,11 @@ int f2fs_sync_inode_meta(struct f2fs_sb_info *sbi)
 
 			/* it's on eviction */
 			if (is_inode_flag_set(inode, FI_DIRTY_INODE))
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 				update_inode_page(inode);
+=======
+				f2fs_update_inode_page(inode);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 			iput(inode);
 		}
 	}
@@ -1060,7 +1126,7 @@ retry_flush_dents:
 	/* write all the dirty dentry pages */
 	if (get_pages(sbi, F2FS_DIRTY_DENTS)) {
 		f2fs_unlock_all(sbi);
-		err = sync_dirty_inodes(sbi, DIR_INODE);
+		err = f2fs_sync_dirty_inodes(sbi, DIR_INODE);
 		if (err)
 			goto out;
 		cond_resched();
@@ -1088,7 +1154,13 @@ retry_flush_nodes:
 
 	if (get_pages(sbi, F2FS_DIRTY_NODES)) {
 		up_write(&sbi->node_write);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 		err = sync_node_pages(sbi, &wbc, false, FS_CP_NODE_IO);
+=======
+		atomic_inc(&sbi->wb_sync_req[NODE]);
+		err = f2fs_sync_node_pages(sbi, &wbc, false, FS_CP_NODE_IO);
+		atomic_dec(&sbi->wb_sync_req[NODE]);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 		if (err) {
 			up_write(&sbi->node_change);
 			f2fs_unlock_all(sbi);
@@ -1182,10 +1254,17 @@ static void commit_checkpoint(struct f2fs_sb_info *sbi,
 
 	/*
 	 * pagevec_lookup_tag and lock_page again will take
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	 * some extra time. Therefore, update_meta_pages and
 	 * sync_meta_pages are combined in this function.
 	 */
 	struct page *page = grab_meta_page(sbi, blk_addr);
+=======
+	 * some extra time. Therefore, f2fs_update_meta_pages and
+	 * f2fs_sync_meta_pages are combined in this function.
+	 */
+	struct page *page = f2fs_grab_meta_page(sbi, blk_addr);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	int err;
 
 	memcpy(page_address(page), src, PAGE_SIZE);
@@ -1223,7 +1302,11 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 	/* Flush all the NAT/SIT pages */
 	while (get_pages(sbi, F2FS_DIRTY_META)) {
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 		sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
+=======
+		f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 		if (unlikely(f2fs_cp_error(sbi)))
 			return -EIO;
 	}
@@ -1232,7 +1315,11 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	 * modify checkpoint
 	 * version number is already updated
 	 */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	ckpt->elapsed_time = cpu_to_le64(get_mtime(sbi));
+=======
+	ckpt->elapsed_time = cpu_to_le64(get_mtime(sbi, true));
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	ckpt->free_segment_count = cpu_to_le32(free_segments(sbi));
 	for (i = 0; i < NR_CURSEG_NODE_TYPE; i++) {
 		ckpt->cur_node_segno[i] =
@@ -1252,7 +1339,11 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	}
 
 	/* 2 cp  + n data seg summary + orphan inode blocks */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	data_sum_blocks = npages_for_summary_flush(sbi, false);
+=======
+	data_sum_blocks = f2fs_npages_for_summary_flush(sbi, false);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	spin_lock_irqsave(&sbi->cp_lock, flags);
 	if (data_sum_blocks < NR_CURSEG_DATA_TYPE)
 		__set_ckpt_flags(ckpt, CP_COMPACT_SUM_FLAG);
@@ -1297,22 +1388,32 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 		blk = start_blk + sbi->blocks_per_seg - nm_i->nat_bits_blocks;
 		for (i = 0; i < nm_i->nat_bits_blocks; i++)
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 			update_meta_page(sbi, nm_i->nat_bits +
 					(i << F2FS_BLKSIZE_BITS), blk + i);
 
 		/* Flush all the NAT BITS pages */
 		while (get_pages(sbi, F2FS_DIRTY_META)) {
 			sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
+=======
+			f2fs_update_meta_page(sbi, nm_i->nat_bits +
+					(i << F2FS_BLKSIZE_BITS), blk + i);
+
+		/* Flush all the NAT BITS pages */
+		while (get_pages(sbi, F2FS_DIRTY_META)) {
+			f2fs_sync_meta_pages(sbi, META, LONG_MAX,
+							FS_CP_META_IO);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 			if (unlikely(f2fs_cp_error(sbi)))
 				return -EIO;
 		}
 	}
 
 	/* write out checkpoint buffer at block 0 */
-	update_meta_page(sbi, ckpt, start_blk++);
+	f2fs_update_meta_page(sbi, ckpt, start_blk++);
 
 	for (i = 1; i < 1 + cp_payload_blks; i++)
-		update_meta_page(sbi, (char *)ckpt + i * F2FS_BLKSIZE,
+		f2fs_update_meta_page(sbi, (char *)ckpt + i * F2FS_BLKSIZE,
 							start_blk++);
 
 	if (orphan_num) {
@@ -1320,7 +1421,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 		start_blk += orphan_blocks;
 	}
 
-	write_data_summaries(sbi, start_blk);
+	f2fs_write_data_summaries(sbi, start_blk);
 	start_blk += data_sum_blocks;
 
 	/* Record write statistics in the hot node summary */
@@ -1331,7 +1432,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	seg_i->journal->info.kbytes_written = cpu_to_le64(kbytes_written);
 
 	if (__remain_node_summaries(cpc->reason)) {
-		write_node_summaries(sbi, start_blk);
+		f2fs_write_node_summaries(sbi, start_blk);
 		start_blk += NR_CURSEG_NODE_TYPE;
 	}
 
@@ -1340,6 +1441,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
 
 	/* Here, we have one bio having CP pack except cp pack 2 page */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
 
 	/* wait for previous submitted meta pages writeback */
@@ -1355,9 +1457,26 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 	/* barrier and flush checkpoint cp pack 2 page if it can */
 	commit_checkpoint(sbi, ckpt, start_blk);
+=======
+	f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
+
+	/* wait for previous submitted meta pages writeback */
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	wait_on_all_pages_writeback(sbi);
 
-	release_ino_entry(sbi, false);
+	if (unlikely(f2fs_cp_error(sbi)))
+		return -EIO;
+
+	/* flush all device cache */
+	err = f2fs_flush_device_cache(sbi);
+	if (err)
+		return err;
+
+	/* barrier and flush checkpoint cp pack 2 page if it can */
+	commit_checkpoint(sbi, ckpt, start_blk);
+	wait_on_all_pages_writeback(sbi);
+
+	f2fs_release_ino_entry(sbi, false);
 
 	if (unlikely(f2fs_cp_error(sbi)))
 		return -EIO;
@@ -1382,7 +1501,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 /*
  * We guarantee that this checkpoint procedure will not fail.
  */
-int write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
+int f2fs_write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 {
 	struct f2fs_checkpoint *ckpt = F2FS_CKPT(sbi);
 	unsigned long long ckpt_ver;
@@ -1415,6 +1534,7 @@ int write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 	/* this is the case of multiple fstrims without any changes */
 	if (cpc->reason & CP_DISCARD) {
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 		if (!exist_trim_candidates(sbi, cpc)) {
 			unblock_operations(sbi);
 			goto out;
@@ -1425,6 +1545,18 @@ int write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 				prefree_segments(sbi) == 0) {
 			flush_sit_entries(sbi, cpc);
 			clear_prefree_segments(sbi, cpc);
+=======
+		if (!f2fs_exist_trim_candidates(sbi, cpc)) {
+			unblock_operations(sbi);
+			goto out;
+		}
+
+		if (NM_I(sbi)->dirty_nat_cnt == 0 &&
+				SIT_I(sbi)->dirty_sentries == 0 &&
+				prefree_segments(sbi) == 0) {
+			f2fs_flush_sit_entries(sbi, cpc);
+			f2fs_clear_prefree_segments(sbi, cpc);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 			unblock_operations(sbi);
 			goto out;
 		}
@@ -1439,15 +1571,26 @@ int write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	ckpt->checkpoint_ver = cpu_to_le64(++ckpt_ver);
 
 	/* write cached NAT/SIT entries to NAT/SIT area */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	flush_nat_entries(sbi, cpc);
 	flush_sit_entries(sbi, cpc);
+=======
+	f2fs_flush_nat_entries(sbi, cpc);
+	f2fs_flush_sit_entries(sbi, cpc);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
 	/* unlock all the fs_lock[] in do_checkpoint() */
 	err = do_checkpoint(sbi, cpc);
 	if (err)
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 		release_discard_addrs(sbi);
 	else
 		clear_prefree_segments(sbi, cpc);
+=======
+		f2fs_release_discard_addrs(sbi);
+	else
+		f2fs_clear_prefree_segments(sbi, cpc);
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
 	unblock_operations(sbi);
 	stat_inc_cp_count(sbi->stat_info);
@@ -1464,7 +1607,7 @@ out:
 	return err;
 }
 
-void init_ino_entry_info(struct f2fs_sb_info *sbi)
+void f2fs_init_ino_entry_info(struct f2fs_sb_info *sbi)
 {
 	int i;
 
@@ -1482,23 +1625,23 @@ void init_ino_entry_info(struct f2fs_sb_info *sbi)
 				F2FS_ORPHANS_PER_BLOCK;
 }
 
-int __init create_checkpoint_caches(void)
+int __init f2fs_create_checkpoint_caches(void)
 {
 	ino_entry_slab = f2fs_kmem_cache_create("f2fs_ino_entry",
 			sizeof(struct ino_entry));
 	if (!ino_entry_slab)
 		return -ENOMEM;
-	inode_entry_slab = f2fs_kmem_cache_create("f2fs_inode_entry",
+	f2fs_inode_entry_slab = f2fs_kmem_cache_create("f2fs_inode_entry",
 			sizeof(struct inode_entry));
-	if (!inode_entry_slab) {
+	if (!f2fs_inode_entry_slab) {
 		kmem_cache_destroy(ino_entry_slab);
 		return -ENOMEM;
 	}
 	return 0;
 }
 
-void destroy_checkpoint_caches(void)
+void f2fs_destroy_checkpoint_caches(void)
 {
 	kmem_cache_destroy(ino_entry_slab);
-	kmem_cache_destroy(inode_entry_slab);
+	kmem_cache_destroy(f2fs_inode_entry_slab);
 }

@@ -86,12 +86,15 @@ static int digsig_verify_rsa(struct key *key,
 
 	down_read(&key->sem);
 	ukp = user_key_payload_locked(key);
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 
 	if (!ukp) {
 		/* key was revoked before we acquired its semaphore */
 		err = -EKEYREVOKED;
 		goto err1;
 	}
+=======
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 
 	if (ukp->datalen < sizeof(*pkh))
 		goto err1;

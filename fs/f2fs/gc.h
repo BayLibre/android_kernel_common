@@ -36,8 +36,11 @@ struct f2fs_gc_kthread {
 	unsigned int no_gc_sleep_time;
 
 	/* for changing gc mode */
+<<<<<<< HEAD   (990559 ANDROID: sdcardfs: Check stacked filesystem depth)
 	unsigned int gc_idle;
 	unsigned int gc_urgent;
+=======
+>>>>>>> BRANCH (f950fa treewide: Use array_size in f2fs_kvzalloc())
 	unsigned int gc_wake;
 };
 
