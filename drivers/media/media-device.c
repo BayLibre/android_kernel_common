@@ -56,7 +56,11 @@ static int media_device_close(struct file *filp)
 
 static long media_device_get_info(struct media_device *dev, void *arg)
 {
+<<<<<<< HEAD   (03002d ANDROID: ftrace: fix function type mismatches)
 	struct media_device_info *info = (struct media_device_info *)arg;
+=======
+	struct media_device_info *info = arg;
+>>>>>>> BRANCH (deaacd Linux 4.14.60)
 
 	memset(info, 0, sizeof(*info));
 
@@ -96,7 +100,11 @@ static struct media_entity *find_entity(struct media_device *mdev, u32 id)
 
 static long media_device_enum_entities(struct media_device *mdev, void *arg)
 {
+<<<<<<< HEAD   (03002d ANDROID: ftrace: fix function type mismatches)
 	struct media_entity_desc *entd = (struct media_entity_desc *)arg;
+=======
+	struct media_entity_desc *entd = arg;
+>>>>>>> BRANCH (deaacd Linux 4.14.60)
 	struct media_entity *ent;
 
 	ent = find_entity(mdev, entd->id);
@@ -149,7 +157,11 @@ static void media_device_kpad_to_upad(const struct media_pad *kpad,
 
 static long media_device_enum_links(struct media_device *mdev, void *arg)
 {
+<<<<<<< HEAD   (03002d ANDROID: ftrace: fix function type mismatches)
 	struct media_links_enum *links = (struct media_links_enum *)arg;
+=======
+	struct media_links_enum *links = arg;
+>>>>>>> BRANCH (deaacd Linux 4.14.60)
 	struct media_entity *entity;
 
 	entity = find_entity(mdev, links->entity);
@@ -197,7 +209,11 @@ static long media_device_enum_links(struct media_device *mdev, void *arg)
 
 static long media_device_setup_link(struct media_device *mdev, void *arg)
 {
+<<<<<<< HEAD   (03002d ANDROID: ftrace: fix function type mismatches)
 	struct media_link_desc *linkd = (struct media_link_desc *)arg;
+=======
+	struct media_link_desc *linkd = arg;
+>>>>>>> BRANCH (deaacd Linux 4.14.60)
 	struct media_link *link = NULL;
 	struct media_entity *source;
 	struct media_entity *sink;
@@ -225,7 +241,11 @@ static long media_device_setup_link(struct media_device *mdev, void *arg)
 
 static long media_device_get_topology(struct media_device *mdev, void *arg)
 {
+<<<<<<< HEAD   (03002d ANDROID: ftrace: fix function type mismatches)
 	struct media_v2_topology *topo = (struct media_v2_topology *)arg;
+=======
+	struct media_v2_topology *topo = arg;
+>>>>>>> BRANCH (deaacd Linux 4.14.60)
 	struct media_entity *entity;
 	struct media_interface *intf;
 	struct media_pad *pad;

@@ -787,7 +787,11 @@ retry:
 
 		set_cold_data(page);
 
+<<<<<<< HEAD   (03002d ANDROID: ftrace: fix function type mismatches)
 		err = f2fs_do_write_data_page(&fio);
+=======
+		err = do_write_data_page(&fio);
+>>>>>>> BRANCH (deaacd Linux 4.14.60)
 		if (err) {
 			clear_cold_data(page);
 			if (err == -ENOMEM) {
