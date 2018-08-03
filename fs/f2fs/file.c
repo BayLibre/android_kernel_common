@@ -1684,7 +1684,11 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
 
 	inode_lock(inode);
 
+<<<<<<< HEAD   (0137ea ANDROID: arm64: Fix 4.9.114 merge)
 	down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+=======
+	down_write(&F2FS_I(inode)->dio_rwsem[WRITE]);
+>>>>>>> BRANCH (ddd28f Linux 4.9.117)
 
 	if (f2fs_is_atomic_file(inode))
 		goto out;
@@ -1711,7 +1715,11 @@ skip_flush:
 	stat_inc_atomic_write(inode);
 	stat_update_max_atomic_write(inode);
 out:
+<<<<<<< HEAD   (0137ea ANDROID: arm64: Fix 4.9.114 merge)
 	up_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+=======
+	up_write(&F2FS_I(inode)->dio_rwsem[WRITE]);
+>>>>>>> BRANCH (ddd28f Linux 4.9.117)
 	inode_unlock(inode);
 	mnt_drop_write_file(filp);
 	return ret;
