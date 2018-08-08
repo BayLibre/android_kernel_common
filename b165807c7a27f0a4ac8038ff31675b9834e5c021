@@ -69,6 +69,30 @@
       "revId": "b165807c7a27f0a4ac8038ff31675b9834e5c021",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00ed50c3_fefaec2f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3030,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-08-08T18:27:29Z",
+      "side": 1,
+      "message": "I thought about this too. I think *new* transaction work can only be queued when thread-\u003etodo is empty, so those must be at the head; but I wonder about nested transactions, where perhaps you can make an outgoing transaction, which queues node work to thread-\u003etodo; then the process that you call into calls back into you, which adds transaction work to your thread-\u003etodo (second in the queue); then a bad userspace could in theory just issue a new transaction instead of replying, and we wouldn\u0027t bail out here because the transaction is not at the head. I\u0027m not sure it would eventually trigger the same BUG() though, need to think this through.",
+      "parentUuid": "f8d61bad_cd55ba02",
+      "range": {
+        "startLine": 3030,
+        "startChar": 6,
+        "endLine": 3030,
+        "endChar": 40
+      },
+      "revId": "b165807c7a27f0a4ac8038ff31675b9834e5c021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
