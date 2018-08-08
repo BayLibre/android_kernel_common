@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "52f4b825_8364d2e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-08-08T15:44:02Z",
+      "side": 1,
+      "message": "the comment suggests that any work on the todo list would cause the assert (not just incoming transactions). This doesn\u0027t match the current code (but might match the future code if we think this is true).\n\nI think the description of the scenario is hard to follow if you don\u0027t already know about it from the bug. Perhaps list the steps that get us to the failed assertion.",
+      "range": {
+        "startLine": 13,
+        "startChar": 17,
+        "endLine": 13,
+        "endChar": 34
+      },
+      "revId": "b165807c7a27f0a4ac8038ff31675b9834e5c021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0c13b2e2_87bf785d",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -13,6 +36,30 @@
       "writtenOn": "2018-08-08T07:20:22Z",
       "side": 1,
       "message": "is it ok for outgoing transactions to be made if there are other kinds of work - eg node work or work related to death notifications?",
+      "range": {
+        "startLine": 3030,
+        "startChar": 6,
+        "endLine": 3030,
+        "endChar": 40
+      },
+      "revId": "b165807c7a27f0a4ac8038ff31675b9834e5c021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8d61bad_cd55ba02",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3030,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-08-08T15:44:02Z",
+      "side": 1,
+      "message": "If no, then it seems like we don\u0027t need to check w-\u003etype at all -- the list should be empty.\n\nIf yes, then don\u0027t we have to check the whole todo list? I had been thinking this was the case, but right now I\u0027m not sure of any valid work that could be here when we are sending a txn (especially if thread-\u003etransaction_stack !\u003d NULL).",
+      "parentUuid": "0c13b2e2_87bf785d",
       "range": {
         "startLine": 3030,
         "startChar": 6,
