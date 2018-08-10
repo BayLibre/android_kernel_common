@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a552054a_af6a0483",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1440,
+      "author": {
+        "id": 1198563
+      },
+      "writtenOn": "2018-08-10T00:50:34Z",
+      "side": 1,
+      "message": "I verified that only binder_inc_ref_for_node reaches here and target_list is either null or thread-\u003etodo. Not sure why thread is not passed.",
+      "parentUuid": "742cee9d_f067db11",
+      "revId": "25618ae757f58942768ed87afa41a0927e07c28e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0c0252e5_0ad43da3",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
