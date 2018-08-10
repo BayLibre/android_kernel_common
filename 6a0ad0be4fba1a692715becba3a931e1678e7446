@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e481e8ab_cb9e4264",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1442,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-08-10T10:11:38Z",
+      "side": 1,
+      "message": "or rather, binder_enqueue_deferred_thread_work_ilocked(), since we don\u0027t need to wake up. We could remove the longish comment here then.",
+      "parentUuid": "b6820e2a_70c040fa",
+      "range": {
+        "startLine": 1442,
+        "startChar": 3,
+        "endLine": 1442,
+        "endChar": 30
+      },
+      "revId": "6a0ad0be4fba1a692715becba3a931e1678e7446",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bb73d22a_b1742b7a",
         "filename": "drivers/android/binder.c",
         "patchSetId": 7
