@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "742cee9d_f067db11",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1440,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2018-08-10T00:44:17Z",
+      "side": 1,
+      "message": "Is the target_list always a thread todo list? If so why are we not passing a thread pointer in?",
+      "revId": "25618ae757f58942768ed87afa41a0927e07c28e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c0252e5_0ad43da3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3044,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2018-08-10T00:44:17Z",
+      "side": 1,
+      "message": "nothing it queued ti the todo list while it is on waiting_threads. If something else was queued this would not work even if that work triggered a wakeup.",
+      "range": {
+        "startLine": 3042,
+        "startChar": 27,
+        "endLine": 3044,
+        "endChar": 24
+      },
+      "revId": "25618ae757f58942768ed87afa41a0927e07c28e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
