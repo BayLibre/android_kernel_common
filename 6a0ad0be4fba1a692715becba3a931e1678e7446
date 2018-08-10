@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6820e2a_70c040fa",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1442,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-08-10T07:44:19Z",
+      "side": 1,
+      "message": "if you have the thread here anyway, why not use binder_enqueue_thread_work_ilocked?",
+      "range": {
+        "startLine": 1442,
+        "startChar": 3,
+        "endLine": 1442,
+        "endChar": 30
+      },
+      "revId": "6a0ad0be4fba1a692715becba3a931e1678e7446",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb73d22a_b1742b7a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3043,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-08-10T07:44:19Z",
+      "side": 1,
+      "message": "I\u0027m still not convinced this scenario can\u0027t happen; can you explain?\n\n1) T1 (with a bad userspace) sends a new transaction X1 to thread T2, and passes in size zero for the read buffer. The transaction contains a binder node, so we queue node work on T1-\u003ethread_todo\n2) T2 receives the transaction, and calls back into T1; binder_proc_transaction() will get T1 as an argument, and push the transaction to T1-\u003ethread_todo (even though it\u0027s not on waiting_threads). T1\u0027s thread_todo now has: 1) node work, 2) BR_TRANSACTION (I guess also a BR_TRANSACTION_COMPLETE, doesn\u0027t matter)\n3) T1 runs again, and since no read buffer was passed in, returns to userspace without receiving the node work or the transaction; instead, T1 fires off a new transaction X2\n4) We get to this code, which doesn\u0027t trigger, because there is no transaction at the head of the queue, and continue to send off X2\n5) T2 dies, we try to send a failed reply for X1, which runs into the same BUG_ON because X1 is not at the head of T1.",
+      "range": {
+        "startLine": 3039,
+        "startChar": 21,
+        "endLine": 3043,
+        "endChar": 55
+      },
+      "revId": "6a0ad0be4fba1a692715becba3a931e1678e7446",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
