@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "4a9bddcb_bc468909",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1429,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2018-08-13T23:25:54Z",
+      "side": 1,
+      "message": "why is this not in binder_enqueue_deferred_thread_work_ilocked?",
+      "revId": "fb29fa91faa53c1472087c46e073f228a4b2a6c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bccef278_0f97ce83",
         "filename": "drivers/android/binder.c",
         "patchSetId": 8
@@ -37,6 +54,30 @@
       "side": 1,
       "message": "Yeah this can be a BUG_ON, but the upstream maintainers seem to prefer WARN_ON as it doesn\u0027t crash the kernel.",
       "parentUuid": "bccef278_0f97ce83",
+      "range": {
+        "startLine": 1430,
+        "startChar": 3,
+        "endLine": 1430,
+        "endChar": 10
+      },
+      "revId": "fb29fa91faa53c1472087c46e073f228a4b2a6c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2d602fe_6b6eff92",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2018-08-13T23:25:54Z",
+      "side": 1,
+      "message": "I think a BUG_ON is safer here. If this assertion fails you will corrupt kernel memory.",
+      "parentUuid": "3c10f324_16f80df7",
       "range": {
         "startLine": 1430,
         "startChar": 3,
