@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0710e1d6_2614fa2c",
+        "filename": "fs/overlayfs/overlayfs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2018-08-28T18:52:35Z",
+      "side": 1,
+      "message": "\"Should that be ns_capable()? Should the test go into vfs_whiteout()?\nI feel there is no convention at all.\n\nNevermind, I don\u0027t think creating a whiteout poses any risk, so don\u0027t think\nwe need to worry about CAP_MKNOD.\" - Amir Goldstein",
+      "range": {
+        "startLine": 131,
+        "startChar": 11,
+        "endLine": 131,
+        "endChar": 31
+      },
+      "revId": "e94d960bad4c2b92505c2f87a1ac85f458ec9dcc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
