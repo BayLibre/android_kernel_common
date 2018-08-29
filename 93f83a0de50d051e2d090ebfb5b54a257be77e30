@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "782acbe5_58052dec",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4739,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-08-29T15:59:02Z",
+      "side": 1,
+      "message": "I would include the internal ones (which correspond to \"binder_inc_ref\" cases). If there is a need to differentiate local refs from remote/internal refs, maybe we need separate fields for them.",
+      "revId": "93f83a0de50d051e2d090ebfb5b54a257be77e30",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
