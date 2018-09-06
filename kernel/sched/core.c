@@ -26,6 +26,7 @@
 #include <linux/profile.h>
 #include <linux/security.h>
 #include <linux/syscalls.h>
+#include <linux/scs.h>
 
 #include <asm/switch_to.h>
 #include <asm/tlb.h>
@@ -3251,6 +3252,8 @@ static inline void schedule_debug(struct task_struct *prev)
 #ifdef CONFIG_SCHED_STACK_END_CHECK
 	if (task_stack_end_corrupted(prev))
 		panic("corrupted stack end detected inside scheduler\n");
+	if (scs_corrupted(prev))
+		panic("corrupted shadow stack detected inside scheduler\n");
 #endif
 
 	if (unlikely(in_atomic_preempt_off())) {
