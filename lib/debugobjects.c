@@ -293,6 +293,7 @@ static void debug_object_is_on_stack(void *addr, int onstack)
 		return;
 
 	limit++;
+<<<<<<< HEAD   (a8c1ea Merge 4.9.126 into android-4.9)
 	if (is_on_stack) {
 		pr_warn("object %p is on stack %p, but NOT annotated\n", addr,
 				task_stack_page(current));
@@ -300,6 +301,15 @@ static void debug_object_is_on_stack(void *addr, int onstack)
 		pr_warn("object %p is NOT on stack %p, but annotated\n", addr,
 				task_stack_page(current));
 	}
+=======
+	if (is_on_stack)
+		pr_warn("object %p is on stack %p, but NOT annotated.\n", addr,
+			 task_stack_page(current));
+	else
+		pr_warn("object %p is NOT on stack %p, but annotated.\n", addr,
+			 task_stack_page(current));
+
+>>>>>>> BRANCH (927556 Linux 4.9.127)
 	WARN_ON(1);
 }
 
