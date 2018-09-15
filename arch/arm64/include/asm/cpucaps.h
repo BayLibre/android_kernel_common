@@ -37,6 +37,12 @@
 #define ARM64_UNMAP_KERNEL_AT_EL0		16
 #define ARM64_HARDEN_BRANCH_PREDICTOR		17
 #define ARM64_SSBD				18
+<<<<<<< HEAD   (eacbb1 Merge 4.9.126 into android-4.9-o)
 #define ARM64_NCAPS				19
+=======
+#define ARM64_MISMATCHED_CACHE_TYPE		19
+
+#define ARM64_NCAPS				20
+>>>>>>> BRANCH (927556 Linux 4.9.127)
 
 #endif /* __ASM_CPUCAPS_H */
