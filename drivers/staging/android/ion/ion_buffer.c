@@ -9,6 +9,7 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
+#include <linux/dma-noncoherent.h>
 
 #include "ion_private.h"
 
@@ -36,6 +37,22 @@ static void ion_buffer_add(struct ion_device *dev,
 
 	rb_link_node(&buffer->node, parent, p);
 	rb_insert_color(&buffer->node, &dev->buffers);
+}
+
+void ion_buffer_prep_noncached(struct ion_buffer *buffer)
+{
+	struct sg_page_iter piter;
+
+	/*
+	 * The memory allocated by the heap could be in the CPU cache. To map
+	 * this memory as non-cached, we need to flush the associated cache
+	 * first. Without the flush, it is possible for stale dirty cache lines
+	 * to be evicted after the ION client started writing into this buffer,
+	 * leading to data corruption.
+	 */
+	for_each_sg_page(buffer->sg_table->sgl, &piter,
+			 buffer->sg_table->nents, 0)
+		arch_dma_prep_coherent(sg_page_iter_page(&piter), PAGE_SIZE);
 }
 
 /* this function should only be called while dev->lock is held */
@@ -72,6 +89,9 @@ static struct ion_buffer *ion_buffer_create(struct ion_heap *heap,
 		ret = -EINVAL;
 		goto err1;
 	}
+
+	if (!(flags & ION_FLAG_CACHED))
+		ion_buffer_prep_noncached(buffer);
 
 	spin_lock(&heap->stat_lock);
 	heap->num_of_buffers++;
