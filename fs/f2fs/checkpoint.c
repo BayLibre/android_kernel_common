@@ -808,6 +808,7 @@ static struct page *validate_checkpoint(struct f2fs_sb_info *sbi,
 					&cp_page_1, version);
 	if (err)
 		return NULL;
+<<<<<<< HEAD   (b7e40c Merge 4.14.75 into android-4.14)
 
 	if (le32_to_cpu(cp_block->cp_pack_total_block_count) >
 					sbi->blocks_per_seg) {
@@ -816,6 +817,8 @@ static struct page *validate_checkpoint(struct f2fs_sb_info *sbi,
 			le32_to_cpu(cp_block->cp_pack_total_block_count));
 		goto invalid_cp;
 	}
+=======
+>>>>>>> BRANCH (0b46ce Linux 4.14.76)
 	pre_version = *version;
 
 	cp_addr += le32_to_cpu(cp_block->cp_pack_total_block_count) - 1;
