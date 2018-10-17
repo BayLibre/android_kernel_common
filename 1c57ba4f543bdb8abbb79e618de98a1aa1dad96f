@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23a6441b_ba0dd7c8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4746,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-10-17T16:20:29Z",
+      "side": 1,
+      "message": "I just looked at this again and commented upstream...\n\nAren\u0027t we under-reporting the weak refs here? The \"internal weak\" refs\nare the count of elements in node-\u003erefs, so we need to add something\nlike:\n\nhlist_for_each_entry(ref, \u0026node-\u003erefs, node_entry)\n        info-\u003eweak_count++;",
+      "revId": "1c57ba4f543bdb8abbb79e618de98a1aa1dad96f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
