@@ -46,6 +46,30 @@
       "revId": "48091d94336ee8bc685c307c068a32bdb9e9d20b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c09b277b_f3b8902f",
+        "filename": "include/uapi/linux/fs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1096713
+      },
+      "writtenOn": "2018-10-22T18:20:14Z",
+      "side": 0,
+      "message": "Since we put them into the AOSP common kernel at these versions, and the removal from the upstream kernel kept these constants but with the comment to no longer use them, I\u0027d assume we\u0027d keep that same approach, right?  These constants have existed in the AOSP common kernel for the same time duration as they were in the upstream kernel.  I would think we\u0027d want to keep the same approach taken for removing Speck.",
+      "parentUuid": "9f841f73_8072556b",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 0
+      },
+      "revId": "48091d94336ee8bc685c307c068a32bdb9e9d20b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
