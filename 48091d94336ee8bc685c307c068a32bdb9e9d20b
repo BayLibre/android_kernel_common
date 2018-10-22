@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2eb46499_205429d1",
+        "filename": "include/uapi/linux/fs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1096713
+      },
+      "writtenOn": "2018-10-22T18:01:21Z",
+      "side": 0,
+      "message": "So in the \"remove Speck\" from upstream, we retain these constants, so they aren\u0027t accidentally used for another meaning: https://android-review.googlesource.com/c/kernel/common/+/763187/4/include/uapi/linux/fs.h\n\nIs the idea that we\u0027ll get that in the next merge from upstream into common kernel, or do we need to add a new CL to this stack to add this?",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 0
+      },
+      "revId": "48091d94336ee8bc685c307c068a32bdb9e9d20b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
