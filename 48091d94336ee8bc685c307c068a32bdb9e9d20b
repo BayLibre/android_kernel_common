@@ -94,6 +94,30 @@
       "revId": "48091d94336ee8bc685c307c068a32bdb9e9d20b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a72460a8_8301cf24",
+        "filename": "include/uapi/linux/fs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2018-10-22T18:48:26Z",
+      "side": 0,
+      "message": "IMO, it\u0027s fine to just remove the constants completely here.  I wanted to leave them upstream so they don\u0027t get reused (e.g. for Adiantum), but in downstream it\u0027s very unlikely to matter.",
+      "parentUuid": "86401672_356d26b7",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 0
+      },
+      "revId": "48091d94336ee8bc685c307c068a32bdb9e9d20b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
