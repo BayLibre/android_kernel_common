@@ -262,7 +262,8 @@ TRACE_EVENT(binder_transaction_fd_send,
 		__entry->offset = offset;
 	),
 	TP_printk("transaction=%d src_fd=%d offset=%ld",
-		  __entry->debug_id, __entry->fd, __entry->offset)
+		  __entry->debug_id, __entry->fd,
+		  (unsigned long)__entry->offset)
 );
 
 TRACE_EVENT(binder_transaction_fd_recv,
@@ -280,7 +281,8 @@ TRACE_EVENT(binder_transaction_fd_recv,
 		__entry->offset = offset;
 	),
 	TP_printk("transaction=%d dest_fd=%d offset=%ld",
-		  __entry->debug_id, __entry->fd, __entry->offset)
+		  __entry->debug_id, __entry->fd,
+		  (unsigned long)__entry->offset)
 );
 
 DECLARE_EVENT_CLASS(binder_buffer_class,
