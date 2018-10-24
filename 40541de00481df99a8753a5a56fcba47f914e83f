@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34a567f3_f758b263",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-10-24T22:58:17Z",
+      "side": 1,
+      "message": "Interestingly, when I ran sparse on a 32-bit build, it flagged this function since it is entered with lock held and then conditionally drops/reacquires. It flagged the spin_unlock() as unexpected.",
+      "revId": "40541de00481df99a8753a5a56fcba47f914e83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
