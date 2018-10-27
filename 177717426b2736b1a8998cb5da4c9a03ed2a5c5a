@@ -22,6 +22,30 @@
       "revId": "177717426b2736b1a8998cb5da4c9a03ed2a5c5a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7043c88_3ba44439",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2018-10-27T04:43:29Z",
+      "side": 1,
+      "message": "In master, they assign this to 0, but in 4.9, this is still a timeval. I thought that this was the expected way to get an arbitrary timeval.\n\nLooking back again, I\u0027ve changed this to set the tstamp\u0027s value to 0, preserving the intent, and making this the same as skb_scrub_packet()",
+      "parentUuid": "ecd47acb_ee042ac8",
+      "range": {
+        "startLine": 219,
+        "startChar": 15,
+        "endLine": 219,
+        "endChar": 29
+      },
+      "revId": "177717426b2736b1a8998cb5da4c9a03ed2a5c5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
