@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3e05f25_f81ba459",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-10-29T13:28:11Z",
+      "side": 1,
+      "message": "Nit: I\u0027m not sure what this enum is used for, but since this is an enum, putting the out-of-tree values in the middle of this list makes all the following values incorrect (off by one). We might want to put it at the end, or even drop it if it\u0027s not used. Maciej?",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 28
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e1e533a_79dc74a5",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3471,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-10-29T13:28:11Z",
+      "side": 1,
+      "message": "In order to simplify all these perhaps we could add the following to addrconf_rt_table?\n\n\tu32 table \u003d l3mdev_fib_table(dev);\n\tif (table) {\n\t\treturn table;\n\t}\n\nand maybe add to the comment \"If the device is in a VRF, always use the VRF table. Otherwise:\"\n\nI know this is out-of-tree code, but it doesn\u0027t look like it\u0027s going anywhere any time soon, so this CL is as upstream as it gets and we might as well do cleanups here.",
+      "range": {
+        "startLine": 3471,
+        "startChar": 13,
+        "endLine": 3471,
+        "endChar": 56
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
