@@ -25,6 +25,70 @@
     },
     {
       "key": {
+        "uuid": "08026c9c_a36f19ec",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-29T23:28:28Z",
+      "side": 1,
+      "message": "Yeah, that was about to be my comment as well, this should AFAICT go at the very bottom of this list in some sort of /* Android-only after this bar */ section.\n\nThat said: I\u0027m not aware of any way to actually *use* this enum from userspace.",
+      "parentUuid": "a3e05f25_f81ba459",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 28
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c0fb1fd_c8315c43",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2334,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-29T23:28:28Z",
+      "side": 1,
+      "message": "this cast should probably be written as\n\ntable \u003d (u32)(-sysctl + dev-\u003eifindex)",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e115cc7_a4e5f754",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6380,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-29T23:28:28Z",
+      "side": 1,
+      "message": "spurious space or something",
+      "range": {
+        "startLine": 6380,
+        "startChar": 10,
+        "endLine": 6380,
+        "endChar": 11
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1e1e533a_79dc74a5",
         "filename": "net/ipv6/route.c",
         "patchSetId": 2
@@ -65,6 +129,70 @@
         "startChar": 13,
         "endLine": 3471,
         "endChar": 56
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "45a6f0ae_8ceaf17b",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3471,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-29T23:28:28Z",
+      "side": 1,
+      "message": "Hmm, I would have actually left this as is... it\u0027s a smaller code mutation if we\u0027re only changing the constant case...",
+      "parentUuid": "38ba00e8_5316e050",
+      "range": {
+        "startLine": 3471,
+        "startChar": 13,
+        "endLine": 3471,
+        "endChar": 56
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4065cc91_7c9ae78c",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-29T23:28:28Z",
+      "side": 1,
+      "message": "probably static int __rt6_addrconf_purge_dflt_routers",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ad64023_d19b7c27",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3597,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-29T23:28:28Z",
+      "side": 1,
+      "message": "I\u0027m surprised this isn\u0027t idev \u0026\u0026 idev-\u003ecnf.accept_ra !\u003d 2\n\n(not saying to change it, just not fully following what\u0027s happening here)",
+      "range": {
+        "startLine": 3597,
+        "startChar": 6,
+        "endLine": 3597,
+        "endChar": 15
       },
       "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
