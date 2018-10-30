@@ -126,6 +126,29 @@
     },
     {
       "key": {
+        "uuid": "1d11756e_41529d63",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5200,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-30T05:26:17Z",
+      "side": 1,
+      "message": "just kill this line and the enum",
+      "range": {
+        "startLine": 5200,
+        "startChar": 0,
+        "endLine": 5200,
+        "endChar": 1
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5e115cc7_a4e5f754",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
@@ -257,6 +280,29 @@
       "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e8bc33e_f6eee7df",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3600,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-30T05:26:17Z",
+      "side": 1,
+      "message": "(in general this function could use a comment saying what \u00270\u0027 and \u0027-1\u0027 returns actually mean.\n\nFor example why -1 and not 1.",
+      "range": {
+        "startLine": 3600,
+        "startChar": 1,
+        "endLine": 3600,
+        "endChar": 7
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
