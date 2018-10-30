@@ -108,6 +108,24 @@
     },
     {
       "key": {
+        "uuid": "5c5de973_eadff456",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2334,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-30T05:22:55Z",
+      "side": 1,
+      "message": "Mostly readability.  I far prefer base + index.\n\nAlso this is casting only def-\u003eifindex to unsigned and not the sysctl nor the sum.",
+      "parentUuid": "f79e95dc_9331f130",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5e115cc7_a4e5f754",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
