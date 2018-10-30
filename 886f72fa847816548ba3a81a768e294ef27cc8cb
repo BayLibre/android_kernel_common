@@ -126,6 +126,24 @@
     },
     {
       "key": {
+        "uuid": "b607d015_46105022",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2334,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-10-30T05:36:38Z",
+      "side": 1,
+      "message": "I recall thinking about integer overflows and casting at the time, but I can\u0027t remember why I did it this way.\n\nLooking at this again, I *think* (-sysctl) will be promoted to unsigned because it\u0027s being added to an unsigned number. Also, (-sysctl) is already guaranteed to be positive since sysctl was \u003c 0. The result is reached via unsigned arithmetic, which is at least defined in the case of overflow. If instead we do (-sysctl + dev-\u003eifindex), then that\u0027s signed arithmetic (both those two numbers are signed), which in theory is undefined on overflow.\n\nPersonally I think I\u0027d leave this as is, partly because it\u0027s also what we\u0027ve been running for many years.",
+      "parentUuid": "5c5de973_eadff456",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1d11756e_41529d63",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
