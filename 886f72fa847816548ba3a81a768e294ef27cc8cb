@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "13701162_33cbf178",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-10-30T04:37:52Z",
+      "side": 1,
+      "message": "Actually it looks like the enum indexes an array of sysctl values that is returned to userspace in the IFLA_INET6_CONF attribute. See inet6_fill_link_af. Not sure exactly what you need to do to get that from userspace, perhaps an RTM_GETLINK dump?",
+      "parentUuid": "08026c9c_a36f19ec",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 28
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9c0fb1fd_c8315c43",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
@@ -60,6 +84,24 @@
       "writtenOn": "2018-10-29T23:28:28Z",
       "side": 1,
       "message": "this cast should probably be written as\n\ntable \u003d (u32)(-sysctl + dev-\u003eifindex)",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f79e95dc_9331f130",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2334,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-10-30T04:37:52Z",
+      "side": 1,
+      "message": "Why? Just for general readability, or are you thinking about integer overflows, ...?",
+      "parentUuid": "9c0fb1fd_c8315c43",
       "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
