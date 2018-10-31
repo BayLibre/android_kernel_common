@@ -22,6 +22,57 @@
       "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e11cd0a8_b487be92",
+        "filename": "include/linux/android_aid.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2018-10-31T17:11:23Z",
+      "side": 1,
+      "message": "Can we obsolete the AID_NET_RAW/AID_NET_ADMIN ids as well?",
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6131a2c_89bd3129",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2018-10-31T17:11:23Z",
+      "side": 1,
+      "message": "Can this function be dropped?",
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19acf6ce_22215dcf",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2018-10-31T17:11:23Z",
+      "side": 1,
+      "message": "Since current_has_bt is the same as current_has_bt_admin, can this be simplified?",
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
