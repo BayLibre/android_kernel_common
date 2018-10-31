@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "ad89985a_f69ea272",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "I\u0027ve removed this feature. Let me know if this was the wrong thing to do. It seems like things will work ok if the sysctl is controlled from the /proc interface and not returned through this ioctl.",
+      "parentUuid": "13701162_33cbf178",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 28
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c0fb1fd_c8315c43",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
@@ -144,6 +168,24 @@
     },
     {
       "key": {
+        "uuid": "1b07ad83_294c343e",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2334,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "I\u0027ll leave it as it is, unless Maciej comes up with something else :)",
+      "parentUuid": "b607d015_46105022",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1d11756e_41529d63",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
@@ -167,6 +209,30 @@
     },
     {
       "key": {
+        "uuid": "defefafc_83300b99",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5200,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d11756e_41529d63",
+      "range": {
+        "startLine": 5200,
+        "startChar": 0,
+        "endLine": 5200,
+        "endChar": 1
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e115cc7_a4e5f754",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 2
@@ -187,6 +253,30 @@
       "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be354ec3_4ec6f92f",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6380,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "Looks ok in vim. I think this just a gerrit funny.",
+      "parentUuid": "5e115cc7_a4e5f754",
+      "range": {
+        "startLine": 6380,
+        "startChar": 10,
+        "endLine": 6380,
+        "endChar": 11
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -278,6 +368,24 @@
     },
     {
       "key": {
+        "uuid": "df577f3d_1f4ed329",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4065cc91_7c9ae78c",
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ad64023_d19b7c27",
         "filename": "net/ipv6/route.c",
         "patchSetId": 2
@@ -289,6 +397,30 @@
       "writtenOn": "2018-10-29T23:28:28Z",
       "side": 1,
       "message": "I\u0027m surprised this isn\u0027t idev \u0026\u0026 idev-\u003ecnf.accept_ra !\u003d 2\n\n(not saying to change it, just not fully following what\u0027s happening here)",
+      "range": {
+        "startLine": 3597,
+        "startChar": 6,
+        "endLine": 3597,
+        "endChar": 15
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b630b739_5dcbf43b",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3597,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "I\u0027m not sure how !idev can happen either. However the -1 here indicates to delete the route, so it\u0027s probably just \"I don\u0027t know what happened, let\u0027s delete this bad thing\".",
+      "parentUuid": "0ad64023_d19b7c27",
       "range": {
         "startLine": 3597,
         "startChar": 6,
@@ -321,6 +453,30 @@
       "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85f0007c_f280c040",
+        "filename": "net/ipv6/route.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3600,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:24:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e8bc33e_f6eee7df",
+      "range": {
+        "startLine": 3600,
+        "startChar": 1,
+        "endLine": 3600,
+        "endChar": 7
+      },
+      "revId": "886f72fa847816548ba3a81a768e294ef27cc8cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
