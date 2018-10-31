@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b95179f4_ffabb700",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:23:51Z",
+      "side": 1,
+      "message": "I don\u0027t think the follow-ups I squashed have any more information than the subject and the signed-off-by, unfortunately. Since they are just churning the code, I think copy/pasting them into this patch\u0027s description is pointless.\n\nHowever, this bit does seem important:\n\n\"For instance, the change from using namespaced cap checks to non-namespaced cap check feels a bit subtle and deserves some rational.\"\n\nI totally agree.. however, that seems to be introduced by the base patch \"ANDROID: net: Paranoid network.\" and I can\u0027t find an explanation for it. It also seems really wrong to me that this snippet is not wrapped with the same #ifdef as the other changes.\n\nI get the feeling this was originally coming in from the current_has_cap() -\u003e capable() reversion, I\u0027m sure older kernels didn\u0027t have network namespaces so maybe this was overlooked when it was cherry-picked in. For us, since we aren\u0027t using namespaces or network namespaces, they should be equivalent?",
+      "parentUuid": "25bc6329_3c11ef8e",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 103
+      },
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e11cd0a8_b487be92",
         "filename": "include/linux/android_aid.h",
         "patchSetId": 2
@@ -39,6 +63,24 @@
       "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0df7b486_1b817356",
+        "filename": "include/linux/android_aid.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:23:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e11cd0a8_b487be92",
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "960cae97_8fa8e040",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:23:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6131a2c_89bd3129",
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "19acf6ce_22215dcf",
         "filename": "net/bluetooth/af_bluetooth.c",
         "patchSetId": 2
@@ -73,6 +133,24 @@
       "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9298c400_1db35cfb",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-10-31T19:23:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19acf6ce_22215dcf",
+      "revId": "4e4f9d42c47b8fdcac6c6cb345415f0e3184acf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
