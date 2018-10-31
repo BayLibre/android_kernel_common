@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28b23e5d_0273b933",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-31T20:18:04Z",
+      "side": 1,
+      "message": "you don\u0027t actually need to init to 0,\nall fields not mentioned in {} start 0 inited.\n\notoh, it does list all the fields, so maybe leave???",
+      "range": {
+        "startLine": 223,
+        "startChar": 2,
+        "endLine": 223,
+        "endChar": 20
+      },
+      "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0dd727d1_13d48b88",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-31T20:18:04Z",
+      "side": 1,
+      "message": "here either",
+      "range": {
+        "startLine": 278,
+        "startChar": 2,
+        "endLine": 278,
+        "endChar": 20
+      },
+      "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fb4aabd_6dc8d192",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2322,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2018-10-31T20:18:04Z",
+      "side": 1,
+      "message": "I really disagree with lorenzo on this.\n\nAlso there\u0027s actually a syzkaller fix for this patch which should get fixed up, merged and then squashed into this patch.\n\n( https://android-review.googlesource.com/c/kernel/common/+/667683 )\n\nIn order to correctly fix it, AFAICT this function can\u0027t take dev, it needs to take idev...",
+      "range": {
+        "startLine": 2322,
+        "startChar": 9,
+        "endLine": 2322,
+        "endChar": 25
+      },
+      "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
