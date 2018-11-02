@@ -45,6 +45,30 @@
       "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d07906f1_2f309835",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1121354
+      },
+      "writtenOn": "2018-11-02T01:43:49Z",
+      "side": 1,
+      "message": "Yes, I think we can use sepolicy to filter socket creation request by socket family. I will upload a change for review tomorrow.",
+      "parentUuid": "ca495a4f_adc12868",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 6
+      },
+      "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
