@@ -93,6 +93,30 @@
       "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7beaf65b_87ab887f",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1003966
+      },
+      "writtenOn": "2018-11-02T20:01:28Z",
+      "side": 1,
+      "message": "Prior to kernel 4.11, when a network address family (such as bluetooth) was not specifically known to the SELinux subsystem, the permission checks were performed against the generic \"socket\" class. \n\nAfter https://github.com/torvalds/linux/commit/da69a5306ab92e07224da54aafee8b1dccf024f6 , SELinux gained specific knowledge of bluetooth sockets, allowing policy to be written specifically against bluetooth sockets as opposed to the generic \"socket\" socket.\n\nNo userspace change is required. Android enabled extended socket permissions in https://android-review.googlesource.com/c/platform/system/sepolicy/+/333267 .",
+      "parentUuid": "65debd76_a9a4c255",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 6
+      },
+      "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
