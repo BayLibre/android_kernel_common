@@ -69,6 +69,30 @@
       "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65debd76_a9a4c255",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1121354
+      },
+      "writtenOn": "2018-11-02T19:42:24Z",
+      "side": 1,
+      "message": "Per IM discussion with nnk@, there are already selinux rules to check bluetooth socket creation. Currently only one security domain (\"hal_bluetooth_btlinux\") is allowed to create bluetooth sockets and that is more strict then the euid check in kernel. So we can remove this part as well. No userspace change required.",
+      "parentUuid": "d07906f1_2f309835",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 6
+      },
+      "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
