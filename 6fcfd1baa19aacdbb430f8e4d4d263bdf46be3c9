@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46c628b4_9e7f843f",
+        "filename": "drivers/net/tun.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2846,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-11-02T01:36:35Z",
+      "side": 1,
+      "message": "I think we can remove this hunk because of https://android-review.googlesource.com/c/platform/system/sepolicy/+/811033 .",
+      "range": {
+        "startLine": 2843,
+        "startChar": 0,
+        "endLine": 2846,
+        "endChar": 6
+      },
+      "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca495a4f_adc12868",
+        "filename": "net/bluetooth/af_bluetooth.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2018-11-02T01:36:35Z",
+      "side": 1,
+      "message": "Chenbo, what was our plan for this? Were were we going to use selinux to prevent apps from creating bluetooth sockets?",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 6
+      },
+      "revId": "6fcfd1baa19aacdbb430f8e4d4d263bdf46be3c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
