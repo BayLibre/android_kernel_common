@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7e38d06c_0735aef6",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-11-07T23:15:18Z",
+      "side": 1,
+      "message": "Yes, the compiler should optimize this away. I\u0027ll leave it, I suppose.",
+      "parentUuid": "28b23e5d_0273b933",
+      "range": {
+        "startLine": 223,
+        "startChar": 2,
+        "endLine": 223,
+        "endChar": 20
+      },
+      "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0dd727d1_13d48b88",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 6
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "350dabe8_b6562437",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-11-07T23:15:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0dd727d1_13d48b88",
+      "range": {
+        "startLine": 278,
+        "startChar": 2,
+        "endLine": 278,
+        "endChar": 20
+      },
+      "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1fb4aabd_6dc8d192",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 6
@@ -68,6 +116,30 @@
       "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "428dbe06_d712aeab",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2322,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2018-11-07T23:15:18Z",
+      "side": 1,
+      "message": "So, I just put this back how it was before, and I rolled in the NULL fix, but not the \"greater\" fix discussed on the other review. So, there might be more work to do here, but hopefully we\u0027ll catch the problem before we dereference NULL?\n\nThis also explains the other idev NULL test being done in the fib6 function that you raised previously..",
+      "parentUuid": "1fb4aabd_6dc8d192",
+      "range": {
+        "startLine": 2322,
+        "startChar": 9,
+        "endLine": 2322,
+        "endChar": 25
+      },
+      "revId": "df902f8c78e38455fc160ee4193939d7ebbe03a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
