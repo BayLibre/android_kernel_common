@@ -24,6 +24,10 @@
 #ifdef CONFIG_BLK_DEV_MD
 extern void md_autodetect_dev(dev_t dev);
 #endif
+
+#ifdef CONFIG_BLK_DEV_DM
+extern void allow_dm_setup(void);
+#endif
  
 /*
  * disk_name() is used by partition check code and the genhd driver.
@@ -543,6 +547,7 @@ rescan:
 			md_autodetect_dev(part_to_dev(part)->devt);
 #endif
 	}
+	allow_dm_setup();
 	free_partitions(state);
 	return 0;
 }
