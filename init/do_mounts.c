@@ -543,6 +543,12 @@ void __init mount_root(void)
 #endif
 }
 
+static volatile bool dm_setup_allowed = false;
+void allow_dm_setup(void) {
+	dm_setup_allowed = true;
+}
+EXPORT_SYMBOL_GPL(allow_dm_setup);
+
 /*
  * Prepare the namespace - decide what/where to mount, load ramdisks, etc.
  */
@@ -566,6 +572,9 @@ void __init prepare_namespace(void)
 	wait_for_device_probe();
 
 	md_run_setup();
+	while (!dm_setup_allowed) {
+		msleep(5);
+	}
 	dm_run_setup();
 
 	if (saved_root_name[0]) {
