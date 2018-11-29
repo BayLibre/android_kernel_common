@@ -15,7 +15,11 @@
 #include <linux/hrtimer.h>
 #include <vdso/datapage.h>
 
+#ifdef ENABLE_COMPAT_VDSO
+#include <asm/vdso/compat_gettimeofday.h>
+#else
 #include <asm/vdso/gettimeofday.h>
+#endif /* ENABLE_COMPAT_VDSO */
 
 /* To improve performances, in this file, __always_inline it is used
  * for the functions called multiple times.
