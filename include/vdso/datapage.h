@@ -34,6 +34,8 @@ struct vdso_data {
 	__u64 wtm_clock_nsec;
 	__u64 btm_nsec;		/* Monotonic to boot time */
 	__u64 tai_sec;		/* International Atomic Time */
+	__u64 cs_mono_mask;	/* NTP-adjusted clocksource mask */
+	__u64 cs_raw_mask;	/* Raw clocksource mask */
 	__u32 tb_seq_count;	/* Timebase sequence counter */
 	__u32 cs_mono_mult;	/* NTP-adjusted clocksource multiplier */
 	__u32 cs_shift;		/* Clocksource shift (mono = raw) */
