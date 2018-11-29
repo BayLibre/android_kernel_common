@@ -21,6 +21,7 @@
 #ifndef __ASSEMBLY__
 
 #include <linux/types.h>
+#include <vdso/types.h>
 
 struct vdso_data {
 	__u64 cs_cycle_last;	/* Timebase at clocksource init */
