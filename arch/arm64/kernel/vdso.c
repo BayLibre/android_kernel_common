@@ -31,11 +31,11 @@
 #include <linux/slab.h>
 #include <linux/timekeeper_internal.h>
 #include <linux/vmalloc.h>
+#include <vdso/datapage.h>
 
 #include <asm/cacheflush.h>
 #include <asm/signal32.h>
 #include <asm/vdso.h>
-#include <asm/vdso_datapage.h>
 
 extern char vdso_start[], vdso_end[];
 static unsigned long vdso_pages __ro_after_init;
@@ -200,6 +200,8 @@ up_fail:
 	return PTR_ERR(ret);
 }
 
+#define VDSO_PRECISION_MASK	~(0xFF00ULL<<48)
+
 /*
  * Update the vDSO data page to keep in sync with kernel timekeeping.
  */
@@ -228,6 +230,11 @@ void update_vsyscall(struct timekeeper *tk)
 		vdso_data->cs_raw_mult		= tk->tkr_raw.mult;
 		/* tkr_mono.shift == tkr_raw.shift */
 		vdso_data->cs_shift		= tk->tkr_mono.shift;
+		vdso_data->btm_nsec		= ktime_to_ns(tk->offs_boot);
+		vdso_data->tai_sec		= tk->xtime_sec +
+							tk->tai_offset;
+		vdso_data->cs_mono_mask		= VDSO_PRECISION_MASK;
+		vdso_data->cs_raw_mask		= VDSO_PRECISION_MASK;
 	}
 
 	smp_wmb();

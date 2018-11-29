@@ -23,13 +23,13 @@
 #include <linux/dma-mapping.h>
 #include <linux/kvm_host.h>
 #include <linux/suspend.h>
+#include <vdso/datapage.h>
 #include <asm/cpufeature.h>
 #include <asm/fixmap.h>
 #include <asm/thread_info.h>
 #include <asm/memory.h>
 #include <asm/smp_plat.h>
 #include <asm/suspend.h>
-#include <asm/vdso_datapage.h>
 #include <linux/kbuild.h>
 #include <linux/arm-smccc.h>
 
@@ -109,13 +109,18 @@ int main(void)
   DEFINE(VDSO_XTIME_CRS_NSEC,	offsetof(struct vdso_data, xtime_coarse_nsec));
   DEFINE(VDSO_WTM_CLK_SEC,	offsetof(struct vdso_data, wtm_clock_sec));
   DEFINE(VDSO_WTM_CLK_NSEC,	offsetof(struct vdso_data, wtm_clock_nsec));
+  DEFINE(VDSO_BTM_NSEC,		offsetof(struct vdso_data, btm_nsec));
+  DEFINE(VDSO_CLK_TAI,		offsetof(struct vdso_data, tai_sec));
   DEFINE(VDSO_TB_SEQ_COUNT,	offsetof(struct vdso_data, tb_seq_count));
   DEFINE(VDSO_CS_MONO_MULT,	offsetof(struct vdso_data, cs_mono_mult));
+  DEFINE(VDSO_CS_MONO_MASK,	offsetof(struct vdso_data, cs_mono_mask));
   DEFINE(VDSO_CS_RAW_MULT,	offsetof(struct vdso_data, cs_raw_mult));
   DEFINE(VDSO_CS_SHIFT,		offsetof(struct vdso_data, cs_shift));
+  DEFINE(VDSO_CS_RAW_MASK,	offsetof(struct vdso_data, cs_raw_mask));
   DEFINE(VDSO_TZ_MINWEST,	offsetof(struct vdso_data, tz_minuteswest));
   DEFINE(VDSO_TZ_DSTTIME,	offsetof(struct vdso_data, tz_dsttime));
   DEFINE(VDSO_USE_SYSCALL,	offsetof(struct vdso_data, use_syscall));
+  DEFINE(VDSO_CLK_MODE,		offsetof(struct vdso_data, clock_mode));
   BLANK();
   DEFINE(TVAL_TV_SEC,		offsetof(struct timeval, tv_sec));
   DEFINE(TVAL_TV_USEC,		offsetof(struct timeval, tv_usec));
