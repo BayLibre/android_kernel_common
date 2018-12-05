@@ -1097,6 +1097,7 @@ next_block:
 		goto sync_out;
 	}
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (is_valid_data_blkaddr(sbi, blkaddr)) {
 		/* use out-place-update for driect IO under LFS mode */
 		if (test_opt(sbi, LFS) && create &&
@@ -1106,6 +1107,9 @@ next_block:
 				set_inode_flag(inode, FI_APPEND_WRITE);
 		}
 	} else {
+=======
+	if (!is_valid_data_blkaddr(sbi, blkaddr)) {
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 		if (create) {
 			if (unlikely(f2fs_cp_error(sbi))) {
 				err = -EIO;
@@ -1792,7 +1796,11 @@ static inline bool need_inplace_update(struct f2fs_io_info *fio)
 	return f2fs_should_update_inplace(inode, fio);
 }
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 int f2fs_do_write_data_page(struct f2fs_io_info *fio)
+=======
+int do_write_data_page(struct f2fs_io_info *fio)
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 {
 	struct page *page = fio->page;
 	struct inode *inode = page->mapping->host;

@@ -83,10 +83,18 @@ repeat:
 
 	fio.page = page;
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	err = f2fs_submit_page_bio(&fio);
 	if (err) {
 		f2fs_put_page(page, 1);
 		return ERR_PTR(err);
+=======
+	if (f2fs_submit_page_bio(&fio)) {
+		memset(page_address(page), 0, PAGE_SIZE);
+		f2fs_stop_checkpoint(sbi, false);
+		f2fs_bug_on(sbi, 1);
+		return page;
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 	}
 
 	lock_page(page);
@@ -881,7 +889,11 @@ int f2fs_get_valid_checkpoint(struct f2fs_sb_info *sbi)
 		sbi->cur_cp_pack = 2;
 
 	/* Sanity checking of checkpoint */
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (f2fs_sanity_check_ckpt(sbi))
+=======
+	if (sanity_check_ckpt(sbi))
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 		goto free_fail_no_cp;
 
 	if (cp_blks <= 1)

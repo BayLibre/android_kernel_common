@@ -517,6 +517,7 @@ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
 			continue;
 
 		dn->data_blkaddr = NULL_ADDR;
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 		f2fs_set_data_blkaddr(dn);
 
 		if (__is_valid_data_blkaddr(blkaddr) &&
@@ -524,6 +525,15 @@ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
 			continue;
 
 		f2fs_invalidate_blocks(sbi, blkaddr);
+=======
+		set_data_blkaddr(dn);
+
+		if (__is_valid_data_blkaddr(blkaddr) &&
+			!f2fs_is_valid_blkaddr(sbi, blkaddr, DATA_GENERIC))
+			continue;
+
+		invalidate_blocks(sbi, blkaddr);
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 		if (dn->ofs_in_node == 0 && IS_INODE(dn->node_page))
 			clear_inode_flag(dn->inode, FI_FIRST_BLOCK_WRITTEN);
 		nr_free++;

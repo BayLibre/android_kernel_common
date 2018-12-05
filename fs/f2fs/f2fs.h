@@ -1045,7 +1045,10 @@ struct f2fs_io_info {
 	int need_lock;		/* indicate we need to lock cp_rwsem */
 	bool in_list;		/* indicate fio is in io_list */
 	bool is_meta;		/* indicate borrow meta inode mapping or not */
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	bool retry;		/* need to reallocate block address */
+=======
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 	enum iostat_type io_type;	/* io type */
 	struct writeback_control *io_wbc; /* writeback control */
 	unsigned char version;		/* version of the node */
@@ -3029,6 +3032,7 @@ enum rw_hint f2fs_io_type_to_rw_hint(struct f2fs_sb_info *sbi,
  * checkpoint.c
  */
 void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io);
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 struct page *f2fs_grab_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
 struct page *f2fs_get_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
 struct page *f2fs_get_meta_page_nofail(struct f2fs_sb_info *sbi, pgoff_t index);
@@ -3036,6 +3040,14 @@ struct page *f2fs_get_tmp_page(struct f2fs_sb_info *sbi, pgoff_t index);
 bool f2fs_is_valid_blkaddr(struct f2fs_sb_info *sbi,
 					block_t blkaddr, int type);
 int f2fs_ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
+=======
+struct page *grab_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
+struct page *get_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
+struct page *get_tmp_page(struct f2fs_sb_info *sbi, pgoff_t index);
+bool f2fs_is_valid_blkaddr(struct f2fs_sb_info *sbi,
+					block_t blkaddr, int type);
+int ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 			int type, bool sync);
 void f2fs_ra_meta_pages_cond(struct f2fs_sb_info *sbi, pgoff_t index);
 long f2fs_sync_meta_pages(struct f2fs_sb_info *sbi, enum page_type type,

@@ -65,16 +65,26 @@ static void __get_inode_rdev(struct inode *inode, struct f2fs_inode *ri)
 	}
 }
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 static int __written_first_block(struct f2fs_sb_info *sbi,
+=======
+static bool __written_first_block(struct f2fs_sb_info *sbi,
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 					struct f2fs_inode *ri)
 {
 	block_t addr = le32_to_cpu(ri->i_addr[offset_in_addr(ri)]);
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (!__is_valid_data_blkaddr(addr))
 		return 1;
 	if (!f2fs_is_valid_blkaddr(sbi, addr, DATA_GENERIC))
 		return -EFAULT;
 	return 0;
+=======
+	if (is_valid_data_blkaddr(sbi, addr))
+		return true;
+	return false;
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 }
 
 static void __set_inode_rdev(struct inode *inode, struct f2fs_inode *ri)
@@ -218,6 +228,7 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
 		return false;
 	}
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (f2fs_sb_has_flexible_inline_xattr(sbi->sb)
 			&& !f2fs_has_extra_attr(inode)) {
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
@@ -284,6 +295,45 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
 		return false;
 	}
 
+=======
+	if (f2fs_has_extra_attr(inode) &&
+			!f2fs_sb_has_extra_attr(sbi->sb)) {
+		set_sbi_flag(sbi, SBI_NEED_FSCK);
+		f2fs_msg(sbi->sb, KERN_WARNING,
+			"%s: inode (ino=%lx) is with extra_attr, "
+			"but extra_attr feature is off",
+			__func__, inode->i_ino);
+		return false;
+	}
+
+	if (fi->i_extra_isize > F2FS_TOTAL_EXTRA_ATTR_SIZE ||
+			fi->i_extra_isize % sizeof(__le32)) {
+		set_sbi_flag(sbi, SBI_NEED_FSCK);
+		f2fs_msg(sbi->sb, KERN_WARNING,
+			"%s: inode (ino=%lx) has corrupted i_extra_isize: %d, "
+			"max: %zu",
+			__func__, inode->i_ino, fi->i_extra_isize,
+			F2FS_TOTAL_EXTRA_ATTR_SIZE);
+		return false;
+	}
+
+	if (F2FS_I(inode)->extent_tree) {
+		struct extent_info *ei = &F2FS_I(inode)->extent_tree->largest;
+
+		if (ei->len &&
+			(!f2fs_is_valid_blkaddr(sbi, ei->blk, DATA_GENERIC) ||
+			!f2fs_is_valid_blkaddr(sbi, ei->blk + ei->len - 1,
+							DATA_GENERIC))) {
+			set_sbi_flag(sbi, SBI_NEED_FSCK);
+			f2fs_msg(sbi->sb, KERN_WARNING,
+				"%s: inode (ino=%lx) extent info [%u, %u, %u] "
+				"is incorrect, run fsck to fix",
+				__func__, inode->i_ino,
+				ei->blk, ei->fofs, ei->len);
+			return false;
+		}
+	}
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 	return true;
 }
 
@@ -340,6 +390,7 @@ static int do_read_inode(struct inode *inode)
 	fi->i_extra_isize = f2fs_has_extra_attr(inode) ?
 					le16_to_cpu(ri->i_extra_isize) : 0;
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (f2fs_sb_has_flexible_inline_xattr(sbi->sb)) {
 		fi->i_inline_xattr_size = le16_to_cpu(ri->i_inline_xattr_size);
 	} else if (f2fs_has_inline_xattr(inode) ||
@@ -356,6 +407,8 @@ static int do_read_inode(struct inode *inode)
 		fi->i_inline_xattr_size = 0;
 	}
 
+=======
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 	if (!sanity_check_inode(inode, node_page)) {
 		f2fs_put_page(node_page, 1);
 		return -EINVAL;
@@ -374,6 +427,7 @@ static int do_read_inode(struct inode *inode)
 	/* get rdev by using inline_info */
 	__get_inode_rdev(inode, ri);
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (S_ISREG(inode->i_mode)) {
 		err = __written_first_block(sbi, ri);
 		if (err < 0) {
@@ -383,6 +437,10 @@ static int do_read_inode(struct inode *inode)
 		if (!err)
 			set_inode_flag(inode, FI_FIRST_BLOCK_WRITTEN);
 	}
+=======
+	if (__written_first_block(sbi, ri))
+		set_inode_flag(inode, FI_FIRST_BLOCK_WRITTEN);
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 
 	if (!f2fs_need_inode_block_update(sbi, inode->i_ino))
 		fi->last_disk_size = inode->i_size;

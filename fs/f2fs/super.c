@@ -2509,6 +2509,7 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
 			secs_per_zone, total_sections);
 		return 1;
 	}
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (le32_to_cpu(raw_super->extension_count) > F2FS_MAX_EXTENSION ||
 			raw_super->hot_ext_count > F2FS_MAX_EXTENSION ||
 			(le32_to_cpu(raw_super->extension_count) +
@@ -2517,6 +2518,12 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
 			"Corrupted extension count (%u + %u > %u)",
 			le32_to_cpu(raw_super->extension_count),
 			raw_super->hot_ext_count,
+=======
+	if (le32_to_cpu(raw_super->extension_count) > F2FS_MAX_EXTENSION) {
+		f2fs_msg(sb, KERN_INFO,
+			"Corrupted extension count (%u > %u)",
+			le32_to_cpu(raw_super->extension_count),
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 			F2FS_MAX_EXTENSION);
 		return 1;
 	}
@@ -2562,7 +2569,11 @@ int f2fs_sanity_check_ckpt(struct f2fs_sb_info *sbi)
 	unsigned int segment_count_main;
 	unsigned int cp_pack_start_sum, cp_payload;
 	block_t user_block_count;
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	int i, j;
+=======
+	int i;
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 
 	total = le32_to_cpu(raw_super->segment_count);
 	fsmeta = le32_to_cpu(raw_super->segment_count_ckpt);

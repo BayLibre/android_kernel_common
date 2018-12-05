@@ -3290,9 +3290,12 @@ void f2fs_wait_on_block_writeback(struct inode *inode, block_t blkaddr)
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
 	struct page *cpage;
 
+<<<<<<< HEAD   (d11d7f Merge 4.14.85 into android-4.14)
 	if (!f2fs_post_read_required(inode))
 		return;
 
+=======
+>>>>>>> BRANCH (715240 Linux 4.14.86)
 	if (!is_valid_data_blkaddr(sbi, blkaddr))
 		return;
 
