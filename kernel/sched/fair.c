@@ -5793,12 +5793,21 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
 	return target;
 }
 
+<<<<<<< HEAD   (0e79bf ANDROID: cuttlefish_defconfig: Enable CONFIG_CRYPTO_ADIANTUM)
 #ifdef CONFIG_SCHED_TUNE
 struct reciprocal_value schedtune_spc_rdiv;
+=======
+static unsigned long cpu_util_without(int cpu, struct task_struct *p);
+>>>>>>> BRANCH (96db90 Linux 4.19.6)
 
+<<<<<<< HEAD   (0e79bf ANDROID: cuttlefish_defconfig: Enable CONFIG_CRYPTO_ADIANTUM)
 static long
 schedtune_margin(unsigned long signal, long boost)
+=======
+static unsigned long capacity_spare_without(int cpu, struct task_struct *p)
+>>>>>>> BRANCH (96db90 Linux 4.19.6)
 {
+<<<<<<< HEAD   (0e79bf ANDROID: cuttlefish_defconfig: Enable CONFIG_CRYPTO_ADIANTUM)
 	long long margin = 0;
 
 	/*
@@ -5891,6 +5900,8 @@ static unsigned long cpu_util_without(int cpu, struct task_struct *p);
 
 static unsigned long capacity_spare_without(int cpu, struct task_struct *p)
 {
+=======
+>>>>>>> BRANCH (96db90 Linux 4.19.6)
 	return max_t(long, capacity_of(cpu) - cpu_util_without(cpu, p), 0);
 }
 
