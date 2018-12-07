@@ -29,6 +29,7 @@ config HAVE_HW_COUNTER
 
 config GENERIC_COMPAT_VDSO
 	bool
+	select ARM_ARCH_TIMER_VCT_ACCESS if ARM64
 	help
 	  This config option enables the compat VDSO layer.
 
