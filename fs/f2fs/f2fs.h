@@ -1038,6 +1038,7 @@ struct f2fs_io_info {
 	block_t old_blkaddr;	/* old block address before Cow */
 	struct page *page;	/* page to be written */
 	struct page *encrypted_page;	/* encrypted page */
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	struct list_head list;		/* serialize IOs */
 	bool submitted;		/* indicate IO submission */
 	int need_lock;		/* indicate we need to lock cp_rwsem */
@@ -1047,6 +1048,9 @@ struct f2fs_io_info {
 	enum iostat_type io_type;	/* io type */
 	struct writeback_control *io_wbc; /* writeback control */
 	unsigned char version;		/* version of the node */
+=======
+	bool is_meta;		/* indicate borrow meta inode mapping or not */
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 };
 
 #define is_read_io(rw) ((rw) == READ)
@@ -2824,6 +2828,39 @@ static inline bool is_valid_data_blkaddr(struct f2fs_sb_info *sbi,
 	return true;
 }
 
+#define __is_meta_io(fio) (PAGE_TYPE_OF_BIO(fio->type) == META &&	\
+				(!is_read_io(fio->op) || fio->is_meta))
+
+bool f2fs_is_valid_blkaddr(struct f2fs_sb_info *sbi,
+					block_t blkaddr, int type);
+void f2fs_msg(struct super_block *sb, const char *level, const char *fmt, ...);
+static inline void verify_blkaddr(struct f2fs_sb_info *sbi,
+					block_t blkaddr, int type)
+{
+	if (!f2fs_is_valid_blkaddr(sbi, blkaddr, type)) {
+		f2fs_msg(sbi->sb, KERN_ERR,
+			"invalid blkaddr: %u, type: %d, run fsck to fix.",
+			blkaddr, type);
+		f2fs_bug_on(sbi, 1);
+	}
+}
+
+static inline bool __is_valid_data_blkaddr(block_t blkaddr)
+{
+	if (blkaddr == NEW_ADDR || blkaddr == NULL_ADDR)
+		return false;
+	return true;
+}
+
+static inline bool is_valid_data_blkaddr(struct f2fs_sb_info *sbi,
+						block_t blkaddr)
+{
+	if (!__is_valid_data_blkaddr(blkaddr))
+		return false;
+	verify_blkaddr(sbi, blkaddr, DATA_GENERIC);
+	return true;
+}
+
 /*
  * file.c
  */
@@ -3055,6 +3092,7 @@ enum rw_hint f2fs_io_type_to_rw_hint(struct f2fs_sb_info *sbi,
 /*
  * checkpoint.c
  */
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io);
 struct page *f2fs_grab_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
 struct page *f2fs_get_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
@@ -3090,6 +3128,35 @@ int f2fs_write_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc);
 void f2fs_init_ino_entry_info(struct f2fs_sb_info *sbi);
 int __init f2fs_create_checkpoint_caches(void);
 void f2fs_destroy_checkpoint_caches(void);
+=======
+void f2fs_stop_checkpoint(struct f2fs_sb_info *, bool);
+struct page *grab_meta_page(struct f2fs_sb_info *, pgoff_t);
+struct page *get_meta_page(struct f2fs_sb_info *, pgoff_t);
+struct page *get_tmp_page(struct f2fs_sb_info *, pgoff_t);
+bool f2fs_is_valid_blkaddr(struct f2fs_sb_info *sbi,
+					block_t blkaddr, int type);
+int ra_meta_pages(struct f2fs_sb_info *, block_t, int, int, bool);
+void ra_meta_pages_cond(struct f2fs_sb_info *, pgoff_t);
+long sync_meta_pages(struct f2fs_sb_info *, enum page_type, long);
+void add_ino_entry(struct f2fs_sb_info *, nid_t, int type);
+void remove_ino_entry(struct f2fs_sb_info *, nid_t, int type);
+void release_ino_entry(struct f2fs_sb_info *, bool);
+bool exist_written_data(struct f2fs_sb_info *, nid_t, int);
+int f2fs_sync_inode_meta(struct f2fs_sb_info *);
+int acquire_orphan_inode(struct f2fs_sb_info *);
+void release_orphan_inode(struct f2fs_sb_info *);
+void add_orphan_inode(struct inode *);
+void remove_orphan_inode(struct f2fs_sb_info *, nid_t);
+int recover_orphan_inodes(struct f2fs_sb_info *);
+int get_valid_checkpoint(struct f2fs_sb_info *);
+void update_dirty_page(struct inode *, struct page *);
+void remove_dirty_inode(struct inode *);
+int sync_dirty_inodes(struct f2fs_sb_info *, enum inode_type);
+int write_checkpoint(struct f2fs_sb_info *, struct cp_control *);
+void init_ino_entry_info(struct f2fs_sb_info *);
+int __init create_checkpoint_caches(void);
+void destroy_checkpoint_caches(void);
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 /*
  * data.c

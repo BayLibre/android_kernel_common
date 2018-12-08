@@ -83,10 +83,18 @@ repeat:
 
 	fio.page = page;
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	err = f2fs_submit_page_bio(&fio);
 	if (err) {
 		f2fs_put_page(page, 1);
 		return ERR_PTR(err);
+=======
+	if (f2fs_submit_page_bio(&fio)) {
+		memset(page_address(page), 0, PAGE_SIZE);
+		f2fs_stop_checkpoint(sbi, false);
+		f2fs_bug_on(sbi, 1);
+		return page;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	}
 
 	lock_page(page);
@@ -188,7 +196,10 @@ int f2fs_ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
 		.op = REQ_OP_READ,
 		.op_flags = sync ? (REQ_META | REQ_PRIO) : REQ_RAHEAD,
 		.encrypted_page = NULL,
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 		.in_list = false,
+=======
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 		.is_meta = (type != META_POR),
 	};
 	struct blk_plug plug;
@@ -881,7 +892,11 @@ int f2fs_get_valid_checkpoint(struct f2fs_sb_info *sbi)
 		sbi->cur_cp_pack = 2;
 
 	/* Sanity checking of checkpoint */
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	if (f2fs_sanity_check_ckpt(sbi))
+=======
+	if (sanity_check_ckpt(sbi))
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 		goto free_fail_no_cp;
 
 	if (cp_blks <= 1)

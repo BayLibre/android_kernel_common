@@ -16,6 +16,13 @@
 #define DEF_MAX_RECLAIM_PREFREE_SEGMENTS	4096	/* 8GB in maximum */
 
 #define F2FS_MIN_SEGMENTS	9 /* SB + 2 (CP + SIT + NAT) + SSA + MAIN */
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
+=======
+
+/* L: Logical segment # in volume, R: Relative segment # in main area */
+#define GET_L2R_SEGNO(free_i, segno)	(segno - free_i->start_segno)
+#define GET_R2L_SEGNO(free_i, segno)	(segno + free_i->start_segno)
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 /* L: Logical segment # in volume, R: Relative segment # in main area */
 #define GET_L2R_SEGNO(free_i, segno)	((segno) - (free_i)->start_segno)
@@ -63,7 +70,11 @@
 #define TOTAL_SEGS(sbi)							\
 	(SM_I(sbi) ? SM_I(sbi)->segment_count : 				\
 		le32_to_cpu(F2FS_RAW_SUPER(sbi)->segment_count))
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 #define TOTAL_BLKS(sbi)	(TOTAL_SEGS(sbi) << (sbi)->log_blocks_per_seg)
+=======
+#define TOTAL_BLKS(sbi)	(TOTAL_SEGS(sbi) << sbi->log_blocks_per_seg)
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 #define MAX_BLKADDR(sbi)	(SEG0_BLKADDR(sbi) + TOTAL_BLKS(sbi))
 #define SEGMENT_SIZE(sbi)	(1ULL << ((sbi)->log_blocksize +	\

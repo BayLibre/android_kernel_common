@@ -496,7 +496,15 @@ void f2fs_submit_page_write(struct f2fs_io_info *fio)
 	struct f2fs_bio_info *io = sbi->write_io[btype] + fio->temp;
 	struct page *bio_page;
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	f2fs_bug_on(sbi, is_read_io(fio->op));
+=======
+	io = is_read ? &sbi->read_io : &sbi->write_io[btype];
+
+	if (__is_valid_data_blkaddr(fio->old_blkaddr))
+		verify_block_addr(fio, fio->old_blkaddr);
+	verify_block_addr(fio, fio->new_blkaddr);
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 	down_write(&io->io_rwsem);
 next:
@@ -1095,6 +1103,7 @@ next_block:
 		goto sync_out;
 	}
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	if (is_valid_data_blkaddr(sbi, blkaddr)) {
 		/* use out-place-update for driect IO under LFS mode */
 		if (test_opt(sbi, LFS) && create &&
@@ -1104,6 +1113,9 @@ next_block:
 				set_inode_flag(inode, FI_APPEND_WRITE);
 		}
 	} else {
+=======
+	if (!is_valid_data_blkaddr(sbi, blkaddr)) {
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 		if (create) {
 			if (unlikely(f2fs_cp_error(sbi))) {
 				err = -EIO;
@@ -1492,6 +1504,43 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
+=======
+static struct bio *f2fs_grab_bio(struct inode *inode, block_t blkaddr,
+				 unsigned nr_pages)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+	struct fscrypt_ctx *ctx = NULL;
+	struct block_device *bdev = sbi->sb->s_bdev;
+	struct bio *bio;
+
+	if (!f2fs_is_valid_blkaddr(sbi, blkaddr, DATA_GENERIC))
+		return ERR_PTR(-EFAULT);
+
+	if (f2fs_encrypted_inode(inode) && S_ISREG(inode->i_mode)) {
+		ctx = fscrypt_get_ctx(inode, GFP_NOFS);
+		if (IS_ERR(ctx))
+			return ERR_CAST(ctx);
+
+		/* wait the page to be moved by cleaning */
+		f2fs_wait_on_encrypted_page_writeback(sbi, blkaddr);
+	}
+
+	bio = bio_alloc(GFP_KERNEL, min_t(int, nr_pages, BIO_MAX_PAGES));
+	if (!bio) {
+		if (ctx)
+			fscrypt_release_ctx(ctx);
+		return ERR_PTR(-ENOMEM);
+	}
+	bio->bi_bdev = bdev;
+	bio->bi_iter.bi_sector = SECTOR_FROM_BLOCK(blkaddr);
+	bio->bi_end_io = f2fs_read_end_io;
+	bio->bi_private = ctx;
+
+	return bio;
+}
+
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 /*
  * This function was originally taken from fs/mpage.c, and customized for f2fs.
  * Major change was from block_size == page_size in f2fs by default.
@@ -1837,10 +1886,23 @@ got_it:
 		err = -EFAULT;
 		goto out_writepage;
 	}
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
+=======
+
+	set_page_writeback(page);
+
+	if (__is_valid_data_blkaddr(fio->old_blkaddr) &&
+		!f2fs_is_valid_blkaddr(fio->sbi, fio->old_blkaddr,
+							DATA_GENERIC)) {
+		err = -EFAULT;
+		goto out_writepage;
+	}
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	/*
 	 * If current allocation needs SSR,
 	 * it had better in-place writes for updated data.
 	 */
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	if (ipu_force || (is_valid_data_blkaddr(fio->sbi, fio->old_blkaddr) &&
 					need_inplace_update(fio))) {
 		err = encrypt_one_page(fio);
@@ -1854,6 +1916,13 @@ got_it:
 			f2fs_unlock_op(fio->sbi);
 		err = f2fs_inplace_write_data(fio);
 		trace_f2fs_do_write_data_page(fio->page, IPU);
+=======
+	if (unlikely(is_valid_data_blkaddr(fio->sbi, fio->old_blkaddr) &&
+			!is_cold_data(page) &&
+			!IS_ATOMIC_WRITTEN_PAGE(page) &&
+			need_inplace_update(inode))) {
+		rewrite_data_page(fio);
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 		set_inode_flag(inode, FI_UPDATE_WRITE);
 		return err;
 	}

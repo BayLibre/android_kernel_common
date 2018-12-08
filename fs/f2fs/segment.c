@@ -694,11 +694,18 @@ int f2fs_create_flush_cmd_control(struct f2fs_sb_info *sbi)
 	atomic_set(&fcc->issing_flush, 0);
 	init_waitqueue_head(&fcc->flush_wait_queue);
 	init_llist_head(&fcc->issue_list);
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	SM_I(sbi)->fcc_info = fcc;
 	if (!test_opt(sbi, FLUSH_MERGE))
 		return err;
 
 init_thread:
+=======
+	SM_I(sbi)->cmd_control_info = fcc;
+	if (!test_opt(sbi, FLUSH_MERGE))
+		return err;
+
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	fcc->f2fs_issue_flush = kthread_run(issue_flush_thread, sbi,
 				"f2fs_flush-%u:%u", MAJOR(dev), MINOR(dev));
 	if (IS_ERR(fcc->f2fs_issue_flush)) {
@@ -3287,9 +3294,12 @@ void f2fs_wait_on_block_writeback(struct inode *inode, block_t blkaddr)
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
 	struct page *cpage;
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	if (!f2fs_post_read_required(inode))
 		return;
 
+=======
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	if (!is_valid_data_blkaddr(sbi, blkaddr))
 		return;
 
@@ -3990,8 +4000,13 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 	int sit_blk_cnt = SIT_BLK_CNT(sbi);
 	unsigned int i, start, end;
 	unsigned int readed, start_blk = 0;
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	int err = 0;
 	block_t total_node_blocks = 0;
+=======
+	int nrpages = MAX_BIO_BLOCKS(sbi) * 8;
+	int err = 0;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 	do {
 		readed = f2fs_ra_meta_pages(sbi, start_blk, BIO_MAX_PAGES,
@@ -4084,6 +4099,7 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 		}
 	}
 	up_read(&curseg->journal_rwsem);
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 
 	if (!err && total_node_blocks != valid_node_count(sbi)) {
 		f2fs_msg(sbi->sb, KERN_ERR,
@@ -4093,6 +4109,8 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 		err = -EINVAL;
 	}
 
+=======
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	return err;
 }
 
@@ -4244,10 +4262,15 @@ int f2fs_build_segment_manager(struct f2fs_sb_info *sbi)
 
 	INIT_LIST_HEAD(&sm_info->sit_entry_set);
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	init_rwsem(&sm_info->curseg_lock);
 
 	if (!f2fs_readonly(sbi->sb)) {
 		err = f2fs_create_flush_cmd_control(sbi);
+=======
+	if (!f2fs_readonly(sbi->sb)) {
+		err = create_flush_cmd_control(sbi);
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 		if (err)
 			return err;
 	}

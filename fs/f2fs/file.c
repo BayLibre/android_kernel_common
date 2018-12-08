@@ -416,9 +416,12 @@ static loff_t f2fs_seek_block(struct file *file, loff_t offset, int whence)
 				data_ofs = (loff_t)pgofs << PAGE_SHIFT) {
 			block_t blkaddr;
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 			blkaddr = datablock_addr(dn.inode,
 					dn.node_page, dn.ofs_in_node);
 
+=======
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 			if (__is_valid_data_blkaddr(blkaddr) &&
 				!f2fs_is_valid_blkaddr(F2FS_I_SB(inode),
 						blkaddr, DATA_GENERIC)) {
@@ -519,6 +522,7 @@ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
 			continue;
 
 		dn->data_blkaddr = NULL_ADDR;
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 		f2fs_set_data_blkaddr(dn);
 
 		if (__is_valid_data_blkaddr(blkaddr) &&
@@ -526,6 +530,15 @@ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
 			continue;
 
 		f2fs_invalidate_blocks(sbi, blkaddr);
+=======
+		set_data_blkaddr(dn);
+
+		if (__is_valid_data_blkaddr(blkaddr) &&
+			!f2fs_is_valid_blkaddr(sbi, blkaddr, DATA_GENERIC))
+			continue;
+
+		invalidate_blocks(sbi, blkaddr);
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 		if (dn->ofs_in_node == 0 && IS_INODE(dn->node_page))
 			clear_inode_flag(dn->inode, FI_FIRST_BLOCK_WRITTEN);
 		nr_free++;

@@ -1908,6 +1908,81 @@ int f2fs_wait_on_node_pages_writeback(struct f2fs_sb_info *sbi,
 	return ret;
 }
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
+=======
+static int f2fs_write_node_page(struct page *page,
+				struct writeback_control *wbc)
+{
+	struct f2fs_sb_info *sbi = F2FS_P_SB(page);
+	nid_t nid;
+	struct node_info ni;
+	struct f2fs_io_info fio = {
+		.sbi = sbi,
+		.type = NODE,
+		.op = REQ_OP_WRITE,
+		.op_flags = (wbc->sync_mode == WB_SYNC_ALL) ? WRITE_SYNC : 0,
+		.page = page,
+		.encrypted_page = NULL,
+	};
+
+	trace_f2fs_writepage(page, NODE);
+
+	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
+		goto redirty_out;
+	if (unlikely(f2fs_cp_error(sbi)))
+		goto redirty_out;
+
+	/* get old block addr of this node page */
+	nid = nid_of_node(page);
+	f2fs_bug_on(sbi, page->index != nid);
+
+	if (wbc->for_reclaim) {
+		if (!down_read_trylock(&sbi->node_write))
+			goto redirty_out;
+	} else {
+		down_read(&sbi->node_write);
+	}
+
+	get_node_info(sbi, nid, &ni);
+
+	/* This page is already truncated */
+	if (unlikely(ni.blk_addr == NULL_ADDR)) {
+		ClearPageUptodate(page);
+		dec_page_count(sbi, F2FS_DIRTY_NODES);
+		up_read(&sbi->node_write);
+		unlock_page(page);
+		return 0;
+	}
+
+	if (__is_valid_data_blkaddr(ni.blk_addr) &&
+		!f2fs_is_valid_blkaddr(sbi, ni.blk_addr, DATA_GENERIC)) {
+		up_read(&sbi->node_write);
+		goto redirty_out;
+	}
+
+	set_page_writeback(page);
+	fio.old_blkaddr = ni.blk_addr;
+	write_node_page(nid, &fio);
+	set_node_addr(sbi, &ni, fio.new_blkaddr, is_fsync_dnode(page));
+	dec_page_count(sbi, F2FS_DIRTY_NODES);
+	up_read(&sbi->node_write);
+
+	if (wbc->for_reclaim)
+		f2fs_submit_merged_bio_cond(sbi, NULL, page, 0, NODE, WRITE);
+
+	unlock_page(page);
+
+	if (unlikely(f2fs_cp_error(sbi)))
+		f2fs_submit_merged_bio(sbi, NODE, WRITE);
+
+	return 0;
+
+redirty_out:
+	redirty_page_for_writepage(wbc, page);
+	return AOP_WRITEPAGE_ACTIVATE;
+}
+
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 static int f2fs_write_node_pages(struct address_space *mapping,
 			    struct writeback_control *wbc)
 {
@@ -2020,6 +2095,12 @@ static void __move_free_nid(struct f2fs_sb_info *sbi, struct free_nid *i,
 			enum nid_state org_state, enum nid_state dst_state)
 {
 	struct f2fs_nm_info *nm_i = NM_I(sbi);
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
+=======
+	struct free_nid *i, *e;
+	struct nat_entry *ne;
+	int err = -EINVAL;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 	f2fs_bug_on(sbi, org_state != i->state);
 	i->state = dst_state;
@@ -2074,14 +2155,24 @@ static bool add_free_nid(struct f2fs_sb_info *sbi,
 
 	/* 0 nid should not be used */
 	if (unlikely(nid == 0))
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 		return false;
+=======
+		return 0;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
 	i = f2fs_kmem_cache_alloc(free_nid_slab, GFP_NOFS);
 	i->nid = nid;
 	i->state = FREE_NID;
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	radix_tree_preload(GFP_NOFS | __GFP_NOFAIL);
+=======
+	if (radix_tree_preload(GFP_NOFS))
+		goto err;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	spin_lock(&nm_i->nid_list_lock);
 
 	if (build) {
@@ -2117,7 +2208,42 @@ static bool add_free_nid(struct f2fs_sb_info *sbi,
 				ret = true;
 			goto err_out;
 		}
+=======
+	spin_lock(&nm_i->free_nid_list_lock);
+
+	if (build) {
+		/*
+		 *   Thread A             Thread B
+		 *  - f2fs_create
+		 *   - f2fs_new_inode
+		 *    - alloc_nid
+		 *     - __insert_nid_to_list(ALLOC_NID_LIST)
+		 *                     - f2fs_balance_fs_bg
+		 *                      - build_free_nids
+		 *                       - __build_free_nids
+		 *                        - scan_nat_page
+		 *                         - add_free_nid
+		 *                          - __lookup_nat_cache
+		 *  - f2fs_add_link
+		 *   - init_inode_metadata
+		 *    - new_inode_page
+		 *     - new_node_page
+		 *      - set_node_addr
+		 *  - alloc_nid_done
+		 *   - __remove_nid_from_list(ALLOC_NID_LIST)
+		 *                         - __insert_nid_to_list(FREE_NID_LIST)
+		 */
+		ne = __lookup_nat_cache(nm_i, nid);
+		if (ne && (!get_nat_flag(ne, IS_CHECKPOINTED) ||
+				nat_get_blkaddr(ne) != NULL_ADDR))
+			goto err_out;
+
+		e = __lookup_free_nid_list(nm_i, nid);
+		if (e)
+			goto err_out;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	}
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 	ret = true;
 	err = __insert_free_nid(sbi, i, FREE_NID);
 err_out:
@@ -2127,11 +2253,27 @@ err_out:
 			nm_i->available_nids++;
 	}
 	spin_unlock(&nm_i->nid_list_lock);
+=======
+	if (radix_tree_insert(&nm_i->free_nid_root, i->nid, i))
+		goto err_out;
+	err = 0;
+	list_add_tail(&i->list, &nm_i->free_nid_list);
+	nm_i->fcnt++;
+err_out:
+	spin_unlock(&nm_i->free_nid_list_lock);
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 	radix_tree_preload_end();
+<<<<<<< HEAD   (93fb36 kbuild: Fix 4.9.138 mismerge)
 
 	if (err)
 		kmem_cache_free(free_nid_slab, i);
 	return ret;
+=======
+err:
+	if (err)
+		kmem_cache_free(free_nid_slab, i);
+	return !err;
+>>>>>>> BRANCH (1aa861 Linux 4.9.144)
 }
 
 static void remove_free_nid(struct f2fs_sb_info *sbi, nid_t nid)
