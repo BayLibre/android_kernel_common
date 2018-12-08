@@ -27,6 +27,7 @@
 
 #include "thermal_core.h"
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 #define HI6220_TEMP0_LAG			(0x0)
 #define HI6220_TEMP0_TH				(0x4)
 #define HI6220_TEMP0_RST_TH			(0x8)
@@ -38,14 +39,35 @@
 #define HI6220_TEMP0_INT_CLR			(0x18)
 #define HI6220_TEMP0_RST_MSK			(0x1C)
 #define HI6220_TEMP0_VALUE			(0x28)
+=======
+#define TEMP0_LAG			(0x0)
+#define TEMP0_TH			(0x4)
+#define TEMP0_RST_TH			(0x8)
+#define TEMP0_CFG			(0xC)
+#define TEMP0_CFG_SS_MSK		(0xF000)
+#define TEMP0_CFG_HDAK_MSK		(0x30)
+#define TEMP0_EN			(0x10)
+#define TEMP0_INT_EN			(0x14)
+#define TEMP0_INT_CLR			(0x18)
+#define TEMP0_RST_MSK			(0x1C)
+#define TEMP0_VALUE			(0x28)
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 #define HI3660_OFFSET(chan)		((chan) * 0x40)
 #define HI3660_TEMP(chan)		(HI3660_OFFSET(chan) + 0x1C)
 #define HI3660_TH(chan)			(HI3660_OFFSET(chan) + 0x20)
 #define HI3660_LAG(chan)		(HI3660_OFFSET(chan) + 0x28)
 #define HI3660_INT_EN(chan)		(HI3660_OFFSET(chan) + 0x2C)
 #define HI3660_INT_CLR(chan)		(HI3660_OFFSET(chan) + 0x30)
+=======
+#define HISI_TEMP_BASE			(-60000)
+#define HISI_TEMP_RESET			(100000)
+#define HISI_TEMP_STEP			(784)
+#define HISI_TEMP_LAG			(3500)
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 #define HI6220_TEMP_BASE			(-60000)
 #define HI6220_TEMP_RESET			(100000)
 #define HI6220_TEMP_STEP			(785)
@@ -57,6 +79,10 @@
 
 #define HI6220_DEFAULT_SENSOR		2
 #define HI3660_DEFAULT_SENSOR		1
+=======
+#define HISI_MAX_SENSORS		4
+#define HISI_DEFAULT_SENSOR		2
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 struct hisi_thermal_sensor {
 	struct thermal_zone_device *tzd;
@@ -71,7 +97,12 @@ struct hisi_thermal_data {
 	int (*irq_handler)(struct hisi_thermal_data *data);
 	struct platform_device *pdev;
 	struct clk *clk;
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	struct hisi_thermal_sensor sensor;
+=======
+	struct hisi_thermal_sensor sensors;
+	int irq;
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 	void __iomem *regs;
 	int irq;
 };
@@ -117,8 +148,44 @@ static inline int hi3660_thermal_step_to_temp(int step)
 	return HI3660_TEMP_BASE + step * HI3660_TEMP_STEP;
 }
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 static inline int hi3660_thermal_temp_to_step(int temp)
+=======
+/*
+ * The lag register contains 5 bits encoding the temperature in steps.
+ *
+ * Each time the temperature crosses the threshold boundary, an
+ * interrupt is raised. It could be when the temperature is going
+ * above the threshold or below. However, if the temperature is
+ * fluctuating around this value due to the load, we can receive
+ * several interrupts which may not desired.
+ *
+ * We can setup a temperature representing the delta between the
+ * threshold and the current temperature when the temperature is
+ * decreasing.
+ *
+ * For instance: the lag register is 5°C, the threshold is 65°C, when
+ * the temperature reaches 65°C an interrupt is raised and when the
+ * temperature decrease to 65°C - 5°C another interrupt is raised.
+ *
+ * A very short lag can lead to an interrupt storm, a long lag
+ * increase the latency to react to the temperature changes.  In our
+ * case, that is not really a problem as we are polling the
+ * temperature.
+ *
+ * [0:4] : lag register
+ *
+ * The temperature is coded in steps, cf. HISI_TEMP_STEP.
+ *
+ * Min : 0x00 :  0.0 °C
+ * Max : 0x1F : 24.3 °C
+ *
+ * The 'value' parameter is in milliCelsius.
+ */
+static inline void hisi_thermal_set_lag(void __iomem *addr, int value)
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 {
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	return DIV_ROUND_UP(temp - HI3660_TEMP_BASE, HI3660_TEMP_STEP);
 }
 
@@ -323,18 +390,82 @@ static int hi6220_thermal_enable_sensor(struct hisi_thermal_data *data)
 
 	/* select sensor id */
 	hi6220_thermal_sensor_select(data->regs, sensor->id);
+=======
+	writel((value / HISI_TEMP_STEP) & 0x1F, addr + TEMP0_LAG);
+}
 
+static inline void hisi_thermal_alarm_clear(void __iomem *addr, int value)
+{
+	writel(value, addr + TEMP0_INT_CLR);
+}
+
+static inline void hisi_thermal_alarm_enable(void __iomem *addr, int value)
+{
+	writel(value, addr + TEMP0_INT_EN);
+}
+
+static inline void hisi_thermal_alarm_set(void __iomem *addr, int temp)
+{
+	writel(hisi_thermal_temp_to_step(temp) | 0x0FFFFFF00, addr + TEMP0_TH);
+}
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
+
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	/* setting the hdak time */
 	hi6220_thermal_hdak_set(data->regs, 0);
+=======
+static inline void hisi_thermal_reset_set(void __iomem *addr, int temp)
+{
+	writel(hisi_thermal_temp_to_step(temp), addr + TEMP0_RST_TH);
+}
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	/* setting lag value between current temp and the threshold */
 	hi6220_thermal_set_lag(data->regs, HI6220_TEMP_LAG);
+=======
+static inline void hisi_thermal_reset_enable(void __iomem *addr, int value)
+{
+	writel(value, addr + TEMP0_RST_MSK);
+}
 
+static inline void hisi_thermal_enable(void __iomem *addr, int value)
+{
+	writel(value, addr + TEMP0_EN);
+}
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
+
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	/* enable for interrupt */
 	hi6220_thermal_alarm_set(data->regs, sensor->thres_temp);
+=======
+static inline int hisi_thermal_get_temperature(void __iomem *addr)
+{
+	return hisi_thermal_step_to_temp(readl(addr + TEMP0_VALUE));
+}
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	hi6220_thermal_reset_set(data->regs, HI6220_TEMP_RESET);
+=======
+/*
+ * Temperature configuration register - Sensor selection
+ *
+ * Bits [19:12]
+ *
+ * 0x0: local sensor (default)
+ * 0x1: remote sensor 1 (ACPU cluster 1)
+ * 0x2: remote sensor 2 (ACPU cluster 0)
+ * 0x3: remote sensor 3 (G3D)
+ */
+static inline void hisi_thermal_sensor_select(void __iomem *addr, int sensor)
+{
+	writel((readl(addr + TEMP0_CFG) & ~TEMP0_CFG_SS_MSK) |
+	       (sensor << 12), addr + TEMP0_CFG);
+}
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	/* enable module */
 	hi6220_thermal_reset_enable(data->regs, 1);
 	hi6220_thermal_enable(data->regs, 1);
@@ -343,6 +474,22 @@ static int hi6220_thermal_enable_sensor(struct hisi_thermal_data *data)
 	hi6220_thermal_alarm_enable(data->regs, 1);
 
 	return 0;
+=======
+/*
+ * Temperature configuration register - Hdak conversion polling interval
+ *
+ * Bits [5:4]
+ *
+ * 0x0 :   0.768 ms
+ * 0x1 :   6.144 ms
+ * 0x2 :  49.152 ms
+ * 0x3 : 393.216 ms
+ */
+static inline void hisi_thermal_hdak_set(void __iomem *addr, int value)
+{
+	writel((readl(addr + TEMP0_CFG) & ~TEMP0_CFG_HDAK_MSK) |
+	       (value << 4), addr + TEMP0_CFG);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 }
 
 static int hi3660_thermal_enable_sensor(struct hisi_thermal_data *data)
@@ -350,8 +497,15 @@ static int hi3660_thermal_enable_sensor(struct hisi_thermal_data *data)
 	unsigned int value;
 	struct hisi_thermal_sensor *sensor = &data->sensor;
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	/* disable interrupt */
 	hi3660_thermal_alarm_enable(data->regs, sensor->id, 0);
+=======
+	/* disable sensor module */
+	hisi_thermal_enable(data->regs, 0);
+	hisi_thermal_alarm_enable(data->regs, 0);
+	hisi_thermal_reset_enable(data->regs, 0);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	/* setting lag value between current temp and the threshold */
 	hi3660_thermal_set_lag(data->regs, sensor->id, HI3660_TEMP_LAG);
@@ -374,11 +528,16 @@ static int hi6220_thermal_probe(struct hisi_thermal_data *data)
 	struct resource *res;
 	int ret;
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	data->get_temp = hi6220_thermal_get_temp;
 	data->enable_sensor = hi6220_thermal_enable_sensor;
 	data->disable_sensor = hi6220_thermal_disable_sensor;
 	data->irq_handler = hi6220_thermal_irq_handler;
+=======
+	*temp = hisi_thermal_get_temperature(data->regs);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	data->regs = devm_ioremap_resource(dev, res);
 	if (IS_ERR(data->regs)) {
@@ -420,6 +579,10 @@ static int hi3660_thermal_probe(struct hisi_thermal_data *data)
 		dev_err(dev, "failed to get io address\n");
 		return PTR_ERR(data->regs);
 	}
+=======
+	dev_dbg(&data->pdev->dev, "id=%d, temp=%d, thres=%d\n",
+		sensor->id, *temp, sensor->thres_temp);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	data->irq = platform_get_irq(pdev, 0);
 	if (data->irq < 0)
@@ -450,21 +613,42 @@ static const struct thermal_zone_of_device_ops hisi_of_thermal_ops = {
 static irqreturn_t hisi_thermal_alarm_irq_thread(int irq, void *dev)
 {
 	struct hisi_thermal_data *data = dev;
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	struct hisi_thermal_sensor *sensor = &data->sensor;
 	int temp = 0;
+=======
+	struct hisi_thermal_sensor *sensor = &data->sensors;
+	int temp;
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	data->irq_handler(data);
+=======
+	hisi_thermal_alarm_clear(data->regs, 1);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	hisi_thermal_get_temp(data, &temp);
+=======
+	temp = hisi_thermal_get_temperature(data->regs);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	if (temp >= sensor->thres_temp) {
 		dev_crit(&data->pdev->dev, "THERMAL ALARM: %d > %d\n",
 			 temp, sensor->thres_temp);
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 		thermal_zone_device_update(data->sensor.tzd,
+=======
+		thermal_zone_device_update(data->sensors.tzd,
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 					   THERMAL_EVENT_UNSPECIFIED);
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	} else {
+=======
+	} else if (temp < sensor->thres_temp) {
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 		dev_crit(&data->pdev->dev, "THERMAL ALARM stopped: %d < %d\n",
 			 temp, sensor->thres_temp);
 	}
@@ -524,11 +708,49 @@ static void hisi_thermal_toggle_sensor(struct hisi_thermal_sensor *sensor,
 		on ? THERMAL_DEVICE_ENABLED : THERMAL_DEVICE_DISABLED);
 }
 
+static int hisi_thermal_setup(struct hisi_thermal_data *data)
+{
+	struct hisi_thermal_sensor *sensor;
+
+	sensor = &data->sensors;
+
+	/* disable module firstly */
+	hisi_thermal_reset_enable(data->regs, 0);
+	hisi_thermal_enable(data->regs, 0);
+
+	/* select sensor id */
+	hisi_thermal_sensor_select(data->regs, sensor->id);
+
+	/* setting the hdak time */
+	hisi_thermal_hdak_set(data->regs, 0);
+
+	/* setting lag value between current temp and the threshold */
+	hisi_thermal_set_lag(data->regs, HISI_TEMP_LAG);
+
+	/* enable for interrupt */
+	hisi_thermal_alarm_set(data->regs, sensor->thres_temp);
+
+	hisi_thermal_reset_set(data->regs, HISI_TEMP_RESET);
+
+	/* enable module */
+	hisi_thermal_reset_enable(data->regs, 1);
+	hisi_thermal_enable(data->regs, 1);
+
+	hisi_thermal_alarm_clear(data->regs, 0);
+	hisi_thermal_alarm_enable(data->regs, 1);
+
+	return 0;
+}
+
 static int hisi_thermal_probe(struct platform_device *pdev)
 {
 	struct hisi_thermal_data *data;
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	int const (*platform_probe)(struct hisi_thermal_data *);
 	struct device *dev = &pdev->dev;
+=======
+	struct resource *res;
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 	int ret;
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
@@ -555,12 +777,36 @@ static int hisi_thermal_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	ret = data->enable_sensor(data);
 	if (ret) {
 		dev_err(dev, "Failed to setup the sensor: %d\n", ret);
+=======
+	ret = hisi_thermal_register_sensor(pdev, data,
+					   &data->sensors,
+					   HISI_DEFAULT_SENSOR);
+	if (ret) {
+		dev_err(&pdev->dev, "failed to register thermal sensor: %d\n",
+			ret);
 		return ret;
 	}
 
+	ret = hisi_thermal_setup(data);
+	if (ret) {
+		dev_err(&pdev->dev, "Failed to setup the sensor: %d\n", ret);
+		return ret;
+	}
+
+	ret = devm_request_threaded_irq(&pdev->dev, data->irq, NULL,
+					hisi_thermal_alarm_irq_thread,
+					IRQF_ONESHOT, "hisi_thermal", data);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "failed to request alarm irq: %d\n", ret);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
+		return ret;
+	}
+
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	if (data->irq) {
 		ret = devm_request_threaded_irq(dev, data->irq, NULL,
 				hisi_thermal_alarm_irq_thread,
@@ -572,6 +818,9 @@ static int hisi_thermal_probe(struct platform_device *pdev)
 	}
 
 	hisi_thermal_toggle_sensor(&data->sensor, true);
+=======
+	hisi_thermal_toggle_sensor(&data->sensors, true);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	return 0;
 }
@@ -579,11 +828,20 @@ static int hisi_thermal_probe(struct platform_device *pdev)
 static int hisi_thermal_remove(struct platform_device *pdev)
 {
 	struct hisi_thermal_data *data = platform_get_drvdata(pdev);
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	struct hisi_thermal_sensor *sensor = &data->sensor;
+=======
+	struct hisi_thermal_sensor *sensor = &data->sensors;
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	hisi_thermal_toggle_sensor(sensor, false);
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 
 	data->disable_sensor(data);
+=======
+	hisi_thermal_disable_sensor(data);
+	clk_disable_unprepare(data->clk);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	return 0;
 }
@@ -593,7 +851,13 @@ static int hisi_thermal_suspend(struct device *dev)
 {
 	struct hisi_thermal_data *data = dev_get_drvdata(dev);
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	data->disable_sensor(data);
+=======
+	hisi_thermal_disable_sensor(data);
+
+	clk_disable_unprepare(data->clk);
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 
 	return 0;
 }
@@ -602,7 +866,17 @@ static int hisi_thermal_resume(struct device *dev)
 {
 	struct hisi_thermal_data *data = dev_get_drvdata(dev);
 
+<<<<<<< HEAD   (049053 ANDROID: cuttlefish_defconfig: Enable CONFIG_ARM64_LSE_ATOMI)
 	return data->enable_sensor(data);
+=======
+	ret = clk_prepare_enable(data->clk);
+	if (ret)
+		return ret;
+
+	hisi_thermal_setup(data);
+
+	return 0;
+>>>>>>> BRANCH (ca48e5 Linux 4.14.87)
 }
 #endif
 
