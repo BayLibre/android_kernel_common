@@ -374,6 +374,7 @@ static int do_read_inode(struct inode *inode)
 	/* get rdev by using inline_info */
 	__get_inode_rdev(inode, ri);
 
+<<<<<<< HEAD   (7961b1 ANDROID: revert all remaining hisi_thermal.c changes)
 	if (S_ISREG(inode->i_mode)) {
 		err = __written_first_block(sbi, ri);
 		if (err < 0) {
@@ -383,6 +384,15 @@ static int do_read_inode(struct inode *inode)
 		if (!err)
 			set_inode_flag(inode, FI_FIRST_BLOCK_WRITTEN);
 	}
+=======
+	err = __written_first_block(sbi, ri);
+	if (err < 0) {
+		f2fs_put_page(node_page, 1);
+		return err;
+	}
+	if (!err)
+		set_inode_flag(inode, FI_FIRST_BLOCK_WRITTEN);
+>>>>>>> BRANCH (1bb538 Linux 4.14.88)
 
 	if (!f2fs_need_inode_block_update(sbi, inode->i_ino))
 		fi->last_disk_size = inode->i_size;
