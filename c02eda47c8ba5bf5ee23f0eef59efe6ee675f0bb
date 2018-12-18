@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d8cb9ff0_ae473ebc",
+        "filename": "Documentation/scheduler/sched-pelt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-12-18T18:36:35Z",
+      "side": 1,
+      "message": "This looks fine - what\u0027s happening here is that these static variables are used in the helper functions, and were not being reset properly. Personally, I might prefer to remove the globals and scope them properly, passing y as a parameter and using local vars inside calc_runnable_avg_yN_inv and friends if we\u0027re going to edit this file more, but it\u0027s a minor nit really.",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 112,
+        "endChar": 9
+      },
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39a45257_75d86610",
+        "filename": "kernel/sched/sched-pelt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-12-18T18:36:35Z",
+      "side": 1,
+      "message": "Clearly these are incorrect in the original version, as they follow on from the values computed in the previous output. I built a simulation in sheets and calculated these values as\n\n980\t1920\t2819\t3680\t4504\t5294\t6050\t6774\t7468\t8132\t8767\t9376\t9959\t10518\t11052\t11564\n\nbut that\u0027s using floats and only converting to int for display, so this looks fine to me as well.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 37
+      },
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b7c4f8b_be0bb5bc",
+        "filename": "kernel/sched/sched-pelt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-12-18T18:36:35Z",
+      "side": 1,
+      "message": "I\u0027m a little unclear how the LOAD_AVG_MAX changes here, maybe it\u0027s just rounding but the proper value should be 24152.81222 calculated as 16 / (1 - y). That will have an impact on the max_n calculation too.",
+      "range": {
+        "startLine": 42,
+        "startChar": 10,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8aa85f9a_07b02154",
+        "filename": "kernel/sched/sched-pelt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-12-18T18:36:35Z",
+      "side": 1,
+      "message": "my spreadsheet calculated these, looks fine to me.\n939\t1800\t2590\t3314\t3978\t4587\t5145\t5657",
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0186b96f_46ec1727",
+        "filename": "kernel/sched/sched-pelt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2018-12-18T18:36:35Z",
+      "side": 1,
+      "message": "Similar here, the real value (8 / (1-y)) should be 12337.95042, so need to look into the way we generate this a bit more before I\u0027m 100% happy",
+      "range": {
+        "startLine": 58,
+        "startChar": 2,
+        "endLine": 59,
+        "endChar": 25
+      },
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
