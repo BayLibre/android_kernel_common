@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "015ed810_ce0e5cd8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2242,
+      "author": {
+        "id": 1015184
+      },
+      "writtenOn": "2018-12-19T09:02:11Z",
+      "side": 1,
+      "message": "I think you still need to ensure read_size \u003e\u003d sizeof(*hdr) - otherwise you could have started reading at say 2 bytes from the end of the buffer and only read 2 bytes.",
+      "range": {
+        "startLine": 2241,
+        "startChar": 0,
+        "endLine": 2242,
+        "endChar": 20
+      },
+      "revId": "26e91edec4d708939833a43ee7223c172014ff55",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1180d798_bd6d05c1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3379,
+      "author": {
+        "id": 1015184
+      },
+      "writtenOn": "2018-12-19T09:02:11Z",
+      "side": 1,
+      "message": "I was wondering for a while why this doesn\u0027t need to be copied back, and BINDER_TYPE_FD is copied back; I think it is because we do the fixups on the other side now, and really the only reason you need to copy back TYPE_FD is to set pad_binder to 0? Can we instead set pad_binder to 0 on the receiving side as well to prevent the copy?",
+      "revId": "26e91edec4d708939833a43ee7223c172014ff55",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
