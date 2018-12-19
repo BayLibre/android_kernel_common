@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "561978a7_78bc1d15",
+        "filename": "kernel/sched/sched-pelt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1414094
+      },
+      "writtenOn": "2018-12-19T06:31:19Z",
+      "side": 1,
+      "message": "Hi Chris, thanks for your comments.\nIf define sum as doulbe in sched-pelt.c, will get same result with you.\nBut all load parameters in kernel is u64, Maybe this is why define sum as int.\n32ms runnable_avg_yN_sum table also be generated with the same way.",
+      "parentUuid": "39a45257_75d86610",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 37
+      },
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7b7c4f8b_be0bb5bc",
         "filename": "kernel/sched/sched-pelt.h",
         "patchSetId": 1
@@ -59,6 +83,30 @@
       "writtenOn": "2018-12-18T18:36:35Z",
       "side": 1,
       "message": "I\u0027m a little unclear how the LOAD_AVG_MAX changes here, maybe it\u0027s just rounding but the proper value should be 24152.81222 calculated as 16 / (1 - y). That will have an impact on the max_n calculation too.",
+      "range": {
+        "startLine": 42,
+        "startChar": 10,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "c02eda47c8ba5bf5ee23f0eef59efe6ee675f0bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5057db89_277fa7bc",
+        "filename": "kernel/sched/sched-pelt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1414094
+      },
+      "writtenOn": "2018-12-19T06:31:19Z",
+      "side": 1,
+      "message": "LOAD_AVG_MAX value calculated as 1024/(1-y) when period n to be infinite, same result with yours. \nHere 24130 approach 1024/(1-y), which calculated as 1024*(1-y^n)/(1-y), n\u003dLOAD_AVG_MAX_N is the first period which integer part same as next period. \n32ms LOAD_AVG_MAX and　LOAD_AVG_MAX_N also be calculated in this way",
+      "parentUuid": "7b7c4f8b_be0bb5bc",
       "range": {
         "startLine": 42,
         "startChar": 10,
