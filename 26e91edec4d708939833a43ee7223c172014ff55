@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "38f2e54d_66339478",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2242,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-12-19T20:43:53Z",
+      "side": 1,
+      "message": "Yes, good catch.",
+      "parentUuid": "015ed810_ce0e5cd8",
+      "range": {
+        "startLine": 2241,
+        "startChar": 0,
+        "endLine": 2242,
+        "endChar": 20
+      },
+      "revId": "26e91edec4d708939833a43ee7223c172014ff55",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1180d798_bd6d05c1",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -36,6 +60,24 @@
       "writtenOn": "2018-12-19T09:02:11Z",
       "side": 1,
       "message": "I was wondering for a while why this doesn\u0027t need to be copied back, and BINDER_TYPE_FD is copied back; I think it is because we do the fixups on the other side now, and really the only reason you need to copy back TYPE_FD is to set pad_binder to 0? Can we instead set pad_binder to 0 on the receiving side as well to prevent the copy?",
+      "revId": "26e91edec4d708939833a43ee7223c172014ff55",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4bec4d8_ef7556e1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3379,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2018-12-19T20:43:53Z",
+      "side": 1,
+      "message": "Well, the reason I did it here instead of the receiving side is that the fixup doesn\u0027t know about the structure of the buffer, it just knows to write a u32 at the given offset. I guess I can add a \"pad_offset\" and \"pad_size\" or something like that to tell it to zero the pad prior to writing the u32, but it seemed simpler to do it here. Do you prefer adding that complexity to the fixup code rather than this copy?",
+      "parentUuid": "1180d798_bd6d05c1",
       "revId": "26e91edec4d708939833a43ee7223c172014ff55",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
