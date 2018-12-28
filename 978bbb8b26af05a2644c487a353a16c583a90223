@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6afcb1a9_82c625ff",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2311,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2018-12-28T12:59:05Z",
+      "side": 1,
+      "message": "At first I thought we need to check object_size !\u003d 0 here, but I don\u0027t think it\u0027s possible at this point for it to be \u00270\u0027, right?",
+      "range": {
+        "startLine": 2311,
+        "startChar": 1,
+        "endLine": 2311,
+        "endChar": 6
+      },
+      "revId": "978bbb8b26af05a2644c487a353a16c583a90223",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
