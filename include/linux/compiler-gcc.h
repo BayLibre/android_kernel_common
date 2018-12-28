@@ -326,6 +326,16 @@
 #define KASAN_ABI_VERSION 3
 #endif
 
+/*
+ * Older GCCs don't support __has_attribute, so instead of checking
+ * __has_attribute(__no_sanitize_address__) do a GCC version check.
+ */
+#if (__GNUC_MINOR__ >= 8)
+#define __no_sanitize_address __attribute__((no_sanitize_address))
+#else
+#define __no_sanitize_address
+#endif
+
 #if GCC_VERSION >= 50100
 /*
  * Mark structures as requiring designated initializers.
