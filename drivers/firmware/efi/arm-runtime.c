@@ -21,6 +21,7 @@
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
+#include <linux/cfi.h>
 
 #include <asm/cacheflush.h>
 #include <asm/efi.h>
@@ -126,10 +127,12 @@ void efi_virtmap_load(void)
 {
 	preempt_disable();
 	efi_set_pgd(&efi_mm);
+	cfi_disable_counter_up();
 }
 
 void efi_virtmap_unload(void)
 {
+	cfi_disable_counter_down();
 	efi_set_pgd(current->active_mm);
 	preempt_enable();
 }

@@ -35,4 +35,20 @@ static inline void cfi_module_remove(struct module *mod, unsigned long min_addr,
 #endif /* CONFIG_MODULES */
 #endif /* CONFIG_CFI_CLANG */
 
+#ifdef CONFIG_CFI_CLANG
+extern atomic_t cfi_disable_counter;
+static inline void cfi_disable_counter_up(void)
+{
+	atomic_inc(&cfi_disable_counter);
+}
+
+static inline void cfi_disable_counter_down(void)
+{
+	atomic_dec(&cfi_disable_counter);
+}
+#else
+static inline void cfi_disable_counter_up(void) {}
+static inline void cfi_disable_counter_down(void) {}
+#endif
+
 #endif /* _LINUX_CFI_H */

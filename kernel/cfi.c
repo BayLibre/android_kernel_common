@@ -300,7 +300,16 @@ void cfi_failure_handler(void *data, void *ptr, void *vtable)
 }
 EXPORT_SYMBOL(cfi_failure_handler);
 
+#ifdef CONFIG_EFI
+atomic_t cfi_disable_counter = ATOMIC_INIT(0);
+#endif
+
 void __cfi_check_fail(void *data, void *ptr)
 {
+#ifdef CONFIG_EFI
+	if (atomic_read(&cfi_disable_counter) > 0) {
+		return;
+	}
+#endif
 	handle_cfi_failure(ptr);
 }
