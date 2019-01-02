@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6a1b1a2c_964b9e9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-01-02T19:55:48Z",
+      "side": 1,
+      "message": "This really was bogus IMO. checkpatch failed because the original changelog said - \"4.19-rc7,\nwhich makes the 4.19 series ending with commit 258f669e7e88 (\"mm: /proc/pid/smaps_rollup: convert to single value seq_file\") suspicious. But the mss was reused for rollup since 493b0e9d945f (\"mm: add /proc/pid/smaps_rollup\")\"\n\nNotice the string \u0027commit\u0027 is missing when the SHA 493b0e9d945f and it failed for that. This wasted a couple of hours for me for Pixel as well as for common to figure out what its complaining about exactly .. :(\n\n(one more case like this and we should do checkpatch checks advisory instead of blocking)",
+      "range": {
+        "startLine": 83,
+        "startChar": 10,
+        "endLine": 83,
+        "endChar": 25
+      },
+      "revId": "129c791f9f6e1a523160c53fb32bedc65919e63d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
