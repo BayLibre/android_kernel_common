@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "612cb349_6b51ca16",
+        "filename": "arch/arm64/kernel/vdso/Makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1283094
+      },
+      "writtenOn": "2019-01-03T02:38:26Z",
+      "side": 1,
+      "message": "I think this causes a build failure with clang. On Pixel 3, the -mcmodel\u003dtiny flag is surrounded by ifneq ($(cc-name),clang)",
+      "revId": "36d75728b494063c84897c9e14f54a95fc875985",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
