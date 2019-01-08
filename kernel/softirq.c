@@ -85,16 +85,12 @@ static void wakeup_softirqd(void)
 
 /*
  * If ksoftirqd is scheduled, we do not want to process pending softirqs
- * right now. Let ksoftirqd handle this at its own rate, to get fairness,
- * unless we're doing some of the synchronous softirqs.
+ * right now. Let ksoftirqd handle this at its own rate, to get fairness.
  */
-#define SOFTIRQ_NOW_MASK ((1 << HI_SOFTIRQ) | (1 << TASKLET_SOFTIRQ))
-static bool ksoftirqd_running(unsigned long pending)
+static bool ksoftirqd_running(void)
 {
 	struct task_struct *tsk = __this_cpu_read(ksoftirqd);
 
-	if (pending & SOFTIRQ_NOW_MASK)
-		return false;
 	return tsk && task_is_running(tsk) && !__kthread_should_park(tsk);
 }
 
@@ -239,7 +235,7 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
 		goto out;
 
 	pending = local_softirq_pending();
-	if (!pending || ksoftirqd_running(pending))
+	if (!pending || ksoftirqd_running())
 		goto out;
 
 	/*
@@ -422,7 +418,7 @@ static inline bool should_wake_ksoftirqd(void)
 
 static inline void invoke_softirq(void)
 {
-	if (ksoftirqd_running(local_softirq_pending()))
+	if (ksoftirqd_running())
 		return;
 
 	if (!force_irqthreads() || !__this_cpu_read(ksoftirqd)) {
@@ -458,7 +454,7 @@ asmlinkage __visible void do_softirq(void)
 
 	pending = local_softirq_pending();
 
-	if (pending && !ksoftirqd_running(pending))
+	if (pending && !ksoftirqd_running())
 		do_softirq_own_stack();
 
 	local_irq_restore(flags);
