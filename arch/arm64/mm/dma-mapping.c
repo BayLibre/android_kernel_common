@@ -29,6 +29,25 @@
 
 #include <asm/cacheflush.h>
 
+extern void asm__dma_map_area(const void *, size_t, int);
+extern void asm__dma_unmap_area(const void *, size_t, int);
+extern void asm__dma_flush_range(const void *, const void *);
+
+void __dma_map_area(const void *p, size_t s, int i)
+{
+    asm__dma_map_area(p, s, i);
+}
+
+void __dma_unmap_area(const void *p, size_t s, int i)
+{
+    asm__dma_unmap_area(p, s, i);
+}
+
+void __dma_flush_range(const void *a, const void *b)
+{
+    asm__dma_flush_range(a, b);
+}
+
 static pgprot_t __get_dma_pgprot(struct dma_attrs *attrs, pgprot_t prot,
 				 bool coherent)
 {

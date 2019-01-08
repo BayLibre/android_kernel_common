@@ -169,7 +169,7 @@ ENDPROC(__dma_clean_range)
  *	- start   - virtual start address of region
  *	- end     - virtual end address of region
  */
-ENTRY(__dma_flush_range)
+ENTRY(asm__dma_flush_range)
 	dcache_line_size x2, x3
 	sub	x3, x2, #1
 	bic	x0, x0, x3
@@ -179,7 +179,7 @@ ENTRY(__dma_flush_range)
 	b.lo	1b
 	dsb	sy
 	ret
-ENDPIPROC(__dma_flush_range)
+ENDPIPROC(asm__dma_flush_range)
 
 /*
  *	__dma_map_area(start, size, dir)
@@ -187,12 +187,12 @@ ENDPIPROC(__dma_flush_range)
  *	- size	- size of region
  *	- dir	- DMA direction
  */
-ENTRY(__dma_map_area)
+ENTRY(asm__dma_map_area)
 	add	x1, x1, x0
 	cmp	w2, #DMA_FROM_DEVICE
 	b.eq	__dma_inv_range
 	b	__dma_clean_range
-ENDPIPROC(__dma_map_area)
+ENDPIPROC(asm__dma_map_area)
 
 /*
  *	__dma_unmap_area(start, size, dir)
@@ -200,9 +200,9 @@ ENDPIPROC(__dma_map_area)
  *	- size	- size of region
  *	- dir	- DMA direction
  */
-ENTRY(__dma_unmap_area)
+ENTRY(asm__dma_unmap_area)
 	add	x1, x1, x0
 	cmp	w2, #DMA_TO_DEVICE
 	b.ne	__dma_inv_range
 	ret
-ENDPIPROC(__dma_unmap_area)
+ENDPIPROC(asm__dma_unmap_area)
