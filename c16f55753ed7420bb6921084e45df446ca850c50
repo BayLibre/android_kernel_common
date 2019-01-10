@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bfd9845_39ef006f",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1119068
+      },
+      "writtenOn": "2019-01-10T11:29:39Z",
+      "side": 1,
+      "message": "Why not just:\n\n\nif (share_cap_level \u003c share_cap_thread \u0026\u0026\n    cpumask_equal(topology_sibling_cpumask(cpu),\n                  policy-\u003erelated_cpus)) {\n\n\nto avoid to goto target ?",
+      "range": {
+        "startLine": 186,
+        "startChar": 2,
+        "endLine": 187,
+        "endChar": 30
+      },
+      "revId": "c16f55753ed7420bb6921084e45df446ca850c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
