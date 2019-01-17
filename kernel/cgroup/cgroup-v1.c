@@ -1210,6 +1210,7 @@ int cgroup1_get_tree(struct fs_context *fc)
 		if (root->flags ^ ctx->flags)
 			pr_warn("new mount options do not match the existing superblock, will be ignored\n");
 
+		ctx->root = root;
 		ret = 0;
 		goto out_unlock;
 	}
@@ -1236,7 +1237,8 @@ int cgroup1_get_tree(struct fs_context *fc)
 		goto out_unlock;
 	}
 
-	init_cgroup_root(root, ctx);
+	ctx->root = root;
+	init_cgroup_root(ctx);
 
 	ret = cgroup_setup_root(root, ctx->subsys_mask);
 	if (ret)
