@@ -491,7 +491,10 @@ void f2fs_update_dentry(nid_t ino, umode_t mode, struct f2fs_dentry_ptr *d,
 }
 
 int f2fs_add_regular_entry(struct inode *dir, const struct qstr *new_name,
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 				const struct qstr *orig_name,
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 				struct inode *inode, nid_t ino, umode_t mode)
 {
 	unsigned int bit_pos;
@@ -517,12 +520,15 @@ int f2fs_add_regular_entry(struct inode *dir, const struct qstr *new_name,
 	}
 
 start:
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 #ifdef CONFIG_F2FS_FAULT_INJECTION
 	if (time_to_inject(F2FS_I_SB(dir), FAULT_DIR_DEPTH)) {
 		f2fs_show_injection_info(FAULT_DIR_DEPTH);
 		return -ENOSPC;
 	}
 #endif
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	if (unlikely(current_depth == MAX_DIR_HASH_DEPTH))
 		return -ENOSPC;
 
@@ -558,15 +564,23 @@ add_dentry:
 
 	if (inode) {
 		down_write(&F2FS_I(inode)->i_sem);
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		page = init_inode_metadata(inode, dir, new_name,
 						orig_name, NULL);
+=======
+		page = init_inode_metadata(inode, dir, new_name, NULL);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		if (IS_ERR(page)) {
 			err = PTR_ERR(page);
 			goto fail;
 		}
 	}
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	make_dentry_ptr_block(NULL, &d, dentry_blk);
+=======
+	make_dentry_ptr(NULL, &d, (void *)dentry_blk, 1);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	f2fs_update_dentry(ino, mode, &d, new_name, dentry_hash, bit_pos);
 
 	set_page_dirty(dentry_page);
@@ -586,6 +600,7 @@ fail:
 	return err;
 }
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 int __f2fs_do_add_link(struct inode *dir, struct fscrypt_name *fname,
 				struct inode *inode, nid_t ino, umode_t mode)
 {
@@ -642,6 +657,33 @@ int __f2fs_add_link(struct inode *dir, const struct qstr *name,
 		err = __f2fs_do_add_link(dir, &fname, inode, ino, mode);
 	}
 	fscrypt_free_filename(&fname);
+=======
+/*
+ * Caller should grab and release a rwsem by calling f2fs_lock_op() and
+ * f2fs_unlock_op().
+ */
+int __f2fs_add_link(struct inode *dir, const struct qstr *name,
+				struct inode *inode, nid_t ino, umode_t mode)
+{
+	struct f2fs_filename fname;
+	struct qstr new_name;
+	int err;
+
+	err = f2fs_fname_setup_filename(dir, name, 0, &fname);
+	if (err)
+		return err;
+
+	new_name.name = fname_name(&fname);
+	new_name.len = fname_len(&fname);
+
+	err = -EAGAIN;
+	if (f2fs_has_inline_dentry(dir))
+		err = f2fs_add_inline_entry(dir, &new_name, inode, ino, mode);
+	if (err == -EAGAIN)
+		err = f2fs_add_regular_entry(dir, &new_name, inode, ino, mode);
+
+	f2fs_fname_free_filename(&fname);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	return err;
 }
 
@@ -800,12 +842,15 @@ int f2fs_fill_dentries(struct dir_context *ctx, struct f2fs_dentry_ptr *d,
 			break;
 
 		de = &d->dentry[bit_pos];
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		if (de->name_len == 0) {
 			bit_pos++;
 			ctx->pos = start_pos + bit_pos;
 			continue;
 		}
 
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		d_type = get_de_type(de);
 
 		de_name.name = d->filename[bit_pos];

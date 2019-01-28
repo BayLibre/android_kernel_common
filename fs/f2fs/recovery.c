@@ -68,6 +68,7 @@ static struct fsync_inode_entry *get_fsync_inode(struct list_head *head,
 	return NULL;
 }
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 static struct fsync_inode_entry *add_fsync_inode(struct f2fs_sb_info *sbi,
 			struct list_head *head, nid_t ino, bool quota_inode)
 {
@@ -97,6 +98,21 @@ static struct fsync_inode_entry *add_fsync_inode(struct f2fs_sb_info *sbi,
 err_out:
 	iput(inode);
 	return ERR_PTR(err);
+=======
+static struct fsync_inode_entry *add_fsync_inode(struct list_head *head,
+							struct inode *inode)
+{
+	struct fsync_inode_entry *entry;
+
+	entry = kmem_cache_alloc(fsync_entry_slab, GFP_F2FS_ZERO);
+	if (!entry)
+		return NULL;
+
+	entry->inode = inode;
+	list_add_tail(&entry->list, head);
+
+	return entry;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 }
 
 static void del_fsync_inode(struct fsync_inode_entry *entry)
@@ -121,16 +137,35 @@ static int recover_dentry(struct inode *inode, struct page *ipage,
 
 	entry = get_fsync_inode(dir_list, pino);
 	if (!entry) {
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		entry = add_fsync_inode(F2FS_I_SB(inode), dir_list,
 							pino, false);
 		if (IS_ERR(entry)) {
 			dir = ERR_CAST(entry);
 			err = PTR_ERR(entry);
+=======
+		dir = f2fs_iget(inode->i_sb, pino);
+		if (IS_ERR(dir)) {
+			err = PTR_ERR(dir);
+			goto out;
+		}
+
+		entry = add_fsync_inode(dir_list, dir);
+		if (!entry) {
+			err = -ENOMEM;
+			iput(dir);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 			goto out;
 		}
 	}
 
 	dir = entry->inode;
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
+=======
+
+	if (file_enc_name(inode))
+		return 0;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	memset(&fname, 0, sizeof(struct fscrypt_name));
 	fname.disk_name.len = le32_to_cpu(raw_inode->i_namelen);
@@ -170,6 +205,7 @@ retry:
 		f2fs_delete_entry(de, page, dir, einode);
 		iput(einode);
 		goto retry;
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	} else if (IS_ERR(page)) {
 		err = PTR_ERR(page);
 	} else {
@@ -178,6 +214,11 @@ retry:
 	}
 	if (err == -ENOMEM)
 		goto retry;
+=======
+	}
+	err = __f2fs_add_link(dir, &name, inode, inode->i_ino, inode->i_mode);
+
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	goto out;
 
 out_put:
@@ -240,6 +281,7 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
 				bool check_only)
 {
 	struct curseg_info *curseg;
+	struct inode *inode;
 	struct page *page = NULL;
 	block_t blkaddr;
 	unsigned int loop_cnt = 0;
@@ -254,7 +296,7 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
 	while (1) {
 		struct fsync_inode_entry *entry;
 
-		if (!is_valid_blkaddr(sbi, blkaddr, META_POR))
+		if (!f2fs_is_valid_blkaddr(sbi, blkaddr, META_POR))
 			return 0;
 
 		page = get_tmp_page(sbi, blkaddr);
@@ -281,16 +323,33 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
 			 * CP | dnode(F) | inode(DF)
 			 * For this case, we should not give up now.
 			 */
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 			entry = add_fsync_inode(sbi, head, ino_of_node(page),
 								quota_inode);
 			if (IS_ERR(entry)) {
 				err = PTR_ERR(entry);
+=======
+			inode = f2fs_iget(sbi->sb, ino_of_node(page));
+			if (IS_ERR(inode)) {
+				err = PTR_ERR(inode);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 				if (err == -ENOENT) {
 					err = 0;
 					goto next;
 				}
 				break;
 			}
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
+=======
+
+			/* add this fsync inode to the list */
+			entry = add_fsync_inode(head, inode);
+			if (!entry) {
+				err = -ENOMEM;
+				iput(inode);
+				break;
+			}
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		}
 		entry->blkaddr = blkaddr;
 
@@ -508,7 +567,7 @@ retry_dn:
 		}
 
 		/* dest is valid block, try to recover from src to dest */
-		if (is_valid_blkaddr(sbi, dest, META_POR)) {
+		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
 
 			if (src == NULL_ADDR) {
 				err = reserve_new_block(&dn);
@@ -569,7 +628,7 @@ static int recover_data(struct f2fs_sb_info *sbi, struct list_head *inode_list,
 	while (1) {
 		struct fsync_inode_entry *entry;
 
-		if (!is_valid_blkaddr(sbi, blkaddr, META_POR))
+		if (!f2fs_is_valid_blkaddr(sbi, blkaddr, META_POR))
 			break;
 
 		ra_meta_pages_cond(sbi, blkaddr);
@@ -620,9 +679,16 @@ int recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
 {
 	struct list_head inode_list;
 	struct list_head dir_list;
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
+=======
+	block_t blkaddr;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	int err;
 	int ret = 0;
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	unsigned long s_flags = sbi->sb->s_flags;
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	bool need_writecp = false;
 #ifdef CONFIG_QUOTA
 	int quota_enabled;
@@ -654,13 +720,23 @@ int recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
 	mutex_lock(&sbi->cp_mutex);
 
 	/* step #1: find fsynced inode numbers */
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	err = find_fsync_dnodes(sbi, &inode_list, check_only);
 	if (err || list_empty(&inode_list))
 		goto skip;
+=======
+	err = find_fsync_dnodes(sbi, &inode_list);
+	if (err || list_empty(&inode_list))
+		goto out;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	if (check_only) {
 		ret = 1;
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		goto skip;
+=======
+		goto out;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	}
 
 	need_writecp = true;
@@ -682,6 +758,11 @@ skip:
 	}
 
 	clear_sbi_flag(sbi, SBI_POR_DOING);
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
+=======
+	if (err)
+		set_ckpt_flags(sbi->ckpt, CP_ERROR_FLAG);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	mutex_unlock(&sbi->cp_mutex);
 
 	/* let's drop all the directory inodes for clean checkpoint */
@@ -691,10 +772,15 @@ skip:
 		struct cp_control cpc = {
 			.reason = CP_RECOVERY,
 		};
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		err = write_checkpoint(sbi, &cpc);
+=======
+		write_checkpoint(sbi, &cpc);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	}
 
 	kmem_cache_destroy(fsync_entry_slab);
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 out:
 #ifdef CONFIG_QUOTA
 	/* Turn quotas off */
@@ -703,5 +789,7 @@ out:
 #endif
 	sbi->sb->s_flags = s_flags; /* Restore MS_RDONLY status */
 
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	return ret ? ret: err;
 }

@@ -438,7 +438,14 @@ int f2fs_submit_page_bio(struct f2fs_io_info *fio)
 	struct page *page = fio->encrypted_page ?
 			fio->encrypted_page : fio->page;
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	verify_block_addr(fio, fio->new_blkaddr);
+=======
+	if (!f2fs_is_valid_blkaddr(fio->sbi, fio->blk_addr,
+			__is_meta_io(fio) ? META_GENERIC : DATA_GENERIC))
+		return -EFAULT;
+
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	trace_f2fs_submit_page_bio(page, fio);
 	f2fs_trace_ios(fio, 0);
 
@@ -467,7 +474,13 @@ int f2fs_submit_page_write(struct f2fs_io_info *fio)
 	struct page *bio_page;
 	int err = 0;
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	f2fs_bug_on(sbi, is_read_io(fio->op));
+=======
+	io = is_read ? &sbi->read_io : &sbi->write_io[btype];
+
+	verify_block_addr(fio, fio->blk_addr);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	down_write(&io->io_rwsem);
 next:
@@ -1035,6 +1048,7 @@ next_dnode:
 		goto unlock_out;
 	}
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	start_pgofs = pgofs;
 	prealloc = 0;
 	last_ofs_in_node = ofs_in_node = dn.ofs_in_node;
@@ -1044,6 +1058,15 @@ next_block:
 	blkaddr = datablock_addr(dn.inode, dn.node_page, dn.ofs_in_node);
 
 	if (blkaddr == NEW_ADDR || blkaddr == NULL_ADDR) {
+=======
+	if (__is_valid_data_blkaddr(dn.data_blkaddr) &&
+		!f2fs_is_valid_blkaddr(sbi, dn.data_blkaddr, DATA_GENERIC)) {
+		err = -EFAULT;
+		goto sync_out;
+	}
+
+	if (!is_valid_data_blkaddr(sbi, dn.data_blkaddr)) {
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		if (create) {
 			if (unlikely(f2fs_cp_error(sbi))) {
 				err = -EIO;
@@ -1416,6 +1439,40 @@ out:
 	return ret;
 }
 
+struct bio *f2fs_grab_bio(struct inode *inode, block_t blkaddr,
+							unsigned nr_pages)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+	struct f2fs_crypto_ctx *ctx = NULL;
+	struct block_device *bdev = sbi->sb->s_bdev;
+	struct bio *bio;
+
+	if (!f2fs_is_valid_blkaddr(sbi, blkaddr, DATA_GENERIC))
+		return ERR_PTR(-EFAULT);
+
+	if (f2fs_encrypted_inode(inode) && S_ISREG(inode->i_mode)) {
+		ctx = f2fs_get_crypto_ctx(inode);
+		if (IS_ERR(ctx))
+			return ERR_CAST(ctx);
+
+		/* wait the page to be moved by cleaning */
+		f2fs_wait_on_encrypted_page_writeback(sbi, blkaddr);
+	}
+
+	bio = bio_alloc(GFP_KERNEL, min_t(int, nr_pages, BIO_MAX_PAGES));
+	if (!bio) {
+		if (ctx)
+			f2fs_release_crypto_ctx(ctx);
+		return ERR_PTR(-ENOMEM);
+	}
+	bio->bi_bdev = bdev;
+	bio->bi_iter.bi_sector = SECTOR_FROM_BLOCK(blkaddr);
+	bio->bi_end_io = f2fs_read_end_io;
+	bio->bi_private = ctx;
+
+	return bio;
+}
+
 /*
  * This function was originally taken from fs/mpage.c, and customized for f2fs.
  * Major change was from block_size == page_size in f2fs by default.
@@ -1492,6 +1549,10 @@ got_it:
 				SetPageUptodate(page);
 				goto confused;
 			}
+
+			if (!f2fs_is_valid_blkaddr(F2FS_I_SB(inode), block_nr,
+								DATA_GENERIC))
+				goto set_error_page;
 		} else {
 			zero_user_segment(page, 0, PAGE_SIZE);
 			if (!PageUptodate(page))
@@ -1511,11 +1572,19 @@ submit_and_realloc:
 			bio = NULL;
 		}
 		if (bio == NULL) {
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 			bio = f2fs_grab_read_bio(inode, block_nr, nr_pages);
 			if (IS_ERR(bio)) {
 				bio = NULL;
+=======
+			bio = f2fs_grab_bio(inode, block_nr, nr_pages);
+			if (IS_ERR(bio))
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 				goto set_error_page;
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 			}
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		}
 
 		if (bio_add_page(bio, page, blocksize, 0) < blocksize)
@@ -1711,6 +1780,7 @@ int do_write_data_page(struct f2fs_io_info *fio)
 	if (fio->need_lock == LOCK_REQ && !f2fs_trylock_op(fio->sbi))
 		return -EAGAIN;
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	err = get_dnode_of_data(&dn, page->index, LOOKUP_NODE);
 	if (err)
 		goto out;
@@ -1723,10 +1793,19 @@ int do_write_data_page(struct f2fs_io_info *fio)
 		goto out_writepage;
 	}
 got_it:
+=======
+	if (__is_valid_data_blkaddr(fio->blk_addr) &&
+		!f2fs_is_valid_blkaddr(fio->sbi, fio->blk_addr,
+							DATA_GENERIC)) {
+		err = -EFAULT;
+		goto out_writepage;
+	}
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	/*
 	 * If current allocation needs SSR,
 	 * it had better in-place writes for updated data.
 	 */
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	if (ipu_force || (valid_ipu_blkaddr(fio) && need_inplace_update(fio))) {
 		err = encrypt_one_page(fio);
 		if (err)
@@ -1741,6 +1820,22 @@ got_it:
 		trace_f2fs_do_write_data_page(fio->page, IPU);
 		set_inode_flag(inode, FI_UPDATE_WRITE);
 		return err;
+=======
+	if (unlikely(is_valid_data_blkaddr(fio->sbi, fio->blk_addr) &&
+			!is_cold_data(page) &&
+			need_inplace_update(inode))) {
+		rewrite_data_page(fio);
+		set_inode_flag(F2FS_I(inode), FI_UPDATE_WRITE);
+		trace_f2fs_do_write_data_page(page, IPU);
+	} else {
+		write_data_page(&dn, fio);
+		set_data_blkaddr(&dn);
+		f2fs_update_extent_cache(&dn);
+		trace_f2fs_do_write_data_page(page, OPU);
+		set_inode_flag(F2FS_I(inode), FI_APPEND_WRITE);
+		if (page->index == 0)
+			set_inode_flag(F2FS_I(inode), FI_FIRST_BLOCK_WRITTEN);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	}
 
 	if (fio->need_lock == LOCK_RETRY) {
@@ -2319,19 +2414,39 @@ repeat:
 		zero_user_segment(page, 0, PAGE_SIZE);
 		SetPageUptodate(page);
 	} else {
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		err = f2fs_submit_page_read(inode, page, blkaddr);
 		if (err)
+=======
+		struct bio *bio;
+
+		bio = f2fs_grab_bio(inode, dn.data_blkaddr, 1);
+		if (IS_ERR(bio)) {
+			err = PTR_ERR(bio);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 			goto fail;
+		}
+
+		if (bio_add_page(bio, page, PAGE_CACHE_SIZE, 0) < PAGE_CACHE_SIZE) {
+			bio_put(bio);
+			err = -EFAULT;
+			goto fail;
+		}
+
+		submit_bio(READ_SYNC, bio);
 
 		lock_page(page);
 		if (unlikely(page->mapping != mapping)) {
 			f2fs_put_page(page, 1);
 			goto repeat;
 		}
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		if (unlikely(!PageUptodate(page))) {
 			err = -EIO;
 			goto fail;
 		}
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	}
 	return 0;
 

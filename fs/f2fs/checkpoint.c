@@ -85,8 +85,10 @@ repeat:
 	fio.page = page;
 
 	if (f2fs_submit_page_bio(&fio)) {
-		f2fs_put_page(page, 1);
-		goto repeat;
+		memset(page_address(page), 0, PAGE_SIZE);
+		f2fs_stop_checkpoint(sbi);
+		f2fs_bug_on(sbi, 1);
+		return page;
 	}
 
 	lock_page(page);
@@ -117,7 +119,8 @@ struct page *get_tmp_page(struct f2fs_sb_info *sbi, pgoff_t index)
 	return __get_meta_page(sbi, index, false);
 }
 
-bool is_valid_blkaddr(struct f2fs_sb_info *sbi, block_t blkaddr, int type)
+bool f2fs_is_valid_blkaddr(struct f2fs_sb_info *sbi,
+					block_t blkaddr, int type)
 {
 	switch (type) {
 	case META_NAT:
@@ -137,8 +140,20 @@ bool is_valid_blkaddr(struct f2fs_sb_info *sbi, block_t blkaddr, int type)
 			return false;
 		break;
 	case META_POR:
+	case DATA_GENERIC:
 		if (unlikely(blkaddr >= MAX_BLKADDR(sbi) ||
-			blkaddr < MAIN_BLKADDR(sbi)))
+			blkaddr < MAIN_BLKADDR(sbi))) {
+			if (type == DATA_GENERIC) {
+				f2fs_msg(sbi->sb, KERN_WARNING,
+					"access invalid blkaddr:%u", blkaddr);
+				WARN_ON(1);
+			}
+			return false;
+		}
+		break;
+	case META_GENERIC:
+		if (unlikely(blkaddr < SEG0_BLKADDR(sbi) ||
+			blkaddr >= MAIN_BLKADDR(sbi)))
 			return false;
 		break;
 	default:
@@ -163,7 +178,10 @@ int ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
 		.op_flags = sync ? (REQ_SYNC | REQ_META | REQ_PRIO) :
 						REQ_RAHEAD,
 		.encrypted_page = NULL,
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		.in_list = false,
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		.is_meta = (type != META_POR),
 	};
 	struct blk_plug plug;
@@ -174,7 +192,7 @@ int ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
 	blk_start_plug(&plug);
 	for (; nrpages-- > 0; blkno++) {
 
-		if (!is_valid_blkaddr(sbi, blkno, type))
+		if (!f2fs_is_valid_blkaddr(sbi, blkno, type))
 			goto out;
 
 		switch (type) {
@@ -745,6 +763,7 @@ static int get_checkpoint_version(struct f2fs_sb_info *sbi, block_t cp_addr,
 	*cp_block = (struct f2fs_checkpoint *)page_address(*cp_page);
 
 	crc_offset = le32_to_cpu((*cp_block)->checksum_offset);
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	if (crc_offset > (blk_size - sizeof(__le32))) {
 		f2fs_msg(sbi->sb, KERN_WARNING,
 			"invalid crc_offset: %zu", crc_offset);
@@ -753,6 +772,19 @@ static int get_checkpoint_version(struct f2fs_sb_info *sbi, block_t cp_addr,
 
 	crc = cur_cp_crc(*cp_block);
 	if (!f2fs_crc_valid(sbi, crc, *cp_block, crc_offset)) {
+=======
+	if (crc_offset >= blk_size) {
+		f2fs_put_page(*cp_page, 1);
+		f2fs_msg(sbi->sb, KERN_WARNING,
+			"invalid crc_offset: %zu", crc_offset);
+		return -EINVAL;
+	}
+
+	crc = le32_to_cpu(*((__le32 *)((unsigned char *)*cp_block
+							+ crc_offset)));
+	if (!f2fs_crc_valid(crc, *cp_block, crc_offset)) {
+		f2fs_put_page(*cp_page, 1);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		f2fs_msg(sbi->sb, KERN_WARNING, "invalid crc value");
 		return -EINVAL;
 	}
@@ -772,14 +804,30 @@ static struct page *validate_checkpoint(struct f2fs_sb_info *sbi,
 	err = get_checkpoint_version(sbi, cp_addr, &cp_block,
 					&cp_page_1, version);
 	if (err)
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		goto invalid_cp1;
+=======
+		return NULL;
+
+	if (le32_to_cpu(cp_block->cp_pack_total_block_count) >
+					sbi->blocks_per_seg) {
+		f2fs_msg(sbi->sb, KERN_WARNING,
+			"invalid cp_pack_total_block_count:%u",
+			le32_to_cpu(cp_block->cp_pack_total_block_count));
+		goto invalid_cp;
+	}
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	pre_version = *version;
 
 	cp_addr += le32_to_cpu(cp_block->cp_pack_total_block_count) - 1;
 	err = get_checkpoint_version(sbi, cp_addr, &cp_block,
 					&cp_page_2, version);
 	if (err)
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 		goto invalid_cp2;
+=======
+		goto invalid_cp;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	cur_version = *version;
 
 	if (cur_version == pre_version) {
@@ -787,9 +835,8 @@ static struct page *validate_checkpoint(struct f2fs_sb_info *sbi,
 		f2fs_put_page(cp_page_2, 1);
 		return cp_page_1;
 	}
-invalid_cp2:
 	f2fs_put_page(cp_page_2, 1);
-invalid_cp1:
+invalid_cp:
 	f2fs_put_page(cp_page_1, 1);
 	return NULL;
 }
@@ -837,6 +884,7 @@ int get_valid_checkpoint(struct f2fs_sb_info *sbi)
 	cp_block = (struct f2fs_checkpoint *)page_address(cur_page);
 	memcpy(sbi->ckpt, cp_block, blk_size);
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	/* Sanity checking of checkpoint */
 	if (sanity_check_ckpt(sbi))
 		goto free_fail_no_cp;
@@ -845,6 +893,16 @@ int get_valid_checkpoint(struct f2fs_sb_info *sbi)
 		sbi->cur_cp_pack = 1;
 	else
 		sbi->cur_cp_pack = 2;
+=======
+	if (cur_page == cp1)
+		sbi->cur_cp_pack = 1;
+	else
+		sbi->cur_cp_pack = 2;
+
+	/* Sanity checking of checkpoint */
+	if (sanity_check_ckpt(sbi))
+		goto free_fail_no_cp;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	if (cp_blks <= 1)
 		goto done;
@@ -921,6 +979,7 @@ void update_dirty_page(struct inode *inode, struct page *page)
 	f2fs_trace_pid(page);
 }
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 void remove_dirty_inode(struct inode *inode)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
@@ -928,14 +987,32 @@ void remove_dirty_inode(struct inode *inode)
 
 	if (!S_ISDIR(inode->i_mode) && !S_ISREG(inode->i_mode) &&
 			!S_ISLNK(inode->i_mode))
+=======
+void remove_dirty_dir_inode(struct inode *inode)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+	struct inode_entry *entry;
+
+	if (!S_ISDIR(inode->i_mode))
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		return;
 
 	if (type == FILE_INODE && !test_opt(sbi, DATA_FLUSH))
 		return;
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	spin_lock(&sbi->inode_lock[type]);
 	__remove_dirty_inode(inode, type);
 	spin_unlock(&sbi->inode_lock[type]);
+=======
+	entry = F2FS_I(inode)->dirty_dir;
+	list_del(&entry->list);
+	F2FS_I(inode)->dirty_dir = NULL;
+	clear_inode_flag(F2FS_I(inode), FI_DIRTY_DIR);
+	stat_dec_dirty_dir(sbi);
+	spin_unlock(&sbi->dir_inode_lock);
+	kmem_cache_free(inode_entry_slab, entry);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 }
 
 int sync_dirty_inodes(struct f2fs_sb_info *sbi, enum inode_type type)
@@ -1217,10 +1294,13 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	__u32 crc32 = 0;
 	int i;
 	int cp_payload_blks = __cp_payload(sbi);
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	struct super_block *sb = sbi->sb;
 	struct curseg_info *seg_i = CURSEG_I(sbi, CURSEG_HOT_NODE);
 	u64 kbytes_written;
 	int err;
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	/* Flush all the NAT/SIT pages */
 	while (get_pages(sbi, F2FS_DIRTY_META)) {
@@ -1276,6 +1356,9 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 	/* update ckpt flag for checkpoint */
 	update_ckpt_flags(sbi, cpc);
+
+	/* set this flag to activate crc|cp_ver for recovery */
+	set_ckpt_flags(ckpt, CP_CRC_RECOVERY_FLAG);
 
 	/* update SIT/NAT bitmap */
 	get_sit_bitmap(sbi, __bitmap_ptr(sbi, SIT_BITMAP));
@@ -1346,6 +1429,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	/* wait for previous submitted meta pages writeback */
 	wait_on_all_pages_writeback(sbi);
 
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	if (unlikely(f2fs_cp_error(sbi)))
 		return -EIO;
 
@@ -1359,11 +1443,15 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	wait_on_all_pages_writeback(sbi);
 
 	release_ino_entry(sbi, false);
+=======
+	release_dirty_inode(sbi);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	if (unlikely(f2fs_cp_error(sbi)))
 		return -EIO;
 
 	clear_sbi_flag(sbi, SBI_IS_DIRTY);
+<<<<<<< HEAD   (507622 Merge 4.4.171 into android-4.4-p)
 	clear_sbi_flag(sbi, SBI_NEED_CP);
 	__set_cp_next_pack(sbi);
 
@@ -1378,6 +1466,9 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	f2fs_bug_on(sbi, get_pages(sbi, F2FS_DIRTY_DENTS));
 
 	return 0;
+=======
+	__set_cp_next_pack(sbi);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 }
 
 /*
