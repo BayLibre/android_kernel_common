@@ -83,10 +83,18 @@ repeat:
 
 	fio.page = page;
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	err = f2fs_submit_page_bio(&fio);
 	if (err) {
 		f2fs_put_page(page, 1);
 		return ERR_PTR(err);
+=======
+	if (f2fs_submit_page_bio(&fio)) {
+		memset(page_address(page), 0, PAGE_SIZE);
+		f2fs_stop_checkpoint(sbi);
+		f2fs_bug_on(sbi, 1);
+		return page;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	}
 
 	lock_page(page);
@@ -189,7 +197,10 @@ int f2fs_ra_meta_pages(struct f2fs_sb_info *sbi, block_t start, int nrpages,
 		.op_flags = sync ? (REQ_SYNC | REQ_META | REQ_PRIO) :
 						REQ_RAHEAD,
 		.encrypted_page = NULL,
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 		.in_list = false,
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		.is_meta = (type != META_POR),
 	};
 	struct blk_plug plug;
@@ -766,6 +777,7 @@ static int get_checkpoint_version(struct f2fs_sb_info *sbi, block_t cp_addr,
 	size_t crc_offset = 0;
 	__u32 crc = 0;
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	*cp_page = f2fs_get_meta_page(sbi, cp_addr);
 	if (IS_ERR(*cp_page))
 		return PTR_ERR(*cp_page);
@@ -782,6 +794,22 @@ static int get_checkpoint_version(struct f2fs_sb_info *sbi, block_t cp_addr,
 
 	crc = cur_cp_crc(*cp_block);
 	if (!f2fs_crc_valid(sbi, crc, *cp_block, crc_offset)) {
+=======
+	*cp_page = get_meta_page(sbi, cp_addr);
+	*cp_block = (struct f2fs_checkpoint *)page_address(*cp_page);
+
+	crc_offset = le32_to_cpu((*cp_block)->checksum_offset);
+	if (crc_offset >= blk_size) {
+		f2fs_put_page(*cp_page, 1);
+		f2fs_msg(sbi->sb, KERN_WARNING,
+			"invalid crc_offset: %zu", crc_offset);
+		return -EINVAL;
+	}
+
+	crc = le32_to_cpu(*((__le32 *)((unsigned char *)*cp_block
+							+ crc_offset)));
+	if (!f2fs_crc_valid(crc, *cp_block, crc_offset)) {
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		f2fs_put_page(*cp_page, 1);
 		f2fs_msg(sbi->sb, KERN_WARNING, "invalid crc value");
 		return -EINVAL;
@@ -881,7 +909,11 @@ int f2fs_get_valid_checkpoint(struct f2fs_sb_info *sbi)
 		sbi->cur_cp_pack = 2;
 
 	/* Sanity checking of checkpoint */
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	if (f2fs_sanity_check_ckpt(sbi))
+=======
+	if (sanity_check_ckpt(sbi))
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		goto free_fail_no_cp;
 
 	if (cp_blks <= 1)
@@ -961,6 +993,7 @@ void f2fs_update_dirty_page(struct inode *inode, struct page *page)
 	f2fs_trace_pid(page);
 }
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 void f2fs_remove_dirty_inode(struct inode *inode)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
@@ -968,14 +1001,32 @@ void f2fs_remove_dirty_inode(struct inode *inode)
 
 	if (!S_ISDIR(inode->i_mode) && !S_ISREG(inode->i_mode) &&
 			!S_ISLNK(inode->i_mode))
+=======
+void remove_dirty_dir_inode(struct inode *inode)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+	struct inode_entry *entry;
+
+	if (!S_ISDIR(inode->i_mode))
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		return;
 
 	if (type == FILE_INODE && !test_opt(sbi, DATA_FLUSH))
 		return;
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	spin_lock(&sbi->inode_lock[type]);
 	__remove_dirty_inode(inode, type);
 	spin_unlock(&sbi->inode_lock[type]);
+=======
+	entry = F2FS_I(inode)->dirty_dir;
+	list_del(&entry->list);
+	F2FS_I(inode)->dirty_dir = NULL;
+	clear_inode_flag(F2FS_I(inode), FI_DIRTY_DIR);
+	stat_dec_dirty_dir(sbi);
+	spin_unlock(&sbi->dir_inode_lock);
+	kmem_cache_free(inode_entry_slab, entry);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 }
 
 int f2fs_sync_dirty_inodes(struct f2fs_sb_info *sbi, enum inode_type type)
@@ -1322,10 +1373,13 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	__u32 crc32 = 0;
 	int i;
 	int cp_payload_blks = __cp_payload(sbi);
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	struct super_block *sb = sbi->sb;
 	struct curseg_info *seg_i = CURSEG_I(sbi, CURSEG_HOT_NODE);
 	u64 kbytes_written;
 	int err;
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	/* Flush all the NAT/SIT pages */
 	f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
@@ -1379,6 +1433,9 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 
 	/* update ckpt flag for checkpoint */
 	update_ckpt_flags(sbi, cpc);
+
+	/* set this flag to activate crc|cp_ver for recovery */
+	set_ckpt_flags(ckpt, CP_CRC_RECOVERY_FLAG);
 
 	/* update SIT/NAT bitmap */
 	get_sit_bitmap(sbi, __bitmap_ptr(sbi, SIT_BITMAP));
@@ -1453,6 +1510,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	commit_checkpoint(sbi, ckpt, start_blk);
 	f2fs_wait_on_all_pages_writeback(sbi);
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	/*
 	 * invalidate intermediate page cache borrowed from meta inode
 	 * which are used for migration of encrypted inode's blocks.
@@ -1462,10 +1520,14 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 				MAIN_BLKADDR(sbi), MAX_BLKADDR(sbi) - 1);
 
 	f2fs_release_ino_entry(sbi, false);
+=======
+	release_dirty_inode(sbi);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	f2fs_reset_fsync_node_info(sbi);
 
 	clear_sbi_flag(sbi, SBI_IS_DIRTY);
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	clear_sbi_flag(sbi, SBI_NEED_CP);
 	clear_sbi_flag(sbi, SBI_QUOTA_SKIP_FLUSH);
 	sbi->unusable_block_count = 0;
@@ -1482,6 +1544,9 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
 	f2fs_bug_on(sbi, get_pages(sbi, F2FS_DIRTY_DENTS));
 
 	return unlikely(f2fs_cp_error(sbi)) ? -EIO : 0;
+=======
+	__set_cp_next_pack(sbi);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 }
 
 /*

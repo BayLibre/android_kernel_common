@@ -1864,8 +1864,37 @@ static int f2fs_issue_discard(struct f2fs_sb_info *sbi,
 	return err;
 }
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 static bool add_discard_addrs(struct f2fs_sb_info *sbi, struct cp_control *cpc,
 							bool check_only)
+=======
+static void __add_discard_entry(struct f2fs_sb_info *sbi,
+		struct cp_control *cpc, struct seg_entry *se,
+		unsigned int start, unsigned int end)
+{
+	struct list_head *head = &SM_I(sbi)->discard_list;
+	struct discard_entry *new, *last;
+
+	if (!list_empty(head)) {
+		last = list_last_entry(head, struct discard_entry, list);
+		if (START_BLOCK(sbi, cpc->trim_start) + start ==
+						last->blkaddr + last->len) {
+			last->len += end - start;
+			goto done;
+		}
+	}
+
+	new = f2fs_kmem_cache_alloc(discard_entry_slab, GFP_NOFS);
+	INIT_LIST_HEAD(&new->list);
+	new->blkaddr = START_BLOCK(sbi, cpc->trim_start) + start;
+	new->len = end - start;
+	list_add_tail(&new->list, head);
+done:
+	SM_I(sbi)->nr_discards += end - start;
+}
+
+static void add_discard_addrs(struct f2fs_sb_info *sbi, struct cp_control *cpc)
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 {
 	int entries = SIT_VBLOCK_MAP_SIZE / sizeof(unsigned long);
 	int max_blocks = sbi->blocks_per_seg;
@@ -3376,7 +3405,11 @@ void f2fs_wait_on_block_writeback(struct inode *inode, block_t blkaddr)
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
 	struct page *cpage;
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	if (!f2fs_post_read_required(inode))
+=======
+	if (!is_valid_data_blkaddr(sbi, blkaddr))
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		return;
 
 	if (!is_valid_data_blkaddr(sbi, blkaddr))
@@ -4079,8 +4112,13 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 	int sit_blk_cnt = SIT_BLK_CNT(sbi);
 	unsigned int i, start, end;
 	unsigned int readed, start_blk = 0;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	int err = 0;
 	block_t total_node_blocks = 0;
+=======
+	int nrpages = MAX_BIO_BLOCKS(sbi);
+	int err = 0;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	do {
 		readed = f2fs_ra_meta_pages(sbi, start_blk, BIO_MAX_PAGES,
@@ -4093,7 +4131,10 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 			struct f2fs_sit_block *sit_blk;
 			struct page *page;
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 			se = &sit_i->sentries[start];
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 			page = get_current_sit_page(sbi, start);
 			if (IS_ERR(page))
 				return PTR_ERR(page);
@@ -4109,6 +4150,7 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 				total_node_blocks += se->valid_blocks;
 
 			/* build discard map only one time */
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 			if (is_set_ckpt_flags(sbi, CP_TRIMMED_FLAG)) {
 				memset(se->discard_map, 0xff,
 					SIT_VBLOCK_MAP_SIZE);
@@ -4122,12 +4164,19 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 			}
 
 			if (__is_large_section(sbi))
+=======
+			memcpy(se->discard_map, se->cur_valid_map, SIT_VBLOCK_MAP_SIZE);
+			sbi->discard_blks += sbi->blocks_per_seg - se->valid_blocks;
+
+			if (sbi->segs_per_sec > 1)
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 				get_sec_entry(sbi, start)->valid_blocks +=
 							se->valid_blocks;
 		}
 		start_blk += readed;
 	} while (start_blk < sit_blk_cnt);
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	down_read(&curseg->journal_rwsem);
 	for (i = 0; i < sits_in_cursum(journal); i++) {
 		unsigned int old_valid_blocks;
@@ -4182,6 +4231,42 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 		err = -EINVAL;
 	}
 
+=======
+	mutex_lock(&curseg->curseg_mutex);
+	for (i = 0; i < sits_in_cursum(sum); i++) {
+		struct f2fs_sit_entry sit;
+		struct seg_entry *se;
+		unsigned int old_valid_blocks;
+
+		start = le32_to_cpu(segno_in_journal(sum, i));
+		if (start >= MAIN_SEGS(sbi)) {
+			f2fs_msg(sbi->sb, KERN_ERR,
+					"Wrong journal entry on segno %u",
+					start);
+			set_sbi_flag(sbi, SBI_NEED_FSCK);
+			err = -EINVAL;
+			break;
+		}
+
+		se = &sit_i->sentries[start];
+		sit = sit_in_journal(sum, i);
+
+		old_valid_blocks = se->valid_blocks;
+
+		err = check_block_count(sbi, start, &sit);
+		if (err)
+			break;
+		seg_info_from_raw_sit(se, &sit);
+
+		memcpy(se->discard_map, se->cur_valid_map, SIT_VBLOCK_MAP_SIZE);
+		sbi->discard_blks += old_valid_blocks - se->valid_blocks;
+
+		if (sbi->segs_per_sec > 1)
+			get_sec_entry(sbi, start)->valid_blocks +=
+				se->valid_blocks - old_valid_blocks;
+	}
+	mutex_unlock(&curseg->curseg_mutex);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	return err;
 }
 

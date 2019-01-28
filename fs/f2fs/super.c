@@ -2395,9 +2395,12 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
 {
 	block_t segment_count, segs_per_sec, secs_per_zone;
 	block_t total_sections, blocks_per_seg;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	struct f2fs_super_block *raw_super = (struct f2fs_super_block *)
 					(bh->b_data + F2FS_SUPER_OFFSET);
 	struct super_block *sb = sbi->sb;
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	unsigned int blocksize;
 	size_t crc_offset = 0;
 	__u32 crc = 0;
@@ -2516,6 +2519,7 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
 			secs_per_zone, total_sections);
 		return 1;
 	}
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	if (le32_to_cpu(raw_super->extension_count) > F2FS_MAX_EXTENSION ||
 			raw_super->hot_ext_count > F2FS_MAX_EXTENSION ||
 			(le32_to_cpu(raw_super->extension_count) +
@@ -2524,6 +2528,12 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
 			"Corrupted extension count (%u + %u > %u)",
 			le32_to_cpu(raw_super->extension_count),
 			raw_super->hot_ext_count,
+=======
+	if (le32_to_cpu(raw_super->extension_count) > F2FS_MAX_EXTENSION) {
+		f2fs_msg(sb, KERN_INFO,
+			"Corrupted extension count (%u > %u)",
+			le32_to_cpu(raw_super->extension_count),
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 			F2FS_MAX_EXTENSION);
 		return 1;
 	}
@@ -2556,7 +2566,11 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
 	return 0;
 }
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 int f2fs_sanity_check_ckpt(struct f2fs_sb_info *sbi)
+=======
+int sanity_check_ckpt(struct f2fs_sb_info *sbi)
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 {
 	unsigned int total, fsmeta;
 	struct f2fs_super_block *raw_super = F2FS_RAW_SUPER(sbi);
@@ -2569,7 +2583,11 @@ int f2fs_sanity_check_ckpt(struct f2fs_sb_info *sbi)
 	unsigned int segment_count_main;
 	unsigned int cp_pack_start_sum, cp_payload;
 	block_t user_block_count;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	int i, j;
+=======
+	int i;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	total = le32_to_cpu(raw_super->segment_count);
 	fsmeta = le32_to_cpu(raw_super->segment_count_ckpt);
@@ -3209,6 +3227,7 @@ try_onemore:
 		goto free_meta_inode;
 	}
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	if (__is_set_ckpt_flags(F2FS_CKPT(sbi), CP_QUOTA_NEED_FSCK_FLAG))
 		set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
 
@@ -3219,6 +3238,8 @@ try_onemore:
 		goto free_devices;
 	}
 
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	sbi->total_valid_node_count =
 				le32_to_cpu(sbi->ckpt->valid_node_count);
 	percpu_counter_set(&sbi->total_valid_inode_count,
@@ -3340,7 +3361,11 @@ try_onemore:
 		if (!retry)
 			goto skip_recovery;
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 		err = f2fs_recover_fsync_data(sbi, false);
+=======
+		err = recover_fsync_data(sbi, false);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		if (err < 0) {
 			need_fsck = true;
 			f2fs_msg(sb, KERN_ERR,
@@ -3356,9 +3381,22 @@ try_onemore:
 				"Need to recover fsync data");
 			goto free_meta;
 		}
+	} else {
+		err = recover_fsync_data(sbi, true);
+
+		if (!f2fs_readonly(sb) && err > 0) {
+			err = -EINVAL;
+			f2fs_msg(sb, KERN_ERR,
+				"Need to recover fsync data");
+			goto free_kobj;
+		}
 	}
 skip_recovery:
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	/* f2fs_recover_fsync_data() cleared this already */
+=======
+	/* recover_fsync_data() cleared this already */
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	clear_sbi_flag(sbi, SBI_POR_DOING);
 
 	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
@@ -3426,10 +3464,15 @@ free_stats:
 free_nm:
 	f2fs_destroy_node_manager(sbi);
 free_sm:
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	f2fs_destroy_segment_manager(sbi);
 free_devices:
 	destroy_device_list(sbi);
 	kvfree(sbi->ckpt);
+=======
+	destroy_segment_manager(sbi);
+	kfree(sbi->ckpt);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 free_meta_inode:
 	make_bad_inode(sbi->meta_inode);
 	iput(sbi->meta_inode);

@@ -116,12 +116,15 @@ struct f2fs_super_block {
 /*
  * For checkpoint
  */
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 #define CP_DISABLED_FLAG		0x00001000
 #define CP_QUOTA_NEED_FSCK_FLAG		0x00000800
 #define CP_LARGE_NAT_BITMAP_FLAG	0x00000400
 #define CP_NOCRC_RECOVERY_FLAG	0x00000200
 #define CP_TRIMMED_FLAG		0x00000100
 #define CP_NAT_BITS_FLAG	0x00000080
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 #define CP_CRC_RECOVERY_FLAG	0x00000040
 #define CP_FASTBOOT_FLAG	0x00000020
 #define CP_FSCK_FLAG		0x00000010
@@ -539,6 +542,9 @@ enum {
 
 #define S_SHIFT 12
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 #define	F2FS_DEF_PROJID		0	/* default project ID */
 
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 #endif  /* _LINUX_F2FS_FS_H */

@@ -65,6 +65,7 @@ static struct fsync_inode_entry *get_fsync_inode(struct list_head *head,
 	return NULL;
 }
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 static struct fsync_inode_entry *add_fsync_inode(struct f2fs_sb_info *sbi,
 			struct list_head *head, nid_t ino, bool quota_inode)
 {
@@ -102,6 +103,25 @@ static void del_fsync_inode(struct fsync_inode_entry *entry, int drop)
 		/* inode should not be recovered, drop it */
 		f2fs_inode_synced(entry->inode);
 	}
+=======
+static struct fsync_inode_entry *add_fsync_inode(struct list_head *head,
+							struct inode *inode)
+{
+	struct fsync_inode_entry *entry;
+
+	entry = kmem_cache_alloc(fsync_entry_slab, GFP_F2FS_ZERO);
+	if (!entry)
+		return NULL;
+
+	entry->inode = inode;
+	list_add_tail(&entry->list, head);
+
+	return entry;
+}
+
+static void del_fsync_inode(struct fsync_inode_entry *entry)
+{
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	iput(entry->inode);
 	list_del(&entry->list);
 	kmem_cache_free(fsync_entry_slab, entry);
@@ -122,16 +142,35 @@ static int recover_dentry(struct inode *inode, struct page *ipage,
 
 	entry = get_fsync_inode(dir_list, pino);
 	if (!entry) {
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 		entry = add_fsync_inode(F2FS_I_SB(inode), dir_list,
 							pino, false);
 		if (IS_ERR(entry)) {
 			dir = ERR_CAST(entry);
 			err = PTR_ERR(entry);
+=======
+		dir = f2fs_iget(inode->i_sb, pino);
+		if (IS_ERR(dir)) {
+			err = PTR_ERR(dir);
+			goto out;
+		}
+
+		entry = add_fsync_inode(dir_list, dir);
+		if (!entry) {
+			err = -ENOMEM;
+			iput(dir);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 			goto out;
 		}
 	}
 
 	dir = entry->inode;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
+=======
+
+	if (file_enc_name(inode))
+		return 0;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	memset(&fname, 0, sizeof(struct fscrypt_name));
 	fname.disk_name.len = le32_to_cpu(raw_inode->i_namelen);
@@ -171,6 +210,7 @@ retry:
 		f2fs_delete_entry(de, page, dir, einode);
 		iput(einode);
 		goto retry;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	} else if (IS_ERR(page)) {
 		err = PTR_ERR(page);
 	} else {
@@ -179,6 +219,11 @@ retry:
 	}
 	if (err == -ENOMEM)
 		goto retry;
+=======
+	}
+	err = __f2fs_add_link(dir, &name, inode, inode->i_ino, inode->i_mode);
+
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	goto out;
 
 out_put:
@@ -294,6 +339,7 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
 				bool check_only)
 {
 	struct curseg_info *curseg;
+	struct inode *inode;
 	struct page *page = NULL;
 	block_t blkaddr;
 	unsigned int loop_cnt = 0;
@@ -339,16 +385,33 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
 			 * CP | dnode(F) | inode(DF)
 			 * For this case, we should not give up now.
 			 */
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 			entry = add_fsync_inode(sbi, head, ino_of_node(page),
 								quota_inode);
 			if (IS_ERR(entry)) {
 				err = PTR_ERR(entry);
+=======
+			inode = f2fs_iget(sbi->sb, ino_of_node(page));
+			if (IS_ERR(inode)) {
+				err = PTR_ERR(inode);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 				if (err == -ENOENT) {
 					err = 0;
 					goto next;
 				}
 				break;
 			}
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
+=======
+
+			/* add this fsync inode to the list */
+			entry = add_fsync_inode(head, inode);
+			if (!entry) {
+				err = -ENOMEM;
+				iput(inode);
+				break;
+			}
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 		}
 		entry->blkaddr = blkaddr;
 
@@ -381,7 +444,11 @@ static void destroy_fsync_dnodes(struct list_head *head, int drop)
 	struct fsync_inode_entry *entry, *tmp;
 
 	list_for_each_entry_safe(entry, tmp, head, list)
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 		del_fsync_inode(entry, drop);
+=======
+		del_fsync_inode(entry);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 }
 
 static int check_index_in_prev_nodes(struct f2fs_sb_info *sbi,
@@ -618,7 +685,11 @@ out:
 }
 
 static int recover_data(struct f2fs_sb_info *sbi, struct list_head *inode_list,
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 		struct list_head *tmp_inode_list, struct list_head *dir_list)
+=======
+						struct list_head *dir_list)
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 {
 	struct curseg_info *curseg;
 	struct page *page = NULL;
@@ -675,7 +746,11 @@ static int recover_data(struct f2fs_sb_info *sbi, struct list_head *inode_list,
 		}
 
 		if (entry->blkaddr == blkaddr)
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 			list_move_tail(&entry->list, tmp_inode_list);
+=======
+			del_fsync_inode(entry);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 next:
 		/* check next segment */
 		blkaddr = next_blkaddr_of_node(page);
@@ -686,13 +761,27 @@ next:
 	return err;
 }
 
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+=======
+int recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 {
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	struct list_head inode_list, tmp_inode_list;
 	struct list_head dir_list;
+=======
+	struct curseg_info *curseg = CURSEG_I(sbi, CURSEG_WARM_NODE);
+	struct list_head inode_list;
+	struct list_head dir_list;
+	block_t blkaddr;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	int err;
 	int ret = 0;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	unsigned long s_flags = sbi->sb->s_flags;
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	bool need_writecp = false;
 #ifdef CONFIG_QUOTA
 	int quota_enabled;
@@ -719,28 +808,46 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
 	}
 
 	INIT_LIST_HEAD(&inode_list);
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	INIT_LIST_HEAD(&tmp_inode_list);
+=======
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	INIT_LIST_HEAD(&dir_list);
 
 	/* prevent checkpoint */
 	mutex_lock(&sbi->cp_mutex);
 
 	/* step #1: find fsynced inode numbers */
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	err = find_fsync_dnodes(sbi, &inode_list, check_only);
 	if (err || list_empty(&inode_list))
 		goto skip;
+=======
+	err = find_fsync_dnodes(sbi, &inode_list);
+	if (err || list_empty(&inode_list))
+		goto out;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	if (check_only) {
 		ret = 1;
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 		goto skip;
+=======
+		goto out;
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	}
 
 	need_writecp = true;
 
 	/* step #2: recover data */
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	err = recover_data(sbi, &inode_list, &tmp_inode_list, &dir_list);
+=======
+	err = recover_data(sbi, &inode_list, &dir_list);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	if (!err)
 		f2fs_bug_on(sbi, !list_empty(&inode_list));
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	else {
 		/* restore s_flags to let iput() trash data */
 		sbi->sb->s_flags = s_flags;
@@ -748,6 +855,10 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
 skip:
 	destroy_fsync_dnodes(&inode_list, err);
 	destroy_fsync_dnodes(&tmp_inode_list, err);
+=======
+out:
+	destroy_fsync_dnodes(&inode_list);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 
 	/* truncate meta pages to be used by the recovery */
 	truncate_inode_pages_range(META_MAPPING(sbi),
@@ -756,9 +867,28 @@ skip:
 	if (err) {
 		truncate_inode_pages_final(NODE_MAPPING(sbi));
 		truncate_inode_pages_final(META_MAPPING(sbi));
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	} else {
 		clear_sbi_flag(sbi, SBI_POR_DOING);
+=======
 	}
+
+	clear_sbi_flag(sbi, SBI_POR_DOING);
+	if (err)
+		set_ckpt_flags(sbi->ckpt, CP_ERROR_FLAG);
+	mutex_unlock(&sbi->cp_mutex);
+
+	/* let's drop all the directory inodes for clean checkpoint */
+	destroy_fsync_dnodes(&dir_list);
+
+	if (!err && need_writecp) {
+		struct cp_control cpc = {
+			.reason = CP_RECOVERY,
+		};
+		write_checkpoint(sbi, &cpc);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
+	}
+<<<<<<< HEAD   (d0c391 UPSTREAM: dm: do not allow readahead to limit IO size)
 	mutex_unlock(&sbi->cp_mutex);
 
 	/* let's drop all the directory inodes for clean checkpoint */
@@ -784,5 +914,9 @@ out:
 #endif
 	sbi->sb->s_flags = s_flags; /* Restore MS_RDONLY status */
 
+=======
+
+	kmem_cache_destroy(fsync_entry_slab);
+>>>>>>> BRANCH (626b00 Linux 4.4.172)
 	return ret ? ret: err;
 }
