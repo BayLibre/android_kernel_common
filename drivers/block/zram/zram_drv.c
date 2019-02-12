@@ -61,6 +61,11 @@ static int zram_slot_trylock(struct zram *zram, u32 index)
 	return bit_spin_trylock(ZRAM_LOCK, &zram->table[index].flags);
 }
 
+static int zram_slot_trylock(struct zram *zram, u32 index)
+{
+	return bit_spin_trylock(ZRAM_LOCK, &zram->table[index].value);
+}
+
 static void zram_slot_lock(struct zram *zram, u32 index)
 {
 	bit_spin_lock(ZRAM_LOCK, &zram->table[index].flags);
@@ -570,7 +575,10 @@ retry:
 	if (test_and_set_bit(blk_idx, zram->bitmap))
 		goto retry;
 
+<<<<<<< HEAD   (1b8918 ANDROID: Turn xt_owner module on)
 	atomic64_inc(&zram->stats.bd_count);
+=======
+>>>>>>> BRANCH (43d3d5 Linux 4.19.21)
 	return blk_idx;
 }
 
@@ -578,7 +586,11 @@ static void free_block_bdev(struct zram *zram, unsigned long blk_idx)
 {
 	int was_set;
 
+<<<<<<< HEAD   (1b8918 ANDROID: Turn xt_owner module on)
 	was_set = test_and_clear_bit(blk_idx, zram->bitmap);
+=======
+	was_set = test_and_clear_bit(entry, zram->bitmap);
+>>>>>>> BRANCH (43d3d5 Linux 4.19.21)
 	WARN_ON_ONCE(!was_set);
 	atomic64_dec(&zram->stats.bd_count);
 }

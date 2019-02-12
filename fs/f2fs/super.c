@@ -1086,6 +1086,12 @@ static void f2fs_put_super(struct super_block *sb)
 	 */
 	f2fs_destroy_stats(sbi);
 
+	/*
+	 * iput() can update stat information, if f2fs_write_checkpoint()
+	 * above failed with error.
+	 */
+	f2fs_destroy_stats(sbi);
+
 	/* destroy f2fs internal modules */
 	f2fs_destroy_node_manager(sbi);
 	f2fs_destroy_segment_manager(sbi);
@@ -3413,7 +3419,10 @@ free_node_inode:
 	f2fs_release_ino_entry(sbi, true);
 	truncate_inode_pages_final(NODE_MAPPING(sbi));
 	iput(sbi->node_inode);
+<<<<<<< HEAD   (1b8918 ANDROID: Turn xt_owner module on)
 	sbi->node_inode = NULL;
+=======
+>>>>>>> BRANCH (43d3d5 Linux 4.19.21)
 free_stats:
 	f2fs_destroy_stats(sbi);
 free_nm:
