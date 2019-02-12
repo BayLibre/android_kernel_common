@@ -85,6 +85,7 @@ ipv6header_mt6(const struct sk_buff *skb, struct xt_action_param *par)
 			break;
 		case NEXTHDR_FRAGMENT:
 			temp |= MASK_FRAGMENT;
+			/* buggy on non initial fragment, if ext header inside frag */
 			break;
 		case NEXTHDR_AUTH:
 			temp |= MASK_AH;
@@ -92,7 +93,7 @@ ipv6header_mt6(const struct sk_buff *skb, struct xt_action_param *par)
 		case NEXTHDR_DEST:
 			temp |= MASK_DSTOPTS;
 			break;
-		default:
+		default: /* unreachable: NONE & ESP handled earlier */
 			return false;
 		}
 
