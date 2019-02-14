@@ -1,0 +1,651 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da161dc9_9f8548f9",
+        "filename": "block/bio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "bio_clone_crypt_context()",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbc364a3_127338c1",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "This notice doesn\u0027t really make sense because (a) there\u0027s no Copyright line, (b) the license text is unusually verbose, and (c) the text says GPLv2+ but then at the end says GPLv2 only.  Is this based on one of the prior patches by one of the other people working on this?  If so, then all you should need is:\n\n// SPDX-License-Identifier: GPL-2.0\n/*\n * Copyright (whatever the previous copyright line was, if any of the original code actually remains)\n * Copyright 2019 Google LLC\n */",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "135af7f5_63ab146c",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "You can use the \u0027sparse\u0027 program to check for endianness bugs.  \u0027make C\u003d2 drivers/scsi/ufs/\u0027 should work after installing \u0027sparse\u0027, see https://sparse.wiki.kernel.org/index.php/Main_Page",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54a7d1bd_1fcc076e",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "This is a much more verbose way to write:\n\n        if (data_unit_size \u003c 512 || data_unit_size \u003e 65536 ||\n            !is_power_of_2(data_unit_size))\n                return -EINVAL;\n                \n        *ufs_data_mask \u003d data_unit_size / 512;\n        return 0;",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 10
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a2936b1_e7068d57",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "What\u0027s a crytpo?",
+      "range": {
+        "startLine": 78,
+        "startChar": 58,
+        "endLine": 78,
+        "endChar": 64
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4334f415_36c6725a",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "In comments like this, say \u00270 or a -errno value\u0027 rather than 0 or non-zero.",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7547cf97_7ab1d80b",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Avoid random NULL checks unless there is a reason for the thing to be optional (NULL).",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 2
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0edc53d_6c0e116e",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "The key size validation is broken, as this allows e.g. 64 bytes for AES-CBC.  AES-512 does not exist :-)  I think it would be easiest to just whitelist the allowed sizes for each algorithm.  AES-XTS allows 32, 48, 64; the others allow 16 and 32.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 3
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63c74220_6cd13108",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "This is redundant because if there\u0027s no crypto support, then num_crypto_cap \u003d\u003d 0 so then by definition the capability index will be invalid.",
+      "range": {
+        "startLine": 132,
+        "startChar": 5,
+        "endLine": 132,
+        "endChar": 35
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eb56587_ac8837d1",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Don\u0027t you need to pass in the key size that matches the capability?  For that matter, why is the key size passed in here at all when a capability with that key size was already selected?",
+      "range": {
+        "startLine": 134,
+        "startChar": 5,
+        "endLine": 134,
+        "endChar": 45
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1145f729_117b5ace",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Are there any ordering requirements about which part of the crypto_cfg has to be written first?  When does the hardware know to actually update its internal state with the key?",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 6
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "897e4de7_5058b245",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Why are the keys being stored in memory?\n\nI thought the whole point of exposing keyslots above the block layer is that it allows for the key to not be in memory.\n\nIf the key is in memory anyway, then wouldn\u0027t it be much easier for the API to just take in the key, and then the mapping to a keyslot would be an implementation detail in the UFS driver?",
+      "range": {
+        "startLine": 167,
+        "startChar": 1,
+        "endLine": 167,
+        "endChar": 57
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c11abb7_8e943096",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "What\u0027s this for?  It\u0027s never called.",
+      "range": {
+        "startLine": 296,
+        "startChar": 4,
+        "endLine": 296,
+        "endChar": 33
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b64cd8e0_c4167376",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "What is this for?  It\u0027s never called.",
+      "range": {
+        "startLine": 344,
+        "startChar": 5,
+        "endLine": 344,
+        "endChar": 24
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbe14066_246a1be5",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "If a variable only holds 0 or a -errno value, call it \u0027err\u0027.  \u0027ret\u0027 is more vague.",
+      "range": {
+        "startLine": 358,
+        "startChar": 5,
+        "endLine": 358,
+        "endChar": 8
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26308e23_d9453696",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Unnecessary cast.",
+      "range": {
+        "startLine": 374,
+        "startChar": 10,
+        "endLine": 374,
+        "endChar": 15
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5910c27_8bd3716d",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Prefer sizeof(var) to sizeof(type).\n\ne.g. sizeof(hba-\u003ecrypto_cap_array[0]) here.",
+      "range": {
+        "startLine": 377,
+        "startChar": 17,
+        "endLine": 377,
+        "endChar": 43
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97322079_b787bf4f",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "This is already zeroed by devm_kcalloc(), so no need to zero it again.",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd51d94d_3fb80890",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "const",
+      "range": {
+        "startLine": 416,
+        "startChar": 0,
+        "endLine": 416,
+        "endChar": 6
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e24205_42cb0bd3",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Use consistent function names.\n\ne.g. ufshcd_crypto_keyslot_program() instead of ufshcd_crypto_program_key(), since the former matches .keyslot_program().",
+      "range": {
+        "startLine": 417,
+        "startChar": 0,
+        "endLine": 421,
+        "endChar": 44
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4654d4a5_52590ce6",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "This header isn\u0027t added until the next patch.  Everything needs to build after each patch.",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5a267b2_86d78eb3",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Many of these functions aren\u0027t used outside of ufshcd-crypto.c.  Make them \u0027static\u0027 instead.",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2e54150_0bc382d0",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "/* _UFSHCD_CRYPTO_H */",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 26
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6705065d_8cd74ae7",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2489,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "If this is a recoverable error, don\u0027t use BUG(), even if it\u0027s in fact a software bug.  Do something appropriate to handle it instead.",
+      "range": {
+        "startLine": 2489,
+        "startChar": 3,
+        "endLine": 2489,
+        "endChar": 6
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f1b6c90_dbf09246",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2500,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "No need for the \u0027\u0026 0xFFFFFFFF\u0027.",
+      "range": {
+        "startLine": 2499,
+        "startChar": 0,
+        "endLine": 2500,
+        "endChar": 82
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a78a8a2_b2434e79",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Why not u64 here, and turn it into lower/upper only when actually programming the hardware?",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d319b8de_5dddcef7",
+        "filename": "drivers/scsi/ufs/ufshci.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Move this comment directly above union ufs_crypto_cap_entry.",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a4fa9f1_8ab06365",
+        "filename": "drivers/scsi/ufs/ufshci.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Fix the indentation here; the values should be aligned.",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 346,
+        "endChar": 37
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d286d0a6_b10ad2f9",
+        "filename": "include/linux/blk_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "unsigned int.  Or consider using \u0027int key_slot\u0027 and having \u0027key_slot \u003c 0\u0027 mean no key is specified, so then the \u0027enabled\u0027 flag isn\u0027t needed.",
+      "range": {
+        "startLine": 142,
+        "startChar": 1,
+        "endLine": 142,
+        "endChar": 5
+      },
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f11de3ed_41a492e6",
+        "filename": "include/linux/blk_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "This needs to be conditional on a kconfig option, maybe CONFIG_BLK_INLINE_ENCRYPTION.  People not interested in the feature will expect to be able to disable it without any bloat left.  Most Linux based systems out there will not need this.\n\nAlso, the generic block layer changes need to go into a separate patch from the UFS changes.",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef78af43_2b95b9bc",
+        "filename": "include/linux/blkdev.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-02-14T23:19:57Z",
+      "side": 1,
+      "message": "Why is this needed, vs. using request::bio-\u003ebi_crypt_context?",
+      "revId": "47f21f1bf010b47f228ca4d8925bce4290dcf0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
