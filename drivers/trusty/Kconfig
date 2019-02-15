@@ -11,6 +11,12 @@ config TRUSTY
 config TRUSTY_CUSTOM_SMC
 	bool
 
+config TRUSTY_HAFNIUM
+	tristate "Trusty hafnium support"
+	depends on HAFNIUM
+	select TRUSTY_CUSTOM_SMC
+	default y
+
 config TRUSTY_FIQ
 	tristate
 	depends on TRUSTY
