@@ -55,6 +55,7 @@ int trusty_call_notifier_register(struct device *dev,
 				  struct notifier_block *n);
 int trusty_call_notifier_unregister(struct device *dev,
 				    struct notifier_block *n);
+void trusty_call_set_atomic(struct device *dev);
 const char *trusty_version_str_get(struct device *dev);
 u32 trusty_get_api_version(struct device *dev);
 

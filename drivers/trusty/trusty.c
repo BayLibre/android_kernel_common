@@ -39,6 +39,7 @@ struct trusty_state {
 	struct completion cpu_idle_completion;
 	char *version_str;
 	u32 api_version;
+	bool atomic_trusty_call;
 	struct device *dev;
 #ifdef CONFIG_TRUSTY_CUSTOM_SMC
 	struct trusty_custom_smc *smc;
@@ -163,13 +164,21 @@ static ulong trusty_std_call_helper(struct device *dev, ulong smcnr,
 {
 	ulong ret;
 	int sleep_time = 1;
+	bool atomic_trusty_call;
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
 
 	while (true) {
 		local_irq_disable();
+		atomic_trusty_call = s->atomic_trusty_call;
 		atomic_notifier_call_chain(&s->notifier, TRUSTY_CALL_PREPARE,
 					   NULL);
+		if (!atomic_trusty_call) {
+			local_irq_enable();
+		}
 		ret = trusty_std_call_inner(dev, smcnr, a0, a1, a2);
+		if (!atomic_trusty_call) {
+			local_irq_disable();
+		}
 		atomic_notifier_call_chain(&s->notifier, TRUSTY_CALL_RETURNED,
 					   NULL);
 		local_irq_enable();
@@ -263,6 +272,14 @@ int trusty_call_notifier_unregister(struct device *dev,
 	return atomic_notifier_chain_unregister(&s->notifier, n);
 }
 EXPORT_SYMBOL(trusty_call_notifier_unregister);
+
+/* Call before trusty_call_notifier_register to ... */
+void trusty_call_set_atomic(struct device *dev)
+{
+	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
+	s->atomic_trusty_call = true;
+}
+EXPORT_SYMBOL(trusty_call_set_atomic);
 
 static int trusty_remove_child(struct device *dev, void *data)
 {

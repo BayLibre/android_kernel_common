@@ -480,6 +480,8 @@ static int trusty_irq_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, is);
 
+	trusty_call_set_atomic(is->trusty_dev);
+
 	is->trusty_call_notifier.notifier_call = trusty_irq_call_notify;
 	ret = trusty_call_notifier_register(is->trusty_dev,
 					    &is->trusty_call_notifier);
