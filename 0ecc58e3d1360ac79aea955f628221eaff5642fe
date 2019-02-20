@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d20678b_cfdc5a9c",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5934,
+      "author": {
+        "id": 1130863
+      },
+      "writtenOn": "2019-02-20T09:50:28Z",
+      "side": 1,
+      "message": "return min_t(unsigned long, cpu_util(cpu) + cpu_util_rt(cpu), capacity_orig_of(cpu));",
+      "range": {
+        "startLine": 5934,
+        "startChar": 0,
+        "endLine": 5934,
+        "endChar": 42
+      },
+      "revId": "0ecc58e3d1360ac79aea955f628221eaff5642fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2974b474_73b9f012",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5942,
+      "author": {
+        "id": 1130863
+      },
+      "writtenOn": "2019-02-20T09:50:28Z",
+      "side": 1,
+      "message": "return min_t(unsigned long, cpu_util(cpu) + cpu_util_rt(cpu), capacity_orig_of(cpu));",
+      "range": {
+        "startLine": 5942,
+        "startChar": 0,
+        "endLine": 5942,
+        "endChar": 41
+      },
+      "revId": "0ecc58e3d1360ac79aea955f628221eaff5642fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
