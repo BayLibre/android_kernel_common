@@ -22,6 +22,30 @@
       "revId": "3bc419d8deb2e3d76af538c2f0994676cb59e741",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c90f4a2_029b121f",
+        "filename": "Documentation/filesystems/overlayfs.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2019-02-21T22:07:12Z",
+      "side": 1,
+      "message": "Yes, it is a security hole (and why upstream is trying to find another solution). It is not a _real_ problem for Android because we do not have any places on /vendor or /system that we are _not_ allowed to read in the directory in the first place ... that we care about in an adb remount developer condition.\n\n(asked and answered on the kernel list, so you are not the only one)",
+      "parentUuid": "fa378034_38c222a8",
+      "range": {
+        "startLine": 100,
+        "startChar": 47,
+        "endLine": 103,
+        "endChar": 6
+      },
+      "revId": "3bc419d8deb2e3d76af538c2f0994676cb59e741",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
