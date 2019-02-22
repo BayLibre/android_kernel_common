@@ -15,6 +15,7 @@
 #include <linux/trusty/smcall.h>
 #include <linux/trusty/trusty.h>
 #include <linux/notifier.h>
+#include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/mm.h>
 #include <linux/mod_devicetable.h>
@@ -39,6 +40,8 @@ struct trusty_log_state {
 	uint32_t get;
 
 	struct page *log_pages;
+	struct scatterlist sg;
+	trusty_shared_mem_id_t log_pages_shared_mem_id;
 
 	struct notifier_block call_notifier;
 	struct notifier_block panic_notifier;
@@ -163,7 +166,7 @@ static int trusty_log_probe(struct platform_device *pdev)
 {
 	struct trusty_log_state *s;
 	int result;
-	phys_addr_t pa;
+	trusty_shared_mem_id_t mem_id;
 
 	dev_dbg(&pdev->dev, "%s\n", __func__);
 	if (!trusty_supports_logging(pdev->dev.parent)) {
@@ -188,14 +191,22 @@ static int trusty_log_probe(struct platform_device *pdev)
 	}
 	s->log = page_address(s->log_pages);
 
-	pa = page_to_phys(s->log_pages);
+	sg_init_one(&s->sg, s->log, TRUSTY_LOG_SIZE);
+	result = trusty_share_memory(s->trusty_dev, &mem_id, &s->sg, 1,
+				     PAGE_KERNEL);
+	if (result) {
+		pr_err("trusty_share_memory failed: %d\n", result);
+		goto err_share_memory;
+	}
+	s->log_pages_shared_mem_id = mem_id;
+
 	result = trusty_std_call32(s->trusty_dev,
 				   SMC_SC_SHARED_LOG_ADD,
-				   (u32)(pa), (u32)(pa >> 32),
+				   (u32)(mem_id), (u32)(mem_id >> 32),
 				   TRUSTY_LOG_SIZE);
 	if (result < 0) {
-		pr_err("trusty std call (SMC_SC_SHARED_LOG_ADD) failed: %d %pa\n",
-		       result, &pa);
+		pr_err("trusty std call (SMC_SC_SHARED_LOG_ADD) failed: %d 0x%llx\n",
+		       result, mem_id);
 		goto error_std_call;
 	}
 
@@ -224,9 +235,19 @@ error_panic_notifier:
 	trusty_call_notifier_unregister(s->trusty_dev, &s->call_notifier);
 error_call_notifier:
 	trusty_std_call32(s->trusty_dev, SMC_SC_SHARED_LOG_RM,
-			  (u32)pa, (u32)(pa >> 32), 0);
+			  (u32)mem_id, (u32)(mem_id >> 32), 0);
 error_std_call:
-	__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	if (trusty_revoke_memory(s->trusty_dev, mem_id, &s->sg, 1)) {
+		pr_err("trusty_revoke_memory failed: %d 0x%llx\n", result,
+		       mem_id);
+		/*
+		 * It is not safe to free this memory if trusty_revoke_memory
+		 * fails. Leak it in that case.
+		 */
+	} else {
+err_share_memory:
+		__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	}
 error_alloc_log:
 	kfree(s);
 error_alloc_state:
@@ -237,7 +258,7 @@ static int trusty_log_remove(struct platform_device *pdev)
 {
 	int result;
 	struct trusty_log_state *s = platform_get_drvdata(pdev);
-	phys_addr_t pa = page_to_phys(s->log_pages);
+	trusty_shared_mem_id_t mem_id = s->log_pages_shared_mem_id;
 
 	dev_dbg(&pdev->dev, "%s\n", __func__);
 
@@ -246,12 +267,22 @@ static int trusty_log_remove(struct platform_device *pdev)
 	trusty_call_notifier_unregister(s->trusty_dev, &s->call_notifier);
 
 	result = trusty_std_call32(s->trusty_dev, SMC_SC_SHARED_LOG_RM,
-				   (u32)pa, (u32)(pa >> 32), 0);
+				   (u32)mem_id, (u32)(mem_id >> 32), 0);
 	if (result) {
 		pr_err("trusty std call (SMC_SC_SHARED_LOG_RM) failed: %d\n",
 		       result);
 	}
-	__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	result = trusty_revoke_memory(s->trusty_dev, mem_id, &s->sg, 1);
+	if (result) {
+		pr_err("trusty failed to remove shared memory: %d\n",
+		       result);
+	} else {
+		/*
+		 * It is not safe to free this memory if trusty_revoke_memory
+		 * fails. Leak it in that case.
+		 */
+		__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	}
 	kfree(s);
 
 	return 0;
