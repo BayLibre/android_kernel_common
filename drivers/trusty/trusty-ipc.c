@@ -30,6 +30,7 @@
 #include <linux/virtio_ids.h>
 #include <linux/virtio_config.h>
 
+#include <linux/trusty/trusty.h>
 #include <linux/trusty/trusty_ipc.h>
 
 #define MAX_DEVICES			4
@@ -171,7 +172,7 @@ static int _match_data(int id, void *p, void *data)
 	return (p == data);
 }
 
-static void *_alloc_shareable_mem(size_t sz, phys_addr_t *ppa, gfp_t gfp)
+static void *_alloc_shareable_mem(size_t sz, gfp_t gfp)
 {
 	return alloc_pages_exact(sz, gfp);
 }
@@ -191,9 +192,11 @@ static struct tipc_msg_buf *_alloc_msg_buf(size_t sz)
 		return NULL;
 
 	/* allocate buffer that can be shared with secure world */
-	mb->buf_va = _alloc_shareable_mem(sz, &mb->buf_pa, GFP_KERNEL);
+	mb->buf_va = _alloc_shareable_mem(sz, GFP_KERNEL);
 	if (!mb->buf_va)
 		goto err_alloc;
+
+	mb->buf_pa = virt_to_phys(mb->buf_va);
 
 	mb->buf_sz = sz;
 
@@ -266,6 +269,7 @@ static bool _put_txbuf_locked(struct tipc_virtio_dev *vds,
 
 static struct tipc_msg_buf *_get_txbuf_locked(struct tipc_virtio_dev *vds)
 {
+	int ret;
 	struct tipc_msg_buf *mb;
 
 	if (vds->state != VDS_ONLINE)
@@ -288,6 +292,17 @@ static struct tipc_msg_buf *_get_txbuf_locked(struct tipc_virtio_dev *vds)
 
 		vds->msg_buf_cnt++;
 	}
+#if 0
+	ret = trusty_share_memory(vds->vdev->dev.parent->parent, mb->buf_pa,
+				  mb->buf_sz, 0);
+	if (ret) {
+		dev_err(&vds->vdev->dev,
+			"trusty_share_memory failed: %d txbuf at %pa\n",
+			ret, &mb->buf_pa);
+		_put_txbuf_locked(vds, mb);
+		return ERR_PTR(-EAGAIN);
+	}
+#endif
 	return mb;
 }
 
@@ -364,8 +379,16 @@ static int vds_queue_txbuf(struct tipc_virtio_dev *vds,
 	mutex_lock(&vds->lock);
 	if (vds->state == VDS_ONLINE) {
 		sg_init_one(&sg, mb->buf_va, mb->wpos);
-		err = virtqueue_add_outbuf(vds->txvq, &sg, 1, mb, GFP_KERNEL);
-		need_notify = virtqueue_kick_prepare(vds->txvq);
+		err = trusty_share_memory(vds->vdev->dev.parent->parent, mb->buf_pa, mb->buf_sz, 0);
+		if (err) {
+			dev_err(&vds->vdev->dev,
+				"trusty_share_memory failed: %d txbuf at %pa\n",
+				err, &mb->buf_pa);
+			err = -EAGAIN;
+		} else {
+			err = virtqueue_add_outbuf(vds->txvq, &sg, 1, mb, GFP_KERNEL);
+			need_notify = virtqueue_kick_prepare(vds->txvq);
+		}
 	} else {
 		err = -ENODEV;
 	}
@@ -512,7 +535,10 @@ EXPORT_SYMBOL(tipc_create_channel);
 
 struct tipc_msg_buf *tipc_chan_get_rxbuf(struct tipc_chan *chan)
 {
-	return vds_alloc_msg_buf(chan->vds);
+	struct tipc_msg_buf *buf = vds_alloc_msg_buf(chan->vds);
+	if (!buf)
+		return NULL;
+	return buf;
 }
 EXPORT_SYMBOL(tipc_chan_get_rxbuf);
 
@@ -1158,7 +1184,7 @@ static int _create_cdev_node(struct device *parent,
 	}
 
 	/* allocate minor */
-	ret = idr_alloc(&tipc_devices, cdn, 0, MAX_DEVICES-1, GFP_KERNEL);
+	ret = idr_alloc(&tipc_devices, cdn, 0, MAX_DEVICES, GFP_KERNEL);
 	if (ret < 0) {
 		dev_dbg(parent, "%s: failed (%d) to get id\n",
 			__func__, ret);
@@ -1448,6 +1474,12 @@ static int _handle_rxbuf(struct tipc_virtio_dev *vds,
 drop_it:
 	/* add the buffer back to the virtqueue */
 	sg_init_one(&sg, rxbuf->buf_va, rxbuf->buf_sz);
+	err = trusty_share_memory(vds->vdev->dev.parent->parent, rxbuf->buf_pa, rxbuf->buf_sz, 0);
+	if (err) {
+		dev_err(dev, "trusty_share_memory failed: %d rxbuf at %pa\n",
+			err, &rxbuf->buf_pa);
+		return err;
+	}
 	err = virtqueue_add_inbuf(vds->rxvq, &sg, 1, rxbuf, GFP_KERNEL);
 	if (err < 0) {
 		dev_err(dev, "failed to add a virtqueue buffer: %d\n", err);
@@ -1553,6 +1585,13 @@ static int tipc_virtio_probe(struct virtio_device *vdev)
 		if (!rxbuf) {
 			dev_err(&vdev->dev, "failed to allocate rx buffer\n");
 			err = -ENOMEM;
+			goto err_free_rx_buffers;
+		}
+
+		err = trusty_share_memory(vdev->dev.parent->parent, rxbuf->buf_pa, rxbuf->buf_sz, 0);
+		if (WARN_ON(err)) {
+			pr_err("trusty_share_memory failed: %d %pa\n", err, &rxbuf->buf_pa);
+			_free_msg_buf(rxbuf);
 			goto err_free_rx_buffers;
 		}
 

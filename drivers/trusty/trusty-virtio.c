@@ -306,6 +306,7 @@ static struct virtqueue *_find_vq(struct virtio_device *vdev,
 	struct trusty_vring *tvr;
 	struct trusty_vdev *tvdev = vdev_to_tvdev(vdev);
 	phys_addr_t pa;
+	int ret;
 
 	if (!name)
 		return ERR_PTR(-EINVAL);
@@ -333,6 +334,13 @@ static struct virtqueue *_find_vq(struct virtio_device *vdev,
 	 */
 	tvr->vr_descr->pa = (u32)(pa >> 32);
 
+	ret = trusty_share_memory(tvdev->tctx->dev->parent, pa, tvr->size, 0);
+	if (ret) {
+		dev_err(&vdev->dev, "trusty_share_memory failed: %d %pa\n",
+			ret, &pa);
+		goto err_share_memory;
+	}
+
 	dev_info(&vdev->dev, "vring%d: va(pa)  %p(%llx) qsz %d notifyid %d\n",
 		 id, tvr->vaddr, (u64)tvr->paddr, tvr->elem_num, tvr->notifyid);
 
@@ -350,6 +358,8 @@ static struct virtqueue *_find_vq(struct virtio_device *vdev,
 	return tvr->vq;
 
 err_new_virtqueue:
+	/* TODO: unshare memory */
+err_share_memory:
 	free_pages_exact(tvr->vaddr, tvr->size);
 	tvr->vaddr = NULL;
 	return ERR_PTR(-ENOMEM);
