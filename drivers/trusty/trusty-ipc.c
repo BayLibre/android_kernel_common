@@ -30,6 +30,7 @@
 #include <linux/virtio_ids.h>
 #include <linux/virtio_config.h>
 
+#include <linux/trusty/trusty.h>
 #include <linux/trusty/trusty_ipc.h>
 
 #define MAX_DEVICES			4
@@ -171,18 +172,17 @@ static int _match_data(int id, void *p, void *data)
 	return (p == data);
 }
 
-static void *_alloc_shareable_mem(size_t sz, phys_addr_t *ppa, gfp_t gfp)
+static void *_alloc_shareable_mem(size_t sz, gfp_t gfp)
 {
 	void *ptr = alloc_pages_exact(sz, gfp);
 
 	if (!ptr)
 		return NULL;
 
-	*ppa = virt_to_phys(ptr);
 	return ptr;
 }
 
-static void _free_shareable_mem(size_t sz, void *va, phys_addr_t pa)
+static void _free_shareable_mem(size_t sz, void *va)
 {
 	free_pages_exact(va, sz);
 }
@@ -190,6 +190,7 @@ static void _free_shareable_mem(size_t sz, void *va, phys_addr_t pa)
 static struct tipc_msg_buf *vds_alloc_msg_buf(struct tipc_virtio_dev *vds,
 					      bool share_write)
 {
+	int ret;
 	struct tipc_msg_buf *mb;
 	size_t sz = vds->msg_buf_max_sz;
 
@@ -199,14 +200,26 @@ static struct tipc_msg_buf *vds_alloc_msg_buf(struct tipc_virtio_dev *vds,
 		return NULL;
 
 	/* allocate buffer that can be shared with secure world */
-	mb->buf_va = _alloc_shareable_mem(sz, &mb->buf_pa, GFP_KERNEL);
+	mb->buf_va = _alloc_shareable_mem(sz, GFP_KERNEL);
 	if (!mb->buf_va)
 		goto err_alloc;
+
+	sg_init_one(&mb->sg, mb->buf_va, sz);
+	ret = trusty_share_memory(vds->vdev->dev.parent->parent, &mb->buf_id,
+				  &mb->sg, 1,
+				  share_write ? PAGE_KERNEL : PAGE_KERNEL_RO);
+	if (ret) {
+		dev_err(&vds->vdev->dev, "trusty_share_memory failed: %d\n",
+			ret);
+		goto err_share;
+	}
 
 	mb->buf_sz = sz;
 
 	return mb;
 
+err_share:
+	_free_shareable_mem(sz, mb->buf_va);
 err_alloc:
 	kfree(mb);
 	return NULL;
@@ -215,7 +228,22 @@ err_alloc:
 static void vds_free_msg_buf(struct tipc_virtio_dev *vds,
 			     struct tipc_msg_buf *mb)
 {
-	_free_shareable_mem(mb->buf_sz, mb->buf_va, mb->buf_pa);
+	int ret;
+
+	ret = trusty_revoke_memory(vds->vdev->dev.parent->parent, mb->buf_id,
+				   &mb->sg, 1);
+	if (ret) {
+		dev_err(&vds->vdev->dev,
+			"trusty_revoke_memory failed: %d txbuf %lld\n",
+			ret, mb->buf_id);
+
+		/*
+		 * It is not safe to free this memory if trusty_revoke_memory
+		 * fails. Leak it in that case.
+		 */
+	} else {
+		_free_shareable_mem(mb->buf_sz, mb->buf_va);
+	}
 	kfree(mb);
 }
 
