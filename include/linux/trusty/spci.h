@@ -14,8 +14,8 @@
 #define SMC_FASTCALL64_NR_SHARED_MEMORY(nr) \
 	SMC_FASTCALL64_NR(SMC_ENTITY_SHARED_MEMORY, nr)
 
-#define SPCI_ALIGNED_16 1
-#define SPCI_NEED_VENDOR_RECLAIM 0
+#define SPCI_ALIGNED_16 0
+#define SPCI_NEED_VENDOR_RECLAIM 1
 
 struct spci_constituent_memory_region_descriptor {
 	u64 address;
