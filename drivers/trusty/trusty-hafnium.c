@@ -12,6 +12,7 @@
  *
  */
 
+#include <hf/call.h>
 #include <linux/module.h>
 #include <linux/net.h>
 #include <linux/of_platform.h>
@@ -45,6 +46,7 @@ struct trusty_hafnium_state {
 	struct trusty_custom_smc smc;
 	struct device *dev;
 	struct socket *sock;
+	uint32_t vm_id;
 };
 
 static inline struct trusty_hafnium_state *
@@ -108,6 +110,18 @@ static ulong trusty_hafnium_custom_smc(ulong r0, ulong r1, ulong r2, ulong r3,
 
 	return resp.ret.r0;
 }
+
+static int trusty_hafnium_share_memory(struct trusty_custom_smc *data,
+				       phys_addr_t paddr, size_t size,
+				       uint32_t flags)
+{
+	struct trusty_hafnium_state *s = trusty_hafnium_smc_to_state(data);
+	pr_err("trusty_hafnium_share_memory: paddr %pa, size %zd, flags 0x%x \n", &paddr, size, flags);
+	if (/*WARN_ON*/(!PAGE_ALIGNED(size)))
+		size = PAGE_ALIGN(size);
+	return hf_share_memory(s->vm_id, paddr, size, HF_MEMORY_SHARE);
+}
+
 static int trusty_hafnium_remove_child(struct device *dev, void *data)
 {
 	platform_device_unregister(to_platform_device(dev));
@@ -119,7 +133,7 @@ static int trusty_hafnium_probe(struct platform_device *pdev)
 	int ret;
 	struct socket *sock;
 	struct trusty_hafnium_state *s;
-
+	uint32_t vm_id = 1; /* TODO: get from device tree */
 	struct sockaddr_hf {
 		sa_family_t family;
 		uint32_t vm_id;
@@ -137,7 +151,7 @@ static int trusty_hafnium_probe(struct platform_device *pdev)
 	}
 
 	saddr.family = AF_HF;
-	saddr.vm_id = 1; /* TODO: get from device tree */
+	saddr.vm_id = vm_id;
 	saddr.port = 0; /* ? */
 
 	ret = kernel_connect(sock, (struct sockaddr *)&saddr, sizeof(saddr), 0);
@@ -153,7 +167,9 @@ static int trusty_hafnium_probe(struct platform_device *pdev)
 	}
 
 	s->sock = sock;
+	s->vm_id = vm_id;
 	s->smc.smc = trusty_hafnium_custom_smc;
+	s->smc.share_memory = trusty_hafnium_share_memory;
 	s->dev = &pdev->dev;
 	trusty_custom_smc_set_drvdata(&pdev->dev, &s->smc);
 	dev_info(s->dev, "hafnium socket ready\n");
