@@ -188,6 +188,10 @@ static int trusty_log_probe(struct platform_device *pdev)
 	s->log = page_address(s->log_pages);
 
 	pa = page_to_phys(s->log_pages);
+	result = trusty_share_memory(s->trusty_dev, pa, TRUSTY_LOG_SIZE, 0);
+	if (result) {
+		pr_err("trusty_share_memory failed: %d %pa\n", result, &pa);
+	}
 	result = trusty_std_call32(s->trusty_dev,
 				   SMC_SC_SHARED_LOG_ADD,
 				   (u32)(pa), (u32)(pa >> 32),
