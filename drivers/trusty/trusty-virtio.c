@@ -306,6 +306,7 @@ static struct virtqueue *_find_vq(struct virtio_device *vdev,
 	struct trusty_vring *tvr;
 	struct trusty_vdev *tvdev = vdev_to_tvdev(vdev);
 	phys_addr_t pa;
+	int ret;
 
 	if (!name)
 		return ERR_PTR(-EINVAL);
@@ -333,6 +334,14 @@ static struct virtqueue *_find_vq(struct virtio_device *vdev,
 	 */
 	tvr->vr_descr->pa = (u32)(pa >> 32);
 
+	ret = trusty_share_memory(tvdev->tctx->dev->parent, &pa, tvr->size, 1,
+	                          TRUSTY_SHARE_MEMORY_ADD);
+	if (ret) {
+		dev_err(&vdev->dev, "trusty_share_memory failed: %d %pa\n",
+			ret, &pa);
+		goto err_share_memory;
+	}
+
 	dev_info(&vdev->dev, "vring%d: va(pa)  %p(%llx) qsz %d notifyid %d\n",
 		 id, tvr->vaddr, (u64)tvr->paddr, tvr->elem_num, tvr->notifyid);
 
@@ -350,7 +359,19 @@ static struct virtqueue *_find_vq(struct virtio_device *vdev,
 	return tvr->vq;
 
 err_new_virtqueue:
-	free_pages_exact(tvr->vaddr, tvr->size);
+	ret = trusty_share_memory(tvdev->tctx->dev->parent, &pa, tvr->size, 1,
+	                          TRUSTY_SHARE_MEMORY_REMOVE);
+	if (ret) {
+		dev_err(&vdev->dev, "trusty_share_memory remove failed: %d %pa\n",
+			ret, &pa);
+		/*
+		 * It is not safe to free this memory if trusty_share_memory
+		 * fails. Leak it in that case.
+		 */
+	} else {
+err_share_memory:
+		free_pages_exact(tvr->vaddr, tvr->size);
+	}
 	tvr->vaddr = NULL;
 	return ERR_PTR(-ENOMEM);
 }
@@ -564,7 +585,9 @@ static void trusty_virtio_remove_devices(struct trusty_ctx *tctx)
 static int trusty_virtio_add_devices(struct trusty_ctx *tctx)
 {
 	int ret;
+	int ret_tmp;
 	void *descr_va;
+	phys_addr_t descr_pa;
 	size_t descr_sz;
 	size_t descr_buf_sz;
 
@@ -574,6 +597,15 @@ static int trusty_virtio_add_devices(struct trusty_ctx *tctx)
 	if (!descr_va) {
 		dev_err(tctx->dev, "Failed to allocate shared area\n");
 		return -ENOMEM;
+	}
+
+	descr_pa = virt_to_phys(descr_va);
+	ret = trusty_share_memory(tctx->dev->parent, &descr_pa, descr_buf_sz, 1,
+				  TRUSTY_SHARE_MEMORY_ADD);
+	if (ret) {
+		dev_err(tctx->dev, "trusty_share_memory failed: %d %pa\n",
+			ret, descr_pa);
+		goto err_share_memory;
 	}
 
 	/* load device descriptors */
@@ -629,7 +661,20 @@ err_parse_descr:
 	cancel_work_sync(&tctx->kick_vqs);
 	trusty_virtio_stop(tctx, descr_va, descr_sz);
 err_load_descr:
-	free_pages_exact(descr_va, descr_buf_sz);
+	ret_tmp = trusty_share_memory(tctx->dev->parent, &descr_pa,
+				      descr_buf_sz, 1,
+				      TRUSTY_SHARE_MEMORY_REMOVE);
+	if (ret_tmp) {
+		dev_err(tctx->dev, "trusty_share_memory remove failed: %d %pa\n",
+			ret_tmp, &descr_pa);
+		/*
+		 * It is not safe to free this memory if trusty_share_memory
+		 * fails. Leak it in that case.
+		 */
+	} else {
+err_share_memory:
+		free_pages_exact(descr_va, descr_buf_sz);
+	}
 	return ret;
 }
 
@@ -690,6 +735,8 @@ err_create_check_wq:
 static int trusty_virtio_remove(struct platform_device *pdev)
 {
 	struct trusty_ctx *tctx = platform_get_drvdata(pdev);
+	phys_addr_t descr_pa;
+	int ret;
 
 	dev_err(&pdev->dev, "removing\n");
 
@@ -710,7 +757,19 @@ static int trusty_virtio_remove(struct platform_device *pdev)
 	trusty_virtio_stop(tctx, tctx->shared_va, tctx->shared_sz);
 
 	/* free shared area */
-	free_pages_exact(tctx->shared_va, tctx->shared_sz);
+	descr_pa = virt_to_phys(tctx->shared_va);
+	ret = trusty_share_memory(tctx->dev->parent, &descr_pa, tctx->shared_sz,
+				  1, TRUSTY_SHARE_MEMORY_REMOVE);
+	if (ret) {
+		dev_err(tctx->dev, "trusty_share_memory remove failed: %d %pa\n",
+			ret, &descr_pa);
+		/*
+		 * It is not safe to free this memory if trusty_share_memory
+		 * fails. Leak it in that case.
+		 */
+	} else {
+		free_pages_exact(tctx->shared_va, tctx->shared_sz);
+	}
 
 	/* free context */
 	kfree(tctx);

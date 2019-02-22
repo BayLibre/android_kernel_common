@@ -189,6 +189,12 @@ static int trusty_log_probe(struct platform_device *pdev)
 	s->log = page_address(s->log_pages);
 
 	pa = page_to_phys(s->log_pages);
+	result = trusty_share_memory(s->trusty_dev, &pa, TRUSTY_LOG_SIZE, 1,
+	                             TRUSTY_SHARE_MEMORY_ADD);
+	if (result) {
+		pr_err("trusty_share_memory failed: %d %pa\n", result, &pa);
+		goto err_share_memory;
+	}
 	result = trusty_std_call32(s->trusty_dev,
 				   SMC_SC_SHARED_LOG_ADD,
 				   (u32)(pa), (u32)(pa >> 32),
@@ -226,7 +232,18 @@ error_call_notifier:
 	trusty_std_call32(s->trusty_dev, SMC_SC_SHARED_LOG_RM,
 			  (u32)pa, (u32)(pa >> 32), 0);
 error_std_call:
-	__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	if (trusty_share_memory(s->trusty_dev, &pa, TRUSTY_LOG_SIZE, 1,
+				TRUSTY_SHARE_MEMORY_REMOVE)) {
+		pr_err("trusty_share_memory remove failed: %d %pa\n", result,
+		       &pa);
+		/*
+		 * It is not safe to free this memory if trusty_share_memory
+		 * fails. Leak it in that case.
+		 */
+	} else {
+err_share_memory:
+		__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	}
 error_alloc_log:
 	kfree(s);
 error_alloc_state:
@@ -251,7 +268,18 @@ static int trusty_log_remove(struct platform_device *pdev)
 		pr_err("trusty std call (SMC_SC_SHARED_LOG_RM) failed: %d\n",
 		       result);
 	}
-	__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	result = trusty_share_memory(s->trusty_dev, &pa, TRUSTY_LOG_SIZE, 1,
+	                             TRUSTY_SHARE_MEMORY_REMOVE);
+	if (result) {
+		pr_err("trusty failed to remove shared memory: %d\n",
+		       result);
+	} else {
+		/*
+		 * It is not safe to free this memory if trusty_share_memory
+		 * fails. Leak it in that case.
+		 */
+		__free_pages(s->log_pages, get_order(TRUSTY_LOG_SIZE));
+	}
 	kfree(s);
 
 	return 0;
