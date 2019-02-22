@@ -27,6 +27,7 @@
 #include <linux/trusty/trusty_custom_smc.h>
 
 struct trusty_state;
+static struct platform_driver trusty_driver;
 
 struct trusty_work {
 	struct trusty_state *ts;
@@ -255,6 +256,24 @@ s32 trusty_std_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 	return ret;
 }
 EXPORT_SYMBOL(trusty_std_call32);
+
+int trusty_share_memory(struct device *dev, phys_addr_t paddr, size_t size,
+			uint32_t flags)
+{
+	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
+	struct trusty_custom_smc *csmc = s->smc;
+
+	if (WARN_ON(dev->driver != &trusty_driver.driver)) {
+		return -EINVAL;
+	}
+
+	if (csmc && csmc->share_memory) {
+		return csmc->share_memory(csmc, paddr, size, flags);
+	} else {
+		return 0;
+	}
+}
+EXPORT_SYMBOL(trusty_share_memory);
 
 int trusty_call_notifier_register(struct device *dev, struct notifier_block *n)
 {

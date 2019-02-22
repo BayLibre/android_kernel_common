@@ -113,6 +113,7 @@ int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 {
 	int ret;
 	struct ns_mem_page_info pg_inf;
+	phys_addr_t paddr;
 
 	if (!dev || !page)
 		return -EINVAL;
@@ -120,6 +121,12 @@ int trusty_call32_mem_buf(struct device *dev, u32 smcnr,
 	ret = trusty_encode_page_info(&pg_inf, page, pgprot);
 	if (ret)
 		return ret;
+
+	paddr = page_to_phys(page);
+	ret = trusty_share_memory(dev, paddr, size, 0);
+	if (ret) {
+		pr_err("trusty_share_memory failed: %d %pa, smc 0x%x\n", ret, &paddr, smcnr);
+	}
 
 	if (SMC_IS_FASTCALL(smcnr)) {
 		return trusty_fast_call32(dev, smcnr,

@@ -29,6 +29,7 @@
 #include <linux/virtio_ids.h>
 #include <linux/virtio_config.h>
 
+#include <linux/trusty/trusty.h>
 #include <linux/trusty/trusty_ipc.h>
 
 #define MAX_DEVICES			4
@@ -170,7 +171,7 @@ static int _match_data(int id, void *p, void *data)
 	return (p == data);
 }
 
-static void *_alloc_shareable_mem(size_t sz, phys_addr_t *ppa, gfp_t gfp)
+static void *_alloc_shareable_mem(size_t sz, gfp_t gfp)
 {
 	return alloc_pages_exact(sz, gfp);
 }
@@ -190,9 +191,11 @@ static struct tipc_msg_buf *_alloc_msg_buf(size_t sz)
 		return NULL;
 
 	/* allocate buffer that can be shared with secure world */
-	mb->buf_va = _alloc_shareable_mem(sz, &mb->buf_pa, GFP_KERNEL);
+	mb->buf_va = _alloc_shareable_mem(sz, GFP_KERNEL);
 	if (!mb->buf_va)
 		goto err_alloc;
+
+	mb->buf_pa = virt_to_phys(mb->buf_va);
 
 	mb->buf_sz = sz;
 
@@ -265,6 +268,7 @@ static bool _put_txbuf_locked(struct tipc_virtio_dev *vds,
 
 static struct tipc_msg_buf *_get_txbuf_locked(struct tipc_virtio_dev *vds)
 {
+	int ret;
 	struct tipc_msg_buf *mb;
 
 	if (vds->state != VDS_ONLINE)
@@ -284,6 +288,11 @@ static struct tipc_msg_buf *_get_txbuf_locked(struct tipc_virtio_dev *vds)
 		mb = _alloc_msg_buf(vds->msg_buf_max_sz);
 		if (!mb)
 			return ERR_PTR(-ENOMEM);
+
+		ret = trusty_share_memory(vds->vdev->dev.parent->parent, mb->buf_pa, mb->buf_sz, 0);
+		if (ret) {
+			pr_err("trusty_share_memory failed: %d %pa\n", ret, &mb->buf_pa);
+		}
 
 		vds->msg_buf_cnt++;
 	}
@@ -1552,6 +1561,11 @@ static int tipc_virtio_probe(struct virtio_device *vdev)
 			dev_err(&vdev->dev, "failed to allocate rx buffer\n");
 			err = -ENOMEM;
 			goto err_free_rx_buffers;
+		}
+
+		err = trusty_share_memory(vdev->dev.parent->parent, rxbuf->buf_pa, rxbuf->buf_sz, 0);
+		if (err) {
+			pr_err("trusty_share_memory failed: %d %pa\n", err, &rxbuf->buf_pa);
 		}
 
 		sg_init_one(&sg, rxbuf->buf_va, rxbuf->buf_sz);

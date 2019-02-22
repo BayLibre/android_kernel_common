@@ -18,12 +18,15 @@
 
 #include <linux/kernel.h>
 #include <linux/trusty/sm_err.h>
+#include <linux/types.h>
 #include <linux/device.h>
 #include <linux/pagemap.h>
 
 struct trusty_custom_smc {
 	ulong (*smc)(ulong r0, ulong r1, ulong r2, ulong r3,
 		     struct trusty_custom_smc *dev);
+	int (*share_memory)(struct trusty_custom_smc *dev,
+			    phys_addr_t paddr, size_t size, uint32_t flags);
 };
 
 static inline struct trusty_custom_smc *trusty_custom_smc_get_drvdata(
