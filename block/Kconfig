@@ -200,6 +200,16 @@ config BLK_SED_OPAL
 	Enabling this option enables users to setup/unlock/lock
 	Locking ranges for SED devices using the Opal protocol.
 
+config BLK_CRYPT_CTX
+	bool "Enable BIO crypto context"
+	default n
+	help
+	Enables the crypto context field in struct bio.
+	Filesystems can use these fields to define
+	crypto parameters and communicate them with lower layers,
+	for e.g. storage drivers, which can use that info to
+	encrypt/decrypt sectors.
+
 menu "Partition Types"
 
 source "block/partitions/Kconfig"

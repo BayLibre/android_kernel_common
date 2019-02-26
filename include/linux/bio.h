@@ -607,6 +607,120 @@ static inline void bvec_kunmap_irq(char *buffer, unsigned long *flags)
 }
 #endif
 
+#ifdef CONFIG_BLK_CRYPT_CTX
+static inline void bio_clone_crypt_context(struct bio *dst, struct bio *src)
+{
+	dst->bi_crypt_context = src->bi_crypt_context;
+}
+
+static inline void bio_init_crypt_ctx(struct bio *bio)
+{
+	bio->bi_crypt_context.key_slot = -1;
+}
+
+static inline bool bio_is_encrypted(struct bio *bio)
+{
+	return bio && bio->bi_crypt_context.key_slot >= 0;
+}
+
+static inline int bio_crypt_get_slot(struct bio *bio)
+{
+	return bio->bi_crypt_context.key_slot;
+}
+
+static inline u64 bio_crypt_data_unit_num(struct bio *bio)
+{
+	WARN_ON(bio->bi_crypt_context.key_slot < 0);
+	return bio->bi_crypt_context.data_unit_num;
+}
+
+static inline void bio_set_crypt_ctx(struct bio *bio,
+				     int key_slot,
+				     u64 dun,
+				     unsigned int dun_bits)
+{
+	bio->bi_crypt_context.key_slot = key_slot;
+	bio->bi_crypt_context.data_unit_num = dun;
+	bio->bi_crypt_context.data_unit_size_bits = dun_bits;
+}
+
+/*
+ * Checks that two bio crypt contexts are compatible - i.e. that
+ * they are mergeable except for data_unit_num continuity.
+ */
+static inline bool bio_crypt_ctx_compatible(struct bio *b_1, struct bio *b_2)
+{
+	struct bio_crypt_ctx *bc1 = &b_1->bi_crypt_context;
+	struct bio_crypt_ctx *bc2 = &b_2->bi_crypt_context;
+
+	if (bc1->key_slot != bc2->key_slot)
+		return false;
+
+	return bc1->key_slot < 0 ||
+	       bc1->data_unit_size_bits == bc2->data_unit_size_bits;
+}
+
+/*
+ * Checks that two bio crypt contexts are compatible, and also
+ * that their data_unit_nums are continuous (and can hence be merged)
+ */
+static inline bool bio_crypt_ctx_back_mergeable(struct bio *b_1,
+						unsigned int b1_sectors,
+						struct bio *b_2)
+{
+	struct bio_crypt_ctx *bc1 = &b_1->bi_crypt_context;
+	struct bio_crypt_ctx *bc2 = &b_2->bi_crypt_context;
+
+	if (!bio_crypt_ctx_compatible(b_1, b_2))
+		return false;
+
+	return bc1->key_slot < 0 ||
+	       (bc1->data_unit_num +
+		(b1_sectors >> (bc1->data_unit_size_bits - 9)) ==
+		bc2->data_unit_num);
+}
+
+#else
+static inline void bio_clone_crypt_context(struct bio *dst,
+					   struct bio *src) { }
+static inline void bio_init_crypt_ctx(struct bio *bio) { }
+static inline void bio_crypt_advance(struct bio *bio,
+				     unsigned int bytes) { }
+
+static inline bool bio_is_encrypted(struct bio *bio)
+{
+	return false;
+}
+
+static inline bool bio_crypt_ctx_compatible(struct bio *b_1, struct bio *b_2)
+{
+	return true;
+}
+
+static inline bool bio_crypt_ctx_back_mergeable(struct bio *b_1,
+						unsigned int b1_sectors,
+						struct bio *b_2)
+{
+	return true;
+}
+
+static inline int bio_crypt_get_slot(struct bio *bio)
+{
+	return -1;
+}
+
+static inline u64 bio_crypt_data_unit_num(struct bio *bio)
+{
+	WARN_ON(1);
+	return 0;
+}
+
+static inline void bio_set_crypt_ctx(struct bio *bio,
+				     int key_slot,
+				     u64 dun,
+				     unsigned int dun_bits) { }
+#endif /* CONFIG_BLK_CRYPT_CTX */
+
 /*
  * BIO list management for use by remapping drivers (e.g. DM or MD) and loop.
  *
