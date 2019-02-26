@@ -500,6 +500,12 @@ static inline int ll_new_hw_segment(struct request_queue *q,
 	 * counters.
 	 */
 	req->nr_phys_segments += nr_phys_segs;
+
+	if (!bio_crypt_ctx_compatible(bio, req->bio)) {
+		WARN_ON(1);
+		goto no_merge;
+	}
+
 	return 1;
 
 no_merge:
@@ -708,6 +714,15 @@ static struct request *attempt_merge(struct request_queue *q,
 	if (req->write_hint != next->write_hint)
 		return NULL;
 
+	if (!bio_crypt_ctx_compatible(req->bio, next->bio))
+		return NULL;
+
+	if (!bio_crypt_ctx_back_mergeable(req->bio,
+					  blk_rq_sectors(req),
+					  next->bio)) {
+			return NULL;
+	}
+
 	/*
 	 * If we are allowed to merge, then append bio list
 	 * from next to rq and release next. merge_requests_fn
@@ -838,6 +853,11 @@ bool blk_rq_merge_ok(struct request *rq, struct bio *bio)
 	if (rq->write_hint != bio->bi_write_hint)
 		return false;
 
+	/* Only merge if the ICE context is the same */
+	/* TODO - fix */
+	if (!bio_crypt_ctx_compatible(bio, rq->bio))
+		return false;
+
 	return true;
 }
 
@@ -846,9 +866,20 @@ enum elv_merge blk_try_merge(struct request *rq, struct bio *bio)
 	if (req_op(rq) == REQ_OP_DISCARD &&
 	    queue_max_discard_segments(rq->q) > 1)
 		return ELEVATOR_DISCARD_MERGE;
-	else if (blk_rq_pos(rq) + blk_rq_sectors(rq) == bio->bi_iter.bi_sector)
+	} else if (blk_rq_pos(rq) + blk_rq_sectors(rq) ==
+		   bio->bi_iter.bi_sector) {
+		if (!bio_crypt_ctx_back_mergeable(rq->bio,
+						  blk_rq_sectors(rq), bio)) {
+			return ELEVATOR_NO_MERGE;
+		}
 		return ELEVATOR_BACK_MERGE;
-	else if (blk_rq_pos(rq) - bio_sectors(bio) == bio->bi_iter.bi_sector)
+	} else if (blk_rq_pos(rq) - bio_sectors(bio) ==
+		   bio->bi_iter.bi_sector) {
+		if (!bio_crypt_ctx_back_mergeable(bio,
+						  bio_sectors(bio), rq->bio)) {
+			return ELEVATOR_NO_MERGE;
+		}
 		return ELEVATOR_FRONT_MERGE;
+	}
 	return ELEVATOR_NO_MERGE;
 }

@@ -271,6 +271,20 @@ static void bio_free(struct bio *bio)
 	}
 }
 
+#ifdef CONFIG_BLK_CRYPT_CTX
+static inline void bio_crypt_advance(struct bio *bio, unsigned int bytes)
+{
+	unsigned int block_size;
+
+	if (bio->bi_crypt_context.key_slot >= 0) {
+		block_size = bdget_disk(bio->bi_disk,
+					bio->bi_partno)->bd_block_size;
+		bio->bi_crypt_context.data_unit_num +=
+			bytes >> bio->bi_crypt_context.data_unit_size_bits;
+	}
+}
+#endif /* CONFIG_BLK_CRYPT_CTX */
+
 /*
  * Users of this function have their own bio allocation. Subsequently,
  * they must remember to pair any call to bio_init() with bio_uninit()
@@ -285,6 +299,7 @@ void bio_init(struct bio *bio, struct bio_vec *table,
 
 	bio->bi_io_vec = table;
 	bio->bi_max_vecs = max_vecs;
+	bio_init_crypt_ctx(bio);
 }
 EXPORT_SYMBOL(bio_init);
 
@@ -307,6 +322,7 @@ void bio_reset(struct bio *bio)
 	memset(bio, 0, BIO_RESET_BYTES);
 	bio->bi_flags = flags;
 	atomic_set(&bio->__bi_remaining, 1);
+	bio_init_crypt_ctx(bio);
 }
 EXPORT_SYMBOL(bio_reset);
 
@@ -609,6 +625,7 @@ void __bio_clone_fast(struct bio *bio, struct bio *bio_src)
 	bio->bi_write_hint = bio_src->bi_write_hint;
 	bio->bi_iter = bio_src->bi_iter;
 	bio->bi_io_vec = bio_src->bi_io_vec;
+	bio_clone_crypt_context(bio, bio_src);
 
 	bio_clone_blkcg_association(bio, bio_src);
 }
@@ -951,6 +968,7 @@ void bio_advance(struct bio *bio, unsigned bytes)
 		bio_integrity_advance(bio, bytes);
 
 	bio_advance_iter(bio, &bio->bi_iter, bytes);
+	bio_crypt_advance(bio, bytes);
 }
 EXPORT_SYMBOL(bio_advance);
 
