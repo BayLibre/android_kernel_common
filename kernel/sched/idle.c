@@ -16,10 +16,9 @@ extern char __cpuidle_text_start[], __cpuidle_text_end[];
  * sched_idle_set_state - Record idle state for the current CPU.
  * @idle_state: State to record.
  */
-void sched_idle_set_state(struct cpuidle_state *idle_state, int index)
+void sched_idle_set_state(struct cpuidle_state *idle_state)
 {
 	idle_set_state(this_rq(), idle_state);
-	idle_set_state_idx(this_rq(), index);
 }
 
 static int __read_mostly cpu_idle_force_poll;
@@ -360,8 +359,7 @@ void cpu_startup_entry(enum cpuhp_state state)
 
 #ifdef CONFIG_SMP
 static int
-select_task_rq_idle(struct task_struct *p, int cpu, int sd_flag, int flags,
-		    int sibling_count_hint)
+select_task_rq_idle(struct task_struct *p, int cpu, int sd_flag, int flags)
 {
 	return task_cpu(p); /* IDLE tasks as never migrated */
 }
