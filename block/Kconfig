@@ -210,6 +210,17 @@ config BLK_CRYPT_CTX
 	for e.g. storage drivers, which can use that info to
 	encrypt/decrypt sectors.
 
+config BLK_KEYSLOT_MANAGER
+	bool "Enable Keyslot Manager in struct request queue"
+	default n
+	depends on BLK_CRYPT_CTX
+	help
+	Enables the Keyslot Manager field in struct request queue.
+	This can be used by lower level storage drivers to expose
+	inline crypto functionality, and by upper level filesystems
+	to use that exposed functionality. Provides refcounting and
+	management of key slots for the lower level crypto engine.
+
 menu "Partition Types"
 
 source "block/partitions/Kconfig"
