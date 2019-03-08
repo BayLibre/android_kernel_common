@@ -1161,6 +1161,10 @@ struct snd_soc_card {
 	u32 pop_time;
 
 	void *drvdata;
+
+#ifndef __GENKSYMS__
+	spinlock_t dpcm_lock;
+#endif
 };
 
 /* SoC machine DAI configuration, glues a codec and cpu DAI together */
