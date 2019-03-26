@@ -4,6 +4,8 @@ SUBLEVEL = 165
 EXTRAVERSION =
 NAME = Roaring Lionus
 
+TEST=do_not_merge
+
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README
