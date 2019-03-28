@@ -446,9 +446,9 @@ static inline u32 avc_xperms_audit_required(u32 requested,
 	denied = requested & ~avd->allowed;
 	if (unlikely(denied)) {
 		audited = denied & avd->auditdeny;
-		if (audited && xpd) {
+		if (audited && xpd) {/*
 			if (avc_xperms_has_perm(xpd, perm, XPERMS_DONTAUDIT))
-				audited &= ~requested;
+				audited &= ~requested;*/
 		}
 	} else if (result) {
 		audited = denied = requested;
