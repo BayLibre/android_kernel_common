@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "afecfc72_ef4f0389",
+        "filename": "include/uapi/linux/fs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1038033
+      },
+      "writtenOn": "2019-04-08T23:52:06Z",
+      "side": 1,
+      "message": "In general it\u0027s not a great idea to change the value of a #define based on\nwhether a CONFIG variable is set.  It\u0027s better to explicitly define which flags are set.\n\nAlso, do we really need FS_POLICY_FLAGS_VALID_BASE and FS_POLICY_FLAGS_VALID?\n\nFinally, it\u0027s not clear to me that HW_ENCRYPTION should be a policy flag.  \nIt might be better to make it an encryption algorithm, since whether we use\ninline crypto or not is an optimization that takes advantage of a hardware feature.\nIn theory, if someone created an inline crypto engine which implemented \nFS_ENCRYPTION_MODE_AES_256_XTS, we could just take an existing file system\nand use it, so long as how it handled keys, et. al. was utterly faithful to \nthe existing fscrypt.    This might also allow us in the future to move the crypto\ncalls to the block layer in the future.\n\nThe other reason why this might be better is because different hardware encryption\nengines might be using algorithms which have different keysizes.  If we use a policy\nflag, then we need to manually hack fscrypt to understand whether the keysize of a\nparticular ICE engine happens to be 256 bits versus some hypothetical post-quantuum\nalgorithm which requires a 1024 bit symmetric key.",
+      "range": {
+        "startLine": 276,
+        "startChar": 8,
+        "endLine": 276,
+        "endChar": 37
+      },
+      "revId": "949eaccb4f3110f2a20185c8ed6e582bc33c0a6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
