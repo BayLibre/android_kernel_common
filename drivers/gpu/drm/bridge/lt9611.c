@@ -460,6 +460,7 @@ static void lt9611_enable_hpd_interrupts(struct lt9611 *lt9611)
 	regmap_write(lt9611->regmap, 0x07, 0x3f);
 }
 
+#if 0
 static void lt9611_sleep_setup(struct lt9611 *lt9611)
 {
 	struct reg_sequence sleep_setup[] = {
@@ -482,6 +483,7 @@ static void lt9611_sleep_setup(struct lt9611 *lt9611)
 
 	regmap_multi_reg_write(lt9611->regmap, sleep_setup, ARRAY_SIZE(sleep_setup));
 }
+#endif
 
 static int lt9611_power_on(struct lt9611 *lt9611)
 {
@@ -943,7 +945,7 @@ static void lt9611_bridge_post_disable(struct drm_bridge *bridge)
 
 	dev_dbg(lt9611->dev, "bridge post_disable\n");
 
-	lt9611_sleep_setup(lt9611);
+	//lt9611_sleep_setup(lt9611);
 }
 
 static void lt9611_bridge_mode_set(struct drm_bridge *bridge,
