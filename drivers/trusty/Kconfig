@@ -78,4 +78,9 @@ config TRUSTY_VIRTIO_IPC
 
 endif # TRUSTY
 
+config TRUSTY_X86_64
+	tristate "Trusty x86_64 driver"
+	select TRUSTY_CUSTOM_SMC
+	default n
+
 endmenu

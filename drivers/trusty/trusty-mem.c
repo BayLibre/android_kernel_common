@@ -65,6 +65,9 @@ static int get_mem_attr(struct page *page, pgprot_t pgprot)
 	default:
 		return -EINVAL;
 	}
+#elif defined(CONFIG_X86_64)
+	/* Set memory type as NS_MAIR_NORMAL_CACHED_WB_RWA */
+	return 0xFF;
 #else
 	return 0;
 #endif
@@ -120,7 +123,16 @@ int trusty_encode_page_info(struct ns_mem_page_info *inf,
 	if (pgprot_val(pgprot) & L_PTE_RDONLY)
 		pte |= ATTR_RDONLY;
 	if (pgprot_val(pgprot) & L_PTE_SHARED)
+<<<<<<< HEAD   (bd616a ANDROID: trusty: fix up headers shared with Trusty)
 		pte |= ATTR_INNER_SHAREABLE; /* inner sharable */
+=======
+		pte |= (3 << 8); /* inner sharable */
+#elif defined(CONFIG_X86_64)
+	if (pgprot_val(pgprot) & _PAGE_USER)
+		pte |= (1 << 6);
+	if (!(pgprot_val(pgprot) & _PAGE_RW))
+		pte |= (1 << 7);
+>>>>>>> CHANGE (91ed4b Trusty: enable trusty driver for Intel x86_64 architecture)
 #endif
 
 	if (!(pte & ATTR_RDONLY))

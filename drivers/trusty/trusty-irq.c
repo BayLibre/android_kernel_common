@@ -17,6 +17,11 @@
 #include <linux/trusty/sm_err.h>
 #include <linux/trusty/trusty.h>
 
+#ifdef CONFIG_X86_64
+extern int trusty_x86_64_release_reserved_vector(unsigned int vector);
+extern void trusty_x86_64_retrigger_irq(unsigned int irq);
+#endif
+
 struct trusty_irq {
 	struct trusty_irq_state *is;
 	struct hlist_node node;
@@ -154,6 +159,7 @@ static irqreturn_t trusty_irq_handler(int irq, void *data)
 		__func__, irq, trusty_irq->irq, smp_processor_id(),
 		trusty_irq->enable);
 
+<<<<<<< HEAD   (bd616a ANDROID: trusty: fix up headers shared with Trusty)
 	if (!trusty_irq->doorbell) {
 		if (trusty_irq->percpu) {
 			disable_percpu_irq(irq);
@@ -162,6 +168,19 @@ static irqreturn_t trusty_irq_handler(int irq, void *data)
 			disable_irq_nosync(irq);
 			irqset = &is->normal_irqs;
 		}
+=======
+#ifdef CONFIG_X86_64
+	trusty_x86_64_retrigger_irq(irq);
+#endif
+
+	if (trusty_irq->percpu) {
+		disable_percpu_irq(irq);
+		irqset = this_cpu_ptr(is->percpu_irqs);
+	} else {
+		disable_irq_nosync(irq);
+		irqset = &is->normal_irqs;
+	}
+>>>>>>> CHANGE (91ed4b Trusty: enable trusty driver for Intel x86_64 architecture)
 
 		spin_lock(&is->normal_irqs_lock);
 		if (trusty_irq->enable) {
@@ -222,10 +241,16 @@ static int trusty_irq_create_irq_mapping(struct trusty_irq_state *is, int irq)
 
 	/* check if "interrupt-ranges" property is present */
 	if (!of_find_property(is->dev->of_node, "interrupt-ranges", NULL)) {
+#ifdef CONFIG_X86_64
+		/* IRQ number which retrieved from Trusty side is vector number */
+		return trusty_x86_64_release_reserved_vector(irq);
+#else
 		/* fallback to old behavior to be backward compatible with
 		 * systems that do not need IRQ domains.
 		 */
 		return irq;
+#endif
+
 	}
 
 	/* find irq range */
@@ -425,7 +450,9 @@ static void trusty_irq_free_irqs(struct trusty_irq_state *is)
 {
 	struct trusty_irq *irq;
 	struct hlist_node *n;
+#ifndef CONFIG_X86_64
 	unsigned int cpu;
+#endif
 
 	hlist_for_each_entry_safe(irq, n, &is->normal_irqs.inactive, node) {
 		dev_dbg(is->dev, "%s: irq %d\n", __func__, irq->irq);
@@ -433,6 +460,7 @@ static void trusty_irq_free_irqs(struct trusty_irq_state *is)
 		hlist_del(&irq->node);
 		kfree(irq);
 	}
+#ifndef CONFIG_X86_64
 	hlist_for_each_entry_safe(irq, n,
 				  &this_cpu_ptr(is->percpu_irqs)->inactive,
 				  node) {
@@ -449,6 +477,7 @@ static void trusty_irq_free_irqs(struct trusty_irq_state *is)
 		}
 		free_percpu(trusty_irq_handler_data);
 	}
+#endif
 }
 
 static int trusty_irq_probe(struct platform_device *pdev)
@@ -484,8 +513,14 @@ static int trusty_irq_probe(struct platform_device *pdev)
 		goto err_trusty_call_notifier_register;
 	}
 
+#ifndef CONFIG_X86_64
 	for (irq = 0; irq >= 0;)
+<<<<<<< HEAD   (bd616a ANDROID: trusty: fix up headers shared with Trusty)
 		irq = trusty_irq_init_one(is, irq, TRUSTY_IRQ_TYPE_PER_CPU);
+=======
+		irq = trusty_irq_init_one(is, irq, true);
+#endif
+>>>>>>> CHANGE (91ed4b Trusty: enable trusty driver for Intel x86_64 architecture)
 	for (irq = 0; irq >= 0;)
 		irq = trusty_irq_init_one(is, irq, TRUSTY_IRQ_TYPE_NORMAL);
 	for (irq = 0; irq >= 0;)
