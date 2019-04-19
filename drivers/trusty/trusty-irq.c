@@ -26,6 +26,11 @@
 #include <linux/trusty/sm_err.h>
 #include <linux/trusty/trusty.h>
 
+#ifdef CONFIG_X86_64
+extern int trusty_x86_64_release_reserved_vector(unsigned int vector);
+extern void trusty_x86_64_retrigger_irq(unsigned int irq);
+#endif
+
 struct trusty_irq {
 	struct trusty_irq_state *is;
 	struct hlist_node node;
@@ -161,6 +166,10 @@ irqreturn_t trusty_irq_handler(int irq, void *data)
 		__func__, irq, trusty_irq->irq, smp_processor_id(),
 		trusty_irq->enable);
 
+#ifdef CONFIG_X86_64
+	trusty_x86_64_retrigger_irq(irq);
+#endif
+
 	if (trusty_irq->percpu) {
 		disable_percpu_irq(irq);
 		irqset = this_cpu_ptr(is->percpu_irqs);
@@ -227,10 +236,16 @@ static int trusty_irq_create_irq_mapping(struct trusty_irq_state *is, int irq)
 
 	/* check if "interrupt-ranges" property is present */
 	if (!of_find_property(is->dev->of_node, "interrupt-ranges", NULL)) {
+#ifdef CONFIG_X86_64
+		/* IRQ number which retrieved from Trusty side is vector number */
+		return trusty_x86_64_release_reserved_vector(irq);
+#else
 		/* fallback to old behavior to be backward compatible with
 		 * systems that do not need IRQ domains.
 		 */
 		return irq;
+#endif
+
 	}
 
 	/* find irq range */
@@ -428,7 +443,9 @@ static void trusty_irq_free_irqs(struct trusty_irq_state *is)
 {
 	struct trusty_irq *irq;
 	struct hlist_node *n;
+#ifndef CONFIG_X86_64
 	unsigned int cpu;
+#endif
 
 	hlist_for_each_entry_safe(irq, n, &is->normal_irqs.inactive, node) {
 		dev_dbg(is->dev, "%s: irq %d\n", __func__, irq->irq);
@@ -436,6 +453,7 @@ static void trusty_irq_free_irqs(struct trusty_irq_state *is)
 		hlist_del(&irq->node);
 		kfree(irq);
 	}
+#ifndef CONFIG_X86_64
 	hlist_for_each_entry_safe(irq, n,
 				  &this_cpu_ptr(is->percpu_irqs)->inactive,
 				  node) {
@@ -452,6 +470,7 @@ static void trusty_irq_free_irqs(struct trusty_irq_state *is)
 		}
 		free_percpu(trusty_irq_handler_data);
 	}
+#endif
 }
 
 static int trusty_irq_probe(struct platform_device *pdev)
@@ -489,8 +508,10 @@ static int trusty_irq_probe(struct platform_device *pdev)
 		goto err_trusty_call_notifier_register;
 	}
 
+#ifndef CONFIG_X86_64
 	for (irq = 0; irq >= 0;)
 		irq = trusty_irq_init_one(is, irq, true);
+#endif
 	for (irq = 0; irq >= 0;)
 		irq = trusty_irq_init_one(is, irq, false);
 
