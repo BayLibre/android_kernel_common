@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7e457330_6059f423",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1003913
+      },
+      "writtenOn": "2019-04-30T17:07:12Z",
+      "side": 1,
+      "message": "Which documentation please?",
+      "parentUuid": "71ccc3db_6f56e8c1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c15cfa11_8b3c3e6d",
         "filename": "drivers/staging/android/lowmemorykiller.c",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-04-30T16:19:11Z",
       "side": 1,
       "message": "so if we \"fill up\", when reading the proc file, we will have stale data?  Shouldn\u0027t we drop the old data instead and keep it full with the most recent information?\n\nOr am I mistaken as to how this is used?\n\nI guess I don\u0027t know how this is going to be used due to the lack of a detailed changelog comment :)",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 64
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "557974f9_3d7f3289",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1003913
+      },
+      "writtenOn": "2019-04-30T17:07:12Z",
+      "side": 1,
+      "message": "It\u0027s a fallback so if userland stops polling/reading the file, a loss of events is preferable to continuous memory loss as the buffer continues to fill.",
+      "parentUuid": "c15cfa11_8b3c3e6d",
       "range": {
         "startLine": 115,
         "startChar": 0,
@@ -117,6 +165,30 @@
     },
     {
       "key": {
+        "uuid": "4801f456_32facbb7",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1003913
+      },
+      "writtenOn": "2019-04-30T17:07:12Z",
+      "side": 1,
+      "message": "I added it to the commit message. Happy for suggestions as to where else to put documentation.",
+      "parentUuid": "3c08f246_0de27994",
+      "range": {
+        "startLine": 173,
+        "startChar": 2,
+        "endLine": 176,
+        "endChar": 60
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "82278dae_7f8857bc",
         "filename": "drivers/staging/android/lowmemorykiller.c",
         "patchSetId": 2
@@ -174,6 +246,30 @@
       "writtenOn": "2019-04-30T16:19:11Z",
       "side": 1,
       "message": "Why proc?",
+      "range": {
+        "startLine": 214,
+        "startChar": 9,
+        "endLine": 214,
+        "endChar": 20
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a5aefc1_40a8ba6c",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1003913
+      },
+      "writtenOn": "2019-04-30T17:07:12Z",
+      "side": 1,
+      "message": "The file is /proc/lowmemorykiller. Is there a better alternative?",
+      "parentUuid": "681fde17_6a56eab4",
       "range": {
         "startLine": 214,
         "startChar": 9,
