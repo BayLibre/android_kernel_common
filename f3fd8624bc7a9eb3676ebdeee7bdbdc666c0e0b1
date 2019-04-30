@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71ccc3db_6f56e8c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "nit, the subject needs to have one of the proper prefixes, I think \"ANDROID:\" works here, but check the documentation to be sure.\n\nYou also need to provide some sort of changelog text, saying why this is needed, and how to use it.  A single sentence isn\u0027t usually the best thing :)",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c15cfa11_8b3c3e6d",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "so if we \"fill up\", when reading the proc file, we will have stale data?  Shouldn\u0027t we drop the old data instead and keep it full with the most recent information?\n\nOr am I mistaken as to how this is used?\n\nI guess I don\u0027t know how this is going to be used due to the lack of a detailed changelog comment :)",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 64
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb616979_acd1a8da",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "why unsigned long when the struct circ_buf is using \u0027int\u0027?",
+      "range": {
+        "startLine": 157,
+        "startChar": 1,
+        "endLine": 157,
+        "endChar": 15
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6da1dfd6_18361759",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 158,
+        "startChar": 1,
+        "endLine": 158,
+        "endChar": 14
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c08f246_0de27994",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "This format should be documented somewhere so we know what it is, and how to properly parse it.",
+      "range": {
+        "startLine": 173,
+        "startChar": 2,
+        "endLine": 176,
+        "endChar": 60
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82278dae_7f8857bc",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "new line needed after this line.  Always run checkpatch.pl so that you don\u0027t get caught by basic checkpatch.pl warnings.",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 30
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea406b29_6735bd3f",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "no error checking?",
+      "range": {
+        "startLine": 211,
+        "startChar": 14,
+        "endLine": 211,
+        "endChar": 17
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "681fde17_6a56eab4",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "Why proc?",
+      "range": {
+        "startLine": 214,
+        "startChar": 9,
+        "endLine": 214,
+        "endChar": 20
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f79fd4c7_f244ae38",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-04-30T16:19:11Z",
+      "side": 1,
+      "message": "pr_err()?",
+      "range": {
+        "startLine": 216,
+        "startChar": 2,
+        "endLine": 216,
+        "endChar": 9
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
