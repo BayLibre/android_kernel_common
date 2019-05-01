@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "3c511d36_a5310250",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-05-01T10:47:00Z",
+      "side": 1,
+      "message": "I\u0027m not saying constantly consume memory, but just drop the older events and only keep the new ones?\n\nIt\u0027s a trade off, do you want to miss old events, or new ones.  It\u0027s your call, you are in charge of the userspace side of this :)",
+      "parentUuid": "557974f9_3d7f3289",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 64
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fb616979_acd1a8da",
         "filename": "drivers/staging/android/lowmemorykiller.c",
         "patchSetId": 2
@@ -177,6 +201,30 @@
       "side": 1,
       "message": "I added it to the commit message. Happy for suggestions as to where else to put documentation.",
       "parentUuid": "3c08f246_0de27994",
+      "range": {
+        "startLine": 173,
+        "startChar": 2,
+        "endLine": 176,
+        "endChar": 60
+      },
+      "revId": "f3fd8624bc7a9eb3676ebdeee7bdbdc666c0e0b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3e14f32_5368e4f0",
+        "filename": "drivers/staging/android/lowmemorykiller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-05-01T10:47:00Z",
+      "side": 1,
+      "message": "Why multi-line?  Isn\u0027t a single line easier to parse and more like \"most\" proc files?\n\nAnyway you are the one having to parse this, not me :)",
+      "parentUuid": "4801f456_32facbb7",
       "range": {
         "startLine": 173,
         "startChar": 2,
