@@ -32,6 +32,10 @@
 #undef get_mcountsym
 #undef get_sym_str_and_relp
 #undef do_func
+#undef read_shstrndx
+#undef read_shnum
+#undef write_shnum
+#undef get_symb_shndx
 #undef Elf_Addr
 #undef Elf_Ehdr
 #undef Elf_Shdr
@@ -66,6 +70,10 @@
 # define fn_is_fake_mcount	fn_is_fake_mcount64
 # define MIPS_is_fake_mcount	MIPS64_is_fake_mcount
 # define mcount_adjust		mcount_adjust_64
+# define read_shstrndx		read_shstrndx_64
+# define read_shnum		read_shnum_64
+# define write_shnum		write_shnum_64
+# define get_symb_shndx		get_secindex_64
 # define Elf_Addr		Elf64_Addr
 # define Elf_Ehdr		Elf64_Ehdr
 # define Elf_Shdr		Elf64_Shdr
@@ -99,6 +107,10 @@
 # define fn_is_fake_mcount	fn_is_fake_mcount32
 # define MIPS_is_fake_mcount	MIPS32_is_fake_mcount
 # define mcount_adjust		mcount_adjust_32
+# define read_shstrndx		read_shstrndx_32
+# define read_shnum		read_shnum_32
+# define write_shnum		write_shnum_32
+# define get_symb_shndx		get_secindex_32
 # define Elf_Addr		Elf32_Addr
 # define Elf_Ehdr		Elf32_Ehdr
 # define Elf_Shdr		Elf32_Shdr
@@ -137,6 +149,58 @@ static void fn_ELF_R_INFO(Elf_Rel *const rp, unsigned sym, unsigned type)
 	rp->r_info = _w(ELF_R_INFO(sym, type));
 }
 static void (*Elf_r_info)(Elf_Rel *const rp, unsigned sym, unsigned type) = fn_ELF_R_INFO;
+
+static unsigned int read_shstrndx(const Elf_Ehdr * const ehdr,
+				  const Elf_Shdr * const shdr0)
+{
+	unsigned int shstrndx = w2(ehdr->e_shstrndx);
+
+	if (shstrndx == SHN_XINDEX)
+		return w(shdr0->sh_link);
+
+	return shstrndx;
+}
+
+static unsigned int read_shnum(const Elf_Ehdr * const ehdr,
+			       const Elf_Shdr * const shdr0)
+{
+	unsigned int shnum = w2(ehdr->e_shnum);
+
+	if (shnum == 0)
+		return w(shdr0->sh_size);
+
+	return shnum;
+}
+
+static void write_shnum(Elf_Ehdr * const ehdr,
+			Elf_Shdr * const shdr0,
+			const unsigned int shnum)
+{
+	if (shnum >= SHN_LORESERVE) {
+		ehdr->e_shnum = 0;
+		shdr0->sh_size = shnum;
+	} else {
+		ehdr->e_shnum = shnum;
+	}
+}
+
+/* Accessor for sym->st_shndx, hides ugliness of "64k sections" */
+static unsigned int get_symb_shndx(const Elf_Sym *sym,
+				   const Elf_Sym *sym0,
+				   const unsigned int *indexes,
+				   unsigned int *index_out)
+{
+	if (is_shndx_special(sym->st_shndx))
+		return 0;
+
+	if (sym->st_shndx != SHN_XINDEX) {
+		*index_out = sym->st_shndx;
+		return 1;
+	}
+
+	*index_out = _w(indexes[sym - sym0]);
+	return 1;
+}
 
 static int mcount_adjust = 0;
 
@@ -189,8 +253,9 @@ static void append_func(Elf_Ehdr *const ehdr,
 	char const *mc_name = (sizeof(Elf_Rela) == rel_entsize)
 		? ".rela__mcount_loc"
 		:  ".rel__mcount_loc";
-	unsigned const old_shnum = w2(ehdr->e_shnum);
 	uint_t const old_shoff = _w(ehdr->e_shoff);
+	Elf_Shdr *const old_shdr0 = (Elf_Shdr *)(old_shoff + (void *)ehdr);
+	unsigned const old_shnum = read_shnum(ehdr, old_shdr0);
 	uint_t const old_shstr_sh_size   = _w(shstr->sh_size);
 	uint_t const old_shstr_sh_offset = _w(shstr->sh_offset);
 	uint_t t = 1 + strlen(mc_name) + _w(shstr->sh_size);
@@ -207,11 +272,18 @@ static void append_func(Elf_Ehdr *const ehdr,
 	uwrite(fd_map, old_shstr_sh_offset + (void *)ehdr, old_shstr_sh_size);
 	uwrite(fd_map, mc_name, 1 + strlen(mc_name));
 
+	/* update shnum (this may write both to ehdr and old_shdr0 */
+	write_shnum(ehdr, old_shdr0, old_shnum + 2);
+
+	/* write updated elf header */
+	ehdr->e_shoff = _w(new_e_shoff);
+	ulseek(fd_map, 0, SEEK_SET);
+	uwrite(fd_map, ehdr, sizeof(*ehdr));
+
 	/* old(modified) Elf_Shdr table, word-byte aligned */
 	ulseek(fd_map, t, SEEK_SET);
 	t += sizeof(Elf_Shdr) * old_shnum;
-	uwrite(fd_map, old_shoff + (void *)ehdr,
-	       sizeof(Elf_Shdr) * old_shnum);
+	uwrite(fd_map, old_shdr0, sizeof(Elf_Shdr) * old_shnum);
 
 	/* new sections __mcount_loc and .rel__mcount_loc */
 	t += 2*sizeof(mcsec);
@@ -244,11 +316,6 @@ static void append_func(Elf_Ehdr *const ehdr,
 
 	uwrite(fd_map, mloc0, (void *)mlocp - (void *)mloc0);
 	uwrite(fd_map, mrel0, (void *)mrelp - (void *)mrel0);
-
-	ehdr->e_shoff = _w(new_e_shoff);
-	ehdr->e_shnum = w2(2 + w2(ehdr->e_shnum));  /* {.rel,}__mcount_loc */
-	ulseek(fd_map, 0, SEEK_SET);
-	uwrite(fd_map, ehdr, sizeof(*ehdr));
 }
 
 static unsigned get_mcountsym(Elf_Sym const *const sym0,
@@ -416,6 +483,7 @@ static void nop_mcount(Elf_Shdr const *const relhdr,
  *      2: 00000000     0 SECTION LOCAL  DEFAULT    1
  */
 static unsigned find_secsym_ndx(unsigned const txtndx,
+				unsigned const *const indexes,
 				char const *const txtname,
 				uint_t *const recvalp,
 				Elf_Shdr const *const symhdr,
@@ -429,8 +497,12 @@ static unsigned find_secsym_ndx(unsigned const txtndx,
 
 	for (symp = sym0, t = nsym; t; --t, ++symp) {
 		unsigned int const st_bind = ELF_ST_BIND(symp->st_info);
+		unsigned int st_shndx = 0;
 
-		if (txtndx == w2(symp->st_shndx)
+		if (!get_symb_shndx(symp, sym0, indexes, &st_shndx))
+			continue;
+
+		if (txtndx == st_shndx
 			/* avoid STB_WEAK */
 		    && (STB_LOCAL == st_bind || STB_GLOBAL == st_bind)) {
 			/* function symbols on ARM have quirks, avoid them */
@@ -505,12 +577,13 @@ do_func(Elf_Ehdr *const ehdr, char const *const fname, unsigned const reltype)
 {
 	Elf_Shdr *const shdr0 = (Elf_Shdr *)(_w(ehdr->e_shoff)
 		+ (void *)ehdr);
-	unsigned const nhdr = w2(ehdr->e_shnum);
-	Elf_Shdr *const shstr = &shdr0[w2(ehdr->e_shstrndx)];
+	unsigned const nhdr = read_shnum(ehdr, shdr0);
+	Elf_Shdr *const shstr = &shdr0[read_shstrndx(ehdr, shdr0)];
 	char const *const shstrtab = (char const *)(_w(shstr->sh_offset)
 		+ (void *)ehdr);
 
 	Elf_Shdr const *relhdr;
+	const unsigned int *indexes = NULL; /* Special section of indexes */
 	unsigned k;
 
 	/* Upper bound on space: assume all relevant relocs are for mcount. */
@@ -525,13 +598,22 @@ do_func(Elf_Ehdr *const ehdr, char const *const fname, unsigned const reltype)
 	unsigned rel_entsize = 0;
 	unsigned symsec_sh_link = 0;
 
+	/* First, find the special section of indexes if it exists */
+	for (relhdr = shdr0, k = nhdr; k; --k, ++relhdr) {
+		if (relhdr->sh_type == SHT_SYMTAB_SHNDX) {
+			indexes = _w(relhdr->sh_offset) + (void *)ehdr;
+			break;
+		}
+	}
+
+	/* Then, do the main work */
 	for (relhdr = shdr0, k = nhdr; k; --k, ++relhdr) {
 		char const *const txtname = has_rel_mcount(relhdr, shdr0,
 			shstrtab, fname);
 		if (txtname && is_mcounted_section_name(txtname)) {
 			uint_t recval = 0;
 			unsigned const recsym = find_secsym_ndx(
-				w(relhdr->sh_info), txtname, &recval,
+				w(relhdr->sh_info), indexes, txtname, &recval,
 				&shdr0[symsec_sh_link = w(relhdr->sh_link)],
 				ehdr);
 

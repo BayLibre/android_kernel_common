@@ -368,6 +368,11 @@ is_mcounted_section_name(char const *const txtname)
 		 strcmp(".text..ftrace", txtname) != 0);
 }
 
+static inline int is_shndx_special(unsigned int i)
+{
+	return i != SHN_XINDEX && i >= SHN_LORESERVE && i <= SHN_HIRESERVE;
+}
+
 /* 32 bit and 64 bit are very similar */
 #include "recordmcount.h"
 #define RECORD_MCOUNT_64
