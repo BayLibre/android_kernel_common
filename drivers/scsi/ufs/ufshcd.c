@@ -2396,38 +2396,6 @@ static inline u16 ufshcd_upiu_wlun_to_scsi_wlun(u8 upiu_wlun_id)
 	return (upiu_wlun_id & ~UFS_UPIU_WLUN_ID) | SCSI_W_LUN_BASE;
 }
 
-static inline int ufshcd_prepare_lrbp_crypto(struct ufs_hba *hba,
-					     struct scsi_cmnd *cmd,
-					     struct ufshcd_lrb *lrbp)
-{
-	int key_slot;
-
-	if (!bio_crypt_should_process(cmd->request->bio,
-					cmd->request->q)) {
-		lrbp->crypto_enable = false;
-		return 0;
-	}
-
-	if (WARN_ON(!ufshcd_is_crypto_enabled(hba))) {
-		/**
-		 * Upper layer asked us to do inline encryption
-		 * but that isn't enabled, so we fail this request.
-		 */
-		return -EINVAL;
-	}
-	key_slot = bio_crypt_get_slot(cmd->request->bio);
-	if (!ufshcd_keyslot_valid(hba, key_slot))
-		return -EINVAL;
-
-	lrbp->crypto_enable = true;
-	lrbp->crypto_key_slot = key_slot;
-	lrbp->data_unit_num =
-		bio_crypt_data_unit_num(cmd->request->bio);
-
-	return 0;
-}
-
-
 /**
  * ufshcd_queuecommand - main entry point for SCSI requests
  * @host: SCSI host pointer
@@ -4672,7 +4640,7 @@ static void ufshcd_slave_destroy(struct scsi_device *sdev)
 		spin_unlock_irqrestore(hba->host->host_lock, flags);
 	}
 
-	ufshcd_crypto_destroy_rq_keyslot_manager(q);
+	ufshcd_crypto_destroy_rq_keyslot_manager(hba, q);
 }
 
 /**
@@ -4884,6 +4852,7 @@ static void __ufshcd_transfer_req_compl(struct ufs_hba *hba,
 			result = ufshcd_transfer_rsp_status(hba, lrbp);
 			scsi_dma_unmap(cmd);
 			cmd->result = result;
+			ufshcd_complete_lrbp_crypto(hba, cmd, lrbp);
 			/* Mark completed command as NULL in LRB */
 			lrbp->cmd = NULL;
 			clear_bit_unlock(index, &hba->lrb_in_use);

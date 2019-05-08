@@ -334,6 +334,24 @@ struct ufs_hba_variant_ops {
 	int	(*phy_initialization)(struct ufs_hba *);
 };
 
+struct ufs_hba_crypto_variant_ops {
+	int (*setup_rq_keyslot_manager)(struct ufs_hba *hba,
+					struct request_queue *q);
+	int (*destroy_rq_keyslot_manager)(struct ufs_hba *hba,
+					  struct request_queue *q);
+	int (*hba_init_crypto)(struct ufs_hba *hba);
+	int (*enable)(struct ufs_hba *hba);
+	int (*disable)(struct ufs_hba *hba);
+	int (*debug)(struct ufs_hba *hba);
+	int (*prepare_lrbp_crypto)(struct ufs_hba *hba,
+				   struct scsi_cmnd *cmd,
+				   struct ufshcd_lrb *lrbp);
+	int (*complete_lrbp_crypto)(struct ufs_hba *hba,
+				    struct scsi_cmnd *cmd,
+				    struct ufshcd_lrb *lrbp);
+	void *priv;
+};
+
 /* clock gating state  */
 enum clk_gating_state {
 	CLKS_OFF,
@@ -558,6 +576,7 @@ struct ufs_hba {
 	u32 ufs_version;
 	struct ufs_hba_variant_ops *vops;
 	void *priv;
+	const struct ufs_hba_crypto_variant_ops *crypto_vops;
 	unsigned int irq;
 	bool is_irq_enabled;
 
