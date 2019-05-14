@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "b3a47d07_455cfb12",
+        "filename": "fs/namei.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1021471
+      },
+      "writtenOn": "2019-05-14T22:58:51Z",
+      "side": 1,
+      "message": "We could use side-datastructure.\n\n   map: inode -\u003e index\n      {dev,ino} -\u003e 0\n      {dev2, ino2} -\u003e 24\n      {dev3, ino3} -\u003e 48\n\n   index_buffer : 0..MAX_SIZE\n      0:  /data/misc/filename.txt\\0\n      24: /next/file/filename.txt\\0\n      48: /more/misc/filename.txt\\0\n\n   index_max \u003d 72",
+      "parentUuid": "ceb58ac3_ac155520",
+      "range": {
+        "startLine": 807,
+        "startChar": 8,
+        "endLine": 807,
+        "endChar": 21
+      },
+      "revId": "d35766ba46fac931f71545ed2ab65a960c8c0b5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6871ad33_a5d538e4",
         "filename": "fs/namei.c",
         "patchSetId": 1
