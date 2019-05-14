@@ -65,6 +65,55 @@ struct platform_device *of_find_device_by_node(struct device_node *np)
 EXPORT_SYMBOL(of_find_device_by_node);
 
 #ifdef CONFIG_OF_ADDRESS
+
+static LIST_HEAD(wait_for_suppliers);
+static DEFINE_MUTEX(wfs_lock);
+static bool retry_dev_links;
+
+static int __of_link_to_suppliers(struct device *dev)
+{
+	struct device_node *sup_node;
+	unsigned int i = 0;
+	u32 dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
+
+	while ((sup_node = of_parse_phandle(dev->of_node, "depends-on", i))) {
+		if (!device_link_add(dev, sup_node->dev, dl_flags))
+			return -ENODEV;
+		i++;
+	}
+
+	return 0;
+}
+
+static int of_link_to_suppliers(struct device *dev)
+{
+	if (unlikely(!dev->of_node))
+		return 0;
+
+	if (__of_link_to_suppliers(dev)) {
+		mutex_lock(&wfs_lock);
+		list_add_tail(&dev->links.needs_suppliers, &wait_for_suppliers);
+		mutex_unlock(&wfs_lock);
+		return -ENODEV;
+	}
+
+	return 0;
+}
+
+static int of_retry_link_to_suppliers(void)
+{
+	struct device *dev, *tmp;
+
+	mutex_lock(&wfs_lock);
+	list_for_each_entry_safe(dev, tmp, &wait_for_suppliers,
+				 links.needs_suppliers)
+		if (!__of_link_to_suppliers(dev))
+			list_del_init(&dev->links.needs_suppliers);
+	mutex_unlock(&wfs_lock);
+
+	return 0;
+}
+
 /*
  * The following routines scan a subtree and registers a device for
  * each applicable node.
@@ -196,11 +245,14 @@ static struct platform_device *of_platform_device_create_pdata(
 	dev->dev.platform_data = platform_data;
 	of_msi_configure(&dev->dev, dev->dev.of_node);
 
+	of_link_to_suppliers(&dev->dev);
 	if (of_device_add(dev) != 0) {
 		platform_device_put(dev);
 		goto err_clear_flag;
 	}
 	np->dev = &dev->dev;
+	if (retry_dev_links)
+		of_retry_link_to_suppliers();
 
 	return dev;
 
@@ -547,6 +599,10 @@ static int __init of_platform_default_populate_init(void)
 	/* Populate everything else. */
 	of_platform_default_populate(NULL, NULL, NULL);
 
+	/* Make the device-links between producers and consumers */
+	retry_dev_links = true;
+	of_retry_link_to_suppliers();
+
 	return 0;
 }
 arch_initcall_sync(of_platform_default_populate_init);
@@ -563,6 +619,9 @@ int of_platform_device_destroy(struct device *dev, void *data)
 		device_for_each_child(dev, NULL, of_platform_device_destroy);
 
 	dev->of_node->dev = NULL;
+	mutex_lock(&wfs_lock);
+	list_del(&dev->links.needs_suppliers);
+	mutex_unlock(&wfs_lock);
 	of_node_clear_flag(dev->of_node, OF_POPULATED);
 	of_node_clear_flag(dev->of_node, OF_POPULATED_BUS);
 
