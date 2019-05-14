@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ceb58ac3_ac155520",
+        "filename": "fs/namei.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-05-14T21:51:37Z",
+      "side": 1,
+      "message": "Unfortunately in eBPF the value size of a key/value pair in the hashtable is fixed. If we choose to big, we waste memory. If we chose too small, then the path gets truncated. We have to find some balance here. I can change it to 256 if that is preferred. Let us see how it goes.",
+      "parentUuid": "3292377f_004f9e1f",
+      "range": {
+        "startLine": 807,
+        "startChar": 8,
+        "endLine": 807,
+        "endChar": 21
+      },
+      "revId": "d35766ba46fac931f71545ed2ab65a960c8c0b5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6871ad33_a5d538e4",
         "filename": "fs/namei.c",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2019-04-17T21:24:39Z",
       "side": 1,
       "message": "When can it be an error?",
+      "revId": "d35766ba46fac931f71545ed2ab65a960c8c0b5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdeaac9f_37ebbfbb",
+        "filename": "fs/namei.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-05-14T21:51:37Z",
+      "side": 1,
+      "message": "If the path was too long for the buffer, then it returns an error.",
+      "parentUuid": "6871ad33_a5d538e4",
       "revId": "d35766ba46fac931f71545ed2ab65a960c8c0b5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
