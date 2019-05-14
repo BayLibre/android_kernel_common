@@ -888,11 +888,13 @@ enum dl_dev_state {
  * @suppliers: List of links to supplier devices.
  * @consumers: List of links to consumer devices.
  * @status: Driver status information.
+ * @needs_suppliers: Hook to global list of devices waiting for suppliers.
  */
 struct dev_links_info {
 	struct list_head suppliers;
 	struct list_head consumers;
 	enum dl_dev_state status;
+	struct list_head needs_suppliers;
 };
 
 /**
