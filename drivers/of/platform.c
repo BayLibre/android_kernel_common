@@ -196,10 +196,12 @@ static struct platform_device *of_platform_device_create_pdata(
 		platform_device_put(dev);
 		goto err_clear_flag;
 	}
+	np->dev = &dev->dev;
 
 	return dev;
 
 err_clear_flag:
+	np->dev = NULL;
 	of_node_clear_flag(np, OF_POPULATED);
 	return NULL;
 }
@@ -556,6 +558,7 @@ int of_platform_device_destroy(struct device *dev, void *data)
 	if (of_node_check_flag(dev->of_node, OF_POPULATED_BUS))
 		device_for_each_child(dev, NULL, of_platform_device_destroy);
 
+	dev->of_node->dev = NULL;
 	of_node_clear_flag(dev->of_node, OF_POPULATED);
 	of_node_clear_flag(dev->of_node, OF_POPULATED_BUS);
 
