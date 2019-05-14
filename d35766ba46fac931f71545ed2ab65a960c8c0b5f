@@ -101,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "e0131a8b_ed2aa9b5",
+        "filename": "include/trace/events/namei.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-05-14T21:54:13Z",
+      "side": 1,
+      "message": "Because ino_t and dev_t bit width change depending on the architecture. In fact, in x86 dev_t is 32-bit in userspace and 64-bit in the kernel. I believe libc does some conversion there but bpf doesn\u0027t use libc. It is strange but that is the case. This causes us to skip the first couple bytes in the tracepoint structure. It is best to just assume 64-bit and I changed the kernel patch also to do the same.",
+      "parentUuid": "50a858aa_5f38adc6",
+      "revId": "d35766ba46fac931f71545ed2ab65a960c8c0b5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0152a233_1e6869eb",
         "filename": "include/trace/events/namei.h",
         "patchSetId": 1
