@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af62dba1_11c493b2",
+        "filename": "fs/namei.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1021471
+      },
+      "writtenOn": "2019-05-15T22:49:42Z",
+      "side": 1,
+      "message": "nit: Consider adding comment why it could return IS_ERR ?",
+      "revId": "b56814ae5bb2861aa3ba682405448de1b686fc09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be1b57a8_ed8b1708",
+        "filename": "include/trace/events/namei.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1021471
+      },
+      "writtenOn": "2019-05-15T22:49:42Z",
+      "side": 1,
+      "message": "unused, and it also causes an error when cherry picking this to older kernels missing errseq.h",
+      "revId": "b56814ae5bb2861aa3ba682405448de1b686fc09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ff6bb18_3f987ab5",
+        "filename": "include/trace/events/namei.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1021471
+      },
+      "writtenOn": "2019-05-15T22:49:42Z",
+      "side": 1,
+      "message": "nit: this format is inconsistent with mm_filemap and makes it annoying to grep through ftrace\n\n(in particular it prints \u0027major:minor\u0027 instead of \u0027dev\u0027)\n\n------\nalso I think mm_filemap is \u0027dev $x:$y ino $a\u0027 (note the spaces instead of a \u0027\u003d\u0027)",
+      "range": {
+        "startLine": 38,
+        "startChar": 18,
+        "endLine": 38,
+        "endChar": 20
+      },
+      "revId": "b56814ae5bb2861aa3ba682405448de1b686fc09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95783e65_e527e887",
+        "filename": "include/trace/events/namei.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1021471
+      },
+      "writtenOn": "2019-05-15T22:49:42Z",
+      "side": 1,
+      "message": "nit: is there any way to escape path, probably not a big deal but at least wrap it in \"\" ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 34,
+        "endLine": 38,
+        "endChar": 36
+      },
+      "revId": "b56814ae5bb2861aa3ba682405448de1b686fc09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
