@@ -198,6 +198,28 @@ static const struct attribute_group ufs_sysfs_default_group = {
 	.attrs = ufs_sysfs_ufshcd_attrs,
 };
 
+static int ufs_sysfs_emulate_health_est_c(struct ufs_hba *hba, u8 *value)
+{
+	u8 desc_buf[2] = {0};
+	u32 avg_pe_cycle;
+	int ret;
+
+	pm_runtime_get_sync(hba->dev);
+	ufshcd_hold(hba, false);
+	ret = ufshcd_read_desc_param(hba, QUERY_DESC_IDN_HEALTH, 0,
+			HEALTH_DESC_PARAM_AVG_PE_CYCLE, desc_buf,
+			sizeof(desc_buf));
+	ufshcd_release(hba);
+	pm_runtime_put_noidle(hba->dev);
+	if (ret)
+		return -EINVAL;
+
+	avg_pe_cycle = get_unaligned_be16(desc_buf);
+	*value = (u8)(avg_pe_cycle * 100 / HEALTH_DESC_DEFAULT_PE_CYCLE);
+
+	return ret;
+}
+
 static ssize_t ufs_sysfs_read_desc_param(struct ufs_hba *hba,
 				  enum desc_idn desc_id,
 				  u8 desc_index,
@@ -206,18 +228,29 @@ static ssize_t ufs_sysfs_read_desc_param(struct ufs_hba *hba,
 				  u8 param_size)
 {
 	u8 desc_buf[8] = {0};
+	u8 value;
 	int ret;
 
 	if (param_size > 8)
 		return -EINVAL;
 
+	pm_runtime_get_sync(hba->dev);
+	ufshcd_hold(hba, false);
 	ret = ufshcd_read_desc_param(hba, desc_id, desc_index,
 				param_offset, desc_buf, param_size);
+	ufshcd_release(hba);
+	pm_runtime_put_sync(hba->dev);
 	if (ret)
 		return -EINVAL;
 	switch (param_size) {
 	case 1:
-		ret = sprintf(sysfs_buf, "0x%02X\n", *desc_buf);
+		value = *desc_buf;
+		if (param_offset == HEALTH_DESC_PARAM_LIFE_TIME_EST_C &&
+				desc_id == QUERY_DESC_IDN_HEALTH &&
+				value == 0 &&
+				ufs_sysfs_emulate_health_est_c(hba, &value))
+			return  -EINVAL;
+		ret = sprintf(sysfs_buf, "0x%02X\n", value);
 		break;
 	case 2:
 		ret = sprintf(sysfs_buf, "0x%04X\n",
@@ -436,11 +469,13 @@ static const struct attribute_group ufs_sysfs_geometry_descriptor_group = {
 UFS_HEALTH_DESC_PARAM(eol_info, _EOL_INFO, 1);
 UFS_HEALTH_DESC_PARAM(life_time_estimation_a, _LIFE_TIME_EST_A, 1);
 UFS_HEALTH_DESC_PARAM(life_time_estimation_b, _LIFE_TIME_EST_B, 1);
+UFS_HEALTH_DESC_PARAM(life_time_estimation_c, _LIFE_TIME_EST_C, 1);
 
 static struct attribute *ufs_sysfs_health_descriptor[] = {
 	&dev_attr_eol_info.attr,
 	&dev_attr_life_time_estimation_a.attr,
 	&dev_attr_life_time_estimation_b.attr,
+	&dev_attr_life_time_estimation_c.attr,
 	NULL,
 };
 

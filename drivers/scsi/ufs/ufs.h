@@ -326,12 +326,15 @@ enum geometry_desc_param {
 };
 
 /* Health descriptor parameters offsets in bytes*/
+#define HEALTH_DESC_DEFAULT_PE_CYCLE	3000
 enum health_desc_param {
 	HEALTH_DESC_PARAM_LEN			= 0x0,
 	HEALTH_DESC_PARAM_TYPE			= 0x1,
 	HEALTH_DESC_PARAM_EOL_INFO		= 0x2,
 	HEALTH_DESC_PARAM_LIFE_TIME_EST_A	= 0x3,
 	HEALTH_DESC_PARAM_LIFE_TIME_EST_B	= 0x4,
+	HEALTH_DESC_PARAM_AVG_PE_CYCLE		= 0xD,
+	HEALTH_DESC_PARAM_LIFE_TIME_EST_C	= 0x24,
 };
 
 /* WriteBooster buffer mode */
