@@ -540,6 +540,10 @@ int blk_crypto_submit_bio(struct bio **bio_ptr)
 
 	/* Get device keyslot if supported */
 	if (q->ksm) {
+		/* If lower layer device just wants the key, do nothing */
+		if (keyslot_manager_is_passthrough(q->ksm))
+			return 0;
+
 		err = bio_crypt_ctx_acquire_keyslot(bio, q->ksm);
 		if (!err)
 			return 0;
