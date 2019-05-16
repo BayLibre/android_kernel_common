@@ -471,6 +471,7 @@ int fib_nl_newrule(struct sk_buff *skb, struct nlmsghdr *nlh)
 	if (rule->l3mdev && rule->table)
 		goto errout_free;
 
+<<<<<<< HEAD   (2a275b ANDROID: cuttlefish_defconfig: Disable DEVTMPFS)
 	if (tb[FRA_UID_RANGE]) {
 		if (current_user_ns() != net->user_ns) {
 			err = -EPERM;
@@ -489,6 +490,11 @@ int fib_nl_newrule(struct sk_buff *skb, struct nlmsghdr *nlh)
 	if ((nlh->nlmsg_flags & NLM_F_EXCL) &&
 	    rule_exists(ops, frh, tb, rule)) {
 		err = -EEXIST;
+=======
+	if (rule_exists(ops, frh, tb, rule)) {
+		if (nlh->nlmsg_flags & NLM_F_EXCL)
+			err = -EEXIST;
+>>>>>>> BRANCH (8baec4 Linux 4.9.177)
 		goto errout_free;
 	}
 
