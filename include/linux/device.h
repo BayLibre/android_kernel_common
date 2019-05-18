@@ -888,11 +888,13 @@ enum dl_dev_state {
  * @suppliers: List of links to supplier devices.
  * @consumers: List of links to consumer devices.
  * @status: Driver status information.
+ * @needs_suppliers: Hook to global list of devices waiting for suppliers.
  */
 struct dev_links_info {
 	struct list_head suppliers;
 	struct list_head consumers;
 	enum dl_dev_state status;
+	struct list_head needs_suppliers;
 };
 
 /**
@@ -1395,6 +1397,9 @@ struct device_link *device_link_add(struct device *consumer,
 				    struct device *supplier, u32 flags);
 void device_link_del(struct device_link *link);
 void device_link_remove(void *consumer, struct device *supplier);
+void device_link_wait_for_supplier(struct device *consumer);
+void device_link_check_waiting_consumers(
+		int (*add_suppliers)(struct device *consumer));
 
 #ifndef dev_fmt
 #define dev_fmt(fmt) fmt
