@@ -55,9 +55,9 @@ EXPORT_TRACEPOINT_SYMBOL(android_fs_dataread_end);
 static void mpage_end_io(struct bio *bio)
 {
 	struct bio_vec *bv;
-	int i;
 	struct bvec_iter_all iter_all;
 
+<<<<<<< HEAD   (e2f91d ANDROID: gki_defconfig: more generic configs for DLKMs)
 	if (trace_android_fs_dataread_end_enabled() &&
 	    (bio_data_dir(bio) == READ)) {
 		struct page *first_page = bio->bi_io_vec[0].bv_page;
@@ -69,6 +69,9 @@ static void mpage_end_io(struct bio *bio)
 	}
 
 	bio_for_each_segment_all(bv, bio, i, iter_all) {
+=======
+	bio_for_each_segment_all(bv, bio, iter_all) {
+>>>>>>> BRANCH (a18833 Linux 5.2-rc1)
 		struct page *page = bv->bv_page;
 		page_endio(page, bio_op(bio),
 			   blk_status_to_errno(bio->bi_status));
