@@ -22,6 +22,30 @@
       "revId": "e43ba023452692e322cf38f022b467757f12997c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3f15a5a_6ef6cdee",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-05-21T18:56:58Z",
+      "side": 1,
+      "message": "I don\u0027t remember ever seeing atomic pointers. AFAIK, that\u0027s not a thing, but I could be wrong. 32-bit read/writes on ARM are sometimes assumed (guaranteed?) to be atomic but I don\u0027t think 64-bit read/writes are.\n\nAlso, even if that\u0027s possible, I still need this spinlock for get_device() to work safely inside of_find_device_by_node(). That way the dev doesn\u0027t get freed after the NULL check inside get_device().",
+      "parentUuid": "e8977e55_774882ee",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 27
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
