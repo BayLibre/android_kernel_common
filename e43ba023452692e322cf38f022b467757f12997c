@@ -46,6 +46,30 @@
       "revId": "e43ba023452692e322cf38f022b467757f12997c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9c28633_88f9557d",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2019-05-21T19:57:18Z",
+      "side": 1,
+      "message": "Here, however, you can write safely atomically, you do not have that race. (But you might introduce a maintenance issue).\n\nThe odds are _zero_ you would be calling this function and the lock contends as this is called in the probe/init routines right?\n\nREAD_ONCE() and WRITE_ONCE() are the defacto atomic pointer ops.\n\nHowever, if you expand the locks a bit (line 60-66), you could set np-\u003edev with the result of to_platform_device(bus_find_device(...)) so that the second lookup is faster. Do we expect of_find_device_by_node to be called multiple times after a relationship is established?",
+      "parentUuid": "e3f15a5a_6ef6cdee",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 27
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
