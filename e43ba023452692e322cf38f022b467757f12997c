@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "40211a5a_d2278e0b",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-05-22T18:44:12Z",
+      "side": 1,
+      "message": "Checked the ARMv8 instruction set at it guarantees that a 64-bit read/write is atomic if the address being read/written to is 64-bit aligned. Which I believe is true for standard pointers in the kernel. So the read/write itself is atomic, but I still need the lock here for other reasons mentioned in the comments.",
+      "parentUuid": "a931e54a_66ec62ce",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 27
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ba245ef_d75fdee2",
         "filename": "drivers/of/platform.c",
         "patchSetId": 3
