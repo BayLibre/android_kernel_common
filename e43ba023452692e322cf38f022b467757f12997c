@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d23bcfa1_6b4c998b",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-05-22T15:50:34Z",
+      "side": 1,
+      "message": "This code is not used often and it\u0027s mostly used only during boot up. Doesn\u0027t seems like it\u0027s going to be contended often. It\u0027s used far less often than the device_links_read/write_locks() :)",
+      "parentUuid": "33c46cf9_1c977534",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 36
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fcfcccfd_ea243c8d",
         "filename": "drivers/of/platform.c",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "a931e54a_66ec62ce",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-05-22T15:50:34Z",
+      "side": 1,
+      "message": "\u003e you can\u0027t change a pointer in an unatomic way on Linux.\nIs this true on a 64-bit machine? Specifically ARM64? I\u0027m not sure if the bus supports a 64-bit atomic read/write. I don\u0027t think it\u0027s a guaranteed standard and might be implementation defined. I agree on a 32-bit machine, it is atomic (at least on ARM32/64).\n\nEven if the pointer update itself is atomic, I\u0027m using the lock here because I need to keep the pointer update (device being freed) atomic with device reference being grabbed. I know get_device() does NULL check, but there\u0027s nothing preventing the dev memory from get freed (say the last reference does a put_device()) after the NULL check. An interrupt could come in right after the NULL check, some other thread puts the last reference and the memory is freed. Now, the \"dev\" used by get_device() would be doing a use after free. Wouldn\u0027t it?",
+      "parentUuid": "fcfcccfd_ea243c8d",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 27
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ba245ef_d75fdee2",
         "filename": "drivers/of/platform.c",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2019-05-22T10:26:52Z",
       "side": 1,
       "message": "you should not need to lock anything as you are setting this under the device lock, right?",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 21
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ca9cf71_7f5e8ec8",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-05-22T15:50:34Z",
+      "side": 1,
+      "message": "There are no locks grabbed anywhere in the call path as far as I can see because this is a new device being created. I think we need a lock here so that get_device()\u0027s view (called from  of_find_device_by_node()) doesn\u0027t change while it\u0027s trying to get the device. It\u0027s arguable that I don\u0027t need a lock here and only need a lock when I set it to NULL, but that seem weird to grab it only sometimes.",
+      "parentUuid": "9ba245ef_d75fdee2",
       "range": {
         "startLine": 207,
         "startChar": 0,
@@ -139,6 +211,29 @@
       "revId": "e43ba023452692e322cf38f022b467757f12997c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a200d956_17d2b373",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-05-22T15:50:34Z",
+      "side": 1,
+      "message": "So once I get the lock inside of_find_device_by_node(), I prevent this execution flow from continuing till I grab a reference with get_device().\n\nAnd once I get the reference, it\u0027s okay for this to continue as I now have a reference and the memory itself can\u0027t be freed.",
+      "range": {
+        "startLine": 213,
+        "startChar": 12,
+        "endLine": 213,
+        "endChar": 23
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
