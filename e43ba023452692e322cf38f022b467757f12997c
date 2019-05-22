@@ -25,6 +25,52 @@
     },
     {
       "key": {
+        "uuid": "fcfcccfd_ea243c8d",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-05-22T10:26:52Z",
+      "side": 1,
+      "message": "no need for a lock here, get_device() on NULL will be fine, and you can\u0027t change a pointer in an unatomic way on Linux.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 27
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ba245ef_d75fdee2",
+        "filename": "drivers/of/platform.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-05-22T10:26:52Z",
+      "side": 1,
+      "message": "you should not need to lock anything as you are setting this under the device lock, right?",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 21
+      },
+      "revId": "e43ba023452692e322cf38f022b467757f12997c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e8977e55_774882ee",
         "filename": "drivers/of/platform.c",
         "patchSetId": 3
