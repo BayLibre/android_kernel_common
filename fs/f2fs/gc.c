@@ -1346,7 +1346,11 @@ void f2fs_build_gc_manager(struct f2fs_sb_info *sbi)
 	sbi->gc_pin_file_threshold = DEF_GC_FAILED_PINNED_FILES;
 
 	/* give warm/cold data area from slower device */
+<<<<<<< HEAD   (606bdb x86: Hide the int3_emulate_call/jmp functions from UML)
 	if (sbi->s_ndevs && !__is_large_section(sbi))
+=======
+	if (f2fs_is_multi_device(sbi) && sbi->segs_per_sec == 1)
+>>>>>>> BRANCH (0df021 Linux 4.19.47)
 		SIT_I(sbi)->last_victim[ALLOC_NEXT] =
 				GET_SEGNO(sbi, FDEV(0).end_blk) + 1;
 }

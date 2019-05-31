@@ -1367,6 +1367,17 @@ static inline bool time_to_inject(struct f2fs_sb_info *sbi, int type)
 }
 #endif
 
+/*
+ * Test if the mounted volume is a multi-device volume.
+ *   - For a single regular disk volume, sbi->s_ndevs is 0.
+ *   - For a single zoned disk volume, sbi->s_ndevs is 1.
+ *   - For a multi-device volume, sbi->s_ndevs is always 2 or more.
+ */
+static inline bool f2fs_is_multi_device(struct f2fs_sb_info *sbi)
+{
+	return sbi->s_ndevs > 1;
+}
+
 /* For write statistics. Suppose sector size is 512 bytes,
  * and the return value is in kbytes. s is of struct f2fs_sb_info.
  */
@@ -3595,6 +3606,7 @@ static inline bool f2fs_may_encrypt(struct inode *inode)
 static inline int block_unaligned_IO(struct inode *inode,
 				struct kiocb *iocb, struct iov_iter *iter)
 {
+<<<<<<< HEAD   (606bdb x86: Hide the int3_emulate_call/jmp functions from UML)
 	unsigned int i_blkbits = READ_ONCE(inode->i_blkbits);
 	unsigned int blocksize_mask = (1 << i_blkbits) - 1;
 	loff_t offset = iocb->ki_pos;
@@ -3636,6 +3648,11 @@ static inline bool f2fs_force_buffered_io(struct inode *inode,
 		return true;
 
 	return false;
+=======
+	return (f2fs_post_read_required(inode) ||
+			(rw == WRITE && test_opt(F2FS_I_SB(inode), LFS)) ||
+			f2fs_is_multi_device(F2FS_I_SB(inode)));
+>>>>>>> BRANCH (0df021 Linux 4.19.47)
 }
 
 #ifdef CONFIG_F2FS_FAULT_INJECTION
