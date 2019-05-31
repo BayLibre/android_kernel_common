@@ -3650,6 +3650,7 @@ static inline bool f2fs_may_encrypt(struct inode *inode)
 static inline int block_unaligned_IO(struct inode *inode,
 				struct kiocb *iocb, struct iov_iter *iter)
 {
+<<<<<<< HEAD   (5cbd12 Merge remote-tracking branch 'origin/upstream-f2fs-stable-li)
 	unsigned int i_blkbits = READ_ONCE(inode->i_blkbits);
 	unsigned int blocksize_mask = (1 << i_blkbits) - 1;
 	loff_t offset = iocb->ki_pos;
@@ -3691,6 +3692,11 @@ static inline bool f2fs_force_buffered_io(struct inode *inode,
 		return true;
 
 	return false;
+=======
+	return (f2fs_post_read_required(inode) ||
+			(rw == WRITE && test_opt(F2FS_I_SB(inode), LFS)) ||
+			f2fs_is_multi_device(F2FS_I_SB(inode)));
+>>>>>>> BRANCH (0df021 Linux 4.19.47)
 }
 
 #ifdef CONFIG_F2FS_FAULT_INJECTION

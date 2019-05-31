@@ -648,7 +648,11 @@ int f2fs_issue_flush(struct f2fs_sb_info *sbi, nid_t ino)
 		return ret;
 	}
 
+<<<<<<< HEAD   (5cbd12 Merge remote-tracking branch 'origin/upstream-f2fs-stable-li)
 	if (atomic_inc_return(&fcc->queued_flush) == 1 ||
+=======
+	if (atomic_inc_return(&fcc->issing_flush) == 1 ||
+>>>>>>> BRANCH (0df021 Linux 4.19.47)
 	    f2fs_is_multi_device(sbi)) {
 		ret = submit_flush_wait(sbi, ino);
 		atomic_dec(&fcc->queued_flush);
