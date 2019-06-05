@@ -220,6 +220,7 @@ static struct bio *bounce_clone_bio(struct bio *bio_src, gfp_t gfp_mask,
 	struct bvec_iter iter;
 	struct bio_vec bv;
 	struct bio *bio;
+	int ret;
 
 	/*
 	 * Pre immutable biovecs, __bio_clone() used to just do a memcpy from
@@ -267,9 +268,13 @@ static struct bio *bounce_clone_bio(struct bio *bio_src, gfp_t gfp_mask,
 		break;
 	}
 
-	if (bio_integrity(bio_src)) {
-		int ret;
+	ret = bio_clone_crypt_context(bio, bio_src, gfp_mask);
+	if (ret < 0) {
+		bio_put(bio);
+		return NULL;
+	}
 
+	if (bio_integrity(bio_src)) {
 		ret = bio_integrity_clone(bio, bio_src, gfp_mask);
 		if (ret < 0) {
 			bio_put(bio);

@@ -29,6 +29,7 @@
 #include <linux/workqueue.h>
 #include <linux/cgroup.h>
 #include <linux/blk-cgroup.h>
+#include <linux/keyslot-manager.h>
 
 #include <trace/events/block.h>
 #include "blk.h"
@@ -253,6 +254,7 @@ static void bio_free(struct bio *bio)
 	struct bio_set *bs = bio->bi_pool;
 	void *p;
 
+	bio_crypt_free_ctx(bio);
 	bio_uninit(bio);
 
 	if (bs) {
@@ -625,6 +627,7 @@ EXPORT_SYMBOL(__bio_clone_fast);
 struct bio *bio_clone_fast(struct bio *bio, gfp_t gfp_mask, struct bio_set *bs)
 {
 	struct bio *b;
+	int ret;
 
 	b = bio_alloc_bioset(gfp_mask, 0, bs);
 	if (!b)
@@ -632,9 +635,13 @@ struct bio *bio_clone_fast(struct bio *bio, gfp_t gfp_mask, struct bio_set *bs)
 
 	__bio_clone_fast(b, bio);
 
-	if (bio_integrity(bio)) {
-		int ret;
+	ret = bio_clone_crypt_context(b, bio, gfp_mask);
+	if (ret < 0) {
+		bio_put(b);
+		return NULL;
+	}
 
+	if (bio_integrity(bio)) {
 		ret = bio_integrity_clone(b, bio, gfp_mask);
 
 		if (ret < 0) {
@@ -951,6 +958,7 @@ void bio_advance(struct bio *bio, unsigned bytes)
 		bio_integrity_advance(bio, bytes);
 
 	bio_advance_iter(bio, &bio->bi_iter, bytes);
+	bio_crypt_advance(bio, bytes);
 }
 EXPORT_SYMBOL(bio_advance);
 
