@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e300f0f7_2ee8ddae",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2059,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-06-11T16:17:18Z",
+      "side": 1,
+      "message": "That\u0027s correct. Once it\u0027s gone through binder_proc_release() no other entity will be able to find the proc so tmp_ref will never be bumped.",
+      "parentUuid": "ce02cf41_89445990",
+      "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9809d8bd_38c1ac2e",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2019-06-11T11:19:16Z",
       "side": 1,
       "message": "I\u0027m not sure I understand why you need to get a tmp_ref on the proc before acquiring the lock. That suggests the binder_proc could otherwise be freed while this is running; but after looking at the code above, I\u0027m not sure that can actually happen? And if it can happen, does that make the scenario in my comment above problematic?",
+      "range": {
+        "startLine": 2126,
+        "startChar": 0,
+        "endLine": 2126,
+        "endChar": 36
+      },
+      "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff238ef6_f7858a02",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2126,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-06-11T16:17:18Z",
+      "side": 1,
+      "message": "Well, I was thinking that we could get here from binder_send_failed_reply() (transaction sender context) while at the same time the target_proc is entering binder_release() and triggering the deferred cleanup of the proc. The scenario would be:\n\n1) procA: binder_release() schedules deferred proc release\n2) procB: binder_send_failed_reply() --\u003e binder_free_transaction() with procA as target\n3) procA: binder_deferred_release() is called\n4) procB: acquire t-\u003elock (line 2123)\n5) procA: block on t-\u003elock while cleanup up active transactions\n6) procB: release t-\u003elock (line 2127)\n7) procA: acquire t-\u003elock, finish cleanup and free proc\n8) procB: acquire inner lock (line 2129). UAF.\n\nThe tmp_ref is to prevent freeing the proc at step #7 and deferring until we are done with the proc here. Do you think this is impossible?\n\nIn this scenario, the threads have all been freed and proc-\u003eis_dead \u003d\u003d true, so the proc would be cleaned up at the decrement (line 2133). I still don\u0027t think there is any other entity that would be taking out a tmp_ref on the proc...can you think of a case?",
+      "parentUuid": "9809d8bd_38c1ac2e",
       "range": {
         "startLine": 2126,
         "startChar": 0,
