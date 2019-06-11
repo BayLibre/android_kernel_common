@@ -105,6 +105,30 @@
       "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90d92610_5d73350a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2126,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2019-06-11T17:33:49Z",
+      "side": 1,
+      "message": "I agree re: binder_cleanup_transaction() not being called in sender context.\n\nI was looking at the binder_send_failed_reply() at L3513, but that is receiving context as well. I\u0027ll take another good look later.",
+      "parentUuid": "36550511_6aa33d68",
+      "range": {
+        "startLine": 2126,
+        "startChar": 0,
+        "endLine": 2126,
+        "endChar": 36
+      },
+      "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
