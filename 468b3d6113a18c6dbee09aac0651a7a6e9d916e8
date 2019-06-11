@@ -153,6 +153,30 @@
       "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "318ead76_6a4606bb",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2126,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-06-11T21:26:31Z",
+      "side": 1,
+      "message": "I don\u0027t see any way to get here in the sender\u0027s context so the target_proc is safe to access without taking the tmp_ref. Simplified version coming.",
+      "parentUuid": "97da2005_7cf80f7e",
+      "range": {
+        "startLine": 2126,
+        "startChar": 0,
+        "endLine": 2126,
+        "endChar": 36
+      },
+      "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
