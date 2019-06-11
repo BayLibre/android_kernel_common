@@ -18,6 +18,10 @@
 
 #include "efistub.h"
 
+<<<<<<< HEAD   (a04470 Revert "fib_rules: return 0 directly if an exactly same rule)
+=======
+
+>>>>>>> BRANCH (3ffb24 Linux 4.9.181)
 static int efi_get_secureboot(efi_system_table_t *sys_table_arg)
 {
 	static efi_char16_t const sb_var_name[] = {
