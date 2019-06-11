@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce02cf41_89445990",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2059,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2019-06-11T11:19:16Z",
+      "side": 1,
+      "message": "I guess this is not new with this CL, but what happens if the tmp_ref count reaches zero, and we observe that \u00270\u0027 value in L2059, and then while we are freeing the proc, somebody else takes a tmp_ref? I guess there are no paths where we can still take a tmp_ref if (proc-\u003eis_dead \u0026\u0026 no threads)?",
+      "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9809d8bd_38c1ac2e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2126,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2019-06-11T11:19:16Z",
+      "side": 1,
+      "message": "I\u0027m not sure I understand why you need to get a tmp_ref on the proc before acquiring the lock. That suggests the binder_proc could otherwise be freed while this is running; but after looking at the code above, I\u0027m not sure that can actually happen? And if it can happen, does that make the scenario in my comment above problematic?",
+      "range": {
+        "startLine": 2126,
+        "startChar": 0,
+        "endLine": 2126,
+        "endChar": 36
+      },
+      "revId": "468b3d6113a18c6dbee09aac0651a7a6e9d916e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
