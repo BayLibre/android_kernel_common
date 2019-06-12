@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7324a957_be4e47dd",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2120,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2019-06-12T10:29:44Z",
+      "side": 1,
+      "message": "do you still need to hold t-\u003espinlock  while retrieving this, just to make sure you see the latest version? I guess we know t-\u003eto_proc can\u0027t be modified by another thread during/after binder_free_transaction, but could it have been modified by another thread just before?",
+      "range": {
+        "startLine": 2120,
+        "startChar": 38,
+        "endLine": 2120,
+        "endChar": 45
+      },
+      "revId": "e8064308fc4f6bcd592fcd9fed2bf3b57c1530ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6430d85a_c61603f0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2122,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2019-06-12T10:29:44Z",
+      "side": 1,
+      "message": "mmm I was just thinking of another scenario, but I don\u0027t think that\u0027s an issue either:\n1) A sends sync transaction to B\n2) As part of handling the transaction, B sends another sync transaction to C\n3) While C is handling the transaction, B dies\n4) C notices B is dead, and calls binder_send_failed_reply(), which calls binder_free_transaction()\n5) In parallel, we\u0027re cleaning up B and its threads, and free B\u0027s binder_proc\n\nbut the binder_free_transaction() we\u0027re calling in 4) is for the outgoing transaction from B, not the one coming into B. I think that transaction can only be cleaned up in the process itself, which presumably makes this safe?",
+      "range": {
+        "startLine": 2122,
+        "startChar": 0,
+        "endLine": 2122,
+        "endChar": 19
+      },
+      "revId": "e8064308fc4f6bcd592fcd9fed2bf3b57c1530ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
