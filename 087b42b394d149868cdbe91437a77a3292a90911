@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a0a48efe_4c4bde35",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2019-06-13T00:30:46Z",
+      "side": 0,
+      "message": "I could enable CONFIG_CPU_FREQ_TIMES and CONFIG_CPU_FREQ_GOV_POWERSAVE. CPU_FREQ is enabled implicitly by CONFIG_CPU_FREQ_GOV_POWERSAVE. CONFIG_CPU_FREQ_GOV_CONSERVATIVE had to be removed to enable boot.\n\nDo we want to investigate the issue with CONFIG_CPU_FREQ_GOV_CONSERVATIVE at a later time?",
+      "parentUuid": "85be01c2_3e11537f",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 34
+      },
+      "revId": "087b42b394d149868cdbe91437a77a3292a90911",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "451cdccc_efed5166",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-06-12T23:44:59Z",
       "side": 0,
       "message": "this is a meta option with no depends. can you check if it can be turned back on?",
+      "range": {
+        "startLine": 291,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 16
+      },
+      "revId": "087b42b394d149868cdbe91437a77a3292a90911",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "715c1af1_00b961e0",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2019-06-13T00:30:46Z",
+      "side": 0,
+      "message": "If it\u0027s added in manually, the check defconfig step in the build process marks it as extraneous because something else seems to depend on it. I had to remove it to silence the build.",
+      "parentUuid": "451cdccc_efed5166",
       "range": {
         "startLine": 291,
         "startChar": 0,
