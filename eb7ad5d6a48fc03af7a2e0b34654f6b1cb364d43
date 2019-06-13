@@ -69,6 +69,30 @@
       "revId": "eb7ad5d6a48fc03af7a2e0b34654f6b1cb364d43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b38a8739_55ac43f0",
+        "filename": "init/do_mounts.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1148850
+      },
+      "writtenOn": "2019-06-13T16:45:19Z",
+      "side": 1,
+      "message": "197 /**\n198  * wait_for_completion_interruptible_timeout: - waits for completion (w/(to,intr))\n199  * @x:  holds the state of this particular completion\n200  * @timeout:  timeout value in jiffies\n201  *\n202  * This waits for either a completion of a specific task to be signaled or for a\n203  * specified timeout to expire. It is interruptible. The timeout is in jiffies.\n204  *\n205  * Return: -ERESTARTSYS if interrupted, 0 if timed out, positive (at least 1,\n206  * or number of jiffies left till timeout) if completed.\n207  */\n\nif I understand correctly every positive value is success, negative (interrupted) and zero (timeout) - error in our case.\nYes, we tested this (with additional prints before and after).",
+      "parentUuid": "27080fe3_2c8a163c",
+      "range": {
+        "startLine": 579,
+        "startChar": 5,
+        "endLine": 579,
+        "endChar": 46
+      },
+      "revId": "eb7ad5d6a48fc03af7a2e0b34654f6b1cb364d43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
