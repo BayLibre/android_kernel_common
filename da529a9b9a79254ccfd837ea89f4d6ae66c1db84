@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8f1ab2be_728e3df2",
+        "filename": "block/partition-generic.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T09:28:05Z",
+      "side": 1,
+      "message": "didn\u0027t checkpatch complain about this?",
+      "range": {
+        "startLine": 435,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 33
+      },
+      "revId": "da529a9b9a79254ccfd837ea89f4d6ae66c1db84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b46c163f_c76b687f",
+        "filename": "init/do_mounts.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T09:28:05Z",
+      "side": 1,
+      "message": "this doesn\u0027t do what you think it does :(",
+      "range": {
+        "startLine": 546,
+        "startChar": 7,
+        "endLine": 546,
+        "endChar": 15
+      },
+      "revId": "da529a9b9a79254ccfd837ea89f4d6ae66c1db84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8800a61_fecd4ccd",
+        "filename": "init/do_mounts.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T09:28:05Z",
+      "side": 1,
+      "message": "I know checkpatch would have complained about this...",
+      "range": {
+        "startLine": 546,
+        "startChar": 40,
+        "endLine": 546,
+        "endChar": 45
+      },
+      "revId": "da529a9b9a79254ccfd837ea89f4d6ae66c1db84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cb839c9_7ac3f141",
+        "filename": "init/do_mounts.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T09:28:05Z",
+      "side": 1,
+      "message": "no way to \"timeout\" if something went wrong?",
+      "range": {
+        "startLine": 575,
+        "startChar": 0,
+        "endLine": 575,
+        "endChar": 28
+      },
+      "revId": "da529a9b9a79254ccfd837ea89f4d6ae66c1db84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f78f5ea6_033bd830",
+        "filename": "init/do_mounts.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T09:28:05Z",
+      "side": 1,
+      "message": "guaranteed to loop forever, this is not how you \"sit and spin\" on a variable in the kernel.",
+      "range": {
+        "startLine": 575,
+        "startChar": 9,
+        "endLine": 575,
+        "endChar": 25
+      },
+      "revId": "da529a9b9a79254ccfd837ea89f4d6ae66c1db84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
