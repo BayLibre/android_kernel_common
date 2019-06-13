@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23a06f6e_dbbd8172",
+        "filename": "block/partition-generic.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T10:02:39Z",
+      "side": 1,
+      "message": "you put this in the .h file, no need to define it again here, right?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 33
+      },
+      "revId": "b7c6e48f5c1e3e6330e13da46bc9c7da426eaace",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edea4534_6096947d",
+        "filename": "init/do_mounts.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-06-13T10:02:39Z",
+      "side": 1,
+      "message": "sitting and spinning on a variable like this can cause the compiler to just optimize it all away into nothing.  You need to use a proper sync type for something like this.\n\nAlso, no \"timeout\" for this loop feels pretty wrong.",
+      "range": {
+        "startLine": 577,
+        "startChar": 9,
+        "endLine": 577,
+        "endChar": 25
+      },
+      "revId": "b7c6e48f5c1e3e6330e13da46bc9c7da426eaace",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
