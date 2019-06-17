@@ -116,6 +116,30 @@
       "revId": "8df38e72c2862abd516cfaa956e26004e1673761",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2295de3b_9e636b14",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2019-06-17T16:56:15Z",
+      "side": 1,
+      "message": "I\u0027m fine either way. The issues are related in a sense that both make cpus_allowed and cpus_requested to disagree and they fix the same broken patch. Up to you to have a separate patch but if you decide to keep them together please update the description to indicate that we also fixed the cpus clearing part.",
+      "parentUuid": "10cce795_c4c17f63",
+      "range": {
+        "startLine": 984,
+        "startChar": 2,
+        "endLine": 984,
+        "endChar": 39
+      },
+      "revId": "8df38e72c2862abd516cfaa956e26004e1673761",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
