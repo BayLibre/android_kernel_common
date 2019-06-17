@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce462385_af6687d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2019-06-17T16:39:35Z",
+      "side": 1,
+      "message": "Needs \"Fixes\" tag:\nFixes: 4803def4e0b2 (\"ANDROID: cpuset: Make cpusets restore on hotplug\")",
+      "revId": "8df38e72c2862abd516cfaa956e26004e1673761",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec920751_19d63ae8",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2019-06-17T16:39:35Z",
+      "side": 1,
+      "message": "I believe we are still missing cpumask_clear(trialcs-\u003ecpus_requested); here. Otherwise when a user calls \"echo \u0027\u0027 \u003e cpus\" it will reset only cpus_allowed but not cpus_requested.",
+      "range": {
+        "startLine": 984,
+        "startChar": 2,
+        "endLine": 984,
+        "endChar": 39
+      },
+      "revId": "8df38e72c2862abd516cfaa956e26004e1673761",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
