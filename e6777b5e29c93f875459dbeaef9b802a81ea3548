@@ -45,6 +45,54 @@
       "revId": "e6777b5e29c93f875459dbeaef9b802a81ea3548",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bec7fd8_4f9cca01",
+        "filename": "build.config.cuttlefish.x86_64",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2019-06-18T22:34:01Z",
+      "side": 1,
+      "message": "There is clang-stable which I like; unfortunately GOMA has issues detecting when the compiler version changed when invoked through a symlink.  But I think we may be able to come up with a better solution since these compiler upgrades are tedious.\n\nFiled b/135555160 | P4 | comment | ASSIGNED | ndesaulniers | better updates\n\nto follow up on.",
+      "parentUuid": "34ccd818_dd85dc33",
+      "range": {
+        "startLine": 9,
+        "startChar": 63,
+        "endLine": 9,
+        "endChar": 71
+      },
+      "revId": "e6777b5e29c93f875459dbeaef9b802a81ea3548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "58669479_8d26d171",
+        "filename": "build.config.cuttlefish.x86_64",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2019-06-18T22:34:01Z",
+      "side": 1,
+      "message": "Let\u0027s follow up in go/aog/985228.  Thanks for testing and the report.",
+      "parentUuid": "47bb6a72_055d2d13",
+      "range": {
+        "startLine": 9,
+        "startChar": 63,
+        "endLine": 9,
+        "endChar": 71
+      },
+      "revId": "e6777b5e29c93f875459dbeaef9b802a81ea3548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
