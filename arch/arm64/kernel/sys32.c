@@ -133,6 +133,7 @@ COMPAT_SYSCALL_DEFINE6(aarch32_fallocate, int, fd, int, mode,
 	return ksys_fallocate(fd, mode, arg_u64(offset), arg_u64(len));
 }
 
+<<<<<<< HEAD   (a84e28 Merge 4.19.53 into android-4.19-q)
 asmlinkage long sys_ni_syscall(void);
 
 COMPAT_SYSCALL_DEFINE0(ni_syscall)
@@ -140,6 +141,8 @@ COMPAT_SYSCALL_DEFINE0(ni_syscall)
 	return sys_ni_syscall();
 }
 
+=======
+>>>>>>> BRANCH (63bbbc Linux 4.19.54)
 #undef __SYSCALL
 #define __SYSCALL(nr, sym)	asmlinkage long __arm64_##sym(const struct pt_regs *);
 #include <asm/unistd32.h>

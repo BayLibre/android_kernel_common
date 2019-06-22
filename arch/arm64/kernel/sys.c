@@ -49,7 +49,11 @@ SYSCALL_DEFINE1(arm64_personality, unsigned int, personality)
 
 asmlinkage long sys_ni_syscall(void);
 
+<<<<<<< HEAD   (a84e28 Merge 4.19.53 into android-4.19-q)
 SYSCALL_DEFINE0(ni_syscall)
+=======
+asmlinkage long __arm64_sys_ni_syscall(const struct pt_regs *__unused)
+>>>>>>> BRANCH (63bbbc Linux 4.19.54)
 {
 	return sys_ni_syscall();
 }
