@@ -16,6 +16,24 @@
       "revId": "6e4760477c72c0fbdf98379354f021877b7d24a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "814956d3_17be6cbd",
+        "filename": "kernel/signal.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3018,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2019-06-24T20:19:16Z",
+      "side": 1,
+      "message": "Yes, you are right. I took a shortcut to test the backport and then forgot to fix that later. Will change to use copy_siginfo_from_user_any() like in your patch.",
+      "parentUuid": "f5bf5c16_b7d958e5",
+      "revId": "6e4760477c72c0fbdf98379354f021877b7d24a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
