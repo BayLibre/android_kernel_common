@@ -683,6 +683,7 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
 	if (group_dead)
 		kill_orphaned_pgrp(tsk->group_leader, NULL);
 
+	tsk->exit_state = EXIT_ZOMBIE;
 	if (unlikely(tsk->ptrace)) {
 		int sig = thread_group_leader(tsk) &&
 				thread_group_empty(tsk) &&
@@ -1184,6 +1185,7 @@ static int wait_task_zombie(struct wait_opts *wo, struct task_struct *p)
 
 		/* If parent wants a zombie, don't release it now */
 		state = EXIT_ZOMBIE;
+		p->exit_state = EXIT_ZOMBIE;
 		if (do_notify_parent(p, p->exit_signal))
 			state = EXIT_DEAD;
 		p->exit_state = state;

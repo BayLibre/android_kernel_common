@@ -1495,7 +1495,6 @@ static unsigned int pidfd_poll(struct file *file, struct poll_table_struct *pts)
 	int poll_flags = 0;
 
 	poll_wait(file, &pid->wait_pidfd, pts);
-
 	rcu_read_lock();
 	task = pid_task(pid, PIDTYPE_PID);
 	/*
@@ -1503,6 +1502,7 @@ static unsigned int pidfd_poll(struct file *file, struct poll_table_struct *pts)
 	 * If the thread group leader exits before all other threads in the
 	 * group, then poll(2) should block, similar to the wait(2) family.
 	 */
+	smp_rmb(); /* order with setting of exit_state */
 	if (!task || (task->exit_state && thread_group_empty(task)))
 		poll_flags = POLLIN | POLLRDNORM;
 	rcu_read_unlock();

@@ -1625,6 +1625,7 @@ static void do_notify_pidfd(struct task_struct *task)
 	struct pid *pid;
 
 	pid = task_pid(task);
+	smp_wmb(); /* order writing exit_state with pidfd_poll() */
 	wake_up_all(&pid->wait_pidfd);
 }
 
