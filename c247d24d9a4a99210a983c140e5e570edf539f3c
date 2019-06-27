@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b62f083d_b1ef6e34",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-06-27T16:59:02Z",
+      "side": 1,
+      "message": "This is incorrect, since these two patches are still queued in the crypto subsystem tree, and not in upstream yet.  They will be in the pull request for 5.3 in either 1.5 or 2.5 weeks, then they will automatically get to android-common via LTS about 2 weeks later.\n\nAre these really needed in android-common before then?  If so, you\u0027d need to write FROMGIT instead of UPSTREAM, and list in the footer (above Change-Id) which commit ID and git repository and branch they were cherry picked from.  But, you\u0027d also need to do android-{4,9,19}, not just android-4.14.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 57
+      },
+      "revId": "c247d24d9a4a99210a983c140e5e570edf539f3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
