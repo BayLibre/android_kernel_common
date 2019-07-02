@@ -660,6 +660,26 @@ int security_inode_getxattr(struct dentry *dentry, const char *name)
 	return call_int_hook(inode_getxattr, 0, dentry, name);
 }
 
+void security_inode_getxattr_copy_up(struct dentry *parent,
+				     struct dentry *child)
+{
+	struct inode *inode;
+
+	inode = d_backing_inode(parent);
+	if (!inode)
+		return;
+	if (unlikely(IS_PRIVATE(inode)))
+		return;
+
+	inode = d_backing_inode(child);
+	if (!inode)
+		return;
+	if (unlikely(IS_PRIVATE(inode)))
+		return;
+
+	call_void_hook(inode_getxattr_copy_up, parent, child);
+}
+
 int security_inode_listxattr(struct dentry *dentry)
 {
 	if (unlikely(IS_PRIVATE(d_backing_inode(dentry))))
@@ -1646,6 +1666,8 @@ struct security_hook_heads security_hook_heads = {
 		LIST_HEAD_INIT(security_hook_heads.inode_post_setxattr),
 	.inode_getxattr =
 		LIST_HEAD_INIT(security_hook_heads.inode_getxattr),
+	.inode_getxattr_copy_up =
+		LIST_HEAD_INIT(security_hook_heads.inode_getxattr_copy_up),
 	.inode_listxattr =
 		LIST_HEAD_INIT(security_hook_heads.inode_listxattr),
 	.inode_removexattr =
