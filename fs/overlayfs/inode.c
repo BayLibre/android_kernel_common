@@ -11,6 +11,7 @@
 #include <linux/slab.h>
 #include <linux/xattr.h>
 #include "overlayfs.h"
+#include "../../security/selinux/include/objsec.h"
 
 static int ovl_copy_up_truncate(struct dentry *dentry)
 {
@@ -265,11 +266,22 @@ ssize_t ovl_getxattr(struct dentry *dentry, const char *name,
 {
 	struct path realpath;
 	enum ovl_path_type type = ovl_path_real(dentry, &realpath);
+	ssize_t res;
 
 	if (ovl_need_xattr_filter(dentry, type) && ovl_is_private_xattr(name))
 		return -ENODATA;
 
-	return vfs_getxattr(realpath.dentry, name, value, size);
+	res = vfs_getxattr(realpath.dentry, name, value, size);
+	if (res == -EACCES) {
+		struct inode_security_struct *isec =
+			realpath.dentry->d_inode->i_security;
+		struct inode_security_struct *oisec =
+			dentry->d_inode->i_security;
+
+		if (oisec && isec)
+			oisec->sid = isec->sid;
+	}
+	return res;
 }
 
 static bool ovl_can_list(const char *s)
