@@ -2829,8 +2829,11 @@ static int binder_fixup_parent(struct binder_transaction *t,
 	binder_size_t buffer_offset;
 	binder_size_t parent_offset;
 
-	if (!(bp->flags & BINDER_BUFFER_FLAG_HAS_PARENT))
+	if (!(bp->flags & BINDER_BUFFER_FLAG_HAS_PARENT)) {
+		bp->parent = 0;
+		bp->parent_offset = 0;
 		return 0;
+	}
 
 	parent = binder_validate_ptr(target_proc, b, &object, bp->parent,
 				     off_start_offset, &parent_offset,
@@ -3433,6 +3436,7 @@ static void binder_transaction(struct binder_proc *proc,
 				return_error_line = __LINE__;
 				goto err_bad_parent;
 			}
+			fda->pad = 0;
 			if (!binder_validate_fixup(target_proc, t->buffer,
 						   off_start_offset,
 						   parent_offset,
