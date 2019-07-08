@@ -45,6 +45,30 @@
       "revId": "84688da639392fa7c4251db191ea45ba27a5c1c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a63fc74_f0a549c5",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3439,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2019-07-08T11:41:03Z",
+      "side": 1,
+      "message": "at this point the FDA struct has already been copied - we first copy the entire data+offsets in the Parcel (at L3289), and then fix up things individually in the target process. For FDA, we only fix up the actual file descriptors here.",
+      "parentUuid": "845d3252_8e404f46",
+      "range": {
+        "startLine": 3439,
+        "startChar": 3,
+        "endLine": 3439,
+        "endChar": 16
+      },
+      "revId": "84688da639392fa7c4251db191ea45ba27a5c1c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
