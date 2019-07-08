@@ -69,6 +69,30 @@
       "revId": "84688da639392fa7c4251db191ea45ba27a5c1c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e04b718c_f1ebd011",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3439,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-07-08T22:56:59Z",
+      "side": 1,
+      "message": "This doesn\u0027t clear anything in user context -- fda points to a local copy (not pointing to the target buffer). fda would need to be copied back for this to have an effect.",
+      "parentUuid": "4a63fc74_f0a549c5",
+      "range": {
+        "startLine": 3439,
+        "startChar": 3,
+        "endLine": 3439,
+        "endChar": 16
+      },
+      "revId": "84688da639392fa7c4251db191ea45ba27a5c1c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
