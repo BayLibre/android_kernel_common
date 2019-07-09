@@ -29,6 +29,7 @@
 
 /* struct bio, bio_vec and BIO_* flags are defined in blk_types.h */
 #include <linux/blk_types.h>
+#include <linux/bio-crypt-ctx.h>
 
 #define BIO_DEBUG
 
@@ -606,18 +607,6 @@ static inline void bvec_kunmap_irq(char *buffer, unsigned long *flags)
 	*flags = 0;
 }
 #endif
-
-enum blk_crypto_mode_num {
-	BLK_ENCRYPTION_MODE_INVALID	= -1,
-	BLK_ENCRYPTION_MODE_AES_256_XTS	= 0,
-	/*
-	 * TODO: Support these too
-	 * BLK_ENCRYPTION_MODE_AES_256_CTS	= 1,
-	 * BLK_ENCRYPTION_MODE_AES_128_CBC	= 2,
-	 * BLK_ENCRYPTION_MODE_AES_128_CTS	= 3,
-	 * BLK_ENCRYPTION_MODE_ADIANTUM		= 4,
-	 */
-};
 
 /*
  * BIO list management for use by remapping drivers (e.g. DM or MD) and loop.
