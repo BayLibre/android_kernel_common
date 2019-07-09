@@ -14,6 +14,7 @@
 
 #include <linux/fscrypt.h>
 #include <crypto/hash.h>
+#include <linux/blk-crypto.h>
 
 /* Encryption parameters */
 #define FS_KEY_DERIVATION_NONCE_SIZE	16
@@ -48,6 +49,17 @@ struct fscrypt_symlink_data {
 	__le16 len;
 	char encrypted_path[1];
 } __packed;
+
+/* Master key referenced by FS_POLICY_FLAG_DIRECT_KEY policy */
+struct fscrypt_master_key {
+	struct hlist_node mk_node;
+	refcount_t mk_refcount;
+	const struct fscrypt_mode *mk_mode;
+	struct crypto_skcipher *mk_ctfm;
+	u8 mk_descriptor[FS_KEY_DESCRIPTOR_SIZE];
+	u8 mk_raw[FS_MAX_KEY_SIZE];
+	struct super_block *mk_sb;
+};
 
 /*
  * fscrypt_info - the "encryption key" for an inode
@@ -113,6 +125,17 @@ static inline bool fscrypt_valid_enc_modes(u32 contents_mode,
 
 	return false;
 }
+
+#ifdef CONFIG_FS_ENCRYPTION_INLINE_CRYPT
+extern enum blk_crypto_mode_num
+get_blk_crypto_mode_for_fscryptalg(u8 fscrypt_alg);
+#else
+static inline enum blk_crypto_mode_num
+get_blk_crypto_mode_for_fscryptalg(u8 fscrypt_alg)
+{
+	return BLK_ENCRYPTION_MODE_INVALID;
+}
+#endif
 
 /* crypto.c */
 extern struct kmem_cache *fscrypt_info_cachep;

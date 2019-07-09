@@ -24,6 +24,9 @@
 #include <linux/module.h>
 #include <linux/bio.h>
 #include <linux/namei.h>
+#include <linux/keyslot-manager.h>
+#include <linux/blkdev.h>
+#include <crypto/algapi.h>
 #include "fscrypt_private.h"
 
 static void __fscrypt_decrypt_bio(struct bio *bio, bool done)
@@ -98,26 +101,32 @@ int fscrypt_zeroout_range(const struct inode *inode, pgoff_t lblk,
 	struct page *ciphertext_page = NULL;
 	struct bio *bio;
 	int ret, err = 0;
+	bool need_fscrypt_crypto = fscrypt_needs_fs_layer_crypto(inode);
 
 	BUG_ON(inode->i_sb->s_blocksize != PAGE_SIZE);
 
-	ctx = fscrypt_get_ctx(GFP_NOFS);
-	if (IS_ERR(ctx))
-		return PTR_ERR(ctx);
+	if (need_fscrypt_crypto) {
+		ctx = fscrypt_get_ctx(GFP_NOFS);
+		if (IS_ERR(ctx))
+			return PTR_ERR(ctx);
 
-	ciphertext_page = fscrypt_alloc_bounce_page(ctx, GFP_NOWAIT);
-	if (IS_ERR(ciphertext_page)) {
-		err = PTR_ERR(ciphertext_page);
-		goto errout;
+		ciphertext_page = fscrypt_alloc_bounce_page(ctx, GFP_NOWAIT);
+		if (IS_ERR(ciphertext_page)) {
+			err = PTR_ERR(ciphertext_page);
+			goto errout;
+		}
+	} else {
+		ciphertext_page = ZERO_PAGE(0);
 	}
 
 	while (len--) {
-		err = fscrypt_do_page_crypto(inode, FS_ENCRYPT, lblk,
+		if (need_fscrypt_crypto) {
+			err = fscrypt_do_page_crypto(inode, FS_ENCRYPT, lblk,
 					     ZERO_PAGE(0), ciphertext_page,
 					     PAGE_SIZE, 0, GFP_NOFS);
-		if (err)
-			goto errout;
-
+			if (err)
+				goto errout;
+		}
 		bio = bio_alloc(GFP_NOWAIT, 1);
 		if (!bio) {
 			err = -ENOMEM;
@@ -136,9 +145,12 @@ int fscrypt_zeroout_range(const struct inode *inode, pgoff_t lblk,
 			err = -EIO;
 			goto errout;
 		}
-		err = submit_bio_wait(bio);
-		if (err == 0 && bio->bi_status)
-			err = -EIO;
+		err = fscrypt_set_bio_crypt_ctx(bio, inode, pblk, GFP_NOIO);
+		if (!err) {
+			err = submit_bio_wait(bio);
+			if (err == 0 && bio->bi_status)
+				err = -EIO;
+		}
 		bio_put(bio);
 		if (err)
 			goto errout;
@@ -146,8 +158,108 @@ int fscrypt_zeroout_range(const struct inode *inode, pgoff_t lblk,
 		pblk++;
 	}
 	err = 0;
-errout:
-	fscrypt_release_ctx(ctx);
+errout:	
+	if (need_fscrypt_crypto)
+		fscrypt_release_ctx(ctx);
 	return err;
 }
 EXPORT_SYMBOL(fscrypt_zeroout_range);
+
+#ifdef CONFIG_FS_ENCRYPTION_INLINE_CRYPT
+enum blk_crypto_mode_num
+get_blk_crypto_mode_for_fscryptalg(u8 fscrypt_alg)
+{
+	switch (fscrypt_alg) {
+	case FS_ENCRYPTION_MODE_AES_256_XTS:
+		return BLK_ENCRYPTION_MODE_AES_256_XTS;
+	default: return BLK_ENCRYPTION_MODE_INVALID;
+	}
+}
+
+int fscrypt_set_bio_crypt_ctx(struct bio *bio,
+			      const struct inode *inode,
+			      u64 data_unit_num,
+			      gfp_t gfp_mask)
+{
+	struct fscrypt_info *ci = inode->i_crypt_info;
+	int err;
+	enum blk_crypto_mode_num blk_crypto_mode;
+
+
+	/* If inode is not inline encrypted, nothing to do. */
+	if (!fscrypt_inode_is_inline_crypted(inode))
+		return 0;
+
+	blk_crypto_mode = get_blk_crypto_mode_for_fscryptalg(ci->ci_data_mode);
+	if (blk_crypto_mode == BLK_ENCRYPTION_MODE_INVALID)
+		return -EINVAL;
+
+	err = bio_crypt_set_ctx(bio, ci->ci_master_key->mk_raw,
+				blk_crypto_mode,
+				data_unit_num,
+				inode->i_blkbits,
+				gfp_mask);
+	if (err)
+		return err;
+
+	return 0;
+}
+EXPORT_SYMBOL(fscrypt_set_bio_crypt_ctx);
+
+void fscrypt_unset_bio_crypt_ctx(struct bio *bio)
+{
+	bio_crypt_free_ctx(bio);
+}
+EXPORT_SYMBOL(fscrypt_unset_bio_crypt_ctx);
+
+int fscrypt_evict_crypt_key(struct inode *inode)
+{
+	struct request_queue *q;
+	struct fscrypt_info *ci;
+
+	if (!inode)
+		return 0;
+
+	q = inode->i_sb->s_bdev->bd_queue;
+	ci = inode->i_crypt_info;
+
+	if (!q || !q->ksm || !ci ||
+	    !fscrypt_inode_is_inline_crypted(inode)) {
+		return 0;
+	}
+
+	return keyslot_manager_evict_key(q->ksm,
+					 ci->ci_master_key->mk_raw,
+					 get_blk_crypto_mode_for_fscryptalg(
+						ci->ci_data_mode),
+					 1 << inode->i_blkbits);
+}
+EXPORT_SYMBOL(fscrypt_evict_crypt_key);
+
+bool fscrypt_inode_crypt_mergeable(const struct inode *inode_1,
+				   const struct inode *inode_2)
+{
+	struct fscrypt_info *ci_1, *ci_2;
+	bool enc_1 = !inode_1 || fscrypt_inode_is_inline_crypted(inode_1);
+	bool enc_2 = !inode_2 || fscrypt_inode_is_inline_crypted(inode_2);
+
+	if (enc_1 != enc_2)
+		return false;
+
+	if (!enc_1)
+		return true;
+
+	if (inode_1 == inode_2)
+		return true;
+
+	ci_1 = inode_1->i_crypt_info;
+	ci_2 = inode_2->i_crypt_info;
+
+	return ci_1->ci_data_mode == ci_2->ci_data_mode &&
+	       crypto_memneq(ci_1->ci_master_key->mk_raw,
+			     ci_2->ci_master_key->mk_raw,
+			     ci_1->ci_master_key->mk_mode->keysize) == 0;
+}
+EXPORT_SYMBOL(fscrypt_inode_crypt_mergeable);
+
+#endif /* FS_ENCRYPTION_INLINE_CRYPT */
