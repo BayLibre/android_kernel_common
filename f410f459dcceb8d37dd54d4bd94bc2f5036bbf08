@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8b3db5e7_ccfb30b2",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-07-11T20:36:48Z",
+      "side": 1,
+      "message": "This is actually consistent with the rest of dmabuf code :(.",
+      "parentUuid": "c16e487c_b4510674",
+      "range": {
+        "startLine": 1002,
+        "startChar": 5,
+        "endLine": 1002,
+        "endChar": 12
+      },
+      "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cb858a6d_57e2272f",
         "filename": "drivers/dma-buf/dma-buf.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-07-11T16:04:41Z",
       "side": 1,
       "message": "is -\u003eops always a valid pointer?",
+      "range": {
+        "startLine": 1005,
+        "startChar": 13,
+        "endLine": 1005,
+        "endChar": 16
+      },
+      "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6383eeb0_79a326dc",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-07-11T20:36:48Z",
+      "side": 1,
+      "message": "same as above, apparently, a dmabuf must have ops according to other dmabuf APIs. So if we are fixing it here, we should probably fix that check everywhere else.",
+      "parentUuid": "cb858a6d_57e2272f",
       "range": {
         "startLine": 1005,
         "startChar": 13,
@@ -68,6 +116,30 @@
       "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0568361_a005c341",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-07-11T20:36:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34fca0e4_b39ac2c3",
+      "range": {
+        "startLine": 1010,
+        "startChar": 0,
+        "endLine": 1010,
+        "endChar": 13
+      },
+      "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
