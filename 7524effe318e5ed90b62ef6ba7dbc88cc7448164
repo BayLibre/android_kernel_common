@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "885f9112_dff3f770",
+        "filename": "include/linux/dma-buf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-07-11T16:07:23Z",
+      "side": 1,
+      "message": "why \"unsigned long\" and not a \"real\" type?  Who is going to use this?  Why introduce this field and then not use it at all in this commit?  Please wait until it is used before introducing it, otherwise we have no way to review this to see if it actually does what you intend it to do.",
+      "range": {
+        "startLine": 331,
+        "startChar": 1,
+        "endLine": 331,
+        "endChar": 14
+      },
+      "revId": "7524effe318e5ed90b62ef6ba7dbc88cc7448164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
