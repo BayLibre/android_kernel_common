@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "10f261e1_98417668",
+        "filename": "drivers/staging/android/ion/ion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-07-11T20:48:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84cb1bd1_03bc4528",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 70
+      },
+      "revId": "e1432b5dc440edf388eb4941d56540f23413a67f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cbeb431d_eb66bd2b",
         "filename": "drivers/staging/android/ion/ion_page_pool.c",
         "patchSetId": 1
@@ -82,6 +106,24 @@
       "writtenOn": "2019-07-11T16:18:33Z",
       "side": 1,
       "message": "why is this a new .h file?  What\u0027s wrong with the old one?",
+      "revId": "e1432b5dc440edf388eb4941d56540f23413a67f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96cbb134_5ee727bf",
+        "filename": "drivers/staging/android/ion/ion_page_pool.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-07-11T20:48:12Z",
+      "side": 1,
+      "message": "the idea here is that heaps can be hardware / vendor specific and can be modules. Since the whole page pooling is only ever used in heap module / driver, it should be refactored out of the ion core (which is part of GKI).\nWe will maintain the page pool code and some default heap modules like system heap etc. So, they will need this.\n\nAfter this, I think what I will do is to move all heap modules in drivers/staging/android/ion/heaps/ that will make the separation pretty clear. All heap drivers will be modules, while core will be part of GKI.\n\nSo this change just refactors all the page pool code away from ion core which doesn\u0027t need it.\n\nDoes that make sense?",
+      "parentUuid": "40536b28_ab2a782a",
       "revId": "e1432b5dc440edf388eb4941d56540f23413a67f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
