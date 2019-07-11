@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c16e487c_b4510674",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-07-11T16:04:41Z",
+      "side": 1,
+      "message": "do you really want to crash syzbot with this?\n\nHow can dmabuf ever be NULL?  If this is a valid thing, just return the error and move on, but systems with panic-on-warn enabled will crash if this gets hit.",
+      "range": {
+        "startLine": 1002,
+        "startChar": 5,
+        "endLine": 1002,
+        "endChar": 12
+      },
+      "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb858a6d_57e2272f",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-07-11T16:04:41Z",
+      "side": 1,
+      "message": "is -\u003eops always a valid pointer?",
+      "range": {
+        "startLine": 1005,
+        "startChar": 13,
+        "endLine": 1005,
+        "endChar": 16
+      },
+      "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34fca0e4_b39ac2c3",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-07-11T16:04:41Z",
+      "side": 1,
+      "message": "EXPORT_SYMBOL_GPL() please.",
+      "range": {
+        "startLine": 1010,
+        "startChar": 0,
+        "endLine": 1010,
+        "endChar": 13
+      },
+      "revId": "f410f459dcceb8d37dd54d4bd94bc2f5036bbf08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
