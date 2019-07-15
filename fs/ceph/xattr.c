@@ -1154,22 +1154,21 @@ out:
 }
 
 static int ceph_get_xattr_handler(const struct xattr_handler *handler,
-				  struct dentry *dentry, struct inode *inode,
-				  const char *name, void *value, size_t size)
+				  struct xattr_gs_args *args)
 {
-	if (!ceph_is_valid_xattr(name))
+	if (!ceph_is_valid_xattr(args->name))
 		return -EOPNOTSUPP;
-	return __ceph_getxattr(inode, name, value, size);
+	return __ceph_getxattr(args->inode, args->name,
+			       args->buffer, args->size);
 }
 
 static int ceph_set_xattr_handler(const struct xattr_handler *handler,
-				  struct dentry *unused, struct inode *inode,
-				  const char *name, const void *value,
-				  size_t size, int flags)
+				  struct xattr_gs_args *args)
 {
-	if (!ceph_is_valid_xattr(name))
+	if (!ceph_is_valid_xattr(args->name))
 		return -EOPNOTSUPP;
-	return __ceph_setxattr(inode, name, value, size, flags);
+	return __ceph_setxattr(args->inode, args->name,
+			       args->value, args->size, args->flags);
 }
 
 static const struct xattr_handler ceph_other_xattr_handler = {
