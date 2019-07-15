@@ -367,12 +367,15 @@ int ovl_xattr_get(struct xattr_gs_args *args)
 {
 	ssize_t res;
 	const struct cred *old_cred;
-	struct dentry *realdentry =
+	struct xattr_gs_args my_args = *args;
+
+	my_args.dentry =
 		ovl_i_dentry_upper(args->inode) ?:
 		ovl_dentry_lower(args->dentry);
+	my_args.inode = d_inode(my_args.dentry);
 
 	old_cred = ovl_override_creds(args->dentry->d_sb);
-	res = vfs_getxattr(realdentry, args->name, args->buffer, args->size);
+	res = __vfs_getxattr(&my_args);
 	revert_creds(old_cred);
 	return res;
 }
