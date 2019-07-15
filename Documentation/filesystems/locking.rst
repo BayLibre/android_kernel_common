@@ -123,12 +123,10 @@ xattr_handler operations
 prototypes::
 
 	bool (*list)(struct dentry *dentry);
-	int (*get)(const struct xattr_handler *handler, struct dentry *dentry,
-		   struct inode *inode, const char *name, void *buffer,
-		   size_t size);
-	int (*set)(const struct xattr_handler *handler, struct dentry *dentry,
-		   struct inode *inode, const char *name, const void *buffer,
-		   size_t size, int flags);
+	int (*get)(const struct xattr_handler *handler,
+		   struct xattr_gs_flags *args);
+	int (*set)(const struct xattr_handler *handler,
+		   struct xattr_gs_flags *args);
 
 locking rules:
 	all may block
