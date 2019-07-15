@@ -195,7 +195,7 @@ int
 xfs_attr_set(
 	struct xfs_inode	*dp,
 	const unsigned char	*name,
-	unsigned char		*value,
+	const unsigned char	*value,
 	int			valuelen,
 	int			flags)
 {

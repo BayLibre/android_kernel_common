@@ -546,6 +546,8 @@ static int sb_finish_set_opts(struct super_block *sb)
 	int rc = 0;
 
 	if (sbsec->behavior == SECURITY_FS_USE_XATTR) {
+		struct xattr_gs_args args;
+
 		/* Make sure that the xattr handler exists and that no
 		   error other than -ENODATA is returned by getxattr on
 		   the root directory.  -ENODATA is ok, as this may be
@@ -558,7 +560,12 @@ static int sb_finish_set_opts(struct super_block *sb)
 			goto out;
 		}
 
-		rc = __vfs_getxattr(root, root_inode, XATTR_NAME_SELINUX, NULL, 0);
+		memset(&args, 0, sizeof(args));
+		args.dentry = root;
+		args.inode = root_inode;
+		args.name = XATTR_NAME_SELINUX;
+		args.flags = XATTR_NOSECURITY;
+		rc = __vfs_getxattr(&args);
 		if (rc < 0 && rc != -ENODATA) {
 			if (rc == -EOPNOTSUPP)
 				pr_warn("SELinux: (dev %s, type "
@@ -1555,6 +1562,7 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
 	char *context = NULL;
 	unsigned len = 0;
 	int rc = 0;
+	struct xattr_gs_args args;
 
 	if (isec->initialized == LABEL_INITIALIZED)
 		return 0;
@@ -1629,12 +1637,21 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
 			goto out;
 		}
 		context[len] = '\0';
-		rc = __vfs_getxattr(dentry, inode, XATTR_NAME_SELINUX, context, len);
+		memset(&args, 0, sizeof(args));
+		args.dentry = dentry;
+		args.inode = inode;
+		args.name = XATTR_NAME_SELINUX;
+		args.buffer = context;
+		args.size = len;
+		args.flags = XATTR_NOSECURITY;
+		rc = __vfs_getxattr(&args);
 		if (rc == -ERANGE) {
 			kfree(context);
 
 			/* Need a larger buffer.  Query for the right size. */
-			rc = __vfs_getxattr(dentry, inode, XATTR_NAME_SELINUX, NULL, 0);
+			args.buffer = NULL;
+			args.size = 0;
+			rc = __vfs_getxattr(&args);
 			if (rc < 0) {
 				dput(dentry);
 				goto out;
@@ -1647,7 +1664,9 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
 				goto out;
 			}
 			context[len] = '\0';
-			rc = __vfs_getxattr(dentry, inode, XATTR_NAME_SELINUX, context, len);
+			args.buffer = context;
+			args.size = len;
+			rc = __vfs_getxattr(&args);
 		}
 		dput(dentry);
 		if (rc < 0) {
