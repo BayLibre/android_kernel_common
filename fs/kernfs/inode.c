@@ -306,34 +306,33 @@ int kernfs_iop_permission(struct inode *inode, int mask)
 }
 
 static int kernfs_xattr_get(const struct xattr_handler *handler,
-			    struct dentry *unused, struct inode *inode,
-			    const char *suffix, void *value, size_t size)
+			    struct xattr_gs_args *args)
 {
-	const char *name = xattr_full_name(handler, suffix);
-	struct kernfs_node *kn = inode->i_private;
+	struct kernfs_node *kn = args->inode->i_private;
 	struct kernfs_iattrs *attrs;
 
 	attrs = kernfs_iattrs(kn);
 	if (!attrs)
 		return -ENOMEM;
 
-	return simple_xattr_get(&attrs->xattrs, name, value, size);
+	return simple_xattr_get(&attrs->xattrs,
+				xattr_full_name(handler, args->name),
+				args->buffer, args->size);
 }
 
 static int kernfs_xattr_set(const struct xattr_handler *handler,
-			    struct dentry *unused, struct inode *inode,
-			    const char *suffix, const void *value,
-			    size_t size, int flags)
+			    struct xattr_gs_args *args)
 {
-	const char *name = xattr_full_name(handler, suffix);
-	struct kernfs_node *kn = inode->i_private;
+	struct kernfs_node *kn = args->inode->i_private;
 	struct kernfs_iattrs *attrs;
 
 	attrs = kernfs_iattrs(kn);
 	if (!attrs)
 		return -ENOMEM;
 
-	return simple_xattr_set(&attrs->xattrs, name, value, size, flags);
+	return simple_xattr_set(&attrs->xattrs,
+				xattr_full_name(handler, args->name),
+				args->value, args->size, args->flags);
 }
 
 static const struct xattr_handler kernfs_trusted_xattr_handler = {
@@ -343,11 +342,9 @@ static const struct xattr_handler kernfs_trusted_xattr_handler = {
 };
 
 static int kernfs_security_xattr_set(const struct xattr_handler *handler,
-				     struct dentry *unused, struct inode *inode,
-				     const char *suffix, const void *value,
-				     size_t size, int flags)
+				     struct xattr_gs_args *args)
 {
-	struct kernfs_node *kn = inode->i_private;
+	struct kernfs_node *kn = args->inode->i_private;
 	struct kernfs_iattrs *attrs;
 	void *secdata;
 	u32 secdata_len = 0;
@@ -357,10 +354,12 @@ static int kernfs_security_xattr_set(const struct xattr_handler *handler,
 	if (!attrs)
 		return -ENOMEM;
 
-	error = security_inode_setsecurity(inode, suffix, value, size, flags);
+	error = security_inode_setsecurity(args->inode, args->name,
+					   args->value, args->size,
+					   args->flags);
 	if (error)
 		return error;
-	error = security_inode_getsecctx(inode, &secdata, &secdata_len);
+	error = security_inode_getsecctx(args->inode, &secdata, &secdata_len);
 	if (error)
 		return error;
 
