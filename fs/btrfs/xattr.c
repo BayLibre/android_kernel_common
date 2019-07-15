@@ -357,29 +357,26 @@ err:
 }
 
 static int btrfs_xattr_handler_get(const struct xattr_handler *handler,
-				   struct dentry *unused, struct inode *inode,
-				   const char *name, void *buffer, size_t size)
+				   struct xattr_gs_args *args)
 {
-	name = xattr_full_name(handler, name);
-	return btrfs_getxattr(inode, name, buffer, size);
+	return btrfs_getxattr(args->inode,
+			      xattr_full_name(handler, args->name),
+			      args->buffer, args->size);
 }
 
 static int btrfs_xattr_handler_set(const struct xattr_handler *handler,
-				   struct dentry *unused, struct inode *inode,
-				   const char *name, const void *buffer,
-				   size_t size, int flags)
+				   struct xattr_gs_args *args)
 {
-	name = xattr_full_name(handler, name);
-	return btrfs_setxattr(NULL, inode, name, buffer, size, flags);
+	return btrfs_setxattr(NULL, args->inode,
+			      xattr_full_name(handler, args->name),
+			      args->value, args->size, args->flags);
 }
 
 static int btrfs_xattr_handler_set_prop(const struct xattr_handler *handler,
-					struct dentry *unused, struct inode *inode,
-					const char *name, const void *value,
-					size_t size, int flags)
+					struct xattr_gs_args *args)
 {
-	name = xattr_full_name(handler, name);
-	return btrfs_set_prop(inode, name, value, size, flags);
+	return btrfs_set_prop(args->inode, xattr_full_name(handler, args->name),
+			      args->value, args->size, args->flags);
 }
 
 static const struct xattr_handler btrfs_security_xattr_handler = {
