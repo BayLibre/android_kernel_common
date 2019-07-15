@@ -37,20 +37,18 @@ ssize_t afs_listxattr(struct dentry *dentry, char *buffer, size_t size)
  * Get the name of the cell on which a file resides.
  */
 static int afs_xattr_get_cell(const struct xattr_handler *handler,
-			      struct dentry *dentry,
-			      struct inode *inode, const char *name,
-			      void *buffer, size_t size)
+			      struct xattr_gs_args *args)
 {
-	struct afs_vnode *vnode = AFS_FS_I(inode);
+	struct afs_vnode *vnode = AFS_FS_I(args->inode);
 	struct afs_cell *cell = vnode->volume->cell;
 	size_t namelen;
 
 	namelen = cell->name_len;
-	if (size == 0)
+	if (args->size == 0)
 		return namelen;
-	if (namelen > size)
+	if (namelen > args->size)
 		return -ERANGE;
-	memcpy(buffer, cell->name, size);
+	memcpy(args->buffer, cell->name, namelen);
 	return namelen;
 }
 
@@ -64,21 +62,19 @@ static const struct xattr_handler afs_xattr_afs_cell_handler = {
  * hex numbers separated by colons.
  */
 static int afs_xattr_get_fid(const struct xattr_handler *handler,
-			     struct dentry *dentry,
-			     struct inode *inode, const char *name,
-			     void *buffer, size_t size)
+			     struct xattr_gs_args *args)
 {
-	struct afs_vnode *vnode = AFS_FS_I(inode);
+	struct afs_vnode *vnode = AFS_FS_I(args->inode);
 	char text[8 + 1 + 8 + 1 + 8 + 1];
 	size_t len;
 
-	len = sprintf(text, "%x:%x:%x",
+	len = snprintf(text, sizeof(text), "%x:%x:%x",
 		      vnode->fid.vid, vnode->fid.vnode, vnode->fid.unique);
-	if (size == 0)
+	if (args->size == 0)
 		return len;
-	if (len > size)
+	if (len > args->size)
 		return -ERANGE;
-	memcpy(buffer, text, len);
+	memcpy(args->buffer, text, len);
 	return len;
 }
 
@@ -91,20 +87,18 @@ static const struct xattr_handler afs_xattr_afs_fid_handler = {
  * Get the name of the volume on which a file resides.
  */
 static int afs_xattr_get_volume(const struct xattr_handler *handler,
-			      struct dentry *dentry,
-			      struct inode *inode, const char *name,
-			      void *buffer, size_t size)
+			      struct xattr_gs_args *args)
 {
-	struct afs_vnode *vnode = AFS_FS_I(inode);
+	struct afs_vnode *vnode = AFS_FS_I(args->inode);
 	const char *volname = vnode->volume->name;
 	size_t namelen;
 
 	namelen = strlen(volname);
-	if (size == 0)
+	if (args->size == 0)
 		return namelen;
-	if (namelen > size)
+	if (namelen > args->size)
 		return -ERANGE;
-	memcpy(buffer, volname, size);
+	memcpy(args->buffer, volname, namelen);
 	return namelen;
 }
 
