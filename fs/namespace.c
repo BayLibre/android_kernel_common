@@ -2550,7 +2550,7 @@ static int do_remount(struct path *path, int ms_flags, int sb_flags,
 		err = -EPERM;
 		if (ns_capable(sb->s_user_ns, CAP_SYS_ADMIN)) {
 			err = reconfigure_super(fc);
-			if (!err) {
+			if (!err && sb->s_op->update_mnt_data) {
 				sb->s_op->update_mnt_data(mnt->mnt.data, fc);
 				set_mount_attributes(mnt, mnt_flags);
 				namespace_lock();
@@ -2558,7 +2558,8 @@ static int do_remount(struct path *path, int ms_flags, int sb_flags,
 				propagate_remount(mnt);
 				unlock_mount_hash();
 				namespace_unlock();
-			}
+			} else if (!err)
+				set_mount_attributes(mnt, mnt_flags);
 		}
 		up_write(&sb->s_umount);
 	}
