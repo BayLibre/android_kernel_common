@@ -20,7 +20,6 @@ struct ovl_config {
 	bool nfs_export;
 	int xino;
 	bool metacopy;
-	bool override_creds;
 };
 
 struct ovl_sb {
