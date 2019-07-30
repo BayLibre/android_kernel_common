@@ -401,6 +401,8 @@ struct task_group {
 	struct uclamp_se	uclamp_req[UCLAMP_CNT];
 	/* Effective clamp values used for a task group */
 	struct uclamp_se	uclamp[UCLAMP_CNT];
+	/* Prefer-idle flag used for a task group */
+	unsigned int		prefer_idle;
 #endif
 
 };
