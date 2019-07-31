@@ -22,6 +22,30 @@
       "revId": "230241ca59ca56bed8fe7c1210d855675f39f6ae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0460ffa_f15381b3",
+        "filename": "include/linux/dma-buf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-07-31T22:28:59Z",
+      "side": 1,
+      "message": "dma_attrs are actually unsigned long according to 00085f1efa38 (\"dma-mapping: use unsigned long for dma_attrs\").\n\nDocumentations/DMA-attributes.txt says these are just bitfields. Another one of the things that the client has to pass to the exporter to allow the exporter to do lazy unmapping or skip syncing the buffer with CPU if its going to get written to immediately after mapping.",
+      "parentUuid": "90ebc4c8_7a56ab34",
+      "range": {
+        "startLine": 406,
+        "startChar": 1,
+        "endLine": 406,
+        "endChar": 15
+      },
+      "revId": "230241ca59ca56bed8fe7c1210d855675f39f6ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
