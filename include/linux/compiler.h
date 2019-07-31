@@ -190,7 +190,11 @@ void __read_once_size(const volatile void *p, void *res, int size)
  * 	https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67368
  * '__maybe_unused' allows us to avoid defined-but-not-used warnings.
  */
+<<<<<<< HEAD   (ff49f6 ANDROID: (arm64) cuttlefish_defconfig: enable CONFIG_CPU_FRE)
 # define __no_kasan_or_inline __no_sanitize_address notrace __maybe_unused
+=======
+# define __no_kasan_or_inline __no_sanitize_address __maybe_unused
+>>>>>>> BRANCH (10d6aa Linux 4.14.135)
 #else
 # define __no_kasan_or_inline __always_inline
 #endif
