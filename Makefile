@@ -813,7 +813,13 @@ LDFLAGS_vmlinux += --gc-sections
 endif
 
 ifdef CONFIG_LTO_CLANG
-lto-clang-flags	:= -flto -fvisibility=hidden
+ifdef CONFIG_THINLTO
+lto-clang-flags	:= -flto=thin
+KBUILD_LDFLAGS	+= --thinlto-cache-dir=.thinlto-cache
+else
+lto-clang-flags	:= -flto
+endif
+lto-clang-flags += -fvisibility=hidden
 
 # allow disabling only clang LTO where needed
 DISABLE_LTO_CLANG := -fno-lto -fvisibility=default
