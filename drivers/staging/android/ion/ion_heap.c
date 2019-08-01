@@ -1,21 +1,24 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * ION Memory Allocator generic heap helpers
+ * ION heap/buffer helper and dma-buf ops Implementation
  *
  * Copyright (C) 2011 Google, Inc.
  */
 
+#include <linux/export.h>
 #include <linux/err.h>
 #include <linux/freezer.h>
+#include <linux/ion.h>
 #include <linux/kthread.h>
 #include <linux/mm.h>
 #include <linux/rtmutex.h>
 #include <linux/sched.h>
+#include <linux/slab.h>
 #include <uapi/linux/sched/types.h>
 #include <linux/scatterlist.h>
 #include <linux/vmalloc.h>
 
-#include "ion.h"
+#include "../uapi/ion.h"
 
 void *ion_heap_map_kernel(struct ion_heap *heap,
 			  struct ion_buffer *buffer)
@@ -54,12 +57,14 @@ void *ion_heap_map_kernel(struct ion_heap *heap,
 
 	return vaddr;
 }
+EXPORT_SYMBOL_GPL(ion_heap_map_kernel);
 
 void ion_heap_unmap_kernel(struct ion_heap *heap,
 			   struct ion_buffer *buffer)
 {
 	vunmap(buffer->vaddr);
 }
+EXPORT_SYMBOL_GPL(ion_heap_unmap_kernel);
 
 int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 		      struct vm_area_struct *vma)
@@ -96,6 +101,7 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(ion_heap_map_user);
 
 static int ion_heap_clear_pages(struct page **pages, int num, pgprot_t pgprot)
 {
@@ -144,6 +150,7 @@ int ion_heap_buffer_zero(struct ion_buffer *buffer)
 
 	return ion_heap_sglist_zero(table->sgl, table->nents, pgprot);
 }
+EXPORT_SYMBOL_GPL(ion_heap_buffer_zero);
 
 int ion_heap_pages_zero(struct page *page, size_t size, pgprot_t pgprot)
 {
@@ -153,6 +160,7 @@ int ion_heap_pages_zero(struct page *page, size_t size, pgprot_t pgprot)
 	sg_set_page(&sg, page, size, 0);
 	return ion_heap_sglist_zero(&sg, 1, pgprot);
 }
+EXPORT_SYMBOL_GPL(ion_heap_pages_zero);
 
 void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
 {
@@ -162,6 +170,7 @@ void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
 	spin_unlock(&heap->free_lock);
 	wake_up(&heap->waitqueue);
 }
+EXPORT_SYMBOL_GPL(ion_heap_freelist_add);
 
 size_t ion_heap_freelist_size(struct ion_heap *heap)
 {
@@ -173,6 +182,7 @@ size_t ion_heap_freelist_size(struct ion_heap *heap)
 
 	return size;
 }
+EXPORT_SYMBOL_GPL(ion_heap_freelist_size);
 
 static size_t _ion_heap_freelist_drain(struct ion_heap *heap, size_t size,
 				       bool skip_pools)
@@ -210,11 +220,13 @@ size_t ion_heap_freelist_drain(struct ion_heap *heap, size_t size)
 {
 	return _ion_heap_freelist_drain(heap, size, false);
 }
+EXPORT_SYMBOL_GPL(ion_heap_freelist_drain);
 
 size_t ion_heap_freelist_shrink(struct ion_heap *heap, size_t size)
 {
 	return _ion_heap_freelist_drain(heap, size, true);
 }
+EXPORT_SYMBOL_GPL(ion_heap_freelist_shrink);
 
 static int ion_heap_deferred_free(void *data)
 {
@@ -259,6 +271,7 @@ int ion_heap_init_deferred_free(struct ion_heap *heap)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(ion_heap_init_deferred_free);
 
 static unsigned long ion_heap_shrink_count(struct shrinker *shrinker,
 					   struct shrink_control *sc)
@@ -313,3 +326,4 @@ int ion_heap_init_shrinker(struct ion_heap *heap)
 
 	return register_shrinker(&heap->shrinker);
 }
+EXPORT_SYMBOL_GPL(ion_heap_init_shrinker);

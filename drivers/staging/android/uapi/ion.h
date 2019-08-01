@@ -12,32 +12,6 @@
 #include <linux/types.h>
 
 /**
- * enum ion_heap_types - list of all possible types of heaps
- * @ION_HEAP_TYPE_SYSTEM:	 memory allocated via vmalloc
- * @ION_HEAP_TYPE_SYSTEM_CONTIG: memory allocated via kmalloc
- * @ION_HEAP_TYPE_CARVEOUT:	 memory allocated from a prereserved
- *				 carveout heap, allocations are physically
- *				 contiguous
- * @ION_HEAP_TYPE_DMA:		 memory allocated via DMA API
- * @ION_NUM_HEAPS:		 helper for iterating over heaps, a bit mask
- *				 is used to identify the heaps, so only 32
- *				 total heap types are supported
- */
-enum ion_heap_type {
-	ION_HEAP_TYPE_SYSTEM,
-	ION_HEAP_TYPE_SYSTEM_CONTIG,
-	ION_HEAP_TYPE_CARVEOUT,
-	ION_HEAP_TYPE_CHUNK,
-	ION_HEAP_TYPE_DMA,
-	ION_HEAP_TYPE_CUSTOM, /*
-			       * must be last so device specific heaps always
-			       * are at the end of this enum
-			       */
-};
-
-#define ION_NUM_HEAP_IDS		(sizeof(unsigned int) * 8)
-
-/**
  * allocation flags - the lower 16 bits are used by core ion, the upper 16
  * bits are reserved for use by the heaps themselves.
  */
