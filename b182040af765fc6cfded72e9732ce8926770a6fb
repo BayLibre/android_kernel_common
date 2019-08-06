@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f2f15e7_e6952aa7",
+        "filename": "include/linux/perf_event.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2019-08-06T19:35:45Z",
+      "side": 1,
+      "message": "Any reason to move capable() inside perf_paranoid_cpu() and perf_paranoid_kernel()? I feel the existing code is to do capable() check outside perf_paranoid_xxx().",
+      "range": {
+        "startLine": 1210,
+        "startChar": 39,
+        "endLine": 1210,
+        "endChar": 62
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18092aad_86657012",
+        "filename": "include/uapi/linux/perf_event.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2019-08-06T19:35:45Z",
+      "side": 1,
+      "message": "change to enum?",
+      "range": {
+        "startLine": 433,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 32
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f6939cd_0822dda9",
+        "filename": "security/selinux/hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6943,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2019-08-06T19:35:45Z",
+      "side": 1,
+      "message": "attr isn\u0027t used. It\u0027s better to pull in only what is needed.",
+      "range": {
+        "startLine": 6943,
+        "startChar": 30,
+        "endLine": 6943,
+        "endChar": 58
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
