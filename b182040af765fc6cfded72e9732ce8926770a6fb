@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a5b6672c_4fd14003",
+        "filename": "include/linux/perf_event.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-06T19:47:09Z",
+      "side": 1,
+      "message": "It keeps the code cleaner and avoids callers making mistake of not checking it. Only for perf_paranoid_tracepoint_raw() I don\u0027t do this since different callers use it differently",
+      "parentUuid": "6f2f15e7_e6952aa7",
+      "range": {
+        "startLine": 1210,
+        "startChar": 39,
+        "endLine": 1210,
+        "endChar": 62
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "18092aad_86657012",
         "filename": "include/uapi/linux/perf_event.h",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d4a126dc_a276aeb3",
+        "filename": "include/uapi/linux/perf_event.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-06T19:47:09Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "18092aad_86657012",
+      "range": {
+        "startLine": 433,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 32
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4f6939cd_0822dda9",
         "filename": "security/selinux/hooks.c",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2019-08-06T19:35:45Z",
       "side": 1,
       "message": "attr isn\u0027t used. It\u0027s better to pull in only what is needed.",
+      "range": {
+        "startLine": 6943,
+        "startChar": 30,
+        "endLine": 6943,
+        "endChar": 58
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4eda700f_1e7f30ad",
+        "filename": "security/selinux/hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6943,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-06T19:47:09Z",
+      "side": 1,
+      "message": "For this case, I don\u0027t agree. Because in the future we almost certainly will need it. So it is Ok to just add it to the interface IMHO. Compiler does the right thing.",
+      "parentUuid": "4f6939cd_0822dda9",
       "range": {
         "startLine": 6943,
         "startChar": 30,
