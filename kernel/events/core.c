@@ -4120,7 +4120,7 @@ find_get_context(struct pmu *pmu, struct task_struct *task,
 
 	if (!task) {
 		/* Must be root to operate on a CPU event: */
-		if (perf_paranoid_cpu() && !capable(CAP_SYS_ADMIN))
+		if (perf_paranoid_cpu(&event->attr))
 			return ERR_PTR(-EACCES);
 
 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
@@ -5696,8 +5696,8 @@ accounting:
 	lock_limit >>= PAGE_SHIFT;
 	locked = vma->vm_mm->pinned_vm + extra;
 
-	if ((locked > lock_limit) && perf_paranoid_tracepoint_raw() &&
-		!capable(CAP_IPC_LOCK)) {
+	if ((locked > lock_limit) && perf_paranoid_tracepoint_raw(&event->attr)
+	    && !capable(CAP_IPC_LOCK)) {
 		ret = -EPERM;
 		goto unlock;
 	}
@@ -10253,7 +10253,7 @@ static int perf_copy_attr(struct perf_event_attr __user *uattr,
 		}
 		/* privileged levels capture (kernel, hv): check permissions */
 		if ((mask & PERF_SAMPLE_BRANCH_PERM_PLM)
-		    && perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN))
+		    && perf_paranoid_kernel(attr) && !capable(CAP_SYS_ADMIN))
 			return -EACCES;
 	}
 
@@ -10474,10 +10474,12 @@ SYSCALL_DEFINE5(perf_event_open,
 	if (err)
 		return err;
 
-	if (!attr.exclude_kernel) {
-		if (perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN))
+	err = security_perf_event(&attr, PERF_SECURITY_EVENT_OPEN);
+	if (err < 0)
+		return err;
+
+	if (!attr.exclude_kernel && perf_paranoid_kernel(&attr))
 			return -EACCES;
-	}
 
 	if (attr.namespaces) {
 		if (!capable(CAP_SYS_ADMIN))
@@ -10494,7 +10496,7 @@ SYSCALL_DEFINE5(perf_event_open,
 
 	/* Only privileged users can get physical addresses */
 	if ((attr.sample_type & PERF_SAMPLE_PHYS_ADDR) &&
-	    perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN))
+	    perf_paranoid_kernel(&attr))
 		return -EACCES;
 
 	/*

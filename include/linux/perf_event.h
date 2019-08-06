@@ -14,6 +14,7 @@
 #ifndef _LINUX_PERF_EVENT_H
 #define _LINUX_PERF_EVENT_H
 
+#include <linux/security.h>
 #include <uapi/linux/perf_event.h>
 #include <uapi/linux/bpf_perf_event.h>
 
@@ -1189,19 +1190,43 @@ static inline bool perf_paranoid_any(void)
 	return sysctl_perf_event_paranoid > 2;
 }
 
-static inline bool perf_paranoid_tracepoint_raw(void)
+static inline bool perf_paranoid_tracepoint_raw(struct perf_event_attr *attr)
 {
-	return sysctl_perf_event_paranoid > -1;
+	int err;
+
+	if (sysctl_perf_event_paranoid > -1)
+		return true;
+
+	err = security_perf_event(attr, PERF_SECURITY_RAW_TRACEPOINT);
+	if (err < 0)
+		return true;
+	return false;
 }
 
-static inline bool perf_paranoid_cpu(void)
+static inline bool perf_paranoid_cpu(struct perf_event_attr *attr)
 {
-	return sysctl_perf_event_paranoid > 0;
+	int err;
+
+	if (sysctl_perf_event_paranoid > 0 && !capable(CAP_SYS_ADMIN))
+		return true;
+
+	err = security_perf_event(attr, PERF_SECURITY_CPU);
+	if (err < 0)
+		return true;
+	return false;
 }
 
-static inline bool perf_paranoid_kernel(void)
+static inline bool perf_paranoid_kernel(struct perf_event_attr *attr)
 {
-	return sysctl_perf_event_paranoid > 1;
+	int err;
+
+	if (sysctl_perf_event_paranoid > 1 && !capable(CAP_SYS_ADMIN))
+		return true;
+
+	err = security_perf_event(attr, PERF_SECURITY_KERNEL);
+	if (err < 0)
+		return true;
+	return false;
 }
 
 extern void perf_event_init(void);
