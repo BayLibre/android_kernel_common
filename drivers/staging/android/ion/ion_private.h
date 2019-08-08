@@ -10,6 +10,7 @@
 
 #include <linux/dcache.h>
 #include <linux/dma-buf.h>
+#include <linux/ion.h>
 #include <linux/miscdevice.h>
 #include <linux/mutex.h>
 #include <linux/plist.h>
@@ -17,7 +18,7 @@
 #include <linux/rwsem.h>
 #include <linux/types.h>
 
-#include "ion.h"
+#include "../uapi/ion.h"
 
 /**
  * struct ion_device - the metadata of the ion device node
