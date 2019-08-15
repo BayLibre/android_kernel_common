@@ -59,6 +59,24 @@
     },
     {
       "key": {
+        "uuid": "d34cb792_a7988865",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-15T17:24:17Z",
+      "side": 1,
+      "message": "Indeed",
+      "parentUuid": "7019d6c2_5156f239",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6c8350af_c2290230",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -76,6 +94,24 @@
     },
     {
       "key": {
+        "uuid": "c0bfd98d_edc81b81",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6401,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-15T17:24:17Z",
+      "side": 1,
+      "message": "Agreed, but I failed to find something better. Suggestions are welcome :)",
+      "parentUuid": "6c8350af_c2290230",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "18f60c44_5bafa285",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -87,6 +123,30 @@
       "writtenOn": "2019-08-15T12:40:50Z",
       "side": 1,
       "message": "The influence have boosted is not explained in the patch-header. I assume this comes straight from the legacy implementation but I guess it could deserve a little bit of explanation.",
+      "range": {
+        "startLine": 6439,
+        "startChar": 1,
+        "endLine": 6439,
+        "endChar": 8
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f181601_5d436bde",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6439,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-15T17:24:17Z",
+      "side": 1,
+      "message": "Right, this maps 1-1 with what find_best_target did basically. But yes, I can put a little something in the header.",
+      "parentUuid": "18f60c44_5bafa285",
       "range": {
         "startLine": 6439,
         "startChar": 1,
