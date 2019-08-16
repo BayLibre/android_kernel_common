@@ -29,6 +29,7 @@
 #include "gc.h"
 #include "trace.h"
 #include <trace/events/f2fs.h>
+#define CREATE_TRACE_POINTS
 #include <trace/events/android_fs.h>
 
 static int f2fs_filemap_fault(struct vm_area_struct *vma,
