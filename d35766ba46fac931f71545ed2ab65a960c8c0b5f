@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "376d84e0_ca64bf39",
+        "filename": "fs/namei.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-16T18:24:14Z",
+      "side": 1,
+      "message": "The second table would still consume a lot of memory for the values in the key/value pair. Let us start with 128 and can always go up from there.",
+      "parentUuid": "b3a47d07_455cfb12",
+      "range": {
+        "startLine": 807,
+        "startChar": 8,
+        "endLine": 807,
+        "endChar": 21
+      },
+      "revId": "d35766ba46fac931f71545ed2ab65a960c8c0b5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6871ad33_a5d538e4",
         "filename": "fs/namei.c",
         "patchSetId": 1
