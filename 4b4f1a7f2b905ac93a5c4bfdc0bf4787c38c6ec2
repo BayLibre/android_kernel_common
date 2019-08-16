@@ -148,6 +148,47 @@
     },
     {
       "key": {
+        "uuid": "ab88edfe_f96fc9c7",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6401,
+      "author": {
+        "id": 1291841
+      },
+      "writtenOn": "2019-08-16T10:29:40Z",
+      "side": 1,
+      "message": "Maybe better:\n\n   highest_spare_cap_cpu \u003d\u003e max_spare_cap_cpu_pi\n   highest_spare_cap     \u003d\u003e max_spare_cap_pi\n\nWhere the \"_pi\" at the end refers to \"prefer_idle\" case?\n\nEven better, looking at the changed I\u0027ve linked below, it seems to be possible to re-use the `max_spare_cap{_cpu}` variables we already have. Indeed, if I\u0027m not wrong, we never need to use both `max_spare_cap*` and `highest_spare_cap*`, do we?",
+      "parentUuid": "6c8350af_c2290230",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c4020da_b82fc318",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6438,
+      "author": {
+        "id": 1291841
+      },
+      "writtenOn": "2019-08-16T10:29:40Z",
+      "side": 1,
+      "message": "Maybe we can generate confusion with these translations to/from prefer_idle/latency_sensitive.\n\nI would keep consistently just one name but, of course, there are pro and cons for both.\n\nYe way I see it is:\n\n- always use latency_sensitive\n  being a more generic concept it should be more mainline friendly.\n  This will also better call out that we are working on a different interface wrt to legacy.\n\n- always use prefer_idle\n  makes simpler for people used to the legacy implementation to know what we are talking about.\n  But, since the usages may be slightly different, that could generate also confusion.\n\nI\u0027m personally more in favour of the first approach and thus I would keep using only latency_sensitive and do a wholesale s/prefer_idle/lantency_sensitive/ in this and the previous patches.",
+      "range": {
+        "startLine": 6438,
+        "startChar": 1,
+        "endLine": 6438,
+        "endChar": 12
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "18f60c44_5bafa285",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -188,6 +229,92 @@
         "startChar": 1,
         "endLine": 6439,
         "endChar": 8
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d471e3d2_83a8e9f0",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6471,
+      "author": {
+        "id": 1291841
+      },
+      "writtenOn": "2019-08-16T10:29:40Z",
+      "side": 1,
+      "message": "Looks like the only thing we need in the following chunk (for the prefer_idle) case is just that spare cap. Thus, if we duplicate this single line where it\u0027s required (i.e. at the bottom of the next chunk) we can probably come up with a better split between the energy_aware and the prefer_idle case.\n\nSomething like:\n   https://gist.github.com/fb69274fa8787bdfa20c37edcd1c4fde\n(which factors in also the next following three comments)",
+      "range": {
+        "startLine": 6471,
+        "startChar": 3,
+        "endLine": 6471,
+        "endChar": 30
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7c110a2_b8c439de",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6479,
+      "author": {
+        "id": 1291841
+      },
+      "writtenOn": "2019-08-16T10:29:40Z",
+      "side": 1,
+      "message": "Maybe add here a small comment to resume the heuristic we use for prefer_idle tasks?",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63e8e65c_da415917",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6492,
+      "author": {
+        "id": 1291841
+      },
+      "writtenOn": "2019-08-16T10:29:40Z",
+      "side": 1,
+      "message": "nit-pick:\n\n if (idle) {\n         if (idle-\u003eexit_latency \u003e min_exit_lat \u0026\u0026\n             cpu_cap \u003d\u003d target_cap) {\n                 continue\n         }\n         min_exit_lat \u003d idle-\u003eexit_latency;\n }",
+      "range": {
+        "startLine": 6487,
+        "startChar": 0,
+        "endLine": 6492,
+        "endChar": 39
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cf57a20_a9c89d53",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6498,
+      "author": {
+        "id": 1291841
+      },
+      "writtenOn": "2019-08-16T10:29:40Z",
+      "side": 1,
+      "message": "nit-pick:\n\n         ...\n         best_idle_cpu \u003d cpu;\n         continue;\n }\n \n if (spare_cap \u003e highest_spare_cap) {\t\n         highest_spare_cap \u003d spare_cap;\n         highest_spare_cap_cpu \u003d cpu;\n }",
+      "range": {
+        "startLine": 6495,
+        "startChar": 3,
+        "endLine": 6498,
+        "endChar": 4
       },
       "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
