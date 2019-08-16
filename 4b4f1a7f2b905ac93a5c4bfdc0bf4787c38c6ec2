@@ -166,6 +166,24 @@
     },
     {
       "key": {
+        "uuid": "473a1cc7_ba7e7fbc",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6401,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-16T14:05:31Z",
+      "side": 1,
+      "message": "\u003e Where the \"_pi\" at the end refers to \"prefer_idle\" case?\n\nRight, I don\u0027t mind changing the name, but you guys need to agree :)\n\n\u003e Even better, looking at the changed I\u0027ve linked below, it seems to be possible to re-use the `max_spare_cap{_cpu}` variables we already have. Indeed, if I\u0027m not wrong, we never need to use both `max_spare_cap*` and `highest_spare_cap*`, do we?\n\nThat\u0027s right, and as I said earlier, that\u0027s actually what I tried first. But in the end I had to put checks on prefer_idle all over, and I disliked the code. Having separate variables makes things more readable IMO. And that\u0027s what we already have in 4.19, so we can live with that :)",
+      "parentUuid": "ab88edfe_f96fc9c7",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0c4020da_b82fc318",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -177,6 +195,30 @@
       "writtenOn": "2019-08-16T10:29:40Z",
       "side": 1,
       "message": "Maybe we can generate confusion with these translations to/from prefer_idle/latency_sensitive.\n\nI would keep consistently just one name but, of course, there are pro and cons for both.\n\nYe way I see it is:\n\n- always use latency_sensitive\n  being a more generic concept it should be more mainline friendly.\n  This will also better call out that we are working on a different interface wrt to legacy.\n\n- always use prefer_idle\n  makes simpler for people used to the legacy implementation to know what we are talking about.\n  But, since the usages may be slightly different, that could generate also confusion.\n\nI\u0027m personally more in favour of the first approach and thus I would keep using only latency_sensitive and do a wholesale s/prefer_idle/lantency_sensitive/ in this and the previous patches.",
+      "range": {
+        "startLine": 6438,
+        "startChar": 1,
+        "endLine": 6438,
+        "endChar": 12
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b61174e_69d1d2d3",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6438,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-16T14:05:31Z",
+      "side": 1,
+      "message": "Agreed, the whole thing is inconsistent right now. I\u0027ll change the patches to use \u0027latency_sensitive\u0027 consistently throughout the series.",
+      "parentUuid": "0c4020da_b82fc318",
       "range": {
         "startLine": 6438,
         "startChar": 1,
@@ -259,6 +301,30 @@
     },
     {
       "key": {
+        "uuid": "d06514ac_a1477f2c",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6471,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-16T14:05:31Z",
+      "side": 1,
+      "message": "I guess it\u0027s a matter of personal taste here, so unless this is fixing something, I\u0027d rather keep the code as it was in 4.19. There is nothing wrong with it as-is, IMO.",
+      "parentUuid": "d471e3d2_83a8e9f0",
+      "range": {
+        "startLine": 6471,
+        "startChar": 3,
+        "endLine": 6471,
+        "endChar": 30
+      },
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d7c110a2_b8c439de",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -270,6 +336,24 @@
       "writtenOn": "2019-08-16T10:29:40Z",
       "side": 1,
       "message": "Maybe add here a small comment to resume the heuristic we use for prefer_idle tasks?",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cdc15a54_33deb79a",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6479,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-16T14:05:31Z",
+      "side": 1,
+      "message": "I\u0027ll put something in the commit header as suggested by Dietmar. That\u0027ll keep this code short and sweet :)",
+      "parentUuid": "d7c110a2_b8c439de",
       "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
