@@ -130,6 +130,24 @@
     },
     {
       "key": {
+        "uuid": "24ff40e3_c7a07414",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6401,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-08-16T08:09:19Z",
+      "side": 1,
+      "message": "Right, max_spare is per-pd, while highest_spare is per-rd, basically. It\u0027s definitely possible to re-use the same variable for both, but I found the code to be even less readable that way as you need to check prefer_idle in even more places. And that\u0027s also what we have in 4.19, so I just kept that as-is for consistency.",
+      "parentUuid": "ce53b452_c09a2f9f",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "18f60c44_5bafa285",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
