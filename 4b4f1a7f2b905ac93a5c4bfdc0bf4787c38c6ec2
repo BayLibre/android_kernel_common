@@ -112,6 +112,24 @@
     },
     {
       "key": {
+        "uuid": "ce53b452_c09a2f9f",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6401,
+      "author": {
+        "id": 1260195
+      },
+      "writtenOn": "2019-08-16T07:43:36Z",
+      "side": 1,
+      "message": "Haven\u0027t checked but since prefer_idle is a per-task thing, can\u0027t you use only the existing max_spare_cap{_cpu}?\n\nif ((!prefer_idle || !idle_cpu()) \u0026\u0026 (spare_cap \u003e max_spare_cap)) {\n\tmax_spare_cap \u003d spare_cap;\n\tmax_spare_cap_cpu \u003d cpu;\n}\n\namong other little tweaks? Max spare and highest spare should be the same, just on a different set of Cpus.",
+      "parentUuid": "c0bfd98d_edc81b81",
+      "revId": "4b4f1a7f2b905ac93a5c4bfdc0bf4787c38c6ec2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "18f60c44_5bafa285",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
