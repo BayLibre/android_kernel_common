@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "f28d9052_ae1d74cb",
+        "filename": "fs/namei.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T18:15:56Z",
+      "side": 1,
+      "message": "128 can certainly be bumped up if it is too less. Right now in my testing on Android, I don\u0027t hit this limit. Even if eBPF truncates, some people (Igor\u0027s team) enable this in ftrace directly so that would consume trace buffer space (128 bytes per record). But, we can certainly revisit the limit later, if it turns out to be a problem.",
+      "parentUuid": "69e5b157_3540418c",
+      "range": {
+        "startLine": 825,
+        "startChar": 4,
+        "endLine": 825,
+        "endChar": 38
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "58bc9bb4_3c5d4047",
         "filename": "include/trace/events/namei.h",
         "patchSetId": 15
