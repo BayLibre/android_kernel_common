@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1253042_6af2fa47",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-08-19T15:28:39Z",
+      "side": 1,
+      "message": "Should cite an \"out-of-tree\" bug to track this since it isn\u0027t going upstream. See https://docs.google.com/document/d/1vzCZPyDzJ75_eLm0Q3TfEC70cYyQMszexetsR2P8aw0/edit#heading\u003dh.ck3kvjh0py7f\n\nShould be a \"Test:\" tag.",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63c6ba82_87b6568d",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-08-19T15:28:39Z",
+      "side": 1,
+      "message": "I find this to be a confusing name (we aren\u0027t doing any \"walking\"). Since all it does is invoke tracing, how about \"success_walk_trace()\"?",
+      "range": {
+        "startLine": 809,
+        "startChar": 11,
+        "endLine": 809,
+        "endChar": 23
+      },
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "963d336f_d8288d55",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-08-19T15:28:39Z",
+      "side": 1,
+      "message": "Might this ever return something other than 0? If not, it seems better to make it void.",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc90a516_ce1c924b",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-08-19T15:28:39Z",
+      "side": 1,
+      "message": "If success_walk() can\u0027t return anything but 0, shouldn\u0027t it be void? Then return 0 from here. That makes the code more readable since we don\u0027t have to look at success_walk() to see what complete_walk() will return.",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
