@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "8eb0d28c_4aea2dc6",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T15:34:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "63c6ba82_87b6568d",
+      "range": {
+        "startLine": 809,
+        "startChar": 11,
+        "endLine": 809,
+        "endChar": 23
+      },
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "963d336f_d8288d55",
         "filename": "fs/namei.c",
         "patchSetId": 14
@@ -59,6 +83,24 @@
     },
     {
       "key": {
+        "uuid": "f85dea21_7bd09f34",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T15:34:07Z",
+      "side": 1,
+      "message": "Done this way to keep code changes to a minimum at the caller side. Just want to ensure the rebase of this patch is maintainable.",
+      "parentUuid": "963d336f_d8288d55",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dc90a516_ce1c924b",
         "filename": "fs/namei.c",
         "patchSetId": 14
@@ -70,6 +112,24 @@
       "writtenOn": "2019-08-19T15:28:39Z",
       "side": 1,
       "message": "If success_walk() can\u0027t return anything but 0, shouldn\u0027t it be void? Then return 0 from here. That makes the code more readable since we don\u0027t have to look at success_walk() to see what complete_walk() will return.",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "408a4cce_0187af7a",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T15:34:07Z",
+      "side": 1,
+      "message": "I was trying to keep code changes to a minimal here, since this code is common with upstream and may cause more conflicts if more lines added (6 more lines added here to be precise if we did it as you\u0027re saying).",
+      "parentUuid": "dc90a516_ce1c924b",
       "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
