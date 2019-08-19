@@ -192,6 +192,30 @@
     },
     {
       "key": {
+        "uuid": "9e843815_4b4b48a6",
+        "filename": "fs/namei.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T18:41:32Z",
+      "side": 1,
+      "message": "I can revisit dynamic allocation again. Let me spend some time on this, this week. I guess we can make eBPF truncate it as you pointed while keeping the trace record size dynamic for benefit of other tools. Keep you posted. Thanks for the review!",
+      "parentUuid": "11ec3b0c_5574bacf",
+      "range": {
+        "startLine": 825,
+        "startChar": 4,
+        "endLine": 825,
+        "endChar": 38
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "58bc9bb4_3c5d4047",
         "filename": "include/trace/events/namei.h",
         "patchSetId": 15
