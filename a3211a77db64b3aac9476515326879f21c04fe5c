@@ -66,6 +66,30 @@
     },
     {
       "key": {
+        "uuid": "4cf0d948_fc4ba4dd",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-08-19T16:31:25Z",
+      "side": 1,
+      "message": "Ack, but no change? Did you intend to change the name?",
+      "parentUuid": "8eb0d28c_4aea2dc6",
+      "range": {
+        "startLine": 809,
+        "startChar": 11,
+        "endLine": 809,
+        "endChar": 23
+      },
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "963d336f_d8288d55",
         "filename": "fs/namei.c",
         "patchSetId": 14
@@ -130,6 +154,24 @@
       "side": 1,
       "message": "I was trying to keep code changes to a minimal here, since this code is common with upstream and may cause more conflicts if more lines added (6 more lines added here to be precise if we did it as you\u0027re saying).",
       "parentUuid": "dc90a516_ce1c924b",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53d6b99a_0bd7dcca",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-08-19T16:31:25Z",
+      "side": 1,
+      "message": "Is this volatile code that changes a lot? If upstream changes the \"return xxx\" line you\u0027re going to conflict anyway, so I guess you are protecting against the condition changing, but since the return statement is different, those are going to flag as conflicts too, aren\u0027t they.\n\nI don\u0027t understand how this obfuscation helps maintainability. To me, adding \"trace\" in the name helps maintainability -- and it doesn\u0027t seem right for the return value of complete_walk() to depend on the return value of a trace function.",
+      "parentUuid": "408a4cce_0187af7a",
       "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
