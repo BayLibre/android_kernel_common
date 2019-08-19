@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e49b2cc5_c75738cb",
+        "filename": "fs/namei.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T17:47:53Z",
+      "side": 1,
+      "message": "Why? That seems to increase indentation for seemingly no benefit.",
+      "parentUuid": "099bcefd_7c80a1ed",
+      "range": {
+        "startLine": 820,
+        "startChar": 6,
+        "endLine": 820,
+        "endChar": 31
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "08127f5c_d0082934",
         "filename": "fs/namei.c",
         "patchSetId": 15
@@ -36,6 +60,30 @@
       "writtenOn": "2019-08-19T16:39:57Z",
       "side": 1,
       "message": "How can it be? I\u0027m not a VFS expert.\n\nOh! You mean too long _after_ mangling. I don\u0027t think it\u0027s fair to just die in this situation. We should account for the worst case expansion.",
+      "range": {
+        "startLine": 825,
+        "startChar": 4,
+        "endLine": 825,
+        "endChar": 38
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0dd681fd_b74d5c57",
+        "filename": "fs/namei.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T17:47:53Z",
+      "side": 1,
+      "message": "I meant d_path returns -ENAMETOOLONG (or similar) if buf is not big enough.\n\nThis is a bit of a limitation here. This buffer is on the stack, we could do dynamic allocation at a higher cost but have to handle failures and still is not much use since:\n1. The tracepoint code (in the .h part of this CL) copies the buf into the trace buffer which is a fixed size record (we could dynamically allocate strings in the trace buffer but eBPF doesn\u0027t support that AFAIK).\n2. Worst case size of full path IIRC is actually 4KB which is way too long and wasteful of trace buffer\u0027s space (each record will be 4K whether we have a path that big or not).",
+      "parentUuid": "08127f5c_d0082934",
       "range": {
         "startLine": 825,
         "startChar": 4,
