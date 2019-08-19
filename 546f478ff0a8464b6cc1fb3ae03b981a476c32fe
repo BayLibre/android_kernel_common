@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "099bcefd_7c80a1ed",
+        "filename": "fs/namei.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1130394
+      },
+      "writtenOn": "2019-08-19T16:39:57Z",
+      "side": 1,
+      "message": "Nit: I\u0027d put all the logic inside the branch instead of returning early.",
+      "range": {
+        "startLine": 820,
+        "startChar": 6,
+        "endLine": 820,
+        "endChar": 31
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08127f5c_d0082934",
+        "filename": "fs/namei.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1130394
+      },
+      "writtenOn": "2019-08-19T16:39:57Z",
+      "side": 1,
+      "message": "How can it be? I\u0027m not a VFS expert.\n\nOh! You mean too long _after_ mangling. I don\u0027t think it\u0027s fair to just die in this situation. We should account for the worst case expansion.",
+      "range": {
+        "startLine": 825,
+        "startChar": 4,
+        "endLine": 825,
+        "endChar": 38
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58bc9bb4_3c5d4047",
+        "filename": "include/trace/events/namei.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1130394
+      },
+      "writtenOn": "2019-08-19T16:39:57Z",
+      "side": 1,
+      "message": "Nit: inode generation too please. Without inode generation, the mapping is still ambiguous.",
+      "range": {
+        "startLine": 37,
+        "startChar": 23,
+        "endLine": 37,
+        "endChar": 26
+      },
+      "revId": "546f478ff0a8464b6cc1fb3ae03b981a476c32fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
