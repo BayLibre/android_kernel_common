@@ -90,6 +90,30 @@
     },
     {
       "key": {
+        "uuid": "f94dc924_e91d7f03",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T17:42:21Z",
+      "side": 1,
+      "message": "I did! Sorry. Changed it now.",
+      "parentUuid": "4cf0d948_fc4ba4dd",
+      "range": {
+        "startLine": 809,
+        "startChar": 11,
+        "endLine": 809,
+        "endChar": 23
+      },
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "963d336f_d8288d55",
         "filename": "fs/namei.c",
         "patchSetId": 14
@@ -122,6 +146,24 @@
       "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58108403_dab8fe02",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T17:42:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f85dea21_7bd09f34",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -172,6 +214,24 @@
       "side": 1,
       "message": "Is this volatile code that changes a lot? If upstream changes the \"return xxx\" line you\u0027re going to conflict anyway, so I guess you are protecting against the condition changing, but since the return statement is different, those are going to flag as conflicts too, aren\u0027t they.\n\nI don\u0027t understand how this obfuscation helps maintainability. To me, adding \"trace\" in the name helps maintainability -- and it doesn\u0027t seem right for the return value of complete_walk() to depend on the return value of a trace function.",
       "parentUuid": "408a4cce_0187af7a",
+      "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6ca7a8d_fc640de9",
+        "filename": "fs/namei.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-08-19T17:42:21Z",
+      "side": 1,
+      "message": "Your way is better.",
+      "parentUuid": "53d6b99a_0bd7dcca",
       "revId": "a3211a77db64b3aac9476515326879f21c04fe5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
