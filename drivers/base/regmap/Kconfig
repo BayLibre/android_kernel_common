@@ -49,3 +49,12 @@ config REGMAP_SOUNDWIRE
 config REGMAP_SCCB
 	tristate
 	depends on I2C
+
+config REGMAP_DUMMY_MODULE
+	bool "Regmap Dummy Module"
+	select REGMAP_IRQ
+	select MFD_CORE
+	select REGMAP_MMIO
+	help
+	  Select this if you want to use this kernel with modules
+	  built from another tree that utilize the REGMAP core
