@@ -39,6 +39,17 @@ config SND_SOC_TOPOLOGY
 config SND_SOC_ACPI
 	tristate
 
+config SND_SOC_DUMMY_MODULE
+	bool "Dummy SOC module"
+	select SND_SOC_GENERIC_DMAENGINE_PCM
+	select SND_PCM_ELD
+	select SND_PCM_IEC958
+	help
+	  Select this to enable SND_SOC_GENERIC_DMAENGINE_PCM
+	  and SND_PCM_ELD which is normally selected by other
+	  driver config options.
+
+
 # All the supported SoCs
 source "sound/soc/adi/Kconfig"
 source "sound/soc/amd/Kconfig"
