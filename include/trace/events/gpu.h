@@ -1,0 +1,248 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+#undef TRACE_SYSTEM
+#define TRACE_SYSTEM gpu
+
+#if !defined(_TRACE_GPU_H) || defined(TRACE_HEADER_MULTI_READ)
+#define _TRACE_GPU_H
+
+#include <linux/tracepoint.h>
+
+/*
+ * The gpu_sched_enqueue event indicates that commands from the userland has
+ * been queued up to the GPU kernel mode driver.
+ *
+ * This event should be traced in the kernel thread that handles the enqueue of
+ * those commands.
+ *
+ * @ctx_id: This is the userland graphics context id. In Vulkan, it corresponds
+ * to the VkDevice. In OpenGL, it corresponds to the EGLContext.
+ *
+ * @pid: This is the id of the userland process that submits the commands.
+ *
+ * @ctx_prio: This is the context's priority for preemption.
+ *
+ * @submission_id: This is the id for the App submission to the graphics driver.
+ * In Vulkan, it corresponds to the vkQueueSubmit. In OpenGL, it corresponds to
+ * the implicit submission that the OpenGL driver consumes based on the actual
+ * driver implementation.
+ *
+ * @msg: This is an optional field to pass additional debug information.
+ *
+ */
+TRACE_EVENT(gpu_sched_enqueue,
+	TP_PROTO(
+		uint64_t ctx_id,
+		uint32_t pid,
+		uint32_t ctx_prio,
+		uint32_t submission_id,
+		const char* msg
+	),
+	TP_ARGS(
+		ctx_id,
+		pid,
+		ctx_prio,
+		submission_id,
+		msg
+	),
+	TP_STRUCT__entry(
+		__field(uint64_t, ctx_id)
+		__field(uint32_t, pid)
+		__field(uint32_t, ctx_prio)
+		__field(uint32_t, submission_id)
+		__string(msg, msg)
+	),
+	TP_fast_assign(
+		__entry->ctx_id = ctx_id;
+		__entry->pid = pid;
+		__entry->ctx_prio = ctx_prio;
+		__entry->submission_id = submission_id;
+		__assign_str(msg, msg);
+	),
+	TP_printk(
+		"ctx_id=%llu "
+		"pid=%u "
+		"ctx_prio=%u "
+		"submission_id=%u "
+		"msg=%s",
+		__entry->ctx_id,
+		__entry->pid,
+		__entry->ctx_prio,
+		__entry->submission_id,
+		__get_str(msg)
+	)
+);
+
+/*
+ * The gpu_sched_submit event indicates that the commands from the GPU context
+ * have been submitted to the GPU hardware for execution or to be executed.
+ *
+ * This event should be traced in the kernel thread that dispatches the commands
+ * from the GPU context to the GPU hardware queues.
+ *
+ * @ctx_id: This is the userland graphics context id. In Vulkan, it corresponds
+ * to the VkDevice. In OpenGL, it corresponds to the EGLContext.
+ *
+ * @pid: This is the id of the userland process that submits the commands.
+ *
+ * @ctx_prio: This is the context's priority for preemption.
+ *
+ * @submission_id: This is the id for the App submission to the graphics driver.
+ * In Vulkan, it corresponds to the vkQueueSubmit. In OpenGL, it corresponds to
+ * the implicit submission that the OpenGL driver consumes based on the actual
+ * driver implementation.
+ *
+ * @hw_queue_id: This identifies which GPU hardware queue the commands have been
+ * submitted to.
+ *
+ * @msg: This is an optional field to pass additional debug information.
+ *
+ */
+TRACE_EVENT(gpu_sched_submit,
+	TP_PROTO(
+		uint64_t ctx_id,
+		uint32_t pid,
+		uint32_t ctx_prio,
+		uint32_t submission_id,
+		uint32_t hw_queue_id,
+		const char* msg
+	),
+	TP_ARGS(
+		ctx_id,
+		pid,
+		ctx_prio,
+		submission_id,
+		hw_queue_id,
+		msg
+	),
+	TP_STRUCT__entry(
+		__field(uint64_t, ctx_id)
+		__field(uint32_t, pid)
+		__field(uint32_t, ctx_prio)
+		__field(uint32_t, submission_id)
+		__field(uint32_t, hw_queue_id)
+		__string(msg, msg)
+	),
+	TP_fast_assign(
+		__entry->ctx_id = ctx_id;
+		__entry->pid = pid;
+		__entry->ctx_prio = ctx_prio;
+		__entry->submission_id = submission_id;
+		__entry->hw_queue_id = hw_queue_id;
+		__assign_str(msg, msg);
+	),
+	TP_printk(
+		"ctx_id=%llu "
+		"pid=%u "
+		"ctx_prio=%u "
+		"submission_id=%u "
+		"hw_queue_id=%u "
+		"msg=%s",
+		__entry->ctx_id,
+		__entry->pid,
+		__entry->ctx_prio,
+		__entry->submission_id,
+		__entry->hw_queue_id,
+		__get_str(msg)
+	)
+);
+
+/*
+ * The gpu_sched_complete event indicates that commands executed on the GPU
+ * hardware have finished, or get preempted, or for any reason stopped.
+ *
+ * This event should be traced in the kernel thread that handles the completion
+ * of the commands execution. It could be in the interrupt handler or just
+ * random kernel thread that cleans up the completed commands as long as the
+ * timestamps in this events are accurate.
+ *
+ * @gpu_start_time: This is the timestamp in nanoseconds for when the GPU
+ * hardware starts executing the submitted commands.
+ *
+ * @gpu_end_time: This is the timestamp in nanoseconds for when the GPU hardware
+ * ends executing the submitted commands.
+ *
+ * @trace_emit_time: This is the timestamp in nanoseconds for when this ftrace
+ * event gets emitted. Need to be as close as possible to precisely reproduce
+ * the GPU render time slice.
+ *
+ * @ctx_id: This is the userland graphics context id. In Vulkan, it corresponds
+ * to the VkDevice. In OpenGL, it corresponds to the EGLContext.
+ *
+ * @pid: This is the id of the userland process that submits the commands.
+ *
+ * @ctx_prio: This is the context's priority for preemption.
+ *
+ * @submission_id: This is the id for the App submission to the graphics driver.
+ * In Vulkan, it corresponds to the vkQueueSubmit. In OpenGL, it corresponds to
+ * the implicit submission that the OpenGL driver consumes based on the actual
+ * driver implementation.
+ *
+ * @msg: This is an optional field to pass additional debug information. For
+ * this event, the reason for this completion should be placed in the msg.
+ *
+ */
+TRACE_EVENT(gpu_sched_complete,
+	TP_PROTO(
+		uint64_t gpu_start_time,
+		uint64_t gpu_end_time,
+		uint64_t trace_emit_time,
+		uint64_t ctx_id,
+		uint32_t pid,
+		uint32_t ctx_prio,
+		uint32_t submission_id,
+		const char* msg
+	),
+	TP_ARGS(
+		gpu_start_time,
+		gpu_end_time,
+		trace_emit_time,
+		ctx_id,
+		pid,
+		ctx_prio,
+		submission_id,
+		msg
+	),
+	TP_STRUCT__entry(
+		__field(uint64_t, gpu_start_time)
+		__field(uint64_t, gpu_end_time)
+		__field(uint64_t, trace_emit_time)
+		__field(uint64_t, ctx_id)
+		__field(uint32_t, pid)
+		__field(uint32_t, ctx_prio)
+		__field(uint32_t, submission_id)
+		__string(msg, msg)
+	),
+	TP_fast_assign(
+		__entry->gpu_start_time = gpu_start_time;
+		__entry->gpu_end_time = gpu_end_time;
+		__entry->trace_emit_time = trace_emit_time;
+		__entry->ctx_id = ctx_id;
+		__entry->pid = pid;
+		__entry->ctx_prio = ctx_prio;
+		__entry->submission_id = submission_id;
+		__assign_str(msg, msg);
+	),
+	TP_printk(
+		"gpu_start_time=%llu "
+		"gpu_end_time=%llu "
+		"trace_emit_time=%llu "
+		"ctx_id=%llu "
+		"pid=%u "
+		"ctx_prio=%u "
+		"submission_id=%u "
+		"msg=%s",
+		__entry->gpu_start_time,
+		__entry->gpu_end_time,
+		__entry->trace_emit_time,
+		__entry->ctx_id,
+		__entry->pid,
+		__entry->ctx_prio,
+		__entry->submission_id,
+		__get_str(msg)
+	)
+);
+
+#endif /* _TRACE_GPU_H */
+
+/* This part must be outside protection */
+#include <trace/define_trace.h>
