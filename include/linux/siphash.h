@@ -21,6 +21,14 @@ typedef struct {
 	u64 key[2];
 } siphash_key_t;
 
+<<<<<<< HEAD   (dc9b48 ANDROID: fix kernelci build-break in lowmemorykiller)
+=======
+static inline bool siphash_key_is_zero(const siphash_key_t *key)
+{
+	return !(key->key[0] | key->key[1]);
+}
+
+>>>>>>> BRANCH (228e87 Linux 4.9.190)
 u64 __siphash_aligned(const void *data, size_t len, const siphash_key_t *key);
 #ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 u64 __siphash_unaligned(const void *data, size_t len, const siphash_key_t *key);
