@@ -119,6 +119,52 @@
     },
     {
       "key": {
+        "uuid": "a5e24c0f_6676834d",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1412036
+      },
+      "writtenOn": "2019-08-27T19:20:45Z",
+      "side": 1,
+      "message": "There are other vendor heap types with more than one instance of it so for those, would a range have to be reserved over here in this structure as part of adding them?",
+      "range": {
+        "startLine": 48,
+        "startChar": 1,
+        "endLine": 48,
+        "endChar": 25
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81ab888f_9e7b7b01",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1412036
+      },
+      "writtenOn": "2019-08-27T19:20:45Z",
+      "side": 1,
+      "message": "Which CMA heaps will correspond to this standard range defined here? Using one of these implies that system image can rely on it and so must be made available by all vendors??\n\nSimilar comment/question(s) for carveout heaps.",
+      "range": {
+        "startLine": 49,
+        "startChar": 25,
+        "endLine": 49,
+        "endChar": 27
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4128e79d_56734b97",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 3
