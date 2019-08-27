@@ -22,6 +22,52 @@
       "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a38e4cbb_b0d447c1",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-27T17:26:45Z",
+      "side": 1,
+      "message": "s/region/regions?",
+      "range": {
+        "startLine": 26,
+        "startChar": 41,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b708375_a455ee30",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-27T17:26:45Z",
+      "side": 1,
+      "message": "As with CMA, isn\u0027t it possible to also have multiple carveout heaps? So, shouldn\u0027t we handle the carveout heap IDs in a similar fashion?",
+      "range": {
+        "startLine": 45,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
