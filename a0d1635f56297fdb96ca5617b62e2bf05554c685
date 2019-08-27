@@ -119,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "367241f2_89aeca73",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-27T19:29:42Z",
+      "side": 1,
+      "message": "I suppose we can, but IMO, that seems rather awkward, because the heaps are, by definition, carveout heaps; they just need different IDs.\n\nIt seems strange to have the ideas of heap type and heap IDs so tightly coupled as they are here, because these aren\u0027t really types anymore (i.e. it makes sense to have multiple heaps of type CMA, but the way we\u0027re doing that is by having a heap of type CMA, type CMA + 1, type CMA + 2, etc, which doesn\u0027t make much sense?)",
+      "parentUuid": "415d0b66_176be854",
+      "range": {
+        "startLine": 45,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a5e24c0f_6676834d",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 3
