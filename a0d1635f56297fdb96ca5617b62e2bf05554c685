@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dc4e20d6_380f54d3",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-27T19:08:11Z",
+      "side": 1,
+      "message": "correct, forgot to delete that once I realized BIT() isn\u0027t in uapi headers.",
+      "parentUuid": "56770c18_b7ad5c56",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a38e4cbb_b0d447c1",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 3
@@ -59,6 +83,30 @@
       "writtenOn": "2019-08-27T17:26:45Z",
       "side": 1,
       "message": "As with CMA, isn\u0027t it possible to also have multiple carveout heaps? So, shouldn\u0027t we handle the carveout heap IDs in a similar fashion?",
+      "range": {
+        "startLine": 45,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "415d0b66_176be854",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-27T19:08:11Z",
+      "side": 1,
+      "message": "We could, but I wonder if its worth adding all that complexity if none of the Android code is going to use them.\n\nFor now the assumption is there can be multiple CMA heaps and only 1 of other staandard types of heaps that Android system can / will talk to.\nHowever, if you have the need to add additional carveout heaps, they can be of a different type and specify their own heap id? (that reminds me, I am not handling this case, so will fix that too).",
+      "parentUuid": "0b708375_a455ee30",
       "range": {
         "startLine": 45,
         "startChar": 1,
