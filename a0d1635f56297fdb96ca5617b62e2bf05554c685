@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "66ce800f_71affa4f",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-28T05:22:18Z",
+      "side": 1,
+      "message": "Oh I agree. I don\u0027t like the type \u003d\u003d id thing one bit. I haven\u0027t though through to see if there are any user space implications of this yet.\n\nIt probably makes the ion_heap_assign_ids() bigger, but I guess I\u0027ll do that now.",
+      "parentUuid": "367241f2_89aeca73",
+      "range": {
+        "startLine": 45,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a5e24c0f_6676834d",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 3
@@ -177,6 +201,30 @@
       "writtenOn": "2019-08-27T19:20:45Z",
       "side": 1,
       "message": "Which CMA heaps will correspond to this standard range defined here? Using one of these implies that system image can rely on it and so must be made available by all vendors??\n\nSimilar comment/question(s) for carveout heaps.",
+      "range": {
+        "startLine": 49,
+        "startChar": 25,
+        "endLine": 49,
+        "endChar": 27
+      },
+      "revId": "a0d1635f56297fdb96ca5617b62e2bf05554c685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6230bd77_180bdf24",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-28T05:22:18Z",
+      "side": 1,
+      "message": "\u003e  Using one of these implies that system image can rely on it \ncorrect.\n\n\u003e so must be made available by all vendors??\nNot really, they only need to make those heaps available that are used by their system image, so definitely not expecting all 8 CMA heaps to be present all the times.\nAndroid (AOSP) will only use standard heap ids as defined in the \u0027enum ion_heap_id\u0027 below ( if at all). I will add a comment to that end below.",
+      "parentUuid": "81ab888f_9e7b7b01",
       "range": {
         "startLine": 49,
         "startChar": 25,
