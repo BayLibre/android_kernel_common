@@ -205,6 +205,29 @@
       "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a74997b_72a21bef",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1412036
+      },
+      "writtenOn": "2019-08-28T18:45:50Z",
+      "side": 1,
+      "message": "So let\u0027s say if vendor A uses dma_start to dma_end as vendor A specific CMA heaps and vendor B uses dma_start to dma_end as vendor B specific CMA heaps - in this case how will system image be able to use any of the (dma_end - dma_start + 1) * 2 heaps as they aren\u0027t mandated to be available across vendors?\n\nThis does restrict and/or standardize the number of CMA heaps that can be used by vendors.",
+      "range": {
+        "startLine": 66,
+        "startChar": 23,
+        "endLine": 66,
+        "endChar": 45
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
