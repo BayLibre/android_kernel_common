@@ -15,6 +15,7 @@
  * the only thing implemented properly.  The rest need looking into...
  */
 
+#include <linux/pagewalk.h>
 #include <linux/dma-noncoherent.h>
 #include <linux/pagewalk.h>
 
