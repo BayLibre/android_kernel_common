@@ -1,0 +1,210 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19d7f46f_11219c8e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be BIT(0)-BIT(15)?",
+      "range": {
+        "startLine": 25,
+        "startChar": 10,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d9a71c2_b005cd1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "So does this mean that these IDs are for CMA/Carveout heaps that the system image/AOSP needs to allocate from (i.e. this is not the place for CMA/Carveout heaps that are utilized by the vendor partition)? Is the point of reserving these IDs for CMA heaps so that if Android some day wants to use CMA heaps, vendors can implement the heaps with these IDs?\n\nOr is this for any CMA heaps that the vendors implement (most likely not, as those, by definition, aren\u0027t standard)?",
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "793aa515_86b21ee3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "BIT(16)-BIT(31)?",
+      "range": {
+        "startLine": 27,
+        "startChar": 7,
+        "endLine": 27,
+        "endChar": 8
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "faa5cd0a_6a27aefd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "If my first point above is true, then I think it would be clearer to say vendor-specific heaps, as opposed to heap types? Though I guess it\u0027s still weird that vendors can implement heaps of type CMA, but they should not be marked explicitly as ION_HEAP_TYPE_DMA.",
+      "range": {
+        "startLine": 27,
+        "startChar": 23,
+        "endLine": 27,
+        "endChar": 24
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f57eb7d_42fe5138",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "BIT(3)-BIT(7)?",
+      "range": {
+        "startLine": 29,
+        "startChar": 14,
+        "endLine": 29,
+        "endChar": 15
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8180c24_9122eb42",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "BIT(8)-BIT(15)?",
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c2b3d87_4171a351",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "Based on what I mentioned below, it might be simpler to make this 0?",
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73cb36b2_af48f74d",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "It seems like all heaps that are not standard heaps, must be of type custom. Otherwise, it will be considered invalid in the ion.c code when the heap is registered. However, doesn\u0027t this make this restrictive for vendors? All of their heaps will be of type custom, so if they need to distinguish between different types of custom heaps, they can\u0027t really do that?\n\nI guess it doesn\u0027t really make sense for anyone to use \"ION_HEAP_TYPE_CUSTOM\" as a type, as I would imagine vendors want a finer granule for heap type classification. So, is the purpose of this just to serve as a boundary marker? If so, then the ion.c code needs to be modified.",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd050976_578ab7b6",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "s/SYSTEMi/SYSTEM",
+      "range": {
+        "startLine": 45,
+        "startChar": 38,
+        "endLine": 45,
+        "endChar": 66
+      },
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1861eb83_85f32095",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-28T18:27:57Z",
+      "side": 1,
+      "message": "I think this might be confusing to our clients, because when they construct their bitmasks for allocation, they do something like\n\nheap_id_mask \u003d 0;\nheap_id_mask \u003d ION_HEAP(SYSTEM_HEAP_ID) | ION_HEAP(CMA_HEAP_1) | ION_HEAP(CMA_HEAP_2), where\n\n#define ION_HEAP(heap_id) (1 \u003c\u003c heap_id).\n\nTherefore, can we define these as simply IDs?",
+      "revId": "93a8029497b5344a47d0a9b868ecd6984ec21804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
