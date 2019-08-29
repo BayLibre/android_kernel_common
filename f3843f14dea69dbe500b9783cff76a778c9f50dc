@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "0ec26ffe_85fc0d59",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-29T01:06:36Z",
+      "side": 1,
+      "message": "So for our vendor-userspace clients that make use of the , will the usage have to be something like this?\n\n/* 5.x+ */\nif (ion_is_modern_version())\n    heap_id_mask \u003d ION_HEAP_SYSTEM;\n/* We do not intend on changing the UAPI in pre-5.x */\nelse\n    heap_id_mask \u003d ION_HEAP(SYSTEM_HEAP_ID);\n\nI suppose that it would have been good to keep some consistency in the way clients express their need to allocate from the system heap.",
+      "range": {
+        "startLine": 62,
+        "startChar": 1,
+        "endLine": 62,
+        "endChar": 16
+      },
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f5ef15ab_c6486573",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 7
