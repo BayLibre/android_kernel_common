@@ -193,6 +193,13 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
 	dsb(sy);
 	isb();
 
+	/*
+	 * As recommended by section 4.3.7 ("Synchronization when using the
+	 * memory-mapped interface") of ARM IHI 0064D
+	 */
+	dsb(sy);
+	isb();
+
 done:
 	CS_LOCK(drvdata->base);
 
