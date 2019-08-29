@@ -3,7 +3,6 @@
  * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
  */
 
-
 #ifndef __RPM_INTERNAL_H__
 #define __RPM_INTERNAL_H__
 
