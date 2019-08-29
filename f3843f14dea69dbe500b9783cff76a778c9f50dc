@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ddb9b488_e01d3509",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-29T04:08:48Z",
+      "side": 1,
+      "message": "ofcourse it will have to have this, but this CL doesn\u0027t include libion. We have to agree and fix the UAPI header here first and then we move it to libion in userspace.",
+      "parentUuid": "290a915d_7a0eff10",
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0ec26ffe_85fc0d59",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 7
@@ -30,6 +48,30 @@
       "writtenOn": "2019-08-29T01:06:36Z",
       "side": 1,
       "message": "So for our vendor-userspace clients that make use of the , will the usage have to be something like this?\n\n/* 5.x+ */\nif (ion_is_modern_version())\n    heap_id_mask \u003d ION_HEAP_SYSTEM;\n/* We do not intend on changing the UAPI in pre-5.x */\nelse\n    heap_id_mask \u003d ION_HEAP(SYSTEM_HEAP_ID);\n\nI suppose that it would have been good to keep some consistency in the way clients express their need to allocate from the system heap.",
+      "range": {
+        "startLine": 62,
+        "startChar": 1,
+        "endLine": 62,
+        "endChar": 16
+      },
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b35b7c36_0093d255",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-29T04:08:48Z",
+      "side": 1,
+      "message": "This can all be handled in libion so nobody has to do anything differently.",
+      "parentUuid": "0ec26ffe_85fc0d59",
       "range": {
         "startLine": 62,
         "startChar": 1,
@@ -76,6 +118,30 @@
       "writtenOn": "2019-08-29T00:58:00Z",
       "side": 1,
       "message": "So for vendor specific CMA and carveout heaps, they are expected to fall in this range? It will be nice for these to be able to use ION_HEAP_TYPE_DMA but the current ion.c implementation would imply that they would have to chose another custom type for it to work.",
+      "range": {
+        "startLine": 69,
+        "startChar": 22,
+        "endLine": 69,
+        "endChar": 23
+      },
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "215d1075_6a4b9dad",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-08-29T04:08:48Z",
+      "side": 1,
+      "message": "Why would they be in that range? They are not vendor specific, the implementation is.\n\nNote that today, there is next to ZERO aosp usage of ion. I generally don\u0027t expect AOSP would use anything but the system heap tbh (even that is a stretch). I think there is some confusion here. Lets fix that f2f.",
+      "parentUuid": "d0e12abb_950708c2",
       "range": {
         "startLine": 69,
         "startChar": 22,
