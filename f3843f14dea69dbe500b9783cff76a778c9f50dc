@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "290a915d_7a0eff10",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1530208
+      },
+      "writtenOn": "2019-08-29T01:11:24Z",
+      "side": 1,
+      "message": "How will clients of libion get this exactly? If a client of libion does\n\n#include \u003clinux/ion.h\u003e\n\nAs per the bp file in libion, do they not get the kernel headers that libion exposes: https://android.googlesource.com/platform/system/core/+/master/libion/kernel-headers/linux instead of the kernel exported headers? Won\u0027t that header not have the IDs?",
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0ec26ffe_85fc0d59",
         "filename": "include/uapi/linux/ion.h",
         "patchSetId": 7
