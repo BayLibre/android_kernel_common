@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5ef15ab_c6486573",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1412036
+      },
+      "writtenOn": "2019-08-29T00:58:00Z",
+      "side": 1,
+      "message": "We don\u0027t currently have any CMA heap usage in system image and neither do we have any carveout heap usage in system image.\n\nSo either these can be interpreted as some standard carveout and CMA heaps that Android might use in future and require all vendors to support or they could be removed if such provision isn\u0027t needed for now.",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 20
+      },
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0e12abb_950708c2",
+        "filename": "include/uapi/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1412036
+      },
+      "writtenOn": "2019-08-29T00:58:00Z",
+      "side": 1,
+      "message": "So for vendor specific CMA and carveout heaps, they are expected to fall in this range? It will be nice for these to be able to use ION_HEAP_TYPE_DMA but the current ion.c implementation would imply that they would have to chose another custom type for it to work.",
+      "range": {
+        "startLine": 69,
+        "startChar": 22,
+        "endLine": 69,
+        "endChar": 23
+      },
+      "revId": "f3843f14dea69dbe500b9783cff76a778c9f50dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
