@@ -22,6 +22,30 @@
       "revId": "e824c7f84a6c217dd05996bdd2d3f5e1ccc75c42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36cd4663_f8c4c148",
+        "filename": "drivers/soc/qcom/rpmh-rsc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-09-03T20:21:24Z",
+      "side": 1,
+      "message": "I think this driver is fundamental to all the other drivers. I don\u0027t really expected this to be unloaded. For now, I think we can merge this without unload support.",
+      "parentUuid": "06fc7598_b5244e7c",
+      "range": {
+        "startLine": 691,
+        "startChar": 0,
+        "endLine": 691,
+        "endChar": 37
+      },
+      "revId": "e824c7f84a6c217dd05996bdd2d3f5e1ccc75c42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
