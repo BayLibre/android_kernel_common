@@ -621,6 +621,40 @@ static void bpf_jit_uncharge_modmem(u32 pages)
 	atomic_long_sub(pages, &bpf_jit_current);
 }
 
+#if defined(CONFIG_BPF_JIT) && defined(CONFIG_CFI_CLANG)
+static inline unsigned int __bpf_call_func(const struct bpf_prog *prog,
+					   const void *ctx)
+{
+	/* call with CFI checking */
+	return prog->bpf_func(ctx, prog->insnsi);
+}
+
+bool __weak arch_bpf_jit_check_func(const struct bpf_prog *prog)
+{
+	return true;
+}
+
+unsigned int __nocfi noinline bpf_call_func(const struct bpf_prog *prog,
+					    const void *ctx)
+{
+	if (!IS_ENABLED(CONFIG_BPF_JIT_ALWAYS_ON) && !prog->jited)
+		return __bpf_call_func(prog, ctx);
+	else {
+		const struct bpf_binary_header *hdr = bpf_jit_binary_hdr(prog);
+
+		if (unlikely(hdr->magic != BPF_BINARY_HEADER_MAGIC ||
+			     !arch_bpf_jit_check_func(prog))) {
+			WARN(1, "attempt to jump to invalid address");
+			return 0;
+		}
+	}
+
+	/* bpf_func is jited and looks valid, call without CFI checking */
+	return prog->bpf_func(ctx, prog->insnsi);
+}
+EXPORT_SYMBOL_GPL(bpf_call_func);
+#endif
+
 struct bpf_binary_header *
 bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
 		     unsigned int alignment,
@@ -647,6 +681,7 @@ bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
 	/* Fill space with illegal/arch-dep instructions. */
 	bpf_fill_ill_insns(hdr, size);
 
+	bpf_jit_set_header_magic(hdr);
 	hdr->pages = pages;
 	hole = min_t(unsigned int, size - (proglen + sizeof(*hdr)),
 		     PAGE_SIZE - sizeof(*hdr));

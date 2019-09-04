@@ -467,6 +467,9 @@ struct sock_fprog_kern {
 };
 
 struct bpf_binary_header {
+#ifdef CONFIG_CFI_CLANG
+	u32 magic;
+#endif
 	u32 pages;
 	/* Some arches need word alignment for their instructions */
 	u8 image[] __aligned(4);
@@ -506,7 +509,38 @@ struct sk_filter {
 	struct bpf_prog	*prog;
 };
 
-#define BPF_PROG_RUN(filter, ctx)  (*(filter)->bpf_func)(ctx, (filter)->insnsi)
+#if defined(CONFIG_BPF_JIT) && defined(CONFIG_CFI_CLANG)
+/*
+ * Making an indirect call to a jited function trips CFI checking. Use
+ * a stub function with __nocfi to allow the call and perform call
+ * target validation. Architectures implementing BPF JIT can override
+ * arch_bpf_jit_check_func to perform additional checking.
+ */
+extern unsigned int bpf_call_func(const struct bpf_prog *prog,
+				  const void *ctx);
+
+extern bool arch_bpf_jit_check_func(const struct bpf_prog *prog);
+
+#define BPF_BINARY_HEADER_MAGIC	0x05de0e82
+
+static inline void bpf_jit_set_header_magic(struct bpf_binary_header *hdr)
+{
+	hdr->magic = BPF_BINARY_HEADER_MAGIC;
+}
+
+#else
+static inline unsigned int bpf_call_func(const struct bpf_prog *prog,
+					 const void *ctx)
+{
+	return prog->bpf_func(ctx, prog->insnsi);
+}
+
+static inline void bpf_jit_set_header_magic(struct bpf_binary_header *hdr)
+{
+}
+#endif
+
+#define BPF_PROG_RUN(filter, ctx)  bpf_call_func(filter, ctx)
 
 #define BPF_SKB_CB_LEN QDISC_CB_PRIV_LEN
 
