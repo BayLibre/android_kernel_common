@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "896d4400_67ad5956",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2019-09-04T19:01:10Z",
+      "side": 1,
+      "message": "We can remove this. It was used by QEMU for cf-logcat, cf-gadget-usb-v1, but the cf-logcat is done with a vsocket now, and the cf-gadget-usb-v1 feature is broken, afaik. crosvm does not support virtio-serial.",
+      "range": {
+        "startLine": 238,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 23
+      },
+      "revId": "c18852c79eaa8eddd26bbfb8f1d0fdee0825b153",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
