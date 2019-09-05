@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9cf27a0f_b61b2d61",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6495,
+      "author": {
+        "id": 1115183
+      },
+      "writtenOn": "2019-09-05T20:02:19Z",
+      "side": 1,
+      "message": "Is this necessary? I think these are only different from max_spare_cap and max_spare_cap_cpu if max_spare_cap_cpu is idle, but in that case max_spare_cap_cpu_ls wouldn\u0027t be returned anyway.",
+      "range": {
+        "startLine": 6495,
+        "startChar": 5,
+        "endLine": 6495,
+        "endChar": 9
+      },
+      "revId": "b2f07c9b7ae528eb27918b614036740b5c54336f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
