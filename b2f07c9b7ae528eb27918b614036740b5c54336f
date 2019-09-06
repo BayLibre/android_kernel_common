@@ -22,6 +22,30 @@
       "revId": "b2f07c9b7ae528eb27918b614036740b5c54336f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba0a6473_1e0d5826",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6495,
+      "author": {
+        "id": 1200908
+      },
+      "writtenOn": "2019-09-06T09:49:18Z",
+      "side": 1,
+      "message": "So, max_spare_cap_cpu is the CPU with max spare cap in the _performance domain_, while max_spare_cap_cpu_ls is the CPU with max spare cap in the entire _root domain_. And yes, max_spare_cap_cpu_ls is useless if we\u0027ve found an idle cpu, hence this \u0027else\u0027 which optimizes this case a tiny bit. I could add \u0027\u0026\u0026 best_idle_cpu \u003c 0\u0027 to the \u0027else\u0027 condition, but not sure this is really going to be any faster.",
+      "parentUuid": "9cf27a0f_b61b2d61",
+      "range": {
+        "startLine": 6495,
+        "startChar": 5,
+        "endLine": 6495,
+        "endChar": 9
+      },
+      "revId": "b2f07c9b7ae528eb27918b614036740b5c54336f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
