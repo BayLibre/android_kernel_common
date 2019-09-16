@@ -19,8 +19,11 @@
 #include <asm/page.h>
 #include <asm/boot.h>
 #include <asm/bootparam.h>
+<<<<<<< HEAD   (72c534 ANDROID: regression introduced override_creds=off)
 #include "../string.h"
 #include <asm/bootparam_utils.h>
+=======
+>>>>>>> BRANCH (e19c51 Linux 4.4.193)
 
 #define BOOT_BOOT_H
 #include "../ctype.h"
