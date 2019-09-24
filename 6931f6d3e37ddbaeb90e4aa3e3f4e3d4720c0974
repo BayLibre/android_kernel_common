@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8fb5aa24_2ce8e6da",
+        "filename": "drivers/staging/android/ion/heaps/ion_cma_heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-09-24T19:31:40Z",
+      "side": 1,
+      "message": "not much actually .. but given they are never more than 8 of these, the code to add / remove heaps became easier.\nOtherwise, this becomes a **cma_heaps with an array of allocated pointers to make sure we free them up when the module is removed etc.",
+      "parentUuid": "05356c76_5566fe5f",
+      "range": {
+        "startLine": 21,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 25
+      },
+      "revId": "6931f6d3e37ddbaeb90e4aa3e3f4e3d4720c0974",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "33399090_47ea312a",
         "filename": "drivers/staging/android/ion/heaps/ion_cma_heap.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-09-18T16:29:13Z",
       "side": 1,
       "message": "Shouldn\u0027t you do this after using the entry? This will make it so you start at 1, instead of 0, so you have a wasted entry at the beginning.",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 9
+      },
+      "revId": "6931f6d3e37ddbaeb90e4aa3e3f4e3d4720c0974",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce1da754_eabc3696",
+        "filename": "drivers/staging/android/ion/heaps/ion_cma_heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-09-24T19:31:40Z",
+      "side": 1,
+      "message": "I guess you are right, I know I moved it here from the end to here for some reason, but I can\u0027t recall it now. will move it to the end and address the comparison below.",
+      "parentUuid": "33399090_47ea312a",
       "range": {
         "startLine": 107,
         "startChar": 8,
@@ -92,6 +140,30 @@
       "revId": "6931f6d3e37ddbaeb90e4aa3e3f4e3d4720c0974",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a36e6910_c91a89b4",
+        "filename": "drivers/staging/android/ion/heaps/ion_cma_heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2019-09-24T19:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c673a309_4d1b4274",
+      "range": {
+        "startLine": 109,
+        "startChar": 13,
+        "endLine": 109,
+        "endChar": 15
+      },
+      "revId": "6931f6d3e37ddbaeb90e4aa3e3f4e3d4720c0974",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
