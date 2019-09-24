@@ -2,3 +2,11 @@
 . ${ROOT_DIR}/common/build.config.aarch64
 . ${ROOT_DIR}/common/build.config.allmodconfig
 
+# CPU_BIG_ENDIAN is currently broken on this branch with ld.lld
+POST_DEFCONFIG_CMDS="${POST_DEFCONFIG_CMDS} : && aarch64_update_allmodconfig"
+function aarch64_update_allmodconfig() {
+    ${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
+         -d CPU_BIG_ENDIAN
+    (cd ${OUT_DIR} && \
+     make O=${OUT_DIR} $archsubarch CC=${CC} CROSS_COMPILE=${CROSS_COMPILE} olddefconfig)
+}
