@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "8994960b_5f705dcf",
+        "filename": "drivers/soc/qcom/Kconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2019-09-25T09:18:26Z",
+      "side": 1,
+      "message": "I get this with allmodconfig:\n\n drivers/soc/qcom/rpmhpd.o: In function `rpmhpd_aggregate_corner\u0027:\n rpmhpd.c:(.text+0x8f8): undefined reference to `rpmh_write\u0027\n rpmhpd.c:(.text+0x900): undefined reference to `rpmh_write_async\u0027\n rpmhpd.c:(.text+0x9c4): undefined reference to `rpmh_write_async\u0027\n rpmhpd.c:(.text+0xa3c): undefined reference to `rpmh_write_async\u0027\n\nShould QCOM_RPMHPD depend on QCOM_RPMH\u003dy or something along those lines ? Or perhaps just revert this patch ?",
+      "revId": "e824c7f84a6c217dd05996bdd2d3f5e1ccc75c42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "06fc7598_b5244e7c",
         "filename": "drivers/soc/qcom/rpmh-rsc.c",
         "patchSetId": 2
