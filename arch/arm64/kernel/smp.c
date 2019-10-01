@@ -599,6 +599,7 @@ static void __init acpi_parse_and_init_cpus(void)
 #endif
 void (*__smp_cross_call)(const struct cpumask *, unsigned int);
 DEFINE_PER_CPU(bool, pending_ipi);
+EXPORT_SYMBOL_GPL(pending_ipi);
 
 static void (*__smp_update_ipi_history_cb)(int cpu);
 /*
