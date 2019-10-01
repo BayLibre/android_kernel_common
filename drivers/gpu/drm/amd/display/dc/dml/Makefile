@@ -32,8 +32,11 @@ endif
 
 dml_ccflags := -mhard-float -msse $(cc_stack_align)
 
+<<<<<<< HEAD   (cfe571 Merge 4.19.75 into android-4.19-q)
 # Use -msse2 only with clang:
 #   https://bugs.freedesktop.org/show_bug.cgi?id=109487
+=======
+>>>>>>> BRANCH (555161 Linux 4.19.76)
 ifdef CONFIG_CC_IS_CLANG
 dml_ccflags += -msse2
 endif
