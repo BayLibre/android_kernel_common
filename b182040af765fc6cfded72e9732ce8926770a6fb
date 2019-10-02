@@ -557,6 +557,30 @@
     },
     {
       "key": {
+        "uuid": "318634d8_3808ac90",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1040443
+      },
+      "writtenOn": "2019-10-02T21:52:33Z",
+      "side": 1,
+      "message": "Hmm not sure if I am interpreting this conversation right but I think we actually do want the ability to restrict only open() but allow pass the FD around to another process that doesn\u0027t have perf_event_open capabilities.\n\nThe problem is the following: things are complicated (as usual).\nOnly few privileged processes on Android will be allowed to perf_event_open. but unfortunately those processes won\u0027t be able to unwind frames correctly unless they runs in the same selinux sandbox of the profiled process (this is because ART symbols cannot be accessed by other sandboxes).\nBut we don\u0027t want apps to generally perf_event_open(). \nSo what will happen in practice is that we\u0027ll likely have to fork() a daemon from the app sandbox for the sake of unwinding, do perf_event_open from another privileged process and then pass the FD to the unwinding app.",
+      "parentUuid": "02d482c4_30bb798d",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
