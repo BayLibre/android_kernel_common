@@ -261,6 +261,30 @@
     },
     {
       "key": {
+        "uuid": "d3fcdd21_00b9ffa8",
+        "filename": "include/uapi/linux/perf_event.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2019-10-02T18:33:45Z",
+      "side": 1,
+      "message": "Should these be flags instead so you can check multiple permissions at once? (does that even make sense for perf events?)",
+      "parentUuid": "d4a126dc_a276aeb3",
+      "range": {
+        "startLine": 433,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 32
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b21f25c3_33df5460",
         "filename": "kernel/trace/trace_event_perf.c",
         "patchSetId": 1
@@ -509,6 +533,30 @@
     },
     {
       "key": {
+        "uuid": "02d482c4_30bb798d",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2019-10-02T18:33:45Z",
+      "side": 1,
+      "message": "It is default deny, but since FD passing is so common on Android that\u0027s not a useful protection i.e. processes are very commonly allowed to use FDs from another process, which is why we need to also protect the object that is represented by that FD.\n\nAs an example, all apps are allowed to handle FDs from system_server, but we wouldn\u0027t want just any object represented by FD to be usable by an app, otherwise we risk object leakage. Apps are specifically only allowed to handle pipes and tcp_sockets passed by system_server. It would be nice to make the same assertions about perf_event objects.\nhttps://android.googlesource.com/platform/system/sepolicy/+/refs/heads/master/public/app.te#53",
+      "parentUuid": "bf68d344_14d58b63",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
@@ -544,6 +592,30 @@
       "side": 1,
       "message": "The other way to accomplish open is to check all 3 of the others.  The \u0027open\u0027 check was to avoid needing that, and just provide a single switch to disable perf altogether - like paranoid \u003d 3 was doing.",
       "parentUuid": "bc51201e_32fdc56c",
+      "range": {
+        "startLine": 247,
+        "startChar": 5,
+        "endLine": 247,
+        "endChar": 9
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78a46bc2_a8ad857a",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2019-10-02T18:33:45Z",
+      "side": 1,
+      "message": "hmm...but \"open\" by itself isn\u0027t useful is it? Can you do anything with just open?. Selinux is setup to check multiple permissions on an object simultaneously, so that shouldn\u0027t be a reason to add redundant checks. If we want to prevent someone doing anything we would just write a neverallow rule e.g.\n\nneverallow appdomain *:perf_event *;",
+      "parentUuid": "cba8d4a2_9401220b",
       "range": {
         "startLine": 247,
         "startChar": 5,
