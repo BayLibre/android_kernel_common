@@ -629,6 +629,30 @@
     },
     {
       "key": {
+        "uuid": "f8ee04cb_55c43600",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-03T17:00:48Z",
+      "side": 1,
+      "message": "Primiano,\nAre you also interested in kernel stack profiles (app is profiled while in kernel mode) ?\n\nThis will require CAP_SYS_ADMIN or perf_paranoid_sysctl \u003c 2.\n\n(This is independent of the problem you describe above with sandboxes)",
+      "parentUuid": "cf75bf5e_0d06d172",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
