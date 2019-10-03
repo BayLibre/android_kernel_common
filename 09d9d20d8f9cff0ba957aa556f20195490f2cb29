@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "815fac10_3fd4bea8",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "Please use the priv variable defined above, these should be the same in practice.",
+      "range": {
+        "startLine": 151,
+        "startChar": 1,
+        "endLine": 151,
+        "endChar": 64
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a61c3b1d_1ac2d79e",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "Please use the priv variable defined above, these should be the same in practice.",
+      "range": {
+        "startLine": 166,
+        "startChar": 50,
+        "endLine": 166,
+        "endChar": 62
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e4ab30_ebf80bfb",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "Unless all of the networks are defined with the same BSS, this will reject connecting to any of the other defined networks.",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 28
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df934ad3_fd2239c9",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "This will also misbehave if it doesn\u0027t recognize the network being connected to.",
+      "range": {
+        "startLine": 309,
+        "startChar": 1,
+        "endLine": 310,
+        "endChar": 17
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b99f83b_bc842779",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "Please use the priv variable defined above, these should be the same in practice.",
+      "range": {
+        "startLine": 407,
+        "startChar": 1,
+        "endLine": 407,
+        "endChar": 64
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccd45ad6_c7eb5642",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "The notify_device_open and notify_device_stop calls are mismatched here. The notify_device_open callback is invoked when the net_device is created, but the notify_device_stop callback is invoked when the wiphy is destroyed.\n\nThere is only one wiphy for the virt_wifi module which is created and destroyed together with the module as it is loaded and unloaded. On the other hand, net_devices can be created and destroyed as long as the module is loaded through using the \"ip link add ... type virt_wifi ... \" commands in the guest.\n\nvirt_wifi_net_device_stop would be a closer match.",
+      "range": {
+        "startLine": 408,
+        "startChar": 1,
+        "endLine": 409,
+        "endChar": 31
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "838e9588_fb8e2228",
+        "filename": "drivers/net/wireless/virt_wifi.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "Please create a struct with only these function pointers, and define that in a header in include/net/virt_wifi.h together with he register_data_simulation function. Header files defined outside of the include/ directory will generally not be visible outside of their own directory, and the external module needs to see the header.\n\nThe virt_wifi_wiphy_priv struct itself should stay private to the virt_wifi.c file, and it can hold a pointer to the struct of function pointers that comes in as input through register_data_simulation (or register_network_simulation).\n\nPlease also define a virt_wifi_unregister_data_simulation function so that the simulation can be unloaded if the simulation kernel module is unloaded.\n\nIt may also be useful to pass the wiphy and possibly net_device to these callbacks in case they become useful to the simulation implementation in the future.",
+      "range": {
+        "startLine": 8,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 55
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3013db95_4f5f76d2",
+        "filename": "drivers/net/wireless/virt_wifi.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-03T20:54:55Z",
+      "side": 1,
+      "message": "Please name this \"virt_wifi_register_data_simulation\" to avoid naming conflicts.",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 28
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
