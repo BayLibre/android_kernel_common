@@ -769,6 +769,30 @@
       "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3acac37b_2ac75f2e",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-03T17:12:55Z",
+      "side": 1,
+      "message": "Hey Jeff, I don\u0027t think the neverallow rule will prevent perf_event if all the others (CPU, kernel, raw_tracepoint) permissions are denied.\n\nThis is exactly the behavior of paranoid sysctl \u003d 3. At 3 we block off perf_event_open(2) completely. I think you may be missing that it is still possible to call perf_event_open(2) without needing CPU, kernel or tracepoint privileges. For example: A process is profiling itself on all CPUs and is only interested in user events. In this case, only sysctl \u003d 3 can block it. We need to emulate this in selinux. How do you propose we do that? The only way is to introduce a layer called OPEN as I am doing here, which blocks all opens.\n\nIf I drop this check, you will not be able to block perf_event_open in the scenario I described as an example above.",
+      "parentUuid": "c1531897_4f74c94e",
+      "range": {
+        "startLine": 247,
+        "startChar": 5,
+        "endLine": 247,
+        "endChar": 9
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
