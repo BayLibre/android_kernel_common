@@ -701,6 +701,30 @@
     },
     {
       "key": {
+        "uuid": "359dc2e6_6e10d437",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1040443
+      },
+      "writtenOn": "2019-10-03T17:22:16Z",
+      "side": 1,
+      "message": "Oh missing userspace events just because they are in the middle of a kernel function (e.g. a syscall) would be unfortunate. \n\nAgain, don\u0027t we need paranoid \u003c 2 for anything to work regardless?",
+      "parentUuid": "e84a0faf_197a4295",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
