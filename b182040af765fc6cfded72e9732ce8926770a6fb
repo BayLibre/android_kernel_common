@@ -677,6 +677,30 @@
     },
     {
       "key": {
+        "uuid": "e84a0faf_197a4295",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-03T17:17:16Z",
+      "side": 1,
+      "message": "Well, performance issues happen in the kernel many times. In this case, you would want profiles from the kernel to figure out where time is going. I don\u0027t think a user profile on its own gives full picture or is very valuable. Plus I think you will miss events where the perf-profiling interrupt happens in the middle of a syscall executing in kernel mode. In this case, AIUI you will miss the full user+kernel stacktrace since the event is a \"kernel event\".",
+      "parentUuid": "3387c6aa_2f004f10",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
