@@ -653,6 +653,30 @@
     },
     {
       "key": {
+        "uuid": "3387c6aa_2f004f10",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1040443
+      },
+      "writtenOn": "2019-10-03T17:02:32Z",
+      "side": 1,
+      "message": "THat might be interesting for local-debugging cases on userdebug (for hw teams), not sure how much of a prio is for user.\n\n\u003e perf_paranoid_sysctl \u003c 2.\nDon\u0027t we need this \u003c 2 regardless just to use perf_event_open?",
+      "parentUuid": "f8ee04cb_55c43600",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
