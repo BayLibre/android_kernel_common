@@ -285,6 +285,30 @@
     },
     {
       "key": {
+        "uuid": "34d163b9_ab65bd8b",
+        "filename": "include/uapi/linux/perf_event.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-03T15:05:10Z",
+      "side": 1,
+      "message": "The permissions needed are checked in different points in the code. I added selinux to checks to wherever the paranoid_..() checks were happening.\n\nAt different points, the \"type\" of check needed is different. Some test for kernel events, others CPU events, etc.\n\nIf I missed something, could you elaborate more on your point or what you mean?",
+      "parentUuid": "d3fcdd21_00b9ffa8",
+      "range": {
+        "startLine": 433,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 32
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b21f25c3_33df5460",
         "filename": "kernel/trace/trace_event_perf.c",
         "patchSetId": 1
@@ -581,6 +605,30 @@
     },
     {
       "key": {
+        "uuid": "cf75bf5e_0d06d172",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-03T15:05:10Z",
+      "side": 1,
+      "message": "Jeff,\nI will look into allocating a new SID for perf_event objects like BPF does. That should take care of what you are asking.\n\nPrimiano,\nI think I am not following. Can you pen down the design you have in mind? It is good if we keep it simple. Dumping stack pointers can also be done from the process that does the open. Then these pointers/stack-frames can be passed to the unwinding app. That keeps it simple without having to pass around FDs.",
+      "parentUuid": "318634d8_3808ac90",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
@@ -640,6 +688,30 @@
       "side": 1,
       "message": "hmm...but \"open\" by itself isn\u0027t useful is it? Can you do anything with just open?. Selinux is setup to check multiple permissions on an object simultaneously, so that shouldn\u0027t be a reason to add redundant checks. If we want to prevent someone doing anything we would just write a neverallow rule e.g.\n\nneverallow appdomain *:perf_event *;",
       "parentUuid": "cba8d4a2_9401220b",
+      "range": {
+        "startLine": 247,
+        "startChar": 5,
+        "endLine": 247,
+        "endChar": 9
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1531897_4f74c94e",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-03T15:05:10Z",
+      "side": 1,
+      "message": "Ok I will look into removing it.",
+      "parentUuid": "78a46bc2_a8ad857a",
       "range": {
         "startLine": 247,
         "startChar": 5,
