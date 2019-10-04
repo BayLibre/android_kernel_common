@@ -749,6 +749,30 @@
     },
     {
       "key": {
+        "uuid": "176aeecb_852832b8",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-04T18:31:41Z",
+      "side": 1,
+      "message": "Primiano,\nIf you are paranoid \u003d\u003d 2, then you can still profile your own process as non-root, on all CPUs. You will just miss kernel events and tracepoint events.",
+      "parentUuid": "5eb94e8b_7572f274",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
@@ -880,6 +904,30 @@
       "side": 1,
       "message": "Got it, thanks for clarifying. In that case should we call it something else? e.g. \"user\" instead of \"open\"?",
       "parentUuid": "3acac37b_2ac75f2e",
+      "range": {
+        "startLine": 247,
+        "startChar": 5,
+        "endLine": 247,
+        "endChar": 9
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c9c28c4_7e242e09",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-04T18:31:41Z",
+      "side": 1,
+      "message": "I was thinking \u0027allow\u0027 might be a better name for the permission. I will update it accordingly.",
+      "parentUuid": "9882117a_2b1eeeb0",
       "range": {
         "startLine": 247,
         "startChar": 5,
