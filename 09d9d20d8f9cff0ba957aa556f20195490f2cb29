@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "3744bfd6_7e7d57b0",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-04T18:13:52Z",
+      "side": 1,
+      "message": "I\u0027m not confident editing the simulation will be enough for this, if multiple APs show up under the same BSS that could have implications for the userspace wifi code. The issue is that this might need another callback to support the simulation using multiple BSSs.",
+      "parentUuid": "2d15ee86_e45973b8",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 28
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df934ad3_fd2239c9",
         "filename": "drivers/net/wireless/virt_wifi.c",
         "patchSetId": 4
@@ -187,6 +211,30 @@
       "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "246c493a_e5af1b78",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-04T18:13:52Z",
+      "side": 1,
+      "message": "Same issue as above.",
+      "parentUuid": "1b3fe42d_478d3265",
+      "range": {
+        "startLine": 309,
+        "startChar": 1,
+        "endLine": 310,
+        "endChar": 17
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     },
     {
       "key": {

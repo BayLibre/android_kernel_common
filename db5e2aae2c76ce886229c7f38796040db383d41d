@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "548b4504_a6eb1cb4",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-04T18:13:52Z",
+      "side": 1,
+      "message": "Just curious, what will this callback be used for? Is there some asynchronous setup work that needs to happen before the generate_virt_scan_result method is invoked? I can\u0027t think of a different reason, but since these scan stages are all on timers there\u0027s no guarantee the other asynchronous work will finish on time.",
+      "range": {
+        "startLine": 158,
+        "startChar": 2,
+        "endLine": 160,
+        "endChar": 64
+      },
+      "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19f597c9_0f4266d4",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-04T18:13:52Z",
+      "side": 1,
+      "message": "Please reject the new ops if there is already one installed, and return a non-zero value.",
+      "range": {
+        "startLine": 651,
+        "startChar": 1,
+        "endLine": 651,
+        "endChar": 32
+      },
+      "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45fa5e11_348d03fa",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-04T18:13:52Z",
+      "side": 1,
+      "message": "Please return 0 if the network simulation was installed, or a non-zero value if it was already NULL.",
+      "range": {
+        "startLine": 656,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 3
+      },
+      "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
