@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d91e0e2c_7d4492c3",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1368080
+      },
+      "writtenOn": "2019-10-05T09:21:27Z",
+      "side": 1,
+      "message": "Original plan is use it to let simulation module based on the scan trigger time to decide the which scan result need to reply. Because here we always use schedule_delayed_work to schedule the scan request thus we will guarantee the scan result will be sequence.\n\nBut you are right it might have asynchronous problem. Thus I will handle a asynchronous in simulation module. i.e. Record the scan request timestamp and count. Then decide the scan result based by the scan result count to get the request timestamp and decide which scan result need to use for the reply.",
+      "parentUuid": "548b4504_a6eb1cb4",
+      "range": {
+        "startLine": 158,
+        "startChar": 2,
+        "endLine": 160,
+        "endChar": 64
+      },
+      "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "19f597c9_0f4266d4",
         "filename": "drivers/net/wireless/virt_wifi.c",
         "patchSetId": 8
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "047544b0_6fe34e8a",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1368080
+      },
+      "writtenOn": "2019-10-05T09:21:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19f597c9_0f4266d4",
+      "range": {
+        "startLine": 651,
+        "startChar": 1,
+        "endLine": 651,
+        "endChar": 32
+      },
+      "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "45fa5e11_348d03fa",
         "filename": "drivers/net/wireless/virt_wifi.c",
         "patchSetId": 8
@@ -68,6 +116,30 @@
       "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb690e39_dca4d526",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1368080
+      },
+      "writtenOn": "2019-10-05T09:21:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45fa5e11_348d03fa",
+      "range": {
+        "startLine": 656,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 3
+      },
+      "revId": "db5e2aae2c76ce886229c7f38796040db383d41d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
