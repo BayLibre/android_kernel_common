@@ -773,6 +773,30 @@
     },
     {
       "key": {
+        "uuid": "2d0befa9_a6c4146b",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1040443
+      },
+      "writtenOn": "2019-10-07T21:29:37Z",
+      "side": 1,
+      "message": "You mean with your patches or without?\nI thought you can\u0027t today, the doc says\n\"2: Disallow kernel profiling by users without CAP_SYS_ADMIN\".\nAnd I though that was deliberate because watching PMU counters from an untrusted app can open the door to side-channel attacks.",
+      "parentUuid": "176aeecb_852832b8",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
