@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93146cf3_54d982ae",
+        "filename": "fs/ext4/ioctl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-10-07T17:54:34Z",
+      "side": 1,
+      "message": "Maybe resolve this conflict by putting this block of code above the one above, to match mainline?\n\n       if ((flags ^ oldflags) \u0026 EXT4_CASEFOLD_FL) {\n                if (!ext4_has_feature_casefold(sb)) {\n                        err \u003d -EOPNOTSUPP;\n                        goto flags_out;\n                }\n\n                if (!S_ISDIR(inode-\u003ei_mode)) {\n                        err \u003d -ENOTDIR;\n                        goto flags_out;\n                }\n\n                if (!ext4_empty_dir(inode)) {\n                        err \u003d -ENOTEMPTY;\n                        goto flags_out;\n                }\n        }\n\n        /*\n         * Wait for all pending directio and then flush all the dirty pages\n         * for this file.  The flush marks all the pages readonly, so any\n         * subsequent attempt to write to the file (particularly mmap pages)\n         * will come through the filesystem and fail.\n         */\n        if (S_ISREG(inode-\u003ei_mode) \u0026\u0026 !IS_IMMUTABLE(inode) \u0026\u0026\n            (flags \u0026 EXT4_IMMUTABLE_FL)) {\n                inode_dio_wait(inode);\n                err \u003d filemap_write_and_wait(inode-\u003ei_mapping);\n                if (err)\n                        goto flags_out;\n        }\n\n\nAs-is, these blocks of code are in the opposite order from mainline.",
+      "revId": "2c837856076f157887cc31fad34b333d651c202d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
