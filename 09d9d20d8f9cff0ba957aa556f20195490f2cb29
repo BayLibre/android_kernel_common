@@ -191,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "a372fed4_1649796d",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1291337
+      },
+      "writtenOn": "2019-10-07T23:05:12Z",
+      "side": 1,
+      "message": "My understanding of wifi is that a BSS(ID?) is used to distinguish one router / access point from the next. So each router would have a unique BSSID, and a client would see some different BSSIDs it can choose from to connect to.\n\nI assume that the network simulation will want to present multiple distinct networks, to exercise the code that chooses between networks. However, as written here the driver will reject connections to all APs that present BSSIDs besides the original VirtWifi driver the network creates itself.\n\nTherefore, as written now the simulation can either create new networks that all have the same BSSID (impossible to encounter in the real world) or new networks that will reject all attempts at user connections (doesn\u0027t sound that useful).",
+      "parentUuid": "9b3b248b_9f3b383f",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 28
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df934ad3_fd2239c9",
         "filename": "drivers/net/wireless/virt_wifi.c",
         "patchSetId": 4
