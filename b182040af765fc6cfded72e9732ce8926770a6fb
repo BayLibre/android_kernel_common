@@ -797,6 +797,30 @@
     },
     {
       "key": {
+        "uuid": "74891f57_224a6dee",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2019-10-08T15:04:02Z",
+      "side": 1,
+      "message": "I meant without patch and I meant getting of the \"stack traces\" for user programs, I did not mean CPU counters or kernel events. At paranoid \u003d\u003d 2, you can still use perf that way. That\u0027s why IIRC the paranoid \u003d\u003d 3 check was added by Android to completely cut off perf. That cutting off can now be done by the security patch itself.",
+      "parentUuid": "2d0befa9_a6c4146b",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 14
+      },
+      "revId": "b182040af765fc6cfded72e9732ce8926770a6fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc51201e_32fdc56c",
         "filename": "security/selinux/include/classmap.h",
         "patchSetId": 1
