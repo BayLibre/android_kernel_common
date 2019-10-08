@@ -215,6 +215,30 @@
     },
     {
       "key": {
+        "uuid": "927c6d10_d24e50ed",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1368080
+      },
+      "writtenOn": "2019-10-08T14:35:37Z",
+      "side": 1,
+      "message": "Thanks for the sharing. I think use the same BSSID might break our goal (verify framework network selection algorithm).\n\nBut do you mean that we need to modify others part if we plan to allow different bssid to connect (something in create new network flow)?",
+      "parentUuid": "a372fed4_1649796d",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 28
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df934ad3_fd2239c9",
         "filename": "drivers/net/wireless/virt_wifi.c",
         "patchSetId": 4
