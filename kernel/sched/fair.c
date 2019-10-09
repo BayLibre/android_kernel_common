@@ -6403,12 +6403,50 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
 }
 
 /*
+ * Scan the asym_capacity domain for idle CPUs; pick the one that minimizes
+ * capacity - util (with the appropriate capacity margin).
+ */
+static int select_idle_capacity(struct task_struct *p, int target)
+{
+	unsigned long new_cap = ULONG_MAX;
+	struct sched_domain *sd;
+	int cpu, new_cpu = -1;
+
+	if (!static_branch_unlikely(&sched_asym_cpucapacity))
+		return -1;
+
+	sd = rcu_dereference(per_cpu(sd_asym_cpucapacity, target));
+	if (!sd)
+		return -1;
+
+	for_each_cpu_wrap(cpu, sched_domain_span(sd), target) {
+		if (!cpumask_test_cpu(cpu, &p->cpus_allowed))
+			continue;
+		if (!available_idle_cpu(cpu))
+			continue;
+		if (!task_fits_capacity(p, capacity_of(cpu)))
+			continue;
+		if (capacity_of(cpu) < new_cap) {
+			new_cap = capacity_of(cpu);
+			new_cpu = cpu;
+		}
+	}
+
+	return new_cpu;
+}
+
+/*
  * Try and locate an idle core/thread in the LLC cache domain.
  */
 static int select_idle_sibling(struct task_struct *p, int prev, int target)
 {
 	struct sched_domain *sd;
 	int i, recent_used_cpu;
+
+	/* For asymmetric capacities, try to be smart about the placement */
+	i = select_idle_capacity(p, target);
+	if ((unsigned)i < nr_cpumask_bits)
+		return i;
 
 	if (available_idle_cpu(target))
 		return target;
