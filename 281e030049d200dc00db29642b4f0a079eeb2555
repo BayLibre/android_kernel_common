@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc9c4ee9_ac921503",
+        "filename": "drivers/clk/qcom/dispcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-10-10T20:34:29Z",
+      "side": 1,
+      "message": "You need to do the same thing for dispcc as I mentioned in gcc.",
+      "range": {
+        "startLine": 566,
+        "startChar": 34,
+        "endLine": 566,
+        "endChar": 56
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "880bd0ef_69ac68b8",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-10-10T20:34:29Z",
+      "side": 1,
+      "message": "Instead of the new flag, just set CLK_IGNORE_UNUSED for clock that are left on by bootloader.",
+      "range": {
+        "startLine": 1317,
+        "startChar": 30,
+        "endLine": 1317,
+        "endChar": 52
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba85d80a_56f361b8",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-10-10T20:34:29Z",
+      "side": 1,
+      "message": "Same here.",
+      "range": {
+        "startLine": 1331,
+        "startChar": 34,
+        "endLine": 1331,
+        "endChar": 35
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "715a53dd_61bd0cb5",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-10-10T20:34:29Z",
+      "side": 1,
+      "message": "Then after registering the clocks with the clock framework, do a clock get/prepare_enable on those \"left on by bootloader\" clocks. If you care for a specific frequency, you can also do a clk_set_rate() or clk_set_rate_range() on the clock.",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99c16d52_87d2e1ed",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3623,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-10-10T20:34:29Z",
+      "side": 1,
+      "message": "add a .driver.sync_state() callback where you undo the stuff you did in the end of the probe function. So a clk_disable_unprepare() and clk_put().\n\nThis sync_state() call will only come when the consumers of GCC have probed.",
+      "range": {
+        "startLine": 3623,
+        "startChar": 15,
+        "endLine": 3623,
+        "endChar": 21
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
