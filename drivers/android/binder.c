@@ -74,6 +74,8 @@
 #include "binder_internal.h"
 #include "binder_trace.h"
 
+int tk_signal, tk_nowait, tk_wait, tk_try_again, tk_wake;
+
 static HLIST_HEAD(binder_deferred_list);
 static DEFINE_MUTEX(binder_deferred_lock);
 
@@ -491,6 +493,7 @@ struct binder_proc {
 	struct rb_root refs_by_desc;
 	struct rb_root refs_by_node;
 	struct list_head waiting_threads;
+	wait_queue_head_t buf_wait;
 	int pid;
 	struct task_struct *tsk;
 	struct hlist_node deferred_work_node;
@@ -511,6 +514,7 @@ struct binder_proc {
 	spinlock_t inner_lock;
 	spinlock_t outer_lock;
 	struct dentry *binderfs_entry;
+	bool waiting_on_buf; // TJK: add to kerneldoc header
 };
 
 enum {
@@ -3000,6 +3004,41 @@ static struct binder_node *binder_get_node_refs_for_txn(
 	return target_node;
 }
 
+static bool binder_retry_async_alloc(struct binder_proc *target_proc,
+				     struct binder_transaction_data *tr,
+				     size_t alloc_size)
+{
+	DEFINE_WAIT(wait);
+
+	/*
+	 * If transaction is more than half the async space, no retry
+	 */
+	if (alloc_size > target_proc->alloc.buffer_size / 4)
+		return false;
+
+	binder_inner_proc_lock(target_proc);
+	prepare_to_wait(&target_proc->buf_wait, &wait, TASK_INTERRUPTIBLE);
+	target_proc->waiting_on_buf = true;
+	binder_inner_proc_unlock(target_proc);
+
+	if (binder_alloc_get_free_async_space(&target_proc->alloc) <
+				alloc_size) {
+		tk_wait++;
+		schedule();
+	} else {
+		// TODO: if failing alloc because buffer space in-use by sync txns, then
+		// we won't sleep here...instead we tight loop trying allocation
+		tk_nowait++;
+	}
+	finish_wait(&target_proc->buf_wait, &wait);
+	if (signal_pending(current)) {
+		tk_signal++;
+		return false;
+	}
+	tk_try_again++;
+	return true;
+}
+
 static void binder_transaction(struct binder_proc *proc,
 			       struct binder_thread *thread,
 			       struct binder_transaction_data *tr, int reply,
@@ -3301,9 +3340,25 @@ static void binder_transaction(struct binder_proc *proc,
 
 	trace_binder_transaction(reply, t, target_node);
 
+retry_alloc:
 	t->buffer = binder_alloc_new_buf(&target_proc->alloc, tr->data_size,
 		tr->offsets_size, extra_buffers_size,
 		!reply && (t->flags & TF_ONE_WAY));
+
+	/*
+	 * if async transaction and out of space, we might block to wait
+	 * for async space to free up. Then we'll retry the allocation.
+	 */
+	if (IS_ERR(t->buffer) && PTR_ERR(t->buffer) == -ENOSPC &&
+			!reply && (t->flags & TF_ONE_WAY)) {
+		// TODO: This is a slight understatement of size since it
+		// doesn't do alignment padding.
+		size_t alloc_size = tr->data_size + tr->offsets_size +
+			extra_buffers_size;
+		if (binder_retry_async_alloc(target_proc, tr, alloc_size))
+			goto retry_alloc;
+	}
+
 	if (IS_ERR(t->buffer)) {
 		/*
 		 * -ESRCH indicates VMA cleared. The target is dying.
@@ -3735,6 +3790,8 @@ err_invalid_target_handle:
 static void
 binder_free_buf(struct binder_proc *proc, struct binder_buffer *buffer)
 {
+	bool is_async = false;
+
 	binder_inner_proc_lock(proc);
 	if (buffer->transaction) {
 		buffer->transaction->buffer = NULL;
@@ -3745,6 +3802,7 @@ binder_free_buf(struct binder_proc *proc, struct binder_buffer *buffer)
 		struct binder_node *buf_node;
 		struct binder_work *w;
 
+		is_async = true;
 		buf_node = buffer->target_node;
 		binder_node_inner_lock(buf_node);
 		BUG_ON(!buf_node->has_async_transaction);
@@ -3763,6 +3821,14 @@ binder_free_buf(struct binder_proc *proc, struct binder_buffer *buffer)
 	trace_binder_transaction_buffer_release(buffer);
 	binder_transaction_buffer_release(proc, buffer, 0, false);
 	binder_alloc_free_buf(&proc->alloc, buffer);
+
+	binder_inner_proc_lock(proc);
+	if (is_async && proc->waiting_on_buf) {
+		proc->waiting_on_buf = false;
+		tk_wake++;
+		wake_up_interruptible_all(&proc->buf_wait);
+	}
+	binder_inner_proc_unlock(proc);
 }
 
 static int binder_thread_write(struct binder_proc *proc,
@@ -5394,6 +5460,7 @@ static int binder_open(struct inode *nodp, struct file *filp)
 	get_task_struct(current->group_leader);
 	proc->tsk = current->group_leader;
 	INIT_LIST_HEAD(&proc->todo);
+	init_waitqueue_head(&proc->buf_wait);
 	if (binder_supported_policy(current->policy)) {
 		proc->default_priority.sched_policy = current->policy;
 		proc->default_priority.prio = current->normal_prio;
@@ -6158,6 +6225,12 @@ int binder_stats_show(struct seq_file *m, void *unused)
 		print_binder_proc_stats(m, proc);
 	mutex_unlock(&binder_procs_lock);
 
+	seq_printf(m, "TJK: wait=%d nowait=%d try=%d signal=%d wake=%d\n",
+			tk_wait,
+			tk_nowait,
+			tk_try_again,
+			tk_signal,
+			tk_wake);
 	return 0;
 }
 
@@ -6235,6 +6308,7 @@ int binder_transaction_log_show(struct seq_file *m, void *unused)
 
 		print_binder_transaction_log_entry(m, &log->entry[index]);
 	}
+	tk_wait = tk_nowait = tk_try_again = tk_signal = tk_wake = 0;
 	return 0;
 }
 
