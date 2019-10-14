@@ -239,6 +239,30 @@
     },
     {
       "key": {
+        "uuid": "86674115_b27bd844",
+        "filename": "drivers/net/wireless/virt_wifi.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1368080
+      },
+      "writtenOn": "2019-10-14T06:12:50Z",
+      "side": 1,
+      "message": "I add \"Virt_Wifi\" back into scan result. Thus it should not break the connection flow.\nWe can claim we only support connect to  \"Virt_Wifi\" from the simulation scan result first.\nOr others suggestion?",
+      "parentUuid": "927c6d10_d24e50ed",
+      "range": {
+        "startLine": 255,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 28
+      },
+      "revId": "09d9d20d8f9cff0ba957aa556f20195490f2cb29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df934ad3_fd2239c9",
         "filename": "drivers/net/wireless/virt_wifi.c",
         "patchSetId": 4
