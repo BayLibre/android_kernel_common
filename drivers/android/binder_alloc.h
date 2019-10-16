@@ -51,6 +51,7 @@ struct binder_buffer {
 	size_t offsets_size;
 	size_t extra_buffers_size;
 	void __user *user_data;
+	void *txn_info;
 };
 
 /**
