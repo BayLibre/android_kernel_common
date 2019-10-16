@@ -311,6 +311,17 @@ struct binder_error {
  *
  * Bookkeeping structure for binder nodes.
  */
+
+struct binder_async_txn_info {
+	int pid;
+	bool has_async_transaction;
+	struct list_head async_todo;
+	struct rb_node rb_node;
+	int tk_q_count;
+	int tk_q_depth;
+	int tk_max_q_depth;
+};
+
 struct binder_node {
 	int debug_id;
 	spinlock_t lock;
@@ -345,10 +356,10 @@ struct binder_node {
 		u8 inherit_rt:1;
 		u8 accept_fds:1;
 		u8 txn_security_ctx:1;
+		u8 relaxed_async_order:1;
 		u8 min_priority;
 	};
-	bool has_async_transaction;
-	struct list_head async_todo;
+	struct rb_root async_txn_info;
 };
 
 struct binder_ref_death {
@@ -1305,9 +1316,10 @@ static struct binder_node *binder_init_node_ilocked(
 	node->accept_fds = !!(flags & FLAT_BINDER_FLAG_ACCEPTS_FDS);
 	node->inherit_rt = !!(flags & FLAT_BINDER_FLAG_INHERIT_RT);
 	node->txn_security_ctx = !!(flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX);
+	node->relaxed_async_order =
+		!!(flags & FLAT_BINDER_FLAG_RELAXED_ONEWAY_ORDERING);
 	spin_lock_init(&node->lock);
 	INIT_LIST_HEAD(&node->work.entry);
-	INIT_LIST_HEAD(&node->async_todo);
 	binder_debug(BINDER_DEBUG_INTERNAL_REFS,
 		     "%d:%d node %d u%016llx c%016llx created\n",
 		     proc->pid, current->pid, node->debug_id,
@@ -2892,6 +2904,63 @@ static int binder_fixup_parent(struct binder_transaction *t,
 	return 0;
 }
 
+int tk_ati_count;
+int tk_ati_alloc;
+int tk_ati_free;
+int tk_ati_q;
+int tk_ati_dq;
+int tk_ati_never;
+int tk_ati_maxq;
+int tk_ati_maxqlen;
+
+//TJK: async_txn functions (add nlocked suffix)
+struct binder_async_txn_info *binder_get_async_txn_info(struct binder_node *node, int pid, struct binder_async_txn_info *new_info)
+{
+	struct rb_node **p = &node->async_txn_info.rb_node;
+	struct rb_node *parent = NULL;
+	struct binder_async_txn_info *info;
+
+	/* if !relaxed ordering, all txns use same pid */
+	if (!node->relaxed_async_order)
+		pid = 0;
+
+	// TODO: Must hold node lock on entry...add check
+	while (*p) {
+		parent = *p;
+		info = rb_entry(parent, struct binder_async_txn_info, rb_node);
+		if (pid < info->pid)
+			p = &(*p)->rb_left;
+		else if (pid > info->pid)
+			p = &(*p)->rb_right;
+		else
+			return info;
+	}
+	if (!new_info)
+		return NULL;
+	tk_ati_alloc++;
+	tk_ati_count++;
+	new_info->pid = pid;
+	INIT_LIST_HEAD(&new_info->async_todo);
+	rb_link_node(&new_info->rb_node, parent, p);
+	rb_insert_color(&new_info->rb_node, &node->async_txn_info);
+	return new_info;
+}
+
+void binder_delete_async_txn_info(struct binder_node *node,
+	struct binder_async_txn_info *info)
+{
+	// must hold node lock on entry
+	if (!info->tk_q_count) tk_ati_never++;
+	else {
+		if (info->tk_q_count > tk_ati_maxq) tk_ati_maxq = info->tk_q_count;
+		if (info->tk_max_q_depth > tk_ati_maxqlen) tk_ati_maxqlen = info->tk_max_q_depth;
+	}
+	rb_erase(&info->rb_node, &node->async_txn_info);
+	kfree(info);
+	tk_ati_free++;
+	tk_ati_count--;
+}
+
 /**
  * binder_proc_transaction() - sends a transaction to a process and wakes it up
  * @t:		transaction to send
@@ -2917,6 +2986,7 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	struct binder_priority node_prio;
 	bool oneway = !!(t->flags & TF_ONE_WAY);
 	bool pending_async = false;
+	struct binder_async_txn_info *info = NULL;
 
 	BUG_ON(!node);
 	binder_node_lock(node);
@@ -2924,12 +2994,26 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	node_prio.sched_policy = node->sched_policy;
 
 	if (oneway) {
+
 		BUG_ON(thread);
-		if (node->has_async_transaction) {
+		info = binder_get_async_txn_info(node, proc->pid, NULL);
+		if (!info) {
+			struct binder_async_txn_info *new_info;
+
+			binder_node_unlock(node);
+			new_info = kzalloc(sizeof(*node), GFP_KERNEL);
+			// TJK: handle !info case
+			binder_node_lock(node);
+			info = binder_get_async_txn_info(node, proc->pid, new_info);
+			if (new_info != info)
+				kfree(new_info);
+		}
+		if (info->has_async_transaction) {
 			pending_async = true;
 		} else {
-			node->has_async_transaction = true;
+			info->has_async_transaction = true;
 		}
+		t->buffer->txn_info = info;
 	}
 
 	binder_inner_proc_lock(proc);
@@ -2950,7 +3034,13 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	} else if (!pending_async) {
 		binder_enqueue_work_ilocked(&t->work, &proc->todo);
 	} else {
-		binder_enqueue_work_ilocked(&t->work, &node->async_todo);
+		BUG_ON(!info);
+		tk_ati_q++;
+		info->tk_q_count++;
+		info->tk_q_depth++;
+		if (info->tk_q_depth > info->tk_max_q_depth)
+			info->tk_max_q_depth = info->tk_q_depth;
+		binder_enqueue_work_ilocked(&t->work, &info->async_todo);
 	}
 
 	if (!pending_async)
@@ -3801,17 +3891,21 @@ binder_free_buf(struct binder_proc *proc, struct binder_buffer *buffer)
 	if (buffer->async_transaction && buffer->target_node) {
 		struct binder_node *buf_node;
 		struct binder_work *w;
+		struct binder_async_txn_info *info;
 
 		is_async = true;
 		buf_node = buffer->target_node;
 		binder_node_inner_lock(buf_node);
-		BUG_ON(!buf_node->has_async_transaction);
+		info = (struct binder_async_txn_info *)buffer->txn_info;
+		BUG_ON(!info);
+		BUG_ON(!info->has_async_transaction);
 		BUG_ON(buf_node->proc != proc);
-		w = binder_dequeue_work_head_ilocked(
-				&buf_node->async_todo);
+		w = binder_dequeue_work_head_ilocked(&info->async_todo);
 		if (!w) {
-			buf_node->has_async_transaction = false;
+			binder_delete_async_txn_info(buf_node, info);
 		} else {
+			tk_ati_dq++;
+			info->tk_q_depth--;
 			binder_enqueue_work_ilocked(
 					w, &proc->todo);
 			binder_wakeup_proc_ilocked(proc);
@@ -5592,10 +5686,17 @@ static int binder_node_release(struct binder_node *node, int refs)
 	struct binder_ref *ref;
 	int death = 0;
 	struct binder_proc *proc = node->proc;
-
-	binder_release_work(proc, &node->async_todo);
+	struct rb_node *n;
 
 	binder_node_lock(node);
+	while ((n = rb_first(&node->async_txn_info)) != NULL) {
+		struct binder_async_txn_info *info =
+			rb_entry(n, struct binder_async_txn_info, rb_node);
+
+		binder_release_work(proc, &info->async_todo);
+		binder_delete_async_txn_info(node, info);
+	}
+
 	binder_inner_proc_lock(proc);
 	binder_dequeue_work_ilocked(&node->work);
 	/*
@@ -5927,9 +6028,16 @@ static void print_binder_node_nilocked(struct seq_file *m,
 	}
 	seq_puts(m, "\n");
 	if (node->proc) {
-		list_for_each_entry(w, &node->async_todo, entry)
-			print_binder_work_ilocked(m, node->proc, "    ",
-					  "    pending async transaction", w);
+		struct rb_node *n;
+
+		for (n = rb_first(&node->async_txn_info); n != NULL; n = rb_next(n)) {
+			struct binder_async_txn_info *info =
+				rb_entry(n, struct binder_async_txn_info, rb_node);
+
+			list_for_each_entry(w, &info->async_todo, entry)
+				print_binder_work_ilocked(m, node->proc, "    ",
+						  "    pending async transaction", w);
+		}
 	}
 }
 
@@ -5966,7 +6074,7 @@ static void print_binder_proc(struct seq_file *m,
 	for (n = rb_first(&proc->nodes); n != NULL; n = rb_next(n)) {
 		struct binder_node *node = rb_entry(n, struct binder_node,
 						    rb_node);
-		if (!print_all && !node->has_async_transaction)
+		if (!print_all && RB_EMPTY_ROOT(&node->async_txn_info))
 			continue;
 
 		/*
@@ -6231,6 +6339,12 @@ int binder_stats_show(struct seq_file *m, void *unused)
 			tk_try_again,
 			tk_signal,
 			tk_wake);
+	seq_printf(m, "TJK.ATI: count=%d alloc=%d/%d q=%d/%d never=%d maxq=%d/%d\n",
+			tk_ati_count,
+			tk_ati_alloc,tk_ati_free,
+			tk_ati_q, tk_ati_dq,
+			tk_ati_never,
+			tk_ati_maxq, tk_ati_maxqlen);
 	return 0;
 }
 
@@ -6309,6 +6423,8 @@ int binder_transaction_log_show(struct seq_file *m, void *unused)
 		print_binder_transaction_log_entry(m, &log->entry[index]);
 	}
 	tk_wait = tk_nowait = tk_try_again = tk_signal = tk_wake = 0;
+	tk_ati_count = tk_ati_alloc = tk_ati_free = tk_ati_q = tk_ati_dq =
+			tk_ati_never = tk_ati_maxq = tk_ati_maxqlen = 0;
 	return 0;
 }
 

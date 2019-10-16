@@ -97,6 +97,8 @@ enum flat_binder_object_flags {
 	 * context
 	 */
 	FLAT_BINDER_FLAG_TXN_SECURITY_CTX = 0x1000,
+
+	FLAT_BINDER_FLAG_RELAXED_ONEWAY_ORDERING = 0x2000,
 };
 
 #ifdef BINDER_IPC_32BIT
