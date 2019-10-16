@@ -27,6 +27,23 @@
 #include <linux/err.h>
 #include <linux/errno.h>
 #include <linux/list.h>
+#include <linux/notifier.h>
+
+/* A hardware display blank change occurred */
+#define DRM_PANEL_EVENT_BLANK		0x01
+/* A hardware display blank early change occurred */
+#define DRM_PANEL_EARLY_EVENT_BLANK	0x02
+
+enum {
+	/* panel: power on */
+	DRM_PANEL_BLANK_UNBLANK,
+	/* panel: power off */
+	DRM_PANEL_BLANK_POWERDOWN,
+};
+
+struct drm_panel_notifier {
+	void *data;
+};
 
 struct device_node;
 struct drm_connector;
@@ -94,6 +111,13 @@ struct drm_panel {
 	const struct drm_panel_funcs *funcs;
 
 	struct list_head list;
+
+	/**
+	 * @nh:
+	 *
+	 * panel notifier list head
+	 */
+	struct blocking_notifier_head nh;
 };
 
 /**
@@ -193,7 +217,26 @@ int drm_panel_add(struct drm_panel *panel);
 void drm_panel_remove(struct drm_panel *panel);
 
 int drm_panel_attach(struct drm_panel *panel, struct drm_connector *connector);
+<<<<<<< HEAD   (c83082 ANDROID: GKI: sched: struct fields for Per-Sched-domain over)
 int drm_panel_detach(struct drm_panel *panel);
+=======
+void drm_panel_detach(struct drm_panel *panel);
+
+int drm_panel_notifier_register(struct drm_panel *panel,
+	struct notifier_block *nb);
+int drm_panel_notifier_unregister(struct drm_panel *panel,
+	struct notifier_block *nb);
+int drm_panel_notifier_call_chain(struct drm_panel *panel,
+	unsigned long val, void *v);
+
+int drm_panel_prepare(struct drm_panel *panel);
+int drm_panel_unprepare(struct drm_panel *panel);
+
+int drm_panel_enable(struct drm_panel *panel);
+int drm_panel_disable(struct drm_panel *panel);
+
+int drm_panel_get_modes(struct drm_panel *panel);
+>>>>>>> CHANGE (310dd4 ANDROID: driver: gpu: drm: add notifier for panel related ev)
 
 #if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL)
 struct drm_panel *of_drm_find_panel(const struct device_node *np);
