@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3e0d28d_37d889bd",
+        "filename": "drivers/soc/qcom/rpmh-rsc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2019-10-16T16:42:47Z",
+      "side": 0,
+      "message": "NB: This fragment allows us to add debug instrumentation, necessary when we are trying to determine load order of larger projects when built-in to match the load order when modularized. by switching to the builtin_platform_driver or module_platform_driver macros, we lose this when trying to fix module load order issues that plague some of the partner code.",
+      "range": {
+        "startLine": 691,
+        "startChar": 0,
+        "endLine": 694,
+        "endChar": 1
+      },
+      "revId": "a8b8978ef1fccaeba0ad9a0a66591f6656a07651",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
