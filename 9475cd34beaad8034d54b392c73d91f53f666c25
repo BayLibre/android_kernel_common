@@ -117,6 +117,23 @@
       "revId": "9475cd34beaad8034d54b392c73d91f53f666c25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "889b7c7e_6d83f905",
+        "filename": "patches/update_series.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-10-17T17:13:26Z",
+      "side": 1,
+      "message": "regenerating the patches every time prevents us from squashing or fixing issues in the commit header. IMHO, we generate the patches once (when they are new and being imported) and then we can add \"Bug: \" tags, fix misspellings etc. The script should add/replace header comments and add new patches, but not mess with the ones that were already there (and preserve comments in the series file).",
+      "revId": "9475cd34beaad8034d54b392c73d91f53f666c25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
