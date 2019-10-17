@@ -70,6 +70,30 @@
       "revId": "630839ac24e36e2c604560a66e152e4466415af9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35ebef01_42e6c790",
+        "filename": "include/linux/module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1131915
+      },
+      "writtenOn": "2019-10-17T20:58:15Z",
+      "side": 0,
+      "message": "Some vendors will ship a product kernel, and vendor kernel modules, that use module signing. The GKI will not use module signing since it needs to work with all vendor\u0027s kernel modules, some of which will be signed. This change allows for a consistent ABI so that signed modules can be loaded.",
+      "parentUuid": "15f3835e_7a1564be",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 24
+      },
+      "revId": "630839ac24e36e2c604560a66e152e4466415af9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
