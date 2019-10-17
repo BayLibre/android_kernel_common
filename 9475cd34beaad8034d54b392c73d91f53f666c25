@@ -134,6 +134,24 @@
       "revId": "9475cd34beaad8034d54b392c73d91f53f666c25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c42dbdb_3c8910b8",
+        "filename": "patches/update_series.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2019-10-17T17:22:06Z",
+      "side": 1,
+      "message": "yeah, the whole idea behind this script is to import the series into git, do all the modifications there (including rewriting commit messages) and then transfer everything back. So, all transformations we can do in git, we can also do here.\nI noticed that this way I can overcome the learning curve for quilt. That sounds like laziness, but I know that quilt knowledge is not so wide spread as git knowledge usually. Yes, and the laziness thing :-)",
+      "parentUuid": "889b7c7e_6d83f905",
+      "revId": "9475cd34beaad8034d54b392c73d91f53f666c25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
