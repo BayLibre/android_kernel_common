@@ -22,6 +22,30 @@
       "revId": "630839ac24e36e2c604560a66e152e4466415af9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f6a2eca_74bc9a6b",
+        "filename": "include/linux/module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1131915
+      },
+      "writtenOn": "2019-10-17T20:10:02Z",
+      "side": 0,
+      "message": "We shouldn\u0027t force vendors to use module signing. It\u0027s not required for security since modules must be loaded from verified partitions. Still, some vendors may wish to use it for defense in depth.",
+      "parentUuid": "2e8ff582_61376f6f",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 24
+      },
+      "revId": "630839ac24e36e2c604560a66e152e4466415af9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
