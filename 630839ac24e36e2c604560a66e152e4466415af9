@@ -46,6 +46,30 @@
       "revId": "630839ac24e36e2c604560a66e152e4466415af9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15f3835e_7a1564be",
+        "filename": "include/linux/module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-10-17T20:26:44Z",
+      "side": 0,
+      "message": "That\u0027s fine, don\u0027t require it, but then a vendor that does want it, will build with this option, and all is ok.\n\nWe should never be getting into a \"core is build without this option, yet vendor module wants this option\" type situation, so I\u0027m not sure what this change is actually helping with.",
+      "parentUuid": "8f6a2eca_74bc9a6b",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 24
+      },
+      "revId": "630839ac24e36e2c604560a66e152e4466415af9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
