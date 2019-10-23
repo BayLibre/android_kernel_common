@@ -46,6 +46,7 @@ enum {
 };
 
 struct drm_panel_notifier {
+	int refresh_rate;
 	void *data;
 };
 
