@@ -35,7 +35,6 @@
 #include "util/tool.h"
 #include "util/data.h"
 #include "util/debug.h"
-#include <linux/err.h>
 
 #ifdef LACKS_OPEN_MEMSTREAM_PROTOTYPE
 FILE *open_memstream(char **ptr, size_t *sizeloc);
@@ -1602,8 +1601,8 @@ static int __cmd_timechart(struct timechart *tchart, const char *output_name)
 							 &tchart->tool);
 	int ret = -EINVAL;
 
-	if (IS_ERR(session))
-		return PTR_ERR(session);
+	if (session == NULL)
+		return -1;
 
 	symbol__init(&session->header.env);
 

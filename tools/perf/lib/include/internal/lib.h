@@ -2,9 +2,7 @@
 #ifndef __LIBPERF_INTERNAL_LIB_H
 #define __LIBPERF_INTERNAL_LIB_H
 
-#include <sys/types.h>
-
-extern unsigned int page_size;
+#include <unistd.h>
 
 ssize_t readn(int fd, void *buf, size_t n);
 ssize_t writen(int fd, const void *buf, size_t n);

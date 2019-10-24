@@ -31,6 +31,5 @@ LIBPERF_API void perf_evlist__disable(struct perf_evlist *evlist);
 LIBPERF_API void perf_evlist__set_maps(struct perf_evlist *evlist,
 				       struct perf_cpu_map *cpus,
 				       struct perf_thread_map *threads);
-LIBPERF_API int perf_evlist__poll(struct perf_evlist *evlist, int timeout);
 
 #endif /* __LIBPERF_EVLIST_H */

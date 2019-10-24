@@ -8,15 +8,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "debug.h"
-#include "event.h"
 #include "tests.h"
 #include "machine.h"
 #include "thread_map.h"
 #include "map.h"
 #include "symbol.h"
-#include "util/synthetic-events.h"
 #include "thread.h"
-#include <internal/lib.h> // page_size
+#include "util.h"
 
 #define THREADS 4
 

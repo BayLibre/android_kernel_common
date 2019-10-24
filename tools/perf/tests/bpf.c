@@ -19,7 +19,6 @@
 #include "llvm.h"
 #include "debug.h"
 #include "parse-events.h"
-#include "util/mmap.h"
 #define NR_ITERS       111
 #define PERF_TEST_BPF_PATH "/sys/fs/bpf/perf_test"
 
@@ -168,9 +167,9 @@ static int do_test(struct bpf_object *obj, int (*func)(void),
 		goto out_delete_evlist;
 	}
 
-	err = evlist__mmap(evlist, opts.mmap_pages);
+	err = perf_evlist__mmap(evlist, opts.mmap_pages);
 	if (err < 0) {
-		pr_debug("evlist__mmap: %s\n",
+		pr_debug("perf_evlist__mmap: %s\n",
 			 str_error_r(errno, sbuf, sizeof(sbuf)));
 		goto out_delete_evlist;
 	}
@@ -179,9 +178,9 @@ static int do_test(struct bpf_object *obj, int (*func)(void),
 	(*func)();
 	evlist__disable(evlist);
 
-	for (i = 0; i < evlist->core.nr_mmaps; i++) {
+	for (i = 0; i < evlist->nr_mmaps; i++) {
 		union perf_event *event;
-		struct mmap *md;
+		struct perf_mmap *md;
 
 		md = &evlist->mmap[i];
 		if (perf_mmap__read_init(md) < 0)

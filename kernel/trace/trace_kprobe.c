@@ -11,7 +11,6 @@
 #include <linux/uaccess.h>
 #include <linux/rculist.h>
 #include <linux/error-injection.h>
-#include <linux/security.h>
 
 #include <asm/setup.h>  /* for COMMAND_LINE_SIZE */
 
@@ -461,10 +460,6 @@ static int __register_trace_kprobe(struct trace_kprobe *tk)
 {
 	int i, ret;
 
-	ret = security_locked_down(LOCKDOWN_KPROBES);
-	if (ret)
-		return ret;
-
 	if (trace_kprobe_is_registered(tk))
 		return -EINVAL;
 
@@ -554,11 +549,10 @@ static bool trace_kprobe_has_same_kprobe(struct trace_kprobe *orig,
 		for (i = 0; i < orig->tp.nr_args; i++) {
 			if (strcmp(orig->tp.args[i].comm,
 				   comp->tp.args[i].comm))
-				break;
+				continue;
 		}
 
-		if (i == orig->tp.nr_args)
-			return true;
+		return true;
 	}
 
 	return false;

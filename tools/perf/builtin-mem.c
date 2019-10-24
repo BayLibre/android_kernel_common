@@ -17,7 +17,6 @@
 #include "util/dso.h"
 #include "util/map.h"
 #include "util/symbol.h"
-#include <linux/err.h>
 
 #define MEM_OPERATION_LOAD	0x1
 #define MEM_OPERATION_STORE	0x2
@@ -250,8 +249,8 @@ static int report_raw_events(struct perf_mem *mem)
 	struct perf_session *session = perf_session__new(&data, false,
 							 &mem->tool);
 
-	if (IS_ERR(session))
-		return PTR_ERR(session);
+	if (session == NULL)
+		return -1;
 
 	if (mem->cpu_list) {
 		ret = perf_session__cpu_bitmap(session, mem->cpu_list,

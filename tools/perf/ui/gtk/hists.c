@@ -8,7 +8,6 @@
 #include "../string2.h"
 #include "gtk.h"
 #include <signal.h>
-#include <stdlib.h>
 #include <linux/string.h>
 
 #define MAX_COLUMNS			32

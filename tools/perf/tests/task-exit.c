@@ -4,13 +4,12 @@
 #include "evsel.h"
 #include "target.h"
 #include "thread_map.h"
+#include "cpumap.h"
 #include "tests.h"
-#include "util/mmap.h"
 
 #include <errno.h>
 #include <signal.h>
 #include <linux/string.h>
-#include <perf/cpumap.h>
 #include <perf/evlist.h>
 
 static int exited;
@@ -52,7 +51,7 @@ int test__task_exit(struct test *test __maybe_unused, int subtest __maybe_unused
 	char sbuf[STRERR_BUFSIZE];
 	struct perf_cpu_map *cpus;
 	struct perf_thread_map *threads;
-	struct mmap *md;
+	struct perf_mmap *md;
 
 	signal(SIGCHLD, sig_handler);
 
@@ -88,7 +87,7 @@ int test__task_exit(struct test *test __maybe_unused, int subtest __maybe_unused
 		goto out_delete_evlist;
 	}
 
-	evsel = evlist__first(evlist);
+	evsel = perf_evlist__first(evlist);
 	evsel->core.attr.task = 1;
 #ifdef __s390x__
 	evsel->core.attr.sample_freq = 1000000;
@@ -107,7 +106,7 @@ int test__task_exit(struct test *test __maybe_unused, int subtest __maybe_unused
 		goto out_delete_evlist;
 	}
 
-	if (evlist__mmap(evlist, 128) < 0) {
+	if (perf_evlist__mmap(evlist, 128) < 0) {
 		pr_debug("failed to mmap events: %d (%s)\n", errno,
 			 str_error_r(errno, sbuf, sizeof(sbuf)));
 		goto out_delete_evlist;
@@ -130,7 +129,7 @@ retry:
 
 out_init:
 	if (!exited || !nr_exit) {
-		evlist__poll(evlist, -1);
+		perf_evlist__poll(evlist, -1);
 		goto retry;
 	}
 

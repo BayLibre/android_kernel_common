@@ -8,7 +8,6 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <linux/err.h>
 #include <linux/string.h>
 #include <linux/zalloc.h>

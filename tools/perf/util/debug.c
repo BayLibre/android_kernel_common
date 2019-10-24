@@ -17,6 +17,7 @@
 #include "event.h"
 #include "debug.h"
 #include "print_binary.h"
+#include "util.h"
 #include "target.h"
 #include "ui/helpline.h"
 #include "ui/ui.h"

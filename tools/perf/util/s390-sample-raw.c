@@ -22,6 +22,7 @@
 #include <asm/byteorder.h>
 
 #include "debug.h"
+#include "util.h"
 #include "session.h"
 #include "evlist.h"
 #include "color.h"

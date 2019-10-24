@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "evlist.h"
 #include "evsel.h"
+#include "cpumap.h"
 #include "parse-events.h"
 #include <errno.h>
 #include <limits.h>
@@ -9,6 +10,7 @@
 #include <api/fs/fs.h>
 #include <subcmd/parse-options.h>
 #include <perf/cpumap.h>
+#include "util.h"
 #include "cloexec.h"
 #include "record.h"
 #include "../perf-sys.h"
@@ -30,7 +32,7 @@ static int perf_do_probe_api(setup_probe_fn_t fn, int cpu, const char *str)
 	if (parse_events(evlist, str, NULL))
 		goto out_delete;
 
-	evsel = evlist__first(evlist);
+	evsel = perf_evlist__first(evlist);
 
 	while (1) {
 		fd = sys_perf_event_open(&evsel->core.attr, pid, cpu, -1, flags);
@@ -171,7 +173,7 @@ void perf_evlist__config(struct evlist *evlist, struct record_opts *opts,
 		use_sample_identifier = perf_can_sample_identifier();
 		sample_id = true;
 	} else if (evlist->core.nr_entries > 1) {
-		struct evsel *first = evlist__first(evlist);
+		struct evsel *first = perf_evlist__first(evlist);
 
 		evlist__for_each_entry(evlist, evsel) {
 			if (evsel->core.attr.sample_type == first->core.attr.sample_type)
@@ -276,7 +278,7 @@ bool perf_evlist__can_select_event(struct evlist *evlist, const char *str)
 	if (err)
 		goto out_delete;
 
-	evsel = evlist__last(temp_evlist);
+	evsel = perf_evlist__last(temp_evlist);
 
 	if (!evlist || perf_cpu_map__empty(evlist->core.cpus)) {
 		struct perf_cpu_map *cpus = perf_cpu_map__new(NULL);

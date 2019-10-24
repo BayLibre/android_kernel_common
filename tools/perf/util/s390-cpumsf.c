@@ -151,6 +151,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "cpumap.h"
 #include "color.h"
 #include "evsel.h"
 #include "evlist.h"

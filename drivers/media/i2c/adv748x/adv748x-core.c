@@ -183,14 +183,14 @@ static int adv748x_initialise_clients(struct adv748x_state *state)
 	int ret;
 
 	for (i = ADV748X_PAGE_DPLL; i < ADV748X_PAGE_MAX; ++i) {
-		state->i2c_clients[i] = i2c_new_ancillary_device(
+		state->i2c_clients[i] = i2c_new_secondary_device(
 				state->client,
 				adv748x_default_addresses[i].name,
 				adv748x_default_addresses[i].default_addr);
 
-		if (IS_ERR(state->i2c_clients[i])) {
+		if (state->i2c_clients[i] == NULL) {
 			adv_err(state, "failed to create i2c client %u\n", i);
-			return PTR_ERR(state->i2c_clients[i]);
+			return -ENOMEM;
 		}
 
 		ret = adv748x_configure_regmap(state, i);

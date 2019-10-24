@@ -4042,12 +4042,8 @@ xfs_bmapi_allocate(
 	 */
 	if (!(bma->flags & XFS_BMAPI_METADATA)) {
 		bma->datatype = XFS_ALLOC_NOBUSY;
-		if (whichfork == XFS_DATA_FORK) {
-			if (bma->offset == 0)
-				bma->datatype |= XFS_ALLOC_INITIAL_USER_DATA;
-			else
-				bma->datatype |= XFS_ALLOC_USERDATA;
-		}
+		if (whichfork == XFS_DATA_FORK && bma->offset == 0)
+			bma->datatype |= XFS_ALLOC_INITIAL_USER_DATA;
 		if (bma->flags & XFS_BMAPI_ZERO)
 			bma->datatype |= XFS_ALLOC_USERDATA_ZERO;
 	}
@@ -5622,11 +5618,6 @@ xfs_bmse_merge(
 	XFS_WANT_CORRUPTED_RETURN(mp, i == 1);
 
 	error = xfs_bmbt_update(cur, &new);
-	if (error)
-		return error;
-
-	/* change to extent format if required after extent removal */
-	error = xfs_bmap_btree_to_extents(tp, ip, cur, logflags, whichfork);
 	if (error)
 		return error;
 

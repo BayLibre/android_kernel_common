@@ -443,6 +443,11 @@ static inline void update_mmu_cache(struct vm_area_struct *vma,
 
 #include <asm-generic/pgtable.h>
 
+/*
+ * No page table caches to initialise
+ */
+#define pgtable_cache_init()		do { } while (0)
+
 typedef pte_t *pte_addr_t;
 
 #endif /* __ASSEMBLY__ */

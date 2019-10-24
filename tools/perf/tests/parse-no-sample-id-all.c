@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include <linux/kernel.h>
 #include <linux/types.h>
 #include <stddef.h>
@@ -7,6 +8,7 @@
 #include "event.h"
 #include "evlist.h"
 #include "header.h"
+#include "util.h"
 #include "debug.h"
 
 static int process_event(struct evlist **pevlist, union perf_event *event)

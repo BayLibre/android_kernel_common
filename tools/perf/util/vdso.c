@@ -11,7 +11,7 @@
 
 #include "vdso.h"
 #include "dso.h"
-#include <internal/lib.h>
+#include "util.h"
 #include "map.h"
 #include "symbol.h"
 #include "machine.h"

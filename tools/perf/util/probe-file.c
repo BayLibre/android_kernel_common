@@ -16,7 +16,6 @@
 #include "strlist.h"
 #include "strfilter.h"
 #include "debug.h"
-#include "build-id.h"
 #include "dso.h"
 #include "color.h"
 #include "symbol.h"

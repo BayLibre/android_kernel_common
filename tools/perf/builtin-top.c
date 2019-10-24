@@ -27,14 +27,11 @@
 #include "util/dso.h"
 #include "util/evlist.h"
 #include "util/evsel.h"
-#include "util/evsel_config.h"
 #include "util/event.h"
 #include "util/machine.h"
 #include "util/map.h"
-#include "util/mmap.h"
 #include "util/session.h"
 #include "util/symbol.h"
-#include "util/synthetic-events.h"
 #include "util/top.h"
 #include "util/util.h"
 #include <linux/rbtree.h>
@@ -79,7 +76,6 @@
 #include <linux/stringify.h>
 #include <linux/time64.h>
 #include <linux/types.h>
-#include <linux/err.h>
 
 #include <linux/ctype.h>
 
@@ -532,7 +528,7 @@ static bool perf_top__handle_keypress(struct perf_top *top, int c)
 				prompt_integer(&counter, "Enter details event counter");
 
 				if (counter >= top->evlist->core.nr_entries) {
-					top->sym_evsel = evlist__first(top->evlist);
+					top->sym_evsel = perf_evlist__first(top->evlist);
 					fprintf(stderr, "Sorry, no such event, using %s.\n", perf_evsel__name(top->sym_evsel));
 					sleep(1);
 					break;
@@ -541,7 +537,7 @@ static bool perf_top__handle_keypress(struct perf_top *top, int c)
 					if (top->sym_evsel->idx == counter)
 						break;
 			} else
-				top->sym_evsel = evlist__first(top->evlist);
+				top->sym_evsel = perf_evlist__first(top->evlist);
 			break;
 		case 'f':
 			prompt_integer(&top->count_filter, "Enter display event count filter");
@@ -865,7 +861,7 @@ static void perf_top__mmap_read_idx(struct perf_top *top, int idx)
 {
 	struct record_opts *opts = &top->record_opts;
 	struct evlist *evlist = top->evlist;
-	struct mmap *md;
+	struct perf_mmap *md;
 	union perf_event *event;
 
 	md = opts->overwrite ? &evlist->overwrite_mmap[idx] : &evlist->mmap[idx];
@@ -905,7 +901,7 @@ static void perf_top__mmap_read(struct perf_top *top)
 	if (overwrite)
 		perf_evlist__toggle_bkw_mmap(evlist, BKW_MMAP_DATA_PENDING);
 
-	for (i = 0; i < top->evlist->core.nr_mmaps; i++)
+	for (i = 0; i < top->evlist->nr_mmaps; i++)
 		perf_top__mmap_read_idx(top, i);
 
 	if (overwrite) {
@@ -963,7 +959,7 @@ static int perf_top__overwrite_check(struct perf_top *top)
 		/* has term for current event */
 		if ((overwrite < 0) && (set >= 0)) {
 			/* if it's first event, set overwrite */
-			if (evsel == evlist__first(evlist))
+			if (evsel == perf_evlist__first(evlist))
 				overwrite = set;
 			else
 				return -1;
@@ -987,7 +983,7 @@ static int perf_top_overwrite_fallback(struct perf_top *top,
 		return 0;
 
 	/* only fall back when first event fails */
-	if (evsel != evlist__first(evlist))
+	if (evsel != perf_evlist__first(evlist))
 		return 0;
 
 	evlist__for_each_entry(evlist, counter)
@@ -1044,7 +1040,7 @@ try_again:
 		}
 	}
 
-	if (evlist__mmap(evlist, opts->mmap_pages) < 0) {
+	if (perf_evlist__mmap(evlist, opts->mmap_pages) < 0) {
 		ui__error("Failed to mmap with %d (%s)\n",
 			    errno, str_error_r(errno, msg, sizeof(msg)));
 		goto out_err;
@@ -1308,7 +1304,7 @@ static int __cmd_top(struct perf_top *top)
 	}
 
 	/* Wait for a minimal set of events before starting the snapshot */
-	evlist__poll(top->evlist, 100);
+	perf_evlist__poll(top->evlist, 100);
 
 	perf_top__mmap_read(top);
 
@@ -1318,7 +1314,7 @@ static int __cmd_top(struct perf_top *top)
 		perf_top__mmap_read(top);
 
 		if (opts->overwrite || (hits == top->samples))
-			ret = evlist__poll(top->evlist, 100);
+			ret = perf_evlist__poll(top->evlist, 100);
 
 		if (resize) {
 			perf_top__resize(top);
@@ -1645,7 +1641,7 @@ int cmd_top(int argc, const char **argv)
 		goto out_delete_evlist;
 	}
 
-	top.sym_evsel = evlist__first(top.evlist);
+	top.sym_evsel = perf_evlist__first(top.evlist);
 
 	if (!callchain_param.enabled) {
 		symbol_conf.cumulate_callchain = false;
@@ -1675,8 +1671,8 @@ int cmd_top(int argc, const char **argv)
 	}
 
 	top.session = perf_session__new(NULL, false, NULL);
-	if (IS_ERR(top.session)) {
-		status = PTR_ERR(top.session);
+	if (top.session == NULL) {
+		status = -1;
 		goto out_delete_evlist;
 	}
 

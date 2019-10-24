@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "dso.h"
 #include "symbol.h"
 #include "symsrc.h"
+#include "util.h"
 
 #include <errno.h>
 #include <unistd.h>
@@ -11,7 +13,6 @@
 #include <byteswap.h>
 #include <sys/stat.h>
 #include <linux/zalloc.h>
-#include <internal/lib.h>
 
 static bool check_need_swap(int file_endian)
 {

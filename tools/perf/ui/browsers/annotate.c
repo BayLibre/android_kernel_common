@@ -2,6 +2,7 @@
 #include "../browser.h"
 #include "../helpline.h"
 #include "../ui.h"
+#include "../util.h"
 #include "../../util/annotate.h"
 #include "../../util/debug.h"
 #include "../../util/dso.h"

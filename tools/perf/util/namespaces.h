@@ -66,6 +66,4 @@ static inline void __nsinfo__zput(struct nsinfo **nsip)
 
 #define nsinfo__zput(nsi) __nsinfo__zput(&nsi)
 
-const char *perf_ns__name(unsigned int id);
-
 #endif  /* __PERF_NAMESPACES_H */

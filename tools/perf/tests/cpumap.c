@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include "cpumap.h"
 #include "event.h"
-#include "util/synthetic-events.h"
 #include <string.h>
 #include <linux/bitops.h>
 #include <perf/cpumap.h>

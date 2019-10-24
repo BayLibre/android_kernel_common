@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "util.h"
 #include "trace-event.h"
 #include "debug.h"
 

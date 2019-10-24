@@ -392,7 +392,8 @@ enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
 
 void __init cpu_smt_disable(bool force)
 {
-	if (!cpu_smt_possible())
+	if (cpu_smt_control == CPU_SMT_FORCE_DISABLED ||
+		cpu_smt_control == CPU_SMT_NOT_SUPPORTED)
 		return;
 
 	if (force) {
@@ -437,14 +438,6 @@ static inline bool cpu_smt_allowed(unsigned int cpu)
 	 */
 	return !cpumask_test_cpu(cpu, &cpus_booted_once_mask);
 }
-
-/* Returns true if SMT is not supported of forcefully (irreversibly) disabled */
-bool cpu_smt_possible(void)
-{
-	return cpu_smt_control != CPU_SMT_FORCE_DISABLED &&
-		cpu_smt_control != CPU_SMT_NOT_SUPPORTED;
-}
-EXPORT_SYMBOL_GPL(cpu_smt_possible);
 #else
 static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
 #endif

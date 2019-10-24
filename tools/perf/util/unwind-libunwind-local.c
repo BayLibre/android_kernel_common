@@ -37,6 +37,7 @@
 #include "unwind.h"
 #include "map.h"
 #include "symbol.h"
+#include "util.h"
 #include "debug.h"
 #include "asm/bug.h"
 #include "dso.h"

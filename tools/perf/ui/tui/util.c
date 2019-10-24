@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <sys/ttydefaults.h>
 
+#include "../../util/debug.h"
 #include "../browser.h"
 #include "../keysyms.h"
 #include "../helpline.h"

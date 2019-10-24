@@ -343,48 +343,6 @@ static __always_inline void vmx_disable_intercept_for_msr(unsigned long *msr_bit
 
 void vmx_vmexit(void);
 
-#define vmx_insn_failed(fmt...)		\
-do {					\
-	WARN_ONCE(1, fmt);		\
-	pr_warn_ratelimited(fmt);	\
-} while (0)
-
-asmlinkage void vmread_error(unsigned long field, bool fault)
-{
-	if (fault)
-		kvm_spurious_fault();
-	else
-		vmx_insn_failed("kvm: vmread failed: field=%lx\n", field);
-}
-
-noinline void vmwrite_error(unsigned long field, unsigned long value)
-{
-	vmx_insn_failed("kvm: vmwrite failed: field=%lx val=%lx err=%d\n",
-			field, value, vmcs_read32(VM_INSTRUCTION_ERROR));
-}
-
-noinline void vmclear_error(struct vmcs *vmcs, u64 phys_addr)
-{
-	vmx_insn_failed("kvm: vmclear failed: %p/%llx\n", vmcs, phys_addr);
-}
-
-noinline void vmptrld_error(struct vmcs *vmcs, u64 phys_addr)
-{
-	vmx_insn_failed("kvm: vmptrld failed: %p/%llx\n", vmcs, phys_addr);
-}
-
-noinline void invvpid_error(unsigned long ext, u16 vpid, gva_t gva)
-{
-	vmx_insn_failed("kvm: invvpid failed: ext=0x%lx vpid=%u gva=0x%lx\n",
-			ext, vpid, gva);
-}
-
-noinline void invept_error(unsigned long ext, u64 eptp, gpa_t gpa)
-{
-	vmx_insn_failed("kvm: invept failed: ext=0x%lx eptp=%llx gpa=0x%llx\n",
-			ext, eptp, gpa);
-}
-
 static DEFINE_PER_CPU(struct vmcs *, vmxarea);
 DEFINE_PER_CPU(struct vmcs *, current_vmcs);
 /*
@@ -526,31 +484,6 @@ static int hv_remote_flush_tlb_with_range(struct kvm *kvm,
 static int hv_remote_flush_tlb(struct kvm *kvm)
 {
 	return hv_remote_flush_tlb_with_range(kvm, NULL);
-}
-
-static int hv_enable_direct_tlbflush(struct kvm_vcpu *vcpu)
-{
-	struct hv_enlightened_vmcs *evmcs;
-	struct hv_partition_assist_pg **p_hv_pa_pg =
-			&vcpu->kvm->arch.hyperv.hv_pa_pg;
-	/*
-	 * Synthetic VM-Exit is not enabled in current code and so All
-	 * evmcs in singe VM shares same assist page.
-	 */
-	if (!*p_hv_pa_pg)
-		*p_hv_pa_pg = kzalloc(PAGE_SIZE, GFP_KERNEL);
-
-	if (!*p_hv_pa_pg)
-		return -ENOMEM;
-
-	evmcs = (struct hv_enlightened_vmcs *)to_vmx(vcpu)->loaded_vmcs->vmcs;
-
-	evmcs->partition_assist_page =
-		__pa(*p_hv_pa_pg);
-	evmcs->hv_vm_id = (unsigned long)vcpu->kvm;
-	evmcs->hv_enlightenments_control.nested_flush_hypercall = 1;
-
-	return 0;
 }
 
 #endif /* IS_ENABLED(CONFIG_HYPERV) */
@@ -1539,32 +1472,27 @@ static int vmx_rtit_ctl_check(struct kvm_vcpu *vcpu, u64 data)
 	return 0;
 }
 
-static int skip_emulated_instruction(struct kvm_vcpu *vcpu)
+/*
+ * Returns an int to be compatible with SVM implementation (which can fail).
+ * Do not use directly, use skip_emulated_instruction() instead.
+ */
+static int __skip_emulated_instruction(struct kvm_vcpu *vcpu)
 {
 	unsigned long rip;
 
-	/*
-	 * Using VMCS.VM_EXIT_INSTRUCTION_LEN on EPT misconfig depends on
-	 * undefined behavior: Intel's SDM doesn't mandate the VMCS field be
-	 * set when EPT misconfig occurs.  In practice, real hardware updates
-	 * VM_EXIT_INSTRUCTION_LEN on EPT misconfig, but other hypervisors
-	 * (namely Hyper-V) don't set it due to it being undefined behavior,
-	 * i.e. we end up advancing IP with some random value.
-	 */
-	if (!static_cpu_has(X86_FEATURE_HYPERVISOR) ||
-	    to_vmx(vcpu)->exit_reason != EXIT_REASON_EPT_MISCONFIG) {
-		rip = kvm_rip_read(vcpu);
-		rip += vmcs_read32(VM_EXIT_INSTRUCTION_LEN);
-		kvm_rip_write(vcpu, rip);
-	} else {
-		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
-			return 0;
-	}
+	rip = kvm_rip_read(vcpu);
+	rip += vmcs_read32(VM_EXIT_INSTRUCTION_LEN);
+	kvm_rip_write(vcpu, rip);
 
 	/* skipping an emulated instruction also counts */
 	vmx_set_interrupt_shadow(vcpu, 0);
 
-	return 1;
+	return EMULATE_DONE;
+}
+
+static inline void skip_emulated_instruction(struct kvm_vcpu *vcpu)
+{
+	(void)__skip_emulated_instruction(vcpu);
 }
 
 static void vmx_clear_hlt(struct kvm_vcpu *vcpu)
@@ -1599,7 +1527,8 @@ static void vmx_queue_exception(struct kvm_vcpu *vcpu)
 		int inc_eip = 0;
 		if (kvm_exception_is_soft(nr))
 			inc_eip = vcpu->arch.event_exit_inst_len;
-		kvm_inject_realmode_interrupt(vcpu, nr, inc_eip);
+		if (kvm_inject_realmode_interrupt(vcpu, nr, inc_eip) != EMULATE_DONE)
+			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
 		return;
 	}
 
@@ -1771,12 +1700,6 @@ static int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 #endif
 	case MSR_EFER:
 		return kvm_get_msr_common(vcpu, msr_info);
-	case MSR_IA32_UMWAIT_CONTROL:
-		if (!msr_info->host_initiated && !vmx_has_waitpkg(vmx))
-			return 1;
-
-		msr_info->data = vmx->msr_ia32_umwait_control;
-		break;
 	case MSR_IA32_SPEC_CTRL:
 		if (!msr_info->host_initiated &&
 		    !guest_cpuid_has(vcpu, X86_FEATURE_SPEC_CTRL))
@@ -1949,16 +1872,6 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 		    (data & MSR_IA32_BNDCFGS_RSVD))
 			return 1;
 		vmcs_write64(GUEST_BNDCFGS, data);
-		break;
-	case MSR_IA32_UMWAIT_CONTROL:
-		if (!msr_info->host_initiated && !vmx_has_waitpkg(vmx))
-			return 1;
-
-		/* The reserved bit 1 and non-32 bit [63:32] should be zero */
-		if (data & (BIT_ULL(1) | GENMASK_ULL(63, 32)))
-			return 1;
-
-		vmx->msr_ia32_umwait_control = data;
 		break;
 	case MSR_IA32_SPEC_CTRL:
 		if (!msr_info->host_initiated &&
@@ -2377,7 +2290,6 @@ static __init int setup_vmcs_config(struct vmcs_config *vmcs_conf,
 			SECONDARY_EXEC_RDRAND_EXITING |
 			SECONDARY_EXEC_ENABLE_PML |
 			SECONDARY_EXEC_TSC_SCALING |
-			SECONDARY_EXEC_ENABLE_USR_WAIT_PAUSE |
 			SECONDARY_EXEC_PT_USE_GPA |
 			SECONDARY_EXEC_PT_CONCEAL_VMX |
 			SECONDARY_EXEC_ENABLE_VMFUNC |
@@ -4114,23 +4026,6 @@ static void vmx_compute_secondary_exec_control(struct vcpu_vmx *vmx)
 		}
 	}
 
-	if (vmx_waitpkg_supported()) {
-		bool waitpkg_enabled =
-			guest_cpuid_has(vcpu, X86_FEATURE_WAITPKG);
-
-		if (!waitpkg_enabled)
-			exec_control &= ~SECONDARY_EXEC_ENABLE_USR_WAIT_PAUSE;
-
-		if (nested) {
-			if (waitpkg_enabled)
-				vmx->nested.msrs.secondary_ctls_high |=
-					SECONDARY_EXEC_ENABLE_USR_WAIT_PAUSE;
-			else
-				vmx->nested.msrs.secondary_ctls_high &=
-					~SECONDARY_EXEC_ENABLE_USR_WAIT_PAUSE;
-		}
-	}
-
 	vmx->secondary_exec_control = exec_control;
 }
 
@@ -4265,8 +4160,6 @@ static void vmx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
 	vmx->rmode.vm86_active = 0;
 	vmx->spec_ctrl = 0;
 
-	vmx->msr_ia32_umwait_control = 0;
-
 	vcpu->arch.microcode_version = 0x100000000ULL;
 	vmx->vcpu.arch.regs[VCPU_REGS_RDX] = get_rdx_init_val();
 	vmx->hv_deadline_tsc = -1;
@@ -4384,7 +4277,8 @@ static void vmx_inject_irq(struct kvm_vcpu *vcpu)
 		int inc_eip = 0;
 		if (vcpu->arch.interrupt.soft)
 			inc_eip = vcpu->arch.event_exit_inst_len;
-		kvm_inject_realmode_interrupt(vcpu, irq, inc_eip);
+		if (kvm_inject_realmode_interrupt(vcpu, irq, inc_eip) != EMULATE_DONE)
+			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
 		return;
 	}
 	intr = irq | INTR_INFO_VALID_MASK;
@@ -4420,7 +4314,8 @@ static void vmx_inject_nmi(struct kvm_vcpu *vcpu)
 	vmx->loaded_vmcs->nmi_known_unmasked = false;
 
 	if (vmx->rmode.vm86_active) {
-		kvm_inject_realmode_interrupt(vcpu, NMI_VECTOR, 0);
+		if (kvm_inject_realmode_interrupt(vcpu, NMI_VECTOR, 0) != EMULATE_DONE)
+			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
 		return;
 	}
 
@@ -4547,7 +4442,7 @@ static int handle_rmode_exception(struct kvm_vcpu *vcpu,
 	 * Cause the #SS fault with 0 error code in VM86 mode.
 	 */
 	if (((vec == GP_VECTOR) || (vec == SS_VECTOR)) && err_code == 0) {
-		if (kvm_emulate_instruction(vcpu, 0)) {
+		if (kvm_emulate_instruction(vcpu, 0) == EMULATE_DONE) {
 			if (vcpu->arch.halt_request) {
 				vcpu->arch.halt_request = 0;
 				return kvm_vcpu_halt(vcpu);
@@ -4598,6 +4493,7 @@ static int handle_exception_nmi(struct kvm_vcpu *vcpu)
 	u32 intr_info, ex_no, error_code;
 	unsigned long cr2, rip, dr6;
 	u32 vect_info;
+	enum emulation_result er;
 
 	vect_info = vmx->idt_vectoring_info;
 	intr_info = vmx->exit_intr_info;
@@ -4614,17 +4510,13 @@ static int handle_exception_nmi(struct kvm_vcpu *vcpu)
 
 	if (!vmx->rmode.vm86_active && is_gp_fault(intr_info)) {
 		WARN_ON_ONCE(!enable_vmware_backdoor);
-
-		/*
-		 * VMware backdoor emulation on #GP interception only handles
-		 * IN{S}, OUT{S}, and RDPMC, none of which generate a non-zero
-		 * error code on #GP.
-		 */
-		if (error_code) {
+		er = kvm_emulate_instruction(vcpu,
+			EMULTYPE_VMWARE | EMULTYPE_NO_UD_ON_FAIL);
+		if (er == EMULATE_USER_EXIT)
+			return 0;
+		else if (er != EMULATE_DONE)
 			kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
-			return 1;
-		}
-		return kvm_emulate_instruction(vcpu, EMULTYPE_VMWARE_GP);
+		return 1;
 	}
 
 	/*
@@ -4666,7 +4558,7 @@ static int handle_exception_nmi(struct kvm_vcpu *vcpu)
 			vcpu->arch.dr6 &= ~DR_TRAP_BITS;
 			vcpu->arch.dr6 |= dr6 | DR6_RTM;
 			if (is_icebp(intr_info))
-				WARN_ON(!skip_emulated_instruction(vcpu));
+				skip_emulated_instruction(vcpu);
 
 			kvm_queue_exception(vcpu, DB_VECTOR);
 			return 1;
@@ -4721,7 +4613,7 @@ static int handle_io(struct kvm_vcpu *vcpu)
 	++vcpu->stat.io_exits;
 
 	if (string)
-		return kvm_emulate_instruction(vcpu, 0);
+		return kvm_emulate_instruction(vcpu, 0) == EMULATE_DONE;
 
 	port = exit_qualification >> 16;
 	size = (exit_qualification & 7) + 1;
@@ -4795,7 +4687,7 @@ static int handle_set_cr4(struct kvm_vcpu *vcpu, unsigned long val)
 static int handle_desc(struct kvm_vcpu *vcpu)
 {
 	WARN_ON(!(vcpu->arch.cr4 & X86_CR4_UMIP));
-	return kvm_emulate_instruction(vcpu, 0);
+	return kvm_emulate_instruction(vcpu, 0) == EMULATE_DONE;
 }
 
 static int handle_cr(struct kvm_vcpu *vcpu)
@@ -5011,7 +4903,7 @@ static int handle_vmcall(struct kvm_vcpu *vcpu)
 
 static int handle_invd(struct kvm_vcpu *vcpu)
 {
-	return kvm_emulate_instruction(vcpu, 0);
+	return kvm_emulate_instruction(vcpu, 0) == EMULATE_DONE;
 }
 
 static int handle_invlpg(struct kvm_vcpu *vcpu)
@@ -5045,6 +4937,20 @@ static int handle_xsetbv(struct kvm_vcpu *vcpu)
 	return 1;
 }
 
+static int handle_xsaves(struct kvm_vcpu *vcpu)
+{
+	kvm_skip_emulated_instruction(vcpu);
+	WARN(1, "this should never happen\n");
+	return 1;
+}
+
+static int handle_xrstors(struct kvm_vcpu *vcpu)
+{
+	kvm_skip_emulated_instruction(vcpu);
+	WARN(1, "this should never happen\n");
+	return 1;
+}
+
 static int handle_apic_access(struct kvm_vcpu *vcpu)
 {
 	if (likely(fasteoi)) {
@@ -5064,7 +4970,7 @@ static int handle_apic_access(struct kvm_vcpu *vcpu)
 			return kvm_skip_emulated_instruction(vcpu);
 		}
 	}
-	return kvm_emulate_instruction(vcpu, 0);
+	return kvm_emulate_instruction(vcpu, 0) == EMULATE_DONE;
 }
 
 static int handle_apic_eoi_induced(struct kvm_vcpu *vcpu)
@@ -5133,15 +5039,23 @@ static int handle_task_switch(struct kvm_vcpu *vcpu)
 	if (!idt_v || (type != INTR_TYPE_HARD_EXCEPTION &&
 		       type != INTR_TYPE_EXT_INTR &&
 		       type != INTR_TYPE_NMI_INTR))
-		WARN_ON(!skip_emulated_instruction(vcpu));
+		skip_emulated_instruction(vcpu);
+
+	if (kvm_task_switch(vcpu, tss_selector,
+			    type == INTR_TYPE_SOFT_INTR ? idt_index : -1, reason,
+			    has_error_code, error_code) == EMULATE_FAIL) {
+		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
+		vcpu->run->internal.suberror = KVM_INTERNAL_ERROR_EMULATION;
+		vcpu->run->internal.ndata = 0;
+		return 0;
+	}
 
 	/*
 	 * TODO: What about debug traps on tss switch?
 	 *       Are we supposed to inject them and update dr6?
 	 */
-	return kvm_task_switch(vcpu, tss_selector,
-			       type == INTR_TYPE_SOFT_INTR ? idt_index : -1,
-			       reason, has_error_code, error_code);
+
+	return 1;
 }
 
 static int handle_ept_violation(struct kvm_vcpu *vcpu)
@@ -5200,7 +5114,21 @@ static int handle_ept_misconfig(struct kvm_vcpu *vcpu)
 	if (!is_guest_mode(vcpu) &&
 	    !kvm_io_bus_write(vcpu, KVM_FAST_MMIO_BUS, gpa, 0, NULL)) {
 		trace_kvm_fast_mmio(gpa);
-		return kvm_skip_emulated_instruction(vcpu);
+		/*
+		 * Doing kvm_skip_emulated_instruction() depends on undefined
+		 * behavior: Intel's manual doesn't mandate
+		 * VM_EXIT_INSTRUCTION_LEN to be set in VMCS when EPT MISCONFIG
+		 * occurs and while on real hardware it was observed to be set,
+		 * other hypervisors (namely Hyper-V) don't set it, we end up
+		 * advancing IP with some random value. Disable fast mmio when
+		 * running nested and keep it for real hardware in hope that
+		 * VM_EXIT_INSTRUCTION_LEN will always be set correctly.
+		 */
+		if (!static_cpu_has(X86_FEATURE_HYPERVISOR))
+			return kvm_skip_emulated_instruction(vcpu);
+		else
+			return kvm_emulate_instruction(vcpu, EMULTYPE_SKIP) ==
+								EMULATE_DONE;
 	}
 
 	return kvm_mmu_page_fault(vcpu, gpa, PFERR_RSVD_MASK, NULL, 0);
@@ -5219,6 +5147,8 @@ static int handle_nmi_window(struct kvm_vcpu *vcpu)
 static int handle_invalid_guest_state(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+	enum emulation_result err = EMULATE_DONE;
+	int ret = 1;
 	bool intr_window_requested;
 	unsigned count = 130;
 
@@ -5239,35 +5169,41 @@ static int handle_invalid_guest_state(struct kvm_vcpu *vcpu)
 		if (kvm_test_request(KVM_REQ_EVENT, vcpu))
 			return 1;
 
-		if (!kvm_emulate_instruction(vcpu, 0))
-			return 0;
+		err = kvm_emulate_instruction(vcpu, 0);
+
+		if (err == EMULATE_USER_EXIT) {
+			++vcpu->stat.mmio_exits;
+			ret = 0;
+			goto out;
+		}
+
+		if (err != EMULATE_DONE)
+			goto emulation_error;
 
 		if (vmx->emulation_required && !vmx->rmode.vm86_active &&
-		    vcpu->arch.exception.pending) {
-			vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-			vcpu->run->internal.suberror =
-						KVM_INTERNAL_ERROR_EMULATION;
-			vcpu->run->internal.ndata = 0;
-			return 0;
-		}
+		    vcpu->arch.exception.pending)
+			goto emulation_error;
 
 		if (vcpu->arch.halt_request) {
 			vcpu->arch.halt_request = 0;
-			return kvm_vcpu_halt(vcpu);
+			ret = kvm_vcpu_halt(vcpu);
+			goto out;
 		}
 
-		/*
-		 * Note, return 1 and not 0, vcpu_run() is responsible for
-		 * morphing the pending signal into the proper return code.
-		 */
 		if (signal_pending(current))
-			return 1;
-
+			goto out;
 		if (need_resched())
 			schedule();
 	}
 
-	return 1;
+out:
+	return ret;
+
+emulation_error:
+	vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
+	vcpu->run->internal.suberror = KVM_INTERNAL_ERROR_EMULATION;
+	vcpu->run->internal.ndata = 0;
+	return 0;
 }
 
 static void grow_ple_window(struct kvm_vcpu *vcpu)
@@ -5538,14 +5474,6 @@ static int handle_encls(struct kvm_vcpu *vcpu)
 	return 1;
 }
 
-static int handle_unexpected_vmexit(struct kvm_vcpu *vcpu)
-{
-	kvm_skip_emulated_instruction(vcpu);
-	WARN_ONCE(1, "Unexpected VM-Exit Reason = 0x%x",
-		vmcs_read32(VM_EXIT_REASON));
-	return 1;
-}
-
 /*
  * The exit handlers return 1 if the exit was handled fully and guest execution
  * may resume.  Otherwise they set the kvm_run parameter to indicate what needs
@@ -5597,15 +5525,13 @@ static int (*kvm_vmx_exit_handlers[])(struct kvm_vcpu *vcpu) = {
 	[EXIT_REASON_INVVPID]                 = handle_vmx_instruction,
 	[EXIT_REASON_RDRAND]                  = handle_invalid_op,
 	[EXIT_REASON_RDSEED]                  = handle_invalid_op,
-	[EXIT_REASON_XSAVES]                  = handle_unexpected_vmexit,
-	[EXIT_REASON_XRSTORS]                 = handle_unexpected_vmexit,
+	[EXIT_REASON_XSAVES]                  = handle_xsaves,
+	[EXIT_REASON_XRSTORS]                 = handle_xrstors,
 	[EXIT_REASON_PML_FULL]		      = handle_pml_full,
 	[EXIT_REASON_INVPCID]                 = handle_invpcid,
 	[EXIT_REASON_VMFUNC]		      = handle_vmx_instruction,
 	[EXIT_REASON_PREEMPTION_TIMER]	      = handle_preemption_timer,
 	[EXIT_REASON_ENCLS]		      = handle_encls,
-	[EXIT_REASON_UMWAIT]                  = handle_unexpected_vmexit,
-	[EXIT_REASON_TPAUSE]                  = handle_unexpected_vmexit,
 };
 
 static const int kvm_vmx_max_exit_handlers =
@@ -6436,23 +6362,6 @@ static void atomic_switch_perf_msrs(struct vcpu_vmx *vmx)
 					msrs[i].host, false);
 }
 
-static void atomic_switch_umwait_control_msr(struct vcpu_vmx *vmx)
-{
-	u32 host_umwait_control;
-
-	if (!vmx_has_waitpkg(vmx))
-		return;
-
-	host_umwait_control = get_umwait_control_msr();
-
-	if (vmx->msr_ia32_umwait_control != host_umwait_control)
-		add_atomic_switch_msr(vmx, MSR_IA32_UMWAIT_CONTROL,
-			vmx->msr_ia32_umwait_control,
-			host_umwait_control, false);
-	else
-		clear_atomic_switch_msr(vmx, MSR_IA32_UMWAIT_CONTROL);
-}
-
 static void vmx_update_hv_timer(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
@@ -6547,7 +6456,6 @@ static void vmx_vcpu_run(struct kvm_vcpu *vcpu)
 	pt_guest_enter(vmx);
 
 	atomic_switch_perf_msrs(vmx);
-	atomic_switch_umwait_control_msr(vmx);
 
 	if (enable_preemption_timer)
 		vmx_update_hv_timer(vcpu);
@@ -6602,9 +6510,6 @@ static void vmx_vcpu_run(struct kvm_vcpu *vcpu)
 	if (static_branch_unlikely(&enable_evmcs))
 		current_evmcs->hv_clean_fields |=
 			HV_VMX_ENLIGHTENED_CLEAN_FIELD_ALL;
-
-	if (static_branch_unlikely(&enable_evmcs))
-		current_evmcs->hv_vp_id = vcpu->arch.hyperv.vp_index;
 
 	/* MSR_IA32_DEBUGCTLMSR is zeroed on vmexit. Restore it if needed */
 	if (vmx->host_debugctlmsr)
@@ -6673,7 +6578,6 @@ static struct kvm *vmx_vm_alloc(void)
 
 static void vmx_vm_free(struct kvm *kvm)
 {
-	kfree(kvm->arch.hyperv.hv_pa_pg);
 	vfree(to_kvm_vmx(kvm));
 }
 
@@ -7802,7 +7706,7 @@ static struct kvm_x86_ops vmx_x86_ops __ro_after_init = {
 
 	.run = vmx_vcpu_run,
 	.handle_exit = vmx_handle_exit,
-	.skip_emulated_instruction = skip_emulated_instruction,
+	.skip_emulated_instruction = __skip_emulated_instruction,
 	.set_interrupt_shadow = vmx_set_interrupt_shadow,
 	.get_interrupt_shadow = vmx_get_interrupt_shadow,
 	.patch_hypercall = vmx_patch_hypercall,
@@ -7933,7 +7837,6 @@ static void vmx_exit(void)
 			if (!vp_ap)
 				continue;
 
-			vp_ap->nested_control.features.directhypercall = 0;
 			vp_ap->current_nested_vmcs = 0;
 			vp_ap->enlighten_vmentry = 0;
 		}
@@ -7973,11 +7876,6 @@ static int __init vmx_init(void)
 			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
 			static_branch_enable(&enable_evmcs);
 		}
-
-		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
-			vmx_x86_ops.enable_direct_tlbflush
-				= hv_enable_direct_tlbflush;
-
 	} else {
 		enlightened_vmcs = false;
 	}

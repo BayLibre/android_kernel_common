@@ -19,7 +19,7 @@
 #include "build-id.h"
 #include "cap.h"
 #include "dso.h"
-#include "util.h" // lsdir()
+#include "util.h"
 #include "debug.h"
 #include "event.h"
 #include "machine.h"

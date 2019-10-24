@@ -7,9 +7,11 @@
 #include <sys/mman.h>
 #include <zlib.h>
 #include <linux/compiler.h>
-#include <internal/lib.h>
 
 #include "util/compress.h"
+#include "util/util.h"
+#include "util/debug.h"
+
 
 #define CHUNK_SIZE  16384
 
