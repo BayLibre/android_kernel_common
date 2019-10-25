@@ -4042,11 +4042,7 @@ static void __sched notrace __schedule(bool preempt)
 
 	if (likely(prev != next)) {
 		rq->nr_switches++;
-		/*
-		 * RCU users of rcu_dereference(rq->curr) may not see
-		 * changes to task_struct made by pick_next_task().
-		 */
-		RCU_INIT_POINTER(rq->curr, next);
+		rq->curr = next;
 		/*
 		 * The membarrier system call requires each architecture
 		 * to have a full memory barrier after updating
@@ -6043,8 +6039,7 @@ void init_idle(struct task_struct *idle, int cpu)
 	__set_task_cpu(idle, cpu);
 	rcu_read_unlock();
 
-	rq->idle = idle;
-	rcu_assign_pointer(rq->curr, idle);
+	rq->curr = rq->idle = idle;
 	idle->on_rq = TASK_ON_RQ_QUEUED;
 #ifdef CONFIG_SMP
 	idle->on_cpu = 1;
