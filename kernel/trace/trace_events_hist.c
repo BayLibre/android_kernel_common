@@ -13,10 +13,6 @@
 #include <linux/rculist.h>
 #include <linux/tracefs.h>
 
-/* for gfp flag names */
-#include <linux/trace_events.h>
-#include <trace/events/mmflags.h>
-
 #include "tracing_map.h"
 #include "trace.h"
 #include "trace_dynevent.h"
@@ -378,7 +374,7 @@ static int synth_event_show(struct seq_file *m, struct dyn_event *ev);
 static int synth_event_release(struct dyn_event *ev);
 static bool synth_event_is_busy(struct dyn_event *ev);
 static bool synth_event_match(const char *system, const char *event,
-			int argc, const char **argv, struct dyn_event *ev);
+			      struct dyn_event *ev);
 
 static struct dyn_event_operations synth_event_ops = {
 	.create = synth_event_create,
@@ -426,7 +422,7 @@ static bool synth_event_is_busy(struct dyn_event *ev)
 }
 
 static bool synth_event_match(const char *system, const char *event,
-			int argc, const char **argv, struct dyn_event *ev)
+			      struct dyn_event *ev)
 {
 	struct synth_event *sev = to_synth_event(ev);
 
@@ -756,8 +752,6 @@ static int synth_field_size(char *type)
 		size = sizeof(unsigned long);
 	else if (strcmp(type, "pid_t") == 0)
 		size = sizeof(pid_t);
-	else if (strcmp(type, "gfp_t") == 0)
-		size = sizeof(gfp_t);
 	else if (synth_field_is_string(type))
 		size = synth_field_string_size(type);
 
@@ -798,8 +792,6 @@ static const char *synth_field_fmt(char *type)
 		fmt = "%lu";
 	else if (strcmp(type, "pid_t") == 0)
 		fmt = "%d";
-	else if (strcmp(type, "gfp_t") == 0)
-		fmt = "%x";
 	else if (synth_field_is_string(type))
 		fmt = "%s";
 
@@ -842,20 +834,9 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
 					 i == se->n_fields - 1 ? "" : " ");
 			n_u64 += STR_VAR_LEN_MAX / sizeof(u64);
 		} else {
-			struct trace_print_flags __flags[] = {
-			    __def_gfpflag_names, {-1, NULL} };
-
 			trace_seq_printf(s, print_fmt, se->fields[i]->name,
 					 entry->fields[n_u64],
 					 i == se->n_fields - 1 ? "" : " ");
-
-			if (strcmp(se->fields[i]->type, "gfp_t") == 0) {
-				trace_seq_puts(s, " (");
-				trace_print_flags_seq(s, "|",
-						      entry->fields[n_u64],
-						      __flags);
-				trace_seq_putc(s, ')');
-			}
 			n_u64++;
 		}
 	}
@@ -2803,8 +2784,6 @@ static struct hist_field *create_alias(struct hist_trigger_data *hist_data,
 		destroy_hist_field(alias, 0);
 		return NULL;
 	}
-
-	alias->var_ref_idx = var_ref->var_ref_idx;
 
 	return alias;
 }

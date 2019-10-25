@@ -115,4 +115,6 @@ header-test-y += $(filter-out $(header-test-), \
 			$(patsubst $(obj)/%,%, $(wildcard \
 			$(addprefix $(obj)/, *.h */*.h */*/*.h */*/*/*.h))))
 
-clean-files += $(filter-out Makefile, $(notdir $(wildcard $(obj)/*)))
+# For GNU Make <= 4.2.1, $(wildcard $(obj)/*/) matches to not only directories
+# but also regular files. Use $(filter %/, ...) just in case.
+clean-dirs += $(patsubst $(obj)/%/,%,$(filter %/, $(wildcard $(obj)/*/)))

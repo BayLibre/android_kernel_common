@@ -5474,12 +5474,6 @@ static int kvmppc_radix_possible(void)
 static int kvmppc_book3s_init_hv(void)
 {
 	int r;
-
-	if (!tlbie_capable) {
-		pr_err("KVM-HV: Host does not support TLBIE\n");
-		return -ENODEV;
-	}
-
 	/*
 	 * FIXME!! Do we need to check on all cpus ?
 	 */

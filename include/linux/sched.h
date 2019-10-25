@@ -962,10 +962,6 @@ struct task_struct {
 	struct mutex_waiter		*blocked_on;
 #endif
 
-#ifdef CONFIG_DEBUG_ATOMIC_SLEEP
-	int				non_block_count;
-#endif
-
 #ifdef CONFIG_TRACE_IRQFLAGS
 	unsigned int			irq_events;
 	unsigned long			hardirq_enable_ip;

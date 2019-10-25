@@ -64,8 +64,6 @@ vmlinux_link()
 	local output=${1}
 	local objects
 
-	info LD ${output}
-
 	# skip output file argument
 	shift
 
@@ -159,18 +157,6 @@ kallsyms()
 	${CC} ${aflags} -c -o ${2} ${afile}
 }
 
-# Perform one step in kallsyms generation, including temporary linking of
-# vmlinux.
-kallsyms_step()
-{
-	kallsymso_prev=${kallsymso}
-	kallsymso=.tmp_kallsyms${1}.o
-	kallsyms_vmlinux=.tmp_vmlinux${1}
-
-	vmlinux_link ${kallsyms_vmlinux} "${kallsymso_prev}" ${btf_vmlinux_bin_o}
-	kallsyms ${kallsyms_vmlinux} ${kallsymso}
-}
-
 # Create map file with all symbols from ${1}
 # See mksymap for additional details
 mksysmap()
@@ -257,7 +243,6 @@ if [ -n "${CONFIG_DEBUG_INFO_BTF}" ]; then
 fi
 
 kallsymso=""
-kallsymso_prev=""
 kallsyms_vmlinux=""
 if [ -n "${CONFIG_KALLSYMS}" ]; then
 
@@ -284,19 +269,32 @@ if [ -n "${CONFIG_KALLSYMS}" ]; then
 	# a)  Verify that the System.map from vmlinux matches the map from
 	#     ${kallsymso}.
 
-	kallsyms_step 1
-	kallsyms_step 2
+	kallsymso=.tmp_kallsyms2.o
+	kallsyms_vmlinux=.tmp_vmlinux2
+
+	# step 1
+	vmlinux_link .tmp_vmlinux1 ${btf_vmlinux_bin_o}
+	kallsyms .tmp_vmlinux1 .tmp_kallsyms1.o
+
+	# step 2
+	vmlinux_link .tmp_vmlinux2 .tmp_kallsyms1.o ${btf_vmlinux_bin_o}
+	kallsyms .tmp_vmlinux2 .tmp_kallsyms2.o
 
 	# step 3
-	size1=$(${CONFIG_SHELL} "${srctree}/scripts/file-size.sh" ${kallsymso_prev})
-	size2=$(${CONFIG_SHELL} "${srctree}/scripts/file-size.sh" ${kallsymso})
+	size1=$(${CONFIG_SHELL} "${srctree}/scripts/file-size.sh" .tmp_kallsyms1.o)
+	size2=$(${CONFIG_SHELL} "${srctree}/scripts/file-size.sh" .tmp_kallsyms2.o)
 
 	if [ $size1 -ne $size2 ] || [ -n "${KALLSYMS_EXTRA_PASS}" ]; then
-		kallsyms_step 3
+		kallsymso=.tmp_kallsyms3.o
+		kallsyms_vmlinux=.tmp_vmlinux3
+
+		vmlinux_link .tmp_vmlinux3 .tmp_kallsyms2.o ${btf_vmlinux_bin_o}
+		kallsyms .tmp_vmlinux3 .tmp_kallsyms3.o
 	fi
 fi
 
-vmlinux_link vmlinux "${kallsymso}" ${btf_vmlinux_bin_o}
+info LD vmlinux
+vmlinux_link vmlinux "${kallsymso}" "${btf_vmlinux_bin_o}"
 
 if [ -n "${CONFIG_BUILDTIME_EXTABLE_SORT}" ]; then
 	info SORTEX vmlinux

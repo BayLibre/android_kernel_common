@@ -291,7 +291,7 @@ static void ssip_set_rxstate(struct ssi_protocol *ssi, unsigned int state)
 		/* CMT speech workaround */
 		if (atomic_read(&ssi->tx_usecnt))
 			break;
-		/* Else, fall through */
+		/* Otherwise fall through */
 	case RECEIVING:
 		mod_timer(&ssi->keep_alive, jiffies +
 						msecs_to_jiffies(SSIP_KATOUT));
@@ -466,10 +466,9 @@ static void ssip_keep_alive(struct timer_list *t)
 		case SEND_READY:
 			if (atomic_read(&ssi->tx_usecnt) == 0)
 				break;
-			/* Fall through */
 			/*
-			 * Workaround for cmt-speech in that case
-			 * we relay on audio timers.
+			 * Fall through. Workaround for cmt-speech
+			 * in that case we relay on audio timers.
 			 */
 		case SEND_IDLE:
 			spin_unlock(&ssi->lock);
