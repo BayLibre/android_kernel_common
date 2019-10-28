@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "006c3901_3db11b87",
+        "filename": "drivers/staging/android/ion/ion.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2019-10-28T23:18:03Z",
+      "side": 1,
+      "message": "Could you please initialize these to avoid an uninitialized variable warning for some build targets? Please see commit message of https://android-review.googlesource.com/c/kernel/common/+/1111878",
+      "range": {
+        "startLine": 235,
+        "startChar": 5,
+        "endLine": 235,
+        "endChar": 24
+      },
+      "revId": "48663790968ca7f876c12aae201a9fc636e2a4db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
