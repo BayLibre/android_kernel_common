@@ -6853,6 +6853,7 @@ again:
 		}
 
 		se = pick_next_entity(cfs_rq, curr);
+		BUG_ON(!se);
 		cfs_rq = group_cfs_rq(se);
 	} while (cfs_rq);
 
@@ -6892,6 +6893,7 @@ simple:
 
 	do {
 		se = pick_next_entity(cfs_rq, NULL);
+		BUG_ON(!se);
 		set_next_entity(cfs_rq, se);
 		cfs_rq = group_cfs_rq(se);
 	} while (cfs_rq);
