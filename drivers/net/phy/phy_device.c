@@ -1787,14 +1787,7 @@ int genphy_read_lpa(struct phy_device *phydev)
 {
 	int lpa, lpagb;
 
-	if (phydev->autoneg == AUTONEG_ENABLE) {
-		if (!phydev->autoneg_complete) {
-			mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising,
-							0);
-			mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-			return 0;
-		}
-
+	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete) {
 		if (phydev->is_gigabit_capable) {
 			lpagb = phy_read(phydev, MII_STAT1000);
 			if (lpagb < 0)
@@ -1822,8 +1815,6 @@ int genphy_read_lpa(struct phy_device *phydev)
 			return lpa;
 
 		mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, lpa);
-	} else {
-		linkmode_zero(phydev->lp_advertising);
 	}
 
 	return 0;

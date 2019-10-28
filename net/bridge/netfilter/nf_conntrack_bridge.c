@@ -33,7 +33,6 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
 {
 	int frag_max_size = BR_INPUT_SKB_CB(skb)->frag_max_size;
 	unsigned int hlen, ll_rs, mtu;
-	ktime_t tstamp = skb->tstamp;
 	struct ip_frag_state state;
 	struct iphdr *iph;
 	int err;
@@ -81,7 +80,6 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
 			if (iter.frag)
 				ip_fraglist_prepare(skb, &iter);
 
-			skb->tstamp = tstamp;
 			err = output(net, sk, data, skb);
 			if (err || !iter.frag)
 				break;
@@ -106,7 +104,6 @@ slow_path:
 			goto blackhole;
 		}
 
-		skb2->tstamp = tstamp;
 		err = output(net, sk, data, skb2);
 		if (err)
 			goto blackhole;

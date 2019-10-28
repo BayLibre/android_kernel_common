@@ -105,9 +105,9 @@ EXPORT_SYMBOL(iterate_dir);
  */
 static int verify_dirent_name(const char *name, int len)
 {
-	if (!len)
+	if (WARN_ON_ONCE(!len))
 		return -EIO;
-	if (memchr(name, '/', len))
+	if (WARN_ON_ONCE(memchr(name, '/', len)))
 		return -EIO;
 	return 0;
 }

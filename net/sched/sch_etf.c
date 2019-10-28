@@ -177,7 +177,7 @@ static int etf_enqueue_timesortedlist(struct sk_buff *nskb, struct Qdisc *sch,
 
 		parent = *p;
 		skb = rb_to_skb(parent);
-		if (ktime_compare(txtime, skb->tstamp) >= 0) {
+		if (ktime_after(txtime, skb->tstamp)) {
 			p = &parent->rb_right;
 			leftmost = false;
 		} else {

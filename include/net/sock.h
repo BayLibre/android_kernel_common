@@ -878,17 +878,12 @@ static inline bool sk_acceptq_is_full(const struct sock *sk)
  */
 static inline int sk_stream_min_wspace(const struct sock *sk)
 {
-	return READ_ONCE(sk->sk_wmem_queued) >> 1;
+	return sk->sk_wmem_queued >> 1;
 }
 
 static inline int sk_stream_wspace(const struct sock *sk)
 {
-	return READ_ONCE(sk->sk_sndbuf) - READ_ONCE(sk->sk_wmem_queued);
-}
-
-static inline void sk_wmem_queued_add(struct sock *sk, int val)
-{
-	WRITE_ONCE(sk->sk_wmem_queued, sk->sk_wmem_queued + val);
+	return sk->sk_sndbuf - sk->sk_wmem_queued;
 }
 
 void sk_stream_write_space(struct sock *sk);
@@ -1212,7 +1207,7 @@ static inline void sk_refcnt_debug_release(const struct sock *sk)
 
 static inline bool __sk_stream_memory_free(const struct sock *sk, int wake)
 {
-	if (READ_ONCE(sk->sk_wmem_queued) >= READ_ONCE(sk->sk_sndbuf))
+	if (sk->sk_wmem_queued >= sk->sk_sndbuf)
 		return false;
 
 	return sk->sk_prot->stream_memory_free ?
@@ -1472,7 +1467,7 @@ DECLARE_STATIC_KEY_FALSE(tcp_tx_skb_cache_key);
 static inline void sk_wmem_free_skb(struct sock *sk, struct sk_buff *skb)
 {
 	sock_set_flag(sk, SOCK_QUEUE_SHRUNK);
-	sk_wmem_queued_add(sk, -skb->truesize);
+	sk->sk_wmem_queued -= skb->truesize;
 	sk_mem_uncharge(sk, skb->truesize);
 	if (static_branch_unlikely(&tcp_tx_skb_cache_key) &&
 	    !sk->sk_tx_skb_cache && !skb_cloned(skb)) {
@@ -2019,7 +2014,7 @@ static inline int skb_copy_to_page_nocache(struct sock *sk, struct iov_iter *fro
 	skb->len	     += copy;
 	skb->data_len	     += copy;
 	skb->truesize	     += copy;
-	sk_wmem_queued_add(sk, copy);
+	sk->sk_wmem_queued   += copy;
 	sk_mem_charge(sk, copy);
 	return 0;
 }
@@ -2225,14 +2220,10 @@ static inline void sk_wake_async(const struct sock *sk, int how, int band)
 
 static inline void sk_stream_moderate_sndbuf(struct sock *sk)
 {
-	u32 val;
-
-	if (sk->sk_userlocks & SOCK_SNDBUF_LOCK)
-		return;
-
-	val = min(sk->sk_sndbuf, sk->sk_wmem_queued >> 1);
-
-	WRITE_ONCE(sk->sk_sndbuf, max_t(u32, val, SOCK_MIN_SNDBUF));
+	if (!(sk->sk_userlocks & SOCK_SNDBUF_LOCK)) {
+		sk->sk_sndbuf = min(sk->sk_sndbuf, sk->sk_wmem_queued >> 1);
+		sk->sk_sndbuf = max_t(u32, sk->sk_sndbuf, SOCK_MIN_SNDBUF);
+	}
 }
 
 struct sk_buff *sk_stream_alloc_skb(struct sock *sk, int size, gfp_t gfp,
@@ -2260,7 +2251,7 @@ bool sk_page_frag_refill(struct sock *sk, struct page_frag *pfrag);
  */
 static inline bool sock_writeable(const struct sock *sk)
 {
-	return refcount_read(&sk->sk_wmem_alloc) < (READ_ONCE(sk->sk_sndbuf) >> 1);
+	return refcount_read(&sk->sk_wmem_alloc) < (sk->sk_sndbuf >> 1);
 }
 
 static inline gfp_t gfp_any(void)
@@ -2280,9 +2271,7 @@ static inline long sock_sndtimeo(const struct sock *sk, bool noblock)
 
 static inline int sock_rcvlowat(const struct sock *sk, int waitall, int len)
 {
-	int v = waitall ? len : min_t(int, READ_ONCE(sk->sk_rcvlowat), len);
-
-	return v ?: 1;
+	return (waitall ? len : min_t(int, sk->sk_rcvlowat, len)) ? : 1;
 }
 
 /* Alas, with timeout socket operations are not restartable.

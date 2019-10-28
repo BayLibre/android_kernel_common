@@ -3405,17 +3405,17 @@ static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
 		return err;
 	}
 
-	*tx_clk = devm_clk_get_optional(&pdev->dev, "tx_clk");
+	*tx_clk = devm_clk_get(&pdev->dev, "tx_clk");
 	if (IS_ERR(*tx_clk))
-		return PTR_ERR(*tx_clk);
+		*tx_clk = NULL;
 
-	*rx_clk = devm_clk_get_optional(&pdev->dev, "rx_clk");
+	*rx_clk = devm_clk_get(&pdev->dev, "rx_clk");
 	if (IS_ERR(*rx_clk))
-		return PTR_ERR(*rx_clk);
+		*rx_clk = NULL;
 
-	*tsu_clk = devm_clk_get_optional(&pdev->dev, "tsu_clk");
+	*tsu_clk = devm_clk_get(&pdev->dev, "tsu_clk");
 	if (IS_ERR(*tsu_clk))
-		return PTR_ERR(*tsu_clk);
+		*tsu_clk = NULL;
 
 	err = clk_prepare_enable(*pclk);
 	if (err) {

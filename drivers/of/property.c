@@ -1018,10 +1018,10 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
  * - -EINVAL if the supplier link is invalid and should not be created
  * - -ENODEV if there is no device that corresponds to the supplier phandle
  */
-static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
-			      u32 dl_flags)
+static int of_link_to_phandle(struct device *dev, struct device_node *sup_np)
 {
 	struct device *sup_dev;
+	u32 dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
 	int ret = 0;
 	struct device_node *tmp_np = sup_np;
 
@@ -1106,13 +1106,6 @@ static struct device_node *parse_interconnects(struct device_node *np,
 				"#interconnect-cells");
 }
 
-static struct device_node *parse_iommus(struct device_node *np,
-					const char *prop_name, int index)
-{
-	return parse_prop_cells(np, prop_name, index, "iommus",
-				"#iommu-cells");
-}
-
 static int strcmp_suffix(const char *str, const char *suffix)
 {
 	unsigned int len, suffix_len;
@@ -1154,12 +1147,11 @@ struct supplier_bindings {
 					  const char *prop_name, int index);
 };
 
-static const struct supplier_bindings of_supplier_bindings[] = {
+static const struct supplier_bindings bindings[] = {
 	{ .parse_prop = parse_clocks, },
 	{ .parse_prop = parse_interconnects, },
 	{ .parse_prop = parse_regulators, },
-	{ .parse_prop = parse_iommus, },
-	{}
+	{},
 };
 
 /**
@@ -1185,24 +1177,17 @@ static int of_link_property(struct device *dev, struct device_node *con_np,
 			     const char *prop_name)
 {
 	struct device_node *phandle;
-	const struct supplier_bindings *s = of_supplier_bindings;
+	const struct supplier_bindings *s = bindings;
 	unsigned int i = 0;
 	bool matched = false;
 	int ret = 0;
-	u32 dl_flags;
-
-	if (dev->of_node == con_np)
-		dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
-	else
-		dl_flags = DL_FLAG_SYNC_STATE_ONLY;
 
 	/* Do not stop at first failed link, link all available suppliers. */
 	while (!matched && s->parse_prop) {
 		while ((phandle = s->parse_prop(con_np, prop_name, i))) {
 			matched = true;
 			i++;
-			if (of_link_to_phandle(dev, phandle, dl_flags)
-								== -EAGAIN)
+			if (of_link_to_phandle(dev, phandle) == -EAGAIN)
 				ret = -EAGAIN;
 			of_node_put(phandle);
 		}
@@ -1211,7 +1196,7 @@ static int of_link_property(struct device *dev, struct device_node *con_np,
 	return ret;
 }
 
-static int of_link_to_suppliers(struct device *dev,
+static int __of_link_to_suppliers(struct device *dev,
 				  struct device_node *con_np)
 {
 	struct device_node *child;
@@ -1220,16 +1205,16 @@ static int of_link_to_suppliers(struct device *dev,
 
 	for_each_property_of_node(con_np, p)
 		if (of_link_property(dev, con_np, p->name))
-			ret = -ENODEV;
+			ret = -EAGAIN;
 
 	for_each_child_of_node(con_np, child)
-		if (of_link_to_suppliers(dev, child) && !ret)
+		if (__of_link_to_suppliers(dev, child))
 			ret = -EAGAIN;
 
 	return ret;
 }
 
-static bool of_devlink = true;
+static bool of_devlink;
 core_param(of_devlink, of_devlink, bool, 0);
 
 static int of_fwnode_add_links(const struct fwnode_handle *fwnode,
@@ -1241,7 +1226,7 @@ static int of_fwnode_add_links(const struct fwnode_handle *fwnode,
 	if (unlikely(!is_of_node(fwnode)))
 		return 0;
 
-	return of_link_to_suppliers(dev, to_of_node(fwnode));
+	return __of_link_to_suppliers(dev, to_of_node(fwnode));
 }
 
 const struct fwnode_operations of_fwnode_ops = {
