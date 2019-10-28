@@ -15,7 +15,6 @@
 #include <linux/seq_file.h>
 #include <linux/suspend.h>
 #include <linux/syscalls.h>
-#include <linux/pm_runtime.h>
 
 #include "power.h"
 

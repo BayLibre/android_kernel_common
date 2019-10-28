@@ -103,7 +103,6 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
 void memunmap_pages(struct dev_pagemap *pgmap)
 {
 	struct resource *res = &pgmap->res;
-	struct page *first_page;
 	unsigned long pfn;
 	int nid;
 
@@ -112,16 +111,14 @@ void memunmap_pages(struct dev_pagemap *pgmap)
 		put_page(pfn_to_page(pfn));
 	dev_pagemap_cleanup(pgmap);
 
-	/* make sure to access a memmap that was actually initialized */
-	first_page = pfn_to_page(pfn_first(pgmap));
-
 	/* pages are dead and unused, undo the arch mapping */
-	nid = page_to_nid(first_page);
+	nid = page_to_nid(pfn_to_page(PHYS_PFN(res->start)));
 
 	mem_hotplug_begin();
 	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
-		__remove_pages(page_zone(first_page), PHYS_PFN(res->start),
-			       PHYS_PFN(resource_size(res)), NULL);
+		pfn = PHYS_PFN(res->start);
+		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
+				 PHYS_PFN(resource_size(res)), NULL);
 	} else {
 		arch_remove_memory(nid, res->start, resource_size(res),
 				pgmap_altmap(pgmap));

@@ -12,11 +12,7 @@ INSTALL ?= install
 CFLAGS += -Wall -O2
 CFLAGS += -D__EXPORTED_HEADERS__ -I$(srctree)/include/uapi -I$(srctree)/include
 
-# This will work when bpf is built in tools env. where srctree
-# isn't set and when invoked from selftests build, where srctree
-# is set to ".". building_out_of_srctree is undefined for in srctree
-# builds
-ifndef building_out_of_srctree
+ifeq ($(srctree),)
 srctree := $(patsubst %/,%,$(dir $(CURDIR)))
 srctree := $(patsubst %/,%,$(dir $(srctree)))
 endif

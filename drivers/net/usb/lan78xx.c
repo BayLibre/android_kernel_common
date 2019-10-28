@@ -3782,14 +3782,10 @@ static int lan78xx_probe(struct usb_interface *intf,
 	/* driver requires remote-wakeup capability during autosuspend. */
 	intf->needs_remote_wakeup = 1;
 
-	ret = lan78xx_phy_init(dev);
-	if (ret < 0)
-		goto out4;
-
 	ret = register_netdev(netdev);
 	if (ret != 0) {
 		netif_err(dev, probe, netdev, "couldn't register the device\n");
-		goto out5;
+		goto out4;
 	}
 
 	usb_set_intfdata(intf, dev);
@@ -3802,10 +3798,14 @@ static int lan78xx_probe(struct usb_interface *intf,
 	pm_runtime_set_autosuspend_delay(&udev->dev,
 					 DEFAULT_AUTOSUSPEND_DELAY);
 
+	ret = lan78xx_phy_init(dev);
+	if (ret < 0)
+		goto out5;
+
 	return 0;
 
 out5:
-	phy_disconnect(netdev->phydev);
+	unregister_netdev(netdev);
 out4:
 	usb_free_urb(dev->urb_intr);
 out3:

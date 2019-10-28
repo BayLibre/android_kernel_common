@@ -384,8 +384,8 @@ static int parse_reply_info_readdir(void **p, void *end,
 	}
 
 done:
-	/* Skip over any unrecognized fields */
-	*p = end;
+	if (*p != end)
+		goto bad;
 	return 0;
 
 bad:
@@ -406,10 +406,12 @@ static int parse_reply_info_filelock(void **p, void *end,
 		goto bad;
 
 	info->filelock_reply = *p;
+	*p += sizeof(*info->filelock_reply);
 
-	/* Skip over any unrecognized fields */
-	*p = end;
+	if (unlikely(*p != end))
+		goto bad;
 	return 0;
+
 bad:
 	return -EIO;
 }
@@ -423,21 +425,18 @@ static int parse_reply_info_create(void **p, void *end,
 {
 	if (features == (u64)-1 ||
 	    (features & CEPH_FEATURE_REPLY_CREATE_INODE)) {
-		/* Malformed reply? */
 		if (*p == end) {
 			info->has_create_ino = false;
 		} else {
 			info->has_create_ino = true;
-			ceph_decode_64_safe(p, end, info->ino, bad);
+			info->ino = ceph_decode_64(p);
 		}
-	} else {
-		if (*p != end)
-			goto bad;
 	}
 
-	/* Skip over any unrecognized fields */
-	*p = end;
+	if (unlikely(*p != end))
+		goto bad;
 	return 0;
+
 bad:
 	return -EIO;
 }

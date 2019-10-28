@@ -262,7 +262,6 @@ static const struct sdhci_iproc_data bcm2835_data = {
 };
 
 static const struct sdhci_pltfm_data sdhci_bcm2711_pltfm_data = {
-	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
 	.ops = &sdhci_iproc_32only_ops,
 };
 
