@@ -4152,6 +4152,8 @@ check_preempt_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr)
 static void
 set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
 {
+	BUG_ON(!se);
+	BUG_ON(!cfs_rq);
 	/* 'current' is not kept within the tree. */
 	if (se->on_rq) {
 		/*
