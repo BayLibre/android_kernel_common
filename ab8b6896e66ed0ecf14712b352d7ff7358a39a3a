@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aebf5370_a72b7def",
+        "filename": "block/keyslot-manager.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2019-10-29T21:12:30Z",
+      "side": 1,
+      "message": "For future cleanup: num_idle_slots isn\u0027t actually necessary.  It would be sufficient to use list_empty(\u0026ksm-\u003eidle_slots) instead.  Also, idle_slots_lock could be removed and idle_slots_wait_queue.lock used instead.",
+      "range": {
+        "startLine": 188,
+        "startChar": 6,
+        "endLine": 188,
+        "endChar": 43
+      },
+      "revId": "ab8b6896e66ed0ecf14712b352d7ff7358a39a3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
