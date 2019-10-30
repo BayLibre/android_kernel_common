@@ -42,5 +42,15 @@
 #define HWCAP_SM4		(1 << 19)
 #define HWCAP_ASIMDDP		(1 << 20)
 #define HWCAP_SHA512		(1 << 21)
+<<<<<<< HEAD   (59eb65 ANDROID: virtio: virtio_input: Set the amount of multitouch )
+=======
+#define HWCAP_SVE		(1 << 22)
+#define HWCAP_ASIMDFHM		(1 << 23)
+#define HWCAP_DIT		(1 << 24)
+#define HWCAP_USCAT		(1 << 25)
+#define HWCAP_ILRCPC		(1 << 26)
+#define HWCAP_FLAGM		(1 << 27)
+#define HWCAP_SSBS		(1 << 28)
+>>>>>>> BRANCH (ddef1e Linux 4.14.151)
 
 #endif /* _UAPI__ASM_HWCAP_H */

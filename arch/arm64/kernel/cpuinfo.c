@@ -74,6 +74,16 @@ static const char *const hwcap_str[] = {
 	"sm4",
 	"asimddp",
 	"sha512",
+<<<<<<< HEAD   (59eb65 ANDROID: virtio: virtio_input: Set the amount of multitouch )
+=======
+	"sve",
+	"asimdfhm",
+	"dit",
+	"uscat",
+	"ilrcpc",
+	"flagm",
+	"ssbs",
+>>>>>>> BRANCH (ddef1e Linux 4.14.151)
 	NULL
 };
 
