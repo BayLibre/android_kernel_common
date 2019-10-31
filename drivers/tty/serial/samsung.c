@@ -1735,7 +1735,7 @@ static int s3c24xx_serial_enable_baudclk(struct s3c24xx_uart_port *ourport)
  * initialise a single serial port from the platform device given
  */
 
-static int s3c24xx_serial_init_port(struct s3c24xx_uart_port *ourport,
+int s3c24xx_serial_init_port(struct s3c24xx_uart_port *ourport,
 				    struct platform_device *platdev)
 {
 	struct uart_port *port = &ourport->port;
@@ -1842,12 +1842,24 @@ static int s3c24xx_serial_init_port(struct s3c24xx_uart_port *ourport,
 	/* reset the fifos (and setup the uart) */
 	s3c24xx_serial_resetport(port, cfg);
 
+	if (!s3c24xx_uart_drv.state) {
+		ret = uart_register_driver(&s3c24xx_uart_drv);
+		if (ret < 0) {
+			dev_err(port->dev, "Failed to register Samsung UART driver\n");
+			return ret;
+		}
+	}
+
+	dbg("%s: adding port\n", __func__);
+	uart_add_one_port(&s3c24xx_uart_drv, &ourport->port);
+
 	return 0;
 
 err:
 	port->mapbase = 0;
 	return ret;
 }
+EXPORT_SYMBOL_GPL(s3c24xx_serial_init_port);
 
 /* Device driver serial port probe */
 
@@ -1868,6 +1880,17 @@ static inline struct s3c24xx_serial_drv_data *s3c24xx_get_driver_data(
 			platform_get_device_id(pdev)->driver_data;
 }
 
+int s3c24xx_serial_get_ports(struct s3c24xx_uart_port **ourport, int index)
+{
+	if (index >= ARRAY_SIZE(s3c24xx_serial_ports))
+		return -EINVAL;
+
+	*ourport = &s3c24xx_serial_ports[index];
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(s3c24xx_serial_get_ports);
+
 static int s3c24xx_serial_probe(struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
@@ -1881,13 +1904,10 @@ static int s3c24xx_serial_probe(struct platform_device *pdev)
 			index = ret;
 	}
 
-	dbg("s3c24xx_serial_probe(%p) %d\n", pdev, index);
-
-	if (index >= ARRAY_SIZE(s3c24xx_serial_ports)) {
+	if (s3c24xx_serial_get_ports(&ourport, index)) {
 		dev_err(&pdev->dev, "serial%d out of range\n", index);
 		return -EINVAL;
 	}
-	ourport = &s3c24xx_serial_ports[index];
 
 	ourport->drv_data = s3c24xx_get_driver_data(pdev);
 	if (!ourport->drv_data) {
@@ -1923,16 +1943,6 @@ static int s3c24xx_serial_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
-	if (!s3c24xx_uart_drv.state) {
-		ret = uart_register_driver(&s3c24xx_uart_drv);
-		if (ret < 0) {
-			pr_err("Failed to register Samsung UART driver\n");
-			return ret;
-		}
-	}
-
-	dbg("%s: adding port\n", __func__);
-	uart_add_one_port(&s3c24xx_uart_drv, &ourport->port);
 	platform_set_drvdata(pdev, &ourport->port);
 
 	/*
@@ -1953,7 +1963,7 @@ static int s3c24xx_serial_probe(struct platform_device *pdev)
 	return 0;
 }
 
-static int s3c24xx_serial_remove(struct platform_device *dev)
+int s3c24xx_serial_unregister_port(struct platform_device *dev)
 {
 	struct uart_port *port = s3c24xx_dev_to_port(&dev->dev);
 
@@ -1963,13 +1973,19 @@ static int s3c24xx_serial_remove(struct platform_device *dev)
 	}
 
 	uart_unregister_driver(&s3c24xx_uart_drv);
-
 	return 0;
+
+}
+EXPORT_SYMBOL_GPL(s3c24xx_serial_unregister_port);
+
+static int s3c24xx_serial_remove(struct platform_device *dev)
+{
+	return s3c24xx_serial_unregister_port(dev);
 }
 
 /* UART power management code */
 #ifdef CONFIG_PM_SLEEP
-static int s3c24xx_serial_suspend(struct device *dev)
+int s3c24xx_serial_suspend(struct device *dev)
 {
 	struct uart_port *port = s3c24xx_dev_to_port(dev);
 
@@ -1978,8 +1994,9 @@ static int s3c24xx_serial_suspend(struct device *dev)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(s3c24xx_serial_suspend);
 
-static int s3c24xx_serial_resume(struct device *dev)
+int s3c24xx_serial_resume(struct device *dev)
 {
 	struct uart_port *port = s3c24xx_dev_to_port(dev);
 	struct s3c24xx_uart_port *ourport = to_ourport(port);
@@ -1998,8 +2015,9 @@ static int s3c24xx_serial_resume(struct device *dev)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(s3c24xx_serial_resume);
 
-static int s3c24xx_serial_resume_noirq(struct device *dev)
+int s3c24xx_serial_resume_noirq(struct device *dev)
 {
 	struct uart_port *port = s3c24xx_dev_to_port(dev);
 	struct s3c24xx_uart_port *ourport = to_ourport(port);
@@ -2024,6 +2042,7 @@ static int s3c24xx_serial_resume_noirq(struct device *dev)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(s3c24xx_serial_resume_noirq);
 
 static const struct dev_pm_ops s3c24xx_serial_pm_ops = {
 	.suspend = s3c24xx_serial_suspend,
@@ -2127,7 +2146,7 @@ s3c24xx_serial_console_write(struct console *co, const char *s,
 	uart_console_write(cons_uart, s, count, s3c24xx_serial_console_putchar);
 }
 
-static void __init
+static void
 s3c24xx_serial_get_options(struct uart_port *port, int *baud,
 			   int *parity, int *bits)
 {
@@ -2195,7 +2214,7 @@ s3c24xx_serial_get_options(struct uart_port *port, int *baud,
 
 }
 
-static int __init
+static int
 s3c24xx_serial_console_setup(struct console *co, char *options)
 {
 	struct uart_port *port;
@@ -2390,28 +2409,6 @@ static struct s3c24xx_serial_drv_data s5pv210_serial_drv_data = {
 #endif
 
 #if defined(CONFIG_ARCH_EXYNOS)
-#define EXYNOS_COMMON_SERIAL_DRV_DATA				\
-	.info = &(struct s3c24xx_uart_info) {			\
-		.name		= "Samsung Exynos UART",	\
-		.type		= PORT_S3C6400,			\
-		.has_divslot	= 1,				\
-		.rx_fifomask	= S5PV210_UFSTAT_RXMASK,	\
-		.rx_fifoshift	= S5PV210_UFSTAT_RXSHIFT,	\
-		.rx_fifofull	= S5PV210_UFSTAT_RXFULL,	\
-		.tx_fifofull	= S5PV210_UFSTAT_TXFULL,	\
-		.tx_fifomask	= S5PV210_UFSTAT_TXMASK,	\
-		.tx_fifoshift	= S5PV210_UFSTAT_TXSHIFT,	\
-		.def_clk_sel	= S3C2410_UCON_CLKSEL0,		\
-		.num_clks	= 1,				\
-		.clksel_mask	= 0,				\
-		.clksel_shift	= 0,				\
-	},							\
-	.def_cfg = &(struct s3c2410_uartcfg) {			\
-		.ucon		= S5PV210_UCON_DEFAULT,		\
-		.ufcon		= S5PV210_UFCON_DEFAULT,	\
-		.has_fracval	= 1,				\
-	}							\
-
 static struct s3c24xx_serial_drv_data exynos4210_serial_drv_data = {
 	EXYNOS_COMMON_SERIAL_DRV_DATA,
 	.fifosize = { 256, 64, 16, 16 },
