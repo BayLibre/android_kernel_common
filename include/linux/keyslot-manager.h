@@ -21,9 +21,6 @@
  *			Returns 0 on success, -errno otherwise.
  * @crypto_mode_supported:	Check whether a crypto_mode and data_unit_size
  *				combo is supported.
- * @keyslot_find:	Returns the slot number that matches the key,
- *			or -ENOKEY if no match found, or -errno on
- *			error.
  *
  * This structure should be provided by storage device drivers when they set up
  * a keyslot manager - this structure holds the function ptrs that the keyslot
@@ -41,9 +38,6 @@ struct keyslot_mgmt_ll_ops {
 	bool (*crypto_mode_supported)(void *ll_priv_data,
 				      enum blk_crypto_mode_num crypto_mode,
 				      unsigned int data_unit_size);
-	int (*keyslot_find)(void *ll_priv_data, const u8 *key,
-			    enum blk_crypto_mode_num crypto_mode,
-			    unsigned int data_unit_size);
 };
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION
@@ -79,6 +73,8 @@ extern int keyslot_manager_evict_key(struct keyslot_manager *ksm,
 				     const u8 *key,
 				     enum blk_crypto_mode_num crypto_mode,
 				     unsigned int data_unit_size);
+
+extern void keyslot_manager_reprogram_all_keys(struct keyslot_manager *ksm);
 
 extern void keyslot_manager_destroy(struct keyslot_manager *ksm);
 

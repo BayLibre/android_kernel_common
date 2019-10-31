@@ -3,8 +3,6 @@
  * Copyright 2019 Google LLC
  */
 
-#include <crypto/algapi.h>
-
 #include "ufshcd.h"
 #include "ufshcd-crypto.h"
 
@@ -139,6 +137,16 @@ static void program_key(struct ufs_hba *hba,
 	wmb();
 }
 
+/* Clear all keyslots at driver init time */
+static void clear_all_keyslots(struct ufs_hba *hba)
+{
+	union ufs_crypto_cfg_entry cfg = { 0 };
+	int slot;
+
+	for (slot = 0; slot < NUM_KEYSLOTS(hba); slot++)
+		program_key(hba, &cfg, slot);
+}
+
 static int ufshcd_crypto_keyslot_program(void *hba_p, const u8 *key,
 					 enum blk_crypto_mode_num crypto_mode,
 					 unsigned int data_unit_size,
@@ -148,7 +156,6 @@ static int ufshcd_crypto_keyslot_program(void *hba_p, const u8 *key,
 	int err = 0;
 	u8 data_unit_mask;
 	union ufs_crypto_cfg_entry cfg;
-	union ufs_crypto_cfg_entry *cfg_arr = hba->crypto_cfgs;
 	int cap_idx;
 
 	cap_idx = ufshcd_crypto_cap_find(hba_p, crypto_mode,
@@ -176,58 +183,8 @@ static int ufshcd_crypto_keyslot_program(void *hba_p, const u8 *key,
 
 	program_key(hba, &cfg, slot);
 
-	memcpy(&cfg_arr[slot], &cfg, sizeof(cfg));
 	memzero_explicit(&cfg, sizeof(cfg));
-
 	return 0;
-}
-
-static int ufshcd_crypto_keyslot_find(void *hba_p,
-				      const u8 *key,
-				      enum blk_crypto_mode_num crypto_mode,
-				      unsigned int data_unit_size)
-{
-	struct ufs_hba *hba = hba_p;
-	int err = 0;
-	int slot;
-	u8 data_unit_mask;
-	union ufs_crypto_cfg_entry cfg;
-	union ufs_crypto_cfg_entry *cfg_arr = hba->crypto_cfgs;
-	int cap_idx;
-
-	cap_idx = ufshcd_crypto_cap_find(hba_p, crypto_mode,
-					       data_unit_size);
-
-	if (!ufshcd_is_crypto_enabled(hba) ||
-	    !ufshcd_cap_idx_valid(hba, cap_idx))
-		return -EINVAL;
-
-	data_unit_mask = get_data_unit_size_mask(data_unit_size);
-
-	if (!(data_unit_mask & hba->crypto_cap_array[cap_idx].sdus_mask))
-		return -EINVAL;
-
-	memset(&cfg, 0, sizeof(cfg));
-	err = ufshcd_crypto_cfg_entry_write_key(&cfg, key,
-					hba->crypto_cap_array[cap_idx]);
-
-	if (err)
-		return -EINVAL;
-
-	for (slot = 0; slot < NUM_KEYSLOTS(hba); slot++) {
-		if ((cfg_arr[slot].config_enable &
-		     UFS_CRYPTO_CONFIGURATION_ENABLE) &&
-		    data_unit_mask == cfg_arr[slot].data_unit_size &&
-		    cap_idx == cfg_arr[slot].crypto_cap_idx &&
-		    !crypto_memneq(&cfg.crypto_key, cfg_arr[slot].crypto_key,
-				  UFS_CRYPTO_KEY_MAX_SIZE)) {
-			memzero_explicit(&cfg, sizeof(cfg));
-			return slot;
-		}
-	}
-
-	memzero_explicit(&cfg, sizeof(cfg));
-	return -ENOKEY;
 }
 
 static int ufshcd_crypto_keyslot_evict(void *hba_p, const u8 *key,
@@ -238,20 +195,19 @@ static int ufshcd_crypto_keyslot_evict(void *hba_p, const u8 *key,
 	struct ufs_hba *hba = hba_p;
 	int i = 0;
 	u32 reg_base;
-	union ufs_crypto_cfg_entry *cfg_arr = hba->crypto_cfgs;
 
 	if (!ufshcd_is_crypto_enabled(hba) ||
 	    !ufshcd_keyslot_valid(hba, slot))
 		return -EINVAL;
 
-	memset(&cfg_arr[slot], 0, sizeof(cfg_arr[slot]));
-	reg_base = hba->crypto_cfg_register + slot * sizeof(cfg_arr[0]);
+	reg_base = hba->crypto_cfg_register +
+		   slot * sizeof(union ufs_crypto_cfg_entry);
 
 	/*
 	 * Clear the crypto cfg on the device. Clearing CFGE
 	 * might not be sufficient, so just clear the entire cfg.
 	 */
-	for (i = 0; i < sizeof(cfg_arr[0]); i += sizeof(__le32))
+	for (i = 0; i < sizeof(union ufs_crypto_cfg_entry); i += sizeof(__le32))
 		ufshcd_writel(hba, 0, reg_base + i);
 	wmb();
 
@@ -268,19 +224,13 @@ static bool ufshcd_crypto_mode_supported(void *hba_p,
 /* Functions implementing UFSHCI v2.1 specification behaviour */
 void ufshcd_crypto_enable_spec(struct ufs_hba *hba)
 {
-	union ufs_crypto_cfg_entry *cfg_arr = hba->crypto_cfgs;
-	int slot;
-
 	if (!ufshcd_hba_is_crypto_supported(hba))
 		return;
 
 	hba->caps |= UFSHCD_CAP_CRYPTO;
-	/*
-	 * Reset might clear all keys, so reprogram all the keys.
-	 * Also serves to clear keys on driver init.
-	 */
-	for (slot = 0; slot < NUM_KEYSLOTS(hba); slot++)
-		program_key(hba, &cfg_arr[slot], slot);
+
+	/* Reset might clear all keys, so reprogram all the keys. */
+	keyslot_manager_reprogram_all_keys(hba->ksm);
 }
 EXPORT_SYMBOL(ufshcd_crypto_enable_spec);
 
@@ -293,7 +243,6 @@ EXPORT_SYMBOL(ufshcd_crypto_disable_spec);
 static const struct keyslot_mgmt_ll_ops ufshcd_ksm_ops = {
 	.keyslot_program	= ufshcd_crypto_keyslot_program,
 	.keyslot_evict		= ufshcd_crypto_keyslot_evict,
-	.keyslot_find		= ufshcd_crypto_keyslot_find,
 	.crypto_mode_supported	= ufshcd_crypto_mode_supported,
 };
 
@@ -336,16 +285,6 @@ int ufshcd_hba_init_crypto_spec(struct ufs_hba *hba,
 		goto out;
 	}
 
-	hba->crypto_cfgs =
-		devm_kcalloc(hba->dev,
-			     NUM_KEYSLOTS(hba),
-			     sizeof(hba->crypto_cfgs[0]),
-			     GFP_KERNEL);
-	if (!hba->crypto_cfgs) {
-		err = -ENOMEM;
-		goto out_free_cfg_mem;
-	}
-
 	/*
 	 * Store all the capabilities now so that we don't need to repeatedly
 	 * access the device each time we want to know its capabilities
@@ -358,17 +297,18 @@ int ufshcd_hba_init_crypto_spec(struct ufs_hba *hba,
 						 cap_idx * sizeof(__le32)));
 	}
 
+	clear_all_keyslots(hba);
+
 	hba->ksm = keyslot_manager_create(NUM_KEYSLOTS(hba), ksm_ops, hba);
 
 	if (!hba->ksm) {
 		err = -ENOMEM;
-		goto out_free_crypto_cfgs;
+		goto out_free_caps;
 	}
 
 	return 0;
-out_free_crypto_cfgs:
-	devm_kfree(hba->dev, hba->crypto_cfgs);
-out_free_cfg_mem:
+
+out_free_caps:
 	devm_kfree(hba->dev, hba->crypto_cap_array);
 out:
 	/* Indicate that init failed by setting crypto_capabilities to 0 */

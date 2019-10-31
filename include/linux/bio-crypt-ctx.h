@@ -14,6 +14,9 @@ enum blk_crypto_mode_num {
 #include <linux/blk_types.h>
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION
+
+#define BLK_CRYPTO_MAX_KEY_SIZE		64
+
 struct bio_crypt_ctx {
 	int keyslot;
 	const u8 *raw_key;

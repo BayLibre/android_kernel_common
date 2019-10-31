@@ -14,8 +14,8 @@
 #include <linux/mempool.h>
 #include <linux/blk-cgroup.h>
 #include <linux/crypto.h>
+#include <linux/random.h>
 #include <crypto/skcipher.h>
-#include <crypto/algapi.h>
 #include <linux/module.h>
 #include <linux/sched/mm.h>
 
@@ -32,12 +32,17 @@ static const struct blk_crypto_mode blk_crypto_modes[] = {
 	},
 };
 
+size_t blk_crypto_keysize(enum blk_crypto_mode_num crypto_mode)
+{
+	return blk_crypto_modes[crypto_mode].keysize;
+}
+EXPORT_SYMBOL(blk_crypto_keysize);
+
 static unsigned int num_prealloc_bounce_pg = 32;
 module_param(num_prealloc_bounce_pg, uint, 0);
 MODULE_PARM_DESC(num_prealloc_bounce_pg,
 	"Number of preallocated bounce pages for blk-crypto to use during crypto API fallback encryption");
 
-#define BLK_CRYPTO_MAX_KEY_SIZE 64
 static int blk_crypto_num_keyslots = 100;
 module_param_named(num_keyslots, blk_crypto_num_keyslots, int, 0);
 MODULE_PARM_DESC(num_keyslots,
@@ -46,7 +51,6 @@ MODULE_PARM_DESC(num_keyslots,
 static struct blk_crypto_keyslot {
 	struct crypto_skcipher *tfm;
 	enum blk_crypto_mode_num crypto_mode;
-	u8 key[BLK_CRYPTO_MAX_KEY_SIZE];
 	struct crypto_skcipher *tfms[ARRAY_SIZE(blk_crypto_modes)];
 } *blk_crypto_keyslots;
 
@@ -92,7 +96,6 @@ static void evict_keyslot(unsigned int slot)
 	err = crypto_skcipher_setkey(slotp->tfms[crypto_mode], blank_key,
 				     blk_crypto_modes[crypto_mode].keysize);
 	WARN_ON(err);
-	memzero_explicit(slotp->key, BLK_CRYPTO_MAX_KEY_SIZE);
 	slotp->crypto_mode = BLK_ENCRYPTION_MODE_INVALID;
 }
 
@@ -115,14 +118,10 @@ static int blk_crypto_keyslot_program(void *priv, const u8 *key,
 		return -ENOMEM;
 	slotp->crypto_mode = crypto_mode;
 	err = crypto_skcipher_setkey(slotp->tfms[crypto_mode], key, keysize);
-
 	if (err) {
 		evict_keyslot(slot);
 		return err;
 	}
-
-	memcpy(slotp->key, key, keysize);
-
 	return 0;
 }
 
@@ -133,23 +132,6 @@ static int blk_crypto_keyslot_evict(void *priv, const u8 *key,
 {
 	evict_keyslot(slot);
 	return 0;
-}
-
-static int blk_crypto_keyslot_find(void *priv,
-				   const u8 *key,
-				   enum blk_crypto_mode_num crypto_mode,
-				   unsigned int data_unit_size_bytes)
-{
-	int slot;
-	const size_t keysize = blk_crypto_modes[crypto_mode].keysize;
-
-	for (slot = 0; slot < blk_crypto_num_keyslots; slot++) {
-		if (blk_crypto_keyslots[slot].crypto_mode == crypto_mode &&
-		    !crypto_memneq(blk_crypto_keyslots[slot].key, key, keysize))
-			return slot;
-	}
-
-	return -ENOKEY;
 }
 
 static bool blk_crypto_mode_supported(void *priv,
@@ -169,7 +151,6 @@ static bool blk_crypto_mode_supported(void *priv,
 static const struct keyslot_mgmt_ll_ops blk_crypto_ksm_ll_ops = {
 	.keyslot_program	= blk_crypto_keyslot_program,
 	.keyslot_evict		= blk_crypto_keyslot_evict,
-	.keyslot_find		= blk_crypto_keyslot_find,
 	.crypto_mode_supported	= blk_crypto_mode_supported,
 };
 

@@ -11,6 +11,8 @@
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION
 
+size_t blk_crypto_keysize(enum blk_crypto_mode_num crypto_mode);
+
 int blk_crypto_init(void);
 
 int blk_crypto_submit_bio(struct bio **bio_ptr);
