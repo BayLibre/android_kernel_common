@@ -93,8 +93,8 @@ bool bio_crypt_ctx_compatible(struct bio *b_1, struct bio *b_2)
 	if (!bio_has_crypt_ctx(b_1))
 		return true;
 
-	return bc1->keyslot == bc2->keyslot &&
-	       bc1->data_unit_size_bits == bc2->data_unit_size_bits;
+	/* Note: equal keyslots also imply equal data_unit_sizes */
+	return bc1->keyslot == bc2->keyslot;
 }
 
 /*
