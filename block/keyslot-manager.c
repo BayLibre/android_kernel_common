@@ -43,7 +43,6 @@ struct keyslot {
 
 struct keyslot_manager {
 	unsigned int num_slots;
-	atomic_t num_idle_slots;
 	struct keyslot_mgmt_ll_ops ksm_ll_ops;
 	void *ll_priv_data;
 
@@ -104,7 +103,6 @@ struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
 		return NULL;
 
 	ksm->num_slots = num_slots;
-	atomic_set(&ksm->num_idle_slots, num_slots);
 	ksm->ksm_ll_ops = *ksm_ll_ops;
 	ksm->ll_priv_data = ll_priv_data;
 
@@ -151,8 +149,6 @@ static void remove_slot_from_lru_list(struct keyslot_manager *ksm, int slot)
 	spin_lock_irqsave(&ksm->idle_slots_lock, flags);
 	list_del(&ksm->slots[slot].idle_slot_node);
 	spin_unlock_irqrestore(&ksm->idle_slots_lock, flags);
-
-	atomic_dec(&ksm->num_idle_slots);
 }
 
 static int find_keyslot(struct keyslot_manager *ksm,
@@ -224,12 +220,12 @@ int keyslot_manager_get_slot_for_key(struct keyslot_manager *ksm,
 		 * If we're here, that means there wasn't a slot that was
 		 * already programmed with the key. So try to program it.
 		 */
-		if (atomic_read(&ksm->num_idle_slots) > 0)
+		if (!list_empty(&ksm->idle_slots))
 			break;
 
 		up_write(&ksm->lock);
 		wait_event(ksm->idle_slots_wait_queue,
-			(atomic_read(&ksm->num_idle_slots) > 0));
+			   !list_empty(&ksm->idle_slots));
 	}
 
 	idle_slot = list_first_entry(&ksm->idle_slots, struct keyslot,
@@ -299,7 +295,6 @@ void keyslot_manager_put_slot(struct keyslot_manager *ksm, unsigned int slot)
 		list_add_tail(&ksm->slots[slot].idle_slot_node,
 			      &ksm->idle_slots);
 		spin_unlock_irqrestore(&ksm->idle_slots_lock, flags);
-		atomic_inc(&ksm->num_idle_slots);
 		wake_up(&ksm->idle_slots_wait_queue);
 	}
 }
