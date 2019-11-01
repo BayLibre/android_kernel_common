@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d658dd9f_cb4193b1",
+        "filename": "Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2019-11-01T14:43:41Z",
+      "side": 1,
+      "message": "note, that KBUILD_VMLINUX_{INIT,MAIN} are merged into KBUILD_VMLINUX_OBJS (see https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd151e9719f184f00d0bb2af864d0aef9beaee7ab). So, you need to add KBUILD_VMLINUX_OBJS to also support 5.1 and later\n\n\nalso, I would rather move this to link-vmlinux.sh, to avoid writing these files unconditionally (see next line)",
+      "range": {
+        "startLine": 1093,
+        "startChar": 9,
+        "endLine": 1093,
+        "endChar": 28
+      },
+      "revId": "069627a170f26891e9039cb6ab93ecced441ed58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfdd0771_36cc1b24",
+        "filename": "arch/arm64/configs/lka_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2019-11-01T14:43:41Z",
+      "side": 1,
+      "message": "I would like to avoid a separate config for this. can we integrate that with what build_abi.sh does already (see https://android.googlesource.com/kernel/build/+/refs/heads/master/build_abi.sh#86) ?\n\nAlso, what are the differences between gki_defconfig and this one?",
+      "revId": "069627a170f26891e9039cb6ab93ecced441ed58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67241973_fb90d219",
+        "filename": "build.config.lka.aarch64",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2019-11-01T14:43:41Z",
+      "side": 1,
+      "message": "also, you might want to use the same mechanism as build_abi.sh: it updates the config _after_ check_defconfig() has potentially run\n\nin case we still need this, this needs now to be reworked as the build.config.* files have been refactored in the meantime",
+      "revId": "069627a170f26891e9039cb6ab93ecced441ed58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
