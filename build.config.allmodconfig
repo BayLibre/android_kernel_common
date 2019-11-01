@@ -9,8 +9,6 @@ function update_config() {
          -d TEST_KMOD  \
          -d XFS_FS \
          -d CPU_BIG_ENDIAN \
-         -d STM \
-         -d TEST_MEMCAT_P \
 
     (cd ${OUT_DIR} && \
      make O=${OUT_DIR} $archsubarch CC=${CC} CROSS_COMPILE=${CROSS_COMPILE} olddefconfig)
