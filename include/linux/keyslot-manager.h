@@ -31,10 +31,12 @@
  */
 struct keyslot_mgmt_ll_ops {
 	int (*keyslot_program)(void *ll_priv_data, const u8 *key,
+			       unsigned int key_size,
 			       enum blk_crypto_mode_num crypto_mode,
 			       unsigned int data_unit_size,
 			       unsigned int slot);
 	int (*keyslot_evict)(void *ll_priv_data, const u8 *key,
+			     unsigned int key_size,
 			     enum blk_crypto_mode_num crypto_mode,
 			     unsigned int data_unit_size,
 			     unsigned int slot);
@@ -42,6 +44,7 @@ struct keyslot_mgmt_ll_ops {
 				      enum blk_crypto_mode_num crypto_mode,
 				      unsigned int data_unit_size);
 	int (*keyslot_find)(void *ll_priv_data, const u8 *key,
+			    unsigned int key_size,
 			    enum blk_crypto_mode_num crypto_mode,
 			    unsigned int data_unit_size);
 };
@@ -55,7 +58,7 @@ extern struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
 
 extern int
 keyslot_manager_get_slot_for_key(struct keyslot_manager *ksm,
-				 const u8 *key,
+				 const u8 *key, unsigned int key_size,
 				 enum blk_crypto_mode_num crypto_mode,
 				 unsigned int data_unit_size);
 
@@ -76,7 +79,7 @@ keyslot_manager_rq_crypto_mode_supported(struct request_queue *q,
 					 unsigned int data_unit_size);
 
 extern int keyslot_manager_evict_key(struct keyslot_manager *ksm,
-				     const u8 *key,
+				     const u8 *key, unsigned int key_size,
 				     enum blk_crypto_mode_num crypto_mode,
 				     unsigned int data_unit_size);
 

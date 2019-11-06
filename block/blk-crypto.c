@@ -97,6 +97,7 @@ static void evict_keyslot(unsigned int slot)
 }
 
 static int blk_crypto_keyslot_program(void *priv, const u8 *key,
+				      unsigned int key_size,
 				      enum blk_crypto_mode_num crypto_mode,
 				      unsigned int data_unit_size,
 				      unsigned int slot)
@@ -127,6 +128,7 @@ static int blk_crypto_keyslot_program(void *priv, const u8 *key,
 }
 
 static int blk_crypto_keyslot_evict(void *priv, const u8 *key,
+				    unsigned int key_size,
 				    enum blk_crypto_mode_num crypto_mode,
 				    unsigned int data_unit_size,
 				    unsigned int slot)
@@ -136,7 +138,7 @@ static int blk_crypto_keyslot_evict(void *priv, const u8 *key,
 }
 
 static int blk_crypto_keyslot_find(void *priv,
-				   const u8 *key,
+				   const u8 *key, unsigned int key_size,
 				   enum blk_crypto_mode_num crypto_mode,
 				   unsigned int data_unit_size_bytes)
 {
@@ -721,6 +723,7 @@ EXPORT_SYMBOL(blk_crypto_start_using_mode);
  * Return: 0 on success, -err on error.
  */
 int blk_crypto_evict_key(struct request_queue *q, const u8 *key,
+			 unsigned int key_size,
 			 enum blk_crypto_mode_num mode,
 			 unsigned int data_unit_size)
 {
@@ -731,7 +734,7 @@ int blk_crypto_evict_key(struct request_queue *q, const u8 *key,
 		ksm = q->ksm;
 	}
 
-	return keyslot_manager_evict_key(ksm, key, mode, data_unit_size);
+	return keyslot_manager_evict_key(ksm, key, key_size, mode, data_unit_size);
 }
 EXPORT_SYMBOL(blk_crypto_evict_key);
 
