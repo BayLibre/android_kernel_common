@@ -297,6 +297,7 @@ static const struct keyslot_mgmt_ll_ops ufshcd_ksm_ops = {
 	.keyslot_evict		= ufshcd_crypto_keyslot_evict,
 	.keyslot_find		= ufshcd_crypto_keyslot_find,
 	.crypto_mode_supported	= ufshcd_crypto_mode_supported,
+	.get_raw_secret		= NULL,
 };
 
 /**

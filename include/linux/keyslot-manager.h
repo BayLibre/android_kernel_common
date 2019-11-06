@@ -24,6 +24,8 @@
  * @keyslot_find:	Returns the slot number that matches the key,
  *			or -ENOKEY if no match found, or -errno on
  *			error.
+ * @get_raw_secret:	Get raw secret in the clear for wrapped keys to be
+ * 			used for filename encryption.
  *
  * This structure should be provided by storage device drivers when they set up
  * a keyslot manager - this structure holds the function ptrs that the keyslot
@@ -47,6 +49,9 @@ struct keyslot_mgmt_ll_ops {
 			    unsigned int key_size,
 			    enum blk_crypto_mode_num crypto_mode,
 			    unsigned int data_unit_size);
+	int (*get_raw_secret)(void *ll_priv_data, const u8 *key,
+			      unsigned int key_size, unsigned int flags,
+			      u8 **secret, unsigned int *secret_size);
 };
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION
@@ -84,6 +89,11 @@ extern int keyslot_manager_evict_key(struct keyslot_manager *ksm,
 				     unsigned int data_unit_size);
 
 extern void keyslot_manager_destroy(struct keyslot_manager *ksm);
+
+extern int keyslot_manager_get_raw_secret(struct keyslot_manager *ksm,
+					  const u8 *key, unsigned int key_size,
+					  unsigned int flags, u8 **secret,
+					  unsigned int *secret_size);
 
 #else /* CONFIG_BLK_INLINE_ENCRYPTION */
 
