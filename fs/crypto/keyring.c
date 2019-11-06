@@ -21,8 +21,12 @@
 #include <crypto/skcipher.h>
 #include <linux/key-type.h>
 #include <linux/seq_file.h>
+#include <linux/blkdev.h>
+#include <linux/keyslot-manager.h>
 
 #include "fscrypt_private.h"
+
+#define FSCRYPT_KEY_WRAPPED_KEY 0x01
 
 static void wipe_master_key_secret(struct fscrypt_master_key_secret *secret)
 {
@@ -497,6 +501,9 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 	struct fscrypt_add_key_arg __user *uarg = _uarg;
 	struct fscrypt_add_key_arg arg;
 	struct fscrypt_master_key_secret secret;
+	u8 *fname_raw_secret;
+	unsigned int fname_raw_secret_len;
+	struct request_queue *q;
 	int err;
 
 	if (copy_from_user(&arg, uarg, sizeof(arg)))
@@ -506,7 +513,7 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 		return -EINVAL;
 
 	if (arg.raw_size < FSCRYPT_MIN_KEY_SIZE ||
-	    arg.raw_size > FSCRYPT_MAX_KEY_SIZE)
+	    arg.raw_size > FSCRYPT_WRAPPED_KEY_SIZE)
 		return -EINVAL;
 
 	if (memchr_inv(arg.__reserved, 0, sizeof(arg.__reserved)))
@@ -515,7 +522,7 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 	memset(&secret, 0, sizeof(secret));
 	secret.size = arg.raw_size;
 	err = -EFAULT;
-	if (copy_from_user(secret.raw, uarg->raw, secret.size))
+	if (copy_from_user(secret.key.raw, uarg->raw, secret.size))
 		goto out_wipe_secret;
 
 	switch (arg.key_spec.type) {
@@ -530,15 +537,45 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 			goto out_wipe_secret;
 		break;
 	case FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER:
-		err = fscrypt_init_hkdf(&secret.hkdf, secret.raw, secret.size);
-		if (err)
-			goto out_wipe_secret;
+#ifdef CONFIG_FS_ENCRYPTION_INLINE_CRYPT
+		if (arg.flags & FSCRYPT_KEY_WRAPPED_KEY) {
+			/*
+			 * For wrapped keys, do not remove raw key as it is needed later.
+			 * Get raw secret using KSM to use for filename encryption.
+			 */
+			q = sb->s_bdev->bd_queue;
+			if (!q || !q->ksm) {
+				err = -EINVAL;
+				goto out_wipe_secret;
+			}
+			err = keyslot_manager_get_raw_secret(q->ksm,
+							     secret.key.wrapped_key,
+							     secret.size,
+							     arg.flags,
+							     &fname_raw_secret,
+							     &fname_raw_secret_len);
+			if (err)
+				goto out_wipe_secret;
 
-		/*
-		 * Now that the HKDF context is initialized, the raw key is no
-		 * longer needed.
-		 */
-		memzero_explicit(secret.raw, secret.size);
+			err = fscrypt_init_hkdf(&secret.hkdf, fname_raw_secret,
+						fname_raw_secret_len);
+			if (err)
+				goto out_wipe_secret;
+		} else {
+#endif
+			err = fscrypt_init_hkdf(&secret.hkdf, secret.key.raw,
+						secret.size);
+			if (err)
+				goto out_wipe_secret;
+
+			/*
+			 * Now that the HKDF context is initialized, the raw key is no
+			 * longer needed.
+			 */
+			memzero_explicit(secret.key.raw, secret.size);
+#ifdef CONFIG_FS_ENCRYPTION_INLINE_CRYPT
+		}
+#endif
 
 		/* Calculate the key identifier and return it to userspace. */
 		err = fscrypt_hkdf_expand(&secret.hkdf,

@@ -374,9 +374,13 @@ struct fscrypt_master_key_secret {
 	/* Size of the raw key in bytes.  Set even if ->raw isn't set. */
 	u32			size;
 
-	/* For v1 policy keys: the raw key.  Wiped for v2 policy keys. */
-	u8			raw[FSCRYPT_MAX_KEY_SIZE];
-
+	union {
+		/* For v1 policy keys: the raw key.  Wiped for v2 policy keys.
+		 * For wrapped keys using v2 policies, not wiped.
+		 */
+		u8			raw[FSCRYPT_MAX_KEY_SIZE];
+		u8			wrapped_key[FSCRYPT_WRAPPED_KEY_SIZE];
+	} key;
 } __randomize_layout;
 
 /*

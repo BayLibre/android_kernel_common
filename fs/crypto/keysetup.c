@@ -305,7 +305,7 @@ static int setup_file_encryption_key(struct fscrypt_info *ci,
 
 	switch (ci->ci_policy.version) {
 	case FSCRYPT_POLICY_V1:
-		err = fscrypt_setup_v1_file_key(ci, mk->mk_secret.raw);
+		err = fscrypt_setup_v1_file_key(ci, mk->mk_secret.key.raw);
 		break;
 	case FSCRYPT_POLICY_V2:
 		err = fscrypt_setup_v2_file_key(ci, mk);
