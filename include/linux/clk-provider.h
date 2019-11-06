@@ -360,6 +360,7 @@ struct clk_hw *clk_hw_register_fixed_rate_with_accuracy(struct device *dev,
 void clk_hw_unregister_fixed_rate(struct clk_hw *hw);
 
 void of_fixed_clk_setup(struct device_node *np);
+int clk_sync_state(struct device *dev);
 
 /**
  * struct clk_gate - gating clock
