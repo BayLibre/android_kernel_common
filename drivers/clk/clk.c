@@ -72,6 +72,7 @@ struct clk_core {
 	unsigned long		flags;
 	bool			orphan;
 	bool			rpm_enabled;
+	bool			need_sync;
 	unsigned int		enable_count;
 	unsigned int		prepare_count;
 	unsigned int		protect_count;
@@ -1299,6 +1300,46 @@ static int clk_disable_unused(void)
 	return 0;
 }
 late_initcall_sync(clk_disable_unused);
+
+static void clk_unprepare_disable_dev_subtree(struct clk_core *core, struct device *dev)
+{
+	struct clk_core *child;
+	unsigned long flags;
+
+	lockdep_assert_held(&prepare_lock);
+
+	hlist_for_each_entry(child, &core->children, child_node)
+		clk_unprepare_disable_dev_subtree(child, dev);
+
+	if (core->dev != dev || !core->need_sync)
+		return;
+
+	if (clk_pm_runtime_get(core))
+		return;
+
+	flags = clk_enable_lock();
+	clk_core_disable(core);
+	clk_enable_unlock(flags);
+	clk_core_unprepare(core);
+
+	clk_pm_runtime_put(core);
+}
+
+void clk_sync_state(struct device *dev)
+{
+	struct clk_core *core;
+
+	clk_prepare_lock();
+
+	hlist_for_each_entry(core, &clk_root_list, child_node)
+		clk_unprepare_disable_dev_subtree(core, dev);
+
+	hlist_for_each_entry(core, &clk_orphan_list, child_node)
+		clk_unprepare_disable_dev_subtree(core, dev);
+
+	clk_prepare_unlock();
+}
+EXPORT_SYMBOL_GPL(clk_sync_state);
 
 static int clk_core_determine_round_nolock(struct clk_core *core,
 					   struct clk_rate_request *req)
@@ -3389,8 +3430,12 @@ static int __clk_core_init(struct clk_core *core)
 	 * don't get accidentally disabled when walking the orphan tree and
 	 * reparenting clocks
 	 */
-	if (core->flags & CLK_IS_CRITICAL) {
+	if (core->flags & CLK_IS_CRITICAL ||
+	    (dev_has_sync_state(core->dev) && clk_core_is_enabled(core))) {
 		unsigned long flags;
+
+		if (!(core->flags & CLK_IS_CRITICAL))
+			core->need_sync = true;
 
 		clk_core_prepare(core);
 
