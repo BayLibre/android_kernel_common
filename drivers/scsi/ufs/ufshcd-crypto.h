@@ -24,7 +24,8 @@ static inline bool ufshcd_keyslot_valid(struct ufs_hba *hba, unsigned int slot)
 
 static inline bool ufshcd_hba_is_crypto_supported(struct ufs_hba *hba)
 {
-	return hba->crypto_capabilities.reg_val != 0;
+	return ((hba->crypto_capabilities.reg_val != 0) &&
+		!(hba->quirks & UFSHCI_QUIRK_BROKEN_CRYPTO));
 }
 
 static inline bool ufshcd_is_crypto_enabled(struct ufs_hba *hba)

@@ -672,6 +672,13 @@ struct ufs_hba {
 	 * enabled via HCE register.
 	 */
 	#define UFSHCI_QUIRK_BROKEN_HCE				0x400
+	/*
+	 * This quirks needs to be enabled if host controller does not
+	 * support inline encryption
+	 * ??? is UFSHCI right? or UFSHCD? -jstultz
+	 */
+	#define UFSHCI_QUIRK_BROKEN_CRYPTO			0x800
+
 	unsigned int quirks;	/* Deviations from standard UFSHCI spec. */
 
 	/* Device deviations from standard UFS device spec. */
