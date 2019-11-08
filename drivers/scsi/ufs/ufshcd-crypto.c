@@ -313,7 +313,8 @@ int ufshcd_hba_init_crypto_spec(struct ufs_hba *hba,
 	/* Default to disabling crypto */
 	hba->caps &= ~UFSHCD_CAP_CRYPTO;
 
-	if (!(hba->capabilities & MASK_CRYPTO_SUPPORT)) {
+	if (!(hba->capabilities & MASK_CRYPTO_SUPPORT) ||
+	    (hba->quirks & UFSHCD_QUIRK_BROKEN_CRYPTO)) {
 		err = -ENODEV;
 		goto out;
 	}
