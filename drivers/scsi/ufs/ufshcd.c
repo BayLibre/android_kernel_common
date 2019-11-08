@@ -8441,7 +8441,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 
 	/* Init crypto */
 	err = ufshcd_hba_init_crypto(hba);
-	if (err) {
+	if (err && err != -ENODEV) {
 		dev_err(hba->dev, "crypto setup failed\n");
 		goto out_remove_scsi_host;
 	}
