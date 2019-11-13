@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "30e1031b_5688d493",
+        "filename": "drivers/clk/qcom/dispcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1594686
+      },
+      "writtenOn": "2019-11-13T23:58:09Z",
+      "side": 1,
+      "message": "fwiw, the intention I had (for better or worse) was to set this flag on leaf node clks, and then propagate the inherit_enabled up the clk tree.\n\nWhen it comes to parent clks with multiple children, we can\u0027t really infer why it is enabled if it is.",
+      "parentUuid": "bc9c4ee9_ac921503",
+      "range": {
+        "startLine": 566,
+        "startChar": 34,
+        "endLine": 566,
+        "endChar": 56
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "880bd0ef_69ac68b8",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-10-10T20:34:29Z",
       "side": 1,
       "message": "Instead of the new flag, just set CLK_IGNORE_UNUSED for clock that are left on by bootloader.",
+      "range": {
+        "startLine": 1317,
+        "startChar": 30,
+        "endLine": 1317,
+        "endChar": 52
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8862bcee_a17b7fe9",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1594686
+      },
+      "writtenOn": "2019-11-13T23:58:09Z",
+      "side": 1,
+      "message": "There is one (well two) subtle difference between CLK_INHERIT_BOOTLOADER (which might not be the best name) and CLK_IGNORE_UNUSED.  With CLK_IGNORE_UNUSED we\u0027d have to set it all the way up the clk tree.. and parent clks wouldn\u0027t be disabled if the leaf node clk is in fact not enabled by bootloader.  (Think of the case w/ a hot-pluggable display, where bootloader will only enable display if a monitor is attached.)",
+      "parentUuid": "880bd0ef_69ac68b8",
       "range": {
         "startLine": 1317,
         "startChar": 30,
