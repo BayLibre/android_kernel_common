@@ -142,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "5c9325aa_2f4516b1",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2019-11-13T22:25:33Z",
+      "side": 1,
+      "message": "Thanks for the quick feedback!\n\nHrm. The clks/clocks-name bits in the clockprovider seems a little sketchy (the bindings for that might be a tough sell upstream). Are you suggesting a separate dummy driver instead?\n\nI just took a swing trying to use my own references and do something like clk_core_prepare_enable() on the clk_hw core but that function isn\u0027t exported. So I\u0027m still fishing around for a path.\n\nI\u0027d be happy to checkout and play with your approach, just let me know!",
+      "parentUuid": "8f727d25_408c0147",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
