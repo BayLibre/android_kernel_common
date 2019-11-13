@@ -190,6 +190,30 @@
     },
     {
       "key": {
+        "uuid": "b24a8b32_da3cdfdb",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-13T23:11:29Z",
+      "side": 1,
+      "message": "Try this patch. You\u0027ll just need a 1 line change below after you pull in this patch.",
+      "parentUuid": "c89d8a41_13d7c3c5",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
@@ -206,6 +230,29 @@
         "startChar": 15,
         "endLine": 3623,
         "endChar": 21
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3073cd44_1681ad54",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3624,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-13T23:11:29Z",
+      "side": 1,
+      "message": "After this line, add:\n.sync_state \u003d clk_sync_state,\n\nAnd that should be it. You might need to do the same for the display cc too.",
+      "range": {
+        "startLine": 3624,
+        "startChar": 0,
+        "endLine": 3624,
+        "endChar": 43
       },
       "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
