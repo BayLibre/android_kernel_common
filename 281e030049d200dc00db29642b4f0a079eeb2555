@@ -166,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "c89d8a41_13d7c3c5",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-13T22:36:16Z",
+      "side": 1,
+      "message": "Clock providers using clocks/clock-names is completely reasonable. The only weird part is getting their own clocks. This is just a suggestion if you want to handle it locally in the provider driver. You could also change your provider\u0027s ops to not turn off clocks if they are on at boot. You could do all of that internally easily without trying to do clk_get(). But doing it through the clock API is just cleaner and simpler.\n\nI\u0027ll push my test patch today or tomorrow.",
+      "parentUuid": "5c9325aa_2f4516b1",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
