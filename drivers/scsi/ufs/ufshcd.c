@@ -861,14 +861,7 @@ static void ufshcd_enable_run_stop_reg(struct ufs_hba *hba)
  */
 static inline void ufshcd_hba_start(struct ufs_hba *hba)
 {
-	u32 val = CONTROLLER_ENABLE;
-
-	if (ufshcd_hba_is_crypto_supported(hba)) {
-		ufshcd_crypto_enable(hba);
-		val |= CRYPTO_GENERAL_ENABLE;
-	}
-
-	ufshcd_writel(hba, val, REG_CONTROLLER_ENABLE);
+	ufshcd_writel(hba, CONTROLLER_ENABLE, REG_CONTROLLER_ENABLE);
 }
 
 /**
@@ -4197,10 +4190,11 @@ out:
  * @hba: per adapter instance
  *
  * To bring UFS host controller to operational state,
- * 1. Enable required interrupts
- * 2. Configure interrupt aggregation
- * 3. Program UTRL and UTMRL base address
- * 4. Configure run-stop-registers
+ * 1. Enable crypto if supported
+ * 2. Enable required interrupts
+ * 3. Configure interrupt aggregation
+ * 4. Program UTRL and UTMRL base address
+ * 5. Configure run-stop-registers
  *
  * Returns 0 on success, non-zero value on failure
  */
@@ -4208,6 +4202,14 @@ static int ufshcd_make_hba_operational(struct ufs_hba *hba)
 {
 	int err = 0;
 	u32 reg;
+
+	/* Enable crypto if supported */
+	if (ufshcd_hba_is_crypto_supported(hba)) {
+		reg = ufshcd_readl(hba, REG_CONTROLLER_ENABLE);
+		reg |= CRYPTO_GENERAL_ENABLE;
+		ufshcd_writel(hba, reg, REG_CONTROLLER_ENABLE);
+		ufshcd_crypto_enable(hba);
+	}
 
 	/* Enable required interrupts */
 	ufshcd_enable_intr(hba, UFSHCD_ENABLE_INTRS);
