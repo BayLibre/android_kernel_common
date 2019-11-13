@@ -94,6 +94,30 @@
     },
     {
       "key": {
+        "uuid": "8b54b851_abd19cd4",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2019-11-13T17:24:32Z",
+      "side": 1,
+      "message": "Sorry for the delayed responce, I finally took a swing at this last friday, and am starting to look at it again. Unfortunately I\u0027m missing something as trying to use clk_get from the provider driver seems problematic, as I have the clk name, but clk_get wants a the indirect clk id name (so instead of the specific \"gcc_disp_axi_clk\" it looks for \"ref\" or whatever the indirect name is in the dt). \n\nIs there a better interface to get the proper handle to enable in the provider driver?",
+      "parentUuid": "715a53dd_61bd0cb5",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
