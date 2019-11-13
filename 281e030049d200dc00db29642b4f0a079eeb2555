@@ -118,6 +118,30 @@
     },
     {
       "key": {
+        "uuid": "8f727d25_408c0147",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-13T21:55:54Z",
+      "side": 1,
+      "message": "You could technically have a clocks/clocks-name property pointing to clocks in your own device. And then use the normal clk_get() APIs to get it. Let me know if you need more clarification in this area.\n\nBut I\u0027ve also been playing with the clock framework code to try and have the clock framework provide an easy API to handle this for the clock providers. It\u0027s not ready for upstream yet because I need to think through a bunch of cases, but it should work for your specific case. Would you able to give it a shot if I push it here?",
+      "parentUuid": "8b54b851_abd19cd4",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
