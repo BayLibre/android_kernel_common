@@ -22,6 +22,30 @@
       "revId": "a15c1b629b64e83b65d89f569ef57abcd1c707cc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13ad9643_f3bc8d9b",
+        "filename": "net/ipv4/af_inet.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 1053408
+      },
+      "writtenOn": "2019-11-13T01:09:20Z",
+      "side": 1,
+      "message": "Default value is 1 which preserves the existing behavior. Setting the value to 0 will prevent\nuserspace applications from binding to these ports even when they are\nexplicitly requested which is the behavior which we are looking for.",
+      "parentUuid": "8e8d7833_3510d3df",
+      "range": {
+        "startLine": 1818,
+        "startChar": 0,
+        "endLine": 1818,
+        "endChar": 41
+      },
+      "revId": "a15c1b629b64e83b65d89f569ef57abcd1c707cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
