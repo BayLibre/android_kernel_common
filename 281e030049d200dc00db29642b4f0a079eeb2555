@@ -382,6 +382,30 @@
     },
     {
       "key": {
+        "uuid": "33f3c20b_d330085f",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-14T21:56:37Z",
+      "side": 1,
+      "message": "I updated (2) again right now to be something much closer to what we could upstream. It also sets the ground work for some future work. It intentionally doesn\u0027t touch clock tree of clock providers that haven\u0027t implemented sync_state() but if you add sync_state() support to a clock provider, then devices that depend on it will work correctly.\n\nWhen you do test it, if you can confirm you tested with patchset 2 or later, that\u0027ll be nice.",
+      "parentUuid": "61210bc8_b71f0839",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
