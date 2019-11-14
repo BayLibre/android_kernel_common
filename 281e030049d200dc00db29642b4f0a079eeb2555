@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "5fa944de_5fac6ed9",
+        "filename": "drivers/clk/qcom/dispcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-14T04:23:41Z",
+      "side": 1,
+      "message": "Thanks for the explanation. What you did was the best that could be done where you wrote the patch.",
+      "parentUuid": "30e1031b_5688d493",
+      "range": {
+        "startLine": 566,
+        "startChar": 34,
+        "endLine": 566,
+        "endChar": 56
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "880bd0ef_69ac68b8",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "There is one (well two) subtle difference between CLK_INHERIT_BOOTLOADER (which might not be the best name) and CLK_IGNORE_UNUSED.  With CLK_IGNORE_UNUSED we\u0027d have to set it all the way up the clk tree.. and parent clks wouldn\u0027t be disabled if the leaf node clk is in fact not enabled by bootloader.  (Think of the case w/ a hot-pluggable display, where bootloader will only enable display if a monitor is attached.)",
       "parentUuid": "880bd0ef_69ac68b8",
+      "range": {
+        "startLine": 1317,
+        "startChar": 30,
+        "endLine": 1317,
+        "endChar": 52
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c57fe25_6911c8af",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-14T04:23:41Z",
+      "side": 1,
+      "message": "Right, that\u0027s why in the comment below I was asking to do a clk_prepare/enable() after registering the clock. To walk the enable up the tree. In any case, I was just trying to give a high level view of what needs to be done with sync_state() for this specific driver. Not a general solution.\n\nEven today, with everything built in statically, the clock framework doesn\u0027t handle boot loader enabled clocks correctly (like the examples you gave with a shared clock). First step is to get current functionality (keeping clocks on when there\u0027s only one user) working with modules. The next step is to fix all the other issues -- shared clock, limiting rate, etc.",
+      "parentUuid": "8862bcee_a17b7fe9",
       "range": {
         "startLine": 1317,
         "startChar": 30,
