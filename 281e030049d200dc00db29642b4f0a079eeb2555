@@ -358,6 +358,30 @@
     },
     {
       "key": {
+        "uuid": "61210bc8_b71f0839",
+        "filename": "drivers/clk/qcom/gcc-sdm845.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2019-11-14T07:49:44Z",
+      "side": 1,
+      "message": "Actually, there are two options to try:\n1. Tested, but WIP:\nhttps://android-review.googlesource.com/c/kernel/common/+/1164507\n\n2. Untested but a more complete option for upstream:\nhttps://android-review.googlesource.com/c/kernel/common/+/1166464/\nhttps://android-review.googlesource.com/c/kernel/common/+/1166465/\n\nCould you please try (2) first? And then if it doesn\u0027t work, try (1)?\n\nUpon further inspection, looks like you already get back a struct clk* pointer when you register your clocks. The clk_hw struct you register has it\u0027s clk field populated by a clk pointer. Looks like you could call clk_prepare_enable() on it too.",
+      "parentUuid": "4cbc415f_07306f32",
+      "range": {
+        "startLine": 3617,
+        "startChar": 36,
+        "endLine": 3617,
+        "endChar": 51
+      },
+      "revId": "281e030049d200dc00db29642b4f0a079eeb2555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99c16d52_87d2e1ed",
         "filename": "drivers/clk/qcom/gcc-sdm845.c",
         "patchSetId": 3
