@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f94d3791_adb2ce34",
+        "filename": "fs/overlayfs/super.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2019-11-19T07:40:58Z",
+      "side": 1,
+      "message": "This line seems to be causing the occasional hard GMU boot crashes on db845c. \n\nIn looking at it, I\u0027m worried that we end up aliasing the exported override_creds symbol from kernel/cred.c. I need to try to better understand the macro to make sure, but changing this to:\n   module_param_named(mnt_override_creds, ovl_override_creds_def, bool, 0644);\n\nalong with setting MODULE_PARM_DESC argument below to be for mnt_override_creds, seems to avoid the crash entirely.",
+      "revId": "0ee40e0e58eb1c8a721453a1db66c5c543aa7e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20996530_527f4df9",
+        "filename": "fs/overlayfs/super.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2019-11-19T07:40:58Z",
+      "side": 1,
+      "message": "Maybe not as critical, but MODULE_PARM_DESC here probably should describe the \"override_creds\" module argument, not the underlying ovl_overrides_creds_def value.",
+      "revId": "0ee40e0e58eb1c8a721453a1db66c5c543aa7e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
