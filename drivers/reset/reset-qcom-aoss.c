@@ -127,7 +127,7 @@ static struct platform_driver qcom_aoss_reset_driver = {
 	},
 };
 
-builtin_platform_driver(qcom_aoss_reset_driver);
+module_platform_driver(qcom_aoss_reset_driver);
 
 MODULE_DESCRIPTION("Qualcomm AOSS Reset Driver");
 MODULE_LICENSE("GPL v2");
