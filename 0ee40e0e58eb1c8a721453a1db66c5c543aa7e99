@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b4c64967_2320496d",
+        "filename": "fs/overlayfs/super.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2019-11-19T17:24:09Z",
+      "side": 1,
+      "message": "\u003cwaves hand\u003e this can not be the droid you are looking for. Something odd is certainly afoot.\n\nAndroid code is looking for override_creds in the parameters/module arguments, changing this will break _so_ much user space API :-( (which means we may have to start now to address an API change). By making this change, all overlayfs mounts (including any temporary ones) are \u0027done wrong\u0027, so we need to know if there is an active overlayfs mount when these problems happen. Thus, two things change, when you make this alteration, so it is not \u0027science\u0027.\n\nThe vars generated are static, and name is always prefixed/suffixed or turned into a string so IDK how it can alias with this macro choice. The whole idea of using module_param_named is to ensure that the name override_creds is kept internal to the module. As proof of concept of unique name isolation, if there is an aliasing problem, then module_param() macro could _never_ be used.\n\nlinux/cred.h (which defines override_creds) is _included_ elsewhere in overlayfs, but not in overlayfs/super.c for this private name (but to be clear, never a variable or symbol), so even if we squint, it still does not make sense that it results in (local object) trouble.\n\nnm -o fs/overlayfs/*.o | grep override_creds\nxxxx.o: U override_creds (all cases where override_creds is called)\nxxxx.o: U ovl_override_creds (all cases where ovl_override_creds is called)\n. . .\nsuper.o: xxxx d ovl_override_creds_def\nsuper.o: xxxx r __param_overide_creds\nsuper.o: xxxx r __param_str_override_creds\n. . .\nutil.o: xxxx T ovl_override_creds\n\nso absolutely no aliasing with override_creds, even the strings are not a problem (the parameter string is recorded as \"overlay.override_creds\", however \"override_creds\" is passed into seq_printf.\n\nDo you still experience trouble if overlayfs is turned into a module (which would require it to be loaded int first_stage_init, which is not available in Android-10, but is available in AOSP and next Android release)? Just need to understand if the problem is within the compilation of overlayfs, or somewhere in the kernel or kernel linker (lld linker bug?)",
+      "parentUuid": "f94d3791_adb2ce34",
+      "revId": "0ee40e0e58eb1c8a721453a1db66c5c543aa7e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "20996530_527f4df9",
         "filename": "fs/overlayfs/super.c",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2019-11-19T07:40:58Z",
       "side": 1,
       "message": "Maybe not as critical, but MODULE_PARM_DESC here probably should describe the \"override_creds\" module argument, not the underlying ovl_overrides_creds_def value.",
+      "revId": "0ee40e0e58eb1c8a721453a1db66c5c543aa7e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c4d951f_411bc8fd",
+        "filename": "fs/overlayfs/super.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2019-11-19T17:24:09Z",
+      "side": 1,
+      "message": "Good catch",
+      "parentUuid": "20996530_527f4df9",
       "revId": "0ee40e0e58eb1c8a721453a1db66c5c543aa7e99",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
