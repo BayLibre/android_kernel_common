@@ -73,3 +73,16 @@ config GKI_HACKS_TO_FIX
 
 	  Unless you are building a GKI kernel to be used with modules
 	  built from a different config, say N here.
+
+config BOARD_VENDOR_RAMDISK_KERNEL_MODULES
+	string "Android module load order for first stage init"
+	default ""
+	help
+	  List and load order of module file basenames to pack into the
+	  ramdisk in support of first stage init.  Since these are basenames
+	  it is the responsibility of the build tools to find and incorporate
+	  the correct class of modules into the ramdisk, and to generate the
+	  modules.load, modules.dep and other modprobe files.
+
+	  If the list is empty, the default, all modules are stuffed into the
+	  ramdisk in no particular order.
