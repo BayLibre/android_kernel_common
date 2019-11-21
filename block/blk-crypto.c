@@ -173,6 +173,7 @@ static const struct keyslot_mgmt_ll_ops blk_crypto_ksm_ll_ops = {
 	.keyslot_evict		= blk_crypto_keyslot_evict,
 	.keyslot_find		= blk_crypto_keyslot_find,
 	.crypto_mode_supported	= blk_crypto_mode_supported,
+	.get_raw_secret 	= NULL,
 };
 
 static void blk_crypto_encrypt_endio(struct bio *enc_bio)
