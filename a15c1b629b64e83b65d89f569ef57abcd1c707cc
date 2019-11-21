@@ -119,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "109ed850_1f365de2",
+        "filename": "net/ipv4/udp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-11-21T20:53:19Z",
+      "side": 1,
+      "message": "What are you looking for in terms of error propagation? It looks like the callers of this are just testing for !0 and then returning an error.\n\nIn inet_autobind(), this would result in -EAGAIN back to userspace... would you prefer a less transient sounding error for this case? Maybe -EINVAL?\n\nIn __inet_bind(), this would result in -EADDRINUSE. Maybe -EINVAL for this one too?\n\nIn inet_csk_listen_start(), I\u0027m not sure what would be returned (whatever comes back from sk_prot-\u003ehash(sk)).",
+      "parentUuid": "fef4782c_b746cc81",
+      "range": {
+        "startLine": 278,
+        "startChar": 1,
+        "endLine": 278,
+        "endChar": 2
+      },
+      "revId": "a15c1b629b64e83b65d89f569ef57abcd1c707cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "100104ee_0ea625cd",
         "filename": "net/sctp/socket.c",
         "patchSetId": 1
@@ -130,6 +154,30 @@
       "writtenOn": "2019-11-13T04:57:33Z",
       "side": 1,
       "message": "this test can be before the spin_lock() acquisition.\n\nalso probably needs to figure out how to get a sane error return code back to userspace.",
+      "range": {
+        "startLine": 8214,
+        "startChar": 2,
+        "endLine": 8214,
+        "endChar": 4
+      },
+      "revId": "a15c1b629b64e83b65d89f569ef57abcd1c707cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4d36e4c_4c24a14c",
+        "filename": "net/sctp/socket.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8214,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-11-21T20:53:19Z",
+      "side": 1,
+      "message": "same question on error propagation.",
+      "parentUuid": "100104ee_0ea625cd",
       "range": {
         "startLine": 8214,
         "startChar": 2,
