@@ -172,6 +172,12 @@ struct fscrypt_info {
 	 * encryption rather than the traditional filesystem layer encryption.
 	 */
 	const u8 *ci_inline_crypt_key;
+
+	/*
+	 * Size of the key for inline encryption. Wrapped keys allow varied
+	 * key sizes which needs to be passed around.
+	 */
+	unsigned int ci_inline_crypt_key_size;
 #endif
 
 	/* True if the key should be freed when this fscrypt_info is freed */
