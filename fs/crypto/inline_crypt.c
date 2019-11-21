@@ -51,6 +51,7 @@ int fscrypt_set_inline_crypt_key(struct fscrypt_info *ci, const u8 *derived_key)
 	const struct fscrypt_mode *mode = ci->ci_mode;
 	const struct super_block *sb = ci->ci_inode->i_sb;
 
+	ci->ci_inline_crypt_key_size = mode->keysize;
 	ci->ci_inline_crypt_key = kmemdup(derived_key, mode->keysize, GFP_NOFS);
 	if (!ci->ci_inline_crypt_key)
 		return -ENOMEM;
@@ -70,7 +71,9 @@ void fscrypt_free_inline_crypt_key(struct fscrypt_info *ci)
 
 		blk_crypto_evict_key(sb->s_bdev->bd_queue,
 				     ci->ci_inline_crypt_key,
+				     ci->ci_inline_crypt_key_size,
 				     mode->blk_crypto_mode, sb->s_blocksize);
+		ci->ci_inline_crypt_key_size = 0;
 		kzfree(ci->ci_inline_crypt_key);
 	}
 }
@@ -152,6 +155,7 @@ out_unlock:
 	mutex_unlock(&inline_crypt_setup_mutex);
 out:
 	if (err == 0) {
+		ci->ci_inline_crypt_key_size = mode->keysize;
 		ci->ci_inline_crypt_key = raw_key;
 		/*
 		 * Since each struct fscrypt_master_key belongs to a particular
@@ -186,6 +190,7 @@ void fscrypt_evict_inline_crypt_keys(struct fscrypt_master_key *mk)
 
 		if (raw_key != NULL) {
 			blk_crypto_evict_key(bdev->bd_queue, raw_key,
+					     fscrypt_modes[i].keysize,
 					     fscrypt_modes[i].blk_crypto_mode,
 					     mk->mk_data_unit_size);
 			kzfree(raw_key);
@@ -268,6 +273,7 @@ int fscrypt_set_bio_crypt_ctx(struct bio *bio, const struct inode *inode,
 	dun = fscrypt_generate_dun(ci, first_lblk);
 
 	return bio_crypt_set_ctx(bio, ci->ci_inline_crypt_key,
+				 ci->ci_inline_crypt_key_size,
 				 ci->ci_mode->blk_crypto_mode,
 				 dun, inode->i_blkbits, gfp_mask);
 }

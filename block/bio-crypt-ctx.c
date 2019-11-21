@@ -135,7 +135,8 @@ int bio_crypt_ctx_acquire_keyslot(struct bio *bio, struct keyslot_manager *ksm)
 		return -ENOMEM;
 
 	slot = keyslot_manager_get_slot_for_key(ksm,
-			bio_crypt_raw_key(bio), crypto_mode,
+			bio_crypt_raw_key(bio), bio_crypt_raw_key_size(bio),
+			crypto_mode,
 			1 << bio->bi_crypt_context->data_unit_size_bits);
 	if (slot < 0)
 		return slot;

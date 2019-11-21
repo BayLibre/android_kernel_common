@@ -17,6 +17,7 @@ enum blk_crypto_mode_num {
 struct bio_crypt_ctx {
 	int keyslot;
 	const u8 *raw_key;
+	unsigned int size;
 	enum blk_crypto_mode_num crypto_mode;
 	u64 data_unit_num;
 	unsigned int data_unit_size_bits;
@@ -67,7 +68,7 @@ extern struct bio_crypt_ctx *bio_crypt_alloc_ctx(gfp_t gfp_mask);
 extern void bio_crypt_free_ctx(struct bio *bio);
 
 static inline int bio_crypt_set_ctx(struct bio *bio,
-				    const u8 *raw_key,
+				    const u8 *raw_key, unsigned int key_size,
 				    enum blk_crypto_mode_num crypto_mode,
 				    u64 dun,
 				    unsigned int dun_bits,
@@ -80,6 +81,7 @@ static inline int bio_crypt_set_ctx(struct bio *bio,
 		return -ENOMEM;
 
 	crypt_ctx->raw_key = raw_key;
+	crypt_ctx->size = key_size;
 	crypt_ctx->data_unit_num = dun;
 	crypt_ctx->data_unit_size_bits = dun_bits;
 	crypt_ctx->crypto_mode = crypto_mode;
@@ -116,6 +118,11 @@ extern int bio_crypt_ctx_acquire_keyslot(struct bio *bio,
 static inline const u8 *bio_crypt_raw_key(struct bio *bio)
 {
 	return bio->bi_crypt_context->raw_key;
+}
+
+static inline unsigned int bio_crypt_raw_key_size(struct bio *bio)
+{
+	return bio->bi_crypt_context->size;
 }
 
 static inline enum blk_crypto_mode_num bio_crypto_mode(struct bio *bio)
@@ -196,6 +203,11 @@ static inline int bio_crypt_get_keyslot(struct bio *bio)
 static inline u8 *bio_crypt_raw_key(struct bio *bio)
 {
 	return NULL;
+}
+
+static inline unsigned int bio_crypt_raw_key_size(struct bio *bio)
+{
+	return 0;
 }
 
 static inline u64 bio_crypt_data_unit_num(struct bio *bio)
