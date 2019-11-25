@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f199f15f_ea0b28a1",
+        "filename": "drivers/power/supply/power_supply_sysfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-11-25T21:49:40Z",
+      "side": 1,
+      "message": "Move after \u0027serial_number\u0027 to preserve offsets for existing fields.",
+      "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bcc56f2_16ffcf7d",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-11-25T21:49:40Z",
+      "side": 1,
+      "message": "move these after SERIAL_NUMBER so values of existing enums are preserved.",
+      "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
