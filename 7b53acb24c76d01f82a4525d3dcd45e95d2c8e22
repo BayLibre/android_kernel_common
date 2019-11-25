@@ -46,6 +46,29 @@
       "revId": "7b53acb24c76d01f82a4525d3dcd45e95d2c8e22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4684ef03_1560798c",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2019-11-25T09:32:12Z",
+      "side": 1,
+      "message": "Does this mean schedtune based CPU frequency boost does not work? Todd told us that schedtune will still work when Uclamp is disabled.",
+      "range": {
+        "startLine": 331,
+        "startChar": 20,
+        "endLine": 331,
+        "endChar": 22
+      },
+      "revId": "7b53acb24c76d01f82a4525d3dcd45e95d2c8e22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
