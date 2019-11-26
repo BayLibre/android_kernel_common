@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "783c4821_e56f5ea6",
+        "filename": "drivers/power/supply/power_supply_sysfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1595743
+      },
+      "writtenOn": "2019-11-26T04:44:15Z",
+      "side": 1,
+      "message": "\u003e Move after \u0027serial_number\u0027 to preserve offsets for existing fields.\n\nProperties after \"model_name\" are displayed as string and the properties above \"model_name\" are only having integers. Since the new properties show \"integer\" values, I\u0027ve added them after \" calibrate\".",
+      "parentUuid": "f199f15f_ea0b28a1",
+      "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8bcc56f2_16ffcf7d",
         "filename": "include/linux/power_supply.h",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20a75d1f_f83ec8f7",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1595743
+      },
+      "writtenOn": "2019-11-26T04:44:15Z",
+      "side": 1,
+      "message": "\u003e move these after SERIAL_NUMBER so values of existing enums are preserved.\n\nMy comment in power_supply_sysfs.c applies here.",
+      "parentUuid": "8bcc56f2_16ffcf7d",
+      "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
