@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "7898ab40_40023ba0",
+        "filename": "drivers/power/supply/power_supply_sysfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2019-11-26T20:58:41Z",
+      "side": 1,
+      "message": "Instead of the QC-specific vendor attributes, can we change this to generic attributes that could be used by any vendor for this kind of thing? Maybe name them \"pad1\", \"pad2\",... or \"vendor1\", \"vendor2\", ... -- maybe have 6 or 8 of them.\n\nThen this would work for other vendors without adding their specific attributes.",
+      "parentUuid": "783c4821_e56f5ea6",
+      "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8bcc56f2_16ffcf7d",
         "filename": "include/linux/power_supply.h",
         "patchSetId": 3
