@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "54cec021_b81c16d5",
+        "filename": "drivers/power/supply/power_supply_sysfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1595743
+      },
+      "writtenOn": "2019-11-26T23:57:53Z",
+      "side": 1,
+      "message": "I like your suggestion. However, having an attribute name that is decipherable looks good to me. In the worst case, I can add \"soh\" property alone to the power_supply_property list and move the others (\"moisture_detection_en\" etc) under our own class device.",
+      "parentUuid": "7898ab40_40023ba0",
+      "revId": "88079e78bd806edcc1d6ca62aeb67eaae7b45994",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8bcc56f2_16ffcf7d",
         "filename": "include/linux/power_supply.h",
         "patchSetId": 3
