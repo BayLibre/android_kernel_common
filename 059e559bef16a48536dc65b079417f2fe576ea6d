@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "73af153f_d99dd9b6",
+        "filename": "drivers/tty/serial/samsung.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 1587589
+      },
+      "writtenOn": "2019-11-26T01:34:25Z",
+      "side": 1,
+      "message": "okay, let me check if it is needed or not.",
+      "parentUuid": "8b1bafb2_2581ba55",
+      "range": {
+        "startLine": 1668,
+        "startChar": 0,
+        "endLine": 1668,
+        "endChar": 10
+      },
+      "revId": "059e559bef16a48536dc65b079417f2fe576ea6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "782aaceb_4129bcf2",
         "filename": "drivers/tty/serial/samsung.c",
         "patchSetId": 2
@@ -94,6 +118,30 @@
     },
     {
       "key": {
+        "uuid": "5dbaa574_8c430859",
+        "filename": "drivers/tty/serial/samsung.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1891,
+      "author": {
+        "id": 1587589
+      },
+      "writtenOn": "2019-11-26T01:34:25Z",
+      "side": 1,
+      "message": "I would like to make know file for module driver of samsung serial.\nSo I change as global array for it.",
+      "parentUuid": "b1714514_30322aee",
+      "range": {
+        "startLine": 1891,
+        "startChar": 13,
+        "endLine": 1891,
+        "endChar": 33
+      },
+      "revId": "059e559bef16a48536dc65b079417f2fe576ea6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f03e65bd_13cc4504",
         "filename": "drivers/tty/serial/samsung.c",
         "patchSetId": 2
@@ -105,6 +153,30 @@
       "writtenOn": "2019-11-21T17:08:49Z",
       "side": 1,
       "message": "ftrace is your friend, this is not needed.",
+      "range": {
+        "startLine": 1916,
+        "startChar": 0,
+        "endLine": 1916,
+        "endChar": 51
+      },
+      "revId": "059e559bef16a48536dc65b079417f2fe576ea6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89c782f7_37e15899",
+        "filename": "drivers/tty/serial/samsung.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1916,
+      "author": {
+        "id": 1587589
+      },
+      "writtenOn": "2019-11-26T01:34:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f03e65bd_13cc4504",
       "range": {
         "startLine": 1916,
         "startChar": 0,
@@ -140,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "77a54f01_141bbea5",
+        "filename": "drivers/tty/serial/samsung.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1587589
+      },
+      "writtenOn": "2019-11-26T01:34:25Z",
+      "side": 1,
+      "message": "I would like to make know file for module driver of samsung serial.\nSo I moved this to header file to share with new samsung serial driver file.",
+      "parentUuid": "fbe322ee_e0e488d9",
+      "range": {
+        "startLine": 150,
+        "startChar": 1,
+        "endLine": 163,
+        "endChar": 1
+      },
+      "revId": "059e559bef16a48536dc65b079417f2fe576ea6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "611aa024_44958fd6",
         "filename": "drivers/tty/serial/samsung.h",
         "patchSetId": 2
@@ -151,6 +247,30 @@
       "writtenOn": "2019-11-21T17:08:49Z",
       "side": 1,
       "message": "why do you need these functions to be global?  This is just a serial driver.",
+      "range": {
+        "startLine": 194,
+        "startChar": 1,
+        "endLine": 202,
+        "endChar": 52
+      },
+      "revId": "059e559bef16a48536dc65b079417f2fe576ea6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7129ff7b_ff077ac7",
+        "filename": "drivers/tty/serial/samsung.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1587589
+      },
+      "writtenOn": "2019-11-26T01:34:25Z",
+      "side": 1,
+      "message": "I would like to make know file for module driver of samsung serial.\nSo I moved this to header file to share with new samsung serial driver file.",
+      "parentUuid": "611aa024_44958fd6",
       "range": {
         "startLine": 194,
         "startChar": 1,
