@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "d66cb89e_b189f705",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2019-12-05T15:44:42Z",
+      "side": 1,
+      "message": "I resolved this by using stune_util() if CONFIG_SCHED_TUNE is selected otherwise do what\u0027s spsecified here.\n\nNote that SCHED_TUNE and utilclamp are mutually exclusive. We can\u0027t enable both options in the kernel.",
+      "parentUuid": "d77841b1_349fd282",
+      "range": {
+        "startLine": 331,
+        "startChar": 20,
+        "endLine": 331,
+        "endChar": 22
+      },
+      "revId": "7b53acb24c76d01f82a4525d3dcd45e95d2c8e22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1e611c19_636fde8f",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
