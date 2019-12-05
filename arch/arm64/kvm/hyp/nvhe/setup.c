@@ -38,6 +38,18 @@ size_t hyp_kvm_iommu_pages;
 			 (unsigned long)__per_cpu_start)
 
 u64 hyp_lm_size_mb;
+#ifdef CONFIG_KVM_ARM_HYP_DEBUG_UART
+unsigned long arm64_kvm_hyp_debug_uart_addr;
+static int create_hyp_debug_uart_mapping(void)
+{
+	phys_addr_t base = CONFIG_KVM_ARM_HYP_DEBUG_UART_ADDR;
+
+	return __pkvm_create_private_mapping(base, PAGE_SIZE, PAGE_HYP_DEVICE,
+					     &arm64_kvm_hyp_debug_uart_addr);
+}
+#else
+static int create_hyp_debug_uart_mapping(void) { return 0; }
+#endif
 
 static void *vmemmap_base;
 static void *vm_table_base;
@@ -191,6 +203,10 @@ static int recreate_hyp_mappings(phys_addr_t phys, unsigned long size,
 		if (ret)
 			return ret;
 	}
+
+	ret = create_hyp_debug_uart_mapping();
+	if (ret)
+		return ret;
 
 	ret = pkvm_create_host_sve_mappings();
 	if (ret)
