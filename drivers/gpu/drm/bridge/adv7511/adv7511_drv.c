@@ -445,7 +445,7 @@ static void adv7511_hpd_work(struct work_struct *work)
 		adv7511->connector.status = status;
 		if (status == connector_status_disconnected)
 			cec_phys_addr_invalidate(adv7511->cec_adap);
-		drm_kms_helper_hotplug_event(adv7511->connector.dev);
+//		drm_kms_helper_hotplug_event(adv7511->connector.dev);
 	}
 }
 
