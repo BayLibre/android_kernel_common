@@ -70,6 +70,8 @@
  */
 #define DMA_ATTR_PRIVILEGED		(1UL << 9)
 
+#define DMA_ERROR_CODE       (~(dma_addr_t)0)
+
 /*
  * DMA_ATTR_SKIP_ZEROING: Do not zero mapping.
  */
