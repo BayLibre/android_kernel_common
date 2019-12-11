@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+menu "Qualcomm technologies inc. MSM specific device drivers"
+	depends on ARCH_QCOM
+
+config MSM_GENI_SE
+	tristate "QCOM GENI Serial Engine Driver"
+	help
+	  This module is used to interact with GENI based Serial Engines on
+	  Qualcomm Technologies, Inc. Universal Peripheral(QUPv3). This
+	  module is used to configure and read the configuration from the
+	  Serial Engines.
+
+endmenu
