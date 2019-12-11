@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce4a7b69_c128572f",
+        "filename": "drivers/tty/serial/msm_geni_serial.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-12-11T12:41:11Z",
+      "side": 1,
+      "message": "no need for this, use the standard TTY api for it.",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 32
+      },
+      "revId": "cda8fc83a1b0e4bb6023b1208c7d95f8dadbf86b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4334d46_a2dbc8ab",
+        "filename": "drivers/tty/serial/msm_geni_serial.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3020,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2019-12-11T12:41:11Z",
+      "side": 1,
+      "message": "drivers need to be quiet if all goes well.\n\nAlso, always use dev_* instead of pr* calls, this is a driver.",
+      "range": {
+        "startLine": 3020,
+        "startChar": 0,
+        "endLine": 3020,
+        "endChar": 47
+      },
+      "revId": "cda8fc83a1b0e4bb6023b1208c7d95f8dadbf86b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
