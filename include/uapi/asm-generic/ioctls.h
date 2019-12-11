@@ -80,6 +80,13 @@
 #define TIOCGEXCL	_IOR('T', 0x40, int) /* Get exclusive mode state */
 #define TIOCGPTPEER	_IO('T', 0x41) /* Safely open the slave */
 
+/* TODO (b/152899547): Uncomment these if userspace doesn't work
+ * for a peripheral connected to UART
+ * #define TIOCPMGET	0x544D	 // PM get
+ * #define TIOCPMPUT	0x544E	 // PM put
+ * #define TIOCPMACT	0x544F	 // PM is active
+ */
+
 #define FIONCLEX	0x5450
 #define FIOCLEX		0x5451
 #define FIOASYNC	0x5452
