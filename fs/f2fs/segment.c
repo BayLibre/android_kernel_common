@@ -641,9 +641,17 @@ int f2fs_issue_flush(struct f2fs_sb_info *sbi, nid_t ino)
 		return 0;
 
 	if (!test_opt(sbi, FLUSH_MERGE)) {
+<<<<<<< HEAD   (47d86d Merge 4.19.88 into android-4.19-q)
 		atomic_inc(&fcc->queued_flush);
+=======
+		atomic_inc(&fcc->issing_flush);
+>>>>>>> BRANCH (312017 Linux 4.19.89)
 		ret = submit_flush_wait(sbi, ino);
+<<<<<<< HEAD   (47d86d Merge 4.19.88 into android-4.19-q)
 		atomic_dec(&fcc->queued_flush);
+=======
+		atomic_dec(&fcc->issing_flush);
+>>>>>>> BRANCH (312017 Linux 4.19.89)
 		atomic_inc(&fcc->issued_flush);
 		return ret;
 	}
