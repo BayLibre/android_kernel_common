@@ -1195,11 +1195,16 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
 
 		if (get_valid_blocks(sbi, segno, false) == 0)
 			goto freed;
+<<<<<<< HEAD   (113c59 ANDROID: update abi_gki_aarch64.xml for LTO, CFI, and SCS)
 		if (__is_large_section(sbi) &&
 				migrated >= sbi->migration_granularity)
 			goto skip;
 		if (!PageUptodate(sum_page) || unlikely(f2fs_cp_error(sbi)))
 			goto skip;
+=======
+		if (!PageUptodate(sum_page) || unlikely(f2fs_cp_error(sbi)))
+			goto next;
+>>>>>>> BRANCH (312017 Linux 4.19.89)
 
 		sum = page_address(sum_page);
 		if (type != GET_SUM_TYPE((&sum->footer))) {
