@@ -244,9 +244,13 @@ static int ufs_sysfs_emulate_health_est_c(struct ufs_hba *hba, u8 *value)
 	u32 avg_pe_cycle;
 	int ret;
 
+	pm_runtime_get_sync(hba->dev);
+	ufshcd_hold(hba, false);
 	ret = ufshcd_read_desc_param(hba, QUERY_DESC_IDN_HEALTH, 0,
 			HEALTH_DESC_PARAM_AVG_PE_CYCLE, desc_buf,
 			sizeof(desc_buf));
+	ufshcd_release(hba);
+	pm_runtime_put_noidle(hba->dev);
 	if (ret)
 		return -EINVAL;
 
@@ -270,8 +274,12 @@ static ssize_t ufs_sysfs_read_desc_param(struct ufs_hba *hba,
 	if (param_size > 8)
 		return -EINVAL;
 
+	pm_runtime_get_sync(hba->dev);
+	ufshcd_hold(hba, false);
 	ret = ufshcd_read_desc_param(hba, desc_id, desc_index,
 				param_offset, desc_buf, param_size);
+	ufshcd_release(hba);
+	pm_runtime_put_sync(hba->dev);
 	if (ret)
 		return -EINVAL;
 	switch (param_size) {
