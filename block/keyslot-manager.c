@@ -66,28 +66,8 @@ struct keyslot_manager {
 	struct keyslot slots[];
 };
 
-/**
- * keyslot_manager_create() - Create a keyslot manager
- * @num_slots: The number of key slots to manage.
- * @ksm_ll_ops: The struct keyslot_mgmt_ll_ops for the device that this keyslot
- *		manager will use to perform operations like programming and
- *		evicting keys.
- * @crypto_mode_supported:	Array of size BLK_ENCRYPTION_MODE_MAX of
- *				bitmasks that represents whether a crypto mode
- *				and data unit size are supported. The i'th bit
- *				of crypto_mode_supported[crypto_mode] is set iff
- *				a data unit size of (1 << i) is supported. We
- *				only support data unit sizes that are powers of
- *				2.
- * @ll_priv_data: Private data passed as is to the functions in ksm_ll_ops.
- *
- * Allocate memory for and initialize a keyslot manager. Called by e.g.
- * storage drivers to set up a keyslot manager in their request_queue.
- *
- * Context: May sleep
- * Return: Pointer to constructed keyslot manager or NULL on error.
- */
-struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
+static struct keyslot_manager *__keyslot_manager_create(
+	unsigned int num_slots,
 	const struct keyslot_mgmt_ll_ops *ksm_ll_ops,
 	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
 	void *ll_priv_data)
@@ -95,9 +75,6 @@ struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
 	struct keyslot_manager *ksm;
 	unsigned int slot;
 	unsigned int i;
-
-	if (num_slots == 0)
-		return NULL;
 
 	/* Check that all ops are specified */
 	if (ksm_ll_ops->keyslot_program == NULL ||
@@ -140,6 +117,39 @@ struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
 err_free_ksm:
 	keyslot_manager_destroy(ksm);
 	return NULL;
+}
+
+/**
+ * keyslot_manager_create() - Create a keyslot manager
+ * @num_slots: The number of key slots to manage.
+ * @ksm_ll_ops: The struct keyslot_mgmt_ll_ops for the device that this keyslot
+ *		manager will use to perform operations like programming and
+ *		evicting keys.
+ * @crypto_mode_supported:	Array of size BLK_ENCRYPTION_MODE_MAX of
+ *				bitmasks that represents whether a crypto mode
+ *				and data unit size are supported. The i'th bit
+ *				of crypto_mode_supported[crypto_mode] is set iff
+ *				a data unit size of (1 << i) is supported. We
+ *				only support data unit sizes that are powers of
+ *				2.
+ * @ll_priv_data: Private data passed as is to the functions in ksm_ll_ops.
+ *
+ * Allocate memory for and initialize a keyslot manager. Called by e.g.
+ * storage drivers to set up a keyslot manager in their request_queue.
+ *
+ * Context: May sleep
+ * Return: Pointer to constructed keyslot manager or NULL on error.
+ */
+struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
+	const struct keyslot_mgmt_ll_ops *ksm_ll_ops,
+	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
+	void *ll_priv_data)
+{
+	if (num_slots == 0)
+		return NULL;
+
+	return __keyslot_manager_create(num_slots, ksm_ll_ops,
+					crypto_mode_supported, ll_priv_data);
 }
 EXPORT_SYMBOL_GPL(keyslot_manager_create);
 
@@ -210,6 +220,9 @@ int keyslot_manager_get_slot_for_key(struct keyslot_manager *ksm,
 	int err;
 	struct keyslot *idle_slot;
 
+	if (keyslot_manager_is_passthrough(ksm))
+		return 0;
+
 	down_read(&ksm->lock);
 	slot = find_and_grab_keyslot(ksm, key);
 	up_read(&ksm->lock);
@@ -275,6 +288,9 @@ int keyslot_manager_get_slot_for_key(struct keyslot_manager *ksm,
  */
 void keyslot_manager_get_slot(struct keyslot_manager *ksm, unsigned int slot)
 {
+	if (keyslot_manager_is_passthrough(ksm))
+		return;
+
 	if (WARN_ON(slot >= ksm->num_slots))
 		return;
 
@@ -291,6 +307,9 @@ void keyslot_manager_get_slot(struct keyslot_manager *ksm, unsigned int slot)
 void keyslot_manager_put_slot(struct keyslot_manager *ksm, unsigned int slot)
 {
 	unsigned long flags;
+
+	if (keyslot_manager_is_passthrough(ksm))
+		return;
 
 	if (WARN_ON(slot >= ksm->num_slots))
 		return;
@@ -351,6 +370,16 @@ int keyslot_manager_evict_key(struct keyslot_manager *ksm,
 	int err;
 	struct keyslot *slotp;
 
+	if (keyslot_manager_is_passthrough(ksm)) {
+		if (ksm->ksm_ll_ops.keyslot_evict) {
+			down_write(&ksm->lock);
+			err = ksm->ksm_ll_ops.keyslot_evict(ksm, key, -1);
+			up_write(&ksm->lock);
+			return err;
+		}
+		return 0;
+	}
+
 	down_write(&ksm->lock);
 	slot = find_keyslot(ksm, key);
 	if (slot < 0) {
@@ -388,6 +417,9 @@ void keyslot_manager_reprogram_all_keys(struct keyslot_manager *ksm)
 {
 	unsigned int slot;
 
+	if (WARN_ON(keyslot_manager_is_passthrough(ksm)))
+		return;
+
 	down_write(&ksm->lock);
 	for (slot = 0; slot < ksm->num_slots; slot++) {
 		const struct keyslot *slotp = &ksm->slots[slot];
@@ -424,3 +456,36 @@ void keyslot_manager_destroy(struct keyslot_manager *ksm)
 	}
 }
 EXPORT_SYMBOL_GPL(keyslot_manager_destroy);
+
+/**
+ * keyslot_manager_create_passthrough() - Create a passthrough keyslot manager
+ * @ksm_ll_ops: The struct keyslot_mgmt_ll_ops
+ * @crypto_mode_supported: Bitmasks for supported encryption modes
+ * @ll_priv_data: Private data passed as is to the functions in ksm_ll_ops.
+ *
+ * Allocate memory for and initialize a passthrough keyslot manager.
+ * Called by e.g. storage drivers to set up a keyslot manager in their
+ * request_queue, when the storage driver wants to manage its keys by itself.
+ * This is useful for inline encryption hardware that don't have a small fixed
+ * number of keyslots, and for layered devices.
+ *
+ * See keyslot_manager_create() for more details about the parameters.
+ *
+ * Context: This function may sleep
+ * Return: Pointer to constructed keyslot manager or NULL on error.
+ */
+struct keyslot_manager *keyslot_manager_create_passthrough(
+	const struct keyslot_mgmt_ll_ops *ksm_ll_ops,
+	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
+	void *ll_priv_data)
+{
+	return __keyslot_manager_create(0, ksm_ll_ops, crypto_mode_supported,
+					ll_priv_data);
+}
+EXPORT_SYMBOL_GPL(keyslot_manager_create_passthrough);
+
+bool keyslot_manager_is_passthrough(struct keyslot_manager *ksm)
+{
+	return ksm->num_slots == 0;
+}
+EXPORT_SYMBOL_GPL(keyslot_manager_is_passthrough);
