@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0f75b5e0_5944b5f8",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 1612467
+      },
+      "writtenOn": "2019-12-18T22:17:46Z",
+      "side": 1,
+      "message": "This read of SMR(idx) should be replaced by the following, to maintain consistency with the other reads / writes of SMR(idx) done in this funciton.\nsmr \u003d arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_SMR(idx));",
+      "revId": "d1c7fa1316d4e844fa8ec85c3e6241e62278dea9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
