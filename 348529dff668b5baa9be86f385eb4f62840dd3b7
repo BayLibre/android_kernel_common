@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5dc5daa0_74b8a63c",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 1006322
+      },
+      "writtenOn": "2019-12-19T17:39:42Z",
+      "side": 1,
+      "message": "That was my initial approach (and the path taken downstream). But what I saw was as the display driver kicks in it inherits the boot SMR, then as it probe defer it would \"free\" the SMR, which would clear the SMR entry and the device trips and reboots.\n\nSo for this to only matter during initialization we also need to make sure not to attach the mdp context until we\u0027re sure that there\u0027s no way to probe defer.",
+      "parentUuid": "40200373_1946238a",
+      "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1561bec0_a6d7a005",
         "filename": "drivers/iommu/arm-smmu.c",
         "patchSetId": 11
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "adf4f0cc_fe495d26",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1717,
+      "author": {
+        "id": 1006322
+      },
+      "writtenOn": "2019-12-19T17:39:42Z",
+      "side": 1,
+      "message": "For reasons still unclear I need cnbdx to inherit the value of 0xff from the \"non-valid\" entries as well, else we\u0027ve seen issues with playing audio when display (cb 0) is active...\n\nWill try to improve my understanding of this issue...",
+      "parentUuid": "1561bec0_a6d7a005",
+      "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "acb90ee3_2356b95f",
         "filename": "drivers/iommu/arm-smmu.c",
         "patchSetId": 11
@@ -47,6 +83,24 @@
       "writtenOn": "2019-12-19T02:01:02Z",
       "side": 1,
       "message": "This should be dev_dbg(...)",
+      "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "324402ad_418318cd",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1723,
+      "author": {
+        "id": 1006322
+      },
+      "writtenOn": "2019-12-19T17:39:42Z",
+      "side": 1,
+      "message": "Yes, at least.",
+      "parentUuid": "acb90ee3_2356b95f",
       "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
