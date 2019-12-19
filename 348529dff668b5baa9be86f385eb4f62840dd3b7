@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40200373_1946238a",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 1612467
+      },
+      "writtenOn": "2019-12-19T02:01:02Z",
+      "side": 1,
+      "message": "I believe we can drop this section - preserving an SMR is only needed during the handover, during boot-up.  Once this is done, we should be able to free the SMR whenever later on.",
+      "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1561bec0_a6d7a005",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1717,
+      "author": {
+        "id": 1612467
+      },
+      "writtenOn": "2019-12-19T02:01:02Z",
+      "side": 1,
+      "message": "Should this be performed just after reading the SMR instead?",
+      "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acb90ee3_2356b95f",
+        "filename": "drivers/iommu/arm-smmu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1723,
+      "author": {
+        "id": 1612467
+      },
+      "writtenOn": "2019-12-19T02:01:02Z",
+      "side": 1,
+      "message": "This should be dev_dbg(...)",
+      "revId": "348529dff668b5baa9be86f385eb4f62840dd3b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
