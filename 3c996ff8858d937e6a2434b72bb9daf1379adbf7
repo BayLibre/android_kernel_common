@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0f65a684_04f213a6",
+        "filename": "drivers/tty/serdev/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2019-12-21T00:41:12Z",
+      "side": 1,
+      "message": "For the crash I mentioned here, the trouble seems to be we\u0027re passing a serdev_device-\u003edev pointer to platform_uevent() which calls to_platform_device() on it thinking its a platform_device-\u003edev. This causes trouble because the pdev-\u003ename passed to add_uevent_var() is invalid.",
+      "revId": "3c996ff8858d937e6a2434b72bb9daf1379adbf7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
