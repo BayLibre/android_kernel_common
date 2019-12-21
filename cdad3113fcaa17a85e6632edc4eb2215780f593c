@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1903516_7b46c0e6",
+        "filename": "drivers/tty/serdev/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2019-12-21T00:26:44Z",
+      "side": 1,
+      "message": "So one issue I see here, is in calling platform_bus_type-\u003ematch() the dev pointer eventually gets converted to a pdev via to_platform_device() in platform_match(). The trouble is that I suspect we\u0027re passing the serdev_device-\u003edev, not a platform_device-\u003edev, since the pdev we get seems to have lots of corruption.",
+      "revId": "cdad3113fcaa17a85e6632edc4eb2215780f593c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
