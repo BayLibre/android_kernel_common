@@ -4,6 +4,12 @@ config GKI_HIDDEN_DRM_CONFIGS
 	select DRM_GEM_CMA_HELPER
 	select DRM_KMS_CMA_HELPER
 	select DRM_MIPI_DSI
+<<<<<<< HEAD   (fd928f ANDROID: gki_defconfig: Disable TRANSPARENT_HUGEPAGE)
+=======
+	select SND_PCM_ELD
+	select VIDEOMODE_HELPERS
+	select WANT_DEV_COREDUMP
+>>>>>>> CHANGE (7204b5 ANDROID: Kconfig.gki: Add Hidden SPRD DRM configs)
 	help
 	  Dummy config option used to enable hidden DRM configs.
 	  These are normally selected implicitely when including a
