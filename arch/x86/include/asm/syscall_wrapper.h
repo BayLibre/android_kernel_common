@@ -182,10 +182,17 @@
  * macros to work correctly.
  */
 #ifndef SYSCALL_DEFINE0
+<<<<<<< HEAD   (a1f33b ANDROID: cuttlefish_defconfig: Disable TRANSPARENT_HUGEPAGE)
 #define SYSCALL_DEFINE0(sname)					\
 	SYSCALL_METADATA(_##sname, 0);				\
 	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused);\
 	ALLOW_ERROR_INJECTION(__x64_sys_##sname, ERRNO);	\
+=======
+#define SYSCALL_DEFINE0(sname)						\
+	SYSCALL_METADATA(_##sname, 0);					\
+	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused);\
+	ALLOW_ERROR_INJECTION(__x64_sys_##sname, ERRNO);		\
+>>>>>>> BRANCH (c7ecf3 Linux 4.19.92)
 	asmlinkage long __x64_sys_##sname(const struct pt_regs *__unused)
 #endif
 

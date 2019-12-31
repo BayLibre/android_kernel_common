@@ -660,8 +660,13 @@ void __native_set_fixmap(enum fixed_addresses idx, pte_t pte)
 	fixmaps_set++;
 }
 
+<<<<<<< HEAD   (a1f33b ANDROID: cuttlefish_defconfig: Disable TRANSPARENT_HUGEPAGE)
 void native_set_fixmap(unsigned /* enum fixed_addresses */ idx, phys_addr_t phys,
 		       pgprot_t flags)
+=======
+void native_set_fixmap(unsigned /* enum fixed_addresses */ idx,
+		       phys_addr_t phys, pgprot_t flags)
+>>>>>>> BRANCH (c7ecf3 Linux 4.19.92)
 {
 	/* Sanitize 'prot' against any unsupported bits: */
 	pgprot_val(flags) &= __default_kernel_pte_mask;
