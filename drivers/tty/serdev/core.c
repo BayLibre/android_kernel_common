@@ -109,7 +109,7 @@ static int serdev_device_match(struct device *dev, struct device_driver *drv)
 		return 1;
 
 	if (dev->parent->parent->bus == &platform_bus_type &&
-	    dev->parent->parent->bus->match(dev, drv))
+	    dev->parent->parent->bus->match(dev->parent->parent, drv))
 		return 1;
 
 	return 0;
