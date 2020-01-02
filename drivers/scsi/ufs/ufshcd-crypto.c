@@ -140,6 +140,7 @@ static void program_key(struct ufs_hba *hba,
 }
 
 static int ufshcd_crypto_keyslot_program(void *hba_p, const u8 *key,
+					 unsigned int key_size,
 					 enum blk_crypto_mode_num crypto_mode,
 					 unsigned int data_unit_size,
 					 unsigned int slot)
@@ -183,7 +184,7 @@ static int ufshcd_crypto_keyslot_program(void *hba_p, const u8 *key,
 }
 
 static int ufshcd_crypto_keyslot_find(void *hba_p,
-				      const u8 *key,
+				      const u8 *key, unsigned int key_size,
 				      enum blk_crypto_mode_num crypto_mode,
 				      unsigned int data_unit_size)
 {
@@ -231,6 +232,7 @@ static int ufshcd_crypto_keyslot_find(void *hba_p,
 }
 
 static int ufshcd_crypto_keyslot_evict(void *hba_p, const u8 *key,
+				       unsigned int key_size,
 				       enum blk_crypto_mode_num crypto_mode,
 				       unsigned int data_unit_size,
 				       unsigned int slot)
