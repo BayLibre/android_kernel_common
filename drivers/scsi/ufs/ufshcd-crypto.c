@@ -33,9 +33,8 @@ static size_t get_keysize_bytes(enum ufs_crypto_key_size size)
 	}
 }
 
-static int ufshcd_crypto_cap_find(void *hba_p,
-				  enum blk_crypto_mode_num crypto_mode,
-				  unsigned int data_unit_size)
+int ufshcd_crypto_cap_find(void *hba_p, enum blk_crypto_mode_num crypto_mode,
+			unsigned int data_unit_size)
 {
 	struct ufs_hba *hba = hba_p;
 	enum ufs_crypto_alg ufs_alg;
@@ -67,6 +66,7 @@ static int ufshcd_crypto_cap_find(void *hba_p,
 
 	return -EINVAL;
 }
+EXPORT_SYMBOL(ufshcd_crypto_cap_find);
 
 /**
  * ufshcd_crypto_cfg_entry_write_key - Write a key into a crypto_cfg_entry
