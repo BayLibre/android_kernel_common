@@ -22,6 +22,7 @@ int blk_crypto_start_using_mode(enum blk_crypto_mode_num mode_num,
 				struct request_queue *q);
 
 int blk_crypto_evict_key(struct request_queue *q, const u8 *key,
+			 unsigned int key_size,
 			 enum blk_crypto_mode_num mode,
 			 unsigned int data_unit_size);
 
