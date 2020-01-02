@@ -246,6 +246,7 @@ EXPORT_SYMBOL_GPL(ufshcd_crypto_disable_spec);
 static const struct keyslot_mgmt_ll_ops ufshcd_ksm_ops = {
 	.keyslot_program	= ufshcd_crypto_keyslot_program,
 	.keyslot_evict		= ufshcd_crypto_keyslot_evict,
+	.get_raw_secret		= NULL,
 };
 
 enum blk_crypto_mode_num ufshcd_blk_crypto_mode_num_for_alg_dusize(

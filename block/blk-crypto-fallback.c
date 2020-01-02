@@ -148,6 +148,7 @@ static int blk_crypto_keyslot_evict(struct keyslot_manager *ksm,
 static const struct keyslot_mgmt_ll_ops blk_crypto_ksm_ll_ops = {
 	.keyslot_program	= blk_crypto_keyslot_program,
 	.keyslot_evict		= blk_crypto_keyslot_evict,
+	.get_raw_secret		= NULL,
 };
 
 static void blk_crypto_encrypt_endio(struct bio *enc_bio)
