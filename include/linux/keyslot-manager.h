@@ -18,6 +18,8 @@ struct keyslot_manager;
  *			The key is provided so that e.g. dm layers can evict
  *			keys from the devices that they map over.
  *			Returns 0 on success, -errno otherwise.
+ * @get_raw_secret:	Get raw secret in the clear for wrapped keys used to
+ * 			derive filename encryption key and identifier.
  *
  * This structure should be provided by storage device drivers when they set up
  * a keyslot manager - this structure holds the function ptrs that the keyslot
@@ -30,6 +32,9 @@ struct keyslot_mgmt_ll_ops {
 	int (*keyslot_evict)(struct keyslot_manager *ksm,
 			     const struct blk_crypto_key *key,
 			     unsigned int slot);
+	int (*get_raw_secret)(struct keyslot_manager *ksm,
+				const u8 *key, unsigned int key_size,
+			    u8 *secret, unsigned int secret_size);
 };
 
 struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
@@ -56,5 +61,9 @@ void keyslot_manager_reprogram_all_keys(struct keyslot_manager *ksm);
 void *keyslot_manager_private(struct keyslot_manager *ksm);
 
 void keyslot_manager_destroy(struct keyslot_manager *ksm);
+
+int keyslot_manager_get_raw_secret(struct keyslot_manager *ksm,
+					  const u8 *key, unsigned int key_size,
+					  u8 *secret, unsigned int secret_size);
 
 #endif /* __LINUX_KEYSLOT_MANAGER_H */
