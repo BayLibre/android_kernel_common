@@ -33,6 +33,9 @@ static inline bool ufshcd_is_crypto_enabled(struct ufs_hba *hba)
 }
 
 /* Functions implementing UFSHCI v2.1 specification behaviour */
+int ufshcd_crypto_cap_find(void *hba_p, enum blk_crypto_mode_num crypto_mode,
+			unsigned int data_unit_size);
+
 int ufshcd_prepare_lrbp_crypto_spec(struct ufs_hba *hba,
 				    struct scsi_cmnd *cmd,
 				    struct ufshcd_lrb *lrbp);
