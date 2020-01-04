@@ -564,8 +564,12 @@ drm_property_create_blob(struct drm_device *dev, size_t length,
 	struct drm_property_blob *blob;
 	int ret;
 
+<<<<<<< HEAD   (4e2488 UPSTREAM: exit: panic before exit_mm() on global init exit)
 	if (!length || length > MAX_BLOB_PROP_SIZE -
 				sizeof(struct drm_property_blob))
+=======
+	if (!length || length > INT_MAX - sizeof(struct drm_property_blob))
+>>>>>>> BRANCH (5825c8 Linux 5.4.8)
 		return ERR_PTR(-EINVAL);
 
 	blob = kvzalloc(sizeof(struct drm_property_blob)+length, GFP_KERNEL);
