@@ -1,0 +1,337 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03e8bf4d_4878ce09",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "The commit message needs to explain *why* the patch is needed, not just *what* the patch does.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 35
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75a38b3f_0108fe4b",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "This comment is wrong because there is code in fscrypt_setup_per_mode_inline_crypt_key() which wipes the key.",
+      "range": {
+        "startLine": 378,
+        "startChar": 40,
+        "endLine": 378,
+        "endChar": 50
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5b057a3_8aad86ca",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "This doesn\u0027t make sense.  First, a single master key can be used with multiple encryption modes. A different key is derived for each mode or for each file.  So there\u0027s not necessarily only one derived key size.  Second, the comment refers to mk_iv_ino_lblk_64_tfms, but that is not used for inline encryption keys.",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 464,
+        "endChar": 27
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d4efbd4_a8916e9d",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "This is only called for IV_INO_LBLK_64 encryption policies, and only if the filesystem is mounted with -o inlinecrypt.\n\nYou need to consider what should happen if the FSCRYPT_POLICY_FLAG_WRAPPED_KEY flag is used with a different encryption policy, or if the filesystem is not mounted with -o inlinecrypt.  Perhaps there should be an error message printed, and FS_IOC_SET_ENCRYPTION_POLICY should fail and access to the file should not be allowed?  That would require updating fscrypt_supported_policy(), at least.",
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d5e6401_67c774b1",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "The key size should be validated when the key is added, not here.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 2
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49f5e06d_f31c8ee3",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "If the same master key is used for multiple encryption modes (which is perfectly legal), wiping it here will cause the second mode to receive an all-zeroes key, which would be Bad.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 48
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07f295fd_bdd54fa4",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Key size should be validated when the key is added, not here.",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 9
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19205048_eddc0a12",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "This is a UAPI flag, so it needs to be declared in the UAPI header.",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8dedc5a_cf0efcd2",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Should keep the FSCRYPT_MAX_KEY_SIZE limit (64 bytes, matching the encryption mode with the biggest key) for non-wrapped keys, not increase it to FSCRYPT_MAX_WRAPPED_KEY_SIZE.",
+      "range": {
+        "startLine": 516,
+        "startChar": 20,
+        "endLine": 516,
+        "endChar": 48
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9c5f5a9_02ffe179",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Avoid using #ifdefs in .c files when possible, as it\u0027s very error-prone.  There\u0027s already a file inline_crypt.c which is conditionally compiled when CONFIG_FS_ENCRYPTION_INLINE_CRYPT\u003dy; how about using that?",
+      "range": {
+        "startLine": 540,
+        "startChar": 0,
+        "endLine": 540,
+        "endChar": 40
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d42ecee0_99ec834e",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Need to return -EINVAL if unknown flags are specified, or if FSCRYPT_KEY_WRAPPED_KEY is specified but CONFIG_FS_ENCRYPTION_INLINE_CRYPT is not enabled.  Otherwise it could be impossible for anyone to add any new flags in the future, as there would be no way to know whether the kernel honors the flags or not.",
+      "range": {
+        "startLine": 541,
+        "startChar": 6,
+        "endLine": 541,
+        "endChar": 15
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91199c51_26a453b4",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Filesystems, including f2fs, can have multiple block devices.  This new code is only using the filesystem\u0027s \"main\" block device, which isn\u0027t necessarily where all the encrypted files are.  If the semantics you\u0027re defining for wrapped keys is that they are potentially different for different disks, or that some disks might support them while others don\u0027t, you probably want to enforce that they are only used on single-block-device filesystems.",
+      "range": {
+        "startLine": 546,
+        "startChar": 0,
+        "endLine": 551,
+        "endChar": 47
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c6aa536_9114aab9",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Try to write it in a way that avoids duplicating this code.",
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "167f9c2e_d08ec4cb",
+        "filename": "include/uapi/linux/fscrypt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "Why 96 in particular?  Where is this number from?",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 39
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec516003_48465ab2",
+        "filename": "include/uapi/linux/fscrypt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-06T22:30:57Z",
+      "side": 1,
+      "message": "There\u0027s already a patch queued for 5.6 that uses this field for something else.",
+      "range": {
+        "startLine": 119,
+        "startChar": 1,
+        "endLine": 119,
+        "endChar": 13
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
