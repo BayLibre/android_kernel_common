@@ -44,6 +44,13 @@ enum qcom_scm_sec_dev_id {
 	QCOM_SCM_ICE_DEV_ID     = 20,
 };
 
+enum qcom_scm_ice_cipher_mode {
+	QCOM_SCM_ICE_CIPHER_MODE_XTS_128 = 0,
+	QCOM_SCM_ICE_CIPHER_MODE_CBC_128 = 1,
+	QCOM_SCM_ICE_CIPHER_MODE_XTS_256 = 3,
+	QCOM_SCM_ICE_CIPHER_MODE_CBC_256 = 4,
+};
+
 #define QCOM_SCM_VMID_HLOS       0x3
 #define QCOM_SCM_VMID_MSS_MSA    0xF
 #define QCOM_SCM_VMID_WLAN       0x18
@@ -73,6 +80,11 @@ extern int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr,
 				  phys_addr_t size);
 extern int qcom_scm_pas_auth_and_reset(u32 peripheral);
 extern int qcom_scm_pas_shutdown(u32 peripheral);
+extern bool qcom_scm_ice_available(void);
+extern int qcom_scm_ice_set_key(u32 index, const u8 *key, int key_size,
+				enum qcom_scm_ice_cipher_mode mode,
+				int data_unit_size);
+extern int qcom_scm_ice_invalidate_key(u32 index);
 extern int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
 			       unsigned int *src,
 			       const struct qcom_scm_vmperm *newvm,
@@ -113,6 +125,11 @@ static inline int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr,
 static inline int
 qcom_scm_pas_auth_and_reset(u32 peripheral) { return -ENODEV; }
 static inline int qcom_scm_pas_shutdown(u32 peripheral) { return -ENODEV; }
+static inline bool qcom_scm_ice_available(void) { return false; }
+static inline int qcom_scm_ice_set_key(u32 index, const u8 *key, int key_size,
+				       enum qcom_scm_ice_cipher_mode mode,
+				       int data_unit_size) { return -ENODEV; }
+static inline int qcom_scm_ice_invalidate_key(u32 index) { return -ENODEV; }
 static inline int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
 				      unsigned int *src,
 				      const struct qcom_scm_vmperm *newvm,
