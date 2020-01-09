@@ -420,6 +420,37 @@ int __qcom_scm_pas_mss_reset(struct device *dev, bool reset)
 	return ret ? : res.a1;
 }
 
+int __qcom_scm_ice_set_key(struct device *dev, u32 index, dma_addr_t key_phys,
+			   int key_size, enum qcom_scm_ice_cipher_mode mode,
+			   int data_unit_size)
+{
+	struct qcom_scm_desc desc = {0};
+	struct arm_smccc_res res;
+
+	desc.args[0] = index;
+	desc.args[1] = key_phys;
+	desc.args[2] = key_size;
+	desc.args[3] = mode;
+	desc.args[4] = data_unit_size;
+	desc.arginfo = QCOM_SCM_ARGS(5, QCOM_SCM_VAL, QCOM_SCM_RW, QCOM_SCM_VAL,
+				     QCOM_SCM_VAL, QCOM_SCM_VAL);
+
+	return qcom_scm_call(dev, QCOM_SCM_SVC_ES,
+			     QCOM_SCM_ES_CONFIG_SET_ICE_KEY, &desc, &res);
+}
+
+int __qcom_scm_ice_invalidate_key(struct device *dev, u32 index)
+{
+	struct qcom_scm_desc desc = {0};
+	struct arm_smccc_res res;
+
+	desc.args[0] = index;
+	desc.arginfo = QCOM_SCM_ARGS(1);
+
+	return qcom_scm_call(dev, QCOM_SCM_SVC_ES,
+			     QCOM_SCM_ES_INVALIDATE_ICE_KEY, &desc, &res);
+}
+
 int __qcom_scm_set_remote_state(struct device *dev, u32 state, u32 id)
 {
 	struct qcom_scm_desc desc = {0};

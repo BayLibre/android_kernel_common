@@ -12,6 +12,7 @@
 #include <linux/dma-direct.h>
 #include <linux/dma-mapping.h>
 #include <linux/module.h>
+#include <linux/slab.h>
 #include <linux/types.h>
 #include <linux/qcom_scm.h>
 #include <linux/of.h>
@@ -343,6 +344,83 @@ int qcom_scm_pas_shutdown(u32 peripheral)
 	return ret;
 }
 EXPORT_SYMBOL(qcom_scm_pas_shutdown);
+
+/**
+ * qcom_scm_ice_available() - Is the ICE key programming interface available?
+ *
+ * Return: true iff the SCM calls wrapped by qcom_scm_ice_set_key() and
+ *	   qcom_scm_ice_invalidate_key() are available.
+ */
+bool qcom_scm_ice_available(void)
+{
+	if (IS_ENABLED(CONFIG_ARM)) /* Not implemented/tested on 32-bit yet. */
+		return false;
+	return __qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_ES,
+					    QCOM_SCM_ES_CONFIG_SET_ICE_KEY) &&
+		__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_ES,
+					     QCOM_SCM_ES_INVALIDATE_ICE_KEY);
+}
+EXPORT_SYMBOL(qcom_scm_ice_available);
+
+/**
+ * qcom_scm_ice_set_key() - Set an inline encryption key
+ * @index: the keyslot into which to set the key
+ * @key: the key to program
+ * @key_size: the size of the key in bytes
+ * @mode: the encryption algorithm the key is for
+ * @data_unit_size: the encryption data unit size, i.e. the size of each
+ *		    individual plaintext and ciphertext.  Given in 512-byte
+ *		    units, e.g. 1 = 512 bytes, 8 = 4096 bytes, etc.
+ *
+ * Program a key into a keyslot of Qualcomm ICE (Inline Cryptographic Engine),
+ * where it can then be used to encrypt/decrypt UFS I/O requests inline.
+ *
+ * The UFSHCI standard defines a standard way to do this, but it doesn't work on
+ * these SoCs; only these SCM calls do...
+ *
+ * Return: 0 on success; -errno on failure.
+ */
+int qcom_scm_ice_set_key(u32 index, const u8 *key, int key_size,
+			 enum qcom_scm_ice_cipher_mode mode, int data_unit_size)
+{
+	u8 *keybuf;
+	dma_addr_t key_phys;
+	int err;
+
+	keybuf = kmemdup(key, key_size, GFP_KERNEL);
+	if (!keybuf)
+		return -ENOMEM;
+
+	key_phys = dma_map_single(__scm->dev, keybuf, key_size, DMA_TO_DEVICE);
+	if (dma_mapping_error(__scm->dev, key_phys)) {
+		err = -ENOMEM;
+		goto out;
+	}
+
+	err = __qcom_scm_ice_set_key(__scm->dev, index, key_phys, key_size,
+				     mode, data_unit_size);
+
+	dma_unmap_single(__scm->dev, key_phys, key_size, DMA_TO_DEVICE);
+out:
+	kzfree(keybuf);
+	return err;
+}
+EXPORT_SYMBOL(qcom_scm_ice_set_key);
+
+/**
+ * qcom_scm_ice_invalidate_key() - Invalidate an inline encryption key
+ * @index: the keyslot to invalidate
+ *
+ * The UFSHCI standard defines a standard way to do this, but it doesn't work on
+ * these SoCs; only these SCM calls do...
+ *
+ * Return: 0 on success; -errno on failure.
+ */
+int qcom_scm_ice_invalidate_key(u32 index)
+{
+	return __qcom_scm_ice_invalidate_key(__scm->dev, index);
+}
+EXPORT_SYMBOL(qcom_scm_ice_invalidate_key);
 
 static int qcom_scm_pas_reset_assert(struct reset_controller_dev *rcdev,
 				     unsigned long idx)
