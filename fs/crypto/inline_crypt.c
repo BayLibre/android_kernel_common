@@ -56,6 +56,7 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 	int num_devs = 1;
 	int queue_refs = 0;
 	struct fscrypt_blk_crypto_key *blk_key;
+	struct block_device **bdevs;
 	int err;
 	int i;
 
@@ -67,12 +68,14 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 	blk_key = kzalloc(struct_size(blk_key, devs, num_devs), GFP_NOFS);
 	if (!blk_key)
 		return -ENOMEM;
+	BUILD_BUG_ON(sizeof(blk_key->devs[0]) != sizeof(struct block_device *));
+	bdevs = (struct block_device **)blk_key->devs;
 
 	blk_key->num_devs = num_devs;
 	if (num_devs == 1)
-		blk_key->devs[0] = bdev_get_queue(sb->s_bdev);
+		bdevs[0] = sb->s_bdev;
 	else
-		sb->s_cop->get_devices(sb, blk_key->devs);
+		sb->s_cop->get_devices(sb, bdevs);
 
 	err = blk_crypto_init_key(&blk_key->base, raw_key, crypto_mode,
 				  sb->s_blocksize);
@@ -89,15 +92,19 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 	 * (namely, the per-mode keys in struct fscrypt_master_key).
 	 */
 	for (i = 0; i < num_devs; i++) {
-		if (!blk_get_queue(blk_key->devs[i])) {
+		struct block_device *bdev = bdevs[i];
+		struct request_queue *q = bdev_get_queue(bdev);
+
+		if (!blk_get_queue(q)) {
 			fscrypt_err(inode, "couldn't get request_queue");
 			err = -EAGAIN;
 			goto fail;
 		}
+		blk_key->devs[i] = q;
 		queue_refs++;
 
-		err = blk_crypto_start_using_mode(crypto_mode, sb->s_blocksize,
-						  blk_key->devs[i]);
+		err = blk_crypto_start_using_mode(bdev, crypto_mode,
+						  sb->s_blocksize);
 		if (err) {
 			fscrypt_err(inode,
 				    "error %d starting to use blk-crypto", err);

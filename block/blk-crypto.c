@@ -240,3 +240,35 @@ int blk_crypto_evict_key(struct request_queue *q,
 
 	return blk_crypto_fallback_evict_key(key);
 }
+
+/**
+ * blk_crypto_start_using_mode() - Start using inline encryption on a device
+ * @bdev: the device on which inline encryption will be used
+ * @mode_num: the encryption algorithm that will be used
+ * @data_unit_size: the data unit size that will be used
+ *
+ * This must be called before submitting any encrypted I/O to the device.
+ *
+ * Return: 0 on success, -errno on failure.  If this fails, inline encryption
+ *	   can't be used on this device.
+ */
+int blk_crypto_start_using_mode(struct block_device *bdev,
+				enum blk_crypto_mode_num mode_num,
+				unsigned int data_unit_size)
+{
+	struct request_queue *q = bdev_get_queue(bdev);
+	int err;
+
+	if (keyslot_manager_crypto_mode_supported(q->ksm, mode_num,
+						  data_unit_size)) {
+		/*
+		 * Only allow inline encryption hardware to be used if it passes
+		 * the self-test.
+		 */
+		err = blk_crypto_selftest(bdev, mode_num, data_unit_size);
+		if (!err)
+			return 0;
+	}
+
+	return blk_crypto_fallback_start_using_mode(mode_num);
+}

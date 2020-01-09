@@ -486,20 +486,7 @@ out:
 	return false;
 }
 
-/**
- * blk_crypto_start_using_mode() - Start using a crypto algorithm on a device
- * @mode_num: the blk_crypto_mode we want to allocate ciphers for.
- * @data_unit_size: the data unit size that will be used
- * @q: the request queue for the device
- *
- * Upper layers must call this function to ensure that a the crypto API fallback
- * has transforms for this algorithm, if they become necessary.
- *
- * Return: 0 on success and -err on error.
- */
-int blk_crypto_start_using_mode(enum blk_crypto_mode_num mode_num,
-				unsigned int data_unit_size,
-				struct request_queue *q)
+int blk_crypto_fallback_start_using_mode(enum blk_crypto_mode_num mode_num)
 {
 	struct blk_crypto_keyslot *slotp;
 	unsigned int i;
@@ -511,14 +498,6 @@ int blk_crypto_start_using_mode(enum blk_crypto_mode_num mode_num,
 	 * for each i are visible before we try to access them.
 	 */
 	if (likely(smp_load_acquire(&tfms_inited[mode_num])))
-		return 0;
-
-	/*
-	 * If the keyslot manager of the request queue supports this
-	 * crypto mode, then we don't need to allocate this mode.
-	 */
-	if (keyslot_manager_crypto_mode_supported(q->ksm, mode_num,
-						  data_unit_size))
 		return 0;
 
 	mutex_lock(&tfms_init_lock);

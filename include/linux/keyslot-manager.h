@@ -48,6 +48,14 @@ bool keyslot_manager_crypto_mode_supported(struct keyslot_manager *ksm,
 					   enum blk_crypto_mode_num crypto_mode,
 					   unsigned int data_unit_size);
 
+int keyslot_manager_begin_selftest(struct keyslot_manager *ksm,
+				   enum blk_crypto_mode_num crypto_mode,
+				   unsigned int data_unit_size);
+
+void keyslot_manager_end_selftest(struct keyslot_manager *ksm,
+				  enum blk_crypto_mode_num crypto_mode,
+				  unsigned int data_unit_size, bool failed);
+
 int keyslot_manager_evict_key(struct keyslot_manager *ksm,
 			      const struct blk_crypto_key *key);
 
