@@ -66,8 +66,7 @@ struct fscrypt_operations {
 				      int *ino_bits_ret, int *lblk_bits_ret);
 	bool (*inline_crypt_enabled)(struct super_block *sb);
 	int (*get_num_devices)(struct super_block *sb);
-	void (*get_devices)(struct super_block *sb,
-			    struct request_queue **devs);
+	void (*get_devices)(struct super_block *sb, struct block_device **devs);
 };
 
 static inline bool fscrypt_has_encryption_key(const struct inode *inode)
