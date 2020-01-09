@@ -42,7 +42,9 @@ struct keyslot {
 struct keyslot_manager {
 	unsigned int num_slots;
 	struct keyslot_mgmt_ll_ops ksm_ll_ops;
-	unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX];
+	unsigned long crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX];
+	unsigned long crypto_mode_test_started[BLK_ENCRYPTION_MODE_MAX];
+	unsigned long crypto_mode_untested[BLK_ENCRYPTION_MODE_MAX];
 	void *ll_priv_data;
 
 	/* Protects programming and evicting keys from the device */
@@ -110,8 +112,10 @@ struct keyslot_manager *keyslot_manager_create(unsigned int num_slots,
 
 	ksm->num_slots = num_slots;
 	ksm->ksm_ll_ops = *ksm_ll_ops;
-	memcpy(ksm->crypto_mode_supported, crypto_mode_supported,
-	       sizeof(ksm->crypto_mode_supported));
+	for (i = 0; i < BLK_ENCRYPTION_MODE_MAX; i++)
+		ksm->crypto_mode_supported[i] = crypto_mode_supported[i];
+	memset(ksm->crypto_mode_untested, 0xFF,
+	       sizeof(ksm->crypto_mode_untested));
 	ksm->ll_priv_data = ll_priv_data;
 
 	init_rwsem(&ksm->lock);
@@ -329,7 +333,57 @@ bool keyslot_manager_crypto_mode_supported(struct keyslot_manager *ksm,
 		return false;
 	if (WARN_ON(!is_power_of_2(data_unit_size)))
 		return false;
-	return ksm->crypto_mode_supported[crypto_mode] & data_unit_size;
+	return READ_ONCE(ksm->crypto_mode_supported[crypto_mode]) &
+		data_unit_size;
+}
+
+/**
+ * keyslot_manager_begin_selftest() - Begin testing a crypto_mode/data_unit_size
+ *				      combo, or wait for the another thread to
+ *				      finish the test.
+ * @ksm: the keyslot manager of the device to test
+ * @crypto_mode: the encryption algorithm to test
+ * @data_unit_size: the data unit size to test
+ *
+ * Return: 1 if the test should be run, 0 if the test has passed, or
+ *	   -ELIBBAD if the test has failed.  If 1 is returned, the caller must
+ *	   run the test and later call keyslot_manager_end_selftest().
+ */
+int keyslot_manager_begin_selftest(struct keyslot_manager *ksm,
+				   enum blk_crypto_mode_num crypto_mode,
+				   unsigned int data_unit_size)
+{
+	unsigned int bit = ilog2(data_unit_size);
+
+	if (!test_and_set_bit(bit, &ksm->crypto_mode_test_started[crypto_mode]))
+		return 1;
+	wait_on_bit_io(&ksm->crypto_mode_untested[crypto_mode], bit,
+		       TASK_UNINTERRUPTIBLE);
+	if (test_bit(bit, &ksm->crypto_mode_supported[crypto_mode]))
+		return 0;
+	return -ELIBBAD;
+}
+
+/**
+ * keyslot_manager_end_selftest() - Finish testing a crypto_mode/data_unit_size
+ *				    combo.
+ * @ksm: the keyslot manager for the device that was tested
+ * @crypto_mode: the crypto mode that was tested
+ * @data_unit_size: the data unit size that was tested
+ * @failed: true if test failed, false if test passed
+ *
+ * If the self-test failed, clear the supported bit.  Also wake up anyone
+ * waiting for the self-test to complete.
+ */
+void keyslot_manager_end_selftest(struct keyslot_manager *ksm,
+				  enum blk_crypto_mode_num crypto_mode,
+				  unsigned int data_unit_size, bool failed)
+{
+	unsigned int bit = ilog2(data_unit_size);
+
+	if (failed)
+		clear_bit(bit, &ksm->crypto_mode_supported[crypto_mode]);
+	clear_and_wake_up_bit(bit, &ksm->crypto_mode_untested[crypto_mode]);
 }
 
 /**

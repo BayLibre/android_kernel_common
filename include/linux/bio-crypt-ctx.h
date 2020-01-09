@@ -89,7 +89,7 @@ void bio_crypt_clone(struct bio *dst, struct bio *src, gfp_t gfp_mask);
 
 static inline void bio_crypt_set_ctx(struct bio *bio,
 				     const struct blk_crypto_key *key,
-				     u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE],
+				     const u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE],
 				     gfp_t gfp_mask)
 {
 	struct bio_crypt_ctx *bc = bio_crypt_alloc_ctx(gfp_mask);

@@ -17,11 +17,17 @@ struct blk_crypto_mode {
 
 extern const struct blk_crypto_mode blk_crypto_modes[];
 
+int blk_crypto_selftest(struct block_device *bdev,
+			enum blk_crypto_mode_num mode_num,
+			unsigned int data_unit_size);
+
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK
 
 int blk_crypto_fallback_submit_bio(struct bio **bio_ptr);
 
 bool blk_crypto_queue_decrypt_bio(struct bio *bio);
+
+int blk_crypto_fallback_start_using_mode(enum blk_crypto_mode_num mode_num);
 
 int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key);
 
@@ -36,7 +42,7 @@ static inline bool bio_crypt_fallback_crypted(const struct bio_crypt_ctx *bc)
 
 static inline int blk_crypto_fallback_submit_bio(struct bio **bio_ptr)
 {
-	pr_warn_once("blk-crypto crypto API fallback disabled; failing request");
+	pr_warn_once("blk-crypto crypto API fallback disabled; failing request\n");
 	(*bio_ptr)->bi_status = BLK_STS_NOTSUPP;
 	return -EIO;
 }
@@ -45,6 +51,13 @@ static inline bool blk_crypto_queue_decrypt_bio(struct bio *bio)
 {
 	WARN_ON(1);
 	return false;
+}
+
+static inline int blk_crypto_fallback_start_using_mode(
+					enum blk_crypto_mode_num mode_num)
+{
+	pr_warn_once("blk-crypto crypto API fallback disabled.  Can't use inline encryption.\n");
+	return -EOPNOTSUPP;
 }
 
 static inline int
