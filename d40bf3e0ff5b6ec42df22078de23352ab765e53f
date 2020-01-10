@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "a75c3c5f_24fa0460",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Removed the code that wipes it as it might be required for other modes.",
+      "parentUuid": "75a38b3f_0108fe4b",
+      "range": {
+        "startLine": 378,
+        "startChar": 40,
+        "endLine": 378,
+        "endChar": 50
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a5b057a3_8aad86ca",
         "filename": "fs/crypto/fscrypt_private.h",
         "patchSetId": 2
@@ -59,6 +83,30 @@
       "writtenOn": "2020-01-06T22:30:57Z",
       "side": 1,
       "message": "This doesn\u0027t make sense.  First, a single master key can be used with multiple encryption modes. A different key is derived for each mode or for each file.  So there\u0027s not necessarily only one derived key size.  Second, the comment refers to mk_iv_ino_lblk_64_tfms, but that is not used for inline encryption keys.",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 464,
+        "endChar": 27
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9325faa_9c9d4e2f",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "The new patchset simplifies this removed all this. Please review again.",
+      "parentUuid": "a5b057a3_8aad86ca",
       "range": {
         "startLine": 460,
         "startChar": 0,
@@ -88,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "91c643d9_c4e0a964",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d4efbd4_a8916e9d",
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d5e6401_67c774b1",
         "filename": "fs/crypto/inline_crypt.c",
         "patchSetId": 2
@@ -108,6 +174,30 @@
       "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44244929_f28bd4ff",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d5e6401_67c774b1",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 2
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -134,6 +224,30 @@
     },
     {
       "key": {
+        "uuid": "617c8097_851ca7e6",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49f5e06d_f31c8ee3",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 48
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "07f295fd_bdd54fa4",
         "filename": "fs/crypto/inline_crypt.c",
         "patchSetId": 2
@@ -154,6 +268,30 @@
       "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af8fa10a_4785e2cd",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07f295fd_bdd54fa4",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 9
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -180,6 +318,30 @@
     },
     {
       "key": {
+        "uuid": "8ec18f5c_2da6b138",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19205048_eddc0a12",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8dedc5a_cf0efcd2",
         "filename": "fs/crypto/keyring.c",
         "patchSetId": 2
@@ -200,6 +362,30 @@
       "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2121652_c73066a3",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8dedc5a_cf0efcd2",
+      "range": {
+        "startLine": 516,
+        "startChar": 20,
+        "endLine": 516,
+        "endChar": 48
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -226,6 +412,30 @@
     },
     {
       "key": {
+        "uuid": "d1e4923b_67a14e25",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9c5f5a9_02ffe179",
+      "range": {
+        "startLine": 540,
+        "startChar": 0,
+        "endLine": 540,
+        "endChar": 40
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d42ecee0_99ec834e",
         "filename": "fs/crypto/keyring.c",
         "patchSetId": 2
@@ -249,6 +459,30 @@
     },
     {
       "key": {
+        "uuid": "1979f7fd_04acf068",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d42ecee0_99ec834e",
+      "range": {
+        "startLine": 541,
+        "startChar": 6,
+        "endLine": 541,
+        "endChar": 15
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91199c51_26a453b4",
         "filename": "fs/crypto/keyring.c",
         "patchSetId": 2
@@ -260,6 +494,30 @@
       "writtenOn": "2020-01-06T22:30:57Z",
       "side": 1,
       "message": "Filesystems, including f2fs, can have multiple block devices.  This new code is only using the filesystem\u0027s \"main\" block device, which isn\u0027t necessarily where all the encrypted files are.  If the semantics you\u0027re defining for wrapped keys is that they are potentially different for different disks, or that some disks might support them while others don\u0027t, you probably want to enforce that they are only used on single-block-device filesystems.",
+      "range": {
+        "startLine": 546,
+        "startChar": 0,
+        "endLine": 551,
+        "endChar": 47
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4be289d4_19d8b23b",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Semantics for wrapped key should remain the same for all blk devices, raw secret retrieved from any blk device should remain the same. But do you prefer to check that ?",
+      "parentUuid": "91199c51_26a453b4",
       "range": {
         "startLine": 546,
         "startChar": 0,
@@ -289,6 +547,24 @@
     },
     {
       "key": {
+        "uuid": "8496f2e5_2f4fb1e7",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c6aa536_9114aab9",
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "167f9c2e_d08ec4cb",
         "filename": "include/uapi/linux/fscrypt.h",
         "patchSetId": 2
@@ -312,6 +588,30 @@
     },
     {
       "key": {
+        "uuid": "3bb6b53a_fa45ca29",
+        "filename": "include/uapi/linux/fscrypt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "64 bytes key material + 16 byte tag + 8 byte metadata + 8 byte policy. Thinking more about it will add some reserved bytes.",
+      "parentUuid": "167f9c2e_d08ec4cb",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 39
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ec516003_48465ab2",
         "filename": "include/uapi/linux/fscrypt.h",
         "patchSetId": 2
@@ -323,6 +623,30 @@
       "writtenOn": "2020-01-06T22:30:57Z",
       "side": 1,
       "message": "There\u0027s already a patch queued for 5.6 that uses this field for something else.",
+      "range": {
+        "startLine": 119,
+        "startChar": 1,
+        "endLine": 119,
+        "endChar": 13
+      },
+      "revId": "d40bf3e0ff5b6ec42df22078de23352ab765e53f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0a2f92a_b654a1a9",
+        "filename": "include/uapi/linux/fscrypt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1619522
+      },
+      "writtenOn": "2020-01-10T19:51:40Z",
+      "side": 1,
+      "message": "Sure let\u0027s discuss the best option to add this field.",
+      "parentUuid": "ec516003_48465ab2",
       "range": {
         "startLine": 119,
         "startChar": 1,
