@@ -1,0 +1,630 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80f0d417_b758c4b4",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Can you move this down to the last subsection of this section (i.e. just above \"Encryption modes and usage\")?  This is an optional feature, so I think it should go after explaining the more standard flow.",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 12
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fe95a0b_99b797f8",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Should clarify that software doesn\u0027t have access to the plaintext keys *even to program them into the hardware*.  Otherwise this sounds like it could just be talking about the traditional inline encryption hardware.",
+      "range": {
+        "startLine": 208,
+        "startChar": 64,
+        "endLine": 209,
+        "endChar": 45
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0414ddea_61802dd4",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "This is going to cause confusion about what the \"master key\" means -- is it the wrapped key, the real unwrapped key, or the secret derived from the wrapped key?  Also, \"ICE\" is Qualcomm-specific; please use a generic name.  Maybe a better explanation would be:\n\n When this feature is used on supported hardware, the \"fscrypt master\n key\" provided by userspace is actually a key that was generated and\n wrapped by the hardware.  This wrapped key is then passed directly to\n the inline encryption hardware to encrypt file contents.\n\n The wrapped key is also passed to the hardware to derive a software\n \"secret\" which fscrypt then uses as the master key for all other\n purposes besides file contents encryption, e.g. deriving filenames \n encryption keys and the key identifier.",
+      "range": {
+        "startLine": 211,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 45
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db11ed33_cc2da891",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "`Wrapped Keys`_\n\n(Note the trailing underscore)",
+      "range": {
+        "startLine": 474,
+        "startChar": 41,
+        "endLine": 474,
+        "endChar": 55
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80e22e46_fdac6f06",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "\"needs to be\" \u003d\u003e \"needs to be used\"\n\nAlso should mention that this must be used in combination with IV_INO_LBLK_64.",
+      "range": {
+        "startLine": 475,
+        "startChar": 17,
+        "endLine": 475,
+        "endChar": 70
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a21ee94_21698a2b",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Should add empty line before and after this list item.",
+      "range": {
+        "startLine": 699,
+        "startChar": 2,
+        "endLine": 699,
+        "endChar": 3
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e47834f5_29f366d5",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "This name doesn\u0027t make it entirely clear that this is a flag for FS_IOC_ADD_ENCRYPTION_KEY.  How about using FSCRYPT_ADD_KEY_FLAG_WRAPPED?",
+      "range": {
+        "startLine": 699,
+        "startChar": 4,
+        "endLine": 699,
+        "endChar": 32
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5492f956_611524de",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "\"See `Wrapped Keys`_ for more details.\"\n\n(Note the trailing underscore, and no need to say \"section\".)",
+      "range": {
+        "startLine": 700,
+        "startChar": 22,
+        "endLine": 700,
+        "endChar": 68
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0b7bef7_92796221",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "There\u0027s a patch queued which provides an alternative way to provide the raw key rather than put it directly in the ``raw`` field.  So perhaps just write \"This denotes that the key is a wrapped key.\"",
+      "range": {
+        "startLine": 699,
+        "startChar": 34,
+        "endLine": 700,
+        "endChar": 21
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0685c70_53b02b78",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Need to document the errors.",
+      "range": {
+        "startLine": 720,
+        "startChar": 0,
+        "endLine": 720,
+        "endChar": 61
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69e81dce_35c8c368",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Please call this \u0027raw_key_size\u0027.  Likewise for all the other functions where a \u0027keysize\u0027 argument is added to denote the size of a \u0027raw_key\u0027.",
+      "range": {
+        "startLine": 332,
+        "startChar": 37,
+        "endLine": 332,
+        "endChar": 44
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "708dd7d3_13ea3b9f",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "The function names \"*get_raw_secret()\" are confusing because they sound like they\u0027re returning the unwrapped key.  Can you please call all these functions *derive_raw_secret() instead, to make it clear that they\u0027re deriving a key?\n\n(Maybe there\u0027s a better name than \"raw_secret\" too, but I can\u0027t think of something obviously better.)",
+      "range": {
+        "startLine": 338,
+        "startChar": 11,
+        "endLine": 338,
+        "endChar": 33
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35c144fb_191bbc08",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "I think it would be clearer to call these \"wrapped_key\" and \"wrapped_key_size\".  Otherwise it\u0027s confusing which \"secret\" is which.",
+      "range": {
+        "startLine": 339,
+        "startChar": 6,
+        "endLine": 339,
+        "endChar": 42
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8f08876_0dd3c00f",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "This is reached if the user tries to add a wrapped key but the kernel was built without inline encryption support.  WARN_ON()s must never be reachable.  Please use fscrypt_warn() instead, e.g.\n\n  fscrypt_warn(NULL, \"kernel built without support for wrapped keys\");",
+      "range": {
+        "startLine": 391,
+        "startChar": 1,
+        "endLine": 391,
+        "endChar": 12
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b749921_02046828",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "This comment isn\u0027t clear about whether in the wrapped key case \u0027raw\u0027 is the wrapped key or whether it\u0027s the HKDF key.  How about something like:\n\n       /* For v1 policy keys: the raw key.  Wiped for v2 policy keys, unless\n        * this a wrapped key, in which case this contains the wrapped key\n        * rather than the key with which \u0027hkdf\u0027 was keyed.",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 422,
+        "endChar": 40
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4160016e_c32d90dd",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "We\u0027re also going to need a \u0027bool is_wrapped_key\u0027 here (with a comment) so that it\u0027s possible to tell whether this a wrapped key or not --- since wrapped keys must only be used with WRAPPED_KEY policies, and non-wrapped keys must only be used with non-WRAPPED_KEY policies.",
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf6efc7_837e7764",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "No need to add the keysize argument to fscrypt_set_derived_key(), since it\u0027s never called in the wrapped key case.",
+      "range": {
+        "startLine": 573,
+        "startChar": 43,
+        "endLine": 573,
+        "endChar": 50
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "870a37d8_ee8b6c77",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "What is the error code for when the hardware doesn\u0027t support this feature?  In some places it\u0027s EINVAL while in others it\u0027s EOPNOTSUPP.  I think you probably want to go with EOPNOTSUPP.",
+      "range": {
+        "startLine": 146,
+        "startChar": 10,
+        "endLine": 146,
+        "endChar": 16
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4e27dcd_dd29613f",
+        "filename": "fs/crypto/inline_crypt.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "I\u0027m not sure what all these random NULL checks are supposed to be accomplishing.  Of these 4 checks the only thing that can actually be NULL is q-\u003eksm.  Are you trying to check whether the filesystem uses multiple block devices?  If so you\u0027d need to call sb-\u003es_cop-\u003eget_num_bdevs().",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 17
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ef696fc_54d06e8e",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Need to return -EINVAL if any flags are set in this case.",
+      "range": {
+        "startLine": 526,
+        "startChar": 2,
+        "endLine": 526,
+        "endChar": 39
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "309dce1d_5dabcd71",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Need to return -EINVAL if any flags other than the wrapped key flag are set.",
+      "range": {
+        "startLine": 536,
+        "startChar": 1,
+        "endLine": 536,
+        "endChar": 39
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "663a5f47_cb7c19ee",
+        "filename": "fs/crypto/keyring.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "This is forgetting to zeroize the key that\u0027s passed to the HKDF in the wrapped key case.\n\nIt\u0027s also really confusing having so many different variables called \"secret\".\n\nCan you please do something like:\n\n                err \u003d -EINVAL;\n                if (arg.flags \u0026 ~FSCRYPT_ADD_KEY_FLAG_WRAPPED)\n                        goto out_wipe_secret;\n                if (arg.flags \u0026 FSCRYPT_ADD_KEY_FLAG_WRAPPED) {\n                        kdf_key \u003d _kdf_key;\n                        kdf_key_size \u003d RAW_SECRET_SIZE;\n                        err \u003d fscrypt_derive_raw_secret(sb, secret.raw,\n                                                        secret.size,\n                                                        kdf_key, kdf_key_size);\n                        if (err)\n                                goto out_wipe_secret;\n                } else {\n                        kdf_key \u003d secret.raw;\n                        kdf_key_size \u003d secret.size;\n                }\n                err \u003d fscrypt_init_hkdf(\u0026secret.hkdf, kdf_key, kdf_key_size);\n                /*\n                 * Now that the HKDF context is initialized, the raw HKDF key is\n                 * no longer needed.\n                 */\n                memzero_explicit(kdf_key, kdf_key_size);\n                if (err)\n                        goto out_wipe_secret;",
+      "range": {
+        "startLine": 553,
+        "startChar": 0,
+        "endLine": 559,
+        "endChar": 3
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fa81293_7a1c2ab9",
+        "filename": "fs/crypto/keysetup.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "The keysize / raw_key_size that\u0027s passed in is ignored in this case, so it would be good to add a sanity check:\n\n       if (WARN_ON(raw_key_size !\u003d ci-\u003eci_mode-\u003ekeysize))\n               return -EINVAL;",
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b7c9820_3597c7b5",
+        "filename": "fs/crypto/keysetup.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "1. Need to check that the file is a regular file before using the wrapped key.\n2. Need to check that the file is using inline encryption before using the wrapped key.\n3. Need to check that the key is actually a wrapped key.\n4. There\u0027s no need to use the on-stack buffer for the wrapped key.\n5. This code allows the same wrapped key to be used for multiple encryption modes.  I think we should explicitly prevent that, unless the hardware is expected to always handle that appropriately by deriving a different key for each mode.\n\nCan you consider something like:\n\n        if (S_ISREG(inode-\u003ei_mode) \u0026\u0026 mk-\u003emk_secret.is_wrapped_key) {\n                int i;\n\n                if (!fscrypt_using_inline_encryption(ci)) {\n                        fscrypt_warn(ci-\u003eci_inode,\n                                     \"wrapped keys require inline encryption (-o inlinecrypt)\");\n                        err \u003d -EINVAL;\n                        goto out_unlock;\n                }\n\n                for (i \u003d 0; i \u003c\u003d __FSCRYPT_MODE_MAX; i++) {\n                        if (fscrypt_is_key_prepared(\u0026keys[mode_num], ci)) {\n                                fscrypt_warn(ci-\u003eci_inode,\n                                             \"wrapped keys only support one encryption mode at a time\");\n                                err \u003d -EINVAL;\n                                goto out_unlock;\n                        }\n                }\n                err \u003d fscrypt_prepare_key(prep_key, mk-\u003emk_secret.raw,\n                                          mk-\u003emk_secret.size, ci);\n                if (err)\n                        goto out_unlock;\n                goto done_unlock;\n        }",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 9
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cfc6d4a_dd779898",
+        "filename": "fs/crypto/keysetup.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "Need to validate here that if the key is a wrapped key, then the policy must be a WRAPPED_KEY policy; and if the key is not a wrapped key, then the policy must *not* be a WRAPPED_KEY policy.",
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13491fac_8e14d8a7",
+        "filename": "fs/crypto/policy.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "I think we have to delay checking for whether inline encryption is enabled until the key is set up (i.e. setup_per_mode_key()), because some filesystems support changing mount options at runtime.  We don\u0027t know for sure whether a given file will use inline encryption or not until fscrypt_select_encryption_impl() has run on the inode.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 4
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12ad8acb_ef178f88",
+        "filename": "fs/crypto/policy.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "If the policy is IV_INO_LBLK_64, then we already checked supported_iv_ino_lblk_64_policy().  So you only need to check the flag itself.",
+      "range": {
+        "startLine": 133,
+        "startChar": 7,
+        "endLine": 133,
+        "endChar": 55
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb2390d1_18482ded",
+        "filename": "include/uapi/linux/fscrypt.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:01:23Z",
+      "side": 1,
+      "message": "I think that FSCRYPT_MAX_WRAPPED_KEY_SIZE should go in fscrypt_private.h and not the UAPI header, since it\u0027s just an implementation limit; it\u0027s not actually used in any UAPI structures.  And this size could easily change in the future if someone needs longer wrapped keys.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 40
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
