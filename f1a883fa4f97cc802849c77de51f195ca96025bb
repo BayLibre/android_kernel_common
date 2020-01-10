@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3f28e7f_a8c8ec46",
+        "filename": "block/blk-crypto.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:09:46Z",
+      "side": 1,
+      "message": "This comment should clarify that the raw key size can now actually be *greater* than the mode\u0027s actual key size.  e.g.\n\n * @raw_key_size: Size of raw key.  Must be at least the required size for the\n *                chosen @crypto_mode; see blk_crypto_modes[].  (It\u0027s allowed to\n *                be longer than the mode\u0027s actual key size, in order to support\n *                inline encryption hardware that accepts wrapped keys.)",
+      "range": {
+        "startLine": 175,
+        "startChar": 30,
+        "endLine": 176,
+        "endChar": 64
+      },
+      "revId": "f1a883fa4f97cc802849c77de51f195ca96025bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c8c5271_2f55345f",
+        "filename": "include/linux/blk-crypto.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-10T21:09:46Z",
+      "side": 1,
+      "message": "\u0027raw_key_size\u0027 would be clearer, especially since there\u0027s already another argument that\u0027s a type of \"key\".",
+      "range": {
+        "startLine": 18,
+        "startChar": 35,
+        "endLine": 18,
+        "endChar": 42
+      },
+      "revId": "f1a883fa4f97cc802849c77de51f195ca96025bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
