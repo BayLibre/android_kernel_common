@@ -8,6 +8,8 @@
 
 #include <linux/bio.h>
 
+#ifdef CONFIG_BLK_INLINE_ENCRYPTION
+
 struct keyslot_manager;
 
 /**
@@ -61,5 +63,13 @@ struct keyslot_manager *keyslot_manager_create_passthrough(
 	const struct keyslot_mgmt_ll_ops *ksm_ops,
 	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
 	void *ll_priv_data);
+
+void keyslot_manager_get_supported_modes(struct keyslot_manager *ksm,
+		 unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX]);
+
+void keyslot_manager_set_supported_modes(struct keyslot_manager *ksm,
+	 const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX]);
+
+#endif /* CONFIG_BLK_INLINE_ENCRYPTION */
 
 #endif /* __LINUX_KEYSLOT_MANAGER_H */
