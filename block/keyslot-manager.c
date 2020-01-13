@@ -87,8 +87,7 @@ static struct keyslot_manager *__keyslot_manager_create(
 
 	ksm->num_slots = num_slots;
 	ksm->ksm_ll_ops = *ksm_ll_ops;
-	memcpy(ksm->crypto_mode_supported, crypto_mode_supported,
-	       sizeof(ksm->crypto_mode_supported));
+	keyslot_manager_set_supported_modes(ksm, crypto_mode_supported);
 	ksm->ll_priv_data = ll_priv_data;
 
 	init_rwsem(&ksm->lock);
@@ -489,3 +488,38 @@ bool keyslot_manager_is_passthrough(struct keyslot_manager *ksm)
 	return ksm->num_slots == 0;
 }
 EXPORT_SYMBOL_GPL(keyslot_manager_is_passthrough);
+
+/**
+ * keyslot_manager_get_supported_modes() - get the supported encryption modes
+ * @ksm: The keyslot manager
+ * @crypto_mode_supported: (output) the bitmasks of supported encryption modes.
+ *			   See keyslot_manager_create() for the format.
+ */
+void keyslot_manager_get_supported_modes(struct keyslot_manager *ksm,
+		 unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX])
+{
+	memcpy(crypto_mode_supported, ksm->crypto_mode_supported,
+	       sizeof(ksm->crypto_mode_supported));
+}
+EXPORT_SYMBOL_GPL(keyslot_manager_get_supported_modes);
+
+/**
+ * keyslot_manager_set_supported_modes() - set the supported encryption modes
+ * @ksm: The keyslot manager
+ * @crypto_mode_supported: The bitmasks of supported encryption modes.
+ *			   See keyslot_manager_create() for the format.
+ *
+ * This function should only be called when setting up a keyslot manager, before
+ * it's been exposed.
+ */
+void keyslot_manager_set_supported_modes(struct keyslot_manager *ksm,
+	 const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX])
+{
+	if (crypto_mode_supported == NULL)
+		memset(ksm->crypto_mode_supported, 0,
+		       sizeof(ksm->crypto_mode_supported));
+	else
+		memcpy(ksm->crypto_mode_supported, crypto_mode_supported,
+		       sizeof(ksm->crypto_mode_supported));
+}
+EXPORT_SYMBOL_GPL(keyslot_manager_set_supported_modes);
