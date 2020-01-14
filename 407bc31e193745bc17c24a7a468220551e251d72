@@ -237,6 +237,30 @@
     },
     {
       "key": {
+        "uuid": "f512a251_d16f6547",
+        "filename": "Documentation/filesystems/fscrypt.rst",
+        "patchSetId": 9
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-14T18:27:05Z",
+      "side": 1,
+      "message": "Just mentioning it here is fine for now.  We\u0027ll probably add some more information about \u0027inlinecrypt\u0027 to this document, but the main documentation for the ext4 and f2fs mount options is elsewhere (in the ext4 man page and in Documentation/filesystems/f2fs.txt) so we\u0027ll need to document it there too.",
+      "parentUuid": "adee9b99_68a4f7d2",
+      "range": {
+        "startLine": 475,
+        "startChar": 17,
+        "endLine": 475,
+        "endChar": 70
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7a21ee94_21698a2b",
         "filename": "Documentation/filesystems/fscrypt.rst",
         "patchSetId": 9
@@ -1094,6 +1118,30 @@
       "side": 1,
       "message": "Currently the wrapped master key is a key derivation key and can derive a contents encryption key for a specific block mode. In the vops we use the crypto_mode to derive the specific key for that particular crypto_mode. But not sure if all hardware would do that, so it does make sense to add this restriction.\n\nBut shouldn\u0027t we use the wrapped key only when the policy requests it rather than for the first mode that calls this function after a wrapped key is set ?",
       "parentUuid": "6b7c9820_3597c7b5",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 9
+      },
+      "revId": "407bc31e193745bc17c24a7a468220551e251d72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "939219ad_22104952",
+        "filename": "fs/crypto/keysetup.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-14T18:27:05Z",
+      "side": 1,
+      "message": "We should verify earlier that is_wrapped_key is true if and only if the policy is WRAPPED_KEY.  After that, checking either flag would be equivalent here.",
+      "parentUuid": "41b4881b_208d1a13",
       "range": {
         "startLine": 182,
         "startChar": 0,
