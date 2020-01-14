@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50b6c20c_eca220be",
+        "filename": "block/blk-crypto.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-14T18:37:20Z",
+      "side": 0,
+      "message": "Should return -EINVAL if \u0027raw_key_size \u003c mode-\u003ekeysize\u0027, since a wrapped key can never be shorter than the original key.",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 17
+      },
+      "revId": "13a6257f6844c301f7e94d9592ae77217c3f5cd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
