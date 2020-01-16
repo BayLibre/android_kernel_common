@@ -477,7 +477,7 @@ static int fscrypt_provisioning_key_preparse(struct key_preparsed_payload *prep)
 	    payload->type != FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER)
 		return -EINVAL;
 
-	if (payload->__reserved)
+	if (payload->flags)
 		return -EINVAL;
 
 	prep->payload.data[0] = kmemdup(payload, prep->datalen, GFP_KERNEL);
@@ -604,6 +604,9 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 		return -EFAULT;
 
 	if (!valid_key_spec(&arg.key_spec))
+		return -EINVAL;
+
+	if (arg.flags)
 		return -EINVAL;
 
 	if (memchr_inv(arg.__reserved, 0, sizeof(arg.__reserved)))
