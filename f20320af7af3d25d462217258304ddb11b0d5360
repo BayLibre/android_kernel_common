@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "671f0925_fb475a74",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2020-01-23T22:15:56Z",
+      "side": 1,
+      "message": "I would prefer dropping ppa here to filling it in, but won\u0027t block on it",
+      "revId": "f20320af7af3d25d462217258304ddb11b0d5360",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ab83233_b1de14cf",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2020-01-23T22:15:56Z",
+      "side": 1,
+      "message": "I\u0027d prefer that the pa arg gets dropped in this refactor patch rather than later in the patch introducing trusty_share/revoke, but again, won\u0027t block on it.",
+      "revId": "f20320af7af3d25d462217258304ddb11b0d5360",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
