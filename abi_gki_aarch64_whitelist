@@ -18,6 +18,8 @@
   autoremove_wake_function
   bcmp
   bin2hex
+  bio_alloc_bioset
+  bio_chain
   blk_cleanup_queue
   blk_execute_rq
   blk_get_queue
@@ -353,6 +355,7 @@
   free_pages_exact
   free_percpu
   freezing_slow_path
+  fs_bio_set
   fsl8250_handle_irq
   generic_file_llseek
   get_device
@@ -549,6 +552,9 @@
   nr_cpu_ids
   nr_swap_pages
   nsecs_to_jiffies
+  nvdimm_bus_register
+  nvdimm_bus_unregister
+  nvdimm_pmem_region_create
   of_address_to_resource
   of_alias_get_id
   of_device_is_big_endian
@@ -834,6 +840,7 @@
   strrchr
   strsep
   strstr
+  submit_bio
   __sw_hweight64
   swiotlb_max_segment
   sync_file_create
