@@ -243,6 +243,8 @@ unsigned long schedutil_cpu_util(int cpu, unsigned long util_cfs,
 {
 	unsigned long dl_util, util, irq;
 	struct rq *rq = cpu_rq(cpu);
+	unsigned long hold_min = 0;
+	unsigned long exp;
 
 	if (sched_feat(SUGOV_RT_MAX_FREQ) && !IS_BUILTIN(CONFIG_UCLAMP_TASK) &&
 	    type == FREQUENCY_UTIL && rt_rq_is_runnable(&rq->rt)) {
@@ -258,6 +260,11 @@ unsigned long schedutil_cpu_util(int cpu, unsigned long util_cfs,
 	if (unlikely(irq >= max))
 		return max;
 
+	/* Apply uclamp hold request, if any. */
+	exp = READ_ONCE(rq->uclamp_hold_expiry);
+	if (exp && time_before(jiffies, exp))
+		hold_min = READ_ONCE(rq->uclamp_hold_value);
+
 	/*
 	 * Because the time spend on RT/DL tasks is visible as 'lost' time to
 	 * CFS tasks and we use the same metric to track the effective
@@ -271,8 +278,10 @@ unsigned long schedutil_cpu_util(int cpu, unsigned long util_cfs,
 	 * frequency will be gracefully reduced with the utilization decay.
 	 */
 	util = util_cfs + cpu_util_rt(rq);
-	if (type == FREQUENCY_UTIL)
+	if (type == FREQUENCY_UTIL) {
 		util = uclamp_rq_util_with(rq, util, p);
+		util = max(hold_min, util);
+	}
 
 	dl_util = cpu_util_dl(rq);
 
