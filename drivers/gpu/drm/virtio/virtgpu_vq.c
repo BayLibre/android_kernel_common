@@ -699,8 +699,11 @@ int virtio_gpu_cmd_get_capset(struct virtio_gpu_device *vgdev,
 	struct virtio_gpu_drv_cap_cache *search_ent;
 	void *resp_buf;
 
+<<<<<<< HEAD   (0dc39d FROMGIT: ext4: Add EXT4_IOC_FSGETXATTR/EXT4_IOC_FSSETXATTR t)
 	*cache_p = NULL;
 
+=======
+>>>>>>> BRANCH (9a95f2 Linux 4.14.168)
 	if (idx >= vgdev->num_capsets)
 		return -EINVAL;
 
