@@ -405,6 +405,14 @@ struct task_group {
 	struct uclamp_se	uclamp[UCLAMP_CNT];
 	/* Latency-sensitive flag used for a task group */
 	unsigned int		latency_sensitive;
+	/* Requested minimum uclamp hold ms time for this entity */
+	unsigned long		uclamp_hold_ms_req;
+	/*
+	 * Jiffy-converted minimum uclamp hold time for this entity taking into
+	 * account the hierarchy restrictions.
+	 *
+	 */
+	unsigned long		uclamp_hold_jiffies;
 #endif
 
 };

@@ -1266,6 +1266,8 @@ static void __init init_uclamp(void)
 #ifdef CONFIG_UCLAMP_TASK_GROUP
 		root_task_group.uclamp_req[clamp_id] = uc_max;
 		root_task_group.uclamp[clamp_id] = uc_max;
+		root_task_group.uclamp_hold_jiffies = 0;
+		root_task_group.uclamp_hold_ms_req = 0;
 #endif
 	}
 }
@@ -6952,6 +6954,8 @@ static inline void alloc_uclamp_sched_group(struct task_group *tg,
 			      uclamp_none(clamp_id), false);
 		tg->uclamp[clamp_id] = parent->uclamp[clamp_id];
 	}
+	tg->uclamp_hold_jiffies = parent->uclamp_hold_jiffies;
+	tg->uclamp_hold_ms_req = parent->uclamp_hold_ms_req;
 #endif
 }
 
@@ -7248,6 +7252,31 @@ static void cpu_util_update_eff(struct cgroup_subsys_state *css)
 	}
 }
 
+static void uclamp_hold_update_jiffies(struct cgroup_subsys_state *css)
+{
+	struct cgroup_subsys_state *top_css = css;
+	unsigned long parent_hold_ms;
+	unsigned long hold_ms;
+
+	css_for_each_descendant_pre(css, top_css) {
+		if (css_tg(css)->parent == &root_task_group)
+			continue;
+
+		if (css_tg(css)->parent) {
+			parent_hold_ms = css_tg(css)->parent->uclamp_hold_ms_req;
+			hold_ms = css_tg(css)->uclamp_hold_ms_req;
+
+			if (hold_ms < parent_hold_ms) {
+				css_tg(css)->uclamp_hold_jiffies =
+					msecs_to_jiffies(parent_hold_ms);
+			} else {
+				css_tg(css)->uclamp_hold_jiffies =
+					msecs_to_jiffies(hold_ms);
+			}
+		}
+	}
+}
+
 /*
  * Integer 10^N with a given N exponent by casting to integer the literal "1eN"
  * C expression. Since there is no way to convert a macro argument (N) into a
@@ -7392,6 +7421,41 @@ static u64 cpu_uclamp_ls_read_u64(struct cgroup_subsys_state *css,
 	struct task_group *tg = css_tg(css);
 
 	return (u64) tg->latency_sensitive;
+}
+
+static int cpu_uclamp_hold_show(struct seq_file *sf, void *v)
+{
+	struct task_group *tg;
+	unsigned long hold_ms;
+
+	tg = css_tg(seq_css(sf));
+	hold_ms = tg->uclamp_hold_ms_req;
+
+	seq_printf(sf, "%lu\n", hold_ms);
+
+	return 0;
+}
+
+static int cpu_uclamp_hold_write(struct cgroup_subsys_state *css,
+				 struct cftype *cftype, u64 hold_u64)
+{
+	unsigned long hold = (unsigned long)hold_u64;
+	struct task_group *tg;
+	int ret = 0;
+
+	mutex_lock(&uclamp_mutex);
+
+	tg = css_tg(css);
+
+	tg->uclamp_hold_ms_req = hold;
+	tg->uclamp_hold_jiffies = msecs_to_jiffies(hold);
+
+	/* Get the effective jiffies of the hold_ms across the hierarchy */
+	uclamp_hold_update_jiffies(css);
+
+	mutex_unlock(&uclamp_mutex);
+
+	return ret;
 }
 #endif /* CONFIG_UCLAMP_TASK_GROUP */
 
@@ -7759,6 +7823,12 @@ static struct cftype cpu_legacy_files[] = {
 		.read_u64 = cpu_uclamp_ls_read_u64,
 		.write_u64 = cpu_uclamp_ls_write_u64,
 	},
+	{
+		.name = "uclamp.hold_ms",
+		.flags = CFTYPE_NOT_ON_ROOT,
+		.seq_show = cpu_uclamp_hold_show,
+		.write_u64 = cpu_uclamp_hold_write,
+	},
 #endif
 	{ }	/* Terminate */
 };
@@ -7945,6 +8015,12 @@ static struct cftype cpu_files[] = {
 		.flags = CFTYPE_NOT_ON_ROOT,
 		.read_u64 = cpu_uclamp_ls_read_u64,
 		.write_u64 = cpu_uclamp_ls_write_u64,
+	},
+	{
+		.name = "uclamp.hold_ms",
+		.flags = CFTYPE_NOT_ON_ROOT,
+		.seq_show = cpu_uclamp_hold_show,
+		.write_u64 = cpu_uclamp_hold_write,
 	},
 #endif
 	{ }	/* terminate */
