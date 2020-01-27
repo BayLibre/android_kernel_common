@@ -1266,6 +1266,8 @@ static void __init init_uclamp(void)
 #ifdef CONFIG_UCLAMP_TASK_GROUP
 		root_task_group.uclamp_req[clamp_id] = uc_max;
 		root_task_group.uclamp[clamp_id] = uc_max;
+		root_task_group.uclamp_hold_jiffies = 0;
+		root_task_group.uclamp_hold_ms_req = 0;
 #endif
 	}
 }
@@ -6952,6 +6954,8 @@ static inline void alloc_uclamp_sched_group(struct task_group *tg,
 			      uclamp_none(clamp_id), false);
 		tg->uclamp[clamp_id] = parent->uclamp[clamp_id];
 	}
+	tg->uclamp_hold_jiffies = parent->uclamp_hold_jiffies;
+	tg->uclamp_hold_ms_req = parent->uclamp_hold_ms_req;
 #endif
 }
 
@@ -7393,6 +7397,43 @@ static u64 cpu_uclamp_ls_read_u64(struct cgroup_subsys_state *css,
 
 	return (u64) tg->latency_sensitive;
 }
+
+static int cpu_uclamp_hold_show(struct seq_file *sf, void *v)
+{
+	struct task_group *tg;
+	unsigned long hold_ms;
+
+	rcu_read_lock();
+	tg = css_tg(seq_css(sf));
+	hold_ms = tg->uclamp_hold_ms_req;
+	rcu_read_unlock();
+
+	seq_printf(sf, "%lu\n", hold_ms);
+	return 0;
+}
+
+static int cpu_uclamp_hold_write(struct cgroup_subsys_state *css,
+				 struct cftype *cftype, u64 hold_u64)
+{
+	unsigned long hold = (unsigned long)hold_u64;
+	struct task_group *tg;
+	int ret = 0;
+
+	rcu_read_lock();
+	tg = css_tg(css);
+	if(hold >= tg->parent->uclamp_hold_ms_req)
+	{
+		mutex_lock(&uclamp_mutex);
+		tg->uclamp_hold_ms_req = hold;
+		tg->uclamp_hold_jiffies = msecs_to_jiffies(hold);
+		mutex_unlock(&uclamp_mutex);
+	} else {
+		ret = -EINVAL;
+	}
+	rcu_read_unlock();
+
+	return ret;
+}
 #endif /* CONFIG_UCLAMP_TASK_GROUP */
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
@@ -7759,6 +7800,12 @@ static struct cftype cpu_legacy_files[] = {
 		.read_u64 = cpu_uclamp_ls_read_u64,
 		.write_u64 = cpu_uclamp_ls_write_u64,
 	},
+	{
+		.name = "uclamp.hold_ms",
+		.flags = CFTYPE_NOT_ON_ROOT,
+		.seq_show = cpu_uclamp_hold_show,
+		.write_u64 = cpu_uclamp_hold_write,
+	},
 #endif
 	{ }	/* Terminate */
 };
@@ -7945,6 +7992,12 @@ static struct cftype cpu_files[] = {
 		.flags = CFTYPE_NOT_ON_ROOT,
 		.read_u64 = cpu_uclamp_ls_read_u64,
 		.write_u64 = cpu_uclamp_ls_write_u64,
+	},
+	{
+		.name = "uclamp.hold_ms",
+		.flags = CFTYPE_NOT_ON_ROOT,
+		.seq_show = cpu_uclamp_hold_show,
+		.write_u64 = cpu_uclamp_hold_write,
 	},
 #endif
 	{ }	/* terminate */
