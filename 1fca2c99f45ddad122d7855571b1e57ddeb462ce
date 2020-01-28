@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af908b2b_768ac9d8",
+        "filename": "drivers/base/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-01-28T01:11:08Z",
+      "side": 1,
+      "message": "I thought this was a new patch upstream and I was confused why this change was introduce. Looks like this is a pretty \"old\" change.\n\nSo, what\u0027s the reason we are pulling in these patches now into 4.19, but not the later patches  515db266a9da and fb583c8eeeb1? This 4.19.99 update will break being able to add STATELESS and stateful links between the same set of devices. But the newer patches I mention will fix that.\n\nI don\u0027t think this affects Android much because there are very few users or DL_FLAG_STATELESS and even those just print a warning if the link add fails. But just wondering why it was done this way upstream.",
+      "range": {
+        "startLine": 254,
+        "startChar": 2,
+        "endLine": 255,
+        "endChar": 15
+      },
+      "revId": "1fca2c99f45ddad122d7855571b1e57ddeb462ce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
