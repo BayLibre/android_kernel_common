@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a566d49_5984f96e",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-29T19:06:11Z",
+      "side": 1,
+      "message": "IMO, it would slightly be better to keep this as bit `1 \u003c\u003c 7` (rather than changing it to `1 \u003c\u003c 6` as part of the backport), in case someone backports the upstream patch that uses bit `1 \u003c\u003c 6`.",
+      "range": {
+        "startLine": 674,
+        "startChar": 8,
+        "endLine": 674,
+        "endChar": 34
+      },
+      "revId": "9e8ed0441f9240e28d6a9882dde2c2f84b3771c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
