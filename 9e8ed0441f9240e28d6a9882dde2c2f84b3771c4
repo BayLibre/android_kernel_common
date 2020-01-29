@@ -22,6 +22,30 @@
       "revId": "9e8ed0441f9240e28d6a9882dde2c2f84b3771c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d22e6a42_1edb6f2e",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-01-29T23:45:44Z",
+      "side": 1,
+      "message": "The original patch this was cherry picked from actually still had 1 \u003c\u003c 6 - but in android-mainline, between that patch and the v5\u003d\u003ev6 update, someone merged something that used the same bit, and it seems somebody resolved the conflict by making UFSHCD_CAP_CRYPTO use 1 \u003c\u003c 7 before I put up the v5\u003d\u003ev6 patch on android-mainline....I made the v5\u003d\u003ev6 update for android 4.14 make this change intead (and another similar one which caused varied line ordering in ufshcd.c).",
+      "parentUuid": "1a566d49_5984f96e",
+      "range": {
+        "startLine": 674,
+        "startChar": 8,
+        "endLine": 674,
+        "endChar": 34
+      },
+      "revId": "9e8ed0441f9240e28d6a9882dde2c2f84b3771c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
