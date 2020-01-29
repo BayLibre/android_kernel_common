@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd83a7a9_526fed0e",
+        "filename": "drivers/scsi/ufs/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-29T19:04:28Z",
+      "side": 1,
+      "message": "This backport is wrong since it\u0027s building ufshcd-crypto.o into the core kernel, rather than building it as part of the ufshcd module.  It needs to be like later kernels:\n\ndiff --git a/drivers/scsi/ufs/Makefile b/drivers/scsi/ufs/Makefile\nindex 9310c6c830417e..fcf5572c3ee8bb 100644\n--- a/drivers/scsi/ufs/Makefile\n+++ b/drivers/scsi/ufs/Makefile\n@@ -3,6 +3,8 @@\n obj-$(CONFIG_SCSI_UFS_DWC_TC_PCI) +\u003d tc-dwc-g210-pci.o ufshcd-dwc.o tc-dwc-g210.o\n obj-$(CONFIG_SCSI_UFS_DWC_TC_PLATFORM) +\u003d tc-dwc-g210-pltfrm.o ufshcd-dwc.o tc-dwc-g210.o\n obj-$(CONFIG_SCSI_UFS_QCOM) +\u003d ufs-qcom.o\n-obj-$(CONFIG_SCSI_UFSHCD) +\u003d ufshcd.o\n+obj-$(CONFIG_SCSI_UFSHCD) +\u003d ufshcd-core.o\n+ufshcd-core-objs :\u003d ufshcd.o\n obj-$(CONFIG_SCSI_UFSHCD_PCI) +\u003d ufshcd-pci.o\n obj-$(CONFIG_SCSI_UFSHCD_PLATFORM) +\u003d ufshcd-pltfrm.o\n+ufshcd-core-$(CONFIG_SCSI_UFS_CRYPTO) +\u003d ufshcd-crypto.o",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "778f68b58f9e54918d325a13deb6cddd7f47751e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
