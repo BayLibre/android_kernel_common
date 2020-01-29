@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96aac11c_700e06ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-29T18:35:27Z",
+      "side": 1,
+      "message": "What does \"CRYPTO_ENGINE is now used by Android userspace\" mean?  It\u0027s a kernel-internal library that\u0027s only used by crypto drivers that select it.  It is actually that it needs to be available in case a vendor has a crypto driver that uses this library?\n\nAlso, is this really intended to fix b/130424539?  I don\u0027t see how this has anything to do with it.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "77002c324012cf3931a613f828b37abe7ab4392a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99c2bc16_12c41aea",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-29T18:35:27Z",
+      "side": 1,
+      "message": "Why is the \"o\" in \"CRYPTo\" lower case?",
+      "range": {
+        "startLine": 25,
+        "startChar": 14,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "77002c324012cf3931a613f828b37abe7ab4392a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cac89c5_3754e4da",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-01-29T18:35:27Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this say \"crypto configs\"?",
+      "range": {
+        "startLine": 28,
+        "startChar": 45,
+        "endLine": 28,
+        "endChar": 55
+      },
+      "revId": "77002c324012cf3931a613f828b37abe7ab4392a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
