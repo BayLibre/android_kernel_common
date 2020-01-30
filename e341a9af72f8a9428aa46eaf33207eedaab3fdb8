@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8dc16eab_a24420c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-01-30T21:40:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "693288b1_0e7a7ce4",
+      "revId": "e341a9af72f8a9428aa46eaf33207eedaab3fdb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0626f792_79de6f8c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -30,6 +48,30 @@
       "writtenOn": "2020-01-28T14:49:58Z",
       "side": 1,
       "message": "I\u0027m not understanding this.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 5
+      },
+      "revId": "e341a9af72f8a9428aa46eaf33207eedaab3fdb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc9c5fa5_bda1c0f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-01-30T21:40:42Z",
+      "side": 1,
+      "message": "Okay I\u0027ll rephrase it. It fixes the definition of capacity_org_of() by adding __maybe_unused to remove a warning. Not sure whether this warning happened always or sometimes to be honest.",
+      "parentUuid": "0626f792_79de6f8c",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -59,6 +101,47 @@
         "endLine": 273,
         "endChar": 35
       },
+      "revId": "e341a9af72f8a9428aa46eaf33207eedaab3fdb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c19b4d84_4f4ebd05",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-01-30T21:40:42Z",
+      "side": 1,
+      "message": "Good catch. I\u0027ll change sugov_get_util() to subtract cpu_util_rt() before calling schedutil_cpu_util().",
+      "parentUuid": "249c6707_f3905179",
+      "range": {
+        "startLine": 273,
+        "startChar": 1,
+        "endLine": 273,
+        "endChar": 35
+      },
+      "revId": "e341a9af72f8a9428aa46eaf33207eedaab3fdb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f952fd6_47c35221",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-01-30T21:40:42Z",
+      "side": 1,
+      "message": "... that is subtract cpu_util_rt() after calling stune_util() and cpu_util_freq()",
       "revId": "e341a9af72f8a9428aa46eaf33207eedaab3fdb8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
