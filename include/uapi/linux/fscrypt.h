@@ -8,6 +8,7 @@
 #ifndef _UAPI_LINUX_FSCRYPT_H
 #define _UAPI_LINUX_FSCRYPT_H
 
+#include <linux/ioctl.h>
 #include <linux/types.h>
 
 /* Encryption policy flags */
@@ -109,14 +110,29 @@ struct fscrypt_key_specifier {
 	} u;
 };
 
+/*
+ * Payload of Linux keyring key of type "fscrypt-provisioning", referenced by
+ * fscrypt_add_key_arg::key_id as an alternative to fscrypt_add_key_arg::raw.
+ */
+struct fscrypt_provisioning_key_payload {
+	__u32 type;
+	__u32 __reserved;
+	__u8 raw[];
+};
+
 /* Struct passed to FS_IOC_ADD_ENCRYPTION_KEY */
 struct fscrypt_add_key_arg {
 	struct fscrypt_key_specifier key_spec;
 	__u32 raw_size;
+<<<<<<< HEAD   (cedd91 ANDROID: bpf: disable CFI for dispatcher functions)
 	__u32 __reserved[8];
 	/* N.B.: "temporary" flag, not reserved upstream */
 #define __FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED		0x00000001
 	__u32 __flags;
+=======
+	__u32 key_id;
+	__u32 __reserved[8];
+>>>>>>> BRANCH (f0d874 Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 	__u8 raw[];
 };
 
