@@ -94,6 +94,30 @@
       "revId": "dc7fb6e8ae6ab0e9ba8a1d28ce4c6185041e0dde",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85b0cc0e_c847201a",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 2364,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-01-31T10:44:44Z",
+      "side": 0,
+      "message": "Yeah not sure what happened here. Perhaps the \u0027inline\u0027 was removed by mistake, which caused a warning, and was then fixed with __maybe_inline ? Anyways, I gave it a go and don\u0027t see the warning, so I figured this should be fine.",
+      "parentUuid": "88fb12ce_84041f99",
+      "range": {
+        "startLine": 2364,
+        "startChar": 7,
+        "endLine": 2364,
+        "endChar": 13
+      },
+      "revId": "dc7fb6e8ae6ab0e9ba8a1d28ce4c6185041e0dde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
