@@ -118,10 +118,16 @@ int blk_crypto_submit_bio(struct bio **bio_ptr)
 			     bio->bi_disk->disk_name, err);
 	}
 
-	/* Fallback to crypto API */
-	err = blk_crypto_fallback_submit_bio(bio_ptr);
-	if (err)
+	if (!bc->bc_key->is_hw_wrapped) {
+		/* Fallback to crypto API */
+		err = blk_crypto_fallback_submit_bio(bio_ptr);
+		if (err)
+			goto out;
+	} else {
+		pr_warn_once("HW wrapped key cannot be used with fallback crypto API.\n");
+		err = -EINVAL;
 		goto out;
+	}
 
 	return 0;
 out:
@@ -184,6 +190,7 @@ bool blk_crypto_endio(struct bio *bio)
  */
 int blk_crypto_init_key(struct blk_crypto_key *blk_key,
 			const u8 *raw_key, unsigned int raw_key_size,
+			bool is_hw_wrapped,
 			enum blk_crypto_mode_num crypto_mode,
 			unsigned int data_unit_size)
 {
@@ -208,6 +215,7 @@ int blk_crypto_init_key(struct blk_crypto_key *blk_key,
 	blk_key->crypto_mode = crypto_mode;
 	blk_key->data_unit_size = data_unit_size;
 	blk_key->data_unit_size_bits = ilog2(data_unit_size);
+	blk_key->is_hw_wrapped = is_hw_wrapped;
 	blk_key->size = raw_key_size;
 	memcpy(blk_key->raw, raw_key, raw_key_size);
 
