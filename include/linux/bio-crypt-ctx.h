@@ -42,6 +42,7 @@ struct blk_crypto_key {
 	unsigned int data_unit_size_bits;
 	unsigned int size;
 	unsigned int hash;
+	bool is_hw_wrapped;
 	u8 raw[BLK_CRYPTO_MAX_WRAPPED_KEY_SIZE];
 };
 
