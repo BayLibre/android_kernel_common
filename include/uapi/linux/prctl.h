@@ -234,7 +234,13 @@ struct prctl_mm_map {
 #define PR_GET_TAGGED_ADDR_CTRL		56
 # define PR_TAGGED_ADDR_ENABLE		(1UL << 0)
 
+<<<<<<< HEAD   (4f9204 Revert "Revert "FROMLIST: scsi: ufs: export hibern8 entry an)
 #define PR_SET_VMA		0x53564d41
 # define PR_SET_VMA_ANON_NAME		0
+=======
+/* Control reclaim behavior when allocating memory */
+#define PR_SET_IO_FLUSHER		57
+#define PR_GET_IO_FLUSHER		58
+>>>>>>> BRANCH (39bed4 Merge tag 'for-linus-hmm' of git://git.kernel.org/pub/scm/li)
 
 #endif /* _LINUX_PRCTL_H */
