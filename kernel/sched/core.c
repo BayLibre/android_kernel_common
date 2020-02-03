@@ -749,6 +749,8 @@ unsigned int sysctl_sched_uclamp_util_max = SCHED_CAPACITY_SCALE;
 /* All clamps are required to be less or equal than these values */
 static struct uclamp_se uclamp_default[UCLAMP_CNT];
 
+static unsigned long task_uclamp_hold_jiffies(struct task_struct *p);
+
 /* Integer rounded range for each bucket */
 #define UCLAMP_BUCKET_DELTA DIV_ROUND_CLOSEST(SCHED_CAPACITY_SCALE, UCLAMP_BUCKETS)
 
@@ -975,6 +977,8 @@ static inline void uclamp_rq_dec_id(struct rq *rq, struct task_struct *p,
 static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p)
 {
 	enum uclamp_id clamp_id;
+	unsigned long hold, hold_jiffies, exp;
+	unsigned long min_clamp;
 
 	if (unlikely(!p->sched_class->uclamp_enabled))
 		return;
@@ -985,17 +989,70 @@ static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p)
 	/* Reset clamp idle holding when there is one RUNNABLE task */
 	if (rq->uclamp_flags & UCLAMP_FLAG_IDLE)
 		rq->uclamp_flags &= ~UCLAMP_FLAG_IDLE;
+
+	/* update rq min clamp hold */
+	hold = task_uclamp_hold_jiffies(p);
+	hold_jiffies = hold + jiffies;
+	exp = READ_ONCE(rq->uclamp_hold_expiry);
+
+	/* extend timeout if necessary */
+	/*
+	 * case 1:
+	 *   Enqueued task has no hold timeout and existing
+	 *   rq hold (if any) has expired.
+	 *   Remove cached rq hold
+	 */
+	if (!hold && exp && (jiffies > exp)) {
+		WRITE_ONCE(rq->uclamp_hold_value, 0);
+		WRITE_ONCE(rq->uclamp_hold_expiry, 0);
+	}
+	if (hold) {
+		min_clamp = uclamp_eff_value(p, UCLAMP_MIN);
+
+		/*
+		* case 2:
+		*   Enqueued task has a hold timeout >= than
+		*   existing hold (may be zero if none active).
+		*   Extend timeout and maybe raise hold value, never reduce it.
+		*/
+		if (hold_jiffies >= exp) {
+			WRITE_ONCE(rq->uclamp_hold_expiry, hold_jiffies);
+			/*
+			 * if exp is zero, we must have also set uclamp_hold_value
+			 * to zero, so this works both ways
+			 */
+			if (min_clamp > READ_ONCE(rq->uclamp_hold_value))
+				WRITE_ONCE(rq->uclamp_hold_value, min_clamp);
+		} else {
+			/*
+			* case 3:
+			*   Enqueued task has hold timeout < existing hold
+			*   (existing must exist, we cannot reach here
+			*   if exp is zero).
+			*   Raise hold value if new is higher than existing.
+			*/
+			if (min_clamp > READ_ONCE(rq->uclamp_hold_value))
+				WRITE_ONCE(rq->uclamp_hold_value, min_clamp);
+		}
+	}
 }
 
 static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p)
 {
 	enum uclamp_id clamp_id;
+	unsigned long exp = READ_ONCE(rq->uclamp_hold_expiry);
 
 	if (unlikely(!p->sched_class->uclamp_enabled))
 		return;
 
 	for_each_clamp_id(clamp_id)
 		uclamp_rq_dec_id(rq, p, clamp_id);
+
+	/* remove rq min clamp hold if we can */
+	if (exp && jiffies > exp) {
+		WRITE_ONCE(rq->uclamp_hold_value, 0);
+		WRITE_ONCE(rq->uclamp_hold_expiry, 0);
+	}
 }
 
 static inline void
@@ -7433,6 +7490,15 @@ static int cpu_uclamp_hold_write(struct cgroup_subsys_state *css,
 	rcu_read_unlock();
 
 	return ret;
+}
+static unsigned long task_uclamp_hold_jiffies(struct task_struct *p)
+{
+	return task_group(p)->uclamp_hold_jiffies;
+}
+#else
+static unsigned long task_uclamp_hold_jiffies(struct task_struct *p)
+{
+	return 0;
 }
 #endif /* CONFIG_UCLAMP_TASK_GROUP */
 
