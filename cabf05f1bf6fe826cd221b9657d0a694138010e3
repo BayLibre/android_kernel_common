@@ -94,6 +94,30 @@
       "revId": "cabf05f1bf6fe826cd221b9657d0a694138010e3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6d84211_0d7f885a",
+        "filename": "security/selinux/hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1120458
+      },
+      "writtenOn": "2020-02-04T19:28:36Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s hard to know if the compiler will optimize this, depending on how the locking is setup, and I think we all understand your concerns. Whatever the case, it should be done separately from this patch, and I\u0027ll go for consistency here.",
+      "parentUuid": "fe541459_2b51173d",
+      "range": {
+        "startLine": 867,
+        "startChar": 12,
+        "endLine": 867,
+        "endChar": 28
+      },
+      "revId": "cabf05f1bf6fe826cd221b9657d0a694138010e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
