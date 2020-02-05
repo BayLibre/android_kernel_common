@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2b5ed118_7bb74f28",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-05T17:33:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6c0d9496_80021d25",
+      "range": {
+        "startLine": 993,
+        "startChar": 1,
+        "endLine": 993,
+        "endChar": 31
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9dbf265b_b99c0649",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
@@ -119,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "320882ce_bbc39c3b",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-05T17:33:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cca8619c_15838001",
+      "range": {
+        "startLine": 1009,
+        "startChar": 1,
+        "endLine": 1009,
+        "endChar": 12
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5fbbe0f_c023524c",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
@@ -201,6 +249,30 @@
       "writtenOn": "2020-02-05T16:30:57Z",
       "side": 1,
       "message": "I think in this case we can unnecessarily boost other tasks.\n\nHere is the case, let\u0027s assume:\n\n- TaskA: enq@t0, deq@t3, util_min:400, hold: 50ms\n- TaskB: enq@t1, deq@t2, util_min:800, hold:  5ms\n\n\n\n    HoldA\n   +------------------------------------------------------//-------+\n           HoldB                                                   |\n          +----------------------+                                 |\n                                 |                                 |\n          +---------------+      + TaskA overboost                 |\n          |TaskB          |                                        |\n          |               |      +-----------------\u003e               |\n          |               |                                        |\n   +-----------------------------------------------+               +\n   |TaskA |               |                        |\n   |      |               |                        |\n   +------+---------------+------+-----------------+\n   \n   t0     t1              t2     tx                t3\n\n\n\nIn this case TaskA will end up running at 800 for longer then required.\nShould we not instead better always reset the hold timeout every time:\n\n   min_clamp \u003e READ_ONCE(rq-\u003euclamp_hold_value)\n\nand then force a boost hold evaluation once we cross the expire?\n\nThis means that in the case above we will reset to util_min:400 at the scheduling event right after tx and maybe more likely before t3.",
+      "range": {
+        "startLine": 1028,
+        "startChar": 3,
+        "endLine": 1032,
+        "endChar": 55
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c5ee687_ef8c0bb9",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-05T17:33:36Z",
+      "side": 1,
+      "message": "Let me think more about this. Thanks!",
+      "parentUuid": "3409fb51_080fe5b0",
       "range": {
         "startLine": 1028,
         "startChar": 3,
