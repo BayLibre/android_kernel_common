@@ -371,15 +371,44 @@ static inline void smp_prepare_cpus(unsigned int maxcpus) { }
  * parsing is performed in place, and we should allow a component to
  * store reference of name/value for future reference.
  */
+static const char __initconst rng_seed_str[] = "rng-seed=";
+/* try to clear rng-seed so it won't be found by user applications. */
+static void __init copy_command_line(char *dest, char *src, size_t r)
+{
+	char *rng_seed = strnstr(src, rng_seed_str, r);
+
+	if (rng_seed) {
+		size_t l = rng_seed - src;
+		char *end;
+
+		memcpy(dest, src, l);
+		dest += l;
+		src = rng_seed + strlen(rng_seed_str);
+		r -= l + strlen(rng_seed_str);
+		end = strnchr(src, r, ' ');
+		if (end) {
+			if (l && rng_seed[-1] == ' ')
+				++end;
+			r -= end - src;
+			src = end;
+		}
+	}
+	memcpy(dest, src, r);
+	dest[r] = '\0';
+}
+
 static void __init setup_command_line(char *command_line)
 {
-	saved_command_line =
-		memblock_virt_alloc(strlen(boot_command_line) + 1, 0);
-	initcall_command_line =
-		memblock_virt_alloc(strlen(boot_command_line) + 1, 0);
-	static_command_line = memblock_virt_alloc(strlen(command_line) + 1, 0);
-	strcpy(saved_command_line, boot_command_line);
-	strcpy(static_command_line, command_line);
+	size_t len;
+
+	len = strnlen(boot_command_line, sizeof(boot_command_line));
+	saved_command_line = memblock_virt_alloc(len + 1, 0);
+	initcall_command_line = memblock_virt_alloc(len + 1, 0);
+	copy_command_line(saved_command_line, boot_command_line, len);
+
+	len = strlen(command_line);
+	static_command_line = memblock_virt_alloc(len + 1, 0);
+	copy_command_line(static_command_line, command_line, len);
 }
 
 /*
@@ -583,7 +612,7 @@ asmlinkage __visible void __init start_kernel(void)
 	build_all_zonelists(NULL);
 	page_alloc_init();
 
-	pr_notice("Kernel command line: %s\n", boot_command_line);
+	pr_notice("Kernel command line: %s\n", saved_command_line);
 	/* parameters may set static keys */
 	jump_label_init();
 	parse_early_param();
@@ -669,6 +698,21 @@ asmlinkage __visible void __init start_kernel(void)
 	rand_initialize();
 	add_latent_entropy();
 	add_device_randomness(command_line, strlen(command_line));
+	if (IS_BUILTIN(CONFIG_RANDOM_TRUST_BOOTLOADER)) {
+		size_t l = strlen(command_line);
+		char *rng_seed = strnstr(command_line, rng_seed_str, l);
+
+		if (rng_seed) {
+			char *end;
+
+			rng_seed += strlen(rng_seed_str);
+			l -= rng_seed - command_line;
+			end = strnchr(rng_seed, l, ' ');
+			if (end)
+				l = end - rng_seed;
+			credit_trusted_entropy(l);
+		}
+	}
 	boot_init_stack_canary();
 
 	time_init();
