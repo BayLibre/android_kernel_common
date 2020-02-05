@@ -123,7 +123,7 @@ static struct clk_ops palmas_clks_ops = {
 };
 
 struct palmas_clks_of_match_data {
-	struct clk_init_data init;
+	struct clk_init_data init = {};
 	const struct palmas_clk32k_desc desc;
 };
 

@@ -69,7 +69,7 @@ struct max9485_driver_data;
 
 struct max9485_clk_hw {
 	struct clk_hw hw;
-	struct clk_init_data init;
+	struct clk_init_data init = {};
 	u8 enable_bit;
 	struct max9485_driver_data *drvdata;
 };
