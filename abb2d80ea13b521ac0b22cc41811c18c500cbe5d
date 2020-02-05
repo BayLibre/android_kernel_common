@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d47fd967_8304a1c0",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-05T12:16:08Z",
+      "side": 1,
+      "message": "AFAIU the spec for the schedtune boost hold feature was doing the hold at enqueue time.\n\nChris, thoughts?",
+      "parentUuid": "9dbf265b_b99c0649",
+      "range": {
+        "startLine": 995,
+        "startChar": 1,
+        "endLine": 995,
+        "endChar": 14
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c5fbbe0f_c023524c",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-05T11:14:15Z",
       "side": 1,
       "message": "in case of hold \u0026\u0026 exp \u0026\u0026 jiffies \u003e exp scenario, should not we set rq-\u003euclamp_hold_value \u003d min_uclamp unconditionally. otherwise we may continue with the older/cached rq-\u003euclamp_hold_value which could be greater than min_camp.",
+      "range": {
+        "startLine": 1022,
+        "startChar": 9,
+        "endLine": 1022,
+        "endChar": 13
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d72fecc_4b31c5be",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-05T12:16:08Z",
+      "side": 1,
+      "message": "Did you mean to highlight the if condition below?\n\nSo the logic is meant to honor the highest hold value requested.\n\n |  Task A enqueue hold_ms request graph\n |\n |     _______________    \u003c- uclamp_min \u003d 800\n |    |               |\n |    |               |\n |    |               |\n |    |               |\n |    |               |\n |_________________________________________\n\n |  Task B enqueue hold_ms request graph\n |\n |          _______________    \u003c- uclamp_min \u003d 400\n |         |               |\n |         |               |\n |         |               |\n |_________________________________________\n\n |  RQ hold_ms final graph (what\u0027s implemented in this patch)\n |\n |     ____________________    \u003c- uclamp_min \u003d 800\n |    |                    |\n |    |                    |\n |    |                    |\n |    |                    |\n |    |                    |\n |_________________________________________\n\n |  RQ hold_ms final graph (what you propose?)\n |\n |     _______________    \u003c- uclamp_min \u003d 800\n |    |               |\n |    |               |____    \u003c- uclamp_min \u003d 400\n |    |                    |\n |    |                    |\n |    |                    |\n |_________________________________________\n\nSo IIUC, what you say if Task A requested a hold_ms with a uclamp_min \u003d 800, but then shortly after another task was enqueued with a uclamp_min \u003d400, we should update uclamp_hold_value to 400 which ends up with that last graph? If yes, then Task A request was dishonered, no?",
+      "parentUuid": "c5fbbe0f_c023524c",
       "range": {
         "startLine": 1022,
         "startChar": 9,
