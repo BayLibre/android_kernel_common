@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "27c8909e_980bab52",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2020-02-05T12:32:36Z",
+      "side": 1,
+      "message": "Yep, the reason for that was in order to give you a solid place where you know the \u0027minimum hold time\u0027 is starting. i.e. if you want to reason about the amount of time you need to keep a cpu frequency level active, you need a specific place where you measure from in my opinion.\n\nI originally chose the enqueue time and the rest of the implementation just hangs off that decision. I guess you could maybe avoid updating the rq sometimes if you made the decision at dequeue but consider the timing from the enqueue time? You might not have all the necessary information at that time, but I haven\u0027t checked.\n\nThe whole thing (enqueue vs dequeue) probably depends upon the tuning interface you\u0027re considering - schedtune used a 50ms hold for all rt tasks in the ACK configuration, starting from enqueue.\n\nThe intent here is for you to be able to use this for periodic tasks to avoid cases where they wake up and cannot select the correct frequency - in which case you need to know the period and the runtime is not necessary.",
+      "parentUuid": "d47fd967_8304a1c0",
+      "range": {
+        "startLine": 995,
+        "startChar": 1,
+        "endLine": 995,
+        "endChar": 14
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c5fbbe0f_c023524c",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "Did you mean to highlight the if condition below?\n\nSo the logic is meant to honor the highest hold value requested.\n\n |  Task A enqueue hold_ms request graph\n |\n |     _______________    \u003c- uclamp_min \u003d 800\n |    |               |\n |    |               |\n |    |               |\n |    |               |\n |    |               |\n |_________________________________________\n\n |  Task B enqueue hold_ms request graph\n |\n |          _______________    \u003c- uclamp_min \u003d 400\n |         |               |\n |         |               |\n |         |               |\n |_________________________________________\n\n |  RQ hold_ms final graph (what\u0027s implemented in this patch)\n |\n |     ____________________    \u003c- uclamp_min \u003d 800\n |    |                    |\n |    |                    |\n |    |                    |\n |    |                    |\n |    |                    |\n |_________________________________________\n\n |  RQ hold_ms final graph (what you propose?)\n |\n |     _______________    \u003c- uclamp_min \u003d 800\n |    |               |\n |    |               |____    \u003c- uclamp_min \u003d 400\n |    |                    |\n |    |                    |\n |    |                    |\n |_________________________________________\n\nSo IIUC, what you say if Task A requested a hold_ms with a uclamp_min \u003d 800, but then shortly after another task was enqueued with a uclamp_min \u003d400, we should update uclamp_hold_value to 400 which ends up with that last graph? If yes, then Task A request was dishonered, no?",
       "parentUuid": "c5fbbe0f_c023524c",
+      "range": {
+        "startLine": 1022,
+        "startChar": 9,
+        "endLine": 1022,
+        "endChar": 13
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf3b01fd_673122e7",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2020-02-05T12:32:36Z",
+      "side": 1,
+      "message": "Yes, as Qais says this is intentional behaviour to minimise updates.\n\nThe basic rules are:\nFor a clamp hold which comes into effect whilst another is active:\n1. The time can be extended, but never reduced\n2. The clamp value can be raised but never lowered",
+      "parentUuid": "9d72fecc_4b31c5be",
       "range": {
         "startLine": 1022,
         "startChar": 9,
