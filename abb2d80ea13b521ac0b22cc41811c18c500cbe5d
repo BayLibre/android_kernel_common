@@ -309,6 +309,30 @@
     },
     {
       "key": {
+        "uuid": "07b3f576_14822839",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-06T11:10:36Z",
+      "side": 1,
+      "message": "I think you\u0027re describing the same corner case Patrick highlighted below.\n\nYes we do have a problem here, you\u0027re right.\n\nI\u0027ll think of a good way to handle this corner case and push and updated patch.\n\nThanks for the useful review comments.",
+      "parentUuid": "d4465f68_807dade1",
+      "range": {
+        "startLine": 1022,
+        "startChar": 9,
+        "endLine": 1022,
+        "endChar": 13
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3409fb51_080fe5b0",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
