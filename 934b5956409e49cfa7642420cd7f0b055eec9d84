@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b51aa1e3_f247cd24",
+        "filename": "drivers/i2c/busses/Kconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-02-06T19:58:35Z",
+      "side": 0,
+      "message": "Since this was rejected upstream and later patches make other large changes to ARCH_EXYNOS, can we instead create a new top-level config like ARCH_EXYNOS_GKI. Then this change isn\u0027t needed since the depends on won\u0027t be satisfied.",
+      "revId": "934b5956409e49cfa7642420cd7f0b055eec9d84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
