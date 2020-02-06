@@ -120,6 +120,53 @@
     },
     {
       "key": {
+        "uuid": "b958881b_85043692",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-02-06T04:47:39Z",
+      "side": 1,
+      "message": "Thanks Chris for the details. I see that we started the 50 msec hold from the enqueue in schedtune also",
+      "parentUuid": "27c8909e_980bab52",
+      "range": {
+        "startLine": 995,
+        "startChar": 1,
+        "endLine": 995,
+        "endChar": 14
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff759ecf_e7714404",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-02-06T04:47:39Z",
+      "side": 1,
+      "message": "Assuming exp \u0026\u0026 time_after(jiffies, exp) is true but hold !\u003d 0. we don\u0027t enter this if so rq-\u003euclamp_hold_value is not reset to 0. Ideally at this point, the cached hold_value in rq-\u003euclamp_hold_value should be ignored and we should take the enqueued task\u0027s uclamp.min . if not rq-\u003euclamp_hold_value \u003e enqueued task\u0027s uclamp.min.\n\nSince we did not do that.\n\nat #1024 line, we may continue to use the previous state value without lowering the hold value. \n\nI agree that this is a very corner case.",
+      "range": {
+        "startLine": 1005,
+        "startChar": 10,
+        "endLine": 1005,
+        "endChar": 11
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cca8619c_15838001",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
@@ -226,6 +273,30 @@
       "side": 1,
       "message": "Yes, as Qais says this is intentional behaviour to minimise updates.\n\nThe basic rules are:\nFor a clamp hold which comes into effect whilst another is active:\n1. The time can be extended, but never reduced\n2. The clamp value can be raised but never lowered",
       "parentUuid": "9d72fecc_4b31c5be",
+      "range": {
+        "startLine": 1022,
+        "startChar": 9,
+        "endLine": 1022,
+        "endChar": 13
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4465f68_807dade1",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-02-06T04:47:39Z",
+      "side": 1,
+      "message": "Qais, I understood the reasoning behind keeping the higher value. I had another corner case in mind. Please see the comment at #1005 line",
+      "parentUuid": "bf3b01fd_673122e7",
       "range": {
         "startLine": 1022,
         "startChar": 9,
