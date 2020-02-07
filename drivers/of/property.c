@@ -1073,8 +1073,10 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
 	} else if (!sup_dev) {
 		return -EAGAIN;
 	}
-	if (!device_link_add(dev, sup_dev, dl_flags))
-		ret = -EAGAIN;
+	if (!device_link_add(dev, sup_dev, dl_flags)) {
+		dev_err(dev, "Causing cycle with %pOFP - aborting linking\n", sup_np);
+		ret = -EINVAL;
+	}
 	put_device(sup_dev);
 	return ret;
 }
