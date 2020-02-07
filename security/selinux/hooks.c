@@ -823,7 +823,14 @@ static int selinux_set_mnt_opts(struct super_block *sb,
 	if (!strcmp(sb->s_type->name, "debugfs") ||
 	    !strcmp(sb->s_type->name, "tracefs") ||
 	    !strcmp(sb->s_type->name, "sysfs") ||
+<<<<<<< HEAD   (5e069e Merge 4.9.289 into android-4.9-q)
 	    !strcmp(sb->s_type->name, "pstore"))
+=======
+	    !strcmp(sb->s_type->name, "pstore") ||
+	    !strcmp(sb->s_type->name, "bpf") ||
+	    !strcmp(sb->s_type->name, "cgroup") ||
+	    !strcmp(sb->s_type->name, "cgroup2"))
+>>>>>>> CHANGE (0a97c4 UPSTREAM: security: selinux: allow per-file labeling for bpf)
 		sbsec->flags |= SE_SBGENFS;
 
 	if (!sbsec->behavior) {
