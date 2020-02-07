@@ -167,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "ddc2ff70_60a46693",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-07T16:06:57Z",
+      "side": 1,
+      "message": "I reworked the logic and I think addressed that..",
+      "parentUuid": "ff759ecf_e7714404",
+      "range": {
+        "startLine": 1005,
+        "startChar": 10,
+        "endLine": 1005,
+        "endChar": 11
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cca8619c_15838001",
         "filename": "kernel/sched/core.c",
         "patchSetId": 2
@@ -368,6 +392,30 @@
       "side": 1,
       "message": "Let me think more about this. Thanks!",
       "parentUuid": "3409fb51_080fe5b0",
+      "range": {
+        "startLine": 1028,
+        "startChar": 3,
+        "endLine": 1032,
+        "endChar": 55
+      },
+      "revId": "abb2d80ea13b521ac0b22cc41811c18c500cbe5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c194af1e_ee75b24c",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-07T16:06:57Z",
+      "side": 1,
+      "message": "Initially I thought this is a different case to what I describe in #1022, but after reading it again it is the same.\n\nSo yes we can do better, but without implementing a more complex logic. AFAIU practically this should be fine and we will extend our boost value but the trade-off between complexity and practical implications makes this is fine?",
+      "parentUuid": "7c5ee687_ef8c0bb9",
       "range": {
         "startLine": 1028,
         "startChar": 3,
