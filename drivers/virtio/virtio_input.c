@@ -168,9 +168,7 @@ static void virtinput_cfg_abs(struct virtio_input *vi, int abs)
 	if (abs == ABS_MT_TRACKING_ID)
 		input_mt_init_slots(vi->idev,
 				    ma, /* input max finger */
-				    INPUT_MT_DIRECT
-					| INPUT_MT_DROP_UNUSED
-					| INPUT_MT_TRACK);
+				    INPUT_MT_DROP_UNUSED | INPUT_MT_TRACK);
 }
 
 static int virtinput_init_vqs(struct virtio_input *vi)
