@@ -135,6 +135,30 @@
     },
     {
       "key": {
+        "uuid": "e4349613_48270c4f",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1130394
+      },
+      "writtenOn": "2020-02-10T23:58:07Z",
+      "side": 1,
+      "message": "\u003e No, that\u0027s not how you \"extend\" ioctls.\n\nDepends on the API. struct rseq_cs, for example, begins with a version number. But whatever.",
+      "parentUuid": "ef73e740_8ac6ebe8",
+      "range": {
+        "startLine": 268,
+        "startChar": 7,
+        "endLine": 268,
+        "endChar": 25
+      },
+      "revId": "299872c15f6bcde6ec40c6aa287ff415bdc4402a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "86abc4c2_732f3c43",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 2
