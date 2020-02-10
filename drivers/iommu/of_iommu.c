@@ -9,11 +9,15 @@
 #include <linux/iommu.h>
 #include <linux/limits.h>
 #include <linux/module.h>
+<<<<<<< HEAD   (8462c9 Merge d271ab29230b ("Merge tag 'for-linus-5.6-rc1-tag' of gi)
 #include <linux/pci.h>
+=======
+>>>>>>> BRANCH (4fc2ea Merge tag 'iommu-updates-v5.6' of git://git.kernel.org/pub/s)
 #include <linux/msi.h>
 #include <linux/of.h>
 #include <linux/of_iommu.h>
 #include <linux/of_pci.h>
+#include <linux/pci.h>
 #include <linux/slab.h>
 #include <linux/fsl/mc.h>
 
@@ -203,8 +207,12 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
 			if (err)
 				break;
 		}
-	}
 
+		fwspec = dev_iommu_fwspec_get(dev);
+		if (!err && fwspec)
+			of_property_read_u32(master_np, "pasid-num-bits",
+					     &fwspec->num_pasid_bits);
+	}
 
 	/*
 	 * Two success conditions can be represented by non-negative err here:
