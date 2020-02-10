@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5feb38b9_88715065",
+        "filename": "fs/f2fs/compress.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-02-10T20:40:24Z",
+      "side": 1,
+      "message": "I\u0027m not sure this works with inline encryption.  In that case won\u0027t fio.encrypt_page be NULL, and thus cc-\u003ecpages[i] will be set to NULL?",
+      "range": {
+        "startLine": 829,
+        "startChar": 0,
+        "endLine": 835,
+        "endChar": 3
+      },
+      "revId": "2d40d7b36ae98efef596387c1d2d198bb4d52da9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
