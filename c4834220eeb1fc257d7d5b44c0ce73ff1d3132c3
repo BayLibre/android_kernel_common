@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2772b70c_6b52cdf3",
+        "filename": "drivers/virtio/virtio_input.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1110304
+      },
+      "writtenOn": "2020-02-11T00:10:51Z",
+      "side": 0,
+      "message": "whether the device is a direct device or not is in the virtio config structure when select is set to VIRTIO_INPUT_CFG_PROP_BITS. In this function it should be available in the  vi-\u003eidev-\u003epropbit field, specifically at the INPUT_PROP_DIRECT bit.",
+      "range": {
+        "startLine": 171,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 23
+      },
+      "revId": "c4834220eeb1fc257d7d5b44c0ce73ff1d3132c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
