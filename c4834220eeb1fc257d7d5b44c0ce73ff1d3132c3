@@ -22,6 +22,30 @@
       "revId": "c4834220eeb1fc257d7d5b44c0ce73ff1d3132c3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c9f1c95_3bc9453a",
+        "filename": "drivers/virtio/virtio_input.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1278660
+      },
+      "writtenOn": "2020-02-11T00:14:13Z",
+      "side": 0,
+      "message": "Something like\n\n((vi-\u003eidev-\u003epropbit \u0026 INPUT_PROP_DIRECT) ? INPUT_MT_DIRECT : 0)\n\n?",
+      "parentUuid": "2772b70c_6b52cdf3",
+      "range": {
+        "startLine": 171,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 23
+      },
+      "revId": "c4834220eeb1fc257d7d5b44c0ce73ff1d3132c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
