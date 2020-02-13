@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "38509b43_0900e865",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1598371
+      },
+      "writtenOn": "2020-02-13T09:34:59Z",
+      "side": 1,
+      "message": "So, we are not addressing the \"corner case\"?\n\nDo we have at least some real world app tests showing how many times we fall into this case?\n\nPerhaps even just a description of the use-cases we are addressing can help in assessing the impact of this choice.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 61
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56c544c9_b56b461a",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 1598371
+      },
+      "writtenOn": "2020-02-13T09:34:59Z",
+      "side": 1,
+      "message": "nit-pick: if (!hold) return; ?",
+      "range": {
+        "startLine": 997,
+        "startChar": 1,
+        "endLine": 997,
+        "endChar": 10
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f880c4c_cf3a5796",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1598371
+      },
+      "writtenOn": "2020-02-13T09:34:59Z",
+      "side": 1,
+      "message": "Does not the logic to update rq-\u003euclamp_hold_value (in both exp and !exp cases) means that you always (and just) set:\n\n   rq-\u003euclamp_hold_value \u003d rq-\u003euclamp[UCLAMP_MIN].value?\n\nWondering if we cannot simplify the code by removing this additional (duplicated?) value?",
+      "range": {
+        "startLine": 1001,
+        "startChar": 3,
+        "endLine": 1004,
+        "endChar": 6
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11937228_afc411cf",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1598371
+      },
+      "writtenOn": "2020-02-13T09:34:59Z",
+      "side": 1,
+      "message": "nit-pick: just for consistency with uclamp_rq_{inc,dec}_id(), cannot we have a pair of similarly named methods, e.g. uclamp_rq_{get,put}_hold(), to wraps all the boost hold related code?",
+      "range": {
+        "startLine": 1053,
+        "startChar": 1,
+        "endLine": 1057,
+        "endChar": 2
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd796872_a64d55da",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7525,
+      "author": {
+        "id": 1598371
+      },
+      "writtenOn": "2020-02-13T09:34:59Z",
+      "side": 1,
+      "message": "nit-pick: uclamp related functions starts all by \"uclamp_\".... i.e. uclamp_hold_jiffies(p) ?\n\nNB. I would remove \u0027task\u0027 too from the name because:\n 1. it\u0027s already passed in as first parameter\n 2. (in this specific implementation) you actually return the TG assigned hold value.\n\nAnd the last point makes me thinking also that this should really be named something like\n\n   uclamp_eff_hold()\n\nthus implementing the same structure we already use for clamp values aggregation, i.e\n   uclamp_eff_value() \u003c- uclamp_eff_get() \u003c- uclamp_rg_restrict()",
+      "range": {
+        "startLine": 7525,
+        "startChar": 21,
+        "endLine": 7525,
+        "endChar": 45
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
