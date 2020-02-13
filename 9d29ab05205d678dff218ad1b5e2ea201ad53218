@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f9931ea_8d144b62",
+        "filename": "fs/f2fs/compress.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-02-13T17:26:22Z",
+      "side": 1,
+      "message": "Is there any reason to not remove fio.encrypted and do:\n\nfor (i \u003d 0; i \u003c cc-\u003enr_cpages; i++) {\n\tf2fs_set_compressed_page(cc-\u003ecpages[i], inode,\n\t\t\t\tcc-\u003erpages[i + 1]-\u003eindex,\n\t\t\t\tcic, i ? \u0026cic-\u003eref : NULL);\n\tif (fscrypt_inode_uses_fs_layer_crypto(inode)) {\n\t\tfio.page \u003d cc-\u003ecpages[i];\n\t\terr \u003d f2fs_encrypt_one_page(\u0026fio);\n\t\tif (err)\n\t\t\tgoto out_destroy_crypt;\n\t\tcc-\u003ecpages[i] \u003d fio.encrypted_page;\n\t}\n}",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 836,
+        "endChar": 3
+      },
+      "revId": "9d29ab05205d678dff218ad1b5e2ea201ad53218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ceac256_d59c5403",
+        "filename": "fs/f2fs/compress.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-02-13T17:26:22Z",
+      "side": 1,
+      "message": "Likewise, fio.encrypted is pointless here since it\u0027s implied by fscrypt_inode_uses_fs_layer_crypto().",
+      "range": {
+        "startLine": 875,
+        "startChar": 6,
+        "endLine": 875,
+        "endChar": 64
+      },
+      "revId": "9d29ab05205d678dff218ad1b5e2ea201ad53218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
