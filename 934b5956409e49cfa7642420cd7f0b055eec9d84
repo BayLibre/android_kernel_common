@@ -16,6 +16,24 @@
       "revId": "934b5956409e49cfa7642420cd7f0b055eec9d84",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "481eaadd_0458c521",
+        "filename": "drivers/i2c/busses/Kconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1542076
+      },
+      "writtenOn": "2020-02-13T08:36:47Z",
+      "side": 0,
+      "message": "Hi Todd,\nS.LSI think it would be good to use ARCH_EXYNOS as it is than ARCH_EXYNOS_GKI.\n1. If ARCH_EXYNOS_GKI is used, there are many confusion because the policies are different from other companies.\n2. If we create a new config ARCH_EXYNOS_GKI, there are more modifications.\n\nSo, could you please review and merge the following patches. There are many difficulties in additional works because patches are not merged.\nhttps://android-review.googlesource.com/c/kernel/common/+/1178546\nhttps://android-review.googlesource.com/c/kernel/common/+/1178551\n\n\nfrom: https://partnerissuetracker.corp.google.com/issues/144661360",
+      "parentUuid": "b51aa1e3_f247cd24",
+      "revId": "934b5956409e49cfa7642420cd7f0b055eec9d84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
