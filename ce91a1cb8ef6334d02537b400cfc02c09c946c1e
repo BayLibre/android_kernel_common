@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74a4714d_4c7f814b",
+        "filename": "fs/incfs/data_mgmt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-02-13T21:56:00Z",
+      "side": 1,
+      "message": "How come we\u0027re OK with xattrs being not persistent between remounts?",
+      "range": {
+        "startLine": 135,
+        "startChar": 1,
+        "endLine": 139,
+        "endChar": 32
+      },
+      "revId": "ce91a1cb8ef6334d02537b400cfc02c09c946c1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "116ff11c_bc3368d2",
+        "filename": "fs/incfs/data_mgmt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-02-13T21:56:00Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s really needed here.\nIf you have a dentry, you can always call get_mount_info(dentry-\u003ed_sb)",
+      "range": {
+        "startLine": 242,
+        "startChar": 1,
+        "endLine": 242,
+        "endChar": 31
+      },
+      "revId": "ce91a1cb8ef6334d02537b400cfc02c09c946c1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbae11fa_71c734e5",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2143,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-02-13T21:56:00Z",
+      "side": 1,
+      "message": "Should \"security.selinux\" be advertised here for .logs and .pending_reads?",
+      "range": {
+        "startLine": 2143,
+        "startChar": 15,
+        "endLine": 2143,
+        "endChar": 30
+      },
+      "revId": "ce91a1cb8ef6334d02537b400cfc02c09c946c1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
