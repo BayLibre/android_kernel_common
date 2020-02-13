@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8d4216f6_936bd324",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-13T11:28:13Z",
+      "side": 1,
+      "message": "As far as I understood schedtune behavior was the spec here and this matches what we\u0027ve done before.\n\nIIUC, Android will set a blanket value 50ms for all tasks.\n\nOne of the things I requested more feedback on from the google team is how much necessary this functionality is to push for a generic upstream solution. I want to see the real world use-case from google to implement the more complex solution. Otherwise it seems a waste of effort? Conor tested uclamp vs schedtune without this functionality and the numbers seemed fine. So maybe we no longer need this feature on recent kernels given the improvements in other areas?\n\nDo you see an easy implementation option here that we missed without having to keep track of the state (expiration, min_value) for every enqueued task on the rq? If you do, then I\u0027ll be happy to just do it :)",
+      "parentUuid": "38509b43_0900e865",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 61
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "56c544c9_b56b461a",
         "filename": "kernel/sched/core.c",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-13T09:34:59Z",
       "side": 1,
       "message": "nit-pick: if (!hold) return; ?",
+      "range": {
+        "startLine": 997,
+        "startChar": 1,
+        "endLine": 997,
+        "endChar": 10
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cf427c9_48995d00",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-13T11:28:13Z",
+      "side": 1,
+      "message": "Yes could save indentation; but I see the code \u0027more\u0027 obvious like this.\n\nIf I ended up spinning another version of this I will consider changing it anyway :)",
+      "parentUuid": "56c544c9_b56b461a",
       "range": {
         "startLine": 997,
         "startChar": 1,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "9a8ae63b_59694021",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-13T11:28:13Z",
+      "side": 1,
+      "message": "Chris was using the rq-\u003euclamp[UCLAMP_MIN].value but I changed it to uclamp_eff_value().\n\nMy concern was that in the rq you can have a task with high uclamp.min value but it doesn\u0027t request any hold.\n\nSo if we have:\n\n     1. task_a-\u003euclamp.min \u003d 800 \u0026\u0026 task_a-\u003ehold_ms \u003d 0\n     2. task_b-\u003euclamp.min \u003d 400 \u0026\u0026 task_b-\u003ehold_ms \u003d 50\n     3. enqueue(task_a)\n     4. enqueue(task_b)\n\nIf we use rq-\u003euclamp[UCLAMP_MIN].value it\u0027d be 800. But since task_a has no hold then we shouldn\u0027t use this value as the min hold but task_b\u0027s value of 400.\n\nMakes sense or did I miss something?",
+      "parentUuid": "8f880c4c_cf3a5796",
+      "range": {
+        "startLine": 1001,
+        "startChar": 3,
+        "endLine": 1004,
+        "endChar": 6
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "11937228_afc411cf",
         "filename": "kernel/sched/core.c",
         "patchSetId": 4
@@ -82,6 +154,30 @@
       "writtenOn": "2020-02-13T09:34:59Z",
       "side": 1,
       "message": "nit-pick: just for consistency with uclamp_rq_{inc,dec}_id(), cannot we have a pair of similarly named methods, e.g. uclamp_rq_{get,put}_hold(), to wraps all the boost hold related code?",
+      "range": {
+        "startLine": 1053,
+        "startChar": 1,
+        "endLine": 1057,
+        "endChar": 2
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b63f92f_e59402a7",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-13T11:28:13Z",
+      "side": 1,
+      "message": "Fair enough",
+      "parentUuid": "11937228_afc411cf",
       "range": {
         "startLine": 1053,
         "startChar": 1,
@@ -114,6 +210,30 @@
       "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0941b053_bf486655",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7525,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-02-13T11:28:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bd796872_a64d55da",
+      "range": {
+        "startLine": 7525,
+        "startChar": 21,
+        "endLine": 7525,
+        "endChar": 45
+      },
+      "revId": "57f5222d45202ddba531159535ed6e98b1c0e11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
