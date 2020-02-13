@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "11de1675_e9084c31",
+        "filename": "fs/incfs/data_mgmt.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-02-13T22:57:31Z",
+      "side": 1,
+      "message": "I don\u0027t know about long term, but right now, given that you only care about \"security.selinux\" xattr, I would save it in .index directory xattrs.\n\nLet\u0027s say \n\n\"security.selinux\" for .pending_reads will be saved as \n(XATTR_USER_PREFIX \"incfs.pending_reads_selinux\") on .index dir.\n\nand\n\n\"security.selinux\" for .pending_reads will be saved as \n(XATTR_USER_PREFIX \"incfs.logs_selinux\") on .index dir.\n\nI do realize that it\u0027s somewhat hacky, but it\u0027s persistent, doesn\u0027t use memory, and not much code.",
+      "parentUuid": "530414a7_ac24a467",
+      "range": {
+        "startLine": 135,
+        "startChar": 1,
+        "endLine": 139,
+        "endChar": 32
+      },
+      "revId": "ce91a1cb8ef6334d02537b400cfc02c09c946c1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "116ff11c_bc3368d2",
         "filename": "fs/incfs/data_mgmt.h",
         "patchSetId": 2
