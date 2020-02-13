@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6643a636_b4f0fc46",
+        "filename": "fs/f2fs/compress.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-02-13T17:32:10Z",
+      "side": 1,
+      "message": "Of course, we can do for better shapes. My intention here is to avoid future merge conflicts by minimal changes.",
+      "parentUuid": "7f9931ea_8d144b62",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 836,
+        "endChar": 3
+      },
+      "revId": "9d29ab05205d678dff218ad1b5e2ea201ad53218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5ceac256_d59c5403",
         "filename": "fs/f2fs/compress.c",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-13T17:26:22Z",
       "side": 1,
       "message": "Likewise, fio.encrypted is pointless here since it\u0027s implied by fscrypt_inode_uses_fs_layer_crypto().",
+      "range": {
+        "startLine": 875,
+        "startChar": 6,
+        "endLine": 875,
+        "endChar": 64
+      },
+      "revId": "9d29ab05205d678dff218ad1b5e2ea201ad53218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "277492b4_852bfa91",
+        "filename": "fs/f2fs/compress.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-02-13T17:32:10Z",
+      "side": 1,
+      "message": "Ditto.",
+      "parentUuid": "5ceac256_d59c5403",
       "range": {
         "startLine": 875,
         "startChar": 6,
