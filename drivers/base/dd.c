@@ -311,6 +311,15 @@ static void deferred_probe_timeout_work_func(struct work_struct *work)
 }
 static DECLARE_DELAYED_WORK(deferred_probe_timeout_work, deferred_probe_timeout_work_func);
 
+static void deferred_initcall_done_work_func(struct work_struct *work)
+{
+	initcalls_done = true;
+	driver_deferred_probe_trigger();
+	flush_work(&deferred_probe_work);
+}
+static DECLARE_DELAYED_WORK(deferred_initcall_done_work,
+			    deferred_initcall_done_work_func);
+
 /**
  * deferred_probe_initcall() - Enable probing of deferred devices
  *
@@ -327,7 +336,8 @@ static int deferred_probe_initcall(void)
 	driver_deferred_probe_trigger();
 	/* Sort as many dependencies as possible before exiting initcalls */
 	flush_work(&deferred_probe_work);
-	initcalls_done = true;
+	schedule_delayed_work(&deferred_initcall_done_work,
+			      msecs_to_jiffies(30000));
 
 	/*
 	 * Trigger deferred probe again, this time we won't defer anything
