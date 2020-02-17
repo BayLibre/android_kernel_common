@@ -28,3 +28,6 @@ obj-$(CONFIG_X86_BIGSMP)	+= bigsmp_32.o
 
 # For 32bit, probe_32 need to be listed last
 obj-$(CONFIG_X86_LOCAL_APIC)	+= probe_$(BITS).o
+
+# TODO(b/149691906): disable UBSan with better granularity.
+UBSAN_SANITIZE := n
