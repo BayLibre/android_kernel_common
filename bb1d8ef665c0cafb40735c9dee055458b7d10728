@@ -22,6 +22,30 @@
       "revId": "bb1d8ef665c0cafb40735c9dee055458b7d10728",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e381a17c_24da7a2b",
+        "filename": "drivers/tty/serial/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1598291
+      },
+      "writtenOn": "2020-02-17T23:29:10Z",
+      "side": 1,
+      "message": "Are you planning to backport to 5.4? or may I backport to 5.4?\nBecause of our short schedule, we first want to enable SERIAL_SAMSUNG by enabling COMPILE_TEST on 5.5 and then sending the removal upstream in long term.",
+      "parentUuid": "8ee838d3_665e1a52",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 58
+      },
+      "revId": "bb1d8ef665c0cafb40735c9dee055458b7d10728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
