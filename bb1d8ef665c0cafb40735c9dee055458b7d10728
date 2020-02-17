@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ee838d3_665e1a52",
+        "filename": "drivers/tty/serial/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-02-17T15:42:47Z",
+      "side": 1,
+      "message": "This dependancy does not need to be there at all!  Just drop both of these and all will be fine.\n\nAs proof of this, the driver is building just fine on 5.5 right now, thanks to COMPILE_TEST being added as a \"|| option here.  So just drop all of them please.\n\nAnd, send the removal upstream, the maintainer there will be glad to take it, now that the driver is fixed up to properly build everywhere.",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 58
+      },
+      "revId": "bb1d8ef665c0cafb40735c9dee055458b7d10728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
