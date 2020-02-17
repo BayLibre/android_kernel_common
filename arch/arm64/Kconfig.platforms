@@ -89,6 +89,13 @@ config ARCH_EXYNOS
 	help
 	  This enables support for ARMv8 based Samsung Exynos SoC family.
 
+config ARCH_EXYNOS_GKI
+	bool "Samsung Exynos SoC family (for GKI)"
+	select SOC_BUS
+	help
+	  This enables support for Samsung Exynos SoC family.
+
+
 config ARCH_K3
 	bool "Texas Instruments Inc. K3 multicore SoC architecture"
 	select PM_GENERIC_DOMAINS if PM
