@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7f365e_30ff0404",
+        "filename": "drivers/of/fdt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1145,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-02-19T15:03:13Z",
+      "side": 1,
+      "message": "Risky activity if the fdt has gone to ro mode, and confirmed that this happens on 4.19, investigating.\n\nWE WANT THIS FEATURE because some BSP\u0027s are already providing this based on upstream (5.4+) and the entropy is _needed_",
+      "range": {
+        "startLine": 1145,
+        "startChar": 2,
+        "endLine": 1145,
+        "endChar": 58
+      },
+      "revId": "8d12d832c24fbf8ec0bebf6e6553cee207e60f82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
