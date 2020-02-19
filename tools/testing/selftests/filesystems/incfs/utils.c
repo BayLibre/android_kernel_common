@@ -104,7 +104,7 @@ bool sign_pkcs7(const void *data_to_sign, size_t data_size,
 	 *			algorithm from the default of SHA-1.  Requires
 	 *			OpenSSL 1.0.0 or later.
 	 */
-	int pkcs7_flags = PKCS7_BINARY | PKCS7_NOATTR | PKCS7_PARTIAL;
+	int pkcs7_flags = PKCS7_BINARY | PKCS7_NOATTR | PKCS7_PARTIAL | PKCS7_DETACHED;
 	void *sig;
 	size_t sig_size;
 	BIO *bio = NULL;

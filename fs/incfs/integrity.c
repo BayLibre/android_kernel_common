@@ -14,9 +14,9 @@ int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
 	struct mem_range root_hash, struct mem_range add_data)
 {
 	struct pkcs7_message *pkcs7 = NULL;
-	const void *data = NULL;
+	void *data = NULL;
 	size_t data_len = 0;
-	const char *p;
+	char *p;
 	int err;
 
 	pkcs7 = pkcs7_parse_message(pkcs7_blob.data, pkcs7_blob.len);
@@ -26,35 +26,29 @@ int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
 		return PTR_ERR(pkcs7);
 	}
 
-	err = pkcs7_get_content_data(pkcs7, &data, &data_len, NULL);
-	if (err || data_len == 0 || data == NULL) {
-		pr_debug("PKCS#7 message does not contain data\n");
-		err = -EBADMSG;
-		goto out;
-	}
-
 	if (root_hash.len == 0) {
 		pr_debug("Root hash is empty.\n");
 		err = -EBADMSG;
 		goto out;
 	}
 
-	if (data_len != root_hash.len + add_data.len) {
-		pr_debug("PKCS#7 data size doesn't match arguments.\n");
-		err = -EKEYREJECTED;
+	data = kzalloc(root_hash.len + add_data.len, GFP_NOFS);
+	if (!data) {
+		err = -ENOMEM;
 		goto out;
 	}
 
 	p = data;
-	if (memcmp(p, root_hash.data, root_hash.len) != 0) {
-		pr_debug("Root hash mismatch.\n");
-		err = -EKEYREJECTED;
-		goto out;
-	}
+	memcpy(p, root_hash.data, root_hash.len);
+	data_len += root_hash.len;
+
 	p += root_hash.len;
-	if (memcmp(p, add_data.data, add_data.len) != 0) {
-		pr_debug("Additional data mismatch.\n");
-		err = -EKEYREJECTED;
+	memcpy(p, add_data.data, add_data.len);
+	data_len += add_data.len;
+
+	err = pkcs7_supply_detached_data(pkcs7, data, data_len);
+	if (err) {
+		pr_debug("PKCS#7 supply detached data error: %d\n", -err);
 		goto out;
 	}
 
@@ -70,6 +64,7 @@ int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
 		err = -EBADMSG;
 
 out:
+	kfree(data);
 	pkcs7_free_message(pkcs7);
 	return err;
 }
