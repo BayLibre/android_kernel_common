@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93513111_10f1c79e",
+        "filename": "drivers/char/random.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2517,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-02-19T18:41:13Z",
+      "side": 1,
+      "message": "NB:\n\nThis function can go to sleep if it passes the entropy threshold which can happen if there is a lot (?) of entropy supplied by the bootloader via the Device Tree. The sleep is skipped, but sporadically as reported upstream. Sleeping here is an issue, and upstream is still struggling with possible fixes. I have proposed an upstream fix specifically for this path that does not call add_hwgenerator_randomness, but adds the entropy directly w/o the threshold to sleep and T\u0027tso is going to formalize it. Basically simpler to just call the equivalent to line 2504+2505 above and be done with it.\n\nI have 512 bytes of entropy as supplied in the DT from the bootloader on qrd7250 and it is not causing a problem in testing, so am not viewing this as an immediate requirement to fix, we will get to it when the (comfort) fixes are formalized.",
+      "range": {
+        "startLine": 2517,
+        "startChar": 2,
+        "endLine": 2517,
+        "endChar": 49
+      },
+      "revId": "a9a5cadcc77f6cf0942ee15c35066d9330e678d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
