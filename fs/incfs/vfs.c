@@ -787,9 +787,6 @@ static int read_single_page(struct file *f, struct page *page)
 	size = df->df_size;
 	timeout_ms = df->df_mount_info->mi_options.read_timeout_ms;
 
-	pr_debug("incfs: %s %s %lld\n", __func__,
-		f->f_path.dentry->d_name.name, offset);
-
 	if (offset < size) {
 		struct mem_range tmp = {
 			.len = 2 * INCFS_DATA_FILE_BLOCK_SIZE
