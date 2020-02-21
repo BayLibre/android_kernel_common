@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf26f713_a81cbd42",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2151,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "Can use hba-\u003eprdt_entry_size here instead of calculating prdt_byte_size.",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10c72fcc_06ef4d7e",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2178,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "In this for loop, we can\u0027t just index into the prd_table with index \"i\" since the size of each prd is prdt_byte_size.\n\nI think we\u0027ll need something like\n(struct ufshcd_sg_entry *)((u8 *)prd_table + i * prdt_byte_size) instead of prd_table[i]\n\nI think the change that Eric has in\n\nhttps://android-review.googlesource.com/c/kernel/common/+/1232543\n\nhas a clean way of doing this.",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c401ff6f_59c2289a",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3471,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "We can just use hba-\u003eprdt_entry_size here",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee7b6777_81cd8bad",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3476,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "I think there need to be SG_ALL entries in each utp_transfer_cmd_desc, so this should be\n\n(sizeof(struct utp_transfer_cmd_desc) + prdt_size * SG_ALL) * hba-\u003enutrs;",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc4dcb18_c6d02066",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3572,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "Doesn\u0027t this need to be changed to take into account the extra bytes used by the prdt table?\nSo something like\n\ncmd_desc_size \u003d sizeof(struct utp_transfer_cmd_desc) + prdt_size * SG_ALL;",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f34f0f56_db711ed2",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3612,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "As far as I understand, each utp_transfer_cmd_desc has size (sizeof(struct utp_transfer_cmd_desc) + hba-\u003eprdt_entry_size * SG_ALL).\n\nSo, shouldn\u0027t this be\n\nhba-\u003elrb[i].ucd_prdt_ptr \u003d (u8 *)cmd_descp + i * cmd_desc_size + prdt_offset;\n?\n\nAnd the same change needs to be done everywhere else in this loop where \"i\" is added to cmd_descp. Again, I think the change that Eric has in\n\nhttps://android-review.googlesource.com/c/kernel/common/+/1232543\n\nhas a clean way of doing this.",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19127d11_a2d83b66",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "If \"vs\" stands for \"variant specific\", then I think these can just be called get_prdt_size and set_prdt_fields.",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47b46153_dcd68553",
+        "filename": "drivers/scsi/ufs/ufshci.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2020-02-21T21:14:19Z",
+      "side": 1,
+      "message": "Maybe also add something like\n\nu8 prdt_table[];\n\nat the end to make this clear.",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
