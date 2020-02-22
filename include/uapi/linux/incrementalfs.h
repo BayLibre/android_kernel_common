@@ -44,9 +44,9 @@
 #define INCFS_IOC_CREATE_FILE \
 	_IOWR(INCFS_IOCTL_BASE_CODE, 30, struct incfs_new_file_args)
 
-/* Read file signature */
+/* Read file signature and signed data */
 #define INCFS_IOC_READ_FILE_SIGNATURE                                          \
-	_IOWR(INCFS_IOCTL_BASE_CODE, 31, struct incfs_get_file_sig_args)
+	_IOR(INCFS_IOCTL_BASE_CODE, 31, struct incfs_get_file_sig_args)
 
 enum incfs_compression_alg {
 	COMPRESSION_NONE = 0,
@@ -121,42 +121,38 @@ enum incfs_hash_tree_algorithm {
 
 struct incfs_file_signature_info {
 	/*
-	 * A pointer to file's root hash (if determined != 0)
-	 * Actual hash size determined by hash_tree_alg.
-	 * Size of the buffer should be at least INCFS_MAX_HASH_SIZE
-	 *
-	 * Equivalent to: u8 *root_hash;
-	 */
-	__aligned_u64 root_hash;
-
-	/*
-	 * A pointer to additional data that was attached to the root hash
-	 * before signing.
-	 *
-	 * Equivalent to: u8 *additional_data;
-	 */
-	__aligned_u64 additional_data;
-
-	/* Size of additional data. */
-	__u32 additional_data_size;
-
-	__u32 reserved1;
-
-	/*
 	 * A pointer to pkcs7 signature DER blob.
 	 *
 	 * Equivalent to: u8 *signature;
 	 */
 	__aligned_u64 signature;
 
-
 	/* Size of pkcs7 signature DER blob */
 	__u32 signature_size;
 
-	__u32 reserved2;
+	__u32 reserved1;
 
-	/* Value from incfs_hash_tree_algorithm */
-	__u8 hash_tree_alg;
+	/*
+	 * A pointer to signed data
+	 *
+	 * Note signed data must be of format:
+	 *
+	 * u32 algorithm;
+	 * u32 hash_size;
+	 * u8 root_hash[hash_size];
+	 * u8 additional_data[];
+	 *
+	 * where algorithm is a value from incfs_hash_tree_algorithm,
+	 * and hash_size must equal the associated size
+	 *
+	 * Equivalent to: u8 *signed_data;
+	 */
+	__aligned_u64 signed_data;
+
+	/* Size of signed data. */
+	__u32 signed_data_size;
+
+	__u32 reserved2;
 };
 
 /*
@@ -219,27 +215,59 @@ struct incfs_new_file_args {
 
 	__aligned_u64 reserved6;
 };
-
 /*
- * Request a digital signature blob for a given file.
- * Argument for INCFS_IOC_READ_FILE_SIGNATURE ioctl
+ * Signature and signed data
+ *
+ * Argument to IOCTL_INCFS_GET_SIGNATURE
+ *
+ * Note that this should be identical to incfs_file_signature_info
+ * for symmetry
  */
-struct incfs_get_file_sig_args {
+struct incfs_get_file_sig_args{
 	/*
-	 * A pointer to the data buffer to save an signature blob to.
+	 * A pointer to pkcs7 signature DER blob.
 	 *
-	 * Equivalent to: u8 *file_signature;
+	 * Equivalent to: u8 *signature;
 	 */
-	__aligned_u64 file_signature;
+	__aligned_u64 signature;
 
-	/* Size of the buffer at file_signature. */
-	__u32 file_signature_buf_size;
+	/* Size of pkcs7 signature DER blob */
+	__u32 signature_size;
 
 	/*
-	 * Number of bytes save file_signature buffer.
-	 * It is set after ioctl done.
+	 * For IOCTL_INCFS_GET_SIGNATURE, size of passed in buffer
+	 *
+	 * Ignored in IOCTL_INCFS_CREATE_FILE
 	 */
-	__u32 file_signature_len_out;
+	__u32 signature_buf_size;
+
+	/*
+	 * A pointer to signed data
+	 *
+	 * Note signed data must be of format:
+	 *
+	 * u32 algorithm;
+	 * u32 hash_size;
+	 * u8 root_hash[hash_size];
+	 * u8 additional_data[];
+	 *
+	 * where algorithm is a value from incfs_hash_tree_algorithm,
+	 * and hash_size must equal the associated size
+	 *
+	 * Equivalent to: u8 *signed_data;
+	 */
+	__aligned_u64 signed_data;
+
+	/* Size of signed data. */
+	__u32 signed_data_size;
+
+	/*
+	 * For IOCTL_INCFS_GET_SIGNATURE, size of passed in buffer
+	 *
+	 * Ignored in IOCTL_INCFS_CREATE_FILE
+	 */
+	__u32 signed_data_buffer_size;
 };
+
 
 #endif /* _UAPI_LINUX_INCREMENTALFS_H */

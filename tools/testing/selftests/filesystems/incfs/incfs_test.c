@@ -37,12 +37,19 @@ struct hash_block {
 	char data[INCFS_DATA_FILE_BLOCK_SIZE];
 };
 
-struct test_signature {
-	void *data;
-	size_t size;
+struct signed_data {
+	uint32_t hash_algorithm;
+	uint32_t hash_size;
+	uint8_t digest[32];
+	uint8_t add_data[256];
+} __packed;
 
-	char add_data[100];
-	size_t add_data_size;
+struct test_signature {
+	void *signature;
+	size_t signature_size;
+
+	void *signed_data;
+	size_t signed_data_size;
 };
 
 struct test_file {
@@ -50,7 +57,6 @@ struct test_file {
 	incfs_uuid_t id;
 	char *name;
 	off_t size;
-	char root_hash[INCFS_MAX_HASH_SIZE];
 	struct hash_block *mtree;
 	int mtree_block_count;
 	struct test_signature sig;
@@ -720,9 +726,9 @@ static int build_mtree(struct test_file *file)
 	int tree_lvl_index[INCFS_MAX_MTREE_LEVELS] = {};
 	int tree_lvl_count[INCFS_MAX_MTREE_LEVELS] = {};
 	int levels_count = 0;
-	char data_to_sign[256] = {};
-	int sig_data_size;
+	int signed_data_size;
 	int i, level;
+	struct signed_data signed_data;
 
 	if (file->size == 0)
 		return 0;
@@ -750,63 +756,68 @@ static int build_mtree(struct test_file *file)
 
 		memset(data, 0, INCFS_DATA_FILE_BLOCK_SIZE);
 		rnd_buf((uint8_t *)data, file->size, seed);
-		sha256(data, INCFS_DATA_FILE_BLOCK_SIZE, file->root_hash);
-		return 0;
-	}
-
-	file->mtree = calloc(total_tree_block_count, sizeof(*file->mtree));
-	/* Build level 0 hashes. */
-	for (i = 0; i < block_count; i++) {
-		off_t offset = i * INCFS_DATA_FILE_BLOCK_SIZE;
-		size_t block_size = INCFS_DATA_FILE_BLOCK_SIZE;
-		int block_index = tree_lvl_index[0] +
-					i / hash_per_block;
-		int block_off = (i % hash_per_block) * digest_size;
-		int seed = get_file_block_seed(file->index, i);
-		char *hash_ptr = file->mtree[block_index].data + block_off;
-
-		if (file->size - offset < block_size) {
-			block_size = file->size - offset;
-			memset(data, 0, INCFS_DATA_FILE_BLOCK_SIZE);
-		}
-
-		rnd_buf((uint8_t *)data, block_size, seed);
-		sha256(data, INCFS_DATA_FILE_BLOCK_SIZE, hash_ptr);
-	}
-
-	/* Build higher levels of hash tree. */
-	for (level = 1; level < levels_count; level++) {
-		int prev_lvl_base = tree_lvl_index[level - 1];
-		int prev_lvl_count = tree_lvl_count[level - 1];
-
-		for (i = 0; i < prev_lvl_count; i++) {
-			int block_index =
-				i / hash_per_block + tree_lvl_index[level];
+		sha256(data, INCFS_DATA_FILE_BLOCK_SIZE,
+		       (char*)signed_data.digest);
+	} else {
+		file->mtree = calloc(total_tree_block_count, sizeof(*file->mtree));
+		/* Build level 0 hashes. */
+		for (i = 0; i < block_count; i++) {
+			off_t offset = i * INCFS_DATA_FILE_BLOCK_SIZE;
+			size_t block_size = INCFS_DATA_FILE_BLOCK_SIZE;
+			int block_index = tree_lvl_index[0] +
+						i / hash_per_block;
 			int block_off = (i % hash_per_block) * digest_size;
-			char *hash_ptr =
-				file->mtree[block_index].data + block_off;
+			int seed = get_file_block_seed(file->index, i);
+			char *hash_ptr = file->mtree[block_index].data + block_off;
 
-			sha256(file->mtree[i + prev_lvl_base].data,
-			       INCFS_DATA_FILE_BLOCK_SIZE, hash_ptr);
+			if (file->size - offset < block_size) {
+				block_size = file->size - offset;
+				memset(data, 0, INCFS_DATA_FILE_BLOCK_SIZE);
+			}
+
+			rnd_buf((uint8_t *)data, block_size, seed);
+			sha256(data, INCFS_DATA_FILE_BLOCK_SIZE, hash_ptr);
 		}
-	}
 
-	/* Calculate root hash from the top block */
-	sha256(file->mtree[0].data,
-		INCFS_DATA_FILE_BLOCK_SIZE, file->root_hash);
+		/* Build higher levels of hash tree. */
+		for (level = 1; level < levels_count; level++) {
+			int prev_lvl_base = tree_lvl_index[level - 1];
+			int prev_lvl_count = tree_lvl_count[level - 1];
+
+			for (i = 0; i < prev_lvl_count; i++) {
+				int block_index =
+					i / hash_per_block + tree_lvl_index[level];
+				int block_off = (i % hash_per_block) * digest_size;
+				char *hash_ptr =
+					file->mtree[block_index].data + block_off;
+
+				sha256(file->mtree[i + prev_lvl_base].data,
+				       INCFS_DATA_FILE_BLOCK_SIZE, hash_ptr);
+			}
+		}
+
+		/* Calculate root hash from the top block */
+		sha256(file->mtree[0].data, INCFS_DATA_FILE_BLOCK_SIZE,
+		       (char*)signed_data.digest);
+	}
 
 	/* Calculating digital signature */
-	snprintf(file->sig.add_data, sizeof(file->sig.add_data), "%ld",
-		 file->size);
-	memcpy(data_to_sign, file->root_hash, SHA256_DIGEST_SIZE);
-	memcpy(data_to_sign + SHA256_DIGEST_SIZE, file->sig.add_data,
-		strlen(file->sig.add_data));
-	sig_data_size = SHA256_DIGEST_SIZE + strlen(file->sig.add_data);
-	if (!sign_pkcs7(data_to_sign, sig_data_size, private_key, x509_cert,
-		       &file->sig.data, &file->sig.size)) {
+	signed_data.hash_algorithm = INCFS_HASH_TREE_SHA256;
+	signed_data.hash_size = 32;
+	snprintf((char*)signed_data.add_data, sizeof(signed_data.add_data),
+		 "%ld", file->size);
+	signed_data_size = (char*) signed_data.add_data - (char*) &signed_data
+			+ strlen((char*) signed_data.add_data);
+	if (!sign_pkcs7(&signed_data, signed_data_size, private_key,
+			x509_cert, &file->sig.signature,
+			&file->sig.signature_size)) {
 		ksft_print_msg("Signing failed.\n");
 		return -EINVAL;
 	}
+
+	file->sig.signed_data = malloc(signed_data_size);
+	memcpy(file->sig.signed_data, &signed_data, signed_data_size);
+	file->sig.signed_data_size = signed_data_size;
 
 	return 0;
 }
@@ -1912,10 +1923,9 @@ static int signature_test(char *mount_dir)
 		int res;
 
 		build_mtree(file);
-
 		res = crypto_emit_file(cmd_fd, NULL, file->name, &file->id,
-			file->size, file->root_hash,
-			file->sig.data, file->sig.size, file->sig.add_data);
+			file->size, file->sig.signature, file->sig.signature_size,
+			file->sig.signed_data, file->sig.signed_data_size);
 
 		if (res) {
 			ksft_print_msg("Emit failed for %s. error: %s\n",
@@ -1965,8 +1975,8 @@ static int signature_test(char *mount_dir)
 			goto failure;
 		}
 
-		if (sig_len != file->sig.size ||
-			memcmp(sig_buf, file->sig.data, sig_len)) {
+		if (sig_len != file->sig.signature_size ||
+			memcmp(sig_buf, file->sig.signature, sig_len)) {
 			ksft_print_msg("Signature mismatch %s.\n",
 				file->name);
 			goto failure;
@@ -2017,8 +2027,8 @@ static int signature_test(char *mount_dir)
 				file->name, strerror(-sig_len));
 			goto failure;
 		}
-		if (sig_len != file->sig.size ||
-			memcmp(sig_buf, file->sig.data, sig_len)) {
+		if (sig_len != file->sig.signature_size ||
+			memcmp(sig_buf, file->sig.signature, sig_len)) {
 			ksft_print_msg("Signature mismatch %s.\n",
 				file->name);
 			goto failure;
@@ -2069,8 +2079,8 @@ static int hash_tree_test(char *mount_dir)
 
 		build_mtree(file);
 		res = crypto_emit_file(cmd_fd, NULL, file->name, &file->id,
-			file->size, file->root_hash,
-			file->sig.data, file->sig.size, file->sig.add_data);
+			file->size, file->sig.signature, file->sig.signature_size,
+			file->sig.signed_data, file->sig.signed_data_size);
 
 		if (i == corrupted_file_idx) {
 			/* Corrupt third blocks hash */
@@ -2101,7 +2111,7 @@ static int hash_tree_test(char *mount_dir)
 					     filename, 2);
 			free(filename);
 			if (res != -EBADMSG) {
-				ksft_print_msg("Hash violation missed1. %d\n",
+				ksft_print_msg("Hash violation missed. %d\n",
 					       res);
 				goto failure;
 			}

@@ -39,20 +39,15 @@ struct mtree {
 };
 
 struct signature_info {
-	struct mem_range root_hash;
-
-	struct mem_range additional_data;
-
 	struct mem_range signature;
 
-	enum incfs_hash_tree_algorithm hash_alg;
+	struct mem_range signed_data;
 };
 
 struct incfs_hash_alg *incfs_get_hash_alg(enum incfs_hash_tree_algorithm id);
 
-struct mtree *incfs_alloc_mtree(enum incfs_hash_tree_algorithm id,
-				int data_block_count,
-				struct mem_range root_hash);
+struct mtree *incfs_alloc_mtree(int data_block_count,
+				struct mem_range signed_data);
 
 void incfs_free_mtree(struct mtree *tree);
 
@@ -65,7 +60,7 @@ int incfs_calc_digest(struct incfs_hash_alg *alg, struct mem_range data,
 			struct mem_range digest);
 
 int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
-	struct mem_range root_hash, struct mem_range add_data);
+	struct mem_range detached_data);
 
 void incfs_free_signature_info(struct signature_info *si);
 

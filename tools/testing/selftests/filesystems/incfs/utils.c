@@ -171,19 +171,15 @@ out:
 }
 
 int crypto_emit_file(int fd, char *dir, char *filename, incfs_uuid_t *id_out,
-	size_t size, const char *root_hash, char *sig, size_t sig_size,
-	char *add_data)
+	size_t size, char *sig, size_t sig_size,
+	char *signed_data, size_t signed_data_size)
 {
 	int mode = __S_IFREG | 0555;
 	struct incfs_file_signature_info sig_info = {
-		.hash_tree_alg = root_hash
-					? INCFS_HASH_TREE_SHA256
-					: 0,
-		.root_hash = ptr_to_u64(root_hash),
-		.additional_data = ptr_to_u64(add_data),
-		.additional_data_size = strlen(add_data),
 		.signature =  ptr_to_u64(sig),
 		.signature_size = sig_size,
+		.signed_data = ptr_to_u64(signed_data),
+		.signed_data_size = signed_data_size,
 	};
 
 	struct incfs_new_file_args args = {
@@ -210,16 +206,12 @@ int emit_file(int fd, char *dir, char *filename, incfs_uuid_t *id_out,
 		size_t size, char *attr)
 {
 	int mode = __S_IFREG | 0555;
-	struct incfs_file_signature_info sig_info = {
-		.hash_tree_alg = 0,
-		.root_hash = ptr_to_u64(NULL)
-	};
 	struct incfs_new_file_args args = {
 			.size = size,
 			.mode = mode,
 			.file_name = ptr_to_u64(filename),
 			.directory_path = ptr_to_u64(dir),
-			.signature_info = ptr_to_u64(&sig_info),
+			.signature_info = ptr_to_u64(NULL),
 			.file_attr = ptr_to_u64(attr),
 			.file_attr_len = attr ? strlen(attr) : 0
 	};
@@ -241,12 +233,12 @@ int get_file_bmap(int cmd_fd, int ino, unsigned char *buf, int buf_size)
 int get_file_signature(int fd, unsigned char *buf, int buf_size)
 {
 	struct incfs_get_file_sig_args args = {
-		.file_signature = ptr_to_u64(buf),
-		.file_signature_buf_size = buf_size
+		.signature = ptr_to_u64(buf),
+		.signature_buf_size = buf_size
 	};
 
 	if (ioctl(fd, INCFS_IOC_READ_FILE_SIGNATURE, &args) == 0)
-		return args.file_signature_len_out;
+		return args.signature_size;
 	return -errno;
 }
 

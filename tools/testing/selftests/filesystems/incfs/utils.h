@@ -32,8 +32,8 @@ int emit_file(int fd, char *dir, char *filename, incfs_uuid_t *id_out,
 		size_t size, char *attr);
 
 int crypto_emit_file(int fd, char *dir, char *filename, incfs_uuid_t *id_out,
-	size_t size, const char *root_hash, char *sig, size_t sig_size,
-	char *add_data);
+	size_t size, char *sig, size_t sig_size,
+	char *signed_data, size_t signed_data_size);
 
 int unlink_node(int fd, int parent_ino, char *filename);
 

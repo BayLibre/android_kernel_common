@@ -221,21 +221,17 @@ struct incfs_file_attr {
 struct incfs_file_signature {
 	struct incfs_md_header sg_header;
 
-	__u8 sg_hash_alg; /* Value from incfs_hash_tree_algorithm */
-
 	__le32 sg_hash_tree_size; /* The size of the hash tree. */
 
 	__le64 sg_hash_tree_offset; /* Hash tree offset in the backing file */
-
-	__u8 sg_root_hash[INCFS_MAX_HASH_SIZE];
 
 	__le32 sg_sig_size; /* The size of the pkcs7 signature. */
 
 	__le64 sg_sig_offset; /* pkcs7 signature's offset in the backing file */
 
-	__le32 sg_add_data_size; /* The size of the additional data. */
+	__le32 sg_signed_data_size; /* The size of the signed data. */
 
-	__le64 sg_add_data_offset; /* Additional data's offset */
+	__le64 sg_signed_data_offset; /* Signed data's offset */
 } __packed;
 
 /* State of the backing file. */
@@ -257,17 +253,17 @@ struct backing_file_context {
 /* Backing file locations of things required for signature validation. */
 struct ondisk_signature {
 
-	loff_t add_data_offset; /* Additional data's offset */
+	loff_t signed_data_offset; /* Signed data's offset in the backing file*/
 
 	loff_t sig_offset; /* pkcs7 signature's offset in the backing file */
 
-	loff_t mtree_offset; /* Backing file offset of the hash tree. */
+	loff_t mtree_offset; /* Merkle tree's offset in the backing file. */
 
-	u32 add_data_size; /* The size of the additional data. */
+	u32 signed_data_size; /* The size of the signed data. */
 
 	u32 sig_size; /* The size of the pkcs7 signature. */
 
-	u32 mtree_size; /* The size of the hash tree. */
+	u32 mtree_size; /* The size of the Merkle tree. */
 };
 
 struct metadata_handler {
@@ -319,8 +315,7 @@ int incfs_write_file_attr_to_backing_file(struct backing_file_context *bfc,
 		struct mem_range value, struct incfs_file_attr *attr);
 
 int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
-		u8 hash_alg, u32 tree_size,
-		struct mem_range root_hash, struct mem_range add_data,
+		u32 tree_size, struct mem_range signed_data,
 		struct mem_range sig);
 
 int incfs_make_empty_backing_file(struct backing_file_context *bfc,

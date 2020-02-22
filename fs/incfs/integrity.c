@@ -9,14 +9,12 @@
 #include <crypto/pkcs7.h>
 
 #include "integrity.h"
+#include "data_mgmt.h"
 
 int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
-	struct mem_range root_hash, struct mem_range add_data)
+				   struct mem_range signed_data)
 {
 	struct pkcs7_message *pkcs7 = NULL;
-	void *data = NULL;
-	size_t data_len = 0;
-	char *p;
 	int err;
 
 	pkcs7 = pkcs7_parse_message(pkcs7_blob.data, pkcs7_blob.len);
@@ -26,27 +24,14 @@ int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
 		return PTR_ERR(pkcs7);
 	}
 
-	if (root_hash.len == 0) {
-		pr_debug("Root hash is empty.\n");
+	if (signed_data.len == 0) {
+		pr_debug("Signed data is empty.\n");
 		err = -EBADMSG;
 		goto out;
 	}
 
-	data = kzalloc(root_hash.len + add_data.len, GFP_NOFS);
-	if (!data) {
-		err = -ENOMEM;
-		goto out;
-	}
-
-	p = data;
-	memcpy(p, root_hash.data, root_hash.len);
-	data_len += root_hash.len;
-
-	p += root_hash.len;
-	memcpy(p, add_data.data, add_data.len);
-	data_len += add_data.len;
-
-	err = pkcs7_supply_detached_data(pkcs7, data, data_len);
+	err = pkcs7_supply_detached_data(pkcs7, signed_data.data,
+					 signed_data.len);
 	if (err) {
 		pr_debug("PKCS#7 supply detached data error: %d\n", -err);
 		goto out;
@@ -64,7 +49,6 @@ int incfs_validate_pkcs7_signature(struct mem_range pkcs7_blob,
 		err = -EBADMSG;
 
 out:
-	kfree(data);
 	pkcs7_free_message(pkcs7);
 	return err;
 }
@@ -109,12 +93,13 @@ struct incfs_hash_alg *incfs_get_hash_alg(enum incfs_hash_tree_algorithm id)
 }
 
 
-struct mtree *incfs_alloc_mtree(enum incfs_hash_tree_algorithm id,
-				int data_block_count,
-				struct mem_range root_hash)
+struct mtree *incfs_alloc_mtree(int data_block_count,
+				struct mem_range signed_data)
 {
 	struct mtree *result = NULL;
+	int hash_alg_id;
 	struct incfs_hash_alg *hash_alg = NULL;
+	struct mem_range root_hash;
 	int hash_per_block;
 	int lvl;
 	int total_blocks = 0;
@@ -124,9 +109,15 @@ struct mtree *incfs_alloc_mtree(enum incfs_hash_tree_algorithm id,
 	if (data_block_count <= 0)
 		return ERR_PTR(-EINVAL);
 
-	hash_alg = incfs_get_hash_alg(id);
+	hash_alg_id = incfs_get_hash_alg_id(signed_data);
+	if (hash_alg_id < 0)
+		return ERR_PTR(hash_alg_id);
+
+	hash_alg = incfs_get_hash_alg(hash_alg_id);
 	if (IS_ERR(hash_alg))
 		return ERR_PTR(PTR_ERR(hash_alg));
+
+	root_hash = incfs_get_root_hash(signed_data);
 
 	if (root_hash.len < hash_alg->digest_size)
 		return ERR_PTR(-EINVAL);
@@ -213,8 +204,7 @@ void incfs_free_signature_info(struct signature_info *si)
 {
 	if (!si)
 		return;
-	kfree(si->root_hash.data);
-	kfree(si->additional_data.data);
+	kfree(si->signed_data.data);
 	kfree(si->signature.data);
 	kfree(si);
 }

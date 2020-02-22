@@ -840,6 +840,7 @@ static struct signature_info *incfs_copy_signature_info_from_user(
 	struct signature_info *result;
 	int error;
 
+
 	if (!original)
 		return NULL;
 
@@ -853,44 +854,21 @@ static struct signature_info *incfs_copy_signature_info_from_user(
 	if (!result)
 		return ERR_PTR(-ENOMEM);
 
-	result->hash_alg = usr_si.hash_tree_alg;
-
-	if (result->hash_alg) {
-		void *p = kzalloc(INCFS_MAX_HASH_SIZE, GFP_NOFS);
-
-		if (!p) {
-			error = -ENOMEM;
-			goto err;
-		}
-
-		/* TODO this sets the root_hash length to MAX_HASH_SIZE not
-		 * the actual size. Fix, then set INCFS_MAX_HASH_SIZE back
-		 * to 64
-		 */
-		result->root_hash = range(p, INCFS_MAX_HASH_SIZE);
-		if (copy_from_user(p, u64_to_user_ptr(usr_si.root_hash),
-				result->root_hash.len) > 0) {
-			error = -EFAULT;
-			goto err;
-		}
-	}
-
-	if (usr_si.additional_data_size > INCFS_MAX_FILE_ATTR_SIZE) {
+	if (usr_si.signed_data_size > INCFS_MAX_FILE_ATTR_SIZE) {
 		error = -E2BIG;
 		goto err;
 	}
 
-	if (usr_si.additional_data && usr_si.additional_data_size) {
-		void *p = kzalloc(usr_si.additional_data_size, GFP_NOFS);
+	if (usr_si.signed_data && usr_si.signed_data_size) {
+		void *p = kzalloc(usr_si.signed_data_size, GFP_NOFS);
 
 		if (!p) {
 			error = -ENOMEM;
 			goto err;
 		}
-		result->additional_data = range(p,
-					usr_si.additional_data_size);
-		if (copy_from_user(p, u64_to_user_ptr(usr_si.additional_data),
-				result->additional_data.len) > 0) {
+		result->signed_data = range(p, usr_si.signed_data_size);
+		if (copy_from_user(p, u64_to_user_ptr(usr_si.signed_data),
+				result->signed_data.len) > 0) {
 			error = -EFAULT;
 			goto err;
 		}
@@ -992,9 +970,9 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 			goto out;
 		}
 
-		if (si->hash_alg) {
-			hash_tree = incfs_alloc_mtree(si->hash_alg, block_count,
-						      si->root_hash);
+		if (si->signed_data.len > 0) {
+			hash_tree = incfs_alloc_mtree(block_count,
+						      si->signed_data);
 			if (IS_ERR(hash_tree)) {
 				error = PTR_ERR(hash_tree);
 				hash_tree = NULL;
@@ -1007,15 +985,13 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 			if (si->signature.len > 0)
 				error = incfs_validate_pkcs7_signature(
 						si->signature,
-						si->root_hash,
-						si->additional_data);
+						si->signed_data);
 			if (error)
 				goto out;
 
 			error = incfs_write_signature_to_backing_file(bfc,
-					si->hash_alg,
 					hash_tree->hash_tree_area_size,
-					si->root_hash, si->additional_data,
+					si->signed_data,
 					si->signature);
 
 			if (error)
@@ -1376,11 +1352,11 @@ static long ioctl_read_file_signature(struct file *f, void __user *arg)
 	if (copy_from_user(&args, args_usr_ptr, sizeof(args)) > 0)
 		return -EINVAL;
 
-	if (!access_ok(u64_to_user_ptr(args.file_signature),
-			args.file_signature_buf_size))
+	if (!access_ok(u64_to_user_ptr(args.signature),
+			args.signature_buf_size))
 		return -EFAULT;
 
-	sig_buf_size = args.file_signature_buf_size;
+	sig_buf_size = args.signature_buf_size;
 	if (sig_buf_size > INCFS_MAX_SIGNATURE_SIZE)
 		return -E2BIG;
 
@@ -1396,13 +1372,13 @@ static long ioctl_read_file_signature(struct file *f, void __user *arg)
 		goto out;
 	}
 
-	if (copy_to_user(u64_to_user_ptr(args.file_signature), sig_buffer,
+	if (copy_to_user(u64_to_user_ptr(args.signature), sig_buffer,
 			read_result)) {
 		error = -EFAULT;
 		goto out;
 	}
 
-	args.file_signature_len_out = read_result;
+	args.signature_size= read_result;
 	if (copy_to_user(args_usr_ptr, &args, sizeof(args)))
 		error = -EFAULT;
 

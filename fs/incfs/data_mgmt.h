@@ -218,8 +218,6 @@ void incfs_free_mount_info(struct mount_info *mi);
 struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf);
 void incfs_free_data_file(struct data_file *df);
 
-int incfs_scan_metadata_chain(struct data_file *df);
-
 struct dir_file *incfs_open_dir_file(struct mount_info *mi, struct file *bf);
 void incfs_free_dir_file(struct dir_file *dir);
 
@@ -228,6 +226,9 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct data_file *df,
 				   struct mem_range tmp);
 
 int incfs_read_file_signature(struct data_file *df, struct mem_range dst);
+
+int incfs_get_hash_alg_id(struct mem_range signed_data);
+struct mem_range incfs_get_root_hash(struct mem_range signed_data);
 
 int incfs_process_new_data_block(struct data_file *df,
 				 struct incfs_new_data_block *block, u8 *data);
