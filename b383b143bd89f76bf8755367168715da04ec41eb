@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "50a1ad96_ef4d262b",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2151,
+      "author": {
+        "id": 1642820
+      },
+      "writtenOn": "2020-02-22T21:00:29Z",
+      "side": 1,
+      "message": "got it",
+      "parentUuid": "cf26f713_a81cbd42",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "10c72fcc_06ef4d7e",
         "filename": "drivers/scsi/ufs/ufshcd.c",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2020-02-21T21:14:19Z",
       "side": 1,
       "message": "In this for loop, we can\u0027t just index into the prd_table with index \"i\" since the size of each prd is prdt_byte_size.\n\nI think we\u0027ll need something like\n(struct ufshcd_sg_entry *)((u8 *)prd_table + i * prdt_byte_size) instead of prd_table[i]\n\nI think the change that Eric has in\n\nhttps://android-review.googlesource.com/c/kernel/common/+/1232543\n\nhas a clean way of doing this.",
+      "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5c878ae_b2664a52",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2178,
+      "author": {
+        "id": 1642820
+      },
+      "writtenOn": "2020-02-22T21:00:29Z",
+      "side": 1,
+      "message": "missed and got it.",
+      "parentUuid": "10c72fcc_06ef4d7e",
       "revId": "b383b143bd89f76bf8755367168715da04ec41eb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
