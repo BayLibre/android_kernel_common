@@ -42,7 +42,11 @@ static inline void apply_alternatives_module(void *start, size_t length) { }
 	" .byte 662b-661b\n"				/* source len      */ \
 	" .byte 664f-663f\n"				/* replacement len */
 
+<<<<<<< HEAD   (159650 ANDROID: arm64: update the abi with the new gki_defconfig)
 #define ALTINSTR_ENTRY_CB(feature,cb)					      \
+=======
+#define ALTINSTR_ENTRY_CB(feature, cb)					      \
+>>>>>>> BRANCH (f25804 Linux 4.19.106)
 	" .word 661b - .\n"				/* label           */ \
 	" .word " __stringify(cb) "- .\n"		/* callback */	      \
 	" .hword " __stringify(feature) "\n"		/* feature bit     */ \
@@ -88,7 +92,11 @@ static inline void apply_alternatives_module(void *start, size_t length) { }
 	oldinstr "\n"							\
 	"662:\n"							\
 	".pushsection .altinstructions,\"a\"\n"				\
+<<<<<<< HEAD   (159650 ANDROID: arm64: update the abi with the new gki_defconfig)
 	ALTINSTR_ENTRY_CB(feature,cb)					\
+=======
+	ALTINSTR_ENTRY_CB(feature, cb)					\
+>>>>>>> BRANCH (f25804 Linux 4.19.106)
 	".popsection\n"							\
 	"663:\n\t"							\
 	"664:\n\t"							\

@@ -918,6 +918,7 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
 			F2FS_I(old_dentry->d_inode)->i_projid)))
 		return -EXDEV;
 
+<<<<<<< HEAD   (159650 ANDROID: arm64: update the abi with the new gki_defconfig)
 	/*
 	 * If new_inode is null, the below renaming flow will
 	 * add a link in old_dir which can conver inline_dir.
@@ -932,6 +933,8 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
 			return err;
 	}
 
+=======
+>>>>>>> BRANCH (f25804 Linux 4.19.106)
 	if (flags & RENAME_WHITEOUT) {
 		err = f2fs_create_whiteout(old_dir, &whiteout);
 		if (err)
@@ -1019,6 +1022,31 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 		if (old_dir_entry)
 			f2fs_i_links_write(new_dir, true);
+<<<<<<< HEAD   (159650 ANDROID: arm64: update the abi with the new gki_defconfig)
+=======
+
+		/*
+		 * old entry and new entry can locate in the same inline
+		 * dentry in inode, when attaching new entry in inline dentry,
+		 * it could force inline dentry conversion, after that,
+		 * old_entry and old_page will point to wrong address, in
+		 * order to avoid this, let's do the check and update here.
+		 */
+		if (is_old_inline && !f2fs_has_inline_dentry(old_dir)) {
+			f2fs_put_page(old_page, 0);
+			old_page = NULL;
+
+			old_entry = f2fs_find_entry(old_dir,
+						&old_dentry->d_name, &old_page);
+			if (!old_entry) {
+				err = -ENOENT;
+				if (IS_ERR(old_page))
+					err = PTR_ERR(old_page);
+				f2fs_unlock_op(sbi);
+				goto out_dir;
+			}
+		}
+>>>>>>> BRANCH (f25804 Linux 4.19.106)
 	}
 
 	down_write(&F2FS_I(old_inode)->i_sem);
@@ -1069,7 +1097,12 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 put_out_dir:
 	f2fs_unlock_op(sbi);
+<<<<<<< HEAD   (159650 ANDROID: arm64: update the abi with the new gki_defconfig)
 	f2fs_put_page(new_page, 0);
+=======
+	if (new_page)
+		f2fs_put_page(new_page, 0);
+>>>>>>> BRANCH (f25804 Linux 4.19.106)
 out_dir:
 	if (old_dir_entry)
 		f2fs_put_page(old_dir_page, 0);
