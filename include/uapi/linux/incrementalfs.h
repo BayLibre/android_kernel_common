@@ -219,54 +219,33 @@ struct incfs_new_file_args {
  * Signature and signed data
  *
  * Argument to IOCTL_INCFS_GET_SIGNATURE
- *
- * Note that this should be identical to incfs_file_signature_info
- * for symmetry
  */
 struct incfs_get_file_sig_args{
 	/*
-	 * A pointer to pkcs7 signature DER blob.
+	 * A pointer to buffer for pkcs7 signature DER blob.
 	 *
 	 * Equivalent to: u8 *signature;
 	 */
 	__aligned_u64 signature;
 
-	/* Size of pkcs7 signature DER blob */
-	__u32 signature_size;
+	/* Size of above signature buffer */
+	__u32 signature_buffer_size;
+
+	/* Returned: Size of pkcs7 signature DER blob */
+	__u32 signature_size_out;
 
 	/*
-	 * For IOCTL_INCFS_GET_SIGNATURE, size of passed in buffer
-	 *
-	 * Ignored in IOCTL_INCFS_CREATE_FILE
-	 */
-	__u32 signature_buf_size;
-
-	/*
-	 * A pointer to signed data
-	 *
-	 * Note signed data must be of format:
-	 *
-	 * u32 algorithm;
-	 * u32 hash_size;
-	 * u8 root_hash[hash_size];
-	 * u8 additional_data[];
-	 *
-	 * where algorithm is a value from incfs_hash_tree_algorithm,
-	 * and hash_size must equal the associated size
+	 * A pointer to buffer for signed data
 	 *
 	 * Equivalent to: u8 *signed_data;
 	 */
 	__aligned_u64 signed_data;
 
-	/* Size of signed data. */
-	__u32 signed_data_size;
-
-	/*
-	 * For IOCTL_INCFS_GET_SIGNATURE, size of passed in buffer
-	 *
-	 * Ignored in IOCTL_INCFS_CREATE_FILE
-	 */
+	/* Size of above signed_data buffer */
 	__u32 signed_data_buffer_size;
+
+	/* Returned: Size of signed data. */
+	__u32 signed_data_size_out;
 };
 
 

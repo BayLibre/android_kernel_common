@@ -1902,6 +1902,7 @@ static int signature_test(char *mount_dir)
 	const int file_num = test.files_count;
 	int i = 0;
 	unsigned char sig_buf[INCFS_MAX_SIGNATURE_SIZE];
+	unsigned char dat_buf[INCFS_MAX_SIGNATURE_SIZE];
 	char *backing_dir;
 	int cmd_fd = -1;
 
@@ -1948,8 +1949,10 @@ static int signature_test(char *mount_dir)
 	for (i = 0; i < file_num; i++) {
 		struct test_file *file = &test.files[i];
 		int sig_len;
+		int dat_len;
 		char *path;
 		int fd;
+		int err;
 
 		if (validate_test_file_content(mount_dir, file) < 0)
 			goto failure;
@@ -1962,14 +1965,15 @@ static int signature_test(char *mount_dir)
 			goto failure;
 		}
 
-		sig_len = get_file_signature(fd, sig_buf, ARRAY_SIZE(sig_buf));
+		err = get_file_signature(fd, sig_buf, ARRAY_SIZE(sig_buf), &sig_len,
+                                         dat_buf, ARRAY_SIZE(dat_buf), &dat_len);
 
 		if (close(fd)) {
 			print_error("Can't close file");
 			goto failure;
 		}
 
-		if (sig_len < 0) {
+		if (err < 0) {
 			ksft_print_msg("Can't load signature %s. error: %s\n",
 				file->name, strerror(-sig_len));
 			goto failure;
@@ -1978,6 +1982,13 @@ static int signature_test(char *mount_dir)
 		if (sig_len != file->sig.signature_size ||
 			memcmp(sig_buf, file->sig.signature, sig_len)) {
 			ksft_print_msg("Signature mismatch %s.\n",
+				file->name);
+			goto failure;
+		}
+
+		if (dat_len != file->sig.signed_data_size ||
+			memcmp(dat_buf, file->sig.signed_data, dat_len)) {
+			ksft_print_msg("Signed data mismatch %s.\n",
 				file->name);
 			goto failure;
 		}
@@ -2001,8 +2012,10 @@ static int signature_test(char *mount_dir)
 	for (i = 0; i < file_num; i++) {
 		struct test_file *file = &test.files[i];
 		int sig_len;
+		int dat_len;
 		char *path;
 		int fd;
+		int err;
 
 		if (validate_test_file_content(mount_dir, file) < 0)
 			goto failure;
@@ -2015,14 +2028,15 @@ static int signature_test(char *mount_dir)
 			goto failure;
 		}
 
-		sig_len = get_file_signature(fd, sig_buf, ARRAY_SIZE(sig_buf));
+		err = get_file_signature(fd, sig_buf, ARRAY_SIZE(sig_buf), &sig_len,
+                                         dat_buf, ARRAY_SIZE(dat_buf), &dat_len);
 
 		if (close(fd)) {
 			print_error("Can't close file");
 			goto failure;
 		}
 
-		if (sig_len < 0) {
+		if (err < 0) {
 			ksft_print_msg("Can't load signature %s. error: %s\n",
 				file->name, strerror(-sig_len));
 			goto failure;
@@ -2030,6 +2044,13 @@ static int signature_test(char *mount_dir)
 		if (sig_len != file->sig.signature_size ||
 			memcmp(sig_buf, file->sig.signature, sig_len)) {
 			ksft_print_msg("Signature mismatch %s.\n",
+				file->name);
+			goto failure;
+		}
+
+		if (dat_len != file->sig.signed_data_size ||
+			memcmp(dat_buf, file->sig.signed_data, dat_len)) {
+			ksft_print_msg("Signed data mismatch %s.\n",
 				file->name);
 			goto failure;
 		}

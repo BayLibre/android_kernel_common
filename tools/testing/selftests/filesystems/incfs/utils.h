@@ -23,7 +23,9 @@ int mount_fs_opt(char *mount_dir, char *backing_dir, char *opt);
 
 int get_file_bmap(int cmd_fd, int ino, unsigned char *buf, int buf_size);
 
-int get_file_signature(int fd, unsigned char *buf, int buf_size);
+int get_file_signature(int fd,
+                       unsigned char *sig, int sig_size, int *sig_size_out,
+                       unsigned char *dat, int dat_size, int *dat_size_out);
 
 int emit_node(int fd, char *filename, int *ino_out, int parent_ino,
 		size_t size, mode_t mode, char *attr);

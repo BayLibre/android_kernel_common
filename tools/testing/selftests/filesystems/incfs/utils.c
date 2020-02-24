@@ -230,15 +230,23 @@ int get_file_bmap(int cmd_fd, int ino, unsigned char *buf, int buf_size)
 	return 0;
 }
 
-int get_file_signature(int fd, unsigned char *buf, int buf_size)
+int get_file_signature(int fd,
+                       unsigned char *sig, int sig_size, int *sig_size_out,
+                       unsigned char *dat, int dat_size, int *dat_size_out)
 {
 	struct incfs_get_file_sig_args args = {
-		.signature = ptr_to_u64(buf),
-		.signature_buf_size = buf_size
+		.signature = ptr_to_u64(sig),
+		.signature_buffer_size = sig_size,
+                .signed_data = ptr_to_u64(dat),
+                .signed_data_buffer_size = dat_size
 	};
 
-	if (ioctl(fd, INCFS_IOC_READ_FILE_SIGNATURE, &args) == 0)
-		return args.signature_size;
+	if (ioctl(fd, INCFS_IOC_READ_FILE_SIGNATURE, &args) == 0) {
+		*sig_size_out = args.signature_size_out;
+		*dat_size_out = args.signed_data_size_out;
+		return 0;
+        }
+
 	return -errno;
 }
 

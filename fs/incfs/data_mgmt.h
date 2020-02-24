@@ -226,6 +226,7 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct data_file *df,
 				   struct mem_range tmp);
 
 int incfs_read_file_signature(struct data_file *df, struct mem_range dst);
+int incfs_read_file_signed_data(struct data_file *df, struct mem_range dst);
 
 int incfs_get_hash_alg_id(struct mem_range signed_data);
 struct mem_range incfs_get_root_hash(struct mem_range signed_data);

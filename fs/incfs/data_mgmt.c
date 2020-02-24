@@ -775,6 +775,34 @@ int incfs_read_file_signature(struct data_file *df, struct mem_range dst)
 	return read_res;
 }
 
+int incfs_read_file_signed_data(struct data_file *df, struct mem_range dst)
+{
+	struct file *bf = df->df_backing_file_context->bc_file;
+	struct ondisk_signature *sig;
+	int read_res = 0;
+
+	if (!dst.data)
+		return -EFAULT;
+
+	sig = df->df_signature;
+	if (!sig)
+		return 0;
+
+	if (dst.len < sig->signed_data_size)
+		return -E2BIG;
+
+	read_res = incfs_kread(bf, dst.data, sig->signed_data_size,
+                               sig->signed_data_offset);
+
+	if (read_res < 0)
+		return read_res;
+
+	if (read_res != sig->signed_data_size)
+		return -EIO;
+
+	return read_res;
+}
+
 int incfs_process_new_hash_block(struct data_file *df,
 				 struct incfs_new_data_block *block, u8 *data)
 {

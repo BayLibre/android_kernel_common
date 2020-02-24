@@ -1338,8 +1338,8 @@ static long ioctl_read_file_signature(struct file *f, void __user *arg)
 {
 	struct incfs_get_file_sig_args __user *args_usr_ptr = arg;
 	struct incfs_get_file_sig_args args = {};
-	u8 *sig_buffer = NULL;
-	size_t sig_buf_size = 0;
+	u8 *signature = NULL;
+	u8 *signed_data = NULL;
 	int error = 0;
 	int read_result = 0;
 	struct data_file *df = get_incfs_data_file(f);
@@ -1353,37 +1353,64 @@ static long ioctl_read_file_signature(struct file *f, void __user *arg)
 		return -EINVAL;
 
 	if (!access_ok(u64_to_user_ptr(args.signature),
-			args.signature_buf_size))
+			args.signature_buffer_size))
 		return -EFAULT;
 
-	sig_buf_size = args.signature_buf_size;
-	if (sig_buf_size > INCFS_MAX_SIGNATURE_SIZE)
+	if (!access_ok(u64_to_user_ptr(args.signed_data),
+			args.signed_data_buffer_size))
+		return -EFAULT;
+
+	if (args.signature_buffer_size > INCFS_MAX_SIGNATURE_SIZE)
 		return -E2BIG;
 
-	sig_buffer = kzalloc(sig_buf_size, GFP_NOFS);
-	if (!sig_buffer)
-		return -ENOMEM;
+	if (args.signed_data_buffer_size > INCFS_MAX_SIGNATURE_SIZE)
+		return -E2BIG;
+
+	signature = kzalloc(args.signature_buffer_size, GFP_NOFS);
+	signed_data = kzalloc(args.signed_data_buffer_size, GFP_NOFS);
+	if (!signature || !signed_data) {
+		error = -ENOMEM;
+		goto out;
+	}
 
 	read_result = incfs_read_file_signature(df,
-			range(sig_buffer, sig_buf_size));
+			range(signature, args.signature_buffer_size));
 
 	if (read_result < 0) {
 		error = read_result;
 		goto out;
 	}
 
-	if (copy_to_user(u64_to_user_ptr(args.signature), sig_buffer,
+	if (copy_to_user(u64_to_user_ptr(args.signature), signature,
 			read_result)) {
 		error = -EFAULT;
 		goto out;
 	}
 
-	args.signature_size= read_result;
+	args.signature_size_out = read_result;
+
+	read_result = incfs_read_file_signed_data(df,
+			range(signed_data, args.signed_data_buffer_size));
+
+	if (read_result < 0) {
+		error = read_result;
+		goto out;
+	}
+
+	if (copy_to_user(u64_to_user_ptr(args.signed_data), signed_data,
+			read_result)) {
+		error = -EFAULT;
+		goto out;
+	}
+
+	args.signed_data_size_out = read_result;
+
 	if (copy_to_user(args_usr_ptr, &args, sizeof(args)))
 		error = -EFAULT;
 
 out:
-	kfree(sig_buffer);
+	kfree(signature);
+	kfree(signed_data);
 
 	return error;
 }
