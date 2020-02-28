@@ -27,8 +27,16 @@ static int __bpf_mt_check_bytecode(struct sock_filter *insns, __u16 len,
 {
 	struct sock_fprog_kern program;
 
+<<<<<<< HEAD   (18b7d9 Merge 4.9.214 into android-4.9-p)
 	if (len > XT_BPF_MAX_NUM_INSTR)
 		return -EINVAL;
+=======
+	if (info->bpf_program_num_elem > XT_BPF_MAX_NUM_INSTR)
+		return -EINVAL;
+
+	program.len = info->bpf_program_num_elem;
+	program.filter = info->bpf_program;
+>>>>>>> BRANCH (4cd444 Linux 4.9.215)
 
 	program.len = len;
 	program.filter = insns;
