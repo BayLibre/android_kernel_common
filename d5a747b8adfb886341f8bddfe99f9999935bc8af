@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45349bc6_46bc82ba",
+        "filename": "drivers/iommu/iova.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1648049
+      },
+      "writtenOn": "2020-02-28T19:24:25Z",
+      "side": 1,
+      "message": "So I assume there is a separate change planned which will enable this config for GKI?\n\nI also assume that you will leave CONFIG_IOMMU_LIMIT_IOVA_ALIGNMENT to its current default of 9 (2MB alignment)? A value of 9 would be our preference.",
+      "range": {
+        "startLine": 181,
+        "startChar": 7,
+        "endLine": 181,
+        "endChar": 40
+      },
+      "revId": "d5a747b8adfb886341f8bddfe99f9999935bc8af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
