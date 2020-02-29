@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a97536f_e7b020b6",
+        "filename": "include/linux/ion.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-02-29T00:37:19Z",
+      "side": 1,
+      "message": "This is not always the case. If \"count\" is less that the number of available heaps then the function returns the value of \"count\" - the number of heaps that were queried into hdata. Please expand on this so that it\u0027s clear.",
+      "range": {
+        "startLine": 319,
+        "startChar": 3,
+        "endLine": 319,
+        "endChar": 40
+      },
+      "revId": "fc5cf4678b485cf2ede853b7c69699bbd1fafde8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
