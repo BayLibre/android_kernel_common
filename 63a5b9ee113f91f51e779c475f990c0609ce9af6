@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "15f2e3a1_06107d2d",
+        "filename": "include/linux/ion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1646687
+      },
+      "writtenOn": "2020-03-02T23:06:43Z",
+      "side": 1,
+      "message": "What do you think if you define the return type as unsigned int?\nSomeone may think this can return a negative error number as other functions do.",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 326,
+        "endChar": 3
+      },
+      "revId": "63a5b9ee113f91f51e779c475f990c0609ce9af6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
