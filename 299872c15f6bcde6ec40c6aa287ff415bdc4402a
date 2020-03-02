@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "f839beb5_4d63130d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1993,
+      "author": {
+        "id": 1562829
+      },
+      "writtenOn": "2020-03-02T23:47:06Z",
+      "side": 1,
+      "message": "This causes a panic for binder transactions released in binder_thread_release. A fix working for me goes by decreasing outstanding_txns for the target proc in that function.\n\nSee https://partner-android-review.googlesource.com/c/kernel/private/msm-google/+/1589414",
+      "revId": "299872c15f6bcde6ec40c6aa287ff415bdc4402a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f4d744c3_ed05bc10",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
