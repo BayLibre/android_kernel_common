@@ -362,8 +362,41 @@ static void drm_gem_dmabuf_vunmap(struct dma_buf *dma_buf, void *vaddr)
 	dev->driver->gem_prime_vunmap(obj, vaddr);
 }
 
+<<<<<<< HEAD   (3be023 FROMLIST: dma-buf: add support for virtio exported objects)
 static void *drm_gem_dmabuf_kmap_atomic(struct dma_buf *dma_buf,
 					unsigned long page_num)
+=======
+/**
+ * drm_gem_dmabuf_get_uuid - dma_buf get_uuid implementation for GEM
+ * @dma_buf: buffer to query
+ * @uuid: uuid outparam
+ *
+ * Queries the buffer's virtio UUID. This can be used as the
+ * &dma_buf_ops.get_uuid callback. Calls into &drm_driver.gem_prime_get_uuid.
+ *
+ * Returns 0 on success or a negative error code on failure.
+ */
+int drm_gem_dmabuf_get_uuid(struct dma_buf *dma_buf, uuid_t *uuid)
+{
+	struct drm_gem_object *obj = dma_buf->priv;
+	struct drm_device *dev = obj->dev;
+
+	if (!dev->driver->gem_prime_get_uuid)
+		return -ENODEV;
+
+	return dev->driver->gem_prime_get_uuid(obj, uuid);
+}
+EXPORT_SYMBOL(drm_gem_dmabuf_get_uuid);
+
+/**
+ * drm_gem_dmabuf_kmap - map implementation for GEM
+ * @dma_buf: buffer to be mapped
+ * @page_num: page number within the buffer
+ *
+ * Not implemented. This can be used as the &dma_buf_ops.map callback.
+ */
+void *drm_gem_dmabuf_kmap(struct dma_buf *dma_buf, unsigned long page_num)
+>>>>>>> CHANGE (c90793 FROMLIST: drm/prime: add support for virtio exported objects)
 {
 	return NULL;
 }
@@ -410,6 +443,7 @@ static const struct dma_buf_ops drm_gem_prime_dmabuf_ops =  {
 	.mmap = drm_gem_dmabuf_mmap,
 	.vmap = drm_gem_dmabuf_vmap,
 	.vunmap = drm_gem_dmabuf_vunmap,
+	.get_uuid = drm_gem_dmabuf_get_uuid,
 };
 
 /**
