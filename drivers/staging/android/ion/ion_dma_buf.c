@@ -286,10 +286,10 @@ static void *ion_dma_buf_vmap(struct dma_buf *dmabuf)
 	struct ion_buffer *buffer = dmabuf->priv;
 	struct ion_heap *heap = buffer->heap;
 
-	if (!heap->buf_ops.vmap)
-		return ERR_PTR(-EOPNOTSUPP);
+	if (heap->buf_ops.vmap)
+		return heap->buf_ops.vmap(dmabuf);
 
-	return heap->buf_ops.vmap(dmabuf);
+	return ion_buffer_kmap_get(buffer);
 }
 
 static void ion_dma_buf_vunmap(struct dma_buf *dmabuf, void *vaddr)
@@ -297,10 +297,10 @@ static void ion_dma_buf_vunmap(struct dma_buf *dmabuf, void *vaddr)
 	struct ion_buffer *buffer = dmabuf->priv;
 	struct ion_heap *heap = buffer->heap;
 
-	if (!heap->buf_ops.vunmap)
-		return;
-
-	return heap->buf_ops.vunmap(dmabuf, vaddr);
+	if (heap->buf_ops.vunmap)
+		heap->buf_ops.vunmap(dmabuf, vaddr);
+	else
+		ion_buffer_kmap_put(buffer);
 }
 
 static int ion_dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags)
