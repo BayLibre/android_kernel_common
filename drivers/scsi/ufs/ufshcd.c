@@ -104,6 +104,9 @@
 /* Polling time to wait for fDeviceInit  */
 #define FDEVICEINIT_COMPL_TIMEOUT 1500 /* millisecs */
 
+/* for manual gc */
+#define UFSHCD_MANUAL_GC_HOLD_HIBERN8		2000	/* 2 seconds */
+
 #define ufshcd_toggle_vreg(_dev, _vreg, _on)				\
 	({                                                              \
 		int _ret;                                               \
@@ -1587,6 +1590,49 @@ static void ufshcd_clkscaling_init_sysfs(struct ufs_hba *hba)
 		dev_err(hba->dev, "Failed to create sysfs for clkscale_enable\n");
 }
 
+static enum hrtimer_restart ufshcd_mgc_hrtimer_handler(struct hrtimer *timer)
+{
+	struct ufs_hba *hba = container_of(timer, struct ufs_hba,
+					manual_gc.hrtimer);
+
+	queue_work(hba->manual_gc.mgc_workq, &hba->manual_gc.hibern8_work);
+	return HRTIMER_NORESTART;
+}
+
+static void ufshcd_mgc_hibern8_work(struct work_struct *work)
+{
+	struct ufs_hba *hba = container_of(work, struct ufs_hba,
+						manual_gc.hibern8_work);
+	pm_runtime_mark_last_busy(hba->dev);
+	pm_runtime_put_noidle(hba->dev);
+	/* bkops will be disabled when power down */
+}
+
+static void ufshcd_init_manual_gc(struct ufs_hba *hba)
+{
+	struct ufs_manual_gc *mgc = &hba->manual_gc;
+	char wq_name[sizeof("ufs_mgc_hibern8_work")];
+
+	mgc->state = MANUAL_GC_ENABLE;
+	mgc->hagc_support = true;
+	mgc->delay_ms = UFSHCD_MANUAL_GC_HOLD_HIBERN8;
+
+	hrtimer_init(&mgc->hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+	mgc->hrtimer.function = ufshcd_mgc_hrtimer_handler;
+
+	INIT_WORK(&mgc->hibern8_work, ufshcd_mgc_hibern8_work);
+	snprintf(wq_name, ARRAY_SIZE(wq_name), "ufs_mgc_hibern8_work_%d",
+			hba->host->host_no);
+	hba->manual_gc.mgc_workq = create_singlethread_workqueue(wq_name);
+}
+
+static void ufshcd_exit_manual_gc(struct ufs_hba *hba)
+{
+	hrtimer_cancel(&hba->manual_gc.hrtimer);
+	cancel_work_sync(&hba->manual_gc.hibern8_work);
+	destroy_workqueue(hba->manual_gc.mgc_workq);
+}
+
 static void ufshcd_ungate_work(struct work_struct *work)
 {
 	int ret;
@@ -2909,11 +2955,14 @@ static inline void ufshcd_init_query(struct ufs_hba *hba,
 	(*request)->upiu_req.selector = selector;
 }
 
-static int ufshcd_query_flag_retry(struct ufs_hba *hba,
+int ufshcd_query_flag_retry(struct ufs_hba *hba,
 	enum query_opcode opcode, enum flag_idn idn, u8 index, bool *flag_res)
 {
 	int ret;
 	int retries;
+
+	if (ufshcd_eh_in_progress(hba))
+		return -EBUSY;
 
 	for (retries = 0; retries < QUERY_REQ_RETRIES; retries++) {
 		ret = ufshcd_query_flag(hba, opcode, idn, index, flag_res);
@@ -3079,14 +3128,17 @@ EXPORT_SYMBOL_GPL(ufshcd_query_attr);
  *
  * Returns 0 for success, non-zero in case of failure
 */
-static int ufshcd_query_attr_retry(struct ufs_hba *hba,
+int ufshcd_query_attr_retry(struct ufs_hba *hba,
 	enum query_opcode opcode, enum attr_idn idn, u8 index, u8 selector,
 	u32 *attr_val)
 {
 	int ret = 0;
 	u32 retries;
 
-	 for (retries = QUERY_REQ_RETRIES; retries > 0; retries--) {
+	if (ufshcd_eh_in_progress(hba))
+		return -EBUSY;
+
+	for (retries = QUERY_REQ_RETRIES; retries > 0; retries--) {
 		ret = ufshcd_query_attr(hba, opcode, idn, index,
 						selector, attr_val);
 		if (ret)
@@ -5364,11 +5416,13 @@ static inline int ufshcd_get_bkops_status(struct ufs_hba *hba, u32 *status)
  * to know whether auto bkops is enabled or disabled after this function
  * returns control to it.
  */
-static int ufshcd_bkops_ctrl(struct ufs_hba *hba,
-			     enum bkops_status status)
+int ufshcd_bkops_ctrl(struct ufs_hba *hba, enum bkops_status status)
 {
 	int err;
 	u32 curr_status = 0;
+
+	if (ufshcd_eh_in_progress(hba))
+		return -EBUSY;
 
 	err = ufshcd_get_bkops_status(hba, &curr_status);
 	if (err) {
@@ -9142,7 +9196,7 @@ void ufshcd_remove(struct ufs_hba *hba)
 	/* disable interrupts */
 	ufshcd_disable_intr(hba, hba->intr_mask);
 	ufshcd_hba_stop(hba, true);
-
+	ufshcd_exit_manual_gc(hba);
 	ufshcd_exit_clk_scaling(hba);
 	ufshcd_exit_clk_gating(hba);
 	if (ufshcd_is_clkscaling_supported(hba))
@@ -9324,6 +9378,8 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 
 	ufshcd_init_clk_scaling(hba);
 
+	ufshcd_init_manual_gc(hba);
+
 	/*
 	 * In order to avoid any spurious interrupt immediately after
 	 * registering UFS controller interrupt handler, clear any pending UFS
@@ -9407,6 +9463,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 out_remove_scsi_host:
 	scsi_remove_host(hba->host);
 exit_gating:
+	ufshcd_exit_manual_gc(hba);
 	ufshcd_exit_clk_scaling(hba);
 	ufshcd_exit_clk_gating(hba);
 out_disable:
