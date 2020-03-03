@@ -154,6 +154,9 @@ enum attr_idn {
 	QUERY_ATTR_IDN_AVAIL_WB_BUFF_SIZE       = 0x1D,
 	QUERY_ATTR_IDN_WB_BUFF_LIFE_TIME_EST    = 0x1E,
 	QUERY_ATTR_IDN_CURR_WB_BUFF_SIZE        = 0x1F,
+	/* use one reserved bit */
+	QUERY_ATTR_IDN_MANUAL_GC_CONT		= 0x12,
+	QUERY_ATTR_IDN_MANUAL_GC_STATUS		= 0x13,
 };
 
 /* Descriptor idn for Query requests */
@@ -288,6 +291,14 @@ enum geometry_desc_param {
 	GEOMETRY_DESC_PARAM_WB_BUFF_CAP_ADJ	= 0x54,
 	GEOMETRY_DESC_PARAM_WB_SUP_RED_TYPE	= 0x55,
 	GEOMETRY_DESC_PARAM_WB_SUP_WB_TYPE	= 0x56,
+};
+
+enum {
+	MANUAL_GC_OFF = 0,
+	MANUAL_GC_ON,
+	MANUAL_GC_DISABLE,
+	MANUAL_GC_ENABLE,
+	MANUAL_GC_MAX,
 };
 
 /* Health descriptor parameters offsets in bytes*/
