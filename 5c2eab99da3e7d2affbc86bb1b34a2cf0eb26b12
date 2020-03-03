@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff830eac_a7df0c74",
+        "filename": "drivers/staging/android/ion/ion.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1646687
+      },
+      "writtenOn": "2020-03-03T22:12:58Z",
+      "side": 1,
+      "message": "I think ret needs to be unsigned because we may need a fix because some static analysis tool reports type mismatch (loss of sign bit)",
+      "range": {
+        "startLine": 68,
+        "startChar": 12,
+        "endLine": 68,
+        "endChar": 20
+      },
+      "revId": "5c2eab99da3e7d2affbc86bb1b34a2cf0eb26b12",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7ac556e_48a98f18",
+        "filename": "include/linux/ion.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1646687
+      },
+      "writtenOn": "2020-03-03T22:12:58Z",
+      "side": 1,
+      "message": "Thank you.\nBut I don\u0027t think it is a good idea to return different type from @count because the return value (number of available heaps) has the same meaning with @count (number of spaces to store heap information).",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 326,
+        "endChar": 6
+      },
+      "revId": "5c2eab99da3e7d2affbc86bb1b34a2cf0eb26b12",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
