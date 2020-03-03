@@ -360,6 +360,16 @@ struct ufs_clk_gating {
 	struct workqueue_struct *clk_gating_workq;
 };
 
+/* for manual gc */
+struct ufs_manual_gc {
+	int state;
+	bool hagc_support;
+	struct hrtimer hrtimer;
+	unsigned long delay_ms;
+	struct work_struct hibern8_work;
+	struct workqueue_struct *mgc_workq;
+};
+
 struct ufs_saved_pwr_info {
 	struct ufs_pa_layer_attr info;
 	bool is_valid;
@@ -751,6 +761,9 @@ struct ufs_hba {
 	/* Keeps information of the UFS device connected to this host */
 	struct ufs_dev_info dev_info;
 	bool auto_bkops_enabled;
+
+	struct ufs_manual_gc manual_gc;
+
 	struct ufs_vreg_info vreg_info;
 	struct list_head clk_list_head;
 
@@ -935,6 +948,12 @@ extern int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
 			       u32 *mib_val, u8 peer);
 extern int ufshcd_config_pwr_mode(struct ufs_hba *hba,
 			struct ufs_pa_layer_attr *desired_pwr_mode);
+extern int ufshcd_query_attr_retry(struct ufs_hba *hba,
+	enum query_opcode opcode, enum attr_idn idn, u8 index, u8 selector,
+	u32 *attr_val);
+extern int ufshcd_query_flag_retry(struct ufs_hba *hba,
+	enum query_opcode opcode, enum flag_idn idn, u8 index, bool *flag_res);
+extern int ufshcd_bkops_ctrl(struct ufs_hba *hba, enum bkops_status status);
 
 /* UIC command interfaces for DME primitives */
 #define DME_LOCAL	0
