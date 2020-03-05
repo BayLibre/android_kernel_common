@@ -81,10 +81,19 @@ config GKI_HIDDEN_QCOM_CONFIGS
 
 config GKI_QCOM_RPMH_CONFIGS
 	bool "QCOM RPM-Hardened (RPMH) communication drivers needed for GKI due to no module support"
+	select QCOM_RPMH	if (ARCH_QCOM)
 	select QCOM_RPMHPD	if (ARCH_QCOM)
 	help
 	  This config option selects various QCOM rpmh drivers that
 	  cannot be built as a module currently.
+
+# ??? Should these go into the gki_defconfig?
+config GKI_REMOTEPROC_CONFIGS
+	bool "Remoteproc subsystems needed for GKI due to module options not being available"
+	select REMOTEPROC
+	select SOC_BUS
+	help
+	  This config option selects various remoteproc subsystems.
 
 config GKI_HIDDEN_MEDIA_CONFIGS
 	bool "Hidden Media configs needed for GKI"
@@ -143,6 +152,7 @@ config GKI_HACKS_TO_FIX
 	select GKI_HIDDEN_MEDIA_CONFIGS
 	select GKI_HIDDEN_VIRTUAL_CONFIGS
 	select GKI_QCOM_RPMH_CONFIGS
+	select GKI_REMOTEPROC_CONFIGS
 	help
 	  Dummy config option used to enable core functionality used by
 	  modules that may not be selectable in this config.
