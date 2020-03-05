@@ -79,6 +79,14 @@ config GKI_HIDDEN_QCOM_CONFIGS
 	  These are normally selected implicitly when a module
 	  that relies on it is configured.
 
+# ??? Should these go into the gki_defconfig?
+config GKI_REMOTEPROC_CONFIGS
+	bool "Remoteproc subsystems needed for GKI due to module options not being available"
+	select REMOTEPROC
+	select SOC_BUS
+	help
+	  This config option selects various remoteproc subsystems.
+
 config GKI_HIDDEN_MEDIA_CONFIGS
 	bool "Hidden Media configs needed for GKI"
 	select VIDEOBUF2_CORE
@@ -136,6 +144,7 @@ config GKI_HACKS_TO_FIX
 	select GKI_LEGACY_WEXT_ALLCONFIG
 	select GKI_HIDDEN_MEDIA_CONFIGS
 	select GKI_HIDDEN_VIRTUAL_CONFIGS
+	select GKI_REMOTEPROC_CONFIGS
 	help
 	  Dummy config option used to enable core functionality used by
 	  modules that may not be selectable in this config.
