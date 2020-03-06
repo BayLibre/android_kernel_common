@@ -1125,6 +1125,8 @@ endif
 ifdef CONFIG_GDB_SCRIPTS
 	$(Q)ln -fsn $(abspath $(srctree)/scripts/gdb/vmlinux-gdb.py)
 endif
+	@echo $(KBUILD_VMLINUX_INIT) $(KBUILD_VMLINUX_MAIN) > vmlinux.objs
+	@echo $(KBUILD_VMLINUX_LIBS) > vmlinux.libs
 	+$(call if_changed,link-vmlinux)
 
 # Build samples along the rest of the kernel. This needs headers_install.
@@ -1398,6 +1400,7 @@ endif # CONFIG_MODULES
 
 # Directories & files removed with 'make clean'
 CLEAN_DIRS  += $(MODVERDIR) include/ksym
+CLEAN_FILES += vmlinux.objs vmlinux.libs
 
 # Directories & files removed with 'make mrproper'
 MRPROPER_DIRS  += include/config usr/include include/generated          \
