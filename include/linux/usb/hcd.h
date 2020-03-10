@@ -225,6 +225,7 @@ struct usb_hcd {
 	 * (ohci 32, uhci 1024, ehci 256/512/1024).
 	 */
 
+	void *android_gki_kabi_padding;
 	/* The HC driver's private data is stored at the end of
 	 * this structure.
 	 */
@@ -410,6 +411,7 @@ struct hc_driver {
 	/* Call for power on/off the port if necessary */
 	int	(*port_power)(struct usb_hcd *hcd, int portnum, bool enable);
 
+	void *android_gki_kabi_padding;
 };
 
 static inline int hcd_giveback_urb_in_bh(struct usb_hcd *hcd)
@@ -560,6 +562,8 @@ struct usb_tt {
 	spinlock_t		lock;
 	struct list_head	clear_list;	/* of usb_tt_clear */
 	struct work_struct	clear_work;
+
+	void *android_gki_kabi_padding;
 };
 
 struct usb_tt_clear {
