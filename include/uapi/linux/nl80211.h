@@ -1624,7 +1624,8 @@ enum nl80211_commands {
  *	flag is included, then control port frames are sent over NL80211 instead
  *	using %CMD_CONTROL_PORT_FRAME.  If control port routing over NL80211 is
  *	to be used then userspace must also use the %NL80211_ATTR_SOCKET_OWNER
- *	flag.
+ *	flag. When used with %NL80211_ATTR_CONTROL_PORT_NO_PREAUTH, pre-auth
+ *	frames are not forwared over the control port.
  *
  * @NL80211_ATTR_TESTDATA: Testmode data blob, passed through to the driver.
  *	We recommend using nested, driver-specific attributes within this.
@@ -2434,6 +2435,9 @@ enum nl80211_commands {
  *	on output (in wiphy attributes) it contains only the feature sub-
  *	attributes.
  *
+ * @NL80211_ATTR_CONTROL_PORT_NO_PREAUTH: disable preauth frame rx on control
+ *	port in order to forward/receive them as ordinary data frames.
+ *
  * @NL80211_ATTR_HE_6GHZ_CAPABILITY: HE 6 GHz Band Capability element (from
  *	association request when used with NL80211_CMD_NEW_STATION).
  *
@@ -2906,6 +2910,8 @@ enum nl80211_attrs {
 	NL80211_ATTR_IFTYPE_AKM_SUITES,
 
 	NL80211_ATTR_TID_CONFIG,
+
+	NL80211_ATTR_CONTROL_PORT_NO_PREAUTH,
 
 	NL80211_ATTR_HE_6GHZ_CAPABILITY,
 
@@ -5613,6 +5619,10 @@ enum nl80211_feature_flags {
  * @NL80211_EXT_FEATURE_BEACON_PROTECTION: The driver supports Beacon protection
  *	and can receive key configuration for BIGTK using key indexes 6 and 7.
  *
+ * @NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH: The driver can disable the
+ *	forwarding of preauth frames over the control port. They are then
+ *	handled as ordinary data frames.
+ *
  * @NUM_NL80211_EXT_FEATURES: number of extended features.
  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
  */
@@ -5661,6 +5671,7 @@ enum nl80211_ext_feature_index {
 	NL80211_EXT_FEATURE_VLAN_OFFLOAD,
 	NL80211_EXT_FEATURE_AQL,
 	NL80211_EXT_FEATURE_BEACON_PROTECTION,
+	NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH,
 
 	/* add new features before the definition below */
 	NUM_NL80211_EXT_FEATURES,
