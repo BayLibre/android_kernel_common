@@ -70,6 +70,30 @@
       "revId": "daad34ccaded231ab473e3ac6fe1da57ff5d7dae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17536a77_14520c62",
+        "filename": "include/linux/device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-03-13T17:28:02Z",
+      "side": 1,
+      "message": "See https://android-review.googlesource.com/c/kernel/common/+/1258468 for a build-time check I have added to ensure we do not change the size of the structure.\n\nstart/end macros are \"fun\" to maintain and understand over time, I\u0027d recommend us trying to keep it simple to start with.  We can bikeshed about the perfect solution, but if you look at what others have had to do in the past, it really isn\u0027t complex issues that need to be solved.",
+      "parentUuid": "b9017152_e8c7b0ff",
+      "range": {
+        "startLine": 157,
+        "startChar": 1,
+        "endLine": 157,
+        "endChar": 39
+      },
+      "revId": "daad34ccaded231ab473e3ac6fe1da57ff5d7dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
