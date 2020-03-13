@@ -22,6 +22,52 @@
       "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caf7b2b5_5b254b46",
+        "filename": "include/linux/android_kabi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1428004
+      },
+      "writtenOn": "2020-03-13T18:39:52Z",
+      "side": 1,
+      "message": "alleviate",
+      "range": {
+        "startLine": 15,
+        "startChar": 46,
+        "endLine": 15,
+        "endChar": 53
+      },
+      "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99722531_52187390",
+        "filename": "include/linux/android_kabi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1428004
+      },
+      "writtenOn": "2020-03-13T18:39:52Z",
+      "side": 1,
+      "message": "For the reserved space to be more easy to use, once defined, they should have been initialized to zero by code that declares variables or dynamically allocates data of those types.\n\nThere is no absolute way of ensuring that they are, but we should require for GKI that the Linux work related to go/initialize in clang and the Linux kernel be enabled.  Maybe a reference to the relevant Linux feature should be included here.\n\nIf a data structure is meant to be allocated and initialized by a driver (by their own code, or by an initialization macro or an inlined function), then it is critical that the reserved memory be initialized.\n\nI do understand that the limited set of data structures might always be dynamically allocated by the kernel, in that case ensuring that they are initialized is easy.\n\nIt could be argued that the reserved memory of kernel allocated and initialized structures don\u0027t need to be initialized until they are actually allocated to be used by a later kernel revision, but there is a danger that some SOC provider might see some of these reserved fields and hijack them for their own needs. Always initializing them allows test code and certification test suites to ensure that the reserved memory has not been hijacked (of course they could still only be initialized under a special test build of the kernel, but that would lead to a proliferation of GKI kernel build alternatives).",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
