@@ -68,6 +68,30 @@
       "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d641c94_a0d5098c",
+        "filename": "include/linux/android_kabi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2020-03-13T22:06:50Z",
+      "side": 1,
+      "message": "CONFIG_INIT_STACK_ALL\u003dy\nCONFIG_INIT_ON_ALLOC_DEFAULT_ON\u003dy\n\nare defined in gki_defconfig. Will this be enough to mitigate your concern?",
+      "parentUuid": "99722531_52187390",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
