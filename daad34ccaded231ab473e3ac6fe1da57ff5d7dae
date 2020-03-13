@@ -22,6 +22,30 @@
       "revId": "daad34ccaded231ab473e3ac6fe1da57ff5d7dae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62bd414c_c4773de0",
+        "filename": "include/linux/device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-03-13T15:06:54Z",
+      "side": 1,
+      "message": "\u003e So IIUC, this effectively wastes 4 bytes. Is that right ?\n\nYes it does.\n\n\u003e And what if I need to add a struct that\u0027s bigger than 8 bytes ?\n\nThen we are in trouble and have to pack things in \"by hand\" :)\n\n\u003e Is this flexible enough ? (genuine question, I don\u0027t know if by RHEL\u0027s experience we could need more flexibility)\n\u003e \n\nBased on what SUSE and RHEL have done in the past, yes, I think this is all we need.\nAnd RHEL tries to keep the ABI for years, vs. SUSE which just does it for a single year and seems to do just fine with 64bits.\n\n\u003e I\u0027m thinking perhaps we want something like:\n\u003e \n\u003e union {\n\u003e         char android_kabi_reserve[32];\n\u003e         struct {\n\u003e                 unsigned int foo;\n\u003e                 u32 bar;\n\u003e                 struct mystruct baz;\n\u003e                 /* add more here */\n\u003e         };\n\u003e };\n\u003e \n\u003e But I\u0027m not sure what the standard says about unions of different sizes. Would that work ?\n\nIt would, but would be harder to code/verify.  Simplicity is probably best here.",
+      "parentUuid": "6d731793_729a1edc",
+      "range": {
+        "startLine": 157,
+        "startChar": 1,
+        "endLine": 157,
+        "endChar": 39
+      },
+      "revId": "daad34ccaded231ab473e3ac6fe1da57ff5d7dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
