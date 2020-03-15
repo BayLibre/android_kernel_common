@@ -137,6 +137,19 @@ struct thread_struct {
 		unsigned long	tp2_value;
 		struct user_fpsimd_state fpsimd_state;
 	} uw;
+	struct fpsimd_kernel_state fpsimd_kernel_state;
+
+	/*
+	 * indicate the depth of using FP/SIMD registers in kernel mode.
+	 * above kernel state should be preserved at first time
+	 * before FP/SIMD registers be used by other tasks
+	 * and the state should be restored before they be used by own.
+	 *
+	 * a kernel thread which uses FP/SIMD registers have to
+	 * set this depth and it could utilize for a tasks executes
+	 * some NEON instructions without preemption disable.
+	 */
+	atomic_t fpsimd_depth;
 
 	unsigned int		fpsimd_cpu;
 	void			*sve_state;	/* SVE registers, if any */

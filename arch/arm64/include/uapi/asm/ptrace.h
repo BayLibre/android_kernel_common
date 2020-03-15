@@ -86,6 +86,13 @@ struct user_fpsimd_state {
 	__u32		__reserved[2];
 };
 
+struct fpsimd_kernel_state {
+	__uint128_t vregs[32];
+	__u32 fpsr;
+	__u32 fpcr;
+	unsigned int cpu;
+};
+
 struct user_hwdebug_state {
 	__u32		dbg_info;
 	__u32		pad;
