@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "c75bfe93_564879be",
+        "filename": "include/linux/android_kabi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-03-16T09:01:15Z",
+      "side": 1,
+      "message": "fixed!",
+      "parentUuid": "53f2b061_52e6ad55",
+      "range": {
+        "startLine": 15,
+        "startChar": 46,
+        "endLine": 15,
+        "endChar": 53
+      },
+      "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d716fdb5_1cf2ce90",
+        "filename": "include/linux/android_kabi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-03-16T09:01:15Z",
+      "side": 1,
+      "message": "Fixed!",
+      "parentUuid": "caf7b2b5_5b254b46",
+      "range": {
+        "startLine": 15,
+        "startChar": 46,
+        "endLine": 15,
+        "endChar": 53
+      },
+      "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "99722531_52187390",
         "filename": "include/linux/android_kabi.h",
         "patchSetId": 1
@@ -92,6 +140,30 @@
       "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12c4149b_962abf28",
+        "filename": "include/linux/android_kabi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-03-16T09:01:15Z",
+      "side": 1,
+      "message": "Remember, we are not adding these fields in a vacumm here, when we add new fields for the padding, we review how the structures are created and handled in the kernel.  If they are created by a driver, then we have different things to do compared to if the \"core\" creates them.\n\nAs for abuse by vendors, we can only do so much and if they want to abuse these types of things, they deserve the pieces that their kernels will fall apart in when they do such a thing 😊",
+      "parentUuid": "2d641c94_a0d5098c",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "c7f1f41a0db33131362ec5d2278e08c2cd645a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
