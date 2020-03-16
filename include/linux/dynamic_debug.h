@@ -48,7 +48,7 @@ struct _ddebug {
 
 
 
-#if defined(CONFIG_DYNAMIC_DEBUG)
+#if defined(CONFIG_DYNAMIC_DEBUG_CORE)
 int ddebug_add_module(struct _ddebug *tab, unsigned int n,
 				const char *modname);
 extern int ddebug_remove_module(const char *mod_name);
@@ -78,6 +78,7 @@ void __dynamic_ibdev_dbg(struct _ddebug *descriptor,
 			 const struct ib_device *ibdev,
 			 const char *fmt, ...);
 
+#if defined(CONFIG_DYNAMIC_DEBUG)
 #define DEFINE_DYNAMIC_DEBUG_METADATA(name, fmt)		\
 	static struct _ddebug  __aligned(8)			\
 	__attribute__((section("__verbose"))) name = {		\
@@ -171,6 +172,7 @@ void __dynamic_ibdev_dbg(struct _ddebug *descriptor,
 				   print_hex_dump,			\
 				   KERN_DEBUG, prefix_str, prefix_type,	\
 				   rowsize, groupsize, buf, len, ascii)
+#endif //CONFIG_DYNAMIC_DEBUG
 
 #else
 
@@ -210,6 +212,6 @@ static inline int ddebug_dyndbg_module_param_cb(char *param, char *val,
 		print_hex_dump(KERN_DEBUG, prefix_str, prefix_type,	\
 				rowsize, groupsize, buf, len, ascii);	\
 	} while (0)
-#endif
+#endif //!CONFIG_DYNAMIC_DEBUG_CORE
 
 #endif
