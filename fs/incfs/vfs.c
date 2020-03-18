@@ -1437,6 +1437,28 @@ out:
 	return error;
 }
 
+static long ioctl_get_filled_blocks(struct file *f, void __user *arg)
+{
+	struct incfs_get_filled_blocks_args __user *args_usr_ptr = arg;
+	struct incfs_get_filled_blocks_args args = {};
+	struct data_file *df = get_incfs_data_file(f);
+	int error;
+
+	if (!df)
+		return -EINVAL;
+
+	if (copy_from_user(&args, args_usr_ptr, sizeof(args)) > 0)
+		return -EINVAL;
+
+	error = incfs_get_filled_blocks(df, u64_to_user_ptr(args.range_buffer),
+	      args.range_buffer_size, &args.range_buffer_size_out);
+
+	if (copy_to_user(args_usr_ptr, &args, sizeof(args)))
+		return -EFAULT;
+
+	return error;
+}
+
 static long dispatch_ioctl(struct file *f, unsigned int req, unsigned long arg)
 {
 	struct mount_info *mi = get_mount_info(file_superblock(f));
@@ -1450,6 +1472,8 @@ static long dispatch_ioctl(struct file *f, unsigned int req, unsigned long arg)
 		return ioctl_permit_fill(f, (void __user *)arg);
 	case INCFS_IOC_READ_FILE_SIGNATURE:
 		return ioctl_read_file_signature(f, (void __user *)arg);
+	case INCFS_IOC_GET_FILLED_BLOCKS:
+		return ioctl_get_filled_blocks(f, (void __user *)arg);
 	default:
 		return -EINVAL;
 	}

@@ -371,6 +371,137 @@ static int get_data_file_block(struct data_file *df, int index,
 	return 0;
 }
 
+static int copy_one_range(const u64 range[2], void __user *buffer, u32 size,
+			  u32 *size_out)
+{
+	if (*size_out + 2 * sizeof(*range) > size)
+		return -ERANGE;
+
+	if (copy_to_user(((char *)buffer) + *size_out, range,
+			 2 * sizeof(*range)))
+		return -EFAULT;
+
+	*size_out += 2 * sizeof(*range);
+	return 0;
+}
+
+static int is_hash_block_present(struct data_file *df, u64 index, bool *result)
+{
+	u64 hash_offset = df->df_signature->hash_offset;
+	u32 hash_size = df->df_signature->hash_size;
+	u8 *buf;
+	int i;
+	int error = 0;
+
+	*result = false;
+	if (INCFS_DATA_FILE_BLOCK_SIZE * index > hash_size)
+		return -EINVAL;
+
+	buf = kzalloc(INCFS_DATA_FILE_BLOCK_SIZE, GFP_NOFS);
+	if (!buf)
+		return -ENOMEM;
+
+	if (incfs_kread(df->df_backing_file_context->bc_file,
+			buf, INCFS_DATA_FILE_BLOCK_SIZE,
+			hash_offset + INCFS_DATA_FILE_BLOCK_SIZE * index)
+			!= INCFS_DATA_FILE_BLOCK_SIZE) {
+		error = EINVAL;
+		goto out;
+	}
+
+	for (i = 0; i < INCFS_DATA_FILE_BLOCK_SIZE; ++i)
+		if (buf[i]) {
+			*result = true;
+			goto out;
+		}
+
+out:
+	kfree(buf);
+	return error;
+}
+
+int incfs_get_filled_blocks(struct data_file *df, void __user *buffer, u32 size,
+		u32 *size_out)
+{
+	u64 index;
+	int error = 0;
+	bool in_range = false;
+	u64 range[2];
+
+	*size_out = 0;
+	for (index = 0; index < df->df_block_count; ++index) {
+		struct data_file_block dfb;
+
+		error = get_data_file_block(df, index, &dfb);
+		if (error)
+			return error;
+
+		if (is_data_block_present(&dfb) == in_range)
+			continue;
+
+		if (!in_range) {
+			in_range = true;
+			range[0] = index;
+		} else {
+			in_range = false;
+			range[1] = index - 1;
+			error = copy_one_range(range, buffer, size, size_out);
+			if (error)
+				return error;
+		}
+
+	}
+
+	if (in_range) {
+		range[1] = index - 1;
+		error = copy_one_range(range, buffer, size, size_out);
+		if (error)
+			return error;
+	}
+
+	if (!df->df_hash_tree || !df->df_signature)
+		return error;
+
+	range[0] = (u64) -1;
+	range[1] = (u64) -1;
+	error = copy_one_range(range, buffer, size, size_out);
+	if (error)
+		return error;
+
+	in_range = false;
+	for (index = 0; index < df->df_signature->hash_size
+			/ INCFS_DATA_FILE_BLOCK_SIZE; ++index) {
+		bool present;
+
+		error = is_hash_block_present(df, index, &present);
+		if (error)
+			return error;
+
+		if (present == in_range)
+			continue;
+
+		if (!in_range) {
+			in_range = true;
+			range[0] = index;
+		} else {
+			in_range = false;
+			range[1] = index - 1;
+			error = copy_one_range(range, buffer, size, size_out);
+			if (error)
+				return error;
+		}
+	}
+
+	if (in_range) {
+		range[1] = index - 1;
+		error = copy_one_range(range, buffer, size, size_out);
+		if (error)
+			return error;
+	}
+
+	return error;
+}
+
 static bool is_read_done(struct pending_read *read)
 {
 	return atomic_read_acquire(&read->done) != 0;
