@@ -64,7 +64,6 @@ struct fscrypt_operations {
 	bool (*has_stable_inodes)(struct super_block *sb);
 	void (*get_ino_and_lblk_bits)(struct super_block *sb,
 				      int *ino_bits_ret, int *lblk_bits_ret);
-	bool (*inline_crypt_enabled)(struct super_block *sb);
 	int (*get_num_devices)(struct super_block *sb);
 	void (*get_devices)(struct super_block *sb,
 			    struct request_queue **devs);
@@ -550,7 +549,7 @@ static inline bool fscrypt_inode_uses_inline_crypto(const struct inode *inode)
 
 static inline bool fscrypt_inode_uses_fs_layer_crypto(const struct inode *inode)
 {
-	return IS_ENCRYPTED(inode) && S_ISREG(inode->i_mode);
+	return fscrypt_needs_contents_encryption(inode);
 }
 
 static inline void fscrypt_set_bio_crypt_ctx(struct bio *bio,

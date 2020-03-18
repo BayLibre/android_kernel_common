@@ -55,6 +55,7 @@
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/regulator/consumer.h>
+#include <linux/keyslot-manager.h>
 #include "unipro.h"
 
 #include <asm/irq.h>
@@ -337,16 +338,16 @@ struct ufs_hba_variant_ops {
 	void	(*dbg_register_dump)(struct ufs_hba *hba);
 	int	(*phy_initialization)(struct ufs_hba *);
 	void	(*device_reset)(struct ufs_hba *hba);
-	int	(*program_key)(struct ufs_hba *hba,
-			       const union ufs_crypto_cfg_entry *cfg, int slot);
+	blk_status_t	(*program_key)(struct ufs_hba *hba,
+				       const union ufs_crypto_cfg_entry *cfg,
+				       int slot);
 };
 
 struct keyslot_mgmt_ll_ops;
 struct ufs_hba_crypto_variant_ops {
 	void (*setup_rq_keyslot_manager)(struct ufs_hba *hba,
 					 struct request_queue *q);
-	void (*destroy_rq_keyslot_manager)(struct ufs_hba *hba,
-					   struct request_queue *q);
+	void (*destroy_keyslot_manager)(struct ufs_hba *hba);
 	int (*hba_init_crypto)(struct ufs_hba *hba,
 			       const struct keyslot_mgmt_ll_ops *ksm_ops);
 	void (*enable)(struct ufs_hba *hba);
@@ -679,16 +680,10 @@ struct ufs_hba {
 	#define UFSHCI_QUIRK_BROKEN_HCE				0x400
 
 	/*
-	 * This quirk needs to be enabled if the host controller advertises
-	 * inline encryption support but it doesn't work correctly.
-	 */
-	#define UFSHCD_QUIRK_BROKEN_CRYPTO			0x800
-
-	/*
 	 * This quirk needs to be enabled if the host controller reports
 	 * OCS FATAL ERROR with device error through sense data
 	 */
-	#define UFSHCD_QUIRK_BROKEN_OCS_FATAL_ERROR		0x1000
+	#define UFSHCD_QUIRK_BROKEN_OCS_FATAL_ERROR		0x800
 
 	unsigned int quirks;	/* Deviations from standard UFSHCI spec. */
 
@@ -797,7 +792,7 @@ struct ufs_hba {
 	union ufs_crypto_capabilities crypto_capabilities;
 	union ufs_crypto_cap_entry *crypto_cap_array;
 	u32 crypto_cfg_register;
-	struct keyslot_manager *ksm;
+	struct keyslot_manager ksm;
 #endif /* CONFIG_SCSI_UFS_CRYPTO */
 };
 

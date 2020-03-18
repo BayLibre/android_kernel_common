@@ -16,6 +16,7 @@
 #include <linux/blkdev.h>
 #include <linux/buffer_head.h>
 #include <linux/keyslot-manager.h>
+#include <linux/sched/mm.h>
 
 #include "fscrypt_private.h"
 
@@ -32,7 +33,7 @@ void fscrypt_select_encryption_impl(struct fscrypt_info *ci)
 	struct super_block *sb = inode->i_sb;
 
 	/* The file must need contents encryption, not filenames encryption */
-	if (!S_ISREG(inode->i_mode))
+	if (!fscrypt_needs_contents_encryption(inode))
 		return;
 
 	/* blk-crypto must implement the needed encryption algorithm */
@@ -40,8 +41,7 @@ void fscrypt_select_encryption_impl(struct fscrypt_info *ci)
 		return;
 
 	/* The filesystem must be mounted with -o inlinecrypt */
-	if (!sb->s_cop->inline_crypt_enabled ||
-	    !sb->s_cop->inline_crypt_enabled(sb))
+	if (!(sb->s_flags & SB_INLINECRYPT))
 		return;
 
 	ci->ci_inlinecrypt = true;
@@ -56,11 +56,13 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 	const struct inode *inode = ci->ci_inode;
 	struct super_block *sb = inode->i_sb;
 	enum blk_crypto_mode_num crypto_mode = ci->ci_mode->blk_crypto_mode;
+	unsigned int blk_crypto_dun_bytes;
 	int num_devs = 1;
 	int queue_refs = 0;
 	struct fscrypt_blk_crypto_key *blk_key;
 	int err;
 	int i;
+	unsigned int flags;
 
 	if (sb->s_cop->get_num_devices)
 		num_devs = sb->s_cop->get_num_devices(sb);
@@ -80,8 +82,14 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 	BUILD_BUG_ON(FSCRYPT_MAX_HW_WRAPPED_KEY_SIZE >
 		     BLK_CRYPTO_MAX_WRAPPED_KEY_SIZE);
 
+	blk_crypto_dun_bytes = 8;
+	if (fscrypt_policy_flags(&ci->ci_policy) &
+						FSCRYPT_POLICY_FLAG_DIRECT_KEY)
+		blk_crypto_dun_bytes += FS_KEY_DERIVATION_NONCE_SIZE;
+
 	err = blk_crypto_init_key(&blk_key->base, raw_key, raw_key_size,
-				  is_hw_wrapped, crypto_mode, sb->s_blocksize);
+				  is_hw_wrapped, crypto_mode,
+				  blk_crypto_dun_bytes, sb->s_blocksize);
 	if (err) {
 		fscrypt_err(inode, "error %d initializing blk-crypto key", err);
 		goto fail;
@@ -102,8 +110,10 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 		}
 		queue_refs++;
 
-		err = blk_crypto_start_using_mode(crypto_mode, sb->s_blocksize,
-						  blk_key->devs[i]);
+		flags = memalloc_nofs_save();
+		err = blk_crypto_start_using_key(&blk_key->base,
+						 blk_key->devs[i]);
+		memalloc_nofs_restore(flags);
 		if (err) {
 			fscrypt_err(inode,
 				    "error %d starting to use blk-crypto", err);
@@ -149,9 +159,8 @@ int fscrypt_derive_raw_secret(struct super_block *sb,
 	if (!q->ksm)
 		return -EOPNOTSUPP;
 
-	return keyslot_manager_derive_raw_secret(q->ksm,
-						 wrapped_key, wrapped_key_size,
-						 raw_secret, raw_secret_size);
+	return blk_ksm_derive_raw_secret(q->ksm, wrapped_key, wrapped_key_size,
+					 raw_secret, raw_secret_size);
 }
 
 /**
@@ -165,8 +174,8 @@ int fscrypt_derive_raw_secret(struct super_block *sb,
  */
 bool fscrypt_inode_uses_inline_crypto(const struct inode *inode)
 {
-	return IS_ENCRYPTED(inode) && S_ISREG(inode->i_mode) &&
-		inode->i_crypt_info->ci_inlinecrypt;
+	return fscrypt_needs_contents_encryption(inode) &&
+	       inode->i_crypt_info->ci_inlinecrypt;
 }
 EXPORT_SYMBOL_GPL(fscrypt_inode_uses_inline_crypto);
 
@@ -181,8 +190,8 @@ EXPORT_SYMBOL_GPL(fscrypt_inode_uses_inline_crypto);
  */
 bool fscrypt_inode_uses_fs_layer_crypto(const struct inode *inode)
 {
-	return IS_ENCRYPTED(inode) && S_ISREG(inode->i_mode) &&
-		!inode->i_crypt_info->ci_inlinecrypt;
+	return fscrypt_needs_contents_encryption(inode) &&
+	       !inode->i_crypt_info->ci_inlinecrypt;
 }
 EXPORT_SYMBOL_GPL(fscrypt_inode_uses_fs_layer_crypto);
 

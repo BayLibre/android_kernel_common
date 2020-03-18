@@ -41,6 +41,8 @@ int blk_rq_append_bio(struct request *rq, struct bio **bio)
 		rq->biotail->bi_next = *bio;
 		rq->biotail = *bio;
 		rq->__data_len += (*bio)->bi_iter.bi_size;
+		if (bio_has_crypt_ctx(*bio))
+			bio_crypt_free_ctx(*bio);
 	}
 
 	return 0;
