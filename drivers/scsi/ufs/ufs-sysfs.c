@@ -329,6 +329,14 @@ static ssize_t manual_gc_hold_store(struct device *dev,
 	return count;
 }
 
+static ssize_t host_capabilities_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct ufs_hba *hba = dev_get_drvdata(dev);
+
+	return snprintf(buf, PAGE_SIZE, "0x%lx\n", hba->caps);
+}
+
 static DEVICE_ATTR_RW(rpm_lvl);
 static DEVICE_ATTR_RO(rpm_target_dev_state);
 static DEVICE_ATTR_RO(rpm_target_link_state);
@@ -342,6 +350,7 @@ static DEVICE_ATTR_RO(rev);
 static DEVICE_ATTR_RO(platform_version);
 static DEVICE_ATTR_RW(manual_gc);
 static DEVICE_ATTR_RW(manual_gc_hold);
+static DEVICE_ATTR_RO(host_capabilities);
 
 static struct attribute *ufs_sysfs_ufshcd_attrs[] = {
 	&dev_attr_rpm_lvl.attr,
@@ -357,6 +366,7 @@ static struct attribute *ufs_sysfs_ufshcd_attrs[] = {
 	&dev_attr_platform_version.attr,
 	&dev_attr_manual_gc.attr,
 	&dev_attr_manual_gc_hold.attr,
+	&dev_attr_host_capabilities.attr,
 	NULL
 };
 
