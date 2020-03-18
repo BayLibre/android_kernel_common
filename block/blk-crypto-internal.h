@@ -7,6 +7,7 @@
 #define __LINUX_BLK_CRYPTO_INTERNAL_H
 
 #include <linux/bio.h>
+#include <linux/blkdev.h>
 
 /* Represents a crypto mode supported by blk-crypto  */
 struct blk_crypto_mode {
@@ -17,33 +18,171 @@ struct blk_crypto_mode {
 
 extern const struct blk_crypto_mode blk_crypto_modes[];
 
-#ifdef CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK
+#ifdef CONFIG_BLK_INLINE_ENCRYPTION
 
-int blk_crypto_fallback_submit_bio(struct bio **bio_ptr);
+static inline const struct blk_crypto_key *bio_crypt_key(struct bio *bio)
+{
+	if (!bio_has_crypt_ctx(bio))
+		return NULL;
+	return bio->bi_crypt_context->bc_key;
+}
 
-bool blk_crypto_queue_decrypt_bio(struct bio *bio);
+void bio_crypt_dun_increment(u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE],
+			     unsigned int inc);
 
-int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key);
+bool bio_crypt_rq_ctx_compatible(struct request *rq, struct bio *bio);
 
-bool bio_crypt_fallback_crypted(const struct bio_crypt_ctx *bc);
+bool bio_crypt_ctx_mergeable(struct bio_crypt_ctx *bc1, unsigned int bc1_bytes,
+			     struct bio_crypt_ctx *bc2);
 
-#else /* CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK */
+static inline bool bio_crypt_ctx_back_mergeable(struct request *req,
+						struct bio *bio)
+{
+	return bio_crypt_ctx_mergeable(req->crypt_ctx, blk_rq_bytes(req),
+				       bio->bi_crypt_context);
+}
 
-static inline bool bio_crypt_fallback_crypted(const struct bio_crypt_ctx *bc)
+static inline bool bio_crypt_ctx_front_mergeable(struct request *req,
+						 struct bio *bio)
+{
+	return bio_crypt_ctx_mergeable(bio->bi_crypt_context,
+				       bio->bi_iter.bi_size, req->crypt_ctx);
+}
+
+static inline bool bio_crypt_ctx_merge_rq(struct request *req,
+					  struct request *next)
+{
+	return bio_crypt_ctx_mergeable(req->crypt_ctx, blk_rq_bytes(req),
+				       next->crypt_ctx);
+}
+
+static inline void blk_crypto_rq_set_defaults(struct request *rq)
+{
+	rq->crypt_ctx = NULL;
+	rq->crypt_keyslot = NULL;
+}
+
+static inline bool blk_crypto_rq_is_encrypted(struct request *rq)
+{
+	return rq->crypt_ctx;
+}
+
+#else /* CONFIG_BLK_INLINE_ENCRYPTION */
+
+static inline struct blk_crypto_key *bio_crypt_key(struct bio *bio)
+{
+	return NULL;
+}
+
+static inline bool bio_crypt_rq_ctx_compatible(struct request *rq,
+					       struct bio *bio)
+{
+	return true;
+}
+
+static inline bool bio_crypt_ctx_front_mergeable(struct request *req,
+						 struct bio *bio)
+{
+	return true;
+}
+
+static inline bool bio_crypt_ctx_back_mergeable(struct request *req,
+						struct bio *bio)
+{
+	return true;
+}
+
+static inline bool bio_crypt_ctx_merge_rq(struct request *req,
+					  struct request *next)
+{
+	return true;
+}
+
+static inline void blk_crypto_rq_set_defaults(struct request *rq) { }
+
+static inline bool blk_crypto_rq_is_encrypted(struct request *rq)
 {
 	return false;
 }
 
-static inline int blk_crypto_fallback_submit_bio(struct bio **bio_ptr)
+#endif /* CONFIG_BLK_INLINE_ENCRYPTION */
+
+void __bio_crypt_advance(struct bio *bio, unsigned int bytes);
+static inline void bio_crypt_advance(struct bio *bio, unsigned int bytes)
 {
-	pr_warn_once("crypto API fallback disabled; failing request\n");
-	(*bio_ptr)->bi_status = BLK_STS_NOTSUPP;
-	return -EIO;
+	if (bio_has_crypt_ctx(bio))
+		__bio_crypt_advance(bio, bytes);
 }
 
-static inline bool blk_crypto_queue_decrypt_bio(struct bio *bio)
+void __bio_crypt_free_ctx(struct bio *bio);
+static inline void bio_crypt_free_ctx(struct bio *bio)
 {
-	WARN_ON(1);
+	if (bio_has_crypt_ctx(bio))
+		__bio_crypt_free_ctx(bio);
+}
+
+bool __blk_crypto_bio_prep(struct bio **bio_ptr);
+static inline bool blk_crypto_bio_prep(struct bio **bio_ptr)
+{
+	if (bio_has_crypt_ctx(*bio_ptr))
+		return __blk_crypto_bio_prep(bio_ptr);
+	return true;
+}
+
+blk_status_t __blk_crypto_init_request(struct request *rq,
+				       const struct blk_crypto_key *key);
+static inline blk_status_t blk_crypto_init_request(struct request *rq,
+					const struct blk_crypto_key *key)
+{
+	if (key)
+		return __blk_crypto_init_request(rq, key);
+	return BLK_STS_OK;
+}
+
+void __blk_crypto_free_request(struct request *rq);
+static inline void blk_crypto_free_request(struct request *rq)
+{
+	if (blk_crypto_rq_is_encrypted(rq))
+		__blk_crypto_free_request(rq);
+}
+
+void __blk_crypto_rq_bio_prep(struct request *rq, struct bio *bio);
+static inline void blk_crypto_rq_bio_prep(struct request *rq, struct bio *bio)
+{
+	if (bio_has_crypt_ctx(bio))
+		__blk_crypto_rq_bio_prep(rq, bio);
+}
+
+void __blk_crypto_rq_prep_clone(struct request *dst, struct request *src);
+static inline void blk_crypto_rq_prep_clone(struct request *dst,
+					    struct request *src)
+{
+
+	if (blk_crypto_rq_is_encrypted(src))
+		__blk_crypto_rq_prep_clone(dst, src);
+}
+
+blk_status_t __blk_crypto_insert_cloned_request(struct request *rq);
+static inline blk_status_t blk_crypto_insert_cloned_request(struct request *rq)
+{
+
+	if (blk_crypto_rq_is_encrypted(rq))
+		return __blk_crypto_insert_cloned_request(rq);
+	return BLK_STS_OK;
+}
+
+#ifdef CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK
+
+bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr);
+
+int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key);
+
+#else /* CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK */
+
+static inline bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
+{
+	pr_warn_once("crypto API fallback disabled; failing request.\n");
+	(*bio_ptr)->bi_status = BLK_STS_NOTSUPP;
 	return false;
 }
 
