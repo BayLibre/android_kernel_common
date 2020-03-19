@@ -615,10 +615,11 @@ static int spci_probe(struct platform_device *pdev)
 	 * Ensure buffer was correctly allocated and that the refcout was
 	 * incremented.
 	 */
-	if (!rx_buffer || !try_get_page(rx_buffer)) {
+	if (!rx_buffer) {
 		pr_err("%s: failed to allocate SPCI Rx buffer\n", __func__);
 		return -ENOMEM;
 	}
+	get_page(rx_buffer);
 
 	/* Allocate Tx buffer. */
 	tx_buffer = alloc_page(GFP_KERNEL);
@@ -627,13 +628,14 @@ static int spci_probe(struct platform_device *pdev)
 	 * Ensure buffer was correctly allocated and that the refcout was
 	 * incremented.
 	 */
-	if (!tx_buffer || !try_get_page(rx_buffer)) {
+	if (!tx_buffer) {
 		put_page(rx_buffer);
 		__free_page(rx_buffer);
 
 		pr_err("%s: failed to allocate SPCI Tx buffer\n", __func__);
 		return -ENOMEM;
 	}
+	get_page(rx_buffer);
 
 	/* Register the RxTx buffers with the SPCI supervisor implementation. */
 	ret = spci_rxtx_map(page_to_phys(tx_buffer), page_to_phys(rx_buffer));
