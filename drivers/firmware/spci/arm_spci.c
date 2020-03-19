@@ -29,6 +29,7 @@ static spci_sp_id_t vm_id;
 
 static struct page *rx_buffer;
 static struct page *tx_buffer;
+static bool spci_ready;
 
 static struct arm_smcccv1_2_return
 (*arm_spci_smccc)(u32 func, u64 arg1, u64 arg2, u64 arg3, u64 arg4,
@@ -47,9 +48,46 @@ arm_spci_##conduit(u32 func, u64 arg1, u64 arg2, u64 arg3, u64 arg4,	\
 	return smccc_ret;						\
 }
 
+#if CONFIG_ARM
+/*
+ * __arm_smcccv1_2_smc does currently not exist for arm. Use similar trusty
+ * function instead.
+ */
+#include "../../trusty/trusty-smc.h"
+static struct arm_smcccv1_2_return
+arm_spci_smc(u32 func, u64 arg1, u64 arg2, u64 arg3, u64 arg4, u64 arg5,
+	     u64 arg6, u64 arg7)
+{
+	struct smc_ret8 ret32;
+	struct arm_smcccv1_2_return ret64;
+
+	/* 64 bit smc calls are not accepted, use 32 bit version instead */
+	func = func & ~0x40000000;
+
+	ret32 = trusty_smc8(func, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+	ret64.func = ret32.r0;
+	ret64.arg1 = ret32.r1;
+	ret64.arg2 = ret32.r2;
+	ret64.arg3 = ret32.r3;
+	ret64.arg4 = ret32.r4;
+	ret64.arg5 = ret32.r5;
+	ret64.arg6 = ret32.r6;
+	ret64.arg7 = ret32.r7;
+	return ret64;
+}
+
+static struct arm_smcccv1_2_return
+arm_spci_hvc(u32 func, u64 arg1, u64 arg2, u64 arg3, u64 arg4, u64 arg5,
+	     u64 arg6, u64 arg7)
+{
+	struct arm_smcccv1_2_return ret64 = {-1};
+	return ret64;
+}
+#else
 SPCI_DEFINE_CALL(smc)
 
 SPCI_DEFINE_CALL(hvc)
+#endif
 
 static u32 sender_receiver_pack(u32 src_id, u32 dst_id)
 {
@@ -118,8 +156,14 @@ static int spci_share_fragment_tx(u32 page_count,
 	u32 fragment_len, u32 total_len, u32 cookie,
 	struct arm_smcccv1_2_return *smccc_return)
 {
+	/*
+	 * w2 must be 0 if w1 is 0. The code passed page_count, but the page
+	 * count currently passed to this function is the wrong page count. We
+	 * need the page count of the buffer passed in w1, but we don't
+	 * currently have an argument to get that buffer in.
+	 */
 	*smccc_return =
-		arm_spci_smccc(SPCI_MEM_SHARE_64, 0, page_count, fragment_len,
+		arm_spci_smccc(SPCI_MEM_SHARE_64, 0, 0, fragment_len,
 			total_len, cookie, 0, 0);
 
 	while (smccc_return->func != SPCI_SUCCESS_32) {
@@ -309,6 +353,7 @@ int spci_share_memory(u32 tag, enum mem_clear_t flags,
 
 	mem_region->flags = flags;
 	mem_region->tag = tag;
+	mem_region->sender_id = vm_id;
 
 	mem_region->constituent_count = sg_nents(sg);
 
@@ -372,6 +417,7 @@ int spci_share_memory(u32 tag, enum mem_clear_t flags,
 			 * XXX: Executing with tx_lock acquired until all fragments are
 			 * transferred.
 			 */
+#if 0 /* we don't need a cookie and this code fails when it runs out of them */
 			if (ephemeral_region_len)
 			{
 				if(cookie!=0) {
@@ -388,6 +434,7 @@ int spci_share_memory(u32 tag, enum mem_clear_t flags,
 					return -ENXIO;
 				}
 			}
+#endif
 
 			/* Transmit fragment. */
 			rc = spci_share_fragment_tx(local_num_pages,
@@ -542,6 +589,8 @@ static struct spci_ops spci_ops = {
 
 struct spci_ops *get_spci_ops(void)
 {
+	if (!spci_ready)
+		return NULL;
 	return &spci_ops;
 }
 EXPORT_SYMBOL_GPL(get_spci_ops);
@@ -648,6 +697,7 @@ static int spci_probe(struct platform_device *pdev)
 		pr_err("%s: failed to register SPCI RxTx buffers\n", __func__);
 		return ret;
 	}
+	spci_ready = true;
 
 	return 0;
 }
