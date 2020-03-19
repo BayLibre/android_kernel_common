@@ -23,11 +23,12 @@
 #include <linux/string.h>
 #include <linux/trusty/smcall.h>
 #include <linux/trusty/sm_err.h>
-#include <linux/trusty/spci.h>
 #include <linux/trusty/trusty.h>
 
 #include <linux/scatterlist.h>
 #include <linux/dma-mapping.h>
+
+#include <linux/arm_spci.h> /* Include late as it's missing includes */
 
 #include "trusty-smc.h"
 
@@ -52,11 +53,8 @@ struct trusty_state {
 	struct list_head nop_queue;
 	spinlock_t nop_lock; /* protects nop_queue */
 	struct device_dma_parameters dma_parms;
-	void *spci_tx;
-	void *spci_rx;
-	u16 spci_local_id;
+	struct spci_ops *spci_ops;
 	u16 spci_remote_id;
-	struct mutex share_memory_msg_lock; /* protects share_memory_msg */
 };
 
 static inline ulong smc(ulong r0, ulong r1, ulong r2, ulong r3)
@@ -226,16 +224,10 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 	struct ns_mem_page_info pg_inf;
 	struct scatterlist *sg;
 	size_t count;
-	unsigned int i;
-	size_t len;
-	u32 spci_handle = 0;
-	size_t spci_len_arg;
-	struct spci_memory_region_descriptor *mrd = s->spci_tx;
-	size_t cmrd_offset = offsetof(struct spci_memory_region_descriptor,
-				      memory_region_attributes_descriptors[1]);
-	struct spci_constituent_memory_region_descriptor *cmrd = s->spci_tx +
-								 cmrd_offset;
-	struct smc_ret8 smc_ret;
+	struct spci_mem_region_attributes spci_attr = {
+		.receiver = s->spci_remote_id,
+	};
+	spci_mem_handle_t spci_handle;
 
 	dev_dbg(s->dev, "%s\n", __func__);
 
@@ -271,74 +263,12 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 		return 0;
 	}
 
-	len = 0;
-	for_each_sg(sglist, sg, nents, i)
-		len += sg_dma_len(sg);
+	spci_attr.attrs = pg_inf.spci_mem_attr;
 
-	mutex_lock(&s->share_memory_msg_lock);
-
-	mrd->tag = 0;
-	mrd->flags = 0;
-	mrd->sender_id = s->spci_local_id;
-	mrd->reserved_10_11 = 0;
-	mrd->total_page_count = len / PAGE_SIZE;
-	mrd->constituent_memory_region_count = nents;
-	mrd->constituent_memory_region_descriptor_offset = cmrd_offset;
-	mrd->memory_region_attributes_descriptor_count = 1;
-	mrd->reserved_28_31 = 0;
-	mrd->memory_region_attributes_descriptors[0].receiver_id =
-		s->spci_remote_id;
-
-	mrd->memory_region_attributes_descriptors[0].memory_attributes =
-		pg_inf.spci_mem_attr;
-
-	spci_len_arg = cmrd_offset + nents * sizeof(*cmrd);
-	sg = sglist;
-	while (count) {
-		size_t i;
-		size_t lcount = min(count,
-				    (PAGE_SIZE - cmrd_offset) / sizeof(*cmrd));
-		size_t fragment_len = lcount * sizeof(*cmrd) + cmrd_offset;
-
-		for (i = 0; i < lcount; i++) {
-			cmrd[i].address = sg_dma_address(sg);
-			cmrd[i].page_count = sg_dma_len(sg) / PAGE_SIZE;
-			sg = sg_next(sg);
-		}
-		count -= lcount;
-		smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_SHARE, 0, 0, fragment_len,
-				      spci_len_arg, 0, 0, 0);
-		if (smc_ret.r0 == SMC_FC_SPCI_SUCCESS) {
-			dev_dbg(s->dev, "%s: fragment_len %zd/%zd, got handle 0x%lx\n",
-				__func__, fragment_len, spci_len_arg,
-				smc_ret.r2);
-			if (cmrd_offset) {
-				spci_handle = smc_ret.r2;
-			} else if (smc_ret.r2 != spci_handle) {
-				dev_err(s->dev, "%s: fragment_len %zd/%zd, handle mismatch 0x%lx != 0x%x\n",
-					__func__, fragment_len, spci_len_arg,
-					smc_ret.r2, spci_handle);
-			}
-		} else {
-			dev_err(s->dev, "%s: fragment_len %zd/%zd, SMC_FC_SPCI_MEM_SHARE failed 0x%x 0x%x 0x%x",
-				__func__, fragment_len, spci_len_arg,
-				smc_ret.r0, smc_ret.r1, smc_ret.r2);
-			ret = -EIO;
-			break;
-		}
-
-		cmrd = s->spci_tx;
-		cmrd_offset = 0;
-		spci_len_arg = 0;
-	}
-
-	count = nents;
-
-	*id = spci_handle;
-
-	mutex_unlock(&s->share_memory_msg_lock);
-
+	ret = s->spci_ops->mem_share(0, 0, &spci_attr, 1, sg, &spci_handle,
+				     NULL, 0);
 	if (!ret) {
+		*id = spci_handle;
 		dev_dbg(s->dev, "%s: done\n", __func__);
 		return 0;
 	}
@@ -378,7 +308,6 @@ int trusty_reclaim_memory(struct device *dev, uint64_t id,
 {
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
 	int ret = 0;
-	struct smc_ret8 smc_ret;
 
 	dev_dbg(s->dev, "%s\n", __func__);
 
@@ -400,23 +329,12 @@ int trusty_reclaim_memory(struct device *dev, uint64_t id,
 		return 0;
 	}
 
-	mutex_lock(&s->share_memory_msg_lock);
-
-	smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_RECLAIM, id, 0, 0, 0, 0, 0, 0);
-	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC_SPCI_MEM_RECLAIM failed 0x%x 0x%x 0x%x",
-			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
-		if (smc_ret.r0 == SMC_FC_SPCI_ERROR &&
-		    smc_ret.r2 == SPCI_ERROR_DENIED)
-			ret = -EBUSY;
-		else
-			ret = -EIO;
-	}
-
-	mutex_unlock(&s->share_memory_msg_lock);
-
-	if (ret != 0)
+	ret = s->spci_ops->mem_reclaim(id, 0);
+	if (ret != 0) {
+		dev_err(s->dev, "%s: spci_ops->mem_reclaim(%d, 0) failed: %d\n",
+			__func__, id, ret);
 		return ret;
+	}
 
 	dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
 
@@ -468,13 +386,18 @@ EXPORT_SYMBOL(trusty_version_str_get);
 
 static int trusty_init_msg_buf(struct trusty_state *s, struct device *dev)
 {
-	phys_addr_t tx_paddr;
-	phys_addr_t rx_paddr;
 	int ret;
-	struct smc_ret8 smc_ret;
 
 	if (s->api_version < TRUSTY_API_VERSION_MEM_OBJ)
 		return 0;
+
+	s->spci_ops = get_spci_ops();
+	if (!s->spci_ops) {
+		dev_err(s->dev, "%s: Failed to get spci_ops, defer\n",
+			__func__);
+		ret = -EPROBE_DEFER;
+		goto err_get_spci_ops;
+	}
 
 	/*
 	 * Set SPCI endpoint IDs.
@@ -482,75 +405,17 @@ static int trusty_init_msg_buf(struct trusty_state *s, struct device *dev)
 	 * Hardcode 0x8000 for the secure os.
 	 * TODO: Use SPCI call or device tree to configure this dynamically
 	 */
-	smc_ret = trusty_smc8(SMC_FC_SPCI_ID_GET, 0, 0, 0, 0, 0, 0, 0);
-	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC_SPCI_ID_GET failed 0x%x 0x%x 0x%x",
-			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
-		ret = -EIO;
-		goto err_id_get;
-	}
-
-	s->spci_local_id = smc_ret.r2;
 	s->spci_remote_id = 0x8000;
-
-	s->spci_tx = kmalloc(PAGE_SIZE, GFP_KERNEL);
-	if (!s->spci_tx) {
-		ret = -ENOMEM;
-		goto err_alloc_tx;
-	}
-	tx_paddr = virt_to_phys(s->spci_tx);
-	if (WARN_ON(tx_paddr & (PAGE_SIZE - 1))) {
-		ret = -EINVAL;
-		goto err_unaligned_tx_buf;
-	}
-
-	s->spci_rx = kmalloc(PAGE_SIZE, GFP_KERNEL);
-	if (!s->spci_rx) {
-		ret = -ENOMEM;
-		goto err_alloc_rx;
-	}
-	rx_paddr = virt_to_phys(s->spci_rx);
-	if (WARN_ON(rx_paddr & (PAGE_SIZE - 1))) {
-		ret = -EINVAL;
-		goto err_unaligned_rx_buf;
-	}
-
-	smc_ret = trusty_smc8(SMC_FCZ_SPCI_RXTX_MAP, tx_paddr, rx_paddr, 1, 0,
-			      0, 0, 0);
-	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC64_SPCI_RXTX_MAP failed 0x%x 0x%x 0x%x",
-			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
-		ret = -EIO;
-		goto err_rxtx_map;
-	}
 
 	return 0;
 
-err_rxtx_map:
-err_unaligned_rx_buf:
-	kfree(s->spci_rx);
-	s->spci_rx = NULL;
-err_alloc_rx:
-err_unaligned_tx_buf:
-	kfree(s->spci_tx);
-	s->spci_tx = NULL;
-err_alloc_tx:
-err_id_get:
+err_get_spci_ops:
 	return ret;
 }
 
 static void trusty_free_msg_buf(struct trusty_state *s, struct device *dev)
 {
-	struct smc_ret8 smc_ret;
-
-	smc_ret = trusty_smc8(SMC_FC_SPCI_RXTX_UNMAP, 0, 0, 0, 0, 0, 0, 0);
-	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC_SPCI_RXTX_UNMAP failed 0x%x 0x%x 0x%x",
-			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
-	} else {
-		kfree(s->spci_rx);
-		kfree(s->spci_tx);
-	}
+	/* TODO: put_spci_ops or put_module? */
 }
 
 static void trusty_init_version(struct trusty_state *s, struct device *dev)
@@ -755,7 +620,6 @@ static int trusty_probe(struct platform_device *pdev)
 	spin_lock_init(&s->nop_lock);
 	INIT_LIST_HEAD(&s->nop_queue);
 	mutex_init(&s->smc_lock);
-	mutex_init(&s->share_memory_msg_lock);
 	ATOMIC_INIT_NOTIFIER_HEAD(&s->notifier);
 	init_completion(&s->cpu_idle_completion);
 
@@ -827,7 +691,6 @@ err_api_version:
 		kfree(s->version_str);
 	}
 	device_for_each_child(&pdev->dev, NULL, trusty_remove_child);
-	mutex_destroy(&s->share_memory_msg_lock);
 	mutex_destroy(&s->smc_lock);
 	kfree(s);
 err_allocate_state:
@@ -849,7 +712,6 @@ static int trusty_remove(struct platform_device *pdev)
 	free_percpu(s->nop_works);
 	destroy_workqueue(s->nop_wq);
 
-	mutex_destroy(&s->share_memory_msg_lock);
 	mutex_destroy(&s->smc_lock);
 	trusty_free_msg_buf(s, &pdev->dev);
 	s->dev->dma_parms = NULL;
