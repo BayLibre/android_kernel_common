@@ -57,6 +57,7 @@
 #include <linux/regulator/consumer.h>
 #include <linux/devfreq.h>
 #include <linux/bitfield.h>
+#include <linux/keyslot-manager.h>
 #include "unipro.h"
 
 #include <asm/irq.h>
@@ -182,7 +183,6 @@ struct ufs_pm_lvl_states {
  * @intr_cmd: Interrupt command (doesn't participate in interrupt aggregation)
  * @issue_time_stamp: time stamp for debug purposes
  * @compl_time_stamp: time stamp for statistics
- * @crypto_enable: whether or not the request needs inline crypto operations
  * @crypto_key_slot: the key slot to use for inline crypto
  * @data_unit_num: the data unit number for the first block for inline crypto
  * @req_abort_skip: skip request abort task flag
@@ -210,10 +210,9 @@ struct ufshcd_lrb {
 	ktime_t issue_time_stamp;
 	ktime_t compl_time_stamp;
 #if IS_ENABLED(CONFIG_SCSI_UFS_CRYPTO)
-	bool crypto_enable;
-	u8 crypto_key_slot;
+	int crypto_key_slot;
 	u64 data_unit_num;
-#endif /* CONFIG_SCSI_UFS_CRYPTO */
+#endif
 
 	bool req_abort_skip;
 };
@@ -361,22 +360,20 @@ struct ufs_hba_variant_ops {
 					void *data);
 };
 
-struct keyslot_mgmt_ll_ops;
+struct blk_ksm_ll_ops;
 struct ufs_hba_crypto_variant_ops {
 	void (*setup_rq_keyslot_manager)(struct ufs_hba *hba,
 					 struct request_queue *q);
-	void (*destroy_rq_keyslot_manager)(struct ufs_hba *hba,
-					   struct request_queue *q);
+	void (*destroy_keyslot_manager)(struct ufs_hba *hba);
 	int (*hba_init_crypto)(struct ufs_hba *hba,
-			       const struct keyslot_mgmt_ll_ops *ksm_ops);
-	void (*enable)(struct ufs_hba *hba);
-	void (*disable)(struct ufs_hba *hba);
+			       const struct blk_ksm_ll_ops *ksm_ops);
+	bool (*enable)(struct ufs_hba *hba);
 	int (*suspend)(struct ufs_hba *hba, enum ufs_pm_op pm_op);
 	int (*resume)(struct ufs_hba *hba, enum ufs_pm_op pm_op);
 	int (*debug)(struct ufs_hba *hba);
-	int (*prepare_lrbp_crypto)(struct ufs_hba *hba,
-				   struct scsi_cmnd *cmd,
-				   struct ufshcd_lrb *lrbp);
+	void (*prepare_lrbp_crypto)(struct ufs_hba *hba,
+				    struct scsi_cmnd *cmd,
+				    struct ufshcd_lrb *lrbp);
 	int (*map_sg_crypto)(struct ufs_hba *hba, struct ufshcd_lrb *lrbp);
 	int (*complete_lrbp_crypto)(struct ufs_hba *hba,
 				    struct scsi_cmnd *cmd,
@@ -691,16 +688,10 @@ struct ufs_hba {
 	#define UFSHCI_QUIRK_BROKEN_HCE				0x400
 
 	/*
-	 * This quirk needs to be enabled if the host controller advertises
-	 * inline encryption support but it doesn't work correctly.
-	 */
-	#define UFSHCD_QUIRK_BROKEN_CRYPTO			0x800
-
-	/*
 	 * This quirk needs to be enabled if the host controller reports
 	 * OCS FATAL ERROR with device error through sense data
 	 */
-	#define UFSHCD_QUIRK_BROKEN_OCS_FATAL_ERROR		0x1000
+	#define UFSHCD_QUIRK_BROKEN_OCS_FATAL_ERROR		0x800
 
 	unsigned int quirks;	/* Deviations from standard UFSHCI spec. */
 
@@ -806,12 +797,11 @@ struct ufs_hba {
 	struct request_queue	*bsg_queue;
 
 #ifdef CONFIG_SCSI_UFS_CRYPTO
-	/* crypto */
 	union ufs_crypto_capabilities crypto_capabilities;
 	union ufs_crypto_cap_entry *crypto_cap_array;
 	u32 crypto_cfg_register;
-	struct keyslot_manager *ksm;
-#endif /* CONFIG_SCSI_UFS_CRYPTO */
+	struct blk_keyslot_manager ksm;
+#endif
 };
 
 /* Returns true if clocks can be gated. Otherwise false */
