@@ -4,6 +4,8 @@
 
 #include <linux/idr.h>
 #include <linux/blk-mq.h>
+#include <linux/blk-crypto.h>
+#include "blk-crypto-internal.h"
 #include "blk-mq.h"
 
 /* Amount of time in which a process may batch requests */

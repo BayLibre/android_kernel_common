@@ -14,6 +14,7 @@
 #include <linux/pagevec.h>
 #include <linux/blkdev.h>
 #include <linux/bio.h>
+#include <linux/blk-crypto.h>
 #include <linux/swap.h>
 #include <linux/prefetch.h>
 #include <linux/uio.h>
@@ -893,7 +894,7 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
 	f2fs_trace_ios(fio, 0);
 
 	if (bio && (!page_is_mergeable(fio->sbi, bio, *fio->last_block,
-						fio->new_blkaddr) ||
+				       fio->new_blkaddr) ||
 		    !f2fs_crypt_mergeable_bio(bio, fio->page->mapping->host,
 					      fio->page->index, fio)))
 		f2fs_submit_merged_ipu_write(fio->sbi, &bio, NULL);
@@ -901,8 +902,7 @@ alloc_new:
 	if (!bio) {
 		bio = __bio_alloc(fio, BIO_MAX_PAGES);
 		f2fs_set_bio_crypt_ctx(bio, fio->page->mapping->host,
-				       fio->page->index, fio,
-				       GFP_NOIO);
+				       fio->page->index, fio, GFP_NOIO);
 		bio_set_op_attrs(bio, fio->op, fio->op_flags);
 
 		add_bio_entry(fio->sbi, bio, page, fio->temp);
@@ -976,8 +976,7 @@ alloc_new:
 		}
 		io->bio = __bio_alloc(fio, BIO_MAX_PAGES);
 		f2fs_set_bio_crypt_ctx(io->bio, fio->page->mapping->host,
-				       fio->page->index, fio,
-				       GFP_NOIO);
+				       fio->page->index, fio, GFP_NOIO);
 		io->fio = *fio;
 	}
 
