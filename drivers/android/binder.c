@@ -553,6 +553,9 @@ enum {
  * @is_dead:              thread is dead and awaiting free
  *                        when outstanding transactions are cleaned up
  *                        (protected by @proc->inner_lock)
+ * @is_selected:          thread has been selected as target
+ *                        for proc work
+ *                        (protected by @proc->inner_lock)
  * @task:                 struct task_struct for this thread
  *
  * Bookkeeping structure for binder threads.
@@ -573,6 +576,7 @@ struct binder_thread {
 	struct binder_stats stats;
 	atomic_t tmp_ref;
 	bool is_dead;
+	bool is_selected;
 	struct task_struct *task;
 };
 
@@ -1009,8 +1013,10 @@ binder_select_thread_ilocked(struct binder_proc *proc)
 					  struct binder_thread,
 					  waiting_thread_node);
 
-	if (thread)
+	if (thread) {
 		list_del_init(&thread->waiting_thread_node);
+		thread->is_selected = true;
+	}
 
 	return thread;
 }
@@ -2912,6 +2918,7 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	bool oneway = !!(t->flags & TF_ONE_WAY);
 	bool pending_async = false;
 	bool retry = false;
+	bool cleared_thread_selection = false;
 
 	BUG_ON(!node);
 
@@ -2935,9 +2942,11 @@ retry_after_prio_restore:
 		if (node->has_async_transaction) {
 			pending_async = true;
 		} else {
+			if (pending_async)
+				pr_info("TJK: pending_async wrong");
 			node->has_async_transaction = true;
 		}
-		if (thread && pending_async) {
+		if (thread && (pending_async || cleared_thread_selection)) {
 			/*
 			 * The node state has changed since we selected
 			 * the thread. Return the thread to the
@@ -2949,15 +2958,25 @@ retry_after_prio_restore:
 			binder_restore_priority(thread->task,
 						proc->default_priority);
 			binder_inner_proc_lock(proc);
-			list_add(&thread->waiting_thread_node,
-				 &proc->waiting_threads);
+                  	if (!cleared_thread_selection)
+				thread->is_selected = false;
+			wake_up_interruptible(&thread->wait);
 			binder_inner_proc_unlock(proc);
 			thread = NULL;
+			pending_async = false;
+			cleared_thread_selection = false;
 			goto retry_after_prio_restore;
 		}
 	}
 
 	binder_inner_proc_lock(proc);
+	if (oneway && thread && !thread->is_selected) {
+		binder_inner_proc_unlock(proc);
+		binder_node_unlock(node);
+		pr_info("TJK: lost thread selection");
+		cleared_thread_selection = true;
+		goto retry_after_prio_restore;
+	}
 
 	if (proc->is_dead || (thread && thread->is_dead)) {
 		binder_inner_proc_unlock(proc);
@@ -4287,16 +4306,22 @@ static int binder_wait_for_work(struct binder_thread *thread,
 	DEFINE_WAIT(wait);
 	struct binder_proc *proc = thread->proc;
 	int ret = 0;
+	static int sigcount = 0;
+	static int selected_on_entry = 0;
 
 	freezer_do_not_count();
 	binder_inner_proc_lock(proc);
+	if (thread->is_selected)
+		selected_on_entry++;
 	for (;;) {
 		prepare_to_wait(&thread->wait, &wait, TASK_INTERRUPTIBLE);
 		if (binder_has_work_ilocked(thread, do_proc_work))
 			break;
-		if (do_proc_work)
+		if (do_proc_work && !thread->is_selected)
 			list_add(&thread->waiting_thread_node,
 				 &proc->waiting_threads);
+		else if (thread->is_selected)
+			pr_info("TJK.%d.%d: selected", sigcount, selected_on_entry);
 		binder_inner_proc_unlock(proc);
 		schedule();
 		binder_inner_proc_lock(proc);
@@ -4307,6 +4332,9 @@ static int binder_wait_for_work(struct binder_thread *thread,
 		}
 	}
 	finish_wait(&thread->wait, &wait);
+	if (ret == -ERESTARTSYS)
+		sigcount++;
+	thread->is_selected = false;
 	binder_inner_proc_unlock(proc);
 	freezer_count();
 
