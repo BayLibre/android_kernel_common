@@ -201,6 +201,7 @@ void blk_rq_init(struct request_queue *q, struct request *rq)
 	rq->start_time_ns = ktime_get_ns();
 	rq->part = NULL;
 	refcount_set(&rq->ref, 1);
+	blk_crypto_rq_set_defaults(rq);
 }
 EXPORT_SYMBOL(blk_rq_init);
 
@@ -1442,6 +1443,12 @@ static struct request *__get_request(struct request_list *rl, unsigned int op,
 		goto fail_alloc;
 
 	blk_rq_init(q, rq);
+
+	if (bio && bio_has_crypt_ctx(bio) && blk_crypto_init_request(rq, bio)) {
+		mempool_free(rq, rl->rq_pool);
+		goto fail_alloc;
+	}
+
 	blk_rq_set_rl(rq, rl);
 	rq->cmd_flags = op;
 	rq->rq_flags = rq_flags;
@@ -1763,6 +1770,9 @@ void __blk_put_request(struct request_queue *q, struct request *req)
 	blk_req_zone_write_unlock(req);
 	blk_pm_put_request(req);
 
+	if (blk_crypto_rq_is_encrypted(req))
+		blk_crypto_free_request(req);
+
 	elv_completed_request(q, req);
 
 	/* this is a bio leak */
@@ -1823,6 +1833,9 @@ bool bio_attempt_back_merge(struct request_queue *q, struct request *req,
 	req->__data_len += bio->bi_iter.bi_size;
 	req->ioprio = ioprio_best(req->ioprio, bio_prio(bio));
 
+	if (bio_has_crypt_ctx(bio))
+		bio_crypt_free_ctx(bio);
+
 	blk_account_io_start(req, false);
 	return true;
 }
@@ -1846,6 +1859,9 @@ bool bio_attempt_front_merge(struct request_queue *q, struct request *req,
 	req->__sector = bio->bi_iter.bi_sector;
 	req->__data_len += bio->bi_iter.bi_size;
 	req->ioprio = ioprio_best(req->ioprio, bio_prio(bio));
+
+	if (bio_has_crypt_ctx(bio))
+		blk_crypto_rq_bio_prep(req, bio);
 
 	blk_account_io_start(req, false);
 	return true;
@@ -2463,8 +2479,8 @@ blk_qc_t generic_make_request(struct bio *bio)
 			/* Create a fresh bio_list for all subordinate requests */
 			bio_list_on_stack[1] = bio_list_on_stack[0];
 			bio_list_init(&bio_list_on_stack[0]);
-
-			if (!blk_crypto_submit_bio(&bio))
+			if (!bio_has_crypt_ctx(bio) ||
+			    !blk_crypto_bio_prep(&bio))
 				ret = q->make_request_fn(q, bio);
 
 			/* sort new bios into those for a lower level
@@ -2527,8 +2543,7 @@ blk_qc_t direct_make_request(struct bio *bio)
 		bio_endio(bio);
 		return BLK_QC_T_NONE;
 	}
-
-	if (!blk_crypto_submit_bio(&bio))
+	if (!bio_has_crypt_ctx(bio) || !blk_crypto_bio_prep(&bio))
 		ret = q->make_request_fn(q, bio);
 	blk_queue_exit(q);
 	return ret;
@@ -2665,6 +2680,10 @@ blk_status_t blk_insert_cloned_request(struct request_queue *q, struct request *
 
 	if (rq->rq_disk &&
 	    should_fail_request(&rq->rq_disk->part0, blk_rq_bytes(rq)))
+		return BLK_STS_IOERR;
+
+	if (blk_crypto_rq_is_encrypted(rq) &&
+	    blk_crypto_insert_cloned_request(rq))
 		return BLK_STS_IOERR;
 
 	if (q->mq_ops) {
@@ -3445,6 +3464,9 @@ void blk_rq_bio_prep(struct request_queue *q, struct request *rq,
 
 	if (bio->bi_disk)
 		rq->rq_disk = bio->bi_disk;
+
+	if (bio_has_crypt_ctx(bio))
+		blk_crypto_rq_bio_prep(rq, bio);
 }
 
 #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
@@ -3576,6 +3598,9 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
 	}
 
 	__blk_rq_prep_clone(rq, rq_src);
+
+	if (blk_crypto_rq_is_encrypted(rq_src))
+		blk_crypto_rq_prep_clone(rq, rq_src);
 
 	return 0;
 
@@ -3996,11 +4021,7 @@ int __init blk_dev_init(void)
 	blk_debugfs_root = debugfs_create_dir("block", NULL);
 #endif
 
-	if (bio_crypt_ctx_init() < 0)
-		panic("Failed to allocate mem for bio crypt ctxs\n");
-
-	if (blk_crypto_fallback_init() < 0)
-		panic("Failed to init blk-crypto-fallback\n");
+	bio_crypt_ctx_init();
 
 	return 0;
 }

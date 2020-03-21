@@ -7,6 +7,7 @@
 #define __LINUX_KEYSLOT_MANAGER_H
 
 #include <linux/bio.h>
+#include <linux/blk-crypto.h>
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION
 
@@ -29,9 +30,9 @@ struct keyslot_manager;
  * manager will use to manipulate keyslots in the hardware.
  */
 struct keyslot_mgmt_ll_ops {
-	int (*keyslot_program)(struct keyslot_manager *ksm,
-			       const struct blk_crypto_key *key,
-			       unsigned int slot);
+	blk_status_t (*keyslot_program)(struct keyslot_manager *ksm,
+					const struct blk_crypto_key *key,
+					unsigned int slot);
 	int (*keyslot_evict)(struct keyslot_manager *ksm,
 			     const struct blk_crypto_key *key,
 			     unsigned int slot);
@@ -41,46 +42,87 @@ struct keyslot_mgmt_ll_ops {
 				 u8 *secret, unsigned int secret_size);
 };
 
-struct keyslot_manager *keyslot_manager_create(
-	struct device *dev,
-	unsigned int num_slots,
-	const struct keyslot_mgmt_ll_ops *ksm_ops,
-	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
-	void *ll_priv_data);
+struct keyslot_manager {
+	/*
+	 * The struct keyslot_mgmt_ll_ops that this keyslot manager will use
+	 * to perform operations like programming and evicting keys on the
+	 * device
+	 */
+	struct keyslot_mgmt_ll_ops ksm_ll_ops;
 
-int keyslot_manager_get_slot_for_key(struct keyslot_manager *ksm,
-				     const struct blk_crypto_key *key);
+	/*
+	 * The maximum number of bytes supported for specifying the data unit
+	 * number.
+	 */
+	unsigned int max_dun_bytes_supported;
 
-void keyslot_manager_get_slot(struct keyslot_manager *ksm, unsigned int slot);
+	/*
+	 * Array of size BLK_ENCRYPTION_MODE_MAX of bitmasks that represents
+	 * whether a crypto mode and data unit size are supported. The i'th
+	 * bit of crypto_mode_supported[crypto_mode] is set iff a data unit
+	 * size of (1 << i) is supported. We only support data unit sizes
+	 * that are powers of 2.
+	 */
+	unsigned int crypto_modes_supported[BLK_ENCRYPTION_MODE_MAX];
 
-void keyslot_manager_put_slot(struct keyslot_manager *ksm, unsigned int slot);
+	/* Device for runtime power management (NULL if none) */
+	struct device *dev;
 
-bool keyslot_manager_crypto_mode_supported(struct keyslot_manager *ksm,
-					   enum blk_crypto_mode_num crypto_mode,
-					   unsigned int data_unit_size);
+	/* Here onwards are *private* fields for internal keyslot manager use */
 
-int keyslot_manager_evict_key(struct keyslot_manager *ksm,
-			      const struct blk_crypto_key *key);
+	unsigned int num_slots;
 
-void keyslot_manager_reprogram_all_keys(struct keyslot_manager *ksm);
+	/* Protects programming and evicting keys from the device */
+	struct rw_semaphore lock;
 
-void *keyslot_manager_private(struct keyslot_manager *ksm);
+	/* List of idle slots, with least recently used slot at front */
+	wait_queue_head_t idle_slots_wait_queue;
+	struct list_head idle_slots;
+	spinlock_t idle_slots_lock;
 
-void keyslot_manager_destroy(struct keyslot_manager *ksm);
+	/*
+	 * Hash table which maps key hashes to keyslots, so that we can find a
+	 * key's keyslot in O(1) time rather than O(num_slots).  Protected by
+	 * 'lock'.  A cryptographic hash function is used so that timing attacks
+	 * can't leak information about the raw keys.
+	 */
+	struct hlist_head *slot_hashtable;
+	unsigned int slot_hashtable_size;
 
-struct keyslot_manager *keyslot_manager_create_passthrough(
-	struct device *dev,
-	const struct keyslot_mgmt_ll_ops *ksm_ops,
-	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
-	void *ll_priv_data);
+	/* Per-keyslot data */
+	struct blk_ksm_keyslot *slots;
+};
 
-void keyslot_manager_intersect_modes(struct keyslot_manager *parent,
-				     const struct keyslot_manager *child);
+int blk_ksm_init(struct keyslot_manager *ksm, struct device *dev,
+		 unsigned int num_slots);
 
-int keyslot_manager_derive_raw_secret(struct keyslot_manager *ksm,
-				      const u8 *wrapped_key,
-				      unsigned int wrapped_key_size,
-				      u8 *secret, unsigned int secret_size);
+blk_status_t blk_ksm_get_slot_for_key(struct keyslot_manager *ksm,
+				      const struct blk_crypto_key *key,
+				      struct blk_ksm_keyslot **slot_ptr);
+
+unsigned int blk_ksm_get_slot_idx(struct blk_ksm_keyslot *slot);
+
+void blk_ksm_put_slot(struct blk_ksm_keyslot *slot);
+
+bool blk_ksm_crypto_key_supported(struct keyslot_manager *ksm,
+				  const struct blk_crypto_key *key);
+
+int blk_ksm_evict_key(struct keyslot_manager *ksm,
+		      const struct blk_crypto_key *key);
+
+void blk_ksm_reprogram_all_keys(struct keyslot_manager *ksm);
+
+void blk_ksm_destroy(struct keyslot_manager *ksm);
+
+void blk_ksm_intersect_modes(struct keyslot_manager *parent,
+			     const struct keyslot_manager *child);
+
+int blk_ksm_derive_raw_secret(struct keyslot_manager *ksm,
+			      const u8 *wrapped_key,
+			      unsigned int wrapped_key_size,
+			      u8 *secret, unsigned int secret_size);
+
+void blk_ksm_init_passthrough(struct keyslot_manager *ksm, struct device *dev);
 
 #endif /* CONFIG_BLK_INLINE_ENCRYPTION */
 

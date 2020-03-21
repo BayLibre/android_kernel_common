@@ -1317,10 +1317,12 @@ static int clone_bio(struct dm_target_io *tio, struct bio *bio,
 
 	__bio_clone_fast(clone, bio);
 
-	bio_crypt_clone(clone, bio, GFP_NOIO);
+	if (bio_has_crypt_ctx(bio))
+		bio_crypt_clone(clone, bio, GFP_NOIO);
 
 	if (unlikely(bio_integrity(bio) != NULL)) {
 		int r;
+
 		if (unlikely(!dm_target_has_integrity(tio->ti->type) &&
 			     !dm_target_passes_integrity(tio->ti->type))) {
 			DMWARN("%s: the target %s doesn't support integrity data.",
@@ -2253,7 +2255,7 @@ static int dm_keyslot_evict_callback(struct dm_target *ti, struct dm_dev *dev,
 static int dm_keyslot_evict(struct keyslot_manager *ksm,
 			    const struct blk_crypto_key *key, unsigned int slot)
 {
-	struct mapped_device *md = keyslot_manager_private(ksm);
+	struct mapped_device *md = container_of(ksm, struct mapped_device, ksm);
 	struct dm_keyslot_evict_args args = { key };
 	struct dm_table *t;
 	int srcu_idx;
@@ -2296,10 +2298,10 @@ static int dm_derive_raw_secret_callback(struct dm_target *ti,
 		return 0;
 	}
 
-	args->err = keyslot_manager_derive_raw_secret(q->ksm, args->wrapped_key,
-						args->wrapped_key_size,
-						args->secret,
-						args->secret_size);
+	args->err = blk_ksm_derive_raw_secret(q->ksm, args->wrapped_key,
+					      args->wrapped_key_size,
+					      args->secret,
+					      args->secret_size);
 	/* Try another device in case this fails. */
 	return 0;
 }
@@ -2314,7 +2316,7 @@ static int dm_derive_raw_secret(struct keyslot_manager *ksm,
 				unsigned int wrapped_key_size,
 				u8 *secret, unsigned int secret_size)
 {
-	struct mapped_device *md = keyslot_manager_private(ksm);
+	struct mapped_device *md = container_of(ksm, struct mapped_device, ksm);
 	struct dm_derive_raw_secret_args args = {
 		.wrapped_key = wrapped_key,
 		.wrapped_key_size = wrapped_key_size,
@@ -2348,33 +2350,28 @@ static struct keyslot_mgmt_ll_ops dm_ksm_ll_ops = {
 	.derive_raw_secret = dm_derive_raw_secret,
 };
 
-static int dm_init_inline_encryption(struct mapped_device *md)
+static void dm_init_inline_encryption(struct mapped_device *md)
 {
-	unsigned int mode_masks[BLK_ENCRYPTION_MODE_MAX];
-
+	blk_ksm_init_passthrough(&md->ksm, NULL);
+	md->ksm.ksm_ll_ops = dm_ksm_ll_ops;
 	/*
 	 * Start out with all crypto mode support bits set.  Any unsupported
 	 * bits will be cleared later when calculating the device restrictions.
 	 */
-	memset(mode_masks, 0xFF, sizeof(mode_masks));
+	memset(md->ksm.crypto_modes_supported, 0xFF,
+	       sizeof(md->ksm.crypto_modes_supported));
 
-	md->queue->ksm = keyslot_manager_create_passthrough(NULL,
-							    &dm_ksm_ll_ops,
-							    mode_masks, md);
-	if (!md->queue->ksm)
-		return -ENOMEM;
-	return 0;
+	blk_ksm_register(&md->ksm, md->queue);
 }
 
 static void dm_destroy_inline_encryption(struct request_queue *q)
 {
-	keyslot_manager_destroy(q->ksm);
-	q->ksm = NULL;
+	blk_ksm_destroy(q->ksm);
+	blk_ksm_unregister(q);
 }
 #else /* CONFIG_BLK_INLINE_ENCRYPTION */
-static inline int dm_init_inline_encryption(struct mapped_device *md)
+static inline void dm_init_inline_encryption(struct mapped_device *md)
 {
-	return 0;
 }
 
 static inline void dm_destroy_inline_encryption(struct request_queue *q)
@@ -2426,11 +2423,7 @@ int dm_setup_md_queue(struct mapped_device *md, struct dm_table *t)
 		return r;
 	}
 
-	r = dm_init_inline_encryption(md);
-	if (r) {
-		DMERR("Cannot initialize inline encryption");
-		return r;
-	}
+	dm_init_inline_encryption(md);
 
 	dm_table_set_restrictions(t, md->queue, &limits);
 	blk_register_queue(md->disk);
