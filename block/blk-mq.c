@@ -25,6 +25,7 @@
 #include <linux/delay.h>
 #include <linux/crash_dump.h>
 #include <linux/prefetch.h>
+#include <linux/blk-crypto.h>
 
 #include <trace/events/block.h>
 
@@ -316,6 +317,7 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	rq->nr_integrity_segments = 0;
 #endif
 	rq->special = NULL;
+	blk_crypto_rq_set_defaults(rq);
 	/* tag was already set */
 	rq->extra_len = 0;
 	rq->__deadline = 0;
@@ -475,6 +477,8 @@ static void __blk_mq_free_request(struct request *rq)
 	struct blk_mq_hw_ctx *hctx = blk_mq_map_queue(q, ctx->cpu);
 	const int sched_tag = rq->internal_tag;
 
+	if (blk_crypto_rq_is_encrypted(rq))
+		blk_crypto_free_request(rq);
 	if (rq->tag != -1)
 		blk_mq_put_tag(hctx, hctx->tags, ctx, rq->tag);
 	if (sched_tag != -1)
@@ -1828,6 +1832,7 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 	struct blk_plug *plug;
 	struct request *same_queue_rq = NULL;
 	blk_qc_t cookie;
+	blk_status_t err;
 
 	blk_queue_bounce(q, &bio);
 
@@ -1858,6 +1863,16 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 	rq_qos_track(q, rq, bio);
 
 	cookie = request_to_qc_t(data.hctx, rq);
+
+	if (bio_has_crypt_ctx(bio)) {
+		err = blk_crypto_init_request(rq, bio);
+		if (err != BLK_STS_OK) {
+			bio->bi_status = err;
+			bio_endio(bio);
+			blk_mq_end_request(rq, err);
+			return BLK_QC_T_NONE;
+		}
+	}
 
 	plug = current->plug;
 	if (unlikely(is_flush_fua)) {

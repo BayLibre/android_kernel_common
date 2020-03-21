@@ -9,11 +9,13 @@
 
 #define pr_fmt(fmt) "blk-crypto: " fmt
 
-#include <linux/blk-crypto.h>
+#include <linux/bio.h>
 #include <linux/blkdev.h>
 #include <linux/keyslot-manager.h>
+#include <linux/module.h>
 #include <linux/random.h>
 #include <linux/siphash.h>
+#include <linux/slab.h>
 
 #include "blk-crypto-internal.h"
 
@@ -35,8 +37,156 @@ const struct blk_crypto_mode blk_crypto_modes[] = {
 	},
 };
 
-/* Check that all I/O segments are data unit aligned */
-static int bio_crypt_check_alignment(struct bio *bio)
+/*
+ * This number needs to be at least (the number of threads doing IO
+ * concurrently) * (maximum recursive depth of a bio), so that we don't
+ * deadlock on crypt_ctx allocations. The default is chosen to be the same
+ * as the default number of post read contexts in both EXT4 and F2FS.
+ */
+static int num_prealloc_crypt_ctxs = 128;
+
+module_param(num_prealloc_crypt_ctxs, int, 0444);
+MODULE_PARM_DESC(num_prealloc_crypt_ctxs,
+		"Number of bio crypto contexts to preallocate");
+
+static struct kmem_cache *bio_crypt_ctx_cache;
+static mempool_t *bio_crypt_ctx_pool;
+
+void __init bio_crypt_ctx_init(void)
+{
+	size_t i;
+
+	bio_crypt_ctx_cache = KMEM_CACHE(bio_crypt_ctx, 0);
+	if (!bio_crypt_ctx_cache)
+		goto out_no_mem;
+
+	bio_crypt_ctx_pool = mempool_create_slab_pool(num_prealloc_crypt_ctxs,
+						      bio_crypt_ctx_cache);
+	if (!bio_crypt_ctx_pool)
+		goto out_no_mem;
+
+	/* This is assumed in various places. */
+	BUILD_BUG_ON(BLK_ENCRYPTION_MODE_INVALID != 0);
+
+	/* Sanity check that no algorithm exceeds the defined limits. */
+	for (i = 0; i < BLK_ENCRYPTION_MODE_MAX; i++) {
+		BUG_ON(blk_crypto_modes[i].keysize > BLK_CRYPTO_MAX_KEY_SIZE);
+		BUG_ON(blk_crypto_modes[i].ivsize > BLK_CRYPTO_MAX_IV_SIZE);
+	}
+
+	return;
+out_no_mem:
+	panic("Failed to allocate mem for bio crypt ctxs\n");
+}
+
+struct bio_crypt_ctx *bio_crypt_alloc_ctx(gfp_t gfp_mask)
+{
+	return mempool_alloc(bio_crypt_ctx_pool, gfp_mask);
+}
+EXPORT_SYMBOL_GPL(bio_crypt_alloc_ctx);
+
+void bio_crypt_set_ctx(struct bio *bio, const struct blk_crypto_key *key,
+		       const u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE], gfp_t gfp_mask)
+{
+	struct bio_crypt_ctx *bc = mempool_alloc(bio_crypt_ctx_pool, gfp_mask);
+
+	bc->bc_key = key;
+	memcpy(bc->bc_dun, dun, sizeof(bc->bc_dun));
+
+	bio->bi_crypt_context = bc;
+}
+
+void bio_crypt_free_ctx(struct bio *bio)
+{
+	mempool_free(bio->bi_crypt_context, bio_crypt_ctx_pool);
+	bio->bi_crypt_context = NULL;
+}
+
+void bio_crypt_clone(struct bio *dst, struct bio *src, gfp_t gfp_mask)
+{
+	bio_clone_skip_dm_default_key(dst, src);
+	dst->bi_crypt_context = mempool_alloc(bio_crypt_ctx_pool, gfp_mask);
+	*dst->bi_crypt_context = *src->bi_crypt_context;
+}
+EXPORT_SYMBOL_GPL(bio_crypt_clone);
+
+void bio_crypt_dun_increment(u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE],
+			     unsigned int inc)
+{
+	int i = 0;
+
+	while (inc && i < BLK_CRYPTO_DUN_ARRAY_SIZE) {
+		dun[i] += inc;
+		inc = (dun[i] < inc);
+		i++;
+	}
+}
+
+void bio_crypt_advance(struct bio *bio, unsigned int bytes)
+{
+	struct bio_crypt_ctx *bc = bio->bi_crypt_context;
+
+	if (!bc)
+		return;
+
+	bio_crypt_dun_increment(bc->bc_dun,
+				bytes >> bc->bc_key->data_unit_size_bits);
+}
+
+bool bio_crypt_dun_is_contiguous(const struct bio_crypt_ctx *bc,
+				 unsigned int bytes,
+				 u64 next_dun[BLK_CRYPTO_DUN_ARRAY_SIZE])
+{
+	int i = 0;
+	unsigned int inc = bytes >> bc->bc_key->data_unit_size_bits;
+
+	while (i < BLK_CRYPTO_DUN_ARRAY_SIZE) {
+		if (bc->bc_dun[i] + inc != next_dun[i])
+			return false;
+		inc = ((bc->bc_dun[i] + inc)  < inc);
+		i++;
+	}
+
+	return true;
+}
+
+/*
+ * Checks that two bio crypt contexts are compatible - i.e. that
+ * they are mergeable except for data_unit_num continuity.
+ */
+static bool bio_crypt_ctx_compatible(struct bio_crypt_ctx *bc1,
+				     struct bio_crypt_ctx *bc2)
+{
+	if (!bc1)
+		return !bc2;
+
+	return bc2 && bc1->bc_key == bc2->bc_key;
+}
+
+bool bio_crypt_rq_ctx_compatible(struct request *rq, struct bio *bio)
+{
+	return bio_crypt_ctx_compatible(rq->crypt_ctx, bio->bi_crypt_context);
+}
+
+/*
+ * Checks that two bio crypt contexts are compatible, and also
+ * that their data_unit_nums are continuous (and can hence be merged)
+ * in the order b_1 followed by b_2.
+ */
+bool bio_crypt_ctx_mergeable(struct bio_crypt_ctx *bc1, unsigned int bc1_bytes,
+			     struct bio_crypt_ctx *bc2)
+{
+	if (!bio_crypt_ctx_compatible(bc1, bc2))
+		return false;
+
+	return !bc1 || bio_crypt_dun_is_contiguous(bc1, bc1_bytes, bc2->bc_dun);
+}
+
+/*
+ * Check that all I/O segments are data unit aligned, and set bio->bi_status
+ * on error.
+ */
+static void bio_crypt_check_alignment(struct bio *bio)
 {
 	const unsigned int data_unit_size =
 				bio->bi_crypt_context->bc_key->data_unit_size;
@@ -44,128 +194,170 @@ static int bio_crypt_check_alignment(struct bio *bio)
 	struct bio_vec bv;
 
 	bio_for_each_segment(bv, bio, iter) {
-		if (!IS_ALIGNED(bv.bv_len | bv.bv_offset, data_unit_size))
-			return -EIO;
+		if (!IS_ALIGNED(bv.bv_len | bv.bv_offset, data_unit_size)) {
+			bio->bi_status = BLK_STS_IOERR;
+			return;
+		}
 	}
-	return 0;
 }
 
 /**
- * blk_crypto_submit_bio - handle submitting bio for inline encryption
+ * blk_crypto_init_request - Initializes the request's crypto fields based on
+ *			     the bio to be added to the request, and prepares
+ *			     it for hardware inline encryption (as opposed to
+ *			     using the crypto API fallback).
  *
- * @bio_ptr: pointer to original bio pointer
+ * @rq: The request to init
+ * @bio: The bio that will (eventually) be added to @rq.
  *
- * If the bio doesn't have inline encryption enabled or the submitter already
- * specified a keyslot for the target device, do nothing.  Else, a raw key must
- * have been provided, so acquire a device keyslot for it if supported.  Else,
- * use the crypto API fallback.
+ * Initializes the request's crypto fields to appropriate default values and
+ * tries to get a keyslot for the bio crypt ctx. Caller must ensure that bio has
+ * a bio_crypt_ctx.
  *
- * When the crypto API fallback is used for encryption, blk-crypto may choose to
- * split the bio into 2 - the first one that will continue to be processed and
- * the second one that will be resubmitted via generic_make_request.
- * A bounce bio will be allocated to encrypt the contents of the aforementioned
- * "first one", and *bio_ptr will be updated to this bounce bio.
- *
- * Return: 0 if bio submission should continue; nonzero if bio_endio() was
- *	   already called so bio submission should abort.
+ * Return: BLK_STATUS_OK on success, and negative error code otherwise.
  */
-int blk_crypto_submit_bio(struct bio **bio_ptr)
+blk_status_t blk_crypto_init_request(struct request *rq, struct bio *bio)
 {
-	struct bio *bio = *bio_ptr;
-	struct request_queue *q;
-	struct bio_crypt_ctx *bc = bio->bi_crypt_context;
-	int err;
+	blk_status_t err;
 
-	if (!bc || !bio_has_data(bio))
-		return 0;
+	blk_crypto_rq_set_defaults(rq);
 
 	/*
-	 * When a read bio is marked for fallback decryption, its bi_iter is
-	 * saved so that when we decrypt the bio later, we know what part of it
-	 * was marked for fallback decryption (when the bio is passed down after
-	 * blk_crypto_submit bio, it may be split or advanced so we cannot rely
-	 * on the bi_iter while decrypting in blk_crypto_endio)
+	 * We have a bio crypt context here - that means we didn't fallback
+	 * to crypto API, so try to program a keyslot now.
 	 */
-	if (bio_crypt_fallback_crypted(bc))
-		return 0;
-
-	err = bio_crypt_check_alignment(bio);
-	if (err) {
-		bio->bi_status = BLK_STS_IOERR;
-		goto out;
-	}
-
-	q = bio->bi_disk->queue;
-
-	if (bc->bc_ksm) {
-		/* Key already programmed into device? */
-		if (q->ksm == bc->bc_ksm)
-			return 0;
-
-		/* Nope, release the existing keyslot. */
-		bio_crypt_ctx_release_keyslot(bc);
-	}
-
-	/* Get device keyslot if supported */
-	if (keyslot_manager_crypto_mode_supported(q->ksm,
-						  bc->bc_key->crypto_mode,
-						  bc->bc_key->data_unit_size)) {
-		err = bio_crypt_ctx_acquire_keyslot(bc, q->ksm);
-		if (!err)
-			return 0;
-
-		pr_warn_once("Failed to acquire keyslot for %s (err=%d).  Falling back to crypto API.\n",
+	err = blk_ksm_get_slot_for_key(rq->q->ksm,
+				       bio->bi_crypt_context->bc_key,
+				       &rq->crypt_keyslot);
+	if (err != BLK_STS_OK)
+		pr_warn_once("Failed to acquire keyslot for %s (err=%d).\n",
 			     bio->bi_disk->disk_name, err);
-	}
-
-	/* Fallback to crypto API */
-	err = blk_crypto_fallback_submit_bio(bio_ptr);
-	if (err)
-		goto out;
-
-	return 0;
-out:
-	bio_endio(*bio_ptr);
 	return err;
 }
 
 /**
- * blk_crypto_endio - clean up bio w.r.t inline encryption during bio_endio
+ * blk_crypto_free_request - Uninitialize the crypto fields of a request.
  *
- * @bio: the bio to clean up
+ * @rq: The request whose crypto fields to uninitialize.
  *
- * If blk_crypto_submit_bio decided to fallback to crypto API for this bio,
- * we queue the bio for decryption into a workqueue and return false,
- * and call bio_endio(bio) at a later time (after the bio has been decrypted).
- *
- * If the bio is not to be decrypted by the crypto API, this function releases
- * the reference to the keyslot that blk_crypto_submit_bio got.
- *
- * Return: true if bio_endio should continue; false otherwise (bio_endio will
- * be called again when bio has been decrypted).
+ * Completely uninitializes the crypto fields of a request. If a keyslot has
+ * been programmed into some inline encryption hardware, that keyslot is
+ * released. The rq->crypt_ctx is also freed.
  */
-bool blk_crypto_endio(struct bio *bio)
+void blk_crypto_free_request(struct request *rq)
 {
-	struct bio_crypt_ctx *bc = bio->bi_crypt_context;
+	blk_ksm_put_slot(rq->crypt_keyslot);
+	mempool_free(rq->crypt_ctx, bio_crypt_ctx_pool);
+	blk_crypto_rq_set_defaults(rq);
+}
 
-	if (!bc)
-		return true;
+/**
+ * blk_crypto_bio_prep - Prepare bio for inline encryption
+ *
+ * @bio_ptr: pointer to original bio pointer
+ *
+ * If the bio crypt context provided for the bio is supported by the underlying
+ * device's inline encryption hardware, do nothing.
+ *
+ * Otherwise, try to perform en/decryption for this bio by falling back to the
+ * kernel crypto API. When the crypto API fallback is used for encryption,
+ * blk-crypto may choose to split the bio into 2 - the first one that will
+ * continue to be processed and the second one that will be resubmitted via
+ * generic_make_request. A bounce bio will be allocated to encrypt the contents
+ * of the aforementioned "first one", and *bio_ptr will be updated to this
+ * bounce bio.
+ *
+ * Caller must ensure bio has bio_crypt_ctx.
+ *
+ * Return: 0 on success; nonzero on error (and bio->bi_status will be set
+ *	   appropriately, and bio_endio() will have been called so bio
+ *	   submission should abort).
+ */
+int blk_crypto_bio_prep(struct bio **bio_ptr)
+{
+	struct bio *bio = *bio_ptr;
 
-	if (bio_crypt_fallback_crypted(bc)) {
-		/*
-		 * The only bios who's crypto is handled by the blk-crypto
-		 * fallback when they reach here are those with
-		 * bio_data_dir(bio) == READ, since WRITE bios that are
-		 * encrypted by the crypto API fallback are handled by
-		 * blk_crypto_encrypt_endio().
-		 */
-		return !blk_crypto_queue_decrypt_bio(bio);
+	/*
+	 * If bio has no data, just pretend it didn't have an encryption
+	 * context.
+	 */
+	if (!bio_has_data(bio)) {
+		bio_crypt_free_ctx(bio);
+		return 0;
 	}
 
-	if (bc->bc_keyslot >= 0)
-		bio_crypt_ctx_release_keyslot(bc);
+	bio_crypt_check_alignment(bio);
+	if (bio->bi_status != BLK_STS_OK)
+		goto fail;
 
-	return true;
+	/*
+	 * Success if device supports the encryption context, or we succeeded
+	 * in falling back to the crypto API.
+	 */
+	if (blk_ksm_crypto_key_supported(bio->bi_disk->queue->ksm,
+					 bio->bi_crypt_context->bc_key))
+		return 0;
+
+	blk_crypto_fallback_bio_prep(bio_ptr);
+	if ((*bio_ptr)->bi_status == BLK_STS_OK)
+		return 0;
+fail:
+	bio_endio(*bio_ptr);
+	return -EIO;
+}
+
+/**
+ * blk_crypto_rq_bio_prep - Prepare a request when its first bio is inserted
+ *
+ * @rq: The request to prepare
+ * @bio: The first bio being inserted into the request
+ *
+ * Frees the bio crypt context in the request's old rq->crypt_ctx, if any, and
+ * moves the bio crypt context of the bio into the request's rq->crypt_ctx.
+ */
+void blk_crypto_rq_bio_prep(struct request *rq, struct bio *bio)
+{
+	mempool_free(rq->crypt_ctx, bio_crypt_ctx_pool);
+	rq->crypt_ctx = bio->bi_crypt_context;
+	bio->bi_crypt_context = NULL;
+}
+
+void blk_crypto_rq_prep_clone(struct request *dst, struct request *src)
+{
+	/* Don't clone crypto info if src uses fallback en/decryption */
+	if (!src->crypt_keyslot)
+		return;
+
+	dst->crypt_ctx = src->crypt_ctx;
+}
+
+/**
+ * blk_crypto_insert_cloned_request - Prepare a cloned request to be inserted
+ *				      into a request queue.
+ * @rq: the request being queued
+ *
+ * Return: BLK_STS_OK on success, nonzero on error.
+ */
+blk_status_t blk_crypto_insert_cloned_request(struct request *rq)
+{
+	blk_status_t err;
+
+	if (!rq->bio)
+		return 0;
+
+	/*
+	 * Pretend that the bio had the encryption ctx before calling
+	 * blk_crypto_init_request
+	 */
+	rq->bio->bi_crypt_context = rq->crypt_ctx;
+	err = blk_crypto_init_request(rq, rq->bio);
+	/*
+	 * blk_crypto_init_request *always* clears the crypto fields in rq to
+	 * defaults, so regardless of what err is, restore rq->crypt_ctx.
+	 */
+	blk_crypto_rq_bio_prep(rq, rq->bio);
+
+	return err;
 }
 
 /**
@@ -179,15 +371,18 @@ bool blk_crypto_endio(struct bio *bio)
  *                @is_hw_wrapped has to be set for such keys)
  * @is_hw_wrapped: Denotes @raw_key is wrapped.
  * @crypto_mode: identifier for the encryption algorithm to use
+ * @blk_crypto_dun_bytes: number of bytes that will be used to specify the DUN
+ *			  when this key is used
  * @data_unit_size: the data unit size to use for en/decryption
  *
- * Return: The blk_crypto_key that was prepared, or an ERR_PTR() on error.  When
- *	   done using the key, it must be freed with blk_crypto_free_key().
+ * Return: 0 on success, -errno on failure.  The caller is responsible for
+ *	   zeroizing both blk_key and raw_key when done with them.
  */
 int blk_crypto_init_key(struct blk_crypto_key *blk_key,
 			const u8 *raw_key, unsigned int raw_key_size,
 			bool is_hw_wrapped,
 			enum blk_crypto_mode_num crypto_mode,
+			unsigned int blk_crypto_dun_bytes,
 			unsigned int data_unit_size)
 {
 	const struct blk_crypto_mode *mode;
@@ -214,6 +409,7 @@ int blk_crypto_init_key(struct blk_crypto_key *blk_key,
 		return -EINVAL;
 
 	blk_key->crypto_mode = crypto_mode;
+	blk_key->dun_bytes = blk_crypto_dun_bytes;
 	blk_key->data_unit_size = data_unit_size;
 	blk_key->data_unit_size_bits = ilog2(data_unit_size);
 	blk_key->size = raw_key_size;
@@ -241,19 +437,17 @@ EXPORT_SYMBOL_GPL(blk_crypto_init_key);
  *
  * Upper layers (filesystems) should call this function to ensure that a key
  * is evicted from hardware that it might have been programmed into. This
- * will call keyslot_manager_evict_key on the queue's keyslot manager, if one
+ * will call blk_ksm_evict_key on the queue's keyslot manager, if one
  * exists, and supports the crypto algorithm with the specified data unit size.
  * Otherwise, it will evict the key from the blk-crypto-fallback's ksm.
  *
- * Return: 0 on success, -err on error.
+ * Return: 0 on success or if key is not present in the q's ksm, -err on error.
  */
 int blk_crypto_evict_key(struct request_queue *q,
 			 const struct blk_crypto_key *key)
 {
-	if (q->ksm &&
-	    keyslot_manager_crypto_mode_supported(q->ksm, key->crypto_mode,
-						  key->data_unit_size))
-		return keyslot_manager_evict_key(q->ksm, key);
+	if (q->ksm && blk_ksm_crypto_key_supported(q->ksm, key))
+		return blk_ksm_evict_key(q->ksm, key);
 
 	return blk_crypto_fallback_evict_key(key);
 }
