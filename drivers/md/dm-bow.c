@@ -754,13 +754,13 @@ static int prepare_unchanged_range(struct bow_context *bc, struct bow_range *br,
 	if (!backup_br)
 		return BLK_STS_NOSPC;
 
+
 	/* Carve out a backup range. This may be smaller than the br given */
 	backup_bi.bi_sector = backup_br->sector;
 	backup_bi.bi_size = min(range_size(backup_br), (u64) bi_iter->bi_size);
 	ret = split_range(bc, &backup_br, &backup_bi);
 	if (ret)
 		return ret;
-
 	/*
 	 * Carve out a changed range. This will not be smaller than the backup
 	 * br since the backup br is smaller than the source range and iterator
@@ -792,6 +792,7 @@ static int prepare_unchanged_range(struct bow_context *bc, struct bow_range *br,
 	 */
 	original_type = br->type;
 	sector0 = backup_br->sector;
+	bc->trims_total -= ori_range_size(backup_br);
 	if (backup_br->type == TRIMMED)
 		list_del(&backup_br->trimmed_list);
 	backup_br->type = br->type == SECTOR0_CURRENT ? SECTOR0_CURRENT
