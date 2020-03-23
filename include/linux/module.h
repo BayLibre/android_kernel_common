@@ -129,7 +129,8 @@ extern void cleanup_module(void);
 #define module_init(initfn)					\
 	static inline initcall_t __maybe_unused __inittest(void)		\
 	{ return initfn; }					\
-	int init_module(void) __copy(initfn) __attribute__((alias(#initfn)));
+	int init_module(void) __copy(initfn) __attribute__((alias(#initfn)));	\
+	ANDROID_ABI_CHECK;
 
 /* This is only required if you want to be unloadable. */
 #define module_exit(exitfn)					\

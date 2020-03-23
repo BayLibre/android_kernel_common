@@ -53,6 +53,7 @@
 #include <linux/bsearch.h>
 #include <linux/dynamic_debug.h>
 #include <linux/audit.h>
+#include <linux/android_kabi.h>
 #include <uapi/linux/module.h>
 #include "module-internal.h"
 
@@ -4582,3 +4583,6 @@ void module_layout(struct module *mod,
 }
 EXPORT_SYMBOL(module_layout);
 #endif
+
+void ANDROID_ABI_FUNCTION(void){}
+EXPORT_SYMBOL(ANDROID_ABI_FUNCTION);

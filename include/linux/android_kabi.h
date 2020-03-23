@@ -34,6 +34,8 @@
 
 #include <linux/compiler.h>
 
+#define ANDROID_GKI_VERSION android_5_4_2020
+
 /*
  * Worker macros, don't use these, use the ones without a leading '_'
  */
@@ -109,5 +111,17 @@
 #define ANDROID_KABI_USE2(number, _new1, _new2)			\
 	_ANDROID_KABI_REPLACE(_ANDROID_KABI_RESERVE(number), struct{ _new1; _new2; })
 
+#define __MAKE_ABI_FUNCTION_NAME(version) ANDROID_ABI_VERSION_ ## version
+#define __ABI_FUNCTION_NAME(version) __MAKE_ABI_FUNCTION_NAME(version)
+#define ANDROID_ABI_FUNCTION __ABI_FUNCTION_NAME(ANDROID_GKI_VERSION)
+
+extern void ANDROID_ABI_FUNCTION(void);
+
+#define ANDROID_ABI_CHECK                                                              \
+	void __maybe_unused module_abi_version(void)                           \
+	{                                                                      \
+		ANDROID_ABI_FUNCTION();                                        \
+	}                                                                      \
+	EXPORT_SYMBOL(module_abi_version)
 
 #endif /* _ANDROID_KABI_H */
