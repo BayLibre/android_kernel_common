@@ -992,7 +992,6 @@ config SERIAL_MSM_CONSOLE
 config SERIAL_QCOM_GENI
 	tristate "QCOM on-chip GENI based serial port support"
 	depends on ARCH_QCOM || COMPILE_TEST
-	depends on QCOM_GENI_SE
 	select SERIAL_CORE
 
 config SERIAL_QCOM_GENI_CONSOLE
