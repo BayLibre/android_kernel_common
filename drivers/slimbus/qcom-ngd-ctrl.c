@@ -1360,6 +1360,7 @@ static int of_qcom_slim_ngd_register(struct device *parent,
 		ngd->pdev->dev.parent = parent;
 		ngd->pdev->driver_override = QCOM_SLIM_NGD_DRV_NAME;
 		ngd->pdev->dev.of_node = node;
+		ngd->pdev->dev.fwnode = of_fwnode_handle(node);
 		ctrl->ngd = ngd;
 		platform_set_drvdata(ngd->pdev, ctrl);
 
