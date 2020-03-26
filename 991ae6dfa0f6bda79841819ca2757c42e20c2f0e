@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "90931c60_9b3bafc3",
+        "filename": "block/blk-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-26T18:01:56Z",
+      "side": 1,
+      "message": "There is a bug here -- bio_clone_skip_dm_default_key() needs to be called even if the src bio does not have a crypt_context.\n\nI think this would be easier to fix in v9 where bio_crypt_clone() returned to being unconditional.",
+      "revId": "991ae6dfa0f6bda79841819ca2757c42e20c2f0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3e0c7aa8_41422d9c",
         "filename": "block/keyslot-manager.c",
         "patchSetId": 1
