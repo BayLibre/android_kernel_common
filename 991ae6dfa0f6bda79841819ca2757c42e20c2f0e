@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4bddbe14_92f30330",
+        "filename": "block/blk-crypto.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-26T17:51:07Z",
+      "side": 1,
+      "message": "This function is unused and is not present in the v8 patchset.",
+      "revId": "991ae6dfa0f6bda79841819ca2757c42e20c2f0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e0c7aa8_41422d9c",
+        "filename": "block/keyslot-manager.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-26T17:51:07Z",
+      "side": 1,
+      "message": "The NULL dereference bug here wasn\u0027t actually fixed until v9.  Can you split post-v8 fixes like these into a separate commit so that it\u0027s clearer what additional changes are being made?",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 282,
+        "endChar": 17
+      },
+      "revId": "991ae6dfa0f6bda79841819ca2757c42e20c2f0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9fca2e8_9a8666b2",
+        "filename": "block/keyslot-manager.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-26T17:51:07Z",
+      "side": 1,
+      "message": "-\u003eksm_ll_ops isn\u0027t allowed to be changed, so I think the locking here should be kept like it was before.",
+      "revId": "991ae6dfa0f6bda79841819ca2757c42e20c2f0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
