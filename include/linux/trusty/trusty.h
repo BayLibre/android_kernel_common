@@ -61,7 +61,8 @@ u32 trusty_get_api_version(struct device *dev);
 
 struct ns_mem_page_info {
 	uint64_t paddr;
-	uint16_t spci_mem_attr;
+	uint8_t spci_mem_attr;
+	uint8_t spci_mem_perm;
 	uint64_t compat_attr;
 };
 

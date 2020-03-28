@@ -228,14 +228,21 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 	size_t count;
 	unsigned int i;
 	size_t len;
-	u32 spci_handle = 0;
+	u64 spci_handle = 0;
 	size_t spci_len_arg;
-	struct spci_memory_region_descriptor *mrd = s->spci_tx;
-	size_t cmrd_offset = offsetof(struct spci_memory_region_descriptor,
-				      memory_region_attributes_descriptors[1]);
-	struct spci_constituent_memory_region_descriptor *cmrd = s->spci_tx +
-								 cmrd_offset;
+	size_t endpoint_count = 1;
+	struct spci_memory_transaction_descriptor *mtd = s->spci_tx;
+	size_t comp_mrd_offset = offsetof(
+		struct spci_memory_transaction_descriptor,
+		endpoint_memory_access_descriptors[endpoint_count]);
+	struct spci_composite_memory_region_descriptor *comp_mrd =
+		s->spci_tx + comp_mrd_offset;
+	struct spci_constituent_memory_region_descriptor *cons_mrd =
+		comp_mrd->address_range_array;
+	size_t cons_mrd_offset = (void *)cons_mrd - s->spci_tx;
 	struct smc_ret8 smc_ret;
+	uint32_t cookie_low;
+	uint32_t cookie_high;
 
 	dev_dbg(s->dev, "%s\n", __func__);
 
@@ -277,47 +284,83 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 
 	mutex_lock(&s->share_memory_msg_lock);
 
-	mrd->tag = 0;
-	mrd->flags = 0;
-	mrd->sender_id = s->spci_local_id;
-	mrd->reserved_10_11 = 0;
-	mrd->total_page_count = len / PAGE_SIZE;
-	mrd->constituent_memory_region_count = nents;
-	mrd->constituent_memory_region_descriptor_offset = cmrd_offset;
-	mrd->memory_region_attributes_descriptor_count = 1;
-	mrd->reserved_28_31 = 0;
-	mrd->memory_region_attributes_descriptors[0].receiver_id =
-		s->spci_remote_id;
+	mtd->sender_id = s->spci_local_id;
+	mtd->memory_region_attributes = pg_inf.spci_mem_attr;
+	mtd->reserved_3 = 0;
+	mtd->flags = 0;
+	mtd->handle = 0;
+	mtd->tag = 0;
+	mtd->reserved_24_27 = 0;
+	mtd->endpoint_memory_access_descriptor_count = endpoint_count;
+	for (i = 0; i < endpoint_count; i++) {
+		struct spci_endpoint_memory_access_descriptor *emad =
+			&mtd->endpoint_memory_access_descriptors[i];
+		/* TODO: support stream ids */
+		emad->perm.endpoint_id = s->spci_remote_id;
+		emad->perm.memory_access_permissions = pg_inf.spci_mem_perm;
+		emad->perm.reserved_3 = 0;
+		emad->composite_memory_region_descriptor_offset =
+			comp_mrd_offset;
+		emad->reserved_8_15 = 0;
+	}
+	comp_mrd->total_page_count = len / PAGE_SIZE;
+	comp_mrd->address_range_count = nents;
+	comp_mrd->reserved_8_15 = 0;
 
-	mrd->memory_region_attributes_descriptors[0].memory_attributes =
-		pg_inf.spci_mem_attr;
-
-	spci_len_arg = cmrd_offset + nents * sizeof(*cmrd);
+	spci_len_arg = cons_mrd_offset + nents * sizeof(*cons_mrd);
 	sg = sglist;
 	while (count) {
 		size_t i;
-		size_t lcount = min(count,
-				    (PAGE_SIZE - cmrd_offset) / sizeof(*cmrd));
-		size_t fragment_len = lcount * sizeof(*cmrd) + cmrd_offset;
+		size_t lcount = min(count, (PAGE_SIZE - cons_mrd_offset) /
+				    sizeof(*cons_mrd));
+		size_t fragment_len = lcount * sizeof(*cons_mrd) +
+				      cons_mrd_offset;
 
 		for (i = 0; i < lcount; i++) {
-			cmrd[i].address = sg_dma_address(sg);
-			cmrd[i].page_count = sg_dma_len(sg) / PAGE_SIZE;
+			cons_mrd[i].address = sg_dma_address(sg);
+			cons_mrd[i].page_count = sg_dma_len(sg) / PAGE_SIZE;
+			cons_mrd[i].reserved_12_15 = 0;
 			sg = sg_next(sg);
 		}
 		count -= lcount;
-		smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_SHARE, 0, 0, fragment_len,
-				      spci_len_arg, 0, 0, 0);
-		if (smc_ret.r0 == SMC_FC_SPCI_SUCCESS) {
+		if (spci_len_arg) {
+			smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_SHARE,
+					      spci_len_arg, fragment_len, 0, 0,
+					      0, 0, 0);
+		} else {
+			smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_FRAG_TX,
+					      cookie_low, cookie_high,
+					      fragment_len, 0, 0, 0, 0);
+		}
+		if (smc_ret.r0 == SMC_FC_SPCI_MEM_FRAG_RX) {
+			cookie_low = smc_ret.r1;
+			cookie_high = smc_ret.r2;
+			dev_dbg(s->dev, "cookie %x %x", cookie_low,
+				cookie_high);
+			if (!count) {
+				dev_err(s->dev, "%s: fragment_len %zd/%zd, unexpected SMC_FC_SPCI_MEM_FRAG_RX\n",
+					__func__, fragment_len, spci_len_arg);
+			}
+		} else if (smc_ret.r0 == SMC_FC_SPCI_SUCCESS) {
+			spci_handle = smc_ret.r2 | smc_ret.r3 << 32;
 			dev_dbg(s->dev, "%s: fragment_len %zd/%zd, got handle 0x%lx\n",
 				__func__, fragment_len, spci_len_arg,
-				smc_ret.r2);
-			if (cmrd_offset) {
-				spci_handle = smc_ret.r2;
-			} else if (smc_ret.r2 != spci_handle) {
-				dev_err(s->dev, "%s: fragment_len %zd/%zd, handle mismatch 0x%lx != 0x%x\n",
+				spci_handle);
+			if (count) {
+				dev_err(s->dev, "%s: fragment_len %zd/%zd, unexpected SMC_FC_SPCI_SUCCESS, count %d != 0\n",
 					__func__, fragment_len, spci_len_arg,
-					smc_ret.r2, spci_handle);
+					count);
+			}
+			if (count && spci_handle) {
+				dev_warn(s->dev,
+					 "%s: fragment_len %zd/%zd, got unexpected handle 0x%lx\n",
+					__func__, fragment_len, spci_len_arg,
+					spci_handle);
+			}
+			if (!count && !spci_handle) {
+				dev_warn(s->dev,
+					 "%s: fragment_len %zd/%zd, got unexpected 0 handle\n",
+					__func__, fragment_len, spci_len_arg);
 			}
 		} else {
 			dev_err(s->dev, "%s: fragment_len %zd/%zd, SMC_FC_SPCI_MEM_SHARE failed 0x%x 0x%x 0x%x",
@@ -327,8 +370,8 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 			break;
 		}
 
-		cmrd = s->spci_tx;
-		cmrd_offset = 0;
+		cons_mrd = s->spci_tx;
+		cons_mrd_offset = 0;
 		spci_len_arg = 0;
 	}
 
@@ -402,7 +445,8 @@ int trusty_reclaim_memory(struct device *dev, uint64_t id,
 
 	mutex_lock(&s->share_memory_msg_lock);
 
-	smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_RECLAIM, id, 0, 0, 0, 0, 0, 0);
+	smc_ret = trusty_smc8(SMC_FC_SPCI_MEM_RECLAIM, (u32)id, id >> 32, 0, 0,
+			      0, 0, 0);
 	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
 		dev_err(s->dev, "%s: SMC_FC_SPCI_MEM_RECLAIM failed 0x%x 0x%x 0x%x",
 			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
@@ -476,6 +520,35 @@ static int trusty_init_msg_buf(struct trusty_state *s, struct device *dev)
 	if (s->api_version < TRUSTY_API_VERSION_MEM_OBJ)
 		return 0;
 
+	/* Get supported SPCI version and check if it is compatible */
+	smc_ret = trusty_smc8(SMC_FC_SPCI_VERSION, SPCI_CURRENT_VERSION, 0, 0,
+			      0, 0, 0, 0);
+	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
+		dev_err(s->dev,
+			"%s: SMC_FC_SPCI_VERSION failed 0x%x 0x%x 0x%x\n",
+			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
+		ret = -EIO;
+		goto err_version;
+	}
+	if (SPCI_VERSION_TO_MAJOR(smc_ret.r2) != SPCI_CURRENT_VERSION_MAJOR) {
+		dev_err(s->dev,
+			"%s: unsupported spci version 0x%x, expected 0x%x\n",
+			__func__, smc_ret.r2, SPCI_CURRENT_VERSION);
+		ret = -EIO;
+		goto err_version;
+	}
+
+	/* Check that SMC_FC_SPCI_MEM_SHARE is implemented */
+	smc_ret = trusty_smc8(SMC_FC_SPCI_FEATURES, SMC_FC_SPCI_MEM_SHARE, 0, 0,
+			      0, 0, 0, 0);
+	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
+		dev_err(s->dev,
+			"%s: SMC_FC_SPCI_FEATURES(SMC_FC_SPCI_MEM_SHARE) failed 0x%x 0x%x 0x%x\n",
+			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
+		ret = -EIO;
+		goto err_features;
+	}
+
 	/*
 	 * Set SPCI endpoint IDs.
 	 *
@@ -484,7 +557,8 @@ static int trusty_init_msg_buf(struct trusty_state *s, struct device *dev)
 	 */
 	smc_ret = trusty_smc8(SMC_FC_SPCI_ID_GET, 0, 0, 0, 0, 0, 0, 0);
 	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC_SPCI_ID_GET failed 0x%x 0x%x 0x%x",
+		dev_err(s->dev,
+			"%s: SMC_FC_SPCI_ID_GET failed 0x%x 0x%x 0x%x\n",
 			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
 		ret = -EIO;
 		goto err_id_get;
@@ -518,7 +592,7 @@ static int trusty_init_msg_buf(struct trusty_state *s, struct device *dev)
 	smc_ret = trusty_smc8(SMC_FCZ_SPCI_RXTX_MAP, tx_paddr, rx_paddr, 1, 0,
 			      0, 0, 0);
 	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC64_SPCI_RXTX_MAP failed 0x%x 0x%x 0x%x",
+		dev_err(s->dev, "%s: SMC_FCZ_SPCI_RXTX_MAP failed 0x%x 0x%x 0x%x\n",
 			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
 		ret = -EIO;
 		goto err_rxtx_map;
@@ -536,6 +610,8 @@ err_unaligned_tx_buf:
 	s->spci_tx = NULL;
 err_alloc_tx:
 err_id_get:
+err_features:
+err_version:
 	return ret;
 }
 
@@ -545,7 +621,7 @@ static void trusty_free_msg_buf(struct trusty_state *s, struct device *dev)
 
 	smc_ret = trusty_smc8(SMC_FC_SPCI_RXTX_UNMAP, 0, 0, 0, 0, 0, 0, 0);
 	if (smc_ret.r0 != SMC_FC_SPCI_SUCCESS) {
-		dev_err(s->dev, "%s: SMC_FC_SPCI_RXTX_UNMAP failed 0x%x 0x%x 0x%x",
+		dev_err(s->dev, "%s: SMC_FC_SPCI_RXTX_UNMAP failed 0x%x 0x%x 0x%x\n",
 			__func__, smc_ret.r0, smc_ret.r1, smc_ret.r2);
 	} else {
 		kfree(s->spci_rx);
