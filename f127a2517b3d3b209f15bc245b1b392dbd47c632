@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c185e414_084bce06",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-03-30T07:15:20Z",
+      "side": 1,
+      "message": "Why a pointer instead of a value?",
+      "range": {
+        "startLine": 374,
+        "startChar": 50,
+        "endLine": 374,
+        "endChar": 59
+      },
+      "revId": "f127a2517b3d3b209f15bc245b1b392dbd47c632",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad16ffca_5ca80f30",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-03-30T07:15:20Z",
+      "side": 1,
+      "message": "I don\u0027t see it declared anywhere. Does this compile?",
+      "range": {
+        "startLine": 376,
+        "startChar": 25,
+        "endLine": 376,
+        "endChar": 30
+      },
+      "revId": "f127a2517b3d3b209f15bc245b1b392dbd47c632",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1be6cea7_402a6600",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-03-30T07:15:20Z",
+      "side": 1,
+      "message": "This could be done more efficiently by reading more than one incfs_blockmap_entry at once.",
+      "range": {
+        "startLine": 474,
+        "startChar": 2,
+        "endLine": 474,
+        "endChar": 56
+      },
+      "revId": "f127a2517b3d3b209f15bc245b1b392dbd47c632",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4395a467_c2b15759",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1142024
+      },
+      "writtenOn": "2020-03-30T07:15:20Z",
+      "side": 1,
+      "message": "Just as easily this could have been done by adding one more record on the metadata chain, without having to open a Pandora box of modifiable file header.",
+      "range": {
+        "startLine": 510,
+        "startChar": 2,
+        "endLine": 510,
+        "endChar": 68
+      },
+      "revId": "f127a2517b3d3b209f15bc245b1b392dbd47c632",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
