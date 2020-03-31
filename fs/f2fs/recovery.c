@@ -119,6 +119,8 @@ static int recover_dentry(struct inode *inode, struct page *ipage,
 	struct fsync_inode_entry *entry;
 	int err = 0;
 	char *name;
+	f2fs_hash_t hash;
+	f2fs_hash_t *precomputed_hash = NULL;
 
 	entry = get_fsync_inode(dir_list, pino);
 	if (!entry) {
@@ -143,7 +145,14 @@ static int recover_dentry(struct inode *inode, struct page *ipage,
 		goto out;
 	}
 retry:
-	de = __f2fs_find_entry(dir, &fname, &page);
+	if (IS_ENCRYPTED(dir) && IS_CASEFOLDED(dir)) {
+		if (fname.disk_name.len > F2FS_NAME_LEN - sizeof(f2fs_hash_t))
+			return -EINVAL;
+		hash = le32_to_cpu(*((f2fs_hash_t *)
+				&raw_inode->i_name[fname.disk_name.len]));
+		precomputed_hash = &hash;
+	}
+	de = __f2fs_find_entry(dir, &fname, &page, precomputed_hash);
 	if (de && inode->i_ino == le32_to_cpu(de->ino))
 		goto out_put;
 
@@ -174,8 +183,8 @@ retry:
 	} else if (IS_ERR(page)) {
 		err = PTR_ERR(page);
 	} else {
-		err = f2fs_add_dentry(dir, &fname, inode,
-					inode->i_ino, inode->i_mode);
+		err = f2fs_add_dentry(dir, &fname, inode, inode->i_ino,
+				inode->i_mode, precomputed_hash);
 	}
 	if (err == -ENOMEM)
 		goto retry;

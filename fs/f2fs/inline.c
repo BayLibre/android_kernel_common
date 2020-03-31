@@ -323,7 +323,8 @@ process_inline:
 }
 
 struct f2fs_dir_entry *f2fs_find_in_inline_dir(struct inode *dir,
-			struct fscrypt_name *fname, struct page **res_page)
+			struct fscrypt_name *fname, struct page **res_page,
+			f2fs_hash_t *hash)
 {
 	struct f2fs_sb_info *sbi = F2FS_SB(dir->i_sb);
 	struct qstr name = FSTR_TO_QSTR(&fname->disk_name);
@@ -339,7 +340,7 @@ struct f2fs_dir_entry *f2fs_find_in_inline_dir(struct inode *dir,
 		return NULL;
 	}
 
-	namehash = f2fs_dentry_hash(dir, &name, fname);
+	namehash = hash ? *hash : f2fs_dentry_hash(dir, &name, fname);
 
 	inline_dentry = inline_data_addr(dir, ipage);
 
@@ -597,7 +598,8 @@ out:
 
 int f2fs_add_inline_entry(struct inode *dir, const struct qstr *new_name,
 				const struct fscrypt_name *fname,
-				struct inode *inode, nid_t ino, umode_t mode)
+				struct inode *inode, nid_t ino, umode_t mode,
+				f2fs_hash_t *hash)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(dir);
 	struct page *ipage;
@@ -638,7 +640,7 @@ int f2fs_add_inline_entry(struct inode *dir, const struct qstr *new_name,
 
 	f2fs_wait_on_page_writeback(ipage, NODE, true, true);
 
-	name_hash = f2fs_dentry_hash(dir, new_name, fname);
+	name_hash = hash ? *hash : f2fs_dentry_hash(dir, new_name, fname);
 	f2fs_update_dentry(ino, mode, &d, new_name, name_hash, bit_pos);
 
 	set_page_dirty(ipage);
