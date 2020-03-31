@@ -163,7 +163,7 @@ static void f2fs_fname_setup_ci_filename(struct inode *dir,
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(dir);
 
-	if (!IS_CASEFOLDED(dir)) {
+	if (!needs_casefold(dir)) {
 		cf_name->name = NULL;
 		return;
 	}
@@ -271,7 +271,8 @@ found:
 static struct f2fs_dir_entry *find_in_level(struct inode *dir,
 					unsigned int level,
 					struct fscrypt_name *fname,
-					struct page **res_page)
+					struct page **res_page,
+					f2fs_hash_t *hash)
 {
 	struct qstr name = FSTR_TO_QSTR(&fname->disk_name);
 	int s = GET_DENTRY_SLOTS(name.len);
@@ -281,7 +282,8 @@ static struct f2fs_dir_entry *find_in_level(struct inode *dir,
 	struct f2fs_dir_entry *de = NULL;
 	bool room = false;
 	int max_slots;
-	f2fs_hash_t namehash = f2fs_dentry_hash(dir, &name, fname);
+	f2fs_hash_t namehash = hash ? *hash :
+			f2fs_dentry_hash(dir, &name, fname);
 
 	nbucket = dir_buckets(level, F2FS_I(dir)->i_dir_level);
 	nblock = bucket_blocks(level);
@@ -322,7 +324,8 @@ static struct f2fs_dir_entry *find_in_level(struct inode *dir,
 }
 
 struct f2fs_dir_entry *__f2fs_find_entry(struct inode *dir,
-			struct fscrypt_name *fname, struct page **res_page)
+			struct fscrypt_name *fname, struct page **res_page,
+			f2fs_hash_t *hash)
 {
 	unsigned long npages = dir_blocks(dir);
 	struct f2fs_dir_entry *de = NULL;
@@ -331,7 +334,7 @@ struct f2fs_dir_entry *__f2fs_find_entry(struct inode *dir,
 
 	if (f2fs_has_inline_dentry(dir)) {
 		*res_page = NULL;
-		de = f2fs_find_in_inline_dir(dir, fname, res_page);
+		de = f2fs_find_in_inline_dir(dir, fname, res_page, hash);
 		goto out;
 	}
 
@@ -350,7 +353,7 @@ struct f2fs_dir_entry *__f2fs_find_entry(struct inode *dir,
 
 	for (level = 0; level < max_depth; level++) {
 		*res_page = NULL;
-		de = find_in_level(dir, level, fname, res_page);
+		de = find_in_level(dir, level, fname, res_page, hash);
 		if (de || IS_ERR(*res_page))
 			break;
 	}
@@ -391,7 +394,7 @@ struct f2fs_dir_entry *f2fs_find_entry(struct inode *dir,
 		return NULL;
 	}
 
-	de = __f2fs_find_entry(dir, &fname, res_page);
+	de = __f2fs_find_entry(dir, &fname, res_page, NULL);
 
 	fscrypt_free_filename(&fname);
 	return de;
@@ -434,17 +437,27 @@ void f2fs_set_link(struct inode *dir, struct f2fs_dir_entry *de,
 	f2fs_put_page(page, 1);
 }
 
-static void init_dent_inode(const struct qstr *name, struct page *ipage)
+static bool init_dent_inode(const struct qstr *name, struct page *ipage,
+			    f2fs_hash_t name_hash, bool needs_hash)
 {
 	struct f2fs_inode *ri;
+	bool added_hash = false;
 
 	f2fs_wait_on_page_writeback(ipage, NODE, true, true);
 
 	/* copy name info. to this inode page */
 	ri = F2FS_INODE(ipage);
 	ri->i_namelen = cpu_to_le32(name->len);
+
 	memcpy(ri->i_name, name->name, name->len);
+	if (needs_hash && name->len < F2FS_NAME_LEN - sizeof(f2fs_hash_t)) {
+		f2fs_hash_t *hash = (f2fs_hash_t *)&ri->i_name[name->len];
+
+		*hash = name_hash;
+		added_hash = true;
+	}
 	set_page_dirty(ipage);
+	return needs_hash && added_hash;
 }
 
 void f2fs_do_make_empty_dir(struct inode *inode, struct inode *parent,
@@ -485,8 +498,8 @@ static int make_empty_dir(struct inode *inode,
 }
 
 struct page *f2fs_init_inode_metadata(struct inode *inode, struct inode *dir,
-			const struct qstr *new_name, const struct qstr *orig_name,
-			struct page *dpage)
+			const struct qstr *new_name, f2fs_hash_t name_hash,
+			const struct qstr *orig_name, struct page *dpage)
 {
 	struct page *page;
 	int dummy_encrypt = DUMMY_ENCRYPTION_ENABLED(F2FS_I_SB(dir));
@@ -529,9 +542,13 @@ struct page *f2fs_init_inode_metadata(struct inode *inode, struct inode *dir,
 	}
 
 	if (new_name) {
-		init_dent_inode(new_name, page);
+		bool needs_hash = IS_ENCRYPTED(dir) && IS_CASEFOLDED(dir);
+		bool stored_hash = init_dent_inode(new_name, page, name_hash,
+						   needs_hash);
 		if (IS_ENCRYPTED(dir))
 			file_set_enc_name(inode);
+		if (needs_hash && !stored_hash)
+			file_lost_pino(inode);
 	}
 
 	/*
@@ -699,7 +716,7 @@ add_dentry:
 	if (inode) {
 		down_write(&F2FS_I(inode)->i_sem);
 		page = f2fs_init_inode_metadata(inode, dir, new_name,
-						orig_name, NULL);
+						dentry_hash, orig_name, NULL);
 		if (IS_ERR(page)) {
 			err = PTR_ERR(page);
 			goto fail;
@@ -732,7 +749,8 @@ fail:
 }
 
 int f2fs_add_dentry(struct inode *dir, struct fscrypt_name *fname,
-				struct inode *inode, nid_t ino, umode_t mode)
+				struct inode *inode, nid_t ino, umode_t mode,
+				f2fs_hash_t *hash)
 {
 	struct qstr new_name;
 	f2fs_hash_t dentry_hash;
@@ -743,8 +761,8 @@ int f2fs_add_dentry(struct inode *dir, struct fscrypt_name *fname,
 
 	if (f2fs_has_inline_dentry(dir))
 		err = f2fs_add_inline_entry(dir, &new_name, fname,
-							inode, ino, mode);
-	dentry_hash = f2fs_dentry_hash(dir, &new_name, fname);
+					inode, ino, mode, hash);
+	dentry_hash = hash ? *hash : f2fs_dentry_hash(dir, &new_name, fname);
 	if (err == -EAGAIN)
 		err = f2fs_add_regular_entry(dir, &new_name, fname->usr_fname,
 						dentry_hash, inode, ino, mode);
@@ -777,7 +795,7 @@ int f2fs_do_add_link(struct inode *dir, const struct qstr *name,
 	 * consistency more.
 	 */
 	if (current != F2FS_I(dir)->task) {
-		de = __f2fs_find_entry(dir, &fname, &page);
+		de = __f2fs_find_entry(dir, &fname, &page, NULL);
 		F2FS_I(dir)->task = NULL;
 	}
 	if (de) {
@@ -786,7 +804,7 @@ int f2fs_do_add_link(struct inode *dir, const struct qstr *name,
 	} else if (IS_ERR(page)) {
 		err = PTR_ERR(page);
 	} else {
-		err = f2fs_add_dentry(dir, &fname, inode, ino, mode);
+		err = f2fs_add_dentry(dir, &fname, inode, ino, mode, NULL);
 	}
 	fscrypt_free_filename(&fname);
 	return err;
@@ -798,7 +816,7 @@ int f2fs_do_tmpfile(struct inode *inode, struct inode *dir)
 	int err = 0;
 
 	down_write(&F2FS_I(inode)->i_sem);
-	page = f2fs_init_inode_metadata(inode, dir, NULL, NULL, NULL);
+	page = f2fs_init_inode_metadata(inode, dir, NULL, 0, NULL, NULL);
 	if (IS_ERR(page)) {
 		err = PTR_ERR(page);
 		goto fail;

@@ -157,6 +157,8 @@ static const struct vm_operations_struct f2fs_file_vm_ops = {
 static int get_parent_ino(struct inode *inode, nid_t *pino)
 {
 	struct dentry *dentry;
+	struct inode *parent;
+	int fix;
 
 	inode = igrab(inode);
 	dentry = d_find_any_alias(inode);
@@ -164,9 +166,14 @@ static int get_parent_ino(struct inode *inode, nid_t *pino)
 	if (!dentry)
 		return 0;
 
-	*pino = parent_ino(dentry);
+	spin_lock(&dentry->d_lock);
+	parent = dentry->d_parent->d_inode;
+	*pino = parent->i_ino;
+	fix = !(IS_ENCRYPTED(parent) && IS_CASEFOLDED(parent));
+	spin_unlock(&dentry->d_lock);
+
 	dput(dentry);
-	return 1;
+	return fix;
 }
 
 static inline enum cp_reason_type need_do_checkpoint(struct inode *inode)
