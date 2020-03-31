@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5036c0b6_ce046ca9",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-31T21:49:48Z",
+      "side": 1,
+      "message": "Why are the -\u003esetup_rq_keyslot_manager() and -\u003edestroy_keyslot_manager() Android-specific variant ops needed?  Everyone should be using hba-\u003eksm, right?  They might initialize it as a \"passthrough\" keyslot manager, but they will still be using it.  So why not just remove these variant ops and use the code directly from v9:\n\nvoid ufshcd_crypto_setup_rq_keyslot_manager(struct ufs_hba *hba,\n                                            struct request_queue *q)\n{\n        if ((hba-\u003ecaps \u0026 UFSHCD_CAP_CRYPTO))\n                blk_ksm_register(\u0026hba-\u003eksm, q);\n}\n\nvoid ufshcd_crypto_destroy_keyslot_manager(struct ufs_hba *hba)\n{\n        blk_ksm_destroy(\u0026hba-\u003eksm);\n}",
+      "range": {
+        "startLine": 275,
+        "startChar": 5,
+        "endLine": 275,
+        "endChar": 42
+      },
+      "revId": "3f3ac530c9fe675b12905f4d6e1985603d1c0c0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc2c980f_58e02318",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-31T21:49:48Z",
+      "side": 1,
+      "message": "This Android-specific variant op is unnecessary since it\u0027s only called immediately after the upstream variant op ufshcd_vops_dbg_register_dump(), which vendors can use instead.",
+      "range": {
+        "startLine": 315,
+        "startChar": 5,
+        "endLine": 315,
+        "endChar": 24
+      },
+      "revId": "3f3ac530c9fe675b12905f4d6e1985603d1c0c0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "170db561_6a8f209e",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-31T21:49:48Z",
+      "side": 1,
+      "message": "This Android-specific function isn\u0027t exported to modules, so no one can be using it.  This would be a good chance to remove it.",
+      "range": {
+        "startLine": 339,
+        "startChar": 5,
+        "endLine": 339,
+        "endChar": 27
+      },
+      "revId": "3f3ac530c9fe675b12905f4d6e1985603d1c0c0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ba99c25_a8f5782e",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4938,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-03-31T21:49:48Z",
+      "side": 1,
+      "message": "Isn\u0027t the -\u003ecomplete_lrbp_crypto() Android-specific variant op unnecessary?  There was a hook here in the old ICE driver, but its purpose was to release the keyslot.  That\u0027s no longer needed now that the block layer manages the keyslots.",
+      "range": {
+        "startLine": 4935,
+        "startChar": 0,
+        "endLine": 4938,
+        "endChar": 6
+      },
+      "revId": "3f3ac530c9fe675b12905f4d6e1985603d1c0c0e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
