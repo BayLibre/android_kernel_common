@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6372320_9d97082f",
+        "filename": "drivers/scsi/ufs/ufshcd-crypto.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-04-01T17:33:53Z",
+      "side": 1,
+      "message": "v9 has a comment here:\n\n       /*\n        * Clear the crypto cfg on the device. Clearing CFGE\n        * might not be sufficient, so just clear the entire cfg.\n        */\n\nMaybe keep it to reduce the diff from v9?",
+      "revId": "db1be8d6f4bb42ca483ff00a834d3e39bdc6673d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
