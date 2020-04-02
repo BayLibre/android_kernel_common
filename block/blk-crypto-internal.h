@@ -173,11 +173,20 @@ static inline blk_status_t blk_crypto_insert_cloned_request(struct request *rq)
 
 #ifdef CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK
 
+int blk_crypto_fallback_start_using_mode(enum blk_crypto_mode_num mode_num);
+
 bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr);
 
 int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key);
 
 #else /* CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK */
+
+static inline int
+blk_crypto_fallback_start_using_mode(enum blk_crypto_mode_num mode_num)
+{
+	pr_warn_once("crypto API fallback is disabled\n");
+	return -ENOPKG;
+}
 
 static inline bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
 {

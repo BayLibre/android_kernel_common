@@ -97,6 +97,9 @@ int blk_crypto_init_key(struct blk_crypto_key *blk_key,
 			unsigned int dun_bytes,
 			unsigned int data_unit_size);
 
+int blk_crypto_start_using_key(const struct blk_crypto_key *key,
+			       struct request_queue *q);
+
 int blk_crypto_evict_key(struct request_queue *q,
 			 const struct blk_crypto_key *key);
 
@@ -119,21 +122,6 @@ static inline void bio_crypt_clone(struct bio *dst, struct bio *src,
 	if (bio_has_crypt_ctx(src))
 		__bio_crypt_clone(dst, src, gfp_mask);
 }
-
-#ifdef CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK
-
-int blk_crypto_start_using_key(struct blk_crypto_key *key,
-			       struct request_queue *q);
-
-#else /* CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK */
-
-static inline int blk_crypto_start_using_key(struct blk_crypto_key *key,
-					     struct request_queue *q)
-{
-	return 0;
-}
-
-#endif /* CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK */
 
 #if IS_ENABLED(CONFIG_DM_DEFAULT_KEY)
 static inline void bio_set_skip_dm_default_key(struct bio *bio)

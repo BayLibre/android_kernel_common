@@ -402,6 +402,33 @@ int blk_crypto_init_key(struct blk_crypto_key *blk_key,
 EXPORT_SYMBOL_GPL(blk_crypto_init_key);
 
 /**
+ * blk_crypto_start_using_key() - Start using a blk_crypto_key on a device
+ * @key: A key to use on the device
+ * @q: the request queue for the device
+ *
+ * Upper layers must call this function to ensure that either the hardware
+ * supports the key's crypto settings, or the crypto API fallback has transforms
+ * for the needed mode allocated and ready to go.
+ *
+ * Return: 0 on success; -EOPNOTSUPP if the key is wrapped but the hardware
+ *	   doesn't support wrapped keys; -ENOPKG if the hardware doesn't support
+ *	   the key and blk-crypto-fallback is either disabled or the needed
+ *	   algorithm is disabled in the crypto API; or another -errno code.
+ */
+int blk_crypto_start_using_key(const struct blk_crypto_key *key,
+			       struct request_queue *q)
+{
+	if (blk_ksm_crypto_key_supported(q->ksm, key))
+		return 0;
+	if (key->is_hw_wrapped) {
+		pr_warn_once("hardware doesn't support wrapped keys\n");
+		return -EOPNOTSUPP;
+	}
+	return blk_crypto_fallback_start_using_mode(key->crypto_mode);
+}
+EXPORT_SYMBOL_GPL(blk_crypto_start_using_key);
+
+/**
  * blk_crypto_evict_key() - Evict a key from any inline encryption hardware
  *			    it may have been programmed into
  * @q: The request queue who's keyslot manager this key might have been

@@ -599,21 +599,13 @@ out:
 	return err;
 }
 
-/**
- * blk_crypto_start_using_key() - Start using a blk_crypto_key on a device
- * @key: A key to use on the device
- * @q: the request queue for the device
- *
- * Upper layers must call this function to ensure that the crypto API fallback
- * has transforms for the algorithm/data_unit_size/dun_bytes combo specified by
- * the key, if it becomes necessary.
- *
- * Return: 0 on success and -err on error.
+/*
+ * Prepare blk-crypto-fallback for the specified crypto mode.
+ * Returns -ENOPKG if the needed crypto API support is missing.
  */
-int blk_crypto_start_using_key(struct blk_crypto_key *key,
-			       struct request_queue *q)
+int blk_crypto_fallback_start_using_mode(enum blk_crypto_mode_num mode_num)
 {
-	enum blk_crypto_mode_num mode_num = key->crypto_mode;
+	const char *cipher_str = blk_crypto_modes[mode_num].cipher_str;
 	struct blk_crypto_keyslot *slotp;
 	unsigned int i;
 	int err = 0;
@@ -626,13 +618,6 @@ int blk_crypto_start_using_key(struct blk_crypto_key *key,
 	if (likely(smp_load_acquire(&tfms_inited[mode_num])))
 		return 0;
 
-	/*
-	 * If the keyslot manager of the request queue supports this crypto
-	 * mode, then we don't need to allocate this mode.
-	 */
-	if (blk_ksm_crypto_key_supported(q->ksm, key))
-		return 0;
-
 	mutex_lock(&tfms_init_lock);
 	err = blk_crypto_fallback_init();
 	if (err)
@@ -643,11 +628,14 @@ int blk_crypto_start_using_key(struct blk_crypto_key *key,
 
 	for (i = 0; i < blk_crypto_num_keyslots; i++) {
 		slotp = &blk_crypto_keyslots[i];
-		slotp->tfms[mode_num] = crypto_alloc_skcipher(
-					blk_crypto_modes[mode_num].cipher_str,
-					0, 0);
+		slotp->tfms[mode_num] = crypto_alloc_skcipher(cipher_str, 0, 0);
 		if (IS_ERR(slotp->tfms[mode_num])) {
 			err = PTR_ERR(slotp->tfms[mode_num]);
+			if (err == -ENOENT) {
+				pr_warn_once("Missing crypto API support for \"%s\"\n",
+					     cipher_str);
+				err = -ENOPKG;
+			}
 			slotp->tfms[mode_num] = NULL;
 			goto out_free_tfms;
 		}
@@ -673,4 +661,3 @@ out:
 	mutex_unlock(&tfms_init_lock);
 	return err;
 }
-EXPORT_SYMBOL_GPL(blk_crypto_start_using_key);
