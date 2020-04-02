@@ -16,6 +16,24 @@
       "revId": "af37ee387f4c2e008ed7ce2d903fe1ce82840b22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2964d229_f473e668",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-04-02T19:26:03Z",
+      "side": 0,
+      "message": "There is already a -\u003edbg_register_dump variant op, so you can just dump your crypto registers there instead.  ufs-qcom.c even already implements this variant op as ufs_qcom_dump_dbg_regs().",
+      "parentUuid": "cf726984_d0ff43f4",
+      "revId": "af37ee387f4c2e008ed7ce2d903fe1ce82840b22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
