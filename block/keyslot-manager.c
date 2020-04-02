@@ -304,6 +304,13 @@ bool blk_ksm_crypto_key_supported(struct blk_keyslot_manager *ksm,
 {
 	if (!ksm)
 		return false;
+	if (key->is_hw_wrapped) {
+		if (!(ksm->features & BLK_CRYPTO_FEATURE_WRAPPED_KEYS))
+			return false;
+	} else {
+		if (!(ksm->features & BLK_CRYPTO_FEATURE_STANDARD_KEYS))
+			return false;
+	}
 	return (ksm->crypto_modes_supported[key->crypto_mode] &
 		key->data_unit_size) &&
 	       (ksm->max_dun_bytes_supported >= key->dun_bytes);
@@ -474,6 +481,7 @@ void blk_ksm_intersect_modes(struct blk_keyslot_manager *parent,
 	if (child) {
 		unsigned int i;
 
+		parent->features &= child->features;
 		parent->max_dun_bytes_supported =
 			min(parent->max_dun_bytes_supported,
 			    child->max_dun_bytes_supported);
@@ -482,6 +490,7 @@ void blk_ksm_intersect_modes(struct blk_keyslot_manager *parent,
 				child->crypto_modes_supported[i];
 		}
 	} else {
+		parent->features = 0;
 		parent->max_dun_bytes_supported = 0;
 		memset(parent->crypto_modes_supported, 0,
 		       sizeof(parent->crypto_modes_supported));

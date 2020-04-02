@@ -197,6 +197,7 @@ int ufshcd_hba_init_crypto_spec(struct ufs_hba *hba,
 		goto out_free_caps;
 
 	hba->ksm.ksm_ll_ops = *ksm_ops;
+	hba->ksm.features = BLK_CRYPTO_FEATURE_STANDARD_KEYS;
 	/* UFS only supports 8 bytes for any DUN */
 	hba->ksm.max_dun_bytes_supported = 8;
 	hba->ksm.dev = hba->dev;

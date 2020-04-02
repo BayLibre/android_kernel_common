@@ -13,6 +13,15 @@
 
 struct blk_keyslot_manager;
 
+/* Inline crypto feature bits.  Must set at least one. */
+enum {
+	/* Support for standard software-specified keys */
+	BLK_CRYPTO_FEATURE_STANDARD_KEYS = BIT(0),
+
+	/* Support for hardware-wrapped keys */
+	BLK_CRYPTO_FEATURE_WRAPPED_KEYS = BIT(1),
+};
+
 /**
  * struct blk_ksm_ll_ops - functions to manage keyslots in hardware
  * @keyslot_program:	Program the specified key into the specified slot in the
@@ -49,6 +58,12 @@ struct blk_keyslot_manager {
 	 * device
 	 */
 	struct blk_ksm_ll_ops ksm_ll_ops;
+
+	/*
+	 * The supported features, as a bitmask of BLK_CRYPTO_FEATURE_* flags.
+	 * Most drivers should set BLK_CRYPTO_FEATURE_STANDARD_KEYS here.
+	 */
+	unsigned int features;
 
 	/*
 	 * The maximum number of bytes supported for specifying the data unit

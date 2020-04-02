@@ -2376,14 +2376,13 @@ static void dm_init_inline_encryption(struct mapped_device *md)
 	md->ksm.ksm_ll_ops = dm_ksm_ll_ops;
 
 	/*
-	 * Start out with no limit on dun bytes supported. Any limits
-	 * will be factored in when calculating the device restrictions.
+	 * Initially declare support for all crypto settings.  Anything
+	 * unsupported by a child device will be removed later when calculating
+	 * the device restrictions.
 	 */
+	md->ksm.features = BLK_CRYPTO_FEATURE_STANDARD_KEYS |
+			   BLK_CRYPTO_FEATURE_WRAPPED_KEYS;
 	md->ksm.max_dun_bytes_supported = UINT_MAX;
-	/*
-	 * Start out with all crypto mode support bits set.  Any unsupported
-	 * bits will be cleared later when calculating the device restrictions.
-	 */
 	memset(md->ksm.crypto_modes_supported, 0xFF,
 	       sizeof(md->ksm.crypto_modes_supported));
 

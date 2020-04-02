@@ -547,6 +547,7 @@ static int blk_crypto_fallback_init(void)
 	err = -ENOMEM;
 
 	blk_crypto_ksm.ksm_ll_ops = blk_crypto_ksm_ll_ops;
+	blk_crypto_ksm.features = BLK_CRYPTO_FEATURE_STANDARD_KEYS;
 	blk_crypto_ksm.max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
 
 	/* All blk-crypto modes have a crypto API fallback. */
