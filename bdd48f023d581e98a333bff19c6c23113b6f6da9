@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bdafdc7_6ca9475d",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-04-06T18:30:05Z",
+      "side": 1,
+      "message": "I hope the compiler is smart enough to understand there\u0027s no aliasing here and to optimize it into a  simple shift + or operation. If not it could help with writing it as a (u64)le_to_cpu(hi) \u003c\u003c 32 | low instead of multiple operations on an indirected field",
+      "range": {
+        "startLine": 355,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 38
+      },
+      "revId": "bdd48f023d581e98a333bff19c6c23113b6f6da9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72c7d697_42df4f6b",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-04-06T18:30:05Z",
+      "side": 1,
+      "message": "I was actually wrong, and the blockmap entry size is 10, not 12, as of now. it\u0027s the worst possible size to read in pages, so I actually doubt any constant here would make much change.\nIt may even be worth changing the format version to 2 already, and reducing the entry size to 8, just to make everything align well.",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 33
+      },
+      "revId": "bdd48f023d581e98a333bff19c6c23113b6f6da9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cec44195_509201fa",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-04-06T18:30:05Z",
+      "side": 1,
+      "message": "keeping this under a page could help a bit, but only a bit I suppose",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 63
+      },
+      "revId": "bdd48f023d581e98a333bff19c6c23113b6f6da9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
