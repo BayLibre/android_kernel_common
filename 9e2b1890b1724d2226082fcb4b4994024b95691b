@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bae6cb9f_5ae0681f",
+        "filename": "drivers/mmc/host/cqhci.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "48491660_4b9b1c90",
+      "range": {
+        "startLine": 583,
+        "startChar": 14,
+        "endLine": 583,
+        "endChar": 20
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e977ed3e_75c01873",
         "filename": "drivers/mmc/host/cqhci.c",
         "patchSetId": 3
@@ -45,6 +69,30 @@
       "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93b73c76_37e38264",
+        "filename": "drivers/mmc/host/cqhci.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "\"struct device\" from underlying \"struct platform_device\" is not available in this function. All pr_xxx statements can be fixed with separate generic patch which fetches the \"struct device\" from \"struct platform_device\" to pass in dev_xxx.",
+      "parentUuid": "e977ed3e_75c01873",
+      "range": {
+        "startLine": 630,
+        "startChar": 3,
+        "endLine": 630,
+        "endChar": 9
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "322e8d59_3cd98898",
+        "filename": "drivers/mmc/host/cqhci.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "\"struct device\" from underlying \"struct platform_device\" is not available in this function. All pr_xxx statements can be fixed with separate generic patch which fetches the \"struct device\" from \"struct platform_device\" to pass in dev_xxx.",
+      "parentUuid": "46c35d43_d2cecb3e",
+      "range": {
+        "startLine": 686,
+        "startChar": 3,
+        "endLine": 686,
+        "endChar": 9
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0e894ea_4e7b4b71",
         "filename": "drivers/mmc/host/cqhci.c",
         "patchSetId": 3
@@ -91,6 +163,30 @@
       "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2c9d5ee_91c65d81",
+        "filename": "drivers/mmc/host/cqhci.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "\"struct device\" from underlying \"struct platform_device\" is not available in this function. All pr_xxx statements can be fixed with separate generic patch which fetches the \"struct device\" from \"struct platform_device\" to pass in dev_xxx.",
+      "parentUuid": "f0e894ea_4e7b4b71",
+      "range": {
+        "startLine": 1206,
+        "startChar": 2,
+        "endLine": 1206,
+        "endChar": 8
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "38d4a51b_9adb1448",
+        "filename": "drivers/mmc/host/cqhci.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "9b9406c6_a66261b4",
+      "range": {
+        "startLine": 146,
+        "startChar": 8,
+        "endLine": 146,
+        "endChar": 21
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "50bc2248_5fcd8cca",
         "filename": "drivers/mmc/host/cqhci.h",
         "patchSetId": 3
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "7b42c128_4cd4e30a",
+        "filename": "drivers/mmc/host/cqhci.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "Yes these are for eMMC Crypto. Fixed.",
+      "parentUuid": "50bc2248_5fcd8cca",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 42
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "86c76b9f_ae6d7d62",
         "filename": "drivers/mmc/host/cqhci.h",
         "patchSetId": 3
@@ -151,6 +295,30 @@
       "writtenOn": "2020-03-26T21:14:38Z",
       "side": 1,
       "message": "Which of these variant ops are you actually using?  Please remove all unused ones.",
+      "range": {
+        "startLine": 216,
+        "startChar": 7,
+        "endLine": 216,
+        "endChar": 36
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10342985_c2cc34f1",
+        "filename": "drivers/mmc/host/cqhci.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-06T09:58:07Z",
+      "side": 1,
+      "message": "All are being used. You can have a look at \"ANDROID: mmc: cqhci: Add CQHCI crypto API\" for implementation details.",
+      "parentUuid": "86c76b9f_ae6d7d62",
       "range": {
         "startLine": 216,
         "startChar": 7,
