@@ -924,7 +924,11 @@ static void a6xx_gmu_memory_free(struct a6xx_gmu *gmu, struct a6xx_gmu_bo *bo)
 	if (IS_ERR_OR_NULL(bo))
 		return;
 
+<<<<<<< HEAD   (3ddb60 ANDROID: fscrypt: fall back to filesystem-layer crypto when )
 	dma_free_attrs(gmu->dev, bo->size, bo->virt, bo->iova, bo->attrs);
+=======
+	dma_free_wc(gmu->dev, bo->size, bo->virt, bo->iova);
+>>>>>>> BRANCH (f365ab Merge tag 'drm-next-2020-04-01' of git://anongit.freedesktop)
 	kfree(bo);
 }
 
@@ -940,8 +944,12 @@ static struct a6xx_gmu_bo *a6xx_gmu_memory_alloc(struct a6xx_gmu *gmu,
 	bo->size = PAGE_ALIGN(size);
 	bo->attrs = DMA_ATTR_WRITE_COMBINE;
 
+<<<<<<< HEAD   (3ddb60 ANDROID: fscrypt: fall back to filesystem-layer crypto when )
 	bo->virt = dma_alloc_attrs(gmu->dev, bo->size, &bo->iova, GFP_KERNEL,
 		bo->attrs);
+=======
+	bo->virt = dma_alloc_wc(gmu->dev, bo->size, &bo->iova, GFP_KERNEL);
+>>>>>>> BRANCH (f365ab Merge tag 'drm-next-2020-04-01' of git://anongit.freedesktop)
 
 	if (!bo->virt) {
 		kfree(bo);
@@ -1232,6 +1240,14 @@ int a6xx_gmu_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
 	ret = of_dma_configure(gmu->dev, node, false);
 	if (ret)
 		return ret;
+<<<<<<< HEAD   (3ddb60 ANDROID: fscrypt: fall back to filesystem-layer crypto when )
+=======
+
+	/* Set the mask after the of_dma_configure() */
+	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(31));
+	if (ret)
+		return ret;
+>>>>>>> BRANCH (f365ab Merge tag 'drm-next-2020-04-01' of git://anongit.freedesktop)
 
 	/* Fow now, don't do anything fancy until we get our feet under us */
 	gmu->idle_level = GMU_IDLE_STATE_ACTIVE;

@@ -13,7 +13,10 @@ struct a6xx_gmu_bo {
 	void *virt;
 	size_t size;
 	dma_addr_t iova;
+<<<<<<< HEAD   (3ddb60 ANDROID: fscrypt: fall back to filesystem-layer crypto when )
 	unsigned long attrs;
+=======
+>>>>>>> BRANCH (f365ab Merge tag 'drm-next-2020-04-01' of git://anongit.freedesktop)
 };
 
 /*
