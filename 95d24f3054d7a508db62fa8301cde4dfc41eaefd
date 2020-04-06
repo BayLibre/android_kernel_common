@@ -39,6 +39,75 @@
       "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ffb6513_6e3ec84a",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-06T18:15:20Z",
+      "side": 1,
+      "message": "dev_err() please.  No driver should ever use pr_* calls.",
+      "range": {
+        "startLine": 316,
+        "startChar": 2,
+        "endLine": 316,
+        "endChar": 8
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbacf4b6_90fb4ca7",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-06T18:15:20Z",
+      "side": 1,
+      "message": "are you sure this flushes anything?  That\u0027s not normally what mb() does...",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "013ef97b_e68d2ff8",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-06T18:15:20Z",
+      "side": 1,
+      "message": "again, what is guaranteeing mb() flushes any i/o memory?\n\nmb() controls the compiler reordering things, it does not control anything with memory flushing.",
+      "range": {
+        "startLine": 409,
+        "startChar": 1,
+        "endLine": 409,
+        "endChar": 3
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
