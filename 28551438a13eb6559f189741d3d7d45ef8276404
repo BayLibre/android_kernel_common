@@ -22,6 +22,30 @@
       "revId": "28551438a13eb6559f189741d3d7d45ef8276404",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "806c8dd0_76820dde",
+        "filename": "drivers/base/power/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2020-04-07T21:58:55Z",
+      "side": 0,
+      "message": "Yes.  All of the abort reason logging happens inside of pm_wakeup_pending() now.  (I think that was part of Todd\u0027s initial WIP patch that got combined with my changes.)",
+      "parentUuid": "3dd349ce_7ed2d12d",
+      "range": {
+        "startLine": 1773,
+        "startChar": 2,
+        "endLine": 1774,
+        "endChar": 26
+      },
+      "revId": "28551438a13eb6559f189741d3d7d45ef8276404",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
