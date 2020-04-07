@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "3f0d2130_6f546a57",
+        "filename": "drivers/mmc/host/cqhci.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-07T11:47:46Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "af661ceb_7c59eb64",
+      "range": {
+        "startLine": 630,
+        "startChar": 3,
+        "endLine": 630,
+        "endChar": 9
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46c35d43_d2cecb3e",
         "filename": "drivers/mmc/host/cqhci.c",
         "patchSetId": 3
@@ -376,6 +400,30 @@
       "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c577b35_d70b5876",
+        "filename": "drivers/mmc/host/cqhci.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1661652
+      },
+      "writtenOn": "2020-04-07T11:47:46Z",
+      "side": 1,
+      "message": "These are used as of now \n        int (*host_init_crypto)(struct cqhci_host *host,\n                                const struct keyslot_mgmt_ll_ops *ksm_ops);\n        void (*enable)(struct cqhci_host *host);\n        void (*disable)(struct cqhci_host *host);\n        int (*resume)(struct cqhci_host *host);\n        int (*debug)(struct cqhci_host *host);\n        int (*recovery_finish)(struct cqhci_host *host);\n\ni have removed the unused ones.",
+      "parentUuid": "55c7d394_7e857ce3",
+      "range": {
+        "startLine": 216,
+        "startChar": 7,
+        "endLine": 216,
+        "endChar": 36
+      },
+      "revId": "9e2b1890b1724d2226082fcb4b4994024b95691b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
