@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc40d98f_5c650079",
+        "filename": "drivers/mmc/host/cqhci.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1198,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-08T09:09:54Z",
+      "side": 1,
+      "message": "don\u0027t use \\ for strings, just make it all in one line, checkpatch will do this properly, and the string as-is does not look like you think it looks 😞",
+      "range": {
+        "startLine": 1198,
+        "startChar": 54,
+        "endLine": 1198,
+        "endChar": 56
+      },
+      "revId": "6870f207a567d3454fa0b7adba9cf6986ef90f8a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
