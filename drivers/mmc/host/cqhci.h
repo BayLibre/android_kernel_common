@@ -19,6 +19,7 @@
 #include <linux/completion.h>
 #include <linux/wait.h>
 #include <linux/irqreturn.h>
+#include <linux/mmc/core.h>
 #include <asm/io.h>
 
 /* registers */
@@ -145,6 +146,9 @@
 #define CQHCI_DAT_ADDR_LO(x)		(((x) & 0xFFFFFFFF) << 32)
 #define CQHCI_DAT_ADDR_HI(x)		(((x) & 0xFFFFFFFF) << 0)
 
+#define CQ_TASK_DESC_TASK_PARAMS_SIZE 8
+#define CQ_TASK_DESC_CE_PARAMS_SIZE 8
+
 struct cqhci_host_ops;
 struct mmc_host;
 struct cqhci_slot;
@@ -212,6 +216,7 @@ struct cqhci_host_ops {
 	void (*disable)(struct mmc_host *mmc, bool recovery);
 };
 
+#ifdef CONFIG_MMC_CQHCI
 static inline void cqhci_writel(struct cqhci_host *host, u32 val, int reg)
 {
 	if (unlikely(host->ops->write_l))
@@ -228,6 +233,11 @@ static inline u32 cqhci_readl(struct cqhci_host *host, int reg)
 		return readl_relaxed(host->mmio + reg);
 }
 
+static inline u8 *get_desc(struct cqhci_host *cq_host, u8 tag)
+{
+	return cq_host->desc_base + (tag * cq_host->slot_sz);
+}
+
 struct platform_device;
 
 irqreturn_t cqhci_irq(struct mmc_host *mmc, u32 intmask, int cmd_error,
@@ -237,4 +247,23 @@ struct cqhci_host *cqhci_pltfm_init(struct platform_device *pdev);
 int cqhci_suspend(struct mmc_host *mmc);
 int cqhci_resume(struct mmc_host *mmc);
 
+#ifdef CONFIG_MMC_CRYPTO
+int cqhci_crypto_start(struct mmc_host *host, struct mmc_request *mrq);
+#else
+static inline int cqhci_crypto_start(struct mmc_host *host,
+		struct mmc_request *mrq) { return 0; }
 #endif
+
+#else /* CONFIG_MMC_CQHCI */
+static inline u8 *get_desc(struct cqhci_host *cq_host, u8 tag) { return NULL; }
+static inline irqreturn_t cqhci_irq(struct mmc_host *mmc, u32 intmask,
+		int cmd_error, int data_error) { return IRQ_HANDLED; }
+static inline int cqhci_init(struct cqhci_host *cq_host,
+		struct mmc_host *mmc, bool dma64) { return 0; }
+static inline struct cqhci_host *cqhci_pltfm_init(struct platform_device *pdev)
+{ return NULL; }
+static inline int cqhci_suspend(struct mmc_host *mmc) { return 0; }
+static inline int cqhci_resume(struct mmc_host *mmc) { return 0; }
+#endif /* CONFIG_MMC_CQHCI */
+
+#endif /* LINUX_MMC_CQHCI_H */

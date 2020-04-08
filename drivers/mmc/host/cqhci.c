@@ -25,6 +25,7 @@
 #include <linux/mmc/card.h>
 
 #include "cqhci.h"
+#include "mtk_sd_crypto.h"
 
 #define DCMD_SLOT 31
 #define NUM_SLOTS 32
@@ -591,6 +592,8 @@ static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
 		if (cq_host->ops->enable)
 			cq_host->ops->enable(mmc);
 	}
+
+	cqhci_crypto_start(mmc, mrq);
 
 	if (mrq->data) {
 		task_desc = (__le64 __force *)get_desc(cq_host, tag);

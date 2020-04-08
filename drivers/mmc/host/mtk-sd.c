@@ -39,6 +39,7 @@
 #include <linux/mmc/sdio.h>
 #include <linux/mmc/slot-gpio.h>
 
+#include "cqhci.h"
 #define MAX_BD_NUM          1024
 
 /*--------------------------------------------------------------------------*/
@@ -85,10 +86,51 @@
 #define EMMC50_CFG0      0x208
 #define EMMC50_CFG3      0x220
 #define SDC_FIFO_CFG     0x228
+/* Crypto */
+#define PERI_FDI_AES_SI_CTRL 0x448
+#define MSDC_AES_EN       0x600
+#define MSDC_AES_SWST     0x670
+#define MSDC_AES_CFG_GP1  0x674
+#define MSDC_AES_KEY_GP1  0x6A0
+#define MSDC_AES_TKEY_GP1 0x6C0
+#define MSDC_AES_IV0_GP1  0x680
+#define MSDC_AES_CTR0_GP1 0x690
+#define MSDC_AES_CTR1_GP1 0x694
+#define MSDC_AES_CTR2_GP1 0x698
+#define MSDC_AES_CTR3_GP1 0x69C
+/* Crypto CQE */
+#define MSDC_CRCAP        0x100
+/* Crypto context fields in CQHCI data command task descriptor */
+#define DATA_UNIT_NUM(x)	    (((u64)(x) & 0xFFFFFFFF) << 0)
+#define CRYPTO_CONFIG_INDEX(x)	(((u64)(x) & 0xFF) << 32)
+#define CRYPTO_ENABLE(x)	    (((u64)(x) & 0x1) << 47)
+
+/* Crypto ATF */
+#define MTK_SIP_KERNEL_HW_FDE_MSDC_CTL_AARCH32 (0x82000273 | 0x00000000)
+#define MTK_SIP_KERNEL_HW_FDE_MSDC_CTL_AARCH64 (0xC2000273 | 0x40000000)
+
+
+
+/*--------------------------------------------------------------------------*/
+/* Top Pad Register Offset                                                  */
+/*--------------------------------------------------------------------------*/
+#define EMMC_TOP_CONTROL	0x00
+#define EMMC_TOP_CMD		0x04
+#define EMMC50_PAD_DS_TUNE	0x0c
 
 /*--------------------------------------------------------------------------*/
 /* Register Mask                                                            */
 /*--------------------------------------------------------------------------*/
+/* Crypto */
+#define PERI_AES_CTRL_MSDC0_EN    (4)          /* RW */
+#define MSDC_AES_MODE_1           (0x1F << 0)  /* RW */
+#define MSDC_AES_BYPASS           (1 << 2)     /* RW */
+#define MSDC_AES_SWITCH_START_ENC (1 << 0)     /* RW */
+#define MSDC_AES_SWITCH_START_DEC (1 << 1)     /* RW */
+#define MSDC_AES_ON               (0x1 << 0)   /* RW */
+#define MSDC_AES_SWITCH_VALID0    (0x1 << 1)   /* RW */
+#define MSDC_AES_SWITCH_VALID1    (0x1 << 2)   /* RW */
+#define MSDC_AES_CLK_DIV_SEL      (0x7 << 4)   /* RW */
 
 /* MSDC_CFG mask */
 #define MSDC_CFG_MODE           (0x1 << 0)	/* RW */
@@ -389,6 +431,7 @@ struct msdc_host {
 	struct clk *src_clk;	/* msdc source clock */
 	struct clk *h_clk;      /* msdc h_clk */
 	struct clk *src_clk_cg; /* msdc source clock control gate */
+	struct clk *crypto_clk;    /* msdc crypto clock */
 	u32 mclk;		/* mmc subsystem clock frequency */
 	u32 src_clk_freq;	/* source clock frequency */
 	unsigned char timing;
@@ -403,6 +446,19 @@ struct msdc_host {
 	struct msdc_save_para save_para; /* used when gate HCLK */
 	struct msdc_tune_para def_tune_para; /* default tune setting */
 	struct msdc_tune_para saved_tune_para; /* tune result of CMD21/CMD19 */
+};
+
+/*--------------------------------------------------------------------------*/
+/* Crypto CQE                                                    */
+/*--------------------------------------------------------------------------*/
+union cqhci_cpt_cap {
+	u32 cap_raw;
+	struct {
+		u8 cap_cnt;
+		u8 cfg_cnt;
+		u8 resv;
+		u8 cfg_ptr;
+	} cap;
 };
 
 static const struct mtk_mmc_compatible mt8135_compat = {
@@ -474,6 +530,35 @@ static const struct of_device_id msdc_of_ids[] = {
 	{}
 };
 MODULE_DEVICE_TABLE(of, msdc_of_ids);
+
+/*--------------------------------------------------------------------------*/
+/* enum                                                    */
+/*--------------------------------------------------------------------------*/
+enum msdc_crypto_alg {
+	MSDC_CRYPTO_ALG_BITLOCKER_AES_CBC	= 1,
+	MSDC_CRYPTO_ALG_AES_ECB				= 2,
+	MSDC_CRYPTO_ALG_ESSIV_AES_CBC		= 3,
+	MSDC_CRYPTO_ALG_AES_XTS				= 4,
+};
+
+/*--------------------------------------------------------------------------*/
+/* function                                                    */
+/*--------------------------------------------------------------------------*/
+
+#define MSDC_SET_BIT32(host, reg, bs) \
+	do { \
+		unsigned int tv = readl(host->base + reg);\
+		tv |= (u32)(bs); \
+		writel(tv, host->base + reg); \
+	} while (0)
+
+#define MSDC_CLR_BIT32(host, reg, bs) \
+	do { \
+		unsigned int tv = readl(host->base + reg);\
+		tv &= ~((u32)(bs)); \
+		writel(tv, host->base + reg); \
+	} while (0)
+
 
 static void sdr_set_bits(void __iomem *reg, u32 bs)
 {
@@ -656,18 +741,33 @@ static void msdc_set_timeout(struct msdc_host *host, u32 ns, u32 clks)
 	sdr_set_field(host->base + SDC_CFG, SDC_CFG_DTOC, timeout);
 }
 
-static void msdc_gate_clock(struct msdc_host *host)
+static void msdc_gate_clock(struct mmc_host *mmc)
 {
+	struct msdc_host *host = mmc_priv(mmc);
+
+	if (!host)
+		return;
+
+	if (mmc->caps2 | MMC_CAP2_CRYPTO)
+		clk_disable_unprepare(host->crypto_clk);
 	clk_disable_unprepare(host->src_clk_cg);
 	clk_disable_unprepare(host->src_clk);
 	clk_disable_unprepare(host->h_clk);
 }
 
-static void msdc_ungate_clock(struct msdc_host *host)
+static void msdc_ungate_clock(struct mmc_host *mmc)
 {
+	struct msdc_host *host = mmc_priv(mmc);
+
+	if (!host)
+		return;
+
 	clk_prepare_enable(host->h_clk);
 	clk_prepare_enable(host->src_clk);
 	clk_prepare_enable(host->src_clk_cg);
+	if (mmc->caps2 | MMC_CAP2_CRYPTO)
+		clk_prepare_enable(host->crypto_clk);
+
 	while (!(readl(host->base + MSDC_CFG) & MSDC_CFG_CKSTB))
 		cpu_relax();
 }
@@ -1822,6 +1922,303 @@ static void msdc_hw_reset(struct mmc_host *mmc)
 	sdr_clr_bits(host->base + EMMC_IOCON, 1);
 }
 
+#ifdef CONFIG_MMC_CRYPTO
+/* non-cqe only set IV here */
+static int set_crypto(struct msdc_host *host,
+		u64 data_unit_num, int ddir)
+{
+	u32 aes_mode_current = 0;
+	u32 ctr[4] = {0};
+	unsigned long polling_tmo = 0;
+
+	aes_mode_current = MSDC_AES_MODE_1 &
+		readl(host->base + MSDC_AES_CFG_GP1);
+
+	switch (aes_mode_current) {
+	case MSDC_CRYPTO_ALG_AES_XTS:
+	{
+		ctr[0] = data_unit_num & 0xffffffff;
+		ctr[1] = (data_unit_num >> 32) & 0xffffffff;
+		break;
+	}
+	default:
+		WARN_ON(1);
+		return -EINVAL;
+	}
+	/* 1. set IV */
+	writel(ctr[0], host->base + MSDC_AES_CTR0_GP1);
+	writel(ctr[1], host->base + MSDC_AES_CTR1_GP1);
+	writel(ctr[2], host->base + MSDC_AES_CTR2_GP1);
+	writel(ctr[3], host->base + MSDC_AES_CTR3_GP1);
+
+	/* 2. enable AES path */
+	MSDC_CLR_BIT32(host, MSDC_AES_SWST, MSDC_AES_BYPASS);
+
+	/* 3. AES switch start (flush the configure) */
+	if (ddir == WRITE) {
+		MSDC_SET_BIT32(host, MSDC_AES_SWST, MSDC_AES_SWITCH_START_ENC);
+		polling_tmo = jiffies + HZ*3;
+		while (readl(host->base + MSDC_AES_SWST)
+			& MSDC_AES_SWITCH_START_ENC) {
+			if (time_after(jiffies, polling_tmo)) {
+				pr_notice(
+				"msdc error: trigger AES ENC timeout!\n");
+				WARN_ON(1);
+				return -EINVAL;
+			}
+		}
+	} else {
+		MSDC_SET_BIT32(host, MSDC_AES_SWST, MSDC_AES_SWITCH_START_DEC);
+		polling_tmo = jiffies + HZ*3;
+		while (readl(host->base + MSDC_AES_SWST)
+			& MSDC_AES_SWITCH_START_DEC) {
+			if (time_after(jiffies, polling_tmo)) {
+				pr_notice(
+				"msdc error: trigger AES DEC timeout!\n");
+				WARN_ON(1);
+				return -EINVAL;
+			}
+		}
+	}
+	return 0;
+}
+
+static inline
+int cqhci_set_crypto_desc(struct cqhci_host *cq_host, u64 task_desc,
+			u64 ctx)
+{
+	u64 *cqhci_crypto_desc = NULL;
+
+	/*
+	 * Get the address of crypto context for the given task descriptor.
+	 * ice context is present in the upper 64bits of task descriptor
+	 */
+	cqhci_crypto_desc = (__le64 __force *)(task_desc +
+						CQ_TASK_DESC_TASK_PARAMS_SIZE);
+	if (IS_ERR_OR_NULL(cqhci_crypto_desc))
+		return -EFAULT;
+
+	memset(cqhci_crypto_desc, 0, CQ_TASK_DESC_CE_PARAMS_SIZE);
+
+	/*
+	 *  Assign upper 64bits data of task descritor with crypto context
+	 */
+	if (cqhci_crypto_desc)
+		*cqhci_crypto_desc = cpu_to_le64(ctx);
+
+	return 0;
+}
+
+/* cqe set key here */
+static void msdc_cqhci_crypto_cfg(struct mmc_host *host,
+		int tag, int slot)
+{
+	struct msdc_host *ll_host = mmc_priv(host);
+	u32 addr, i, cc_idx;
+	union cqhci_cpt_cap cpt_cap;
+	union mmc_crypto_cfg_entry cfg;
+
+	cc_idx = tag;
+	cpt_cap.cap_raw = readl(ll_host->cq_host->mmio + MSDC_CRCAP);
+	addr = (cpt_cap.cap.cfg_ptr << 8) + (u32)(cc_idx << 7);
+
+	memset(&cfg, 0, sizeof(cfg));
+	memcpy(&cfg, &host->crypto_cfgs[slot], sizeof(cfg));
+
+	/* fixed 512 bytes */
+	cfg.data_unit_size = 1;
+
+	/* write configuration only to register */
+	for (i = 0; i < 32; i++) {
+		writel(cfg.reg_val[i],
+			ll_host->cq_host->mmio + (addr + i * 4));
+#ifdef _CQHCI_DEBUG
+		pr_notice("%s: (%d)REG[0x%x]=0x%x\n",
+			__func__, cc_idx,
+			(addr + i * 4),
+			cfg.reg_val[i]);
+#endif
+	}
+}
+
+int cqhci_crypto_start(struct mmc_host *host, struct mmc_request *mrq)
+{
+	struct msdc_host *ll_host = mmc_priv(host);
+	u64 ctx, task_desc, dun;
+	int slot, err, cc_idx;
+	u8 tag;
+	bool c_en = false;
+	u8 *start;
+
+	if (!mrq->crypto_enable)
+		goto skip_crypto;
+
+	slot = mrq->crypto_key_slot;
+	cc_idx = mrq->tag;
+
+	/* Now, Mediatek host had a fixed the crypto data unit (512bytes)
+	 * That means that we cannot support the non-512bytes sector size.
+	 * Specially, don't care overflow, because mmc host only support 32
+	 * bits dun.
+	 */
+	dun = mrq->data_unit_num * 8;
+
+	/* KEY */
+	msdc_cqhci_crypto_cfg(host, mrq->tag, slot);
+	c_en = true;
+
+skip_crypto:
+	/* IV */
+	ctx = DATA_UNIT_NUM(dun) |
+		CRYPTO_CONFIG_INDEX(cc_idx) |
+		CRYPTO_ENABLE(!!c_en);
+
+	tag = mrq->tag;
+	start = get_desc(ll_host->cq_host, tag);
+	if (IS_ERR_OR_NULL(start))
+		return -EFAULT;
+
+	task_desc = (u64)start;
+	err = cqhci_set_crypto_desc(ll_host->cq_host, task_desc, ctx);
+	if (err)
+		return err;
+
+	return 0;
+}
+
+
+/* set crypto information */
+static int msdc_prepare_mqr_crypto(struct mmc_host *host,
+		u64 data_unit_num, int ddir, int tag, int slot)
+{
+	struct msdc_host *ll_host = mmc_priv(host);
+
+	/* CQE shouldn't go here */
+	WARN_ON(host->caps2 & (MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD));
+
+	if (unlikely(!data_unit_num))
+		return -EINVAL;
+
+	/* switch crypto engine to MSDC */
+	return set_crypto(ll_host, data_unit_num, ddir);
+}
+
+/* only non-cqe uses this to set key */
+static void msdc_crypto_program_key(struct mmc_host *host,
+			u32 *key, u32 *tkey, u32 config)
+{
+	struct msdc_host *ll_host = mmc_priv(host);
+	int i;
+	int iv[4] = {0};
+
+	/* CQE shouldn't go here */
+	WARN_ON(host->caps2 & (MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD));
+
+	if (!ll_host || !ll_host->base)
+		return;
+
+	if (unlikely(!*key && !tkey)) {
+		/* disable AES path by set bypass bit */
+		MSDC_SET_BIT32(ll_host, MSDC_AES_SWST, MSDC_AES_BYPASS);
+		return;
+	}
+
+	/* switch crypto engine to MSDC */
+
+	/* write AES config */
+	MSDC_SET_BIT32(ll_host, MSDC_AES_CFG_GP1, config);
+
+	/* IV */
+	for (i = 0; i < 4; i++)
+		writel(iv[i], ll_host->base + (MSDC_AES_IV0_GP1 + i * 4));
+
+	/* KEY */
+	for (i = 0; i < 8; i++)
+		writel(key[i], ll_host->base + (MSDC_AES_KEY_GP1 + i * 4));
+	/* TKEY */
+	for (i = 0; i < 8; i++)
+		writel(tkey[i], ll_host->base + (MSDC_AES_TKEY_GP1 + i * 4));
+
+}
+
+static int msdc_complete_mqr_crypto(struct mmc_host *host)
+{
+	struct msdc_host *ll_host = mmc_priv(host);
+
+	/* only for non-cqe, cqe needs nothing */
+	if ((readl(ll_host->base + MSDC_AES_SWST)
+			& MSDC_AES_BYPASS) == 0)
+		/* disable AES path by set bypass bit */
+		MSDC_SET_BIT32(ll_host, MSDC_AES_SWST, MSDC_AES_BYPASS);
+	return 0;
+}
+
+static void msdc_init_crypto(struct mmc_host *host)
+{
+	struct msdc_host *ll_host = mmc_priv(host);
+	void __iomem *reg;
+
+	if (host->caps2 & (MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD)) {
+		reg = ll_host->cq_host->mmio;
+		host->crypto_capabilities.reg_val =
+				cpu_to_le32(readl(reg + MSDC_CRCAP));
+		host->crypto_cfg_register =
+				host->crypto_capabilities.config_array_ptr;
+		/* DCOMD will use a fix tag of CQE,
+		 * so total count should be -1
+		 */
+		host->crypto_capabilities.config_count--;
+	} else {
+		host->crypto_capabilities.config_count = 0;
+		/* in non-CQHCI, support only one */
+		host->crypto_capabilities.num_crypto_cap = 1;
+	}
+}
+
+static int msdc_get_crypto_capabilities(struct mmc_host *host)
+{
+	u8 cap_idx;
+	struct msdc_host *ll_host = mmc_priv(host);
+
+	if (!(host->caps2 & (MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD)))
+		goto non_cqe;
+
+	if (unlikely(host->crypto_capabilities.num_crypto_cap != 0xA))
+		return -EINVAL;
+
+	for (cap_idx = 0; cap_idx < host->crypto_capabilities.num_crypto_cap;
+	     cap_idx++) {
+		host->crypto_cap_array[cap_idx].reg_val =
+			cpu_to_le32(readl(ll_host->cq_host->mmio +
+				MSDC_CRCAP +
+				(cap_idx + 1) * sizeof(__le32)));
+	}
+
+	return 0;
+non_cqe:
+	/*
+	 * non-cqe has only one algorithm
+	 * algorithm_id : AES-XTS (04)
+	 * sdus_mask: meaningless (09)
+	 * key_size: 256bits (02)
+	 * reserved: 0x5A
+	 */
+	cap_idx = 0;
+	host->crypto_cap_array[cap_idx].reg_val =
+		((u32)0x5A020904 & 0xFFFFFFFF);
+
+	return 0;
+}
+
+static const struct mmc_crypto_variant_ops crypto_var_ops = {
+	.host_init_crypto = msdc_init_crypto,
+	.get_crypto_capabilities = msdc_get_crypto_capabilities,
+	.prepare_mqr_crypto = msdc_prepare_mqr_crypto,
+	.host_program_key = msdc_crypto_program_key,
+	.complete_mqr_crypto = msdc_complete_mqr_crypto,
+};
+#endif
+
 static const struct mmc_host_ops mt_msdc_ops = {
 	.post_req = msdc_post_req,
 	.pre_req = msdc_pre_req,
@@ -1908,6 +2305,10 @@ static int msdc_drv_probe(struct platform_device *pdev)
 	if (IS_ERR(host->src_clk_cg))
 		host->src_clk_cg = NULL;
 
+	host->crypto_clk = devm_clk_get(&pdev->dev, "crypto_clk");
+	if (IS_ERR(host->crypto_clk))
+		host->crypto_clk = NULL;
+
 	host->irq = platform_get_irq(pdev, 0);
 	if (host->irq < 0) {
 		ret = -EINVAL;
@@ -1949,6 +2350,10 @@ static int msdc_drv_probe(struct platform_device *pdev)
 		mmc->f_min = DIV_ROUND_UP(host->src_clk_freq, 4 * 4095);
 
 	mmc->caps |= MMC_CAP_ERASE | MMC_CAP_CMD23;
+#ifdef CONFIG_MMC_CRYPTO
+	mmc->caps2 |= MMC_CAP2_CRYPTO;
+	mmc->crypto_vops = &crypto_var_ops;
+#endif
 	/* MMC core transfer sizes tunable parameters */
 	mmc->max_segs = MAX_BD_NUM;
 	mmc->max_seg_size = BDMA_DESC_BUFLEN;
@@ -1977,7 +2382,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
 	spin_lock_init(&host->lock);
 
 	platform_set_drvdata(pdev, mmc);
-	msdc_ungate_clock(host);
+	msdc_ungate_clock(mmc);
 	msdc_init_hw(host);
 
 	ret = devm_request_irq(&pdev->dev, host->irq, msdc_irq,
@@ -2000,7 +2405,7 @@ end:
 release:
 	platform_set_drvdata(pdev, NULL);
 	msdc_deinit_hw(host);
-	msdc_gate_clock(host);
+	msdc_gate_clock(mmc);
 release_mem:
 	if (host->dma.gpd)
 		dma_free_coherent(&pdev->dev,
@@ -2029,7 +2434,7 @@ static int msdc_drv_remove(struct platform_device *pdev)
 	platform_set_drvdata(pdev, NULL);
 	mmc_remove_host(host->mmc);
 	msdc_deinit_hw(host);
-	msdc_gate_clock(host);
+	msdc_gate_clock(mmc);
 
 	pm_runtime_disable(host->dev);
 	pm_runtime_put_noidle(host->dev);
@@ -2087,7 +2492,7 @@ static int msdc_runtime_suspend(struct device *dev)
 	struct msdc_host *host = mmc_priv(mmc);
 
 	msdc_save_reg(host);
-	msdc_gate_clock(host);
+	msdc_gate_clock(mmc);
 	return 0;
 }
 
@@ -2096,7 +2501,7 @@ static int msdc_runtime_resume(struct device *dev)
 	struct mmc_host *mmc = dev_get_drvdata(dev);
 	struct msdc_host *host = mmc_priv(mmc);
 
-	msdc_ungate_clock(host);
+	msdc_ungate_clock(mmc);
 	msdc_restore_reg(host);
 	return 0;
 }
