@@ -56,6 +56,7 @@
 #include "mmc_ops.h"
 #include "quirks.h"
 #include "sd_ops.h"
+#include "mmc-crypto.h"
 
 MODULE_ALIAS("mmc:block");
 #ifdef MODULE_PARAM_PREFIX
@@ -1542,8 +1543,13 @@ static int mmc_blk_cqe_issue_flush(struct mmc_queue *mq, struct request *req)
 static int mmc_blk_cqe_issue_rw_rq(struct mmc_queue *mq, struct request *req)
 {
 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
+	int ret;
 
 	mmc_blk_data_prep(mq, mqrq, 0, NULL, NULL);
+
+	ret = mmc_prepare_mqr_crypto(mq->card->host, mqrq);
+	if (ret == -EINVAL)
+		return ret;
 
 	return mmc_blk_cqe_start_req(mq->card->host, &mqrq->brq.mrq);
 }
@@ -1895,6 +1901,9 @@ static void mmc_blk_mq_complete_rq(struct mmc_queue *mq, struct request *req)
 {
 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
 	unsigned int nr_bytes = mqrq->brq.data.bytes_xfered;
+	struct mmc_host *host = mq->card->host;
+
+	mmc_complete_mqr_crypto(host);
 
 	if (nr_bytes) {
 		if (blk_update_request(req, BLK_STS_OK, nr_bytes))
@@ -2157,6 +2166,10 @@ static int mmc_blk_mq_issue_rw_rq(struct mmc_queue *mq,
 
 	mq->rw_wait = true;
 
+	err = mmc_prepare_mqr_crypto(host, mqrq);
+	if (err == -EINVAL)
+		goto crypto_fail;
+
 	err = mmc_start_request(host, &mqrq->brq.mrq);
 
 	if (prev_req)
@@ -2172,7 +2185,7 @@ static int mmc_blk_mq_issue_rw_rq(struct mmc_queue *mq,
 out_post_req:
 	if (err)
 		mmc_post_req(host, &mqrq->brq.mrq, err);
-
+crypto_fail:
 	return err;
 }
 
