@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4f21ba8_1e8dc625",
+        "filename": "fs/incfs/format.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-04-09T19:16:48Z",
+      "side": 1,
+      "message": "curious if there\u0027s a way of doing it without allocating even that single byte (because this is a page write, I believe)\nolder versions used vfs_truncate() here, but not anymore. I don\u0027t remember what the issue was",
+      "range": {
+        "startLine": 108,
+        "startChar": 1,
+        "endLine": 110,
+        "endChar": 17
+      },
+      "revId": "d256f33c72dfc7c406c8bd6b224b4b83a2c8fac9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
