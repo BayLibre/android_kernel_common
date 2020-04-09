@@ -103,38 +103,6 @@ struct notification {
 	wait_queue_head_t wqh;
 };
 
-/**
- * struct seccomp_filter - container for seccomp BPF programs
- *
- * @usage: reference count to manage the object lifetime.
- *         get/put helpers should be used when accessing an instance
- *         outside of a lifetime-guarded section.  In general, this
- *         is only needed for handling filters shared across tasks.
- * @log: true if all actions except for SECCOMP_RET_ALLOW should be logged
- * @prev: points to a previously installed, or inherited, filter
- * @prog: the BPF program to evaluate
- * @notif: the struct that holds all notification related information
- * @notify_lock: A lock for all notification-related accesses.
- *
- * seccomp_filter objects are organized in a tree linked via the @prev
- * pointer.  For any task, it appears to be a singly-linked list starting
- * with current->seccomp.filter, the most recently attached or inherited filter.
- * However, multiple filters may share a @prev node, by way of fork(), which
- * results in a unidirectional tree existing in memory.  This is similar to
- * how namespaces work.
- *
- * seccomp_filter objects should never be modified after being attached
- * to a task_struct (other than @usage).
- */
-struct seccomp_filter {
-	refcount_t usage;
-	bool log;
-	struct seccomp_filter *prev;
-	struct bpf_prog *prog;
-	struct notification *notif;
-	struct mutex notify_lock;
-};
-
 /* Limit any path through the tree to 256KB worth of instructions. */
 #define MAX_INSNS_PER_PATH ((1 << 18) / sizeof(struct sock_filter))
 
@@ -432,7 +400,7 @@ static struct seccomp_filter *seccomp_prepare_filter(struct sock_fprog *fprog)
 {
 	struct seccomp_filter *sfilter;
 	int ret;
-	const bool save_orig = IS_ENABLED(CONFIG_CHECKPOINT_RESTORE);
+	const bool save_orig = IS_ENABLED(CONFIG_PROC_PID_SECCOMP);
 
 	if (fprog->len == 0 || fprog->len > BPF_MAXINSNS)
 		return ERR_PTR(-EINVAL);
@@ -1465,7 +1433,10 @@ long prctl_set_seccomp(unsigned long seccomp_mode, void __user *filter)
 	return do_seccomp(op, 0, uargs);
 }
 
-#if defined(CONFIG_SECCOMP_FILTER) && defined(CONFIG_CHECKPOINT_RESTORE)
+// TODO: make CONFIG_PROC_PID_SECCOMP depend on CONFIG_CHECKPOINT_RESTORE
+// TODO: should I replace all CONFIG_CHECKPOINT_RESTORE
+//       with CONFIG_PROC_PID_SECCOMP in this file?
+#if defined(CONFIG_SECCOMP_FILTER) && defined(CONFIG_PROC_PID_SECCOMP)
 static struct seccomp_filter *get_nth_filter(struct task_struct *task,
 					     unsigned long filter_off)
 {
@@ -1532,7 +1503,7 @@ long seccomp_get_filter(struct task_struct *task, unsigned long filter_off,
 	if (!fprog) {
 		/* This must be a new non-cBPF filter, since we save
 		 * every cBPF filter's orig_prog above when
-		 * CONFIG_CHECKPOINT_RESTORE is enabled.
+		 * CONFIG_PROC_PID_SECCOMP is enabled.
 		 */
 		ret = -EMEDIUMTYPE;
 		goto out;
