@@ -22,6 +22,30 @@
       "revId": "1f6d45013520db0d2c3603f3301eb84b8de704f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fdfb8fb_7d0c647f",
+        "filename": "fs/incfs/format.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-04-10T03:17:53Z",
+      "side": 1,
+      "message": "Because I was optimizing one very specific case (no hash, file creation) and just put this in to make it compile.\n\n*If* we think turning off synchronization is the way forward, we should review this and all other uses.",
+      "parentUuid": "e689e788_1019e53e",
+      "range": {
+        "startLine": 359,
+        "startChar": 52,
+        "endLine": 359,
+        "endChar": 56
+      },
+      "revId": "1f6d45013520db0d2c3603f3301eb84b8de704f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
