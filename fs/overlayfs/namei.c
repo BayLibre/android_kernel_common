@@ -846,7 +846,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
 		if (err)
 			goto out;
 
-		if (upperdentry && unlikely(ovl_dentry_remote(upperdentry))) {
+		if (upperdentry && upperdentry->d_flags & DCACHE_OP_REAL) {
 			dput(upperdentry);
 			err = -EREMOTE;
 			goto out;
@@ -1077,7 +1077,14 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
 			goto out_free_oe;
 	}
 
+<<<<<<< HEAD   (661632 Merge f40f31cadc0e ("Merge tag 'f2fs-for-5.7-rc1' of git://g)
 	ovl_revert_creds(dentry->d_sb, old_cred);
+=======
+	ovl_dentry_update_reval(dentry, upperdentry,
+			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
+
+	revert_creds(old_cred);
+>>>>>>> BRANCH (5d30bc Merge tag '9p-for-5.7-2' of git://github.com/martinetd/linux)
 	if (origin_path) {
 		dput(origin_path->dentry);
 		kfree(origin_path);

@@ -226,7 +226,11 @@ void lkdtm_ARRAY_BOUNDS(void)
 {
 	struct array_bounds_flex_array *not_checked;
 	struct array_bounds *checked;
+<<<<<<< HEAD   (661632 Merge f40f31cadc0e ("Merge tag 'f2fs-for-5.7-rc1' of git://g)
 	int i;
+=======
+	volatile int i;
+>>>>>>> BRANCH (5d30bc Merge tag '9p-for-5.7-2' of git://github.com/martinetd/linux)
 
 	not_checked = kmalloc(sizeof(*not_checked) * 2, GFP_KERNEL);
 	checked = kmalloc(sizeof(*checked) * 2, GFP_KERNEL);
