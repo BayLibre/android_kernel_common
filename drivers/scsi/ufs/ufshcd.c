@@ -173,19 +173,6 @@ enum {
 #define ufshcd_clear_eh_in_progress(h) \
 	((h)->eh_flags &= ~UFSHCD_EH_IN_PROGRESS)
 
-#define ufshcd_set_ufs_dev_active(h) \
-	((h)->curr_dev_pwr_mode = UFS_ACTIVE_PWR_MODE)
-#define ufshcd_set_ufs_dev_sleep(h) \
-	((h)->curr_dev_pwr_mode = UFS_SLEEP_PWR_MODE)
-#define ufshcd_set_ufs_dev_poweroff(h) \
-	((h)->curr_dev_pwr_mode = UFS_POWERDOWN_PWR_MODE)
-#define ufshcd_is_ufs_dev_active(h) \
-	((h)->curr_dev_pwr_mode == UFS_ACTIVE_PWR_MODE)
-#define ufshcd_is_ufs_dev_sleep(h) \
-	((h)->curr_dev_pwr_mode == UFS_SLEEP_PWR_MODE)
-#define ufshcd_is_ufs_dev_poweroff(h) \
-	((h)->curr_dev_pwr_mode == UFS_POWERDOWN_PWR_MODE)
-
 struct ufs_pm_lvl_states ufs_pm_lvl_states[] = {
 	{UFS_ACTIVE_PWR_MODE, UIC_LINK_ACTIVE_STATE},
 	{UFS_ACTIVE_PWR_MODE, UIC_LINK_HIBERN8_STATE},
@@ -937,7 +924,40 @@ static int ufshcd_set_clk_freq(struct ufs_hba *hba, bool scale_up)
 				clki->name, clk_get_rate(clki->clk));
 	}
 
+<<<<<<< HEAD   (3d496e Merge c0cc271173b2 ("Merge tag 'modules-for-v5.7' of git://g)
+=======
 out:
+	return ret;
+}
+
+/**
+ * ufshcd_scale_clks - scale up or scale down UFS controller clocks
+ * @hba: per adapter instance
+ * @scale_up: True if scaling up and false if scaling down
+ *
+ * Returns 0 if successful
+ * Returns < 0 for any other errors
+ */
+static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up)
+{
+	int ret = 0;
+	ktime_t start = ktime_get();
+
+	ret = ufshcd_vops_clk_scale_notify(hba, scale_up, PRE_CHANGE);
+	if (ret)
+		goto out;
+
+	ret = ufshcd_set_clk_freq(hba, scale_up);
+	if (ret)
+		goto out;
+
+	ret = ufshcd_vops_clk_scale_notify(hba, scale_up, POST_CHANGE);
+	if (ret)
+		ufshcd_set_clk_freq(hba, !scale_up);
+
+>>>>>>> BRANCH (5b8b9d Merge branch 'akpm' (patches from Andrew))
+out:
+<<<<<<< HEAD   (3d496e Merge c0cc271173b2 ("Merge tag 'modules-for-v5.7' of git://g)
 	return ret;
 }
 
@@ -967,6 +987,11 @@ static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up)
 		return ret;
 	}
 
+=======
+	trace_ufshcd_profile_clk_scaling(dev_name(hba->dev),
+			(scale_up ? "up" : "down"),
+			ktime_to_us(ktime_sub(ktime_get(), start)), ret);
+>>>>>>> BRANCH (5b8b9d Merge branch 'akpm' (patches from Andrew))
 	return ret;
 }
 
@@ -1157,28 +1182,47 @@ static int ufshcd_devfreq_scale(struct ufs_hba *hba, bool scale_up)
 	if (!scale_up) {
 		ret = ufshcd_scale_gear(hba, false);
 		if (ret)
+<<<<<<< HEAD   (3d496e Merge c0cc271173b2 ("Merge tag 'modules-for-v5.7' of git://g)
 			goto clk_scaling_unprepare;
+=======
+			goto out_unprepare;
+>>>>>>> BRANCH (5b8b9d Merge branch 'akpm' (patches from Andrew))
 	}
 
 	ret = ufshcd_scale_clks(hba, scale_up);
+<<<<<<< HEAD   (3d496e Merge c0cc271173b2 ("Merge tag 'modules-for-v5.7' of git://g)
 	if (ret)
 		goto scale_up_gear;
+=======
+	if (ret) {
+		if (!scale_up)
+			ufshcd_scale_gear(hba, true);
+		goto out_unprepare;
+	}
+>>>>>>> BRANCH (5b8b9d Merge branch 'akpm' (patches from Andrew))
 
 	/* scale up the gear after scaling up clocks */
 	if (scale_up) {
 		ret = ufshcd_scale_gear(hba, true);
-		if (ret) {
+		if (ret)
 			ufshcd_scale_clks(hba, false);
+<<<<<<< HEAD   (3d496e Merge c0cc271173b2 ("Merge tag 'modules-for-v5.7' of git://g)
 			goto clk_scaling_unprepare;
 		}
+=======
+>>>>>>> BRANCH (5b8b9d Merge branch 'akpm' (patches from Andrew))
 	}
 
+<<<<<<< HEAD   (3d496e Merge c0cc271173b2 ("Merge tag 'modules-for-v5.7' of git://g)
 	goto clk_scaling_unprepare;
 
 scale_up_gear:
 	if (!scale_up)
 		ufshcd_scale_gear(hba, true);
 clk_scaling_unprepare:
+=======
+out_unprepare:
+>>>>>>> BRANCH (5b8b9d Merge branch 'akpm' (patches from Andrew))
 	ufshcd_clock_scaling_unprepare(hba);
 out:
 	ufshcd_release(hba);
@@ -3844,7 +3888,7 @@ out:
 	return ret;
 }
 
-static int ufshcd_link_recovery(struct ufs_hba *hba)
+int ufshcd_link_recovery(struct ufs_hba *hba)
 {
 	int ret;
 	unsigned long flags;
@@ -3871,6 +3915,7 @@ static int ufshcd_link_recovery(struct ufs_hba *hba)
 
 	return ret;
 }
+EXPORT_SYMBOL_GPL(ufshcd_link_recovery);
 
 static int __ufshcd_uic_hibern8_enter(struct ufs_hba *hba)
 {
