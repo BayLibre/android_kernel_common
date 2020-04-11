@@ -13,6 +13,7 @@
 
 #include <linux/acpi.h>
 #include <linux/of.h>
+#include <linux/platform_device.h>
 
 /*
  * This macro must be used by the different irqchip drivers to declare
@@ -24,7 +25,34 @@
  * @compstr: compatible string of the irqchip driver
  * @fn: initialization function
  */
-#define IRQCHIP_DECLARE(name, compat, fn) OF_DECLARE_2(irqchip, name, compat, fn)
+#ifndef MODULE
+
+#define IRQCHIP_MODULE_BEGIN
+#define IRQCHIP_DECLARE(name, compat, fn) OF_DECLARE_2(irqchip, name, compat, fn);
+#define IRQCHIP_MODULE_END(drv_name)
+
+#else
+
+extern int platform_irqchip_probe(struct platform_device *pdev);
+
+#define IRQCHIP_MODULE_BEGIN	\
+static const struct of_device_id __irqchip_match_table[] = {
+
+#define IRQCHIP_DECLARE(name, compat, fn) { .compatible = compat, .data = fn },
+
+#define IRQCHIP_MODULE_END(drv_name)			\
+	{},						\
+};							\
+MODULE_DEVICE_TABLE(of, __irqchip_match_table);		\
+static struct platform_driver drv_name##_driver = {	\
+	.probe  = platform_irqchip_probe,		\
+	.driver = {					\
+		.name = #drv_name,			\
+		.of_match_table = __irqchip_match_table,\
+	},						\
+};							\
+module_platform_driver(drv_name##_driver);
+#endif
 
 /*
  * This macro must be used by the different irqchip drivers to declare
