@@ -35,4 +35,8 @@ include/generated/compile.h: FORCE
 	@$($(quiet)chk_compile.h)
 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@	\
 	"$(UTS_MACHINE)" "$(CONFIG_SMP)" "$(CONFIG_PREEMPT)"	\
+<<<<<<< HEAD   (563181 Merge 5b8b9d0c6d0e ("Merge branch 'akpm' (patches from Andre)
 	"$(CONFIG_PREEMPT_RT)" "$(CC) $(KBUILD_CFLAGS)" "$(LD)"
+=======
+	"$(CONFIG_PREEMPT_RT)" "$(CC)" "$(LD)"
+>>>>>>> BRANCH (b03222 Merge tag 'nios2-v5.7-rc1' of git://git.kernel.org/pub/scm/l)
