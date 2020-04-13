@@ -115,6 +115,7 @@ static int param_set_axis(const char *val, const struct kernel_param *kp)
 	}
 	return ret;
 }
+EXPORT_SYMBOL_GPL(param_set_int);
 
 static const struct kernel_param_ops param_ops_axis = {
 	.set = param_set_axis,
