@@ -3155,7 +3155,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
 		error = -EBUSY;
 		goto bad_swap_unlock_inode;
 	}
+<<<<<<< HEAD   (adacfc Merge 5.4.32 into android-5.4)
 
+=======
+>>>>>>> BRANCH (e8a1b8 f2fs: keep inline_data when compression conversion)
 	/*
 	 * Read the swap header.
 	 */
@@ -3166,7 +3169,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
 	page = read_mapping_page(mapping, 0, swap_file);
 	if (IS_ERR(page)) {
 		error = PTR_ERR(page);
-		goto bad_swap;
+		goto bad_swap_unlock_inode;
 	}
 	swap_header = kmap(page);
 
