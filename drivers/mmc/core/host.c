@@ -504,6 +504,7 @@ EXPORT_SYMBOL(mmc_remove_host);
  */
 void mmc_free_host(struct mmc_host *host)
 {
+	mmc_crypto_destroy_rq_keyslot_manager(host);
 	mmc_pwrseq_free(host);
 	put_device(&host->class_dev);
 }
