@@ -22,11 +22,16 @@
 
 /* capabilities */
 #define CQHCI_CAP			0x04
+#define CQHCI_CAP_CS			(1 << 28)
+#define CQHCI_CCAP			0x100
+#define CQHCI_CRYPTOCAP			0x104
+
 /* configuration */
 #define CQHCI_CFG			0x08
 #define CQHCI_DCMD			0x00001000
 #define CQHCI_TASK_DESC_SZ		0x00000100
 #define CQHCI_ENABLE			0x00000001
+#define CQHCI_CRYPTO_ENABLE		0x00000002
 
 /* control */
 #define CQHCI_CTL			0x0C
@@ -137,6 +142,11 @@
 #define CQHCI_DAT_LENGTH(x)		(((x) & 0xFFFF) << 16)
 #define CQHCI_DAT_ADDR_LO(x)		(((x) & 0xFFFFFFFF) << 32)
 #define CQHCI_DAT_ADDR_HI(x)		(((x) & 0xFFFFFFFF) << 0)
+
+/* crypto context is present in the upper 64bits of task descriptor */
+#define CQHCI_TASK_DESC_CRYPTO_PARAM_OFFSET	8
+/* crypto descriptor size */
+#define CQHCI_TASK_DESC_CRYPTO_PARAMS_SIZE	8
 
 struct cqhci_host_ops;
 struct mmc_host;

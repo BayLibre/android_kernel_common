@@ -15,8 +15,10 @@
 #include <linux/mmc/mmc.h>
 #include <linux/mmc/host.h>
 #include <linux/mmc/card.h>
+#include <linux/mmc/mmc-crypto.h>
 
 #include "cqhci.h"
+#include "cqhci-crypto.h"
 
 #define DCMD_SLOT 31
 #define NUM_SLOTS 32
@@ -256,6 +258,9 @@ static void __cqhci_enable(struct cqhci_host *cq_host)
 
 	if (cq_host->caps & CQHCI_TASK_DESC_SZ_128)
 		cqcfg |= CQHCI_TASK_DESC_SZ;
+
+	if (mmc_crypto_enable(mmc))
+		cqcfg |= CQHCI_CRYPTO_ENABLE;
 
 	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
 
@@ -596,6 +601,12 @@ static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
 		task_desc = (__le64 __force *)get_desc(cq_host, tag);
 		cqhci_prep_task_desc(mrq, &data, 1);
 		*task_desc = cpu_to_le64(data);
+		err = cqhci_prep_crypto_desc(mmc, mrq, task_desc);
+		if (err) {
+			pr_err("failed to retrieve crypto ctx for tag %d\n",
+				tag);
+			return err;
+		}
 		err = cqhci_prep_tran_desc(mrq, cq_host, tag);
 		if (err) {
 			pr_err("%s: cqhci: failed to setup tx desc: %d\n",
@@ -1055,6 +1066,8 @@ static void cqhci_recovery_finish(struct mmc_host *mmc)
 
 	cqhci_set_irqs(cq_host, CQHCI_IS_MASK);
 
+	cqhci_crypto_recovery_finish(mmc);
+
 	pr_debug("%s: cqhci: recovery done\n", mmc_hostname(mmc));
 }
 
@@ -1134,6 +1147,18 @@ int cqhci_init(struct cqhci_host *cq_host, struct mmc_host *mmc,
 	if (!cq_host->slot) {
 		err = -ENOMEM;
 		goto out_err;
+	}
+
+#ifdef CONFIG_MMC_CRYPTO
+	mmc->caps2 |= MMC_CAP2_CRYPTO;
+	mmc->crypto_vops = &cqhci_crypto_vops;
+#endif
+	err = mmc_init_crypto(mmc);
+	if (err) {
+		dev_err(mmc->parent,
+			"CQHCI version %u.%02u Crypto initialization err %d\n",
+			cqhci_ver_major(cq_host), cqhci_ver_minor(cq_host),
+			err);
 	}
 
 	spin_lock_init(&cq_host->lock);
