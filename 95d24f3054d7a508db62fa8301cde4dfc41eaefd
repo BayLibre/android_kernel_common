@@ -112,6 +112,52 @@
     },
     {
       "key": {
+        "uuid": "47c0125a_44467787",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2020-04-14T21:33:26Z",
+      "side": 1,
+      "message": "This function is also not defined. Please roll back to writel_relaxed",
+      "range": {
+        "startLine": 150,
+        "startChar": 1,
+        "endLine": 150,
+        "endChar": 22
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5d21848_91ff0e51",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2020-04-14T21:33:26Z",
+      "side": 1,
+      "message": "not defined either",
+      "range": {
+        "startLine": 155,
+        "startChar": 8,
+        "endLine": 155,
+        "endChar": 28
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2ffb6513_6e3ec84a",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
