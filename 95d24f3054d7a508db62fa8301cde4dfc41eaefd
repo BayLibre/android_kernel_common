@@ -89,6 +89,30 @@
     },
     {
       "key": {
+        "uuid": "adf2c4c2_fcb48b2e",
+        "filename": "drivers/tty/serial/Kconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-15T18:19:13Z",
+      "side": 1,
+      "message": "Yes, removed SERIAL_MSM_GENI\nSERIAL_MSM_GENI_EARLY_CONSOLE is correct",
+      "parentUuid": "a4fdb7bf_e2eb5b8a",
+      "range": {
+        "startLine": 972,
+        "startChar": 12,
+        "endLine": 972,
+        "endChar": 27
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9fd5d1ef_c60eb575",
         "filename": "drivers/tty/serial/Makefile",
         "patchSetId": 2
@@ -135,6 +159,30 @@
     },
     {
       "key": {
+        "uuid": "cee2cedf_fca5f1a3",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-15T18:19:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47c0125a_44467787",
+      "range": {
+        "startLine": 150,
+        "startChar": 1,
+        "endLine": 150,
+        "endChar": 22
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5d21848_91ff0e51",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -158,6 +206,30 @@
     },
     {
       "key": {
+        "uuid": "377ad3d8_af29d405",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-15T18:19:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5d21848_91ff0e51",
+      "range": {
+        "startLine": 155,
+        "startChar": 8,
+        "endLine": 155,
+        "endChar": 28
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2ffb6513_6e3ec84a",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -169,6 +241,30 @@
       "writtenOn": "2020-04-06T18:15:20Z",
       "side": 1,
       "message": "dev_err() please.  No driver should ever use pr_* calls.",
+      "range": {
+        "startLine": 316,
+        "startChar": 2,
+        "endLine": 316,
+        "endChar": 8
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42087df7_b2481c99",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-15T18:19:13Z",
+      "side": 1,
+      "message": "I can remove this print i think",
+      "parentUuid": "2ffb6513_6e3ec84a",
       "range": {
         "startLine": 316,
         "startChar": 2,
@@ -204,6 +300,30 @@
     },
     {
       "key": {
+        "uuid": "633bf6d6_5c41e0cf",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-15T18:19:13Z",
+      "side": 1,
+      "message": "We wanted to ensure that write gets completed over the NOC.",
+      "parentUuid": "fbacf4b6_90fb4ca7",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "013ef97b_e68d2ff8",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -215,6 +335,30 @@
       "writtenOn": "2020-04-06T18:15:20Z",
       "side": 1,
       "message": "again, what is guaranteeing mb() flushes any i/o memory?\n\nmb() controls the compiler reordering things, it does not control anything with memory flushing.",
+      "range": {
+        "startLine": 409,
+        "startChar": 1,
+        "endLine": 409,
+        "endChar": 3
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2df0d3af_86b97e94",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-15T18:19:13Z",
+      "side": 1,
+      "message": "I think i can remove this, it\u0027s not needed.",
+      "parentUuid": "013ef97b_e68d2ff8",
       "range": {
         "startLine": 409,
         "startChar": 1,
