@@ -324,6 +324,30 @@
     },
     {
       "key": {
+        "uuid": "fea53ea1_dcf1bd46",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-04-16T02:06:44Z",
+      "side": 1,
+      "message": "Greg, mb() also expands to an ARM dsb (one of the sb) that makes sure the write finishes before proceeding. I think this is fine.",
+      "parentUuid": "633bf6d6_5c41e0cf",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "013ef97b_e68d2ff8",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -364,6 +388,53 @@
         "startChar": 1,
         "endLine": 409,
         "endChar": 3
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9315f1bc_b30e94b9",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-04-16T02:06:44Z",
+      "side": 1,
+      "message": "Are you sure this write doesn\u0027t need to finish before the read/writes in other functions that are called after this function?",
+      "parentUuid": "2df0d3af_86b97e94",
+      "range": {
+        "startLine": 409,
+        "startChar": 1,
+        "endLine": 409,
+        "endChar": 3
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2536b1d5_a333390d",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-04-16T02:06:44Z",
+      "side": 1,
+      "message": "As in making sure the write here is completed before msm_geni_serial_poll_bit() below or the other writes that come after it.",
+      "range": {
+        "startLine": 431,
+        "startChar": 1,
+        "endLine": 431,
+        "endChar": 25
       },
       "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
