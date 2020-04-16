@@ -396,6 +396,30 @@
     },
     {
       "key": {
+        "uuid": "f95399b2_c91e8afe",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-04-16T17:15:13Z",
+      "side": 1,
+      "message": "Mukesh, This is not for compiler ordering. This mb() is here for actual bus ordering reasons. I can go into more details in the bug.\n\nGreg, in arm64 (and arm32 with DMA_BUFFERABLE or something like that) mb translates to an actual asm instructions.\n\nFrom: arch/arm64/include/asm/barrier.h\n\n#define dsb(opt)        asm volatile(\"dsb \" #opt : : : \"memory\")\n#define mb()            dsb(sy)",
+      "parentUuid": "395a2cba_692d436b",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "013ef97b_e68d2ff8",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -526,6 +550,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "2536b1d5_a333390d",
+      "range": {
+        "startLine": 431,
+        "startChar": 1,
+        "endLine": 431,
+        "endChar": 25
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52c29131_20769241",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-04-16T17:15:13Z",
+      "side": 1,
+      "message": "Long story short, the mb() in this code are most likely there for a good reason.",
+      "parentUuid": "3c4534bc_07818355",
       "range": {
         "startLine": 431,
         "startChar": 1,
