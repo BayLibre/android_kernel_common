@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19d5e5a2_46608013",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-16T10:51:35Z",
+      "side": 1,
+      "message": "why are these even needed?  Just call the functions directly instead, these wrappers don\u0027t do anything to help understand the code except make your lines longer 😊",
+      "range": {
+        "startLine": 147,
+        "startChar": 12,
+        "endLine": 147,
+        "endChar": 35
+      },
+      "revId": "ac0ec822779819c8d5cdc1d97d44afdefe1d3ece",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd70d1de_90478a57",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-16T10:51:35Z",
+      "side": 1,
+      "message": "next iteration of what?  Compiler will not reorder writes to the same memory location.",
+      "range": {
+        "startLine": 332,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 19
+      },
+      "revId": "ac0ec822779819c8d5cdc1d97d44afdefe1d3ece",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d60f95b_bea11ba7",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-16T10:51:35Z",
+      "side": 1,
+      "message": "again, mb() does not mean that.",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 6
+      },
+      "revId": "ac0ec822779819c8d5cdc1d97d44afdefe1d3ece",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79a2f75c_cbffb418",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-16T10:51:35Z",
+      "side": 1,
+      "message": "that is not what mb() does.",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 561,
+        "endChar": 6
+      },
+      "revId": "ac0ec822779819c8d5cdc1d97d44afdefe1d3ece",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
