@@ -515,5 +515,10 @@ int dma_buf_mmap(struct dma_buf *, struct vm_area_struct *,
 		 unsigned long);
 void *dma_buf_vmap(struct dma_buf *);
 void dma_buf_vunmap(struct dma_buf *, void *vaddr);
+<<<<<<< HEAD   (70fe1b ANDROID: GKI: update abi for 5.4.33 changes)
 int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags);
+=======
+int dma_buf_get_uuid(struct dma_buf *dmabuf, uuid_t *uuid);
+
+>>>>>>> CHANGE (14cf94 ANDROID: Add C protos for dma_buf/drm_prime get_uuid)
 #endif /* __DMA_BUF_H__ */
