@@ -348,6 +348,30 @@
     },
     {
       "key": {
+        "uuid": "c409e0c8_319466df",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-04-16T08:55:18Z",
+      "side": 1,
+      "message": "Are you sure?  According to the kernel documentation, mb() does NOT do anything about I/O memory.  There are ways to ensure I/O memory has written, but mb() is not that way",
+      "parentUuid": "fea53ea1_dcf1bd46",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "013ef97b_e68d2ff8",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
