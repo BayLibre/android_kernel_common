@@ -277,6 +277,30 @@
     },
     {
       "key": {
+        "uuid": "4da247e0_d3d375c4",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2020-04-16T17:25:14Z",
+      "side": 1,
+      "message": "Mukesh, I don\u0027t think he was asking to remove the error messages. They\u0027ll be helpful I think (maybe a ramdump will tell why earlyconsole isn\u0027t working).\n\nGreg, This is one of those early drivers without any device. So, not sure how he can use dev_err().",
+      "parentUuid": "42087df7_b2481c99",
+      "range": {
+        "startLine": 316,
+        "startChar": 2,
+        "endLine": 316,
+        "endChar": 8
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fbacf4b6_90fb4ca7",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
