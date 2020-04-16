@@ -372,6 +372,30 @@
     },
     {
       "key": {
+        "uuid": "395a2cba_692d436b",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-16T10:23:10Z",
+      "side": 1,
+      "message": "It shows mb() is to do with compiler ordering.. not for the Hardware execution order. Is that right ?\nIMO, this has to do with compiler ordering only as explained below at #409.",
+      "parentUuid": "c409e0c8_319466df",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "013ef97b_e68d2ff8",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -443,6 +467,30 @@
     },
     {
       "key": {
+        "uuid": "24492629_3548e024",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-16T10:23:10Z",
+      "side": 1,
+      "message": "Sorry, i think as per HPG i should wait for polling operation i.e. watermark, before proceeding to write data into FIFO.\nso anything after that polling can\u0027t be scheduled before.\nSo mb() at line#336 is also needed to maintain order.",
+      "parentUuid": "9315f1bc_b30e94b9",
+      "range": {
+        "startLine": 409,
+        "startChar": 1,
+        "endLine": 409,
+        "endChar": 3
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2536b1d5_a333390d",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -463,6 +511,30 @@
       "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c4534bc_07818355",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-16T10:23:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2536b1d5_a333390d",
+      "range": {
+        "startLine": 431,
+        "startChar": 1,
+        "endLine": 431,
+        "endChar": 25
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
