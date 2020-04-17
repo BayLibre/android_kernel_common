@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "c02b5a82_2e560926",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-04-17T21:14:42Z",
+      "side": 1,
+      "message": "Yeah, we don\u0027t warn about such situation. However I think the BUG_ON(!pool-\u003ehigh_count) and BUG_ON(!pool-\u003elow_count) calls above this will handle situations when a page is being removed from an empty pool (which is required for nr_total_pages to go negative). Am I wrong?",
+      "parentUuid": "23d634d7_79d4470c",
+      "range": {
+        "startLine": 67,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 15
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d66e9859_530dbad5",
         "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
         "patchSetId": 2
