@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "43db7ab2_39865d31",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-04-17T21:01:47Z",
+      "side": 1,
+      "message": "Theoretically yes, so having it signed helps to detect such a case.",
+      "parentUuid": "e916ca6e_95acea75",
+      "range": {
+        "startLine": 67,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 15
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d66e9859_530dbad5",
         "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97c604ae_b1892916",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-04-17T21:01:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d66e9859_530dbad5",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 30
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "65988081_8b531499",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-04-17T21:01:47Z",
+      "side": 1,
+      "message": "When CONFIG_ION_SYSTEM_HEAP\u003dn ion_page_pool.c is not being compiled: \n\nobj-$(CONFIG_ION_SYSTEM_HEAP) +\u003d ion_sys_heap.o\nion_sys_heap-y :\u003d ion_system_heap.o ion_page_pool.o\n\nSo this is required to prevent undefined symbols (squashed from https://android-review.googlesource.com/c/kernel/common/+/1192281)",
+      "parentUuid": "e1ba8f0a_a4f21823",
+      "range": {
+        "startLine": 57,
+        "startChar": 7,
+        "endLine": 57,
+        "endChar": 29
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72272022_7c65f991",
         "filename": "drivers/staging/android/ion/heaps/ion_page_pool.h",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2020-04-17T20:42:12Z",
       "side": 1,
       "message": "why not \u0027unsigned long\u0027 ? or u64 even?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 4
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03b55768_0c8f8a8f",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-04-17T21:01:47Z",
+      "side": 1,
+      "message": "To make sure arithmetic is atomic. See a long discussion in 4.14 version of this patch at https://android-review.googlesource.com/c/kernel/common/+/1174516/5..7/drivers/staging/android/ion/ion_page_pool.c",
+      "parentUuid": "72272022_7c65f991",
       "range": {
         "startLine": 58,
         "startChar": 0,
