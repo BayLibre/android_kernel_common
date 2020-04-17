@@ -72,9 +72,15 @@ stack_protector_prepare: prepare0
 					include/generated/asm-offsets.h))
 endif
 
+<<<<<<< HEAD   (5b7c54 ANDROID: GKI: ABI update for dma-buf/DRM get_uuid change)
 ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
 KBUILD_CFLAGS	+= -ffixed-x18
 endif
+=======
+# Ensure that if the compiler supports branch protection we default it
+# off.
+KBUILD_CFLAGS += $(call cc-option,-mbranch-protection=none)
+>>>>>>> BRANCH (dc4059 Linux 5.4.33)
 
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
 KBUILD_CPPFLAGS	+= -mbig-endian

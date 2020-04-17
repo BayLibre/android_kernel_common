@@ -1109,10 +1109,15 @@ static int dmz_init_zone(struct blk_zone *blkz, unsigned int idx, void *data)
 	switch (blkz->type) {
 	case BLK_ZONE_TYPE_CONVENTIONAL:
 		set_bit(DMZ_RND, &zone->flags);
+<<<<<<< HEAD   (5b7c54 ANDROID: GKI: ABI update for dma-buf/DRM get_uuid change)
 		zmd->nr_rnd_zones++;
 		break;
 	case BLK_ZONE_TYPE_SEQWRITE_REQ:
 	case BLK_ZONE_TYPE_SEQWRITE_PREF:
+=======
+	} else if (blkz->type == BLK_ZONE_TYPE_SEQWRITE_REQ ||
+		   blkz->type == BLK_ZONE_TYPE_SEQWRITE_PREF) {
+>>>>>>> BRANCH (dc4059 Linux 5.4.33)
 		set_bit(DMZ_SEQ, &zone->flags);
 		break;
 	default:

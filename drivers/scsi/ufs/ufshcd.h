@@ -55,7 +55,10 @@
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/regulator/consumer.h>
+<<<<<<< HEAD   (5b7c54 ANDROID: GKI: ABI update for dma-buf/DRM get_uuid change)
 #include <linux/devfreq.h>
+=======
+>>>>>>> BRANCH (dc4059 Linux 5.4.33)
 #include <linux/bitfield.h>
 #include "unipro.h"
 
