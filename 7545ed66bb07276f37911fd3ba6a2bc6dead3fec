@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e916ca6e_95acea75",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2020-04-17T20:42:12Z",
+      "side": 1,
+      "message": "can this go -ve due to incorrect use of page pool APIs?",
+      "range": {
+        "startLine": 67,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 15
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d66e9859_530dbad5",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2020-04-17T20:42:12Z",
+      "side": 1,
+      "message": "ah, ignore the header comment. Looks like one for the pool already exists.",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 30
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1ba8f0a_a4f21823",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2020-04-17T20:42:12Z",
+      "side": 1,
+      "message": "the page pools aren\u0027t necessarily a system heap thing,\n\nMay be add page_pool-\u003enr_pages and add 2 APIs.\n\nunsigned long ion_page_pool_nr_pages(struct ion_page_pool *pool); // Returns nr_pages in the given *pool if its valid\nunsigned long ion_page_pool_nr_pages_total(void); // Returns nr_pages in all the page pools created so far.",
+      "range": {
+        "startLine": 57,
+        "startChar": 7,
+        "endLine": 57,
+        "endChar": 29
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72272022_7c65f991",
+        "filename": "drivers/staging/android/ion/heaps/ion_page_pool.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1108565
+      },
+      "writtenOn": "2020-04-17T20:42:12Z",
+      "side": 1,
+      "message": "why not \u0027unsigned long\u0027 ? or u64 even?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 4
+      },
+      "revId": "7545ed66bb07276f37911fd3ba6a2bc6dead3fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
