@@ -301,6 +301,30 @@
     },
     {
       "key": {
+        "uuid": "e8ff736e_0a2de60a",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-19T10:45:06Z",
+      "side": 1,
+      "message": "Yes, that was one of the confusion i had.\nAnd as there can\u0027t be any basic errors, we support possible baud rates till 3.2 Mbps here without any issue hence i thought of removing this print.",
+      "parentUuid": "4da247e0_d3d375c4",
+      "range": {
+        "startLine": 316,
+        "startChar": 2,
+        "endLine": 316,
+        "endChar": 8
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fbacf4b6_90fb4ca7",
         "filename": "drivers/tty/serial/msm_geni_serial_console.c",
         "patchSetId": 2
@@ -432,6 +456,30 @@
       "side": 1,
       "message": "Mukesh, This is not for compiler ordering. This mb() is here for actual bus ordering reasons. I can go into more details in the bug.\n\nGreg, in arm64 (and arm32 with DMA_BUFFERABLE or something like that) mb translates to an actual asm instructions.\n\nFrom: arch/arm64/include/asm/barrier.h\n\n#define dsb(opt)        asm volatile(\"dsb \" #opt : : : \"memory\")\n#define mb()            dsb(sy)",
       "parentUuid": "395a2cba_692d436b",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 6
+      },
+      "revId": "95d24f3054d7a508db62fa8301cde4dfc41eaefd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81ac6eec_daa7ec0e",
+        "filename": "drivers/tty/serial/msm_geni_serial_console.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1591476
+      },
+      "writtenOn": "2020-04-19T10:45:06Z",
+      "side": 1,
+      "message": "Okay, sure. So i will keep as it is.",
+      "parentUuid": "f95399b2_c91e8afe",
       "range": {
         "startLine": 336,
         "startChar": 0,
