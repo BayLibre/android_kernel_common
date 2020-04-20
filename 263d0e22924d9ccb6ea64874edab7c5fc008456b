@@ -22,6 +22,30 @@
       "revId": "263d0e22924d9ccb6ea64874edab7c5fc008456b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88ad209e_f8b674e0",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-ion",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-04-20T20:00:48Z",
+      "side": 1,
+      "message": "well, the UAPI did not change since 4.14. I only changed the implementation of the ION pool size reporting, so I think we should keep it as is. Any objections?\n\nBTW, the new API for ION pool size would allow vendor pools to be also reported. I think I should update 4.14 and 4.19 too to match this one.",
+      "parentUuid": "1585a56f_e54def99",
+      "range": {
+        "startLine": 3,
+        "startChar": 15,
+        "endLine": 3,
+        "endChar": 23
+      },
+      "revId": "263d0e22924d9ccb6ea64874edab7c5fc008456b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
