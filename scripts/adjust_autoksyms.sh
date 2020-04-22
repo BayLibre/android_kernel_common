@@ -40,6 +40,42 @@ esac
 # Generate a new symbol list file
 $CONFIG_SHELL $srctree/scripts/gen_autoksyms.sh "$new_ksyms_file"
 
+if [ -n "$CONFIG_UNUSED_KSYMS_WHITELIST_ONLY" ] && [ -f "vmlinux" ] ; then
+	ksym_wls=/dev/null
+	for UNUSED_KSYMS_WHITELIST_FILE in $CONFIG_UNUSED_KSYMS_WHITELIST; do
+		eval ksym_wl="$UNUSED_KSYMS_WHITELIST_FILE"
+		[ "${ksym_wl}" != "${ksym_wl#/}" ] ||
+		ksym_wl="$abs_srctree/$ksym_wl"
+		if [ ! -f "$ksym_wl" ]; then
+			echo "ERROR: '$ksym_wl' whitelist file not found" >&2
+			exit 1
+		fi
+		ksym_wls="$ksym_wls $ksym_wl"
+	done
+
+	info "WARNING" "CONFIG_UNUSED_KSYMS_WHITELIST_ONLY is enabled. "\
+"Non-whitelisted symbols will be undefined!"
+
+	syms_from_whitelist=syms_from_whitelist.txt.tmp
+	syms_from_vmlinux=syms_from_vmlinux.txt.tmp
+
+	cat $ksym_wl |
+	sort -u > "$syms_from_whitelist"
+
+	$NM --defined-only vmlinux |
+	grep "__ksymtab_" |
+	sed 's/^.*__ksymtab_//' |
+	sort -u > "$syms_from_vmlinux"
+
+	# Forcefully unexport the symbols that are not declared in the whitelist
+	syms_to_unexport=$(comm -13 "$syms_from_whitelist" "$syms_from_vmlinux")
+
+	echo "$syms_to_unexport" |
+	xargs -I% sed -i "/^#define __KSYM_% 1/d" "$new_ksyms_file"
+
+	rm -f "$syms_from_whitelist" "$syms_from_vmlinux"
+fi
+
 # Extract changes between old and new list and touch corresponding
 # dependency files.
 changed=$(
