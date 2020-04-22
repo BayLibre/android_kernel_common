@@ -19,15 +19,20 @@ esac
 # We need access to CONFIG_ symbols
 . include/config/auto.conf
 
-ksym_wl=/dev/null
+ksym_wls=/dev/null
 if [ -n "$CONFIG_UNUSED_KSYMS_WHITELIST" ]; then
-	# Use 'eval' to expand the whitelist path and check if it is relative
-	eval ksym_wl="$CONFIG_UNUSED_KSYMS_WHITELIST"
-	[ "${ksym_wl}" != "${ksym_wl#/}" ] || ksym_wl="$abs_srctree/$ksym_wl"
-	if [ ! -f "$ksym_wl" ] || [ ! -r "$ksym_wl" ]; then
-		echo "ERROR: '$ksym_wl' whitelist file not found" >&2
-		exit 1
-	fi
+	for UNUSED_KSYMS_WHITELIST_FILE in $CONFIG_UNUSED_KSYMS_WHITELIST; do
+		# Use 'eval' to expand the whitelist path and
+		# check if it is relative
+		eval ksym_wl="$UNUSED_KSYMS_WHITELIST_FILE"
+		[ "${ksym_wl}" != "${ksym_wl#/}" ] ||
+		ksym_wl="$abs_srctree/$ksym_wl"
+		if [ ! -f "$ksym_wl" ]; then
+			echo "ERROR: '$ksym_wl' whitelist file not found" >&2
+			exit 1
+		fi
+		ksym_wls="$ksym_wls $ksym_wl"
+	done
 fi
 
 # Generate a new ksym list file with symbols needed by the current
@@ -42,7 +47,7 @@ EOT
 [ -f modules.order ] && modlist=modules.order || modlist=/dev/null
 sed 's/ko$/mod/' $modlist |
 xargs -n1 sed -n -e '2{s/ /\n/g;/^$/!p;}' -- |
-cat - "$ksym_wl" |
+cat - "$ksym_wls" |
 sort -u |
 sed -e 's/\(.*\)/#define __KSYM_\1 1/' >> "$output_file"
 
