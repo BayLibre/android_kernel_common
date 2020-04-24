@@ -424,9 +424,9 @@ static int add_existing_master_key(struct fscrypt_master_key *mk,
 	return 0;
 }
 
-static int add_master_key(struct super_block *sb,
-			  struct fscrypt_master_key_secret *secret,
-			  const struct fscrypt_key_specifier *mk_spec)
+static int do_add_master_key(struct super_block *sb,
+			     struct fscrypt_master_key_secret *secret,
+			     const struct fscrypt_key_specifier *mk_spec)
 {
 	static DEFINE_MUTEX(fscrypt_add_key_mutex);
 	struct key *key;
@@ -463,6 +463,50 @@ retry:
 out_unlock:
 	mutex_unlock(&fscrypt_add_key_mutex);
 	return err;
+}
+
+static int add_master_key(struct super_block *sb,
+			  struct fscrypt_master_key_secret *secret,
+			  struct fscrypt_key_specifier *key_spec,
+			  bool is_hw_wrapped)
+{
+	u8 _kdf_key[RAW_SECRET_SIZE];
+	u8 *kdf_key;
+	unsigned int kdf_key_size;
+	int err;
+
+	if (key_spec->type == FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER) {
+		if (is_hw_wrapped) {
+			kdf_key = _kdf_key;
+			kdf_key_size = RAW_SECRET_SIZE;
+			err = fscrypt_derive_raw_secret(sb, secret->raw,
+							secret->size,
+							kdf_key, kdf_key_size);
+			if (err)
+				return err;
+			secret->is_hw_wrapped = true;
+		} else {
+			kdf_key = secret->raw;
+			kdf_key_size = secret->size;
+		}
+		err = fscrypt_init_hkdf(&secret->hkdf, kdf_key, kdf_key_size);
+		/*
+		 * Now that the HKDF context is initialized, the raw HKDF
+		 * key is no longer needed.
+		 */
+		memzero_explicit(kdf_key, kdf_key_size);
+		if (err)
+			return err;
+
+		/* Calculate the key identifier and return it to userspace. */
+		err = fscrypt_hkdf_expand(&secret->hkdf,
+					  HKDF_CONTEXT_KEY_IDENTIFIER,
+					  NULL, 0, key_spec->u.identifier,
+					  FSCRYPT_KEY_IDENTIFIER_SIZE);
+		if (err)
+			return err;
+	}
+	return do_add_master_key(sb, secret, key_spec);
 }
 
 static int fscrypt_provisioning_key_preparse(struct key_preparsed_payload *prep)
@@ -570,9 +614,6 @@ out_put:
 	return err;
 }
 
-/* Size of software "secret" derived from hardware-wrapped key */
-#define RAW_SECRET_SIZE 32
-
 /*
  * Add a master encryption key to the filesystem, causing all files which were
  * encrypted with it to appear "unlocked" (decrypted) when accessed.
@@ -603,9 +644,7 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 	struct fscrypt_add_key_arg __user *uarg = _uarg;
 	struct fscrypt_add_key_arg arg;
 	struct fscrypt_master_key_secret secret;
-	u8 _kdf_key[RAW_SECRET_SIZE];
-	u8 *kdf_key;
-	unsigned int kdf_key_size;
+	bool is_hw_wrapped = arg.__flags & __FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED;
 	int err;
 
 	if (copy_from_user(&arg, uarg, sizeof(arg)))
@@ -616,6 +655,24 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 
 	if (memchr_inv(arg.__reserved, 0, sizeof(arg.__reserved)))
 		return -EINVAL;
+
+	/*
+	 * Only root can add keys that are identified by an arbitrary descriptor
+	 * rather than by a cryptographic hash --- since otherwise a malicious
+	 * user could add the wrong key.
+	 */
+	if (arg.key_spec.type == FSCRYPT_KEY_SPEC_TYPE_DESCRIPTOR) {
+		if (!capable(CAP_SYS_ADMIN))
+			return -EACCES;
+		if (arg.__flags)
+			return -EINVAL;
+	}
+
+	if (arg.key_spec.type == FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER) {
+		if (arg.__flags & ~__FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED)
+			return -EINVAL;
+
+	}
 
 	memset(&secret, 0, sizeof(secret));
 	if (arg.key_id) {
@@ -640,72 +697,39 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 			goto out_wipe_secret;
 	}
 
-	switch (arg.key_spec.type) {
-	case FSCRYPT_KEY_SPEC_TYPE_DESCRIPTOR:
-		/*
-		 * Only root can add keys that are identified by an arbitrary
-		 * descriptor rather than by a cryptographic hash --- since
-		 * otherwise a malicious user could add the wrong key.
-		 */
-		err = -EACCES;
-		if (!capable(CAP_SYS_ADMIN))
-			goto out_wipe_secret;
-
-		err = -EINVAL;
-		if (arg.__flags)
-			goto out_wipe_secret;
-		break;
-	case FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER:
-		err = -EINVAL;
-		if (arg.__flags & ~__FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED)
-			goto out_wipe_secret;
-		if (arg.__flags & __FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED) {
-			kdf_key = _kdf_key;
-			kdf_key_size = RAW_SECRET_SIZE;
-			err = fscrypt_derive_raw_secret(sb, secret.raw,
-							secret.size,
-							kdf_key, kdf_key_size);
-			if (err)
-				goto out_wipe_secret;
-			secret.is_hw_wrapped = true;
-		} else {
-			kdf_key = secret.raw;
-			kdf_key_size = secret.size;
-		}
-		err = fscrypt_init_hkdf(&secret.hkdf, kdf_key, kdf_key_size);
-		/*
-		 * Now that the HKDF context is initialized, the raw HKDF
-		 * key is no longer needed.
-		 */
-		memzero_explicit(kdf_key, kdf_key_size);
-		if (err)
-			goto out_wipe_secret;
-
-		/* Calculate the key identifier and return it to userspace. */
-		err = fscrypt_hkdf_expand(&secret.hkdf,
-					  HKDF_CONTEXT_KEY_IDENTIFIER,
-					  NULL, 0, arg.key_spec.u.identifier,
-					  FSCRYPT_KEY_IDENTIFIER_SIZE);
-		if (err)
-			goto out_wipe_secret;
-		err = -EFAULT;
-		if (copy_to_user(uarg->key_spec.u.identifier,
-				 arg.key_spec.u.identifier,
-				 FSCRYPT_KEY_IDENTIFIER_SIZE))
-			goto out_wipe_secret;
-		break;
-	default:
-		WARN_ON(1);
-		err = -EINVAL;
+	err = add_master_key(sb, &secret, &arg.key_spec, is_hw_wrapped);
+	if (err)
 		goto out_wipe_secret;
-	}
-
-	err = add_master_key(sb, &secret, &arg.key_spec);
+	/* Return the key identifier to userspace if needed */
+	err = -EFAULT;
+	if (arg.key_spec.type == FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER &&
+	    copy_to_user(uarg->key_spec.u.identifier,
+			 arg.key_spec.u.identifier,
+			 FSCRYPT_KEY_IDENTIFIER_SIZE))
+		goto out_wipe_secret;
+	err = 0;
 out_wipe_secret:
 	wipe_master_key_secret(&secret);
 	return err;
 }
 EXPORT_SYMBOL_GPL(fscrypt_ioctl_add_key);
+
+int fscrypt_add_test_dummy_key(struct super_block *sb,
+			       struct fscrypt_key_specifier *key_spec)
+{
+	struct fscrypt_master_key_secret secret;
+	int i;
+	int err;
+
+	memset(&secret, 0, sizeof(secret));
+	secret.size = FSCRYPT_MAX_KEY_SIZE;
+	for (i = 0; i < secret.size; i++)
+		secret.raw[i] = (u8)i;
+
+	err = add_master_key(sb, &secret, key_spec, false);
+	wipe_master_key_secret(&secret);
+	return err;
+}
 
 /*
  * Verify that the current user has added a master key with the given identifier

@@ -419,6 +419,9 @@ fscrypt_is_key_prepared(struct fscrypt_prepared_key *prep_key,
 
 /* keyring.c */
 
+/* Size of software "secret" derived from hardware-wrapped key */
+#define RAW_SECRET_SIZE 32
+
 /*
  * fscrypt_master_key_secret - secret key material of an in-use master key
  */
@@ -560,6 +563,9 @@ static inline int master_key_spec_len(const struct fscrypt_key_specifier *spec)
 extern struct key *
 fscrypt_find_master_key(struct super_block *sb,
 			const struct fscrypt_key_specifier *mk_spec);
+
+extern int fscrypt_add_test_dummy_key(struct super_block *sb,
+				      struct fscrypt_key_specifier *key_spec);
 
 extern int fscrypt_verify_key_added(struct super_block *sb,
 				    const u8 identifier[FSCRYPT_KEY_IDENTIFIER_SIZE]);

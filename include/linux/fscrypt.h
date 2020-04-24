@@ -164,6 +164,11 @@ extern void fscrypt_put_encryption_info(struct inode *);
 extern void fscrypt_free_inode(struct inode *);
 extern int fscrypt_drop_inode(struct inode *inode);
 
+extern const union fscrypt_context *
+fscrypt_parse_test_dummy_context(struct super_block *sb, const char *arg);
+extern void fscrypt_show_test_dummy_encryption(struct seq_file *seq, char sep,
+					       const union fscrypt_context *ctx);
+
 /* fname.c */
 extern int fscrypt_setup_filename(struct inode *, const struct qstr *,
 				int lookup, struct fscrypt_name *);

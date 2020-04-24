@@ -10,6 +10,7 @@
 
 #include <crypto/skcipher.h>
 #include <linux/key.h>
+#include <linux/seq_file.h>
 
 #include "fscrypt_private.h"
 
@@ -621,3 +622,80 @@ int fscrypt_drop_inode(struct inode *inode)
 	return !is_master_key_secret_present(&mk->mk_secret);
 }
 EXPORT_SYMBOL_GPL(fscrypt_drop_inode);
+
+const union fscrypt_context *
+fscrypt_parse_test_dummy_context(struct super_block *sb, const char *arg)
+{
+	union fscrypt_context *ctx;
+	char *options;
+	char *p;
+	char *opt;
+	u8 contents_encryption_mode = FSCRYPT_MODE_AES_256_XTS;
+	u8 filenames_encryption_mode = FSCRYPT_MODE_AES_256_CTS;
+	struct fscrypt_key_specifier key_spec = { 0 };
+
+	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+
+	options = kstrdup(arg, GFP_KERNEL);
+
+	if (!ctx || !options)
+		goto fail;
+
+	ctx->version = FSCRYPT_CONTEXT_V1;
+
+	p = options;
+	while ((opt = strsep(&p, "+")) != NULL) {
+		if (strcmp(opt, "v1") == 0)
+			ctx->version = FSCRYPT_CONTEXT_V1;
+		else if (strcmp(opt, "v2") == 0)
+			ctx->version = FSCRYPT_CONTEXT_V2;
+		else
+			goto fail;
+	}
+
+	if (ctx->version == FSCRYPT_CONTEXT_V1) {
+		key_spec.type = FSCRYPT_KEY_SPEC_TYPE_DESCRIPTOR;
+		memset(key_spec.u.descriptor, 0x42,
+		       FSCRYPT_KEY_DESCRIPTOR_SIZE);
+	} else {
+		key_spec.type = FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER;
+	}
+	if (fscrypt_add_test_dummy_key(sb, &key_spec) != 0)
+		goto fail;
+
+	switch (ctx->version) {
+	case FSCRYPT_CONTEXT_V1:
+		ctx->v1.contents_encryption_mode = contents_encryption_mode;
+		ctx->v1.filenames_encryption_mode = filenames_encryption_mode;
+		memcpy(ctx->v1.master_key_descriptor, key_spec.u.descriptor,
+		       FSCRYPT_KEY_DESCRIPTOR_SIZE);
+		break;
+	case FSCRYPT_CONTEXT_V2:
+		ctx->v2.contents_encryption_mode = contents_encryption_mode;
+		ctx->v2.filenames_encryption_mode = filenames_encryption_mode;
+		memcpy(ctx->v2.master_key_identifier, key_spec.u.identifier,
+		       FSCRYPT_KEY_IDENTIFIER_SIZE);
+		break;
+	default:
+		WARN_ON(1);
+		goto fail;
+	}
+
+	kfree(options);
+	return ctx;
+
+fail:
+	kfree(options);
+	kfree(ctx);
+	return NULL;
+}
+EXPORT_SYMBOL_GPL(fscrypt_parse_test_dummy_context);
+
+void fscrypt_show_test_dummy_encryption(struct seq_file *seq, char sep,
+					const union fscrypt_context *ctx)
+{
+	if (!ctx)
+		return;
+	seq_printf(seq, "%ctest_dummy_encryption=v%d", sep, ctx->version);
+}
+EXPORT_SYMBOL_GPL(fscrypt_show_test_dummy_encryption);
