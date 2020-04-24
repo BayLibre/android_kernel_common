@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/* vendor_hook.c
+ *
+ * Android Vendor Hook Support
+ *
+ * Copyright (C) 2020 Google, Inc.
+ */
+
+#define CREATE_TRACE_POINTS
+#include <trace/hooks/sched.h>
+
+/*
+ * Export tracepoints that act as a bare tracehook (ie: have no trace event
+ * associated with them) to allow external modules to probe them.
+ */
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_exit);
+
