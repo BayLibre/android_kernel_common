@@ -25,7 +25,6 @@
   device_register
   device_unregister
   _dev_info
-  __dev_kfree_skb_any
   devm_kmalloc
   dev_queue_xmit
   dev_set_name
@@ -801,8 +800,6 @@
   napi_disable
   napi_gro_receive
   napi_hash_del
-  __napi_schedule
-  napi_schedule_prep
   netdev_notify_peers
   netdev_warn
   netif_device_attach
