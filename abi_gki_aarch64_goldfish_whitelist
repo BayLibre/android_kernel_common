@@ -51,7 +51,6 @@
   device_create
   device_unregister
   _dev_info
-  __dev_kfree_skb_any
   devm_ioremap
   devm_kfree
   devm_kmalloc
@@ -163,8 +162,6 @@
   napi_disable
   napi_gro_receive
   napi_hash_del
-  __napi_schedule
-  napi_schedule_prep
   __netdev_alloc_skb
   netdev_err
   netdev_increment_features
