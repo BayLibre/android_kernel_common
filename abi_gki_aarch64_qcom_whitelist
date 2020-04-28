@@ -229,8 +229,6 @@
   dma_fence_release
   dma_fence_signal
   dma_fence_signal_locked
-  __dma_flush_area
-  __dma_inv_area
   dmam_alloc_coherent
   dma_release_from_dev_coherent
   dma_request_slave_channel
@@ -1060,12 +1058,10 @@
   _dev_notice
   driver_find_device
   driver_for_each_device
-  fast_smmu_put_dma_cookie
   free_io_pgtable_ops
   free_pages_exact
   generic_device_group
   iommu_alloc_resv_region
-  iommu_debugfs_top
   iommu_device_register
   iommu_dma_get_resv_regions
   iommu_fwspec_add_ids
@@ -1382,8 +1378,6 @@
 
 # required by ion-alloc.ko
   dma_buf_export
-  dma_get_device_base
-  dma_get_size
   mm_event_count
   __next_zones_zonelist
   sched_setattr
@@ -1441,19 +1435,13 @@
   snd_soc_jack_report
 
 # required by minidump_log.ko
-  __bss_stop
   log_buf_addr_get
   log_buf_len_get
-  __per_cpu_end
   per_cpu_ptr_to_phys
-  __per_cpu_start
-  _sdata
   vendor_panic_cb
 
 # required by msm-poweroff.ko
-  arm_pm_restart
   flush_cache_all
-  kimage_vaddr
   register_die_notifier
 
 # required by msm-vidc.ko
@@ -1490,7 +1478,6 @@
   dev_pm_opp_find_freq_exact
   dev_pm_opp_register_notifier
   dev_pm_opp_unregister_notifier
-  __dma_clean_area
   dma_fence_add_callback
   dma_fence_array_ops
   dma_fence_remove_callback
@@ -1849,7 +1836,6 @@
 
 # required by msm_pm.ko
   arm_cpuidle_suspend
-  cpu_do_idle
   cpuidle_dev
   cpuidle_register_device
   cpuidle_register_driver
@@ -2095,7 +2081,6 @@
 
 # required by qtee_shm_bridge.ko
   do_tlb_conf_fault_cb
-  __flush_dcache_area
   gen_pool_best_fit
   gen_pool_set_algo
   gen_pool_virt_to_phys
