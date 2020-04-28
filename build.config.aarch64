@@ -6,11 +6,12 @@ LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN=prebuilts/gcc/linux-x86/aarch64/aarch64-li
 
 MAKE_GOALS="
 Image
-modules
+dtbs
 "
 
 FILES="
 arch/arm64/boot/Image
+arch/arm64/boot/dts/arm/juno-r2.dtb
 vmlinux
 System.map
 "
