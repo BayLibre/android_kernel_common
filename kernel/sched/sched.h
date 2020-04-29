@@ -2417,11 +2417,6 @@ static inline bool uclamp_boosted(struct task_struct *p)
 }
 #endif /* CONFIG_UCLAMP_TASK */
 
-static inline bool task_latency_sensitive(struct task_struct *p)
-{
-	return (p->latency_nice < DEFAULT_LATENCY_NICE);
-}
-
 #ifdef arch_scale_freq_capacity
 # ifndef arch_scale_freq_invariant
 #  define arch_scale_freq_invariant()	true

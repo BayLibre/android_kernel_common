@@ -6571,7 +6571,8 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu, int sy
 	if (!task_util_est(p))
 		goto unlock;
 
-	latency_sensitive = task_latency_sensitive(p);
+	if (p->latency_nice < DEFAULT_LATENCY_NICE)
+		latency_sensitive = true;
 	boosted = uclamp_boosted(p);
 	target_cap = boosted ? 0 : ULONG_MAX;
 
