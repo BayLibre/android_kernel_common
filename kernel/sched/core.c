@@ -2838,6 +2838,7 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
 	p->prio = current->normal_prio;
 
 	/* Propagate the parent's latency requirements to the child as well */
+	printk("sched_fork set task %d latency_nice to %d", p->pid, current->latency_nice);
 	p->latency_nice = current->latency_nice;
 
 	uclamp_fork(p);
@@ -2856,6 +2857,7 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
 		p->prio = p->normal_prio = __normal_prio(p);
 		set_load_weight(p, false);
 
+		printk("reset_on_fork. Set task %d to 0", p->pid);
 		p->latency_nice = DEFAULT_LATENCY_NICE;
 		/*
 		 * We don't need the reset flag anymore after the fork. It has
@@ -7020,6 +7022,7 @@ static void sched_change_group(struct task_struct *tsk, int type)
 	tsk->sched_task_group = tg;
 
 #ifdef CONFIG_UCLAMP_TASK_GROUP
+	printk("sched_change_group set task %d latency_nice from %d to %d\n", tsk->pid, tsk->latency_nice, (int)tg->latency_sensitive);
 	tsk->latency_nice = UCLAMP_LS_TO_LAT_NICE(tg->latency_sensitive);
 #endif
 
@@ -7363,10 +7366,14 @@ static void _set_latency_nice_tasks(struct cgroup_subsys_state *css, int latency
 	struct css_task_iter it;
 	struct task_struct *task;
 
+	printk("start_iter");
 	css_task_iter_start(css, 0, &it);
+	printk("start_loop");
 	while ((task = css_task_iter_next(&it))) {
+		printk("set_task_latency_nice: pid=%d prev_lat_n=%d new_lat_n=%d", task->pid, task->latency_nice, latency_nice);
 		task->latency_nice = latency_nice;
 	}
+	printk("end_iter");
 	css_task_iter_end(&it);
 }
 
@@ -7379,6 +7386,7 @@ static int cpu_uclamp_ls_write_u64(struct cgroup_subsys_state *css,
 		return -EINVAL;
 	tg = css_tg(css);
 	tg->latency_sensitive = (unsigned int) ls;
+	printk("cpu_uclamp_ls_write_u64 update all tasks");
 	_set_latency_nice_tasks(css, UCLAMP_LS_TO_LAT_NICE(ls));
 
 	return 0;
