@@ -53,8 +53,13 @@
 #define ARM64_HAS_STAGE2_FWB			32
 #define ARM64_WORKAROUND_1463225		33
 #define ARM64_SSBS				34
+#define ARM64_WORKAROUND_1542419		35
 
+<<<<<<< HEAD   (dc8e96 ANDROID: abi_gki_aarch64_cuttlefish_whitelist: remove stale )
 /* kabi: reserve 35 - 62 for future cpu capabilities */
 #define ARM64_NCAPS				62
+=======
+#define ARM64_NCAPS				36
+>>>>>>> BRANCH (765675 Linux 4.19.119)
 
 #endif /* __ASM_CPUCAPS_H */

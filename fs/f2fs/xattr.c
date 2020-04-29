@@ -560,6 +560,7 @@ out:
 ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
 {
 	struct inode *inode = d_inode(dentry);
+	nid_t xnid = F2FS_I(inode)->i_xattr_nid;
 	struct f2fs_xattr_entry *entry;
 	void *base_addr, *last_base_addr;
 	int error = 0;
@@ -571,7 +572,11 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
 	if (error)
 		return error;
 
+<<<<<<< HEAD   (dc8e96 ANDROID: abi_gki_aarch64_cuttlefish_whitelist: remove stale )
 	last_base_addr = (void *)base_addr + XATTR_SIZE(inode);
+=======
+	last_base_addr = (void *)base_addr + XATTR_SIZE(xnid, inode);
+>>>>>>> BRANCH (765675 Linux 4.19.119)
 
 	list_for_each_xattr(entry, base_addr) {
 		const struct xattr_handler *handler =
@@ -582,8 +587,14 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
 
 		if ((void *)(entry) + sizeof(__u32) > last_base_addr ||
 			(void *)XATTR_NEXT_ENTRY(entry) > last_base_addr) {
+<<<<<<< HEAD   (dc8e96 ANDROID: abi_gki_aarch64_cuttlefish_whitelist: remove stale )
 			f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
 						inode->i_ino);
+=======
+			f2fs_msg(dentry->d_sb, KERN_ERR,
+				 "inode (%lu) has corrupted xattr",
+				 inode->i_ino);
+>>>>>>> BRANCH (765675 Linux 4.19.119)
 			set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
 			error = -EFSCORRUPTED;
 			goto cleanup;
