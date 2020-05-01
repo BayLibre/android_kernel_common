@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30206a84_490040a7",
+        "filename": "arch/arm64/kernel/process.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-05-01T18:40:32Z",
+      "side": 1,
+      "message": "This does not belong in an arch-specific file, if this is a system-wide notifier.  Put it in the core kernel call instead please.\n\nBut again, this should be done upstream first...",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 38
+      },
+      "revId": "71788c3306117ebe2ede9cb53c3bb5c7d226f84b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
