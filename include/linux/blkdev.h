@@ -280,6 +280,11 @@ static inline bool bio_is_passthrough(struct bio *bio)
 	return blk_op_is_scsi(op) || blk_op_is_private(op);
 }
 
+static inline bool blk_rq_is_internal(struct request *rq)
+{
+	return rq->cmd_flags & REQ_INTERNAL;
+}
+
 static inline unsigned short req_get_ioprio(struct request *req)
 {
 	return req->ioprio;
