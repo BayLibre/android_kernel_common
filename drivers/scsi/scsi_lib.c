@@ -1731,8 +1731,9 @@ out_put_budget:
 static enum blk_eh_timer_return scsi_timeout(struct request *req,
 		bool reserved)
 {
-	if (reserved)
+	if (blk_rq_is_internal(req) || WARN_ON_ONCE(reserved))
 		return BLK_EH_RESET_TIMER;
+
 	return scsi_times_out(req);
 }
 
@@ -1943,6 +1944,46 @@ void scsi_mq_destroy_tags(struct Scsi_Host *shost)
 {
 	blk_mq_free_tag_set(&shost->tag_set);
 }
+
+/**
+ * scsi_get_internal_cmd - Allocate an internal SCSI command
+ * @q: request queue from which to allocate the command
+ * @data_direction: Data direction for the allocated command
+ * @flags: Zero or more BLK_MQ_REQ_* flags.
+ *
+ * Allocates a request for driver-internal use. The tag of the returned SCSI
+ * command data structure is guaranteed to be unique.
+ */
+struct scsi_cmnd *scsi_get_internal_cmd(struct request_queue *q,
+					enum dma_data_direction data_direction,
+					blk_mq_req_flags_t flags)
+{
+	unsigned int op = REQ_INTERNAL;
+	struct request *rq;
+
+	op |= data_direction == DMA_TO_DEVICE ? REQ_OP_DRV_OUT : REQ_OP_DRV_IN;
+	rq = blk_mq_alloc_request(q, op, flags);
+	if (IS_ERR(rq))
+		return ERR_CAST(rq);
+	return blk_mq_rq_to_pdu(rq);
+}
+EXPORT_SYMBOL_GPL(scsi_get_internal_cmd);
+
+/**
+ * scsi_put_internal_cmd - Free an internal SCSI command
+ * @scmd: Request to be freed
+ *
+ * Check if @scmd is an internal command and call blk_mq_free_request() if true.
+ */
+void scsi_put_internal_cmd(struct scsi_cmnd *scmd)
+{
+	struct request *rq = blk_mq_rq_from_pdu(scmd);
+
+	if (WARN_ON_ONCE(!blk_rq_is_internal(rq)))
+		return;
+	blk_mq_free_request(rq);
+}
+EXPORT_SYMBOL_GPL(scsi_put_internal_cmd);
 
 /**
  * scsi_device_from_queue - return sdev associated with a request_queue

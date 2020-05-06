@@ -303,6 +303,13 @@ enum blk_eh_timer_return scsi_times_out(struct request *req)
 	if (test_and_set_bit(SCMD_STATE_COMPLETE, &scmd->state))
 		return BLK_EH_DONE;
 
+	/*
+	 * The code below is for documentation purposes only since the
+	 * dereference above of the scmd->device pointer triggers a kernel
+	 * oops for internal commands.
+	 */
+	WARN_ON_ONCE(blk_rq_is_internal(scsi_cmd_to_rq(scmd)));
+
 	trace_scsi_dispatch_cmd_timeout(scmd);
 	scsi_log_completion(scmd, TIMEOUT_ERROR);
 
