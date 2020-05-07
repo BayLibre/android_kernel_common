@@ -369,6 +369,7 @@ struct tcpm_port {
 	unsigned int hard_reset_count;
 	bool pd_capable;
 	bool explicit_contract;
+	bool usb_comm_capable;
 	unsigned int rx_msgid;
 
 	/* Partner capabilities/requests */
@@ -987,7 +988,8 @@ static int tcpm_set_current_limit(struct tcpm_port *port, u32 max_ma, u32 mv)
 static int tcpm_set_attached_state(struct tcpm_port *port, bool attached)
 {
 	return port->tcpc->set_roles(port->tcpc, attached, port->pwr_role,
-				     port->data_role);
+				     port->data_role,
+				     port->usb_comm_capable);
 }
 
 static int tcpm_set_roles(struct tcpm_port *port, bool attached,
@@ -1031,7 +1033,8 @@ static int tcpm_set_roles(struct tcpm_port *port, bool attached,
 	if (ret < 0)
 		return ret;
 
-	ret = port->tcpc->set_roles(port->tcpc, attached, role, data);
+	ret = port->tcpc->set_roles(port->tcpc, attached, role, data,
+				    port->usb_comm_capable);
 	if (ret < 0)
 		return ret;
 
@@ -1048,7 +1051,8 @@ static int tcpm_set_pwr_role(struct tcpm_port *port, enum typec_role role)
 	int ret;
 
 	ret = port->tcpc->set_roles(port->tcpc, true, role,
-				    port->data_role);
+				    port->data_role,
+				    port->usb_comm_capable);
 	if (ret < 0)
 		return ret;
 
@@ -4253,6 +4257,7 @@ static void run_state_machine(struct tcpm_port *port)
 		tcpm_unregister_altmodes(port);
 		port->nr_sink_caps = 0;
 		port->send_discover = true;
+		port->usb_comm_capable = false;
 		if (port->pwr_role == TYPEC_SOURCE)
 			tcpm_set_state(port, SRC_HARD_RESET_VBUS_OFF,
 				       PD_T_PS_HARD_RESET);
