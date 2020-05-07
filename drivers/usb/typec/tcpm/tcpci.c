@@ -373,7 +373,8 @@ static int tcpci_set_bist_data(struct tcpc_dev *tcpc, bool enable)
 }
 
 static int tcpci_set_roles(struct tcpc_dev *tcpc, bool attached,
-			   enum typec_role role, enum typec_data_role data)
+			   enum typec_role role, enum typec_data_role data,
+			   bool usb_comm_capable)
 {
 	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
 	unsigned int reg;
@@ -390,7 +391,7 @@ static int tcpci_set_roles(struct tcpc_dev *tcpc, bool attached,
 
 	if (tcpci->data->set_roles) {
 		ret = tcpci->data->set_roles(tcpci, tcpci->data, attached, role,
-					     data);
+					     data, usb_comm_capable);
 		if (ret < 0)
 			return ret;
 	}
