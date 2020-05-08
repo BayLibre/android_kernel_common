@@ -3719,6 +3719,10 @@ try_onemore:
 		if (err)
 			goto free_meta;
 	}
+	if (DUMMY_ENCRYPTION_ENABLED(sbi) && !sb_rdonly(sb) &&
+	    !F2FS_HAS_FEATURE(sbi, F2FS_FEATURE_ENCRYPT)) {
+		F2FS_SET_FEATURE(sbi, F2FS_FEATURE_ENCRYPT);
+	}
 
 reset_checkpoint:
 	/* f2fs_recover_fsync_data() cleared this already */
