@@ -101,10 +101,22 @@ static int rt6_score_route(struct rt6_info *rt, int oif, int strict);
 #ifdef CONFIG_IPV6_ROUTE_INFO
 static struct rt6_info *rt6_add_route_info(struct net_device *dev,
 					   const struct in6_addr *prefix, int prefixlen,
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 					   const struct in6_addr *gwaddr, unsigned int pref);
 static struct rt6_info *rt6_get_route_info(struct net_device *dev,
+=======
+					   const struct in6_addr *gwaddr,
+					   struct net_device *dev,
+					   unsigned int pref);
+static struct rt6_info *rt6_get_route_info(struct net *net,
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 					   const struct in6_addr *prefix, int prefixlen,
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 					   const struct in6_addr *gwaddr);
+=======
+					   const struct in6_addr *gwaddr,
+					   struct net_device *dev);
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 #endif
 
 struct uncached_list {
@@ -336,9 +348,9 @@ static struct rt6_info *__ip6_dst_alloc(struct net *net,
 	return rt;
 }
 
-static struct rt6_info *ip6_dst_alloc(struct net *net,
-				      struct net_device *dev,
-				      int flags)
+struct rt6_info *ip6_dst_alloc(struct net *net,
+			       struct net_device *dev,
+			       int flags)
 {
 	struct rt6_info *rt = __ip6_dst_alloc(net, dev, flags);
 
@@ -362,6 +374,7 @@ static struct rt6_info *ip6_dst_alloc(struct net *net,
 
 	return rt;
 }
+EXPORT_SYMBOL(ip6_dst_alloc);
 
 static void ip6_dst_destroy(struct dst_entry *dst)
 {
@@ -798,7 +811,12 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
 	if (rinfo->prefix_len == 0)
 		rt = rt6_get_dflt_router(gwaddr, dev);
 	else
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 		rt = rt6_get_route_info(dev, prefix, rinfo->prefix_len,	gwaddr);
+=======
+		rt = rt6_get_route_info(net, prefix, rinfo->prefix_len,
+					gwaddr, dev);
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 
 	if (rt && !lifetime) {
 		ip6_del_rt(rt);
@@ -806,7 +824,12 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
 	}
 
 	if (!rt && lifetime)
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 		rt = rt6_add_route_info(dev, prefix, rinfo->prefix_len, gwaddr, pref);
+=======
+		rt = rt6_add_route_info(net, prefix, rinfo->prefix_len, gwaddr,
+					dev, pref);
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 	else if (rt)
 		rt->rt6i_flags = RTF_ROUTEINFO |
 				 (rt->rt6i_flags & ~RTF_PREF_MASK) | RTF_PREF(pref);
@@ -2274,14 +2297,25 @@ static void ip6_rt_copy_init(struct rt6_info *rt, struct rt6_info *ort)
 #ifdef CONFIG_IPV6_ROUTE_INFO
 static struct rt6_info *rt6_get_route_info(struct net_device *dev,
 					   const struct in6_addr *prefix, int prefixlen,
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 					   const struct in6_addr *gwaddr)
+=======
+					   const struct in6_addr *gwaddr,
+					   struct net_device *dev)
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 {
+	u32 tb_id = l3mdev_fib_table(dev) ? : RT6_TABLE_INFO;
+	int ifindex = dev->ifindex;
 	struct fib6_node *fn;
 	struct rt6_info *rt = NULL;
 	struct fib6_table *table;
 
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 	table = fib6_get_table(dev_net(dev),
 			       addrconf_rt_table(dev, RT6_TABLE_INFO));
+=======
+	table = fib6_get_table(net, tb_id);
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 	if (!table)
 		return NULL;
 
@@ -2307,7 +2341,13 @@ out:
 
 static struct rt6_info *rt6_add_route_info(struct net_device *dev,
 					   const struct in6_addr *prefix, int prefixlen,
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 					   const struct in6_addr *gwaddr, unsigned int pref)
+=======
+					   const struct in6_addr *gwaddr,
+					   struct net_device *dev,
+					   unsigned int pref)
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 {
 	struct fib6_config cfg = {
 		.fc_metric	= IP6_RT_PRIO_USER,
@@ -2320,7 +2360,11 @@ static struct rt6_info *rt6_add_route_info(struct net_device *dev,
 		.fc_nlinfo.nl_net = dev_net(dev),
 	};
 
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 	cfg.fc_table = l3mdev_fib_table_by_index(dev_net(dev), dev->ifindex) ? : addrconf_rt_table(dev, RT6_TABLE_INFO);
+=======
+	cfg.fc_table = l3mdev_fib_table(dev) ? : RT6_TABLE_INFO,
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 	cfg.fc_dst = *prefix;
 	cfg.fc_gateway = *gwaddr;
 
@@ -2330,17 +2374,26 @@ static struct rt6_info *rt6_add_route_info(struct net_device *dev,
 
 	ip6_route_add(&cfg);
 
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 	return rt6_get_route_info(dev, prefix, prefixlen, gwaddr);
+=======
+	return rt6_get_route_info(net, prefix, prefixlen, gwaddr, dev);
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 }
 #endif
 
 struct rt6_info *rt6_get_dflt_router(const struct in6_addr *addr, struct net_device *dev)
 {
+	u32 tb_id = l3mdev_fib_table(dev) ? : RT6_TABLE_DFLT;
 	struct rt6_info *rt;
 	struct fib6_table *table;
 
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 	table = fib6_get_table(dev_net(dev),
 			       addrconf_rt_table(dev, RT6_TABLE_MAIN));
+=======
+	table = fib6_get_table(dev_net(dev), tb_id);
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 	if (!table)
 		return NULL;
 
@@ -2374,11 +2427,18 @@ struct rt6_info *rt6_add_dflt_router(const struct in6_addr *gwaddr,
 
 	cfg.fc_gateway = *gwaddr;
 
-	ip6_route_add(&cfg);
+	if (!ip6_route_add(&cfg)) {
+		struct fib6_table *table;
+
+		table = fib6_get_table(dev_net(dev), cfg.fc_table);
+		if (table)
+			table->flags |= RT6_TABLE_HAS_DFLT_ROUTER;
+	}
 
 	return rt6_get_dflt_router(gwaddr, dev);
 }
 
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 
 int rt6_addrconf_purge(struct rt6_info *rt, void *arg) {
 	if (rt->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF) &&
@@ -2388,8 +2448,49 @@ int rt6_addrconf_purge(struct rt6_info *rt, void *arg) {
 }
 
 void rt6_purge_dflt_routers(struct net *net)
+=======
+static void __rt6_purge_dflt_routers(struct fib6_table *table)
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 {
+<<<<<<< HEAD   (d45940 Merge 4.4.222 into android-4.4-o)
 	fib6_clean_all(net, rt6_addrconf_purge, NULL);
+=======
+	struct rt6_info *rt;
+
+restart:
+	read_lock_bh(&table->tb6_lock);
+	for (rt = table->tb6_root.leaf; rt; rt = rt->dst.rt6_next) {
+		if (rt->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF) &&
+		    (!rt->rt6i_idev || rt->rt6i_idev->cnf.accept_ra != 2)) {
+			dst_hold(&rt->dst);
+			read_unlock_bh(&table->tb6_lock);
+			ip6_del_rt(rt);
+			goto restart;
+		}
+	}
+	read_unlock_bh(&table->tb6_lock);
+
+	table->flags &= ~RT6_TABLE_HAS_DFLT_ROUTER;
+}
+
+void rt6_purge_dflt_routers(struct net *net)
+{
+	struct fib6_table *table;
+	struct hlist_head *head;
+	unsigned int h;
+
+	rcu_read_lock();
+
+	for (h = 0; h < FIB6_TABLE_HASHSZ; h++) {
+		head = &net->ipv6.fib_table_hash[h];
+		hlist_for_each_entry_rcu(table, head, tb6_hlist) {
+			if (table->flags & RT6_TABLE_HAS_DFLT_ROUTER)
+				__rt6_purge_dflt_routers(table);
+		}
+	}
+
+	rcu_read_unlock();
+>>>>>>> BRANCH (e15744 Linux 4.4.223)
 }
 
 static void rtmsg_to_fib6_config(struct net *net,
