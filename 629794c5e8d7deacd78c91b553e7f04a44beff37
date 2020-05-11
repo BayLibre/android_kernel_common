@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69d20db7_834c64a6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-05-11T17:16:20Z",
+      "side": 1,
+      "message": "\"md: \" \u003d\u003e \"dm-default-key: \"",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "629794c5e8d7deacd78c91b553e7f04a44beff37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7dda2a0f_cca09393",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-05-11T17:16:20Z",
+      "side": 1,
+      "message": "\"block crypto\" \u003d\u003e \"blk-crypto\"",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 13
+      },
+      "revId": "629794c5e8d7deacd78c91b553e7f04a44beff37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47f3f8af_2de7f85f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-05-11T17:16:20Z",
+      "side": 1,
+      "message": "This doesn\u0027t actually test metadata encryption with a wrapped key, because wrappedkey_v0 needs to be set separately for FBE and metadata encryption.  For metadata encryption, the fstab needs \"metadata_encryption\u003daes-256-xts:wrappedkey_v0\"; see https://source.android.com/security/encryption/metadata#switching-on-metadata-encryption.\n\nCan you please confirm that you\u0027re actually testing metadata encryption with a wrapped key?",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 38
+      },
+      "revId": "629794c5e8d7deacd78c91b553e7f04a44beff37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
