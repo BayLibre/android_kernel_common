@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80756ee6_e7e69cfc",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2020-05-12T20:06:12Z",
+      "side": 1,
+      "message": "As it looks like most of the paths to leave this function (successfully or unsuccessfully) need to put either saved_page, or page, or both, I wonder if it wouldn\u0027t be better to handle this at the bottom of the function and rework all these returns to use the \"ret \u003d -ESOMETHING; goto err_whatever\" paradigm. It makes missing a put_page in the future a little less likely..",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 19
+      },
+      "revId": "fc4b90cc88320a99144632d8b2cdfd66d57f79e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
