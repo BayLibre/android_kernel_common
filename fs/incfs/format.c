@@ -11,6 +11,7 @@
 #include <linux/slab.h>
 #include <linux/crc32.h>
 #include <linux/kernel.h>
+#include <linux/pagemap.h>
 
 #include "format.h"
 #include "data_mgmt.h"
@@ -499,18 +500,36 @@ int incfs_read_blockmap_entry(struct backing_file_context *bfc, int block_index,
 			loff_t bm_base_off,
 			struct incfs_blockmap_entry *bm_entry)
 {
-	int error = incfs_read_blockmap_entries(bfc, bm_entry, block_index, 1,
-						bm_base_off);
+	const loff_t bm_entry_off =
+		bm_base_off + sizeof(struct incfs_blockmap_entry) * block_index;
+	const size_t bytes_to_read = sizeof(struct incfs_blockmap_entry);
+	const int first_byte_page_index = bm_entry_off / PAGE_SIZE;
+	const int last_byte_page_index =
+		(bm_entry_off + bytes_to_read - 1) / PAGE_SIZE;
+	if (first_byte_page_index == last_byte_page_index) {
+		void *page_contents;
+		struct page *page =
+			read_mapping_page(bfc->bc_file->f_inode->i_mapping,
+					  first_byte_page_index,
+					  NULL);
+		if (IS_ERR_OR_NULL(page))
+			return page ? PTR_ERR(page) : -ENOMEM;
 
-	if (error < 0)
-		return error;
-
-	if (error == 0)
-		return -EIO;
-
-	if (error != 1)
-		return -EFAULT;
-
+		page_contents = page_address(page);
+		memcpy(bm_entry, page_contents + (bm_entry_off % PAGE_SIZE),
+		       bytes_to_read);
+		put_page(page);
+	} else {
+		int error = incfs_read_blockmap_entries(bfc, bm_entry,
+							block_index, 1,
+							bm_base_off);
+		if (error < 0)
+			return error;
+		if (error == 0)
+			return -EIO;
+		if (error != 1)
+			return -EFAULT;
+	}
 	return 0;
 }
 
