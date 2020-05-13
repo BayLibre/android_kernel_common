@@ -295,10 +295,21 @@ static struct sysrq_key_op sysrq_showstate_op = {
 	.enable_mask	= SYSRQ_ENABLE_DUMP,
 };
 
+// HACK: from drivers/android/binder.c
+extern void binder_sysrq(void);
+
+static void sysrq_handle_binder(int key)
+{
+	binder_sysrq();
+}
+
 static void sysrq_handle_showstate_blocked(int key)
 {
 	show_state_filter(TASK_UNINTERRUPTIBLE);
+	// HACK dump binder state here to avoid uspace changes
+	binder_sysrq();	
 }
+
 static struct sysrq_key_op sysrq_showstate_blocked_op = {
 	.handler	= sysrq_handle_showstate_blocked,
 	.help_msg	= "show-blocked-tasks(w)",
@@ -431,6 +442,13 @@ static struct sysrq_key_op sysrq_unrt_op = {
 	.enable_mask	= SYSRQ_ENABLE_RTNICE,
 };
 
+static struct sysrq_key_op sysrq_binder_op = {
+	.handler	= sysrq_handle_binder,
+	.help_msg	= "binder(x)",
+	.action_msg	= "Dump binder processes",
+	.enable_mask	= SYSRQ_ENABLE_DUMP,
+};
+
 /* Key Operations table and lock */
 static DEFINE_SPINLOCK(sysrq_key_table_lock);
 
@@ -487,7 +505,7 @@ static struct sysrq_key_op *sysrq_key_table[36] = {
 	/* x: May be registered on mips for TLB dump */
 	/* x: May be registered on ppc/powerpc for xmon */
 	/* x: May be registered on sparc64 for global PMU dump */
-	NULL,				/* x */
+	&sysrq_binder_op,				/* x */
 	/* y: May be registered on sparc64 for global register dump */
 	NULL,				/* y */
 	&sysrq_ftrace_dump_op,		/* z */

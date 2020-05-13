@@ -6108,6 +6108,21 @@ static int __init init_binder_device(const char *name)
 	return ret;
 }
 
+void binder_sysrq()
+{
+	struct binder_proc *proc;
+
+	pr_err("debug_fuse: binder_sysrq()\n");
+	mutex_lock(&binder_procs_lock);
+	hlist_for_each_entry(proc, &binder_procs, proc_node) {
+		binder_inner_proc_lock(proc);
+		pr_err("debug_fuse: proc %d (%s) alive, files %016llx", proc->pid, proc->tsk->comm, proc->files);
+		binder_inner_proc_unlock(proc);
+
+	}
+	mutex_unlock(&binder_procs_lock);
+}
+
 static int __init binder_init(void)
 {
 	int ret;
