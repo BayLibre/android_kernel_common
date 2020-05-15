@@ -313,6 +313,11 @@ config DM_SNAPSHOT
        ---help---
 	 Allow volume managers to take writable snapshots of a device.
 
+config DM_SNAP_USER
+	bool "Userspace exception store"
+	default y
+	depends on DM_SNAPSHOT
+
 config DM_THIN_PROVISIONING
        tristate "Thin provisioning target"
        depends on BLK_DEV_DM

@@ -275,6 +275,14 @@ int dm_exception_store_init(void)
 		goto persistent_fail;
 	}
 
+#ifdef CONFIG_DM_SNAP_USER
+	r = dm_user_snapshot_init();
+	if (r) {
+		DMERR("Unable to register user exception store type");
+		goto persistent_fail;
+	}
+#endif
+
 	return 0;
 
 persistent_fail:

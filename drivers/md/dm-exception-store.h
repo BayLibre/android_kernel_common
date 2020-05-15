@@ -194,12 +194,17 @@ int dm_exception_store_init(void);
 void dm_exception_store_exit(void);
 
 /*
- * Two exception store implementations.
+ * Three exception store implementations.
  */
 int dm_persistent_snapshot_init(void);
 void dm_persistent_snapshot_exit(void);
 
 int dm_transient_snapshot_init(void);
 void dm_transient_snapshot_exit(void);
+
+#ifdef CONFIG_DM_SNAP_USER
+int dm_user_snapshot_init(void);
+void dm_user_snapshot_exit(void);
+#endif
 
 #endif /* _LINUX_DM_EXCEPTION_STORE */
