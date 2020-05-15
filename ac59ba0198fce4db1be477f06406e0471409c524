@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3d16924e_8adac42c",
+        "filename": "abi_gki_aarch64_qcom_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-05-15T06:30:08Z",
+      "side": 1,
+      "message": "why does a driver need this?  This just allows you to create new user/kernel apis that I do not think the Treble rules for HALS will allow.\n\nHave a pointer to the code that requires this?",
+      "range": {
+        "startLine": 1140,
+        "startChar": 0,
+        "endLine": 1140,
+        "endChar": 16
+      },
+      "revId": "ac59ba0198fce4db1be477f06406e0471409c524",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d58dd827_cc3b4768",
+        "filename": "abi_gki_aarch64_qcom_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 1669,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-05-15T06:30:08Z",
+      "side": 1,
+      "message": "no objection to this, if you want to split this into two separate commits.",
+      "range": {
+        "startLine": 1669,
+        "startChar": 0,
+        "endLine": 1669,
+        "endChar": 13
+      },
+      "revId": "ac59ba0198fce4db1be477f06406e0471409c524",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
