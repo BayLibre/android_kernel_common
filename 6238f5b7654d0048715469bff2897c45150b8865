@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "414ddcac_2918d3b5",
+        "filename": "net/ipv4/tcp_minisocks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2020-05-15T21:11:39Z",
+      "side": 1,
+      "message": "Pre-existing lint error.\n\nCHECK:PARENTHESIS_ALIGNMENT: Alignment should match open parenthesis\n#193: FILE: net/ipv4/tcp_minisocks.c:382:\n+\ttcp_select_initial_window(sock_net(sk_listener), full_space,\n \t\tmss - (ireq-\u003etstamp_ok ? TCPOLEN_TSTAMP_ALIGNED : 0),\n\ntotal: 0 errors, 0 warnings, 1 checks, 175 lines checked",
+      "range": {
+        "startLine": 381,
+        "startChar": 27,
+        "endLine": 381,
+        "endChar": 35
+      },
+      "revId": "6238f5b7654d0048715469bff2897c45150b8865",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
