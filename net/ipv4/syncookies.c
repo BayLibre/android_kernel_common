@@ -395,7 +395,11 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
 	    (req->rsk_window_clamp > full_space || req->rsk_window_clamp == 0))
 		req->rsk_window_clamp = full_space;
 
+<<<<<<< HEAD   (d66ebc Merge 4.14.281 into android-4.14-q)
 	tcp_select_initial_window(full_space, req->mss,
+=======
+	tcp_select_initial_window(sock_net(sk), tcp_full_space(sk), req->mss,
+>>>>>>> CHANGE (08870b ANDROID: namespace'ify tcp_default_init_rwnd implementation)
 				  &req->rsk_rcv_wnd, &req->rsk_window_clamp,
 				  ireq->wscale_ok, &rcv_wscale,
 				  dst_metric(&rt->dst, RTAX_INITRWND));
