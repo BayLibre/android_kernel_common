@@ -793,9 +793,20 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
 #define smaps_hugetlb_range	NULL
 #endif /* HUGETLB_PAGE */
 
-static const struct mm_walk_ops smaps_walk_ops = {
-	.pmd_entry		= smaps_pte_range,
-	.hugetlb_entry		= smaps_hugetlb_range,
+
+struct mm_walk_ops smaps_walk_ops = {
+	.pmd_entry = smaps_pte_range,
+#ifdef CONFIG_HUGETLB_PAGE
+	.hugetlb_entry = smaps_hugetlb_range,
+#endif
+};
+
+struct mm_walk_ops smaps_walk_swap_ops = {
+	.pmd_entry = smaps_pte_range,
+#ifdef CONFIG_HUGETLB_PAGE
+	.hugetlb_entry = smaps_hugetlb_range,
+#endif
+	.pte_hole = smaps_pte_hole,
 };
 
 static const struct mm_walk_ops smaps_shmem_walk_ops = {
@@ -1566,7 +1577,9 @@ static int pagemap_hugetlb_range(pte_t *ptep, unsigned long hmask,
 static const struct mm_walk_ops pagemap_ops = {
 	.pmd_entry	= pagemap_pmd_range,
 	.pte_hole	= pagemap_pte_hole,
+#ifdef CONFIG_HUGETLB_PAGE
 	.hugetlb_entry	= pagemap_hugetlb_range,
+#endif
 };
 
 /*
