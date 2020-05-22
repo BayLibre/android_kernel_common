@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c7b1960_e7746dea",
+        "filename": "drivers/dma-buf/dma-heap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-05-22T09:25:52Z",
+      "side": 1,
+      "message": "no reference count handling?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 23
+      },
+      "revId": "8fb7383ff040f81779d688fbca7e1e9db3315b7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "104c5e6a_e0edb6c0",
+        "filename": "drivers/dma-buf/dma-heap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-05-22T09:25:52Z",
+      "side": 1,
+      "message": "you just broke reference counting 😞\n\nYou can not pass around a pointer that is reference counted, without also incrementing that reference count.",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 26
+      },
+      "revId": "8fb7383ff040f81779d688fbca7e1e9db3315b7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
