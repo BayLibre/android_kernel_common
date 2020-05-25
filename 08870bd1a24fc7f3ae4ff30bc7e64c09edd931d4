@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "725730d1_4babbd82",
+        "filename": "net/ipv4/sysctl_net_ipv4.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2020-05-25T05:11:02Z",
+      "side": 1,
+      "message": "The previous code would silently ignore invalid writes, but the new code will return EINVAL on invalid writes. Can you check that the userspace code will not fall over and/or crash if it gets EINVAL?",
+      "range": {
+        "startLine": 1178,
+        "startChar": 20,
+        "endLine": 1178,
+        "endChar": 40
+      },
+      "revId": "08870bd1a24fc7f3ae4ff30bc7e64c09edd931d4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
