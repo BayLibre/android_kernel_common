@@ -22,6 +22,30 @@
       "revId": "08870bd1a24fc7f3ae4ff30bc7e64c09edd931d4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34a8216d_c41b90e6",
+        "filename": "net/ipv4/sysctl_net_ipv4.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2020-05-25T22:11:14Z",
+      "side": 1,
+      "message": "That\u0027s a fair point.\n\nHowever, it would be a misconfiguration to try to do that, and probably worth flagging...\n\nThat said, I don\u0027t see any cases where that would happen:\n\n//system/core/rootdir/init.rc\n\n# \"tcp_default_init_rwnd\" Is too long!\non property:sys.sysctl.tcp_def_init_rwnd\u003d*\n    write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}\n\n(I\u0027m pretty sure the above won\u0027t care, because this stuff exists on cuttlefish, and the 5.4 kernel it uses doesn\u0027t even have the sysctl)\n\n//frameworks/base/services/core/java/com/android/server/ConnectivityService.java\n\nInteger rwndValue \u003d Settings.Global.getInt(mContext.getContentResolver(),\n    Settings.Global.TCP_DEFAULT_INIT_RWND,\n            mSystemProperties.getInt(\"net.tcp.default_init_rwnd\", 0));\nfinal String sysctlKey \u003d \"sys.sysctl.tcp_def_init_rwnd\";\nif (rwndValue !\u003d 0) {\n    mSystemProperties.set(sysctlKey, rwndValue.toString());\n}\n\n$ for i in ...; do echo; echo $i; adb -s $i shell getprop | egrep tcp | egrep init_rwnd; done\n\ntaimen[4.4]\n[net.tcp.default_init_rwnd]: [60]\n[sys.sysctl.tcp_def_init_rwnd]: [60]\n\ncrosshatch[4.9]\n[net.tcp.default_init_rwnd]: [60]\n\nblueline[4.9]\n[net.tcp.default_init_rwnd]: [60]\n[sys.sysctl.tcp_def_init_rwnd]: [60]\n\nbonito[4.9]\n[net.tcp.default_init_rwnd]: [60]\n[sys.sysctl.tcp_def_init_rwnd]: [60]\n\nf[4.14]\n[net.tcp.default_init_rwnd]: [60]\n[sys.sysctl.tcp_def_init_rwnd]: [60]\n\naosp_cf_x86_64_phone[5.4]\n[net.tcp.default_init_rwnd]: [60]\n[sys.sysctl.tcp_def_init_rwnd]: [60]\n\n/kernel/tests/net/test/sock_diag_test.py also writes 60",
+      "parentUuid": "725730d1_4babbd82",
+      "range": {
+        "startLine": 1178,
+        "startChar": 20,
+        "endLine": 1178,
+        "endChar": 40
+      },
+      "revId": "08870bd1a24fc7f3ae4ff30bc7e64c09edd931d4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
