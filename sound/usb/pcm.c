@@ -134,6 +134,9 @@ static struct audioformat *find_format(struct snd_usb_substream *subs)
 			found = fp;
 			cur_attr = attr;
 		}
+
+		if (usb_audio_ops && usb_audio_ops->vendor_pcm_binterval)
+			usb_audio_ops->vendor_pcm_binterval(fp, found, &cur_attr, &attr);
 	}
 	return found;
 }
@@ -641,6 +644,9 @@ static int set_format(struct snd_usb_substream *subs, struct audioformat *fmt)
 		}
 		dev_dbg(&dev->dev, "setting usb interface %d:%d\n",
 			fmt->iface, fmt->altsetting);
+		if (usb_audio_ops && usb_audio_ops->vendor_set_pcm_intf)
+			usb_audio_ops->vendor_set_pcm_intf(iface, fmt->iface,
+					fmt->altsetting, subs->direction);
 		snd_usb_set_interface_quirk(dev);
 	}
 
@@ -1039,6 +1045,16 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
 	struct usb_interface *iface;
 	int ret;
 
+	if (usb_audio_ops && usb_audio_ops->vendor_set_pcmbuf) {
+		ret = usb_audio_ops->vendor_set_pcmbuf(subs->dev,
+						subs->cur_audiofmt->iface);
+
+		if (ret < 0) {
+			dev_err(&subs->dev->dev, "pcm buf transfer failed\n");
+			return ret;
+		}
+	}
+
 	if (! subs->cur_audiofmt) {
 		dev_err(&subs->dev->dev, "no format is specified!\n");
 		return -ENXIO;
@@ -1071,6 +1087,15 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
 					       subs->cur_rate);
 		if (ret < 0)
 			goto unlock;
+
+		if (usb_audio_ops && usb_audio_ops->vendor_set_rate) {
+			subs->need_setup_ep = false;
+			usb_audio_ops->vendor_set_rate(iface,
+					subs->cur_audiofmt->iface,
+					subs->cur_rate,
+					subs->cur_audiofmt->altsetting);
+			goto unlock;
+		}
 
 		ret = configure_endpoint(subs);
 		if (ret < 0)
@@ -1481,6 +1506,10 @@ static int snd_usb_pcm_open(struct snd_pcm_substream *substream)
 	struct snd_usb_substream *subs = &as->substream[direction];
 	int ret;
 
+	if (usb_audio_ops && usb_audio_ops->vendor_pcm_con)
+		usb_audio_ops->vendor_pcm_con(subs->dev,
+				SND_PCM_OPEN, direction);
+
 	subs->interface = -1;
 	subs->altset_idx = 0;
 	runtime->hw = snd_usb_hardware;
@@ -1507,14 +1536,23 @@ static int snd_usb_pcm_close(struct snd_pcm_substream *substream)
 	int direction = substream->stream;
 	struct snd_usb_stream *as = snd_pcm_substream_chip(substream);
 	struct snd_usb_substream *subs = &as->substream[direction];
+	struct usb_interface *iface;
 	int ret;
 
+	if (usb_audio_ops && usb_audio_ops->vendor_pcm_con)
+		usb_audio_ops->vendor_pcm_con(subs->dev,
+				SND_PCM_CLOSE, direction);
+
 	snd_media_stop_pipeline(subs);
+	iface = usb_ifnum_to_if(subs->dev, subs->interface);
 
 	if (!as->chip->keep_iface &&
 	    subs->interface >= 0 &&
 	    !snd_usb_lock_shutdown(subs->stream->chip)) {
 		usb_set_interface(subs->dev, subs->interface, 0);
+		if (usb_audio_ops && usb_audio_ops->vendor_set_pcm_intf)
+			usb_audio_ops->vendor_set_pcm_intf(iface,
+					subs->interface, 0, direction);
 		subs->interface = -1;
 		ret = snd_usb_pcm_change_state(subs, UAC3_PD_STATE_D1);
 		snd_usb_unlock_shutdown(subs->stream->chip);
