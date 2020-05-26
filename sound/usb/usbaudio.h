@@ -124,5 +124,23 @@ int snd_usb_lock_shutdown(struct snd_usb_audio *chip);
 void snd_usb_unlock_shutdown(struct snd_usb_audio *chip);
 
 extern bool snd_usb_use_vmalloc;
+extern struct usb_audio_vendor_ops *usb_audio_ops;
+
+struct usb_audio_vendor_ops {
+	void (*vendor_conn)(struct usb_interface *intf,
+			struct usb_device *udev);
+	void (*vendor_disc)(void);
+	int (*vendor_set_intf)(struct usb_device *udev,
+			struct usb_host_interface *alts, int iface, int alt);
+	int (*vendor_set_rate)(int iface, int rate, int alt);
+	int (*vendor_set_pcmbuf)(struct usb_device *udev);
+	int (*vendor_set_pcm_intf)(struct usb_device *udev,
+			int iface, int alt, int direction);
+	void (*vendor_pcm_con)(int onoff, int direction);
+	void (*vendor_pcm_binterval)(void *fp, void *found,
+			int *cur_attr, int *attr);
+	int (*vendor_usb_add_ctls)(struct snd_usb_audio *chip,
+				unsigned long private_value);
+};
 
 #endif /* __USBAUDIO_H */

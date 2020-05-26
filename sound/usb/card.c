@@ -105,6 +105,7 @@ MODULE_PARM_DESC(use_vmalloc, "Use vmalloc for PCM intermediate buffers (default
 static DEFINE_MUTEX(register_mutex);
 static struct snd_usb_audio *usb_chip[SNDRV_CARDS];
 static struct usb_driver usb_audio_driver;
+struct usb_audio_vendor_ops *usb_audio_ops;
 
 struct snd_usb_substream *find_snd_usb_substream(unsigned int card_num,
 	unsigned int pcm_idx, unsigned int direction, struct snd_usb_audio
@@ -171,6 +172,12 @@ err:
 	return subs;
 }
 EXPORT_SYMBOL_GPL(find_snd_usb_substream);
+
+void set_vender_interface(struct usb_audio_vendor_ops *vendor_ops)
+{
+	usb_audio_ops = vendor_ops;
+}
+EXPORT_SYMBOL_GPL(set_vender_interface);
 
 /*
  * disconnect streams
@@ -645,6 +652,9 @@ static int usb_audio_probe(struct usb_interface *intf,
 	if (err < 0)
 		return err;
 
+	if (usb_audio_ops->vendor_conn)
+		usb_audio_ops->vendor_conn(intf, dev);
+
 	/*
 	 * found a config.  now register to ALSA
 	 */
@@ -699,6 +709,9 @@ static int usb_audio_probe(struct usb_interface *intf,
 		}
 	}
 	dev_set_drvdata(&dev->dev, chip);
+
+	if (usb_audio_ops->vendor_usb_add_ctls)
+		usb_audio_ops->vendor_usb_add_ctls(chip, 0);
 
 	/*
 	 * For devices with more than one control interface, we assume the
@@ -774,6 +787,9 @@ static void usb_audio_disconnect(struct usb_interface *intf)
 
 	if (chip->disconnect_cb)
 		chip->disconnect_cb(chip);
+
+	if (usb_audio_ops->vendor_disc)
+		usb_audio_ops->vendor_disc();
 
 	mutex_lock(&register_mutex);
 	if (atomic_inc_return(&chip->shutdown) == 1) {
