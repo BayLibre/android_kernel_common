@@ -260,6 +260,7 @@ static int usb_parse_endpoint(struct device *ddev, int cfgno,
 	unsigned char *buffer0 = buffer;
 	struct usb_endpoint_descriptor *d;
 	struct usb_host_endpoint *endpoint;
+	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
 	int n, i, j, retval;
 	unsigned int maxp;
 	const unsigned short *maxpacket_maxes;
@@ -267,6 +268,9 @@ static int usb_parse_endpoint(struct device *ddev, int cfgno,
 	d = (struct usb_endpoint_descriptor *) buffer;
 	buffer += d->bLength;
 	size -= d->bLength;
+
+	if (hcd->driver->ep_parse)
+		hcd->driver->ep_parse(udev, d, size);
 
 	if (d->bLength >= USB_DT_ENDPOINT_AUDIO_SIZE)
 		n = USB_DT_ENDPOINT_AUDIO_SIZE;
