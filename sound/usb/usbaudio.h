@@ -127,4 +127,34 @@ void snd_usb_unlock_shutdown(struct snd_usb_audio *chip);
 extern bool snd_usb_use_vmalloc;
 extern bool snd_usb_skip_validation;
 
+/* for vender function mapping */
+extern struct snd_usb_audio_vendor_ops *usb_audio_ops;
+
+/* USB audio interface function for audio core */
+struct snd_usb_audio_vendor_ops {
+	/* Set descriptors and memory map */
+	void (*vendor_conn)(struct usb_interface *intf,
+			struct usb_device *udev);
+	/* Set disconnection */
+	void (*vendor_disc)(void);
+	/* Set interface info and setting value */
+	int (*vendor_set_intf)(struct usb_device *udev,
+			struct usb_host_interface *alts, int iface, int alt);
+	/* Set sample rate */
+	int (*vendor_set_rate)(int iface, int rate, int alt);
+	/* Alloc pcm buffer */
+	int (*vendor_set_pcmbuf)(struct usb_device *udev);
+	/* Set pcm interface */
+	int (*vendor_set_pcm_intf)(struct usb_device *udev,
+			int iface, int alt, int direction);
+	/* informed whether pcm open/close to vendor */
+	void (*vendor_pcm_con)(bool onoff, bool direction);
+	/* set datainterval */
+	void (*vendor_pcm_binterval)(void *fp, void *found,
+			int *cur_attr, int *attr);
+	/* control USB F/W */
+	int (*vendor_usb_add_ctls)(struct snd_usb_audio *chip,
+				unsigned long private_value);
+};
+
 #endif /* __USBAUDIO_H */
