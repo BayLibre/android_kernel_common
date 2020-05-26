@@ -341,6 +341,8 @@ struct hc_driver {
 		/* CLEAR_TT_BUFFER completion callback */
 	void	(*clear_tt_buffer_complete)(struct usb_hcd *,
 				struct usb_host_endpoint *);
+	void	(*ep_parse)(struct usb_device *udev,
+			struct usb_endpoint_descriptor *desc, int size);
 
 	/* xHCI specific functions */
 		/* Called by usb_alloc_dev to alloc HC device structures */
