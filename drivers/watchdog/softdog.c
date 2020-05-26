@@ -53,6 +53,16 @@ module_param(soft_panic, int, 0);
 MODULE_PARM_DESC(soft_panic,
 	"Softdog action, set to 1 to panic, 0 to reboot (default=0)");
 
+static char *soft_reboot_target;
+module_param(soft_reboot_target, charp, 0);
+MODULE_PARM_DESC(soft_reboot_target,
+	"Softdog action, set reboot target (default=emergency)");
+
+static int soft_active_on_boot;
+module_param(soft_active_on_boot, int, 0);
+MODULE_PARM_DESC(soft_active_on_boot,
+	"Set to 1 to active Softdog on boot (default=0)");
+
 static struct hrtimer softdog_ticktock;
 static struct hrtimer softdog_preticktock;
 
@@ -66,7 +76,10 @@ static enum hrtimer_restart softdog_fire(struct hrtimer *timer)
 		panic("Software Watchdog Timer expired");
 	} else {
 		pr_crit("Initiating system reboot\n");
-		emergency_restart();
+		if (soft_reboot_target != NULL)
+			machine_restart(soft_reboot_target);
+		else
+			emergency_restart();
 		pr_crit("Reboot didn't ?????\n");
 	}
 
@@ -147,6 +160,11 @@ static int __init softdog_init(void)
 		hrtimer_init(&softdog_preticktock, CLOCK_MONOTONIC,
 			     HRTIMER_MODE_REL);
 		softdog_preticktock.function = softdog_pretimeout;
+	}
+
+	if (soft_active_on_boot) {
+		set_bit(WDOG_HW_RUNNING, &softdog_dev.status);
+		set_bit(WDOG_ACTIVE, &softdog_dev.status);
 	}
 
 	ret = watchdog_register_device(&softdog_dev);
