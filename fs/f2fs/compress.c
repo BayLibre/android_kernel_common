@@ -985,7 +985,11 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
 	loff_t psize;
 	int i, err;
 
+<<<<<<< HEAD   (a845d1 ANDROID: remove unused variable)
 	if (!f2fs_trylock_op(sbi))
+=======
+	if (!IS_NOQUOTA(inode) && !f2fs_trylock_op(sbi))
+>>>>>>> BRANCH (2d9a99 f2fs: flush dirty meta pages when flushing them)
 		return -EAGAIN;
 
 	set_new_dnode(&dn, cc->inode, NULL, NULL, 0);
