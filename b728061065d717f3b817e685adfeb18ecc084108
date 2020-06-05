@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48ba5faf_6c1d9b6b",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1102,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-06-05T00:27:02Z",
+      "side": 1,
+      "message": "Is this right? You want to return from this function with a side-effect of acquiring the bc_mutex? Shouldn\u0027t the mutex_unlock() be outside the conditional?",
+      "revId": "b728061065d717f3b817e685adfeb18ecc084108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
