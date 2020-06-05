@@ -546,6 +546,15 @@
 	__end_rodata = .;
 
 /*
+ * Non-instrumentable text section
+ */
+#define NOINSTR_TEXT							\
+		ALIGN_FUNCTION();					\
+		__noinstr_text_start = .;				\
+		*(.noinstr.text)					\
+		__noinstr_text_end = .;
+
+/*
  * .text section. Map to function alignment to avoid address changes
  * during second ld run in second ld pass when generating System.map
  *
@@ -556,7 +565,11 @@
 #define TEXT_TEXT							\
 		ALIGN_FUNCTION();					\
 		*(.text.hot TEXT_MAIN .text.fixup .text.unlikely)	\
+<<<<<<< HEAD   (f76a7c Merge afdb0f2ec57d ("Merge tag 'fscrypt-for-linus' of git://)
 		*(TEXT_CFI_MAIN)					\
+=======
+		NOINSTR_TEXT						\
+>>>>>>> BRANCH (0bd957 Merge tag 'core-kprobes-2020-06-01' of git://git.kernel.org/)
 		*(.text..refcount)					\
 		*(.text..ftrace)					\
 		*(.ref.text)						\
