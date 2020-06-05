@@ -544,6 +544,7 @@
   netif_rx_ni
   netif_schedule_queue
   netif_tx_wake_queue
+  __netlink_kernel_create
   netlink_unicast
   net_ratelimit
   nf_register_net_hooks
@@ -924,18 +925,18 @@
   __sw_hweight32
   __sw_hweight64
   __sw_hweight8
-  __symbol_get
-  __symbol_put
   sync_file_create
   sync_file_get_fence
   synchronize_irq
   syscon_node_to_regmap
+  sysfs_create_bin_file
   sysfs_create_file_ns
   sysfs_create_files
   sysfs_create_group
   sysfs_create_groups
   sysfs_create_link
   sysfs_notify
+  sysfs_remove_bin_file
   sysfs_remove_file_ns
   sysfs_remove_group
   sysfs_remove_groups
@@ -1558,8 +1559,6 @@
   security_mmap_addr
   set_page_dirty_lock
   sg_alloc_table_from_pages
-  sysfs_create_bin_file
-  sysfs_remove_bin_file
   sysfs_remove_files
   unmapped_area_topdown
   unregister_shrinker
@@ -2406,6 +2405,11 @@
   snd_soc_component_disable_pin
   snd_soc_component_force_enable_pin
 
+# required by sockev_nlmcast.ko
+  nlmsg_notify
+  sockev_register_notify
+  sockev_unregister_notify
+
 # required by spi-geni-qcom.ko
   dma_release_channel
   __spi_alloc_controller
@@ -2553,7 +2557,6 @@
   msleep_interruptible
   netif_tx_stop_all_queues
   netlink_broadcast
-  __netlink_kernel_create
   netlink_kernel_release
   nla_put_64bit
   nla_strlcpy
