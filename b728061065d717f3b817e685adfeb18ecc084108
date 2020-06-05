@@ -52,6 +52,23 @@
       "revId": "b728061065d717f3b817e685adfeb18ecc084108",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b282419_a4e4cf25",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1102,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-06-05T00:32:43Z",
+      "side": 1,
+      "message": "Actually, that brings up another question. If the mutex_lock fails and we skip incfs_write_hash_block_to_backing_file(), is that ok? Do we naturally try again later?",
+      "revId": "b728061065d717f3b817e685adfeb18ecc084108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
