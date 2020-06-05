@@ -138,10 +138,14 @@ struct f2fs_mount_info {
 	int fsync_mode;			/* fsync policy */
 	int fs_mode;			/* fs mode: LFS or ADAPTIVE */
 	int bggc_mode;			/* bggc mode: off, on or sync */
+<<<<<<< HEAD   (c285ec FROMLIST: esp: select CRYPTO_SEQIV)
 	bool test_dummy_encryption;	/* test dummy encryption */
 #ifdef CONFIG_FS_ENCRYPTION
 	bool inlinecrypt;		/* inline encryption enabled */
 #endif
+=======
+	struct fscrypt_dummy_context dummy_enc_ctx; /* test dummy encryption */
+>>>>>>> BRANCH (afdb0f Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 	block_t unusable_cap;		/* Amount of space allowed to be
 					 * unusable when disabling checkpoint
 					 */
@@ -1262,7 +1266,7 @@ enum fsync_mode {
 
 #ifdef CONFIG_FS_ENCRYPTION
 #define DUMMY_ENCRYPTION_ENABLED(sbi) \
-			(unlikely(F2FS_OPTION(sbi).test_dummy_encryption))
+	(unlikely(F2FS_OPTION(sbi).dummy_enc_ctx.ctx != NULL))
 #else
 #define DUMMY_ENCRYPTION_ENABLED(sbi) (0)
 #endif
