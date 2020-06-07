@@ -103,6 +103,14 @@ KVM_NVHE_ALIAS(gic_nonsecure_priorities);
 KVM_NVHE_ALIAS(__start___kvm_ex_table);
 KVM_NVHE_ALIAS(__stop___kvm_ex_table);
 
+#if IS_ENABLED(CONFIG_TRACE_MMIO_ACCESS)
+KVM_NVHE_ALIAS(__log_write_mmio);
+KVM_NVHE_ALIAS(__log_read_mmio);
+KVM_NVHE_ALIAS(__log_post_read_mmio);
+KVM_NVHE_ALIAS(__tracepoint_rwmmio_write);
+KVM_NVHE_ALIAS(__tracepoint_rwmmio_read);
+KVM_NVHE_ALIAS(__tracepoint_rwmmio_post_read);
+#endif
 #endif /* CONFIG_KVM */
 
 #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
