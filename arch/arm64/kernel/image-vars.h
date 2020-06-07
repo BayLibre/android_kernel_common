@@ -103,6 +103,28 @@ KVM_NVHE_ALIAS(gic_nonsecure_priorities);
 KVM_NVHE_ALIAS(__start___kvm_ex_table);
 KVM_NVHE_ALIAS(__stop___kvm_ex_table);
 
+/* raw_read/write logging */
+#if IS_ENABLED(CONFIG_TRACE_RW)
+KVM_NVHE_ALIAS(__log_writeb_io);
+KVM_NVHE_ALIAS(__log_writew_io);
+KVM_NVHE_ALIAS(__log_writel_io);
+KVM_NVHE_ALIAS(__log_writeq_io);
+KVM_NVHE_ALIAS(__log_read_io);
+KVM_NVHE_ALIAS(__log_post_readb_io);
+KVM_NVHE_ALIAS(__log_post_readw_io);
+KVM_NVHE_ALIAS(__log_post_readl_io);
+KVM_NVHE_ALIAS(__log_post_readq_io);
+KVM_NVHE_ALIAS(__tracepoint_rwio_writeb);
+KVM_NVHE_ALIAS(__tracepoint_rwio_writew);
+KVM_NVHE_ALIAS(__tracepoint_rwio_writel);
+KVM_NVHE_ALIAS(__tracepoint_rwio_writeq);
+KVM_NVHE_ALIAS(__tracepoint_rwio_read);
+KVM_NVHE_ALIAS(__tracepoint_rwio_post_readb);
+KVM_NVHE_ALIAS(__tracepoint_rwio_post_readw);
+KVM_NVHE_ALIAS(__tracepoint_rwio_post_readl);
+KVM_NVHE_ALIAS(__tracepoint_rwio_post_readq);
+#endif
+
 #endif /* CONFIG_KVM */
 
 #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
