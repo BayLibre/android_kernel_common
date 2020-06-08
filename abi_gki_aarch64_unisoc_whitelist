@@ -592,6 +592,7 @@
   strchr
   strcmp
   strcpy
+  strlcat
   strlcpy
   strlen
   strncasecmp
@@ -687,6 +688,7 @@
   usb_gadget_udc_reset
   usb_get_dr_mode
   usb_get_intf
+  usb_hcd_is_primary_hcd
   usb_interface_id
   usb_kill_urb
   usb_phy_get_charger_current
@@ -1763,6 +1765,7 @@
 
 # required by sprd_powerdebug.ko
   cpu_pm_register_notifier
+  cpu_pm_unregister_notifier
   pm_print_active_wakeup_sources
   syscon_node_to_regmap
 
@@ -2380,15 +2383,23 @@
   bio_associate_blkg
   bio_put
   bit_wait
+  d_make_root
+  d_splice_alias
   flush_dcache_page
   fs_bio_set
   fs_ftype_to_dtype
+  generic_read_dir
   generic_ro_fops
+  iget5_locked
   iget_failed
+  init_special_inode
   init_user_ns
+  inode_init_once
   inode_nohighmem
+  iput
   __lock_page
   LZ4_decompress_safe_partial
+  memmove
   out_of_line_wait_on_bit_lock
   pagecache_get_page
   page_get_link
@@ -2400,10 +2411,23 @@
   radix_tree_preload
   read_cache_page
   read_cache_page_gfp
+  register_filesystem
+  set_nlink
   simple_get_link
   submit_bio
   trace_print_flags_seq
+  unlock_new_inode
   unlock_page
+  unregister_filesystem
   vm_unmap_aliases
   wake_up_bit
   __wake_up_locked
+
+# required by sprd_cpp.ko
+  clk_get_parent
+  of_iomap
+
+# required by sprd_camera.ko
+  ktime_get_ts64
+  ns_to_timeval
+  _raw_spin_trylock
