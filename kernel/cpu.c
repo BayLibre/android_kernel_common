@@ -1001,11 +1001,34 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
 	if (!cpu_present(cpu))
 		return -EINVAL;
 
-	cpus_write_lock();
+	/*
+	 * Early BP run stages.
+	 *
+	 * The early stages (> CPUHP_AP_LIMIT), can be run directly on the BP
+	 * without the need for the time consuming cpus_write_lock().
+	 *
+	 * concurrent accesses to cpuhp_tasks_frozen and cpuhp_state are
+	 * protected by:
+	 *   - cpus_map_{begin,end} (against concurrent up/down)
+	 *   - cpuhp_state_mutex (against dynamic state add/remove)
+	 */
+	mutex_lock(&cpuhp_state_mutex);
 
 	cpuhp_tasks_frozen = tasks_frozen;
-
 	prev_state = cpuhp_set_state(st, target);
+
+	ret = cpuhp_down_callbacks(cpu, st, CPUHP_AP_LIMIT);
+
+	mutex_unlock(&cpuhp_state_mutex);
+
+	if (ret || st->state == target)
+		goto out_early_stage;
+
+	/*
+	 * AP run stages.
+	 */
+	cpus_write_lock();
+
 	/*
 	 * If the current CPU state is in the range of the AP hotplug thread,
 	 * then we need to kick the thread.
@@ -1047,6 +1070,8 @@ out:
 	 */
 	lockup_detector_cleanup();
 	arch_smt_update();
+
+out_early_stage:
 	return ret;
 }
 
@@ -1655,8 +1680,17 @@ static struct cpuhp_step cpuhp_hp_states[] = {
 	 */
 
 #ifdef CONFIG_SMP
+	/*
+	 * This delimits where the AP worker thread needs to kick-in.
+	 */
+	[CPUHP_AP_LIMIT] = {
+		.name			= "ap_work_limit",
+		.startup.single		= NULL,
+		.teardown.single	= NULL,
+	},
+
 	/* Last state is scheduler control setting the cpu active */
-	[CPUHP_AP_ACTIVE] = {
+	[CPUHP_SCHED_ACTIVE] = {
 		.name			= "sched:active",
 		.startup.single		= sched_cpu_activate,
 		.teardown.single	= sched_cpu_deactivate,
