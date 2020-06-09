@@ -1689,6 +1689,12 @@ static struct cpuhp_step cpuhp_hp_states[] = {
 		.teardown.single	= NULL,
 	},
 
+	[CPUHP_SCHED_DRAIN_RQ] = {
+		.name			= "sched_drain_rq:offline",
+		.startup.single		= NULL,
+		.teardown.single	= sched_cpu_drain_rq,
+	},
+
 	/* Last state is scheduler control setting the cpu active */
 	[CPUHP_SCHED_ACTIVE] = {
 		.name			= "sched:active",

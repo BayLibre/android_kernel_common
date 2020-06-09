@@ -6358,15 +6358,22 @@ static void calc_load_migrate(struct rq *rq)
 		atomic_long_add(delta, &calc_load_tasks);
 }
 
-static struct task_struct *__pick_migrate_task(struct rq *rq)
+static struct task_struct *__pick_migrate_task(struct rq *rq,
+					       const struct sched_class *start,
+					       bool force)
 {
 	const struct sched_class *class;
 	struct task_struct *next;
 
-	for_each_class(class) {
+	for_class_range(class, start, NULL) {
 		next = class->pick_next_task(rq);
 		if (next) {
 			next->sched_class->put_prev_task(rq, next);
+
+			if (is_per_cpu_kthread(next) && !force &&
+			    next->sched_class != &idle_sched_class)
+				continue;
+
 			return next;
 		}
 	}
@@ -6382,11 +6389,15 @@ static struct task_struct *__pick_migrate_task(struct rq *rq)
  * Called with rq->lock held even though we'er in stop_machine() and
  * there's no concurrency possible, we hold the required locks anyway
  * because of lock validation efforts.
+ *
+ * force: if false, the function will not try to migrate CPU pinned
+ * kthreads.
  */
-static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
+static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf, bool force)
 {
 	struct rq *rq = dead_rq;
 	struct task_struct *next, *stop = rq->stop;
+	const struct sched_class *start = sched_class_highest;
 	struct rq_flags orf = *rf;
 	int dest_cpu;
 
@@ -6416,7 +6427,13 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
 		if (rq->nr_running == 1)
 			break;
 
-		next = __pick_migrate_task(rq);
+		next = __pick_migrate_task(rq, start, force);
+
+		/* force case covered by the rq->nr_running check above */
+		if (!force && next->sched_class == &idle_sched_class)
+			break;
+
+		start = next->sched_class;
 
 		/*
 		 * Rules for changing task_struct::cpus_mask are holding
@@ -6535,6 +6552,27 @@ static int cpuset_cpu_inactive(unsigned int cpu)
 	return 0;
 }
 
+static int drain_rq_cpu_stop(void *data)
+{
+	struct rq *rq = this_rq();
+	struct rq_flags rf;
+	int ret = 0;
+
+	rq_lock_irqsave(rq, &rf);
+	migrate_tasks(rq, &rf, false);
+	rq_unlock_irqrestore(rq, &rf);
+
+	return ret;
+}
+
+int sched_cpu_drain_rq(unsigned int cpu)
+{
+	if (!idle_cpu(cpu))
+		return stop_one_cpu(cpu, drain_rq_cpu_stop, NULL);
+
+	return 0;
+}
+
 int sched_cpu_activate(unsigned int cpu)
 {
 	struct rq *rq = cpu_rq(cpu);
@@ -6640,7 +6678,7 @@ int sched_cpu_dying(unsigned int cpu)
 		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
 		set_rq_offline(rq);
 	}
-	migrate_tasks(rq, &rf);
+	migrate_tasks(rq, &rf, true);
 	BUG_ON(rq->nr_running != 1);
 	rq_unlock_irqrestore(rq, &rf);
 
