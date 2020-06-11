@@ -2264,6 +2264,7 @@ int __weak arch_prctl_spec_ctrl_set(struct task_struct *t, unsigned long which,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD   (7a2a83 Merge f359287765c0 ("Merge branch 'from-miklos' of git://git)
 #ifdef CONFIG_MMU
 static int prctl_update_vma_anon_name(struct vm_area_struct *vma,
 		struct vm_area_struct **prev,
@@ -2412,6 +2413,9 @@ static int prctl_set_vma(unsigned long opt, unsigned long start,
 #endif
 
 #define PR_IO_FLUSHER (PF_MEMALLOC_NOIO | PF_LESS_THROTTLE)
+=======
+#define PR_IO_FLUSHER (PF_MEMALLOC_NOIO | PF_LOCAL_THROTTLE)
+>>>>>>> BRANCH (947090 Merge branch 'akpm' (patches from Andrew))
 
 SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 		unsigned long, arg4, unsigned long, arg5)
