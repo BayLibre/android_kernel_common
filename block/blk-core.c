@@ -39,7 +39,6 @@
 #include <linux/debugfs.h>
 #include <linux/bpf.h>
 #include <linux/psi.h>
-#include <linux/blk-crypto.h>
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/block.h>
@@ -1071,9 +1070,7 @@ blk_qc_t generic_make_request(struct bio *bio)
 			/* Create a fresh bio_list for all subordinate requests */
 			bio_list_on_stack[1] = bio_list_on_stack[0];
 			bio_list_init(&bio_list_on_stack[0]);
-
-			if (!blk_crypto_submit_bio(&bio))
-				ret = q->make_request_fn(q, bio);
+			ret = q->make_request_fn(q, bio);
 
 			blk_queue_exit(q);
 
@@ -1121,7 +1118,7 @@ blk_qc_t direct_make_request(struct bio *bio)
 {
 	struct request_queue *q = bio->bi_disk->queue;
 	bool nowait = bio->bi_opf & REQ_NOWAIT;
-	blk_qc_t ret = BLK_QC_T_NONE;
+	blk_qc_t ret;
 
 	if (!generic_make_request_checks(bio))
 		return BLK_QC_T_NONE;
@@ -1134,8 +1131,7 @@ blk_qc_t direct_make_request(struct bio *bio)
 		return BLK_QC_T_NONE;
 	}
 
-	if (!blk_crypto_submit_bio(&bio))
-		ret = q->make_request_fn(q, bio);
+	ret = q->make_request_fn(q, bio);
 	blk_queue_exit(q);
 	return ret;
 }
@@ -1802,12 +1798,6 @@ int __init blk_dev_init(void)
 #ifdef CONFIG_DEBUG_FS
 	blk_debugfs_root = debugfs_create_dir("block", NULL);
 #endif
-
-	if (bio_crypt_ctx_init() < 0)
-		panic("Failed to allocate mem for bio crypt ctxs\n");
-
-	if (blk_crypto_fallback_init() < 0)
-		panic("Failed to init blk-crypto-fallback\n");
 
 	return 0;
 }

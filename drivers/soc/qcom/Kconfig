@@ -97,7 +97,7 @@ config QCOM_RMTFS_MEM
 	  Say y here if you intend to boot the modem remoteproc.
 
 config QCOM_RPMH
-	tristate "Qualcomm RPM-Hardened (RPMH) Communication"
+	bool "Qualcomm RPM-Hardened (RPMH) Communication"
 	depends on ARCH_QCOM && ARM64 || COMPILE_TEST
 	help
 	  Support for communication with the hardened-RPM blocks in
@@ -107,7 +107,7 @@ config QCOM_RPMH
 	  help apply the aggregated state on the resource.
 
 config QCOM_RPMHPD
-	tristate "Qualcomm RPMh Power domain driver"
+	bool "Qualcomm RPMh Power domain driver"
 	depends on QCOM_RPMH && QCOM_COMMAND_DB
 	help
 	  QCOM RPMh Power domain driver to support power-domains with
@@ -116,8 +116,8 @@ config QCOM_RPMHPD
 	  for the voltage rail.
 
 config QCOM_RPMPD
-	tristate "Qualcomm RPM Power domain driver"
-	depends on QCOM_SMD_RPM
+	bool "Qualcomm RPM Power domain driver"
+	depends on QCOM_SMD_RPM=y
 	help
 	  QCOM RPM Power domain driver to support power-domains with
 	  performance states. The driver communicates a performance state

@@ -25,7 +25,6 @@
 #include <linux/error-injection.h>
 #include <linux/tracepoint-defs.h>
 #include <linux/srcu.h>
-#include <linux/cfi.h>
 
 #include <linux/percpu.h>
 #include <asm/module.h>
@@ -379,10 +378,6 @@ struct module {
 	const s32 *crcs;
 	unsigned int num_syms;
 
-#ifdef CONFIG_CFI_CLANG
-	cfi_check_fn cfi_check;
-#endif
-
 	/* Kernel parameters. */
 #ifdef CONFIG_SYSFS
 	struct mutex param_lock;
@@ -407,12 +402,10 @@ struct module {
 	const s32 *unused_gpl_crcs;
 #endif
 
-	/*
-	 * Signature was verified. Unconditionally compiled in Android to
-	 * preserve ABI compatibility between kernels without module
-	 * signing enabled and signed modules.
-	 */
+#ifdef CONFIG_MODULE_SIG
+	/* Signature was verified. */
 	bool sig_ok;
+#endif
 
 	bool async_probe_requested;
 

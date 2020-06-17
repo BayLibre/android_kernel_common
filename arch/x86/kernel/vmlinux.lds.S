@@ -40,12 +40,12 @@ OUTPUT_FORMAT(CONFIG_OUTPUT_FORMAT)
 #ifdef CONFIG_X86_32
 OUTPUT_ARCH(i386)
 ENTRY(phys_startup_32)
+jiffies = jiffies_64;
 #else
 OUTPUT_ARCH(i386:x86-64)
 ENTRY(phys_startup_64)
+jiffies_64 = jiffies;
 #endif
-
-jiffies = jiffies_64;
 
 #if defined(CONFIG_X86_64)
 /*
@@ -144,13 +144,6 @@ SECTIONS
 		__indirect_thunk_start = .;
 		*(.text.__x86.indirect_thunk)
 		__indirect_thunk_end = .;
-#endif
-
-#ifdef CONFIG_CFI_CLANG
-		. = ALIGN(PAGE_SIZE);
-		__cfi_jt_start = .;
-		*(.text..L.cfi.jumptable .text..L.cfi.jumptable.*)
-		__cfi_jt_end = .;
 #endif
 	} :text =0xcccc
 
@@ -459,7 +452,3 @@ INIT_PER_CPU(irq_stack_backing_store);
            "kexec control code size is too big");
 #endif
 
-#ifdef CONFIG_CFI_CLANG
-. = ASSERT((__cfi_jt_end - __cfi_jt_start > 0),
-	   "CFI jump table is empty");
-#endif
