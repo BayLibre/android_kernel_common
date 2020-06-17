@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b499c8d6_c09c685c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-06-17T18:14:56Z",
+      "side": 1,
+      "message": "We found out that someone is using ufshcd_complete_lrbp_crypto(); see https://android-review.googlesource.com/c/kernel/common/+/1281834/2/drivers/scsi/ufs/ufs-exynos-fmp.c#116.\n\nIt sounds like they\u0027ve updated their code since then to remove usage of some of the other variant ops following my suggestions at https://b.corp.google.com/issues/129991660#comment78.  But probably they\u0027re still using ufshcd_complete_lrbp_crypto().\n\nSo I think we need to keep ufshcd_complete_lrbp_crypto() for now.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 19
+      },
+      "revId": "9e53bc2642fdd24a138ec06ad41e51d645ce2fcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8abcdb3_bdac2f27",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-06-17T18:14:56Z",
+      "side": 1,
+      "message": "I think that suspend() and resume() should be removed too.  There are already non-crypto specific variant ops for these -- similar to the case for debug().",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 54
+      },
+      "revId": "9e53bc2642fdd24a138ec06ad41e51d645ce2fcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
