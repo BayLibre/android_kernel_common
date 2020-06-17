@@ -66,11 +66,6 @@ void *keyslot_manager_private(struct keyslot_manager *ksm);
 
 void keyslot_manager_destroy(struct keyslot_manager *ksm);
 
-struct keyslot_manager *keyslot_manager_create_passthrough(
-	const struct keyslot_mgmt_ll_ops *ksm_ops,
-	const unsigned int crypto_mode_supported[BLK_ENCRYPTION_MODE_MAX],
-	void *ll_priv_data);
-
 void keyslot_manager_intersect_modes(struct keyslot_manager *parent,
 				     const struct keyslot_manager *child);
 
