@@ -105,6 +105,24 @@
       "revId": "923f67c706cff9a70e3a707b6c1471649338f6bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3ed4046_a6c6ddf9",
+        "filename": "include/linux/cpufreq.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-06-17T17:26:17Z",
+      "side": 1,
+      "message": "This will go in android-mainline once the upstream discussions are over: https://lore.kernel.org/lkml/20200615165554.228063-1-qperret@google.com/\n\nAnd for 5.4 / GKI 1.0, I don\u0027t think we will merge it. Definitely not in 5.4-stable. With GKI 1.0 partners are free to set the default governor they want in Kconfig as this shouldn\u0027t impact the ABI.",
+      "parentUuid": "8bbcc860_cced2a50",
+      "revId": "923f67c706cff9a70e3a707b6c1471649338f6bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
