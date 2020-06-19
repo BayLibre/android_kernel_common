@@ -4,6 +4,7 @@
  */
 #include <linux/crc32.h>
 #include <linux/file.h>
+#include <linux/filter.h>
 #include <linux/gfp.h>
 #include <linux/ktime.h>
 #include <linux/lz4.h>
@@ -96,6 +97,19 @@ int incfs_realloc_mount_info(struct mount_info *mi,
 		kfree(old_buffer);
 	}
 
+	if (mi->mi_pending_read_bpf) {
+		fput(mi->mi_pending_read_bpf);
+		mi->mi_pending_read_bpf = NULL;
+	}
+
+	if (options->pending_read_bpf) {
+		struct file *file = fget(options->pending_read_bpf);
+
+		if (IS_ERR(file))
+		    return PTR_ERR(file);
+		mi->mi_pending_read_bpf = file;
+	}
+
 	mi->mi_options = *options;
 	return 0;
 }
@@ -115,6 +129,8 @@ void incfs_free_mount_info(struct mount_info *mi)
 	kfree(mi->mi_log.rl_ring_buf);
 	kfree(mi->log_xattr);
 	kfree(mi->pending_read_xattr);
+	if (mi->mi_pending_read_bpf)
+		fput(mi->mi_pending_read_bpf);
 	kfree(mi);
 }
 
@@ -839,6 +855,13 @@ static struct pending_read *add_pending_read(struct data_file *df,
 	result->file_id = df->df_id;
 	result->block_index = block_index;
 	result->timestamp_us = ktime_to_us(ktime_get());
+
+	if (mi->mi_pending_read_bpf) {
+		struct bpf_prog *prog = mi->mi_pending_read_bpf->private_data;
+		int action = BPF_PROG_RUN(prog, result);
+
+		pr_debug("result %d\n", action);
+	}
 
 	mutex_lock(&mi->mi_pending_reads_mutex);
 

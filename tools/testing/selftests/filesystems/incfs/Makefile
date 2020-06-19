@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
-CFLAGS += -D_FILE_OFFSET_BITS=64 -Wall -Werror -I../.. -I../../../../..
+CFLAGS += -D_FILE_OFFSET_BITS=64 -Wall -Werror
+CFLAGS += -I../../../../include
+CFLAGS += -I../../../../include/uapi
+CFLAGS += -I../.. -I../../../../..
 LDLIBS := -llz4 -lcrypto -lpthread
 TEST_GEN_PROGS := incfs_test incfs_stress incfs_perf
 

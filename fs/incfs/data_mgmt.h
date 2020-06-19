@@ -101,6 +101,7 @@ struct mount_options {
 	unsigned int read_log_wakeup_count;
 	bool no_backing_file_cache;
 	bool no_backing_file_readahead;
+	int pending_read_bpf;
 };
 
 struct mount_info {
@@ -151,6 +152,8 @@ struct mount_info {
 
 	void *pending_read_xattr;
 	size_t pending_read_xattr_size;
+
+	struct file *mi_pending_read_bpf;
 };
 
 struct data_file_block {

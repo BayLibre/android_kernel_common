@@ -218,6 +218,7 @@ enum parse_parameter {
 	Opt_no_backing_file_readahead,
 	Opt_rlog_pages,
 	Opt_rlog_wakeup_cnt,
+	Opt_pending_read_bpf,
 	Opt_err
 };
 
@@ -240,6 +241,7 @@ static const match_table_t option_tokens = {
 	{ Opt_no_backing_file_readahead, "no_bf_readahead=%u" },
 	{ Opt_rlog_pages, "rlog_pages=%u" },
 	{ Opt_rlog_wakeup_cnt, "rlog_wakeup_cnt=%u" },
+	{ Opt_pending_read_bpf, "pending_read_bpf=%u" },
 	{ Opt_err, NULL }
 };
 
@@ -258,6 +260,7 @@ static int parse_options(struct mount_options *opts, char *str)
 	opts->read_log_wakeup_count = 10;
 	opts->no_backing_file_cache = false;
 	opts->no_backing_file_readahead = false;
+	opts->pending_read_bpf = -1;
 	if (str == NULL || *str == 0)
 		return 0;
 
@@ -299,6 +302,11 @@ static int parse_options(struct mount_options *opts, char *str)
 			if (match_int(&args[0], &value))
 				return -EINVAL;
 			opts->read_log_wakeup_count = value;
+			break;
+		case Opt_pending_read_bpf:
+			if (match_int(&args[0], &value) || value > INT_MAX)
+				return -EINVAL;
+			opts->pending_read_bpf = value;
 			break;
 		default:
 			return -EINVAL;

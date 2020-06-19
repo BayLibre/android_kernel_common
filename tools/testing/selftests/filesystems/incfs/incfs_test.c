@@ -20,6 +20,8 @@
 #include <sys/wait.h>
 #include <sys/xattr.h>
 
+#include <linux/bpf.h>
+#include <linux/filter.h>
 #include <linux/random.h>
 #include <linux/unistd.h>
 
@@ -2774,6 +2776,7 @@ static int mapped_file_test(const char *mount_dir)
 		char orig_file_path[PATH_MAX];
 		char mapped_file_path[PATH_MAX];
 
+		result = TEST_FAILURE;
 		if (emit_file(cmd_fd, NULL, file->name, &file->id, file->size,
 					NULL) < 0)
 			goto failure;
@@ -2826,6 +2829,186 @@ static int mapped_file_test(const char *mount_dir)
 	}
 
 failure:
+	close(cmd_fd);
+	umount(mount_dir);
+	free(backing_dir);
+	return result;
+}
+
+static int validate_bpf(const char *name, size_t size)
+{
+	int result = TEST_FAILURE;
+	char data[INCFS_DATA_FILE_BLOCK_SIZE];
+	int fd = open(name, O_RDONLY | O_CLOEXEC);
+	if (fd == -1) {
+		ksft_print_msg("Failed to open %s with error %s\n", name,
+			       strerror(errno));
+		goto failure;
+	}
+
+	pread(fd, data, INCFS_DATA_FILE_BLOCK_SIZE, 0);
+	result = TEST_SUCCESS;
+
+failure:
+	close(fd);
+	return result;
+}
+
+static int bpf_test(const char *mount_dir)
+{
+	char *backing_dir = create_backing_dir(mount_dir);
+	int result = TEST_FAILURE;
+	int cmd_fd = -1;
+	char log_buf[4096];
+	int map_fd = -1;
+	union bpf_attr map_attrs = {
+		.map_type = BPF_MAP_TYPE_HASH,
+		.key_size = 16,
+		.value_size = 8,
+		.max_entries = 256,
+	};
+	int prog_fd = -1;
+	char mount_options[256];
+	struct test_files_set test = get_test_files_set();
+	const int file_num = test.files_count;
+	int i;
+
+	if (!backing_dir)
+		goto failure;
+
+	map_fd = syscall(__NR_bpf, BPF_MAP_CREATE, &map_attrs,
+			 sizeof(map_attrs));
+	if (map_fd < 0) {
+		ksft_print_msg("BPF_MAP_CREATE failed:\n%s\n",
+			       strerror(errno));
+		goto failure;
+	}
+
+	{
+		struct bpf_insn prog[] = {
+			BPF_MOV64_REG(BPF_REG_6, BPF_REG_1),
+
+			/* Copy over uuid */
+			BPF_LDX_MEM(BPF_DW, BPF_REG_0, BPF_REG_6, 0),
+			BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -24),
+			BPF_LDX_MEM(BPF_DW, BPF_REG_0, BPF_REG_6, 8),
+			BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+
+			/* Copy over timestamp */
+			BPF_LDX_MEM(BPF_DW, BPF_REG_0, BPF_REG_6, 16),
+			BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -8),
+
+			BPF_LD_MAP_FD(BPF_REG_1, map_fd),
+			BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+			BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -24),
+			BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
+			BPF_ALU64_IMM(BPF_ADD, BPF_REG_3, -8),
+			BPF_MOV64_IMM(BPF_REG_4, BPF_ANY),
+			BPF_EMIT_CALL(/*BPF_FUNC_map_update_elem*/ 2),
+			BPF_EXIT_INSN(),
+		};
+		union bpf_attr prog_attrs = {
+			.prog_type = BPF_PROG_TYPE_KPROBE,
+			.insn_cnt = ARRAY_SIZE(prog),
+			.insns = ptr_to_u64(prog),
+			.license = ptr_to_u64("GPL"),
+			.log_level = 7,
+			.log_size = sizeof(log_buf),
+			.log_buf = ptr_to_u64(log_buf),
+			.kern_version = 0,
+		};
+
+		prog_fd = syscall(__NR_bpf, BPF_PROG_LOAD, &prog_attrs,
+				  sizeof(prog_attrs));
+	}
+
+	if (prog_fd < 0) {
+		ksft_print_msg("BPF_PROG_LOAD failed:\n%s\n%s\n",
+			       log_buf, strerror(errno));
+		goto failure;
+	}
+
+	snprintf(mount_options, ARRAY_SIZE(mount_options),
+		 "readahead=0,pending_read_bpf=%d", prog_fd);
+	if (mount_fs_opt(mount_dir, backing_dir, mount_options, false) != 0)
+		goto failure;
+	close(prog_fd);
+	prog_fd = -1;
+
+	cmd_fd = open_commands_file(mount_dir);
+	if (cmd_fd < 0)
+		goto failure;
+
+	for (i = 0; i < file_num; ++i) {
+		struct test_file *file = &test.files[i];
+		char file_path[PATH_MAX];
+
+		result = TEST_FAILURE;
+		if (emit_file(cmd_fd, NULL, file->name, &file->id, file->size,
+					NULL) < 0)
+			goto failure;
+
+		result = snprintf(file_path, ARRAY_SIZE(file_path), "%s/%s",
+				  mount_dir, file->name);
+
+		if (result < 0 || result >= ARRAY_SIZE(file_path)) {
+			result = TEST_FAILURE;
+			goto failure;
+		}
+
+		result = validate_bpf(file_path, file->size);
+		if (result)
+			goto failure;
+	}
+
+	{
+		u64 key[2] = {0};
+
+		for (;;) {
+			u64 next_key[2] = {0};
+			union bpf_attr iter = {
+				.map_fd   = map_fd,
+				.key      = ptr_to_u64(key),
+				.next_key = ptr_to_u64(next_key),
+	                };
+			int ret = syscall(__NR_bpf, BPF_MAP_GET_NEXT_KEY, &iter,
+					  sizeof(iter));
+			union bpf_attr lookup;
+			u64 value = 0;
+
+			if (ret == -1 && errno == ENOENT)
+				break;
+
+			if (ret == -1) {
+				ksft_print_msg("Failed to iterate map with err: %s\n",
+					       strerror(errno));
+				goto failure;
+			}
+
+			memcpy(key, next_key, sizeof(key));
+			lookup = (union bpf_attr) {
+                          .map_fd = map_fd,
+                          .key    = ptr_to_u64(key),
+			  .value  = ptr_to_u64(&value),
+			};
+			ret = syscall(__NR_bpf, BPF_MAP_LOOKUP_ELEM, &lookup,
+				      sizeof(lookup));
+			if (ret == -1) {
+				ksft_print_msg("Failed to lookup elem with err: %s\n",
+					       strerror(errno));
+				goto failure;
+			}
+
+			ksft_print_msg("key %llx%llx value %u\n",
+				       key[0], key[1], value);
+		}
+	}
+
+	result = TEST_SUCCESS;
+
+failure:
+	close(map_fd);
+	close(prog_fd);
 	close(cmd_fd);
 	umount(mount_dir);
 	free(backing_dir);
@@ -2942,6 +3125,7 @@ int main(int argc, char *argv[])
 		MAKE_TEST(get_hash_blocks_test),
 		MAKE_TEST(large_file_test),
 		MAKE_TEST(mapped_file_test),
+		MAKE_TEST(bpf_test),
 	};
 #undef MAKE_TEST
 
