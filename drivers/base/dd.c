@@ -387,6 +387,7 @@ static void driver_bound(struct device *dev)
 
 	klist_add_tail(&dev->p->knode_driver, &dev->driver->p->klist_devices);
 	device_links_driver_bound(dev);
+	device_pm_move_to_tail(dev);
 
 	device_pm_check_callbacks(dev);
 
