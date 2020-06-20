@@ -51,11 +51,6 @@ extern u64 __cpu_logical_map[NR_CPUS];
 struct seq_file;
 
 /*
- * generate IPI list text
- */
-extern void show_ipi_list(struct seq_file *p, int prec);
-
-/*
  * Discover the set of possible CPUs and determine their
  * SMP operations.
  */
