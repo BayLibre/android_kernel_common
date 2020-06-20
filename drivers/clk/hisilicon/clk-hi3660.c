@@ -66,7 +66,7 @@ static const struct hisi_gate_clock hi3660_crgctrl_gate_sep_clks[] = {
 	{ HI3660_PCLK_GPIO3, "pclk_gpio3", "clk_div_cfgbus",
 	  CLK_SET_RATE_PARENT, 0x10, 3, 0, },
 	{ HI3660_PCLK_GPIO4, "pclk_gpio4", "clk_div_cfgbus",
-	  CLK_SET_RATE_PARENT, 0x10, 4, 0, },
+	  CLK_SET_RATE_PARENT|CLK_IGNORE_UNUSED, 0x10, 4, 0, },
 	{ HI3660_PCLK_GPIO5, "pclk_gpio5", "clk_div_cfgbus",
 	  CLK_SET_RATE_PARENT, 0x10, 5, 0, },
 	{ HI3660_PCLK_GPIO6, "pclk_gpio6", "clk_div_cfgbus",
