@@ -1,0 +1,14 @@
+Exynos USB audio offloading with ABOX
+
+The driver support for USB audio sync with ABOX.
+
+Required properties:
+
+  - compatible : "exynos-usb-audio-offloading"
+
+Example:
+
+exynos-usb-audio-offloading {
+	compatible = "exynos-usb-audio-offloading";
+};
+
