@@ -1,3 +1,4 @@
+<<<<<<< HEAD   (1ec346 Merge ee01c4d72adf ("Merge branch 'akpm' (patches from Andre)
 .. Permission is granted to copy, distribute and/or modify this
 .. document under the terms of the GNU Free Documentation License,
 .. Version 1.1 or any later version published by the Free Software
@@ -4272,3 +4273,5 @@ enum v4l2_mpeg_video_hevc_size_of_length_field -
       - Selecting this value specifies that HEVC slices are expected
         to be prefixed by Annex B start codes. According to :ref:`hevc`
         valid start codes can be 3-bytes 0x000001 or 4-bytes 0x00000001.
+=======
+>>>>>>> BRANCH (d77d1d Merge tag 'zonefs-5.8-rc1' of git://git.kernel.org/pub/scm/l)

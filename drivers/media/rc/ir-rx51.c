@@ -241,8 +241,12 @@ static int ir_rx51_probe(struct platform_device *dev)
 	}
 
 	/* Use default, in case userspace does not set the carrier */
+<<<<<<< HEAD   (1ec346 Merge ee01c4d72adf ("Merge branch 'akpm' (patches from Andre)
 	ir_rx51.freq = DIV_ROUND_CLOSEST_ULL(pwm_get_period(pwm),
 			NSEC_PER_SEC);
+=======
+	ir_rx51.freq = DIV_ROUND_CLOSEST_ULL(pwm_get_period(pwm), NSEC_PER_SEC);
+>>>>>>> BRANCH (d77d1d Merge tag 'zonefs-5.8-rc1' of git://git.kernel.org/pub/scm/l)
 	pwm_put(pwm);
 
 	hrtimer_init(&ir_rx51.timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
