@@ -770,6 +770,8 @@ int dm_table_add_target(struct dm_table *t, const char *type,
 	tgt->len = len;
 	tgt->error = "Unknown error";
 
+	pr_info("new target: begin=%llu, end=%llu\n", start, len);
+
 	/*
 	 * Does this target adjoin the previous one ?
 	 */

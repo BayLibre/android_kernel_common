@@ -646,4 +646,14 @@ config DM_BOW
 
 	  If unsure, say N.
 
+config DM_USER
+	tristate "Block device in userspace"
+	depends on BLK_DEV_DM
+	default y
+	---help---
+	  This device-mapper target allows a userspace daemon to provide the
+	  contents of a block device.
+
+	  If unsure, say N.
+
 endif # MD

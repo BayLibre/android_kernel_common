@@ -71,7 +71,8 @@
 #define USERIO_MINOR		240
 #define VHOST_VSOCK_MINOR	241
 #define RFKILL_MINOR		242
-#define DM_SNAP_USER_MINOR  243
+#define DM_USER_MINOR  243
+#define DM_SNAP_USER_MINOR  244
 #define MISC_DYNAMIC_MINOR	255
 
 struct device;
