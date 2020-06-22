@@ -1,0 +1,625 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "14849d95_cf1e80fe",
+        "filename": "sound/usb/samsung/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "why not just name the file the module name also?  That saves you a step in the Makefile.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 74
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f1c865c_d2c2a544",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "no need for the text boilerplate if you have the SPDX line.",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 19,
+        "endChar": 77
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "409ce841_3edf236a",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "why have this enabled for a shipping driver?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 15
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab5b67bb_ab9d8347",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "why export?  Nothing calls into this driver.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 17
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d007922a_f34bba31",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "pr_dbg() will do this without the DEBUG check, just remove all of those types of checks from the code entirely.\n\nAnd you should use dev_dbg() to get proper information about the device that is sending the message.\n\nAnd finally, no need for these \"made it to this function!\" type of messages, just use ftrace if you really need that, these can all be removed.",
+      "range": {
+        "startLine": 78,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 9
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51aff4f2_cf056398",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "endian issues?  Did you run sparse on this code?",
+      "range": {
+        "startLine": 80,
+        "startChar": 29,
+        "endLine": 80,
+        "endChar": 37
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab12697a_4ef8b9f6",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "endian issues.",
+      "range": {
+        "startLine": 81,
+        "startChar": 24,
+        "endLine": 81,
+        "endChar": 33
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7af79f8_bce417fb",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "caller should send message, no need for this driver to send it again.",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 58
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afe1bb51_ff114656",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "no need here as well.\n\nAlso, what about unwinding properly when an error happens?  You just leaked memory :(",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 59
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eb9e18c_3367bc49",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "who is calling these functions?",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 17
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b830aac7_f68e0dc6",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "do not make up random error numbers, use predefined ones, like ENOMEM and friends.\n\nHappens all over the driver, please fix up all instances.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 12
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ab61990_9234e7e1",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "you are relying on a single static variable everywhere here, just pass in the device to the caller please, that will remove this odd issue and fix up your api like I asked for previously.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 48
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "505fc12e_4d007199",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "how can this ever happen?",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 60
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bfcca93_be089221",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "don\u0027t be noisy, if a driver is working fine, please be quiet.\n\nIf there are real errors, then use dev_err() so you know to fix things up.  dev_info() is for informational things.",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 44
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79b21049_c070da90",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "how can this have changed from the check at the beginning of the function?\n\nIf it can, something really bad happened, please fix that instead of papering over the error here.",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 56
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c99cd3a_8ae63098",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "you just leaked a lot of resources, please fix them all up when erroring out here.",
+      "range": {
+        "startLine": 537,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 12
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76011c59_c82e0fe0",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "why a loop just to pick the first configuration in the device?  That feels odd, just set it and move on.",
+      "range": {
+        "startLine": 560,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 60
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67f8261c_3e0c5e77",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "again you leak resources on the error path :(",
+      "range": {
+        "startLine": 621,
+        "startChar": 0,
+        "endLine": 621,
+        "endChar": 32
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06a78eac_18f36b7a",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "why print this?",
+      "range": {
+        "startLine": 638,
+        "startChar": 0,
+        "endLine": 638,
+        "endChar": 73
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "281aeb81_a59dce27",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "enumerated type?",
+      "range": {
+        "startLine": 676,
+        "startChar": 38,
+        "endLine": 676,
+        "endChar": 41
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e76d6b6_ccd9ce21",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "bool?",
+      "range": {
+        "startLine": 676,
+        "startChar": 25,
+        "endLine": 676,
+        "endChar": 28
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cfff998_561cc63a",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1088,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "if it is not needed, then just remove it.",
+      "range": {
+        "startLine": 1088,
+        "startChar": 0,
+        "endLine": 1088,
+        "endChar": 31
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07004cd3_7ad37b7c",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1096,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "no need for this.",
+      "range": {
+        "startLine": 1096,
+        "startChar": 0,
+        "endLine": 1096,
+        "endChar": 40
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "504919c1_2444d953",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1098,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "no error checking???",
+      "range": {
+        "startLine": 1098,
+        "startChar": 1,
+        "endLine": 1098,
+        "endChar": 10
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd5dd745_4615e268",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "no need for pdev at all???",
+      "range": {
+        "startLine": 1100,
+        "startChar": 0,
+        "endLine": 1100,
+        "endChar": 0
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4df9ca2_44379bd4",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "remove.",
+      "range": {
+        "startLine": 1106,
+        "startChar": 0,
+        "endLine": 1106,
+        "endChar": 40
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "903e23a2_8baf3c4a",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-22T12:01:50Z",
+      "side": 1,
+      "message": "this is a \"fake\" driver, so why make it a platform driver?",
+      "range": {
+        "startLine": 1124,
+        "startChar": 0,
+        "endLine": 1124,
+        "endChar": 78
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
