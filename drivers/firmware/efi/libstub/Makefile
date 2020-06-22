@@ -28,8 +28,13 @@ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
 				   -D__NO_FORTIFY \
 				   $(call cc-option,-ffreestanding) \
 				   $(call cc-option,-fno-stack-protector) \
+<<<<<<< HEAD   (2f8b07 ANDROID: GKI: enable CONFIG_EXT4_FS_POSIX_ACL.)
 				   -D__DISABLE_EXPORTS \
 				   $(DISABLE_LTO)
+=======
+				   $(call cc-option,-fno-addrsig) \
+				   -D__DISABLE_EXPORTS
+>>>>>>> BRANCH (b3a99f Linux 4.19.129)
 
 GCOV_PROFILE			:= n
 KASAN_SANITIZE			:= n

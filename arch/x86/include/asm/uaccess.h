@@ -717,7 +717,11 @@ static __must_check inline bool user_access_begin(int type,
 {
 	if (unlikely(!access_ok(type, ptr, len)))
 		return 0;
+<<<<<<< HEAD   (2f8b07 ANDROID: GKI: enable CONFIG_EXT4_FS_POSIX_ACL.)
 	__uaccess_begin();
+=======
+	__uaccess_begin_nospec();
+>>>>>>> BRANCH (b3a99f Linux 4.19.129)
 	return 1;
 }
 

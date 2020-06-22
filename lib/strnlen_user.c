@@ -33,13 +33,6 @@ static inline long do_strnlen_user(const char __user *src, unsigned long count, 
 	unsigned long c;
 
 	/*
-	 * Truncate 'max' to the user-specified limit, so that
-	 * we only have one limit we need to check in the loop
-	 */
-	if (max > count)
-		max = count;
-
-	/*
 	 * Do everything aligned. But that means that we
 	 * need to also expand the maximum..
 	 */
@@ -115,6 +108,16 @@ long strnlen_user(const char __user *str, long count)
 		unsigned long max = max_addr - src_addr;
 		long retval;
 
+<<<<<<< HEAD   (2f8b07 ANDROID: GKI: enable CONFIG_EXT4_FS_POSIX_ACL.)
+=======
+		/*
+		 * Truncate 'max' to the user-specified limit, so that
+		 * we only have one limit we need to check in the loop
+		 */
+		if (max > count)
+			max = count;
+
+>>>>>>> BRANCH (b3a99f Linux 4.19.129)
 		if (user_access_begin(VERIFY_READ, str, max)) {
 			retval = do_strnlen_user(str, count, max);
 			user_access_end();
