@@ -16,6 +16,24 @@
       "revId": "0927cf341cda4284ebc829321788a56806c1f668",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "feeed417_4bab4e20",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-06-23T13:48:15Z",
+      "side": 1,
+      "message": "\u003e This patch doesn\u0027t actually deal correctly with boosted tasks, though, no? That is, if a boosted task was going through the EM path, its boost would unconditionally be accounted in prev_cpu only right?\n\nScratch that, it wouldn\u0027t be accounted at all since the task hasn\u0027t been enqueued yet. But I guess the conclusion remains the same.",
+      "parentUuid": "afa7ed3e_e7afdc39",
+      "revId": "0927cf341cda4284ebc829321788a56806c1f668",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
