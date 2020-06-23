@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "afa7ed3e_e7afdc39",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-06-23T13:38:51Z",
+      "side": 1,
+      "message": "This patch doesn\u0027t actually deal correctly with boosted tasks, though, no? That is, if a boosted task was going through the EM path, its boost would unconditionally be accounted in prev_cpu only right?\n\nI _think_ that might be OK for Android given that all boosted tasks have the prefer-idle flag set, so we don\u0027t actually use the EM for them. But that most certainly deserve an explanation here, as I\u0027m sure I\u0027ll forget all about it in a few weeks time ...",
+      "revId": "0927cf341cda4284ebc829321788a56806c1f668",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
