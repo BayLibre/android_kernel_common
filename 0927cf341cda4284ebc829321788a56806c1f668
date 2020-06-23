@@ -34,6 +34,24 @@
       "revId": "0927cf341cda4284ebc829321788a56806c1f668",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "390f4193_f5fb8aab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1324603
+      },
+      "writtenOn": "2020-06-23T14:22:47Z",
+      "side": 1,
+      "message": "Yes, you are right. I think we need a way to simulate the boost if the boosted task is to enqueue/dequeue on a cpu. Let me figure it out if it\u0027s worth doing so. But I think maybe not all boosted tasks also have prefer-idle flag set, because vendors could override it, and in pixel, there is one such group.",
+      "parentUuid": "feeed417_4bab4e20",
+      "revId": "0927cf341cda4284ebc829321788a56806c1f668",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
