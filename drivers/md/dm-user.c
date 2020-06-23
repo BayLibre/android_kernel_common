@@ -40,19 +40,52 @@ static inline struct channel *channel_from_file(struct file *file)
 	return file->private_data;
 }
 
+static inline size_t bio_size(struct bio *bio)
+{
+	size_t out;
+	struct bio_vec bvec;
+	struct bvec_iter iter;
+
+	out = 0;
+	bio_for_each_segment(bvec, bio, iter)
+		out += bio_iter_len(bio, iter);
+	return out;
+}
+
 static inline size_t bytes_needed_to_user(struct bio *bio)
 {
-	return 4096;
+	switch (bio_op(bio)) {
+	case REQ_OP_READ:
+		return 0;
+	case REQ_OP_WRITE:
+		return bio_size(bio);
+	}
+
+	BUG();
 }
 
 static inline size_t bytes_needed_from_user(struct bio *bio)
 {
-	return 4096;
+	switch (bio_op(bio)) {
+	case REQ_OP_READ:
+		return bio_size(bio);
+	case REQ_OP_WRITE:
+		return 0;
+	}
+
+	BUG();
 }
 
 static inline unsigned long bio_type_to_user_type(struct bio *bio)
 {
-	return DM_USER_MAP_READ;
+	switch (bio_op(bio)) {
+	case REQ_OP_READ:
+		return DM_USER_MAP_READ;
+	case REQ_OP_WRITE:
+		return DM_USER_MAP_WRITE;
+	}
+
+	BUG();
 }
 
 /*
@@ -82,8 +115,10 @@ static ssize_t dev_read(struct kiocb *iocb, struct iov_iter *to)
 	 * Requests are of variable size, but we must at least have enough
 	 * space to fill out a single request.
 	 */
-	if (iov_iter_count(to) < sizeof(msg))
+	if (iov_iter_count(to) < sizeof(msg)) {
+		pr_info("very small dm-user control read\n");
 		return -EINVAL;
+	}
 
 	/*
 	 * Try to pass a message to userspace.  First we must get a message.
@@ -99,19 +134,23 @@ static ssize_t dev_read(struct kiocb *iocb, struct iov_iter *to)
 
 	if (iov_iter_count(to) < sizeof(msg) + bytes_needed_to_user(c->to_user)) {
 		out = -ENOSPC;
+		pr_info("small dm-user control read, needed %lld\n", sizeof(msg) + bytes_needed_to_user(c->to_user));
 		goto unlock;
 	}
 
 	msg.seq = c->seq;
 	msg.type = bio_type_to_user_type(c->to_user);
 	msg.flags = 0;
-	msg.len = bytes_needed_to_user(c->to_user);
+	msg.sector = c->to_user->bi_iter.bi_sector;
+	msg.len = bio_size(c->to_user);
 	out += copy_to_iter(&msg, sizeof(msg), to);
-	bio_for_each_segment(bvec, c->to_user, iter) {
-		out += copy_page_to_iter(bio_iter_page(c->to_user, iter),
-					 bio_iter_offset(c->to_user, iter),
-					 bio_iter_len(c->to_user, iter),
-					 to);
+	if (bytes_needed_to_user(c->to_user) > 0) {
+		bio_for_each_segment(bvec, c->to_user, iter) {
+			out += copy_page_to_iter(bio_iter_page(c->to_user, iter),
+						 bio_iter_offset(c->to_user, iter),
+						 bio_iter_len(c->to_user, iter),
+						 to);
+		}
 	}
 
 	c->from_user = c->to_user;
@@ -147,8 +186,10 @@ static ssize_t dev_write(struct kiocb *iocb, struct iov_iter *from)
 	 * We can copy the first bits from userspace now, as we know there must
 	 * be at least a header in any write request.
 	 */
-	if (iov_iter_count(from) < sizeof(msg))
+	if (iov_iter_count(from) < sizeof(msg)) {
+		pr_info("very small dm-user control write\n");
 		return -EINVAL;
+	}
 	copy_from_iter(&msg, sizeof(msg), from);
 
 	/*
@@ -162,24 +203,30 @@ static ssize_t dev_write(struct kiocb *iocb, struct iov_iter *from)
 		mutex_lock(&c->lock);
 	}
 
-	if (iov_iter_count(from) < sizeof(msg) + bytes_needed_from_user(c->from_user)) {
+	if (iov_iter_count(from) < bytes_needed_from_user(c->from_user)) {
 		out = -ENOSPC;
+		pr_info("small dm-user control write, needed %lld but got %lld\n", bytes_needed_from_user(c->from_user), iov_iter_count(from));
 		goto unlock;
 	}
 
-	bio_for_each_segment(bvec, c->from_user, iter) {
-		out += copy_page_from_iter(bio_iter_page(c->from_user, iter),
-					   bio_iter_offset(c->from_user, iter),
-					   bio_iter_len(c->from_user, iter),
-					   from);
+	if (msg.len != bytes_needed_from_user(c->from_user)) {
+		pr_info("small dm-user write message length, needed %lld but got %lld\n", bytes_needed_from_user(c->from_user), msg.len);
+		out = -EINVAL;
+		goto unlock;
+	}
+
+	if (bytes_needed_from_user(c->from_user) > 0) {
+		bio_for_each_segment(bvec, c->from_user, iter) {
+			out += copy_page_from_iter(bio_iter_page(c->from_user, iter),
+						   bio_iter_offset(c->from_user, iter),
+						   bio_iter_len(c->from_user, iter),
+						   from);
+		}
 	}
 
 	bio_endio(c->from_user);
 	c->from_user = NULL;
 	wake_up_interruptible(&c->wq);
-
-	out += iov_iter_count(from);
-	iov_iter_advance(from, iov_iter_count(from));
 
 	c->seq++;
 
@@ -202,8 +249,7 @@ static __poll_t dev_poll(struct file *file, poll_table *wait)
 
 static int dev_release(struct inode *inode, struct file *file)
 {
-	kfree(file->private_data);
-	return 0;
+	BUG();
 }
 
 static int dev_fasync(int fd, struct file *file, int on)
@@ -268,8 +314,6 @@ static int user_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 static int user_map(struct dm_target *ti, struct bio *bio)
 {
 	struct channel *c;
-
-	pr_info("user_map() called\n");
 
 	c = channel_from_target(ti);
 	BUG_ON(!c);

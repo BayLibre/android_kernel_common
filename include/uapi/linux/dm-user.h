@@ -19,11 +19,12 @@
 #define DM_USER_MAP_WRITE	1
 
 struct dm_user_message {
-	unsigned long seq;
-	unsigned long type;
-	unsigned long flags;
-	unsigned long len;
-	char buf[];
+	__u64 seq;
+	__u64 type;
+	__u64 flags;
+    __u64 sector;
+	__u64 len;
+	__u8  buf[];
 };
 
 #endif
