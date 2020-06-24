@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "e0b8241b_ebc4442c",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-24T06:03:28Z",
+      "side": 1,
+      "message": "No driver should be reading/writing to files directly, please use the proper userspace apis instead.",
+      "parentUuid": "976332b2_ab395529",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "Our sound driver use this. Because we cannot use debugfs anymore, and sound driver use procfs. So, they need symbolic link for procfs and need full path for proc_symlink() function.\n\nAlso: unisoc_whitelist has it.",
       "parentUuid": "8611ecc8_4c4e12a8",
+      "range": {
+        "startLine": 648,
+        "startChar": 0,
+        "endLine": 648,
+        "endChar": 18
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "12bb12ec_98549577",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-24T06:03:28Z",
+      "side": 1,
+      "message": "Do not use procfs for debugging stuff, or for drivers.",
+      "parentUuid": "caf5e4c0_67091ef7",
       "range": {
         "startLine": 648,
         "startChar": 0,
@@ -190,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "fc32f59f_8bc0717b",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-24T06:03:28Z",
+      "side": 1,
+      "message": "USB drivers have nothing to do with proc, please do not do that.",
+      "parentUuid": "e1b6f14a_cf6bae96",
+      "range": {
+        "startLine": 964,
+        "startChar": 2,
+        "endLine": 964,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "16f819fe_628384bb",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -225,6 +297,30 @@
       "side": 1,
       "message": "required by usb-storage.ko\n\nOur usb storage driver added it.\nI think they added some features for USB Storage function.",
       "parentUuid": "16f819fe_628384bb",
+      "range": {
+        "startLine": 1104,
+        "startChar": 2,
+        "endLine": 1104,
+        "endChar": 19
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b641e975_e34d4078",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 1104,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-24T06:03:28Z",
+      "side": 1,
+      "message": "We can enable usb storage as a built-in if you all rely on this, please let us know.",
+      "parentUuid": "6a47699f_32f8f13f",
       "range": {
         "startLine": 1104,
         "startChar": 2,
