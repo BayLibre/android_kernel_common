@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "976332b2_ab395529",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-24T03:35:38Z",
+      "side": 1,
+      "message": "This is because vfs_read \u0026 vfs_write removed, and it replaced by kernel_read / kernel_write at driver side : \n\nbelow is code change:\n\n-               nread \u003d vfs_read(fp, (char __user *)fw_data, fw_size, \u0026fp-\u003ef_pos);\n+               nread \u003d kernel_read(fp, (char __user *)fw_data, fw_size, \u0026fp-\u003ef_pos);\n\n\n-                       ret \u003d vfs_write(filp, write_req-\u003ebuf, write_req-\u003eactual,\n+                       ret \u003d kernel_write(filp, write_req-\u003ebuf, write_req-\u003eactual,",
+      "parentUuid": "278316f9_8e2690ba",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caf5e4c0_67091ef7",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-24T03:35:38Z",
+      "side": 1,
+      "message": "Our sound driver use this. Because we cannot use debugfs anymore, and sound driver use procfs. So, they need symbolic link for procfs and need full path for proc_symlink() function.\n\nAlso: unisoc_whitelist has it.",
+      "parentUuid": "8611ecc8_4c4e12a8",
+      "range": {
+        "startLine": 648,
+        "startChar": 0,
+        "endLine": 648,
+        "endChar": 18
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "480d9159_4b6afe5d",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-24T03:35:38Z",
+      "side": 1,
+      "message": "required by snd-soc-samsung-abox.ko\nsound/soc/samsung/abox/abox_proc.c:     return PDE_DATA(file_inode(file));\nthis also needed by sound driver. But QCOM, Unisoc also has this.",
+      "parentUuid": "4cdd4d54_a63aa12d",
+      "range": {
+        "startLine": 874,
+        "startChar": 2,
+        "endLine": 874,
+        "endChar": 10
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "525e85cf_b5c323e2",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -91,6 +163,30 @@
       "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1b6f14a_cf6bae96",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-24T03:35:38Z",
+      "side": 1,
+      "message": "1560 # required by usb_notify_layer.ko\nproc_create\n\nOur usb driver use this function.",
+      "parentUuid": "525e85cf_b5c323e2",
+      "range": {
+        "startLine": 964,
+        "startChar": 2,
+        "endLine": 964,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "6a47699f_32f8f13f",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 1104,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-24T03:35:38Z",
+      "side": 1,
+      "message": "required by usb-storage.ko\n\nOur usb storage driver added it.\nI think they added some features for USB Storage function.",
+      "parentUuid": "16f819fe_628384bb",
+      "range": {
+        "startLine": 1104,
+        "startChar": 2,
+        "endLine": 1104,
+        "endChar": 19
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be5d242e_b084ab5e",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -137,6 +257,30 @@
       "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60d6db98_40d072b2",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 1419,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-24T03:35:38Z",
+      "side": 1,
+      "message": "drivers/usb/dwc2/hcd.c: retval \u003d usb_add_hcd(hcd, hsotg-\u003eirq, IRQF_SHARED);\n\nSo, this is DesignWare usb host controller.\n\nAnd I also found QCOM, UNISOC also have them.",
+      "parentUuid": "be5d242e_b084ab5e",
+      "range": {
+        "startLine": 1419,
+        "startChar": 2,
+        "endLine": 1419,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
