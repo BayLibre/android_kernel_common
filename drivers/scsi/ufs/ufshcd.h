@@ -70,6 +70,7 @@
 #include <scsi/scsi_eh.h>
 
 #include "ufs.h"
+#include "ufs_quirks.h"
 #include "ufshci.h"
 
 #define UFSHCD "ufshcd"
@@ -346,6 +347,7 @@ struct ufs_hba_variant_ops {
 	void    (*hibern8_notify)(struct ufs_hba *, enum uic_cmd_dme,
 					enum ufs_notify_change_status);
 	int	(*apply_dev_quirks)(struct ufs_hba *hba);
+	void	(*fixup_dev_quirks)(struct ufs_hba *hba);
 	int     (*suspend)(struct ufs_hba *, enum ufs_pm_op);
 	int     (*resume)(struct ufs_hba *, enum ufs_pm_op);
 	void	(*dbg_register_dump)(struct ufs_hba *hba);
@@ -596,10 +598,25 @@ enum ufshcd_caps {
 	UFSHCD_CAP_RPM_AUTOSUSPEND			= 1 << 6,
 
 	/*
+<<<<<<< HEAD   (dbea74 Merge 7ae77150d94d ("Merge tag 'powerpc-5.8-1' of git://git.)
 	 * This capability allows the host controller driver to use the
 	 * inline crypto engine, if it is present
 	 */
 	UFSHCD_CAP_CRYPTO				= 1 << 8,
+=======
+	 * This capability allows the host controller driver to turn-on
+	 * WriteBooster, if the underlying device supports it and is
+	 * provisioned to be used. This would increase the write performance.
+	 */
+	UFSHCD_CAP_WB_EN				= 1 << 7,
+};
+
+struct ufs_hba_variant_params {
+	struct devfreq_dev_profile devfreq_profile;
+	struct devfreq_simple_ondemand_data ondemand_data;
+	u16 hba_enable_delay_us;
+	u32 wb_flush_threshold;
+>>>>>>> BRANCH (818dbd Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)
 };
 
 /**
@@ -704,6 +721,7 @@ struct ufs_hba {
 	int nutmrs;
 	u32 ufs_version;
 	const struct ufs_hba_variant_ops *vops;
+	struct ufs_hba_variant_params *vps;
 	void *priv;
 	const struct ufs_hba_crypto_variant_ops *crypto_vops;
 	size_t sg_entry_size;
@@ -727,7 +745,6 @@ struct ufs_hba {
 	u32 eh_flags;
 	u32 intr_mask;
 	u16 ee_ctrl_mask;
-	u16 hba_enable_delay_us;
 	bool is_powered;
 
 	/* Work Queues */
@@ -779,6 +796,7 @@ struct ufs_hba {
 
 	struct device		bsg_dev;
 	struct request_queue	*bsg_queue;
+<<<<<<< HEAD   (dbea74 Merge 7ae77150d94d ("Merge tag 'powerpc-5.8-1' of git://git.)
 
 #ifdef CONFIG_SCSI_UFS_CRYPTO
 	union ufs_crypto_capabilities crypto_capabilities;
@@ -786,6 +804,11 @@ struct ufs_hba {
 	u32 crypto_cfg_register;
 	struct blk_keyslot_manager ksm;
 #endif
+=======
+	bool wb_buf_flush_enabled;
+	bool wb_enabled;
+	struct delayed_work rpm_dev_flush_recheck_work;
+>>>>>>> BRANCH (818dbd Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)
 };
 
 /* Returns true if clocks can be gated. Otherwise false */
@@ -834,6 +857,11 @@ static inline bool ufshcd_is_auto_hibern8_enabled(struct ufs_hba *hba)
 	return FIELD_GET(UFSHCI_AHIBERN8_TIMER_MASK, hba->ahit) ? true : false;
 }
 
+static inline bool ufshcd_is_wb_allowed(struct ufs_hba *hba)
+{
+	return hba->caps & UFSHCD_CAP_WB_EN;
+}
+
 #define ufshcd_writel(hba, val, reg)	\
 	writel((val), (hba)->mmio_base + (reg))
 #define ufshcd_readl(hba, reg)	\
@@ -867,7 +895,7 @@ int ufshcd_uic_hibern8_exit(struct ufs_hba *hba);
 void ufshcd_delay_us(unsigned long us, unsigned long tolerance);
 int ufshcd_wait_for_register(struct ufs_hba *hba, u32 reg, u32 mask,
 				u32 val, unsigned long interval_us,
-				unsigned long timeout_ms, bool can_sleep);
+				unsigned long timeout_ms);
 void ufshcd_parse_dev_ref_clk_freq(struct ufs_hba *hba, struct clk *refclk);
 void ufshcd_update_reg_hist(struct ufs_err_reg_hist *reg_hist,
 			    u32 reg);
@@ -902,6 +930,13 @@ static inline bool ufshcd_keep_autobkops_enabled_except_suspend(
 							struct ufs_hba *hba)
 {
 	return hba->caps & UFSHCD_CAP_KEEP_AUTO_BKOPS_ENABLED_EXCEPT_SUSPEND;
+}
+
+static inline u8 ufshcd_wb_get_query_index(struct ufs_hba *hba)
+{
+	if (hba->dev_info.b_wb_buffer_type == WB_BUF_MODE_LU_DEDICATED)
+		return hba->dev_info.wb_dedicated_lu;
+	return 0;
 }
 
 extern int ufshcd_runtime_suspend(struct ufs_hba *hba);
@@ -991,11 +1026,11 @@ int ufshcd_read_desc_param(struct ufs_hba *hba,
 int ufshcd_query_attr(struct ufs_hba *hba, enum query_opcode opcode,
 		      enum attr_idn idn, u8 index, u8 selector, u32 *attr_val);
 int ufshcd_query_flag(struct ufs_hba *hba, enum query_opcode opcode,
-	enum flag_idn idn, bool *flag_res);
+	enum flag_idn idn, u8 index, bool *flag_res);
 
 void ufshcd_auto_hibern8_enable(struct ufs_hba *hba);
 void ufshcd_auto_hibern8_update(struct ufs_hba *hba, u32 ahit);
-
+void ufshcd_fixup_dev_quirks(struct ufs_hba *hba, struct ufs_dev_fix *fixups);
 #define SD_ASCII_STD true
 #define SD_RAW false
 int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
@@ -1128,6 +1163,12 @@ static inline int ufshcd_vops_apply_dev_quirks(struct ufs_hba *hba)
 	if (hba->vops && hba->vops->apply_dev_quirks)
 		return hba->vops->apply_dev_quirks(hba);
 	return 0;
+}
+
+static inline void ufshcd_vops_fixup_dev_quirks(struct ufs_hba *hba)
+{
+	if (hba->vops && hba->vops->fixup_dev_quirks)
+		hba->vops->fixup_dev_quirks(hba);
 }
 
 static inline int ufshcd_vops_suspend(struct ufs_hba *hba, enum ufs_pm_op op)
