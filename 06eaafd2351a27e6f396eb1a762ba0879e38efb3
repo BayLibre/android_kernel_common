@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "c36bf44b_f6751048",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-25T23:11:05Z",
+      "side": 1,
+      "message": "So many kernel driver (including mainline code) are using this function.\nAnd more_over, our other 3rd party driver also use it. we need that kernel_read / write function for driver action.\n\nAs you know, we escaped from vfs_read / write function but without kernel_read() or kernel_write which API can we use?\nIf possible, please give us some hint.\n\nbelow is chaning log jump to kernel_read in mainline.\n\ncommit 74a6565f378c1b71f2572bf1f3c03ad35a7c75ca\nAuthor: Jann Horn \u003cjannh@google.com\u003e\nDate:   Fri Mar 1 21:11:24 2019 +0100\n\n    staging: rtl8723bs: use kernel_read() instead of open-coded version\n\n    Replace the manual call to f_op-\u003eread() under KERNEL_DS with kernel_read().\n    This also reduces the number of users of the legacy alias get_ds() for\n    KERNEL_DS.\n\n    Signed-off-by: Jann Horn \u003cjannh@google.com\u003e\n    Signed-off-by: Greg Kroah-Hartman \u003cgregkh@linuxfoundation.org\u003e",
+      "parentUuid": "e0b8241b_ebc4442c",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Do not use procfs for debugging stuff, or for drivers.",
       "parentUuid": "caf5e4c0_67091ef7",
+      "range": {
+        "startLine": 648,
+        "startChar": 0,
+        "endLine": 648,
+        "endChar": 18
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b67f2231_501c8751",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-25T23:11:05Z",
+      "side": 1,
+      "message": "I\u0027ll let other engineers check this. Thanks.",
+      "parentUuid": "12bb12ec_98549577",
       "range": {
         "startLine": 648,
         "startChar": 0,
@@ -262,6 +310,30 @@
     },
     {
       "key": {
+        "uuid": "842f9870_89f20edd",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-25T23:11:05Z",
+      "side": 1,
+      "message": "I\u0027ll let other engineers check this. Thanks.",
+      "parentUuid": "fc32f59f_8bc0717b",
+      "range": {
+        "startLine": 964,
+        "startChar": 2,
+        "endLine": 964,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "16f819fe_628384bb",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
@@ -321,6 +393,30 @@
       "side": 1,
       "message": "We can enable usb storage as a built-in if you all rely on this, please let us know.",
       "parentUuid": "6a47699f_32f8f13f",
+      "range": {
+        "startLine": 1104,
+        "startChar": 2,
+        "endLine": 1104,
+        "endChar": 19
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9eafa367_0ef6a904",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 1104,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-25T23:11:05Z",
+      "side": 1,
+      "message": "I\u0027ll let USB engineer check this. Thanks.",
+      "parentUuid": "b641e975_e34d4078",
       "range": {
         "startLine": 1104,
         "startChar": 2,
