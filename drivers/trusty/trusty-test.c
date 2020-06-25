@@ -284,8 +284,8 @@ static int trusty_test_run(struct trusty_test_state *s, size_t page_count,
 	size_t i;
 	size_t size = page_count * PAGE_SIZE;
 	LIST_HEAD(obj_list);
-	struct trusty_test_shmem_obj *obj;
-	struct trusty_test_shmem_obj *next_obj;
+	struct trusty_test_shmem_obj *obj = NULL;
+	struct trusty_test_shmem_obj *next_obj = NULL;
 
 	for (i = 0; i < obj_count && !ret; i++)
 		ret = trusty_test_alloc_obj(s, page_count, &obj_list);
