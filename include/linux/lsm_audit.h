@@ -74,6 +74,11 @@ struct common_audit_data {
 #define LSM_AUDIT_DATA_FILE	12
 #define LSM_AUDIT_DATA_IBPKEY	13
 #define LSM_AUDIT_DATA_IBENDPORT 14
+<<<<<<< HEAD   (891284 Merge 42612e776331 ("Merge tag 'f2fs-for-5.8' of git://git.k)
+=======
+#define LSM_AUDIT_DATA_LOCKDOWN 15
+#define LSM_AUDIT_DATA_NOTIFICATION 16
+>>>>>>> BRANCH (b3a9e3 Linux 5.8-rc1)
 	union 	{
 		struct path path;
 		struct dentry *dentry;
