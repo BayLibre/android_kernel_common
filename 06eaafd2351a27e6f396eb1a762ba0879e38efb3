@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "880217de_8a5cb8e4",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1670210
+      },
+      "writtenOn": "2020-06-26T01:15:57Z",
+      "side": 1,
+      "message": "When debugging any driver using any hardware that can process large data like DMA, sub-core or etc, internal buffer dump or debugging data injection is very essential.\nIf kernel_read/write() is allowed, it is very simple. Just insert kernel_read/write() in wanted place with if statement which checks debugging flag.\nBut, if buffer dump/injection should be created without kernel_read/write(), following code is needed.\n\n1. Make a file in anyfs.\n2. Create file read/write operation.\n3. Read or copy the file during testing.\n\nBut, upper approach has following problems.\n\n1. If DMA buffer is very small for any reason (often latency problem) and interrupt is very often, read from user space can easily miss any single transmission. To evade this situation more implementation like copying each transmission to other large buffer is needed.\n2. To read or write the file, user process needs session like ADB shell. If it isn\u0027t available for any reason, user space program for debugging also should be implemented.\n\nIf kernel_read/write() is allowed, many driver developers can save many times for debugging.",
+      "parentUuid": "c36bf44b_f6751048",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
