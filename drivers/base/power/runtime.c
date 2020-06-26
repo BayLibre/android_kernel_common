@@ -123,6 +123,27 @@ u64 pm_runtime_suspended_time(struct device *dev)
 EXPORT_SYMBOL_GPL(pm_runtime_suspended_time);
 
 /**
+ * pm_runtime_set_next_wakeup_event - Notify PM framework of an impending event.
+ * @dev: Device to handle
+ * @next: impending interrupt/wakeup for the device
+ */
+int pm_runtime_set_next_event(struct device *dev, ktime_t next)
+{
+	unsigned long flags;
+	int ret = -EINVAL;
+
+	spin_lock_irqsave(&dev->power.lock, flags);
+	if (ktime_before(ktime_get(), next)) {
+		dev->power.next_event = next;
+		ret = 0;
+	}
+	spin_unlock_irqrestore(&dev->power.lock, flags);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(pm_runtime_set_next_event);
+
+/**
  * pm_runtime_deactivate_timer - Deactivate given device's suspend timer.
  * @dev: Device to handle.
  */
@@ -1414,6 +1435,9 @@ void pm_runtime_enable(struct device *dev)
 	     atomic_read(&dev->power.child_count) > 0,
 	     "Enabling runtime PM for inactive device (%s) with active children\n",
 	     dev_name(dev));
+
+	/* Reset the next wakeup for the device */
+	dev->power.next_event = KTIME_MAX;
 
 	spin_unlock_irqrestore(&dev->power.lock, flags);
 }
