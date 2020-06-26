@@ -59,6 +59,7 @@ extern void pm_runtime_get_suppliers(struct device *dev);
 extern void pm_runtime_put_suppliers(struct device *dev);
 extern void pm_runtime_new_link(struct device *dev);
 extern void pm_runtime_drop_link(struct device *dev);
+extern int pm_runtime_set_next_event(struct device *dev, ktime_t next);
 
 /**
  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.

@@ -515,6 +515,12 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
       power.use_autosuspend isn't set, otherwise returns the expiration time
       in jiffies
 
+  `int pm_runtime_set_next_event(struct device *dev, ktime_t next);`
+    - inform runtime PM of the next event on the device. Devices that are
+      sensitive to their domain idle enter/exit latencies may provide this
+      information for use by the PM domain governor. The domain governor would
+      use this information to calculate it's sleep length.
+
 It is safe to execute the following helper functions from interrupt context:
 
 - pm_request_idle()
@@ -545,6 +551,7 @@ functions may also be used in interrupt context:
 - pm_runtime_put_sync()
 - pm_runtime_put_sync_suspend()
 - pm_runtime_put_sync_autosuspend()
+- pm_runtime_set_next_event()
 
 5. Runtime PM Initialization, Device Probing and Removal
 ========================================================
@@ -638,6 +645,16 @@ device's wake-up setting (it may leave that to the device driver's system
 suspend routine).  It may be necessary to resume the device and suspend it again
 in order to do so.  The same is true if the driver uses different power levels
 or other settings for runtime suspend and system sleep.
+
+When a device enters idle at runtime, it may trigger the runtime PM up the
+hierarchy and if device has a predictable interrupt pattern, we can even do a
+better job at determining the parent's idle state. For example, a display
+device gets a VSYNC interrupt every 16 ms when running at 60 Hz. When it's PM
+domain is powering down and happens to be at the boundary of the VSYNC
+interrupt, it may not be efficient to power off the domain. Knowing the next
+wake up (when available) for devices in the domain we can determine the idle
+duration of the domain. By comparing idle duration with the residencies of the
+domain idle states, we can be efficient in both power and performance.
 
 During system resume, the simplest approach is to bring all devices back to full
 power, even if they had been suspended before the system suspend began.  There
