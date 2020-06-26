@@ -505,7 +505,7 @@ static DECLARE_DELAYED_WORK(deferred_retry_work, amba_deferred_retry_func);
 
 #define DEFERRED_DEVICE_TIMEOUT (msecs_to_jiffies(5 * 1000))
 
-static int amba_deferred_retry(void)
+int amba_deferred_retry(void)
 {
 	struct deferred_device *ddev, *tmp;
 
