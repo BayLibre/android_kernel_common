@@ -515,6 +515,14 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
       power.use_autosuspend isn't set, otherwise returns the expiration time
       in jiffies
 
+  `int pm_runtime_set_next_event(struct device *dev, ktime_t next);`
+    - notify runtime PM of the next event on the device. Devices that are
+      sensitive to their domain idle enter/exit latencies may provide this
+      information for use by the PM domain governor. The governor may determine
+      if it worthwhile to enter a domain idle state. If the residency of the
+      domain idle state is not met, the domain would waste more power entering
+      and exiting the said idle state.
+
 It is safe to execute the following helper functions from interrupt context:
 
 - pm_request_idle()
@@ -545,6 +553,7 @@ functions may also be used in interrupt context:
 - pm_runtime_put_sync()
 - pm_runtime_put_sync_suspend()
 - pm_runtime_put_sync_autosuspend()
+- pm_runtime_set_next_event()
 
 5. Runtime PM Initialization, Device Probing and Removal
 ========================================================
@@ -638,6 +647,18 @@ device's wake-up setting (it may leave that to the device driver's system
 suspend routine).  It may be necessary to resume the device and suspend it again
 in order to do so.  The same is true if the driver uses different power levels
 or other settings for runtime suspend and system sleep.
+
+When a device enters idle at runtime, it may trigger the runtime PM up the
+hierarchy. Devices that have an predictable interrupt pattern, may help
+influence a better idle state determination of its parent. For example, a
+display device could get a VSYNC interrupt every 16ms. A PM domain containing
+the device, could also be entering and exiting idle due to runtime PM
+coordination. If the domain were also entering runtime idle, we would know when
+the domain would be waken up as a result of the display device waking up. Using
+the device's next_event, the PM domain governor can make a better choice of the
+idle state for the domain, knowing it would be be woken up by the device in the
+near future. This is specially useful when the device is sensitive to its PM
+domain's idle state enter and exit latencies.
 
 During system resume, the simplest approach is to bring all devices back to full
 power, even if they had been suspended before the system suspend began.  There

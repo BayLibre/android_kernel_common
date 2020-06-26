@@ -123,6 +123,33 @@ u64 pm_runtime_suspended_time(struct device *dev)
 EXPORT_SYMBOL_GPL(pm_runtime_suspended_time);
 
 /**
+ * pm_runtime_set_next_wakeup_event - Notify PM framework of an impending event.
+ * @dev: Device to handle
+ * @next: impending interrupt/wakeup for the device
+ */
+int pm_runtime_set_next_event(struct device *dev, ktime_t next)
+{
+	unsigned long flags;
+	int ret = -EINVAL;
+
+	/*
+	 * Note the next pending wakeup of a device,
+	 * if the device does not have runtime PM enabled.
+	 */
+	spin_lock_irqsave(&dev->power.lock, flags);
+	if (!dev->power.disable_depth) {
+		if (ktime_before(ktime_get(), next)) {
+			dev->power.next_event = next;
+			ret = 0;
+		}
+	}
+	spin_unlock_irqrestore(&dev->power.lock, flags);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(pm_runtime_set_next_event);
+
+/**
  * pm_runtime_deactivate_timer - Deactivate given device's suspend timer.
  * @dev: Device to handle.
  */
@@ -1380,6 +1407,9 @@ void __pm_runtime_disable(struct device *dev, bool check_resume)
 	/* Update time accounting before disabling PM-runtime. */
 	update_pm_runtime_accounting(dev);
 
+	/* Reset the next wakeup for the device */
+	dev->power.next_event = KTIME_MAX;
+
 	if (!dev->power.disable_depth++)
 		__pm_runtime_barrier(dev);
 
@@ -1609,6 +1639,7 @@ void pm_runtime_init(struct device *dev)
 	dev->power.deferred_resume = false;
 	INIT_WORK(&dev->power.work, pm_runtime_work);
 
+	dev->power.next_event = KTIME_MAX;
 	dev->power.timer_expires = 0;
 	hrtimer_init(&dev->power.suspend_timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS);
 	dev->power.suspend_timer.function = pm_suspend_timer_fn;
