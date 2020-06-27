@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "067b3522_239aa4ac",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-27T13:00:04Z",
+      "side": 1,
+      "message": "No, drivers should NEVER be writing directly to the disk.  kernel_read/write is not needed for sysfs or debugfs, just use debugfs please.\n\nOr use the normal kernel debugging and trace functionality.",
+      "parentUuid": "880217de_8a5cb8e4",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
