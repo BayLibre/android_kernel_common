@@ -2,6 +2,24 @@
   "comments": [
     {
       "key": {
+        "uuid": "f2ea1e7c_2bb1abf6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1697067
+      },
+      "writtenOn": "2020-06-28T10:44:18Z",
+      "side": 1,
+      "message": "\u003e Commit does not have a valid tag, such as ANDROID:\n\u003e \n\u003e FROMGIT: Patch from an upstream git repository, needs reference to upstream sha\n\u003e ANDROID: Patch only relevant for Android, unlikely to be upstreamed\n\u003e UPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\n\u003e BACKPORT: Modified patch from upstream, needs reference to upstream sha\n\u003e FROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease fix.",
+      "parentUuid": "ffb95648_0a581922",
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "14849d95_cf1e80fe",
         "filename": "sound/usb/samsung/Makefile",
         "patchSetId": 1
@@ -13,6 +31,30 @@
       "writtenOn": "2020-06-22T12:01:50Z",
       "side": 1,
       "message": "why not just name the file the module name also?  That saves you a step in the Makefile.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 74
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27054246_129c6ec4",
+        "filename": "sound/usb/samsung/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1697067
+      },
+      "writtenOn": "2020-06-28T10:44:18Z",
+      "side": 1,
+      "message": "Ok, I will fix it.",
+      "parentUuid": "14849d95_cf1e80fe",
       "range": {
         "startLine": 3,
         "startChar": 0,
@@ -163,6 +205,30 @@
     },
     {
       "key": {
+        "uuid": "2439da50_5321cc5e",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1697067
+      },
+      "writtenOn": "2020-06-28T10:44:18Z",
+      "side": 1,
+      "message": "No, This is for only msg to ABOX.",
+      "parentUuid": "51aff4f2_cf056398",
+      "range": {
+        "startLine": 80,
+        "startChar": 29,
+        "endLine": 80,
+        "endChar": 37
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ab12697a_4ef8b9f6",
         "filename": "sound/usb/samsung/exynos_usb_audio.c",
         "patchSetId": 1
@@ -220,6 +286,30 @@
       "writtenOn": "2020-06-22T19:00:39Z",
       "side": 1,
       "message": "how does this differ from a \"normal\" iommu_map() call?  Why is it a special call and not just the normal one where your platform then does the \"abox-specific\" stuff instead based on the platform and iommu driver loaded at the time?",
+      "range": {
+        "startLine": 114,
+        "startChar": 7,
+        "endLine": 114,
+        "endChar": 21
+      },
+      "revId": "c88bd897a0b0bce2ff1362af2004cf419a2f56ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86adac56_14f434d4",
+        "filename": "sound/usb/samsung/exynos_usb_audio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1697067
+      },
+      "writtenOn": "2020-06-28T10:44:18Z",
+      "side": 1,
+      "message": "We separated job for USB audio offloading between ABOX and exynos_usb_audio at the beginning of the design.\n\n\nsound/soc/samsung/abox/abox.c\n\n1067 int abox_iommu_map(struct device *dev, unsigned long iova,\n1068                 phys_addr_t addr, size_t bytes, void *area)\n1069 {\n1070         struct abox_data *data \u003d dev_get_drvdata(dev);\n1071         struct abox_iommu_mapping *mapping;\n1072         unsigned long flags;\n1073         int ret;\n1074\n1075         dev_dbg(dev, \"%s(%#lx, %#zx)\\n\", __func__, iova, bytes);\n1076\n1077         if (!area) {\n1078                 dev_warn(dev, \"%s(%#lx): no virtual address\\n\", __func__, iova);\n1079                 area \u003d phys_to_virt(addr);\n1080         }\n1081\n1082         mapping \u003d devm_kmalloc(dev, sizeof(*mapping), GFP_KERNEL);\n1083         if (!mapping) {\n1084                 ret \u003d -ENOMEM;\n1085                 goto out;\n1086         }\n1087\n1088         ret \u003d iommu_map(data-\u003eiommu_domain, iova, addr, bytes, 0);\n1089         if (ret \u003c 0) {\n1090                 devm_kfree(dev, mapping);\n1091                 dev_err(dev, \"iommu_map(%#lx) fail: %d\\n\", iova, ret);\n1092                 goto out;\n1093         }\n1094\n1095         mapping-\u003eiova \u003d iova;\n1096         mapping-\u003eaddr \u003d addr;\n1097         mapping-\u003earea \u003d area;\n1098         mapping-\u003ebytes \u003d bytes;\n1099\n1100         spin_lock_irqsave(\u0026data-\u003eiommu_lock, flags);\n1101         list_add(\u0026mapping-\u003elist, \u0026data-\u003eiommu_maps);\n1102         spin_unlock_irqrestore(\u0026data-\u003eiommu_lock, flags);\n1103 out:\n1104         return ret;\n1105 }\n1106 EXPORT_SYMBOL(abox_iommu_map);",
+      "parentUuid": "0b248273_30408037",
       "range": {
         "startLine": 114,
         "startChar": 7,
