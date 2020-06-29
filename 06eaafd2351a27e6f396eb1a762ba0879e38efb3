@@ -169,6 +169,30 @@
     },
     {
       "key": {
+        "uuid": "abb1bdd7_873e7731",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-29T11:51:20Z",
+      "side": 1,
+      "message": "Again, a driver should never need to write/read from a disk directory, that functionality is just not to be done in Linux for lots of good reasons (security, namespaces, Treble, etc.)\n\nThe api to use all depends on the problem you are trying to solve.  Odds are there is already a correct user/kernel api present for your needs that do not involve the kernel writing to a disk directly.",
+      "parentUuid": "39aa6d9e_589d16c1",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
