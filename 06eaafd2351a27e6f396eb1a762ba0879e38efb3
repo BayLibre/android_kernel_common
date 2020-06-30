@@ -193,6 +193,30 @@
     },
     {
       "key": {
+        "uuid": "1d44cdcf_b906b158",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2020-06-30T02:49:53Z",
+      "side": 1,
+      "message": "OK, I\u0027m going to find out our kernel_read / write function in module and try to remove them. But I cannot find substitute function yet.\n\nBut Do you mean erase all feature to access disk directory?\nIf we are trying to access sysfs node or else, is it OK?\n\nI\u0027m trying to spread all our module engineers who is using kernel_read / write function.\n\nAfter fix it or if they have question, I\u0027m going to let them to comment here.\n\nThanks",
+      "parentUuid": "abb1bdd7_873e7731",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
