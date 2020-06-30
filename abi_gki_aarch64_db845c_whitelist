@@ -1,23 +1,26 @@
 [abi_whitelist]
 # commonly used symbols
-  add_uevent_var
   __alloc_skb
   alloc_workqueue
   __arch_copy_from_user
   __arch_copy_to_user
   arm64_const_caps_ready
+  bcmp
   bpf_trace_run1
   bpf_trace_run2
   bpf_trace_run3
   bpf_trace_run4
+  __break_lease
   bt_err
   bt_info
   call_rcu
+  cancel_delayed_work
   cancel_delayed_work_sync
   cancel_work_sync
   capable
   __cfi_slowpath
   __check_object_size
+  clear_inode
   clk_bulk_disable
   clk_bulk_enable
   clk_bulk_prepare
@@ -47,6 +50,7 @@
   __cpu_online_mask
   crc32_le
   _ctype
+  d_drop
   debugfs_create_bool
   debugfs_create_dir
   debugfs_create_file
@@ -58,20 +62,18 @@
   delayed_work_timer_fn
   del_timer
   del_timer_sync
+  dentry_open
   destroy_workqueue
   dev_driver_string
   _dev_err
-  dev_fwnode
   dev_get_regmap
   device_create_file
   device_init_wakeup
-  device_match_fwnode
   device_property_present
   device_property_read_string
   device_property_read_u32_array
-  device_register
+  device_release_driver
   device_set_wakeup_capable
-  device_unregister
   device_wakeup_enable
   _dev_info
   __dev_kfree_skb_any
@@ -90,7 +92,6 @@
   __devm_of_phy_provider_register
   devm_of_platform_populate
   devm_phy_create
-  devm_phy_get
   devm_pinctrl_register
   __devm_regmap_init_mmio_clk
   devm_regulator_bulk_get
@@ -105,6 +106,7 @@
   _dev_notice
   dev_set_name
   _dev_warn
+  dget_parent
   disable_irq
   disable_irq_nosync
   divider_get_val
@@ -127,6 +129,7 @@
   dma_set_mask
   do_SAK
   down_write
+  dput
   driver_unregister
   drm_add_edid_modes
   drm_atomic_helper_connector_destroy_state
@@ -149,16 +152,21 @@
   extcon_get_state
   extcon_register_notifier
   extcon_unregister_notifier
+  fd_install
   find_next_bit
   find_next_zero_bit
   finish_wait
+  flush_dcache_page
   fput
   free_irq
+  free_pages
   generic_file_llseek
   generic_handle_irq
   generic_mii_ioctl
   generic_read_dir
   get_device
+  get_unused_fd_flags
+  get_zeroed_page
   gpiochip_add_data_with_key
   gpiochip_add_pin_range
   gpiochip_generic_free
@@ -200,7 +208,9 @@
   irq_set_chip_data
   irq_set_irq_wake
   irq_to_desc
+  iterate_dir
   jiffies
+  kern_path
   kfree
   kfree_skb
   kimage_vaddr
@@ -220,6 +230,9 @@
   kvmalloc_node
   __list_add_valid
   __list_del_entry_valid
+  lockref_get
+  lock_rename
+  match_token
   memcpy
   memmove
   memset
@@ -232,7 +245,9 @@
   msm_pinctrl_probe
   msm_pinctrl_remove
   __mutex_init
+  mutex_is_locked
   mutex_lock
+  mutex_lock_interruptible
   mutex_unlock
   __netdev_alloc_skb
   netdev_info
@@ -267,9 +282,12 @@
   of_property_read_string
   of_property_read_u32_index
   of_property_read_variable_u32_array
+  pagecache_get_page
   param_ops_bool
   param_ops_int
   param_ops_uint
+  path_get
+  path_put
   pci_bus_type
   pci_dev_put
   pci_match_id
@@ -282,11 +300,6 @@
   pci_write_config_byte
   perf_trace_buf_alloc
   perf_trace_run_bpf_submit
-  phy_exit
-  phy_init
-  phy_power_off
-  phy_power_on
-  phy_set_mode_ext
   pinconf_generic_dt_node_to_map
   pinctrl_dev_get_drvdata
   pinctrl_pm_select_default_state
@@ -321,9 +334,10 @@
   preempt_schedule
   preempt_schedule_notrace
   prepare_to_wait_event
-  print_hex_dump
   printk
+  __put_cred
   put_device
+  __put_page
   __put_task_struct
   queue_delayed_work_on
   queue_work_on
@@ -396,6 +410,7 @@
   strlcpy
   strlen
   strncmp
+  strsep
   __sw_hweight32
   __sw_hweight64
   synchronize_irq
@@ -412,6 +427,7 @@
   trace_print_symbols_seq
   trace_raw_output_prep
   trace_seq_printf
+  truncate_inode_pages
   tty_flip_buffer_push
   __tty_insert_flip_char
   tty_termios_encode_baud_rate
@@ -425,6 +441,8 @@
   uart_update_timeout
   uart_write_wakeup
   unlock_new_inode
+  unlock_page
+  unlock_rename
   unregister_filesystem
   unregister_reboot_notifier
   unregister_shrinker
@@ -483,6 +501,7 @@
   usb_remove_hcd
   usb_root_hub_lost_power
   usleep_range
+  vfs_getattr
   vsnprintf
   wait_for_completion_timeout
   __wake_up
@@ -812,10 +831,8 @@
   drm_state_dump
   drm_universal_plane_init
   drm_vblank_init
-  fd_install
   flush_workqueue
   get_pid_task
-  get_unused_fd_flags
   gpiod_direction_input
   gpiod_direction_output
   gpiod_get_value
@@ -853,8 +870,6 @@
   mipi_dsi_host_register
   mipi_dsi_host_unregister
   mipi_dsi_packet_format_is_long
-  mutex_is_locked
-  mutex_lock_interruptible
   mutex_trylock_recursive
   nsecs_to_jiffies
   ns_to_timespec
@@ -874,6 +889,7 @@
   of_property_read_string_helper
   param_ops_charp
   pid_task
+  pm_runtime_get_if_in_use
   put_pid
   put_unused_fd
   _raw_read_lock
@@ -948,6 +964,7 @@
   amba_bustype
   bus_set_iommu
   device_link_add
+  device_match_fwnode
   devm_free_irq
   driver_find_device
   free_io_pgtable_ops
@@ -1164,8 +1181,11 @@
   uart_set_options
 
 # required by ulpi.ko
+  add_uevent_var
   bus_register
   bus_unregister
+  device_register
+  device_unregister
   driver_register
   of_device_modalias
   of_device_request_module
@@ -1177,13 +1197,20 @@
   of_clk_get_parent_count
 
 # required by dwc3.ko
+  dev_fwnode
   device_property_read_u8_array
+  devm_phy_get
   devm_usb_get_phy
   extcon_find_edev_by_node
   extcon_get_extcon_dev
   of_usb_get_phy_mode
+  phy_exit
+  phy_init
   phy_pm_runtime_get_sync
   phy_pm_runtime_put_sync
+  phy_power_off
+  phy_power_on
+  phy_set_mode_ext
   platform_get_irq_byname_optional
   system_freezable_wq
   usb_add_gadget_udc
@@ -1196,6 +1223,8 @@
   usb_gadget_udc_reset
   usb_gadget_unmap_request_by_dev
   usb_get_maximum_speed
+  usb_role_switch_register
+  usb_role_switch_unregister
 
 # required by ehci-hcd.ko
   device_remove_file
@@ -1210,17 +1239,17 @@
   usb_amd_hang_symptom_quirk
 
 # required by ehci-platform.ko
+  device_attach
   device_pm_wait_for_dev
+  soc_device_match
   usb_of_get_companion_dev
 
 # required by ohci-hcd.ko
   debugfs_remove
   flush_work
-  free_pages
   gen_pool_dma_alloc_align
   gen_pool_dma_zalloc_align
   gen_pool_free_owner
-  get_zeroed_page
   sb800_prefetch
 
 # required by ohci-pci.ko
@@ -1229,7 +1258,6 @@
 
 # required by xhci-hcd.ko
   add_timer
-  cancel_delayed_work
   mod_delayed_work_on
   __num_online_cpus
   param_ops_ullong
@@ -1250,7 +1278,6 @@
 # required by xhci-pci-renesas.ko
   debugfs_attr_read
   debugfs_attr_write
-  device_release_driver
   pci_dev_get
   pci_write_config_dword
   request_firmware_nowait
@@ -1265,26 +1292,10 @@
   of_usb_host_tpl_support
   __usb_create_hcd
 
-# required by roles.ko
-  __class_create
-  class_destroy
-  class_find_device
-  device_connection_find_match
-  device_match_name
-  fwnode_connection_find_match
-  fwnode_get_parent
-  fwnode_property_present
-  kstrtobool
-  module_put
-  __sysfs_match_string
-  try_module_get
-
 # required by qcom-wdt.ko
   platform_get_irq_optional
 
 # required by sdcardfs.ko
-  __break_lease
-  clear_inode
   clear_nlink
   configfs_register_subsystem
   configfs_unregister_subsystem
@@ -1292,12 +1303,8 @@
   config_group_init_type_name
   config_item_init_type_name
   copy_fs_struct
-  d_drop
-  dentry_open
-  dget_parent
   d_invalidate
   d_path
-  dput
   d_rehash
   d_set_d_op
   filemap_write_and_wait
@@ -1313,21 +1320,14 @@
   generic_permission
   igrab
   inode_newsize_ok
-  iterate_dir
-  kern_path
   kill_anon_super
   kstrtoull
-  lockref_get
-  lock_rename
   lookup_one_len_unlocked
   mntget
   names_cachep
   notify_change2
   override_creds
-  path_get
-  path_put
   prepare_creds
-  __put_cred
   revert_creds
   setattr_prepare
   set_fs_pwd
@@ -1337,12 +1337,9 @@
   strrchr
   synchronize_rcu
   touch_atime
-  truncate_inode_pages
   truncate_setsize
-  unlock_rename
   vfs_create2
   vfs_fsync_range
-  vfs_getattr
   vfs_get_super
   vfs_mkdir2
   vfs_path_lookup
