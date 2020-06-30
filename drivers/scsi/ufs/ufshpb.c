@@ -908,6 +908,7 @@ static int ufshpb_execute_umap_req(struct ufshpb_lu *hpb,
 
 	blk_execute_rq_nowait(q, NULL, req, 1, ufshpb_umap_req_compl_fn);
 
+	hpb->stats.umap_req_cnt++;
 	return 0;
 }
 
@@ -1104,17 +1105,36 @@ free_umap_req:
 	return -EAGAIN;
 }
 
+static int ufshpb_issue_umap_single_req(struct ufshpb_lu *hpb,
+					struct ufshpb_region *rgn)
+{
+	return ufshpb_issue_umap_req(hpb, rgn);
+}
+
 static int ufshpb_issue_umap_all_req(struct ufshpb_lu *hpb)
 {
 	return ufshpb_issue_umap_req(hpb, NULL, false);
 }
 
-static void __ufshpb_evict_region(struct ufshpb_lu *hpb,
-				  struct ufshpb_region *rgn)
+static int __ufshpb_evict_region(struct ufshpb_lu *hpb,
+				 struct ufshpb_region *rgn)
 {
 	struct victim_select_info *lru_info;
 	struct ufshpb_subregion *srgn;
 	int srgn_idx;
+
+	lockdep_assert_held(&hpb->rgn_state_lock);
+
+	if (hpb->is_hcm) {
+		unsigned long flags;
+		int ret;
+
+		spin_unlock_irqrestore(&hpb->rgn_state_lock, flags);
+		ret = ufshpb_issue_umap_single_req(hpb, rgn);
+		spin_lock_irqsave(&hpb->rgn_state_lock, flags);
+		if (ret)
+			return ret;
+	}
 
 	lru_info = &hpb->lru_info;
 
@@ -1124,6 +1144,8 @@ static void __ufshpb_evict_region(struct ufshpb_lu *hpb,
 
 	for_each_sub_region(rgn, srgn_idx, srgn)
 		ufshpb_purge_active_subregion(hpb, srgn);
+
+	return 0;
 }
 
 static int ufshpb_evict_region(struct ufshpb_lu *hpb, struct ufshpb_region *rgn)
@@ -1144,7 +1166,7 @@ static int ufshpb_evict_region(struct ufshpb_lu *hpb, struct ufshpb_region *rgn)
 			goto out;
 		}
 
-		__ufshpb_evict_region(hpb, rgn);
+		ret = __ufshpb_evict_region(hpb, rgn);
 	}
 out:
 	spin_unlock_irqrestore(&hpb->rgn_state_lock, flags);
@@ -1278,7 +1300,9 @@ static int ufshpb_add_region(struct ufshpb_lu *hpb, struct ufshpb_region *rgn)
 				"LRU full (%d), choose victim %d\n",
 				atomic_read(&lru_info->active_cnt),
 				victim_rgn->rgn_idx);
-			__ufshpb_evict_region(hpb, victim_rgn);
+			ret = __ufshpb_evict_region(hpb, victim_rgn);
+			if (ret)
+				goto out;
 		}
 
 		/*
@@ -1841,6 +1865,7 @@ ufshpb_sysfs_attr_show_func(rb_noti_cnt);
 ufshpb_sysfs_attr_show_func(rb_active_cnt);
 ufshpb_sysfs_attr_show_func(rb_inactive_cnt);
 ufshpb_sysfs_attr_show_func(map_req_cnt);
+ufshpb_sysfs_attr_show_func(umap_req_cnt);
 
 static struct attribute *hpb_dev_stat_attrs[] = {
 	&dev_attr_hit_cnt.attr,
@@ -1849,6 +1874,7 @@ static struct attribute *hpb_dev_stat_attrs[] = {
 	&dev_attr_rb_active_cnt.attr,
 	&dev_attr_rb_inactive_cnt.attr,
 	&dev_attr_map_req_cnt.attr,
+	&dev_attr_umap_req_cnt.attr,
 	NULL,
 };
 
@@ -1973,6 +1999,7 @@ static void ufshpb_stat_init(struct ufshpb_lu *hpb)
 	hpb->stats.rb_active_cnt = 0;
 	hpb->stats.rb_inactive_cnt = 0;
 	hpb->stats.map_req_cnt = 0;
+	hpb->stats.umap_req_cnt = 0;
 }
 
 static void ufshpb_param_init(struct ufshpb_lu *hpb)
