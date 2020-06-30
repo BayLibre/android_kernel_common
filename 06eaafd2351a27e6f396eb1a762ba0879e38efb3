@@ -217,6 +217,30 @@
     },
     {
       "key": {
+        "uuid": "52a96768_41ff4ec9",
+        "filename": "abi_gki_aarch64_exynos_whitelist",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-06-30T14:27:04Z",
+      "side": 1,
+      "message": "No in-kernel code should ever try to read a sysfs, or any other virtual filesystem, file directly.  Use the correct in-kernel apis to get that information, if they need it.\n\nWhat sysfs files are they reading/writing to?\n\nRealize that no upstream kernel code does this, so that\u0027s a huge hint that no out-of-tree code should also do that.",
+      "parentUuid": "1d44cdcf_b906b158",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 623,
+        "endChar": 13
+      },
+      "revId": "06eaafd2351a27e6f396eb1a762ba0879e38efb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8611ecc8_4c4e12a8",
         "filename": "abi_gki_aarch64_exynos_whitelist",
         "patchSetId": 2
