@@ -335,7 +335,11 @@ quiet_cmd_lzo = LZO     $@
 
 quiet_cmd_lz4 = LZ4     $@
       cmd_lz4 = { cat $(real-prereqs) | \
+<<<<<<< HEAD   (14693a Merge 5.4.50 into android-5.4)
                   lz4 -c -l -12 --favor-decSpeed stdin stdout; \
+=======
+                  $(LZ4) -l -12 --favor-decSpeed stdin stdout; \
+>>>>>>> CHANGE (bd42f5 ANDROID: GKI: scripts: Makefile: update the lz4 command (#2))
                   $(size_append); } > $@
 
 # U-Boot mkimage
