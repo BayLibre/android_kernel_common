@@ -212,7 +212,7 @@ int vfs_fsync(struct file *file, int datasync)
 {
 	return vfs_fsync_range(file, 0, LLONG_MAX, datasync);
 }
-EXPORT_SYMBOL(vfs_fsync);
+EXPORT_SYMBOL_NS(vfs_fsync, ANDROID_GKI_VFS_EXPORT_ONLY);
 
 static int do_fsync(unsigned int fd, int datasync)
 {

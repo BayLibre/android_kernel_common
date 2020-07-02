@@ -299,7 +299,7 @@ loff_t vfs_llseek(struct file *file, loff_t offset, int whence)
 	}
 	return fn(file, offset, whence);
 }
-EXPORT_SYMBOL(vfs_llseek);
+EXPORT_SYMBOL_NS(vfs_llseek, ANDROID_GKI_VFS_EXPORT_ONLY);
 
 off_t ksys_lseek(unsigned int fd, off_t offset, unsigned int whence)
 {
