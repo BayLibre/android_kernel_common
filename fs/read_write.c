@@ -441,7 +441,7 @@ ssize_t kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
 	set_fs(old_fs);
 	return result;
 }
-EXPORT_SYMBOL(kernel_read);
+EXPORT_SYMBOL_NS(kernel_read, VFS_INTERNAL_I_AM_REALLY_A_FILESYSTEM_AND_I_KNOW_WHAT_I_AM_DOING);
 
 ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 {
