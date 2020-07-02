@@ -2453,5 +2453,6 @@ static void __exit ns_cleanup_module(void)
 module_exit(ns_cleanup_module);
 
 MODULE_LICENSE ("GPL");
+MODULE_IMPORT_NS(ANDROID_GKI_VFS_EXPORT_ONLY);
 MODULE_AUTHOR ("Artem B. Bityuckiy");
 MODULE_DESCRIPTION ("The NAND flash simulator");
