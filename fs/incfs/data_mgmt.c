@@ -12,10 +12,13 @@
 #include <linux/slab.h>
 #include <linux/types.h>
 #include <linux/workqueue.h>
+#include <linux/module.h>
 
 #include "data_mgmt.h"
 #include "format.h"
 #include "integrity.h"
+
+MODULE_IMPORT_NS(VFS_INTERNAL_I_AM_REALLY_A_FILESYSTEM_AND_AM_NOT_A_DRIVER);
 
 static void log_wake_up_all(struct work_struct *work)
 {

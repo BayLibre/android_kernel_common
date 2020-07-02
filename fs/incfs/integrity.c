@@ -5,9 +5,11 @@
 #include <crypto/sha.h>
 #include <crypto/hash.h>
 #include <linux/err.h>
-#include <linux/version.h>
+#include <linux/module.h>
 
 #include "integrity.h"
+
+MODULE_IMPORT_NS(VFS_INTERNAL_I_AM_REALLY_A_FILESYSTEM_AND_AM_NOT_A_DRIVER);
 
 struct incfs_hash_alg *incfs_get_hash_alg(enum incfs_hash_tree_algorithm id)
 {

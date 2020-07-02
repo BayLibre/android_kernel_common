@@ -12,6 +12,8 @@
 
 #define INCFS_NODE_FEATURES "features"
 
+MODULE_IMPORT_NS(VFS_INTERNAL_I_AM_REALLY_A_FILESYSTEM_AND_AM_NOT_A_DRIVER);
+
 static struct file_system_type incfs_fs_type = {
 	.owner = THIS_MODULE,
 	.name = INCFS_NAME,

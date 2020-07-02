@@ -31,6 +31,8 @@
 #define READ_EXEC_FILE_MODE 0555
 #define READ_WRITE_FILE_MODE 0666
 
+MODULE_IMPORT_NS(VFS_INTERNAL_I_AM_REALLY_A_FILESYSTEM_AND_AM_NOT_A_DRIVER);
+
 static int incfs_remount_fs(struct super_block *sb, int *flags, char *data);
 
 static int dentry_revalidate(struct dentry *dentry, unsigned int flags);

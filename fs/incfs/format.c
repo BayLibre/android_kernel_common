@@ -11,9 +11,12 @@
 #include <linux/slab.h>
 #include <linux/crc32.h>
 #include <linux/kernel.h>
+#include <linux/module.h>
 
 #include "format.h"
 #include "data_mgmt.h"
+
+MODULE_IMPORT_NS(VFS_INTERNAL_I_AM_REALLY_A_FILESYSTEM_AND_AM_NOT_A_DRIVER);
 
 struct backing_file_context *incfs_alloc_bfc(struct file *backing_file)
 {
