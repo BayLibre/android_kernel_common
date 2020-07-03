@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ecb7017_610c5f7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-03T07:47:30Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1: Code-Review+1\n\u003e \n\u003e Matthias, how can we know if a change like this is safe to get into 5.4 kernels from a KMI perspective? Is it the case that we can simply merge changes into \"any and all common branches where treehugger does not tell us that making the change breaks the KMI\"?\n\nYes, TH will say if the ABI that people are depending on breaks with any kernel change, so it should be safe to rely on that.\n\nLet\u0027s run it again here to verify as the previous run seems to be gone from the system now (or I can\u0027t figure out where to find it...)",
+      "revId": "4f5efed8ed1b967c826a546e9275f4de9a68cd59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
