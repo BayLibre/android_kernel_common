@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "557b7082_e8e711e8",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "I remember seeing a very similar function before, maybe even without heap allocation. Or is that bin2hex()?",
+      "range": {
+        "startLine": 133,
+        "startChar": 6,
+        "endLine": 133,
+        "endChar": 20
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aad255da_d068e792",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "nit: extra line",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 0
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d01de9be_d654fe59",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "nit: not needed after \"return\"",
+      "range": {
+        "startLine": 258,
+        "startChar": 3,
+        "endLine": 258,
+        "endChar": 9
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88ced832_81e6bef3",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "curious how the \u0027is file fully loaded\u0027 ioctl works on this kind of a file. AFAIK the only interface we have now is to iterate all files one by one and call that ioctl on them",
+      "range": {
+        "startLine": 1494,
+        "startChar": 12,
+        "endLine": 1494,
+        "endChar": 36
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d015149f_8a43d174",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1572,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "is there any verification for the size/offset values against the source file? source is immutable, so we can and should verify the values right away here.",
+      "range": {
+        "startLine": 1572,
+        "startChar": 9,
+        "endLine": 1572,
+        "endChar": 49
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8055564_464e2229",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "existing_file_id or source_file_id ?",
+      "range": {
+        "startLine": 375,
+        "startChar": 14,
+        "endLine": 375,
+        "endChar": 21
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3002c99_c7f910c7",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-06T20:02:46Z",
+      "side": 1,
+      "message": "same, source_offset ?",
+      "range": {
+        "startLine": 381,
+        "startChar": 15,
+        "endLine": 381,
+        "endChar": 21
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
