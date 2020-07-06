@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6967a5fc_bedda3e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2020-07-06T22:42:13Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e \u003e Patch Set 1:\n\u003e \u003e \n\u003e \u003e \u003e Patch Set 1:\n\u003e \u003e \u003e \n\u003e \u003e \u003e The main motivation there is actually the rate limit but we can check how frequently we will hit the upstream case. Our team is very busy at this moment though.\n\u003e \u003e \n\u003e \u003e BTW, is the GKI a hard requirement for this kind of change?\n\u003e \n\u003e There are no GKI requirements for 4.19 so that should be fine. With 5.4, the only requirement is compliance (the device must pass CTS/VTS with GKI, but can ship with another kernel), so no problem either. But for 5.10 (or whatever the next LTS is), shipping with GKI will be a requirement, so it would indeed be good to try and get an upstream solution for this issue.\n\nsgtm. if no further objection, I will bypass lint here and try to bring a discussion in upstream as well.",
+      "revId": "0746865d27db9743325c68a065415755eadf6f93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
