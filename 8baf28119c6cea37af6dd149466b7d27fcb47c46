@@ -16,6 +16,24 @@
       "revId": "8baf28119c6cea37af6dd149466b7d27fcb47c46",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15fa6a29_40adecc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1407350
+      },
+      "writtenOn": "2020-07-07T08:10:44Z",
+      "side": 1,
+      "message": "vchan_init is used in in drivers/dma/fsl-edma.c.\nfsl-edma.c is build as module. audio driver use fsl-edma to pass data.\ndrivers/dma/virt-dma.c is comon driver, so select it when enable audio.",
+      "parentUuid": "363dac72_b01b0aba",
+      "revId": "8baf28119c6cea37af6dd149466b7d27fcb47c46",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
