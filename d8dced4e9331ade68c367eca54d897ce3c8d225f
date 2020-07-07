@@ -19,6 +19,29 @@
     },
     {
       "key": {
+        "uuid": "7017e60d_c9397e17",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1721954
+      },
+      "writtenOn": "2020-07-07T22:36:06Z",
+      "side": 1,
+      "message": "I do see comments from Greg about removal of these symbols\nhttps://android-review.googlesource.com/c/kernel/common/+/1317734\n\nAs Raghavendra mentioned \"we compile sdcardfs.ko internally as we still haven\u0027t switched to fuse_fs\". \n\nGreg,\nI thought i have addressed \"sdcardfs\" symbols. I have used below gerrit to remove symbols. Do you still see symbols related to sdcardfs?\nhttps://android-review.googlesource.com/c/kernel/common/+/1319726",
+      "range": {
+        "startLine": 250,
+        "startChar": 2,
+        "endLine": 250,
+        "endChar": 16
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe196593_47a0459b",
         "filename": "android/abi_gki_aarch64_qcom",
         "patchSetId": 1
