@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "0bc58200_0269c392",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1721954
+      },
+      "writtenOn": "2020-07-08T18:31:50Z",
+      "side": 1,
+      "message": "Sure",
+      "parentUuid": "9e66bac8_a484b59d",
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7017e60d_c9397e17",
         "filename": "android/abi_gki_aarch64_qcom",
         "patchSetId": 1
@@ -71,6 +89,30 @@
       "side": 1,
       "message": "This function isn\u0027t even exported from the kernel, how can you be using it here?\n\nAre you _sure_ you generated this table correctly?",
       "parentUuid": "7017e60d_c9397e17",
+      "range": {
+        "startLine": 250,
+        "startChar": 2,
+        "endLine": 250,
+        "endChar": 16
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c18df1e4_0e3c1d55",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1721954
+      },
+      "writtenOn": "2020-07-08T18:31:50Z",
+      "side": 1,
+      "message": "I am updating the list as per what we have internally. I do see this symbol internally. I will check and remove internally as well here.",
+      "parentUuid": "cea9dab9_5ac1f0aa",
       "range": {
         "startLine": 250,
         "startChar": 2,
@@ -210,6 +252,30 @@
       "side": 1,
       "message": "Something is really odd with this patch, as said above, this symbol isn\u0027t even in our kernel.\n\nI\u0027ve stopped reviewing here, please fix this whole thing up based on the kernel image and resend it.",
       "parentUuid": "37f82ff7_a1178a9b",
+      "range": {
+        "startLine": 882,
+        "startChar": 2,
+        "endLine": 882,
+        "endChar": 17
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "034fa9cd_a57c1a0c",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1721954
+      },
+      "writtenOn": "2020-07-08T18:31:50Z",
+      "side": 1,
+      "message": "Greg, since i am updating whitelist with downstream it came in. It seems i have to remove couple of things in downstream as well. Will remove this in my next patch.",
+      "parentUuid": "a56fe83c_40cce47c",
       "range": {
         "startLine": 882,
         "startChar": 2,
