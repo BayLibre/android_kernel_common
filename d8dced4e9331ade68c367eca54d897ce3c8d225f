@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "9e66bac8_a484b59d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-08T06:26:54Z",
+      "side": 1,
+      "message": "These symbols do not look like they have been made against the correct kernel tree as they contain things that are not even in our kernel.  Please fix this up, and remove all of the filesytem symbols as sdcardfs is gone from the kernel image.",
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7017e60d_c9397e17",
         "filename": "android/abi_gki_aarch64_qcom",
         "patchSetId": 1
@@ -35,6 +52,99 @@
         "startChar": 2,
         "endLine": 250,
         "endChar": 16
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cea9dab9_5ac1f0aa",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-08T06:26:54Z",
+      "side": 1,
+      "message": "This function isn\u0027t even exported from the kernel, how can you be using it here?\n\nAre you _sure_ you generated this table correctly?",
+      "parentUuid": "7017e60d_c9397e17",
+      "range": {
+        "startLine": 250,
+        "startChar": 2,
+        "endLine": 250,
+        "endChar": 16
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fe91029_4a3b5e5d",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-08T06:26:54Z",
+      "side": 1,
+      "message": "who needs this?  That\u0027s for filesystems only.",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 502,
+        "endChar": 13
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74b29244_c235a651",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-08T06:26:54Z",
+      "side": 1,
+      "message": "should never be needed by any driver, please remove.",
+      "range": {
+        "startLine": 587,
+        "startChar": 2,
+        "endLine": 587,
+        "endChar": 8
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c6bf3f8_04dd6125",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-08T06:26:54Z",
+      "side": 1,
+      "message": "not needed by any driver, please remove.",
+      "range": {
+        "startLine": 589,
+        "startChar": 2,
+        "endLine": 589,
+        "endChar": 10
       },
       "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
@@ -76,6 +186,30 @@
       "writtenOn": "2020-07-07T22:46:43Z",
       "side": 1,
       "message": "this should be removed. there is no flush_cache_all at upstream.",
+      "range": {
+        "startLine": 882,
+        "startChar": 2,
+        "endLine": 882,
+        "endChar": 17
+      },
+      "revId": "d8dced4e9331ade68c367eca54d897ce3c8d225f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a56fe83c_40cce47c",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-08T06:26:54Z",
+      "side": 1,
+      "message": "Something is really odd with this patch, as said above, this symbol isn\u0027t even in our kernel.\n\nI\u0027ve stopped reviewing here, please fix this whole thing up based on the kernel image and resend it.",
+      "parentUuid": "37f82ff7_a1178a9b",
       "range": {
         "startLine": 882,
         "startChar": 2,
