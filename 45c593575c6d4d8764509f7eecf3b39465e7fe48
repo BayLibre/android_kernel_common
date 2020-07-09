@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6345053a_620b3d6e",
+        "filename": "include/linux/mm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-07-09T00:36:05Z",
+      "side": 1,
+      "message": "Wait. Do you need these vendor fields in addition to the actual fields above?\n\n\tunsigned long vma_flags;\t/* Speculative Page Fault field */\n\tpgprot_t vma_page_prot;\t\t/* Speculative Page Fault field */",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 458,
+        "endChar": 24
+      },
+      "revId": "45c593575c6d4d8764509f7eecf3b39465e7fe48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
