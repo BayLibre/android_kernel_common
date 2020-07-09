@@ -158,6 +158,7 @@ void log_irq_wakeup_reason(int irq)
 
 	spin_unlock_irqrestore(&wakeup_reason_lock, flags);
 }
+EXPORT_SYMBOL_GPL(log_irq_wakeup_reason);
 
 void log_threaded_irq_wakeup_reason(int irq, int parent_irq)
 {
@@ -260,8 +261,6 @@ static void print_wakeup_sources(void)
 
 	if (suspend_abort) {
 		pr_info("Abort: %s\n", non_irq_wake_reason);
-		spin_unlock_irqrestore(&wakeup_reason_lock, flags);
-		return;
 	}
 
 	if (!list_empty(&leaf_irqs))
