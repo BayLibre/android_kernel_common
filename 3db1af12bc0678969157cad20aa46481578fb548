@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "27782d42_00fcc59c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2020-07-10T13:08:09Z",
+      "side": 1,
+      "message": "Based on a feedback we got from Bjorn sometime\nback, we do not need following configs from this\npatch:\n\nCONFIG_WCN36XX\u003dm\nCONFIG_QCOM_WCNSS_PIL\u003dm\nCONFIG_QCOM_OCMEM\u003dm\nCONFIG_QCOM_WCNSS_CTRL\u003dm\nCONFIG_QCOM_SMD_RPM\u003dm\nCONFIG_QCOM_RPMPD\u003dm\n\nIs it OK if we remove following unused drivers\nfrom the db845c fragment list as well, while we\nare at it (to skip another round of ABI update?):\n\nCONFIG_PINCTRL_MSM8998\u003dm\nCONFIG_COMMON_CLK_SCMI\u003dm\nCONFIG_MSM_GCC_8998\u003dm\nCONFIG_QCOM_GSBI\u003dm\n\nOr should it go as a separate change?",
+      "revId": "3db1af12bc0678969157cad20aa46481578fb548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
