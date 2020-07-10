@@ -69,6 +69,23 @@
       "revId": "23483f2054c1f9362c5c1eac72874efa20fdd49c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "283f8ff2_afc1f316",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2020-07-10T17:13:11Z",
+      "side": 1,
+      "message": "I would like to understand more about the motivation for this.  Based on what I know (and it\u0027s possible I am missing something), I disagree with the underlying premise that this change should be made at all.  This mechanism is meant to capture one, single wakeup reason for every resume or failed suspend (or potentially multiple wakeup IRQs if there are 2+ pending in HW in early resume flow).\n\nIf the kernel actually suspended successfully, we want to capture the IRQ(s) that caused it to resume.\n\nIf the kernel did _not_ suspend successfully, we want to capture the wakeup source (or off-nominal error) that blocked it.\n\nI am not aware of any reason why we would ever want this mechanism to capture both for a single event, and if we did, it would result in incorrect data being provided to the android framework.",
+      "revId": "23483f2054c1f9362c5c1eac72874efa20fdd49c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
