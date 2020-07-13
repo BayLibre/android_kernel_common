@@ -775,6 +775,8 @@ void __put_page(struct page *page);
 
 void put_pages_list(struct list_head *pages);
 
+void split_page_by_order(struct page *page, unsigned int order,
+			unsigned int new_order);
 void split_page(struct page *page, unsigned int order);
 
 /*

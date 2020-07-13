@@ -3171,6 +3171,25 @@ void free_unref_page_list(struct list_head *list)
 }
 
 /*
+ * split_page_by_order takes a non-compound higher-order page, and splits
+ * it into n (1 << (order - new_order)) sub-order pages: page[0..n]
+ * Each sub-page must be freed individually.
+ */
+void split_page_by_order(struct page *page, unsigned int order,
+			unsigned int new_order)
+{
+	int i;
+
+	VM_BUG_ON_PAGE(PageCompound(page), page);
+	VM_BUG_ON_PAGE(!page_count(page), page);
+	VM_BUG_ON_PAGE(order < new_order, page);
+
+	for (i = 1; i < (1 << (order - new_order)); i++)
+		set_page_refcounted(page + i * (1 << new_order));
+	split_page_owner(page, order, new_order);
+}
+
+/*
  * split_page takes a non-compound higher-order page, and splits it into
  * n (1<<order) sub-pages: page[0..n]
  * Each sub-page must be freed individually.
@@ -3180,14 +3199,7 @@ void free_unref_page_list(struct list_head *list)
  */
 void split_page(struct page *page, unsigned int order)
 {
-	int i;
-
-	VM_BUG_ON_PAGE(PageCompound(page), page);
-	VM_BUG_ON_PAGE(!page_count(page), page);
-
-	for (i = 1; i < (1 << order); i++)
-		set_page_refcounted(page + i);
-	split_page_owner(page, order, 0);
+	split_page_by_order(page, order, 0);
 }
 EXPORT_SYMBOL_GPL(split_page);
 
