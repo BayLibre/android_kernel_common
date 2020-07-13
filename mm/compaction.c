@@ -730,15 +730,24 @@ isolate_freepages_range(struct compact_control *cc,
 			break;
 
 		isolated = isolate_freepages_block(cc, &isolate_start_pfn,
-					block_end_pfn, freepage_list, 0, true);
+					block_end_pfn, freepage_list,
+					cc->alloc_bulk ? 1 : 0,
+					cc->alloc_bulk ? false : true);
 
 		/*
 		 * In strict mode, isolate_freepages_block() returns 0 if
 		 * there are any holes in the block (ie. invalid PFNs or
-		 * non-free pages).
+		 * non-free pages) so just stop the isolation in the case.
+		 * However, in alloc_bulk mode, we could check further range
+		 * to find affordable high order free pages so keep going
+		 * with next pageblock.
 		 */
-		if (!isolated)
-			break;
+		if (!isolated) {
+			if (!cc->alloc_bulk)
+				break;
+			pfn = block_end_pfn;
+			continue;
+		}
 
 		/*
 		 * If we managed to isolate pages, it is always (1 << n) *
@@ -1117,7 +1126,6 @@ isolate_migratepages_range(struct compact_control *cc, unsigned long start_pfn,
 		if (!pageblock_pfn_to_page(block_start_pfn,
 					block_end_pfn, cc->zone))
 			continue;
-
 		pfn = isolate_migratepages_block(cc, pfn, block_end_pfn,
 							ISOLATE_UNEVICTABLE);
 

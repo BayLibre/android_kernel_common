@@ -8422,11 +8422,13 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
 	/* This function is based on compact_zone() from compaction.c. */
 	unsigned long nr_reclaimed;
 	unsigned long pfn = start;
-	unsigned int tries = 0;
-	int ret = 0;
+	unsigned int tries;
+	int ret;
 
 	migrate_prep();
 
+next:
+	tries = ret = 0;
 	while (pfn < end || !list_empty(&cc->migratepages)) {
 		if (fatal_signal_pending(current)) {
 			ret = -EINTR;
@@ -8453,17 +8455,28 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
 		ret = migrate_pages(&cc->migratepages, alloc_migrate_target,
 				    NULL, 0, cc->mode, MR_CONTIG_RANGE);
 	}
+
 	if (ret < 0) {
 		putback_movable_pages(&cc->migratepages);
-		return ret;
+		if (cc->alloc_bulk && pfn < end) {
+			/*
+			 * -EINTR means current process has fatal signal.
+			 * -ENOMEM means there is no free memory.
+			 *  In these cases, stop the effort to work with
+			 *  next blocks.
+			 */
+			if (ret != -EINTR && ret != -ENOMEM)
+				goto next;
+		}
 	}
-	return 0;
+	return ret;
 }
 
 static int __alloc_contig_range(unsigned long start, unsigned long end,
 		       unsigned int migratetype, gfp_t gfp_mask,
 		       unsigned int alloc_order,
-		       struct list_head *freepage_list)
+		       struct list_head *freepage_list,
+		       bool alloc_bulk)
 {
 	unsigned long outer_start, outer_end;
 	unsigned int order;
@@ -8480,6 +8493,7 @@ static int __alloc_contig_range(unsigned long start, unsigned long end,
 		.no_set_skip_hint = true,
 		.gfp_mask = current_gfp_context(gfp_mask),
 		.isolate_order = alloc_order,
+		.alloc_bulk = alloc_bulk,
 	};
 	INIT_LIST_HEAD(&cc.migratepages);
 
@@ -8508,7 +8522,8 @@ static int __alloc_contig_range(unsigned long start, unsigned long end,
 	 */
 
 	ret = start_isolate_page_range(pfn_max_align_down(start),
-				       pfn_max_align_up(end), migratetype, 0);
+				       pfn_max_align_up(end), migratetype,
+				       alloc_bulk ? ALLOW_ISOLATE_FAILURE : 0);
 	if (ret < 0)
 		return ret;
 
@@ -8573,7 +8588,7 @@ static int __alloc_contig_range(unsigned long start, unsigned long end,
 	}
 
 	/* Make sure the range is really isolated. */
-	if (test_pages_isolated(outer_start, end, false)) {
+	if (!alloc_bulk && test_pages_isolated(outer_start, end, false)) {
 		pr_info_ratelimited("%s: [%lx, %lx) PFNs busy\n",
 			__func__, outer_start, end);
 		ret = -EBUSY;
@@ -8654,7 +8669,7 @@ int alloc_contig_range(unsigned long start, unsigned long end,
 	LIST_HEAD(freepage_list);
 
 	return __alloc_contig_range(start, end, migratetype,
-			gfp_mask, 0, &freepage_list);
+			gfp_mask, 0, &freepage_list, false);
 }
 
 /**
@@ -8691,7 +8706,7 @@ int alloc_pages_bulk(unsigned long start, unsigned long end,
 		return -EINVAL;
 
 	ret = __alloc_contig_range(start, end, migratetype,
-				gfp_mask, order, &freepage_list);
+				gfp_mask, order, &freepage_list, true);
 	if (ret)
 		return ret;
 

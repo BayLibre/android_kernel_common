@@ -204,6 +204,7 @@ struct compact_control {
 	bool contended;			/* Signal lock or sched contention */
 	bool rescan;			/* Rescanning the same pageblock */
 	int isolate_order;		/* minimum order isolated from buddy */
+	bool alloc_bulk;		/* alloc_pages_bulk allocation */
 };
 
 /*

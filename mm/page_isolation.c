@@ -171,6 +171,8 @@ __first_valid_page(unsigned long pfn, unsigned long nr_pages)
  *			SKIP_HWPOISON - ignore hwpoison pages
  *			REPORT_FAILURE - report details about the failure to
  *			isolate the range
+ *			ALLOW_ISOLATE_FAILURE - skip the pageblock of the range
+ *			whenever we fail to set MIGRATE_ISOLATE
  *
  * Making page-allocation-type to be MIGRATE_ISOLATE means free pages in
  * the range will never be allocated. Any free pages and pages freed in the
@@ -207,6 +209,8 @@ int start_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn,
 		page = __first_valid_page(pfn, pageblock_nr_pages);
 		if (page) {
 			if (set_migratetype_isolate(page, migratetype, flags)) {
+				if (flags & ALLOW_ISOLATE_FAILURE)
+					continue;
 				undo_pfn = pfn;
 				goto undo;
 			}
