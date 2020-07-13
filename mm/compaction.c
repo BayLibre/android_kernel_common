@@ -695,10 +695,10 @@ isolate_fail:
  */
 unsigned long
 isolate_freepages_range(struct compact_control *cc,
-			unsigned long start_pfn, unsigned long end_pfn)
+			unsigned long start_pfn, unsigned long end_pfn,
+			struct list_head *freepage_list)
 {
 	unsigned long isolated, pfn, block_start_pfn, block_end_pfn;
-	LIST_HEAD(freelist);
 
 	pfn = start_pfn;
 	block_start_pfn = pageblock_start_pfn(pfn);
@@ -730,7 +730,7 @@ isolate_freepages_range(struct compact_control *cc,
 			break;
 
 		isolated = isolate_freepages_block(cc, &isolate_start_pfn,
-					block_end_pfn, &freelist, 0, true);
+					block_end_pfn, freepage_list, 0, true);
 
 		/*
 		 * In strict mode, isolate_freepages_block() returns 0 if
@@ -748,15 +748,14 @@ isolate_freepages_range(struct compact_control *cc,
 	}
 
 	/* __isolate_free_page() does not map the pages */
-	split_map_pages(&freelist, cc->isolate_order);
+	split_map_pages(freepage_list, cc->isolate_order);
 
 	if (pfn < end_pfn) {
 		/* Loop terminated early, cleanup. */
-		release_freepages(&freelist, cc->isolate_order);
+		release_freepages(freepage_list, cc->isolate_order);
 		return 0;
 	}
 
-	/* We don't use freelists for anything. */
 	return pfn;
 }
 
