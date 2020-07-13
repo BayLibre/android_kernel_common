@@ -86,6 +86,24 @@
       "revId": "23483f2054c1f9362c5c1eac72874efa20fdd49c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6063c8b0_1ea0bdcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1723023
+      },
+      "writtenOn": "2020-07-13T02:06:27Z",
+      "side": 1,
+      "message": "The reason I submit this patch is that kernel would only log wakeup source names even if the suspended system is wakeup by an irq.\n\nConsidering the following cases: a wakeup source is activated during wakeup irq handler\n\nsuspend_enter\n  -\u003e s2idle_loop -\u003e system has suspended\n\n   (wakeup irq interrupt)\n   pm_system_irq_wakeup() -\u003e log_irq_wakeup_reason -\u003e irq handler -\u003e activate wakeup source \n\n   (start resume flow)\n    -\u003e pm_wakeup_pending\n      -\u003e log_suspend_abort_reason\n        -\u003e__log_abort_or_abnormal_wake(true, fmt, args);\n           -\u003e set suspend_abort true\n   ....\n   -\u003e print_wakeup_sources\n      -\u003e only print wakeup source due to suspend_abort is true and irq recorded in log_irq_wakeup_reason is not printed\n\nCould we check wakeup irq first and then check wakeup sources?",
+      "parentUuid": "283f8ff2_afc1f316",
+      "revId": "23483f2054c1f9362c5c1eac72874efa20fdd49c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
