@@ -80,7 +80,7 @@ static void split_map_pages(struct list_head *list)
 
 		post_alloc_hook(page, order, __GFP_MOVABLE);
 		if (order)
-			split_page(page, order);
+			split_page_by_order(page, order, 0);
 
 		for (i = 0; i < nr_pages; i++) {
 			list_add(&page->lru, &tmp_list);
