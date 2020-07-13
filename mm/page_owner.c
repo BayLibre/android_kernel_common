@@ -204,7 +204,8 @@ void __set_page_owner_migrate_reason(struct page *page, int reason)
 	page_owner->last_migrate_reason = reason;
 }
 
-void __split_page_owner(struct page *page, unsigned int order)
+void __split_page_owner(struct page *page, unsigned int order,
+			unsigned int new_order)
 {
 	int i;
 	struct page_ext *page_ext = lookup_page_ext(page);
@@ -213,9 +214,11 @@ void __split_page_owner(struct page *page, unsigned int order)
 	if (unlikely(!page_ext))
 		return;
 
+	VM_BUG_ON_PAGE(order < new_order, page);
+
 	for (i = 0; i < (1 << order); i++) {
 		page_owner = get_page_owner(page_ext);
-		page_owner->order = 0;
+		page_owner->order = new_order;
 		page_ext = page_ext_next(page_ext);
 	}
 }
