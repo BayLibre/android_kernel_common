@@ -203,6 +203,7 @@ struct compact_control {
 	bool whole_zone;		/* Whole zone should/has been scanned */
 	bool contended;			/* Signal lock or sched contention */
 	bool rescan;			/* Rescanning the same pageblock */
+	int isolate_order;		/* minimum order isolated from buddy */
 };
 
 /*

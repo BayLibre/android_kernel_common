@@ -50,7 +50,8 @@ static inline void count_compact_events(enum vm_event_item item, long delta)
 #define pageblock_start_pfn(pfn)	block_start_pfn(pfn, pageblock_order)
 #define pageblock_end_pfn(pfn)		block_end_pfn(pfn, pageblock_order)
 
-static unsigned long release_freepages(struct list_head *freelist)
+static unsigned long release_freepages(struct list_head *freelist,
+					unsigned int order)
 {
 	struct page *page, *next;
 	unsigned long high_pfn = 0;
@@ -58,7 +59,7 @@ static unsigned long release_freepages(struct list_head *freelist)
 	list_for_each_entry_safe(page, next, freelist, lru) {
 		unsigned long pfn = page_to_pfn(page);
 		list_del(&page->lru);
-		__free_page(page);
+		__free_pages(page, order);
 		if (pfn > high_pfn)
 			high_pfn = pfn;
 	}
@@ -66,7 +67,7 @@ static unsigned long release_freepages(struct list_head *freelist)
 	return high_pfn;
 }
 
-static void split_map_pages(struct list_head *list)
+static void split_map_pages(struct list_head *list, unsigned int split_order)
 {
 	unsigned int i, order, nr_pages;
 	struct page *page, *next;
@@ -76,15 +77,16 @@ static void split_map_pages(struct list_head *list)
 		list_del(&page->lru);
 
 		order = page_private(page);
-		nr_pages = 1 << order;
+		VM_BUG_ON_PAGE(order < split_order, page);
+		nr_pages = 1 << (order - split_order);
 
 		post_alloc_hook(page, order, __GFP_MOVABLE);
-		if (order)
-			split_page_by_order(page, order, 0);
+		if (order > split_order)
+			split_page_by_order(page, order, split_order);
 
 		for (i = 0; i < nr_pages; i++) {
 			list_add(&page->lru, &tmp_list);
-			page++;
+			page += 1 << split_order;
 		}
 	}
 
@@ -528,8 +530,10 @@ static bool compact_unlock_should_abort(spinlock_t *lock,
 }
 
 /*
- * Isolate free pages onto a private freelist. If @strict is true, will abort
- * returning 0 on any invalid PFNs or non-free pages inside of the pageblock
+ * Isolate free pages onto a private freelist if order of page is greater
+ * or equal to cc->isolate_order. If @strict is true, will abort
+ * returning 0 on any invalid PFNs, pages with order lower than
+ * cc->isolate_order or non-free pages inside of the pageblock
  * (even though it may still end up isolating some pages).
  */
 static unsigned long isolate_freepages_block(struct compact_control *cc,
@@ -606,8 +610,19 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
 				goto isolate_fail;
 		}
 
-		/* Found a free page, will break it into order-0 pages */
+		/*
+		 * Found a free page. will isolate and possibly split the pag
+		 * into isolate_order sub pages if the page's order is greater
+		 * than or equal to the isolate_order. Otherwise, it will keep
+		 * going with further pages to isolate them unless strict is
+		 * true.
+		 */
 		order = page_order(page);
+		if (order < cc->isolate_order) {
+			blockpfn += (1UL << order) - 1;
+			cursor += (1UL << order) - 1;
+			goto isolate_fail;
+		}
 		isolated = __isolate_free_page(page, order);
 		if (!isolated)
 			break;
@@ -733,11 +748,11 @@ isolate_freepages_range(struct compact_control *cc,
 	}
 
 	/* __isolate_free_page() does not map the pages */
-	split_map_pages(&freelist);
+	split_map_pages(&freelist, cc->isolate_order);
 
 	if (pfn < end_pfn) {
 		/* Loop terminated early, cleanup. */
-		release_freepages(&freelist);
+		release_freepages(&freelist, cc->isolate_order);
 		return 0;
 	}
 
@@ -1539,7 +1554,7 @@ static void isolate_freepages(struct compact_control *cc)
 
 splitmap:
 	/* __isolate_free_page() does not map the pages */
-	split_map_pages(freelist);
+	split_map_pages(freelist, 0);
 }
 
 /*
@@ -2262,7 +2277,7 @@ out:
 	 * so we don't leave any returned pages behind in the next attempt.
 	 */
 	if (cc->nr_freepages > 0) {
-		unsigned long free_pfn = release_freepages(&cc->freepages);
+		unsigned long free_pfn = release_freepages(&cc->freepages, 0);
 
 		cc->nr_freepages = 0;
 		VM_BUG_ON(free_pfn == 0);
