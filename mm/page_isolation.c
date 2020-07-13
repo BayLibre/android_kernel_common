@@ -82,8 +82,6 @@ out:
 	}
 
 	spin_unlock_irqrestore(&zone->lock, flags);
-	if (!ret)
-		drain_all_pages(zone);
 	return ret;
 }
 
@@ -214,6 +212,8 @@ int start_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn,
 				undo_pfn = pfn;
 				goto undo;
 			}
+			if (!(flags & ALLOW_ISOLATE_FAILURE))
+				drain_all_pages(page_zone(page));
 			nr_isolate_pageblock++;
 		}
 	}
