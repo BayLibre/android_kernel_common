@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "79c19c5d_a5e78a77",
+        "filename": "android/gki_arm64_modules.order",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2020-07-13T20:06:41Z",
+      "side": 1,
+      "message": "do we need this to be fully qualified? Is it even possible to have same.ko twice?",
+      "revId": "85e6bf6122dd1d2b368f5c51e77e4f34eda5cb27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3feb198_12a1628e",
+        "filename": "build.config.gki.aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2020-07-13T20:06:41Z",
+      "side": 1,
+      "message": "As mentioned in the other change, I would rather see the definition here as\n\n  MODULE_LIST\u003dandroid/gki_arm64_modules.order\n\nAnd if I had a choice I would name it \"gki_arm64_modules\"",
+      "revId": "85e6bf6122dd1d2b368f5c51e77e4f34eda5cb27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
