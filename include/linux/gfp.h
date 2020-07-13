@@ -619,6 +619,10 @@ static inline bool pm_suspended_storage(void)
 /* The below functions must be run on a range from a single zone. */
 extern int alloc_contig_range(unsigned long start, unsigned long end,
 			      unsigned migratetype, gfp_t gfp_mask);
+extern int alloc_pages_bulk(unsigned long start, unsigned long end,
+			unsigned int migratetype, gfp_t gfp_mask,
+			unsigned int order, unsigned int nr_elem,
+			struct page **pages);
 #endif
 void free_contig_range(unsigned long pfn, unsigned int nr_pages);
 

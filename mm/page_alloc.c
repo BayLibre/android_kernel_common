@@ -8461,10 +8461,14 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
 }
 
 static int __alloc_contig_range(unsigned long start, unsigned long end,
-		       unsigned migratetype, gfp_t gfp_mask)
+		       unsigned int migratetype, gfp_t gfp_mask,
+		       unsigned int alloc_order,
+		       struct list_head *freepage_list)
 {
 	unsigned long outer_start, outer_end;
 	unsigned int order;
+	struct page *page, *page2;
+	unsigned long pfn;
 	int ret = 0;
 
 	struct compact_control cc = {
@@ -8475,6 +8479,7 @@ static int __alloc_contig_range(unsigned long start, unsigned long end,
 		.ignore_skip_hint = true,
 		.no_set_skip_hint = true,
 		.gfp_mask = current_gfp_context(gfp_mask),
+		.isolate_order = alloc_order,
 	};
 	INIT_LIST_HEAD(&cc.migratepages);
 
@@ -8576,17 +8581,42 @@ static int __alloc_contig_range(unsigned long start, unsigned long end,
 	}
 
 	/* Grab isolated pages from freelists. */
-	outer_end = isolate_freepages_range(&cc, outer_start, end);
+	outer_end = isolate_freepages_range(&cc, outer_start, end,
+					freepage_list);
 	if (!outer_end) {
 		ret = -EBUSY;
 		goto done;
 	}
 
 	/* Free head and tail (if any) */
-	if (start != outer_start)
-		free_contig_range(outer_start, start - outer_start);
-	if (end != outer_end)
-		free_contig_range(end, outer_end - end);
+	if (start != outer_start) {
+		if (alloc_order == 0)
+			free_contig_range(outer_start, start - outer_start);
+		else {
+			list_for_each_entry_safe(page, page2,
+						freepage_list, lru) {
+				pfn = page_to_pfn(page);
+				if (pfn >= start)
+					break;
+				list_del(&page->lru);
+				__free_pages(page, alloc_order);
+			}
+		}
+	}
+	if (end != outer_end) {
+		if (alloc_order == 0)
+			free_contig_range(end, outer_end - end);
+		else {
+			list_for_each_entry_safe_reverse(page, page2,
+						freepage_list, lru) {
+				pfn = page_to_pfn(page);
+				if ((pfn + (1 << alloc_order)) <= end)
+					break;
+				list_del(&page->lru);
+				__free_pages(page, alloc_order);
+			}
+		}
+	}
 
 done:
 	undo_isolate_page_range(pfn_max_align_down(start),
@@ -8621,8 +8651,61 @@ done:
 int alloc_contig_range(unsigned long start, unsigned long end,
 		       unsigned migratetype, gfp_t gfp_mask)
 {
-	return __alloc_contig_range(start, end, migratetype, gfp_mask);
+	LIST_HEAD(freepage_list);
+
+	return __alloc_contig_range(start, end, migratetype,
+			gfp_mask, 0, &freepage_list);
 }
+
+/**
+ * alloc_pages_bulk() -- tries to allocate high order pages
+ * by batch from given range [start, end)
+ * @start:	start PFN to allocate
+ * @end:	one-past-the-last PFN to allocate
+ * @migratetype:	migratetype of the underlaying pageblocks (either
+ *			#MIGRATE_MOVABLE or #MIGRATE_CMA).  All pageblocks
+ *			in range must have the same migratetype and it must
+ *			be either of the two.
+ * @gfp_mask:	GFP mask to use during compaction
+ * @order:	page order requested
+ * @nr_elem:    the number of high-order pages to allocate
+ * @pages:      page array pointer to store allocated pages (must
+ *              have space for at least nr_elem elements)
+ *
+ * The PFN range does not have to be pageblock or MAX_ORDER_NR_PAGES
+ * aligned.  The PFN range must belong to a single zone.
+ *
+ * Return: the number of pages allocated on success or negative error code.
+ * The allocated pages need to be free with __free_pages
+ */
+int alloc_pages_bulk(unsigned long start, unsigned long end,
+			unsigned int migratetype, gfp_t gfp_mask,
+			unsigned int order, unsigned int nr_elem,
+			struct page **pages)
+{
+	int ret;
+	struct page *page, *page2;
+	LIST_HEAD(freepage_list);
+
+	if (order >= MAX_ORDER)
+		return -EINVAL;
+
+	ret = __alloc_contig_range(start, end, migratetype,
+				gfp_mask, order, &freepage_list);
+	if (ret)
+		return ret;
+
+	/* keep pfn ordering */
+	list_for_each_entry_safe(page, page2, &freepage_list, lru) {
+		if (ret < nr_elem)
+			pages[ret++] = page;
+		else
+			__free_pages(page, order);
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL(alloc_pages_bulk);
 #endif /* CONFIG_CONTIG_ALLOC */
 
 void free_contig_range(unsigned long pfn, unsigned int nr_pages)
