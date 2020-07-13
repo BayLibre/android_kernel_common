@@ -79,6 +79,13 @@ static atomic_t ashmem_shrink_inflight = ATOMIC_INIT(0);
 static DECLARE_WAIT_QUEUE_HEAD(ashmem_shrink_wait);
 
 /*
+ * Protection against concurrent writes and cache shrinking.
+ *
+ * This is protected by ashmem_mutex.
+ */
+static unsigned long writes_in_progress;
+
+/*
  * long lru_count - The count of pages on our LRU list.
  *
  * This is protected by ashmem_mutex.
@@ -316,6 +323,37 @@ out_unlock:
 	return ret;
 }
 
+static ssize_t ashmem_write_iter(struct kiocb *iocb, struct iov_iter *from)
+{
+	struct ashmem_area *asma = iocb->ki_filp->private_data;
+	int ret = 0;
+
+	mutex_lock(&ashmem_mutex);
+
+	if (!asma->file) {
+		ret = -EBADF;
+		goto out_unlock;
+	}
+
+	/* ensure no areas are shruck before setting writes_in_progress */
+	wait_event(ashmem_shrink_wait, !atomic_read(&ashmem_shrink_inflight));
+	writes_in_progress++;
+	/*
+	 * asma and asma->file are used outside the lock here.  We assume
+	 * once asma->file is set it will never be changed, and will not
+	 * be destroyed until all references to the file are dropped and
+	 * ashmem_release is called.
+	 */
+	mutex_unlock(&ashmem_mutex);
+	ret = generic_file_write_iter(iocb, from);
+	mutex_lock(&ashmem_mutex);
+	writes_in_progress--;
+out_unlock:
+	mutex_unlock(&ashmem_mutex);
+	return ret;
+}
+
+
 static loff_t ashmem_llseek(struct file *file, loff_t offset, int origin)
 {
 	struct ashmem_area *asma = file->private_data;
@@ -480,6 +518,8 @@ ashmem_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 		loff_t end = (range->pgend + 1) * PAGE_SIZE;
 		struct file *f = range->asma->file;
 
+		if (writes_in_progress)
+			goto out_unlock;
 		get_file(f);
 		atomic_inc(&ashmem_shrink_inflight);
 		range->purged = ASHMEM_WAS_PURGED;
@@ -498,6 +538,7 @@ ashmem_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 		if (--sc->nr_to_scan <= 0)
 			break;
 	}
+out_unlock:
 	mutex_unlock(&ashmem_mutex);
 out:
 	return freed;
@@ -890,6 +931,7 @@ static const struct file_operations ashmem_fops = {
 	.open = ashmem_open,
 	.release = ashmem_release,
 	.read_iter = ashmem_read_iter,
+	.write_iter = ashmem_write_iter,
 	.llseek = ashmem_llseek,
 	.mmap = ashmem_mmap,
 	.unlocked_ioctl = ashmem_ioctl,
