@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7c0ee356_228f628b",
+        "filename": "android/gki_arm64_modules.order",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-07-14T08:40:24Z",
+      "side": 1,
+      "message": "I don\u0027t actually know if there is anything to prevent it. I wondered the same thing yesterday when I realized that we ignored the paths when copying modules from staging to dist. That does look a bit odd to me :/\n\nAnd for this particular file, it\u0027s the raw copy of the modules.order file, which I figured made sense to have in the source tree. This gets processed by build.sh when it is copied over to dist, and the paths are removed at this point (since this is where we also \u0027loose\u0027 the modules paths too).",
+      "parentUuid": "79c19c5d_a5e78a77",
+      "revId": "85e6bf6122dd1d2b368f5c51e77e4f34eda5cb27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d3feb198_12a1628e",
         "filename": "build.config.gki.aarch64",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-07-13T20:06:41Z",
       "side": 1,
       "message": "As mentioned in the other change, I would rather see the definition here as\n\n  MODULE_LIST\u003dandroid/gki_arm64_modules.order\n\nAnd if I had a choice I would name it \"gki_arm64_modules\"",
+      "revId": "85e6bf6122dd1d2b368f5c51e77e4f34eda5cb27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a621d74_52cc90bb",
+        "filename": "build.config.gki.aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-07-14T08:40:24Z",
+      "side": 1,
+      "message": "Right, so the problem here is, in the \u0027GKI build\u0027 case I want to generate the list of GKI modules. And in the \u0027vendor build\u0027 case, I want to use the list that was generated in the GKI build and pass it to extract_symbol. So, I\u0027m not against having a \u0027MODULE_LIST\u0027 option as you suggest, but we will still need to have a \u0027IS_GKI_BUILD\u0027 flag to make the difference between the two configurations. And the MODULE_LIST variable will always have to point at the GKI module list anyways, for both vendor _and_ gki builds. So, I ended up hardcoding it, and saving a bit of configuration for partners downstream, but I\u0027m open to suggestions.",
+      "parentUuid": "d3feb198_12a1628e",
       "revId": "85e6bf6122dd1d2b368f5c51e77e4f34eda5cb27",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
