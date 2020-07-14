@@ -104,6 +104,24 @@
       "revId": "23483f2054c1f9362c5c1eac72874efa20fdd49c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "620d82bc_5c5112d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2020-07-14T21:10:55Z",
+      "side": 1,
+      "message": "I understand now... thank you for explaining.\n\nThe call behavior you describe isn\u0027t actually intentional; it\u0027s a bug.  It didn\u0027t happen before s2idle was refactored in 4.14, and it still doesn\u0027t happen in deep suspend.\n\nThe original wakeup reason logging code made a silent assumption that _only_ one of two things could happen:\n* a suspend was successful, and only (the equivalent of) log_irq_wakeup_reason() would be called during resume\n* a suspend failed, and only log_suspend_abort_reason() would be called.\n\nBut when s2idle was refactored out of the main suspend flow in 4.14, that assumed behavior was no longer the case.  In 4.14 and 4.19, s2idle flow will explicitly call pm_wakeup_pending even after a successful suspend, and - most unfortunately - after doing some device resume work, which makes it extremely likely that pm_wakeup_pending() will find some sort of wake source activity and report it as an abort.  It looks like s2idle has been refactored yet again in 5.4, so I don\u0027t know what the behavior will be there.\n\nSo the bug is that the wakeup reason logging code should not assume that log_irq_wakeup_reason() and log_suspend_abort_reason() will never be called in the same resume operation.  Instead, it should ensure that it captures the first _kind_ of event that gets logged (not just the first call, because we want to allow multiple calls to log_irq_wakeup_reason and log_threaded_irq_wakeup_reason).\n\nRight now, there are binary flags for suspend_abort and abnormal_wake.  They are used to ensure that only the first abort or abnormal wake gets logged because 1) we only want the first one and 2) they use the same text buffer.  If that\u0027s modified to no longer use a binary flag but instead use some enumerated values (e.g. RESUME_NONE, RESUME_IRQ, RESUME_ABORT, RESUME_ABNORMAL), then each API function can check to see whether it should do anything based on that flag.  So\n* log_suspend_abort_reason - do nothing unless current value is RESUME_NONE, otherwise set to RESUME_ABORT\n* log_abnormal_wakeup_reason - do nothing unless current value is RESUME_NONE, otherwise set to RESUME_ABNORMAL\n* log_irq_wakeup_reason and log_threaded_irq_wakeup_reason - do nothing unless current value is _either_ RESUME_NONE or RESUME_IRQ, otherwise set it to RESUME_IRQ\n\nI haven\u0027t had a chance to try that, but I think it should work as desired.",
+      "parentUuid": "6063c8b0_1ea0bdcf",
+      "revId": "23483f2054c1f9362c5c1eac72874efa20fdd49c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
