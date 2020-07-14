@@ -51,6 +51,24 @@
       "revId": "07680ff06bf84ff83a764d43a19f437acb4f5c82",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3e50a325_2b2226f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1409360
+      },
+      "writtenOn": "2020-07-14T08:41:30Z",
+      "side": 1,
+      "message": "Hi Paul,\n\nI\u0027m sorry, but let me explain detail much more:\n\n1. Below code will result in build error with strict build option in ARM-32, of cause,you know the reason.\nfs/incfs/vfs.c:\nsb-\u003es_magic \u003d INCFS_MAGIC_NUMBER;\n\n2. About your patch, hmm, maybe it works normally, but I think we should do my best to avoid variable truncation, so I cannot get the reason why we need a 40-bit magic for Incfs until now...we really need it?\n\nAppreciate your time.",
+      "parentUuid": "9994ae10_8d1475b7",
+      "revId": "07680ff06bf84ff83a764d43a19f437acb4f5c82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
