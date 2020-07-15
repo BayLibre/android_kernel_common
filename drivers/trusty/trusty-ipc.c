@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Google, Inc.
+ * Copyright (C) 2020 Google, Inc.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -33,6 +33,8 @@
 #include <linux/trusty/trusty.h>
 #include <linux/trusty/trusty_ipc.h>
 
+#include <uapi/linux/trusty/ipc.h>
+
 #define MAX_DEVICES			4
 
 #define REPLY_TIMEOUT			5000
@@ -48,13 +50,6 @@
 #define TIPC_ANY_ADDR			0xFFFFFFFF
 
 #define TIPC_MIN_LOCAL_ADDR		1024
-
-#define TIPC_IOC_MAGIC			'r'
-#define TIPC_IOC_CONNECT		_IOW(TIPC_IOC_MAGIC, 0x80, char *)
-#if defined(CONFIG_COMPAT)
-#define TIPC_IOC_CONNECT_COMPAT		_IOW(TIPC_IOC_MAGIC, 0x80, \
-					     compat_uptr_t)
-#endif
 
 struct tipc_virtio_dev;
 
