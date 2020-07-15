@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "841f8f2d_ee816d3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-15T20:36:06Z",
+      "side": 1,
+      "message": "This looks like it should strengthen the sync flag. Does this patch solve the issue?\n\nHow does it behave if waker is CFS? The normal CFS sync behavior is that the wakee is put on the rq of the same cpu so when the waker yields, the wakee gets the CPU. I think this will also be the behavior with this patch if the waker is RT and the wakee is RT with the same or lower prio (where \"lower prio\" means a higher priority number).\n\nBut, if a CFS task wakes an RT task with this patch, the waker will be preempted and then will resume later (most likely for a very short duration), so it incurs a extra context switches. Should we consider suppressing sync for this case?\n\n",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ed2c2f7_09afa56b",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-15T20:36:06Z",
+      "side": 1,
+      "message": "bool?",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fe1bd8c_13318c5b",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1380,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-15T20:36:06Z",
+      "side": 1,
+      "message": "bool?",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f6f84f9_1cd28ad8",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-15T20:36:06Z",
+      "side": 1,
+      "message": "should sync be a bool?\n  bool sync \u003d !!(flags \u0026 WF_SYNC);",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
