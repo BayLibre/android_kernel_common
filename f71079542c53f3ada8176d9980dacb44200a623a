@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7ca210c1_58910061",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1688863
+      },
+      "writtenOn": "2020-07-15T20:47:42Z",
+      "side": 1,
+      "message": "With that in mind, I think it\u0027s fine to suppress sync in the \"CFS wakes RT\" case. Though, for my own knowledge, under what circumstances do we expected to see this? Are there any Android-specific paths leading to this behavior that I should be aware of?",
+      "parentUuid": "841f8f2d_ee816d3c",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ed2c2f7_09afa56b",
         "filename": "kernel/sched/rt.c",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6f6ea58_32f77df6",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 1688863
+      },
+      "writtenOn": "2020-07-15T20:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ed2c2f7_09afa56b",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "b2a3f561_9469b3b2",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1380,
+      "author": {
+        "id": 1688863
+      },
+      "writtenOn": "2020-07-15T20:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fe1bd8c_13318c5b",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5f6f84f9_1cd28ad8",
         "filename": "kernel/sched/rt.c",
         "patchSetId": 5
@@ -67,6 +121,24 @@
       "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da058b1f_f1bcf34c",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 1688863
+      },
+      "writtenOn": "2020-07-15T20:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f6f84f9_1cd28ad8",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
