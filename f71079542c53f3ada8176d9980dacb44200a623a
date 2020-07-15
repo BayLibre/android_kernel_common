@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "4e434b21_1e214f06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-15T20:59:44Z",
+      "side": 1,
+      "message": "The main Android use-case for sync is binder. So we get this case if the client is CFS and the server is RT (SCHED_FIFO). There are some HAL processes that use SCHED_FIFO (by setting the per-node min prio), so any time a CFS client interacts with those HALs we have this case. It might be that we don\u0027t care about the perf of those cases, but I\u0027m not sure.",
+      "parentUuid": "7ca210c1_58910061",
+      "revId": "f71079542c53f3ada8176d9980dacb44200a623a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ed2c2f7_09afa56b",
         "filename": "kernel/sched/rt.c",
         "patchSetId": 5
