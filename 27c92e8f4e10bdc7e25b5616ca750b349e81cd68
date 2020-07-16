@@ -46,6 +46,29 @@
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37ff6e45_01c138df",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1324603
+      },
+      "writtenOn": "2020-07-16T03:44:31Z",
+      "side": 1,
+      "message": "Does this mean we allow 2 rt tasks on this cpu? At the moment, there is one rt task sync waking up another rt task, which is not enqueued yet, so there could be another unrelated rt task on this cpu. After the sync callee is enqueued (the caller should be sleeping now), it has to compare its prio with that unrelated rt task. I\u0027m not sure if it is intended design, just want to share that in CFS, we check that \"cpu_rq(cpu)-\u003enr_running \u003d\u003d 1\" to make sure the callee could run immediately.",
+      "range": {
+        "startLine": 1371,
+        "startChar": 2,
+        "endLine": 1371,
+        "endChar": 27
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
