@@ -9,5 +9,7 @@
 void incfs_kill_sb(struct super_block *sb);
 struct dentry *incfs_mount_fs(struct file_system_type *type, int flags,
 			      const char *dev_name, void *data);
+int incfs_proc_init(void);
+void incfs_proc_cleanup(void);
 
 #endif
