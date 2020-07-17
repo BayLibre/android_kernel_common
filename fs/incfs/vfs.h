@@ -9,5 +9,16 @@
 void incfs_kill_sb(struct super_block *sb);
 struct dentry *incfs_mount_fs(struct file_system_type *type, int flags,
 			      const char *dev_name, void *data);
+#ifdef CONFIG_INCFS_STATS
+
+void incfs_debugfs_init(void);
+void incfs_debugfs_cleanup(void);
+
+#else
+
+#define incfs_debugfs_init(void) do {} while (0)
+#define incfs_debugfs_cleanup(void) do {} while (0)
+
+#endif
 
 #endif

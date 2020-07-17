@@ -16,3 +16,18 @@ config INCREMENTAL_FS
 
 	  To compile this file system support as a module, choose M here: the
 	  module will be called incrementalfs.
+
+config INCFS_STATS
+	bool "Gather statistical information on incremental file system"
+	depends on INCREMENTAL_FS
+	help
+	  This option causes statistical information to be gathered and
+	  exported through file:
+
+		/proc/fs/incfs/stats
+
+	  The gathering of statistics may add certain amount of overhead to
+	  execution due to use of atomic instructions and on a
+	  multi-CPU system these may be on cachelines that keep bouncing
+	  between CPUs.  On the other hand, the stats are very useful for
+	  debugging purposes.  Saying 'y' here is recommended.

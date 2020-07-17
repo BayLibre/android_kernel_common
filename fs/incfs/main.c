@@ -82,6 +82,8 @@ static int __init init_incfs_module(void)
 	if (err)
 		return err;
 
+	incfs_debugfs_init();
+
 	err = register_filesystem(&incfs_fs_type);
 	if (err)
 		cleanup_sysfs();
@@ -92,6 +94,7 @@ static int __init init_incfs_module(void)
 static void __exit cleanup_incfs_module(void)
 {
 	cleanup_sysfs();
+	incfs_debugfs_cleanup();
 	unregister_filesystem(&incfs_fs_type);
 }
 

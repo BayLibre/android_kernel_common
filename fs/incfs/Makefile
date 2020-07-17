@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
-obj-$(CONFIG_INCREMENTAL_FS)	+= incrementalfs.o
+
+obj-$(CONFIG_INCREMENTAL_FS)	:= incrementalfs.o
 
 incrementalfs-y := \
 	data_mgmt.o \
@@ -7,3 +8,5 @@ incrementalfs-y := \
 	integrity.o \
 	main.o \
 	vfs.o
+
+incrementalfs-$(CONFIG_INCFS_STATS) += incfs_debugfs.o stats.o

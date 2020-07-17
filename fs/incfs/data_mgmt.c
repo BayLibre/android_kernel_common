@@ -16,6 +16,7 @@
 #include "data_mgmt.h"
 #include "format.h"
 #include "integrity.h"
+#include "stats.h"
 
 static void log_wake_up_all(struct work_struct *work)
 {
@@ -34,6 +35,8 @@ struct mount_info *incfs_alloc_mount_info(struct super_block *sb,
 	mi = kzalloc(sizeof(*mi), GFP_NOFS);
 	if (!mi)
 		return ERR_PTR(-ENOMEM);
+
+	incfs_stat(&incfs_active_mounts);
 
 	mi->mi_sb = sb;
 	mi->mi_backing_dir_path = *backing_dir_path;
@@ -115,6 +118,7 @@ void incfs_free_mount_info(struct mount_info *mi)
 	kfree(mi->log_xattr);
 	kfree(mi->pending_read_xattr);
 	kfree(mi);
+	incfs_stat_d(&incfs_active_mounts);
 }
 
 static void data_file_segment_init(struct data_file_segment *segment)
@@ -829,10 +833,14 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 	if (df->df_blockmap_off <= 0)
 		return -ENODATA;
 
+	incfs_stat(&incfs_n_op_read_wait);
+
 	segment = get_file_segment(df, block_index);
 	error = mutex_lock_interruptible(&segment->blockmap_mutex);
-	if (error)
+	if (error) {
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return error;
+	}
 
 	/* Look up the given block */
 	error = get_data_file_block(df, block_index, &block);
@@ -842,12 +850,15 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		read = add_pending_read(df, block_index);
 
 	mutex_unlock(&segment->blockmap_mutex);
-	if (error)
+	if (error) {
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return error;
+	}
 
 	/* If the block was found, just return it. No need to wait. */
 	if (is_data_block_present(&block)) {
 		*res_block = block;
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return 0;
 	}
 
@@ -855,11 +866,14 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 
 	if (timeout_ms == 0) {
 		log_block_read(mi, &df->df_id, block_index);
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return -ETIME;
 	}
 
-	if (!read)
+	if (!read) {
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return -ENOMEM;
+	}
 
 	/* Wait for notifications about block's arrival */
 	wait_res =
@@ -874,6 +888,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 	if (wait_res == 0) {
 		/* Wait has timed out */
 		log_block_read(mi, &df->df_id, block_index);
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return -ETIME;
 	}
 	if (wait_res < 0) {
@@ -881,12 +896,15 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		 * Only ERESTARTSYS is really expected here when a signal
 		 * comes while we wait.
 		 */
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return wait_res;
 	}
 
 	error = mutex_lock_interruptible(&segment->blockmap_mutex);
-	if (error)
+	if (error) {
+		incfs_stat_d(&incfs_n_op_read_wait);
 		return error;
+	}
 
 	/*
 	 * Re-read block's info now, it has just arrived and
@@ -907,6 +925,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 	}
 
 	mutex_unlock(&segment->blockmap_mutex);
+	incfs_stat_d(&incfs_n_op_read_wait);
 	return error;
 }
 
@@ -944,6 +963,7 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 		if (result >= 0 && result != bytes_to_read)
 			result = -EIO;
 	} else {
+		incfs_stat64(&incfs_n_read_lz4);
 		bytes_to_read = min(tmp.len, block.db_stored_size);
 		result = incfs_kread(bf, tmp.data, bytes_to_read, pos);
 		if (result == bytes_to_read) {
