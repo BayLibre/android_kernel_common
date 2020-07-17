@@ -103,6 +103,24 @@
       "revId": "7ad691e8dde9ee0d69b2e899c6e23b921c6cacf9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "de1bfe33_9483df63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-17T21:10:24Z",
+      "side": 1,
+      "message": "Greg, these cpu isolation patches are not being submitted upstream because we already know they wouldn\u0027t be accepted in current form. QC needs this feature and it\u0027s a little too invasive for vendor hooks, so right now the goal is to review the full set and then decide how best to proceed. The -2 is fine since these (and the rest of the isolation patches that are coming soon) need discussion with us and with the ARM scheduler team. There is a side discussion going on about how to upstream this functionality, but it is useful to see the patches for that discussion.",
+      "parentUuid": "738b3046_343d0615",
+      "revId": "7ad691e8dde9ee0d69b2e899c6e23b921c6cacf9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
