@@ -69,6 +69,24 @@
       "revId": "07680ff06bf84ff83a764d43a19f437acb4f5c82",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04eb565d_8b8efac5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-07-17T14:47:30Z",
+      "side": 1,
+      "message": "Again, and I\u0027m being fussy, but can we fix this with a cast and/or conditional code at this point eg\n\nsb-\u003es_magic \u003d (long) INCFS_MAGIC_NUMBER;\n\nAgain, I think your idea (make it a 32-bit number) is right for future releases, but I don\u0027t want any changes to the current working version in R, and this will avoid changing the 63-bit implementation",
+      "parentUuid": "3e50a325_2b2226f2",
+      "revId": "07680ff06bf84ff83a764d43a19f437acb4f5c82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
