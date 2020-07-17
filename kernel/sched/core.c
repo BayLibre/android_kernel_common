@@ -6292,7 +6292,7 @@ void idle_task_exit(void)
  *
  * Also see the comment "Global load-average calculations".
  */
-static void calc_load_migrate(struct rq *rq)
+void calc_load_migrate(struct rq *rq)
 {
 	long delta = calc_load_fold_active(rq, 1);
 	if (delta)
@@ -6330,6 +6330,9 @@ static struct task_struct *__pick_migrate_task(struct rq *rq,
  * Called with rq->lock held even though we'er in stop_machine() and
  * there's no concurrency possible, we hold the required locks anyway
  * because of lock validation efforts.
+ *
+ * Migration of pinned tasks is false when the caller wishes
+ * to keep kthreads attached to the cpu.
  */
 void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf,
 		   bool migrate_pinned_kthreads)

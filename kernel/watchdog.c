@@ -440,7 +440,7 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
 	return HRTIMER_RESTART;
 }
 
-static void watchdog_enable(unsigned int cpu)
+void watchdog_enable(unsigned int cpu)
 {
 	struct hrtimer *hrtimer = this_cpu_ptr(&watchdog_hrtimer);
 	struct completion *done = this_cpu_ptr(&softlockup_completion);
@@ -466,7 +466,7 @@ static void watchdog_enable(unsigned int cpu)
 		watchdog_nmi_enable(cpu);
 }
 
-static void watchdog_disable(unsigned int cpu)
+void watchdog_disable(unsigned int cpu)
 {
 	struct hrtimer *hrtimer = this_cpu_ptr(&watchdog_hrtimer);
 
