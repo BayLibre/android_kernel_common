@@ -9921,7 +9921,13 @@ static DEFINE_SPINLOCK(balancing);
  */
 void update_max_interval(void)
 {
-	max_load_balance_interval = HZ*num_online_cpus()/10;
+	unsigned int available_cpus;
+	cpumask_t avail_mask;
+
+	cpumask_andnot(&avail_mask, cpu_online_mask, cpu_paused_mask);
+	available_cpus = cpumask_weight(&avail_mask);
+
+	max_load_balance_interval = HZ*available_cpus/10;
 }
 
 /*

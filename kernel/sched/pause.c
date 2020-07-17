@@ -1,0 +1,165 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
+ */
+#include <linux/irq.h>
+#include <linux/delay.h>
+#include <trace/events/sched.h>
+#include "sched.h"
+
+#ifdef CONFIG_HOTPLUG_CPU
+static int do_pause_work_cpu_stop(void *data)
+{
+	unsigned int cpu = smp_processor_id();
+	struct rq *rq = cpu_rq(cpu);
+	struct rq_flags rf;
+
+	local_irq_disable();
+
+	irq_migrate_all_off_this_cpu();
+
+	sched_ttwu_pending();
+
+	rq_lock(rq, &rf);
+
+	/*
+	 * Temporarily mark the rq as offline. This will allow us to
+	 * move tasks off the CPU.
+	 */
+	if (rq->rd) {
+		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
+		set_rq_offline(rq);
+	}
+
+	migrate_tasks(rq, &rf, false);
+
+	if (rq->rd)
+		set_rq_online(rq);
+	rq_unlock(rq, &rf);
+
+	local_irq_enable();
+	return 0;
+}
+
+static int do_unpause_work_cpu_stop(void *data)
+{
+	watchdog_enable(smp_processor_id());
+	return 0;
+}
+
+static unsigned int cpu_pause_vote[NR_CPUS];
+
+/*
+ * 1) CPU is paused and cpu is offlined:
+ *Unpause the core.
+ * 2) CPU is not paused and CPU is offlined:
+ *No action taken.
+ * 3) CPU is offline and request to pause
+ *Request ignored.
+ * 4) CPU is offline and paused:
+ *Not a possible state.
+ * 5) CPU is online and request to pause
+ *Normal case: Pause the CPU
+ * 6) CPU is not paused and comes back online
+ *Nothing to do
+ *
+ * Note: The client calling sched_pause_cpu() is repsonsible for ONLY
+ * calling sched_unpause_cpu() on a CPU that the client previously paused.
+ * Client is also responsible for unpausing when a core goes offline
+ * (after CPU is marked offline).
+ */
+int sched_pause_cpu(int cpu)
+{
+	struct rq *rq;
+	cpumask_t avail_cpus;
+	int ret_code = 0;
+
+	cpu_maps_update_begin();
+
+	cpumask_andnot(&avail_cpus, cpu_online_mask, cpu_paused_mask);
+
+	if (cpu < 0 || cpu >= nr_cpu_ids || cpu >= NR_CPUS || !cpu_possible(cpu) ||
+	    !cpu_online(cpu) || (cpumask_weight(&avail_cpus) == 1))  {
+		ret_code = -EINVAL;
+		goto out;
+	}
+
+	rq = cpu_rq(cpu);
+
+	if (++cpu_pause_vote[cpu] > 1)
+		goto out;
+
+	set_cpu_paused(cpu, true);
+	cpumask_clear_cpu(cpu, &avail_cpus);
+
+	/* Migrate timers */
+	smp_call_function_any(&avail_cpus, hrtimer_quiesce_cpu, &cpu, 1);
+	smp_call_function_any(&avail_cpus, timer_quiesce_cpu, &cpu, 1);
+
+	watchdog_disable(cpu);
+
+	/* migrate irqs and tasks via stopper thread*/
+	irq_lock_sparse();
+	stop_cpus(cpumask_of(cpu), do_pause_work_cpu_stop, 0);
+	irq_unlock_sparse();
+
+	calc_load_migrate(rq);
+	update_max_interval();
+
+out:
+	cpu_maps_update_done();
+	return ret_code;
+}
+EXPORT_SYMBOL(sched_pause_cpu);
+
+/*
+ * Note: The client calling sched_pause_cpu() is repsonsible for ONLY
+ * calling sched_unpause_cpu() on a CPU that the client previously paused.
+ * Client is also responsible for unpausing when a core goes offline
+ * (after CPU is marked offline).
+ */
+int sched_unpause_cpu_unlocked(int cpu)
+{
+	int ret_code = 0;
+
+	if (cpu < 0 || cpu >= nr_cpu_ids || !cpu_possible(cpu)) {
+		ret_code = -EINVAL;
+		goto out;
+	}
+
+	if (!cpu_pause_vote[cpu]) {
+		ret_code = -EINVAL;
+		goto out;
+	}
+
+	if (--cpu_pause_vote[cpu])
+		goto out;
+
+	set_cpu_paused(cpu, false);
+	update_max_interval();
+
+	if (cpu_online(cpu)) {
+		stop_cpus(cpumask_of(cpu), do_unpause_work_cpu_stop, 0);
+
+		/* Kick CPU to immediately do load balancing */
+		if (!atomic_fetch_or(NOHZ_KICK_MASK, nohz_flags(cpu)))
+			smp_send_reschedule(cpu);
+	}
+
+out:
+	return ret_code;
+}
+EXPORT_SYMBOL(sched_unpause_cpu_unlocked);
+
+int sched_unpause_cpu(int cpu)
+{
+	int ret_code;
+
+	cpu_maps_update_begin();
+	ret_code = sched_unpause_cpu_unlocked(cpu);
+	cpu_maps_update_done();
+	return ret_code;
+}
+EXPORT_SYMBOL(sched_unpause_cpu);
+
+#endif /* CONFIG_HOTPLUG_CPU */
