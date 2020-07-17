@@ -6,4 +6,5 @@ incrementalfs-y := \
 	format.o \
 	integrity.o \
 	main.o \
-	vfs.o
+	vfs.o \
+	incfs_debugfs.o

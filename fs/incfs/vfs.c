@@ -18,6 +18,7 @@
 
 #include <uapi/linux/incrementalfs.h>
 
+#include "stats.h"
 #include "vfs.h"
 #include "data_mgmt.h"
 #include "format.h"
@@ -803,8 +804,14 @@ static int read_single_page(struct file *f, struct page *page)
 	int block_index;
 	int timeout_ms;
 
-	if (!df)
+	incfs_n_read++;
+	atomic_inc(&incfs_n_op_read);
+
+	if (!df) {
+		incfs_n_read_err++;
+		atomic_dec(&incfs_n_op_read);
 		return -EBADF;
+	}
 
 	offset = page_offset(page);
 	block_index = offset / INCFS_DATA_FILE_BLOCK_SIZE;
@@ -833,14 +840,17 @@ static int read_single_page(struct file *f, struct page *page)
 	else if (read_result < PAGE_SIZE)
 		zero_user(page, read_result, PAGE_SIZE - read_result);
 
-	if (result == 0)
+	if (result == 0) {
 		SetPageUptodate(page);
-	else
+	} else {
+		incfs_n_read_err++;
 		SetPageError(page);
+	}
 
 	flush_dcache_page(page);
 	kunmap(page);
 	unlock_page(page);
+	atomic_dec(&incfs_n_op_read);
 	return result;
 }
 
@@ -1297,20 +1307,32 @@ static long ioctl_fill_blocks(struct file *f, void __user *arg)
 	ssize_t error = 0;
 	int i = 0;
 
-	if (!df)
+	incfs_n_write++;
+
+	if (!df) {
+		incfs_n_write_err++;
 		return -EBADF;
+	}
 
-	if ((uintptr_t)f->private_data != CAN_FILL)
+	if ((uintptr_t)f->private_data != CAN_FILL) {
+		incfs_n_write_err++;
 		return -EPERM;
+	}
 
-	if (copy_from_user(&fill_blocks, usr_fill_blocks, sizeof(fill_blocks)))
+	if (copy_from_user(&fill_blocks, usr_fill_blocks, sizeof(fill_blocks))) {
+		incfs_n_write_err++;
 		return -EFAULT;
+	}
 
 	usr_fill_block_array = u64_to_user_ptr(fill_blocks.fill_blocks);
 	data_buf = (u8 *)__get_free_pages(GFP_NOFS | __GFP_COMP,
 					  get_order(data_buf_size));
-	if (!data_buf)
+	if (!data_buf) {
+		incfs_n_write_err++;
 		return -ENOMEM;
+	}
+
+	atomic_inc(&incfs_n_op_write);
 
 	for (i = 0; i < fill_blocks.count; i++) {
 		struct incfs_fill_block fill_block = {};
@@ -1318,17 +1340,20 @@ static long ioctl_fill_blocks(struct file *f, void __user *arg)
 		if (copy_from_user(&fill_block, &usr_fill_block_array[i],
 				   sizeof(fill_block)) > 0) {
 			error = -EFAULT;
+			incfs_n_write_err++;
 			break;
 		}
 
 		if (fill_block.data_len > data_buf_size) {
 			error = -E2BIG;
+			incfs_n_write_err++;
 			break;
 		}
 
 		if (copy_from_user(data_buf, u64_to_user_ptr(fill_block.data),
 				   fill_block.data_len) > 0) {
 			error = -EFAULT;
+			incfs_n_write_err++;
 			break;
 		}
 		fill_block.data = 0; /* To make sure nobody uses it. */
@@ -1339,13 +1364,16 @@ static long ioctl_fill_blocks(struct file *f, void __user *arg)
 			error = incfs_process_new_data_block(df, &fill_block,
 							     data_buf);
 		}
-		if (error)
+		if (error) {
+			incfs_n_write_err++;
 			break;
+		}
 	}
 
 	if (data_buf)
 		free_pages((unsigned long)data_buf, get_order(data_buf_size));
 
+	atomic_dec(&incfs_n_op_write);
 	/*
 	 * Only report the error if no records were processed, otherwise
 	 * just return how many were processed successfully.
@@ -1467,11 +1495,16 @@ static long ioctl_get_filled_blocks(struct file *f, void __user *arg)
 	if (copy_from_user(&args, args_usr_ptr, sizeof(args)) > 0)
 		return -EINVAL;
 
+	atomic_inc(&incfs_n_op_read_blocks);
+
 	error = incfs_get_filled_blocks(df, &args);
 
-	if (copy_to_user(args_usr_ptr, &args, sizeof(args)))
+	if (copy_to_user(args_usr_ptr, &args, sizeof(args))) {
+		atomic_dec(&incfs_n_op_read_blocks);
 		return -EFAULT;
+	}
 
+	atomic_dec(&incfs_n_op_read_blocks);
 	return error;
 }
 
