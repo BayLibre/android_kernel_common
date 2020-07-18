@@ -777,13 +777,14 @@ static struct dentry *open_or_create_index_dir(struct dentry *backing_dir)
 
 	/* Index needs to be created. */
 	inode_lock_nested(backing_inode, I_MUTEX_PARENT);
-	err = vfs_mkdir(backing_inode, index_dentry, 0777);
+	err = vfs_mkdir(backing_inode, index_dentry, 0744);
 	inode_unlock(backing_inode);
 
 	if (err)
 		return ERR_PTR(err);
 
-	if (!d_really_is_positive(index_dentry)) {
+	if (!d_really_is_positive(index_dentry) ||
+		unlikely(d_unhashed(index_dentry))) {
 		dput(index_dentry);
 		return ERR_PTR(-EINVAL);
 	}
@@ -1637,7 +1638,8 @@ static int dir_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 	if (!err) {
 		struct inode *inode = NULL;
 
-		if (d_really_is_negative(backing_dentry)) {
+		if (d_really_is_negative(backing_dentry) ||
+			unlikely(d_unhashed(backing_dentry))) {
 			err = -EINVAL;
 			goto out;
 		}
