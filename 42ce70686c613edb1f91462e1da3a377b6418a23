@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "65fe42ab_7e45bad7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-07-20T17:35:29Z",
+      "side": 1,
+      "message": "Users cannot rename/remove when the incfs is mounted. We return -EBUSY.\n\nWhen incfs in unmounted, there is no way to catch the rename/remove file operations inside incfs driver to prevent it as the call passes directly through VFS and to the underlying filesystem.",
+      "parentUuid": "8dc62e24_2b6743cb",
+      "range": {
+        "startLine": 10,
+        "startChar": 18,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "42ce70686c613edb1f91462e1da3a377b6418a23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "943353f3_e0e0defe",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2020-07-20T16:34:26Z",
       "side": 1,
       "message": "Is this right? From https://elixir.bootlin.com/linux/v5.7.8/source/fs/overlayfs/dir.c#L130 (just an example) this isn\u0027t a failure, rather, it\u0027s a success but we need to look up the dentry.\n\n(But thanks for spotting this - obviously this does need fixed one way or another)",
+      "revId": "42ce70686c613edb1f91462e1da3a377b6418a23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9294153c_d59b1d4b",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-07-20T17:35:29Z",
+      "side": 1,
+      "message": "Yes, I did see the overlayfs example. I didn\u0027t do that because d_unhashed should be sufficient. Here is another example:\n\nhttps://elixir.bootlin.com/linux/v5.7.8/source/fs/cachefiles/namei.c#L564",
+      "parentUuid": "943353f3_e0e0defe",
       "revId": "42ce70686c613edb1f91462e1da3a377b6418a23",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
