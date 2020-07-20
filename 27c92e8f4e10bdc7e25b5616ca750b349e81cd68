@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "215a3d9b_655d2bb1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-07-20T16:26:13Z",
+      "side": 1,
+      "message": "Do you care if the CPU was big here? IOW is it a problem to wakeup a little cpu?",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a96a9b3_ce606d3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-07-20T16:26:13Z",
+      "side": 1,
+      "message": "It\u0027d be good to expand the commit message with more info about how to reproduce if possible. And if you collected any numbers including that will be great as a reference for the future.\n\nThe patch looks correct to me other than the worry about the behavior when the 2 RT tasks are equal in priority. It\u0027d be worth to verify this if you haven\u0027t already.\n\nAs an alternative, have you considered using affinity to restrict RT tasks to littles? From some profiling I\u0027ve done in the past, RT tasks are happy to run on little in general. I could be wrong, but is the energy impact significant for waking up an idle or sleeping little cpu?\n\nAndroid RT planning is one area it needs to do better at. It is an area of investigation for me currently on how we can do better. But for now, I think most RT tasks are statically created at boot, no? So if you have a late init script to affine tasks to littles, I think it\u0027s worth experimenting with. You might want to give RendererThread and Composer thread an exception to run anywhere.",
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ea17449_7f2c5a49",
         "filename": "kernel/sched/rt.c",
         "patchSetId": 6
@@ -49,6 +89,53 @@
     },
     {
       "key": {
+        "uuid": "9549c9c5_ba2c5ac5",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-07-20T16:26:13Z",
+      "side": 1,
+      "message": "Adding a comment about expected behavior for !RT tasks would be useful here IMHO.",
+      "parentUuid": "239ec8f7_450c1dd9",
+      "range": {
+        "startLine": 1369,
+        "startChar": 0,
+        "endLine": 1369,
+        "endChar": 47
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03a6c935_10966cf2",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1370,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-07-20T16:26:13Z",
+      "side": 1,
+      "message": "Have you tested this when the 2 RT tasks are the same priority? I think the current behavior of check_preempt_equal_prio() is okay. But worth double checking that it won\u0027t force a push for either the waker or the wakee.",
+      "range": {
+        "startLine": 1370,
+        "startChar": 2,
+        "endLine": 1370,
+        "endChar": 37
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "37ff6e45_01c138df",
         "filename": "kernel/sched/rt.c",
         "patchSetId": 6
@@ -60,6 +147,30 @@
       "writtenOn": "2020-07-16T03:44:31Z",
       "side": 1,
       "message": "Does this mean we allow 2 rt tasks on this cpu? At the moment, there is one rt task sync waking up another rt task, which is not enqueued yet, so there could be another unrelated rt task on this cpu. After the sync callee is enqueued (the caller should be sleeping now), it has to compare its prio with that unrelated rt task. I\u0027m not sure if it is intended design, just want to share that in CFS, we check that \"cpu_rq(cpu)-\u003enr_running \u003d\u003d 1\" to make sure the callee could run immediately.",
+      "range": {
+        "startLine": 1371,
+        "startChar": 2,
+        "endLine": 1371,
+        "endChar": 27
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "639a8436_17fffba8",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-07-20T16:26:13Z",
+      "side": 1,
+      "message": "should_honor_rt_sync() is called from select_task_rq_rt() and enqueue_task_rt(). In the former, checking for \u003d\u003d 1 could be useful because p is not enqueued yet. In the latter, the condition above is correct because now rt_nr_running takes into account the woken up RT task.\n\nIt depends on the intended use case, the current implementation could select this_cpu but then at enqueue find out that there are more than 2 RT task and add it to pushable tasks list. If we do check for \u003d\u003d 1 in select_task_rq_rt(), then we try to push the new task faster. But in both cases I\u0027d expect a push to be triggered.\n\nFrom my observation profiling RT tasks in Android, having a clash is quite rare. So the current implementation looks correct to me.",
+      "parentUuid": "37ff6e45_01c138df",
       "range": {
         "startLine": 1371,
         "startChar": 2,
