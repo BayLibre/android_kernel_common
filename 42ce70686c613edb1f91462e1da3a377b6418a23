@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "6b4591db_5b855e9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-07-20T21:16:42Z",
+      "side": 1,
+      "message": "The following check in dir_rename and dir_* other functions should prevent. I can re-test it.\n \n\tif (backing_old_dir_dentry \u003d\u003d mi-\u003emi_index_dir) {\n\t\t/* Direct moves from .index are not allowed. */\n\t\terror \u003d -EBUSY;\n\t\tgoto out;\n\t}",
+      "parentUuid": "883ed385_2b8b255c",
+      "range": {
+        "startLine": 10,
+        "startChar": 18,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "42ce70686c613edb1f91462e1da3a377b6418a23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "943353f3_e0e0defe",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 1
