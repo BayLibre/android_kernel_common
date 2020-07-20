@@ -105,6 +105,24 @@
       "revId": "07680ff06bf84ff83a764d43a19f437acb4f5c82",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae07c0b4_f3905eeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-07-20T21:24:45Z",
+      "side": 1,
+      "message": "So I just remembered that the magic number is also in the file header, so we cannot change it. It will actually be the full five bytes even on 32-bit systems. Now the superblock magic number is unrelated to the file header magic number except that they are both set from the same macro.\n\nAnyway what this means is that we need to do the cast I suggest above. Can you prepare such a change and test it, and I will happily +2 it?",
+      "parentUuid": "c681107e_4094fee3",
+      "revId": "07680ff06bf84ff83a764d43a19f437acb4f5c82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
