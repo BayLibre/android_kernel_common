@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9667ba3_c709aee8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-21T15:42:15Z",
+      "side": 1,
+      "message": "Please remove this extra line",
+      "revId": "5b57e6bffa414eb8f08353f19e1f0a21702236ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83809bad_c1a66c77",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2946,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-21T15:42:15Z",
+      "side": 1,
+      "message": "I\u0027d prefer names that describe the state of the transaction/thread rather than describing what your vendor code is going to do. Perhaps use \"trace_android_vh_set_priority()\" instead.\n\nAlso, I\u0027m not sure exactly what your tune does, but I suspect you want this hook before the binder_enqueue_thread_work_ilocked() to guarantee that it is run before the transaction is processed by the target (the thread can be awakened before L2954 by other events like a signal)\n\nIs there are reason this hook can\u0027t be in binder_transaction_priority instead?",
+      "revId": "5b57e6bffa414eb8f08353f19e1f0a21702236ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3106c5a7_b116f361",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3605,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-21T15:42:15Z",
+      "side": 1,
+      "message": "same comment as above regarding naming. Maybe trace_android_vh_binder_restore_priority?\n\nIs there a reason why the hook is here instead of in binder_restore_priority()? -- then there would be only 1 instance of the trace and you accomplish the same thing.",
+      "revId": "5b57e6bffa414eb8f08353f19e1f0a21702236ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
