@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "5560a679_2a8e66aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-07-21T06:23:29Z",
+      "side": 1,
+      "message": "Just re-tested it.. We need to check with backing_old_dentry.\n\nTested the following manually when incfs_perf is running:\n\n1: rm -rf .index\n2: mv .index .test\n3: mv .index ~/test\n4: ln .index .log\n\nAll fails with -EBUSY when mounted.",
+      "parentUuid": "6b4591db_5b855e9d",
+      "range": {
+        "startLine": 10,
+        "startChar": 18,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "42ce70686c613edb1f91462e1da3a377b6418a23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "943353f3_e0e0defe",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 1
