@@ -154,9 +154,12 @@ SECTIONS
 		KEEP(*(.altinstructions))
 		__alt_instructions_end = .;
 	}
+<<<<<<< HEAD   (d104a0 ANDROID: cuttlefish_defconfig: Drop built-in cmdline)
 	.altinstr_replacement : {
 		KEEP(*(.altinstr_replacement))
 	}
+=======
+>>>>>>> BRANCH (69b94d Linux 4.14.189)
 
 	. = ALIGN(PAGE_SIZE);
 	__inittext_end = .;
