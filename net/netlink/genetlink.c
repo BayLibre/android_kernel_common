@@ -961,6 +961,7 @@ static struct genl_family genl_ctrl __ro_after_init = {
 	.netnsok = true,
 };
 
+<<<<<<< HEAD   (95a98f UPSTREAM: media: v4l2-ctrl: Add H264 profile and levels)
 static int genl_bind(struct net *net, int group)
 {
 	struct genl_family *f;
@@ -1008,13 +1009,13 @@ static void genl_unbind(struct net *net, int group)
 	up_read(&cb_lock);
 }
 
+=======
+>>>>>>> BRANCH (20b3a3 Linux 4.19.134)
 static int __net_init genl_pernet_init(struct net *net)
 {
 	struct netlink_kernel_cfg cfg = {
 		.input		= genl_rcv,
 		.flags		= NL_CFG_F_NONROOT_RECV,
-		.bind		= genl_bind,
-		.unbind		= genl_unbind,
 	};
 
 	/* we'll bump the group number right afterwards */
