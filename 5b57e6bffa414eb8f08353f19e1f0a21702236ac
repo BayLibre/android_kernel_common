@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "426020f8_22a78291",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2946,
+      "author": {
+        "id": 1170883
+      },
+      "writtenOn": "2020-07-22T14:32:13Z",
+      "side": 1,
+      "message": "It\u0027s sound better about naming \"trace_android_vh_set_priority()\",\nI will update in patchset#2 with your recommendation.",
+      "parentUuid": "83809bad_c1a66c77",
+      "revId": "5b57e6bffa414eb8f08353f19e1f0a21702236ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3106c5a7_b116f361",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2020-07-21T15:42:15Z",
       "side": 1,
       "message": "same comment as above regarding naming. Maybe trace_android_vh_binder_restore_priority?\n\nIs there a reason why the hook is here instead of in binder_restore_priority()? -- then there would be only 1 instance of the trace and you accomplish the same thing.",
+      "revId": "5b57e6bffa414eb8f08353f19e1f0a21702236ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91c752b2_ad31477b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3605,
+      "author": {
+        "id": 1170883
+      },
+      "writtenOn": "2020-07-22T14:32:13Z",
+      "side": 1,
+      "message": "Also udpate in patchset#2.\n\nSince there is no binder_transaction in the parameter of \nbinder_restore_priority, it couldn\u0027t update vendor data \nif the hook is in the function.",
+      "parentUuid": "3106c5a7_b116f361",
       "revId": "5b57e6bffa414eb8f08353f19e1f0a21702236ac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
