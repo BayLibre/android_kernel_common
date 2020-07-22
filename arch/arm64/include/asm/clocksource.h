@@ -3,5 +3,13 @@
 #define _ASM_CLOCKSOURCE_H
 
 #include <asm/vdso/clocksource.h>
+<<<<<<< HEAD   (e6cae5 ANDROID: GKI: Update ABI since moving zram to vendor fragmen)
+=======
+
+struct arch_clocksource_data {
+	/* Usable for direct VDSO access? */
+	enum vdso_arch_clockmode clock_mode;
+};
+>>>>>>> BRANCH (d811d2 Linux 5.4.53)
 
 #endif
