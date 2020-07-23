@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "778ae34f_9077ddc6",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-07-23T20:46:28Z",
+      "side": 1,
+      "message": "this can become an issue if a non-owner calls a create_file ioctl and is denied because it can\u0027t change the .index contents",
+      "range": {
+        "startLine": 780,
+        "startChar": 46,
+        "endLine": 780,
+        "endChar": 50
+      },
+      "revId": "326fc7f5adc57e03bb0b65b9e92e1732ebe739dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3c834a37_80f3c00b",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 2
