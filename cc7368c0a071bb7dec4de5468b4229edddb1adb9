@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fcf7e6bb_a79c2501",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-07-23T03:59:44Z",
+      "side": 1,
+      "message": "Need to #include \u003clinux/vendor.h\u003e\n\nbuild errors:\nfatal: this operation must be run in a work tree\n/buildbot/src/android/common-android-mainline/common/drivers/android/binder.c:620:2: error: type name requires a specifier or qualifier\n        ANDROID_VENDOR_DATA(1);\n        ^\n/buildbot/src/android/common-android-mainline/common/drivers/android/binder.c:620:22: error: expected parameter declarator\n        ANDROID_VENDOR_DATA(1);\n                            ^\n/buildbot/src/android/common-android-mainline/common/drivers/android/binder.c:620:22: error: expected \u0027)\u0027\n/buildbot/src/android/common-android-mainline/common/drivers/android/binder.c:620:21: note: to match this \u0027(\u0027\n        ANDROID_VENDOR_DATA(1);\n                           ^\n/buildbot/src/android/common-android-mainline/common/drivers/android/binder.c:620:21: error: this function declaration is not a prototype [-Werror,-Wstrict-prototypes]\n        ANDROID_VENDOR_DATA(1);\n                           ^\n                             void\n4 errors generated.",
+      "revId": "cc7368c0a071bb7dec4de5468b4229edddb1adb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
