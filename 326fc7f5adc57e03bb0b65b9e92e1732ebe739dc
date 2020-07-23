@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c834a37_80f3c00b",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1854,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-07-23T18:57:02Z",
+      "side": 1,
+      "message": "By changing this you fix the bug and you can no longer rename .index, but now it is possible to rename files inside the .index directory.\n\nSo we need both conditions. We also need a test for both of these issues",
+      "range": {
+        "startLine": 1854,
+        "startChar": 28,
+        "endLine": 1854,
+        "endChar": 66
+      },
+      "revId": "326fc7f5adc57e03bb0b65b9e92e1732ebe739dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
