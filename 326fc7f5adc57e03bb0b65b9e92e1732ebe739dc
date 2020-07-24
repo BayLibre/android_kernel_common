@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e696f747_aa4dcbb2",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-07-24T07:57:17Z",
+      "side": 1,
+      "message": "I see.. So mount can be done by the admin thread which should have root privileges as .index is created as part of mount; and then create_file can be invoked through a separate process other than admin threads and work on these mount points ? Is that the use case ?",
+      "parentUuid": "778ae34f_9077ddc6",
+      "range": {
+        "startLine": 780,
+        "startChar": 46,
+        "endLine": 780,
+        "endChar": 50
+      },
+      "revId": "326fc7f5adc57e03bb0b65b9e92e1732ebe739dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3c834a37_80f3c00b",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 2
