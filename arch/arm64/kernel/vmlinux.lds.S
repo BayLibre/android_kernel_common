@@ -154,9 +154,12 @@ SECTIONS
 		KEEP(*(.altinstructions))
 		__alt_instructions_end = .;
 	}
+<<<<<<< HEAD   (83018b UPSTREAM: perf/core: Fix crash when using HW tracing kernel )
 	.altinstr_replacement : {
 		KEEP(*(.altinstr_replacement))
 	}
+=======
+>>>>>>> BRANCH (69b94d Linux 4.14.189)
 
 	. = ALIGN(PAGE_SIZE);
 	__inittext_end = .;
