@@ -2124,6 +2124,7 @@
       <elf-symbol name='mempool_kmalloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd35a6d31'/>
       <elf-symbol name='memremap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4d924f20'/>
       <elf-symbol name='memset' type='func-type' binding='weak-binding' visibility='default-visibility' is-defined='yes' crc='0xdcb764ad'/>
+      <elf-symbol name='memset64' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xed8a2d95'/>
       <elf-symbol name='memunmap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9e9fdd9d'/>
       <elf-symbol name='memweight' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3fe2ccbe'/>
       <elf-symbol name='mfd_add_devices' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x41865c6c'/>
@@ -101700,6 +101701,12 @@
         <parameter type-id='b59d7dce' name='n' filepath='lib/string.c' line='714' column='1'/>
         <parameter type-id='80f4b756' name='str' filepath='lib/string.c' line='714' column='1'/>
         <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='memset64' mangled-name='memset64' filepath='lib/string.c' line='806' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='memset64'>
+        <parameter type-id='5d6479ae' name='s' filepath='lib/string.c' line='806' column='1'/>
+        <parameter type-id='9c313c2d' name='v' filepath='lib/string.c' line='806' column='1'/>
+        <parameter type-id='b59d7dce' name='count' filepath='lib/string.c' line='806' column='1'/>
+        <return type-id='eaa32e2f'/>
       </function-decl>
       <function-decl name='bcmp' mangled-name='bcmp' filepath='lib/string.c' line='905' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='bcmp'>
         <parameter type-id='eaa32e2f' name='a' filepath='lib/string.c' line='905' column='1'/>
