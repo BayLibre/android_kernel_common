@@ -1,11 +1,15 @@
 [abi_whitelist]
 # commonly used symbols
+  add_timer
   add_wait_queue
   __alloc_disk_node
   alloc_etherdev_mqs
   __alloc_pages_nodemask
   __alloc_skb
   alloc_workqueue
+  __arch_copy_from_user
+  __arch_copy_to_user
+  arm64_const_caps_ready
   bcmp
   bio_alloc_bioset
   blk_cleanup_queue
@@ -16,9 +20,12 @@
   blk_queue_max_discard_sectors
   blk_queue_max_write_zeroes_sectors
   blk_queue_physical_block_size
+  bpf_trace_run1
   bpf_trace_run2
+  bpf_trace_run3
   __break_lease
   call_rcu
+  cancel_delayed_work
   cancel_delayed_work_sync
   capable
   cfg80211_inform_bss_data
@@ -31,12 +38,12 @@
   complete
   __const_udelay
   consume_skb
-  _copy_from_user
-  _copy_to_user
   __cpuhp_remove_state
   __cpuhp_setup_state
   __cpuhp_state_add_instance
   __cpuhp_state_remove_instance
+  cpu_hwcap_keys
+  cpu_hwcaps
   cpumask_next
   cpu_number
   __cpu_online_mask
@@ -46,12 +53,15 @@
   crypto_register_scomp
   crypto_unregister_alg
   crypto_unregister_scomp
-  current_task
   d_drop
   deactivate_locked_super
-  debug_smp_processor_id
+  debugfs_create_dir
+  debugfs_create_file
+  debugfs_remove_recursive
   delayed_work_timer_fn
   del_gendisk
+  del_timer
+  del_timer_sync
   dentry_open
   destroy_workqueue
   _dev_err
@@ -60,11 +70,14 @@
   device_unregister
   _dev_info
   __dev_kfree_skb_any
+  devm_add_action
   devm_kmalloc
   dev_queue_xmit
   dev_set_name
   _dev_warn
   dget_parent
+  dma_alloc_attrs
+  dma_free_attrs
   d_make_root
   dma_set_coherent_mask
   dma_set_mask
@@ -75,9 +88,10 @@
   ethtool_op_get_link
   eth_validate_addr
   event_triggers_call
-  ex_handler_refcount
   fd_install
+  find_next_bit
   finish_wait
+  flush_dcache_page
   flush_delayed_work
   flush_work
   fput
@@ -107,12 +121,6 @@
   init_wait_entry
   __init_waitqueue_head
   inode_init_once
-  ioread16
-  ioread32
-  ioread8
-  iowrite16
-  iowrite32
-  iowrite8
   iput
   iterate_dir
   jiffies
@@ -175,7 +183,6 @@
   nr_cpu_ids
   __num_online_cpus
   pagecache_get_page
-  page_offset_base
   param_ops_bool
   param_ops_charp
   param_ops_int
@@ -183,10 +190,13 @@
   passthru_features_check
   path_get
   path_put
+  pci_alloc_irq_vectors_affinity
   pci_disable_device
   pci_enable_device
+  pci_free_irq_vectors
   pci_iomap
-  pci_iounmap
+  pci_irq_vector
+  pci_read_config_byte
   pci_read_config_dword
   __pci_register_driver
   pci_request_region
@@ -195,7 +205,6 @@
   __per_cpu_offset
   perf_trace_buf_alloc
   perf_trace_run_bpf_submit
-  phys_base
   platform_device_add
   platform_device_alloc
   platform_device_del
@@ -203,11 +212,10 @@
   platform_device_unregister
   __platform_driver_register
   platform_driver_unregister
-  __preempt_count
-  preempt_count_add
-  preempt_count_sub
-  ___preempt_schedule
-  ___preempt_schedule_notrace
+  pm_runtime_allow
+  pm_runtime_forbid
+  preempt_schedule
+  preempt_schedule_notrace
   prepare_to_wait_event
   printk
   __put_cred
@@ -218,6 +226,10 @@
   put_unused_fd
   queue_delayed_work_on
   queue_work_on
+  radix_tree_delete
+  radix_tree_insert
+  radix_tree_lookup
+  ___ratelimit
   _raw_spin_lock
   _raw_spin_lock_bh
   _raw_spin_lock_irq
@@ -228,6 +240,8 @@
   _raw_spin_unlock_irqrestore
   __rcu_read_lock
   __rcu_read_unlock
+  refcount_dec_and_test_checked
+  refcount_inc_checked
   register_blkdev
   register_filesystem
   register_netdev
@@ -252,6 +266,9 @@
   set_nlink
   sg_init_one
   sg_init_table
+  sg_next
+  single_open
+  single_release
   skb_clone
   skb_put
   sk_free
@@ -259,8 +276,8 @@
   snd_pcm_alt_chmaps
   snprintf
   sprintf
-  sscanf
   __stack_chk_fail
+  __stack_chk_guard
   strcmp
   strcpy
   strlcpy
@@ -300,6 +317,18 @@
   unregister_virtio_driver
   up_read
   up_write
+  usb_add_hcd
+  usb_create_shared_hcd
+  usb_disabled
+  usb_hcd_check_unlink_urb
+  usb_hcd_giveback_urb
+  usb_hcd_is_primary_hcd
+  usb_hcd_link_urb_to_ep
+  usb_hcd_poll_rh_status
+  usb_hcd_resume_root_hub
+  usb_hcd_unlink_urb_from_ep
+  usb_put_hcd
+  usb_remove_hcd
   usleep_range
   vfree
   vfs_getattr
@@ -321,7 +350,7 @@
   virtqueue_kick
   virtqueue_kick_prepare
   virtqueue_notify
-  vmemmap_base
+  vmemmap
   vring_create_virtqueue
   vring_del_virtqueue
   vring_interrupt
@@ -331,7 +360,6 @@
   __wake_up
   __warn_printk
   woken_wake_function
-  __x86_indirect_thunk_r11
 
 # required by ac97_bus.ko
   bus_register
@@ -351,35 +379,21 @@
   sg_miter_start
   sg_miter_stop
   usb_add_gadget_udc
-  usb_add_hcd
   usb_create_hcd
-  usb_create_shared_hcd
   usb_del_gadget_udc
-  usb_disabled
   usb_ep_set_maxpacket_limit
   usb_gadget_giveback_request
   usb_gadget_udc_reset
   usb_get_dev
-  usb_hcd_check_unlink_urb
-  usb_hcd_giveback_urb
-  usb_hcd_is_primary_hcd
-  usb_hcd_link_urb_to_ep
-  usb_hcd_poll_rh_status
-  usb_hcd_resume_root_hub
-  usb_hcd_unlink_urb_from_ep
   usb_put_dev
-  usb_put_hcd
-  usb_remove_hcd
 
 # required by erofs.ko
   add_to_page_cache_lru
   bio_add_page
+  bio_associate_blkg
   bio_put
   bit_wait
-  bpf_trace_run1
-  bpf_trace_run3
   bpf_trace_run4
-  __default_kernel_pte_mask
   fs_ftype_to_dtype
   generic_block_bmap
   generic_fillattr
@@ -387,6 +401,7 @@
   iget_failed
   inode_nohighmem
   kill_block_super
+  kimage_vaddr
   LZ4_decompress_safe_partial
   match_strdup
   mount_bdev
@@ -398,10 +413,7 @@
   posix_acl_from_xattr
   print_hex_dump
   put_pages_list
-  radix_tree_delete
   radix_tree_gang_lookup
-  radix_tree_insert
-  radix_tree_lookup
   radix_tree_preload
   rcu_barrier
   read_cache_page
@@ -495,6 +507,7 @@
 
 # required by nd_virtio.ko
   bio_chain
+  bio_clone_blkg_association
 
 # required by net_failover.ko
   call_netdevice_notifiers
@@ -514,8 +527,6 @@
   pci_bus_type
 
 # required by rtc-test.ko
-  add_timer
-  del_timer
   device_init_wakeup
   devm_rtc_allocate_device
   ktime_get_real_seconds
@@ -557,7 +568,6 @@
   notify_change2
   override_creds
   prepare_creds
-  ___ratelimit
   revert_creds
   setattr_prepare
   set_fs_pwd
@@ -630,19 +640,12 @@
   vmalloc
 
 # required by tpm.ko
-  acpi_check_dsm
-  acpi_evaluate_dsm
-  acpi_get_table
-  acpi_os_map_iomem
-  acpi_os_unmap_iomem
   alloc_chrdev_region
   cdev_device_add
   cdev_device_del
   cdev_init
   __compat_only_sysfs_link_entry_to_kobj
-  del_timer_sync
   device_initialize
-  devm_add_action
   efi
   efi_tpm_final_log_size
   hash_digest_size
@@ -652,12 +655,12 @@
   jiffies_to_usecs
   krealloc
   memchr_inv
-  memcpy_fromio
   memremap
   memunmap
   of_find_property
   of_get_property
   of_property_match_string
+  physvirt_offset
   securityfs_create_dir
   securityfs_create_file
   securityfs_remove
@@ -707,7 +710,6 @@
   dma_fence_release
   dma_fence_signal_locked
   dma_fence_wait_timeout
-  dma_ops
   dma_resv_add_excl_fence
   drm_add_edid_modes
   drm_add_modes_noedid
@@ -791,7 +793,6 @@
   memdup_user
   __sg_alloc_table_from_pages
   sg_free_table
-  sg_next
   sync_file_create
   sync_file_get_fence
   __tracepoint_dma_fence_emit
@@ -817,7 +818,6 @@
   ttm_eu_fence_buffer_objects
   ttm_eu_reserve_buffers
   ttm_tt_init
-  vga_remove_vgacon
   ww_mutex_lock_interruptible
   ww_mutex_unlock
 
@@ -858,14 +858,9 @@
   cdev_add
   cdev_alloc
   cdev_del
-  debugfs_create_dir
-  debugfs_create_file
   debugfs_remove
-  debugfs_remove_recursive
   device_create
   device_destroy
-  dma_alloc_attrs
-  dma_free_attrs
   fasync_helper
   freezing_slow_path
   hvc_alloc
@@ -880,8 +875,6 @@
   pipe_unlock
   __refrigerator
   __register_chrdev
-  single_open
-  single_release
   __splice_from_pipe
   system_freezing_cnt
   __unregister_chrdev
@@ -905,6 +898,7 @@
   platform_device_register_full
   platform_get_irq
   platform_get_resource
+  sscanf
 
 # required by virtio_net.ko
   arch_bpf_jit_check_func
@@ -921,7 +915,6 @@
   eth_prepare_mac_addr_change
   ethtool_op_get_ts_info
   eth_type_trans
-  find_first_bit
   flow_keys_basic_dissector
   __napi_alloc_skb
   napi_complete_done
@@ -952,7 +945,6 @@
   skb_to_sgvec
   skb_tstamp_tx
   softnet_data
-  __this_cpu_preempt_check
   __tracepoint_xdp_exception
   virtqueue_add_inbuf_ctx
   virtqueue_enable_cb_delayed
@@ -970,15 +962,11 @@
 
 # required by virtio_pci.ko
   irq_set_affinity_hint
-  pci_alloc_irq_vectors_affinity
   pci_find_capability
   pci_find_ext_capability
   pci_find_next_capability
-  pci_free_irq_vectors
   pci_iomap_range
   pci_irq_get_affinity
-  pci_irq_vector
-  pci_read_config_byte
   pci_release_region
   pci_release_selected_regions
   pci_request_selected_regions
@@ -1012,18 +1000,15 @@
 # required by vmw_vsock_virtio_transport_common.ko
   bpf_trace_run10
   bpf_trace_run8
-  cancel_delayed_work
   _copy_from_iter_full
   _copy_to_iter
 
 # required by vsock.ko
   autoremove_wake_function
-  __get_user_4
   prandom_u32
   prepare_to_wait
   proto_register
   proto_unregister
-  __put_user_4
   _raw_write_lock_bh
   _raw_write_unlock_bh
   security_sock_graft
@@ -1050,6 +1035,53 @@
   sock_diag_unregister
   sock_i_ino
 
+# required by xhci-hcd.ko
+  complete_all
+  debugfs_create_regset32
+  dev_driver_string
+  dma_direct_map_page
+  dma_direct_unmap_page
+  dma_pool_alloc
+  dma_pool_create
+  dma_pool_destroy
+  dma_pool_free
+  mod_delayed_work_on
+  param_ops_ullong
+  platform_device_add_properties
+  platform_device_add_resources
+  radix_tree_maybe_preload
+  sg_pcopy_from_buffer
+  sg_pcopy_to_buffer
+  __sw_hweight32
+  usb_amd_dev_put
+  usb_amd_pt_check_port
+  usb_amd_quirk_pll_disable
+  usb_amd_quirk_pll_enable
+  usb_asmedia_modifyflowcontrol
+  usb_debug_root
+  usb_disable_xhci_ports
+  usb_hcd_end_port_resume
+  usb_hc_died
+  usb_hcd_irq
+  usb_hcd_map_urb_for_dma
+  usb_hcd_start_port_resume
+  usb_hub_clear_tt_buffer
+  usb_root_hub_lost_power
+  usb_wakeup_notification
+  vsnprintf
+  wait_for_completion_timeout
+
+# required by xhci-pci.ko
+  pci_d3cold_disable
+  pci_set_mwi
+  pci_set_power_state
+  usb_amd_quirk_pll_check
+  usb_enable_intel_xhci_ports
+  usb_hcd_pci_pm_ops
+  usb_hcd_pci_probe
+  usb_hcd_pci_remove
+  usb_hcd_pci_shutdown
+
 # required by zram.ko
   __alloc_percpu
   bdget_disk
@@ -1070,6 +1102,7 @@
   idr_for_each
   kstrtoint
   kstrtou16
+  memset64
   page_endio
   sysfs_streq
   vzalloc
