@@ -22,6 +22,30 @@
       "revId": "baf53b36d23821813e12970e551a8911ee0df2f1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eeaa9b46_d9dd4c8d",
+        "filename": "drivers/staging/android/ion/heaps/ion_system_heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2020-07-27T20:33:12Z",
+      "side": 1,
+      "message": "Thank you for bringing up for_each_sgtable_sg. I didn\u0027t know that that macro exists!\nIt has been introduced by commit 709d6d73c756 (\"scatterlist: add generic wrappers for iterating over sgtable objects\") in Linux 5.8.\nDo you think we should backport that change to 5.4 to get access to that macro?",
+      "parentUuid": "abe7b105_02ef7514",
+      "range": {
+        "startLine": 170,
+        "startChar": 1,
+        "endLine": 170,
+        "endChar": 50
+      },
+      "revId": "baf53b36d23821813e12970e551a8911ee0df2f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
