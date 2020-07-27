@@ -16,6 +16,24 @@
       "revId": "20f45b2193e24b075d0e40f087d296506ba74fc9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "49657839_b74f3d15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1735014
+      },
+      "writtenOn": "2020-07-27T15:45:52Z",
+      "side": 1,
+      "message": "It was: https://android-review.googlesource.com/c/kernel/common/+/1371863\nBut this change has not gotten much traction upstream over the last 2 weeks. \n\nInternal test team discovered this on KASAN build via SyzKaller which triggered the error:\n     BUG: KASAN: use-after-free in drm_gem_open_ioctl+0x144/0x1c0\n\nThey have marked this as a critical security issue and we are therefore under tight scrutiny to get this fix merged ASAP. ACK change should be replaced with upstream version once it merges.",
+      "parentUuid": "004bb854_6e644a74",
+      "revId": "20f45b2193e24b075d0e40f087d296506ba74fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
