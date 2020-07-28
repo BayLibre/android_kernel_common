@@ -33,6 +33,42 @@
       "revId": "67da11ccc2f1b8c32d22a7992adf9223e4cfac10",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "022819ec_f5a96f8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2020-07-28T06:52:28Z",
+      "side": 1,
+      "message": "It is requested from one of our vendor preferrence EAS optimization.\nI described it further more info in bug comments.",
+      "parentUuid": "dbdd2d61_d8da1c93",
+      "revId": "67da11ccc2f1b8c32d22a7992adf9223e4cfac10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aac11483_1b4d56b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2020-07-28T06:52:28Z",
+      "side": 1,
+      "message": "Unisoc arm32 products share the same kernel with GKI 5.4.\nI prefer a pointer type of vendor data for it instead of a fixed u64 type.\nCould I add ANDROID_VENDOR_POINTER() for it?",
+      "parentUuid": "6eb5b23c_822c9d7b",
+      "revId": "67da11ccc2f1b8c32d22a7992adf9223e4cfac10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
