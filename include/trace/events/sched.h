@@ -601,6 +601,42 @@ TRACE_EVENT(sched_wake_idle_without_ipi,
 );
 
 /*
+ * sched_pause - called when cores are paused/unpaused
+ *
+ * @acutal_mask: mask of cores actually paused/unpaused
+ * @req_mask: mask of cores requested paused/unpaused
+ * @online_mask: cpu online mask
+ * @time: amount of time in us it took to pause/unpause
+ * @pause: 1 if pausing, 0 if unpausing
+ *
+ */
+TRACE_EVENT(sched_pause,
+
+	TP_PROTO(unsigned int requested_cpu, unsigned int paused_cpus,
+		     u64 start_time, unsigned char pause),
+
+	TP_ARGS(requested_cpu, paused_cpus, start_time, pause),
+
+	TP_STRUCT__entry(
+		__field(u32, requested_cpu)
+		__field(u32, paused_cpus)
+		__field(u32, time)
+		__field(unsigned char, pause)
+	),
+
+	TP_fast_assign(
+		__entry->requested_cpu = requested_cpu;
+		__entry->paused_cpus = paused_cpus;
+		__entry->time = div64_u64(sched_clock() - start_time, 1000);
+		__entry->pause = pause;
+	),
+
+	TP_printk("pause cpu=%u cpus=0x%x time=%u us paused=%d",
+			__entry->requested_cpu, __entry->paused_cpus,
+			__entry->time, __entry->pause)
+);
+
+/*
  * Following tracepoints are not exported in tracefs and provide hooking
  * mechanisms only for testing and debugging purposes.
  *
