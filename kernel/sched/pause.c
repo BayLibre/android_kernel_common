@@ -73,6 +73,10 @@ int sched_pause_cpu(int cpu)
 {
 	cpumask_t avail_cpus;
 	int ret_code = 0;
+	u64 start_time = 0;
+
+	if (trace_sched_pause_enabled())
+		start_time = sched_clock();
 
 	cpu_maps_update_begin();
 
@@ -106,6 +110,8 @@ int sched_pause_cpu(int cpu)
 
 out:
 	cpu_maps_update_done();
+	trace_sched_pause(cpu, cpumask_bits(cpu_isolated_mask)[0],
+			  start_time, 1);
 	return ret_code;
 }
 EXPORT_SYMBOL(sched_pause_cpu);
@@ -119,11 +125,15 @@ EXPORT_SYMBOL(sched_pause_cpu);
 int sched_unpause_cpu_unlocked(int cpu)
 {
 	int ret_code = 0;
+	u64 start_time = 0;
 
 	if (cpu < 0 || cpu >= nr_cpu_ids || !cpu_possible(cpu)) {
 		ret_code = -EINVAL;
 		goto out;
 	}
+
+	if (trace_sched_pause_enabled())
+		start_time = sched_clock();
 
 	if (!cpu_pause_vote[cpu]) {
 		ret_code = -EINVAL;
@@ -145,6 +155,8 @@ int sched_unpause_cpu_unlocked(int cpu)
 	}
 
 out:
+	trace_sched_pause(cpu, cpumask_bits(cpu_isolated_mask)[0],
+			  start_time, 0);
 	return ret_code;
 }
 EXPORT_SYMBOL(sched_unpause_cpu_unlocked);
