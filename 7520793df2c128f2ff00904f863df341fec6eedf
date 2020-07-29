@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9391646_e4600d88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1409360
+      },
+      "writtenOn": "2020-07-29T02:10:22Z",
+      "side": 1,
+      "message": "Hi Paul,\n\nI found another issue about magic number in ARM-32-bit platform, e.g\n\ndata_mgmt.h\n\nstatic inline struct inode_info *get_incfs_node(struct inode *inode)\n{\n\tif (!inode)\n\t\treturn NULL;\n\n\tif (inode-\u003ei_sb-\u003es_magic !\u003d INCFS_MAGIC_NUMBER) {\n\t\t/* This inode doesn\u0027t belong to us. */\n\t\tpr_warn_once(\"incfs: %s on an alien inode.\", __func__);\n\t\treturn NULL;\n\t}\n\n\treturn container_of(inode, struct inode_info, n_vfs_inode);\n}\n\nmagic judge will return NULL, and this will result in NULL pointer access then memory exception!\n\nShall we fix that with below patch?\n#ifdef CONFIG_ARM64\n#define INCFS_MAGIC_NUMBER (0x5346434e49ul)\n#else\n#define INCFS_MAGIC_NUMBER (unsigned long)(0x5346434e49ul)\n#endif\n\nThanks~\n",
+      "revId": "7520793df2c128f2ff00904f863df341fec6eedf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
