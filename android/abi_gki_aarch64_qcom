@@ -1153,6 +1153,7 @@
   kernel_kobj
   kernel_recvmsg
   kernel_sendmsg
+  kernel_setsockopt
   kernel_sigaction
   kernfs_find_and_get_ns
   kernfs_notify
@@ -1406,6 +1407,7 @@
   of_drm_find_panel
   of_find_compatible_node
   of_find_device_by_node
+  of_find_i2c_device_by_node
   of_find_matching_node_and_match
   of_find_node_by_name
   of_find_node_by_phandle
@@ -1559,6 +1561,8 @@
   physvirt_offset
   pinconf_generic_dt_node_to_map
   pinctrl_dev_get_drvdata
+  pinctrl_force_default
+  pinctrl_force_sleep
   pinctrl_get
   pinctrl_lookup_state
   pinctrl_pm_select_default_state
@@ -1588,6 +1592,11 @@
   platform_get_resource
   platform_get_resource_byname
   platform_irq_count
+  pm_clk_add
+  pm_clk_create
+  pm_clk_destroy
+  pm_clk_resume
+  pm_clk_suspend
   pm_generic_resume
   pm_generic_runtime_resume
   pm_generic_runtime_suspend
@@ -1726,6 +1735,7 @@
   refcount_inc_checked
   refcount_inc_not_zero_checked
   __refrigerator
+  regcache_cache_bypass
   regcache_cache_only
   regcache_mark_dirty
   regcache_sync
@@ -1757,6 +1767,7 @@
   regmap_irq_get_virq
   regmap_raw_read
   regmap_read
+  regmap_register_patch
   regmap_update_bits_base
   regmap_write
   regulator_bulk_disable
@@ -1825,6 +1836,15 @@
   rndis_signal_connect
   rndis_uninit
   round_jiffies
+  rpmsg_create_ept
+  rpmsg_destroy_ept
+  rpmsg_get_signals
+  rpmsg_poll
+  rpmsg_register_device
+  rpmsg_send
+  rpmsg_set_signals
+  rpmsg_trysend
+  rpmsg_unregister_device
   rtc_class_close
   rtc_class_open
   rtc_read_time
@@ -1851,11 +1871,14 @@
   schedule_timeout
   schedule_timeout_interruptible
   schedule_timeout_uninterruptible
+  scmd_printk
   scnprintf
   scsi_add_host_with_dma
   scsi_autopm_get_device
   scsi_autopm_put_device
+  scsi_block_requests
   scsi_block_when_processing_errors
+  scsi_change_queue_depth
   scsi_command_size_tbl
   scsi_device_get
   scsi_device_put
@@ -1868,6 +1891,7 @@
   scsi_ioctl_block_when_processing_errors
   scsi_is_host_device
   scsi_normalize_sense
+  scsi_print_command
   __scsi_print_sense
   scsi_register_interface
   scsi_remove_host
@@ -1875,6 +1899,7 @@
   scsi_report_device_reset
   scsi_scan_host
   scsi_sense_desc_find
+  scsi_unblock_requests
   sdev_prefix_printk
   __sdhci_add_host
   sdhci_add_host
@@ -1998,6 +2023,9 @@
   skip_spaces
   smp_call_function
   smp_call_function_single
+  snd_card_free
+  snd_card_new
+  snd_card_register
   snd_ctl_add
   snd_ctl_boolean_mono_info
   snd_ctl_enum_info
@@ -2015,10 +2043,17 @@
   snd_pcm_hw_constraint_list
   snd_pcm_hw_constraint_minmax
   snd_pcm_hw_constraint_step
+  snd_pcm_lib_free_pages
   snd_pcm_lib_ioctl
+  snd_pcm_lib_malloc_pages
+  snd_pcm_lib_preallocate_pages_for_all
+  snd_pcm_new
   snd_pcm_period_elapsed
+  snd_pcm_set_ops
   snd_pcm_std_chmaps
   snd_pcm_stop
+  _snd_pcm_stream_lock_irqsave
+  snd_pcm_stream_unlock_irqrestore
   snd_soc_add_component_controls
   snd_soc_bytes_tlv_callback
   snd_soc_card_get_kcontrol
@@ -2200,6 +2235,7 @@
   thermal_cooling_device_unregister
   thermal_of_cooling_device_register
   thermal_zone_device_register
+  thermal_zone_device_unregister
   thermal_zone_device_update
   thermal_zone_get_temp
   thermal_zone_get_zone_by_name
@@ -2308,6 +2344,7 @@
   unregister_pernet_subsys
   unregister_pm_notifier
   unregister_reboot_notifier
+  unregister_restart_handler
   unregister_rpmsg_driver
   unregister_shrinker
   unregister_syscore_ops
@@ -2320,12 +2357,14 @@
   usb_add_phy_dev
   usb_alloc_coherent
   usb_alloc_dev
+  usb_alloc_streams
   usb_alloc_urb
   usb_amd_dev_put
   usb_amd_pt_check_port
   usb_amd_quirk_pll_check
   usb_amd_quirk_pll_disable
   usb_amd_quirk_pll_enable
+  usb_anchor_urb
   usb_asmedia_modifyflowcontrol
   usb_assign_descriptors
   usb_autopm_get_interface
@@ -2361,6 +2400,7 @@
   usb_find_common_endpoints
   usb_free_all_descriptors
   usb_free_coherent
+  usb_free_streams
   usb_free_urb
   usb_function_register
   usb_function_unregister
@@ -2395,6 +2435,7 @@
   usb_hub_find_child
   usb_ifnum_to_if
   usb_interface_id
+  usb_kill_anchored_urbs
   usb_kill_urb
   usb_lock_device_for_reset
   usb_match_one_id
@@ -2410,6 +2451,9 @@
   usb_remove_phy
   usb_reset_device
   usb_reset_endpoint
+  usb_role_switch_register
+  usb_role_switch_set_role
+  usb_role_switch_unregister
   usb_root_hub_lost_power
   usb_set_device_state
   usb_set_interface
@@ -2420,8 +2464,10 @@
   usb_string
   usb_string_id
   usb_submit_urb
+  usb_unanchor_urb
   usb_unlink_urb
   usb_unregister_notify
+  usb_wait_anchor_empty_timeout
   usb_wakeup_notification
   __usecs_to_jiffies
   usleep_range
@@ -2466,7 +2512,10 @@
   v4l2_type_names
   vabits_actual
   vb2_buffer_done
+  vb2_common_vm_ops
   vb2_create_bufs
+  vb2_create_framevec
+  vb2_destroy_framevec
   vb2_dqbuf
   vb2_expbuf
   vb2_fop_mmap
@@ -2495,6 +2544,10 @@
   vb2_reqbufs
   vb2_streamoff
   vb2_streamon
+  vchan_dma_desc_free_list
+  vchan_init
+  vchan_tx_desc_free
+  vchan_tx_submit
   vfree
   video_devdata
   video_device_alloc
