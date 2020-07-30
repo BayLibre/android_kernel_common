@@ -16,6 +16,24 @@
       "revId": "da4ae23ac9bc4f12c55677f2c64de98618f4a06b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "274838ac_745f862d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1081223
+      },
+      "writtenOn": "2020-07-30T21:34:18Z",
+      "side": 1,
+      "message": "The ideal thing would be that both Android and Halium GKI could be interchangeable.\nSadly this option is the only one that breaks cgroup ABI thus making loading vendor modules close to impossible.\n\nI would also prefer to have Android itself use this feature, I haven\u0027t dig much what this option could do to the kernel attach surface, but I agree any non needed option indeed increases it.\n\nThe other change was put up to close even more the differences between the 2 kernels, but the ABI isn\u0027t affected luckily.\n\nAnd I sure know Halium isn\u0027t supported but there are quite a number of cool Android devices that allow using it to play with other distributions that could improve the user experience 😊",
+      "parentUuid": "357ff4f9_bc71636b",
+      "revId": "da4ae23ac9bc4f12c55677f2c64de98618f4a06b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
