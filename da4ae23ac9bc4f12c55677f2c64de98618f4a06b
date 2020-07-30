@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "357ff4f9_bc71636b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-07-30T21:21:00Z",
+      "side": 1,
+      "message": "Adding random config options that can cause userspace visable changes like these, for devices that are not really supported, is not generally a good idea, as now you are forcing us to support those features for the next 8+ years 😞\n\nSo I would really want to see a use case that requires this, in android userspace, before we agree to enable either of these options, as they do increase the attack surface of the kernel in a non-trivial way.",
+      "revId": "da4ae23ac9bc4f12c55677f2c64de98618f4a06b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
