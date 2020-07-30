@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d67c2c0_3f76258f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1081223
+      },
+      "writtenOn": "2020-07-30T13:18:42Z",
+      "side": 1,
+      "message": "I know Lint will fail because we don\u0027t have any Bug id associated with this change, so ignore it for now.\nAs of now GKI kernels won\u0027t work under Halium ( https://halium.org/ ) because of this missing config ( that is ABI breaking )\nIt would allow GKI kernels to be used in some interesting ports without any modification.\nWould it be possible to pull this in?",
+      "revId": "b94b6e1c66c2424b9aed5eab383a79cb1ff1b27d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
