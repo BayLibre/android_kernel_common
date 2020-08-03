@@ -105,6 +105,7 @@
 	_IOWR(INCFS_IOCTL_BASE_CODE, 35, struct incfs_create_mapped_file_args)
 
 /*
+<<<<<<< HEAD
  * Get number of blocks, total and filled
  * May only be called on .pending_reads file
  */
@@ -124,6 +125,19 @@
  */
 #define INCFS_IOC_SET_READ_TIMEOUTS \
 	_IOW(INCFS_IOCTL_BASE_CODE, 38, struct incfs_set_read_timeouts_args)
+
+/*
+ * Reads Merkle tree blocks
+ * On success, the length of the Merkle tree blocks that were read is
+ * returned.  Similar to the ``read()`` system call, 0 is returned at the
+ * end of the Merkle tree.  The returned length may be less than
+ * ``length``, for example if the ioctl is interrupted.
+ *
+ * The Merkle tree blocks are returned in order from the top level to the
+ * bottom level.
+ */
+#define INCFS_IOC_READ_MERKLE_TREE					       \
+	_IOR(INCFS_IOCTL_BASE_CODE, 39, struct incfs_read_merkle_tree_args)
 
 /* ===== sysfs feature flags ===== */
 /*
@@ -535,5 +549,18 @@ struct incfs_set_read_timeouts_args {
 	__u32 timeouts_array_size;
 };
 
+/* Arguments for INCFS_IOC_READ_MERKLE_TREE */
+struct incfs_read_merkle_tree_args {
+	/* Offset into Merkle tree to read. Must be multiple of block size */
+	__u64 offset;
+
+	/* Length of data to read. Must be multiple of block size */
+	__u64 length;
+
+	/* buf to populate with data */
+	__aligned_u64 buf;
+
+	__u64 __reserved[3];
+};
 
 #endif /* _UAPI_LINUX_INCREMENTALFS_H */
