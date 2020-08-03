@@ -3473,11 +3473,11 @@ out:
  *
  * Return 0 in case of success, non-zero otherwise
  */
-static inline int ufshcd_read_unit_desc_param(struct ufs_hba *hba,
-					      int lun,
-					      enum unit_desc_param param_offset,
-					      u8 *param_read_buf,
-					      u32 param_size)
+int ufshcd_read_unit_desc_param(struct ufs_hba *hba,
+				int lun,
+				enum unit_desc_param param_offset,
+				u8 *param_read_buf,
+				u32 param_size)
 {
 	/*
 	 * Unit descriptors are only available for general purpose LUs (LUN id
@@ -3489,6 +3489,7 @@ static inline int ufshcd_read_unit_desc_param(struct ufs_hba *hba,
 	return ufshcd_read_desc_param(hba, QUERY_DESC_IDN_UNIT, lun,
 				      param_offset, param_read_buf, param_size);
 }
+EXPORT_SYMBOL_GPL(ufshcd_read_unit_desc_param);
 
 static int ufshcd_get_ref_clk_gating_wait(struct ufs_hba *hba)
 {
@@ -5441,6 +5442,10 @@ static int ufshcd_wb_ctrl(struct ufs_hba *hba, bool enable)
 
 	if (!(enable ^ hba->wb_enabled))
 		return 0;
+
+	if (!ufshcd_wb_ctrl_vendor(hba, enable))
+		return 0;
+
 	if (enable)
 		opcode = UPIU_QUERY_OPCODE_SET_FLAG;
 	else
@@ -6758,6 +6763,8 @@ static int ufshcd_reset_and_restore(struct ufs_hba *hba)
 	int err = 0;
 	int retries = MAX_HOST_RESET_RETRIES;
 
+	ufshcd_wb_reset_vendor(hba);
+
 	do {
 		/* Reset the attached device */
 		ufshcd_vops_device_reset(hba);
@@ -7048,6 +7055,9 @@ static void ufshcd_wb_probe(struct ufs_hba *hba, u8 *desc_buf)
 
 	if (!(dev_info->d_ext_ufs_feature_sup & UFS_DEV_WRITE_BOOSTER_SUP))
 		goto wb_disabled;
+
+	if (!ufshcd_wb_alloc_units_vendor(hba))
+		return;
 
 	/*
 	 * WB may be supported but not configured while provisioning.
@@ -8468,6 +8478,8 @@ static int ufshcd_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
 			ufshcd_is_auto_hibern8_enabled(hba))) &&
 			ufshcd_wb_need_flush(hba));
 	}
+
+	ufshcd_wb_toggle_flush_vendor(hba, pm_op);
 
 	if (req_dev_pwr_mode != hba->curr_dev_pwr_mode) {
 		if ((ufshcd_is_runtime_pm(pm_op) && !hba->auto_bkops_enabled) ||

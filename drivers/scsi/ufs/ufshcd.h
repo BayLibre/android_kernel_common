@@ -257,6 +257,13 @@ struct ufs_desc_size {
 	int hlth_desc;
 };
 
+struct ufs_wb_ops {
+	int (*wb_toggle_flush_vendor)(struct ufs_hba *hba, enum ufs_pm_op pm_op);
+	int (*wb_alloc_units_vendor)(struct ufs_hba *hba);
+	int (*wb_ctrl_vendor)(struct ufs_hba *hba, bool enable);
+	int (*wb_reset_vendor)(struct ufs_hba *hba, bool force);
+};
+
 /**
  * struct ufs_clk_info - UFS clock related info
  * @list: list headed by hba->clk_list_head
@@ -844,6 +851,7 @@ struct ufs_hba {
 
 	bool wb_buf_flush_enabled;
 	bool wb_enabled;
+	struct ufs_wb_ops *wb_ops;
 	struct delayed_work rpm_dev_flush_recheck_work;
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
@@ -1093,6 +1101,10 @@ int ufshcd_exec_raw_upiu_cmd(struct ufs_hba *hba,
 			     u8 *desc_buff, int *buff_len,
 			     enum query_opcode desc_op);
 
+int ufshcd_read_unit_desc_param(struct ufs_hba *hba,
+				int lun, enum unit_desc_param param_offset,
+				u8 *param_read_buf, u32 param_size);
+
 /* Wrapper functions for safely calling variant operations */
 static inline const char *ufshcd_get_var_name(struct ufs_hba *hba)
 {
@@ -1265,6 +1277,39 @@ static inline u8 ufshcd_scsi_to_upiu_lun(unsigned int scsi_lun)
 			| UFS_UPIU_WLUN_ID;
 	else
 		return scsi_lun & UFS_UPIU_MAX_UNIT_NUM_ID;
+}
+
+static inline int ufshcd_wb_toggle_flush_vendor(struct ufs_hba *hba,
+						enum ufs_pm_op pm_op)
+{
+	if (!hba->wb_ops || !hba->wb_ops->wb_toggle_flush_vendor)
+		return -1;
+
+	return hba->wb_ops->wb_toggle_flush_vendor(hba, pm_op);
+}
+
+static int ufshcd_wb_alloc_units_vendor(struct ufs_hba *hba)
+{
+	if (!hba->wb_ops || !hba->wb_ops->wb_alloc_units_vendor)
+		return -1;
+
+	return hba->wb_ops->wb_alloc_units_vendor(hba);
+}
+
+static int ufshcd_wb_ctrl_vendor(struct ufs_hba *hba, bool enable)
+{
+	if (!hba->wb_ops || !hba->wb_ops->wb_ctrl_vendor)
+		return -1;
+
+	return hba->wb_ops->wb_ctrl_vendor(hba, enable);
+}
+
+static int ufshcd_wb_reset_vendor(struct ufs_hba *hba)
+{
+	if (!hba->wb_ops || !hba->wb_ops->wb_reset_vendor)
+		return -1;
+
+	return hba->wb_ops->wb_reset_vendor(hba, false);
 }
 
 int ufshcd_dump_regs(struct ufs_hba *hba, size_t offset, size_t len,
