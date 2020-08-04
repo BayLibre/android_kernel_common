@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "54d7f5bf_b16edfce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2020-08-04T10:58:02Z",
+      "side": 1,
+      "message": "I do not see how this makes things better. Now we duplicate the definition into all build.config* files and it feels like a local variable. Though this is a common definition.\n\nShould we not rather try to source relative to the location we are sourcing from? This would make it much more readable.",
+      "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
