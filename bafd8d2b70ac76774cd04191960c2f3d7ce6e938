@@ -52,6 +52,24 @@
       "revId": "bafd8d2b70ac76774cd04191960c2f3d7ce6e938",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b9fc538_9dd21490",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1738285
+      },
+      "writtenOn": "2020-08-04T11:43:15Z",
+      "side": 1,
+      "message": "Yes. It cannot be guaranteed if tty device name is too long. The easiest way is just defining the buffer to MAX_PATH size. I think we can use kstrtoul to parse the idx value and we can avoid sprintf function.",
+      "parentUuid": "65aac4f8_60338d54",
+      "revId": "bafd8d2b70ac76774cd04191960c2f3d7ce6e938",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
