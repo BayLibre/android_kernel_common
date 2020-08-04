@@ -16,6 +16,24 @@
       "revId": "bafd8d2b70ac76774cd04191960c2f3d7ce6e938",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "57e5f1d0_136ed23f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1738285
+      },
+      "writtenOn": "2020-08-04T10:26:15Z",
+      "side": 1,
+      "message": "When I checked tty names from /etc/securetty(?), it looks up to ttyXXX[01]. So, I put it to 8 as the length.\nAnd it is caused by \"ANDROID: serdev: restrict claim of platform devices\". That\u0027s why I didn\u0027t go to upstream.",
+      "parentUuid": "7df5f45a_f40496a2",
+      "revId": "bafd8d2b70ac76774cd04191960c2f3d7ce6e938",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
