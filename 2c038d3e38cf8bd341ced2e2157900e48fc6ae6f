@@ -16,6 +16,23 @@
       "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8d646d6b_9e4ceca7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2020-08-04T15:15:22Z",
+      "side": 1,
+      "message": "if we are sure the KERNEL_DIR is where the build.config* are stored, maybe it\u0027s better to set the value for the KERNEL_DIR in the build/_setup_env.sh file?\nthen no need to set the KERNEL_DIR in the build.config* any more, and KERNEL_DIR could be just used in the build.config* with the value set in build/_setup_env.sh",
+      "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
