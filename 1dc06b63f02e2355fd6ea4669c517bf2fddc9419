@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e0b24ea_75e83289",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-04T11:50:16Z",
+      "side": 1,
+      "message": "Minor nit, but otherwise looks much better, thanks!",
+      "revId": "1dc06b63f02e2355fd6ea4669c517bf2fddc9419",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "028927ed_2108f506",
+        "filename": "drivers/tty/serdev/serdev-ttyport.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-04T11:50:16Z",
+      "side": 1,
+      "message": "no need to init this, right?  And assigning an unsigned variable to -1 is a bit odd :)",
+      "range": {
+        "startLine": 305,
+        "startChar": 25,
+        "endLine": 305,
+        "endChar": 30
+      },
+      "revId": "1dc06b63f02e2355fd6ea4669c517bf2fddc9419",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
