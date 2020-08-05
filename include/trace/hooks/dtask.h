@@ -8,6 +8,7 @@
 
 #include <trace/hooks/vendor_hooks.h>
 
+<<<<<<< HEAD   (1e3041af01622a8956e6130548f6dfb66e10871c Reapply "FROMGIT: memfd,selinux: call security_inode_init_se)
 /*
  * Following tracepoints are not exported in tracefs and provide a
  * mechanism for vendor modules to hook and extend functionality
@@ -57,5 +58,14 @@ DECLARE_HOOK(android_vh_rwsem_write_wait_finish,
 
 #endif /* _TRACE_HOOK_DTASK_H */
 
+||||||| BASE   (d28522eb370c4657206477446388172870735d37 ANDROID: sched: Update android_rvh_check_preempt_wakeup hook)
+=======
+struct task_struct;
+DECLARE_HOOK(android_vh_sched_show_task,
+	TP_PROTO(struct task_struct *task),
+	TP_ARGS(task));
+
+#endif /* _TRACE_HOOK_DTASK_H */
+>>>>>>> CHANGE (f0ff9d0ac58cf16ce9c24586e88cf893313dfad1 ANDROID: vendor_hooks: add waiting information for blocked t)
 /* This part must be outside protection */
 #include <trace/define_trace.h>

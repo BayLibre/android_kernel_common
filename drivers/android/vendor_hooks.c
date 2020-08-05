@@ -37,6 +37,7 @@
 #include <trace/hooks/reboot.h>
 #include <trace/hooks/timer.h>
 #include <trace/hooks/fpsimd.h>
+<<<<<<< HEAD   (1e3041af01622a8956e6130548f6dfb66e10871c Reapply "FROMGIT: memfd,selinux: call security_inode_init_se)
 #include <trace/hooks/signal.h>
 #include <trace/hooks/hung_task.h>
 #include <trace/hooks/topology.h>
@@ -44,6 +45,10 @@
 #include <trace/hooks/ftrace_dump.h>
 #include <trace/hooks/dtask.h>
 #include <trace/hooks/power.h>
+||||||| BASE   (d28522eb370c4657206477446388172870735d37 ANDROID: sched: Update android_rvh_check_preempt_wakeup hook)
+=======
+#include <trace/hooks/dtask.h>
+>>>>>>> CHANGE (f0ff9d0ac58cf16ce9c24586e88cf893313dfad1 ANDROID: vendor_hooks: add waiting information for blocked t)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -125,6 +130,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
+<<<<<<< HEAD   (1e3041af01622a8956e6130548f6dfb66e10871c Reapply "FROMGIT: memfd,selinux: call security_inode_init_se)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_write_timeout_estab_retrans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_format_check);
@@ -137,3 +143,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ep_create_wakeup_source);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo_unfrozen);
+||||||| BASE   (d28522eb370c4657206477446388172870735d37 ANDROID: sched: Update android_rvh_check_preempt_wakeup hook)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_show_task);
+>>>>>>> CHANGE (f0ff9d0ac58cf16ce9c24586e88cf893313dfad1 ANDROID: vendor_hooks: add waiting information for blocked t)
