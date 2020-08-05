@@ -7,6 +7,7 @@
 #include <linux/file.h>
 #include <linux/fs.h>
 #include <linux/fs_stack.h>
+#include <linux/fsverity.h>
 #include <linux/namei.h>
 #include <linux/parser.h>
 #include <linux/seq_file.h>
@@ -761,6 +762,8 @@ static long dispatch_ioctl(struct file *f, unsigned int req, unsigned long arg)
 		return ioctl_get_filled_blocks(f, (void __user *)arg);
 	case INCFS_IOC_GET_BLOCK_COUNT:
 		return ioctl_get_block_count(f, (void __user *)arg);
+	case FS_IOC_ENABLE_VERITY:
+		return fsverity_ioctl_enable(f, (const void __user *)arg);
 	default:
 		return -EINVAL;
 	}
@@ -1537,8 +1540,11 @@ struct dentry *incfs_mount_fs(struct file_system_type *type, int flags,
 
 	sb->s_op = &incfs_super_ops;
 	sb->s_d_op = &incfs_dentry_ops;
-	sb->s_flags |= S_NOATIME;
-	sb->s_magic = INCFS_MAGIC_NUMBER;
+#ifdef CONFIG_FS_VERITY
+	sb->s_vop = &incfs_verityops;
+#endif
+	sb->s_flags |= S_NOATIME | S_VERITY;
+	sb->s_magic = (long)INCFS_MAGIC_NUMBER;
 	sb->s_time_gran = 1;
 	sb->s_blocksize = INCFS_DATA_FILE_BLOCK_SIZE;
 	sb->s_blocksize_bits = blksize_bits(sb->s_blocksize);
