@@ -48,6 +48,7 @@
 #include <linux/uidgid_types.h>
 #include <linux/android_vendor.h>
 #include <asm/kmap_size.h>
+#include <linux/android_vendor.h>
 
 /* task_struct member predeclarations (sorted alphabetically): */
 struct audit_context;
@@ -1577,6 +1578,7 @@ struct task_struct {
 #ifdef CONFIG_USER_EVENTS
 	struct user_event_mm		*user_event_mm;
 #endif
+	ANDROID_VENDOR_DATA_ARRAY(1, 2);
 
 	/*
 	 * New fields for task_struct should be added above here, so that
