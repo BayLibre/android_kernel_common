@@ -30,4 +30,6 @@ static inline struct super_block *file_superblock(struct file *f)
 	return inode->i_sb;
 }
 
+extern const struct fsverity_operations incfs_verityops;
+
 #endif
