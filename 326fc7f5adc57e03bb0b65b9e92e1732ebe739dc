@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "6e5f708c_7959c5b7",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-08-05T23:46:13Z",
+      "side": 1,
+      "message": "Reverted back the permissions.",
+      "parentUuid": "e696f747_aa4dcbb2",
+      "range": {
+        "startLine": 780,
+        "startChar": 46,
+        "endLine": 780,
+        "endChar": 50
+      },
+      "revId": "326fc7f5adc57e03bb0b65b9e92e1732ebe739dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c834a37_80f3c00b",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 2
@@ -69,6 +93,30 @@
       "revId": "326fc7f5adc57e03bb0b65b9e92e1732ebe739dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11daa923_0986d12b",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1854,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2020-08-05T23:46:13Z",
+      "side": 1,
+      "message": "Thanks. Added new test to incfs_test to test\n\n1: renaming .index\n2: removing .index\n\nThere is already a test in incfs_test which verifies renaming files within index.\n\n        err \u003d rename(filename_in_index, dst_name);\n        if (err \u003d\u003d 0 || errno !\u003d EBUSY) {\n                print_error(\"Shouldn\u0027t be able to move from index\\n\");\n                goto failure;\n        }",
+      "parentUuid": "3c834a37_80f3c00b",
+      "range": {
+        "startLine": 1854,
+        "startChar": 28,
+        "endLine": 1854,
+        "endChar": 66
+      },
+      "revId": "326fc7f5adc57e03bb0b65b9e92e1732ebe739dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
