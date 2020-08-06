@@ -51,6 +51,42 @@
       "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a565c240_7683ec5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2020-08-06T17:10:59Z",
+      "side": 1,
+      "message": "I agree we shouldn\u0027t define in build/_setup_env.sh because the build project can be used by partners that will have a different kernel dir than \"common\".",
+      "parentUuid": "6c92e48c_d2d549b1",
+      "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a7edacfa_5ac59296",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2020-08-06T17:10:59Z",
+      "side": 1,
+      "message": "Well each of the configs are for separate targets. So I think it\u0027s fine to duplicate KERNEL_DIR since it could be different per build target. I mean this isn\u0027t changing much since I\u0027m just replacing the hardcoded path with a generic patch that is defined. I don\u0027t have a strong opinion. I just wanted to see what people thought about this patch.\n\nDo you mean to do something like this, removing the whole \"$ROOT_DIR/common/\" part?\n\n. build.config.common",
+      "parentUuid": "54d7f5bf_b16edfce",
+      "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
