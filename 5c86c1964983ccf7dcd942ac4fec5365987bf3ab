@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd667303_e79a867a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-08-06T22:52:05Z",
+      "side": 1,
+      "message": "We need a lot more explanation in the commit message to accept this. We normally don\u0027t accept UAPI changes at all without them being submitted upstream. In this case, the enum rearrangement results in changing the value of the labels. Why is that ok? Do we know there are no userspace components relying on the old value?\n\nWe also are no longer accepting new features into android-4.14-stable, so why is it needed in 4.14?\n\nPlease explain it all in the commit message.",
+      "revId": "5c86c1964983ccf7dcd942ac4fec5365987bf3ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
