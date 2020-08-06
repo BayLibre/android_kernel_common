@@ -34,6 +34,24 @@
       "revId": "3f3ce7f2620ec974881be802bcec88afb49c7703",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6219e52_4a403b54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101621
+      },
+      "writtenOn": "2020-08-06T22:46:05Z",
+      "side": 1,
+      "message": "Thank for the Lint suggestion, fixed!\n\nIn the current version of aosp crosvm, RESOURCE_{MAP,UNMAP}_BLOB is in the 2D group.  In the latest TOT, it\u0027s in the 3D group:\n\nhttps://chromium.googlesource.com/chromiumos/platform/crosvm/+/refs/heads/master/devices/src/virtio/gpu/protocol.rs#54\n\nSo once we update aosp/crosvm, we\u0027ll need to change it here too.",
+      "parentUuid": "603e332b_5c581b3e",
+      "revId": "3f3ce7f2620ec974881be802bcec88afb49c7703",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
