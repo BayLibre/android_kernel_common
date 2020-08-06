@@ -16,6 +16,443 @@
       "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d67d70b1_063ec3bf",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2543,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "as userspace can trigger this, is it really needed?",
+      "range": {
+        "startLine": 2543,
+        "startChar": 0,
+        "endLine": 2543,
+        "endChar": 19
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66f894b3_209fb6d3",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2546,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "you return the wrong error here 😞",
+      "range": {
+        "startLine": 2546,
+        "startChar": 0,
+        "endLine": 2546,
+        "endChar": 23
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23ad56f5_bf92e536",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2575,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "no validation that this value was correct?  Why not refuse the request if it is?",
+      "range": {
+        "startLine": 2575,
+        "startChar": 16,
+        "endLine": 2575,
+        "endChar": 24
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e07f2030_021d4a01",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2578,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "no need for this duplication, kzalloc() will print this.",
+      "range": {
+        "startLine": 2578,
+        "startChar": 0,
+        "endLine": 2578,
+        "endChar": 56
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83b04591_d22f912f",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2635,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "userspace can trigger this, do not spam the log.",
+      "range": {
+        "startLine": 2635,
+        "startChar": 0,
+        "endLine": 2635,
+        "endChar": 62
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e26a724_87040d85",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2648,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "again, why not verify this earlier and fail if it is too big/small?",
+      "range": {
+        "startLine": 2648,
+        "startChar": 48,
+        "endLine": 2648,
+        "endChar": 56
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5039fb60_6f9e49f6",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2666,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "return the proper error if this happens.",
+      "range": {
+        "startLine": 2666,
+        "startChar": 0,
+        "endLine": 2666,
+        "endChar": 9
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f176c438_52167661",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2671,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "again, return an error!",
+      "range": {
+        "startLine": 2671,
+        "startChar": 0,
+        "endLine": 2671,
+        "endChar": 9
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eedc39e4_05d4a09c",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2677,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "user triggerable, do not spam logs",
+      "range": {
+        "startLine": 2677,
+        "startChar": 0,
+        "endLine": 2677,
+        "endChar": 18
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d54251ab_eb3037d2",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2679,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "never needed for a dev_* call, it is already present.",
+      "range": {
+        "startLine": 2679,
+        "startChar": 2,
+        "endLine": 2679,
+        "endChar": 10
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d495516c_bf6f2cba",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2703,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "how can this happen?",
+      "range": {
+        "startLine": 2703,
+        "startChar": 0,
+        "endLine": 2703,
+        "endChar": 17
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e454f951_c2c74320",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2705,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "how can this happen?",
+      "range": {
+        "startLine": 2705,
+        "startChar": 0,
+        "endLine": 2705,
+        "endChar": 12
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbae1e46_1119a18b",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2706,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "if it can happen, do not spam the log for user-triggerable things.",
+      "range": {
+        "startLine": 2706,
+        "startChar": 0,
+        "endLine": 2706,
+        "endChar": 60
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cce1b1d_cb0e35ab",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2719,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "wrong error value for incorrect ioctl value.",
+      "range": {
+        "startLine": 2719,
+        "startChar": 0,
+        "endLine": 2719,
+        "endChar": 16
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dcaa58e9_36eaefb6",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2720,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "again, no error logs.",
+      "range": {
+        "startLine": 2720,
+        "startChar": 0,
+        "endLine": 2720,
+        "endChar": 63
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a80658c_cad9eac5",
+        "filename": "include/uapi/scsi/ufs/ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "no spdx line?",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c649d44f_e42a3c09",
+        "filename": "include/uapi/scsi/ufs/ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "do you really mean GPL2+?  are you sure?  (I have to ask)\n\nNo need for boilerplate text here either, the spdx line will handle it.",
+      "range": {
+        "startLine": 6,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 38
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a594b76_916314d1",
+        "filename": "include/uapi/scsi/ufs/ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "where does this come from?",
+      "range": {
+        "startLine": 21,
+        "startChar": 26,
+        "endLine": 21,
+        "endChar": 32
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7ed4df2_de79093e",
+        "filename": "include/uapi/scsi/ufs/ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-06T07:24:46Z",
+      "side": 1,
+      "message": "ick, there is blank space in this ioctl structure, do you mean for that to happen???",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 16
+      },
+      "revId": "a4898223b0a281650b0cae005bf52f803c5b703d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
