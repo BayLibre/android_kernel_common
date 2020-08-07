@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01f2bf86_514b6c84",
+        "filename": "kernel/sched/cputime.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-07T12:31:50Z",
+      "side": 1,
+      "message": "shouldn\u0027t this just be called from userspace instead, it is what times(2) does, right?\n\nWhat driver wants to modify this?  It should not have access to a task_struct.",
+      "range": {
+        "startLine": 684,
+        "startChar": 0,
+        "endLine": 684,
+        "endChar": 49
+      },
+      "revId": "d5a1bbadc91d7d1f92f746163ad51818c13e765b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
