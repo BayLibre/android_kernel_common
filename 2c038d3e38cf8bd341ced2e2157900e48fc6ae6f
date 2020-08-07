@@ -87,6 +87,24 @@
       "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d837945f_1bab7b37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2020-08-07T06:38:55Z",
+      "side": 1,
+      "message": "\u003e So I think it\u0027s fine to duplicate KERNEL_DIR since it could be different per build target.\n\nI do not see that use case really. In particular _all_ the build.configs here have it named \u0027common\u0027.\n\n\n\u003e Do you mean to do something like this, removing the whole \"$ROOT_DIR/common/\" part?\n\nyes, something like this.\n\nBut I also like the idea of deducting a default in _setup_env.sh (see the suggestion from YongQuin)",
+      "parentUuid": "a7edacfa_5ac59296",
+      "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
