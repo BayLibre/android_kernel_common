@@ -88,8 +88,13 @@ config QCOM_RMTFS_MEM
 	  Say y here if you intend to boot the modem remoteproc.
 
 config QCOM_RPMH
+<<<<<<< HEAD   (00d6a8 Merge e4cbce4d1317 ("Merge tag 'sched-core-2020-08-03' of gi)
 	tristate "Qualcomm RPM-Hardened (RPMH) Communication"
 	depends on ARCH_QCOM && ARM64 || COMPILE_TEST
+=======
+	bool "Qualcomm RPM-Hardened (RPMH) Communication"
+	depends on ARCH_QCOM || COMPILE_TEST
+>>>>>>> BRANCH (c0842f random32: move the pseudo-random 32-bit definitions to prand)
 	help
 	  Support for communication with the hardened-RPM blocks in
 	  Qualcomm Technologies Inc (QTI) SoCs. RPMH communication uses an
