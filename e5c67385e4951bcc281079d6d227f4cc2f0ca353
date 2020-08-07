@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "693ca515_e22a6493",
+        "filename": "kernel/sched/cputime.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-08-07T03:06:10Z",
+      "side": 1,
+      "message": "This won\u0027t do anything since CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is not defined for GKI. Did you intend to put this at line 683? You should probably export from both places.",
+      "revId": "e5c67385e4951bcc281079d6d227f4cc2f0ca353",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
