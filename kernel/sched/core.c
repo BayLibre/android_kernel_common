@@ -6299,7 +6299,8 @@ static void calc_load_migrate(struct rq *rq)
 		atomic_long_add(delta, &calc_load_tasks);
 }
 
-static struct task_struct *__pick_migrate_task(struct rq *rq)
+static struct task_struct *__pick_migrate_task(struct rq *rq,
+					       bool migrate_pinned_kthreads)
 {
 	const struct sched_class *class;
 	struct task_struct *next;
@@ -6308,6 +6309,12 @@ static struct task_struct *__pick_migrate_task(struct rq *rq)
 		next = class->pick_next_task(rq);
 		if (next) {
 			next->sched_class->put_prev_task(rq, next);
+
+			if (is_per_cpu_kthread(next) &&
+			    !migrate_pinned_kthreads &&
+			    next->sched_class != &idle_sched_class)
+				continue;
+
 			return next;
 		}
 	}
@@ -6324,7 +6331,8 @@ static struct task_struct *__pick_migrate_task(struct rq *rq)
  * there's no concurrency possible, we hold the required locks anyway
  * because of lock validation efforts.
  */
-static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
+void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf,
+		   bool migrate_pinned_kthreads)
 {
 	struct rq *rq = dead_rq;
 	struct task_struct *next, *stop = rq->stop;
@@ -6357,7 +6365,10 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
 		if (rq->nr_running == 1)
 			break;
 
-		next = __pick_migrate_task(rq);
+		next = __pick_migrate_task(rq, migrate_pinned_kthreads);
+		if (!migrate_pinned_kthreads &&
+		    next->sched_class == &idle_sched_class)
+			break;
 
 		/*
 		 * Rules for changing task_struct::cpus_mask are holding
@@ -6373,11 +6384,30 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
 		rq_relock(rq, rf);
 
 		/*
+		 * The migrate_tasks() is called during pause of a CPU to
+		 * migrate off all the unpinned kernel threads to a different
+		 * CPU. The CPU's rq->lock is dropped before acquiring the
+		 * task's pi_lock and while migrating the task to a different
+		 * CPU. Since pausing does not lock all other CPUs in the
+		 * stop_machine loop like CPU hotplug, this CPU's rq->lock
+		 * could be taken by other CPUs and clear the RQCF_UPDATED
+		 * flag. Instead of mucking around with these flags, force a
+		 * clock update when RQCF_UPDATED is not set upon reacquiring
+		 * the rq->lock.
+		 */
+		if (!(rq->clock_update_flags & RQCF_UPDATED))
+			update_rq_clock(rq);
+
+		/*
 		 * Since we're inside stop-machine, _nothing_ should have
 		 * changed the task, WARN if weird stuff happened, because in
 		 * that case the above rq->lock drop is a fail too.
+		 * However, during cpu pause the load balancer might have
+		 * interferred since not all CPUs are stopped. Ignore warning
+		 * for this case.
 		 */
-		if (WARN_ON(task_rq(next) != rq || !task_on_rq_queued(next))) {
+		if (task_rq(next) != rq || !task_on_rq_queued(next)) {
+			WARN_ON(migrate_pinned_tasks);
 			raw_spin_unlock(&next->pi_lock);
 			continue;
 		}
@@ -6390,12 +6420,15 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf)
 			rq = dead_rq;
 			*rf = orf;
 			rq_relock(rq, rf);
+			if (!(rq->clock_update_flags & RQCF_UPDATED))
+				update_rq_clock(rq);
 		}
 		raw_spin_unlock(&next->pi_lock);
 	}
 
 	rq->stop = stop;
 }
+
 #endif /* CONFIG_HOTPLUG_CPU */
 
 void set_rq_online(struct rq *rq)
@@ -6577,7 +6610,7 @@ int sched_cpu_dying(unsigned int cpu)
 		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
 		set_rq_offline(rq);
 	}
-	migrate_tasks(rq, &rf);
+	migrate_tasks(rq, &rf, true);
 	BUG_ON(rq->nr_running != 1);
 	rq_unlock_irqrestore(rq, &rf);
 
