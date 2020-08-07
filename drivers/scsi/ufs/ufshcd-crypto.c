@@ -187,7 +187,10 @@ int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba)
 	hba->ksm.ksm_ll_ops = ufshcd_ksm_ops;
 	/* UFS only supports 8 bytes for any DUN */
 	hba->ksm.max_dun_bytes_supported = 8;
+<<<<<<< HEAD   (f04a11 Merge 7b4ea9456dd3 ("Revert "x86/mm/64: Do not sync vmalloc/)
 	hba->ksm.features = BLK_CRYPTO_FEATURE_STANDARD_KEYS;
+=======
+>>>>>>> BRANCH (86cfcc Merge tag 'dlm-5.9' of git://git.kernel.org/pub/scm/linux/ke)
 	hba->ksm.dev = hba->dev;
 
 	/*
