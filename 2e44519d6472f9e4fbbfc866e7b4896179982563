@@ -69,6 +69,23 @@
       "revId": "2e44519d6472f9e4fbbfc866e7b4896179982563",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bffd538b_ec487026",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-08-07T15:43:15Z",
+      "side": 1,
+      "message": "The GKI kernel enables CONFIG_UCLAMP_TASK so this sched feature is not needed. Is there a reason you can\u0027t enable uclamp?",
+      "revId": "2e44519d6472f9e4fbbfc866e7b4896179982563",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
