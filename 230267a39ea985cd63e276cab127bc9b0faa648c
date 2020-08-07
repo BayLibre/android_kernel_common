@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "757100ae_220a7c15",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6361,
+      "author": {
+        "id": 1318918
+      },
+      "writtenOn": "2020-08-07T18:31:17Z",
+      "side": 1,
+      "message": "normal case kthreads will be true\n\npause case kthreads will be false\n\nsuggest we call this variable migrate_pinned_kthreads.\n\nThis is a neat idea, lighter than our implementation where we dequeue such tasks temporarily. Vincent\u0027s idea will be an issue if there are hundreds of pinned kthreads - we will end up skipping them many times. But we only have a handful of kernel threads so this should be fine.",
+      "range": {
+        "startLine": 6361,
+        "startChar": 0,
+        "endLine": 6361,
+        "endChar": 76
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
