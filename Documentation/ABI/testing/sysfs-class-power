@@ -205,8 +205,13 @@ Description:
 		Valid values: "Unknown", "Good", "Overheat", "Dead",
 			      "Over voltage", "Unspecified failure", "Cold",
 			      "Watchdog timer expire", "Safety timer expire",
+<<<<<<< HEAD   (fe0d06 Revert "ANDROID: mnt: Add filesystem private data to mount p)
 			      "Over current", "Calibration required",
 			      "Warm", "Cool", "Hot"
+=======
+			      "Over current", "Calibration required", "Warm",
+			      "Cool", "Hot"
+>>>>>>> BRANCH (449dc8 Merge tag 'for-v5.9' of git://git.kernel.org/pub/scm/linux/k)
 
 What:		/sys/class/power_supply/<supply_name>/precharge_current
 Date:		June 2017

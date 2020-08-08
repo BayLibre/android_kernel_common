@@ -17,7 +17,11 @@
 #include <linux/buffer_head.h>
 #include <linux/keyslot-manager.h>
 #include <linux/sched/mm.h>
+<<<<<<< HEAD   (fe0d06 Revert "ANDROID: mnt: Add filesystem private data to mount p)
 #include <linux/uio.h>
+=======
+#include <linux/slab.h>
+>>>>>>> BRANCH (449dc8 Merge tag 'for-v5.9' of git://git.kernel.org/pub/scm/linux/k)
 
 #include "fscrypt_private.h"
 
@@ -197,7 +201,7 @@ int fscrypt_prepare_inline_crypt_key(struct fscrypt_prepared_key *prep_key,
 fail:
 	for (i = 0; i < queue_refs; i++)
 		blk_put_queue(blk_key->devs[i]);
-	kzfree(blk_key);
+	kfree_sensitive(blk_key);
 	return err;
 }
 
@@ -211,7 +215,7 @@ void fscrypt_destroy_inline_crypt_key(struct fscrypt_prepared_key *prep_key)
 			blk_crypto_evict_key(blk_key->devs[i], &blk_key->base);
 			blk_put_queue(blk_key->devs[i]);
 		}
-		kzfree(blk_key);
+		kfree_sensitive(blk_key);
 	}
 }
 
