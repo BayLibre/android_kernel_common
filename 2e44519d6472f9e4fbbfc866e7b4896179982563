@@ -86,6 +86,24 @@
       "revId": "2e44519d6472f9e4fbbfc866e7b4896179982563",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b95bcaf8_2148ba12",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1407350
+      },
+      "writtenOn": "2020-08-08T01:43:30Z",
+      "side": 1,
+      "message": "I just go through the uclamp mechanism import from 5.4 kernel. it should can been used to fx this issue. we can define  sysctl_sched_uclamp_util_min and  sysctl_sched_uclamp_util_max.\nThanks Todd.",
+      "parentUuid": "bffd538b_ec487026",
+      "revId": "2e44519d6472f9e4fbbfc866e7b4896179982563",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
