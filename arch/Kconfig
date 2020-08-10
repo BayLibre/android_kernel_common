@@ -840,6 +840,18 @@ config OLD_SIGACTION
 config COMPAT_OLD_SIGACTION
 	bool
 
+config IGNORE_ANY_SIGNALS
+	tristate "ignore any signals when coredump is doing"
+	help
+	  Thie sigkill is very special. If a process recives a sigkill, it will
+	  immediately respond to the sigkill. When a process is abnormal and
+	  collecting coredump, the do_coredump flow will be interrupted by
+	  SIGKILL, causing the coredump to be truncated. This truncated coredump
+	  is incomplete, and also gdb can't load.
+	  Maybe we can ignore any signlas when process is collecting coredump.
+
+	  This config can decide whether to ignore any signals.
+
 config 64BIT_TIME
 	def_bool ARCH_HAS_64BIT_TIME
 	help

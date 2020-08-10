@@ -896,6 +896,13 @@ static bool prepare_signal(int sig, struct task_struct *p, bool force)
 	sigset_t flush;
 
 	if (signal->flags & (SIGNAL_GROUP_EXIT | SIGNAL_GROUP_COREDUMP)) {
+		if (IS_ENABLED(CONFIG_IGNORE_ANY_SIGNALS)) {
+			if (signal->flags & SIGNAL_GROUP_COREDUMP) {
+				pr_debug("[%d:%s] skip sig %d due to coredump"
+					" is doing\n",p->pid, p->comm, sig);
+				return false;
+			}
+		}
 		if (!(signal->flags & SIGNAL_GROUP_EXIT))
 			return sig == SIGKILL;
 		/*
