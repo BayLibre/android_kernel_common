@@ -105,6 +105,24 @@
       "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4ea7a5e_0efdf837",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2020-08-10T11:12:33Z",
+      "side": 1,
+      "message": "In case I did not describe clearly, I submitted a change here for discuss:\nhttps://android-review.googlesource.com/c/kernel/build/+/1394687\n\nIt should be OK when partners use different path for the kernel dir(needs this change as well with the KERNEL_DIR settings removed and common replaced with KERNEL_DIR).\nbut for build.configs that not in the KERNEL_DIR, need to specify for KERNEL_DIR explicitly in the build config file.\nNot sure if that works for the cases discussed here?",
+      "parentUuid": "a565c240_7683ec5a",
+      "revId": "2c038d3e38cf8bd341ced2e2157900e48fc6ae6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
