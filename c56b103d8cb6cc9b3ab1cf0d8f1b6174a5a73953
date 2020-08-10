@@ -37,6 +37,30 @@
     },
     {
       "key": {
+        "uuid": "aadeacb5_96f2420a",
+        "filename": "android/abi_gki_aarch64_oplus",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1725627
+      },
+      "writtenOn": "2020-08-10T13:00:52Z",
+      "side": 1,
+      "message": "\u003e Prefer to use inclusive terms like \u0027deny list\u0027 or \u0027allow list\u0027; see https://developers.google.com/style/word-list#blacklist for more details.\n\nWe have checked the latest ABI script, and it will still write [abi_whitelist] into whitelist file. Maybe it needs to be fixed by Google.",
+      "parentUuid": "870d3771_931555a1",
+      "range": {
+        "startLine": 1,
+        "startChar": 5,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "c56b103d8cb6cc9b3ab1cf0d8f1b6174a5a73953",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9b846fc7_93e6ed5f",
         "filename": "android/abi_gki_aarch64_oplus",
         "patchSetId": 1
