@@ -32,6 +32,10 @@
 
 #include "utils.h"
 
+/* Can't include uapi/linux/fs.h because it clashes with mount.h */
+#define	FS_IOC_GETFLAGS			_IOR('f', 1, long)
+#define FS_VERITY_FL			0x00100000 /* Verity protected inode */
+
 #define TEST_FAILURE 1
 #define TEST_SUCCESS 0
 
@@ -3632,7 +3636,7 @@ out:
 	return result;
 }
 
-static int validate_verity(const char *mount_dir, struct test_file *file,
+static int enable_verity(const char *mount_dir, struct test_file *file,
 			   EVP_PKEY *key, X509 *cert)
 {
 	int result = TEST_FAILURE;
@@ -3647,9 +3651,12 @@ static int validate_verity(const char *mount_dir, struct test_file *file,
 	};
 	unsigned char *sig = NULL;
 	size_t sig_len;
+	uint64_t flags;
 
 	TEST(filename = concat_file_name(mount_dir, file->name), filename);
 	TEST(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
+	TESTEQUAL(ioctl(fd, FS_IOC_GETFLAGS, &flags), 0);
+	TESTEQUAL(flags & FS_VERITY_FL, 0);
 	TESTEQUAL(sign(key, cert, file->root_hash, 32, &sig, &sig_len), 0);
 
 	fear.sig_size = sig_len;
@@ -3659,6 +3666,25 @@ static int validate_verity(const char *mount_dir, struct test_file *file,
 	result = TEST_SUCCESS;
 out:
 	free(sig);
+	close(fd);
+	free(filename);
+	return result;
+}
+
+static int validate_verity(const char *mount_dir, struct test_file *file)
+{
+	int result = TEST_FAILURE;
+	char *filename = concat_file_name(mount_dir, file->name);
+	int fd = -1;
+	uint64_t flags;
+
+	TEST(filename = concat_file_name(mount_dir, file->name), filename);
+	TEST(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
+	TESTEQUAL(ioctl(fd, FS_IOC_GETFLAGS, &flags), 0);
+	TESTEQUAL(flags & FS_VERITY_FL, FS_VERITY_FL);
+
+	result = TEST_SUCCESS;
+out:
 	close(fd);
 	free(filename);
 	return result;
@@ -3691,14 +3717,13 @@ static int verity_test(const char *mount_dir)
 				     file->sig.add_data), 0);
 
 		TESTEQUAL(emit_partial_test_file_hash(mount_dir, file), 0);
+		TESTEQUAL(enable_verity(mount_dir, file, key, cert), 0);
 	}
 
 	for (i = 0; i < file_num; i++)
-		TESTEQUAL(validate_verity(mount_dir, &test.files[i], key, cert),
-			  0);
+		TESTEQUAL(validate_verity(mount_dir, &test.files[i]), 0);
 
 	result = TEST_SUCCESS;
-
 out:
 	X509_free(cert);
 	EVP_PKEY_free(key);
