@@ -255,24 +255,33 @@ static int enable_verity(struct file *filp,
 	if (err)
 		goto out;
 
-	/*
-	 * Build the Merkle tree.  Don't hold the inode lock during this, since
-	 * on huge files this may take a very long time and we don't want to
-	 * force unrelated syscalls like chown() to block forever.  We don't
-	 * need the inode lock here because deny_write_access() already prevents
-	 * the file from being written to or truncated, and we still serialize
-	 * ->begin_enable_verity() and ->end_enable_verity() using the inode
-	 * lock and only allow one process to be here at a time on a given file.
-	 */
-	pr_debug("Building Merkle tree...\n");
-	BUILD_BUG_ON(sizeof(desc->root_hash) < FS_VERITY_MAX_DIGEST_SIZE);
-	err = build_merkle_tree(filp, &params, desc->root_hash);
-	if (err) {
-		fsverity_err(inode, "Error %d building Merkle tree", err);
-		goto rollback;
+	if (vops->get_root_hash) {
+		err = vops->get_root_hash(filp, arg, desc->root_hash);
+		if (err)
+			goto rollback;
+	} else {
+		/*
+		 * Build the Merkle tree.  Don't hold the inode lock during this, since
+		 * on huge files this may take a very long time and we don't want to
+		 * force unrelated syscalls like chown() to block forever.  We don't
+		 * need the inode lock here because deny_write_access() already prevents
+		 * the file from being written to or truncated, and we still serialize
+		 * ->begin_enable_verity() and ->end_enable_verity() using the inode
+		 * lock and only allow one process to be here at a time on a given file.
+		 */
+		pr_debug("Building Merkle tree...\n");
+		BUILD_BUG_ON(sizeof(desc->root_hash) <
+			     FS_VERITY_MAX_DIGEST_SIZE);
+		err = build_merkle_tree(filp, &params, desc->root_hash);
+		if (err) {
+			fsverity_err(inode, "Error %d building Merkle tree",
+				     err);
+			goto rollback;
+		}
+		pr_debug("Done building Merkle tree.  Root hash is %s:%*phN\n",
+			 params.hash_alg->name, params.digest_size,
+			 desc->root_hash);
 	}
-	pr_debug("Done building Merkle tree.  Root hash is %s:%*phN\n",
-		 params.hash_alg->name, params.digest_size, desc->root_hash);
 
 	/*
 	 * Create the fsverity_info.  Don't bother trying to save work by
