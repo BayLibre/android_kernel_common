@@ -50,6 +50,13 @@ static int incfs_get_root_hash(struct file *filp,
 	return 0;
 }
 
+int incfs_verity_get_flags(struct file *f, void __user *arg)
+{
+	u32 flags = (file_inode(f)->i_flags & S_VERITY) ? FS_VERITY_FL : 0;
+
+	return put_user(flags, (int __user *) arg);
+}
+
 const struct fsverity_operations incfs_verityops = {
 	.begin_enable_verity		= incfs_begin_enable_verity,
 	.end_enable_verity		= incfs_end_enable_verity,

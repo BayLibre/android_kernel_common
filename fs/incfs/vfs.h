@@ -31,5 +31,6 @@ static inline struct super_block *file_superblock(struct file *f)
 }
 
 extern const struct fsverity_operations incfs_verityops;
+extern int incfs_verity_get_flags(struct file *f, void __user *arg);
 
 #endif
