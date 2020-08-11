@@ -217,6 +217,7 @@ out:
 	}
 	return vi;
 }
+EXPORT_SYMBOL_GPL(fsverity_create_info);
 
 void fsverity_set_info(struct inode *inode, struct fsverity_info *vi)
 {
@@ -236,6 +237,7 @@ void fsverity_set_info(struct inode *inode, struct fsverity_info *vi)
 		(void)fsverity_get_info(inode);
 	}
 }
+EXPORT_SYMBOL_GPL(fsverity_set_info);
 
 void fsverity_free_info(struct fsverity_info *vi)
 {
@@ -244,6 +246,7 @@ void fsverity_free_info(struct fsverity_info *vi)
 	kfree(vi->tree_params.hashstate);
 	kmem_cache_free(fsverity_info_cachep, vi);
 }
+EXPORT_SYMBOL_GPL(fsverity_free_info);
 
 /* Ensure the inode has an ->i_verity_info */
 static int ensure_verity_info(struct inode *inode)
