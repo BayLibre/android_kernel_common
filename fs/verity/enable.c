@@ -153,11 +153,15 @@ static int build_merkle_tree(struct file *filp,
 			     u8 *root_hash)
 {
 	struct inode *inode = file_inode(filp);
+	const struct fsverity_operations *vops = inode->i_sb->s_vop;
 	u8 *pending_hashes;
 	struct ahash_request *req;
 	u64 blocks;
 	unsigned int level;
 	int err = -ENOMEM;
+
+	if (vops->get_root_hash)
+		return vops->get_root_hash(filp, root_hash);
 
 	if (inode->i_size == 0) {
 		/* Empty file is a special case; root hash is all 0's */
