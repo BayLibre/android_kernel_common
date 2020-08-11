@@ -50,6 +50,29 @@
     },
     {
       "key": {
+        "uuid": "f315af59_32826508",
+        "filename": "android/abi_gki_aarch64_oplus",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-08-11T18:35:12Z",
+      "side": 1,
+      "message": "this symbol is not exported in the kernel at all, so how can this even be here?\n\nIt breaks the build when this patch is submitted.",
+      "range": {
+        "startLine": 75,
+        "startChar": 2,
+        "endLine": 75,
+        "endChar": 11
+      },
+      "revId": "e1e8a127255141e342924a5bc71feac3bb4f6c02",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eb512c40_4aa08d4e",
         "filename": "android/abi_gki_aarch64_oplus",
         "patchSetId": 1
