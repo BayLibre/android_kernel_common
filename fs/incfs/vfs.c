@@ -764,6 +764,8 @@ static long dispatch_ioctl(struct file *f, unsigned int req, unsigned long arg)
 		return ioctl_get_block_count(f, (void __user *)arg);
 	case FS_IOC_ENABLE_VERITY:
 		return fsverity_ioctl_enable(f, (const void __user *)arg);
+	case FS_IOC_GETFLAGS:
+		return incfs_verity_get_flags(f, (void __user *) arg);
 	default:
 		return -EINVAL;
 	}
