@@ -109,6 +109,19 @@ struct fsverity_operations {
 	 */
 	int (*write_merkle_tree_block)(struct inode *inode, const void *buf,
 				       u64 index, int log_blocksize);
+
+	/**
+	 * Return the root hash of the file system
+	 *
+	 * If implemented, the file system already knows the root hash of a
+	 * given file and thus there is no need to calculate the merkle tree
+	 *
+	 * Implementation must validate the arg match the ones previously
+	 * used to calculate root_hash, or return -EINVAL;
+	 */
+	int (*get_root_hash)(struct file *filp,
+			     const struct fsverity_enable_arg *arg,
+			     u8 *root_hash);
 };
 
 #ifdef CONFIG_FS_VERITY
