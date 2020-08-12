@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb0c5a3f_7693f4c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1053408
+      },
+      "writtenOn": "2020-08-12T07:22:28Z",
+      "side": 1,
+      "message": "Hi GregKH, this commit is not correct. This patch leads to a deadlock as described in https://www.spinics.net/lists/netdev/msg663848.html and as a result we had to remove the genl_bind references through https://www.mail-archive.com/netdev@vger.kernel.org/msg335557.html",
+      "revId": "e80ce97d57f9da38f99fe94dd23d1e8229df824b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
