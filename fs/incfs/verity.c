@@ -11,6 +11,7 @@
 #include "verity.h"
 
 #include "data_mgmt.h"
+#include "format.h"
 #include "integrity.h"
 #include "vfs.h"
 
@@ -53,11 +54,6 @@
 /* Largest digest size among all hash algorithms supported by fs-verity. */
 #define FS_VERITY_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
 
-/* Arbitrary limit to bound the kmalloc() size.  Can be changed. */
-#define FS_VERITY_MAX_DESCRIPTOR_SIZE	16128
-#define FS_VERITY_MAX_SIGNATURE_SIZE	(FS_VERITY_MAX_DESCRIPTOR_SIZE - \
-					 sizeof(struct fsverity_descriptor))
-
 static int incfs_get_root_hash(struct file *filp, u8 *root_hash)
 {
 	struct data_file *df = get_incfs_data_file(filp);
@@ -71,11 +67,44 @@ static int incfs_get_root_hash(struct file *filp, u8 *root_hash)
 	return 0;
 }
 
-static int incfs_end_enable_verity(struct file *filp)
+static int incfs_end_enable_verity(struct file *filp, u8 *sig, size_t sig_size)
 {
 	struct inode *inode = file_inode(filp);
+	struct mem_range signature = {
+		.data = sig,
+		.len = sig_size,
+	};
+	struct data_file *df = get_incfs_data_file(filp);
+	struct backing_file_context *bfc;
+	int error;
+	struct incfs_df_verity_signature *vs;
+	loff_t offset;
 
+	if (!df || !df->df_backing_file_context)
+		return -EFSCORRUPTED;
+
+	bfc = df->df_backing_file_context;
+	error = mutex_lock_interruptible(&bfc->bc_mutex);
+	if (error)
+		return error;
+	error = incfs_write_verity_signature_to_backing_file(bfc, signature,
+							     &offset);
+	mutex_unlock(&bfc->bc_mutex);
+	if (error)
+		return error;
+
+	vs = kzalloc(sizeof(*vs), GFP_NOFS);
+	if (!vs)
+		return -ENOMEM;
+
+	*vs = (struct incfs_df_verity_signature) {
+		.size = signature.len,
+		.offset = offset,
+	};
+
+	df->df_verity_signature = vs;
 	inode_set_flags(inode, S_VERITY, S_VERITY);
+
 	return 0;
 }
 
@@ -100,55 +129,7 @@ static enum incfs_hash_tree_algorithm incfs_convert_fsverity_hash_alg(
 	}
 }
 
-/*
- * Validate the given fsverity_descriptor and calculate its digest. The
- * signature (if present) is also checked.
- */
-static struct mem_range incfs_calc_verity_digest(const struct inode *inode,
-					     struct fsverity_descriptor *desc,
-					     u8 *signature, size_t sig_size)
-{
-	enum incfs_hash_tree_algorithm incfs_hash_alg;
-	struct mem_range verity_file_digest;
-	int err;
-	struct incfs_hash_alg *hash_alg;
-
-	incfs_hash_alg = incfs_convert_fsverity_hash_alg(desc->hash_algorithm);
-	if (incfs_hash_alg < 0)
-		return range(ERR_PTR(incfs_hash_alg), 0);
-
-	hash_alg = incfs_get_hash_alg(incfs_hash_alg);
-	if (IS_ERR(hash_alg))
-		return range((u8 *)hash_alg, 0);
-
-	verity_file_digest = range(kzalloc(hash_alg->digest_size, GFP_KERNEL),
-				   hash_alg->digest_size);
-	if (!verity_file_digest.data)
-		return range(ERR_PTR(-ENOMEM), 0);
-
-	err = incfs_compute_file_digest(hash_alg, desc,
-					verity_file_digest.data);
-	if (err) {
-		pr_err("Error %d computing file digest", err);
-		goto out;
-	}
-	pr_debug("Computed file digest: %s:%*phN\n",
-		 hash_alg->name, (int) verity_file_digest.len,
-		 verity_file_digest.data);
-
-	err = __fsverity_verify_signature(inode, desc->signature,
-					  le32_to_cpu(desc->sig_size),
-					  verity_file_digest.data,
-					  desc->hash_algorithm);
-out:
-	if (err) {
-		kfree(verity_file_digest.data);
-		verity_file_digest = range(ERR_PTR(err), 0);
-	}
-	return verity_file_digest;
-}
-
-static struct mem_range incfs_get_verity_digest(struct inode *inode)
+static inline struct mem_range incfs_get_verity_digest(struct inode *inode)
 {
 	struct inode_info *node = get_incfs_node(inode);
 	struct data_file *df;
@@ -200,48 +181,113 @@ static void incfs_set_verity_digest(struct inode *inode,
 		kfree(verity_file_digest.data);
 }
 
-static int incfs_enable_verity(struct file *filp,
-			 const struct fsverity_enable_arg *arg)
+/*
+ * Validate the given fsverity_descriptor and calculate its digest. The
+ * signature (if present) is also checked.
+ */
+static struct mem_range incfs_calc_verity_digest_from_desc(
+					const struct inode *inode,
+					struct fsverity_descriptor *desc,
+					u8 *signature, size_t sig_size)
 {
-	struct inode *inode = file_inode(filp);
-	struct fsverity_descriptor *desc;
-	u8 *signature = NULL;
+	enum incfs_hash_tree_algorithm incfs_hash_alg;
 	struct mem_range verity_file_digest;
 	int err;
+	struct incfs_hash_alg *hash_alg;
 
-	/* Start initializing the fsverity_descriptor */
-	desc = kzalloc(sizeof(*desc), GFP_KERNEL);
-	if (!desc)
-		return -ENOMEM;
+	incfs_hash_alg = incfs_convert_fsverity_hash_alg(desc->hash_algorithm);
+	if (incfs_hash_alg < 0)
+		return range(ERR_PTR(incfs_hash_alg), 0);
 
-	desc->version = 1;
-	desc->hash_algorithm = arg->hash_algorithm;
-	desc->log_blocksize = ilog2(arg->block_size);
-	desc->data_size = cpu_to_le64(inode->i_size);
+	hash_alg = incfs_get_hash_alg(incfs_hash_alg);
+	if (IS_ERR(hash_alg))
+		return range((u8 *)hash_alg, 0);
 
-	/* Get the signature if the user provided one */
-	if (arg->sig_size) {
-		signature = memdup_user(u64_to_user_ptr(arg->sig_ptr),
-					arg->sig_size);
-		if (IS_ERR(signature)) {
-			err = PTR_ERR(signature);
-			signature = NULL;
-		}
+	verity_file_digest = range(kzalloc(hash_alg->digest_size, GFP_KERNEL),
+				   hash_alg->digest_size);
+	if (!verity_file_digest.data)
+		return range(ERR_PTR(-ENOMEM), 0);
+
+	err = incfs_compute_file_digest(hash_alg, desc,
+					verity_file_digest.data);
+	if (err) {
+		pr_err("Error %d computing file digest", err);
+		goto out;
 	}
+	pr_debug("Computed file digest: %s:%*phN\n",
+		 hash_alg->name, (int) verity_file_digest.len,
+		 verity_file_digest.data);
+
+	err = __fsverity_verify_signature(inode, desc->signature,
+					  le32_to_cpu(desc->sig_size),
+					  verity_file_digest.data,
+					  desc->hash_algorithm);
+out:
+	if (err) {
+		kfree(verity_file_digest.data);
+		verity_file_digest = range(ERR_PTR(err), 0);
+	}
+	return verity_file_digest;
+}
+
+static struct mem_range incfs_calc_verity_digest(
+					struct inode *inode, struct file *filp,
+					u8 *signature, size_t signature_size,
+					int hash_algorithm)
+{
+	struct fsverity_descriptor *desc = kzalloc(sizeof(*desc), GFP_KERNEL);
+	int err;
+	struct mem_range verity_file_digest;
+
+	if (!desc)
+		return range(ERR_PTR(-ENOMEM), 0);
+
+	*desc = (struct fsverity_descriptor) {
+		.version = 1,
+		.hash_algorithm = hash_algorithm,
+		.log_blocksize = ilog2(INCFS_DATA_FILE_BLOCK_SIZE),
+		.data_size = cpu_to_le64(inode->i_size),
+	};
 
 	err = incfs_get_root_hash(filp, desc->root_hash);
 	if (err)
 		goto out;
 
-	verity_file_digest = incfs_calc_verity_digest(inode, desc, signature,
-							arg->sig_size);
+	verity_file_digest = incfs_calc_verity_digest_from_desc(inode, desc,
+						signature, signature_size);
+
+out:
+	kfree(desc);
+	if (err)
+		return range(ERR_PTR(err), 0);
+	return verity_file_digest;
+}
+
+static int incfs_enable_verity(struct file *filp,
+			 const struct fsverity_enable_arg *arg)
+{
+	struct inode *inode = file_inode(filp);
+	u8 *signature = NULL;
+	struct mem_range verity_file_digest;
+	int err;
+
+	/* Get the signature if the user provided one */
+	if (arg->sig_size) {
+		signature = memdup_user(u64_to_user_ptr(arg->sig_ptr),
+					arg->sig_size);
+		if (IS_ERR(signature))
+			return PTR_ERR(signature);
+	}
+
+	verity_file_digest = incfs_calc_verity_digest(inode, filp, signature,
+					arg->sig_size, arg->hash_algorithm);
 	if (IS_ERR(verity_file_digest.data)) {
 		err = PTR_ERR(verity_file_digest.data);
 		verity_file_digest.data = NULL;
 		goto out;
 	}
 
-	err = incfs_end_enable_verity(filp);
+	err = incfs_end_enable_verity(filp, signature, arg->sig_size);
 	if (err)
 		goto out;
 
@@ -250,7 +296,6 @@ static int incfs_enable_verity(struct file *filp,
 	verity_file_digest.data = NULL;
 out:
 	kfree(signature);
-	kfree(desc);
 	kfree(verity_file_digest.data);
 	if (err)
 		pr_err("failed with err %d", err);
@@ -291,4 +336,104 @@ int incfs_ioctl_enable_verity(struct file *filp, const void __user *uarg)
 		return -EINVAL;
 
 	return incfs_enable_verity(filp, &arg);
+}
+
+static u8 *incfs_get_verity_signature(struct file *filp, size_t *sig_size)
+{
+	struct data_file *df = get_incfs_data_file(filp);
+	struct incfs_df_verity_signature *vs;
+	u8 *signature;
+	int res;
+
+	if (!df || !df->df_backing_file_context)
+		return ERR_PTR(-EFSCORRUPTED);
+
+	vs = df->df_verity_signature;
+	if (!vs)
+		return ERR_PTR(-EINVAL);
+
+	signature = kzalloc(vs->size, GFP_KERNEL);
+	if (!signature)
+		return ERR_PTR(-ENOMEM);
+
+	res = incfs_kread(df->df_backing_file_context,
+			  signature, vs->size, vs->offset);
+
+	if (res < 0)
+		goto err_out;
+
+	if (res != vs->size) {
+		res = -EINVAL;
+		goto err_out;
+	}
+
+	*sig_size = vs->size;
+	return signature;
+
+err_out:
+	kfree(signature);
+	return ERR_PTR(res);
+}
+
+/* Ensure data_file->df_verity_file_digest is populated */
+static int ensure_verity_info(struct inode *inode, struct file *filp)
+{
+	struct mem_range verity_file_digest;
+	u8 *signature = NULL;
+	size_t sig_size;
+	int err = 0;
+
+	/* See if this file is already verity enabled */
+	verity_file_digest = incfs_get_verity_digest(inode);
+	if (verity_file_digest.data)
+		return 0;
+
+	signature = incfs_get_verity_signature(filp, &sig_size);
+	if (IS_ERR(signature))
+		return PTR_ERR(signature);
+
+	verity_file_digest = incfs_calc_verity_digest(inode, filp, signature,
+						     sig_size,
+						     FS_VERITY_HASH_ALG_SHA256);
+	if (IS_ERR(verity_file_digest.data)) {
+		err = PTR_ERR(verity_file_digest.data);
+		verity_file_digest.data = NULL;
+		goto out;
+	}
+
+	incfs_set_verity_digest(inode, verity_file_digest);
+	verity_file_digest.data = NULL;
+
+out:
+	kfree(verity_file_digest.data);
+	kfree(signature);
+	return err;
+}
+
+/**
+ * incfs_fsverity_file_open() - prepare to open a file that may be
+ * verity-enabled
+ * @inode: the inode being opened
+ * @filp: the struct file being set up
+ *
+ * When opening a verity file, deny the open if it is for writing.  Otherwise,
+ * set up data_file->df_verity_file_digest if not already done.
+ *
+ * Return: 0 on success, -errno on failure
+ */
+int incfs_fsverity_file_open(struct inode *inode, struct file *filp)
+{
+	struct data_file *df = get_incfs_data_file(filp);
+
+	if (!df || !df->df_verity_signature)
+		return 0;
+
+	if (filp->f_mode & FMODE_WRITE) {
+		pr_debug("Denying opening verity file (ino %lu) for write\n",
+			 inode->i_ino);
+		return -EPERM;
+	}
+
+	inode_set_flags(inode, S_VERITY, S_VERITY);
+	return ensure_verity_info(inode, filp);
 }
