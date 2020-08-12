@@ -273,6 +273,8 @@ struct data_file {
 	struct mtree *df_hash_tree;
 
 	struct incfs_df_signature *df_signature;
+
+	struct incfs_df_verity_descriptor *df_verity_descriptor;
 };
 
 struct dir_file {
