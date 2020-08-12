@@ -120,6 +120,7 @@ enum incfs_metadata_type {
 	INCFS_MD_FILE_ATTR = 2,
 	INCFS_MD_SIGNATURE = 3,
 	INCFS_MD_STATUS = 4,
+	INCFS_MD_VERITY_DESCRIPTOR = 5,
 };
 
 enum incfs_file_header_flags {
@@ -255,6 +256,21 @@ struct incfs_status {
 	__le32 is_dummy[6]; /* Spare fields */
 } __packed;
 
+/* Metadata record for verity descriptor. Type = INCFS_MD_VERITY_DESCRIPTOR */
+struct incfs_file_verity_descriptor {
+	struct incfs_md_header vd_header;
+
+	__le32 vd_size; /* The size of the signature. */
+
+	__le64 vd_offset; /* Signature's offset in the backing file */
+} __packed;
+
+/* In memory version of above */
+struct incfs_df_verity_descriptor {
+	u32 size;
+	u64 offset;
+};
+
 /* State of the backing file. */
 struct backing_file_context {
 	/* Protects writes to bc_file */
@@ -280,6 +296,7 @@ struct metadata_handler {
 		struct incfs_blockmap blockmap;
 		struct incfs_file_signature signature;
 		struct incfs_status status;
+		struct incfs_file_verity_descriptor verity_descriptor;
 	} md_buffer;
 
 	int (*handle_blockmap)(struct incfs_blockmap *bm,
@@ -288,6 +305,8 @@ struct metadata_handler {
 				 struct metadata_handler *handler);
 	int (*handle_status)(struct incfs_status *sig,
 				 struct metadata_handler *handler);
+	int (*handle_verity_descriptor)(struct incfs_file_verity_descriptor *d,
+					struct metadata_handler *handler);
 };
 #define INCFS_MAX_METADATA_RECORD_SIZE \
 	sizeof_field(struct metadata_handler, md_buffer)
@@ -328,6 +347,9 @@ int incfs_write_status_to_backing_file(struct backing_file_context *bfc,
 				       loff_t status_offset,
 				       u32 data_blocks_written,
 				       u32 hash_blocks_written);
+int incfs_write_verity_descriptor_to_backing_file(
+		struct backing_file_context *bfc, struct mem_range descriptor,
+		loff_t *offset);
 
 int incfs_make_empty_backing_file(struct backing_file_context *bfc,
 				  incfs_uuid_t *uuid, u64 file_size);

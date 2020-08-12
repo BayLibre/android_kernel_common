@@ -322,9 +322,6 @@ static int write_new_status_to_backing_file(struct backing_file_context *bfc,
 		.is_hash_blocks_written = cpu_to_le32(hash_blocks_written),
 	};
 
-	if (!bfc)
-		return -EFAULT;
-
 	LOCK_REQUIRED(bfc->bc_mutex);
 	rollback_pos = incfs_get_end_offset(bfc->bc_file);
 	result = append_md_to_backing_file(bfc, &is.is_header);
@@ -342,6 +339,9 @@ int incfs_write_status_to_backing_file(struct backing_file_context *bfc,
 	struct incfs_status is;
 	int result;
 
+	if (!bfc)
+		return -EFAULT;
+
 	if (status_offset == 0)
 		return write_new_status_to_backing_file(bfc,
 				data_blocks_written, hash_blocks_written);
@@ -357,6 +357,40 @@ int incfs_write_status_to_backing_file(struct backing_file_context *bfc,
 		return -EIO;
 
 	return 0;
+}
+
+int incfs_write_verity_descriptor_to_backing_file(
+		struct backing_file_context *bfc, struct mem_range descriptor,
+		loff_t *offset)
+{
+	struct incfs_file_verity_descriptor vd = {};
+	int result = 0;
+	loff_t rollback_pos = 0;
+
+	rollback_pos = incfs_get_end_offset(bfc->bc_file);
+
+	vd.vd_header.h_md_entry_type = INCFS_MD_VERITY_DESCRIPTOR;
+	vd.vd_header.h_record_size = cpu_to_le16(sizeof(vd));
+	vd.vd_header.h_next_md_offset = cpu_to_le64(0);
+	if (descriptor.data != NULL && descriptor.len > 0) {
+		loff_t pos = incfs_get_end_offset(bfc->bc_file);
+
+		vd.vd_size = cpu_to_le32(descriptor.len);
+		vd.vd_offset = cpu_to_le64(pos);
+
+		result = write_to_bf(bfc, descriptor.data, descriptor.len, pos);
+		if (result)
+			goto err;
+
+		*offset = pos;
+	}
+
+	result = append_md_to_backing_file(bfc, &vd.vd_header);
+err:
+	if (result)
+		/* Error, rollback file changes */
+		truncate_backing_file(bfc, rollback_pos);
+	return result;
 }
 
 /*
@@ -684,6 +718,11 @@ int incfs_read_next_metadata_record(struct backing_file_context *bfc,
 		if (handler->handle_status)
 			res = handler->handle_status(
 				&handler->md_buffer.status, handler);
+		break;
+	case INCFS_MD_VERITY_DESCRIPTOR:
+		if (handler->handle_verity_descriptor)
+			res = handler->handle_verity_descriptor(
+				&handler->md_buffer.verity_descriptor, handler);
 		break;
 	default:
 		res = -ENOTSUPP;
