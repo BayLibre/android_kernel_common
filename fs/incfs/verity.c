@@ -11,6 +11,7 @@
 #include "verity.h"
 
 #include "data_mgmt.h"
+#include "format.h"
 #include "integrity.h"
 #include "vfs.h"
 
@@ -50,8 +51,6 @@
  *    rest of the process is completed.
  */
 
-#define FS_VERITY_MAX_SIGNATURE_SIZE	16128
-
 static int incfs_get_root_hash(struct file *filp, u8 *root_hash)
 {
 	struct data_file *df = get_incfs_data_file(filp);
@@ -65,11 +64,57 @@ static int incfs_get_root_hash(struct file *filp, u8 *root_hash)
 	return 0;
 }
 
-static int incfs_end_enable_verity(struct file *filp)
+static int incfs_end_enable_verity(struct file *filp, u8 *sig, size_t sig_size)
 {
 	struct inode *inode = file_inode(filp);
+	struct mem_range signature = {
+		.data = sig,
+		.len = sig_size,
+	};
+	struct data_file *df = get_incfs_data_file(filp);
+	struct backing_file_context *bfc;
+	int error;
+	struct incfs_df_verity_signature *vs;
+	loff_t offset;
+	__le64 verity_attr_value = cpu_to_le64(1);
 
+	if (!df || !df->df_backing_file_context)
+		return -EFSCORRUPTED;
+
+	bfc = df->df_backing_file_context;
+	error = mutex_lock_interruptible(&bfc->bc_mutex);
+	if (error)
+		return error;
+	error = incfs_write_verity_signature_to_backing_file(bfc, signature,
+							     &offset);
+	mutex_unlock(&bfc->bc_mutex);
+	if (error)
+		return error;
+
+	/*
+	 * Set verity xattr so we can set S_VERITY without opening backing file
+	 */
+	error = vfs_setxattr(bfc->bc_file->f_path.dentry,
+			     INCFS_XATTR_VERITY_NAME,
+			     (char *) &verity_attr_value,
+			     sizeof(verity_attr_value),	XATTR_CREATE);
+	if (error) {
+		pr_warn("incfs: error setting verity xattr: %d\n", error);
+		return error;
+	}
+
+	vs = kzalloc(sizeof(*vs), GFP_NOFS);
+	if (!vs)
+		return -ENOMEM;
+
+	*vs = (struct incfs_df_verity_signature) {
+		.size = signature.len,
+		.offset = offset,
+	};
+
+	df->df_verity_signature = vs;
 	inode_set_flags(inode, S_VERITY, S_VERITY);
+
 	return 0;
 }
 
@@ -94,13 +139,66 @@ static enum incfs_hash_tree_algorithm incfs_convert_fsverity_hash_alg(
 	}
 }
 
+static inline struct mem_range incfs_get_verity_digest(struct inode *inode)
+{
+	struct inode_info *node = get_incfs_node(inode);
+	struct data_file *df;
+	struct mem_range verity_file_digest;
+
+	if (!node) {
+		pr_warn("Invalid inode\n");
+		return range(NULL, 0);
+	}
+
+	df = node->n_file;
+
+	/*
+	 * Pairs with the cmpxchg_release() in fsverity_set_file_digest().
+	 * I.e., another task may publish ->df_verity_file_digest concurrently,
+	 * executing a RELEASE barrier.  We need to use smp_load_acquire() here
+	 * to safely ACQUIRE the memory the other task published.
+	 */
+	verity_file_digest.data = smp_load_acquire(
+					&df->df_verity_file_digest.data);
+	verity_file_digest.len = df->df_verity_file_digest.len;
+	return verity_file_digest;
+}
+
+static void incfs_set_verity_digest(struct inode *inode,
+				     struct mem_range verity_file_digest)
+{
+	struct inode_info *node = get_incfs_node(inode);
+	struct data_file *df;
+
+	if (!node) {
+		pr_warn("Invalid inode\n");
+		return;
+	}
+
+	df = node->n_file;
+	df->df_verity_file_digest.len = verity_file_digest.len;
+
+	/*
+	 * Multiple tasks may race to set ->df_verity_file_digest.data, so use
+	 * cmpxchg_release().  This pairs with the smp_load_acquire() in
+	 * fsverity_get_file_digest().  I.e., here we publish
+	 * ->df_verity_file_digest.data, with a RELEASE barrier so that other
+	 * tasks can ACQUIRE it.
+	 */
+	if (cmpxchg_release(&df->df_verity_file_digest.data, NULL,
+			    verity_file_digest.data) != NULL)
+		/* Lost the race, so free the file_digest we allocated. */
+		kfree(verity_file_digest.data);
+}
+
 /*
  * Calculate the digest of the fsverity_descriptor. The signature (if present)
  * is also checked.
  */
-static struct mem_range incfs_calc_verity_digest(const struct inode *inode,
-					     struct fsverity_descriptor *desc,
-					     u8 *signature, size_t sig_size)
+static struct mem_range incfs_calc_verity_digest_from_desc(
+					const struct inode *inode,
+					struct fsverity_descriptor *desc,
+					u8 *signature, size_t sig_size)
 {
 	enum incfs_hash_tree_algorithm incfs_hash_alg;
 	struct mem_range verity_file_digest;
@@ -130,8 +228,7 @@ static struct mem_range incfs_calc_verity_digest(const struct inode *inode,
 		 hash_alg->name, (int) verity_file_digest.len,
 		 verity_file_digest.data);
 
-	err = __fsverity_verify_signature(inode, desc->signature,
-					  le32_to_cpu(desc->sig_size),
+	err = __fsverity_verify_signature(inode, signature, sig_size,
 					  verity_file_digest.data,
 					  desc->hash_algorithm);
 out:
@@ -142,77 +239,46 @@ out:
 	return verity_file_digest;
 }
 
-static struct mem_range incfs_get_verity_digest(struct inode *inode)
+static struct mem_range incfs_calc_verity_digest(
+					struct inode *inode, struct file *filp,
+					u8 *signature, size_t signature_size,
+					int hash_algorithm)
 {
-	struct inode_info *node = get_incfs_node(inode);
-	struct data_file *df;
+	struct fsverity_descriptor *desc = kzalloc(sizeof(*desc), GFP_KERNEL);
+	int err;
 	struct mem_range verity_file_digest;
 
-	if (!node) {
-		pr_warn("Invalid inode\n");
-		return range(NULL, 0);
-	}
+	if (!desc)
+		return range(ERR_PTR(-ENOMEM), 0);
 
-	df = node->n_file;
+	*desc = (struct fsverity_descriptor) {
+		.version = 1,
+		.hash_algorithm = hash_algorithm,
+		.log_blocksize = ilog2(INCFS_DATA_FILE_BLOCK_SIZE),
+		.data_size = cpu_to_le64(inode->i_size),
+	};
 
-	/*
-	 * Pairs with the cmpxchg_release() in incfs_set_file_digest().
-	 * I.e., another task may publish ->df_verity_file_digest concurrently,
-	 * executing a RELEASE barrier.  We need to use smp_load_acquire() here
-	 * to safely ACQUIRE the memory the other task published.
-	 */
-	verity_file_digest.data = smp_load_acquire(
-					&df->df_verity_file_digest.data);
-	verity_file_digest.len = df->df_verity_file_digest.len;
+	err = incfs_get_root_hash(filp, desc->root_hash);
+	if (err)
+		goto out;
+
+	verity_file_digest = incfs_calc_verity_digest_from_desc(inode, desc,
+						signature, signature_size);
+
+out:
+	kfree(desc);
+	if (err)
+		return range(ERR_PTR(err), 0);
 	return verity_file_digest;
-}
-
-static void incfs_set_verity_digest(struct inode *inode,
-				     struct mem_range verity_file_digest)
-{
-	struct inode_info *node = get_incfs_node(inode);
-	struct data_file *df;
-
-	if (!node) {
-		pr_warn("Invalid inode\n");
-		kfree(verity_file_digest.data);
-		return;
-	}
-
-	df = node->n_file;
-	df->df_verity_file_digest.len = verity_file_digest.len;
-
-	/*
-	 * Multiple tasks may race to set ->df_verity_file_digest.data, so use
-	 * cmpxchg_release().  This pairs with the smp_load_acquire() in
-	 * incfs_get_file_digest().  I.e., here we publish
-	 * ->df_verity_file_digest.data, with a RELEASE barrier so that other
-	 * tasks can ACQUIRE it.
-	 */
-	if (cmpxchg_release(&df->df_verity_file_digest.data, NULL,
-			    verity_file_digest.data) != NULL)
-		/* Lost the race, so free the file_digest we allocated. */
-		kfree(verity_file_digest.data);
 }
 
 static int incfs_enable_verity(struct file *filp,
 			 const struct fsverity_enable_arg *arg)
 {
 	struct inode *inode = file_inode(filp);
-	struct fsverity_descriptor *desc;
 	u8 *signature = NULL;
 	struct mem_range verity_file_digest;
 	int err;
-
-	/* Start initializing the fsverity_descriptor */
-	desc = kzalloc(sizeof(*desc), GFP_KERNEL);
-	if (!desc)
-		return -ENOMEM;
-
-	desc->version = 1;
-	desc->hash_algorithm = arg->hash_algorithm;
-	desc->log_blocksize = ilog2(arg->block_size);
-	desc->data_size = cpu_to_le64(inode->i_size);
 
 	/* Get the signature if the user provided one */
 	if (arg->sig_size) {
@@ -225,19 +291,15 @@ static int incfs_enable_verity(struct file *filp,
 		}
 	}
 
-	err = incfs_get_root_hash(filp, desc->root_hash);
-	if (err)
-		goto out;
-
-	verity_file_digest = incfs_calc_verity_digest(inode, desc, signature,
-							arg->sig_size);
+	verity_file_digest = incfs_calc_verity_digest(inode, filp, signature,
+					arg->sig_size, arg->hash_algorithm);
 	if (IS_ERR(verity_file_digest.data)) {
 		err = PTR_ERR(verity_file_digest.data);
 		verity_file_digest.data = NULL;
 		goto out;
 	}
 
-	err = incfs_end_enable_verity(filp);
+	err = incfs_end_enable_verity(filp, signature, arg->sig_size);
 	if (err)
 		goto out;
 
@@ -246,7 +308,6 @@ static int incfs_enable_verity(struct file *filp,
 	verity_file_digest.data = NULL;
 out:
 	kfree(signature);
-	kfree(desc);
 	kfree(verity_file_digest.data);
 	if (err)
 		pr_err("%s failed with err %d", __func__, err);
@@ -287,4 +348,97 @@ int incfs_ioctl_enable_verity(struct file *filp, const void __user *uarg)
 		return -EINVAL;
 
 	return incfs_enable_verity(filp, &arg);
+}
+
+static u8 *incfs_get_verity_signature(struct file *filp, size_t *sig_size)
+{
+	struct data_file *df = get_incfs_data_file(filp);
+	struct incfs_df_verity_signature *vs;
+	u8 *signature;
+	int res;
+
+	if (!df || !df->df_backing_file_context)
+		return ERR_PTR(-EFSCORRUPTED);
+
+	vs = df->df_verity_signature;
+	if (!vs)
+		return ERR_PTR(-EINVAL);
+
+	signature = kzalloc(vs->size, GFP_KERNEL);
+	if (!signature)
+		return ERR_PTR(-ENOMEM);
+
+	res = incfs_kread(df->df_backing_file_context,
+			  signature, vs->size, vs->offset);
+
+	if (res < 0)
+		goto err_out;
+
+	if (res != vs->size) {
+		res = -EINVAL;
+		goto err_out;
+	}
+
+	*sig_size = vs->size;
+	return signature;
+
+err_out:
+	kfree(signature);
+	return ERR_PTR(res);
+}
+
+/* Ensure data_file->df_verity_file_digest is populated */
+static int ensure_verity_info(struct inode *inode, struct file *filp)
+{
+	struct mem_range verity_file_digest;
+	u8 *signature = NULL;
+	size_t sig_size;
+	int err = 0;
+
+	/* See if this file is already verity enabled */
+	verity_file_digest = incfs_get_verity_digest(inode);
+	if (verity_file_digest.data)
+		return 0;
+
+	signature = incfs_get_verity_signature(filp, &sig_size);
+	if (IS_ERR(signature))
+		return PTR_ERR(signature);
+
+	verity_file_digest = incfs_calc_verity_digest(inode, filp, signature,
+						     sig_size,
+						     FS_VERITY_HASH_ALG_SHA256);
+	if (IS_ERR(verity_file_digest.data)) {
+		err = PTR_ERR(verity_file_digest.data);
+		verity_file_digest.data = NULL;
+		goto out;
+	}
+
+	incfs_set_verity_digest(inode, verity_file_digest);
+	verity_file_digest.data = NULL;
+
+out:
+	kfree(verity_file_digest.data);
+	kfree(signature);
+	return err;
+}
+
+/**
+ * incfs_fsverity_file_open() - prepare to open a file that may be
+ * verity-enabled
+ * @inode: the inode being opened
+ * @filp: the struct file being set up
+ *
+ * When opening a verity file, deny the open if it is for writing.  Otherwise,
+ * set up data_file->df_verity_file_digest if not already done.
+ *
+ * Return: 0 on success, -errno on failure
+ */
+int incfs_fsverity_file_open(struct inode *inode, struct file *filp)
+{
+	struct data_file *df = get_incfs_data_file(filp);
+
+	if (!df || !df->df_verity_signature)
+		return 0;
+
+	return ensure_verity_info(inode, filp);
 }

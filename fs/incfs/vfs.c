@@ -159,6 +159,8 @@ struct inode_search {
 	struct dentry *backing_dentry;
 
 	size_t size;
+
+	bool verity;
 };
 
 enum parse_parameter {
@@ -255,6 +257,21 @@ static u64 read_size_attr(struct dentry *backing_dentry)
 	return le64_to_cpu(attr_value);
 }
 
+/* Read verity flag from the attribute. Quicker than reading the header */
+static bool read_verity_attr(struct dentry *backing_dentry)
+{
+	__le64 attr_value;
+	ssize_t bytes_read;
+
+	bytes_read = vfs_getxattr(backing_dentry, INCFS_XATTR_VERITY_NAME,
+			(char *)&attr_value, sizeof(attr_value));
+
+	if (bytes_read != sizeof(attr_value))
+		return false;
+
+	return le64_to_cpu(attr_value) != 0;
+}
+
 static int inode_test(struct inode *inode, void *opaque)
 {
 	struct inode_search *search = opaque;
@@ -285,6 +302,8 @@ static int inode_set(struct inode *inode, void *opaque)
 		inode->i_op = &incfs_file_inode_ops;
 		inode->i_fop = &incfs_file_ops;
 		inode->i_mode &= ~0222;
+		if (search->verity)
+			inode_set_flags(inode, S_VERITY, S_VERITY);
 	} else if (S_ISDIR(inode->i_mode)) {
 		inode->i_size = 0;
 		inode->i_blocks = 1;
@@ -319,6 +338,7 @@ static struct inode *fetch_regular_inode(struct super_block *sb,
 		.ino = backing_inode->i_ino,
 		.backing_dentry = backing_dentry,
 		.size = read_size_attr(backing_dentry),
+		.verity = read_verity_attr(backing_dentry),
 	};
 	struct inode *inode = iget5_locked(sb, search.ino, inode_test,
 				inode_set, &search);
@@ -1371,7 +1391,12 @@ static int file_open(struct inode *inode, struct file *file)
 		file->private_data = fd;
 
 		err = make_inode_ready_for_data_ops(mi, inode, backing_file);
+		if (err)
+			goto out;
 
+		err = incfs_fsverity_file_open(inode, file);
+		if (err)
+			goto out;
 	} else if (S_ISDIR(inode->i_mode)) {
 		struct dir_file *dir = NULL;
 
