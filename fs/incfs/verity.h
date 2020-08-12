@@ -8,4 +8,5 @@
 
 int ioctl_enable_verity(struct file *filp, const void __user *uarg);
 
+int incfs_fsverity_file_open(struct inode *inode, struct file *filp);
 #endif
