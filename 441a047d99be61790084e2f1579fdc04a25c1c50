@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a906fef_ce1bb2da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-08-13T10:37:06Z",
+      "side": 1,
+      "message": "A few minor comments on the implementation.",
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "51d62776_462b656c",
+        "filename": "drivers/iommu/io-pgtable-arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-08-13T10:37:06Z",
+      "side": 1,
+      "message": "Better off just taking the \u0027struct io_pgtable *\u0027 instead.",
+      "range": {
+        "startLine": 231,
+        "startChar": 7,
+        "endLine": 231,
+        "endChar": 48
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f68ed1eb_ecb4203e",
+        "filename": "drivers/iommu/io-pgtable-arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-08-13T10:37:06Z",
+      "side": 1,
+      "message": "Better off just taking the \u0027struct io_pgtable *\u0027 instead.",
+      "range": {
+        "startLine": 266,
+        "startChar": 6,
+        "endLine": 266,
+        "endChar": 46
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a97bda12_8e600802",
+        "filename": "drivers/iommu/io-pgtable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-08-13T10:37:06Z",
+      "side": 1,
+      "message": "It is _crucial_ that this returns a cacheable linear map address for a naturally aligned, physically contiguous region of memory and I\u0027m very worried that this is easily overlooked. Passing the order instead of a size would help to convey this, but I also think you need to document these constraints in the kerneldoc.",
+      "range": {
+        "startLine": 82,
+        "startChar": 2,
+        "endLine": 83,
+        "endChar": 22
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f48ead7_697ce237",
+        "filename": "include/linux/io-pgtable.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-08-13T10:37:06Z",
+      "side": 1,
+      "message": "Missing kerneldoc for return value",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 6
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
