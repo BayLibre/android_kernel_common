@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b16908d6_4b6347e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2020-08-13T19:01:04Z",
+      "side": 1,
+      "message": "Addressed comments. Thanks for the feedback!",
+      "parentUuid": "8a906fef_ce1bb2da",
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "51d62776_462b656c",
         "filename": "drivers/iommu/io-pgtable-arm.c",
         "patchSetId": 3
@@ -30,6 +48,30 @@
       "writtenOn": "2020-08-13T10:37:06Z",
       "side": 1,
       "message": "Better off just taking the \u0027struct io_pgtable *\u0027 instead.",
+      "range": {
+        "startLine": 231,
+        "startChar": 7,
+        "endLine": 231,
+        "endChar": 48
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de80a0fa_b17476e2",
+        "filename": "drivers/iommu/io-pgtable-arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2020-08-13T19:01:04Z",
+      "side": 1,
+      "message": "I had thought about doing that, but this function can be called before struct io_pgtable is initialized with the cookie and the cfg data from arm_64_lpae_alloc_pgtable_s1, which gets called before the data structure is initialized in alloc_io_pgtable_ops.",
+      "parentUuid": "51d62776_462b656c",
       "range": {
         "startLine": 231,
         "startChar": 7,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "8d35c02c_85cfc79d",
+        "filename": "drivers/iommu/io-pgtable-arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2020-08-13T19:01:04Z",
+      "side": 1,
+      "message": "I guess here we can, but I don\u0027t like that it becomes asymmetric with the allocation function.",
+      "parentUuid": "f68ed1eb_ecb4203e",
+      "range": {
+        "startLine": 266,
+        "startChar": 6,
+        "endLine": 266,
+        "endChar": 46
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a97bda12_8e600802",
         "filename": "drivers/iommu/io-pgtable.c",
         "patchSetId": 3
@@ -88,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "8c1c77b9_e6112a30",
+        "filename": "drivers/iommu/io-pgtable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2020-08-13T19:01:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a97bda12_8e600802",
+      "range": {
+        "startLine": 82,
+        "startChar": 2,
+        "endLine": 83,
+        "endChar": 22
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f48ead7_697ce237",
         "filename": "include/linux/io-pgtable.h",
         "patchSetId": 3
@@ -108,6 +198,30 @@
       "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bcec384_efdfce4f",
+        "filename": "include/linux/io-pgtable.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2020-08-13T19:01:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3f48ead7_697ce237",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 6
+      },
+      "revId": "441a047d99be61790084e2f1579fdc04a25c1c50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
