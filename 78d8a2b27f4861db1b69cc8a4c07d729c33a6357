@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cdbe4395_e030ac19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2020-08-15T14:11:15Z",
+      "side": 1,
+      "message": "mipi_dsi_dcs* functions are used by the display panel driver https://lkml.org/lkml/2020/8/11/712\nand i2c_bit_add_numbered_bus() by touchscreen driver.\n\nI took the liberty of adding android/abi_gki_aarch64_beryllium which may be wrong. Let me know which abi file should I use instead.",
+      "revId": "78d8a2b27f4861db1b69cc8a4c07d729c33a6357",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
