@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ab6b017d_f411c457",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "Yes, this is moving that function from vfs to data_mgmt",
+      "parentUuid": "557b7082_e8e711e8",
+      "range": {
+        "startLine": 133,
+        "startChar": 6,
+        "endLine": 133,
+        "endChar": 20
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aad255da_d068e792",
         "filename": "fs/incfs/data_mgmt.c",
         "patchSetId": 3
@@ -45,6 +69,30 @@
       "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebbc9cfa_48d9335a",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aad255da_d068e792",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 0
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "84d83616_e8308e9b",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d01de9be_d654fe59",
+      "range": {
+        "startLine": 258,
+        "startChar": 3,
+        "endLine": 258,
+        "endChar": 9
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "88ced832_81e6bef3",
         "filename": "fs/incfs/vfs.c",
         "patchSetId": 3
@@ -91,6 +163,30 @@
       "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21e5e1d8_27e4b935",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "It *should* return exactly the same as it would on the underlying file, if my reading of the code is correct.\n\nI\u0027m not sure what behavior is wanted here - file a bug I guess if this isn\u0027t the best answer.",
+      "parentUuid": "88ced832_81e6bef3",
+      "range": {
+        "startLine": 1494,
+        "startChar": 12,
+        "endLine": 1494,
+        "endChar": 36
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "ef75b106_3e12971a",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1572,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "Technically that\u0027s not true - you can remove and replace the source, but I\u0027ve added checks for this.",
+      "parentUuid": "d015149f_8a43d174",
+      "range": {
+        "startLine": 1572,
+        "startChar": 9,
+        "endLine": 1572,
+        "endChar": 49
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8055564_464e2229",
         "filename": "include/uapi/linux/incrementalfs.h",
         "patchSetId": 3
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "f3b6e1b1_2d49637f",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8055564_464e2229",
+      "range": {
+        "startLine": 375,
+        "startChar": 14,
+        "endLine": 375,
+        "endChar": 21
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b3002c99_c7f910c7",
         "filename": "include/uapi/linux/incrementalfs.h",
         "patchSetId": 3
@@ -160,6 +304,30 @@
       "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f398f95_29a54cc8",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-17T22:15:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3002c99_c7f910c7",
+      "range": {
+        "startLine": 381,
+        "startChar": 15,
+        "endLine": 381,
+        "endChar": 21
+      },
+      "revId": "07d6aa0ade63e1f6b938e9186bc879245e571faf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
