@@ -4881,16 +4881,15 @@ pipe_config_infoframe_mismatch(struct drm_printer *p, bool fastset,
 	struct intel_display *display = to_intel_display(crtc);
 	const char *loglevel;
 
-	if (fastset) {
-		if (!drm_debug_enabled(DRM_UT_KMS))
-			return;
-
+	if (fastset)
 		loglevel = KERN_DEBUG;
-	} else {
+	else
 		loglevel = KERN_ERR;
-	}
 
 	pipe_config_mismatch(p, fastset, crtc, name, "infoframe");
+
+	if (fastset && !drm_debug_syslog_enabled(DRM_UT_KMS))
+		return;
 
 	drm_printf(p, "expected:\n");
 	hdmi_infoframe_log(loglevel, display->drm->dev, a);
