@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "75262489_65d38f2c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "can you give some details about how we plan to use this new (light weight hotplug interface) interface from the kernel drivers/modules. User space has the interface to specify whatever HP state they want to put for a given CPU. I believe we will have a kernel API around cpu_down() and cpu_up().\n\nThis interface nicely fits with CPU hotplug. so a isolated/paused CPU will be in the lower HP state and upon actualy hotplug, it will move to the final state. So there is no explicit sync needed like we have in isolation code.",
+      "range": {
+        "startLine": 49,
+        "startChar": 7,
+        "endLine": 49,
+        "endChar": 9
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "757100ae_220a7c15",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -18,6 +41,145 @@
         "startChar": 0,
         "endLine": 6361,
         "endChar": 76
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6ef4521_283065da",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6361,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "if we have one RT pinned thread and 100 fair tasks, we end up calling pick_next_task() and put_prev_task() on that RT task 100 times. So one pinned thread is enough to cause overhead, I think.\n\nCan we try bookmarking the class (next\u0027s sched_class) here so that we can start from that class instead of for_each_classes()?\n\nwould it be too much to add an argument to pick_next_task() to skip pinned kthread? I like bookmarking since we don\u0027t have to duplicate the pinned kthread checks in all scheduling classes.",
+      "parentUuid": "757100ae_220a7c15",
+      "range": {
+        "startLine": 6361,
+        "startChar": 0,
+        "endLine": 6361,
+        "endChar": 76
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db35b88c_343d15d4",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6438,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "since we drop the rq lock here, the bookmarking (see above comment) does not work nicely:-( Given that we migrate tasks is done in two passes, it might work as well because we don\u0027t expect any tasks other than pinned kthreads to be queued while dropping this lock during 2nd pass.",
+      "range": {
+        "startLine": 6438,
+        "startChar": 2,
+        "endLine": 6438,
+        "endChar": 11
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3509ab9e_0099773f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6561,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "we should also make sched_group::group_weight and update_group_capacity() aware of this new forever online but !active thing.",
+      "range": {
+        "startLine": 6561,
+        "startChar": 0,
+        "endLine": 6561,
+        "endChar": 4
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29222ed6_7ba31f6b",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6587,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "can you please check if RT scheduling class can steer tasks away from !cpu_active_mask? The cpupri and RT tasks placement is not checking active mask, AFAICT. It relies on sched_class::rq_offline to mark a CPU offline.",
+      "range": {
+        "startLine": 6587,
+        "startChar": 1,
+        "endLine": 6587,
+        "endChar": 2
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbe88e07_2369cbd8",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6595,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "for the rq::ttwu_pending case, we expect the IPI to be served before we return from this function. Right?",
+      "range": {
+        "startLine": 6595,
+        "startChar": 9,
+        "endLine": 6595,
+        "endChar": 13
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e641ea6_16bf39fd",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6598,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-18T05:51:19Z",
+      "side": 1,
+      "message": "synchronize_rcu_expedited() ? once can also achieve that by passing rcu_expedited \u003d 1 to kernel command line. but would be nice to use the expedited here since it isolation/pause can happen during thermal conditions also.",
+      "range": {
+        "startLine": 6598,
+        "startChar": 0,
+        "endLine": 6598,
+        "endChar": 19
       },
       "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
