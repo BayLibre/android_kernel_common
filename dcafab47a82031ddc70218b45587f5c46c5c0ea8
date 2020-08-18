@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "076bc4e4_ffe1a042",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-08-18T18:41:26Z",
+      "side": 1,
+      "message": "This is failing checkpatch. Please fix and re-submit.\n\nERROR:EXECUTE_PERMISSIONS: do not set execute permissions for source files\n#31: FILE: drivers/android/vendor_hooks.c\n--\nERROR:EXECUTE_PERMISSIONS: do not set execute permissions for source files\n#51: FILE: include/trace/hooks/net.h\n--\nERROR:EXECUTE_PERMISSIONS: do not set execute permissions for source files\n#85: FILE: net/core/dev.c\n--\nERROR:EXECUTE_PERMISSIONS: do not set execute permissions for source files\n#112: FILE: net/core/skbuff.c\n--\nERROR:EXECUTE_PERMISSIONS: do not set execute permissions for source files\n#134: FILE: net/ipv4/tcp_input.c\n",
+      "revId": "dcafab47a82031ddc70218b45587f5c46c5c0ea8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f97a8ea1_1c8519b5",
+        "filename": "net/core/dev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-08-18T18:41:26Z",
+      "side": 1,
+      "message": "nit.\n\n  if (!vendor_pt.next)",
+      "revId": "dcafab47a82031ddc70218b45587f5c46c5c0ea8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
