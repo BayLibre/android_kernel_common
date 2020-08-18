@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b395787_79c4eb8a",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-08-18T19:10:30Z",
+      "side": 1,
+      "message": "need to dput() here as well? Maybe it\u0027s time to go full goto out here?",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 19
+      },
+      "revId": "d81fe79f977063e2bea71c7f8bc16e9b822697f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1efb7ea_9d8456a0",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1549,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-08-18T19:10:30Z",
+      "side": 1,
+      "message": "this will try to dput() a dentry that can be an error one. AFAIK dput() doesn\u0027t work with error pointers",
+      "range": {
+        "startLine": 1549,
+        "startChar": 7,
+        "endLine": 1549,
+        "endChar": 10
+      },
+      "revId": "d81fe79f977063e2bea71c7f8bc16e9b822697f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
