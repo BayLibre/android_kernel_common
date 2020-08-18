@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "55fe35be_06f41195",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "We\u0027ll indeed just need to create a public interface to down the CPU to a certain level. (e.g. cpu_{down,remove}(cpu, target) where target \u003d CPUHP_AP_LIMIT).\n\nI have a new version of this patch-set, I should be able to share soon, which will incorporate a usage example.",
+      "parentUuid": "75262489_65d38f2c",
+      "range": {
+        "startLine": 49,
+        "startChar": 7,
+        "endLine": 49,
+        "endChar": 9
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "757100ae_220a7c15",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "c79f061c_e7d0ef02",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6361,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "Good point, I\u0027ll see how to improve this situation.",
+      "parentUuid": "b6ef4521_283065da",
+      "range": {
+        "startLine": 6361,
+        "startChar": 0,
+        "endLine": 6361,
+        "endChar": 76
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "db35b88c_343d15d4",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -83,6 +131,30 @@
       "writtenOn": "2020-08-18T05:51:19Z",
       "side": 1,
       "message": "since we drop the rq lock here, the bookmarking (see above comment) does not work nicely:-( Given that we migrate tasks is done in two passes, it might work as well because we don\u0027t expect any tasks other than pinned kthreads to be queued while dropping this lock during 2nd pass.",
+      "range": {
+        "startLine": 6438,
+        "startChar": 2,
+        "endLine": 6438,
+        "endChar": 11
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6f8d23b_3231805b",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6438,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "Indeed the idea behind the second pass is to catch any task placement that we could have missed originally. I though, solved this issue in the upcoming new version by using synchronize_rcu_expedited (only ~100us while the \"normal\" version needs \u003e10ms) for the active_mask sync and a single migration.",
+      "parentUuid": "db35b88c_343d15d4",
       "range": {
         "startLine": 6438,
         "startChar": 2,
@@ -118,6 +190,30 @@
     },
     {
       "key": {
+        "uuid": "ac0117f4_7c61f9e7",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6561,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "I believe it already is:\n\nsched_cpu_deactivate() -\u003e cpuset_cpu_inactive -\u003e partition_sched_domains -\u003e build_sched_domains -\u003e init_sched_group_capacity -\u003e update_sched_group_capacity().",
+      "parentUuid": "3509ab9e_0099773f",
+      "range": {
+        "startLine": 6561,
+        "startChar": 0,
+        "endLine": 6561,
+        "endChar": 4
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "29222ed6_7ba31f6b",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -129,6 +225,30 @@
       "writtenOn": "2020-08-18T05:51:19Z",
       "side": 1,
       "message": "can you please check if RT scheduling class can steer tasks away from !cpu_active_mask? The cpupri and RT tasks placement is not checking active mask, AFAICT. It relies on sched_class::rq_offline to mark a CPU offline.",
+      "range": {
+        "startLine": 6587,
+        "startChar": 1,
+        "endLine": 6587,
+        "endChar": 2
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c04f8fe8_34612828",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6587,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "I tested that the RT tasks from a CPU going inactive are moved away, it might though because of core.c, ultimately catching !active CPU. I\u0027ll dig into this, to confirm if RT needs to be aware of the cpu_active_mask. \n\nRegarding load balancing, I haven\u0027t found any problematic path. We\u0027ll only pull if we are active and only the CPU from rd-\u003espan are scanned. A \"paused\" CPU should be properly excluded.",
+      "parentUuid": "29222ed6_7ba31f6b",
       "range": {
         "startLine": 6587,
         "startChar": 1,
@@ -164,6 +284,30 @@
     },
     {
       "key": {
+        "uuid": "aee465fe_f7aff518",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6595,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "Yes. Notice though that I abandoned this approach in the upcoming version for a single migration after a proper sync.",
+      "parentUuid": "fbe88e07_2369cbd8",
+      "range": {
+        "startLine": 6595,
+        "startChar": 9,
+        "endLine": 6595,
+        "endChar": 13
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9e641ea6_16bf39fd",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -175,6 +319,30 @@
       "writtenOn": "2020-08-18T05:51:19Z",
       "side": 1,
       "message": "synchronize_rcu_expedited() ? once can also achieve that by passing rcu_expedited \u003d 1 to kernel command line. but would be nice to use the expedited here since it isolation/pause can happen during thermal conditions also.",
+      "range": {
+        "startLine": 6598,
+        "startChar": 0,
+        "endLine": 6598,
+        "endChar": 19
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a791203a_993443c1",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6598,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-08-18T09:39:06Z",
+      "side": 1,
+      "message": "I used indeed this version in the upcoming new version, to avoid having to use this \"double migration\". (see comment above)",
+      "parentUuid": "9e641ea6_16bf39fd",
       "range": {
         "startLine": 6598,
         "startChar": 0,
