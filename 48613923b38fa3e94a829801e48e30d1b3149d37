@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd43a3ac_de61288c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-08-18T08:51:25Z",
+      "side": 1,
+      "message": "I just tried this patch and I\u0027m getting the following error when building using build.sh (as mentioned here: https://source.android.com/setup/build/building-kernels). Could you please fix that?\n\nVerifying that savedefconfig matches common/arch/arm64/configs/gki_defconfig\n++ RES\u003d0\n++ diff -u common/arch/arm64/configs/gki_defconfig /mnt/data_1TB/repos/ack/out/android-mainline/common/defconfig\n--- common/arch/arm64/configs/gki_defconfig     2020-08-18 09:47:03.908217846 +0100\n+++ /mnt/data_1TB/repos/ack/out/android-mainline/common/defconfig       2020-08-18 09:47:13.836236164 +0100\n@@ -319,7 +319,6 @@\n CONFIG_MFD_SYSCON\u003dy\n CONFIG_REGULATOR\u003dy\n CONFIG_REGULATOR_FIXED_VOLTAGE\u003dy\n-CONFIG_VIDEO_DEV\u003dy\n # CONFIG_VGA_ARB is not set\n CONFIG_DRM\u003dy\n # CONFIG_DRM_FBDEV_EMULATION is not set\n++ RES\u003d1\n++ \u0027[\u0027 1 -ne 0 \u0027]\u0027\n++ echo ERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig\nERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig",
+      "revId": "48613923b38fa3e94a829801e48e30d1b3149d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
