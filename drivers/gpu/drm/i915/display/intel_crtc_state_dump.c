@@ -46,7 +46,7 @@ static void
 intel_dump_infoframe(struct intel_display *display,
 		     const union hdmi_infoframe *frame)
 {
-	if (!drm_debug_enabled(DRM_UT_KMS))
+	if (!drm_debug_syslog_enabled(DRM_UT_KMS))
 		return;
 
 	hdmi_infoframe_log(KERN_DEBUG, display->drm->dev, frame);
