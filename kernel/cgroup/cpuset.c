@@ -366,13 +366,13 @@ static inline bool is_in_v2_mode(void)
  * until we find one that does have some online cpus.
  *
  * One way or another, we guarantee to return some non-empty subset
- * of cpu_online_mask.
+ * of cpu_active_mask.
  *
  * Call with callback_lock or cpuset_mutex held.
  */
 static void guarantee_online_cpus(struct cpuset *cs, struct cpumask *pmask)
 {
-	while (!cpumask_intersects(cs->effective_cpus, cpu_online_mask)) {
+	while (!cpumask_intersects(cs->effective_cpus, cpu_active_mask)) {
 		cs = parent_cs(cs);
 		if (unlikely(!cs)) {
 			/*
@@ -380,13 +380,13 @@ static void guarantee_online_cpus(struct cpuset *cs, struct cpumask *pmask)
 			 * consequence of a race between cpuset_hotplug_work
 			 * and cpu hotplug notifier.  But we know the top
 			 * cpuset's effective_cpus is on its way to to be
-			 * identical to cpu_online_mask.
+			 * identical to cpu_active_mask.
 			 */
-			cpumask_copy(pmask, cpu_online_mask);
+			cpumask_copy(pmask, cpu_active_mask);
 			return;
 		}
 	}
-	cpumask_and(pmask, cs->effective_cpus, cpu_online_mask);
+	cpumask_and(pmask, cs->effective_cpus, cpu_active_mask);
 }
 
 /*
