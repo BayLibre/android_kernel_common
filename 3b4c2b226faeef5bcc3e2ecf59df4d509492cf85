@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "691de86d_c2d72b32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-08-19T01:52:29Z",
+      "side": 1,
+      "message": "Failed checkpatch (1 check):\n\n#96: FILE: net/core/dev.c:309:\n+\tif (vendor_pt.next !\u003d NULL)\n\nPlease change it to:\n\n        if (!vendor_pt.next)\n\n",
+      "revId": "3b4c2b226faeef5bcc3e2ecf59df4d509492cf85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
