@@ -167,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "b90b7399_adedf79f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6438,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-19T04:25:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6f8d23b_3231805b",
+      "range": {
+        "startLine": 6438,
+        "startChar": 2,
+        "endLine": 6438,
+        "endChar": 11
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3509ab9e_0099773f",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -211,6 +235,30 @@
       "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27046570_b7018450",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6561,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-19T04:25:14Z",
+      "side": 1,
+      "message": "Right, i forgot about the previous callback from HP prior to this new callback for migrating tasks. So the scheduler domains are indeed re-built. looks good. This also means that cpusets are also updated upon a CPU pause.",
+      "parentUuid": "ac0117f4_7c61f9e7",
+      "range": {
+        "startLine": 6561,
+        "startChar": 0,
+        "endLine": 6561,
+        "endChar": 4
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
@@ -308,6 +356,30 @@
     },
     {
       "key": {
+        "uuid": "0c10a5e2_e8b652d9",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6595,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-19T04:25:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aee465fe_f7aff518",
+      "range": {
+        "startLine": 6595,
+        "startChar": 9,
+        "endLine": 6595,
+        "endChar": 13
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9e641ea6_16bf39fd",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -352,6 +424,30 @@
       "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f66ed8b_661fd135",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6598,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-08-19T04:25:14Z",
+      "side": 1,
+      "message": "yeah, with expedited() we can convert migration to one pass.",
+      "parentUuid": "a791203a_993443c1",
+      "range": {
+        "startLine": 6598,
+        "startChar": 0,
+        "endLine": 6598,
+        "endChar": 19
+      },
+      "revId": "230267a39ea985cd63e276cab127bc9b0faa648c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
