@@ -420,6 +420,10 @@ OBJDUMP		= llvm-objdump
 READELF		= llvm-readelf
 OBJSIZE		= llvm-size
 STRIP		= llvm-strip
+<<<<<<< HEAD   (31a772 ANDROID: Refresh ABI.xmls with libabigail 1.8.0-1dca710a)
+=======
+KBUILD_HOSTLDFLAGS	+= -fuse-ld=lld --rtlib=compiler-rt
+>>>>>>> CHANGE (f14e5b ANDROID: Makefile: add compiler-rt dependency explicitly)
 else
 CC		= $(CROSS_COMPILE)gcc
 LD		= $(CROSS_COMPILE)ld
