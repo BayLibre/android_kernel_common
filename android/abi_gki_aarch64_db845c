@@ -141,7 +141,6 @@
   dma_request_chan
   dma_set_coherent_mask
   dma_set_mask
-  do_SAK
   down_write
   dput
   driver_register
@@ -282,7 +281,6 @@
   no_llseek
   nvmem_cell_read
   of_address_to_resource
-  of_alias_get_id
   of_clk_add_hw_provider
   of_clk_del_provider
   of_clk_get
@@ -475,17 +473,6 @@
   trace_raw_output_prep
   trace_seq_printf
   truncate_inode_pages
-  tty_flip_buffer_push
-  __tty_insert_flip_char
-  uart_add_one_port
-  uart_get_baud_rate
-  uart_register_driver
-  uart_remove_one_port
-  uart_resume_port
-  uart_suspend_port
-  uart_unregister_driver
-  uart_update_timeout
-  uart_write_wakeup
   __udelay
   unlock_new_inode
   unlock_rename
@@ -801,6 +788,15 @@
   wait_for_completion_interruptible
 
 # required by i2c-qcom-geni.ko
+  geni_se_config_packing
+  geni_se_init
+  geni_se_resources_off
+  geni_se_resources_on
+  geni_se_rx_dma_prep
+  geni_se_rx_dma_unprep
+  geni_se_select_mode
+  geni_se_tx_dma_prep
+  geni_se_tx_dma_unprep
   i2c_get_dma_safe_msg_buf
   i2c_put_dma_safe_msg_buf
   of_machine_is_compatible
@@ -1196,11 +1192,24 @@
   ww_mutex_unlock
 
 # required by msm_serial.ko
+  do_SAK
   iomem_resource
+  of_alias_get_id
   __release_region
   __request_region
+  tty_flip_buffer_push
+  __tty_insert_flip_char
   tty_termios_baud_rate
   tty_termios_encode_baud_rate
+  uart_add_one_port
+  uart_get_baud_rate
+  uart_register_driver
+  uart_remove_one_port
+  uart_resume_port
+  uart_suspend_port
+  uart_unregister_driver
+  uart_update_timeout
+  uart_write_wakeup
 
 # required by nvmem_qfprom.ko
   devm_nvmem_register
@@ -1285,20 +1294,6 @@
 
 # required by qcom_common.ko
   rproc_coredump_add_segment
-
-# required by qcom_geni_serial.ko
-  console_stop
-  device_create_file
-  devm_platform_ioremap_resource
-  handle_sysrq
-  kstrtoint
-  oops_in_progress
-  _raw_spin_trylock
-  tty_insert_flip_string_fixed_flag
-  uart_console_device
-  uart_console_write
-  uart_parse_options
-  uart_set_options
 
 # required by qcom_glink_native.ko
   of_irq_get
