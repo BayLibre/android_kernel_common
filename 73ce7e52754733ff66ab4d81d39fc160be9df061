@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "67dc21de_a5d9e98c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-08-26T01:49:54Z",
+      "side": 1,
+      "message": "This topic backports the support for specific UFS inline encryption hardware that was upstreamed in 5.9, mainly so that we\u0027ll get test coverage of real inline encryption hardware on this branch via db845c (as opposed to just blk-crypto-fallback as is currently the case).  I manually tested it on db845c.",
+      "revId": "73ce7e52754733ff66ab4d81d39fc160be9df061",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
