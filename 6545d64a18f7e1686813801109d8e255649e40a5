@@ -16,6 +16,24 @@
       "revId": "6545d64a18f7e1686813801109d8e255649e40a5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c3980417_f63fc4cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1436321
+      },
+      "writtenOn": "2020-08-27T07:16:20Z",
+      "side": 1,
+      "message": "According to the patch below, SCS should be disabled.\nhttps://patchwork.kernel.org/patch/11228991/\n\nI have checked the latest asop 4.19 kernel, and SCS was removed from arch/arm64/kernel/vdso/Makefile by\n  CFLAGS_REMOVE_vgettimeofday.o \u003d $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS)\n\nWithout SCS, is the flag -ffixed-x18 still required?",
+      "parentUuid": "ca9a8e19_d63e3b74",
+      "revId": "6545d64a18f7e1686813801109d8e255649e40a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
