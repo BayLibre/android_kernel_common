@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "aabb4899_19d00b1e",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-27T20:10:02Z",
+      "side": 1,
+      "message": "One wait queue per pseudo file seems sensible. I could try reconciling them into one, but it seems unnecessary",
+      "parentUuid": "1c729b5f_1191a797",
+      "range": {
+        "startLine": 906,
+        "startChar": 23,
+        "endLine": 906,
+        "endChar": 42
+      },
+      "revId": "248f8b05cb2b596a8cd4059d79b6e66738ecc26d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5b54bdfd_34b2ffc8",
         "filename": "fs/incfs/pseudo_files.c",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "38cb9c3b_9895f2fd",
+        "filename": "fs/incfs/pseudo_files.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-27T20:10:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b54bdfd_34b2ffc8",
+      "range": {
+        "startLine": 982,
+        "startChar": 2,
+        "endLine": 982,
+        "endChar": 11
+      },
+      "revId": "248f8b05cb2b596a8cd4059d79b6e66738ecc26d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "682104bb_cfb14cf2",
         "filename": "fs/incfs/pseudo_files.c",
         "patchSetId": 2
@@ -68,6 +116,30 @@
       "revId": "248f8b05cb2b596a8cd4059d79b6e66738ecc26d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c544702b_0a7663d4",
+        "filename": "fs/incfs/pseudo_files.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-08-27T20:10:02Z",
+      "side": 1,
+      "message": "Changing the PSEUDO_FILE_COUNT to 3 is what is needed",
+      "parentUuid": "682104bb_cfb14cf2",
+      "range": {
+        "startLine": 1134,
+        "startChar": 7,
+        "endLine": 1134,
+        "endChar": 15
+      },
+      "revId": "248f8b05cb2b596a8cd4059d79b6e66738ecc26d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
