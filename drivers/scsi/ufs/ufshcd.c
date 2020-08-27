@@ -4870,9 +4870,12 @@ static int ufshcd_slave_configure(struct scsi_device *sdev)
 
 	blk_queue_update_dma_pad(q, PRDT_DATA_BYTE_COUNT_PAD - 1);
 
+<<<<<<< HEAD   (f058ed ANDROID: GKI: Add CONFIG_KVM and CONFIG_VHOST_VSOCK)
 	if (ufshcd_is_rpm_autosuspend_allowed(hba))
 		sdev->rpm_autosuspend = 1;
 
+=======
+>>>>>>> BRANCH (b20984 fs-verity: use smp_load_acquire() for ->i_verity_info)
 	ufshcd_crypto_setup_rq_keyslot_manager(hba, q);
 
 	return 0;

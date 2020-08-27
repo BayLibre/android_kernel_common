@@ -27,7 +27,10 @@
 #include <linux/pr.h>
 #include <linux/refcount.h>
 #include <linux/blk-crypto.h>
+<<<<<<< HEAD   (f058ed ANDROID: GKI: Add CONFIG_KVM and CONFIG_VHOST_VSOCK)
 #include <linux/keyslot-manager.h>
+=======
+>>>>>>> BRANCH (b20984 fs-verity: use smp_load_acquire() for ->i_verity_info)
 
 #define DM_MSG_PREFIX "core"
 
