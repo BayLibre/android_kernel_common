@@ -317,8 +317,8 @@ struct scmi_device *scmi_find_child_dev(struct device *parent,
  *
  * @ops: Pointer to the transport specific ops structure
  * @max_rx_timeout_ms: Timeout for communication with SoC (in Milliseconds)
- * @max_msg: Maximum number of messages that can be pending
- *	simultaneously in the system
+ * @max_msg: Maximum number of messages for a channel type (tx or rx) that can
+ *	be pending simultaneously in the system
  * @max_msg_size: Maximum size of data per message that can be handled.
  */
 struct scmi_desc {
