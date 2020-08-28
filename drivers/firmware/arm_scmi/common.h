@@ -134,6 +134,7 @@ struct scmi_msg {
  *	buffer for the rx path as we use for the tx path.
  * @done: command message transmit completion event
  * @async_done: pointer to delayed response message received event completion
+ * @extra_data: Transport-specific private data pointer
  */
 struct scmi_xfer {
 	int transfer_id;
@@ -142,6 +143,7 @@ struct scmi_xfer {
 	struct scmi_msg rx;
 	struct completion done;
 	struct completion *async_done;
+	void *extra_data;
 };
 
 struct scmi_xfer_ops;
