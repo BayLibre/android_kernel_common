@@ -430,6 +430,7 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 	struct file *new_file;
 	int error = 0;
 	struct backing_file_context *bfc = NULL;
+	struct incfs_file_header *fh = NULL;
 	u32 block_count;
 	struct mem_range raw_signature = { NULL };
 	struct mtree *hash_tree = NULL;
@@ -459,9 +460,12 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 	}
 
 	mutex_lock(&bfc->bc_mutex);
-	error = incfs_write_fh_to_backing_file(bfc, uuid, size);
-	if (error)
+	fh = incfs_create_backing_file(bfc, uuid, size);
+	if (IS_ERR(fh)) {
+		error = PTR_ERR(fh);
+		fh = NULL;
 		goto out;
+	}
 
 	block_count = (u32)get_blocks_count_for_size(size);
 
@@ -483,7 +487,7 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 		}
 
 		error = incfs_write_signature_to_backing_file(
-			bfc, raw_signature, hash_tree->hash_tree_area_size);
+			bfc, raw_signature, hash_tree->hash_tree_area_size, fh);
 		if (error)
 			goto out;
 
@@ -492,10 +496,12 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 	}
 
 	if (block_count)
-		error = incfs_write_blockmap_to_backing_file(bfc, block_count);
-
+		error = incfs_write_blockmap_to_backing_file(bfc, block_count,
+							     fh);
 	if (error)
 		goto out;
+
+	error = incfs_update_file_header(bfc, fh);
 out:
 	if (bfc) {
 		mutex_unlock(&bfc->bc_mutex);
@@ -503,6 +509,7 @@ out:
 	}
 	incfs_free_mtree(hash_tree);
 	kfree(raw_signature.data);
+	kfree(fh);
 
 	if (error)
 		pr_debug("incfs: %s error: %d\n", __func__, error);
@@ -709,6 +716,7 @@ static int init_new_mapped_file(struct mount_info *mi, struct dentry *dentry,
 	struct file *new_file;
 	int error = 0;
 	struct backing_file_context *bfc = NULL;
+	struct incfs_file_header *fh = NULL;
 
 	if (!mi || !dentry || !uuid)
 		return -EFAULT;
@@ -735,15 +743,18 @@ static int init_new_mapped_file(struct mount_info *mi, struct dentry *dentry,
 	}
 
 	mutex_lock(&bfc->bc_mutex);
-	error = incfs_write_mapping_fh_to_backing_file(bfc, uuid, size, offset);
-	if (error)
+	fh = incfs_create_mapping_file(bfc, uuid, size, offset);
+	if (IS_ERR(fh)) {
+		error = PTR_ERR(fh);
 		goto out;
+	}
 
 out:
 	if (bfc) {
 		mutex_unlock(&bfc->bc_mutex);
 		incfs_free_bfc(bfc);
 	}
+	kfree(fh);
 
 	if (error)
 		pr_debug("incfs: %s error: %d\n", __func__, error);

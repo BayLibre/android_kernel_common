@@ -3,105 +3,6 @@
  * Copyright 2018 Google LLC
  */
 
-/*
- * Overview
- * --------
- * The backbone of the incremental-fs ondisk format is an append only linked
- * list of metadata blocks. Each metadata block contains an offset of the next
- * one. These blocks describe files and directories on the
- * file system. They also represent actions of adding and removing file names
- * (hard links).
- *
- * Every time incremental-fs instance is mounted, it reads through this list
- * to recreate filesystem's state in memory. An offset of the first record in
- * the metadata list is stored in the superblock at the beginning of the backing
- * file.
- *
- * Most of the backing file is taken by data areas and blockmaps.
- * Since data blocks can be compressed and have different sizes,
- * single per-file data area can't be pre-allocated. That's why blockmaps are
- * needed in order to find a location and size of each data block in
- * the backing file. Each time a file is created, a corresponding block map is
- * allocated to store future offsets of data blocks.
- *
- * Whenever a data block is given by data loader to incremental-fs:
- *   - A data area with the given block is appended to the end of
- *     the backing file.
- *   - A record in the blockmap for the given block index is updated to reflect
- *     its location, size, and compression algorithm.
-
- * Metadata records
- * ----------------
- * incfs_blockmap - metadata record that specifies size and location
- *                           of a blockmap area for a given file. This area
- *                           contains an array of incfs_blockmap_entry-s.
- * incfs_file_signature - metadata record that specifies where file signature
- *                           and its hash tree can be found in the backing file.
- *
- * incfs_file_attr - metadata record that specifies where additional file
- *		        attributes blob can be found.
- *
- * Metadata header
- * ---------------
- * incfs_md_header - header of a metadata record. It's always a part
- *                   of other structures and served purpose of metadata
- *                   bookkeeping.
- *
- *              +-----------------------------------------------+       ^
- *              |            incfs_md_header                    |       |
- *              | 1. type of body(BLOCKMAP, FILE_ATTR..)        |       |
- *              | 2. size of the whole record header + body     |       |
- *              | 3. CRC the whole record header + body         |       |
- *              | 4. offset of the previous md record           |]------+
- *              | 5. offset of the next md record (md link)     |]---+
- *              +-----------------------------------------------+    |
- *              |  Metadata record body with useful data        |    |
- *              +-----------------------------------------------+    |
- *                                                                   +--->
- *
- * Other ondisk structures
- * -----------------------
- * incfs_super_block - backing file header
- * incfs_blockmap_entry - a record in a blockmap area that describes size
- *                       and location of a data block.
- * Data blocks dont have any particular structure, they are written to the
- * backing file in a raw form as they come from a data loader.
- *
- * Backing file layout
- * -------------------
- *
- *
- *              +-------------------------------------------+
- *              |            incfs_file_header              |]---+
- *              +-------------------------------------------+    |
- *              |                 metadata                  |<---+
- *              |           incfs_file_signature            |]---+
- *              +-------------------------------------------+    |
- *                        .........................              |
- *              +-------------------------------------------+    |   metadata
- *     +------->|               blockmap area               |    |  list links
- *     |        |          [incfs_blockmap_entry]           |    |
- *     |        |          [incfs_blockmap_entry]           |    |
- *     |        |          [incfs_blockmap_entry]           |    |
- *     |    +--[|          [incfs_blockmap_entry]           |    |
- *     |    |   |          [incfs_blockmap_entry]           |    |
- *     |    |   |          [incfs_blockmap_entry]           |    |
- *     |    |   +-------------------------------------------+    |
- *     |    |             .........................              |
- *     |    |   +-------------------------------------------+    |
- *     |    |   |                 metadata                  |<---+
- *     +----|--[|               incfs_blockmap              |]---+
- *          |   +-------------------------------------------+    |
- *          |             .........................              |
- *          |   +-------------------------------------------+    |
- *          +-->|                 data block                |    |
- *              +-------------------------------------------+    |
- *                        .........................              |
- *              +-------------------------------------------+    |
- *              |                 metadata                  |<---+
- *              |              incfs_file_attr              |
- *              +-------------------------------------------+
- */
 #ifndef _INCFS_FORMAT_H
 #define _INCFS_FORMAT_H
 #include <linux/types.h>
@@ -141,47 +42,60 @@ struct incfs_md_header {
 } __packed;
 
 /* Backing file header */
+struct incfs_file_section {
+	__le64 fs_size;
+	__le64 fs_offset;
+};
+
 struct incfs_file_header {
-	/* Magic number: INCFS_MAGIC_NUMBER */
-	__le64 fh_magic;
-
-	/* Format version: INCFS_FORMAT_CURRENT_VER */
-	__le64 fh_version;
-
-	/* sizeof(incfs_file_header) */
-	__le16 fh_header_size;
-
-	/* INCFS_DATA_FILE_BLOCK_SIZE */
-	__le16 fh_data_block_size;
-
-	/* File flags, from incfs_file_header_flags */
-	__le32 fh_flags;
-
 	union {
-		/* Standard incfs file */
 		struct {
-			/* Offset of the first metadata record */
-			__le64 fh_first_md_offset;
+			/* Magic number: INCFS_MAGIC_NUMBER */
+			__le32 fh_magic;
+
+			/* Format version: INCFS_FORMAT_CURRENT_VER */
+			__le32 fh_version;
+
+			/* sizeof(incfs_file_header) */
+			__le16 fh_header_size;
+
+			/* INCFS_DATA_FILE_BLOCK_SIZE */
+			__le16 fh_data_block_size;
+
+			/* File flags, from incfs_file_header_flags */
+			__le32 fh_flags;
 
 			/* Full size of the file's content */
 			__le64 fh_file_size;
 
 			/* File uuid */
 			incfs_uuid_t fh_uuid;
+
+			/* Mapped files only - offset in original file */
+			__le64 fh_offset;
+
+			/* Number of sectors written out */
+			__le64 fh_sectors_written;
 		};
 
-		/* Mapped file - INCFS_FILE_MAPPED set in fh_flags */
-		struct {
-			/* Offset in original file */
-			__le64 fh_original_offset;
-
-			/* Full size of the file's content */
-			__le64 fh_mapped_file_size;
-
-			/* Original file's uuid */
-			incfs_uuid_t fh_original_uuid;
-		};
+		u8 fh_filler[128];
 	};
+
+	union {
+		struct {
+			/* Blockmap */
+			struct incfs_file_section fh_blockmap;
+
+			/* File signature */
+			struct incfs_file_section fh_signature;
+
+			/* Hash tree */
+			struct incfs_file_section fh_hash_tree;
+		};
+
+		struct incfs_file_section fh_sections_filler[8];
+	};
+
 } __packed;
 
 enum incfs_block_map_entry_flags {
@@ -203,30 +117,6 @@ struct incfs_blockmap_entry {
 	__le16 me_flags;
 } __packed;
 
-/* Metadata record for locations of file blocks. Type = INCFS_MD_BLOCK_MAP */
-struct incfs_blockmap {
-	struct incfs_md_header m_header;
-
-	/* Base offset of the array of incfs_blockmap_entry */
-	__le64 m_base_offset;
-
-	/* Size of the map entry array in blocks */
-	__le32 m_block_count;
-} __packed;
-
-/* Metadata record for file signature. Type = INCFS_MD_SIGNATURE */
-struct incfs_file_signature {
-	struct incfs_md_header sg_header;
-
-	__le32 sg_sig_size; /* The size of the signature. */
-
-	__le64 sg_sig_offset; /* Signature's offset in the backing file */
-
-	__le32 sg_hash_tree_size; /* The size of the hash tree. */
-
-	__le64 sg_hash_tree_offset; /* Hash tree offset in the backing file */
-} __packed;
-
 /* In memory version of above */
 struct incfs_df_signature {
 	u32 sig_size;
@@ -242,32 +132,7 @@ struct backing_file_context {
 
 	/* File object to read data from */
 	struct file *bc_file;
-
-	/*
-	 * Offset of the last known metadata record in the backing file.
-	 * 0 means there are no metadata records.
-	 */
-	loff_t bc_last_md_record_offset;
 };
-
-struct metadata_handler {
-	loff_t md_record_offset;
-	loff_t md_prev_record_offset;
-	void *context;
-
-	union {
-		struct incfs_md_header md_header;
-		struct incfs_blockmap blockmap;
-		struct incfs_file_signature signature;
-	} md_buffer;
-
-	int (*handle_blockmap)(struct incfs_blockmap *bm,
-			       struct metadata_handler *handler);
-	int (*handle_signature)(struct incfs_file_signature *sig,
-				 struct metadata_handler *handler);
-};
-#define INCFS_MAX_METADATA_RECORD_SIZE \
-	sizeof_field(struct metadata_handler, md_buffer)
 
 loff_t incfs_get_end_offset(struct file *f);
 
@@ -277,14 +142,20 @@ struct backing_file_context *incfs_alloc_bfc(struct file *backing_file);
 void incfs_free_bfc(struct backing_file_context *bfc);
 
 /* Writing stuff */
-int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
-					 u32 block_count);
+struct incfs_file_header *incfs_create_backing_file(
+				struct backing_file_context *bfc,
+				incfs_uuid_t *uuid, u64 file_size);
 
-int incfs_write_fh_to_backing_file(struct backing_file_context *bfc,
-				   incfs_uuid_t *uuid, u64 file_size);
-
-int incfs_write_mapping_fh_to_backing_file(struct backing_file_context *bfc,
+struct incfs_file_header *incfs_create_mapping_file(
+				struct backing_file_context *bfc,
 				incfs_uuid_t *uuid, u64 file_size, u64 offset);
+
+int incfs_update_file_header(struct backing_file_context *bfc,
+			     struct incfs_file_header *fh);
+
+int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
+					 u32 block_count,
+					 struct incfs_file_header *fh);
 
 int incfs_write_data_block_to_backing_file(struct backing_file_context *bfc,
 					   struct mem_range block,
@@ -299,17 +170,14 @@ int incfs_write_hash_block_to_backing_file(struct backing_file_context *bfc,
 					   loff_t file_size);
 
 int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
-					  struct mem_range sig, u32 tree_size);
+					  struct mem_range sig, u32 tree_size,
+					  struct incfs_file_header *fh);
 
 int incfs_write_file_header_flags(struct backing_file_context *bfc, u32 flags);
 
-int incfs_make_empty_backing_file(struct backing_file_context *bfc,
-				  incfs_uuid_t *uuid, u64 file_size);
-
 /* Reading stuff */
-int incfs_read_file_header(struct backing_file_context *bfc,
-			   loff_t *first_md_off, incfs_uuid_t *uuid,
-			   u64 *file_size, u32 *flags);
+struct incfs_file_header *incfs_read_file_header(
+					struct backing_file_context *bfc);
 
 int incfs_read_blockmap_entry(struct backing_file_context *bfc, int block_index,
 			      loff_t bm_base_off,
@@ -319,9 +187,6 @@ int incfs_read_blockmap_entries(struct backing_file_context *bfc,
 		struct incfs_blockmap_entry *entries,
 		int start_index, int blocks_number,
 		loff_t bm_base_off);
-
-int incfs_read_next_metadata_record(struct backing_file_context *bfc,
-				    struct metadata_handler *handler);
 
 ssize_t incfs_kread(struct file *f, void *buf, size_t size, loff_t pos);
 ssize_t incfs_kwrite(struct file *f, const void *buf, size_t size, loff_t pos);
