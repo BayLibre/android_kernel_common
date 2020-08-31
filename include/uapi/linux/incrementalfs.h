@@ -18,14 +18,11 @@
 
 /* ===== constants ===== */
 #define INCFS_NAME "incremental-fs"
-#define INCFS_MAGIC_NUMBER (unsigned long)(0x5346434e49ul)
+#define INCFS_MAGIC_NUMBER 0x46434e49ul
 #define INCFS_DATA_FILE_BLOCK_SIZE 4096
 #define INCFS_HEADER_VER 1
 
-/* TODO: This value is assumed in incfs_copy_signature_info_from_user to be the
- * actual signature length. Set back to 64 when fixed.
- */
-#define INCFS_MAX_HASH_SIZE 32
+#define INCFS_MAX_HASH_SIZE 64
 #define INCFS_MAX_FILE_ATTR_SIZE 512
 
 #define INCFS_PENDING_READS_FILENAME ".pending_reads"
@@ -37,7 +34,6 @@
 
 #define INCFS_MAX_SIGNATURE_SIZE 8096
 #define INCFS_SIGNATURE_VERSION 2
-#define INCFS_SIGNATURE_SECTIONS 2
 
 #define INCFS_IOCTL_BASE_CODE 'g'
 

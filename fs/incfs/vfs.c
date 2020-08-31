@@ -1126,8 +1126,8 @@ static int file_open(struct inode *inode, struct file *file)
 
 out:
 	if (err)
-		pr_debug("incfs: %s name:%s err: %d\n", __func__,
-			file->f_path.dentry->d_name.name, err);
+		pr_debug("name:%s err: %d\n",
+			 file->f_path.dentry->d_name.name, err);
 	if (backing_file)
 		fput(backing_file);
 	return err;
