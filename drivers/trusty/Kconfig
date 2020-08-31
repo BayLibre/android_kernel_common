@@ -30,13 +30,13 @@ config TRUSTY_TEST
 
 config TRUSTY_VIRTIO
 	tristate "Trusty virtio support"
-	depends on TRUSTY
+	depends on TRUSTY_VIRTIO_IPC
 	select VIRTIO
 	default y
 
 config TRUSTY_VIRTIO_IPC
 	tristate "Trusty Virtio IPC driver"
-	depends on TRUSTY_VIRTIO
+	depends on TRUSTY
 	default y
 	help
 	  This module adds support for communications with Trusty Services
