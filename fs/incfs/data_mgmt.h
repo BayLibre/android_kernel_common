@@ -228,9 +228,6 @@ struct data_file {
 	 */
 	struct data_file_segment df_segments[SEGMENTS_PER_FILE];
 
-	/* Base offset of the first metadata record. */
-	loff_t df_metadata_off;
-
 	/* Base offset of the block map. */
 	loff_t df_blockmap_off;
 
@@ -248,8 +245,6 @@ struct data_file {
 
 	/* For mapped files, the offset into the actual file */
 	loff_t df_mapped_offset;
-
-	struct file_attr n_attr;
 
 	struct mtree *df_hash_tree;
 

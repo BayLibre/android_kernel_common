@@ -199,21 +199,104 @@ static struct data_file *handle_mapped_file(struct mount_info *mi,
 	if (IS_ERR(result))
 		goto out;
 
-	result->df_mapped_offset = df->df_metadata_off;
+	result->df_mapped_offset = df->df_mapped_offset;
 
 out:
 	dput(index_file_dentry);
 	return result;
 }
 
+static int process_blockmap_section(struct data_file *df,
+				    struct incfs_file_section *blockmap)
+{
+	loff_t base_off = le64_to_cpu(blockmap->fs_offset);
+	u32 block_count = le64_to_cpu(blockmap->fs_size) /
+		sizeof(struct incfs_blockmap_entry);
+
+	if (df->df_data_block_count > block_count)
+		return -EBADMSG;
+
+	df->df_total_block_count = block_count;
+	df->df_blockmap_off = base_off;
+	return 0;
+}
+
+static int process_signature_section(struct data_file *df,
+				     struct incfs_file_section *signature,
+				     struct incfs_file_section *hash_tree)
+{
+	int error = 0;
+	struct incfs_df_signature *sig;
+	struct mtree *ht = NULL;
+	void *buf = NULL;
+	ssize_t read;
+
+	if (!df->df_backing_file_context ||
+	    !df->df_backing_file_context->bc_file)
+		return -ENOENT;
+
+	if (!signature->fs_offset && !signature->fs_size &&
+	    !hash_tree->fs_offset && !hash_tree->fs_size)
+		return 0;
+
+	sig = kzalloc(sizeof(*sig), GFP_NOFS);
+	if (!sig)
+		return -ENOMEM;
+
+	sig->hash_offset = le64_to_cpu(hash_tree->fs_offset);
+	sig->hash_size = le64_to_cpu(hash_tree->fs_size);
+	sig->sig_offset = le64_to_cpu(signature->fs_offset);
+	sig->sig_size = le64_to_cpu(signature->fs_size);
+
+	buf = kzalloc(sig->sig_size, GFP_NOFS);
+	if (!buf) {
+		error = -ENOMEM;
+		goto out;
+	}
+
+	read = incfs_kread(df->df_backing_file_context->bc_file, buf,
+			   sig->sig_size, sig->sig_offset);
+	if (read < 0) {
+		error = read;
+		goto out;
+	}
+
+	if (read != sig->sig_size) {
+		error = -EINVAL;
+		goto out;
+	}
+
+	ht = incfs_alloc_mtree(range(buf, sig->sig_size),
+				      df->df_data_block_count);
+	if (IS_ERR(ht)) {
+		error = PTR_ERR(ht);
+		ht = NULL;
+		goto out;
+	}
+	if (ht->hash_tree_area_size != sig->hash_size) {
+		error = -EINVAL;
+		goto out;
+	}
+
+	df->df_signature = sig;
+	sig = NULL;
+	df->df_hash_tree = ht;
+	ht = NULL;
+out:
+	incfs_free_mtree(ht);
+	kfree(sig);
+	kfree(buf);
+
+	return error;
+}
+
 struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 {
 	struct data_file *df = NULL;
 	struct backing_file_context *bfc = NULL;
-	int md_records;
-	u64 size;
 	int error = 0;
 	int i;
+	struct incfs_file_header *fh = NULL;
 
 	if (!bf || !mi)
 		return ERR_PTR(-EFAULT);
@@ -239,29 +322,43 @@ struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 	error = mutex_lock_interruptible(&bfc->bc_mutex);
 	if (error)
 		goto out;
-	error = incfs_read_file_header(bfc, &df->df_metadata_off, &df->df_id,
-				       &size, &df->df_header_flags);
+	fh = incfs_read_file_header(bfc);
 	mutex_unlock(&bfc->bc_mutex);
 
-	if (error)
+	if (IS_ERR(fh)) {
+		error = PTR_ERR(fh);
+		fh = NULL;
 		goto out;
+	}
 
-	df->df_size = size;
-	if (size > 0)
-		df->df_data_block_count = get_blocks_count_for_size(size);
+	df->df_size = le64_to_cpu(fh->fh_file_size);
+	df->df_id = fh->fh_uuid;
+	df->df_header_flags = le32_to_cpu(fh->fh_flags);
 
 	if (df->df_header_flags & INCFS_FILE_MAPPED) {
-		struct data_file *mapped_df = handle_mapped_file(mi, df);
+		struct data_file *mapped_df;
 
+		df->df_mapped_offset = le64_to_cpu(fh->fh_offset);
+		mapped_df = handle_mapped_file(mi, df);
 		incfs_free_data_file(df);
 		return mapped_df;
 	}
 
-	md_records = incfs_scan_metadata_chain(df);
-	if (md_records < 0)
-		error = md_records;
+	if (df->df_size > 0)
+		df->df_data_block_count =
+			get_blocks_count_for_size(df->df_size);
+
+	error = process_blockmap_section(df, &fh->fh_blockmap);
+	if (error)
+		goto out;
+
+	error = process_signature_section(df, &fh->fh_signature,
+					  &fh->fh_hash_tree);
+	if (error)
+		goto out;
 
 out:
+	kfree(fh);
 	if (error) {
 		incfs_free_bfc(bfc);
 		if (df)
@@ -1207,161 +1304,6 @@ int incfs_process_new_hash_block(struct data_file *df,
 		mutex_unlock(&bfc->bc_mutex);
 	}
 	return error;
-}
-
-static int process_blockmap_md(struct incfs_blockmap *bm,
-			       struct metadata_handler *handler)
-{
-	struct data_file *df = handler->context;
-	int error = 0;
-	loff_t base_off = le64_to_cpu(bm->m_base_offset);
-	u32 block_count = le32_to_cpu(bm->m_block_count);
-
-	if (!df)
-		return -EFAULT;
-
-	if (df->df_data_block_count > block_count)
-		return -EBADMSG;
-
-	df->df_total_block_count = block_count;
-	df->df_blockmap_off = base_off;
-	return error;
-}
-
-static int process_file_signature_md(struct incfs_file_signature *sg,
-				struct metadata_handler *handler)
-{
-	struct data_file *df = handler->context;
-	struct mtree *hash_tree = NULL;
-	int error = 0;
-	struct incfs_df_signature *signature =
-		kzalloc(sizeof(*signature), GFP_NOFS);
-	void *buf = NULL;
-	ssize_t read;
-
-	if (!signature)
-		return -ENOMEM;
-
-	if (!df || !df->df_backing_file_context ||
-	    !df->df_backing_file_context->bc_file) {
-		error = -ENOENT;
-		goto out;
-	}
-
-	signature->hash_offset = le64_to_cpu(sg->sg_hash_tree_offset);
-	signature->hash_size = le32_to_cpu(sg->sg_hash_tree_size);
-	signature->sig_offset = le64_to_cpu(sg->sg_sig_offset);
-	signature->sig_size = le32_to_cpu(sg->sg_sig_size);
-
-	buf = kzalloc(signature->sig_size, GFP_NOFS);
-	if (!buf) {
-		error = -ENOMEM;
-		goto out;
-	}
-
-	read = incfs_kread(df->df_backing_file_context->bc_file, buf,
-			   signature->sig_size, signature->sig_offset);
-	if (read < 0) {
-		error = read;
-		goto out;
-	}
-
-	if (read != signature->sig_size) {
-		error = -EINVAL;
-		goto out;
-	}
-
-	hash_tree = incfs_alloc_mtree(range(buf, signature->sig_size),
-				      df->df_data_block_count);
-	if (IS_ERR(hash_tree)) {
-		error = PTR_ERR(hash_tree);
-		hash_tree = NULL;
-		goto out;
-	}
-	if (hash_tree->hash_tree_area_size != signature->hash_size) {
-		error = -EINVAL;
-		goto out;
-	}
-	if (signature->hash_size > 0 &&
-	    handler->md_record_offset <= signature->hash_offset) {
-		error = -EINVAL;
-		goto out;
-	}
-	if (handler->md_record_offset <= signature->sig_offset) {
-		error = -EINVAL;
-		goto out;
-	}
-	df->df_hash_tree = hash_tree;
-	hash_tree = NULL;
-	df->df_signature = signature;
-	signature = NULL;
-out:
-	incfs_free_mtree(hash_tree);
-	kfree(signature);
-	kfree(buf);
-
-	return error;
-}
-
-int incfs_scan_metadata_chain(struct data_file *df)
-{
-	struct metadata_handler *handler = NULL;
-	int result = 0;
-	int records_count = 0;
-	int error = 0;
-	struct backing_file_context *bfc = NULL;
-
-	if (!df || !df->df_backing_file_context)
-		return -EFAULT;
-
-	bfc = df->df_backing_file_context;
-
-	handler = kzalloc(sizeof(*handler), GFP_NOFS);
-	if (!handler)
-		return -ENOMEM;
-
-	/* No writing to the backing file while it's being scanned. */
-	error = mutex_lock_interruptible(&bfc->bc_mutex);
-	if (error)
-		goto out;
-
-	/* Reading superblock */
-	handler->md_record_offset = df->df_metadata_off;
-	handler->context = df;
-	handler->handle_blockmap = process_blockmap_md;
-	handler->handle_signature = process_file_signature_md;
-
-	while (handler->md_record_offset > 0) {
-		error = incfs_read_next_metadata_record(bfc, handler);
-		if (error) {
-			pr_warn("incfs: Error during reading incfs-metadata record. Offset: %lld Record #%d Error code: %d\n",
-				handler->md_record_offset, records_count + 1,
-				-error);
-			break;
-		}
-		records_count++;
-	}
-	if (error) {
-		pr_warn("incfs: Error %d after reading %d incfs-metadata records.\n",
-			 -error, records_count);
-		result = error;
-	} else
-		result = records_count;
-	mutex_unlock(&bfc->bc_mutex);
-
-	if (df->df_hash_tree) {
-		int hash_block_count = get_blocks_count_for_size(
-			df->df_hash_tree->hash_tree_area_size);
-
-		if (df->df_data_block_count + hash_block_count !=
-		    df->df_total_block_count)
-			result = -EINVAL;
-	} else if (df->df_data_block_count != df->df_total_block_count)
-		result = -EINVAL;
-
-out:
-	kfree(handler);
-	return result;
 }
 
 /*
