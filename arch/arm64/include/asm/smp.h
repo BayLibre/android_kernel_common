@@ -72,13 +72,6 @@ extern void handle_IPI(int ipinr, struct pt_regs *regs);
 extern void smp_init_cpus(void);
 
 /*
- * Provide a function to raise an IPI cross call on CPUs in callmap.
- */
-extern void set_smp_cross_call(void (*)(const struct cpumask *, unsigned int));
-
-extern void (*__smp_cross_call)(const struct cpumask *, unsigned int);
-
-/*
  * Register IPI interrupts with the arch SMP code
  */
 extern void set_smp_ipi_range(int ipi_base, int nr_ipi);
