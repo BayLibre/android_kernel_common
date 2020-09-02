@@ -125,65 +125,48 @@ struct incfs_df_signature {
 	u64 hash_offset;
 };
 
-/* State of the backing file. */
-struct backing_file_context {
-	/* Protects writes to bc_file */
-	struct mutex bc_mutex;
-
-	/* File object to read data from */
-	struct file *bc_file;
-};
-
 loff_t incfs_get_end_offset(struct file *f);
 
-/* Backing file context management */
-struct backing_file_context *incfs_alloc_bfc(struct file *backing_file);
-
-void incfs_free_bfc(struct backing_file_context *bfc);
-
 /* Writing stuff */
-struct incfs_file_header *incfs_create_backing_file(
-				struct backing_file_context *bfc,
+struct incfs_file_header *incfs_create_backing_file(struct file *backing_file,
 				incfs_uuid_t *uuid, u64 file_size);
 
-struct incfs_file_header *incfs_create_mapping_file(
-				struct backing_file_context *bfc,
+struct incfs_file_header *incfs_create_mapping_file(struct file *backing_file,
 				incfs_uuid_t *uuid, u64 file_size, u64 offset);
 
-int incfs_update_file_header(struct backing_file_context *bfc,
+int incfs_update_file_header(struct file *backing_file,
 			     struct incfs_file_header *fh);
 
-int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_blockmap_to_backing_file(struct file *backing_file,
 					 u32 block_count,
 					 struct incfs_file_header *fh);
 
-int incfs_write_data_block_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_data_block_to_backing_file(struct file *backing_file,
 					   struct mem_range block,
 					   int block_index, loff_t bm_base_off,
 					   u16 flags);
 
-int incfs_write_hash_block_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_hash_block_to_backing_file(struct file *backing_file,
 					   struct mem_range block,
 					   int block_index,
 					   loff_t hash_area_off,
 					   loff_t bm_base_off,
 					   loff_t file_size);
 
-int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_signature_to_backing_file(struct file *backing_file,
 					  struct mem_range sig, u32 tree_size,
 					  struct incfs_file_header *fh);
 
-int incfs_write_file_header_flags(struct backing_file_context *bfc, u32 flags);
+int incfs_write_file_header_flags(struct file *backing_file, u32 flags);
 
 /* Reading stuff */
-struct incfs_file_header *incfs_read_file_header(
-					struct backing_file_context *bfc);
+struct incfs_file_header *incfs_read_file_header(struct file *backing_file);
 
-int incfs_read_blockmap_entry(struct backing_file_context *bfc, int block_index,
+int incfs_read_blockmap_entry(struct file *backing_file, int block_index,
 			      loff_t bm_base_off,
 			      struct incfs_blockmap_entry *bm_entry);
 
-int incfs_read_blockmap_entries(struct backing_file_context *bfc,
+int incfs_read_blockmap_entries(struct file *backing_file,
 		struct incfs_blockmap_entry *entries,
 		int start_index, int blocks_number,
 		loff_t bm_base_off);
