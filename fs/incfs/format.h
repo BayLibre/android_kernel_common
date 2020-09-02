@@ -74,8 +74,8 @@ struct incfs_file_header {
 			/* Mapped files only - offset in original file */
 			__le64 fh_offset;
 
-			/* Number of sectors written out */
-			__le64 fh_sectors_written;
+			/* Number of data blocks written out */
+			__le32 fh_blocks_written;
 		};
 
 		u8 fh_filler[128];

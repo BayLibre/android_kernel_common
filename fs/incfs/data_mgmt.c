@@ -347,6 +347,9 @@ struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 	if (error)
 		goto out;
 
+	atomic_set(&df->df_data_blocks_written,
+		   le32_to_cpu(fh->fh_blocks_written));
+
 out:
 	kfree(fh);
 	if (error) {
@@ -358,8 +361,17 @@ out:
 
 void incfs_free_data_file(struct data_file *df)
 {
+	__le32 blocks_written;
+
 	if (!df)
 		return;
+
+	blocks_written = cpu_to_le32(atomic_read(&df->df_data_blocks_written));
+	if (blocks_written)
+		incfs_kwrite(df->df_backing_file, &blocks_written,
+			     sizeof(blocks_written),
+			     offsetof(struct incfs_file_header,
+				      fh_blocks_written));
 
 	incfs_free_mtree(df->df_hash_tree);
 	fput(df->df_backing_file);
@@ -1189,8 +1201,10 @@ int incfs_process_new_data_block(struct data_file *df,
 	error = incfs_write_data_block_to_backing_file(
 			df->df_backing_file, range(data, block->data_len),
 			block->block_index, df->df_blockmap_off, flags);
-	if (!error)
+	if (!error) {
 		notify_pending_reads(mi, segment, block->block_index);
+		atomic_inc(&df->df_data_blocks_written);
+	}
 
 	up_write(&segment->rwsem);
 
