@@ -246,6 +246,9 @@ struct data_file {
 	/* For mapped files, the offset into the actual file */
 	loff_t df_mapped_offset;
 
+	/* Number of data blocks written to file */
+	atomic_t df_data_blocks_written;
+
 	struct mtree *df_hash_tree;
 
 	struct incfs_df_signature *df_signature;
