@@ -231,8 +231,7 @@ static int process_signature_section(struct data_file *df,
 	void *buf = NULL;
 	ssize_t read;
 
-	if (!df->df_backing_file_context ||
-	    !df->df_backing_file_context->bc_file)
+	if (!df->df_backing_file)
 		return -ENOENT;
 
 	if (!signature->fs_offset && !signature->fs_size &&
@@ -254,7 +253,7 @@ static int process_signature_section(struct data_file *df,
 		goto out;
 	}
 
-	read = incfs_kread(df->df_backing_file_context->bc_file, buf,
+	read = incfs_kread(df->df_backing_file, buf,
 			   sig->sig_size, sig->sig_offset);
 	if (read < 0) {
 		error = read;
@@ -293,7 +292,6 @@ out:
 struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 {
 	struct data_file *df = NULL;
-	struct backing_file_context *bfc = NULL;
 	int error = 0;
 	int i;
 	struct incfs_file_header *fh = NULL;
@@ -304,26 +302,18 @@ struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 	if (!S_ISREG(bf->f_inode->i_mode))
 		return ERR_PTR(-EBADF);
 
-	bfc = incfs_alloc_bfc(bf);
-	if (IS_ERR(bfc))
-		return ERR_CAST(bfc);
-
 	df = kzalloc(sizeof(*df), GFP_NOFS);
 	if (!df) {
 		error = -ENOMEM;
 		goto out;
 	}
 
-	df->df_backing_file_context = bfc;
+	df->df_backing_file = get_file(bf);
 	df->df_mount_info = mi;
 	for (i = 0; i < ARRAY_SIZE(df->df_segments); i++)
 		data_file_segment_init(&df->df_segments[i]);
 
-	error = mutex_lock_interruptible(&bfc->bc_mutex);
-	if (error)
-		goto out;
-	fh = incfs_read_file_header(bfc);
-	mutex_unlock(&bfc->bc_mutex);
+	fh = incfs_read_file_header(df->df_backing_file);
 
 	if (IS_ERR(fh)) {
 		error = PTR_ERR(fh);
@@ -360,9 +350,6 @@ struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 out:
 	kfree(fh);
 	if (error) {
-		incfs_free_bfc(bfc);
-		if (df)
-			df->df_backing_file_context = NULL;
 		incfs_free_data_file(df);
 		return ERR_PTR(error);
 	}
@@ -375,7 +362,7 @@ void incfs_free_data_file(struct data_file *df)
 		return;
 
 	incfs_free_mtree(df->df_hash_tree);
-	incfs_free_bfc(df->df_backing_file_context);
+	fput(df->df_backing_file);
 	kfree(df);
 }
 
@@ -716,7 +703,6 @@ static int get_data_file_block(struct data_file *df, int index,
 			       struct data_file_block *res_block)
 {
 	struct incfs_blockmap_entry bme = {};
-	struct backing_file_context *bfc = NULL;
 	loff_t blockmap_off = 0;
 	int error = 0;
 
@@ -724,12 +710,11 @@ static int get_data_file_block(struct data_file *df, int index,
 		return -EFAULT;
 
 	blockmap_off = df->df_blockmap_off;
-	bfc = df->df_backing_file_context;
-
 	if (index < 0 || blockmap_off == 0)
 		return -EINVAL;
 
-	error = incfs_read_blockmap_entry(bfc, index, blockmap_off, &bme);
+	error = incfs_read_blockmap_entry(df->df_backing_file, index,
+					  blockmap_off, &bme);
 	if (error)
 		return error;
 
@@ -762,29 +747,17 @@ static int copy_one_range(struct incfs_filled_range *range, void __user *buffer,
 static int update_file_header_flags(struct data_file *df, u32 bits_to_reset,
 				    u32 bits_to_set)
 {
-	int result;
 	u32 new_flags;
-	struct backing_file_context *bfc;
 
 	if (!df)
 		return -EFAULT;
-	bfc = df->df_backing_file_context;
-	if (!bfc)
-		return -EFAULT;
-
-	result = mutex_lock_interruptible(&bfc->bc_mutex);
-	if (result)
-		return result;
 
 	new_flags = (df->df_header_flags & ~bits_to_reset) | bits_to_set;
-	if (new_flags != df->df_header_flags) {
-		df->df_header_flags = new_flags;
-		result = incfs_write_file_header_flags(bfc, new_flags);
-	}
+	if (new_flags == df->df_header_flags)
+		return 0;
 
-	mutex_unlock(&bfc->bc_mutex);
-
-	return result;
+	df->df_header_flags = new_flags;
+	return incfs_write_file_header_flags(df->df_backing_file, new_flags);
 }
 
 #define READ_BLOCKMAP_ENTRIES 512
@@ -844,7 +817,7 @@ int incfs_get_filled_blocks(struct data_file *df,
 
 		if (++i == READ_BLOCKMAP_ENTRIES) {
 			entries_read = incfs_read_blockmap_entries(
-				df->df_backing_file_context, bme,
+				df->df_backing_file, bme,
 				arg->index_out, READ_BLOCKMAP_ENTRIES,
 				df->df_blockmap_off);
 			if (entries_read < 0) {
@@ -1124,7 +1097,7 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 		return -ERANGE;
 
 	mi = df->df_mount_info;
-	bf = df->df_backing_file_context->bc_file;
+	bf = df->df_backing_file;
 
 	result = wait_for_data_block(df, index, timeout_ms, &block);
 	if (result < 0)
@@ -1175,7 +1148,6 @@ int incfs_process_new_data_block(struct data_file *df,
 				 struct incfs_fill_block *block, u8 *data)
 {
 	struct mount_info *mi = NULL;
-	struct backing_file_context *bfc = NULL;
 	struct data_file_segment *segment = NULL;
 	struct data_file_block existing_block = {};
 	u16 flags = 0;
@@ -1184,7 +1156,6 @@ int incfs_process_new_data_block(struct data_file *df,
 	if (!df || !block)
 		return -EFAULT;
 
-	bfc = df->df_backing_file_context;
 	mi = df->df_mount_info;
 
 	if (block->block_index >= df->df_data_block_count)
@@ -1215,13 +1186,9 @@ int incfs_process_new_data_block(struct data_file *df,
 	if (error)
 		return error;
 
-	error = mutex_lock_interruptible(&bfc->bc_mutex);
-	if (!error) {
-		error = incfs_write_data_block_to_backing_file(
-			bfc, range(data, block->data_len), block->block_index,
-			df->df_blockmap_off, flags);
-		mutex_unlock(&bfc->bc_mutex);
-	}
+	error = incfs_write_data_block_to_backing_file(
+			df->df_backing_file, range(data, block->data_len),
+			block->block_index, df->df_blockmap_off, flags);
 	if (!error)
 		notify_pending_reads(mi, segment, block->block_index);
 
@@ -1235,7 +1202,7 @@ int incfs_process_new_data_block(struct data_file *df,
 
 int incfs_read_file_signature(struct data_file *df, struct mem_range dst)
 {
-	struct file *bf = df->df_backing_file_context->bc_file;
+	struct file *bf = df->df_backing_file;
 	struct incfs_df_signature *sig;
 	int read_res = 0;
 
@@ -1263,13 +1230,11 @@ int incfs_read_file_signature(struct data_file *df, struct mem_range dst)
 int incfs_process_new_hash_block(struct data_file *df,
 				 struct incfs_fill_block *block, u8 *data)
 {
-	struct backing_file_context *bfc = NULL;
 	struct mount_info *mi = NULL;
 	struct mtree *hash_tree = NULL;
 	struct incfs_df_signature *sig = NULL;
 	loff_t hash_area_base = 0;
 	loff_t hash_area_size = 0;
-	int error = 0;
 
 	if (!df || !block)
 		return -EFAULT;
@@ -1277,7 +1242,6 @@ int incfs_process_new_hash_block(struct data_file *df,
 	if (!(block->flags & INCFS_BLOCK_FLAGS_HASH))
 		return -EINVAL;
 
-	bfc = df->df_backing_file_context;
 	mi = df->df_mount_info;
 
 	if (!df)
@@ -1296,14 +1260,9 @@ int incfs_process_new_hash_block(struct data_file *df,
 		return -ERANGE;
 	}
 
-	error = mutex_lock_interruptible(&bfc->bc_mutex);
-	if (!error) {
-		error = incfs_write_hash_block_to_backing_file(
-			bfc, range(data, block->data_len), block->block_index,
+	return incfs_write_hash_block_to_backing_file(df->df_backing_file,
+			range(data, block->data_len), block->block_index,
 			hash_area_base, df->df_blockmap_off, df->df_size);
-		mutex_unlock(&bfc->bc_mutex);
-	}
-	return error;
 }
 
 /*

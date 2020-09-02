@@ -216,7 +216,7 @@ struct file_attr {
 
 
 struct data_file {
-	struct backing_file_context *df_backing_file_context;
+	struct file *df_backing_file;
 
 	struct mount_info *df_mount_info;
 

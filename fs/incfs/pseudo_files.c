@@ -427,9 +427,8 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 			 u8 __user *user_signature_info, u64 signature_size)
 {
 	struct path path = {};
-	struct file *new_file;
+	struct file *new_file = NULL;
 	int error = 0;
-	struct backing_file_context *bfc = NULL;
 	struct incfs_file_header *fh = NULL;
 	u32 block_count;
 	struct mem_range raw_signature = { NULL };
@@ -448,19 +447,11 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 
 	if (IS_ERR(new_file)) {
 		error = PTR_ERR(new_file);
+		new_file = NULL;
 		goto out;
 	}
 
-	bfc = incfs_alloc_bfc(new_file);
-	fput(new_file);
-	if (IS_ERR(bfc)) {
-		error = PTR_ERR(bfc);
-		bfc = NULL;
-		goto out;
-	}
-
-	mutex_lock(&bfc->bc_mutex);
-	fh = incfs_create_backing_file(bfc, uuid, size);
+	fh = incfs_create_backing_file(new_file, uuid, size);
 	if (IS_ERR(fh)) {
 		error = PTR_ERR(fh);
 		fh = NULL;
@@ -486,8 +477,9 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 			goto out;
 		}
 
-		error = incfs_write_signature_to_backing_file(
-			bfc, raw_signature, hash_tree->hash_tree_area_size, fh);
+		error = incfs_write_signature_to_backing_file(new_file,
+				raw_signature, hash_tree->hash_tree_area_size,
+				fh);
 		if (error)
 			goto out;
 
@@ -496,17 +488,16 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 	}
 
 	if (block_count)
-		error = incfs_write_blockmap_to_backing_file(bfc, block_count,
-							     fh);
+		error = incfs_write_blockmap_to_backing_file(new_file,
+				     block_count, fh);
 	if (error)
 		goto out;
 
-	error = incfs_update_file_header(bfc, fh);
+	error = incfs_update_file_header(new_file, fh);
 out:
-	if (bfc) {
-		mutex_unlock(&bfc->bc_mutex);
-		incfs_free_bfc(bfc);
-	}
+	if (new_file)
+		fput(new_file);
+
 	incfs_free_mtree(hash_tree);
 	kfree(raw_signature.data);
 	kfree(fh);
@@ -715,7 +706,6 @@ static int init_new_mapped_file(struct mount_info *mi, struct dentry *dentry,
 	struct path path = {};
 	struct file *new_file;
 	int error = 0;
-	struct backing_file_context *bfc = NULL;
 	struct incfs_file_header *fh = NULL;
 
 	if (!mi || !dentry || !uuid)
@@ -729,32 +719,17 @@ static int init_new_mapped_file(struct mount_info *mi, struct dentry *dentry,
 	new_file = dentry_open(&path, O_RDWR | O_NOATIME | O_LARGEFILE,
 			       mi->mi_owner);
 
-	if (IS_ERR(new_file)) {
-		error = PTR_ERR(new_file);
-		goto out;
-	}
+	if (IS_ERR(new_file))
+		return PTR_ERR(new_file);
 
-	bfc = incfs_alloc_bfc(new_file);
-	fput(new_file);
-	if (IS_ERR(bfc)) {
-		error = PTR_ERR(bfc);
-		bfc = NULL;
-		goto out;
-	}
-
-	mutex_lock(&bfc->bc_mutex);
-	fh = incfs_create_mapping_file(bfc, uuid, size, offset);
+	fh = incfs_create_mapping_file(new_file, uuid, size, offset);
 	if (IS_ERR(fh)) {
 		error = PTR_ERR(fh);
-		goto out;
+		fh = NULL;
 	}
 
-out:
-	if (bfc) {
-		mutex_unlock(&bfc->bc_mutex);
-		incfs_free_bfc(bfc);
-	}
 	kfree(fh);
+	fput(new_file);
 
 	if (error)
 		pr_debug("incfs: %s error: %d\n", __func__, error);

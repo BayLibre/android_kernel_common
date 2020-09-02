@@ -15,31 +15,6 @@
 #include "format.h"
 #include "data_mgmt.h"
 
-struct backing_file_context *incfs_alloc_bfc(struct file *backing_file)
-{
-	struct backing_file_context *result = NULL;
-
-	result = kzalloc(sizeof(*result), GFP_NOFS);
-	if (!result)
-		return ERR_PTR(-ENOMEM);
-
-	result->bc_file = get_file(backing_file);
-	mutex_init(&result->bc_mutex);
-	return result;
-}
-
-void incfs_free_bfc(struct backing_file_context *bfc)
-{
-	if (!bfc)
-		return;
-
-	if (bfc->bc_file)
-		fput(bfc->bc_file);
-
-	mutex_destroy(&bfc->bc_mutex);
-	kfree(bfc);
-}
-
 loff_t incfs_get_end_offset(struct file *f)
 {
 	/*
@@ -49,10 +24,10 @@ loff_t incfs_get_end_offset(struct file *f)
 	return i_size_read(file_inode(f));
 }
 
-static int write_to_bf(struct backing_file_context *bfc, const void *buf,
+static int write_to_bf(struct file *backing_file, const void *buf,
 			size_t count, loff_t pos)
 {
-	ssize_t res = incfs_kwrite(bfc->bc_file, buf, count, pos);
+	ssize_t res = incfs_kwrite(backing_file, buf, count, pos);
 
 	if (res < 0)
 		return res;
@@ -61,7 +36,7 @@ static int write_to_bf(struct backing_file_context *bfc, const void *buf,
 	return 0;
 }
 
-static int append_zeros_no_fallocate(struct backing_file_context *bfc,
+static int append_zeros_no_fallocate(struct file *backing_file,
 				     size_t file_size, size_t len)
 {
 	u8 buffer[256] = {};
@@ -70,7 +45,8 @@ static int append_zeros_no_fallocate(struct backing_file_context *bfc,
 	for (i = 0; i < len; i += sizeof(buffer)) {
 		int to_write = len - i > sizeof(buffer)
 			? sizeof(buffer) : len - i;
-		int err = write_to_bf(bfc, buffer, to_write, file_size + i);
+		int err = write_to_bf(backing_file, buffer, to_write,
+				      file_size + i);
 
 		if (err)
 			return err;
@@ -80,40 +56,32 @@ static int append_zeros_no_fallocate(struct backing_file_context *bfc,
 }
 
 /* Append a given number of zero bytes to the end of the backing file. */
-static int append_zeros(struct backing_file_context *bfc, size_t len)
+static int append_zeros(struct file *backing_file, size_t len)
 {
 	loff_t file_size = 0;
 	loff_t new_last_byte_offset = 0;
 	int result;
 
-	if (!bfc)
-		return -EFAULT;
-
 	if (len == 0)
 		return 0;
-
-	LOCK_REQUIRED(bfc->bc_mutex);
 
 	/*
 	 * Allocate only one byte at the new desired end of the file.
 	 * It will increase file size and create a zeroed area of
 	 * a given size.
 	 */
-	file_size = incfs_get_end_offset(bfc->bc_file);
+	file_size = incfs_get_end_offset(backing_file);
 	new_last_byte_offset = file_size + len - 1;
-	result = vfs_fallocate(bfc->bc_file, 0, new_last_byte_offset, 1);
+	result = vfs_fallocate(backing_file, 0, new_last_byte_offset, 1);
 	if (result != -EOPNOTSUPP)
 		return result;
 
-	return append_zeros_no_fallocate(bfc, file_size, len);
+	return append_zeros_no_fallocate(backing_file, file_size, len);
 }
 
-int incfs_write_file_header_flags(struct backing_file_context *bfc, u32 flags)
+int incfs_write_file_header_flags(struct file *backing_file, u32 flags)
 {
-	if (!bfc)
-		return -EFAULT;
-
-	return write_to_bf(bfc, &flags, sizeof(flags),
+	return write_to_bf(backing_file, &flags, sizeof(flags),
 			   offsetof(struct incfs_file_header, fh_flags));
 }
 
@@ -121,7 +89,7 @@ int incfs_write_file_header_flags(struct backing_file_context *bfc, u32 flags)
  * Reserve 0-filled space for the blockmap body, and append
  * incfs_blockmap metadata record pointing to it.
  */
-int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_blockmap_to_backing_file(struct file *backing_file,
 					 u32 block_count,
 					 struct incfs_file_header *fh)
 {
@@ -129,14 +97,9 @@ int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
 	loff_t file_end = 0;
 	size_t map_size = block_count * sizeof(struct incfs_blockmap_entry);
 
-	if (!bfc)
-		return -EFAULT;
-
-	LOCK_REQUIRED(bfc->bc_mutex);
-
 	/* Reserve 0-filled space for the blockmap body in the backing file. */
-	file_end = incfs_get_end_offset(bfc->bc_file);
-	result = append_zeros(bfc, map_size);
+	file_end = incfs_get_end_offset(backing_file);
+	result = append_zeros(backing_file, map_size);
 	if (result)
 		return result;
 
@@ -146,30 +109,25 @@ int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
 	return 0;
 }
 
-int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_signature_to_backing_file(struct file *backing_file,
 					  struct mem_range sig, u32 tree_size,
 					  struct incfs_file_header *fh)
 {
 	int result = 0;
 
-	if (!bfc)
-		return -EFAULT;
-
-	LOCK_REQUIRED(bfc->bc_mutex);
-
 	if (sig.data != NULL && sig.len > 0) {
-		loff_t pos = incfs_get_end_offset(bfc->bc_file);
+		loff_t pos = incfs_get_end_offset(backing_file);
 
 		fh->fh_signature.fs_size = cpu_to_le64(sig.len);
 		fh->fh_signature.fs_offset = cpu_to_le64(pos);
 
-		result = write_to_bf(bfc, sig.data, sig.len, pos);
+		result = write_to_bf(backing_file, sig.data, sig.len, pos);
 		if (result)
 			return result;
 	}
 
 	if (tree_size > 0) {
-		loff_t tree_area_pos = incfs_get_end_offset(bfc->bc_file);
+		loff_t tree_area_pos = incfs_get_end_offset(backing_file);
 		size_t alignment = 0;
 
 		if (tree_size > 5 * INCFS_DATA_FILE_BLOCK_SIZE) {
@@ -187,7 +145,7 @@ int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
 		 * If root hash is not the only hash in the tree.
 		 * reserve 0-filled space for the tree.
 		 */
-		result = append_zeros(bfc, tree_size + alignment);
+		result = append_zeros(backing_file, tree_size + alignment);
 		if (result)
 			return result;
 
@@ -198,8 +156,7 @@ int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
 	return 0;
 }
 
-static struct incfs_file_header *create_file(
-				struct backing_file_context *bfc,
+static struct incfs_file_header *create_file(struct file *backing_file,
 				incfs_uuid_t *uuid, u64 file_size, u64 offset,
 				u32 flags)
 {
@@ -212,11 +169,6 @@ static struct incfs_file_header *create_file(
 	if (!fh)
 		return ERR_PTR(-ENOMEM);
 
-	if (!bfc) {
-		error = -EFAULT;
-		goto err;
-	}
-
 	fh->fh_magic = cpu_to_le32(INCFS_MAGIC_NUMBER);
 	fh->fh_version = cpu_to_le32(INCFS_FORMAT_CURRENT_VER);
 	fh->fh_header_size = cpu_to_le16(sizeof(*fh));
@@ -226,14 +178,12 @@ static struct incfs_file_header *create_file(
 	fh->fh_offset = cpu_to_le64(offset);
 	fh->fh_flags = cpu_to_le32(flags);
 
-	LOCK_REQUIRED(bfc->bc_mutex);
-
-	if (incfs_get_end_offset(bfc->bc_file) != 0) {
+	if (incfs_get_end_offset(backing_file) != 0) {
 		error = -EEXIST;
 		goto err;
 	}
 
-	error = incfs_update_file_header(bfc, fh);
+	error = incfs_update_file_header(backing_file, fh);
 	if (error)
 		goto err;
 
@@ -250,35 +200,34 @@ err:
  * fh.fh_first_md_offset is 0 for now, but will be updated
  * once first metadata record is added.
  */
-struct incfs_file_header *incfs_create_backing_file(
-				struct backing_file_context *bfc,
+struct incfs_file_header *incfs_create_backing_file(struct file *backing_file,
 				incfs_uuid_t *uuid, u64 file_size)
 {
-	return create_file(bfc, uuid, file_size, 0, 0);
+	return create_file(backing_file, uuid, file_size, 0, 0);
 }
 
 /*
  * Write a backing file header for a mapping file
  * It should always be called only on empty file.
  */
-struct incfs_file_header *incfs_create_mapping_file(
-				struct backing_file_context *bfc,
+struct incfs_file_header *incfs_create_mapping_file(struct file *backing_file,
 				incfs_uuid_t *uuid, u64 file_size, u64 offset)
 {
-	return create_file(bfc, uuid, file_size, offset, INCFS_FILE_MAPPED);
+	return create_file(backing_file, uuid, file_size, offset,
+			   INCFS_FILE_MAPPED);
 }
 
-int incfs_update_file_header(struct backing_file_context *bfc,
+int incfs_update_file_header(struct file *backing_file,
 			     struct incfs_file_header *fh)
 {
-	if (!fh || !bfc)
+	if (!fh)
 		return -EFAULT;
 
-	return write_to_bf(bfc, fh, sizeof(*fh), 0);
+	return write_to_bf(backing_file, fh, sizeof(*fh), 0);
 }
 
 /* Write a given data block and update file's blockmap to point it. */
-int incfs_write_data_block_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_data_block_to_backing_file(struct file *backing_file,
 				     struct mem_range block, int block_index,
 				     loff_t bm_base_off, u16 flags)
 {
@@ -288,22 +237,17 @@ int incfs_write_data_block_to_backing_file(struct backing_file_context *bfc,
 	loff_t bm_entry_off =
 		bm_base_off + sizeof(struct incfs_blockmap_entry) * block_index;
 
-	if (!bfc)
-		return -EFAULT;
-
 	if (block.len >= (1 << 16) || block_index < 0)
 		return -EINVAL;
 
-	LOCK_REQUIRED(bfc->bc_mutex);
-
-	data_offset = incfs_get_end_offset(bfc->bc_file);
+	data_offset = incfs_get_end_offset(backing_file);
 	if (data_offset <= bm_entry_off) {
 		/* Blockmap entry is beyond the file's end. It is not normal. */
 		return -EINVAL;
 	}
 
 	/* Write the block data at the end of the backing file. */
-	result = write_to_bf(bfc, block.data, block.len, data_offset);
+	result = write_to_bf(backing_file, block.data, block.len, data_offset);
 	if (result)
 		return result;
 
@@ -313,11 +257,11 @@ int incfs_write_data_block_to_backing_file(struct backing_file_context *bfc,
 	bm_entry.me_data_size = cpu_to_le16((u16)block.len);
 	bm_entry.me_flags = cpu_to_le16(flags);
 
-	return write_to_bf(bfc, &bm_entry, sizeof(bm_entry),
+	return write_to_bf(backing_file, &bm_entry, sizeof(bm_entry),
 				bm_entry_off);
 }
 
-int incfs_write_hash_block_to_backing_file(struct backing_file_context *bfc,
+int incfs_write_hash_block_to_backing_file(struct file *backing_file,
 					   struct mem_range block,
 					   int block_index,
 					   loff_t hash_area_off,
@@ -333,19 +277,14 @@ int incfs_write_hash_block_to_backing_file(struct backing_file_context *bfc,
 		sizeof(struct incfs_blockmap_entry) *
 			(block_index + get_blocks_count_for_size(file_size));
 
-	if (!bfc)
-		return -EFAULT;
-
-	LOCK_REQUIRED(bfc->bc_mutex);
-
 	data_offset = hash_area_off + block_index * INCFS_DATA_FILE_BLOCK_SIZE;
-	file_end = incfs_get_end_offset(bfc->bc_file);
+	file_end = incfs_get_end_offset(backing_file);
 	if (data_offset + block.len > file_end) {
 		/* Block is located beyond the file's end. It is not normal. */
 		return -EINVAL;
 	}
 
-	result = write_to_bf(bfc, block.data, block.len, data_offset);
+	result = write_to_bf(backing_file, block.data, block.len, data_offset);
 	if (result)
 		return result;
 
@@ -353,15 +292,16 @@ int incfs_write_hash_block_to_backing_file(struct backing_file_context *bfc,
 	bm_entry.me_data_offset_hi = cpu_to_le16((u16)(data_offset >> 32));
 	bm_entry.me_data_size = cpu_to_le16(INCFS_DATA_FILE_BLOCK_SIZE);
 
-	return write_to_bf(bfc, &bm_entry, sizeof(bm_entry), bm_entry_off);
+	return write_to_bf(backing_file, &bm_entry, sizeof(bm_entry),
+			   bm_entry_off);
 }
 
-int incfs_read_blockmap_entry(struct backing_file_context *bfc, int block_index,
+int incfs_read_blockmap_entry(struct file *backing_file, int block_index,
 			loff_t bm_base_off,
 			struct incfs_blockmap_entry *bm_entry)
 {
-	int error = incfs_read_blockmap_entries(bfc, bm_entry, block_index, 1,
-						bm_base_off);
+	int error = incfs_read_blockmap_entries(backing_file, bm_entry,
+						block_index, 1,	bm_base_off);
 
 	if (error < 0)
 		return error;
@@ -375,7 +315,7 @@ int incfs_read_blockmap_entry(struct backing_file_context *bfc, int block_index,
 	return 0;
 }
 
-int incfs_read_blockmap_entries(struct backing_file_context *bfc,
+int incfs_read_blockmap_entries(struct file *backing_file,
 		struct incfs_blockmap_entry *entries,
 		int start_index, int blocks_number,
 		loff_t bm_base_off)
@@ -386,21 +326,20 @@ int incfs_read_blockmap_entries(struct backing_file_context *bfc,
 					* blocks_number;
 	int result = 0;
 
-	if (!bfc || !entries)
+	if (!entries)
 		return -EFAULT;
 
 	if (start_index < 0 || bm_base_off <= 0)
 		return -ENODATA;
 
-	result = incfs_kread(bfc->bc_file, entries, bytes_to_read,
+	result = incfs_kread(backing_file, entries, bytes_to_read,
 			     bm_entry_off);
 	if (result < 0)
 		return result;
 	return result / sizeof(*entries);
 }
 
-struct incfs_file_header *incfs_read_file_header(
-					struct backing_file_context *bfc)
+struct incfs_file_header *incfs_read_file_header(struct file *backing_file)
 {
 	ssize_t bytes_read = 0;
 	struct incfs_file_header *fh = kzalloc(sizeof(*fh), GFP_NOFS);
@@ -409,13 +348,7 @@ struct incfs_file_header *incfs_read_file_header(
 	if (!fh)
 		return ERR_PTR(-ENOMEM);
 
-	if (!bfc) {
-		error = -EFAULT;
-		goto err;
-	}
-
-	LOCK_REQUIRED(bfc->bc_mutex);
-	bytes_read = incfs_kread(bfc->bc_file, fh, sizeof(*fh), 0);
+	bytes_read = incfs_kread(backing_file, fh, sizeof(*fh), 0);
 	if (bytes_read < 0) {
 		error = bytes_read;
 		goto err;
