@@ -61,4 +61,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ipi_stop);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_printk_store);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_regs);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_lockup_pool);
+<<<<<<< HEAD   (1eb128 ANDROID: scs: use vmapped shadow stacks by default)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sysrq_crash);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_busiest_group);
+>>>>>>> CHANGE (489646 ANDROID: sched: add restrict vendor hook to modify load bala)
