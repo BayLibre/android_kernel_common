@@ -1322,6 +1322,7 @@ struct dm_target *dm_table_get_target(struct dm_table *t, unsigned int index)
 
 	return t->targets + index;
 }
+EXPORT_SYMBOL_GPL(dm_table_get_target);
 
 /*
  * Search the btree for the correct target.
