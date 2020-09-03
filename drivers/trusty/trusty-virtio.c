@@ -843,3 +843,4 @@ module_platform_driver(trusty_virtio_driver);
 
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("Trusty virtio driver");
+MODULE_SOFTDEP("pre: trusty-ipc");
