@@ -22,7 +22,6 @@ enum incfs_metadata_type {
 };
 
 enum incfs_file_header_flags {
-	INCFS_FILE_COMPLETE = 1 << 0,
 	INCFS_FILE_MAPPED = 1 << 1,
 };
 
@@ -156,8 +155,6 @@ int incfs_write_hash_block_to_backing_file(struct file *backing_file,
 int incfs_write_signature_to_backing_file(struct file *backing_file,
 					  struct mem_range sig, u32 tree_size,
 					  struct incfs_file_header *fh);
-
-int incfs_write_file_header_flags(struct file *backing_file, u32 flags);
 
 /* Reading stuff */
 struct incfs_file_header *incfs_read_file_header(struct file *backing_file);
