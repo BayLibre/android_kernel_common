@@ -1986,6 +1986,7 @@ unsigned int dm_table_get_num_targets(struct dm_table *t)
 {
 	return t->num_targets;
 }
+EXPORT_SYMBOL_GPL(dm_table_get_num_targets);
 
 struct list_head *dm_table_get_devices(struct dm_table *t)
 {
