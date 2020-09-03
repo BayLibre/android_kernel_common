@@ -33,6 +33,12 @@
 
 #define INCFS_ROOT_INODE 0
 
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define le32_to_cpu(x)          (x)
+#else
+#error Big endian not supported!
+#endif
+
 struct hash_block {
 	char data[INCFS_DATA_FILE_BLOCK_SIZE];
 };
@@ -2948,15 +2954,25 @@ failure:
 	return result;
 }
 
-static int validate_block_count(const char *mount_dir, struct test_file *file)
+static int validate_block_count(const char *mount_dir, const char *backing_dir,
+				struct test_file *file)
 {
 	int block_cnt = 1 + (file->size - 1) / INCFS_DATA_FILE_BLOCK_SIZE;
 	char *filename = concat_file_name(mount_dir, file->name);
+	char *backing_filename = concat_file_name(backing_dir, file->name);
 	int fd;
 	struct incfs_get_block_count_args bca = {};
 	int test_result = TEST_FAILURE;
 	int result;
 	int i;
+	uint32_t blocks_filled;
+	struct incfs_filled_range ranges[128];
+	struct incfs_get_filled_blocks_args fba = {
+		.range_buffer = ptr_to_u64(ranges),
+		.range_buffer_size = sizeof(ranges),
+	};
+	int cmd_fd = -1;
+	struct incfs_permit_fill permit_fill;
 
 	fd = open(filename, O_RDONLY | O_CLOEXEC);
 	if (fd <= 0)
@@ -2994,9 +3010,53 @@ static int validate_block_count(const char *mount_dir, struct test_file *file)
 	if (bca.total_blocks_out != block_cnt ||
 	    bca.filled_blocks_out != (block_cnt + 1) / 2)
 		goto out;
+	close(fd);
+
+	drop_caches();
+
+	fd = open(backing_filename, O_RDWR | O_CLOEXEC);
+	result = pread(fd, &blocks_filled, sizeof(blocks_filled), 48);
+	if (result != sizeof(blocks_filled) ||
+	    le32_to_cpu(blocks_filled) != (block_cnt + 1) / 2)
+		goto out;
+
+	blocks_filled = 0;
+	result = pwrite(fd, &blocks_filled, sizeof(blocks_filled), 48);
+	if (result != sizeof(blocks_filled))
+		goto out;
+
+	close(fd);
+	fd = open(filename, O_RDONLY | O_CLOEXEC);
+	result = ioctl(fd, INCFS_IOC_GET_BLOCK_COUNT, &bca);
+	if (result != 0)
+		goto out;
+
+	if (bca.total_blocks_out != block_cnt ||
+	    bca.filled_blocks_out != 0)
+		goto out;
+
+	cmd_fd = open_commands_file(mount_dir);
+	permit_fill.file_descriptor = fd;
+	if (ioctl(cmd_fd, INCFS_IOC_PERMIT_FILL, &permit_fill))
+		goto out;
+
+	do {
+		result = ioctl(fd, INCFS_IOC_GET_FILLED_BLOCKS, &fba);
+		fba.start_index = fba.index_out + 1;
+	} while (fba.index_out < fba.data_blocks_out);
+
+	result = ioctl(fd, INCFS_IOC_GET_BLOCK_COUNT, &bca);
+	if (result != 0)
+		goto out;
+
+	if (bca.total_blocks_out != block_cnt ||
+	    bca.filled_blocks_out != (block_cnt + 1) / 2)
+		goto out;
 
 	test_result = TEST_SUCCESS;
 out:
+	free(backing_filename);
+	close(cmd_fd);
 	free(filename);
 	close(fd);
 	return test_result;
@@ -3029,7 +3089,7 @@ static int block_count_test(const char *mount_dir)
 					NULL) < 0)
 			goto failure;
 
-		result = validate_block_count(mount_dir, file);
+		result = validate_block_count(mount_dir, backing_dir, file);
 		if (result)
 			goto failure;
 	}

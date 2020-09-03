@@ -79,12 +79,6 @@ static int append_zeros(struct file *backing_file, size_t len)
 	return append_zeros_no_fallocate(backing_file, file_size, len);
 }
 
-int incfs_write_file_header_flags(struct file *backing_file, u32 flags)
-{
-	return write_to_bf(backing_file, &flags, sizeof(flags),
-			   offsetof(struct incfs_file_header, fh_flags));
-}
-
 /*
  * Reserve 0-filled space for the blockmap body, and append
  * incfs_blockmap metadata record pointing to it.
