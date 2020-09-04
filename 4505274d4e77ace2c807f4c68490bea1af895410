@@ -33,6 +33,24 @@
       "revId": "4505274d4e77ace2c807f4c68490bea1af895410",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e2f34e00_61291ea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1691940
+      },
+      "writtenOn": "2020-09-04T16:50:25Z",
+      "side": 1,
+      "message": "You are right, we can use it but it does useless work in our case. d_path() adds a suffix \"(deleted)\" for unlinked dentries. We need \"clear\" path and therefore we will have to do additional work after calling d_path(): check whether the dentry is unlinked, remove the suffix if it is.",
+      "parentUuid": "87920147_0395356c",
+      "revId": "4505274d4e77ace2c807f4c68490bea1af895410",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
