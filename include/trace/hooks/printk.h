@@ -16,9 +16,13 @@ DECLARE_HOOK(android_vh_printk_hotplug,
 	TP_PROTO(int *flag),
 	TP_ARGS(flag));
 
+DECLARE_HOOK(android_vh_printk_store,
+	TP_PROTO(int facility, int level),
+	TP_ARGS(facility, level))
 #else
 
 #define trace_android_vh_printk_hotplug(flag)
+#define trace_android_vh_printk_store(facility, level)
 
 #endif
 

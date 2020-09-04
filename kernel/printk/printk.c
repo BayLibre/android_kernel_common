@@ -2013,6 +2013,7 @@ asmlinkage int vprintk_emit(int facility, int level,
 	printed_len = vprintk_store(facility, level, dev_info, fmt, args);
 	logbuf_unlock_irqrestore(flags);
 
+	trace_android_vh_printk_store(facility, level);
 	/* If called from the scheduler, we can not call up(). */
 	if (!in_sched) {
 		/*
