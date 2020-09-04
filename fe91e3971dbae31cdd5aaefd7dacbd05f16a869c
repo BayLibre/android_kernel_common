@@ -16,6 +16,24 @@
       "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "394e0944_bc57b7f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1691940
+      },
+      "writtenOn": "2020-09-04T14:47:29Z",
+      "side": 1,
+      "message": "\u003e What dm driver needs this\nThis is not dm driver. This is required for Samsung loadable module.\n\nThe Samsung kernel module needs to verify a file\u0027s signature. There is not needs to verify files from dm-verity/fs-verity therefore we check where a file came from before verifying.\nIn short, we need API \"is_dmverity(inode)\". We\u0027ve implemented it with functions in this patchset.\n\n\u003e and why isn\u0027t it upstream?\nTo upstream this patch we should do it along with our kernel module. We can\u0027t upstream our module because it can\u0027t work without Samsung proprietary components.",
+      "parentUuid": "fb8c6bba_1653aa1d",
+      "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
