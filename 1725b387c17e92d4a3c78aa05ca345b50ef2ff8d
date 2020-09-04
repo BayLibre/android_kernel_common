@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe4e3705_fc0ec69b",
+        "filename": "android/abi_gki_aarch64_oneplus",
+        "patchSetId": 5
+      },
+      "lineNbr": 2023,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-04T12:10:07Z",
+      "side": 1,
+      "message": "This module is already built into the kernel image, so it can not physically be built as a module, something is really odd with your configuration.\n\nLet me look at cleaning this up a bit to give you a basic file to build off of, which might be easier...",
+      "range": {
+        "startLine": 2023,
+        "startChar": 0,
+        "endLine": 2023,
+        "endChar": 28
+      },
+      "revId": "1725b387c17e92d4a3c78aa05ca345b50ef2ff8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
