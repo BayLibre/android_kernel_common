@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac20047f_0b64051d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-09-04T00:08:33Z",
+      "side": 1,
+      "message": "This list refers to symbols that are not exported by the kernel (exported by a vendor module?). Please remove them.\n\nSymbols missing from ksymtab:\n - __cfi_slowpath_diag\n - __ubsan_handle_cfi_check_fail\n - cmd_db_read_addr\n - cmd_db_read_aux_data\n - cmd_db_read_slave_id\n - cmd_db_ready\n - force_oem_console_setup\n - rpmh_flush\n - rpmh_invalidate\n - rpmh_mode_solver_set\n - rpmh_write\n - rpmh_write_async\n - rpmh_write_batch\n - rpmsg_get_sigs\n - rpmsg_set_sigs\n\nSee https://android.googlesource.com/kernel/build/+/refs/heads/master/abi/#6_working-with-symbol-lists for information on generating symbol lists.",
+      "revId": "7e90dc7cba72e2de74e46eee7c61df105b162e0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
