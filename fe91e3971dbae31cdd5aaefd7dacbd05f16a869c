@@ -34,6 +34,24 @@
       "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c7cbfc93_e2969792",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-08T20:34:53Z",
+      "side": 1,
+      "message": "\u003e we need API \"is_dmverity(inode)\"\n\nCan you elaborate on what you\u0027re trying to accomplish with this?  Just because a file is located on a dm-verity protected volume doesn\u0027t mean that the volume has been authenticated in any particular way.  It\u0027s up to the user of dm-verity how to authenticate the root hash, if they wish to do so at all.  What security properties is your module trying to achieve?\n\nAlso how are you handling edge cases like a device-mapper device that contains multiple targets (only one of which is verity), a filesystem which uses multiple block devices, loopback devices, etc.\n\nNote that normally, \"disk\" properties get propagated upwards in a generic way via the request_queue.  Upper layers don\u0027t reach down into internal data structures of lower layers, as that\u0027s a layering violation.",
+      "parentUuid": "394e0944_bc57b7f9",
+      "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
