@@ -1678,6 +1678,7 @@
       <elf-symbol name='ida_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xffb7c514'/>
       <elf-symbol name='idr_alloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb8f11603'/>
       <elf-symbol name='idr_alloc_cyclic' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x91f44510'/>
+      <elf-symbol name='idr_alloc_u32' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x12ab31f1'/>
       <elf-symbol name='idr_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8e17b3ae'/>
       <elf-symbol name='idr_find' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x20978fb9'/>
       <elf-symbol name='idr_for_each' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1d40b6f3'/>
@@ -110979,6 +110980,14 @@
         <parameter type-id='eaa32e2f'/>
         <parameter type-id='95e97e5e'/>
         <parameter type-id='95e97e5e'/>
+        <parameter type-id='f0981eeb'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='idr_alloc_u32' mangled-name='idr_alloc_u32' filepath='include/linux/idr.h' line='115' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idr_alloc_u32'>
+        <parameter type-id='301185b4'/>
+        <parameter type-id='eaa32e2f'/>
+        <parameter type-id='807869d3'/>
+        <parameter type-id='7359adad'/>
         <parameter type-id='f0981eeb'/>
         <return type-id='95e97e5e'/>
       </function-decl>
