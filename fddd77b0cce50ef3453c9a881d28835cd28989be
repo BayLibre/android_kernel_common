@@ -22,6 +22,30 @@
       "revId": "fddd77b0cce50ef3453c9a881d28835cd28989be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b79959ab_36c8bd0a",
+        "filename": "drivers/iommu/iova.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1697971
+      },
+      "writtenOn": "2020-09-09T01:04:06Z",
+      "side": 1,
+      "message": "Good-catch: this was an error in the original version of the patch submitted and merged here: https://android-review.googlesource.com/c/kernel/common/+/1244811/9/drivers/iommu/iova.c\n\nWhich was subsequently fixed in a follow-up patch: https://android-review.googlesource.com/c/kernel/common/+/1253235\n\nwhich I\u0027m now going to include in this series.  I\u0027ve asked internally to make sure we\u0027re not missing anything else, and I was told that we should be fine with this addition.",
+      "parentUuid": "972734c5_d7052d8b",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 372,
+        "endChar": 43
+      },
+      "revId": "fddd77b0cce50ef3453c9a881d28835cd28989be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
