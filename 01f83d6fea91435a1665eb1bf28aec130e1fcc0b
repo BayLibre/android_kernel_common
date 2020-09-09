@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25bf902e_bdc332e0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3535,
+      "author": {
+        "id": 1120458
+      },
+      "writtenOn": "2020-09-09T17:02:58Z",
+      "side": 1,
+      "message": "L3534 is target_thread, but this is target_proc. Are they always guaranteed to be in sync?",
+      "range": {
+        "startLine": 3535,
+        "startChar": 18,
+        "endLine": 3535,
+        "endChar": 29
+      },
+      "revId": "01f83d6fea91435a1665eb1bf28aec130e1fcc0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "745a7491_7023adbe",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5151,
+      "author": {
+        "id": 1120458
+      },
+      "writtenOn": "2020-09-09T17:02:58Z",
+      "side": 1,
+      "message": "this would mean we hit L5136 but not L5174, right?",
+      "range": {
+        "startLine": 5151,
+        "startChar": 0,
+        "endLine": 5151,
+        "endChar": 9
+      },
+      "revId": "01f83d6fea91435a1665eb1bf28aec130e1fcc0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
