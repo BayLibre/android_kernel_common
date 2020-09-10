@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4033999d_c267b280",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-10T18:10:46Z",
+      "side": 1,
+      "message": "do you want to at least log a warning if the write fails? that may help with debugging later",
+      "range": {
+        "startLine": 371,
+        "startChar": 2,
+        "endLine": 371,
+        "endChar": 14
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6279b1a_aaceb08c",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-10T18:10:46Z",
+      "side": 1,
+      "message": "curious if this allows for a very improbable race condition, when userspace wakes up and reads the old counter before this thread ever has a chance to run to increment it",
+      "range": {
+        "startLine": 1206,
+        "startChar": 0,
+        "endLine": 1206,
+        "endChar": 42
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d04e3e45_621dde20",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1244,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-10T18:10:46Z",
+      "side": 1,
+      "message": "what about here?",
+      "range": {
+        "startLine": 1244,
+        "startChar": 4,
+        "endLine": 1244,
+        "endChar": 32
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b2de596_ad94da8e",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-10T18:10:46Z",
+      "side": 1,
+      "message": "does this include hash blocks?",
+      "range": {
+        "startLine": 675,
+        "startChar": 32,
+        "endLine": 675,
+        "endChar": 36
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13109847_5df82523",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-10T18:10:46Z",
+      "side": 1,
+      "message": "data blocks only? do we not care about hash blocks - especially as the ioctl name doesn\u0027t mention that. \"get filled ranges\" ioctl already includes both. What about separate fields for data and hash blocks here?",
+      "range": {
+        "startLine": 431,
+        "startChar": 20,
+        "endLine": 431,
+        "endChar": 24
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
