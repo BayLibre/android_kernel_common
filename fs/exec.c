@@ -71,6 +71,7 @@
 #include "internal.h"
 
 #include <trace/events/sched.h>
+#include <trace/hooks/fs.h>
 
 static int bprm_creds_from_file(struct linux_binprm *bprm);
 
@@ -1929,8 +1930,10 @@ static int bprm_execve(struct linux_binprm *bprm,
 		goto out;
 
 	retval = exec_binprm(bprm);
-	if (retval < 0)
+	if (retval < 0) {
+		trace_android_vh_exec_binprm_fail(current, bprm->file);
 		goto out;
+	}
 
 	/* execve succeeded */
 	current->fs->in_exec = 0;
