@@ -108,6 +108,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/task.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/kernel.h>
+
 /*
  * Minimum number of threads to boot the kernel
  */
@@ -2225,6 +2228,11 @@ static __latent_entropy struct task_struct *copy_process(
 		retval = -EINTR;
 		goto bad_fork_cancel_cgroup;
 	}
+
+	retval = 0;
+	trace_android_vh_copy_process(clone_flags, p, &retval);
+	if (retval)
+		goto bad_fork_cancel_cgroup;
 
 	/* past the last point of failure */
 	if (pidfile)
