@@ -20,6 +20,7 @@
 #include <trace/hooks/gic.h>
 #include <trace/hooks/mm.h>
 #include <trace/hooks/kernel.h>
+#include <trace/hooks/fs.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -62,3 +63,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_vm_rw_core);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ptrace);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_copy_process);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exec_binprm_fail);
