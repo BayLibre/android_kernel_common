@@ -729,6 +729,21 @@ static int tcpci_parse_config(struct tcpci *tcpci)
 	return 0;
 }
 
+void tcpci_auto_discharge_update(struct tcpci *tcpci)
+{
+	if (!tcpci || !tcpci->data)
+		return;
+	if (tcpci->data->auto_discharge_disconnect) {
+		tcpci->tcpc.enable_auto_vbus_discharge = tcpci_enable_auto_vbus_discharge;
+		tcpci->tcpc.set_auto_vbus_discharge_threshold =
+			tcpci_set_auto_vbus_discharge_threshold;
+	} else {
+		tcpci->tcpc.enable_auto_vbus_discharge = NULL;
+		tcpci->tcpc.set_auto_vbus_discharge_threshold = NULL;
+	}
+}
+EXPORT_SYMBOL_GPL(tcpci_auto_discharge_update);
+
 struct tcpci *tcpci_register_port(struct device *dev, struct tcpci_data *data)
 {
 	struct tcpci *tcpci;
@@ -759,12 +774,6 @@ struct tcpci *tcpci_register_port(struct device *dev, struct tcpci_data *data)
 	tcpci->tcpc.frs_sourcing_vbus = tcpci_frs_sourcing_vbus;
 	tcpci->tcpc.set_current_limit = tcpci_set_current_limit;
 	tcpci->tcpc.set_pd_capable = tcpci_set_pd_capable;
-
-	if (tcpci->data->auto_discharge_disconnect) {
-		tcpci->tcpc.enable_auto_vbus_discharge = tcpci_enable_auto_vbus_discharge;
-		tcpci->tcpc.set_auto_vbus_discharge_threshold =
-			tcpci_set_auto_vbus_discharge_threshold;
-	}
 
 	err = tcpci_parse_config(tcpci);
 	if (err < 0)
