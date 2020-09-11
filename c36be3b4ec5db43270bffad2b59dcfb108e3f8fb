@@ -51,6 +51,24 @@
       "revId": "c36be3b4ec5db43270bffad2b59dcfb108e3f8fb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3067b89e_2bca04da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1319951
+      },
+      "writtenOn": "2020-09-11T17:49:35Z",
+      "side": 1,
+      "message": "It is used in the google BMS kernel module to exchange the charging state between the platform charger driver (specific to the device) and the framework common charging driver.\n\nI have implementations in the charger driver for 2 QC IF-PMIC platforms and 2 for unreleased maxim IF-PMIC including the one used on next year device: I doubt that that we can upstream this code at this point in time. We could also upstream the the pixel common charging driver but I would need to do some cleanup and remove the dependencies from the rest of the google charging framework.\n\nBottom line it\u0027s only one field in an enum.\n\nSure we trade some memory (~400 bytes) to minimize the risk of clashes with upstream changes but this is easy to maintain and quick to do. Publishing it upstream along with a client for it is a lot more work with (I feel) not much gain.",
+      "parentUuid": "20749812_df068316",
+      "revId": "c36be3b4ec5db43270bffad2b59dcfb108e3f8fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
