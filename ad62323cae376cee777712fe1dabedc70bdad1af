@@ -16,6 +16,24 @@
       "revId": "ad62323cae376cee777712fe1dabedc70bdad1af",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e577cc2_e8a657ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1427094
+      },
+      "writtenOn": "2020-09-14T08:53:05Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nOnly 5.4 kernel has this problem.\n\nThis problem does not occur in other upstream branches\nincluding android-mainline, because they use different methods to\ncapture the compiler version.\n\nI have uploaded two changes for android11-5.4 \u0026 android12-5.4:\n  ACK android11-5.4: aosp/1426468\n  ACK android12-5.4: aosp/1426469\n\nPlease let me know if we need to upload this change to other branches.\nThanks.",
+      "parentUuid": "3f066b97_053d67bf",
+      "revId": "ad62323cae376cee777712fe1dabedc70bdad1af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
