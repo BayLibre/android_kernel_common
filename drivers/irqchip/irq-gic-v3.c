@@ -18,7 +18,9 @@
 #include <linux/percpu.h>
 #include <linux/refcount.h>
 #include <linux/slab.h>
+#include <linux/syscore_ops.h>
 #include <trace/hooks/gic_v3.h>
+#include <trace/hooks/gic.h>
 
 #include <linux/irqchip.h>
 #include <linux/irqchip/arm-gic-common.h>
@@ -43,20 +45,6 @@ struct redist_region {
 	void __iomem		*redist_base;
 	phys_addr_t		phys_base;
 	bool			single_redist;
-};
-
-struct gic_chip_data {
-	struct fwnode_handle	*fwnode;
-	void __iomem		*dist_base;
-	struct redist_region	*redist_regions;
-	struct rdists		rdists;
-	struct irq_domain	*domain;
-	u64			redist_stride;
-	u32			nr_redist_regions;
-	u64			flags;
-	bool			has_rss;
-	unsigned int		ppi_nr;
-	struct partition_desc	**ppi_descs;
 };
 
 static struct gic_chip_data gic_data __read_mostly;
@@ -1407,6 +1395,26 @@ static void gic_cpu_pm_init(void)
 static inline void gic_cpu_pm_init(void) { }
 #endif /* CONFIG_CPU_PM */
 
+#ifdef CONFIG_PM
+static void gic_resume(void)
+{
+	trace_android_vh_gic_resume(&gic_data);
+}
+
+static struct syscore_ops gic_syscore_ops = {
+	.resume = gic_resume,
+};
+
+static void gic_syscore_init(void)
+{
+	register_syscore_ops(&gic_syscore_ops);
+}
+
+#else
+static inline void gic_syscore_init(void) { }
+#endif
+
+
 static struct irq_chip gic_chip = {
 	.name			= "GICv3",
 	.irq_mask		= gic_mask_irq,
@@ -1895,6 +1903,7 @@ static int __init gic_init_bases(void __iomem *dist_base,
 	gic_cpu_init();
 	gic_smp_init();
 	gic_cpu_pm_init();
+	gic_syscore_init();
 
 	if (gic_dist_supports_lpis()) {
 		its_init(handle, &gic_data.rdists, gic_data.domain);
