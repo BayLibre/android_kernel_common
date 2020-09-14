@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "542f43b9_68d160f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-14T08:38:57Z",
+      "side": 1,
+      "message": "Why not sent upstream first?\n\nAlso sysfs api issues, see comments...",
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70edda72_7f8c5de6",
+        "filename": "drivers/scsi/ufs/ufs-sysfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-14T08:38:57Z",
+      "side": 1,
+      "message": "I would STRONGLY recommend against doing this, you don\u0027t want host-controller-specific sysfs files.\n\nWhat would they be for?  Who would use them?  Where are they documented?\n\nAnd adding groups by hand like this is racy, why not use the default groups attribute in the bus instead?\n\nAlso, this needs to check an error, and properly unwind if something goes wrong.",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 867,
+        "endChar": 31
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61a709fa_c9b83240",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-14T08:38:57Z",
+      "side": 1,
+      "message": "it can return an error, you are not checking this everywhere 😞",
+      "range": {
+        "startLine": 328,
+        "startChar": 1,
+        "endLine": 328,
+        "endChar": 4
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
