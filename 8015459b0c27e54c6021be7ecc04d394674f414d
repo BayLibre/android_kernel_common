@@ -52,6 +52,24 @@
       "revId": "8015459b0c27e54c6021be7ecc04d394674f414d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7373155_807125be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-14T15:58:42Z",
+      "side": 1,
+      "message": "+security team\n\nPlease correct me, if I\u0027m wrong. I don\u0027t think there\u0027s a big hole, since UFS FW checks the binary integrity when doing FFU, and RPMB itself is a secured protocol which has the authentication. I\u0027m not sure what\u0027d be the point where those were already accessible from anywhere, but why not /dev/sgX.",
+      "parentUuid": "ea1bada5_0707bef0",
+      "revId": "8015459b0c27e54c6021be7ecc04d394674f414d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
