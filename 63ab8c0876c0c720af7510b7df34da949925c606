@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0c67af2e_2de09fac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-14T15:38:06Z",
+      "side": 1,
+      "message": "I don\u0027t think this can be accepted in mainline, since these will be used for custom features.",
+      "parentUuid": "542f43b9_68d160f5",
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "70edda72_7f8c5de6",
         "filename": "drivers/scsi/ufs/ufs-sysfs.c",
         "patchSetId": 1
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "48cef1e9_390d2e09",
+        "filename": "drivers/scsi/ufs/ufs-sysfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-14T15:38:06Z",
+      "side": 1,
+      "message": "\"you don\u0027t want host-controller-specific sysfs files.\"\n-\u003e may I ask what this means?\n\n\"What would they be for?  Who would use them?  Where are they documented?\"\n-\u003e vendor features such as command control in writebooster, host-activate GC, 1% lifetime, which are all non-jedec standard.\nhttps://docs.google.com/presentation/d/1Fx513W9kNte5-RE3hWbuZ1MKfFtTZHTwbIJvvPeH_RA/edit#slide\u003did.p\n\n\"Also, this needs to check an error, and properly unwind if something goes wrong.\"\n-\u003e no. this should not block the existing boot up.",
+      "parentUuid": "70edda72_7f8c5de6",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 867,
+        "endChar": 31
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61a709fa_c9b83240",
         "filename": "drivers/scsi/ufs/ufshcd.h",
         "patchSetId": 1
@@ -53,6 +95,30 @@
       "writtenOn": "2020-09-14T08:38:57Z",
       "side": 1,
       "message": "it can return an error, you are not checking this everywhere 😞",
+      "range": {
+        "startLine": 328,
+        "startChar": 1,
+        "endLine": 328,
+        "endChar": 4
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "562e45d8_2b41f3a5",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-14T15:38:06Z",
+      "side": 1,
+      "message": "Because this should not block the boot-up. See ufs_sysfs_add_nodes() which doesn\u0027t do anything.",
+      "parentUuid": "61a709fa_c9b83240",
       "range": {
         "startLine": 328,
         "startChar": 1,
