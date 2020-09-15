@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "8de060b7_9c4ce414",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-15T18:53:59Z",
+      "side": 1,
+      "message": "Yes, I\u0027m okay with that. And, I don\u0027t want to post any patch in LKML which I\u0027m not convinced. If this doesn\u0027t make sense to you, let me just drop and re-think how to implement it in vendor side. I\u0027m not sure this is what ACK team wants tho.",
+      "parentUuid": "2dddcb40_85bcba45",
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "70edda72_7f8c5de6",
         "filename": "drivers/scsi/ufs/ufs-sysfs.c",
         "patchSetId": 1
@@ -114,6 +132,30 @@
       "side": 1,
       "message": "device-specific sysfs files are not good in that they are undocumented, require custom userspace code that is not Treble-compliant, and generally can cause a total mess as you can do \"anything\" in a sysfs file that we can not audit and properly review.",
       "parentUuid": "48cef1e9_390d2e09",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 867,
+        "endChar": 31
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "997e2b43_5d251d83",
+        "filename": "drivers/scsi/ufs/ufs-sysfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-15T18:53:59Z",
+      "side": 1,
+      "message": "Why do you think \"can not audit and properly review\"? The patches will be posted in device kernel and there\u0027ll be a review process as well.",
+      "parentUuid": "f8b8a6c6_f1bdb66a",
       "range": {
         "startLine": 867,
         "startChar": 0,
