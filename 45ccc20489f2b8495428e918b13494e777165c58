@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d63744e_24d04d0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-15T08:11:34Z",
+      "side": 1,
+      "message": "why not sent upstream first?",
+      "revId": "45ccc20489f2b8495428e918b13494e777165c58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6d351c34_79739280",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 7430,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-15T08:11:34Z",
+      "side": 1,
+      "message": "dev_err() provides the function name if you want it, right?  no need for it here.",
+      "range": {
+        "startLine": 7430,
+        "startChar": 48,
+        "endLine": 7430,
+        "endChar": 56
+      },
+      "revId": "45ccc20489f2b8495428e918b13494e777165c58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
