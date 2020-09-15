@@ -125,6 +125,110 @@ static void debug_print_probes(struct tracepoint_func *funcs)
 		printk(KERN_DEBUG "Probe %d : %p\n", i, funcs[i].func);
 }
 
+#ifdef CONFIG_ANDROID_VENDOR_HOOKS
+
+static inline void *restricted_hook_allocate_probes(int count)
+{
+	struct tp_probes *p  = kzalloc(struct_size(p, probes, count),
+				       GFP_KERNEL);
+	return p == NULL ? NULL : p->probes;
+}
+
+#define MAX_TRACE_HOOK_PROBES 4
+static struct tracepoint_func *
+restricted_hook_add(struct tracepoint_func **funcs, struct tracepoint_func *tp_func)
+{
+	struct tracepoint_func *existing;
+	int nr_probes = 0;
+
+	if (WARN_ON(!tp_func->func))
+		return ERR_PTR(-EINVAL);
+
+	debug_print_probes(*funcs);
+	existing = *funcs;
+
+	if (!existing) {
+		/* no memory exists yet. allocated fixed # entries */
+		existing = restricted_hook_allocate_probes(MAX_TRACE_HOOK_PROBES + 1);
+		if (!existing)
+			return ERR_PTR(-ENOMEM);
+		*funcs = existing;
+	}
+
+	while (existing[nr_probes].func)
+		nr_probes++;
+
+	/* limit number of probes */
+	if (nr_probes >= MAX_TRACE_HOOK_PROBES)
+		return ERR_PTR(-EBUSY);
+
+	existing[nr_probes].data = tp_func->data;
+
+	/* consumer will use tp_func->func to know
+	 * that the function is safe to enter.
+	 * prevent reordering to guarantee.
+	 */
+	wmb();
+
+	existing[nr_probes].func = tp_func->func;
+
+	/* existing[nr_probes+1] is already zero'd. */
+	debug_print_probes(*funcs);
+
+	return existing;
+}
+
+/*
+ * Add the restricted hook function to a tracepoint.
+ */
+static int restricted_hook_add_func(struct tracepoint *tp,
+				    struct tracepoint_func *func)
+{
+	struct tracepoint_func *tp_funcs, *existing;
+
+	tp_funcs = tp->funcs;
+
+	existing = restricted_hook_add(&tp_funcs, func);
+
+	if (IS_ERR(existing)) {
+		WARN_ON_ONCE(PTR_ERR(existing) != -ENOMEM);
+		return PTR_ERR(existing);
+	}
+
+	tp->funcs = tp_funcs;
+
+	if (!static_key_enabled(&tp->key))
+		static_key_slow_inc(&tp->key);
+
+	return 0;
+}
+
+/**
+ * restricted_vendor_hook_register -  Connect a vendor hook
+ *
+ * @tp: tracepoint for restricted vendor hook
+ * @probe: restricted vendor hook handler
+ * @data: restricted vendor hook data
+ *
+ * Returns 0, error value on error.
+ * Once registered, vendor hooks cannot be unregistered.
+ */
+int restricted_vendor_hook_register(struct tracepoint *tp, void *probe, void *data)
+{
+	struct tracepoint_func tp_func;
+	int ret;
+
+	tp_func.func = probe;
+	tp_func.data = data;
+	mutex_lock(&tracepoints_mutex);
+	ret = restricted_hook_add_func(tp, &tp_func);
+	mutex_unlock(&tracepoints_mutex);
+	return ret;
+}
+EXPORT_SYMBOL_GPL(restricted_vendor_hook_register);
+
+#endif /* CONFIG_ANDROID_VENDOR_HOOKS */
+
 static struct tracepoint_func *
 func_add(struct tracepoint_func **funcs, struct tracepoint_func *tp_func,
 	 int prio)
