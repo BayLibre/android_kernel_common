@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "2dddcb40_85bcba45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-15T08:09:48Z",
+      "side": 1,
+      "message": "Why does it matter?\n\nIf upstream says \"no custom features for controller drivers\" then why would we support that here?  That means you are setting yourself up to support this for the next 10+ years, is that ok?",
+      "parentUuid": "0c67af2e_2de09fac",
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "70edda72_7f8c5de6",
         "filename": "drivers/scsi/ufs/ufs-sysfs.c",
         "patchSetId": 1
@@ -84,6 +102,30 @@
     },
     {
       "key": {
+        "uuid": "f8b8a6c6_f1bdb66a",
+        "filename": "drivers/scsi/ufs/ufs-sysfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-15T08:09:48Z",
+      "side": 1,
+      "message": "device-specific sysfs files are not good in that they are undocumented, require custom userspace code that is not Treble-compliant, and generally can cause a total mess as you can do \"anything\" in a sysfs file that we can not audit and properly review.",
+      "parentUuid": "48cef1e9_390d2e09",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 867,
+        "endChar": 31
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61a709fa_c9b83240",
         "filename": "drivers/scsi/ufs/ufshcd.h",
         "patchSetId": 1
@@ -119,6 +161,30 @@
       "side": 1,
       "message": "Because this should not block the boot-up. See ufs_sysfs_add_nodes() which doesn\u0027t do anything.",
       "parentUuid": "61a709fa_c9b83240",
+      "range": {
+        "startLine": 328,
+        "startChar": 1,
+        "endLine": 328,
+        "endChar": 4
+      },
+      "revId": "63ab8c0876c0c720af7510b7df34da949925c606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df6862c4_fc8e599a",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-15T08:09:48Z",
+      "side": 1,
+      "message": "You are not even unwinding from errors properly?  What happens if things go wrong?  You need to recover from this, otherwise the system will be in an unknown state.",
+      "parentUuid": "562e45d8_2b41f3a5",
       "range": {
         "startLine": 328,
         "startChar": 1,
