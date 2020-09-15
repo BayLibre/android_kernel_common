@@ -16,6 +16,24 @@
       "revId": "b974f72afe09808c832928c4111fa79b6bd29e17",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ec143b2_ce85cdd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2020-09-15T15:45:04Z",
+      "side": 1,
+      "message": "TBH, I don\u0027t know exactly which tools will use this except sg_write_buffer and RPMB. And, if you want to tackle about FFU, I\u0027m not sure whether firmware interface can support it or not. We do FFU in bootloader for OTA, so sg_write_buffer was sometimes used for urgent FFU locally. BTW, the question here is whether we can give /dev/sgX and it looks like no security concerns?",
+      "parentUuid": "ece2d2b8_77beafb1",
+      "revId": "b974f72afe09808c832928c4111fa79b6bd29e17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
