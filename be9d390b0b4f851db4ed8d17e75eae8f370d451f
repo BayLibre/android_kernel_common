@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8b5bad73_1c9d89b1",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-09-15T22:06:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4033999d_c267b280",
+      "range": {
+        "startLine": 371,
+        "startChar": 2,
+        "endLine": 371,
+        "endChar": 14
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f6279b1a_aaceb08c",
         "filename": "fs/incfs/data_mgmt.c",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "f28398a4_a3939bc5",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-09-15T22:06:08Z",
+      "side": 1,
+      "message": "This is called from the FILL_BLOCKS ioctl, which is synchronous. So I think a single thread calling the ioctl then calling the second ioctl to read it could not fail to see it.",
+      "parentUuid": "f6279b1a_aaceb08c",
+      "range": {
+        "startLine": 1206,
+        "startChar": 0,
+        "endLine": 1206,
+        "endChar": 42
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d04e3e45_621dde20",
         "filename": "fs/incfs/data_mgmt.c",
         "patchSetId": 3
@@ -68,6 +116,30 @@
       "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ace6234a_dd3167b9",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1244,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-09-15T22:06:08Z",
+      "side": 1,
+      "message": "Hashes added in later cl",
+      "parentUuid": "d04e3e45_621dde20",
+      "range": {
+        "startLine": 1244,
+        "startChar": 4,
+        "endLine": 1244,
+        "endChar": 32
+      },
+      "revId": "be9d390b0b4f851db4ed8d17e75eae8f370d451f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     },
     {
       "key": {
