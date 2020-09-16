@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b3cb950_0f394027",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2817,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-16T17:39:43Z",
+      "side": 1,
+      "message": "can this be \"busy\" right after testing this call?  What prevents that from racing?",
+      "revId": "6c0c7a683f6546f8df96d2d50743b60233bb4905",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "650bbb59_3f96d1bc",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2992,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-16T17:39:43Z",
+      "side": 1,
+      "message": "same race comment here.",
+      "revId": "6c0c7a683f6546f8df96d2d50743b60233bb4905",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa0608da_99b2db60",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 5207,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-16T17:39:43Z",
+      "side": 1,
+      "message": "same race comment.",
+      "revId": "6c0c7a683f6546f8df96d2d50743b60233bb4905",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
