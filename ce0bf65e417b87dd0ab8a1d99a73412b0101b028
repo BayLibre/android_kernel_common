@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "f5387448_092a31df",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T19:12:06Z",
+      "side": 1,
+      "message": "There is nothing ipi specific in the code you added to the trusty-irq driver. If you use of_irq_find_parent \"default\" seems like a reasonable name that leaks less gic specific information into the generic driver.",
+      "parentUuid": "2a1e9012_627808a1",
+      "revId": "ce0bf65e417b87dd0ab8a1d99a73412b0101b028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "17711b9e_cf85cc98",
         "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
         "patchSetId": 1
