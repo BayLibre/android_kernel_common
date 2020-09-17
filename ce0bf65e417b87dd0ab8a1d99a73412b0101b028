@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "6bed5df8_e96e2062",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T19:21:22Z",
+      "side": 1,
+      "message": "interrupt-default-template would make the driver a little more flexible, but we could leave that for a future version if you think it is simpler. I was thinking the specifying the template for the default range would also let us reuse more if the code that handles the other ranges, but that is not how your code is currently structured.\n\nRE: ...oirq.args_count \u003d 1...\nYes to some degree, but if you get that from \"interrupt-default-template\" then it would not be ipi specific at all. (assuming you rename your function and variables)",
+      "parentUuid": "f5387448_092a31df",
+      "revId": "ce0bf65e417b87dd0ab8a1d99a73412b0101b028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "17711b9e_cf85cc98",
         "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
         "patchSetId": 1
