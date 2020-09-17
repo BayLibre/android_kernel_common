@@ -46,6 +46,30 @@
       "revId": "f4a5be226ab45840d6c6567974e67d9a6ccf6202",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "56e7625f_1f2aae9a",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-17T16:47:47Z",
+      "side": 1,
+      "message": "what if one keeps only writing hash blocks? we need to wake up the waiter to report that progress, but as implemented it won\u0027t ever happen",
+      "parentUuid": "d7022dae_4ce96338",
+      "range": {
+        "startLine": 931,
+        "startChar": 0,
+        "endLine": 933,
+        "endChar": 46
+      },
+      "revId": "f4a5be226ab45840d6c6567974e67d9a6ccf6202",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
