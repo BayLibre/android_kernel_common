@@ -16,6 +16,23 @@
       "revId": "e9e2c7ab246ba71cb25e89dbe54e04f4f6d3688b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e12aae8a_8a198bf8",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T18:49:10Z",
+      "side": 1,
+      "message": "this is a little inconsistent with the interrupt-ranges where base is subtracted. If the beg is not the real base, but 8, like here, then I would expect ipi_base to also be set to 8.",
+      "revId": "e9e2c7ab246ba71cb25e89dbe54e04f4f6d3688b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
