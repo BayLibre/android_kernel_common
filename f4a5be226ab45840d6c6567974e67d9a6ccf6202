@@ -22,6 +22,30 @@
       "revId": "f4a5be226ab45840d6c6567974e67d9a6ccf6202",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7022dae_4ce96338",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-09-17T16:43:41Z",
+      "side": 1,
+      "message": "No, because you *have* to write the hashes out first. We could fix that problem if you want, but for the moment we fail reads where the data block exists but the hash block doesn\u0027t, we don\u0027t queue them up",
+      "parentUuid": "d537dad9_1b6e3f47",
+      "range": {
+        "startLine": 931,
+        "startChar": 0,
+        "endLine": 933,
+        "endChar": 46
+      },
+      "revId": "f4a5be226ab45840d6c6567974e67d9a6ccf6202",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
