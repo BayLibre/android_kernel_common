@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c7aa4c53_354e78aa",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T23:30:58Z",
+      "side": 1,
+      "message": "I prefer to keep the name more generic as this will can work with other interrupt types/controllers as well. If you don\u0027t want the template I suggested in patchset 1 this range could be called simple-interrupt-range to signal that it works with interrupts that have no parameters other than the number.",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62e24a3f_0a8b666d",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T23:30:58Z",
+      "side": 1,
+      "message": "simple?",
+      "range": {
+        "startLine": 212,
+        "startChar": 26,
+        "endLine": 212,
+        "endChar": 29
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "588f485a_65e1d928",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T23:30:58Z",
+      "side": 1,
+      "message": "range?",
+      "range": {
+        "startLine": 215,
+        "startChar": 5,
+        "endLine": 215,
+        "endChar": 14
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e0a38e1_c8b0b019",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T23:30:58Z",
+      "side": 1,
+      "message": "ipar? or something like that?",
+      "range": {
+        "startLine": 216,
+        "startChar": 21,
+        "endLine": 216,
+        "endChar": 24
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d01ca4b3_3a3d8b29",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T23:30:58Z",
+      "side": 1,
+      "message": "base?",
+      "range": {
+        "startLine": 218,
+        "startChar": 15,
+        "endLine": 218,
+        "endChar": 23
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34714895_4f1bad39",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T23:30:58Z",
+      "side": 1,
+      "message": "I assume using this path does not work?",
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
