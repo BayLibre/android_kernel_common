@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e44e90be_efd7c26c",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T18:40:23Z",
+      "side": 1,
+      "message": "If you use of_irq_find_parent to get the controller as suggested, we can add a interrupt-default-template that has the same format as the existing interrupt-templates but without the first argument.\nFor the example this becomes:\ninterrupt-default-template \u003d \u003c 0 \u003e;",
+      "revId": "ce0bf65e417b87dd0ab8a1d99a73412b0101b028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17711b9e_cf85cc98",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-17T18:40:23Z",
+      "side": 1,
+      "message": "You could then add:\ninterrupt-default-range \u003d \u003c0 15\u003e;\n(or use the default range for anything that does not match an explicit range)",
+      "revId": "ce0bf65e417b87dd0ab8a1d99a73412b0101b028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
