@@ -70,6 +70,30 @@
       "revId": "f4a5be226ab45840d6c6567974e67d9a6ccf6202",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24ff08d7_96908d2a",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-09-17T17:44:28Z",
+      "side": 1,
+      "message": "This is all about .blocks_written, which currently only reports data blocks. I can add hash blocks to that if needed, but that\u0027s totally unrelated to this change. Please file a bug if you want that change.",
+      "parentUuid": "56e7625f_1f2aae9a",
+      "range": {
+        "startLine": 931,
+        "startChar": 0,
+        "endLine": 933,
+        "endChar": 46
+      },
+      "revId": "f4a5be226ab45840d6c6567974e67d9a6ccf6202",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
