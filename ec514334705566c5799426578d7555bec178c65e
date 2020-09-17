@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3ae88d2_20c5232b",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-09-17T19:40:52Z",
+      "side": 1,
+      "message": "this isn\u0027t thread-safe, better to use a compare-and-swap instead IMO",
+      "range": {
+        "startLine": 816,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 42
+      },
+      "revId": "ec514334705566c5799426578d7555bec178c65e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
