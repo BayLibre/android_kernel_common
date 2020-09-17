@@ -555,8 +555,11 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
 	int ret;
 
 	/* Interrupt configuration for SGIs can't be changed */
-	if (irq < 16)
+	if (irq < 16) {
+		if (type == IRQ_TYPE_EDGE_RISING)
+			return 0;
 		return -EINVAL;
+	}
 
 	range = get_intid_range(d);
 
