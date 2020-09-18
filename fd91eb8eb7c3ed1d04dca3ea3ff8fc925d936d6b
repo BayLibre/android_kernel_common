@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "4cdb309e_bfba0e5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T20:40:59Z",
+      "side": 1,
+      "message": "I don\u0027t know.  The Trusty team should be able to answer this.",
+      "parentUuid": "202bae1e_9a6930b6",
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8e7b6fc5_47302404",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
@@ -47,6 +65,30 @@
       "writtenOn": "2020-09-18T14:18:27Z",
       "side": 1,
       "message": "should be a default attribute group, you just raced with userspace and lost 😞",
+      "range": {
+        "startLine": 631,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 57
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1343f70_6dc64409",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T20:40:59Z",
+      "side": 1,
+      "message": "Do you mean setting platform_driver::driver.dev_groups?  That looks simpler, but won\u0027t it still be racy?  I don\u0027t see how to avoid the race, since this is a platform_device driver.",
+      "parentUuid": "8e7b6fc5_47302404",
       "range": {
         "startLine": 631,
         "startChar": 0,
@@ -82,6 +124,30 @@
     },
     {
       "key": {
+        "uuid": "5e3d87d7_79ba1e2f",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T20:40:59Z",
+      "side": 1,
+      "message": "dev_dbg() only adds __func__ if CONFIG_DYNAMIC_DEBUG is enabled and the user has enabled printing of the function name.  So the messages should still be meaningful even without the function name, right?  If so, there would be a bit more to fixing this than just removing __func__.",
+      "parentUuid": "96ef9327_207bc4d1",
+      "range": {
+        "startLine": 726,
+        "startChar": 3,
+        "endLine": 726,
+        "endChar": 11
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b81caf85_70d7c449",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
@@ -105,6 +171,30 @@
     },
     {
       "key": {
+        "uuid": "4f82da1d_29f7bb0c",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T20:40:59Z",
+      "side": 1,
+      "message": "This function has only one caller, and it provides a non-null pointer.  So WARN_ON() looks okay here.\n\nAll the other WARNs and BUGs in this driver need to be checked too, though.",
+      "parentUuid": "b81caf85_70d7c449",
+      "range": {
+        "startLine": 778,
+        "startChar": 0,
+        "endLine": 778,
+        "endChar": 19
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "21a164fd_53cb517a",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
@@ -116,6 +206,30 @@
       "writtenOn": "2020-09-18T14:18:27Z",
       "side": 1,
       "message": "not needed for a platform driver, right?",
+      "range": {
+        "startLine": 934,
+        "startChar": 0,
+        "endLine": 934,
+        "endChar": 23
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "645c3f82_81fdc484",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T20:40:59Z",
+      "side": 1,
+      "message": "Looks like it.  Removing in https://android-review.googlesource.com/c/kernel/common/+/1432021.",
+      "parentUuid": "21a164fd_53cb517a",
       "range": {
         "startLine": 934,
         "startChar": 0,
