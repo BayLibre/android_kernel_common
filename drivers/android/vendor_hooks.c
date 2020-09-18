@@ -19,6 +19,7 @@
 #include <trace/hooks/mpam.h>
 #include <trace/hooks/gic.h>
 #include <trace/hooks/wqlockup.h>
+#include <trace/hooks/xfrm.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -57,5 +58,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_show_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_idle);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mpam_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_busiest_group);
+<<<<<<< HEAD   (d47a4b FROMLIST: soc: qcom: cmd-db: allow loading as a module)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_lockup_pool);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ip6_pkt_too_big);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ip6_fragment);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh__xfrm4_output);
+>>>>>>> CHANGE (3518ea ANDROID: xfrm: Add vendor hooks to xfrm)
