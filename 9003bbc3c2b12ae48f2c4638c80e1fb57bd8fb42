@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "cceccba4_5dff8b61",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T18:40:46Z",
+      "side": 1,
+      "message": "The GIC interrupt specifiers can\u0027t be changed because the upstream kernel considers device trees to be a stable interface.  Device tree files may be outside the kernel source tree, and people may use old device tree files with new kernels.  So whatever the current way of specifying interrupts for the GIC is, that has to be permanently supported in all future kernel versions.\n\nWe may still be willing to accept breaking changes in the Trusty bindings for now.  However, we should still avoid defining an interface that directly exposes internal kernel implementation details.  If I understand correctly, Marc did *not* intend for the way to call irq_create_of_mapping() to map a SGI to be a stable interface which is guaranteed to stay the same in all future kernel versions.  Therefore it should be handled in the driver, not the device tree.  The device tree should just list the IPI numbers directly.\n\nAlso note that if there is an interrupt controller whose interrupt specifiers take only one cell, the existing \"interrupt-templates\" will work fine for it.  There\u0027s no need to re-use the IPI property for that case.",
+      "parentUuid": "125d1702_f41017fa",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "62e24a3f_0a8b666d",
         "filename": "drivers/trusty/trusty-irq.c",
         "patchSetId": 5
@@ -212,6 +236,24 @@
       "side": 1,
       "message": "Yes, I\u0027m asking if the ipi are mapped 1:1 with linux interrupt numbers. If so this code could be triggered for ipi with a range check as well.",
       "parentUuid": "c94c1202_41d4226b",
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7643f81f_98a90965",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T18:40:46Z",
+      "side": 1,
+      "message": "No, the Linux interrupt numbers can be different from the IPI numbers.",
+      "parentUuid": "07975a3f_f536a68b",
       "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
