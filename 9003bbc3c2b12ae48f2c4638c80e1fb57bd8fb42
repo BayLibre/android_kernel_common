@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c024be4b_b4107fc6",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T00:17:46Z",
+      "side": 1,
+      "message": "That suggestion still doesn\u0027t make sense to me.  There already is a way to specify other kinds of interrupts: \"interrupt-ranges\" and \"interrupt-templates\".  And from what I understood from what Marc said, I don\u0027t think he meant the detail of \"IPIs are specified by using 1 argument to irq_create_of_mapping()\" to be something that\u0027s exposed in device tree files, as that means that it can never be changed later.  Instead the device tree should just specify the IPI numbers, and the way of doing the mapping should be a driver implementation detail.\n\nmzyngier@, can you confirm whether I\u0027m understanding correctly?",
+      "parentUuid": "c7aa4c53_354e78aa",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "62e24a3f_0a8b666d",
         "filename": "drivers/trusty/trusty-irq.c",
         "patchSetId": 5
@@ -128,6 +152,24 @@
       "writtenOn": "2020-09-17T23:30:58Z",
       "side": 1,
       "message": "I assume using this path does not work?",
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c94c1202_41d4226b",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T00:17:46Z",
+      "side": 1,
+      "message": "This is only executed if interrupt-ranges isn\u0027t present, so no.\n\nOr if you\u0027re asking why can\u0027t we just return \u0027irq\u0027, we still might have to remap it to something else.",
+      "parentUuid": "34714895_4f1bad39",
       "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
