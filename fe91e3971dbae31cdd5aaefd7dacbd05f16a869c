@@ -70,6 +70,24 @@
       "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9d3a3586_e868197b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T17:40:49Z",
+      "side": 1,
+      "message": "It still seems problematic to make assumptions about dm-verity can be used.  Did you consider *all* Android uses of dm-verity, including mainline modules?  What if future Android platform releases introduce new uses of dm-verity?\n\nIt\u0027s a big layering violation to be walk down the storage stack into device-mapper internal data structures.  Normally device properties get passed up the stack in a well-defined way via the request_queue.\n\nCan you please share a link to the source code for your driver that needs these exports so that we can see exactly what you\u0027re trying to accomplish?",
+      "parentUuid": "b1fc819b_99b73bf6",
+      "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
