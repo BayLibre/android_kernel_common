@@ -13,9 +13,17 @@
 #include <net/ip.h>
 #include <net/xfrm.h>
 #include <net/icmp.h>
+#include <trace/hooks/xfrm.h>
 
 static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
+<<<<<<< HEAD   (d47a4b FROMLIST: soc: qcom: cmd-db: allow loading as a module)
+=======
+	struct xfrm_state *x = skb_dst(skb)->xfrm;
+	const struct xfrm_state_afinfo *afinfo;
+	int ret = -EAFNOSUPPORT;
+	int vh_ret = 1;
+>>>>>>> CHANGE (3518ea ANDROID: xfrm: Add vendor hooks to xfrm)
 #ifdef CONFIG_NETFILTER
 	struct xfrm_state *x = skb_dst(skb)->xfrm;
 
@@ -24,6 +32,9 @@ static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 		return dst_output(net, sk, skb);
 	}
 #endif
+	trace_android_vh__xfrm4_output(net, sk, skb, &vh_ret);
+	if (vh_ret < 1)
+		return vh_ret;
 
 	return xfrm_output(sk, skb);
 }
