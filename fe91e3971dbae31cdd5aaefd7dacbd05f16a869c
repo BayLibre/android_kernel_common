@@ -52,6 +52,24 @@
       "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1fc819b_99b73bf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1691940
+      },
+      "writtenOn": "2020-09-18T15:08:13Z",
+      "side": 1,
+      "message": "\u003e Can you elaborate on what you\u0027re trying to accomplish with this? Just because a file is located on a dm-verity protected volume doesn\u0027t mean that the volume has been authenticated in any particular way.\n\u003e It\u0027s up to the user of dm-verity how to authenticate the root hash, if they wish to do so at all. What security properties is your module trying to achieve?\n\nWe only need to know that a file is located on a dm-verity protected volume.\nOur module provides information to other modules that all files used by the task are from \"verity\" partition or are signed by our module. We know, that a user can skip root-hash authentication but in our case this fact will be verified by another module.\n\n\u003e Also how are you handling edge cases like a device-mapper device that contains multiple targets (only one of which is verity), a filesystem which uses multiple block devices, loopback devices, etc.\n\nOur solution is developed for Samsung devices only. Therefore it doesn\u0027t cover all edge cases because some features are disabled on Samsung devices.\n1. Our code returns \"false\" if there is more than one \"verity\" target in the table.\n2. If this is a loopback device, we check whether it\u0027s a backed by a file. After that we verify the file. \n3. We don\u0027t cover the case with multiple devices at this moment.",
+      "parentUuid": "c7cbfc93_e2969792",
+      "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
