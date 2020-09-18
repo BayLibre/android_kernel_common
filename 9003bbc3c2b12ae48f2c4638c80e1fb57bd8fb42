@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "125d1702_f41017fa",
+        "filename": "Documentation/devicetree/bindings/trusty/trusty-irq.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-18T00:55:24Z",
+      "side": 1,
+      "message": "That is how all other gic interrupts work though. If you add a parameter to the gic other interrupts you have to update device trees. If the IPIs exposed by the gic driver change to have more parameters something has to be updated. We can either update the device tree entry, which is where we have the other gic specific information, or the trusty-irq driver, which currently does not have any gic specific code. If IPIs are the only interrupts that can work without any additional parameters, then your current name makes sense, but I did not think that was the case.",
+      "parentUuid": "c024be4b_b4107fc6",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "62e24a3f_0a8b666d",
         "filename": "drivers/trusty/trusty-irq.c",
         "patchSetId": 5
@@ -170,6 +194,24 @@
       "side": 1,
       "message": "This is only executed if interrupt-ranges isn\u0027t present, so no.\n\nOr if you\u0027re asking why can\u0027t we just return \u0027irq\u0027, we still might have to remap it to something else.",
       "parentUuid": "34714895_4f1bad39",
+      "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07975a3f_f536a68b",
+        "filename": "drivers/trusty/trusty-irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-18T00:55:24Z",
+      "side": 1,
+      "message": "Yes, I\u0027m asking if the ipi are mapped 1:1 with linux interrupt numbers. If so this code could be triggered for ipi with a range check as well.",
+      "parentUuid": "c94c1202_41d4226b",
       "revId": "9003bbc3c2b12ae48f2c4638c80e1fb57bd8fb42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
