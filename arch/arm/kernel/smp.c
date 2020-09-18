@@ -26,6 +26,7 @@
 #include <linux/completion.h>
 #include <linux/cpufreq.h>
 #include <linux/irq_work.h>
+#include <linux/kernel_stat.h>
 
 #include <linux/atomic.h>
 #include <asm/bugs.h>
