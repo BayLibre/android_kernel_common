@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cdaf3068_ed5f3f14",
+        "filename": "arch/arm/kernel/smp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-18T03:14:58Z",
+      "side": 1,
+      "message": "Marc, there is a build error here:\n\n   /usr/local/google/buildbot/src/android/master/external/linux/arch/arm/kernel/smp.c:537:27: \n   error: implicit declaration of function \u0027kstat_irqs_cpu\u0027 [-Werror,-Wimplicit-function-declaration]\n                        seq_printf(p, \"%10u \", kstat_irqs_cpu(irq, cpu));",
+      "revId": "2d21fb1e74046927b2a9777e70f626969d0af704",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
