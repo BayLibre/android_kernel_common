@@ -54,6 +54,98 @@
     },
     {
       "key": {
+        "uuid": "859b9d71_99dc0892",
+        "filename": "drivers/trusty/Kconfig",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-19T12:11:30Z",
+      "side": 1,
+      "message": "this is the default, no need to list this.\n\nAnd no help text?  checkpatch should be complaining about this...",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 10
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "328b9fd6_8b894781",
+        "filename": "drivers/trusty/Kconfig",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-19T12:11:30Z",
+      "side": 1,
+      "message": "why only ARM?\n\nNo COMPILE_TEST?",
+      "range": {
+        "startLine": 14,
+        "startChar": 12,
+        "endLine": 14,
+        "endChar": 15
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0abb099_8b9377a2",
+        "filename": "drivers/trusty/Kconfig",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-19T12:11:30Z",
+      "side": 1,
+      "message": "\u0027default y\u0027 is only if the machine will not boot for this, just remove it from all other places.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bb0f098_71bb4d5a",
+        "filename": "drivers/trusty/Kconfig",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-19T12:11:30Z",
+      "side": 1,
+      "message": "COMPILE_TEST as well?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8e7b6fc5_47302404",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
