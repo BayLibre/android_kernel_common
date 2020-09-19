@@ -101,6 +101,30 @@
     },
     {
       "key": {
+        "uuid": "f7c3a4e0_f69523dd",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-19T11:57:12Z",
+      "side": 1,
+      "message": "Yes, use dev_groups, the driver core correctly adds the attributes before telling userspace that the driver is bound to the device.",
+      "parentUuid": "c1343f70_6dc64409",
+      "range": {
+        "startLine": 631,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 57
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "96ef9327_207bc4d1",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
@@ -136,6 +160,30 @@
       "side": 1,
       "message": "dev_dbg() only adds __func__ if CONFIG_DYNAMIC_DEBUG is enabled and the user has enabled printing of the function name.  So the messages should still be meaningful even without the function name, right?  If so, there would be a bit more to fixing this than just removing __func__.",
       "parentUuid": "96ef9327_207bc4d1",
+      "range": {
+        "startLine": 726,
+        "startChar": 3,
+        "endLine": 726,
+        "endChar": 11
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b143ef06_23577fa5",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-19T11:57:12Z",
+      "side": 1,
+      "message": "meaningful, yes, but don\u0027t be wasteful by adding __func__ when it\u0027s not needed :)",
+      "parentUuid": "5e3d87d7_79ba1e2f",
       "range": {
         "startLine": 726,
         "startChar": 3,
