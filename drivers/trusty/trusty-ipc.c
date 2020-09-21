@@ -923,11 +923,8 @@ static int dn_connect_ioctl(struct tipc_dn_chan *dn, char __user *usr_name)
 
 	/* copy in service name from user space */
 	err = strncpy_from_user(name, usr_name, sizeof(name));
-	if (err < 0) {
-		pr_err("%s: copy_from_user (%p) failed (%d)\n",
-		       __func__, usr_name, err);
+	if (err < 0)
 		return err;
-	}
 	name[sizeof(name)-1] = '\0';
 
 	/* send connect request */
@@ -941,45 +938,28 @@ static int dn_connect_ioctl(struct tipc_dn_chan *dn, char __user *usr_name)
 
 static long tipc_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
-	int ret;
 	struct tipc_dn_chan *dn = filp->private_data;
-
-	if (_IOC_TYPE(cmd) != TIPC_IOC_MAGIC)
-		return -EINVAL;
 
 	switch (cmd) {
 	case TIPC_IOC_CONNECT:
-		ret = dn_connect_ioctl(dn, (char __user *)arg);
-		break;
+		return dn_connect_ioctl(dn, (char __user *)arg);
 	default:
-		pr_warn("%s: Unhandled ioctl cmd: 0x%x\n",
-			__func__, cmd);
-		ret = -EINVAL;
+		return -ENOTTY;
 	}
-	return ret;
 }
 
-#if defined(CONFIG_COMPAT)
+#ifdef CONFIG_COMPAT
 static long tipc_compat_ioctl(struct file *filp,
 			      unsigned int cmd, unsigned long arg)
 {
-	int ret;
-	struct tipc_dn_chan *dn = filp->private_data;
-	void __user *user_req = compat_ptr(arg);
-
-	if (_IOC_TYPE(cmd) != TIPC_IOC_MAGIC)
-		return -EINVAL;
-
 	switch (cmd) {
 	case TIPC_IOC_CONNECT_COMPAT:
-		ret = dn_connect_ioctl(dn, user_req);
+		cmd = TIPC_IOC_CONNECT;
 		break;
 	default:
-		pr_warn("%s: Unhandled ioctl cmd: 0x%x\n",
-			__func__, cmd);
-		ret = -EINVAL;
+		return -ENOIOCTLCMD;
 	}
-	return ret;
+	return tipc_ioctl(filp, cmd, (unsigned long)compat_ptr(arg));
 }
 #endif
 
@@ -1138,7 +1118,7 @@ static const struct file_operations tipc_fops = {
 	.open		= tipc_open,
 	.release	= tipc_release,
 	.unlocked_ioctl	= tipc_ioctl,
-#if defined(CONFIG_COMPAT)
+#ifdef CONFIG_COMPAT
 	.compat_ioctl	= tipc_compat_ioctl,
 #endif
 	.read_iter	= tipc_read_iter,
