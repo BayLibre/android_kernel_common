@@ -709,7 +709,8 @@ int tipc_chan_queue_msg(struct tipc_chan *chan, struct tipc_msg_buf *mb)
 		err = vds_queue_txbuf(chan->vds, mb);
 		if (err) {
 			/* this should never happen */
-			pr_err("%s: failed to queue tx buffer (%d)\n",
+			dev_err(&chan->vds->vdev->dev,
+				"%s: failed to queue tx buffer (%d)\n",
 			       __func__, err);
 		}
 		break;
@@ -722,8 +723,9 @@ int tipc_chan_queue_msg(struct tipc_chan *chan, struct tipc_msg_buf *mb)
 		break;
 	default:
 		err = -EBADFD;
-		pr_err("%s: unexpected channel state %d\n",
-		       __func__, chan->state);
+		dev_err(&chan->vds->vdev->dev,
+			"%s: unexpected channel state %d\n",
+			__func__, chan->state);
 	}
 	mutex_unlock(&chan->lock);
 	return err;
@@ -763,8 +765,9 @@ int tipc_chan_connect(struct tipc_chan *chan, const char *name)
 		err = vds_queue_txbuf(chan->vds, txbuf);
 		if (err) {
 			/* this should never happen */
-			pr_err("%s: failed to queue tx buffer (%d)\n",
-			       __func__, err);
+			dev_err(&chan->vds->vdev->dev,
+				"%s: failed to queue tx buffer (%d)\n",
+				__func__, err);
 		} else {
 			chan->state = TIPC_CONNECTING;
 			txbuf = NULL; /* prevents discarding buffer */
@@ -787,8 +790,9 @@ int tipc_chan_connect(struct tipc_chan *chan, const char *name)
 		break;
 	default:
 		err = -EBADFD;
-		pr_err("%s: unexpected channel state %d\n",
-		       __func__, chan->state);
+		dev_err(&chan->vds->vdev->dev,
+			"%s: unexpected channel state %d\n",
+			__func__, chan->state);
 		break;
 	}
 	mutex_unlock(&chan->lock);
@@ -826,8 +830,9 @@ int tipc_chan_shutdown(struct tipc_chan *chan)
 		err = vds_queue_txbuf(chan->vds, txbuf);
 		if (err) {
 			/* this should never happen */
-			pr_err("%s: failed to queue tx buffer (%d)\n",
-			       __func__, err);
+			dev_err(&chan->vds->vdev->dev,
+				"%s: failed to queue tx buffer (%d)\n",
+				__func__, err);
 		}
 	} else {
 		err = -ENOTCONN;
@@ -912,7 +917,8 @@ static struct tipc_msg_buf *dn_handle_msg(void *data,
 			 * return an old buffer effectively discarding
 			 * incoming message
 			 */
-			pr_err("%s: discard incoming message\n", __func__);
+			dev_err(&dn->chan->vds->vdev->dev,
+				"%s: discard incoming message\n", __func__);
 			newbuf = rxbuf;
 		}
 	}
@@ -980,7 +986,8 @@ static void dn_handle_event(void *data, int event)
 		break;
 
 	default:
-		pr_err("%s: unhandled event %d\n", __func__, event);
+		dev_err(&dn->chan->vds->vdev->dev,
+			"%s: unhandled event %d\n", __func__, event);
 		break;
 	}
 }
