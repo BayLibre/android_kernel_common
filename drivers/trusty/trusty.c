@@ -231,8 +231,6 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 	uint32_t cookie_low;
 	uint32_t cookie_high;
 
-	dev_dbg(s->dev, "%s\n", __func__);
-
 	if (WARN_ON(dev->driver != &trusty_driver.driver))
 		return -EINVAL;
 
@@ -366,7 +364,6 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 
 	if (!ret) {
 		*id = ffa_handle;
-		dev_dbg(s->dev, "%s: done\n", __func__);
 		return 0;
 	}
 
@@ -407,8 +404,6 @@ int trusty_reclaim_memory(struct device *dev, uint64_t id,
 	int ret = 0;
 	struct smc_ret8 smc_ret;
 
-	dev_dbg(s->dev, "%s\n", __func__);
-
 	if (WARN_ON(dev->driver != &trusty_driver.driver))
 		return -EINVAL;
 
@@ -422,8 +417,6 @@ int trusty_reclaim_memory(struct device *dev, uint64_t id,
 		}
 
 		dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
-
-		dev_dbg(s->dev, "%s: done\n", __func__);
 		return 0;
 	}
 
@@ -448,7 +441,6 @@ int trusty_reclaim_memory(struct device *dev, uint64_t id,
 
 	dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
 
-	dev_dbg(s->dev, "%s: done\n", __func__);
 	return 0;
 }
 EXPORT_SYMBOL(trusty_reclaim_memory);
@@ -701,14 +693,10 @@ static void locked_nop_work_func(struct work_struct *work)
 	struct trusty_work *tw = container_of(work, struct trusty_work, work);
 	struct trusty_state *s = tw->ts;
 
-	dev_dbg(s->dev, "%s\n", __func__);
-
 	ret = trusty_std_call32(s->dev, SMC_SC_LOCKED_NOP, 0, 0, 0);
 	if (ret != 0)
 		dev_err(s->dev, "%s: SMC_SC_LOCKED_NOP failed %d",
 			__func__, ret);
-
-	dev_dbg(s->dev, "%s: done\n", __func__);
 }
 
 static void nop_work_func(struct work_struct *work)
@@ -719,8 +707,6 @@ static void nop_work_func(struct work_struct *work)
 	u32 last_arg0;
 	struct trusty_work *tw = container_of(work, struct trusty_work, work);
 	struct trusty_state *s = tw->ts;
-
-	dev_dbg(s->dev, "%s:\n", __func__);
 
 	dequeue_nop(s, args);
 	do {
@@ -747,8 +733,6 @@ static void nop_work_func(struct work_struct *work)
 			}
 		}
 	} while (next);
-
-	dev_dbg(s->dev, "%s: done\n", __func__);
 }
 
 void trusty_enqueue_nop(struct device *dev, struct trusty_nop *nop)
