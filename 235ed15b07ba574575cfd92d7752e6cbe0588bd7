@@ -16,6 +16,23 @@
       "revId": "235ed15b07ba574575cfd92d7752e6cbe0588bd7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "795e3ab4_5683ec7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2020-09-21T16:00:53Z",
+      "side": 1,
+      "message": "What is this needed for? I don\u0027t think we want to add additional sysfs nodes under the ufshcd parent(s), we want to add it only to the downstream driver, no? otherwise sysfs paths could be encoded in userspace and later conflict with upstream",
+      "revId": "235ed15b07ba574575cfd92d7752e6cbe0588bd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
