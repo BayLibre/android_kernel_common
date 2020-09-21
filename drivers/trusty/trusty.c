@@ -87,7 +87,7 @@ static ulong trusty_std_call_inner(struct device *dev, ulong smcnr,
 	int retry = 5;
 
 	dev_dbg(dev, "smc(0x%lx 0x%lx 0x%lx 0x%lx)\n", smcnr, a0, a1, a2);
-	while (true) {
+	for (;;) {
 		ret = smc(smcnr, a0, a1, a2);
 		while ((s32)ret == SM_ERR_FIQ_INTERRUPTED)
 			ret = smc(SMC_SC_RESTART_FIQ, 0, 0, 0);
@@ -110,7 +110,7 @@ static ulong trusty_std_call_helper(struct device *dev, ulong smcnr,
 	int sleep_time = 1;
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
 
-	while (true) {
+	for (;;) {
 		local_irq_disable();
 		atomic_notifier_call_chain(&s->notifier, TRUSTY_CALL_PREPARE,
 					   NULL);
