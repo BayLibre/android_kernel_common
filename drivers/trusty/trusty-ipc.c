@@ -1590,16 +1590,14 @@ static int _create_cdev_node(struct device *parent,
 	dev_t devt;
 
 	if (!name) {
-		dev_dbg(parent, "%s: cdev name has to be provided\n",
-			__func__);
+		dev_dbg(parent, "cdev name has to be provided\n");
 		return -EINVAL;
 	}
 
 	/* allocate minor */
 	ret = idr_alloc(&tipc_devices, cdn, 0, MAX_DEVICES, GFP_KERNEL);
 	if (ret < 0) {
-		dev_dbg(parent, "%s: failed (%d) to get id\n",
-			__func__, ret);
+		dev_dbg(parent, "failed (%d) to get minor device id\n", ret);
 		return ret;
 	}
 
@@ -1611,8 +1609,7 @@ static int _create_cdev_node(struct device *parent,
 	devt = MKDEV(tipc_major, cdn->minor);
 	ret = cdev_add(&cdn->cdev, devt, 1);
 	if (ret) {
-		dev_dbg(parent, "%s: cdev_add failed (%d)\n",
-			__func__, ret);
+		dev_dbg(parent, "cdev_add failed (%d)\n", ret);
 		goto err_add_cdev;
 	}
 
@@ -1621,8 +1618,7 @@ static int _create_cdev_node(struct device *parent,
 				 devt, NULL, "trusty-ipc-%s", name);
 	if (IS_ERR(cdn->dev)) {
 		ret = PTR_ERR(cdn->dev);
-		dev_dbg(parent, "%s: device_create failed: %d\n",
-			__func__, ret);
+		dev_dbg(parent, "device_create failed: %d\n", ret);
 		goto err_device_create;
 	}
 
@@ -1736,8 +1732,8 @@ static void _handle_conn_rsp(struct tipc_virtio_dev *vds,
 	}
 
 	dev_dbg(&vds->vdev->dev,
-		"%s: connection response: for addr 0x%x: status %d remote addr 0x%x\n",
-		__func__, rsp->target, rsp->status, rsp->remote);
+		"connection response: for addr 0x%x: status %d remote addr 0x%x\n",
+		rsp->target, rsp->status, rsp->remote);
 
 	/* Lookup channel */
 	chan = vds_lookup_channel(vds, rsp->target);
@@ -1774,8 +1770,8 @@ static void _handle_disc_req(struct tipc_virtio_dev *vds,
 		return;
 	}
 
-	dev_dbg(&vds->vdev->dev, "%s: disconnect request: for addr 0x%x\n",
-		__func__, req->target);
+	dev_dbg(&vds->vdev->dev, "disconnect request: for addr 0x%x\n",
+		req->target);
 
 	chan = vds_lookup_channel(vds, req->target);
 	if (chan) {
@@ -1839,8 +1835,8 @@ static void _handle_ctrl_msg(struct tipc_virtio_dev *vds,
 	}
 
 	dev_dbg(&vds->vdev->dev,
-		"%s: Incoming ctrl message: src 0x%x type %d len %d\n",
-		__func__, src, msg->type, msg->body_len);
+		"Incoming ctrl message: src 0x%x type %d len %d\n",
+		src, msg->type, msg->body_len);
 
 	switch (msg->type) {
 	case TIPC_CTRL_MSGTYPE_GO_ONLINE:
