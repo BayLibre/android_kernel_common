@@ -109,8 +109,8 @@ static void kick_vq(struct trusty_ctx *tctx,
 {
 	int ret;
 
-	dev_dbg(tctx->dev, "%s: vdev_id=%d: vq_id=%d\n",
-		__func__, tvdev->notifyid, tvr->notifyid);
+	dev_dbg(tctx->dev, "kicking virtqueue; vdev_id=%d, vq_id=%d\n",
+		tvdev->notifyid, tvr->notifyid);
 
 	ret = trusty_std_call32(tctx->dev->parent, SMC_SC_VDEV_KICK_VQ,
 				tvdev->notifyid, tvr->notifyid, 0);
@@ -160,7 +160,9 @@ static int trusty_load_device_descr(struct trusty_ctx *tctx,
 {
 	int ret;
 
-	dev_dbg(tctx->dev, "%s: %zu bytes @ id %llu\n", __func__, sz, id);
+	dev_dbg(tctx->dev,
+		"loading virtio device descriptors; %zu bytes @ id %llu\n",
+		sz, id);
 
 	ret = trusty_std_call32(tctx->dev->parent, SMC_SC_VIRTIO_GET_DESCR,
 				(u32)id, id >> 32, sz);
@@ -177,7 +179,7 @@ static void trusty_virtio_stop(struct trusty_ctx *tctx,
 {
 	int ret;
 
-	dev_dbg(tctx->dev, "%s: %zu bytes @ id %llu\n", __func__, sz, id);
+	dev_dbg(tctx->dev, "stopping virtio; %zu bytes @ id %llu\n", sz, id);
 
 	ret = trusty_std_call32(tctx->dev->parent, SMC_SC_VIRTIO_STOP,
 				(u32)id, id >> 32, sz);
@@ -193,7 +195,7 @@ static int trusty_virtio_start(struct trusty_ctx *tctx,
 {
 	int ret;
 
-	dev_dbg(tctx->dev, "%s: %zu bytes @ id %llu\n", __func__, sz, id);
+	dev_dbg(tctx->dev, "starting virtio; %zu bytes @ id %llu\n", sz, id);
 
 	ret = trusty_std_call32(tctx->dev->parent, SMC_SC_VIRTIO_START,
 				(u32)id, id >> 32, sz);
@@ -247,8 +249,9 @@ static void trusty_virtio_get_config(struct virtio_device *vdev,
 {
 	struct trusty_vdev *tvdev = vdev_to_tvdev(vdev);
 
-	dev_dbg(&vdev->dev, "%s: %d bytes @ offset %d\n",
-		__func__, len, offset);
+	dev_dbg(&vdev->dev,
+		"getting virtio config field; %d bytes @ offset %d\n",
+		len, offset);
 
 	if (tvdev->config) {
 		if (offset + len <= tvdev->config_len)

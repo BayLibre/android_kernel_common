@@ -92,8 +92,7 @@ static ulong trusty_std_call_inner(struct device *dev, ulong smcnr,
 	ulong ret;
 	int retry = 5;
 
-	dev_dbg(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx)\n",
-		__func__, smcnr, a0, a1, a2);
+	dev_dbg(dev, "smc(0x%lx 0x%lx 0x%lx 0x%lx)\n", smcnr, a0, a1, a2);
 	while (true) {
 		ret = smc(smcnr, a0, a1, a2);
 		while ((s32)ret == SM_ERR_FIQ_INTERRUPTED)
@@ -101,8 +100,9 @@ static ulong trusty_std_call_inner(struct device *dev, ulong smcnr,
 		if ((int)ret != SM_ERR_BUSY || !retry)
 			break;
 
-		dev_dbg(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx) returned busy, retry\n",
-			__func__, smcnr, a0, a1, a2);
+		dev_dbg(dev,
+			"smc(0x%lx 0x%lx 0x%lx 0x%lx) returned busy, retry\n",
+			smcnr, a0, a1, a2);
 		retry--;
 	}
 
@@ -138,20 +138,20 @@ static ulong trusty_std_call_helper(struct device *dev, ulong smcnr,
 		if (sleep_time == 256)
 			dev_warn(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx) returned busy\n",
 				 __func__, smcnr, a0, a1, a2);
-		dev_dbg(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx) returned busy, wait %d ms\n",
-			__func__, smcnr, a0, a1, a2, sleep_time);
+		dev_dbg(dev, "smc(0x%lx 0x%lx 0x%lx 0x%lx) returned busy, wait %d ms\n",
+			smcnr, a0, a1, a2, sleep_time);
 
 		msleep(sleep_time);
 		if (sleep_time < 1000)
 			sleep_time <<= 1;
 
-		dev_dbg(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx) retry\n",
-			__func__, smcnr, a0, a1, a2);
+		dev_dbg(dev, "retrying smc(0x%lx 0x%lx 0x%lx 0x%lx)\n",
+			smcnr, a0, a1, a2);
 	}
 
 	if (sleep_time > 256)
-		dev_warn(dev, "%s(0x%lx 0x%lx 0x%lx 0x%lx) busy cleared\n",
-			 __func__, smcnr, a0, a1, a2);
+		dev_warn(dev, "smc(0x%lx 0x%lx 0x%lx 0x%lx) busy cleared\n",
+			 smcnr, a0, a1, a2);
 
 	return ret;
 }
@@ -192,19 +192,18 @@ s32 trusty_std_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 		reinit_completion(&s->cpu_idle_completion);
 	}
 
-	dev_dbg(dev, "%s(0x%x 0x%x 0x%x 0x%x) started\n",
-		__func__, smcnr, a0, a1, a2);
+	dev_dbg(dev, "smc(0x%x 0x%x 0x%x 0x%x) started\n", smcnr, a0, a1, a2);
 
 	ret = trusty_std_call_helper(dev, smcnr, a0, a1, a2);
 	while (ret == SM_ERR_INTERRUPTED || ret == SM_ERR_CPU_IDLE) {
-		dev_dbg(dev, "%s(0x%x 0x%x 0x%x 0x%x) interrupted\n",
-			__func__, smcnr, a0, a1, a2);
+		dev_dbg(dev, "smc(0x%x 0x%x 0x%x 0x%x) interrupted\n",
+			smcnr, a0, a1, a2);
 		if (ret == SM_ERR_CPU_IDLE)
 			trusty_std_call_cpu_idle(s);
 		ret = trusty_std_call_helper(dev, SMC_SC_RESTART_LAST, 0, 0, 0);
 	}
-	dev_dbg(dev, "%s(0x%x 0x%x 0x%x 0x%x) returned 0x%x\n",
-		__func__, smcnr, a0, a1, a2, ret);
+	dev_dbg(dev, "smc(0x%x 0x%x 0x%x 0x%x) returned 0x%x\n",
+		smcnr, a0, a1, a2, ret);
 
 	if (WARN_ONCE(ret == SM_ERR_PANIC, "trusty crashed"))
 		s->trusty_panicked = true;
@@ -343,9 +342,8 @@ int trusty_share_memory(struct device *dev, uint64_t *id,
 			}
 		} else if (smc_ret.r0 == SMC_FC_FFA_SUCCESS) {
 			ffa_handle = smc_ret.r2 | (u64)smc_ret.r3 << 32;
-			dev_dbg(s->dev, "%s: fragment_len %zu/%zu, got handle 0x%llx\n",
-				__func__, fragment_len, total_len,
-				ffa_handle);
+			dev_dbg(s->dev, "fragment_len %zu/%zu, got handle 0x%llx\n",
+				fragment_len, total_len, ffa_handle);
 			if (count) {
 				/*
 				 * We have not sent all our descriptors.
@@ -726,8 +724,8 @@ static void nop_work_func(struct work_struct *work)
 
 	dequeue_nop(s, args);
 	do {
-		dev_dbg(s->dev, "%s: %x %x %x\n",
-			__func__, args[0], args[1], args[2]);
+		dev_dbg(s->dev, "calling SMC_SC_NOP with args=[%x %x %x]\n",
+			args[0], args[1], args[2]);
 
 		last_arg0 = args[0];
 		ret = trusty_std_call32(s->dev, SMC_SC_NOP,
