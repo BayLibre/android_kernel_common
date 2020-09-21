@@ -1495,8 +1495,6 @@ static void _txvq_cb(struct virtqueue *txvq)
 	bool need_wakeup = false;
 	struct tipc_virtio_dev *vds = txvq->vdev->priv;
 
-	dev_dbg(&txvq->vdev->dev, "%s\n", __func__);
-
 	/* detach all buffers */
 	mutex_lock(&vds->lock);
 	while ((mb = virtqueue_get_buf(txvq, &len)) != NULL)
@@ -1517,8 +1515,6 @@ static int tipc_virtio_probe(struct virtio_device *vdev)
 	struct virtqueue *vqs[2];
 	vq_callback_t *vq_cbs[] = {_rxvq_cb, _txvq_cb};
 	static const char * const vq_names[] = { "rx", "tx" };
-
-	dev_dbg(&vdev->dev, "%s:\n", __func__);
 
 	vds = kzalloc(sizeof(*vds), GFP_KERNEL);
 	if (!vds)
@@ -1577,7 +1573,6 @@ static int tipc_virtio_probe(struct virtio_device *vdev)
 	vdev->priv = vds;
 	vds->state = VDS_OFFLINE;
 
-	dev_dbg(&vdev->dev, "%s: done\n", __func__);
 	return 0;
 
 err_free_rx_buffers:
