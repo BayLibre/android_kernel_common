@@ -361,7 +361,7 @@ static ssize_t trusty_test_run_store(struct device *dev,
 	int ret;
 	char *buf_next;
 
-	while (true) {
+	for (;;) {
 		while (isspace(*buf))
 			buf++;
 		size = simple_strtoul(buf, &buf_next, 0);
