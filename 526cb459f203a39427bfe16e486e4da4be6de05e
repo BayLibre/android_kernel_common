@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "800ac8c6_e9dbbf13",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-22T22:22:46Z",
+      "side": 1,
+      "message": "Why does start with __ and the other one with _. Is there some naming scheme documented anywhere that would prevent collisions between local a global headers? I see both __ and _ used in existing headers under /include, but I also see _LINUX used as a prefix on headers in /drivers and not on headers in /include/linux.",
+      "revId": "526cb459f203a39427bfe16e486e4da4be6de05e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
