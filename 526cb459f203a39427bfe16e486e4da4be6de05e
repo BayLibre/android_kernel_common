@@ -16,6 +16,24 @@
       "revId": "526cb459f203a39427bfe16e486e4da4be6de05e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbceaa12_ee8c7745",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-22T22:31:01Z",
+      "side": 1,
+      "message": "I went for the existing convention used in the Trusty code: the headers in include/linux/trusty/ use \"__LINUX_TRUSTY\", and the headers in drivers/trusty/ use \"_TRUSTY\".\n\nUnfortunately there\u0027s no include guard naming convention that all Linux kernel code uses.  So it\u0027s not worth overthinking this.  Using the directory name in the name for include/ (shared headers) but not for other directories (private headers) seems fairly common, though.",
+      "parentUuid": "800ac8c6_e9dbbf13",
+      "revId": "526cb459f203a39427bfe16e486e4da4be6de05e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
