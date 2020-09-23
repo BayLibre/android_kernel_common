@@ -106,6 +106,24 @@
       "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "feeed62e_806ae4a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-23T15:53:38Z",
+      "side": 1,
+      "message": "A couple concerns.\n\nFirst, is there a specific threat that this module is supposed to defend against?  It seems to use on-device signing to prevent unauthorized file modifications, but that can be circumvented if the kernel has been compromised.  But if the kernel hasn\u0027t been compromised, then SELinux will already prevent unauthorized file modifications.\n\nSecond, it seems that this module will need a lot more core kernel changes besides just exporting these symbols.  Can you upload all the needed changes as one Gerrit topic so that reviewers can see everything in context?",
+      "parentUuid": "7f54a122_e2fade3d",
+      "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
