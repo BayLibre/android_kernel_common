@@ -19,6 +19,7 @@
 #include <linux/irqdesc.h>
 #include <linux/wakeup_reason.h>
 #include <trace/events/power.h>
+#include <trace/hooks/pm_wakeup.h>
 
 #include "power.h"
 
@@ -990,17 +991,22 @@ void pm_wakeup_clear(bool reset)
 void pm_system_irq_wakeup(unsigned int irq_number)
 {
 	if (pm_wakeup_irq == 0) {
+		bool log_wakeup_reason = true;
 		struct irq_desc *desc;
 		const char *name = "null";
 
-		desc = irq_to_desc(irq_number);
-		if (desc == NULL)
-			name = "stray irq";
-		else if (desc->action && desc->action->name)
-			name = desc->action->name;
+		trace_android_vh_pm_irq_wakeup(&log_wakeup_reason);
 
-		log_irq_wakeup_reason(irq_number);
-		pr_warn("%s: %d triggered %s\n", __func__, irq_number, name);
+		if (log_wakeup_reason) {
+			desc = irq_to_desc(irq_number);
+			if (desc == NULL)
+				name = "stray irq";
+			else if (desc->action && desc->action->name)
+				name = desc->action->name;
+
+			log_irq_wakeup_reason(irq_number);
+			pr_warn("%s: %d triggered %s\n", __func__, irq_number, name);
+		}
 
 		pm_wakeup_irq = irq_number;
 		pm_system_wakeup();
