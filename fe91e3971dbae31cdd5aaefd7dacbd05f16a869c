@@ -142,6 +142,24 @@
       "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0e4b332_6ed6741f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-24T06:48:25Z",
+      "side": 1,
+      "message": "I\u0027m aware that you worked with the ART team to add hooks to ART.  However, in the parts of those discussions I could see, it was never actually mentioned what attacks FIVE protects against (and why it is not redundant with existing functionality like SELinux).  Do you have a document or anything that describes that?  It\u0027s natural that you\u0027ll get a lot of questions if you don\u0027t give a clear technical motivation for your feature.\n\nBased on the code you linked to, it looks like as-is, the hooks that FIVE would need in the core Linux kernel would be invasive and hard to maintain.  The kernel team needs to understand the problem being solved so that  they can advise on how to solve the problem in the best way.  I.e. they might help you make use of functionality that is already upstream, rework the changes to be suitable for upstream, or rework your module to need fewer core kernel changes.\n\nSo, please provide as much information as possible about the problem(s) you are trying to solve, including a Gerrit topic containing the complete set of hooks you\u0027re requesting.  It will be hard to make progress by uploading individual patches without a proper explanation.",
+      "parentUuid": "deba4ad0_35fbc87f",
+      "revId": "fe91e3971dbae31cdd5aaefd7dacbd05f16a869c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
