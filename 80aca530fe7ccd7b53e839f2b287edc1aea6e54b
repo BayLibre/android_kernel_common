@@ -68,6 +68,24 @@
       "revId": "80aca530fe7ccd7b53e839f2b287edc1aea6e54b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34db4356_6c04bf62",
+        "filename": "drivers/trusty/Kconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-25T22:50:44Z",
+      "side": 1,
+      "message": "TRUSTY provides an api used by all the dependent modules. If you enable it by itself I don\u0027t think you can get anything other than the trusty version string. TRUSTY_VIRTIO and TRUSTY_VIRTIO_IPC right now are interdependent.",
+      "parentUuid": "423dbf5c_7d3fb383",
+      "revId": "80aca530fe7ccd7b53e839f2b287edc1aea6e54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
