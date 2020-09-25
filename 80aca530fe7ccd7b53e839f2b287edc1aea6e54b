@@ -50,6 +50,24 @@
       "revId": "80aca530fe7ccd7b53e839f2b287edc1aea6e54b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "423dbf5c_7d3fb383",
+        "filename": "drivers/trusty/Kconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-09-25T22:47:57Z",
+      "side": 1,
+      "message": "Well, that raises the question of what TRUSTY does on its own.  Each option needs to be documented.  It looks like it doesn\u0027t really do anything useful on its own?  Maybe TRUSTY_VIRTIO and TRUSTY_VIRTIO_IPC shouldn\u0027t really be separate options?",
+      "parentUuid": "cf46fbcd_9f4281ec",
+      "revId": "80aca530fe7ccd7b53e839f2b287edc1aea6e54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
