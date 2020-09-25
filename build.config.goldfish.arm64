@@ -1,12 +1,4 @@
-ARCH=arm64
-BRANCH=android-4.4
-CROSS_COMPILE=aarch64-linux-android-
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.common
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.aarch64
+
 DEFCONFIG=ranchu64_defconfig
-EXTRA_CMDS=''
-LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN=prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
-FILES="
-arch/arm64/boot/Image
-vmlinux
-System.map
-"
-STOP_SHIP_TRACEPRINTK=1
