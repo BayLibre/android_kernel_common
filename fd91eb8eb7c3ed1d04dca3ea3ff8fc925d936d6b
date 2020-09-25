@@ -527,6 +527,30 @@
     },
     {
       "key": {
+        "uuid": "9e1b1c95_872c67b4",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2020-09-25T23:19:21Z",
+      "side": 1,
+      "message": "the inner and outer smc call loop was clearer before. \"fragment_len %zu/%zu, got handle 0x%llx\" could use some context.",
+      "parentUuid": "ec2073ed_ca6891ab",
+      "range": {
+        "startLine": 726,
+        "startChar": 3,
+        "endLine": 726,
+        "endChar": 11
+      },
+      "revId": "fd91eb8eb7c3ed1d04dca3ea3ff8fc925d936d6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b81caf85_70d7c449",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
