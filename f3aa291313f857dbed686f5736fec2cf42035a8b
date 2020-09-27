@@ -33,6 +33,23 @@
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a83d961e_1c28e5b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-27T10:32:23Z",
+      "side": 1,
+      "message": "Upstream rejected this way of doing things, saying this is not how to do hotplug cpu interactions, instead you should be offlineing them and bringing them back online, which is much faster and deterministic, unlike hotplug.\n\nSo I don\u0027t think this is really needed at all, right?",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
