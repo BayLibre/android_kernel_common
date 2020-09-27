@@ -4202,7 +4202,11 @@ static struct fib6_info *rt6_add_route_info(struct net *net,
 		.fc_nlinfo.nl_net = net,
 	};
 
+<<<<<<< HEAD   (07f80e ANDROID: sched: add cpumask parameter to cpu capacity vendor)
 	cfg.fc_table = l3mdev_fib_table(dev) ? : addrconf_rt_table(dev, RT6_TABLE_INFO),
+=======
+	cfg.fc_table = l3mdev_fib_table(dev) ? : RT6_TABLE_INFO;
+>>>>>>> BRANCH (a1bffa Merge tag 'scsi-fixes' of git://git.kernel.org/pub/scm/linux)
 	cfg.fc_dst = *prefix;
 	cfg.fc_gateway = *gwaddr;
 
