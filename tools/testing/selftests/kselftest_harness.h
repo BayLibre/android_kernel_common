@@ -51,8 +51,10 @@
 #define __KSELFTEST_HARNESS_H
 
 #ifndef _GNU_SOURCE
-#define _GNU_SOURCE
+# define _GNU_SOURCE
 #endif
+
+>>>>>>> selftests: Check for _GNU_SOURCE before defining it
 #include <asm/types.h>
 #include <errno.h>
 #include <stdbool.h>
