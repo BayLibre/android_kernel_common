@@ -86,6 +86,7 @@ struct miscdevice  {
 	const struct attribute_group **groups;
 	const char *nodename;
 	umode_t mode;
+	void *private;
 };
 
 extern int misc_register(struct miscdevice *misc);
