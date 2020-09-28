@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d4083d3_040d4fcf",
+        "filename": "mm/cma.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-09-28T20:47:28Z",
+      "side": 1,
+      "message": "I think you are still missing \"if (fatal_signal_pending) break;\" statement here to stop the loop.",
+      "revId": "cf5fd1a587d15b6f965ffdfb6c5f39261d53296f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
