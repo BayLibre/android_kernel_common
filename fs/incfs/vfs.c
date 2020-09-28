@@ -825,6 +825,8 @@ static long dispatch_ioctl(struct file *f, unsigned int req, unsigned long arg)
 		return incfs_verity_get_flags(f, (void __user *) arg);
 	case INCFS_IOC_READ_MERKLE_TREE:
 		return ioctl_read_merkle_tree(f, (void __user *)arg);
+	case FS_IOC_MEASURE_VERITY:
+		return fsverity_ioctl_measure(f, (void __user *)arg);
 	default:
 		return -EINVAL;
 	}
