@@ -260,6 +260,13 @@ gen_tar: install
 	@tar caf ${TAR_PATH} --exclude=kselftest-packages -C ${INSTALL_PATH} .
 	@echo "Created ${TAR_PATH}"
 
+SFS_PATH = $(abspath ${INSTALL_PATH}/kselftest-packages/kselftest.squashfs)
+gen_squashfs: install
+	@mkdir -p ${INSTALL_PATH}/kselftest-packages/
+	@rm -f ${SFS_PATH}
+	@env -C ${INSTALL_PATH} mksquashfs . ${SFS_PATH} -e kselftest-packages -all-root
+	@echo "Created ${SFS_PATH}"
+
 clean:
 	@for TARGET in $(TARGETS); do \
 		BUILD_TARGET=$$BUILD/$$TARGET;	\
