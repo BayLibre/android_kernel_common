@@ -16,6 +16,23 @@
       "revId": "c5e1ae01bfdb0aac31c8b1d2e2a8e2030eca30d5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0bbc7b1d_720f4def",
+        "filename": "arch/arm64/kvm/sys_regs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2020-09-28T10:06:12Z",
+      "side": 1,
+      "message": "Why is this #ifdef\u0027d? This predicate should be valid at all times, shouldn\u0027t it?",
+      "revId": "c5e1ae01bfdb0aac31c8b1d2e2a8e2030eca30d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
