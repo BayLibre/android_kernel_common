@@ -16,6 +16,11 @@
 #include <trace/hooks/futex.h>
 #include <trace/hooks/topology.h>
 #include <trace/hooks/debug.h>
+<<<<<<< HEAD   (9d0d63 ANDROID: use arm-linux-androidkernel- for CROSS_COMPILE_COMP)
+=======
+#include <trace/hooks/minidump.h>
+#include <trace/hooks/wqlockup.h>
+>>>>>>> CHANGE (2ea974 ANDROID: workqueue: add vendor hook for wq lockup informatio)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -53,3 +58,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_write_finished);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_rwsem_list_add);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_futex_plist_add);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ipi_stop);
+<<<<<<< HEAD   (9d0d63 ANDROID: use arm-linux-androidkernel- for CROSS_COMPILE_COMP)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_printk_store);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_regs);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_lockup_pool);
+>>>>>>> CHANGE (2ea974 ANDROID: workqueue: add vendor hook for wq lockup informatio)
