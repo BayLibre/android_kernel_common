@@ -33,6 +33,24 @@
       "revId": "c5e1ae01bfdb0aac31c8b1d2e2a8e2030eca30d5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f71a4f6_26b1c41e",
+        "filename": "arch/arm64/kvm/sys_regs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-09-29T09:56:55Z",
+      "side": 1,
+      "message": "It is dead code for none asym aarch32 systems, no? Happy to remove the ifdef anyway.",
+      "parentUuid": "0bbc7b1d_720f4def",
+      "revId": "c5e1ae01bfdb0aac31c8b1d2e2a8e2030eca30d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
