@@ -51,6 +51,24 @@
       "revId": "c5e1ae01bfdb0aac31c8b1d2e2a8e2030eca30d5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7e732be_2260f26e",
+        "filename": "arch/arm64/kvm/sys_regs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2020-09-29T11:06:14Z",
+      "side": 1,
+      "message": "It\u0027s a slow path, and in general we avoid conditional compilation in KVM/arm.",
+      "parentUuid": "6f71a4f6_26b1c41e",
+      "revId": "c5e1ae01bfdb0aac31c8b1d2e2a8e2030eca30d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
