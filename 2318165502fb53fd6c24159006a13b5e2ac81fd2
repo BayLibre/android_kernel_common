@@ -34,6 +34,24 @@
       "revId": "2318165502fb53fd6c24159006a13b5e2ac81fd2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "854d633f_b949c5e3",
+        "filename": "include/linux/memcontrol.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-09-29T23:32:36Z",
+      "side": 0,
+      "message": "Suren, Pratik is thinking about non-GKI uses of the android11-5.4 kernel (like Go devices or other small memory devices). I think it does make sense to wrap these new elements in something. Maybe instead of removing CONFIG_TRANSPARENT_HUGEPAGE, change it to something like:\n\n  #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_GKI_HUGEPAGE_FIELDS)\n\nAnd then define GKI_HUGEPAGE_FIELDS in gki_defconfig. Clearly no-one else would define this so non-GKI small-memory devices wouldn\u0027t incur the memory overhead.",
+      "parentUuid": "4aab8cba_d3d6e4da",
+      "revId": "2318165502fb53fd6c24159006a13b5e2ac81fd2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
