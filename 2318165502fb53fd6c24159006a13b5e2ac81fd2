@@ -16,6 +16,24 @@
       "revId": "2318165502fb53fd6c24159006a13b5e2ac81fd2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4aab8cba_d3d6e4da",
+        "filename": "include/linux/memcontrol.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-09-29T22:45:03Z",
+      "side": 0,
+      "message": "I don\u0027t think we can disable fields present in GKI for production kernels. In such case drivers which were compiled with GKI kernel and passed compliance test will be broken when switching to production kernel.\n\nBesides we don\u0027t have many memcgs and when CONFIG_MEMCG is disabled we have none, so the overhead of this should be tiny.\n\nI need to check what are the GKI requirements for Android Go devices. Maybe it makes sense to have a different ABI for them since CONFIG_TRANSPARENT_HUGEPAGE and most likely some other features are not needed there.",
+      "parentUuid": "7975b909_db346dd5",
+      "revId": "2318165502fb53fd6c24159006a13b5e2ac81fd2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
