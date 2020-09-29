@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4a645fff_3150f580",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2020-09-29T09:43:01Z",
+      "side": 1,
+      "message": "As previously mentioned in an email thread, this patch on its own is not enough to guarantee that a retrigger will reliably work (SW retrigger can still be used and will mess up the GIC state machine, potentially resulting in lost interrupts).\n\nPlease see (and maybe cherry-pick) the series at https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git/log/?h\u003dirq/gic-retrigger which aims at solving the problem for good.",
+      "revId": "9d16109797224d294481d449992c09ea07172ed4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
