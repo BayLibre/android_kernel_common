@@ -33,6 +33,24 @@
       "revId": "5befc120c9790c485a2017e1f89ec2e81d0d5741",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dcd6dd2d_a1731377",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-09-29T09:53:19Z",
+      "side": 1,
+      "message": "Hi Todd/Greg/Will/Marc\n\nSorry for the delayed response. I already addressed the Lint issue and added the BUG. I have another pending change for KVM that I wanted to push the whole lot after testing. But I shall send an updated version today anyway and follow up with that extension when it\u0027s ready.\n\nThe reason I pushed the patches is to facilitate early access and review. There was a request to split affinity handling, I did that. I refactored the hotplug patch so that it potentially can be converted to a hook.\n\nIf you have any other consideration to take into account, I\u0027d be happy to address them.",
+      "parentUuid": "b755f9f1_97815245",
+      "revId": "5befc120c9790c485a2017e1f89ec2e81d0d5741",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
