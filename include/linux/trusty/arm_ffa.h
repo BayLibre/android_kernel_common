@@ -1,6 +1,8 @@
-/* SPDX-License-Identifier: GPL-2.0-only */
+/* SPDX-License-Identifier: MIT */
 /*
  * Copyright (C) 2020 Google, Inc.
+ *
+ * Trusty also has a copy of this header.  Please keep the copies in sync.
  */
 #ifndef __LINUX_TRUSTY_ARM_FFA_H
 #define __LINUX_TRUSTY_ARM_FFA_H

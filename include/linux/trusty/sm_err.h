@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /*
  * Copyright (c) 2013 Google Inc. All rights reserved
+ *
+ * Trusty also has a copy of this header.  Please keep the copies in sync.
  */
 #ifndef __LINUX_TRUSTY_SM_ERR_H
 #define __LINUX_TRUSTY_SM_ERR_H
