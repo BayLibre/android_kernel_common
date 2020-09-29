@@ -34,6 +34,24 @@
       "revId": "a0212dbcef6d8b619371eb766da024aaf25e877b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5794025e_47b0139d",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-09-29T15:08:25Z",
+      "side": 1,
+      "message": "It looks like EXPORT_PER_CPU_SYMBOL_GPL is just #defined to EXPORT_SYMBOL_GPL(). It would be nice if it did fail -- I suspect there are more cases of this from folks who don\u0027t know EXPORT_PER_CPU_SYMBOL_GPL exists.",
+      "parentUuid": "f6245c36_dd1da5d1",
+      "revId": "a0212dbcef6d8b619371eb766da024aaf25e877b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
