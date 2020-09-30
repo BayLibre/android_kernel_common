@@ -659,6 +659,17 @@ config DM_BOW
 	  This can then be restored by running a command line utility,
 	  or committed by simply replacing the target.
 
+config DM_USER
+	tristate "Block device in userspace"
+	depends on BLK_DEV_DM
+	help
+	  This device-mapper target allows a userspace daemon to provide the
+	  contents of a block device.  See
+	  <file:Documentation/block/dm-user.rst> for more information.
+
+	  To compile this code as a module, choose M here: the module will be
+	  called dm-user.
+
 	  If unsure, say N.
 
 endif # MD
