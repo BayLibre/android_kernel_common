@@ -16,6 +16,24 @@
       "revId": "3ebdc69f631e8240e514832bf8e2077931f75568",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b5530be7_09e7ce3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1767592
+      },
+      "writtenOn": "2020-09-30T12:29:14Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nWe submitted this upstream [1] but it was rejected because there already exists a earlycon driver in upstream (qcom-geni-serial.c) for this HW.\n\nUnfortunately we can\u0027t re-use the same upstream driver for downstream because patch [2] creates a dependency btw earlycon and other upstream QUP HW based driver to resolve ICC crashes.\n\nOnce the sync_state is implemented for ICC (it\u0027s already posted upstream but I am facing issue with SC7180 platform, working with ICC provider for the same) we can drop [2] and would be able to use upstream earlycon for downstream.\n\nThis gerrit is temporary solution for GKI 2.0 and it will be dropped once we are able to use upstream earlycon in downstream.\n\n[1] https://patchwork.kernel.org/comment/23440911/\n[2] https://patchwork.kernel.org/patch/11620269/",
+      "parentUuid": "3791dafa_16043dd3",
+      "revId": "3ebdc69f631e8240e514832bf8e2077931f75568",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
