@@ -52,6 +52,24 @@
       "revId": "2318165502fb53fd6c24159006a13b5e2ac81fd2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a09824d_06f3c41e",
+        "filename": "include/linux/memcontrol.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2020-09-30T00:21:13Z",
+      "side": 0,
+      "message": "Ok, now I get it. Will replace with #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_GKI_OPTIONAL_FEATURES) and will define CONFIG_GKI_OPTIONAL_FEATURES only inside gki_defconfig. This will enable these fields unconditionally in GKI but not in non-GKI kernels.",
+      "parentUuid": "854d633f_b949c5e3",
+      "revId": "2318165502fb53fd6c24159006a13b5e2ac81fd2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
     }
   ]
 }
