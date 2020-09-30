@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "228c139e_01f7a22e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-30T11:26:04Z",
+      "side": 1,
+      "message": "I don\u0027t think you need the minor number as a new field as you already have it...",
+      "revId": "330c9a90df51c2aab68dd984470e030cf372bc2d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "413a40c4_f252f9d3",
+        "filename": "drivers/dma-buf/dma-heap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-09-30T11:26:04Z",
+      "side": 1,
+      "message": "why do you need this, you already have it 3 fields up in the heap_devt right?\n\nMINOR(heap_devt) should give you the needed minor from what I can tell...",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 11
+      },
+      "revId": "330c9a90df51c2aab68dd984470e030cf372bc2d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
