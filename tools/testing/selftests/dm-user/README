@@ -1,0 +1,16 @@
+dm-user Tests
+=============
+Tests for dm-user.
+
+I'm just knocking off selftests/futex here.  There's a C helper in
+harness/harness.c that does the DM ioctl, but otherwise everything's
+essentially the same.
+
+Quick Start
+-----------
+# make
+# ./run.sh
+
+Slow Start
+----------
+These tests use `dmsetup` to manage device mapper nodes, which is part of lvm2.

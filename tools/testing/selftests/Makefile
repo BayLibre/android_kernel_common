@@ -9,6 +9,7 @@ TARGETS += clone3
 TARGETS += core
 TARGETS += cpufreq
 TARGETS += cpu-hotplug
+TARGETS += dm-user
 TARGETS += drivers/dma-buf
 TARGETS += efivarfs
 TARGETS += exec
