@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c5a478f_d53bfb49",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-01T21:05:37Z",
+      "side": 1,
+      "message": "Anything that changes code in fs/verity/ should be marked as \"fs-verity:\", not \"Incremental fs:\".",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "7206f754dfd0e77ece4e7bfc572d3b6f4c7cb528",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c65009c_4d2fd863",
+        "filename": "fs/verity/enable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-01T21:05:37Z",
+      "side": 1,
+      "message": "Isn\u0027t it wrong to ignore the merkle_tree_params?  What if the parameters aren\u0027t compatible with the root hash returned by -\u003eget_root_hash()?",
+      "range": {
+        "startLine": 152,
+        "startChar": 8,
+        "endLine": 152,
+        "endChar": 47
+      },
+      "revId": "7206f754dfd0e77ece4e7bfc572d3b6f4c7cb528",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
