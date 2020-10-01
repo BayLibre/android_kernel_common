@@ -197,6 +197,8 @@ struct tcpci_data {
 	void (*frs_sourcing_vbus)(struct tcpci *tcpci, struct tcpci_data *data);
 	void (*set_partner_usb_comm_capable)(struct tcpci *tcpci, struct tcpci_data *data,
 					     bool capable);
+	int (*set_roles)(struct tcpci *tcpci, struct tcpci_data *data, bool attached,
+			 enum typec_role role, enum typec_data_role data_role);
 };
 
 struct tcpci *tcpci_register_port(struct device *dev, struct tcpci_data *data);
