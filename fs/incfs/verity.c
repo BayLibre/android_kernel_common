@@ -309,3 +309,11 @@ int ioctl_enable_verity(struct file *filp, const void __user *uarg)
 
 	return enable_verity(filp, &arg);
 }
+
+int incfs_verity_get_flags(struct file *f, void __user *arg)
+{
+	u32 flags = (file_inode(f)->i_flags & S_VERITY) ? FS_VERITY_FL : 0;
+
+	return put_user(flags, (int __user *) arg);
+}
+
