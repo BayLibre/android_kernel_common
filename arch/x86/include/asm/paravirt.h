@@ -19,7 +19,9 @@
 
 static inline unsigned long long paravirt_sched_clock(void)
 {
-	return PVOP_CALL0(unsigned long long, time.sched_clock);
+	unsigned long long res = PVOP_CALL0(unsigned long long, time.sched_clock);
+    pr_info("pv sched clock..............0x%llx\n", res);
+    return res;
 }
 
 struct static_key;

@@ -69,7 +69,7 @@ __always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
 		seq = this_cpu_read(cyc2ns.seq.sequence);
 		idx = seq & 1;
 
-		data->cyc2ns_offset = this_cpu_read(cyc2ns.data[idx].cyc2ns_offset);
+		data->cyc2ns_offset = 0;
 		data->cyc2ns_mul    = this_cpu_read(cyc2ns.data[idx].cyc2ns_mul);
 		data->cyc2ns_shift  = this_cpu_read(cyc2ns.data[idx].cyc2ns_shift);
 
@@ -204,29 +204,37 @@ static void __init cyc2ns_init_secondary_cpus(void)
 	}
 }
 
+static int numcalls = 0;
+
 /*
  * Scheduler clock - returns current time in nanosec units.
  */
 u64 native_sched_clock(void)
 {
-	if (static_branch_likely(&__use_tsc)) {
-		u64 tsc_now = rdtsc();
+    ++numcalls;
+    if (numcalls % 1000 == 0) {
+        struct cyc2ns_data data;
+        unsigned long long ns, ns2;
+        u64 tsc_now = rdtsc();
+        cyc2ns_read_begin(&data);
 
-		/* return the value in ns */
-		return cycles_2_ns(tsc_now);
-	}
+        ns = data.cyc2ns_offset;
+        ns2 = ns + mul_u64_u32_shr(tsc_now, data.cyc2ns_mul, data.cyc2ns_shift);
+        pr_info("native_sched_clock res: tsc %llu 0x%llx ns1 %llu ns2%llu off %llu\n",
+                (unsigned long long)tsc_now,
+                (unsigned long long)ns2,
+                (unsigned long long)ns,
+                (unsigned long long)ns2,
+                (unsigned long long)data.cyc2ns_offset);
+        cyc2ns_read_end();
 
-	/*
-	 * Fall back to jiffies if there's no TSC available:
-	 * ( But note that we still use it if the TSC is marked
-	 *   unstable. We do this because unlike Time Of Day,
-	 *   the scheduler clock tolerates small errors and it's
-	 *   very important for it to be as fast as the platform
-	 *   can achieve it. )
-	 */
-
-	/* No locking but a rare wrong value is not a big deal: */
-	return (jiffies_64 - INITIAL_JIFFIES) * (1000000000 / HZ);
+        return ns2;
+    } else {
+        u64 tsc_now = rdtsc();
+        /* return the value in ns */
+        u64 res =cycles_2_ns(tsc_now);
+        return res;
+    }
 }
 
 /*
@@ -242,12 +250,12 @@ u64 native_sched_clock_from_tsc(u64 tsc)
 #ifdef CONFIG_PARAVIRT
 unsigned long long sched_clock(void)
 {
-	return paravirt_sched_clock();
+    return native_sched_clock();
 }
 
 bool using_native_sched_clock(void)
 {
-	return pv_ops.time.sched_clock == native_sched_clock;
+    return true;
 }
 #else
 unsigned long long
@@ -613,92 +621,27 @@ success:
  */
 unsigned long native_calibrate_tsc(void)
 {
-	unsigned int eax_denominator, ebx_numerator, ecx_hz, edx;
-	unsigned int crystal_khz;
-
-	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-		return 0;
-
-	if (boot_cpu_data.cpuid_level < 0x15)
-		return 0;
-
-	eax_denominator = ebx_numerator = ecx_hz = edx = 0;
-
-	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
-	cpuid(0x15, &eax_denominator, &ebx_numerator, &ecx_hz, &edx);
-
-	if (ebx_numerator == 0 || eax_denominator == 0)
-		return 0;
-
-	crystal_khz = ecx_hz / 1000;
-
-	/*
-	 * Denverton SoCs don't report crystal clock, and also don't support
-	 * CPUID.0x16 for the calculation below, so hardcode the 25MHz crystal
-	 * clock.
-	 */
-	if (crystal_khz == 0 &&
-			boot_cpu_data.x86_model == INTEL_FAM6_ATOM_GOLDMONT_D)
-		crystal_khz = 25000;
-
-	/*
-	 * TSC frequency reported directly by CPUID is a "hardware reported"
-	 * frequency and is the most accurate one so far we have. This
-	 * is considered a known frequency.
-	 */
-	if (crystal_khz != 0)
-		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-
-	/*
-	 * Some Intel SoCs like Skylake and Kabylake don't report the crystal
-	 * clock, but we can easily calculate it to a high degree of accuracy
-	 * by considering the crystal ratio and the CPU speed.
-	 */
-	if (crystal_khz == 0 && boot_cpu_data.cpuid_level >= 0x16) {
-		unsigned int eax_base_mhz, ebx, ecx, edx;
-
-		cpuid(0x16, &eax_base_mhz, &ebx, &ecx, &edx);
-		crystal_khz = eax_base_mhz * 1000 *
-			eax_denominator / ebx_numerator;
-	}
-
-	if (crystal_khz == 0)
-		return 0;
-
-	/*
-	 * For Atom SoCs TSC is the only reliable clocksource.
-	 * Mark TSC reliable so no watchdog on it.
-	 */
-	if (boot_cpu_data.x86_model == INTEL_FAM6_ATOM_GOLDMONT)
-		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
-
-#ifdef CONFIG_X86_LOCAL_APIC
-	/*
-	 * The local APIC appears to be fed by the core crystal clock
-	 * (which sounds entirely sensible). We can set the global
-	 * lapic_timer_period here to avoid having to calibrate the APIC
-	 * timer later.
-	 */
-	lapic_timer_period = crystal_khz * 1000 / HZ;
-#endif
-
-	return crystal_khz * ebx_numerator / eax_denominator;
+    return 2660;
 }
 
 static unsigned long cpu_khz_from_cpuid(void)
 {
 	unsigned int eax_base_mhz, ebx_max_mhz, ecx_bus_mhz, edx;
 
+        pr_info("call cpu_khz_from_cpuid");
 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+        pr_info("Not using cpuid, not intel\n");
 		return 0;
 
-	if (boot_cpu_data.cpuid_level < 0x16)
-		return 0;
+	if (boot_cpu_data.cpuid_level < 0x16) {
+        pr_info("Not using cpuid, level < 0x16\n");
+    }
 
 	eax_base_mhz = ebx_max_mhz = ecx_bus_mhz = edx = 0;
 
 	cpuid(0x16, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
 
+	pr_info("result: 0x%x\n", eax_base_mhz);
 	return eax_base_mhz * 1000;
 }
 
@@ -860,16 +803,7 @@ static unsigned long pit_hpet_ptimer_calibrate_cpu(void)
  */
 unsigned long native_calibrate_cpu_early(void)
 {
-	unsigned long flags, fast_calibrate = cpu_khz_from_cpuid();
-
-	if (!fast_calibrate)
-		fast_calibrate = cpu_khz_from_msr();
-	if (!fast_calibrate) {
-		local_irq_save(flags);
-		fast_calibrate = quick_pit_calibrate();
-		local_irq_restore(flags);
-	}
-	return fast_calibrate;
+    return 2660;
 }
 
 
@@ -1403,9 +1337,12 @@ static bool __init determine_cpu_tsc_frequencies(bool early)
 	WARN_ON(cpu_khz || tsc_khz);
 
 	if (early) {
-		cpu_khz = x86_platform.calibrate_cpu();
-		tsc_khz = x86_platform.calibrate_tsc();
+        pr_info("early setup");
+		cpu_khz = 2660000;
+		tsc_khz = 2660000;
+        pr_info("early setup (after)");
 	} else {
+        pr_info("LATE setup");
 		/* We should not be here with non-native cpu calibration */
 		WARN_ON(x86_platform.calibrate_cpu != native_calibrate_cpu);
 		cpu_khz = pit_hpet_ptimer_calibrate_cpu();
@@ -1421,8 +1358,10 @@ static bool __init determine_cpu_tsc_frequencies(bool early)
 	else if (abs(cpu_khz - tsc_khz) * 10 > tsc_khz)
 		cpu_khz = tsc_khz;
 
-	if (tsc_khz == 0)
+	if (tsc_khz == 0) {
+        pr_info("failed early");
 		return false;
+    }
 
 	pr_info("Detected %lu.%03lu MHz processor\n",
 		(unsigned long)cpu_khz / KHZ,
@@ -1459,8 +1398,10 @@ void __init tsc_early_init(void)
 	/* Don't change UV TSC multi-chassis synchronization */
 	if (is_early_uv_system())
 		return;
-	if (!determine_cpu_tsc_frequencies(true))
+	if (!determine_cpu_tsc_frequencies(true)) {
+        pr_info("determine_cpu_tsc_frequencies failed (early)");
 		return;
+    }
 	loops_per_jiffy = get_loops_per_jiffy();
 
 	tsc_enable_sched_clock();
@@ -1472,8 +1413,12 @@ void __init tsc_init(void)
 	 * native_calibrate_cpu_early can only calibrate using methods that are
 	 * available early in boot.
 	 */
-	if (x86_platform.calibrate_cpu == native_calibrate_cpu_early)
+	if (x86_platform.calibrate_cpu == native_calibrate_cpu_early) {
+        pr_info("calibrate cpu is native_calibrate_cpu\n");
 		x86_platform.calibrate_cpu = native_calibrate_cpu;
+    } else {
+        pr_info("calibrate cpu is not native_calibrate_cpu\n");
+    }
 
 	if (!boot_cpu_has(X86_FEATURE_TSC)) {
 		setup_clear_cpu_cap(X86_FEATURE_TSC_DEADLINE_TIMER);
@@ -1481,6 +1426,7 @@ void __init tsc_init(void)
 	}
 
 	if (!tsc_khz) {
+        pr_info("determine_cpu_tsc_frequencies try again (late)");
 		/* We failed to determine frequencies earlier, try again */
 		if (!determine_cpu_tsc_frequencies(false)) {
 			mark_tsc_unstable("could not calculate TSC khz");

@@ -68,6 +68,7 @@ void tsc_verify_tsc_adjust(bool resume)
 		return;
 
 	/* Restore the original value */
+    pr_info("tsc adjust 0x%llx\n", (unsigned long long)(adj->adjusted));
 	wrmsrl(MSR_IA32_TSC_ADJUST, adj->adjusted);
 
 	if (!adj->warned || resume) {
@@ -100,8 +101,9 @@ static void tsc_sanitize_first_cpu(struct tsc_adjust *cur, s64 bootval,
 		if (likely(!tsc_async_resets)) {
 			pr_warn(FW_BUG "TSC ADJUST: CPU%u: %lld force to 0\n",
 				cpu, bootval);
-			wrmsrl(MSR_IA32_TSC_ADJUST, 0);
-			bootval = 0;
+    pr_info("tsc adjust 0x%llx force to 0 ? nah.....:)\n", (unsigned long long)(0));
+			// wrmsrl(MSR_IA32_TSC_ADJUST, 0);
+			// bootval = 0;
 		} else {
 			pr_info("TSC ADJUST: CPU%u: %lld NOT forced to 0\n",
 				cpu, bootval);
@@ -115,14 +117,20 @@ bool __init tsc_store_and_check_tsc_adjust(bool bootcpu)
 {
 	struct tsc_adjust *cur = this_cpu_ptr(&tsc_adjust);
 	s64 bootval;
+        pr_info("tsc_store_and_check_tsc_adjust start\n");
 
-	if (!boot_cpu_has(X86_FEATURE_TSC_ADJUST))
+	if (!boot_cpu_has(X86_FEATURE_TSC_ADJUST)) {
+        pr_info("no tsc adjust, return\n");
 		return false;
+    }
 
 	/* Skip unnecessary error messages if TSC already unstable */
-	if (check_tsc_unstable())
+	if (check_tsc_unstable()) {
+        pr_info("tsc unstable, return\n");
 		return false;
+    }
 
+    pr_info("tsc adjust 0x%llx\n", (unsigned long long)(bootval));
 	rdmsrl(MSR_IA32_TSC_ADJUST, bootval);
 	cur->bootval = bootval;
 	cur->nextcheck = jiffies + HZ;
@@ -137,18 +145,26 @@ bool __init tsc_store_and_check_tsc_adjust(bool bootcpu)
  */
 bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 {
+        pr_info("tsc_store_and_check_tsc_adjust start(non-smp)\n");
 	struct tsc_adjust *ref, *cur = this_cpu_ptr(&tsc_adjust);
 	unsigned int refcpu, cpu = smp_processor_id();
 	struct cpumask *mask;
 	s64 bootval;
 
-	if (!boot_cpu_has(X86_FEATURE_TSC_ADJUST))
-		return false;
+	if (!boot_cpu_has(X86_FEATURE_TSC_ADJUST)) {
+        pr_info("no tsc adjust\n");
+    }
 
 	rdmsrl(MSR_IA32_TSC_ADJUST, bootval);
 	cur->bootval = bootval;
+        pr_info("bootval: 0x%llx\n", bootval);
+	wrmsrl(MSR_IA32_TSC_ADJUST, rdtsc());
+	rdmsrl(MSR_IA32_TSC_ADJUST, bootval);
+        pr_info("bootval: 0x%llx\n", bootval);
 	cur->nextcheck = jiffies + HZ;
 	cur->warned = false;
+	cur->bootval = bootval;
+        pr_info("bootval: 0x%llx\n", bootval);
 
 	/*
 	 * If a non-zero TSC value for socket 0 may be valid then the default
@@ -170,6 +186,9 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 	if (refcpu >= nr_cpu_ids) {
 		tsc_sanitize_first_cpu(cur, bootval, smp_processor_id(),
 				       bootcpu);
+        pr_info("skip out?\n");
+	rdmsrl(MSR_IA32_TSC_ADJUST, bootval);
+        pr_info("bootval: 0x%llx\n", bootval);
 		return false;
 	}
 
@@ -189,6 +208,7 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
 	 */
 	if (bootval != ref->adjusted) {
 		cur->adjusted = ref->adjusted;
+    pr_info("tsc adjust 0x%llx\n", (unsigned long long)(ref->adjusted));
 		wrmsrl(MSR_IA32_TSC_ADJUST, ref->adjusted);
 	}
 	/*

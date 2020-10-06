@@ -2047,12 +2047,14 @@ EXPORT_SYMBOL_GPL(kvm_write_tsc);
 static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
 					   s64 adjustment)
 {
+    pr_info("adjust_tsc_offset_guest\n");
 	u64 tsc_offset = kvm_x86_ops->read_l1_tsc_offset(vcpu);
 	kvm_vcpu_write_tsc_offset(vcpu, tsc_offset + adjustment);
 }
 
 static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
 {
+    pr_info("adjust_tsc_offset_host\n");
 	if (vcpu->arch.tsc_scaling_ratio != kvm_default_tsc_scaling_ratio)
 		WARN_ON(adjustment < 0);
 	adjustment = kvm_scale_tsc(vcpu, (u64) adjustment);
@@ -2422,6 +2424,7 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
 	if (vcpu->tsc_catchup) {
 		u64 tsc = compute_guest_tsc(v, kernel_ns);
 		if (tsc > tsc_timestamp) {
+            pr_info("adjust_tsc_offset_guest\n");
 			adjust_tsc_offset_guest(v, tsc - tsc_timestamp);
 			tsc_timestamp = tsc;
 		}
