@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "507e65d1_faf67b2b",
+        "filename": "arch/arm64/kernel/smp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2020-10-06T08:01:22Z",
+      "side": 1,
+      "message": "Where does \"regs\" come from? There is no such variable in this function...\nI\u0027m surprised it even compiles.",
+      "revId": "dea798407021c7fde0731dc8aff86d12e94a46e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
