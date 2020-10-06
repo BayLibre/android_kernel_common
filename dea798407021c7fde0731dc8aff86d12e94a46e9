@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "d0dd872e_8c8bb260",
         "filename": "/PATCHSET_LEVEL",
@@ -14,10 +15,27 @@
       "side": 1,
       "message": "Please fix the build failures -- in the future, please test the build before submitting.",
       "revId": "dea798407021c7fde0731dc8aff86d12e94a46e9",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02ccf3dd_b5c58aeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1385395
+      },
+      "writtenOn": "2020-10-06T22:23:31Z",
+      "side": 1,
+      "message": "I restored this patch because we are requesting vendor to upload a new patch set with latest fixes, but the new patch set is getting rejected:\n\nTo https://android.googlesource.com/kernel/common\n ! [remote rejected]           HEAD -\u003e refs/for/android-mainline (cannot add patch set to 1446727.)\n\nAny idea why it is being rejected?",
+      "revId": "dea798407021c7fde0731dc8aff86d12e94a46e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "507e65d1_faf67b2b",
         "filename": "arch/arm64/kernel/smp.c",
@@ -31,8 +49,7 @@
       "side": 1,
       "message": "Where does \"regs\" come from? There is no such variable in this function...\nI\u0027m surprised it even compiles.",
       "revId": "dea798407021c7fde0731dc8aff86d12e94a46e9",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
