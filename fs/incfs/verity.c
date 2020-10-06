@@ -327,3 +327,11 @@ out_drop_write:
 	mnt_drop_write_file(filp);
 	return err;
 }
+
+int incfs_verity_get_flags(struct file *f, void __user *arg)
+{
+	u32 flags = (file_inode(f)->i_flags & S_VERITY) ? FS_VERITY_FL : 0;
+
+	return put_user(flags, (int __user *) arg);
+}
+

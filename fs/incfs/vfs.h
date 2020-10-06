@@ -30,6 +30,13 @@ static inline struct super_block *file_superblock(struct file *f)
 	return inode->i_sb;
 }
 
-extern const struct fsverity_operations incfs_verityops;
+#ifdef CONFIG_FS_VERITY
+extern int incfs_verity_get_flags(struct file *f, void __user *arg);
+#else
+static inline int incfs_verity_get_flags(struct file *f, void __user *arg)
+{
+	return -EOPNOTSUPP;
+}
+#endif
 
 #endif
