@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ba31ea8_253eec99",
+        "filename": "include/linux/fsverity.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2020-10-06T02:06:41Z",
+      "side": 1,
+      "message": "should the interface allow for implementations to return root hash for only some calls, and not for all of those? e.g. returning -ENOENT would mean that the caller should go on with the default tree calculation",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 23
+      },
+      "revId": "336aa7639cbc52418055e24c887f5f08e87ff904",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": true
+    }
+  ]
+}
