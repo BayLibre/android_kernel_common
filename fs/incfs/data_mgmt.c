@@ -168,7 +168,7 @@ struct dentry *incfs_lookup_dentry(struct dentry *parent, const char *name)
 	struct dentry *result = NULL;
 
 	if (!parent)
-		return ERR_PTR(-EFAULT);
+		return ERR_PTR(-EFSCORRUPTED);
 
 	inode = d_inode(parent);
 	inode_lock_nested(inode, I_MUTEX_PARENT);
@@ -239,7 +239,7 @@ struct data_file *incfs_open_data_file(struct mount_info *mi, struct file *bf)
 	int i;
 
 	if (!bf || !mi)
-		return ERR_PTR(-EFAULT);
+		return ERR_PTR(-EFSCORRUPTED);
 
 	if (!S_ISREG(bf->f_inode->i_mode))
 		return ERR_PTR(-EBADF);
@@ -722,7 +722,7 @@ static int get_data_file_block(struct data_file *df, int index,
 	int error = 0;
 
 	if (!df || !res_block)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	blockmap_off = df->df_blockmap_off;
 	bfc = df->df_backing_file_context;
@@ -1019,7 +1019,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 	u64 time;
 
 	if (!df || !res_block)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (block_index < 0 || block_index >= df->df_data_block_count)
 		return -EINVAL;
@@ -1135,7 +1135,7 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 	struct data_file *df = get_incfs_data_file(f);
 
 	if (!dst.data || !df || !tmp.data)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (tmp.len < 2 * INCFS_DATA_FILE_BLOCK_SIZE)
 		return -ERANGE;
@@ -1201,7 +1201,7 @@ int incfs_process_new_data_block(struct data_file *df,
 	int error = 0;
 
 	if (!df || !block)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	bfc = df->df_backing_file_context;
 	mi = df->df_mount_info;
@@ -1211,7 +1211,7 @@ int incfs_process_new_data_block(struct data_file *df,
 
 	segment = get_file_segment(df, block->block_index);
 	if (!segment)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (block->compression == COMPRESSION_LZ4)
 		flags |= INCFS_BLOCK_COMPRESSED_LZ4;
@@ -1266,14 +1266,14 @@ int incfs_read_file_signature(struct data_file *df, struct mem_range dst)
 	int read_res = 0;
 
 	if (!dst.data)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	sig = df->df_signature;
 	if (!sig)
 		return 0;
 
 	if (dst.len < sig->sig_size)
-		return -E2BIG;
+		return -EINVAL;
 
 	read_res = incfs_kread(bf, dst.data, sig->sig_size, sig->sig_offset);
 
@@ -1298,7 +1298,7 @@ int incfs_process_new_hash_block(struct data_file *df,
 	int error = 0;
 
 	if (!df || !block)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (!(block->flags & INCFS_BLOCK_FLAGS_HASH))
 		return -EINVAL;
@@ -1344,10 +1344,10 @@ static int process_blockmap_md(struct incfs_blockmap *bm,
 	u32 block_count = le32_to_cpu(bm->m_block_count);
 
 	if (!df)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (df->df_data_block_count > block_count)
-		return -EBADMSG;
+		return -EFSCORRUPTED;
 
 	df->df_total_block_count = block_count;
 	df->df_blockmap_off = base_off;
@@ -1458,7 +1458,7 @@ static int incfs_scan_metadata_chain(struct data_file *df)
 	struct backing_file_context *bfc = NULL;
 
 	if (!df || !df->df_backing_file_context)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	bfc = df->df_backing_file_context;
 
@@ -1527,7 +1527,7 @@ int incfs_collect_pending_reads(struct mount_info *mi, int sn_lowerbound,
 	struct pending_read *entry = NULL;
 
 	if (!mi)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (reads_size <= 0)
 		return 0;
