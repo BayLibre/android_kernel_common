@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "db086195_3d33bf81",
         "filename": "/PATCHSET_LEVEL",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "Why not sent upstream first?",
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "58ed866a_f9776f41",
         "filename": "/PATCHSET_LEVEL",
@@ -31,10 +32,10 @@
       "side": 1,
       "message": "Needs a FROMLIST: and a Link: tag now as the Lint text says.",
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "a83d961e_1c28e5b8",
         "filename": "/PATCHSET_LEVEL",
@@ -48,8 +49,25 @@
       "side": 1,
       "message": "Upstream rejected this way of doing things, saying this is not how to do hotplug cpu interactions, instead you should be offlineing them and bringing them back online, which is much faster and deterministic, unlike hotplug.\n\nSo I don\u0027t think this is really needed at all, right?",
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5052fa6f_6e20de48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-07T15:25:50Z",
+      "side": 1,
+      "message": "If it is needed, please submit it upstream so it can be reviewed there as you are changing core kernel code.",
+      "parentUuid": "a83d961e_1c28e5b8",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
