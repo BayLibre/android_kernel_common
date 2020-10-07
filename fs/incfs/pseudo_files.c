@@ -54,7 +54,7 @@ static ssize_t log_read(struct file *f, char __user *buf, size_t len,
 	ssize_t reads_per_page;
 
 	if (!mi)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	report_uid = mi->mi_options.report_uid;
 	record_size = report_uid ? sizeof(*reads_buf2) : sizeof(*reads_buf);
@@ -185,7 +185,7 @@ static ssize_t pending_reads_read(struct file *f, char __user *buf, size_t len,
 	ssize_t result = 0;
 
 	if (!mi)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	report_uid = mi->mi_options.report_uid;
 	record_size = report_uid ? sizeof(*reads_buf2) : sizeof(*reads_buf);
@@ -306,7 +306,7 @@ static long ioctl_permit_fill(struct file *f, void __user *arg)
 
 	default:
 		pr_warn("Invalid file private data");
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 
@@ -418,7 +418,7 @@ static struct mem_range incfs_copy_signature_info_from_user(u8 __user *original,
 		return range(NULL, 0);
 
 	if (size > INCFS_MAX_SIGNATURE_SIZE)
-		return range(ERR_PTR(-EFAULT), 0);
+		return range(ERR_PTR(-EBADMSG), 0);
 
 	result = kzalloc(size, GFP_NOFS | __GFP_COMP);
 	if (!result)
@@ -445,7 +445,7 @@ static int init_new_file(struct mount_info *mi, struct dentry *dentry,
 	struct mtree *hash_tree = NULL;
 
 	if (!mi || !dentry || !uuid)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	/* Resize newly created file to its true size. */
 	path = (struct path) {
@@ -539,7 +539,7 @@ static long ioctl_create_file(struct mount_info *mi,
 	bool incomplete_linked = false;
 
 	if (!mi || !mi->mi_index_dir || !mi->mi_incomplete_dir) {
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 
@@ -593,7 +593,7 @@ static long ioctl_create_file(struct mount_info *mi,
 	named_file_dentry = incfs_lookup_dentry(parent_dir_path.dentry,
 					file_name);
 	if (!named_file_dentry) {
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 	if (IS_ERR(named_file_dentry)) {
@@ -611,7 +611,7 @@ static long ioctl_create_file(struct mount_info *mi,
 	incomplete_file_dentry = incfs_lookup_dentry(mi->mi_incomplete_dir,
 					file_id_str);
 	if (!incomplete_file_dentry) {
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 	if (IS_ERR(incomplete_file_dentry)) {
@@ -628,7 +628,7 @@ static long ioctl_create_file(struct mount_info *mi,
 	/* Look up a dentry in the .index dir. It should be negative. */
 	index_file_dentry = incfs_lookup_dentry(mi->mi_index_dir, file_id_str);
 	if (!index_file_dentry) {
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 	if (IS_ERR(index_file_dentry)) {
@@ -683,7 +683,7 @@ static long ioctl_create_file(struct mount_info *mi,
 	/* Save the file's attribute as an xattr */
 	if (args.file_attr_len && args.file_attr) {
 		if (args.file_attr_len > INCFS_MAX_FILE_ATTR_SIZE) {
-			error = -E2BIG;
+			error = -EBADMSG;
 			goto out;
 		}
 
@@ -764,7 +764,7 @@ static int init_new_mapped_file(struct mount_info *mi, struct dentry *dentry,
 	struct backing_file_context *bfc = NULL;
 
 	if (!mi || !dentry || !uuid)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	/* Resize newly created file to its true size. */
 	path = (struct path) {
@@ -818,7 +818,7 @@ static long ioctl_create_mapped_file(struct mount_info *mi, void __user *arg)
 	__le64 size_attr_value;
 
 	if (copy_from_user(&args, args_usr_ptr, sizeof(args)) > 0)
-		return -EINVAL;
+		return -EFAULT;
 
 	file_name = strndup_user(u64_to_user_ptr(args.file_name), PATH_MAX);
 	if (IS_ERR(file_name)) {
@@ -898,7 +898,7 @@ static long ioctl_create_mapped_file(struct mount_info *mi, void __user *arg)
 	file_dentry = incfs_lookup_dentry(parent_dir_path.dentry,
 					file_name);
 	if (!file_dentry) {
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 	if (IS_ERR(file_dentry)) {
@@ -956,10 +956,10 @@ static long ioctl_get_read_timeouts(struct mount_info *mi, void __user *arg)
 	int size;
 
 	if (copy_from_user(&args, args_usr_ptr, sizeof(args)))
-		return -EINVAL;
+		return -EFAULT;
 
 	if (args.timeouts_array_size_out > INCFS_DATA_FILE_BLOCK_SIZE)
-		return -EINVAL;
+		return -EFAULT;
 
 	buffer = kzalloc(args.timeouts_array_size_out, GFP_NOFS);
 	if (!buffer)
@@ -968,7 +968,7 @@ static long ioctl_get_read_timeouts(struct mount_info *mi, void __user *arg)
 	spin_lock(&mi->mi_per_uid_read_timeouts_lock);
 	size = mi->mi_per_uid_read_timeouts_size;
 	if (args.timeouts_array_size < size)
-		error = -E2BIG;
+		error = -EINVAL;
 	else if (size)
 		memcpy(buffer, mi->mi_per_uid_read_timeouts, size);
 	spin_unlock(&mi->mi_per_uid_read_timeouts_lock);
@@ -979,7 +979,7 @@ static long ioctl_get_read_timeouts(struct mount_info *mi, void __user *arg)
 				 size))
 			error = -EFAULT;
 
-	if (!error || error == -E2BIG)
+	if (!error || error == -EINVAL)
 		if (copy_to_user(args_usr_ptr, &args, sizeof(args)) > 0)
 			error = -EFAULT;
 
@@ -997,7 +997,7 @@ static long ioctl_set_read_timeouts(struct mount_info *mi, void __user *arg)
 	int i;
 
 	if (copy_from_user(&args, args_usr_ptr, sizeof(args)))
-		return -EINVAL;
+		return -EFAULT;
 
 	size = args.timeouts_array_size;
 	if (size) {
@@ -1011,7 +1011,7 @@ static long ioctl_set_read_timeouts(struct mount_info *mi, void __user *arg)
 
 		if (copy_from_user(buffer, u64_to_user_ptr(args.timeouts_array),
 				   size)) {
-			error = -EINVAL;
+			error = -EFAULT;
 			goto out;
 		}
 
@@ -1092,7 +1092,7 @@ static ssize_t blocks_written_read(struct file *f, char __user *buf, size_t len,
 	int result = 0;
 
 	if (!mi)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	blocks_written = atomic_read(&mi->mi_blocks_written);
 	if (state->blocks_written == blocks_written)
