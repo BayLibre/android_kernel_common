@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "436757d7_e915f1b7",
         "filename": "fs/incfs/verity.c",
@@ -20,10 +21,34 @@
         "endChar": 37
       },
       "revId": "74310577c87849962cb25a0aa0a9f63cc5287ef3",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf6c20c6_556c3bcb",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-10-07T14:46:14Z",
+      "side": 1,
+      "message": "I chose this order - get the file format right, and only then worry about the in-memory structs. Debatable, but I think this way makes sense.",
+      "parentUuid": "436757d7_e915f1b7",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 37
+      },
+      "revId": "74310577c87849962cb25a0aa0a9f63cc5287ef3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "074be4cc_0c2f8533",
         "filename": "fs/incfs/vfs.c",
@@ -43,8 +68,31 @@
         "endChar": 26
       },
       "revId": "74310577c87849962cb25a0aa0a9f63cc5287ef3",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65c0ccb1_29a6c2dc",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-10-07T14:46:14Z",
+      "side": 1,
+      "message": "int fsverity_file_open(struct inode *inode, struct file *filp)\n{\n\tif (!IS_VERITY(inode))\n\t\treturn 0;\n\nThe code attempts to touch up the structs in memory after validating everything in the incfs_enable_verity path - check that out for errors, but otherwise this is correct, I think",
+      "parentUuid": "074be4cc_0c2f8533",
+      "range": {
+        "startLine": 1308,
+        "startChar": 8,
+        "endLine": 1308,
+        "endChar": 26
+      },
+      "revId": "74310577c87849962cb25a0aa0a9f63cc5287ef3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
