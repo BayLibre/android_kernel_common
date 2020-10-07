@@ -94,7 +94,7 @@ static int incfs_end_enable_verity(struct file *filp,
 		return 0;
 
 	if (!df || !df->df_backing_file_context)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	bfc = df->df_backing_file_context;
 	error = mutex_lock_interruptible(&bfc->bc_mutex);
@@ -435,7 +435,7 @@ static int sign_file(struct file *f)
 		goto out;
 
 	if (df->df_signature || df->df_hash_tree) {
-		error = -EFAULT;
+		error = -EFSCORRUPTED;
 		goto out;
 	}
 

@@ -196,7 +196,7 @@ struct mtree *incfs_alloc_mtree(struct mem_range signature,
 
 err:
 	kfree(result);
-	return ERR_PTR(-E2BIG);
+	return ERR_PTR(-EBADMSG);
 }
 
 void incfs_free_mtree(struct mtree *tree)
@@ -210,7 +210,7 @@ int incfs_calc_digest(struct incfs_hash_alg *alg, struct mem_range data,
 	SHASH_DESC_ON_STACK(desc, alg->shash);
 
 	if (!alg || !alg->shash || !data.data || !digest.data)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (alg->digest_size > digest.len)
 		return -EINVAL;
