@@ -33,6 +33,42 @@
       "message": "Please also enable the corresponding options in the x86 gki_defconfig before submitting.",
       "revId": "bd21674c3dbc7edc75b2f49ea5ab7b30c7bd5be2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46f059b9_6b0ea6ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2020-10-07T18:00:24Z",
+      "side": 1,
+      "message": "I checked before upload CL, CONFIG_CPU_FREQ and CONFIG_THERMAL are both not enabled in x86, and I don\u0027t know the reason and history there.",
+      "parentUuid": "b703839c_e1f8b1ef",
+      "revId": "bd21674c3dbc7edc75b2f49ea5ab7b30c7bd5be2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec9afde2_7fb42e43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2020-10-07T18:00:24Z",
+      "side": 1,
+      "message": "Yes we need this in testing the production build (we never testing debug build).\n\nI believe there are many many ways userland can do harmful things, but the sysfs node is locked by both unix permission and sepolicy. So probably only vendor init and vendor thermal HAL can mess things up. Given thermal mitigation is per-device policy and OEM responsibility, I don\u0027t think it will create any trouble. Pixel shipped this for many generations.",
+      "parentUuid": "3a326a31_f3017f8d",
+      "revId": "bd21674c3dbc7edc75b2f49ea5ab7b30c7bd5be2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
