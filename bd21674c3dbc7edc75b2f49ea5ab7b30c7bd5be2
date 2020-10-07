@@ -16,6 +16,23 @@
       "message": "For CONFIG_THERMAL_EMULATION:\n\nWARNING: Be careful while enabling this option on production systems, because userland can easily disable the thermal policy by simply flooding this sysfs node with low temperature values.\n\nDo we need this in GKI, or could this just be in a downstream \"debug kernel\" for when it is needed?",
       "revId": "bd21674c3dbc7edc75b2f49ea5ab7b30c7bd5be2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b703839c_e1f8b1ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2020-10-07T17:43:30Z",
+      "side": 1,
+      "message": "Please also enable the corresponding options in the x86 gki_defconfig before submitting.",
+      "revId": "bd21674c3dbc7edc75b2f49ea5ab7b30c7bd5be2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
