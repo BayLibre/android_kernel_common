@@ -175,7 +175,7 @@ static int parse_options(struct mount_options *opts, char *str)
 	char *position;
 
 	if (opts == NULL)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	*opts = (struct mount_options) {
 		.read_timeout_ms = 1000, /* Default: 1s */
@@ -356,7 +356,7 @@ static int incfs_init_dentry(struct dentry *dentry, struct path *path)
 	struct dentry_info *d_info = NULL;
 
 	if (!dentry || !path)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	d_info = kzalloc(sizeof(*d_info), GFP_NOFS);
 	if (!d_info)
@@ -607,7 +607,7 @@ static long ioctl_fill_blocks(struct file *f, void __user *arg)
 		}
 
 		if (fill_block.data_len > data_buf_size) {
-			error = -E2BIG;
+			error = -EINVAL;
 			break;
 		}
 
@@ -661,7 +661,7 @@ static long ioctl_read_file_signature(struct file *f, void __user *arg)
 
 	sig_buf_size = args.file_signature_buf_size;
 	if (sig_buf_size > INCFS_MAX_SIGNATURE_SIZE)
-		return -E2BIG;
+		return -EBADMSG;
 
 	sig_buffer = kzalloc(sig_buf_size, GFP_NOFS | __GFP_COMP);
 	if (!sig_buffer)
@@ -783,7 +783,7 @@ static struct dentry *dir_lookup(struct inode *dir_inode, struct dentry *dentry,
 	if (!backing_dentry || IS_ERR(backing_dentry)) {
 		err = IS_ERR(backing_dentry)
 			? PTR_ERR(backing_dentry)
-			: -EFAULT;
+			: -EFSCORRUPTED;
 		backing_dentry = NULL;
 		goto out;
 	} else {
@@ -1448,7 +1448,7 @@ static ssize_t incfs_getxattr(struct dentry *d, const char *name,
 		return -ENODATA;
 
 	if (stored_size > size)
-		return -E2BIG;
+		return -EINVAL;
 
 	memcpy(value, stored_value, stored_size);
 	return stored_size;
@@ -1472,7 +1472,7 @@ static ssize_t incfs_setxattr(struct dentry *d, const char *name,
 		return -ENODATA;
 
 	if (size > INCFS_MAX_FILE_ATTR_SIZE)
-		return -E2BIG;
+		return -EBADMSG;
 
 	if (!strcmp(d->d_iname, INCFS_PENDING_READS_FILENAME)) {
 		stored_value = &mi->pending_read_xattr;

@@ -3372,7 +3372,7 @@ static int per_uid_read_timeouts_test(const char *mount_dir)
 	TESTEQUAL(pread(fd, buffer, sizeof(buffer), 0), -1);
 	TESTEQUAL(is_close(&start, 3000), 0);
 	TESTEQUAL(ioctl(cmd_fd, INCFS_IOC_GET_READ_TIMEOUTS, &grt), -1);
-	TESTEQUAL(errno, E2BIG);
+	TESTEQUAL(errno, EINVAL);
 	TESTEQUAL(grt.timeouts_array_size_out, sizeof(purt_get));
 	grt.timeouts_array_size = sizeof(purt_get);
 	TESTEQUAL(ioctl(cmd_fd, INCFS_IOC_GET_READ_TIMEOUTS, &grt), 0);

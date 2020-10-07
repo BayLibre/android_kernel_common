@@ -63,12 +63,12 @@ static int truncate_backing_file(struct backing_file_context *bfc,
 	int result = 0;
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	LOCK_REQUIRED(bfc->bc_mutex);
 
 	if (!bfc->bc_file)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	old_end = incfs_get_end_offset(bfc->bc_file);
 	if (old_end == new_end)
@@ -127,7 +127,7 @@ static int append_zeros(struct backing_file_context *bfc, size_t len)
 	int result;
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (len == 0)
 		return 0;
@@ -162,7 +162,7 @@ static int append_md_to_backing_file(struct backing_file_context *bfc,
 	size_t record_size;
 
 	if (!bfc || !record)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (bfc->bc_last_md_record_offset < 0)
 		return -EINVAL;
@@ -218,7 +218,7 @@ int incfs_write_blockmap_to_backing_file(struct backing_file_context *bfc,
 	size_t map_size = block_count * sizeof(struct incfs_blockmap_entry);
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	blockmap.m_header.h_md_entry_type = INCFS_MD_BLOCK_MAP;
 	blockmap.m_header.h_record_size = cpu_to_le16(sizeof(blockmap));
@@ -253,7 +253,7 @@ int incfs_write_signature_to_backing_file(struct backing_file_context *bfc,
 	size_t alignment = 0;
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	LOCK_REQUIRED(bfc->bc_mutex);
 
@@ -372,7 +372,7 @@ int incfs_write_fh_to_backing_file(struct backing_file_context *bfc,
 	loff_t file_pos = 0;
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	fh.fh_magic = cpu_to_le64(INCFS_MAGIC_NUMBER);
 	fh.fh_version = cpu_to_le64(INCFS_FORMAT_CURRENT_VER);
@@ -403,7 +403,7 @@ int incfs_write_mapping_fh_to_backing_file(struct backing_file_context *bfc,
 	loff_t file_pos = 0;
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	fh.fh_magic = cpu_to_le64(INCFS_MAGIC_NUMBER);
 	fh.fh_version = cpu_to_le64(INCFS_FORMAT_CURRENT_VER);
@@ -436,7 +436,7 @@ int incfs_write_data_block_to_backing_file(struct backing_file_context *bfc,
 		bm_base_off + sizeof(struct incfs_blockmap_entry) * block_index;
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (block.len >= (1 << 16) || block_index < 0)
 		return -EINVAL;
@@ -481,7 +481,7 @@ int incfs_write_hash_block_to_backing_file(struct backing_file_context *bfc,
 			(block_index + get_blocks_count_for_size(file_size));
 
 	if (!bfc)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	LOCK_REQUIRED(bfc->bc_mutex);
 
@@ -517,7 +517,7 @@ int incfs_read_blockmap_entry(struct backing_file_context *bfc, int block_index,
 		return -EIO;
 
 	if (error != 1)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	return 0;
 }
@@ -534,7 +534,7 @@ int incfs_read_blockmap_entries(struct backing_file_context *bfc,
 	int result = 0;
 
 	if (!bfc || !entries)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (start_index < 0 || bm_base_off <= 0)
 		return -ENODATA;
@@ -554,7 +554,7 @@ int incfs_read_file_header(struct backing_file_context *bfc,
 	struct incfs_file_header fh = {};
 
 	if (!bfc || !first_md_off)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	bytes_read = incfs_kread(bfc->bc_file, &fh, sizeof(fh), 0);
 	if (bytes_read < 0)
@@ -601,7 +601,7 @@ int incfs_read_next_metadata_record(struct backing_file_context *bfc,
 	struct incfs_md_header *md_hdr = NULL;
 
 	if (!bfc || !handler)
-		return -EFAULT;
+		return -EFSCORRUPTED;
 
 	if (handler->md_record_offset == 0)
 		return -EPERM;
