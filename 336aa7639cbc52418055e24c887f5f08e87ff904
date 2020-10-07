@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e4fd6ad_7b9d8270",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-10-07T14:42:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7446bec4_fe20e847",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "336aa7639cbc52418055e24c887f5f08e87ff904",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b83c99_a24333fa",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6536b453_2dbf2a42",
+        "filename": "fs/verity/enable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-10-07T14:42:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84b83c99_a24333fa",
+      "range": {
+        "startLine": 259,
+        "startChar": 2,
+        "endLine": 259,
+        "endChar": 5
+      },
+      "revId": "336aa7639cbc52418055e24c887f5f08e87ff904",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ba31ea8_253eec99",
@@ -60,6 +108,30 @@
       "writtenOn": "2020-10-06T02:06:41Z",
       "side": 1,
       "message": "should the interface allow for implementations to return root hash for only some calls, and not for all of those? e.g. returning -ENOENT would mean that the caller should go on with the default tree calculation",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 23
+      },
+      "revId": "336aa7639cbc52418055e24c887f5f08e87ff904",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d39944db_0916c39a",
+        "filename": "include/linux/fsverity.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-10-07T14:42:17Z",
+      "side": 1,
+      "message": "Only if we are using it. We shouldn\u0027t make things more complex than needed",
+      "parentUuid": "2ba31ea8_253eec99",
       "range": {
         "startLine": 122,
         "startChar": 0,
