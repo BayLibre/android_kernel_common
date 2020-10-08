@@ -16,6 +16,24 @@
       "message": "What about newer branches as well?  This went into 5.8, so all other trees probably need this, right?",
       "revId": "ca46ef7eacb6804e15c5e96dfdfe208bfd3636ab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b11d8d3_e74bcba9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2020-10-08T16:01:23Z",
+      "side": 1,
+      "message": "Yes. This is just a prototype for now. While it does pass my unit test, I haven\u0027t reviewed it carefully and haven\u0027t prepared patches for other trees.\n\nDo you know if it\u0027s feasible to get this into LTS? It would be good to do so because it fixes a privacy/tracking issue. Specifically: without this patch, a network observer can track the user across different networks because the bottom 64 bits of the IPv6 address stay the same, even when MAC address randomization is in use.\n\nIf it\u0027s not possible to get this into LTS I can prep patches for the other trees myself.",
+      "parentUuid": "1e3616ea_9a43f3ee",
+      "revId": "ca46ef7eacb6804e15c5e96dfdfe208bfd3636ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
