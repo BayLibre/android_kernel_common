@@ -68,6 +68,80 @@
       "parentUuid": "a83d961e_1c28e5b8",
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ecbed85_f2fda25e",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-08T21:16:43Z",
+      "side": 1,
+      "message": "wouldn\u0027t it be better not to assume that only SCHED_NORMAL is left here?\n\nHow about removing lines 1196-1199 and making this:\n\n  if (policy \u003d\u003d SCHED_NORMAL)\n    return sched_setscheduler_nocheck(...)\n\n  return -EPERM;\n}",
+      "range": {
+        "startLine": 1204,
+        "startChar": 0,
+        "endLine": 1206,
+        "endChar": 12
+      },
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c89081_8695f8ff",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-08T21:16:43Z",
+      "side": 1,
+      "message": "Can you add a comment in the code about why RT is important for lines 1295-1315? If the issue is that this thread can be preempted for a long time, why is it ok that we are in fair sched at line 1282. Is the point only to minimize the latency between line 1295 and 1312?",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92afd0ba_f5d6ccaf",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1297,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-08T21:16:43Z",
+      "side": 1,
+      "message": "Shouldn\u0027t sched policy be restored?",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2bd8d74_34369aa1",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-08T21:16:43Z",
+      "side": 1,
+      "message": "If an error was returned above, we bail. So switch_err is \u003e 0.\n\nShouldn\u0027t we be restoring fair policy in this case esp given it is benign to do so if we are already in fair policy.",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
