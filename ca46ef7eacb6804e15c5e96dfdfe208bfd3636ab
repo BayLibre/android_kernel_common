@@ -34,6 +34,24 @@
       "parentUuid": "1e3616ea_9a43f3ee",
       "revId": "ca46ef7eacb6804e15c5e96dfdfe208bfd3636ab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61375f76_f0ff4282",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-09T09:01:36Z",
+      "side": 1,
+      "message": "As on the networking list if it can be added to stable, as this only showed up in 5.8.\n\nAnd to my eye, it looks like a new feature, not a bugfix for anything, so it might not be \"eligible\" for the stable/LTS kernels.\n\nIf you want this in the 5.4 kernel, please submit it to the android11-5.4 branch now, as this might break some abis and we have a limited time in which to be able to do so.",
+      "parentUuid": "4b11d8d3_e74bcba9",
+      "revId": "ca46ef7eacb6804e15c5e96dfdfe208bfd3636ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
