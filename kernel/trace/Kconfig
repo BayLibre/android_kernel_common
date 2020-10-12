@@ -874,3 +874,8 @@ endif # FTRACE
 
 endif # TRACING_SUPPORT
 
+config DEBUG_LIST
+	bool "Debug List"
+	help
+	  A debugging list for recording sub-system activities.
+
