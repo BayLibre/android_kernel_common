@@ -56,6 +56,64 @@
       },
       "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a51d11be_7a3cbf48",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-12T17:06:09Z",
+      "side": 1,
+      "message": "Agreed.  This would break existing devices, break compatibility with e2fsprogs and f2fs-tools, and break compatibility with the upstream kernel.  Why is this needed?",
+      "parentUuid": "b3ef7324_827e8024",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "458c8e6d_e180a7c6",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-12T17:06:09Z",
+      "side": 1,
+      "message": "Why is this needed?  This header (fs/crypto/fscrypt_private.h) is only for use by code in fs/crypto/.  It\u0027s *not* intended to be included by modules.  And both filesystems that support fscrypt are built-in.  What are you trying to accomplish?",
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d75024ce_c4831953",
+        "filename": "include/linux/fscrypt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-12T17:06:09Z",
+      "side": 1,
+      "message": "The methods of struct fscrypt_operations are intended to only be called by code in fs/crypto/.  But you\u0027re not adding any code that calls these methods.  Also, both filesystems that support fscrypt are built-in.  So why is this change needed, and what is it trying to accomplish?",
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
