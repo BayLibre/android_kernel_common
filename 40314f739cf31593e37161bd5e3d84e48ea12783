@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbc0b6bb_a8f77cb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "This change requires attention to Android user space as the event propagation mechanisms (EventHub, InputHub and SwitchInputMapper) appear to filter out higher codes? Hopefully existing SW_MAX that is part of the user space uapi headers does not create an issue, but I know of an assert in user space if it is changed!!! User space should be tested and updated to correspond with any kernel uapi header changes. I also find that some of the codes may share a duplicate meaning to the existing set.",
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c7cb38f_b6f9e1db",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "nit: SW_PEN_INSERTED has exactly the same comment! SwitchInputMapper does not react to SW_PEN_INSERTED, but recognizes it.",
+      "range": {
+        "startLine": 812,
+        "startChar": 8,
+        "endLine": 812,
+        "endChar": 21
+      },
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74451da8_a22e1745",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "nit: SW_LID interacts with popular folio daemons and input manager to wakeup and un-blank the screen. I suspect SW_FLIP is meant for the same purpose?",
+      "range": {
+        "startLine": 813,
+        "startChar": 8,
+        "endLine": 813,
+        "endChar": 15
+      },
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c12025_1b6fcd99",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "Q: should WiredAcessoryManager be mindful of this?",
+      "range": {
+        "startLine": 815,
+        "startChar": 8,
+        "endLine": 815,
+        "endChar": 21
+      },
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cbb0f71_44ba03cb",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "nit: SW_MACHINE_COVER may have the same purpose. Also, if SW_MAX !\u003d SW_MACHINE_COVER, the SwitchInputMapper will assert! There should be a corresponding change to user space includes and services if SW_MAX is changed.",
+      "range": {
+        "startLine": 816,
+        "startChar": 8,
+        "endLine": 816,
+        "endChar": 23
+      },
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99e342f_85edda28",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "nit: SW_CAMERA_LENSE_COVER is recognized by some of the launchers, window managers and camera application to activate. I suspect SW_CAMERA_SLIDE is meant for the same purpose?",
+      "range": {
+        "startLine": 817,
+        "startChar": 8,
+        "endLine": 817,
+        "endChar": 23
+      },
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be469fac_db67c6d6",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1032276
+      },
+      "writtenOn": "2020-10-12T15:31:20Z",
+      "side": 1,
+      "message": "nit: SW_KEYPAD_SLIDE is recognized by the input manager as a means of activating/deactivating the keyboard, and is used in Android on \u0027convertible\u0027 devices too AFAIK. I suspect SW_KEY_COVER_BACKFOLD serves a similar purpose?",
+      "range": {
+        "startLine": 818,
+        "startChar": 8,
+        "endLine": 818,
+        "endChar": 29
+      },
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
