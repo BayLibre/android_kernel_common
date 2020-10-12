@@ -16,6 +16,24 @@
       "message": "What is the status of getting these drivers merged upstream?\n\nAnd does this change break the abi?",
       "revId": "f6be52c16e6ca9219a1fc08550fb990a3c591e7b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "465740f0_140118b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1635667
+      },
+      "writtenOn": "2020-10-12T09:25:02Z",
+      "side": 1,
+      "message": "It does break KMI.\n\nWe need more time to internal discussion for upstream\nI think upstream can not finish before KMI freeze may be\n\nIt relate framework, we using common framework.\nSo switch value change is affect to another project, \nWe have to do many tests before making patches",
+      "parentUuid": "b585a2a3_a0557f8e",
+      "revId": "f6be52c16e6ca9219a1fc08550fb990a3c591e7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
