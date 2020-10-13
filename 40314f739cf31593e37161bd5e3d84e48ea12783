@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1b742b64_01772547",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1635667
+      },
+      "writtenOn": "2020-10-13T09:30:16Z",
+      "side": 1,
+      "message": "We using 7 switch for our project and merged with existing set\n\n#define SW_LID                  0x00  /* set \u003d lid shut */\n-\u003e checking the fold open/closed\n\n#define SW_CAMERA_LENS_COVER    0x09  /* set \u003d lens covered */\n-\u003e checking the slide camera turned on\n\n#define SW_KEYPAD_SLIDE         0x0a  /* set \u003d keypad slide out */\n-\u003e checking the keyboard cover are backfolded\n\n#define SW_PEN_INSERTED         0x0f  /* set \u003d pen inserted */\n-\u003e checking the pen inserted\n\n#define SW_MACHINE_COVER        0x10  /* set \u003d cover closed */\n-\u003e checking the flip cover opened / closed\n\n#define SW_COVER_ATTACHED\t0x11  /* set \u003d cover attached */\n-\u003e checking the flip cover attached with device\n\n#define SW_EXT_PEN_ATTACHED\t0x12  /* set \u003d external pen attached */\n-\u003e checking the pen of attached to external point\n\nHow about it?",
+      "parentUuid": "fbc0b6bb_a8f77cb7",
+      "revId": "40314f739cf31593e37161bd5e3d84e48ea12783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5c7cb38f_b6f9e1db",
         "filename": "include/uapi/linux/input-event-codes.h",
         "patchSetId": 6
