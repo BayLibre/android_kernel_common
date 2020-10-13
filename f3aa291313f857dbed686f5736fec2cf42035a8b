@@ -143,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b17be5a2_ad34f7bb",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2020-10-13T22:48:57Z",
+      "side": 1,
+      "message": "We need to return 1 for _FIFO/_RR, because line 1292 will not bail.",
+      "parentUuid": "cc037cf0_4fde91af",
+      "range": {
+        "startLine": 1204,
+        "startChar": 0,
+        "endLine": 1206,
+        "endChar": 12
+      },
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48c89081_8695f8ff",
         "filename": "kernel/cpu.c",
         "patchSetId": 2
