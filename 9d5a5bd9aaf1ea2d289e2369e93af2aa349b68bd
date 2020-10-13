@@ -125,6 +125,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d714d68_6da20685",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-13T17:48:20Z",
+      "side": 1,
+      "message": "\u003e file that is under Samsung\u0027s protection\n\nWhat does this mean and how is it different from the existing FBE?  Have any changes you made been reviewed by a cryptographer and do they have tests (like vts_kernel_encryption_test) that show that your extra \"protection\" is working as intended and isn\u0027t actually making things worse?  Crypto can be very hard to get right; it can appear to be working while having subtle flaws.  And why hasn\u0027t this been proposed upstream?\n\n\u003e Again, when we open a file and subsequently corresponding crypt info is set up, we need a flag to identify the file under Samsung\u0027s protection.\n\nTo re-iterate, you can\u0027t add an extra field to either fscrypt_context_v1 or fscrypt_context_v2 because it would break things.   Please find a different solution.",
+      "parentUuid": "f728a8d2_4d1208dd",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "458c8e6d_e180a7c6",
         "filename": "fs/crypto/fscrypt_private.h",
         "patchSetId": 1
@@ -154,6 +178,24 @@
       "side": 1,
       "message": "We need more crypto information other than things in fscrypt_info. The vendor data will be used to connect the extended crypto information. Once merged, the vendor data will be referred at proper places by means of vendor hook. It\u0027s not direct use-case in the built-in, plus we\u0027re also planning to add more codes to leverage vendor hoook. Beforehand, we\u0027re trying to deploy data field we need.",
       "parentUuid": "458c8e6d_e180a7c6",
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e6c11f_750fda4d",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-13T17:48:20Z",
+      "side": 1,
+      "message": "You need to post everything you need for your feature at once so that it can be reviewed.  As-is there is no context to review anything.  Also why is this needed in GKI 1.0?",
+      "parentUuid": "c6607817_a312e619",
       "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
