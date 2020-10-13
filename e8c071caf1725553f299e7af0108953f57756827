@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e57dbd80_3592f994",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-13T14:08:46Z",
+      "side": 1,
+      "message": "this needs a lot more description and explanation.  \n\nPlease see the kernel documentation for how to write a good changelog entry.",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 57
+      },
+      "revId": "e8c071caf1725553f299e7af0108953f57756827",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b46db061_6babe658",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-13T14:08:46Z",
+      "side": 1,
+      "message": "signed-off-by twice???",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 49
+      },
+      "revId": "e8c071caf1725553f299e7af0108953f57756827",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "15598a31_d2fb93cb",
@@ -14,6 +60,29 @@
       "writtenOn": "2020-10-13T11:55:44Z",
       "side": 1,
       "message": "Thanks for considering optimal use of the existing switch codes with similar or overlapping behavior. I understand that going further may exasperate Android user space as there are daemons and services that actually use some of these codes should you re-use more. There is still the outstanding consideration that needs investigation and testing, Android user-space issue with either changing the global SW_MAX (abort), or what happens to user space without adjusting the global SW_MAX, when codes above SW_MAX show up.",
+      "revId": "e8c071caf1725553f299e7af0108953f57756827",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5452ae_6ba39ab2",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-13T14:08:46Z",
+      "side": 1,
+      "message": "how about submitting these drivers so when the numbers change, they will properly work as well?",
+      "range": {
+        "startLine": 812,
+        "startChar": 0,
+        "endLine": 813,
+        "endChar": 67
+      },
       "revId": "e8c071caf1725553f299e7af0108953f57756827",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
