@@ -35,6 +35,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed2e2652_cf3c4d5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1778621
+      },
+      "writtenOn": "2020-10-13T09:43:19Z",
+      "side": 1,
+      "message": "reply to the comments",
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3ef7324_827e8024",
@@ -82,6 +99,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f728a8d2_4d1208dd",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1778621
+      },
+      "writtenOn": "2020-10-13T09:43:19Z",
+      "side": 1,
+      "message": "When we developed our feature before GKI introduced, what we needed for the first thing was just a flag to identify the file that is under Samsung\u0027s protection, and we couldn\u0027t help adding new data member to the structure since other data members were already in use tightly without having any reserved, plus we decided it was the most stable way to mark a file for the protection. Again, when we open a file and subsequently corresponding crypt info is set up, we need a flag to identify the file under Samsung\u0027s protection.\nMeanwhile, I think we don\u0027t need the change in v1 because newly upcoming models will not use v1 but v2.",
+      "parentUuid": "a51d11be_7a3cbf48",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "458c8e6d_e180a7c6",
@@ -99,6 +140,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6607817_a312e619",
+        "filename": "fs/crypto/fscrypt_private.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1778621
+      },
+      "writtenOn": "2020-10-13T09:43:19Z",
+      "side": 1,
+      "message": "We need more crypto information other than things in fscrypt_info. The vendor data will be used to connect the extended crypto information. Once merged, the vendor data will be referred at proper places by means of vendor hook. It\u0027s not direct use-case in the built-in, plus we\u0027re also planning to add more codes to leverage vendor hoook. Beforehand, we\u0027re trying to deploy data field we need.",
+      "parentUuid": "458c8e6d_e180a7c6",
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d75024ce_c4831953",
@@ -112,6 +171,24 @@
       "writtenOn": "2020-10-12T17:06:09Z",
       "side": 1,
       "message": "The methods of struct fscrypt_operations are intended to only be called by code in fs/crypto/.  But you\u0027re not adding any code that calls these methods.  Also, both filesystems that support fscrypt are built-in.  So why is this change needed, and what is it trying to accomplish?",
+      "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07a26a46_169b4084",
+        "filename": "include/linux/fscrypt.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1778621
+      },
+      "writtenOn": "2020-10-13T09:43:19Z",
+      "side": 1,
+      "message": "The code calling these methods is not in this patch though, we need the methods to set/get our extended attributes. To call this methods, we may need to change more places through the both filesystems. All the changes in the patch is very essential for our feature. Somehow we have to develop a sort of interface for our feature to be used in common android.",
+      "parentUuid": "d75024ce_c4831953",
       "revId": "9d5a5bd9aaf1ea2d289e2369e93af2aa349b68bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
