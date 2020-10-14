@@ -903,7 +903,10 @@ static void do_handle_IPI(int ipinr)
 		break;
 
 	case IPI_CPU_STOP:
+<<<<<<< HEAD   (99be12 FROMLIST: arm64: vdso32: Allow ld.lld to properly link the V)
 		trace_android_vh_ipi_stop(get_irq_regs());
+=======
+>>>>>>> BRANCH (865c50 x86/uaccess: utilize CONFIG_CC_HAS_ASM_GOTO_OUTPUT)
 		local_cpu_stop();
 		break;
 
