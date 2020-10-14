@@ -89,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0323250_fb5af0fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-14T21:03:03Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3d7b9952_a37f2f7e",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ecbed85_f2fda25e",
         "filename": "kernel/cpu.c",
         "patchSetId": 2
@@ -182,6 +200,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ab50a9b_5a4d19b2",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-14T21:03:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b17be5a2_ad34f7bb",
+      "range": {
+        "startLine": 1204,
+        "startChar": 0,
+        "endLine": 1206,
+        "endChar": 12
+      },
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48c89081_8695f8ff",
@@ -213,6 +255,24 @@
       "side": 1,
       "message": "line 1282 is lightweight early checks.\n\nWe need to be RT for the time we do actual work, that extend from try_online_node() [Related to memory hotplug] all the way to the point where we drop the lock in cpu_map_update_done()",
       "parentUuid": "48c89081_8695f8ff",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2fe03c_6b8e0780",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-14T21:03:03Z",
+      "side": 1,
+      "message": "Can you add a comment in the code that explains? We are going to the trouble to switching to RT -- explain in a comment why it is important to minimize the interval from try_online_node() through cpu_map_update_done().",
+      "parentUuid": "84a616dc_a864b20c",
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -270,6 +330,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b39fe063_bfc880ca",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1297,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-14T21:03:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e881016_c80a0f09",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2bd8d74_34369aa1",
@@ -301,6 +379,24 @@
       "side": 1,
       "message": "Well switch_err \u003d 1 if RT task initiates the hotplug-IN of the cpu. \nWe dont want to convert it to Fair.\n\nThe return from switch_to_rt_policy() could be -ve, 0 or 1.  We want to switch back to FAIR only for 0.",
       "parentUuid": "a2bd8d74_34369aa1",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edcfab3f_7f1d76a2",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-14T21:03:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3c7767f_89bbd243",
       "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
