@@ -16,6 +16,24 @@
       "message": "Why can\u0027t you do this with a normal bpf script today?  Why is a hook needed?",
       "revId": "b3690e584a3dada1bcf1499a0ac632c2bed65069",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "459cd9ad_771e6cae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1710531
+      },
+      "writtenOn": "2020-10-14T08:59:49Z",
+      "side": 1,
+      "message": "We are gathering the kernel events for debugging.\ninterrupt information is very important. Sometimes drivers runs for a long time in a interrupt handler. In addition, some irq may happen interrupt stroming very frequently. Actually, I tried to use tracepoint of irq. But it is slower than vendor_hook and it doesn\u0027t exist the time parameter.",
+      "parentUuid": "b2c51d48_fb79a6bc",
+      "revId": "b3690e584a3dada1bcf1499a0ac632c2bed65069",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
