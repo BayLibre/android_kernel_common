@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "228c139e_01f7a22e",
         "filename": "/PATCHSET_LEVEL",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "I don\u0027t think you need the minor number as a new field as you already have it...",
       "revId": "330c9a90df51c2aab68dd984470e030cf372bc2d",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "413a40c4_f252f9d3",
         "filename": "drivers/dma-buf/dma-heap.c",
@@ -37,8 +38,31 @@
         "endChar": 11
       },
       "revId": "330c9a90df51c2aab68dd984470e030cf372bc2d",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d3d5c81_f9d978b7",
+        "filename": "drivers/dma-buf/dma-heap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2020-10-14T06:45:41Z",
+      "side": 1,
+      "message": "Thanks for the suggestion! Fixed in the cherry-picked follow-on patch already submittted to android-mainline. I\u0027ve left this patch alone as I want to keep android-mainline and android12-5.4 in sync as best I can here.",
+      "parentUuid": "413a40c4_f252f9d3",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 11
+      },
+      "revId": "330c9a90df51c2aab68dd984470e030cf372bc2d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
