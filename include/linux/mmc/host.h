@@ -80,6 +80,9 @@ struct mmc_ios {
 	bool enhanced_strobe;			/* hs400es selection */
 };
 
+#define NUM_LOG_PAGES           10
+#define mmc_log_string(mmc_host, fmt, ...)      do { } while (0)
+
 struct mmc_clk_phase {
 	bool valid;
 	u16 in_deg;
@@ -92,6 +95,24 @@ struct mmc_clk_phase_map {
 };
 
 struct mmc_host;
+
+enum {
+	MMC_ERR_CMD_TIMEOUT,
+	MMC_ERR_CMD_CRC,
+	MMC_ERR_DAT_TIMEOUT,
+	MMC_ERR_DAT_CRC,
+	MMC_ERR_AUTO_CMD,
+	MMC_ERR_ADMA,
+	MMC_ERR_TUNING,
+	MMC_ERR_CMDQ_RED,
+	MMC_ERR_CMDQ_GCE,
+	MMC_ERR_CMDQ_ICCE,
+	MMC_ERR_REQ_TIMEOUT,
+	MMC_ERR_CMDQ_REQ_TIMEOUT,
+	MMC_ERR_ICE_CFG,
+	MMC_ERR_MAX,
+};
+
 
 struct mmc_host_ops {
 	/*
@@ -468,6 +489,7 @@ struct mmc_host {
 	struct mmc_supply	supply;
 
 	struct dentry		*debugfs_root;
+	u32                     err_stats[MMC_ERR_MAX];
 
 	/* Ongoing data transfer that allows commands during transfer */
 	struct mmc_request	*ongoing_mrq;

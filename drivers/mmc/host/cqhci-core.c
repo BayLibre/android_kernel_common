@@ -825,6 +825,13 @@ irqreturn_t cqhci_irq(struct mmc_host *mmc, u32 intmask, int cmd_error,
 	if ((status & (CQHCI_IS_RED | CQHCI_IS_GCE | CQHCI_IS_ICCE)) ||
 	    cmd_error || data_error || ice_err){
 		mmc->need_hw_reset = true;
+		if (status & CQHCI_IS_RED)
+			mmc->err_stats[MMC_ERR_CMDQ_RED]++;
+		if (status & CQHCI_IS_GCE)
+			mmc->err_stats[MMC_ERR_CMDQ_GCE]++;
+		if (status & CQHCI_IS_ICCE)
+			mmc->err_stats[MMC_ERR_CMDQ_ICCE]++;
+
 		cqhci_error_irq(mmc, status, cmd_error, data_error);
 	}
 
