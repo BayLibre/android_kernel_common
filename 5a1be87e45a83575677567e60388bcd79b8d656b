@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd0f781c_1206453c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2020-10-15T04:45:09Z",
+      "side": 1,
+      "message": "Hi, Nick\n\nSeems there are build problems for arm32bit platform with this change:\nThe error we got with our ci build is here:\n    19:17:45   LD [M]  sound/usb/snd-usbmidi-lib.ko\n    19:17:49 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:49 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:49   AS      arch/arm/boot/compressed/piggy.o\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50   LD      arch/arm/boot/compressed/vmlinux\n    19:17:50 ld.lld: error: -defsym: syntax error: _kernel_bss_size\u003d\n\nThe build config we used for the beagle-x15 build is here:\nhttps://android-git.linaro.org/kernel/omap-modules.git/tree/build.config.x15?h\u003dandroid12-5.4\n\nAnd I checked the gas repository, there is no arm-linux-androidkernel-nm command there, \nAny idea what we might missed for the beagle-x15 build?\n\n\nThanks,\nYongqin Liu\n",
+      "revId": "5a1be87e45a83575677567e60388bcd79b8d656b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
