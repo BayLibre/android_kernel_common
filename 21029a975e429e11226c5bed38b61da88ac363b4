@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68affd19_0db7f4e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-15T00:50:46Z",
+      "side": 1,
+      "message": "Commit message needs an explanation for why this is needed.",
+      "revId": "21029a975e429e11226c5bed38b61da88ac363b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68400bf2_743b9610",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-15T00:50:46Z",
+      "side": 1,
+      "message": "There needs to be a bug filed at https://b.corp.google.com/issues?q\u003dcomponentid:526574 to track this non-upstream patch.",
+      "revId": "21029a975e429e11226c5bed38b61da88ac363b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8474b8c3_24f35b89",
+        "filename": "fs/verity/enable.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-15T00:50:46Z",
+      "side": 1,
+      "message": "Using \u0027goto\u0027 to avoid reindenting this code might actually be better since it would reduce the diff from upstream...",
+      "revId": "21029a975e429e11226c5bed38b61da88ac363b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7472df04_a188d88c",
+        "filename": "include/linux/fsverity.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-15T00:50:46Z",
+      "side": 1,
+      "message": "And also the Merkle tree is already stored on-disk, right?  Or at least is already available to the filesystem?\n\nAlso, what if the filesystem implements -\u003eget_root_hash() but doesn\u0027t have the precomputed tree for a particular file?  Or is the assumption that it\u0027s all-or-nothing -- either a filesystem has a precomputed tree for all files (or doesn\u0027t support fs-verity on files that don\u0027t already have a precomputed tree), *or* a filesystem doesn\u0027t implement -\u003eget_root_hash?",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 69
+      },
+      "revId": "21029a975e429e11226c5bed38b61da88ac363b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cfaaa40_63489db5",
+        "filename": "include/linux/fsverity.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-15T00:50:46Z",
+      "side": 1,
+      "message": "incfs also returns -EOPNOTSUPP; what does that mean?",
+      "range": {
+        "startLine": 120,
+        "startChar": 33,
+        "endLine": 120,
+        "endChar": 51
+      },
+      "revId": "21029a975e429e11226c5bed38b61da88ac363b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
