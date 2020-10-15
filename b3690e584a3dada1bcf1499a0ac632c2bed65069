@@ -105,6 +105,24 @@
       "parentUuid": "30670a7a_5e6a6d00",
       "revId": "b3690e584a3dada1bcf1499a0ac632c2bed65069",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dda60de_e58ba9a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-15T06:07:27Z",
+      "side": 1,
+      "message": "bpf does not affect performance if not enabled. If enabled, it will take just as much performance hit as this hook being enabled would, they use the same framework.\n\nAnd you can add any bpf hook on any function in the kernel, you don\u0027t need to add a tracepoint manually.  I suggest reading up on how bpf now works for more details.",
+      "parentUuid": "aa6f44f2_a5e4a5ed",
+      "revId": "b3690e584a3dada1bcf1499a0ac632c2bed65069",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
