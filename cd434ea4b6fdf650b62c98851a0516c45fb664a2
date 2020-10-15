@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "041b5a64_baa9025f",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1195,
+      "author": {
+        "id": 1716199
+      },
+      "writtenOn": "2020-10-15T20:03:29Z",
+      "side": 1,
+      "message": "We want to switch to FIFO only when needed and not for all the tasks. If the current task policy is (policy \u003d\u003d SCHED_FIFO || policy \u003d\u003d SCHED_RR), we don\u0027t want to switch.",
+      "parentUuid": "3330a1ed_223a325b",
+      "range": {
+        "startLine": 1195,
+        "startChar": 0,
+        "endLine": 1195,
+        "endChar": 28
+      },
+      "revId": "cd434ea4b6fdf650b62c98851a0516c45fb664a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71ccd99f_7161c5f0",
         "filename": "kernel/cpu.c",
         "patchSetId": 4
@@ -60,6 +84,30 @@
       "writtenOn": "2020-10-15T13:51:11Z",
       "side": 1,
       "message": "this should be calling sched_set_fifo(), right?",
+      "range": {
+        "startLine": 1197,
+        "startChar": 0,
+        "endLine": 1197,
+        "endChar": 65
+      },
+      "revId": "cd434ea4b6fdf650b62c98851a0516c45fb664a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed16ece7_f0eb8d34",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1716199
+      },
+      "writtenOn": "2020-10-15T20:03:29Z",
+      "side": 1,
+      "message": "Hi Greg KH, \nsched_set_fifo is void function and we don\u0027t know whether switch really happened or not. \n\nsched_setscheduler_nocheck returns the success or error, so that we do appropriate steps at the end of cpu hotplug in.",
+      "parentUuid": "71ccd99f_7161c5f0",
       "range": {
         "startLine": 1197,
         "startChar": 0,
