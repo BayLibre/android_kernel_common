@@ -16,6 +16,24 @@
       "message": "Hi, Nick\n\nSeems there are build problems for arm32bit platform with this change:\nThe error we got with our ci build is here:\n    19:17:45   LD [M]  sound/usb/snd-usbmidi-lib.ko\n    19:17:49 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:49 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:49   AS      arch/arm/boot/compressed/piggy.o\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50 /bin/sh: 1: arm-linux-androidkernel-nm: not found\n    19:17:50 /bin/sh: 1: arithmetic expression: expecting primary: \" \"\n    19:17:50   LD      arch/arm/boot/compressed/vmlinux\n    19:17:50 ld.lld: error: -defsym: syntax error: _kernel_bss_size\u003d\n\nThe build config we used for the beagle-x15 build is here:\nhttps://android-git.linaro.org/kernel/omap-modules.git/tree/build.config.x15?h\u003dandroid12-5.4\n\nAnd I checked the gas repository, there is no arm-linux-androidkernel-nm command there, \nAny idea what we might missed for the beagle-x15 build?\n\n\nThanks,\nYongqin Liu\n",
       "revId": "5a1be87e45a83575677567e60388bcd79b8d656b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f61945e_50659efd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2020-10-15T17:58:06Z",
+      "side": 1,
+      "message": "Hi YongQin,\nI apologize for breaking your build, but thank you for letting me know.\n\nCan you try cherry picking 29c623d64f0dcd6aa10e0eabd16233e77114090b from upstream locally?  I just sent it stable a day or two ago for v5.4.y and v4.19.y, and it was accepted, but hasn\u0027t been pushed out yet.\n\nSee also:\nhttps://lore.kernel.org/stable/20201014140046.GQ2415204@sasha-vm/T/#m06e8314bd8bff5e279575b79594d4912e7b28805\n\nhttps://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/BINUTILS_KERNEL_DEPRECATION.md",
+      "parentUuid": "dd0f781c_1206453c",
+      "revId": "5a1be87e45a83575677567e60388bcd79b8d656b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
