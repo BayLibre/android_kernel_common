@@ -83,3 +83,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_update_topology_flags_workfn);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_thermal_stats);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wake_up_sync);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
+<<<<<<< HEAD   (a026cc ANDROID: mm: lru_cache_disable skips lru cache drainnig)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_energy_efficient_cpu);
+>>>>>>> CHANGE (cbcd3a ANDROID: sched: Add vendor hooks for find_energy_efficient_c)
