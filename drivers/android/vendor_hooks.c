@@ -129,3 +129,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_resolve_freq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_fast_switch);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_target);
