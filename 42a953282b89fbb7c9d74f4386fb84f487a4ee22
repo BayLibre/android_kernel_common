@@ -16,6 +16,75 @@
       "message": "3 functions are \"new\" here, you need to call that out specifically, and update the .xml file at the same time.\n\nThe functions you are exporting are:\n  - extcon_dev_unregister\n  - commit_creds\n  - prepare_creds\n\nThe extcon one is fine, no objection there, the creds functions are odd, what needs these functions?",
       "revId": "42a953282b89fbb7c9d74f4386fb84f487a4ee22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e7cff59_fb51e493",
+        "filename": "android/abi_gki_aarch64_oneplus",
+        "patchSetId": 2
+      },
+      "lineNbr": 1916,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T14:57:04Z",
+      "side": 1,
+      "message": "please use the proper power supply api, you should not need to call this function at all.",
+      "range": {
+        "startLine": 1916,
+        "startChar": 2,
+        "endLine": 1916,
+        "endChar": 19
+      },
+      "revId": "42a953282b89fbb7c9d74f4386fb84f487a4ee22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73232515_bff3a287",
+        "filename": "android/abi_gki_aarch64_oneplus",
+        "patchSetId": 2
+      },
+      "lineNbr": 1917,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T14:57:04Z",
+      "side": 1,
+      "message": "a charger driver should not need this.",
+      "range": {
+        "startLine": 1917,
+        "startChar": 2,
+        "endLine": 1917,
+        "endChar": 14
+      },
+      "revId": "42a953282b89fbb7c9d74f4386fb84f487a4ee22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9ef9736_9a310087",
+        "filename": "android/abi_gki_aarch64_oneplus",
+        "patchSetId": 2
+      },
+      "lineNbr": 1926,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T14:57:04Z",
+      "side": 1,
+      "message": "a power supply driver should not need this.",
+      "range": {
+        "startLine": 1926,
+        "startChar": 2,
+        "endLine": 1926,
+        "endChar": 15
+      },
+      "revId": "42a953282b89fbb7c9d74f4386fb84f487a4ee22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
