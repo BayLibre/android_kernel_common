@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "843d7d17_31313a11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T14:55:44Z",
+      "side": 1,
+      "message": "3 functions are \"new\" here, you need to call that out specifically, and update the .xml file at the same time.\n\nThe functions you are exporting are:\n  - extcon_dev_unregister\n  - commit_creds\n  - prepare_creds\n\nThe extcon one is fine, no objection there, the creds functions are odd, what needs these functions?",
+      "revId": "42a953282b89fbb7c9d74f4386fb84f487a4ee22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
