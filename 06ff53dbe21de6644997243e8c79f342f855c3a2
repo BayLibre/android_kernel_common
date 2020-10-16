@@ -16,6 +16,24 @@
       "message": "While you know I\u0027m not a fan of FBDEV, does it work if you \u003dm these options in the common-modules/virtual-device fragment? I think we can merge that, for now.",
       "revId": "06ff53dbe21de6644997243e8c79f342f855c3a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8396521_51692f89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2020-10-16T17:12:38Z",
+      "side": 1,
+      "message": "Unfortunately not. I tried that to begin with but when doing a split GKI/modules build the build fails like so:\n    \n    depmod: WARNING: [...]/video/fbdev/core/fb.ko needs unknown symbol fb_notifier_call_chain\n\nIt\u0027s probably not worth investigating why since in the long term we won\u0027t have FBDEV here anyway.",
+      "parentUuid": "330bbde0_8f5e2330",
+      "revId": "06ff53dbe21de6644997243e8c79f342f855c3a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
