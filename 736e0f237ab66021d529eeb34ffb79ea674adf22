@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "526b8982_27e921a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "Most of these here (I only reviewed about half), are specific only to filesystems.\n\nWhat filesystem are you needing to support for GKI 1 that we do not already support?",
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4edbe271_c3c6426a",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "why is a driver caring about a filesystem lock?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 15
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43e61791_256a751c",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "what driver wants to call this?  That\u0027s for filesystems-only.",
+      "range": {
+        "startLine": 121,
+        "startChar": 2,
+        "endLine": 121,
+        "endChar": 13
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb884a9_6b586c5b",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "again, filesystem-specific.",
+      "range": {
+        "startLine": 219,
+        "startChar": 2,
+        "endLine": 219,
+        "endChar": 7
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbbe38e7_d7ecdafc",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "filesystem-specific",
+      "range": {
+        "startLine": 223,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 8
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea21151d_459fff7c",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "drivers should not be messing with dentries.",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 230,
+        "endChar": 13
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3efd6ec7_70333f7c",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "filesystem-specific",
+      "range": {
+        "startLine": 361,
+        "startChar": 2,
+        "endLine": 362,
+        "endChar": 15
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1d00fb6_aaa737ec",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-16T13:25:21Z",
+      "side": 1,
+      "message": "do not add new filesystem sysfs files.",
+      "range": {
+        "startLine": 488,
+        "startChar": 2,
+        "endLine": 488,
+        "endChar": 9
+      },
+      "revId": "736e0f237ab66021d529eeb34ffb79ea674adf22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
