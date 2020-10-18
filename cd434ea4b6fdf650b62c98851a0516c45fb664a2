@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b43fbbe7_d513773d",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1716199
+      },
+      "writtenOn": "2020-10-18T23:07:06Z",
+      "side": 1,
+      "message": "I have explained below.",
+      "parentUuid": "410ea510_fd313412",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 35
+      },
+      "revId": "cd434ea4b6fdf650b62c98851a0516c45fb664a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3330a1ed_223a325b",
         "filename": "kernel/cpu.c",
         "patchSetId": 4
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "If you can not switch, you have bigger issues happening, right?  You still want to keep going, and not error out, to allow the process to continue.\n\nHave you ever seen this fail?",
       "parentUuid": "ed16ece7_f0eb8d34",
+      "range": {
+        "startLine": 1197,
+        "startChar": 0,
+        "endLine": 1197,
+        "endChar": 65
+      },
+      "revId": "cd434ea4b6fdf650b62c98851a0516c45fb664a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b19fa9e7_cd0174bd",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1716199
+      },
+      "writtenOn": "2020-10-18T23:07:06Z",
+      "side": 1,
+      "message": "sched_setscheduler_nocheck is also exported function and used many other places in the kernel.  We would like to check the return value and do  the appropriate actions. \n\nWe have never seen switching failure problem in the Qualcomm internal testing and this patch is there on the Qualcomm tree from 4.4 kernel onwards.",
+      "parentUuid": "748e7f26_e5ad61e4",
       "range": {
         "startLine": 1197,
         "startChar": 0,
