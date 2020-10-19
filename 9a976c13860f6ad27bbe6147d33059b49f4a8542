@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cba679f3_2003549e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2020-10-19T23:32:49Z",
+      "side": 1,
+      "message": "This is a straight forward backport/cherrypick of the 4.14 patch.\n(it just required some trivial context only conflict resolution fixups)\n\nApparently folks are running into the can\u0027t test with ADB over TCP\n(instead of over USB) problem on 4.9-q now, this will hopefully resolve\nthat particular problem.",
+      "revId": "9a976c13860f6ad27bbe6147d33059b49f4a8542",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
