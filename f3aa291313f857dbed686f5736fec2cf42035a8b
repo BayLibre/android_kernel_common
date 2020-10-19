@@ -315,6 +315,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbe8b39f_4e70e055",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-19T18:36:05Z",
+      "side": 1,
+      "message": "Why is it so hard to write a comment that says that? The point is that we\u0027ve got this seemingly crazy code to flip to RT and back to CFS. Our team has to maintain it, so if someone is looking at the code, they\u0027ll want to know why are we doing this and why we care about hotplug latency. Please add a comment to the code that answers those questions.\n\nThis is not going in without this comment in the code, so please just add it.",
+      "parentUuid": "3c7a2571_68041102",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "92afd0ba_f5d6ccaf",
         "filename": "kernel/cpu.c",
         "patchSetId": 2
