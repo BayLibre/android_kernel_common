@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "056578cb_96ce64f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1710319
+      },
+      "writtenOn": "2020-10-19T04:46:39Z",
+      "side": 1,
+      "message": "# commonly used symbols\nvmalloc_to_pfn\n\n# required by nfc.ko\nadd_wait_queue_exclusive\nclass_dev_iter_exit\nclass_dev_iter_init\nclass_dev_iter_next\n__sock_recv_timestamp\n__sock_recv_wifi_status\n\n# required by incrementalfs.ko\nbin2hex\n__break_lease\nclear_inode\nd_add\nd_drop\ndeactivate_locked_super\ndentry_open\ndget_parent\nd_instantiate\nd_make_root\ndput\nfs_kobj\nfsstack_copy_attr_all\ngeneric_file_mmap\ngeneric_file_read_iter\ngeneric_file_splice_read\ngeneric_read_dir\ngeneric_shutdown_super\niget5_locked\nihold\ninode_init_once\ninode_init_owner\niput\niterate_dir\nkern_path\nlockref_get\nlock_rename\nlookup_one_len\nLZ4_decompress_safe\nmatch_int\nmatch_token\nnotify_change\npagecache_get_page\npath_get\npath_put\nregister_filesystem\nrfkill_blocked\nset_anon_super\nsget\nsimple_getattr\nsimple_setattr\nsimple_statfs\nstrndup_user\nsync_filesystem\ntruncate_inode_pages\nunlock_new_inode\nunlock_page\nunlock_rename\nunregister_filesystem\nuser_path_at_empty\nuser_path_at_empty\nvfs_create\nvfs_fallocate\nvfs_getattr\nvfs_getxattr\nvfs_link\nvfs_listxattr\nvfs_mkdir\nvfs_rename\nvfs_rmdir\nvfs_setxattr\nvfs_unlink\n\n# required by scsc_wlan.ko\ncfg80211_chandef_valid\ncfg80211_conn_failed\ncfg80211_ref_bss\nd_instantiate\n\n\n# required by rtc-s2mpu13.ko\ndevm_rtc_allocate_device\n\n\n# required by scsc_logring.ko\ndev_vprintk_emit\nvprintk_emit\n\n# required by scsc_mx.ko\ngenlmsg_multicast_allns\n\n# required by fimc-is.ko\ni2c_new_device\n\n# required by ntc_thermistor.ko\niio_convert_raw_to_processed\niio_get_channel_type\n\n\n# required by rtc-s2mpu13.ko\nkernel_restart\nrtc_add_group\n__rtc_register_device\n\n\n# required by nanohub.ko\nrtc_set_time\n__wake_up_locked_key\n__wake_up_sync\n\n# required by exynos9815_sound.ko\nsnd_soc_dai_set_tristate\n\n# required by snd-soc-s5m3700-dump.ko\n  strspn",
+      "revId": "6329bc1e395f8964ad566ac4082389db38710360",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
