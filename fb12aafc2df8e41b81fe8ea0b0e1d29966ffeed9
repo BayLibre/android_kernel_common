@@ -34,6 +34,23 @@
       "parentUuid": "124a3762_d741029b",
       "revId": "fb12aafc2df8e41b81fe8ea0b0e1d29966ffeed9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "229647ca_9a0356e7",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-19T19:01:28Z",
+      "side": 1,
+      "message": "Have you submitted this upstream? This is a UAPI change so the constants need to be assigned upstream so we don\u0027t have a support nightmare of inconsistent UAPI definition if this is changed upstream later.",
+      "revId": "fb12aafc2df8e41b81fe8ea0b0e1d29966ffeed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
