@@ -297,6 +297,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c7a2571_68041102",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1716199
+      },
+      "writtenOn": "2020-10-19T18:23:11Z",
+      "side": 1,
+      "message": "If the issue is that this thread can be preempted for a long time, why is it ok that we are in fair sched at line 1282.\n\u003cPrasad\u003e Hi Todd, Line@1282 is just for checking whether cpu is present or not. There is in that line would preempt the task. \n\n\n\n\u003cTodd\u003e Explain in a comment why it is important to minimize the interval from try_online_node() through cpu_map_update_done().\n\u003cPrasad\u003e I am not sure what is the intention behind this question. The real crux of the CPU hotplug in logic starts from @1295 and ends at @1313. cpu hotplug design consists of lot of call back functions and these call backs come from various kernel subsystems. These call backs handling takes long time when systems is heavily loaded.\n\nThis solution helped to minimize the time to bring the cpu online in the heavy loaded conditions, So that new cpu can participate in scheduling and share the device load.",
+      "parentUuid": "9a2fe03c_6b8e0780",
+      "revId": "f3aa291313f857dbed686f5736fec2cf42035a8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "92afd0ba_f5d6ccaf",
         "filename": "kernel/cpu.c",
         "patchSetId": 2
