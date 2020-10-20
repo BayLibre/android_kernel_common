@@ -33,6 +33,23 @@
       "message": "What about 4.4-q ?",
       "revId": "9a976c13860f6ad27bbe6147d33059b49f4a8542",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43bbee78_429245cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2020-10-20T00:00:00Z",
+      "side": 1,
+      "message": "lint failure is:\n\nCHECK:PARENTHESIS_ALIGNMENT: Alignment should match open parenthesis\n#199: FILE: net/ipv4/tcp_minisocks.c:394:\n+\ttcp_select_initial_window(sock_net(sk_listener), full_space,\n \t\tmss - (ireq-\u003etstamp_ok ? TCPOLEN_TSTAMP_ALIGNED : 0),\n\ntotal: 0 errors, 0 warnings, 1 checks, 175 lines checked\n\nbut fixing would require increasing the diff,\nand this patch ain\u0027t going upstream (not needed in 4.19+)",
+      "revId": "9a976c13860f6ad27bbe6147d33059b49f4a8542",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
