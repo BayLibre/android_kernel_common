@@ -36,6 +36,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "720c331f_4fe07967",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-20T06:15:41Z",
+      "side": 1,
+      "message": "We can not break userspace apis in the future, which is what this patch will cause to happen.",
+      "revId": "fb12aafc2df8e41b81fe8ea0b0e1d29966ffeed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "229647ca_9a0356e7",
@@ -67,6 +84,24 @@
       "side": 1,
       "message": "I will try it\nBut I am not sure it can before KMI freeze",
       "parentUuid": "229647ca_9a0356e7",
+      "revId": "fb12aafc2df8e41b81fe8ea0b0e1d29966ffeed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54512c4b_1fe81c86",
+        "filename": "include/uapi/linux/input-event-codes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-10-20T06:15:41Z",
+      "side": 1,
+      "message": "Thinking about this more, we can not take userspace-visable ABI breaks that are not accepted upstream as that will break when we move to newer kernels that end up using these values.\n\nWe can not break userspace in the future, ever, sorry.  Please work to get your changes upstream first and then we can gladly backport this.",
+      "parentUuid": "ee88eb3e_192920f4",
       "revId": "fb12aafc2df8e41b81fe8ea0b0e1d29966ffeed9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
