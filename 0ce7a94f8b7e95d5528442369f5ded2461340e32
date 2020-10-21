@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b52abd_8966b27c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-10-21T07:10:56Z",
+      "side": 1,
+      "message": "We should do this work upstream now that SCS has been merged.\n\nIf the plan is to use vmap()\u0027d pages for the SCS (is there a gki_defconfig change pending for this?), then let\u0027s just make _that_ the upstream implementation, rather than stick with the 1K region which has been shown not to be large enough after all.",
+      "revId": "0ce7a94f8b7e95d5528442369f5ded2461340e32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4196e38_81b829c5",
+        "filename": "include/linux/scs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-10-21T07:10:56Z",
+      "side": 1,
+      "message": "I think this comment is pretty questionable given the claims over at b/169781940.\nGiven that stack overflow leads to silent corruption in the current implementation, I think we should re-evaluate whether the security/memory trade-off here.",
+      "range": {
+        "startLine": 21,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "0ce7a94f8b7e95d5528442369f5ded2461340e32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
