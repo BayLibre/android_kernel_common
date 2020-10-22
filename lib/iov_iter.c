@@ -1693,7 +1693,7 @@ noinline static int copy_iovec_from_user(struct iovec *iov,
 	return 0;
 }
 
-struct iovec *iovec_from_user(const struct iovec __user *uvec,
+noinline struct iovec *iovec_from_user(const struct iovec __user *uvec,
 		unsigned long nr_segs, unsigned long fast_segs,
 		struct iovec *fast_iov, bool compat)
 {
