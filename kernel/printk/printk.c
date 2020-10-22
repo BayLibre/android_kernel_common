@@ -2294,6 +2294,12 @@ void resume_console(void)
  */
 static int console_cpu_notify(unsigned int cpu)
 {
+	int flag = 0;
+
+	trace_android_vh_printk_hotplug(&flag);
+	if (!flag)
+		return 0;
+
 	if (!cpuhp_tasks_frozen) {
 		/* If trylock fails, someone else is doing the printing */
 		if (console_trylock())
