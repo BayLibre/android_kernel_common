@@ -1728,7 +1728,7 @@ noinline struct iovec *iovec_from_user(const struct iovec __user *uvec,
 	return iov;
 }
 
-ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+noinline ssize_t __import_iovec(int type, const struct iovec __user *uvec,
 		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
 		 struct iov_iter *i, bool compat)
 {
