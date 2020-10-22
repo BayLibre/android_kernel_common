@@ -16,6 +16,24 @@
       "message": "Why isn\u0027t this sent upstream?\n\nAnd for stress testing, why does this matter?  We don\u0027t care about \"performance\" when doing something like this.",
       "revId": "6af4920a0c9b42e82a996134a7812ef6b0abcece",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e39f0498_a8b58dfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1716199
+      },
+      "writtenOn": "2020-10-22T12:34:07Z",
+      "side": 1,
+      "message": "Yes. we should not be carrying about performance but timer and irq migration gets delayed wit not required prints. \n\n\nOn Qualcomm platforms, these prints are not needed and other vendor may need these prints. So changed loglevel in ACK tree. \n\n\n-Thanks, Prasad",
+      "parentUuid": "4a0c6490_3d516465",
+      "revId": "6af4920a0c9b42e82a996134a7812ef6b0abcece",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
