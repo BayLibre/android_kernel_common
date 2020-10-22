@@ -489,6 +489,7 @@ struct mmc_host {
 	int			cqe_qdepth;
 	bool			cqe_enabled;
 	bool			cqe_on;
+	bool                    need_hw_reset;
 
 	/* Inline encryption support */
 #ifdef CONFIG_MMC_CRYPTO
