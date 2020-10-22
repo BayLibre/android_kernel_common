@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a88ff78_90280c88",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-10-22T11:07:07Z",
+      "side": 1,
+      "message": "I just discovered this CL, so jumping late in the discussion.\n\nWhy would you need this? This is a userspace-impacting change which feels unnecessary and is unjustified. Can\u0027t you just let IDLE/BATCH and DL tasks where they are? _They_ will have to pay the latency cost, but why do you care? Do you actually do hotplug from IDLE/BATCH/DL tasks?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "c6e5f9d7cf2f5968fbc9c5cdba095646a242cad3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
