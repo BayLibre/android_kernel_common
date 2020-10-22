@@ -1678,7 +1678,7 @@ uaccess_end:
 	return ret;
 }
 
-static int copy_iovec_from_user(struct iovec *iov,
+noinline static int copy_iovec_from_user(struct iovec *iov,
 		const struct iovec __user *uvec, unsigned long nr_segs)
 {
 	unsigned long seg;
