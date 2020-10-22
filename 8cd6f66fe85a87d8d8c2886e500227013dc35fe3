@@ -16,6 +16,24 @@
       "message": "This change breaks KMI. If accepted, it cannot merge until Oct 31",
       "revId": "8cd6f66fe85a87d8d8c2886e500227013dc35fe3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f21399e_99d4649c",
+        "filename": "include/linux/pci-epc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-10-22T23:16:24Z",
+      "side": 1,
+      "message": "... and it appears that this patch set is not related to GKI so, we can\u0027t accept any KMI breaking changes.\n\nWe can only take this patch set into android11-5.4 if it is refactored to avoid breaking KMI.\n\nThere shouldn\u0027t be any problem with backporting this patch set to android12-5.4, but for Android R, this needs to be carried in a downstream kernel unless the KMI changes can be removed.",
+      "parentUuid": "5066e942_009694f0",
+      "revId": "8cd6f66fe85a87d8d8c2886e500227013dc35fe3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
