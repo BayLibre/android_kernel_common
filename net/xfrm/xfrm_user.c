@@ -1642,6 +1642,22 @@ static struct xfrm_policy *xfrm_policy_construct(struct net *net, struct xfrm_us
 	return NULL;
 }
 
+static void print_selector(struct xfrm_selector *sel) {
+	if (sel->family == 2) {
+				printk(KERN_ALERT "DEBUG: Passed %s %s %pI4\n", "selector, ""&sel->saddr", &sel->saddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %s %pI4\n", "selector", "&sel->daddr", &sel->daddr);
+	} else {
+				printk(KERN_ALERT "DEBUG: Passed %s %s %pI6\n", "selector, ""&sel->saddr", &sel->saddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %s %pI6\n", "selector", "&sel->daddr", &sel->daddr);
+	}
+}
+
+static void print_policy(struct xfrm_policy *xp)
+{
+	printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
+	print_selector(&(xp->selector));
+}
+
 static int xfrm_add_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
 		struct nlattr **attrs)
 {
@@ -1652,6 +1668,7 @@ static int xfrm_add_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
 	int err;
 	int excl;
 
+  printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
 	err = verify_newpolicy_info(p);
 	if (err)
 		return err;
@@ -1660,6 +1677,7 @@ static int xfrm_add_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
 		return err;
 
 	xp = xfrm_policy_construct(net, p, attrs, &err);
+	//print_policy(xp);
 	if (!xp)
 		return err;
 
@@ -1670,6 +1688,7 @@ static int xfrm_add_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
 	excl = nlh->nlmsg_type == XFRM_MSG_NEWPOLICY;
 	err = xfrm_policy_insert(p->dir, xp, excl);
 	xfrm_audit_policy_add(xp, err ? 0 : 1, true);
+	printk(KERN_ALERT "DEBUG: Passed %s %d %s %d \n",__FUNCTION__, __LINE__, "policy index", xp->index);
 
 	if (err) {
 		security_xfrm_policy_free(xp->security);
@@ -2375,6 +2394,8 @@ static int xfrm_do_migrate(struct sk_buff *skb, struct nlmsghdr *nlh,
 	struct net *net = sock_net(skb->sk);
 	struct xfrm_encap_tmpl  *encap = NULL;
 
+	printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
+
 	if (attrs[XFRMA_MIGRATE] == NULL)
 		return -EINVAL;
 
@@ -2399,7 +2420,7 @@ static int xfrm_do_migrate(struct sk_buff *skb, struct nlmsghdr *nlh,
 	}
 
 	err = xfrm_migrate(&pi->sel, pi->dir, type, m, n, kmp, net, encap);
-
+  printk(KERN_ALERT "DEBUG: Passed %s %d %d \n",__FUNCTION__, err, __LINE__);
 	kfree(encap);
 
 	return err;

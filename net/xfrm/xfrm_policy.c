@@ -4249,6 +4249,7 @@ static bool xfrm_migrate_selector_match(const struct xfrm_selector *sel_cmp,
 		}
 	} else {
 		if (memcmp(sel_tgt, sel_cmp, sizeof(*sel_tgt)) == 0) {
+			printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 			return true;
 		}
 	}
@@ -4262,6 +4263,11 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
 	struct hlist_head *chain;
 	u32 priority = ~0U;
 
+	// printk(KERN_ALERT "DEBUG: Passed %s %d %s %pI4\n", __FUNCTION__, __LINE__, "&sel->daddr", &sel->daddr);
+	// printk(KERN_ALERT "DEBUG: Passed $s %d %s %pI4\n", __FUNCTION__, __LINE__, "&sel->saddr", &sel->saddr);
+	// printk(KERN_ALERT "DEBUG: Passed %s %d %d", __FUNCTION__, __LINE__, "sel->family", sel->family);
+	// printk(KERN_ALERT "DEBUG: Passed $s %d %d", __FUNCTION__, __LINE__, "dir", dir);
+
 	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
 	chain = policy_hash_direct(net, &sel->daddr, &sel->saddr, sel->family, dir);
 	hlist_for_each_entry(pol, chain, bydst) {
@@ -4269,6 +4275,7 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
 		    pol->type == type) {
 			ret = pol;
 			priority = ret->priority;
+			printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 			break;
 		}
 	}
@@ -4279,6 +4286,7 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
 
 		if (xfrm_migrate_selector_match(sel, &pol->selector) &&
 		    pol->type == type) {
+			printk(KERN_ALERT "DEBUG: Passed %s %d %s %d \n",__FUNCTION__, __LINE__, "index", pol->index);
 			ret = pol;
 			break;
 		}
@@ -4306,6 +4314,21 @@ static int migrate_tmpl_match(const struct xfrm_migrate *m, const struct xfrm_tm
 					    m->old_family)) {
 				match = 1;
 			}
+			printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
+			if (m->old_family == 2) {
+				printk(KERN_ALERT "DEBUG: Passed %s %pI4\n", "&t->id.daddr", &t->id.daddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %pI4\n", "&m->old_daddr", &m->old_daddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %pI4\n", "&t->id.saddr", &t->saddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %pI4\n", "&m->old_saddr", &m->old_saddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %d \n", "m->old_family", m->old_family);
+			}else {
+				printk(KERN_ALERT "DEBUG: Passed %s %pI6\n", "&t->id.daddr", &t->id.daddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %pI6\n", "&m->old_daddr", &m->old_daddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %pI6\n", "&t->id.saddr", &t->saddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %pI6\n", "&m->old_saddr", &m->old_saddr);
+				printk(KERN_ALERT "DEBUG: Passed %s %d \n", "m->old_family", m->old_family);
+			}
+
 			break;
 		case XFRM_MODE_TRANSPORT:
 			/* in case of transport mode, template does not store
@@ -4334,6 +4357,7 @@ static int xfrm_policy_migrate(struct xfrm_policy *pol,
 		return -ENOENT;
 	}
 
+printk(KERN_ALERT "DEBUG: Passed %s %d %s %d \n",__FUNCTION__, __LINE__, "policy index", pol->index);
 	for (i = 0; i < pol->xfrm_nr; i++) {
 		for (j = 0, mp = m; j < num_migrate; j++, mp++) {
 			if (!migrate_tmpl_match(mp, &pol->xfrm_vec[i]))
@@ -4354,7 +4378,7 @@ static int xfrm_policy_migrate(struct xfrm_policy *pol,
 	}
 
 	write_unlock_bh(&pol->lock);
-
+  printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	if (!n)
 		return -ENODATA;
 
@@ -4402,6 +4426,10 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 	struct xfrm_state *x_new[XFRM_MAX_DEPTH];
 	struct xfrm_migrate *mp;
 
+printk(KERN_ALERT "DEBUG: Passed %s %d %s %d \n",__FUNCTION__, __LINE__, "num_migrate", num_migrate);
+	// printk(KERN_ALERT "DEBUG: Passed %s %d %s %pI4\n", __FUNCTION__, __LINE__, "&sel->daddr", &sel->daddr);
+	// printk(KERN_ALERT "DEBUG: Passed $s %d %s %pI4\n", __FUNCTION__, __LINE__, "&sel->saddr", &sel->saddr);
+
 	/* Stage 0 - sanity checks */
 	if ((err = xfrm_migrate_check(m, num_migrate)) < 0)
 		goto out;
@@ -4432,9 +4460,11 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 			}
 		}
 	}
+  printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 
 	/* Stage 3 - update policy */
 	if ((err = xfrm_policy_migrate(pol, m, num_migrate)) < 0)
+	  printk(KERN_ALERT "DEBUG: Passed %s %d %d \n",__FUNCTION__, err, __LINE__);
 		goto restore_state;
 
 	/* Stage 4 - delete old state(s) */
@@ -4442,9 +4472,11 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 		xfrm_states_put(x_cur, nx_cur);
 		xfrm_states_delete(x_cur, nx_cur);
 	}
+  printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 
 	/* Stage 5 - announce */
 	km_migrate(sel, dir, type, m, num_migrate, k, encap);
+  printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 
 	xfrm_pol_put(pol);
 
