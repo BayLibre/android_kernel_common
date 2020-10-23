@@ -1449,6 +1449,12 @@ static int scmi_probe(struct platform_device *pdev)
 	handle->devm_get_protocol = scmi_devm_get_protocol;
 	handle->devm_put_protocol = scmi_devm_put_protocol;
 
+	if (desc->ops->link_supplier) {
+		ret = desc->ops->link_supplier(dev);
+		if (ret)
+			return ret;
+	}
+
 	ret = scmi_txrx_setup(info, dev, SCMI_PROTOCOL_BASE);
 	if (ret)
 		return ret;
