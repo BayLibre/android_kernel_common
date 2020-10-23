@@ -127,6 +127,7 @@ struct scmi_protocol_instance {
  * @active_protocols: IDR storing device_nodes for protocols actually defined
  *		      in the DT and confirmed as implemented by fw.
  * @notify_priv: Pointer to private data structure specific to notifications.
+ * @transport_info: Transport private info
  * @node: List head
  * @users: Number of users of this instance
  */
@@ -145,6 +146,7 @@ struct scmi_info {
 	u8 *protocols_imp;
 	struct idr active_protocols;
 	void *notify_priv;
+	void *transport_info;
 	struct list_head node;
 	int users;
 };
@@ -349,6 +351,39 @@ static void scmi_handle_response(struct scmi_chan_info *cinfo,
 	} else {
 		complete(&xfer->done);
 	}
+}
+
+/**
+ * scmi_set_transport_info() - Set transport private info
+ *
+ * @dev: SCMI instance device
+ * @transport_info: transport private info
+ *
+ * Return: 0 on success, otherwise error.
+ */
+int scmi_set_transport_info(struct device *dev, void *transport_info)
+{
+	struct scmi_info *info = dev_get_drvdata(dev);
+
+	if (!info)
+		return -EBADR;
+
+	info->transport_info = transport_info;
+	return 0;
+}
+
+/**
+ * scmi_get_transport_info() - Get transport private info
+ *
+ * @dev: SCMI instance device
+ *
+ * Return: transport private info on success, otherwise NULL.
+ */
+void *scmi_get_transport_info(struct device *dev)
+{
+	struct scmi_info *info = dev_get_drvdata(dev);
+
+	return info ? info->transport_info : NULL;
 }
 
 /**
