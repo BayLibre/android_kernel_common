@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76aecff2_a3f85866",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-10-23T08:19:53Z",
+      "side": 1,
+      "message": "Thanks, this has been posted to the list at:\n\nhttps://lore.kernel.org/linux-arm-kernel/20201022202355.3529836-1-samitolvanen@google.com/T/#t",
+      "parentUuid": "d9b52abd_8966b27c",
+      "revId": "0ce7a94f8b7e95d5528442369f5ded2461340e32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4196e38_81b829c5",
@@ -31,6 +49,30 @@
       "writtenOn": "2020-10-21T07:10:56Z",
       "side": 1,
       "message": "I think this comment is pretty questionable given the claims over at b/169781940.\nGiven that stack overflow leads to silent corruption in the current implementation, I think we should re-evaluate whether the security/memory trade-off here.",
+      "range": {
+        "startLine": 21,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "0ce7a94f8b7e95d5528442369f5ded2461340e32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fac8313_6f16898e",
+        "filename": "include/linux/scs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2020-10-23T08:19:53Z",
+      "side": 1,
+      "message": "In other words, let\u0027s have CONFIG_SHADOW_CALL_STACK_VMAP default to \u0027y\u0027",
+      "parentUuid": "c4196e38_81b829c5",
       "range": {
         "startLine": 21,
         "startChar": 3,
