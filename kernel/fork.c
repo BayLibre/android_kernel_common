@@ -95,7 +95,11 @@
 #include <linux/stackleak.h>
 #include <linux/kasan.h>
 #include <linux/scs.h>
+<<<<<<< HEAD   (46ec02 Merge 3ad11d7ac887 ("Merge tag 'block-5.10-2020-10-12' of gi)
 #include <linux/cpufreq_times.h>
+=======
+#include <linux/io_uring.h>
+>>>>>>> BRANCH (6ad4bf Merge tag 'io_uring-5.10-2020-10-12' of git://git.kernel.dk/)
 
 #include <asm/pgalloc.h>
 #include <linux/uaccess.h>
@@ -730,6 +734,7 @@ void __put_task_struct(struct task_struct *tsk)
 	WARN_ON(refcount_read(&tsk->usage));
 	WARN_ON(tsk == current);
 
+	io_uring_free(tsk);
 	cgroup_free(tsk);
 	task_numa_free(tsk, true);
 	security_task_free(tsk);
@@ -1985,6 +1990,10 @@ static __latent_entropy struct task_struct *copy_process(
 	seqcount_init(&p->vtime.seqcount);
 	p->vtime.starttime = 0;
 	p->vtime.state = VTIME_INACTIVE;
+#endif
+
+#ifdef CONFIG_IO_URING
+	p->io_uring = NULL;
 #endif
 
 #if defined(SPLIT_RSS_COUNTING)
