@@ -16,6 +16,24 @@
       "message": "Why this branch?",
       "revId": "641bf62193bd7e9d6f51dd4865495b1ee9f3ac68",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df8867af_8577fbe6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2020-10-26T09:07:05Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nIt was a long story that I\u0027ve being working on for couple weeks.\nI\u0027m going to describe it briefly.\n\nAt first, we faced to requirement of 3GiB DDR size devices on arm32 from our customers. It\u0027s easier for other vendors who has their ddr physical address which starts from 0x4000,0000 in 32bit kernel than Unisoc whoes ddr starts from 0x8000,0000.\n\nSo we have to enable ARM_LPAE for physical address extension. But it will disable \nCPU_SW_DOMAIN_PAN which is a mandotory requirement from Android security team who does not like to waive it for critical security reason.\n\nThen we found Catalin\u0027s patches [1] posted at 5 years ago. But unfortunately as he said these patches were not suitable to be merged into upstream.\n\nBecause we only has this problem on Android Q devices, I rebased them on q-release plus fixing some error and confilicts here.\n\nI think we might be the only user who needs to enable TTBR0_PAN in the world. So Could it be treated as a special case in this branch other than upstream?\n\nPlease also note they are 4 patches which are binded under a same topic.\n\nThanks.\n-Orson\n\n[1] https://lore.kernel.org/linux-arm-kernel/1443018250-22893-5-git-send-email-catalin.marinas@arm.com/",
+      "parentUuid": "b367d6e4_1b0348f9",
+      "revId": "641bf62193bd7e9d6f51dd4865495b1ee9f3ac68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
