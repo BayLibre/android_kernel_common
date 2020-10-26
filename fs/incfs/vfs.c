@@ -7,6 +7,7 @@
 #include <linux/file.h>
 #include <linux/fs.h>
 #include <linux/fs_stack.h>
+#include <linux/fsverity.h>
 #include <linux/namei.h>
 #include <linux/parser.h>
 #include <linux/seq_file.h>
@@ -19,6 +20,7 @@
 #include "format.h"
 #include "internal.h"
 #include "pseudo_files.h"
+#include "verity.h"
 
 static int incfs_remount_fs(struct super_block *sb, int *flags, char *data);
 
@@ -755,8 +757,10 @@ static long dispatch_ioctl(struct file *f, unsigned int req, unsigned long arg)
 		return ioctl_get_filled_blocks(f, (void __user *)arg);
 	case INCFS_IOC_GET_BLOCK_COUNT:
 		return ioctl_get_block_count(f, (void __user *)arg);
+	case FS_IOC_ENABLE_VERITY:
+		return incfs_ioctl_enable_verity(f, (const void __user *)arg);
 	default:
-		return -EINVAL;
+		return -ENOTTY;
 	}
 }
 
