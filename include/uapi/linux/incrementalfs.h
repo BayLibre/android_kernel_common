@@ -35,7 +35,8 @@
 #define INCFS_XATTR_SIZE_NAME (XATTR_USER_PREFIX "incfs.size")
 #define INCFS_XATTR_METADATA_NAME (XATTR_USER_PREFIX "incfs.metadata")
 
-#define INCFS_MAX_SIGNATURE_SIZE 8096
+/* Same as fs-verity's (arbitrary) sig size */
+#define INCFS_MAX_SIGNATURE_SIZE 16128
 #define INCFS_SIGNATURE_VERSION 2
 #define INCFS_SIGNATURE_SECTIONS 2
 
