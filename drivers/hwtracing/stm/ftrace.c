@@ -65,7 +65,11 @@ static int __init stm_ftrace_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD   (546294 Merge c6dbef730762 ("Merge tag 'usb-5.10-rc1' of git://git.k)
 	stm_ftrace.data.nr_chans = num_possible_cpus();
+=======
+	stm_ftrace.data.nr_chans = roundup_pow_of_two(num_possible_cpus());
+>>>>>>> BRANCH (726eb7 Merge tag 'char-misc-5.10-rc1' of git://git.kernel.org/pub/s)
 	ret = stm_source_register_device(NULL, &stm_ftrace.data);
 	if (ret)
 		pr_err("Failed to register stm_source - ftrace.\n");

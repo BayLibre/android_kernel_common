@@ -57,4 +57,8 @@ obj-$(CONFIG_PVPANIC)   	+= pvpanic.o
 obj-$(CONFIG_HABANA_AI)		+= habanalabs/
 obj-$(CONFIG_UACCE)		+= uacce/
 obj-$(CONFIG_XILINX_SDFEC)	+= xilinx_sdfec.o
+<<<<<<< HEAD   (546294 Merge c6dbef730762 ("Merge tag 'usb-5.10-rc1' of git://git.k)
 obj-$(CONFIG_UID_SYS_STATS)	+= uid_sys_stats.o
+=======
+obj-$(CONFIG_HISI_HIKEY_USB)	+= hisi_hikey_usb.o
+>>>>>>> BRANCH (726eb7 Merge tag 'char-misc-5.10-rc1' of git://git.kernel.org/pub/s)
