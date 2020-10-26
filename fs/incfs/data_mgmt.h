@@ -276,6 +276,12 @@ struct data_file {
 	struct mtree *df_hash_tree;
 
 	struct incfs_df_signature *df_signature;
+
+	/*
+	 * The verity file digest, set when verity is enabled and the file has
+	 * been opened
+	 */
+	struct mem_range df_verity_file_digest;
 };
 
 struct dir_file {
