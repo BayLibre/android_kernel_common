@@ -17,7 +17,11 @@ struct ovl_config {
 	bool nfs_export;
 	int xino;
 	bool metacopy;
+<<<<<<< HEAD   (d131e0 Merge fad70111d57e ("Merge tag 'afs-fixes-20201016' of git:/)
 	bool override_creds;
+=======
+	bool ovl_volatile;
+>>>>>>> BRANCH (071a05 Merge tag 'ovl-update-5.10' of git://git.kernel.org/pub/scm/)
 };
 
 struct ovl_sb {
@@ -89,6 +93,11 @@ static inline struct vfsmount *ovl_upper_mnt(struct ovl_fs *ofs)
 static inline struct ovl_fs *OVL_FS(struct super_block *sb)
 {
 	return (struct ovl_fs *)sb->s_fs_info;
+}
+
+static inline bool ovl_should_sync(struct ovl_fs *ofs)
+{
+	return !ofs->config.ovl_volatile;
 }
 
 /* private information held for every overlayfs dentry */
