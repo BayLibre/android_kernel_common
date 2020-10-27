@@ -135,6 +135,10 @@ enum dentry_d_lock_class
 	DENTRY_D_LOCK_NESTED
 };
 
+struct module_kabi_preserve_d_canonical_path {
+	void (*d_canonical_path)(const struct path *, struct path *);
+};
+
 struct dentry_operations {
 	int (*d_revalidate)(struct dentry *, unsigned int);
 	int (*d_weak_revalidate)(struct dentry *, unsigned int);
@@ -151,7 +155,7 @@ struct dentry_operations {
 	int (*d_manage)(const struct path *, bool);
 	struct dentry *(*d_real)(struct dentry *, const struct inode *);
 
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE(1, struct module_kabi_preserve_d_canonical_path m1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
