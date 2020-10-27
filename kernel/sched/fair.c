@@ -9570,7 +9570,7 @@ static int need_active_balance(struct lb_env *env)
 	return unlikely(sd->nr_balance_failed > sd->cache_nice_tries+2);
 }
 
-static int active_load_balance_cpu_stop(void *data);
+int active_load_balance_cpu_stop(void *data);
 
 static int should_we_balance(struct lb_env *env)
 {
@@ -9926,7 +9926,7 @@ update_next_balance(struct sched_domain *sd, unsigned long *next_balance)
  * least 1 task to be running on each physical CPU where possible, and
  * avoids physical / logical imbalances.
  */
-static int active_load_balance_cpu_stop(void *data)
+int active_load_balance_cpu_stop(void *data)
 {
 	struct rq *busiest_rq = data;
 	int busiest_cpu = cpu_of(busiest_rq);
@@ -10010,6 +10010,7 @@ out_unlock:
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(active_load_balance_cpu_stop);
 
 static DEFINE_SPINLOCK(balancing);
 
@@ -10021,6 +10022,7 @@ void update_max_interval(void)
 {
 	max_load_balance_interval = HZ*num_online_cpus()/10;
 }
+EXPORT_SYMBOL_GPL(update_max_interval);
 
 /*
  * It checks each scheduling domain to see if it is due to be balanced,
@@ -11314,6 +11316,7 @@ const struct sched_class fair_sched_class
 	.uclamp_enabled		= 1,
 #endif
 };
+EXPORT_SYMBOL_GPL(fair_sched_class);
 
 #ifdef CONFIG_SCHED_DEBUG
 void print_cfs_stats(struct seq_file *m, int cpu)

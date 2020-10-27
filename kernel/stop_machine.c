@@ -443,7 +443,7 @@ static int __stop_cpus(const struct cpumask *cpumask,
  * @cpumask were offline; otherwise, 0 if all executions of @fn
  * returned 0, any non zero return value if any returned non zero.
  */
-static int stop_cpus(const struct cpumask *cpumask, cpu_stop_fn_t fn, void *arg)
+int stop_cpus(const struct cpumask *cpumask, cpu_stop_fn_t fn, void *arg)
 {
 	int ret;
 
@@ -453,6 +453,7 @@ static int stop_cpus(const struct cpumask *cpumask, cpu_stop_fn_t fn, void *arg)
 	mutex_unlock(&stop_cpus_mutex);
 	return ret;
 }
+EXPORT_SYMBOL_GPL(stop_cpus);
 
 static int cpu_stop_should_run(unsigned int cpu)
 {
