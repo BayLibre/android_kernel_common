@@ -28,6 +28,10 @@ static inline void force_uaccess_end(mm_segment_t oldfs)
 	set_fs(oldfs);
 }
 
+#ifndef TASK_SIZE_MAX
+#define TASK_SIZE_MAX			TASK_SIZE
+#endif
+
 /*
  * Architectures should provide two primitives (raw_copy_{to,from}_user())
  * and get rid of their private instances of copy_{to,from}_user() and
