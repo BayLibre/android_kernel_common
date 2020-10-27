@@ -27,6 +27,30 @@ static inline void force_uaccess_end(mm_segment_t oldfs)
 {
 	set_fs(oldfs);
 }
+<<<<<<< HEAD   (dba28e Merge 45fe605832c8 ("Merge tag 'armsoc-defconfig' of git://g)
+=======
+#else /* CONFIG_SET_FS */
+typedef struct {
+	/* empty dummy */
+} mm_segment_t;
+
+#ifndef TASK_SIZE_MAX
+#define TASK_SIZE_MAX			TASK_SIZE
+#endif
+
+#define uaccess_kernel()		(false)
+#define user_addr_max()			(TASK_SIZE_MAX)
+
+static inline mm_segment_t force_uaccess_begin(void)
+{
+	return (mm_segment_t) { };
+}
+
+static inline void force_uaccess_end(mm_segment_t oldfs)
+{
+}
+#endif /* CONFIG_SET_FS */
+>>>>>>> BRANCH (0593c1 Merge tag 'riscv-for-linus-5.10-mw1' of git://git.kernel.org)
 
 /*
  * Architectures should provide two primitives (raw_copy_{to,from}_user())

@@ -88,6 +88,10 @@ config RISCV
 	select SPARSE_IRQ
 	select SYSCTL_EXCEPTION_TRACE
 	select THREAD_INFO_IN_TASK
+<<<<<<< HEAD   (dba28e Merge 45fe605832c8 ("Merge tag 'armsoc-defconfig' of git://g)
+=======
+	select UACCESS_MEMCPY if !MMU
+>>>>>>> BRANCH (0593c1 Merge tag 'riscv-for-linus-5.10-mw1' of git://git.kernel.org)
 
 config ARCH_MMAP_RND_BITS_MIN
 	default 18 if 64BIT
