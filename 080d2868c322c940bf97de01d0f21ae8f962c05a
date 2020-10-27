@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab99be7_be4b1bb9",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-10-27T18:42:59Z",
+      "side": 1,
+      "message": "Why is a \"struct fsverity_descriptor\" being stored on-disk?  I thought that incfs already had its own way of handling the Merkle tree.  As a result, incfs should only need to store the signature, not a fsverity_descriptor (Merkle tree properties + signature) -- right?  There should be only one source of truth for the Merkle tree.",
+      "revId": "080d2868c322c940bf97de01d0f21ae8f962c05a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
