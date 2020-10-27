@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0761ebc_c0872271",
+        "filename": "fs/fuse/fuse_i.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2020-10-27T18:55:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3f85a69_0623b344",
+      "range": {
+        "startLine": 257,
+        "startChar": 3,
+        "endLine": 257,
+        "endChar": 4
+      },
+      "revId": "3c14161f19204bb194953fe7afd4035c7d374a4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e18bc42f_ce0ef992",
@@ -37,6 +61,30 @@
       "writtenOn": "2020-10-27T17:54:09Z",
       "side": 1,
       "message": "This is a uapi value we have to support for the next 20+ years.  Is that ok???",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 28
+      },
+      "revId": "3c14161f19204bb194953fe7afd4035c7d374a4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b01b1346_d0747198",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2020-10-27T18:55:16Z",
+      "side": 1,
+      "message": "Yes, we need to expose this to userspace somehow.",
+      "parentUuid": "e18bc42f_ce0ef992",
       "range": {
         "startLine": 468,
         "startChar": 0,
