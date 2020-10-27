@@ -956,7 +956,12 @@ static void do_handle_IPI(int ipinr)
 		break;
 
 	case IPI_CPU_STOP:
+<<<<<<< HEAD   (709eab ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 		trace_android_vh_ipi_stop(get_irq_regs());
+=======
+		trace_android_vh_ipi_stop_rcuidle(regs);
+		irq_enter();
+>>>>>>> CHANGE (ee9ce0 ANDROID: arm64: smp: fix Lockdep warning: RCU used illegally)
 		local_cpu_stop();
 		break;
 
