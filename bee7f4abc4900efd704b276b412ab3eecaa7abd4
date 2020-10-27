@@ -16,6 +16,29 @@
       "message": "Pls help me understand how it works when we have 10 fair tasks and the next one to run is a per-cpu kthread?\n\nstop, dl and rt returns NULL. so we come to fair and first next would be the kthread and we do a \u0027continue\u0027 here. That would take us to idle class and we stop migrating the remaining 9 fair tasks.\n\nAm I missing something here?",
       "revId": "bee7f4abc4900efd704b276b412ab3eecaa7abd4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1651b58_69063402",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6586,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-10-27T09:10:42Z",
+      "side": 1,
+      "message": "In the pause case, we don\u0027t take cpus write lock, so calling this with cpuslocked() may not be correct.",
+      "range": {
+        "startLine": 6586,
+        "startChar": 2,
+        "endLine": 6586,
+        "endChar": 30
+      },
+      "revId": "bee7f4abc4900efd704b276b412ab3eecaa7abd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
