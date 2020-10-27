@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd5254aa_118ecb12",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6375,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-10-27T10:34:17Z",
+      "side": 1,
+      "message": "You\u0027re not, there\u0027s indeed a flaw here. There\u0027s no task iterator sadly so I\u0027m afraid we won\u0027t escape putting the percpu kthread temporary out of the rq.",
+      "parentUuid": "238703e0_5a9e1e30",
+      "revId": "bee7f4abc4900efd704b276b412ab3eecaa7abd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1651b58_69063402",
         "filename": "kernel/sched/core.c",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2020-10-27T09:10:42Z",
       "side": 1,
       "message": "In the pause case, we don\u0027t take cpus write lock, so calling this with cpuslocked() may not be correct.",
+      "range": {
+        "startLine": 6586,
+        "startChar": 2,
+        "endLine": 6586,
+        "endChar": 30
+      },
+      "revId": "bee7f4abc4900efd704b276b412ab3eecaa7abd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "026ef420_27778ff8",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6586,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-10-27T10:34:17Z",
+      "side": 1,
+      "message": "We still do take this lock in the case of _cpu_up() and therefore, for all the startup callbacks.",
+      "parentUuid": "c1651b58_69063402",
       "range": {
         "startLine": 6586,
         "startChar": 2,
