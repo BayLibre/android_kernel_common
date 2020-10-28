@@ -1437,6 +1437,57 @@ static bool fw_devlink_is_permissive(void)
 	return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
 }
 
+static DEFINE_MUTEX(fwnode_link_lock);
+
+int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
+{
+	struct fwnode_dev_link *link;
+	int ret = 0;
+
+	mutex_lock(&fwnode_link_lock);
+
+	/* Duplicate requests are intentionally not refcounted. */
+	list_for_each_entry(link, &sup->consumers, s_hook)
+		if (link->consumer == con)
+			goto out;
+
+	link = kzalloc(sizeof(*link), GFP_KERNEL);
+	if (!link) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	link->supplier = sup;
+	INIT_LIST_HEAD(&link->s_hook);
+	link->consumer = con;
+	INIT_LIST_HEAD(&link->c_hook);
+
+	list_add(&link->s_hook, &sup->consumers);
+	list_add(&link->c_hook, &con->suppliers);
+out:
+	mutex_unlock(&fwnode_link_lock);
+
+	return ret;
+}
+
+void fwnode_links_purge(struct fwnode_handle *fwnode)
+{
+	struct fwnode_dev_link *link, *tmp;
+
+	mutex_lock(&fwnode_link_lock);
+	list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
+		list_del(link->s_hook);
+		list_del(link->c_hook);
+		kfree(link);
+	}
+	list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook) {
+		list_del(link->s_hook);
+		list_del(link->c_hook);
+		kfree(link);
+	}
+	mutex_unlock(&fwnode_link_lock);
+}
+
 static void fw_devlink_link_device(struct device *dev)
 {
 	int fw_ret;
