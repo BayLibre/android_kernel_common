@@ -3,6 +3,7 @@
 #define _LINUX_SCHED_TOPOLOGY_H
 
 #include <linux/topology.h>
+#include <linux/android_vendor.h>
 
 #include <linux/sched/idle.h>
 
@@ -81,7 +82,12 @@ struct sched_domain_shared {
 	atomic_t	ref;
 	atomic_t	nr_busy_cpus;
 	int		has_idle_cores;
+<<<<<<< HEAD   (09ad10 ANDROID: GKI: Remove CONFIG_LOCALVERSION="-mainline" on 6.1 )
 	int		nr_idle_scan;
+=======
+
+	ANDROID_VENDOR_DATA(1);
+>>>>>>> CHANGE (7a2a31 ANDROID: sched: gki: add padding to some structs to support )
 };
 
 struct sched_domain {

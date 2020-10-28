@@ -1509,6 +1509,7 @@ struct task_struct {
 	int				mce_count;
 #endif
 	ANDROID_VENDOR_DATA_ARRAY(1, 64);
+<<<<<<< HEAD   (09ad10 ANDROID: GKI: Remove CONFIG_LOCALVERSION="-mainline" on 6.1 )
 	ANDROID_OEM_DATA_ARRAY(1, 6);
 
 #ifdef CONFIG_KRETPROBES
@@ -1537,6 +1538,8 @@ struct task_struct {
 	 */
 	union rv_task_monitor		rv[RV_PER_TASK_MONITORS];
 #endif
+=======
+>>>>>>> CHANGE (7a2a31 ANDROID: sched: gki: add padding to some structs to support )
 
 	/*
 	 * New fields for task_struct should be added above here, so that
