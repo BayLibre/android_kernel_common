@@ -895,6 +895,8 @@ struct root_domain {
 	 * CPUs of the rd. Protected by RCU.
 	 */
 	struct perf_domain __rcu *pd;
+
+	ANDROID_VENDOR_DATA_ARRAY(1, 1);
 };
 
 extern void init_defrootdomain(void);
@@ -1166,6 +1168,7 @@ struct rq {
 	u64			core_forceidle_start;
 #endif
 
+<<<<<<< HEAD   (8c1bf2 ANDROID: Sched: Add vendor hooks required for WALT)
 	/* Scratch cpumask to be temporarily used under rq_lock */
 	cpumask_var_t		scratch_mask;
 
@@ -1173,6 +1176,9 @@ struct rq {
 	call_single_data_t	cfsb_csd;
 	struct list_head	cfsb_csd_list;
 #endif
+=======
+	ANDROID_VENDOR_DATA_ARRAY(1, 1);
+>>>>>>> CHANGE (d1dba4 ANDROID: sched: gki: add padding to some structs to support )
 };
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
