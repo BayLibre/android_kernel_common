@@ -233,6 +233,7 @@ struct scmi_protocol {
 	const struct scmi_protocol_events	*events;
 };
 
+bool is_scmi_protocol_device(struct device *dev);
 int __init scmi_bus_init(void);
 void __exit scmi_bus_exit(void);
 
