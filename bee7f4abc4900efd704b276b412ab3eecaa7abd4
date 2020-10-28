@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5a3b2ac_03efcbd4",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6375,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-10-28T04:04:54Z",
+      "side": 1,
+      "message": "Yeah, we have to take out the pinned kthreads out of rq temporarily. That is how isolation is implemented in our tree.",
+      "parentUuid": "bd5254aa_118ecb12",
+      "revId": "bee7f4abc4900efd704b276b412ab3eecaa7abd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1651b58_69063402",
         "filename": "kernel/sched/core.c",
         "patchSetId": 3
@@ -97,6 +115,30 @@
       "side": 1,
       "message": "But the same can be found in the deactivate part sadly.",
       "parentUuid": "026ef420_27778ff8",
+      "range": {
+        "startLine": 6586,
+        "startChar": 2,
+        "endLine": 6586,
+        "endChar": 30
+      },
+      "revId": "bee7f4abc4900efd704b276b412ab3eecaa7abd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d2a9156_3930f862",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6586,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-10-28T04:04:54Z",
+      "side": 1,
+      "message": "My bad. Actually I meant for deactivate() but wrote the comment here instead :-)",
+      "parentUuid": "86772802_f1536e9a",
       "range": {
         "startLine": 6586,
         "startChar": 2,
