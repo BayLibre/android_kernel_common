@@ -58,6 +58,7 @@
 #include <linux/dynamic_debug.h>
 #include <linux/audit.h>
 #include <uapi/linux/module.h>
+#include <linux/android_debug_symbols.h>
 #include "module-internal.h"
 
 #define CREATE_TRACE_POINTS
@@ -4784,6 +4785,25 @@ void print_modules(void)
 		pr_cont(" [last unloaded: %s]", last_unloaded_module);
 	pr_cont("\n");
 }
+
+#ifdef CONFIG_ANDROID_DEBUG_SYMBOLS
+void android_debug_for_each_module(process_module_fn_t fn, void *data)
+{
+	struct module *module;
+
+	/* List of modules safely readable with preempt_disable,
+	 * mutex lock not required.
+	 */
+	preempt_disable();
+	list_for_each_entry_rcu(module, &modules, list) {
+		if (fn(module->name, module->core_layout.base, data))
+			goto out;
+	}
+out:
+	preempt_enable();
+}
+EXPORT_SYMBOL_NS_GPL(android_debug_for_each_module, MINIDUMP);
+#endif
 
 #ifdef CONFIG_MODVERSIONS
 /*
