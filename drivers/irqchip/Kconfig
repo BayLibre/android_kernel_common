@@ -339,7 +339,9 @@ config RENESAS_H8S_INTC
 	  on Renesas H8S SoCs.
 
 config IMX_GPCV2
-	bool
+	bool "IMX GPCv2 Support"
+	default y
+	depends on ARCH_MXC
 	select IRQ_DOMAIN
 	help
 	  Enables the wakeup IRQs for IMX platforms with GPCv2 block

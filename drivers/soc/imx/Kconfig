@@ -6,7 +6,7 @@ config IMX_GPCV2_PM_DOMAINS
 	depends on ARCH_MXC || (COMPILE_TEST && OF)
 	depends on PM
 	select PM_GENERIC_DOMAINS
-	default y if SOC_IMX7D
+	default y if (SOC_IMX7D || ARCH_MXC)
 
 config IMX_SCU_SOC
 	bool "i.MX System Controller Unit SoC info support"
