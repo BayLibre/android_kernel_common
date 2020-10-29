@@ -109,3 +109,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reweight_entity);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_context_switch);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
