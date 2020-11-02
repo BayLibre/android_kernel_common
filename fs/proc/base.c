@@ -3267,6 +3267,7 @@ static const struct pid_entry tgid_base_stuff[] = {
 #ifdef CONFIG_PROC_PID_ARCH_STATUS
 	ONE("arch_status", S_IRUGO, proc_pid_arch_status),
 #endif
+	REG("dma_buf_maps", 0444, proc_pid_dma_buf_maps_operations),
 };
 
 static int proc_tgid_base_readdir(struct file *file, struct dir_context *ctx)

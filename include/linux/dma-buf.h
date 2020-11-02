@@ -27,6 +27,11 @@ struct dma_buf;
 struct dma_buf_attachment;
 
 /**
+ * Check if struct file* is associated with dma_buf.
+ */
+inline int is_dma_buf_file(struct file *file);
+
+/**
  * struct dma_buf_ops - operations possible on struct dma_buf
  * @vmap: [optional] creates a virtual mapping for the buffer into kernel
  *	  address space. Same restrictions as for vmap and friends apply.

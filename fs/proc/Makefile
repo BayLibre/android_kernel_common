@@ -16,6 +16,7 @@ proc-y	+= cmdline.o
 proc-y	+= consoles.o
 proc-y	+= cpuinfo.o
 proc-y	+= devices.o
+proc-y	+= dma_bufs.o
 proc-y	+= interrupts.o
 proc-y	+= loadavg.o
 proc-y	+= meminfo.o

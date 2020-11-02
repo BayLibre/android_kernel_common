@@ -29,8 +29,6 @@
 #include <uapi/linux/dma-buf.h>
 #include <uapi/linux/magic.h>
 
-static inline int is_dma_buf_file(struct file *);
-
 struct dma_buf_list {
 	struct list_head head;
 	struct mutex lock;
@@ -421,10 +419,7 @@ static const struct file_operations dma_buf_fops = {
 	.show_fdinfo	= dma_buf_show_fdinfo,
 };
 
-/*
- * is_dma_buf_file - Check if struct file* is associated with dma_buf
- */
-static inline int is_dma_buf_file(struct file *file)
+inline int is_dma_buf_file(struct file *file)
 {
 	return file->f_op == &dma_buf_fops;
 }
