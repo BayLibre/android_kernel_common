@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe12c4d_29516e96",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1206463
+      },
+      "writtenOn": "2020-11-02T04:29:13Z",
+      "side": 1,
+      "message": "Hi Ram,\n\nIs there any reason to make this config to be \"y\" by default?\nThere is a vts case \"KernelHeadersTest#ModuleExist\" would check the module \"kheaders.ko\" should exist under \"/vendor/lib/modules/\". Should we bypass this case after GKI is enabled?\n\nThanks!",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 18
+      },
+      "revId": "b891cc41ea3e7af5655b30417aa3514bf0760cb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
