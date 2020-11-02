@@ -52,6 +52,23 @@
       "parentUuid": "d9f15b85_0827df0e",
       "revId": "23277e650644f0256442a3f01252d8fbc6af07f1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6a7449b_73c233c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2020-11-02T20:02:32Z",
+      "side": 1,
+      "message": "It doesn\u0027t change anything at runtime of the compressed kernel image AFAIK; it only changes the contents of a few sections and adds new ones to the vmlinux. These sections are stripped when building the compressed kernel image, and not loaded on disk or runtime.",
+      "revId": "23277e650644f0256442a3f01252d8fbc6af07f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
