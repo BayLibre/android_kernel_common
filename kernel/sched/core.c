@@ -6936,19 +6936,25 @@ int sched_cpu_activate(unsigned int cpu)
 	return 0;
 }
 
-int sched_cpu_deactivate(unsigned int cpu)
+int sched_cpus_activate(struct cpumask *cpus)
+{
+	unsigned int cpu;
+	int ret = 0;
+
+	for_each_cpu(cpu, cpus) {
+		if (sched_cpu_activate(cpu))
+			ret = -EBUSY;
+	}
+
+	return ret;
+}
+
+
+int _sched_cpu_deactivate(unsigned int cpu)
 {
 	int ret;
 
 	set_cpu_active(cpu, false);
-	/*
-	 * We've cleared cpu_active_mask, wait for all preempt-disabled and RCU
-	 * users of this state to go away such that all new such users will
-	 * observe it.
-	 *
-	 * Do sync before park smpboot threads to take care the rcu boost case.
-	 */
-	synchronize_rcu();
 
 #ifdef CONFIG_SCHED_SMT
 	/*
@@ -6971,6 +6977,38 @@ int sched_cpu_deactivate(unsigned int cpu)
 	update_max_interval();
 
 	return 0;
+}
+
+int sched_cpu_deactivate(unsigned int cpu)
+{
+	int ret = _sched_cpu_deactivate(cpu);
+
+	if (ret)
+		return ret;
+
+	/*
+	 * We've cleared cpu_active_mask, wait for all preempt-disabled and RCU
+	 * users of this state to go away such that all new such users will
+	 * observe it.
+	 *
+	 * Do sync before park smpboot threads to take care the rcu boost case.
+	 */
+	synchronize_rcu();
+
+	return 0;
+}
+
+int sched_cpus_deactivate_nosync(struct cpumask *cpus)
+{
+	unsigned int cpu;
+	int ret = 0;
+
+	for_each_cpu(cpu, cpus) {
+		if (_sched_cpu_deactivate(cpu))
+			ret = -EBUSY;
+	}
+
+	return ret;
 }
 
 static void sched_rq_cpu_starting(unsigned int cpu)
