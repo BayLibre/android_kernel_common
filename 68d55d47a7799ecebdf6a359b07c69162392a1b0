@@ -16,6 +16,24 @@
       "message": "Why isn\u0027t this submitted upstream first?",
       "revId": "68d55d47a7799ecebdf6a359b07c69162392a1b0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ede928_c5d46ac7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1741939
+      },
+      "writtenOn": "2020-11-03T07:26:01Z",
+      "side": 1,
+      "message": "The code is on ACK only.\n\nThis problem is RCU used illegally from idle CPU.\nWhich is because handle_IPI() may be called from idle CPU and trace_android_vh_ipi_stop() will use RCU.\nReplacing it with the  “trace_android_vh_ipi_stop_rcuidle()” should solve this problem.\n\nThis tracepoint is add by following patch: (by Todd)\nhttps://android-review.googlesource.com/c/kernel/common/+/1407927",
+      "parentUuid": "ed3c756a_7d078872",
+      "revId": "68d55d47a7799ecebdf6a359b07c69162392a1b0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
