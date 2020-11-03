@@ -15,12 +15,15 @@
 struct fwnode_operations;
 struct device;
 
+#define FWNODE_FLAG_LINKS_ADDED		BIT(0)
+
 struct fwnode_handle {
 	struct fwnode_handle *secondary;
 	const struct fwnode_operations *ops;
 	struct device *dev;
 	struct list_head suppliers;
 	struct list_head consumers;
+	u32 flags;
 };
 
 struct fwnode_link {
