@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bab6a013_ecfc4191",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-04T07:33:37Z",
+      "side": 1,
+      "message": "Still needs to be upstream.\n\nAlso, why do you need to call this function?  What is wrong with a normal printk() call?  What needs this deferred functionality, it is very rare and totally incorrect for the majority of the kernel.  No module should ever need this.",
+      "revId": "654099e742194882012ef6082ef3235350ef38c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
