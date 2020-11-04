@@ -16,6 +16,24 @@
       "message": "Still needs to be upstream.\n\nAlso, why do you need to call this function?  What is wrong with a normal printk() call?  What needs this deferred functionality, it is very rare and totally incorrect for the majority of the kernel.  No module should ever need this.",
       "revId": "654099e742194882012ef6082ef3235350ef38c1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "982450e9_b77650a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2020-11-04T23:39:48Z",
+      "side": 1,
+      "message": "This change is enhancing scheduler debug. We want to get notified if RT tasks are throttled. The module will do a bunch of prints in atomic context. We cannot send the print to console in such a context hence the need to printk_deferred request.",
+      "parentUuid": "bab6a013_ecfc4191",
+      "revId": "654099e742194882012ef6082ef3235350ef38c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
