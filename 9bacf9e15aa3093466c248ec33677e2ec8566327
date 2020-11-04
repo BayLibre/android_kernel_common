@@ -62,6 +62,23 @@
       "message": "LGTM",
       "revId": "9bacf9e15aa3093466c248ec33677e2ec8566327",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46fc73a5_0bb58a2c",
+        "filename": "kernel/sched/cpupri.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2020-11-04T20:22:56Z",
+      "side": 1,
+      "message": "Lets call the drop_nopreempts_cpu() here?\n\ncpupri_find_fitness() passes the drop_nopremepts flag to __cpupri_find()\n\n__cpupri_find() can drop the nonpremept cpus between lines 98 and 100 like so\n\n\n   if (drop_nopreempts) \n              drop_nopreempt_cpus(lowest_mask);\n\nwith this we can remove lines 157 through 160.\n\n\nThis request because if pause cpu pans out, we can add additional checks here to discount nonactive cpus. It makes the code flow well.",
+      "revId": "9bacf9e15aa3093466c248ec33677e2ec8566327",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
