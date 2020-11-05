@@ -106,6 +106,24 @@
       "parentUuid": "2fbb88f6_952e13b4",
       "revId": "2e01da1bf297604208b1bd690e6eda9bb2cb05a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4298e27d_1677713e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133258
+      },
+      "writtenOn": "2020-11-05T23:07:46Z",
+      "side": 1,
+      "message": "1:CTS tests are failing:\nBug: 170072925   Broken test: android.hardware.input.cts.tests.GameviceGv186Test#testAllMotions on git_master on cf_x86_phone-userdebug at 6881927\nBug: 170126889   SC - CTS-on-GSI: android.hardware.input.cts.tests.RazerKishiTest#testAllMotions failure\n\n2: With CTS tests running on phone devices like coral which kernel is msm 4.14 it doesn\u0027t have the problem because the hid-input.c doesn\u0027t check the HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE, but the the common kernel does.\n\n3:We started to see these failures on git_master/cf_x86_phone-userdebug because of the kernel behavior,  I didn\u0027t say we are not seeing on android11-5.4 branch, it there is a build with it the CTS will also fail on that target. The issues were found on git_master/cf_x86_phone-userdebug which uses 5.4 kernel, so this would fix the CTS test failure on cf_x86_phone-userdebug target.",
+      "parentUuid": "4655748d_def3eb92",
+      "revId": "2e01da1bf297604208b1bd690e6eda9bb2cb05a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
