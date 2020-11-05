@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5ebe3c9_8508da9d",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-11-05T20:18:12Z",
+      "side": 1,
+      "message": "The stream is enplaced in the workspace, and has no other existence. There is no function to free it. Nor does the f2fs code free it.",
+      "parentUuid": "6db07764_b64beaab",
+      "range": {
+        "startLine": 40,
+        "startChar": 5,
+        "endLine": 40,
+        "endChar": 20
+      },
+      "revId": "a91fa557ff2d5208b1f445e02538a1c7af3aaed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27ed4553_6fa51afe",
@@ -37,6 +61,30 @@
       "writtenOn": "2020-11-05T18:51:31Z",
       "side": 1,
       "message": "I think this is still ENOMEM",
+      "range": {
+        "startLine": 403,
+        "startChar": 12,
+        "endLine": 403,
+        "endChar": 16
+      },
+      "revId": "a91fa557ff2d5208b1f445e02538a1c7af3aaed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "224cec84_b91ca7da",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-11-05T20:18:12Z",
+      "side": 1,
+      "message": "Copying relevant code from f2fs - that\u0027s what it does. This is not allocating any memory, just setting up structs",
+      "parentUuid": "27ed4553_6fa51afe",
       "range": {
         "startLine": 403,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a7c1601_66b7d5f9",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-11-05T20:18:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41a25432_2c6250d4",
+      "range": {
+        "startLine": 414,
+        "startChar": 34,
+        "endLine": 414,
+        "endChar": 56
+      },
+      "revId": "a91fa557ff2d5208b1f445e02538a1c7af3aaed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00d45111_ceb57df8",
@@ -83,6 +155,30 @@
       "writtenOn": "2020-11-05T18:51:31Z",
       "side": 1,
       "message": "I\u0027d rather keep it there for longer - it doesn\u0027t cost that much, but may save quite a bit of cpu for some scenarios. Esp if not all pages are zstd-compressed",
+      "range": {
+        "startLine": 415,
+        "startChar": 21,
+        "endLine": 415,
+        "endChar": 25
+      },
+      "revId": "a91fa557ff2d5208b1f445e02538a1c7af3aaed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b9d8472_2c47b1da",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-11-05T20:18:12Z",
+      "side": 1,
+      "message": "Changed to 5000. We could make this a mount option in the future?\n\n(I had it at 5000 initially, but set it to 1000 for testing ....)",
+      "parentUuid": "00d45111_ceb57df8",
       "range": {
         "startLine": 415,
         "startChar": 21,
@@ -116,6 +212,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b4c7d1e_81597b6b",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-11-05T20:18:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d071d27e_32db21ac",
+      "range": {
+        "startLine": 1215,
+        "startChar": 0,
+        "endLine": 1215,
+        "endChar": 45
+      },
+      "revId": "a91fa557ff2d5208b1f445e02538a1c7af3aaed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a950492_ebf2f943",
@@ -129,6 +249,30 @@
       "writtenOn": "2020-11-05T18:51:31Z",
       "side": 1,
       "message": "unsure if this is helpful for the usermode: max usually tells you what\u0027s the current maximum valid value, and here it\u0027s different",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 67
+      },
+      "revId": "a91fa557ff2d5208b1f445e02538a1c7af3aaed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef464e44_252e1554",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-11-05T20:18:12Z",
+      "side": 1,
+      "message": "Good catch! Put this in format.h and corrected misuse of COMPRESSION_* and INCFS_BLOCK_COMPRESSED_*",
+      "parentUuid": "4a950492_ebf2f943",
       "range": {
         "startLine": 148,
         "startChar": 0,
