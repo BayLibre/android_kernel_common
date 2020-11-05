@@ -52,6 +52,24 @@
       "parentUuid": "3896ee26_a4aac645",
       "revId": "2e01da1bf297604208b1bd690e6eda9bb2cb05a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f88e00d_9edc0868",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133258
+      },
+      "writtenOn": "2020-11-05T16:59:17Z",
+      "side": 1,
+      "message": "This is NOT a new device id,  but the the device IDs already in use by Android. Previously the behavior is default, but Linux 5.4 introduced this HID_QUIRK flag that all devices have to declare it,  that\u0027s a behavior change on all existing devices.\nWe have 2 P1 issues that input CTS are broken, due to the kernel 5.4 bug.  I have no idea when the patches can be reviewed by Linux kernel org but the bugs are open and CTS tests are broken for a month.",
+      "parentUuid": "6258acea_978bd7f7",
+      "revId": "2e01da1bf297604208b1bd690e6eda9bb2cb05a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
