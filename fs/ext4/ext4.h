@@ -2407,6 +2407,22 @@ static inline void ext4_fname_from_fscrypt_name(struct ext4_filename *dst,
 	dst->crypto_buf = src->crypto_buf;
 }
 
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
+=======
+#ifdef CONFIG_EXT4_FS_ENCRYPTION
+static inline void ext4_fname_from_fscrypt_name(struct ext4_filename *dst,
+						const struct fscrypt_name *src)
+{
+	memset(dst, 0, sizeof(*dst));
+
+	dst->usr_fname = src->usr_fname;
+	dst->disk_name = src->disk_name;
+	dst->hinfo.hash = src->hash;
+	dst->hinfo.minor_hash = src->minor_hash;
+	dst->crypto_buf = src->crypto_buf;
+}
+
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 static inline int ext4_fname_setup_filename(struct inode *dir,
 					    const struct qstr *iname,
 					    int lookup,
@@ -2420,6 +2436,7 @@ static inline int ext4_fname_setup_filename(struct inode *dir,
 		return err;
 
 	ext4_fname_from_fscrypt_name(fname, &name);
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 
 #ifdef CONFIG_UNICODE
 	err = ext4_fname_setup_ci_filename(dir, iname, fname);
@@ -2444,6 +2461,24 @@ static inline int ext4_fname_prepare_lookup(struct inode *dir,
 	err = ext4_fname_setup_ci_filename(dir, &dentry->d_name, fname);
 #endif
 	return err;
+=======
+	return 0;
+}
+
+static inline int ext4_fname_prepare_lookup(struct inode *dir,
+					    struct dentry *dentry,
+					    struct ext4_filename *fname)
+{
+	struct fscrypt_name name;
+	int err;
+
+	err = fscrypt_prepare_lookup(dir, dentry, &name);
+	if (err)
+		return err;
+
+	ext4_fname_from_fscrypt_name(fname, &name);
+	return 0;
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 }
 
 static inline void ext4_fname_free_filename(struct ext4_filename *fname)
@@ -2462,7 +2497,11 @@ static inline void ext4_fname_free_filename(struct ext4_filename *fname)
 	fname->cf_name.name = NULL;
 #endif
 }
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 #else /* !CONFIG_FS_ENCRYPTION */
+=======
+#else /* !CONFIG_EXT4_FS_ENCRYPTION */
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 static inline int ext4_fname_setup_filename(struct inode *dir,
 					    const struct qstr *iname,
 					    int lookup,
@@ -2472,10 +2511,27 @@ static inline int ext4_fname_setup_filename(struct inode *dir,
 	fname->usr_fname = iname;
 	fname->disk_name.name = (unsigned char *) iname->name;
 	fname->disk_name.len = iname->len;
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
+=======
+	return 0;
+}
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 #ifdef CONFIG_UNICODE
 	err = ext4_fname_setup_ci_filename(dir, iname, fname);
 #endif
+=======
+static inline int ext4_fname_prepare_lookup(struct inode *dir,
+					    struct dentry *dentry,
+					    struct ext4_filename *fname)
+{
+	return ext4_fname_setup_filename(dir, &dentry->d_name, 1, fname);
+}
+
+static inline void ext4_fname_free_filename(struct ext4_filename *fname) { }
+#endif /* !CONFIG_EXT4_FS_ENCRYPTION */
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 
 	return err;
 }

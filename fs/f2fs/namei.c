@@ -482,7 +482,11 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 	nid_t ino = -1;
 	int err = 0;
 	unsigned int root_ino = F2FS_ROOT_INO(F2FS_I_SB(dir));
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 	struct f2fs_filename fname;
+=======
+	struct fscrypt_name fname;
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 
 	trace_f2fs_lookup_start(dir, dentry, flags);
 
@@ -491,6 +495,7 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 		goto out;
 	}
 
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 	err = f2fs_prepare_lookup(dir, dentry, &fname);
 	generic_set_encrypted_ci_d_ops(dir, dentry);
 	if (err == -ENOENT)
@@ -499,6 +504,15 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 		goto out;
 	de = __f2fs_find_entry(dir, &fname, &page);
 	f2fs_free_filename(&fname);
+=======
+	err = fscrypt_prepare_lookup(dir, dentry, &fname);
+	if (err == -ENOENT)
+		goto out_splice;
+	if (err)
+		goto out;
+	de = __f2fs_find_entry(dir, &fname, &page);
+	fscrypt_free_filename(&fname);
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 
 	if (!de) {
 		if (IS_ERR(page)) {
@@ -551,7 +565,11 @@ out_splice:
 #endif
 	new = d_splice_alias(inode, dentry);
 	err = PTR_ERR_OR_ZERO(new);
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 	trace_f2fs_lookup_end(dir, dentry, ino, !new ? -ENOENT : err);
+=======
+	trace_f2fs_lookup_end(dir, dentry, ino, err);
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 	return new;
 out_iput:
 	iput(inode);

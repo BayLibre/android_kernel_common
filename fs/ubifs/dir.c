@@ -222,7 +222,10 @@ static struct dentry *ubifs_lookup(struct inode *dir, struct dentry *dentry,
 	dbg_gen("'%pd' in dir ino %lu", dentry, dir->i_ino);
 
 	err = fscrypt_prepare_lookup(dir, dentry, &nm);
+<<<<<<< HEAD   (974709 ANDROID: GKI: Enable DEBUG_INFO_DWARF4)
 	ubifs_set_d_ops(dir, dentry);
+=======
+>>>>>>> BRANCH (b94de4 Linux 4.19.155)
 	if (err == -ENOENT)
 		return d_splice_alias(NULL, dentry);
 	if (err)
