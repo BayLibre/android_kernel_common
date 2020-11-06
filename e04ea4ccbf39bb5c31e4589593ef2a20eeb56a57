@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7246a1a3_9fbe64b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1122323
+      },
+      "writtenOn": "2020-11-06T12:13:55Z",
+      "side": 1,
+      "message": "Looks OK to me. Again, haven\u0027t verified. It seems sensible though to remove CPUs which have a non-preemptible task right now from the set, and if we didn\u0027t find any we start again with the whole set.\n\nThe definition here of non-preemptible task is handling softIRQs, running softirqd or handling hard irqs, not tasks currently which interrupts disabled.\n\nWe\u0027re accepting the possibility that we displace a lower priority RT task in order to avoid the wakeup latency penalty if we hit something which can\u0027t be interrupted for a while.\n",
+      "revId": "e04ea4ccbf39bb5c31e4589593ef2a20eeb56a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
