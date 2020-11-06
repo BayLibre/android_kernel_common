@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95c7347d_57c57d4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2020-11-06T09:40:17Z",
+      "side": 1,
+      "message": "from the commit here[1], seems we should not enable it in the kernel side, and maybe we should disable it for all kernel versions.\nOr we just need to update the xfrm_algorithm_test to ignore the md5 related  failures from kernel 5.7, but still check for other kernel versions.\n\nPlease give comments on how we should do for the this CRYPTO_MD5 config.\n\n[1]: https://android.googlesource.com/kernel/common/+/be01369859b8aa07346e497381bb46d377da0d8c%5E%21/",
+      "revId": "2b05002bd7e10f2ed0a08d18a6521d4f8863edc1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
