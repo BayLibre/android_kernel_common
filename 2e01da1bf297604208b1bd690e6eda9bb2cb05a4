@@ -124,6 +124,24 @@
       "parentUuid": "4655748d_def3eb92",
       "revId": "2e01da1bf297604208b1bd690e6eda9bb2cb05a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d511f52_a40e4ffe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-06T07:02:59Z",
+      "side": 1,
+      "message": "What is the git commit id in the kernel that causes these failures to start happening?  That sounds like a regression and should be fixed.  Also, you should add a \"Fixes:\" tag to your patch when sending it upstream to show that this is resolving a problem that used to work properly and explain that, otherwise this just looks like a new quirk addition which will be merged eventually.",
+      "parentUuid": "4298e27d_1677713e",
+      "revId": "2e01da1bf297604208b1bd690e6eda9bb2cb05a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
