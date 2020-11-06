@@ -1095,9 +1095,32 @@ EXPORT_SYMBOL_GPL(remove_cpu);
 
 extern bool dl_cpu_busy(unsigned int cpu);
 
+int __pause_drain_rq(struct cpumask *cpus)
+{
+	unsigned int cpu;
+	int err = 0;
+
+	for_each_cpu(cpu, cpus) {
+		err = sched_cpu_drain_rq(cpu);
+		if (err)
+			break;
+	}
+
+	return err;
+}
+
+void __wait_drain_rq(struct cpumask *cpus)
+{
+	unsigned int cpu;
+
+	for_each_cpu(cpu, cpus)
+		sched_cpu_drain_rq_wait(cpu);
+
+}
+
 int pause_cpus(struct cpumask *cpus)
 {
-	int err = 0;
+	int err = 0, _err;
 	int cpu;
 
 	cpu_maps_update_begin();
@@ -1128,7 +1151,42 @@ int pause_cpus(struct cpumask *cpus)
 	for_each_cpu(cpu, cpus)
 		set_cpu_active(cpu, false);
 
+	/*
+	 * Lazy migration:
+	 *
+	 * We do care about how fast a CPU can go idle and stay this state. If
+	 * we try to take the cpus_write_lock() here, we would have to wait for
+	 * a few dozens of ms, as this function might schedule. However, there's
+	 * no risk of editing this value right now. The only problem being for
+	 * another CPU to observe an out of date value and to try to enqueue a
+	 * task. We can then try to drain the paused CPU rqs before doing a
+	 * complete deactivation and another migration that would catch any
+	 * racy enqueue.
+	 */
+	_err = __pause_drain_rq(cpus);
+	if (_err) {
+		err = _err;
+		__wait_drain_rq(cpus);
+		for_each_cpu(cpu, cpus)
+			set_cpu_active(cpu, true);
+		goto err_cpu_maps_update;
+	}
+
+	/*
+	 * Slow path deactivation:
+	 *
+	 * Now that paused CPUs are most likely idle, we can go through a
+	 * complete scheduler deactivation.
+	 *
+	 * The cpu_active_mask being already set and cpus_write_lock calling
+	 * synchronize_rcu(), we know that all preempt-disabled and RCU users
+	 * will observe the updated value. After the deactivation, another
+	 * drain would then catch any tasks which escaped the first lazy
+	 * migration.
+	 */
 	cpus_write_lock();
+
+	__wait_drain_rq(cpus);
 
 	cpuhp_tasks_frozen = 0; /* No hibernation */
 
@@ -1139,6 +1197,15 @@ int pause_cpus(struct cpumask *cpus)
 		 */
 		cpumask_andnot(cpus, cpus, cpu_active_mask);
 		err = -EBUSY;
+	}
+
+	_err = __pause_drain_rq(cpus);
+	__wait_drain_rq(cpus);
+	if (_err) {
+		err = _err;
+		for_each_cpu(cpu, cpus)
+			sched_cpu_activate(cpu);
+		goto err_cpus_write;
 	}
 
 	/*
@@ -1152,6 +1219,7 @@ int pause_cpus(struct cpumask *cpus)
 		st->state = CPUHP_AP_ACTIVE - 1;
 	}
 
+err_cpus_write:
 	cpus_write_unlock();
 err_cpu_maps_update:
 	cpu_maps_update_done();

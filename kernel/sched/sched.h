@@ -1051,6 +1051,10 @@ struct rq {
 	unsigned int		ttwu_local;
 #endif
 
+#ifdef CONFIG_HOTPLUG_CPU
+	struct cpu_stop_work	drain;
+#endif
+
 #ifdef CONFIG_CPU_IDLE
 	/* Must be inspected within a rcu lock section */
 	struct cpuidle_state	*idle_state;
