@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91162004_7f897427",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-07T15:23:58Z",
+      "side": 1,
+      "message": "I don\u0027t think you need the structure for the kabi padding, try just using the function pointer directly.",
+      "revId": "65865896cb79110bcb3bada8caf9d381886330b6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f35776_93a08810",
+        "filename": "include/linux/dcache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-07T15:23:58Z",
+      "side": 1,
+      "message": "any reason to not just put the function pointer definition in here?  Why a structure?",
+      "range": {
+        "startLine": 158,
+        "startChar": 21,
+        "endLine": 158,
+        "endChar": 65
+      },
+      "revId": "65865896cb79110bcb3bada8caf9d381886330b6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
