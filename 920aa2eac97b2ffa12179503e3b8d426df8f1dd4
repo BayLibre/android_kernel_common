@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce68500f_540abe3e",
+        "filename": "kernel/sched/cpupri.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-07T00:41:04Z",
+      "side": 1,
+      "message": "If this line is gone, there will be warnings about drop_nopreempt_cpus() being defined and never used. Put that whole function under the config as well.",
+      "revId": "920aa2eac97b2ffa12179503e3b8d426df8f1dd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b36b608a_dc5bdcbc",
+        "filename": "kernel/sched/cpupri.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-07T00:41:04Z",
+      "side": 1,
+      "message": "Will we get a warning on the unused label \"retry\"?",
+      "revId": "920aa2eac97b2ffa12179503e3b8d426df8f1dd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
