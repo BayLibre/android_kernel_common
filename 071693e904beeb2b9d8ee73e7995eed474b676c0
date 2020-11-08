@@ -16,6 +16,24 @@
       "message": "Why is this patch still needed?  If you did the abi \"fix\" right, no need to update the .xml file.",
       "revId": "071693e904beeb2b9d8ee73e7995eed474b676c0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b2e160_c3e8e8c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2020-11-08T11:17:37Z",
+      "side": 1,
+      "message": "Shouldn\u0027t be required.\nBut the newly generated ABI xml shows *some changes* in cfg80211_bitrate_mask, and I wonder why this happened.\nAbandoning this change and letting TH take care of the ABI checks, let\u0027s see if it\u0027s happy with that.\nThanks!",
+      "parentUuid": "2e9b4322_7568c183",
+      "revId": "071693e904beeb2b9d8ee73e7995eed474b676c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
