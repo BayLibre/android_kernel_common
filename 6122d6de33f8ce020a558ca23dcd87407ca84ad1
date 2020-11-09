@@ -22,6 +22,30 @@
       },
       "revId": "6122d6de33f8ce020a558ca23dcd87407ca84ad1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fab922c_06c8c6f9",
+        "filename": "kernel/sched/cpupri.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1688863
+      },
+      "writtenOn": "2020-11-09T18:36:11Z",
+      "side": 1,
+      "message": "Hello Qais,\n\nI agree with your suggestion, but from looking at the current implementation of rt_task_fits_capacity() inside the CONFIG_UCLAMP_TASK block, I think that function would need to be refactored first to make it more generic before putting non-uclamp code in.\n\nIn the interest of getting this in, I\u0027m thinking of pushing for these to merge, then make this refactor+improvement at a later date. Do you have any issues with this?",
+      "parentUuid": "b4c695e1_c3c34dff",
+      "range": {
+        "startLine": 169,
+        "startChar": 7,
+        "endLine": 169,
+        "endChar": 26
+      },
+      "revId": "6122d6de33f8ce020a558ca23dcd87407ca84ad1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
