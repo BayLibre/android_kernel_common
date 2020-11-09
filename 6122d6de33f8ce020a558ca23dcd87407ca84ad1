@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4c695e1_c3c34dff",
+        "filename": "kernel/sched/cpupri.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-11-09T12:46:48Z",
+      "side": 1,
+      "message": "Sorry a bit late to the party.\n\nYou could have extended rt_task_fits_capacity() which is passed as the fitness_fn to check if the cpu is not preemptible as well as fits the capacity. That would probably have reduced the diff significantly. I made that function generic intentionally with this use case in mind so the fitness condition can be extended to verify the cpu is preemptible too.",
+      "range": {
+        "startLine": 169,
+        "startChar": 7,
+        "endLine": 169,
+        "endChar": 26
+      },
+      "revId": "6122d6de33f8ce020a558ca23dcd87407ca84ad1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
