@@ -46,6 +46,30 @@
       },
       "revId": "6122d6de33f8ce020a558ca23dcd87407ca84ad1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcc45065_7a05ab38",
+        "filename": "kernel/sched/cpupri.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2020-11-10T11:26:49Z",
+      "side": 1,
+      "message": "Hi Avila\n\nWorks for me.\n\nI don\u0027t think you need a full refactoring. Just cram task_may_preempt() in both definitions of rt_task_fits_capacity(). I think this will be better in terms of maintenance and staying closer to upstream code. I\u0027m happy with creating a new fitness function wrapper that calls rt_task_fits_capacity() and task_may_preempt() (hopefully remembered the name of the function correctly) too.\n\nThanks.",
+      "parentUuid": "3fab922c_06c8c6f9",
+      "range": {
+        "startLine": 169,
+        "startChar": 7,
+        "endLine": 169,
+        "endChar": 26
+      },
+      "revId": "6122d6de33f8ce020a558ca23dcd87407ca84ad1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
