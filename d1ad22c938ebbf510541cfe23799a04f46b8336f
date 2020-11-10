@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "612f9877_d263b5ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-11-10T16:18:52Z",
+      "side": 1,
+      "message": "That wasn\u0027t :) I meant hotplug down. Hotunplug is used at several places in the sources.",
+      "parentUuid": "24e387da_96cfab0e",
+      "range": {
+        "startLine": 9,
+        "startChar": 26,
+        "endLine": 9,
+        "endChar": 35
+      },
+      "revId": "d1ad22c938ebbf510541cfe23799a04f46b8336f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "360ee350_d41f6996",
@@ -54,6 +78,30 @@
       "writtenOn": "2020-11-10T05:59:19Z",
       "side": 1,
       "message": "should we change the function name as well?",
+      "range": {
+        "startLine": 373,
+        "startChar": 12,
+        "endLine": 373,
+        "endChar": 33
+      },
+      "revId": "d1ad22c938ebbf510541cfe23799a04f46b8336f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d74d31ec_83244337",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-11-10T16:18:52Z",
+      "side": 1,
+      "message": "We could, but it would also increase the chance of merge problems with the upstream kernel. e.g. a patch bringing a new call to guarantee_online_cpus().",
+      "parentUuid": "903bb9a2_dda31c60",
       "range": {
         "startLine": 373,
         "startChar": 12,
