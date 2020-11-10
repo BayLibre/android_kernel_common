@@ -1,6 +1,63 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "376aa15a_e86ffbdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-10T07:43:23Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33f15723_35cf987a",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-10T07:43:23Z",
+      "side": 1,
+      "message": "I would suggest disabling preemption before for loop. so that any migration/x woken up on this cpu will block calling sched_cpu_drain_rq(). \n\npreempt_disable()\n\nfor(...)\n\npreempt_enable()",
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "effe57c4_9b12840e",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-10T07:43:23Z",
+      "side": 1,
+      "message": "you meant cpu_active_mask is cleared, correct?\n\nAlso cpus_write_lock() means synchronize_rcu() every time?",
+      "range": {
+        "startLine": 1182,
+        "startChar": 22,
+        "endLine": 1182,
+        "endChar": 23
+      },
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f26e5ecc_e93d566a",
