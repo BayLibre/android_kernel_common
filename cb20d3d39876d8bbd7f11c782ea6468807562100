@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ba84725_2190d8c8",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-11-10T17:25:04Z",
+      "side": 1,
+      "message": "Sorry, I\u0027m not sure I understand the need for !preempt here, migrate_tasks() already runs with !preempt as we take the rq_lock.\n\nUnless it is for the case where _pause_drain_rq() is run by a CPU that is supposed to go to pause state and it could delay stoppers on other CPUs ?",
+      "parentUuid": "33f15723_35cf987a",
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "effe57c4_9b12840e",
         "filename": "kernel/cpu.c",
         "patchSetId": 4
@@ -60,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf2538ef_cfeef5e3",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-11-10T17:25:04Z",
+      "side": 1,
+      "message": "Yes, IIRC the whole story is that behind the hood of this lock is rcu_sync. when rcu_sync is in IDLE mode, it\u0027ll end-up with a synchronize_rcu(). As the access to this lock is serialized by the HP locks, cpu_write_lock() will always end-up in a synchronize_rcu().",
+      "parentUuid": "effe57c4_9b12840e",
+      "range": {
+        "startLine": 1182,
+        "startChar": 22,
+        "endLine": 1182,
+        "endChar": 23
+      },
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f26e5ecc_e93d566a",
         "filename": "kernel/cpu.c",
         "patchSetId": 4
@@ -71,6 +113,30 @@
       "writtenOn": "2020-11-10T01:33:12Z",
       "side": 1,
       "message": "Can you remind me why we need the cpus_write_lock() here?\nMy understanding is that cpus_read_lock() is used by various drivers to ensure the kernel isnt offlined while they work on it. \n\nsched_cpu_deactivate/activate isnt taking the cpu all the way to offline. So do we need cpus_write_lock()?",
+      "range": {
+        "startLine": 1187,
+        "startChar": 1,
+        "endLine": 1187,
+        "endChar": 16
+      },
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27e83524_49b89e9f",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-11-10T17:25:04Z",
+      "side": 1,
+      "message": "That would protect against cpuset, as some parts might read the cpu mask, out of a critical section (a simple synchronize_rcu() wouldn\u0027t be enough to ensure that the  observed cpu_active_mask is up to date. is_allowed_cpu() would probably catch this. But we would need to synch_rcu any way, and the \"lazy\" migration already speeding-up the process, it seemed more appropriate to take the cpus_write_lock().",
+      "parentUuid": "f26e5ecc_e93d566a",
       "range": {
         "startLine": 1187,
         "startChar": 1,
