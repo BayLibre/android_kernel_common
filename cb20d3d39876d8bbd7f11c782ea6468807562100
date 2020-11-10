@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f26e5ecc_e93d566a",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2020-11-10T01:33:12Z",
+      "side": 1,
+      "message": "Can you remind me why we need the cpus_write_lock() here?\nMy understanding is that cpus_read_lock() is used by various drivers to ensure the kernel isnt offlined while they work on it. \n\nsched_cpu_deactivate/activate isnt taking the cpu all the way to offline. So do we need cpus_write_lock()?",
+      "range": {
+        "startLine": 1187,
+        "startChar": 1,
+        "endLine": 1187,
+        "endChar": 16
+      },
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
