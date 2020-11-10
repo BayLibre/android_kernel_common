@@ -25,6 +25,7 @@
 #include <trace/hooks/gic_v3.h>
 #include <trace/hooks/epoch.h>
 #include <trace/hooks/cpufreq.h>
+#include <trace/hooks/mm.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -80,3 +81,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_newidle_balance);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_nohz_balancer_kick);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_busiest_queue);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_migrate_queued_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_skip_swapcache_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
