@@ -22,6 +22,30 @@
       },
       "revId": "de8106067014a58c00e77fff47ab0c4c907f5745",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "942769e3_5a2d08a1",
+        "filename": "kernel/module.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4001,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2020-11-11T22:53:17Z",
+      "side": 1,
+      "message": "cfi_init() is called in post_relocation(). Looking closer at the control flow after that, Mayank, why isn\u0027t this under free_modinfo instead?",
+      "parentUuid": "a815f467_006ae637",
+      "range": {
+        "startLine": 4001,
+        "startChar": 0,
+        "endLine": 4001,
+        "endChar": 18
+      },
+      "revId": "de8106067014a58c00e77fff47ab0c4c907f5745",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
