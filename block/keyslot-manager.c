@@ -200,6 +200,13 @@ struct keyslot_manager *keyslot_manager_create(
 	spin_lock_init(&ksm->idle_slots_lock);
 
 	ksm->slot_hashtable_size = roundup_pow_of_two(num_slots);
+	/*
+	 * hash_ptr() assumes bits != 0, so ensure the hash table has at least 2
+	 * buckets.  This only makes a difference when there is only 1 keyslot.
+	 */
+	if (ksm->slot_hashtable_size < 2)
+		ksm->slot_hashtable_size = 2;
+
 	ksm->slot_hashtable = kvmalloc_array(ksm->slot_hashtable_size,
 					     sizeof(ksm->slot_hashtable[0]),
 					     GFP_KERNEL);
