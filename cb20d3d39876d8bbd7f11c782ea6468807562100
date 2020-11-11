@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b62f68e3_0c444257",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-11T03:52:57Z",
+      "side": 1,
+      "message": "Lets say we want to pause 4-6 CPUs. pause_cpus(4-6) is called from a thread running on CPU#4 (CPU#4 should be paused).\n\nTask-pause: CPU#4 would be running this code, once it calls sched_cpu_drain_rq(4), it wakes up migration/4 and preempts the task-pause running on CPU#4. Nothing wrong, but you won\u0027t be able to call drain_rq on CPU#5 and CPU#6. If we disable preemption, migration/4 can\u0027t preempt us and we can call drain_rq on all CPUs and then re-enable premption.",
+      "parentUuid": "5ba84725_2190d8c8",
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "effe57c4_9b12840e",
         "filename": "kernel/cpu.c",
         "patchSetId": 4
@@ -90,6 +108,30 @@
       "side": 1,
       "message": "Yes, IIRC the whole story is that behind the hood of this lock is rcu_sync. when rcu_sync is in IDLE mode, it\u0027ll end-up with a synchronize_rcu(). As the access to this lock is serialized by the HP locks, cpu_write_lock() will always end-up in a synchronize_rcu().",
       "parentUuid": "effe57c4_9b12840e",
+      "range": {
+        "startLine": 1182,
+        "startChar": 22,
+        "endLine": 1182,
+        "endChar": 23
+      },
+      "revId": "cb20d3d39876d8bbd7f11c782ea6468807562100",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d147fdb_d5ce28ac",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-11T03:52:57Z",
+      "side": 1,
+      "message": "Done. Right, GP sate would be idle and we end up calling synchronize_rcu() every time.",
+      "parentUuid": "cf2538ef_cfeef5e3",
       "range": {
         "startLine": 1182,
         "startChar": 22,
