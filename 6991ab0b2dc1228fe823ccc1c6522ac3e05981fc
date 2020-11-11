@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "662f693e_84bab6d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2020-11-11T03:38:40Z",
+      "side": 1,
+      "message": "Hi, Matthias\n\nIt seems this change would cause the \"lzma: not found\" error like  reported here:\nhttps://ci.linaro.org/job/lkft-generic-omap-build/478/consoleFull\n\n20:19:31   LZMA    arch/arm/boot/compressed/piggy_data\n20:19:31 /bin/sh: 1: lzma: not found\n20:19:31   CC      arch/arm/boot/compressed/misc.o\n20:19:31   CC      arch/arm/boot/compressed/decompress.o\n20:19:31 make[3]: *** [/home/buildslave/srv/lkft/workspace/kernel/common/mainline/arch/arm/boot/compressed/Makefile:184: arch/arm/boot/compressed/piggy_data] Error 127\n20:19:31 make[3]: *** Deleting file \u0027arch/arm/boot/compressed/piggy_data\u0027\n20:19:31 make[3]: *** Waiting for unfinished jobs....\n\n\nshould we add all the commands like listed here[1] to _setup_env.sh or let the build to set itself in its own build config file?\n\nfor our x15 build, with adding \"ADDITIONAL_HOST_TOOLS\u003d\"${ADDITIONAL_HOST_TOOLS} lzma\" in the build config file, it works too.\n\n[1]: https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/arch/arm/boot/compressed/Makefile#78\n\nWant to know your suggestions where we should update.\n\nThanks,\nYongqin Liu",
+      "revId": "6991ab0b2dc1228fe823ccc1c6522ac3e05981fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
