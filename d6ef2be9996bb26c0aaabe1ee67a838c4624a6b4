@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0778a344_e06c9fe4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2020-11-12T00:09:19Z",
+      "side": 1,
+      "message": "Thinking about this more, the only use of `lsl` in the kernel is register/register operands; maybe supporting that use case is sufficient.\n\nWe also plan on dropping support for clang-10 now that clang-11 is out and generally available though.\n\nWorst case, we could wait on this until we uprev AOSP LLVM (b/171348143)",
+      "revId": "d6ef2be9996bb26c0aaabe1ee67a838c4624a6b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
