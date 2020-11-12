@@ -32,6 +32,14 @@ config CRYPTO_FIPS
 	  certification.  You should say no unless you know what
 	  this is.
 
+config CRYPTO_NIAP_FPT_TST_EXT_11
+	bool "NIAP FPT_TST_EXT.1.1 compliance"
+	depends on CRYPTO_SKCIPHER && CRYPTO_HASH && CRYPTO_AEAD && CRYPTO_DRBG
+	help
+	  This option enables a suite of self-tests during initial start-up to
+	  demonstrate the correct operation of cryptographic functionality, as
+	  required in NIAP FPT_TST_EXT.1.1.
+
 config CRYPTO_ALGAPI
 	tristate
 	select CRYPTO_ALGAPI2
