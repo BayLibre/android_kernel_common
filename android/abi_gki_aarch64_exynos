@@ -985,6 +985,7 @@
   pci_bus_type
   pci_d3cold_disable
   pci_find_bus
+  pci_find_ext_capability
   pci_free_irq_vectors
   pci_get_device
   pci_irq_vector
@@ -1094,6 +1095,7 @@
   printk
   __printk_ratelimit
   printk_timed_ratelimit
+  probe_kernel_read
   proc_create
   proc_create_data
   proc_create_seq_private
