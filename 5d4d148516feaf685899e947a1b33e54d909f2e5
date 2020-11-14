@@ -16,6 +16,24 @@
       "message": "These are fine, but why not just submit these upstream to the stable trees for inclusion there?  Isn\u0027t that easier?",
       "revId": "5d4d148516feaf685899e947a1b33e54d909f2e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83a45b0c_2f80e795",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2020-11-14T17:51:33Z",
+      "side": 1,
+      "message": "The two fscrypt patches are fixes for a regression in 5.10.  They aren\u0027t applicable to any of the stable kernels.  android12-5.4 is different because it has all the latest fscrypt patches already.",
+      "parentUuid": "8657988d_e750e373",
+      "revId": "5d4d148516feaf685899e947a1b33e54d909f2e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
