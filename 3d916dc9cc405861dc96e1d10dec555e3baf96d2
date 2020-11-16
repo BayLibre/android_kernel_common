@@ -22,6 +22,30 @@
       },
       "revId": "3d916dc9cc405861dc96e1d10dec555e3baf96d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f85006cf_f70f4e8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1794940
+      },
+      "writtenOn": "2020-11-16T08:22:43Z",
+      "side": 1,
+      "message": "I just added the following symobls in android/abi_gki_aarch64_qcom and built kernel with \"BUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh --update --print-report\", then android/abi_gki_aarch64.xml was changed. But the report said that \"0 Added function\". It seems that other vendor already added these symbols, such as unisoc.\n\nregister_virtio_device\nregister_virtio_driver\nunregister_virtio_device\nunregister_virtio_driver\nvirtio_check_driver_offered_feature\nvirtio_config_changed\nvirtio_max_dma_size\nvirtqueue_add_inbuf\nvirtqueue_add_inbuf_ctx\nvirtqueue_add_outbuf\nvirtqueue_add_sgs\nvirtqueue_detach_unused_buf\nvirtqueue_disable_cb\nvirtqueue_enable_cb\nvirtqueue_enable_cb_delayed\nvirtqueue_enable_cb_prepare\nvirtqueue_get_avail_addr\nvirtqueue_get_buf\nvirtqueue_get_buf_ctx\nvirtqueue_get_desc_addr\nvirtqueue_get_used_addr\nvirtqueue_get_vring_size\nvirtqueue_is_broken\nvirtqueue_kick\nvirtqueue_kick_prepare\nvirtqueue_notify\nvirtqueue_poll\nvring_create_virtqueue\nvring_del_virtqueue\nvring_interrupt\nvring_transport_features",
+      "parentUuid": "e290ab88_9db6226a",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 79
+      },
+      "revId": "3d916dc9cc405861dc96e1d10dec555e3baf96d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
