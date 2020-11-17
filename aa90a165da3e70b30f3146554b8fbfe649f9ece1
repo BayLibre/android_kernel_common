@@ -1,0 +1,550 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11628b04_0ebe2017",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "Minor review comments...",
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bca1aca4_19fd8d52",
+        "filename": "drivers/trusty/trusty-mem.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "date?",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb43e5a_879d47dc",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "I think this file has been touched since then 😊",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a29b7737_ce47b980",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "all new exports need to be EXPORT_SYMBOL_GPL() please.",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 13
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "143c4ab4_e6fe4eb0",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "do we still have \"old\" clients if this is a new driver submission?",
+      "range": {
+        "startLine": 395,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 72
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ee5514_bfe704ae",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "sysfs_emit()",
+      "range": {
+        "startLine": 495,
+        "startChar": 8,
+        "endLine": 495,
+        "endChar": 17
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e80d607f_fedbc279",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "DEVICE_ATTR_RO()",
+      "range": {
+        "startLine": 498,
+        "startChar": 7,
+        "endLine": 498,
+        "endChar": 18
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43586bc4_6b914304",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "returning a pointer to a dynamically allocated memory chunk so that you now do not know who \"owns\" it?  Brave :)",
+      "range": {
+        "startLine": 510,
+        "startChar": 11,
+        "endLine": 510,
+        "endChar": 22
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ad5aa99_1a771ebe",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "so this can fail and not tell the caller that it failed?",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 618,
+        "endChar": 73
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6bafd51_b20b4098",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "drivers are quite if all is well.",
+      "range": {
+        "startLine": 647,
+        "startChar": 0,
+        "endLine": 647,
+        "endChar": 55
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac7cc009_65a419d4",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "drivers are quite if all is well.",
+      "range": {
+        "startLine": 680,
+        "startChar": 0,
+        "endLine": 680,
+        "endChar": 59
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76468214_40135618",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "of course it\u0027s Linux 😊",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 16
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d80412f0_50a3805c",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "is a typedef really needed?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 7
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0826904_3e09f437",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "please use proper kernel types like u64 and u32, not userspace types like these.",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 9
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41ff30d5_44598bca",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "why is a typedef needed?",
+      "range": {
+        "startLine": 105,
+        "startChar": 16,
+        "endLine": 105,
+        "endChar": 31
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05d7607c_3711f237",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "did you run this through checkpatch?\n\nBIT(4)?",
+      "range": {
+        "startLine": 106,
+        "startChar": 37,
+        "endLine": 106,
+        "endChar": 44
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "399ec7cc_0504e975",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "same question everywhere, why typedefs?",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 7
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ee97f0b_1b45ffaf",
+        "filename": "include/linux/trusty/arm_ffa.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "BIT() please.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 32
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea6b1126_c08023ca",
+        "filename": "include/linux/trusty/sm_err.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "date.",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f78310d_8ea3c10c",
+        "filename": "include/linux/trusty/sm_err.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "where are these to be able to keep them in sync?",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 5,
+        "endChar": 19
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16a1527b_29514e60",
+        "filename": "include/linux/trusty/sm_err.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "Yes, this is in-kernel linux code, no need to repeat it 😊",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 16
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "914d9714_0931a681",
+        "filename": "include/linux/trusty/smcall.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "date?",
+      "range": {
+        "startLine": 3,
+        "startChar": 22,
+        "endLine": 3,
+        "endChar": 26
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce16cc26_402295e5",
+        "filename": "include/linux/trusty/trusty.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "date",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4e3fcb_d434fd19",
+        "filename": "include/linux/trusty/trusty.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-17T08:57:29Z",
+      "side": 1,
+      "message": "move this up to under the paddr to get a semblance of packing in the structure?",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 17
+      },
+      "revId": "aa90a165da3e70b30f3146554b8fbfe649f9ece1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
