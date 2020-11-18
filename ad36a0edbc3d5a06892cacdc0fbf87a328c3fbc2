@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b1465d4_71e3897d",
+        "filename": "kernel/sched/topology.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-18T16:48:09Z",
+      "side": 1,
+      "message": "We were using sched_energy_enabled() which can be dropped. So, we don\u0027t need this export. Dropped in latest patch.",
+      "parentUuid": "91ef99ec_da798db5",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 40
+      },
+      "revId": "ad36a0edbc3d5a06892cacdc0fbf87a328c3fbc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6f3977a_262fd3c6",
@@ -37,6 +61,30 @@
       "writtenOn": "2020-11-18T16:05:09Z",
       "side": 1,
       "message": "Is this really needed? In practice that is always going to be the LLC, so it should be safe to assume this spans all online CPUs. And if you need this to iterate over the sched-groups, then I\u0027d suggest refactoring this code to use perf-domains instead.",
+      "range": {
+        "startLine": 621,
+        "startChar": 0,
+        "endLine": 621,
+        "endChar": 47
+      },
+      "revId": "ad36a0edbc3d5a06892cacdc0fbf87a328c3fbc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01f5e87b_e47db177",
+        "filename": "kernel/sched/topology.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-18T16:48:09Z",
+      "side": 1,
+      "message": "Yes, we were in need of this for iterating over the sched groups. Sure thing, we can refactor the code. Dropped this export in latest patch.",
+      "parentUuid": "f6f3977a_262fd3c6",
       "range": {
         "startLine": 621,
         "startChar": 0,
