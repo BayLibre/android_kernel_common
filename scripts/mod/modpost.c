@@ -29,6 +29,8 @@ static bool modversions;
 static bool all_versions;
 /* If we are modposting external module set to 1 */
 static bool external_module;
+#define MODULE_SCMVERSION_SIZE 64
+static char module_scmversion[MODULE_SCMVERSION_SIZE];
 /* Only warn about unresolved symbols */
 static bool warn_unresolved;
 
@@ -2295,6 +2297,23 @@ static void add_srcversion(struct buffer *b, struct module *mod)
 	}
 }
 
+/**
+ * add_scmversion() - Adds the MODULE_INFO macro for the scmversion.
+ * @b: Buffer to append to.
+ *
+ * This function fills in the module attribute `scmversion` for the kernel
+ * module. This is useful for determining a given module's SCM version on
+ * device via /sys/modules/<module>/scmversion and/or using the modinfo tool.
+ */
+static void add_scmversion(struct buffer *b)
+{
+	if (module_scmversion[0] != '\0') {
+		buf_printf(b, "\n");
+		buf_printf(b, "MODULE_INFO(scmversion, \"%s\");\n",
+			   module_scmversion);
+	}
+}
+
 static void write_buf(struct buffer *b, const char *fname)
 {
 	FILE *file;
@@ -2380,6 +2399,7 @@ static void write_mod_c_file(struct module *mod)
 	add_depends(&buf, mod);
 	add_moddevtable(&buf, mod);
 	add_srcversion(&buf, mod);
+	add_scmversion(&buf);
 
 	ret = snprintf(fname, sizeof(fname), "%s.mod.c", mod->name);
 	if (ret >= sizeof(fname)) {
@@ -2513,7 +2533,7 @@ int main(int argc, char **argv)
 	LIST_HEAD(dump_lists);
 	struct dump_list *dl, *dl2;
 
-	while ((opt = getopt(argc, argv, "ei:mnT:o:awENd:")) != -1) {
+	while ((opt = getopt(argc, argv, "ei:mnT:o:awENd:v:")) != -1) {
 		switch (opt) {
 		case 'e':
 			external_module = true;
@@ -2549,6 +2569,9 @@ int main(int argc, char **argv)
 			break;
 		case 'd':
 			missing_namespace_deps = optarg;
+			break;
+		case 'v':
+			strncpy(module_scmversion, optarg, sizeof(module_scmversion) - 1);
 			break;
 		default:
 			exit(1);
