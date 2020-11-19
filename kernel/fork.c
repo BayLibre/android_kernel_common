@@ -108,6 +108,8 @@
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/task.h>
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/sched.h>
 
 /*
  * Minimum number of threads to boot the kernel
@@ -2359,6 +2361,7 @@ bad_fork_cleanup_perf:
 	perf_event_free_task(p);
 bad_fork_cleanup_policy:
 	lockdep_free_task(p);
+	trace_android_vh_cleanup_policy(p);
 #ifdef CONFIG_NUMA
 	mpol_put(p->mempolicy);
 bad_fork_cleanup_threadgroup_lock:

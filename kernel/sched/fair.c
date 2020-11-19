@@ -4133,6 +4133,7 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
 			thresh >>= 1;
 
 		vruntime -= thresh;
+		trace_android_rvh_place_entity(se, vruntime);
 	}
 
 	/* ensure we never gain time by being placed backwards. */
@@ -8178,6 +8179,8 @@ static void update_cpu_capacity(struct sched_domain *sd, int cpu)
 	unsigned long capacity = scale_rt_capacity(cpu);
 	struct sched_group *sdg = sd->groups;
 
+	trace_android_rvh_update_cpu_capacity(&capacity);
+
 	cpu_rq(cpu)->cpu_capacity_orig = arch_scale_cpu_capacity(cpu);
 
 	if (!capacity)
@@ -9557,6 +9560,7 @@ static int should_we_balance(struct lb_env *env)
 {
 	struct sched_group *sg = env->sd->groups;
 	int cpu;
+	bool ret = false, balance = false;
 
 	/*
 	 * Ensure the balancing environment is consistent; can happen
@@ -9580,6 +9584,10 @@ static int should_we_balance(struct lb_env *env)
 		/* Are we the first idle CPU? */
 		return cpu == env->dst_cpu;
 	}
+
+	trace_android_rvh_should_we_balance(sg, &ret, &balance);
+	if (ret)
+		return balance;
 
 	/* Are we the first CPU of this group ? */
 	return group_balance_cpu(sg) == env->dst_cpu;
