@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921895c0_e2325b0b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-20T00:52:29Z",
+      "side": 1,
+      "message": "please conform to guidelines (see Lint message)",
+      "revId": "da09c08ba5a6322c266c50a4e16140b210f23155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15a1c7be_487e1542",
+        "filename": "kernel/fork.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2363,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-20T00:52:29Z",
+      "side": 1,
+      "message": "Does this need to be a restricted hook? The context looks safe for a regular hook.",
+      "revId": "da09c08ba5a6322c266c50a4e16140b210f23155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfcb06d3_dbf4a77c",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4026,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-20T00:52:29Z",
+      "side": 1,
+      "message": "does this need to be a restricted hook?",
+      "revId": "da09c08ba5a6322c266c50a4e16140b210f23155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721e181e_50a0fe0a",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4042,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-20T00:52:29Z",
+      "side": 1,
+      "message": "does this need to be a restricted hook?\n\nWe\u0027ll want to get rid of the next one since it provides no value over this one.",
+      "revId": "da09c08ba5a6322c266c50a4e16140b210f23155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e8a1d23_088f1756",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-20T00:52:29Z",
+      "side": 1,
+      "message": "This changes the control flow if the hook is not attached. Please either initialize ret to 0 or make this \"if (!ret)\"",
+      "revId": "da09c08ba5a6322c266c50a4e16140b210f23155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
