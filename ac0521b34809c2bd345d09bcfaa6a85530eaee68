@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29f5543_ce548e0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "Looks good, a few minor comments below.\n\nBut the reference counting needs to be fixed up, see inline comment for details.",
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c036ed4c_83b90dc7",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "are you sure?\n\n(I have to ask...)",
+      "range": {
+        "startLine": 1,
+        "startChar": 35,
+        "endLine": 1,
+        "endChar": 36
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cd9c03b_ec9c28be",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "bonus is that this handles your reference counting logic for you.",
+      "range": {
+        "startLine": 116,
+        "startChar": 37,
+        "endLine": 117,
+        "endChar": 46
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62f284ce_980097dd",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "either you use proper reference counting, or none at all.\n\nWhy is this needed?  What\u0027s wrong with the reference counting the misc device provides you?\n\nIf you really want to roll your own like this, disconnect the misc device from your structure (make it a *) and then use a kref so you get proper reference counting logic, and you don\u0027t have to hand-roll your own here, which seems flaky...",
+      "range": {
+        "startLine": 555,
+        "startChar": 4,
+        "endLine": 555,
+        "endChar": 14
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "923dc0ca_5a87093a",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "wrong return value.\n\nIf you don\u0027t support a file_operations callback, just leave it null, no need to provide a function like this, right?\n\nSame thing for fasync, splice_write, and poll.",
+      "range": {
+        "startLine": 903,
+        "startChar": 9,
+        "endLine": 903,
+        "endChar": 19
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4072e037_26ed76da",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "-ENOMEM",
+      "range": {
+        "startLine": 933,
+        "startChar": 7,
+        "endLine": 933,
+        "endChar": 13
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "634f9629_47ada1f8",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 962,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-20T08:07:42Z",
+      "side": 1,
+      "message": "-ENOMEM?",
+      "range": {
+        "startLine": 962,
+        "startChar": 7,
+        "endLine": 962,
+        "endChar": 13
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
