@@ -16,6 +16,121 @@
       "message": "Please have a look at https://android-review.googlesource.com/c/kernel/common/+/1501631 (including the discussion) as some of these are duplicates and should be removed.",
       "revId": "9104f209ceb74c7738ab8ccd41d1923c872c8282",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a9c59f_81816e98",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-23T17:48:16Z",
+      "side": 1,
+      "message": "Is this really needed? It should be trivial to maintain this in your module directly as all updates to this are tightly coupled with you cpufreq driver.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "9104f209ceb74c7738ab8ccd41d1923c872c8282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "607a7f29_0b3f6c10",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6857,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-23T17:48:16Z",
+      "side": 1,
+      "message": "A lot of these APIs (or the ones to migrate tasks off CPUs and such) seem to be isolation/pause-related. Will we need all of them with Pause?",
+      "range": {
+        "startLine": 6856,
+        "startChar": 1,
+        "endLine": 6857,
+        "endChar": 34
+      },
+      "revId": "9104f209ceb74c7738ab8ccd41d1923c872c8282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae88a7f3_999574ce",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7073,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-23T17:48:16Z",
+      "side": 1,
+      "message": "Out of curiosity, is this the solution to b/172642309 ?",
+      "range": {
+        "startLine": 7073,
+        "startChar": 0,
+        "endLine": 7073,
+        "endChar": 31
+      },
+      "revId": "9104f209ceb74c7738ab8ccd41d1923c872c8282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d03a32f5_4058db6c",
+        "filename": "kernel/sched/cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-23T17:48:16Z",
+      "side": 1,
+      "message": "Why? Do you want to override it? cpufreq_add_update_util_hook() below is already exported, can you use that?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "9104f209ceb74c7738ab8ccd41d1923c872c8282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675f2f2f_129f0508",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2407,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-23T17:48:16Z",
+      "side": 1,
+      "message": "Why would you export a static inline function? That seems very wrong.",
+      "range": {
+        "startLine": 2407,
+        "startChar": 0,
+        "endLine": 2407,
+        "endChar": 39
+      },
+      "revId": "9104f209ceb74c7738ab8ccd41d1923c872c8282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
