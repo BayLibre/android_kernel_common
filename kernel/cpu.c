@@ -1253,6 +1253,9 @@ int resume_cpus(struct cpumask *cpus)
 	if (cpumask_empty(cpus))
 		goto err_cpu_maps_update;
 
+	for_each_cpu(cpu, cpus)
+		set_cpu_active(cpu, true);
+
 	cpus_write_lock();
 
 	cpuhp_tasks_frozen = 0;
