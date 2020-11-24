@@ -16,6 +16,24 @@
       "message": "Why do we need this? AFAIK, the Trusty support is supposed to be a 5.10 feature only, relying on the new API exposed for IPIs.\n\nI\u0027m definitely not supportive of this, as this deviates from upstream in an unmaintainable way.",
       "revId": "fe63f4adf1891ead4d68718b13960de988d0307f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0204c83d_1bd97759",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2020-11-24T10:45:28Z",
+      "side": 1,
+      "message": "Hi Marc,\n\n\u003e Why do we need this? \n\nThis is request from our internal team of security.\nJust like the description in commit message: we want to \"forwarding IPIs to the trustzone OS\". The case was we have some firmware need to be verified in trusty from userland.\n\n\u003e the Trusty support is supposed to be a 5.10 feature only,\n\nI think you are talking about this patch series\nhttps://lwn.net/Articles/820949/ ?\n\nIs it possible to backport them into a11-5.4?\n\nplease also refer to our request ticket @\nhttps://partnerissuetracker.corp.google.com/u/1/issues/174105231\n\nRegards,\nOrson",
+      "parentUuid": "b0f893c1_62bd3c40",
+      "revId": "fe63f4adf1891ead4d68718b13960de988d0307f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
