@@ -51,6 +51,24 @@
       "message": "So a static export shows up as a \"double\" export?  Odd.\n\nAnyway, good idea.",
       "revId": "5857979f1bfb3e0028ca58249180c4ea56ea3d11",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bde4454_03f6c93c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-24T16:51:37Z",
+      "side": 1,
+      "message": "A static export will trigger a warning in modpost, but nothing prevents 2 static functions defined in separate translation units from having the same name. And as a result modules will be able to dynamically link against the \u0027first\u0027 one, so a lot of fun ...\n\nPerhaps the alternative would be to make static exports fatal and just avoid the issue from the start ...",
+      "parentUuid": "2dfc1c92_dbc12152",
+      "revId": "5857979f1bfb3e0028ca58249180c4ea56ea3d11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
