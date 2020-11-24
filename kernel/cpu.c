@@ -37,6 +37,7 @@
 #include <trace/events/power.h>
 #define CREATE_TRACE_POINTS
 #include <trace/events/cpuhp.h>
+#include "sched/sched.h"
 
 #include "smpboot.h"
 
@@ -1252,6 +1253,23 @@ int resume_cpus(struct cpumask *cpus)
 
 	if (cpumask_empty(cpus))
 		goto err;
+
+	/* set all CPUs active in this request */
+	for_each_cpu(cpu, cpus) {
+		set_cpu_active(cpu, true);
+	}
+
+	/* rebuild the domains */
+	cpuset_update_active_cpus();
+
+	/* wait for the domains to be rebuilt */
+	cpuset_wait_for_hotplug();
+
+	/* send the IPI to each CPU */
+	for_each_cpu(cpu, cpus) {
+		atomic_fetch_or(NOHZ_KICK_MASK, nohz_flags(cpu));
+		smp_send_reschedule(cpu);
+	}
 
 	cpus_write_lock();
 
