@@ -87,6 +87,24 @@
       "parentUuid": "9bde4454_03f6c93c",
       "revId": "5857979f1bfb3e0028ca58249180c4ea56ea3d11",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7630ec0e_645e7d2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-24T18:07:35Z",
+      "side": 1,
+      "message": "Yeah, that is horrible but it works somehow. The compiler will keep an out-of-line copy I suppose.\n\nmodpost upstream reports that as just a warning since 2019 -- there were a few in-tree occurences so I think using a warn was to avoid breaking builds.",
+      "parentUuid": "57e4135d_d3f5d630",
+      "revId": "5857979f1bfb3e0028ca58249180c4ea56ea3d11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
