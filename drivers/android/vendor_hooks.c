@@ -212,6 +212,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_gic_v3_set_affinity);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_set_affinity);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_v3_affinity_init);
+<<<<<<< HEAD   (1afccd UPSTREAM: mm: make find_extend_vma() fail if write lock not )
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterrupt_tasks);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterrupt_tasks_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_meminfo_proc_show);
@@ -315,3 +316,19 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rmqueue_smallest_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_one_page_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_suspend_epoch_val);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_resume_epoch_val);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_max_freq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_table_limits);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_newidle_balance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_nohz_balancer_kick);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_busiest_queue);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_migrate_queued_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_energy_efficient_cpu);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_sugov_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_setaffinity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_cpus_allowed);
+>>>>>>> CHANGE (4d1ac6 ANDROID: sched/cpuset: Add vendor hook to change tasks affin)

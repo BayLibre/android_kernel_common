@@ -128,6 +128,7 @@ DECLARE_RESTRICTED_HOOK(android_rvh_sched_setaffinity,
 	TP_PROTO(struct task_struct *p, const struct cpumask *in_mask, int *retval),
 	TP_ARGS(p, in_mask, retval), 1);
 
+<<<<<<< HEAD   (1afccd UPSTREAM: mm: make find_extend_vma() fail if write lock not )
 DECLARE_RESTRICTED_HOOK(android_rvh_sched_getaffinity,
 	TP_PROTO(struct task_struct *p, struct cpumask *in_mask),
 	TP_ARGS(p, in_mask), 1);
@@ -391,6 +392,40 @@ DECLARE_HOOK(android_vh_mmput,
 
 /* macro versions of hooks are no longer required */
 
+=======
+DECLARE_RESTRICTED_HOOK(android_rvh_update_cpus_allowed,
+	TP_PROTO(struct task_struct *p, cpumask_var_t cpus_requested,
+		 const struct cpumask *new_mask, int *ret),
+	TP_ARGS(p, cpus_requested, new_mask, ret), 1);
+#else
+#define trace_android_rvh_select_task_rq_fair(p, prev_cpu, sd_flag, wake_flags, new_cpu)
+#define trace_android_rvh_select_task_rq_rt(p, prev_cpu, sd_flag, wake_flags, new_cpu)
+#define trace_android_rvh_select_fallback_rq(cpu, p, dest_cpu)
+#define trace_android_vh_scheduler_tick(rq)
+#define trace_android_rvh_enqueue_task(rq, p)
+#define trace_android_rvh_dequeue_task(rq, p)
+#define trace_android_rvh_can_migrate_task(p, dst_cpu, can_migrate)
+#define trace_android_rvh_find_lowest_rq(p, local_cpu_mask, ret, lowest_cpu)
+#define trace_android_rvh_prepare_prio_fork(p)
+#define trace_android_rvh_finish_prio_fork(p)
+#define trace_android_rvh_rtmutex_prepare_setprio(p, pi_task)
+#define trace_android_rvh_set_user_nice(p, nice)
+#define trace_android_rvh_setscheduler(p)
+#define trace_android_rvh_find_busiest_group(busiest, dst_rq, out_balance)
+#define trace_android_vh_dump_throttled_rt_tasks(cpu, clock, rt_period, rt_runtime, rt_period_timer_expires)
+#define trace_android_vh_jiffies_update(unused)
+#define trace_android_rvh_sched_newidle_balance(this_rq, rf, pulled_task, done)
+#define trace_android_rvh_sched_nohz_balancer_kick(rq, flags, done)
+#define trace_android_rvh_find_busiest_queue(dst_cpu, group, env_cpus, busiest, done)
+#define trace_android_rvh_migrate_queued_task(rq, rf, p, new_cpu, detached)
+#define trace_android_rvh_find_energy_efficient_cpu(p, prev_cpu, sync, new_cpu)
+#define trace_android_vh_set_sugov_sched_attr(attr)
+#define trace_android_rvh_set_iowait(p, should_iowait_boost)
+#define trace_android_rvh_set_sugov_update(sg_policy, next_freq, should_update)
+#define trace_android_rvh_sched_setaffinity(p, in_mask, retval)
+#define trace_android_rvh_update_cpus_allowed(p, cpus_requested, new_mask, ret)
+#endif
+>>>>>>> CHANGE (4d1ac6 ANDROID: sched/cpuset: Add vendor hook to change tasks affin)
 #endif /* _TRACE_HOOK_SCHED_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
