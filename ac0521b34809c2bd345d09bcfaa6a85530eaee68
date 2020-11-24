@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0692061_9c27bd86",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T21:16:27Z",
+      "side": 1,
+      "message": "I\u0027m using kref now.  I\u0027m not marking this as resolved, though, as I think that if there was a bug related to the reference counting before then there would still be one.\n\nI guess the fundamental reason I think I need a reference count is that I have resources I need access to after misc_unregister() until the cooresponding fops.release has been called.  I poked around the misc code again and don\u0027t see anything existing that I can hook in to, and I don\u0027t see a way for it to do something like ensuring that misc_unregistrer() blocks until release completes (conceptually I\u0027m not sure how you\u0027d even do that).",
+      "parentUuid": "1dccf286_9c5f83c4",
+      "range": {
+        "startLine": 555,
+        "startChar": 4,
+        "endLine": 555,
+        "endChar": 14
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "923dc0ca_5a87093a",
         "filename": "drivers/md/dm-user.c",
         "patchSetId": 6
