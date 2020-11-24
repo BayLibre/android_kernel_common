@@ -16,6 +16,24 @@
       "message": "I could imagine upstream is interested in that as well. It manifests an error condition, right?\n\nIs this also triggered if two modules export the same symbol? In which case this would be ok if they are not loaded at the same time.",
       "revId": "5857979f1bfb3e0028ca58249180c4ea56ea3d11",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "465adf46_aee379c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-24T15:23:56Z",
+      "side": 1,
+      "message": "\u003e I could imagine upstream is interested in that as well. It manifests an error condition, right?\n\nNot sure? Clearly upstream has been happy with this being non-fatal for a long time so ...\n\n\u003e Is this also triggered if two modules export the same symbol? In which case this would be ok if they are not loaded at the same time.\n\nGood point, we should probably limit that to double exports from within the same object. Maybe with that addition that would make sense for upstream. I\u0027ll have a go at it.",
+      "parentUuid": "46a3d965_fe30cc84",
+      "revId": "5857979f1bfb3e0028ca58249180c4ea56ea3d11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
