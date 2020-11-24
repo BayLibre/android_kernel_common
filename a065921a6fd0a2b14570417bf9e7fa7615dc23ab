@@ -50,6 +50,46 @@
       "message": "Jian-min, please give a +1 (this patch adds a parameter to jian-min.liu@mediatek.com in sched/core.c)",
       "revId": "a065921a6fd0a2b14570417bf9e7fa7615dc23ab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e285faa_5816477a",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-24T08:31:42Z",
+      "side": 1,
+      "message": "we have trace_android_rvh_enqueue_task() hook in enqueue_task(). do we still need this?",
+      "range": {
+        "startLine": 1388,
+        "startChar": 1,
+        "endLine": 1388,
+        "endChar": 34
+      },
+      "revId": "a065921a6fd0a2b14570417bf9e7fa7615dc23ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3495945_53fcfbf4",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1402,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-24T08:31:42Z",
+      "side": 1,
+      "message": "ditto. we have trace_android_rvh_dequeue_task(). do we still need this?",
+      "revId": "a065921a6fd0a2b14570417bf9e7fa7615dc23ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
