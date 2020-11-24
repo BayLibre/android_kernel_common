@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37efc058_b2d0c369",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T19:38:44Z",
+      "side": 1,
+      "message": "Not really.  I started by copying this file from dm-zero.c, including the license heder.  I\u0027m not sure there\u0027s actually any of that code left, so I dropped their copyright when someone else complained.  I guess I always err on the side of keeping stuff so I left this one alone, but if there wasn\u0027t sufficient code left over to warrant the copyrights then I guess there isn\u0027t to warrant the \"+\" either.",
+      "parentUuid": "c036ed4c_83b90dc7",
+      "range": {
+        "startLine": 1,
+        "startChar": 35,
+        "endLine": 1,
+        "endChar": 36
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5cd9c03b_ec9c28be",
         "filename": "drivers/md/dm-user.c",
         "patchSetId": 6
@@ -54,6 +78,30 @@
       "writtenOn": "2020-11-20T08:07:42Z",
       "side": 1,
       "message": "bonus is that this handles your reference counting logic for you.",
+      "range": {
+        "startLine": 116,
+        "startChar": 37,
+        "endLine": 117,
+        "endChar": 46
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df367354_80a46bd8",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T19:38:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5cd9c03b_ec9c28be",
       "range": {
         "startLine": 116,
         "startChar": 37,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1dccf286_9c5f83c4",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T19:38:44Z",
+      "side": 1,
+      "message": "So there\u0027s essentially three questions here:\n\n* Why is this improper reference counting?\n* Why am I not just using some existing reference counting mechanism?\n* Why isn\u0027t the miscdev reference counting sufficient?\n\nThat last one is probably the most important, as if my assumptions there don\u0027t hold then the others don\u0027t matter.  There\u0027s a comment above about why this isn\u0027t handled by the miscdev reference count:\n\n````\n\t/*\n\t * Device mapper\u0027s target destructor triggers tearing this all down,\n\t * but we can\u0027t actually free until every channel associated with this\n\t * target has been destroyed.  Channels each have a reference to their\n\t * target, and there is an additional single reference that corresponds\n\t * to both DM and the misc device (both of which are destroyed by DM).\n\t *\n\t * In the common case userspace will be asleep waiting for a new\n\t * message when device mapper decides to destroy the target, which\n\t * means no new messages will appear.  The destroyed flag triggers a\n\t * wakeup, which will end up removing the reference.\n\t */\n````\n\nif that doesn\u0027t explain it well enough then I\u0027d prefer to fix the comment.\n\nAs far as why I\u0027m not using kref, it\u0027s essentially just laziness: I didn\u0027t want to chase around the locks in another subsystem, as I already have that potential issue with the shared lock.  I don\u0027t think it would actually be necessary to convert the miscdev to a pointer in order to use kref, but if it is that\u0027s touch of a headache: I didn\u0027t see a private data field in the miscdev (I\u0027d originally added one, but decided to drop that in order to avoid the ABI break), which would be the easiest way to do that.\n\nConverting it over is probably the right thing to do, so I\u0027ll go do it, but I\u0027d be interesting in knowing if there\u0027s anything actually broken about this.",
+      "parentUuid": "62f284ce_980097dd",
+      "range": {
+        "startLine": 555,
+        "startChar": 4,
+        "endLine": 555,
+        "endChar": 14
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "923dc0ca_5a87093a",
         "filename": "drivers/md/dm-user.c",
         "patchSetId": 6
@@ -100,6 +172,30 @@
       "writtenOn": "2020-11-20T08:07:42Z",
       "side": 1,
       "message": "wrong return value.\n\nIf you don\u0027t support a file_operations callback, just leave it null, no need to provide a function like this, right?\n\nSame thing for fasync, splice_write, and poll.",
+      "range": {
+        "startLine": 903,
+        "startChar": 9,
+        "endLine": 903,
+        "endChar": 19
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47c77f1b_2dac51bd",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T19:38:44Z",
+      "side": 1,
+      "message": "I left these here because I was planning on implementing most of them.  I guess maybe ioctl isn\u0027t all that useful, but splice and poll are definately.  I\u0027ll just drop them for now.",
+      "parentUuid": "923dc0ca_5a87093a",
       "range": {
         "startLine": 903,
         "startChar": 9,
@@ -133,6 +229,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86784c8e_0d76e7ee",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T19:38:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4072e037_26ed76da",
+      "range": {
+        "startLine": 933,
+        "startChar": 7,
+        "endLine": 933,
+        "endChar": 13
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "634f9629_47ada1f8",
@@ -146,6 +266,30 @@
       "writtenOn": "2020-11-20T08:07:42Z",
       "side": 1,
       "message": "-ENOMEM?",
+      "range": {
+        "startLine": 962,
+        "startChar": 7,
+        "endLine": 962,
+        "endChar": 13
+      },
+      "revId": "ac0521b34809c2bd345d09bcfaa6a85530eaee68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39258720_25004925",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 962,
+      "author": {
+        "id": 1598726
+      },
+      "writtenOn": "2020-11-24T19:38:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "634f9629_47ada1f8",
       "range": {
         "startLine": 962,
         "startChar": 7,
