@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69c9c166_d38f32e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-25T02:42:58Z",
+      "side": 1,
+      "message": "LGTM. minor comment inline",
+      "revId": "a4bdbcd8dda722f22163b299116bf4e01123e1f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4876045c_c36706f1",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3018,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-25T02:42:58Z",
+      "side": 1,
+      "message": "should we move this hook under if (success) and rename the hook to rvh_task_woken()",
+      "range": {
+        "startLine": 3018,
+        "startChar": 1,
+        "endLine": 3018,
+        "endChar": 37
+      },
+      "revId": "a4bdbcd8dda722f22163b299116bf4e01123e1f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
