@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f836347e_5b4791d2",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 11319,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-11-25T01:17:03Z",
+      "side": 1,
+      "message": "In that case, instead of exporting fair_class, can you add an is_fair_class() function that we can export for this check?",
+      "parentUuid": "947716e1_89321aea",
+      "revId": "328f15817e4eac7ad35201a40a748d5155f15f55",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb55d795_44b6d812",
         "filename": "kernel/sched/topology.c",
         "patchSetId": 4
