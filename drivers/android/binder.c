@@ -957,6 +957,7 @@ static void binder_wakeup_poll_threads_ilocked(struct binder_proc *proc,
 		thread = rb_entry(n, struct binder_thread, rb_node);
 		if (thread->looper & BINDER_LOOPER_STATE_POLL &&
 		    binder_available_for_proc_work_ilocked(thread)) {
+			trace_android_vh_binder_wakeup_poll_threads_ilocked(thread, current);
 			if (sync)
 				wake_up_interruptible_sync(&thread->wait);
 			else
@@ -1016,6 +1017,7 @@ static void binder_wakeup_thread_ilocked(struct binder_proc *proc,
 	assert_spin_locked(&proc->inner_lock);
 
 	if (thread) {
+		trace_android_vh_binder_wakeup_thread_ilocked(thread, current);
 		if (sync)
 			wake_up_interruptible_sync(&thread->wait);
 		else
@@ -4671,6 +4673,7 @@ retry:
 		ptr += trsize;
 
 		trace_binder_transaction_received(t);
+		trace_android_vh_binder_thread_read(current);
 		binder_stat_br(proc, thread, cmd);
 		binder_debug(BINDER_DEBUG_TRANSACTION,
 			     "%d:%d %s %d %d:%d, cmd %d size %zd-%zd ptr %016llx-%016llx\n",
