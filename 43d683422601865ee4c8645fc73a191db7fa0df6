@@ -16,6 +16,52 @@
       "message": "Thanks Greg/Todd. Please help review latest patch which addressed your comments from previous patch.\n\nBest,\nSatya",
       "revId": "43d683422601865ee4c8645fc73a191db7fa0df6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24a02011_2520e172",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T12:17:57Z",
+      "side": 1,
+      "message": "shouldn\u0027t this, and the other tracepoint, if we really want these, be restricted?",
+      "range": {
+        "startLine": 960,
+        "startChar": 17,
+        "endLine": 960,
+        "endChar": 20
+      },
+      "revId": "43d683422601865ee4c8645fc73a191db7fa0df6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ef38aa2_32a4ad02",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T12:17:57Z",
+      "side": 1,
+      "message": "a spinlock is held right now, is that a wise thing to also call a random trace point?",
+      "range": {
+        "startLine": 1020,
+        "startChar": 2,
+        "endLine": 1020,
+        "endChar": 47
+      },
+      "revId": "43d683422601865ee4c8645fc73a191db7fa0df6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
