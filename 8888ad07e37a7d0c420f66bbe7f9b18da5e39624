@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fff84e6_2e128aa8",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T17:33:11Z",
+      "side": 1,
+      "message": "meta-comment, shouldn\u0027t these other binder hooks also be \"restricted\"?",
+      "range": {
+        "startLine": 49,
+        "startChar": 37,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "8888ad07e37a7d0c420f66bbe7f9b18da5e39624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e138638_c1ef9a0f",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T17:33:11Z",
+      "side": 1,
+      "message": "these should be an inline function, not a define, to get proper type safety when this is not enabled.\n\nFor some reason the other ones in this file are not that way, sorry about that.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 66
+      },
+      "revId": "8888ad07e37a7d0c420f66bbe7f9b18da5e39624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
