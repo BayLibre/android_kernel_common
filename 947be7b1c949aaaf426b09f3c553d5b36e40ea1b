@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "372ef462_26ef108f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-26T04:15:04Z",
+      "side": 1,
+      "message": "Thanks for the review Greg. Unfortunately, we can\u0027t get our modifications to upstream as they depend on WALT.",
+      "parentUuid": "4095ddb1_d89ff5af",
+      "revId": "947be7b1c949aaaf426b09f3c553d5b36e40ea1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32830a3c_a102d380",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "392d0ae6_ddb2dd09",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-26T04:15:04Z",
+      "side": 1,
+      "message": "Right, associated task_struct should do. Fixed in latest pacth.",
+      "parentUuid": "32830a3c_a102d380",
+      "revId": "947be7b1c949aaaf426b09f3c553d5b36e40ea1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bd88e8b_88854401",
@@ -48,6 +84,30 @@
       "writtenOn": "2020-11-25T21:46:40Z",
       "side": 1,
       "message": "thread-\u003etask instead?",
+      "range": {
+        "startLine": 1020,
+        "startChar": 48,
+        "endLine": 1020,
+        "endChar": 54
+      },
+      "revId": "947be7b1c949aaaf426b09f3c553d5b36e40ea1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c29a6e27_978061a3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-26T04:15:04Z",
+      "side": 1,
+      "message": "yes, fixed in latest patch.",
+      "parentUuid": "9bd88e8b_88854401",
       "range": {
         "startLine": 1020,
         "startChar": 48,
@@ -95,6 +155,30 @@
       "side": 1,
       "message": "You can get \"current\" in your handler, so I agree with Greg -- this adds nothing. Use trace_binder_transaction_received()",
       "parentUuid": "bdca4462_9e84224c",
+      "range": {
+        "startLine": 4676,
+        "startChar": 0,
+        "endLine": 4676,
+        "endChar": 47
+      },
+      "revId": "947be7b1c949aaaf426b09f3c553d5b36e40ea1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "011c51dc_155cc0e1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4676,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-26T04:15:04Z",
+      "side": 1,
+      "message": "Agreed, removed in latest patch.",
+      "parentUuid": "78ef3fe5_aca00467",
       "range": {
         "startLine": 4676,
         "startChar": 0,
