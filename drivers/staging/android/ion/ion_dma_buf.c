@@ -291,13 +291,13 @@ static int ion_dma_buf_vmap(struct dma_buf *dmabuf, struct dma_buf_map *map)
 	return 0;
 }
 
-static void ion_dma_buf_vunmap(struct dma_buf *dmabuf, void *vaddr)
+static void ion_dma_buf_vunmap(struct dma_buf *dmabuf, struct dma_buf_map *map)
 {
 	struct ion_buffer *buffer = dmabuf->priv;
 	struct ion_heap *heap = buffer->heap;
 
 	if (heap->buf_ops.vunmap) {
-		heap->buf_ops.vunmap(dmabuf, vaddr);
+		heap->buf_ops.vunmap(dmabuf, map);
 		return;
 	}
 
