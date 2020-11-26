@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "498d0b84_6e6f75b5",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2107,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-26T02:28:48Z",
+      "side": 1,
+      "message": "yes, The patch was not rebased to the tip. I will fix it and upload now.",
+      "parentUuid": "8bca05fe_841868bf",
+      "range": {
+        "startLine": 2107,
+        "startChar": 0,
+        "endLine": 2107,
+        "endChar": 32
+      },
+      "revId": "c9d050c2b2a89e04cf1b5d21e6f8da0ada1820aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c0b6f3b_d2f50c8b",
@@ -72,6 +96,24 @@
       "writtenOn": "2020-11-25T01:40:34Z",
       "side": 1,
       "message": "why is this one needed? Isn\u0027t the capacity updated during the pause sequence?",
+      "revId": "c9d050c2b2a89e04cf1b5d21e6f8da0ada1820aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f34c43_e7ffc9b3",
+        "filename": "kernel/sched/topology.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1173,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-11-26T02:28:48Z",
+      "side": 1,
+      "message": "This is not needed for now. I am splitting the patch to export the essential symbols needed for WALT tracking. if required, a separate patch for what all required for other stuff.",
+      "parentUuid": "32ea038e_ec8683bd",
       "revId": "c9d050c2b2a89e04cf1b5d21e6f8da0ada1820aa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
