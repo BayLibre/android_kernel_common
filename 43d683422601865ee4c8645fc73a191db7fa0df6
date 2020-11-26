@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee45416e_3f9a4813",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-26T16:29:16Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. Updated.",
+      "parentUuid": "24a02011_2520e172",
+      "range": {
+        "startLine": 960,
+        "startChar": 17,
+        "endLine": 960,
+        "endChar": 20
+      },
+      "revId": "43d683422601865ee4c8645fc73a191db7fa0df6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ef38aa2_32a4ad02",
@@ -54,6 +78,30 @@
       "writtenOn": "2020-11-26T12:17:57Z",
       "side": 1,
       "message": "a spinlock is held right now, is that a wise thing to also call a random trace point?",
+      "range": {
+        "startLine": 1020,
+        "startChar": 2,
+        "endLine": 1020,
+        "endChar": 47
+      },
+      "revId": "43d683422601865ee4c8645fc73a191db7fa0df6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7f9bcd_de526be0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-11-26T16:29:16Z",
+      "side": 1,
+      "message": "Don\u0027t see other way around it. Don\u0027t think it would be an issue either as we just do few checks and set/clear flags. Please let me know if you see any potential issues.",
+      "parentUuid": "8ef38aa2_32a4ad02",
       "range": {
         "startLine": 1020,
         "startChar": 2,
