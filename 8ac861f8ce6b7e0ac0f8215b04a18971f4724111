@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32cf7203_432d8e68",
+        "filename": "include/linux/debug_kinfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T12:57:09Z",
+      "side": 1,
+      "message": "why a include/linux/ .h file for when there is only one in-kernel user?  This should just be in the .c file itself, right?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 65
+      },
+      "revId": "8ac861f8ce6b7e0ac0f8215b04a18971f4724111",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2cfca97_89325869",
+        "filename": "include/linux/debug_kinfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T12:57:09Z",
+      "side": 1,
+      "message": "if these all cross the user/kernel boundry, they need to be the \"__\" types (__u8) for this case.",
+      "range": {
+        "startLine": 22,
+        "startChar": 1,
+        "endLine": 22,
+        "endChar": 3
+      },
+      "revId": "8ac861f8ce6b7e0ac0f8215b04a18971f4724111",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37bba7e5_c57c853e",
+        "filename": "include/linux/debug_kinfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T12:57:09Z",
+      "side": 1,
+      "message": "__u8?",
+      "range": {
+        "startLine": 54,
+        "startChar": 1,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "8ac861f8ce6b7e0ac0f8215b04a18971f4724111",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a344d656_2dddec12",
+        "filename": "include/linux/debug_kinfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-11-26T12:57:09Z",
+      "side": 1,
+      "message": "__u32?",
+      "range": {
+        "startLine": 58,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 4
+      },
+      "revId": "8ac861f8ce6b7e0ac0f8215b04a18971f4724111",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
