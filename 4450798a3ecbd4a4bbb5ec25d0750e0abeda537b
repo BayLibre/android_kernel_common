@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a56fafc_de767eae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-27T09:02:30Z",
+      "side": 1,
+      "message": "Almost there...",
+      "revId": "4450798a3ecbd4a4bbb5ec25d0750e0abeda537b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b264a1b_d2e9db19",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2020-11-27T09:02:30Z",
+      "side": 1,
+      "message": "That one got lost in translation I think. Why it needed? It should be trivial to maintain that state from your cpufreq driver directly.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "4450798a3ecbd4a4bbb5ec25d0750e0abeda537b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
