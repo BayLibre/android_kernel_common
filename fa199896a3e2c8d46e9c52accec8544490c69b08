@@ -16,6 +16,24 @@
       "message": "Kernel-4.14＠Ｒ also need this patch",
       "revId": "fa199896a3e2c8d46e9c52accec8544490c69b08",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c08fbaf0_a451afaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2020-11-30T10:09:27Z",
+      "side": 1,
+      "message": "Hi Kuohong,\n\nCan you please double check it\u0027s not available in 4.14 for R?\nhttps://android.googlesource.com/kernel/common/+log/refs/heads/android-4.14-stable/?s\u003d4dda03640143d\n\nCan you please also run `atest FileObserverLegacyPathTest` on your device to see if it\u0027s affected?\n\nThanks,\nAlessio",
+      "parentUuid": "6159b4e1_8d9e2895",
+      "revId": "fa199896a3e2c8d46e9c52accec8544490c69b08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
