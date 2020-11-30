@@ -52,6 +52,24 @@
       "parentUuid": "c08fbaf0_a451afaa",
       "revId": "fa199896a3e2c8d46e9c52accec8544490c69b08",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5603033_23a21a28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2020-11-30T12:59:14Z",
+      "side": 1,
+      "message": "Hi Kuohong,\n\nCan you please be more precise with where this thing is missing?\nWhat is the output of FileObserverLegacyPathTest?\n\nIf you are referring to 4.14 (https://android.googlesource.com/kernel/common/+/4dda03640143db368c5c74d57640db6494434761%5E%21/), there fuse_dentry_canonical_path uses fuse_request_send directly, so no fuse_simple_request are required. In later kernels (\u003e\u003d 4.19) I refactored the original change to use fuse_simple_request.\n\nThanks,\nAlessio",
+      "parentUuid": "8d6cff3d_5e097fce",
+      "revId": "fa199896a3e2c8d46e9c52accec8544490c69b08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
