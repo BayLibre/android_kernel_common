@@ -71,6 +71,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2be6b2_5afe4088",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-12-01T15:33:16Z",
+      "side": 1,
+      "message": "Ok, it doesn\u0027t actually matter much, but I\u0027d prefer that these vendor hook changes just add hooks -- not go back and change other hooks.",
+      "parentUuid": "1833f87e_97da44cb",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "527bfffa_b46c5c24",
@@ -84,6 +102,24 @@
       "writtenOn": "2020-12-01T04:11:52Z",
       "side": 1,
       "message": "Thanks Todd \u0026 Greg. I went back and cross checked on the suggestions/comments.\nI would like to get agreement on below to avoid back and forth on this change. \n\n1. macro vs inline\n\tWhen ANDROID_VENDOR_HOOKS or TRACEPOINTS disabled, the trace hooks become dummy.\n\tSo, either macro or inline should do. Greg\u0027s suggestion was to use inline instead of macro for type safety. \n\tI don\u0027t see how \"type safety\" could an issue as these become no-ops by pre-processor. So, macro should do.\n\n2. vh vs rvh\n   As we are in atomic context \u0026 hot paths, \"rvh\" is the one that we should use for the new hooks being introduced for performance reasons.\n   For the already available hooks, sticking to \"vh\" should do.\n   \nPlease let me know your thoughts. Will update the change once we conclude.  ",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af88580a_a07f0df7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-12-01T15:33:16Z",
+      "side": 1,
+      "message": "They should vh unless there is a reason. You claim the reason is that these are hot paths in atomic context. Can you run binderThroughputTest or some other workload to demonstrate that rvh makes a difference? I suspect it won\u0027t make a difference here.",
+      "parentUuid": "527bfffa_b46c5c24",
       "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
