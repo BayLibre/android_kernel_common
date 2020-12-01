@@ -39,6 +39,30 @@
       },
       "revId": "4450798a3ecbd4a4bbb5ec25d0750e0abeda537b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7457b559_2988b1c7",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-12-01T05:06:27Z",
+      "side": 1,
+      "message": "possible to add a private hook from msm cpufreq to scheduler, but since it is readily available want to re-use it. This will also allow us to use AMU counter based scale in future.\n\nprefer to use this interface for now.",
+      "parentUuid": "8b264a1b_d2e9db19",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "4450798a3ecbd4a4bbb5ec25d0750e0abeda537b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
