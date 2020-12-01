@@ -1257,6 +1257,8 @@ int resume_cpus(struct cpumask *cpus)
 		set_cpu_active(cpu, true);
 	}
 
+	cpuset_hotplug_workfn(NULL);
+
 	cpus_write_lock();
 
 	cpuhp_tasks_frozen = 0;
