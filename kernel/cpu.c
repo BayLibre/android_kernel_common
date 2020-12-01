@@ -1256,6 +1256,12 @@ int resume_cpus(struct cpumask *cpus)
 	for_each_cpu(cpu, cpus)
 		set_cpu_active(cpu, true);
 
+	/* Lazy Resume.  Build domains immediately instead of scheduling
+	 * a workqueue.  This is so that the cpu can pull load when
+	 * sent a load balancing kick.
+	 */
+	cpuset_hotplug_workfn(NULL);
+
 	cpus_write_lock();
 
 	cpuhp_tasks_frozen = 0;
