@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832aa373_6b797518",
+        "filename": "kernel/trace/trace_preemptirq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1215505
+      },
+      "writtenOn": "2020-12-01T11:44:47Z",
+      "side": 1,
+      "message": "I have tested this on 5.4 in our tree. it works fine. However, when I did a compile test on android-mainline with PREEMPT_TRACER and IRQSOFF_TRACER are enabled, I am getting some weird errors. tried few thing to see if we are creating trace points from multiple paths, but could not find out. can you please take a look?\n\ndrivers/android/vendor_hooks.o: In function `__traceiter_android_rvh_preempt_disable\u0027:\n/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/sched.h:127: multiple definition of `__traceiter_android_rvh_preempt_disable\u0027\nkernel/trace/trace_preemptirq.o:/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/preemptirq.h:16: first defined here\ndrivers/android/vendor_hooks.o: In function `__traceiter_android_rvh_irqs_disable\u0027:\n/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/sched.h:135: multiple definition of `__traceiter_android_rvh_irqs_disable\u0027\nkernel/trace/trace_preemptirq.o:/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/preemptirq.h:24: first defined here\ndrivers/android/vendor_hooks.o:(__tracepoints+0x1098): multiple definition of `__tracepoint_android_rvh_irqs_enable\u0027\nkernel/trace/trace_preemptirq.o:(__tracepoints+0xd8): first defined here\ndrivers/android/vendor_hooks.o:(__tracepoints+0x1008): multiple definition of `__tracepoint_android_rvh_preempt_enable\u0027\nkernel/trace/trace_preemptirq.o:(__tracepoints+0x48): first defined here\ndrivers/android/vendor_hooks.o:(__tracepoints+0xfc0): multiple definition of `__tracepoint_android_rvh_preempt_disable\u0027\nkernel/trace/trace_preemptirq.o:(__tracepoints+0x0): first defined here\ndrivers/android/vendor_hooks.o:(.data+0x100): multiple definition of `__SCK__tp_func_android_rvh_preempt_enable\u0027\nkernel/trace/trace_preemptirq.o:(.data+0x10): first defined here\ndrivers/android/vendor_hooks.o:(__tracepoints+0x1050): multiple definition of `__tracepoint_android_rvh_irqs_disable\u0027\nkernel/trace/trace_preemptirq.o:(__tracepoints+0x90): first defined here\ndrivers/android/vendor_hooks.o:(.data+0x108): multiple definition of `__SCK__tp_func_android_rvh_preempt_disable\u0027\nkernel/trace/trace_preemptirq.o:(.data+0x18): first defined here\ndrivers/android/vendor_hooks.o: In function `__traceiter_android_rvh_preempt_enable\u0027:\n/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/sched.h:131: multiple definition of `__traceiter_android_rvh_preempt_enable\u0027\nkernel/trace/trace_preemptirq.o:/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/preemptirq.h:20: first defined here\ndrivers/android/vendor_hooks.o: In function `__traceiter_android_rvh_irqs_enable\u0027:\n/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/sched.h:139: multiple definition of `__traceiter_android_rvh_irqs_enable\u0027\nkernel/trace/trace_preemptirq.o:/local/mnt/workspace/pkondeti/.repos/k/android-common/include/trace/hooks/preemptirq.h:28: first defined here\ndrivers/android/vendor_hooks.o:(.data+0xf0): multiple definition of `__SCK__tp_func_android_rvh_irqs_enable\u0027",
+      "range": {
+        "startLine": 15,
+        "startChar": 1,
+        "endLine": 15,
+        "endChar": 9
+      },
+      "revId": "0d432e7224b532613d6989699a4c6699a5ae120d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
