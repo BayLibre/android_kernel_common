@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a41db6a_e2ea9252",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-12-01T20:08:10Z",
+      "side": 1,
+      "message": "Why are you using restricted hooks. The fact that all of them are adjacent to a regular trace event suggests that there is no reason to use restricted.\n\nIn fact, why not avoid the hooks completely and attach to the existing trace events?",
+      "revId": "6de2d587eeea5fa5dd1dad96b3b50abedc98a69e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
