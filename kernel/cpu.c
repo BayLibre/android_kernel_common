@@ -1257,6 +1257,8 @@ int resume_cpus(struct cpumask *cpus)
 		set_cpu_active(cpu, true);
 	}
 
+	trace_android_rvh_sched_lb_resume_cpus(cpus);
+
 	cpuset_hotplug_workfn(NULL);
 
 	cpus_write_lock();
