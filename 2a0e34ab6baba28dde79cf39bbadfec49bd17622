@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa857a3e_a92ecfa3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-12-01T04:11:52Z",
+      "side": 1,
+      "message": "Sure, will update.",
+      "parentUuid": "eff0ec92_2027e6d0",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9ab1cac_963789b7",
         "filename": "/COMMIT_MSG",
         "patchSetId": 6
@@ -37,6 +55,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1833f87e_97da44cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-12-01T04:11:52Z",
+      "side": 1,
+      "message": "Switched to inline per Greg\u0027s suggestion",
+      "parentUuid": "c9ab1cac_963789b7",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "527bfffa_b46c5c24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-12-01T04:11:52Z",
+      "side": 1,
+      "message": "Thanks Todd \u0026 Greg. I went back and cross checked on the suggestions/comments.\nI would like to get agreement on below to avoid back and forth on this change. \n\n1. macro vs inline\n\tWhen ANDROID_VENDOR_HOOKS or TRACEPOINTS disabled, the trace hooks become dummy.\n\tSo, either macro or inline should do. Greg\u0027s suggestion was to use inline instead of macro for type safety. \n\tI don\u0027t see how \"type safety\" could an issue as these become no-ops by pre-processor. So, macro should do.\n\n2. vh vs rvh\n   As we are in atomic context \u0026 hot paths, \"rvh\" is the one that we should use for the new hooks being introduced for performance reasons.\n   For the already available hooks, sticking to \"vh\" should do.\n   \nPlease let me know your thoughts. Will update the change once we conclude.  ",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12a0742d_adfffd01",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
@@ -48,6 +101,24 @@
       "writtenOn": "2020-11-30T17:19:30Z",
       "side": 1,
       "message": "why restricted hooks? Please update commit message with rationale for use of restricted hooks instead of regular hooks.",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea1078e0_2bcb0668",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-12-01T04:11:52Z",
+      "side": 1,
+      "message": "Sure, updated per Greg\u0027s suggestion.",
+      "parentUuid": "12a0742d_adfffd01",
       "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
