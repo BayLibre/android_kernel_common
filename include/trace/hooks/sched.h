@@ -100,6 +100,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_migrate_queued_task,
 		 struct task_struct *p, int new_cpu,
 		 int *detached),
 	TP_ARGS(rq, rf, p, new_cpu, detached), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_resume_cpus,
+	TP_PROTO(int cpus, int *err),
+	TP_ARGS(cpus, err), 1);
 #else
 #define trace_android_rvh_select_task_rq_fair(p, prev_cpu, sd_flag, wake_flags, new_cpu)
 #define trace_android_rvh_select_task_rq_rt(p, prev_cpu, sd_flag, wake_flags, new_cpu)
@@ -121,6 +125,7 @@ DECLARE_RESTRICTED_HOOK(android_rvh_migrate_queued_task,
 #define trace_android_rvh_sched_nohz_balancer_kick(rq, flags, done)
 #define trace_android_rvh_find_busiest_queue(dst_cpu, group, busiest, done)
 #define trace_android_rvh_migrate_queued_task(rq, rf, p, new_cpu, detached)
+#define trace_android_rvh_resume_cpus(cpus, err)
 #endif
 #endif /* _TRACE_HOOK_SCHED_H */
 /* This part must be outside protection */
