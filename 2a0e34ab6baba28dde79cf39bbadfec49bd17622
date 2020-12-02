@@ -91,6 +91,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "38003662_97a9026d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-12-02T16:22:39Z",
+      "side": 1,
+      "message": "SGTM, updated and going with macro.",
+      "parentUuid": "3e2be6b2_5afe4088",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "527bfffa_b46c5c24",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
@@ -120,6 +138,24 @@
       "side": 1,
       "message": "They should vh unless there is a reason. You claim the reason is that these are hot paths in atomic context. Can you run binderThroughputTest or some other workload to demonstrate that rvh makes a difference? I suspect it won\u0027t make a difference here.",
       "parentUuid": "527bfffa_b46c5c24",
+      "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1a2b1ef_1ea803e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2020-12-02T16:22:39Z",
+      "side": 1,
+      "message": "Going with normal hook for time being and will update later if we really need restricted one.",
+      "parentUuid": "af88580a_a07f0df7",
       "revId": "2a0e34ab6baba28dde79cf39bbadfec49bd17622",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
