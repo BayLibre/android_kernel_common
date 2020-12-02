@@ -16,6 +16,24 @@
       "message": "Thanks so much for submitting these. Tested on db845c without CONFIG_ION and its looking good.\n\nPer earlier discussion, not sure if we want to merge the dma-buf-map changes before android-5.10 branches. those changes will land in 5.11, but as they have impact on a wide set of dmabuf exporters, they may cause collisions with 5.10-stable updates.\n\nI have earlier versions of these patches against 5.10 I can submit that do not need the dma-buf-map changes if its preferred (though I\u0027m not sure if we tag that as BACKPORT-FROMGIT: or what? maybe just ANDROID for now). They can then be dropped from android-mainline after the 5.11-rc1 merge happens.\n\n\n",
       "revId": "a38b581358c3355fbda524b014b4c3e3a32f8e1b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6712c29_fbcede4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2020-12-02T22:36:28Z",
+      "side": 1,
+      "message": "You are right, we don\u0027t want these merging to mainline now. I will abandon this set and we can take the other set you uploaded. I think we should make the tag as BACKPORT since there are some backporting changes involved. Thank you for the guidance John!",
+      "parentUuid": "11ff9d63_3b273fb8",
+      "revId": "a38b581358c3355fbda524b014b4c3e3a32f8e1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
