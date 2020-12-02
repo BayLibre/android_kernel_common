@@ -106,6 +106,12 @@ enum tcpm_transmit_type {
  *		restart toggling after checking the connector for contaminant.
  *		This forces the TCPM state machine to tranistion to TOGGLING state
  *		without calling start_toggling callback.
+ * @is_vbus_vsafe0v:
+ *		Optional; TCPCI spec based TCPC implementations are expected to
+ *		detect VSAFE0V voltage level at vbus. When detection of VSAFE0V
+ *		is supported by TCPC, set this callback for TCPM to query
+ *		whether vbus is at VSAFE0V when needed.
+ *		Returns true when vbus is at VSAFE0V, false otherwise.
  */
 struct tcpc_dev {
 	struct fwnode_handle *fwnode;
@@ -137,6 +143,7 @@ struct tcpc_dev {
 	int (*set_auto_vbus_discharge_threshold)(struct tcpc_dev *dev, enum typec_pwr_opmode mode,
 						 bool pps_active, u32 requested_vbus_voltage);
 	int (*check_contaminant)(struct tcpc_dev *dev);
+	bool (*is_vbus_vsafe0v)(struct tcpc_dev *dev);
 };
 
 struct tcpm_port;
