@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "918a5b31_71ce152a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-12-02T06:38:21Z",
+      "side": 1,
+      "message": "What driver needs to do this?  It feels really odd that this is needed by anything, what memory are you allocating that requires this call to free it?",
+      "revId": "0832d441de8a783ea175f8307954da6a2e2428e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cadb9b52_7f6601c9",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7672,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-12-02T06:38:21Z",
+      "side": 1,
+      "message": "EXPORT_SYMBOL_GPL please.",
+      "range": {
+        "startLine": 7672,
+        "startChar": 0,
+        "endLine": 7672,
+        "endChar": 13
+      },
+      "revId": "0832d441de8a783ea175f8307954da6a2e2428e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
