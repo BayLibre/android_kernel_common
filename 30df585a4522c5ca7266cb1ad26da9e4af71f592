@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "149bb7e9_b337532c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1761165
+      },
+      "writtenOn": "2020-12-03T19:49:56Z",
+      "side": 1,
+      "message": "comments addressed, will upload new patchset.",
+      "revId": "30df585a4522c5ca7266cb1ad26da9e4af71f592",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "094be5e0_63a5baa7",
@@ -14,6 +31,24 @@
       "writtenOn": "2020-12-03T01:42:17Z",
       "side": 1,
       "message": "where is this hook defined? I don\u0027t see it in include/trace/hooks/sched.h",
+      "revId": "30df585a4522c5ca7266cb1ad26da9e4af71f592",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51f895f7_6b7f9e84",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1761165
+      },
+      "writtenOn": "2020-12-03T19:49:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "094be5e0_63a5baa7",
       "revId": "30df585a4522c5ca7266cb1ad26da9e4af71f592",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -55,6 +90,30 @@
       "side": 1,
       "message": "+1. Name the hook based on the function/state, not based on how you intend to use it.",
       "parentUuid": "dc89924d_86f424c7",
+      "range": {
+        "startLine": 1260,
+        "startChar": 19,
+        "endLine": 1260,
+        "endChar": 28
+      },
+      "revId": "30df585a4522c5ca7266cb1ad26da9e4af71f592",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db216757_028ee37e",
+        "filename": "kernel/cpu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1260,
+      "author": {
+        "id": 1761165
+      },
+      "writtenOn": "2020-12-03T19:49:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52e2b3d8_be623151",
       "range": {
         "startLine": 1260,
         "startChar": 19,
