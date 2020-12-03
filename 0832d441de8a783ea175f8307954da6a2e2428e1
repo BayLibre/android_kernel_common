@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61666df8_f5ebc2ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-12-03T09:11:38Z",
+      "side": 1,
+      "message": "As no one upstream is using this, why not use the proper api for freeing the memory you allocate like upstream has already been converted to do?  That would make your code much more \"future proof\", right?\n\nIf you can point me at your driver, I will be glad to look at it and make a patch for it to work properly without this call.",
+      "parentUuid": "62000d7b_e3244256",
+      "revId": "0832d441de8a783ea175f8307954da6a2e2428e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cadb9b52_7f6601c9",
         "filename": "mm/page_alloc.c",
         "patchSetId": 1
