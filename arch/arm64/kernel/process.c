@@ -72,13 +72,19 @@ EXPORT_SYMBOL(__stack_chk_guard);
 void (*pm_power_off)(void);
 EXPORT_SYMBOL_GPL(pm_power_off);
 
+<<<<<<< HEAD   (2e14f0 ANDROID: tracing: Add restricted vendor hooks for preemptirq)
 static void __cpu_do_idle(void)
+=======
+void (*arm_pm_restart)(enum reboot_mode reboot_mode, const char *cmd);
+
+static void noinstr __cpu_do_idle(void)
+>>>>>>> BRANCH (34816d Merge tag 'gfs2-v5.10-rc5-fixes' of git://git.kernel.org/pub)
 {
 	dsb(sy);
 	wfi();
 }
 
-static void __cpu_do_idle_irqprio(void)
+static void noinstr __cpu_do_idle_irqprio(void)
 {
 	unsigned long pmr;
 	unsigned long daif_bits;
@@ -108,7 +114,7 @@ static void __cpu_do_idle_irqprio(void)
  *	ensure that interrupts are not masked at the PMR (because the core will
  *	not wake up if we block the wake up signal in the interrupt controller).
  */
-void cpu_do_idle(void)
+void noinstr cpu_do_idle(void)
 {
 	if (system_uses_irq_prio_masking())
 		__cpu_do_idle_irqprio();
@@ -119,7 +125,7 @@ void cpu_do_idle(void)
 /*
  * This is our default idle handler.
  */
-void arch_cpu_idle(void)
+void noinstr arch_cpu_idle(void)
 {
 	/*
 	 * This should do all the clock switching and wait for interrupt
