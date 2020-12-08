@@ -353,6 +353,7 @@ For 32-bit we have the following conventions - kernel is built with
  * This does 'call enter_from_user_mode' unless we can avoid it based on
  * kernel config or using the static jump infrastructure.
  */
+<<<<<<< HEAD   (ffb252 UPSTREAM: psi: eliminate kthread_worker from psi trigger sch)
 .macro CALL_enter_from_user_mode
 #ifdef CONFIG_CONTEXT_TRACKING
 #ifdef CONFIG_JUMP_LABEL
@@ -360,6 +361,14 @@ For 32-bit we have the following conventions - kernel is built with
 #endif
 	call enter_from_user_mode
 .Lafter_call_\@:
+=======
+.macro LOAD_CPU_AND_NODE_SEG_LIMIT reg:req
+	movq	$__CPUNODE_SEG, \reg
+#ifdef __clang__
+	.long 0xc0030f48
+#else
+	lsl	\reg, \reg
+>>>>>>> CHANGE (cc7f7a ANDROID: x86: entry: fix LSL open coding)
 #endif
 .endm
 
