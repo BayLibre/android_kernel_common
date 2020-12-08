@@ -16,6 +16,29 @@
       "message": "Can you split this up into a \"add logging/trace facilities\" for debugging, and \"add hooks for functional operations\" patches, as a patch series, so we can properly review these?\n\nAnd why are the logging/trace patches not just sent upstream?  I\u0027m sure they would be glad to take them so that everyone can use proper tracing functionality there.",
       "revId": "f591524526f937e1504fad4d5022e93796cc591f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0712d4_fbc0cab3",
+        "filename": "drivers/usb/dwc3/io.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-12-08T07:13:56Z",
+      "side": 1,
+      "message": "not needed in this .h file, put it in the .c file that needs it please.  .h files should only contain stuff needed to build the file itself.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "f591524526f937e1504fad4d5022e93796cc591f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
