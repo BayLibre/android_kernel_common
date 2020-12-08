@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18a6ec0a_dd85ac67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-12-08T20:26:13Z",
+      "side": 1,
+      "message": "Then make them real callbacks for the platform driver interface if you need to do real logic in them.  No need for a fake \"hook\" for this, let\u0027s fix the api to work properly for your driver upstream, so that everyone can use it correctly (hint, you aren\u0027t the only one needing these.)",
+      "parentUuid": "c1db4d65_caf765eb",
+      "revId": "f591524526f937e1504fad4d5022e93796cc591f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f0712d4_fbc0cab3",
         "filename": "drivers/usb/dwc3/io.h",
         "patchSetId": 2
