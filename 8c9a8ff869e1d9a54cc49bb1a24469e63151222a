@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87040afb_dee362ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1576409
+      },
+      "writtenOn": "2020-12-09T12:03:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5486e8ca_c1b341e5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 42
+      },
+      "revId": "8c9a8ff869e1d9a54cc49bb1a24469e63151222a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41f253d0_ff37caa7",
@@ -37,6 +61,30 @@
       "writtenOn": "2020-12-07T17:27:28Z",
       "side": 1,
       "message": "this symbol isn\u0027t in our tree, where did it come from?",
+      "range": {
+        "startLine": 2307,
+        "startChar": 2,
+        "endLine": 2307,
+        "endChar": 31
+      },
+      "revId": "8c9a8ff869e1d9a54cc49bb1a24469e63151222a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4646f8f3_652edb0b",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2307,
+      "author": {
+        "id": 1576409
+      },
+      "writtenOn": "2020-12-09T12:03:19Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nThis variable is created by preprocessing from cgroup_subsys.h features.\n\nFile include/linux/cgroup_subsys.h define:\n```\nSUBSYS(memory) \n```\nAnd then been proprocessed into `memory_cgrp_subsys_on_dfl_key` in `kernel/cgroup/cgroup.c`:\n```\n 132 #define SUBSYS(_x)                \\\n 133   DEFINE_STATIC_KEY_TRUE(_x ## _cgrp_subsys_enabled_key);     \\\n 134   DEFINE_STATIC_KEY_TRUE(_x ## _cgrp_subsys_on_dfl_key); \\ # here create this key\n 135   EXPORT_SYMBOL_GPL(_x ## _cgrp_subsys_enabled_key);      \\\n 136   EXPORT_SYMBOL_GPL(_x ## _cgrp_subsys_on_dfl_key);\n```\n\nThe patch of http://go/pa-kernel-src/+/9a84bb13816fe have a call to `sk_under_memory_pressure`. So it\u0027s mandatory to export the this key in allow list.",
+      "parentUuid": "41f253d0_ff37caa7",
       "range": {
         "startLine": 2307,
         "startChar": 2,
