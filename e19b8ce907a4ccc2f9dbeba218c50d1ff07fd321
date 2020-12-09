@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48586748_fefa9b81",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6981,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-12-09T23:00:07Z",
+      "side": 1,
+      "message": "kernelci is reporting errors for arm64/allnoconfig builds:\n\nkernel/sched/core.c:6973:2: error: implicit declaration of function ‘migrate_tasks’; did you mean ‘migrate_pages’? [-Werror\u003dimplicit-function-declaration]\nkernel/sched/core.c:6981:48: error: ‘struct rq’ has no member named ‘drain’\nkernel/sched/core.c:6982:53: error: ‘struct rq’ has no member named ‘drain_done’\nkernel/sched/core.c:6995:48: error: ‘struct rq’ has no member named ‘drain’",
+      "revId": "e19b8ce907a4ccc2f9dbeba218c50d1ff07fd321",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
