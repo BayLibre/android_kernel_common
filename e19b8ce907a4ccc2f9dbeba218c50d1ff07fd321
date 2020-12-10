@@ -16,6 +16,24 @@
       "message": "kernelci is reporting errors for arm64/allnoconfig builds:\n\nkernel/sched/core.c:6973:2: error: implicit declaration of function ‘migrate_tasks’; did you mean ‘migrate_pages’? [-Werror\u003dimplicit-function-declaration]\nkernel/sched/core.c:6981:48: error: ‘struct rq’ has no member named ‘drain’\nkernel/sched/core.c:6982:53: error: ‘struct rq’ has no member named ‘drain_done’\nkernel/sched/core.c:6995:48: error: ‘struct rq’ has no member named ‘drain’",
       "revId": "e19b8ce907a4ccc2f9dbeba218c50d1ff07fd321",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953ae0db_7d453b9f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 6981,
+      "author": {
+        "id": 1601419
+      },
+      "writtenOn": "2020-12-10T11:27:31Z",
+      "side": 1,
+      "message": "Sorry for that. I submitted a fix: \n\nhttps://android-review.googlesource.com/c/kernel/common/+/1521565",
+      "parentUuid": "48586748_fefa9b81",
+      "revId": "e19b8ce907a4ccc2f9dbeba218c50d1ff07fd321",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
