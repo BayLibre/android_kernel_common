@@ -13,6 +13,7 @@
 #include <asm/syscall.h>
 #include <asm/thread_info.h>
 #include <asm/unistd.h>
+#include <trace/hooks/secureguard.h>
 
 long compat_arm_syscall(struct pt_regs *regs, int scno);
 long sys_ni_syscall(void);
@@ -41,6 +42,9 @@ static void invoke_syscall(struct pt_regs *regs, unsigned int scno,
 			   const syscall_fn_t syscall_table[])
 {
 	long ret;
+	unsigned int id_buf[8];
+
+	trace_android_vh_secureguard_pre_handle(regs, scno, sc_nr, id_buf);
 
 	if (scno < sc_nr) {
 		syscall_fn_t syscall_fn;
@@ -49,6 +53,7 @@ static void invoke_syscall(struct pt_regs *regs, unsigned int scno,
 	} else {
 		ret = do_ni_syscall(regs, scno);
 	}
+	trace_android_vh_secureguard_post_handle(regs, scno, sc_nr, id_buf);
 
 	if (is_compat_task())
 		ret = lower_32_bits(ret);
