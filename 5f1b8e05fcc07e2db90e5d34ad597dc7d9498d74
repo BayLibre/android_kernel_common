@@ -62,6 +62,29 @@
       "message": "This is also only one arch-specific, if you really need this, please do it in an arch-neutral way (hint, seccomp can do this...)",
       "revId": "5f1b8e05fcc07e2db90e5d34ad597dc7d9498d74",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bfe521_29eb619a",
+        "filename": "arch/arm64/kernel/syscall.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2020-12-11T10:36:35Z",
+      "side": 1,
+      "message": "Getting access to the stack frame this way simply isn\u0027t acceptable.\n\nThe Linux kernel already has way to intercept syscalls (seccomp and co), and we shouldn\u0027t invent a new way to do it.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "5f1b8e05fcc07e2db90e5d34ad597dc7d9498d74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
