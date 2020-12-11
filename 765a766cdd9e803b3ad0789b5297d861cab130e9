@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b8581ed_9af2a7a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2020-12-11T07:02:12Z",
+      "side": 1,
+      "message": "Just wanted to do an initial submission here, as DanielV blocked this from being queued for 5.11 upstream until we can demonstrate benefit in the context of a purely mesa based device.\n\nI\u0027m working on a dmabuf heap gralloc implementation for db845c to try to show this, however, showing benefit over normal gbm_gralloc may be tough until we get the accellerated v4l2 decoding working on that board.\n\nSo in the meantime, I suspect this will be needed for folks doing dmabuf transition to properly match ION\u0027s system heap implementation.",
+      "revId": "765a766cdd9e803b3ad0789b5297d861cab130e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
