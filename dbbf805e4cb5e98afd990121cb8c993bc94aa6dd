@@ -22,6 +22,30 @@
       },
       "revId": "dbbf805e4cb5e98afd990121cb8c993bc94aa6dd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0253d9dc_fb56e79a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2020-12-14T18:14:33Z",
+      "side": 1,
+      "message": "Done. Merged with xml change so this is now self-contained.\n\nBut note that this still leaves your question from the one I merged it with:\n\n\"why are these 2 new functions needed to be supported?  What changes require them?\"\n\nincfs needs to be able to perform file operations as the mounting process. This is to allow fills (which are restricted by the merkle tree) from less privileged processes. This was fixed to work correctly in https://android-review.googlesource.com/c/kernel/common/+/1524342",
+      "parentUuid": "f161c7f1_9baf51f2",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "dbbf805e4cb5e98afd990121cb8c993bc94aa6dd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
