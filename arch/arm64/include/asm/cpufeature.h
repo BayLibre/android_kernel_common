@@ -62,6 +62,7 @@ struct arm64_ftr_bits {
 	u8		shift;
 	u8		width;
 	s64		safe_val; /* safe value for FTR_EXACT features */
+	s64		(*filter)(const struct arm64_ftr_bits *ftrp, s64 fval);
 };
 
 /*
@@ -355,6 +356,11 @@ struct arm64_cpu_capabilities {
 	const struct arm64_cpu_capabilities *match_list;
 };
 
+/* Flags to check early params PTR_AUTH */
+#ifdef CONFIG_ARM64_PTR_AUTH
+extern bool arm64_ptr_auth_disabled;
+#endif
+
 static inline int cpucap_default_scope(const struct arm64_cpu_capabilities *cap)
 {
 	return cap->type & ARM64_CPUCAP_SCOPE_MASK;
@@ -569,7 +575,12 @@ cpuid_feature_extract_field(u64 features, int field, bool sign)
 
 static inline s64 arm64_ftr_value(const struct arm64_ftr_bits *ftrp, u64 val)
 {
-	return (s64)cpuid_feature_extract_field_width(val, ftrp->shift, ftrp->width, ftrp->sign);
+	s64 fval = (s64)cpuid_feature_extract_field_width(val, ftrp->shift,
+					ftrp->width, ftrp->sign);
+
+	if (ftrp->filter)
+		fval = ftrp->filter(ftrp, fval);
+	return fval;
 }
 
 static inline bool id_aa64mmfr0_mixed_endian_el0(u64 mmfr0)
