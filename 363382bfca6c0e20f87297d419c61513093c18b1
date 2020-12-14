@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d5f2a67_67a3b51a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-12-14T23:16:06Z",
+      "side": 1,
+      "message": "The first 2 patches in this series don\u0027t break KMI, so they could proceed. This one does break KMI by adding to arguements to ops-\u003eiotlb_sync_map().\n\nCan\u0027t you do this in a KMI-compatible way by using a trace hook? See comment on line #2066.",
+      "revId": "363382bfca6c0e20f87297d419c61513093c18b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "607dd683_b9f8776c",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2020-12-14T23:16:06Z",
+      "side": 1,
+      "message": "The addition of the two new arguments is the KMI break. Can\u0027t you work around this by using a vendor hook? Then this would be:\n\n  bool done \u003d false;\n  ...\n  trace_android_vh_iotlb_sync_map(domain, iova, mapped, \u0026done);\n  if (!done \u0026\u0026 ops-\u003eiotlb_sync_map)\n\tops-\u003eiotlb_sync_map(domain);\n  \n\nYour iova driver could implement the hook.",
+      "revId": "363382bfca6c0e20f87297d419c61513093c18b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
