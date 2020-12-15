@@ -101,6 +101,7 @@ struct genpd_power_state {
 	struct fwnode_handle *fwnode;
 	ktime_t idle_time;
 	void *data;
+	bool disabled;
 };
 
 struct genpd_lock_ops;
@@ -233,6 +234,7 @@ int dev_pm_genpd_add_notifier(struct device *dev, struct notifier_block *nb);
 int dev_pm_genpd_remove_notifier(struct device *dev);
 void genpd_enable_next_wakeup(struct generic_pm_domain *genpd, bool enable);
 int dev_pm_genpd_set_next_wakeup(struct device *dev, ktime_t next);
+int dev_pm_genpd_disable_idle_state(struct device *dev, unsigned int idx, bool disable);
 
 extern struct dev_power_governor simple_qos_governor;
 extern struct dev_power_governor pm_domain_always_on_gov;
@@ -296,6 +298,11 @@ static void genpd_enable_next_wakeup(struct generic_pm_domain *genpd,
 { }
 
 static inline int dev_pm_genpd_set_next_wakeup(struct device *dev, ktime_t next)
+{
+	return -EOPNOTSUPP;
+}
+
+static inline int dev_pm_genpd_disable_idle_state(struct device *dev, unsigned int idx, bool disable)
 {
 	return -EOPNOTSUPP;
 }

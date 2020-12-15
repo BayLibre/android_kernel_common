@@ -1926,6 +1926,36 @@ out:
 }
 EXPORT_SYMBOL_GPL(pm_genpd_remove_subdomain);
 
+/**
+ * dev_pm_genpd_disable_idle_state - Disallow a PM domain's idle state
+ *
+ * @dev: device attached to the PM domain
+ * @idx: index of the PM domain's idle state to be disabled
+ * @disable: enable/disable idle state
+ *
+ * Allow a PM domain's idle state to be disabled. Disabled idle states will
+ * be ignored by the domain governor when entering idle. Devices would
+ * invoke this before calling runtime suspend.
+ */
+int dev_pm_genpd_disable_idle_state(struct device *dev, unsigned int idx, bool disable)
+{
+	struct generic_pm_domain *genpd;
+
+	genpd = dev_to_genpd_safe(dev);
+	if (!genpd)
+		return -ENODEV;
+
+	if (idx >= genpd->state_count)
+		return -EINVAL;
+
+	genpd_lock(genpd);
+	genpd->states[idx].disabled = disable;
+	genpd_unlock(genpd);
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(dev_pm_genpd_disable_idle_state);
+
 static void genpd_free_default_power_state(struct genpd_power_state *states,
 					   unsigned int state_count)
 {
