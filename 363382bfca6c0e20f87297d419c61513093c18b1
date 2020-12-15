@@ -33,6 +33,24 @@
       "message": "The addition of the two new arguments is the KMI break. Can\u0027t you work around this by using a vendor hook? Then this would be:\n\n  bool done \u003d false;\n  ...\n  trace_android_vh_iotlb_sync_map(domain, iova, mapped, \u0026done);\n  if (!done \u0026\u0026 ops-\u003eiotlb_sync_map)\n\tops-\u003eiotlb_sync_map(domain);\n  \n\nYour iova driver could implement the hook.",
       "revId": "363382bfca6c0e20f87297d419c61513093c18b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8de41704_49bd2e6a",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1769527
+      },
+      "writtenOn": "2020-12-15T02:12:11Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. We will try locally.",
+      "parentUuid": "607dd683_b9f8776c",
+      "revId": "363382bfca6c0e20f87297d419c61513093c18b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
