@@ -33,6 +33,23 @@
       "message": "Why is this a build-time option?  Shouldn\u0027t it be read from the hardware itself?",
       "revId": "3c0c5847715ea251dca92c6c3f98836f9d09082c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70ec631c_031c52b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2020-12-16T11:19:41Z",
+      "side": 1,
+      "message": "Why do we need yet another knob for hotplug? What are the scenarios where you would hotplug less than 1GB?\n\nI can\u0027t imagine any HW that would bring the memory in chunks of 128MB.\n\nIt looks to me that you are trying to solve an unrelated problem, which should probably be discussed upstream.",
+      "revId": "3c0c5847715ea251dca92c6c3f98836f9d09082c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
