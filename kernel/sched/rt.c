@@ -1451,6 +1451,7 @@ task_may_not_preempt(struct task_struct *task, int cpu)
 	return (task_thread_info(task)->preempt_count & SOFTIRQ_MASK) ||
 	       task == cpu_ksoftirqd;
 }
+EXPORT_SYMBOL_GPL(task_may_not_preempt);
 #endif /* CONFIG_RT_SOFTINT_OPTIMIZATION */
 
 static int
