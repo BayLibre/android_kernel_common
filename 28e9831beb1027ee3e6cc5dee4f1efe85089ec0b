@@ -22,6 +22,30 @@
       },
       "revId": "28e9831beb1027ee3e6cc5dee4f1efe85089ec0b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c4be7e1_e8381e94",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 1
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 1743420
+      },
+      "writtenOn": "2020-12-16T03:17:36Z",
+      "side": 1,
+      "message": "Dear Greg,\n\nA vendor hook for workqueue watchdog timer has been applied at Bug 169374262.\nWe\u0027ll print out several logs including information of a runqueue owned by pool-\u003ecpu.\nThis log message help us analyzing a workqueue lockup problem.\n\npr_info(\"CPU%u [CFS util_avg:%lu load_avg:%lu nr_running:%u][RT rt_nr_running:%u][avg_rt util_avg:%lu]\\n\",\n\tcpu, cpu_rq(cpu)-\u003ecfs.avg.util_avg, cpu_rq(cpu)-\u003ecfs.avg.load_avg, cpu_rq(cpu)-\u003ecfs.nr_running,\n\tcpu_rq(cpu)-\u003ert.rt_nr_running, cpu_rq(cpu)-\u003eavg_rt.util_avg);\n\nExample)\n[  646.111602] BUG: workqueue lockup - pool cpus\u003d0 node\u003d0 flags\u003d0x0 nice\u003d0 stuck for 57s!\n[  646.111721] CPU0 [CFS util_avg:1023 load_avg:2047 nr_running:2][RT util_avg:0][avg_rt util_avg:0]   \u003c-----------------!!",
+      "parentUuid": "0cc8c691_accafdc6",
+      "range": {
+        "startLine": 2011,
+        "startChar": 2,
+        "endLine": 2011,
+        "endChar": 11
+      },
+      "revId": "28e9831beb1027ee3e6cc5dee4f1efe85089ec0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
