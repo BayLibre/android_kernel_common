@@ -22,6 +22,30 @@
       },
       "revId": "0d8aa4b4976c815371435fb0919e3d2fe2227890",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a61576_7ef12b41",
+        "filename": "kernel/softirq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1067053
+      },
+      "writtenOn": "2020-12-16T13:50:34Z",
+      "side": 1,
+      "message": "Hi Greg KH,\n\nIt is defined in the \ninclude/trace/events/irq.h:53:TRACE_EVENT(irq_handler_entry,\n\nand used in the file. \nkernel/irq/chip.c:763:  trace_irq_handler_entry(irq, action);\n\nAs per my knowledge for exporting any tracpoint symbol, we need to have following include. \n#define CREATE_TRACE_POINTS\n#include \u003ctrace/events/irq.h\u003e\nUpstream have used above include in the softirq.c file, so I have exported that symbol from here.",
+      "parentUuid": "cdcc4bf4_99826a23",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 48
+      },
+      "revId": "0d8aa4b4976c815371435fb0919e3d2fe2227890",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
