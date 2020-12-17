@@ -16,6 +16,24 @@
       "message": "Does this mean that the earlier change adding _va_function() to kvm_ksym_ref_nvhe(sym) is not required?",
       "revId": "2fedaaa3899880ab2cb4c32f24c1a363551a1f84",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69ec239a_5514f310",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2020-12-17T20:47:22Z",
+      "side": 1,
+      "message": "__va_function() is needed whenever kvm_ksym_ref_nvhe() is used in code that has CFI enabled and the pointer is passed to EL2. In earlier kernel versions, kvm_call_hyp() used to call __kvm_call_hyp(kvm_ksym_ref(f), ...), which went horribly wrong when the compiler replaced the function pointer with a pointer to the jump table (see b/163385976), but it looks like we are not passing function pointers to EL2 anymore. In fact, I don\u0027t see any users of kvm_ksym_ref_nvhe(), so I\u0027ll just drop the __va_function() addition from the other CL. Thanks for pointing this out.",
+      "parentUuid": "26d17e18_e0277c92",
+      "revId": "2fedaaa3899880ab2cb4c32f24c1a363551a1f84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
