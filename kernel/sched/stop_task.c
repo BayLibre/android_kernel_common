@@ -133,3 +133,4 @@ DEFINE_SCHED_CLASS(stop) = {
 	.switched_to		= switched_to_stop,
 	.update_curr		= update_curr_stop,
 };
+EXPORT_SYMBOL_GPL(stop_sched_class);

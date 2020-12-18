@@ -2575,6 +2575,7 @@ DEFINE_SCHED_CLASS(dl) = {
 
 	.update_curr		= update_curr_dl,
 };
+EXPORT_SYMBOL_GPL(dl_sched_class);
 
 /* Used for dl_bw check and update, used under sched_rt_handler()::mutex */
 static u64 dl_generation;

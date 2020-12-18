@@ -2551,6 +2551,7 @@ DEFINE_SCHED_CLASS(rt) = {
 	.uclamp_enabled		= 1,
 #endif
 };
+EXPORT_SYMBOL_GPL(rt_sched_class);
 
 #ifdef CONFIG_RT_GROUP_SCHED
 /*

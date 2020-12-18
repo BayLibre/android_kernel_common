@@ -11373,6 +11373,7 @@ DEFINE_SCHED_CLASS(fair) = {
 	.uclamp_enabled		= 1,
 #endif
 };
+EXPORT_SYMBOL_GPL(fair_sched_class);
 
 #ifdef CONFIG_SCHED_DEBUG
 void print_cfs_stats(struct seq_file *m, int cpu)
