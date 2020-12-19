@@ -28,6 +28,7 @@
 #include <linux/iommu.h>
 #include <linux/kernel.h>
 #include <linux/kmemleak.h>
+#include <linux/module.h>
 #include <linux/sizes.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
@@ -835,7 +836,7 @@ out_free_data:
 	return NULL;
 }
 
-struct io_pgtable_init_fns io_pgtable_arm_v7s_init_fns = {
+static struct io_pgtable_init_fns io_pgtable_arm_v7s_init_fns = {
 	.alloc	= arm_v7s_alloc_pgtable,
 	.free	= arm_v7s_free_pgtable,
 };
@@ -983,5 +984,33 @@ static int __init arm_v7s_do_selftests(void)
 	pr_info("self test ok\n");
 	return 0;
 }
-subsys_initcall(arm_v7s_do_selftests);
+#else
+static int arm_v7s_do_selftests(void)
+{
+	return 0;
+}
 #endif
+
+static int __init arm_v7s_init(void)
+{
+	int ret;
+
+	ret = io_pgtable_ops_register(ARM_V7S, &io_pgtable_arm_v7s_init_fns);
+	if (ret < 0) {
+		pr_err("Failed to register ARM v7s fmt ret = %d\n", ret);
+		return ret;
+	}
+
+	ret = arm_v7s_do_selftests();
+	if (ret < 0)
+		io_pgtable_ops_unregister(ARM_V7S);
+
+	return ret;
+}
+core_initcall(arm_v7s_init);
+
+static void __exit arm_v7s_exit(void)
+{
+	io_pgtable_ops_unregister(ARM_V7S);
+}
+module_exit(arm_v7s_exit);
