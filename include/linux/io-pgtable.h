@@ -163,6 +163,37 @@ struct io_pgtable_ops {
 };
 
 /**
+ * struct io_pgtable_init_fns - Alloc/free a set of page tables for a
+ *                              particular format.
+ *
+ * @alloc: Allocate a set of page tables described by cfg.
+ * @free:  Free the page tables associated with iop.
+ */
+struct io_pgtable_init_fns {
+	struct io_pgtable *(*alloc)(struct io_pgtable_cfg *cfg, void *cookie);
+	void (*free)(struct io_pgtable *iop);
+};
+
+/**
+ * io_pgtable_ops_register() - Register the page table routines for a page table
+ *                             format.
+ *
+ * @fmt:      The page table format for which we are registering ops for.
+ * @init_fns: The functions for allocating and freeing the page tables of
+ *            a particular format.
+ */
+int io_pgtable_ops_register(enum io_pgtable_fmt fmt,
+			    struct io_pgtable_init_fns *init_fns);
+
+/**
+ * io_pgtable_ops_unregister() - Unregister the page table routines for a page
+ *                               table format.
+ *
+ * @fmt: The format for which we are unregistering ops for.
+ */
+void io_pgtable_ops_unregister(enum io_pgtable_fmt fmt);
+
+/**
  * alloc_io_pgtable_ops() - Allocate a page table allocator for use by an IOMMU.
  *
  * @fmt:    The page table format.
@@ -235,24 +266,5 @@ io_pgtable_tlb_add_page(struct io_pgtable *iop,
 	if (iop->cfg.tlb->tlb_add_page)
 		iop->cfg.tlb->tlb_add_page(gather, iova, granule, iop->cookie);
 }
-
-/**
- * struct io_pgtable_init_fns - Alloc/free a set of page tables for a
- *                              particular format.
- *
- * @alloc: Allocate a set of page tables described by cfg.
- * @free:  Free the page tables associated with iop.
- */
-struct io_pgtable_init_fns {
-	struct io_pgtable *(*alloc)(struct io_pgtable_cfg *cfg, void *cookie);
-	void (*free)(struct io_pgtable *iop);
-};
-
-extern struct io_pgtable_init_fns io_pgtable_arm_32_lpae_s1_init_fns;
-extern struct io_pgtable_init_fns io_pgtable_arm_32_lpae_s2_init_fns;
-extern struct io_pgtable_init_fns io_pgtable_arm_64_lpae_s1_init_fns;
-extern struct io_pgtable_init_fns io_pgtable_arm_64_lpae_s2_init_fns;
-extern struct io_pgtable_init_fns io_pgtable_arm_v7s_init_fns;
-extern struct io_pgtable_init_fns io_pgtable_arm_mali_lpae_init_fns;
 
 #endif /* __IO_PGTABLE_H */

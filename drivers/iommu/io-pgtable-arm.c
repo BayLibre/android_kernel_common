@@ -13,6 +13,7 @@
 #include <linux/bitops.h>
 #include <linux/io-pgtable.h>
 #include <linux/kernel.h>
+#include <linux/module.h>
 #include <linux/sizes.h>
 #include <linux/slab.h>
 #include <linux/types.h>
@@ -143,6 +144,11 @@ struct arm_lpae_io_pgtable {
 	int			bits_per_level;
 
 	void			*pgd;
+};
+
+struct arm_lpae_io_pgtable_init_fns {
+	enum io_pgtable_fmt fmt;
+	struct io_pgtable_init_fns init_fns;
 };
 
 typedef u64 arm_lpae_iopte;
@@ -1028,29 +1034,32 @@ out_free_data:
 	return NULL;
 }
 
-struct io_pgtable_init_fns io_pgtable_arm_64_lpae_s1_init_fns = {
-	.alloc	= arm_64_lpae_alloc_pgtable_s1,
-	.free	= arm_lpae_free_pgtable,
-};
-
-struct io_pgtable_init_fns io_pgtable_arm_64_lpae_s2_init_fns = {
-	.alloc	= arm_64_lpae_alloc_pgtable_s2,
-	.free	= arm_lpae_free_pgtable,
-};
-
-struct io_pgtable_init_fns io_pgtable_arm_32_lpae_s1_init_fns = {
-	.alloc	= arm_32_lpae_alloc_pgtable_s1,
-	.free	= arm_lpae_free_pgtable,
-};
-
-struct io_pgtable_init_fns io_pgtable_arm_32_lpae_s2_init_fns = {
-	.alloc	= arm_32_lpae_alloc_pgtable_s2,
-	.free	= arm_lpae_free_pgtable,
-};
-
-struct io_pgtable_init_fns io_pgtable_arm_mali_lpae_init_fns = {
-	.alloc	= arm_mali_lpae_alloc_pgtable,
-	.free	= arm_lpae_free_pgtable,
+static struct arm_lpae_io_pgtable_init_fns arm_lpae_init_fns_table[] = {
+	{
+		.fmt		= ARM_32_LPAE_S1,
+		.init_fns.alloc	= arm_32_lpae_alloc_pgtable_s1,
+		.init_fns.free	= arm_lpae_free_pgtable,
+	},
+	{
+		.fmt		= ARM_32_LPAE_S2,
+		.init_fns.alloc	= arm_32_lpae_alloc_pgtable_s2,
+		.init_fns.free	= arm_lpae_free_pgtable,
+	},
+	{
+		.fmt		= ARM_64_LPAE_S1,
+		.init_fns.alloc	= arm_64_lpae_alloc_pgtable_s1,
+		.init_fns.free	= arm_lpae_free_pgtable,
+	},
+	{
+		.fmt		= ARM_64_LPAE_S2,
+		.init_fns.alloc	= arm_64_lpae_alloc_pgtable_s2,
+		.init_fns.free	= arm_lpae_free_pgtable,
+	},
+	{
+		.fmt		= ARM_MALI_LPAE,
+		.init_fns.alloc	= arm_mali_lpae_alloc_pgtable,
+		.init_fns.free	= arm_lpae_free_pgtable,
+	},
 };
 
 #ifdef CONFIG_IOMMU_IO_PGTABLE_LPAE_SELFTEST
@@ -1236,5 +1245,45 @@ static int __init arm_lpae_do_selftests(void)
 	pr_info("selftest: completed with %d PASS %d FAIL\n", pass, fail);
 	return fail ? -EFAULT : 0;
 }
-subsys_initcall(arm_lpae_do_selftests);
+#else
+static int __init arm_lpae_do_selftests(void)
+{
+	return 0;
+}
 #endif
+
+static int __init arm_lpae_init(void)
+{
+	int ret, i;
+
+	for (i = 0; i < ARRAY_SIZE(arm_lpae_init_fns_table); i++) {
+		ret = io_pgtable_ops_register(arm_lpae_init_fns_table[i].fmt,
+					      &arm_lpae_init_fns_table[i].init_fns);
+		if (ret < 0) {
+			pr_err("Failed to register ARM LPAE fmt: %d ret: %d\n",
+			       arm_lpae_init_fns_table[i].fmt, ret);
+			goto err_io_pgtable_register;
+		}
+	}
+
+	ret = arm_lpae_do_selftests();
+	if (ret < 0)
+		goto err_io_pgtable_register;
+
+	return 0;
+
+err_io_pgtable_register:
+	while (i--)
+		io_pgtable_ops_unregister(arm_lpae_init_fns_table[i].fmt);
+	return ret;
+}
+core_initcall(arm_lpae_init);
+
+static void __exit arm_lpae_exit(void)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(arm_lpae_init_fns_table); i++)
+		io_pgtable_ops_unregister(arm_lpae_init_fns_table[i].fmt);
+}
+module_exit(arm_lpae_exit);
