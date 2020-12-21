@@ -203,6 +203,7 @@ static int cma_heap_vmap(struct dma_buf *dmabuf, struct dma_buf_map *map)
 {
 	struct cma_heap_buffer *buffer = dmabuf->priv;
 	void *vaddr;
+<<<<<<< HEAD   (9398a9 Merge 432c19a8d965 ("Merge tag 'thermal-v5.11-2-rc1' of git:)
 
 	mutex_lock(&buffer->lock);
 	if (buffer->vmap_cnt) {
@@ -246,6 +247,53 @@ static void cma_heap_dma_buf_release(struct dma_buf *dmabuf)
 	if (buffer->vmap_cnt > 0) {
 		WARN(1, "%s: buffer still mapped in the kernel\n", __func__);
 		vunmap(buffer->vaddr);
+=======
+	int ret = 0;
+
+	mutex_lock(&buffer->lock);
+	if (buffer->vmap_cnt) {
+		buffer->vmap_cnt++;
+		dma_buf_map_set_vaddr(map, buffer->vaddr);
+		goto out;
+	}
+
+	vaddr = cma_heap_do_vmap(buffer);
+	if (IS_ERR(vaddr)) {
+		ret = PTR_ERR(vaddr);
+		goto out;
+	}
+	buffer->vaddr = vaddr;
+	buffer->vmap_cnt++;
+	dma_buf_map_set_vaddr(map, buffer->vaddr);
+out:
+	mutex_unlock(&buffer->lock);
+
+	return ret;
+}
+
+static void cma_heap_vunmap(struct dma_buf *dmabuf, struct dma_buf_map *map)
+{
+	struct cma_heap_buffer *buffer = dmabuf->priv;
+
+	mutex_lock(&buffer->lock);
+	if (!--buffer->vmap_cnt) {
+		vunmap(buffer->vaddr);
+		buffer->vaddr = NULL;
+	}
+	mutex_unlock(&buffer->lock);
+	dma_buf_map_clear(map);
+}
+
+static void cma_heap_dma_buf_release(struct dma_buf *dmabuf)
+{
+	struct cma_heap_buffer *buffer = dmabuf->priv;
+	struct cma_heap *cma_heap = buffer->heap;
+
+	if (buffer->vmap_cnt > 0) {
+		WARN(1, "%s: buffer still mapped in the kernel\n", __func__);
+		vunmap(buffer->vaddr);
+		buffer->vaddr = NULL;
+>>>>>>> BRANCH (c59c75 Merge tag 'drm-next-2020-12-18' of git://anongit.freedesktop)
 	}
 
 	cma_release(cma_heap->cma, buffer->cma_pages, buffer->pagecount);
@@ -265,10 +313,17 @@ static const struct dma_buf_ops cma_heap_buf_ops = {
 	.release = cma_heap_dma_buf_release,
 };
 
+<<<<<<< HEAD   (9398a9 Merge 432c19a8d965 ("Merge tag 'thermal-v5.11-2-rc1' of git:)
 static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
 					 unsigned long len,
 					 unsigned long fd_flags,
 					 unsigned long heap_flags)
+=======
+static int cma_heap_allocate(struct dma_heap *heap,
+				  unsigned long len,
+				  unsigned long fd_flags,
+				  unsigned long heap_flags)
+>>>>>>> BRANCH (c59c75 Merge tag 'drm-next-2020-12-18' of git://anongit.freedesktop)
 {
 	struct cma_heap *cma_heap = dma_heap_get_drvdata(heap);
 	struct cma_heap_buffer *buffer;
@@ -283,7 +338,11 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
 
 	buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
 	if (!buffer)
+<<<<<<< HEAD   (9398a9 Merge 432c19a8d965 ("Merge tag 'thermal-v5.11-2-rc1' of git:)
 		return ERR_PTR(-ENOMEM);
+=======
+		return -ENOMEM;
+>>>>>>> BRANCH (c59c75 Merge tag 'drm-next-2020-12-18' of git://anongit.freedesktop)
 
 	INIT_LIST_HEAD(&buffer->attachments);
 	mutex_init(&buffer->lock);
@@ -343,7 +402,18 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
 		goto free_pages;
 	}
 
+<<<<<<< HEAD   (9398a9 Merge 432c19a8d965 ("Merge tag 'thermal-v5.11-2-rc1' of git:)
 	return dmabuf;
+=======
+	ret = dma_buf_fd(dmabuf, fd_flags);
+	if (ret < 0) {
+		dma_buf_put(dmabuf);
+		/* just return, as put will call release and that will free */
+		return ret;
+	}
+
+	return ret;
+>>>>>>> BRANCH (c59c75 Merge tag 'drm-next-2020-12-18' of git://anongit.freedesktop)
 
 free_pages:
 	kfree(buffer->pages);
@@ -352,7 +422,11 @@ free_cma:
 free_buffer:
 	kfree(buffer);
 
+<<<<<<< HEAD   (9398a9 Merge 432c19a8d965 ("Merge tag 'thermal-v5.11-2-rc1' of git:)
 	return ERR_PTR(ret);
+=======
+	return ret;
+>>>>>>> BRANCH (c59c75 Merge tag 'drm-next-2020-12-18' of git://anongit.freedesktop)
 }
 
 static const struct dma_heap_ops cma_heap_ops = {
