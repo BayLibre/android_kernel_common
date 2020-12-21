@@ -26,6 +26,7 @@
 DEFINE_PER_CPU(struct nmi_ctx, nmi_contexts);
 
 DEFINE_PER_CPU(unsigned long *, irq_stack_ptr);
+EXPORT_SYMBOL_GPL(irq_stack_ptr);
 
 #ifdef CONFIG_VMAP_STACK
 static void init_irq_stacks(void)
