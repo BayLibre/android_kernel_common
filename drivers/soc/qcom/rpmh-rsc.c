@@ -498,7 +498,11 @@ static void __tcs_buffer_write(struct rsc_drv *drv, int tcs_id, int cmd_id,
 		write_tcs_cmd(drv, RSC_DRV_CMD_MSGID, tcs_id, j, msgid);
 		write_tcs_cmd(drv, RSC_DRV_CMD_ADDR, tcs_id, j, cmd->addr);
 		write_tcs_cmd(drv, RSC_DRV_CMD_DATA, tcs_id, j, cmd->data);
+<<<<<<< HEAD   (701c8a Merge 9805529ec544 ("Merge tag 'arm-soc-dt-5.11' of git://gi)
 		// trace_rpmh_send_msg_rcuidle(drv, tcs_id, j, msgid, cmd);
+=======
+		trace_rpmh_send_msg(drv, tcs_id, j, msgid, cmd);
+>>>>>>> BRANCH (ff49c8 Merge tag 'f2fs-for-5.11-rc1' of git://git.kernel.org/pub/sc)
 	}
 
 	write_tcs_reg(drv, RSC_DRV_CMD_WAIT_FOR_CMPL, tcs_id, cmd_complete);
@@ -1020,7 +1024,10 @@ static const struct of_device_id rpmh_drv_match[] = {
 	{ }
 };
 MODULE_DEVICE_TABLE(of, rpmh_drv_match);
+<<<<<<< HEAD   (701c8a Merge 9805529ec544 ("Merge tag 'arm-soc-dt-5.11' of git://gi)
 
+=======
+>>>>>>> BRANCH (ff49c8 Merge tag 'f2fs-for-5.11-rc1' of git://git.kernel.org/pub/sc)
 
 static struct platform_driver rpmh_driver = {
 	.probe = rpmh_rsc_probe,
