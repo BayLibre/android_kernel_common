@@ -198,6 +198,22 @@ DECLARE_RESTRICTED_HOOK(android_rvh_cpu_cgroup_can_attach,
 	TP_PROTO(struct cgroup_taskset *tset, int *retval),
 	TP_ARGS(tset, retval), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_sched_fork_init,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_ttwu_cond,
+	TP_PROTO(bool *cond),
+	TP_ARGS(cond), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_schedule_bug,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_sched_exec,
+	TP_PROTO(bool *cond),
+	TP_ARGS(cond), 1);
+
 DECLARE_HOOK(android_vh_map_util_freq,
 	TP_PROTO(unsigned long util, unsigned long freq,
 		unsigned long cap, unsigned long *next_freq),
@@ -209,6 +225,22 @@ DECLARE_HOOK(android_vh_em_cpu_energy,
 		unsigned long max_util, unsigned long sum_util,
 		unsigned long *energy),
 	TP_ARGS(pd, max_util, sum_util, energy));
+
+DECLARE_HOOK(android_vh_build_sched_domains,
+	TP_PROTO(bool has_asym),
+	TP_ARGS(has_asym));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_tick,
+	TP_PROTO(struct task_struct *p, unsigned long *ideal_runtime, bool *skip_preempt),
+	TP_ARGS(p, ideal_runtime, skip_preempt), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_wakeup_ignore,
+	TP_PROTO(struct task_struct *p, bool *ignore),
+	TP_ARGS(p, ignore), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_replace_next_task_fair,
+	TP_PROTO(struct rq *rq, struct task_struct **p, struct sched_entity **se, bool *repick, bool simple),
+	TP_ARGS(rq, p, se, repick, simple), 1);
 #endif /* _TRACE_HOOK_SCHED_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>

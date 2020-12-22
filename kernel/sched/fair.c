@@ -4450,9 +4450,14 @@ check_preempt_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr)
 	unsigned long ideal_runtime, delta_exec;
 	struct sched_entity *se;
 	s64 delta;
+	bool skip_preempt = false;
 
 	ideal_runtime = sched_slice(cfs_rq, curr);
 	delta_exec = curr->sum_exec_runtime - curr->prev_sum_exec_runtime;
+	trace_android_rvh_check_preempt_tick(current, &ideal_runtime, &skip_preempt);
+	if (skip_preempt)
+		return;
+
 	if (delta_exec > ideal_runtime) {
 		resched_curr(rq_of(cfs_rq));
 		/*
@@ -7203,8 +7208,13 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
 	int scale = cfs_rq->nr_running >= sched_nr_latency;
 	int next_buddy_marked = 0;
 	int cse_is_idle, pse_is_idle;
+	bool ignore = false;
 
 	if (unlikely(se == pse))
+		return;
+
+	trace_android_rvh_check_preempt_wakeup_ignore(curr, &ignore);
+	if (ignore)
 		return;
 
 	/*
@@ -7332,6 +7342,7 @@ pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf
 	struct sched_entity *se;
 	struct task_struct *p;
 	int new_tasks;
+	bool repick = false;
 
 again:
 	if (!sched_fair_runnable(rq))
@@ -7385,6 +7396,7 @@ again:
 	} while (cfs_rq);
 
 	p = task_of(se);
+	trace_android_rvh_replace_next_task_fair(rq, &p, &se, &repick, false);
 
 	/*
 	 * Since we haven't yet done put_prev_entity and if the selected task
@@ -7417,6 +7429,10 @@ simple:
 #endif
 	if (prev)
 		put_prev_task(rq, prev);
+
+	trace_android_rvh_replace_next_task_fair(rq, &p, &se, &repick, true);
+	if (repick)
+		goto done;
 
 	do {
 		se = pick_next_entity(cfs_rq, NULL);
