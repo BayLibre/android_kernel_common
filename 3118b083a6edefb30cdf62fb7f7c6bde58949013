@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c12f8a0_21708223",
+        "filename": "drivers/iommu/io-pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2020-12-22T23:38:14Z",
+      "side": 1,
+      "message": "This is the part that I\u0027m iffy about from Robin\u0027s feedback. I\u0027ve asked him to clarify why he thinks we don\u0027t need locking here. My concern is that we can have a race with respect to filling out the io_pgtable_init_table entry for a particular format.",
+      "revId": "3118b083a6edefb30cdf62fb7f7c6bde58949013",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
