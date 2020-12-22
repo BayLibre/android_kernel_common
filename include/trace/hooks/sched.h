@@ -234,6 +234,14 @@ DECLARE_HOOK(android_vh_em_cpu_energy,
 		unsigned long *energy),
 	TP_ARGS(pd, max_util, sum_util, energy));
 
+DECLARE_HOOK(android_vh_cpu_up,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
+
+DECLARE_HOOK(android_vh_cpu_down,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
