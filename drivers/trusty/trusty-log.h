@@ -7,6 +7,14 @@
 #ifndef _TRUSTY_LOG_H_
 #define _TRUSTY_LOG_H_
 
+struct log_metadata {
+    uint32_t len;
+    uint32_t chunk_num;
+    uint32_t total_chunks;
+    char app_name[128];
+    char log_data[128];
+};
+
 /*
  * Ring buffer that supports one secure producer thread and one
  * linux side consumer thread.
@@ -15,7 +23,7 @@ struct log_rb {
 	volatile uint32_t alloc;
 	volatile uint32_t put;
 	uint32_t sz;
-	volatile char data[];
+	volatile struct log_metadata data[];
 } __packed;
 
 #define SMC_SC_SHARED_LOG_VERSION	SMC_STDCALL_NR(SMC_ENTITY_LOGGING, 0)
