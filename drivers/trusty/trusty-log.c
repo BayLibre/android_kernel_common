@@ -47,29 +47,125 @@ struct trusty_log_state {
 	struct notifier_block call_notifier;
 	struct notifier_block panic_notifier;
 	char line_buffer[TRUSTY_LINE_BUFFER_SIZE];
+	struct log_data_footer footer;
+	struct log_data_header header;
 };
 
-static int log_read_line(struct trusty_log_state *s, int put, int get)
+static void read_log_data(struct trusty_log_state *s, uint32_t log_offset,
+			   uint32_t len, char *value)
 {
-	struct log_rb *log = s->log;
-	int i;
-	char c = '\0';
-	size_t max_to_read =
-		min_t(size_t, put - get, sizeof(s->line_buffer) - 1);
-	size_t mask = log->sz - 1;
+	uint32_t i, offset;
+	uint32_t mask = s->log->sz - 1;
 
-	for (i = 0; i < max_to_read && c != '\n';)
-		s->line_buffer[i++] = c = log->data[get++ & mask];
+	for (i = 0; i < len; i++) {
+		offset = (log_offset + i) & mask;
+		value[i] = s->log->data[offset];
+	}
+}
+
+/* Finds the previous entry size from current entry offset */
+static uint32_t get_previous_entry_size(struct trusty_log_state *s,
+					uint32_t log_offset)
+{
+	uint32_t offset;
+	char value[20];
+
+	/* read footer */
+	offset = log_offset - sizeof(struct log_data_footer);
+	read_log_data(s, offset, sizeof(struct log_data_footer), value);
+	s->footer = *(struct log_data_footer *)(value);
+
+	return (s->footer.log_len + s->footer.app_name_len +
+		sizeof(uint32_t) + sizeof(struct log_data_footer));
+}
+
+static int log_read_line(struct trusty_log_state *s, u32 put, u32 get,
+			 uint32_t partial_entry_size)
+{
+	int i, j, k;
+	char c = '\0';
+	uint32_t offset;
+	uint32_t log_offset, header_len;
+	uint32_t partial_log_len = 0;
+	char value[256];
+
+	i = 0;
+	while (i < sizeof(s->line_buffer) - 1 && get < put) {
+		/* check for overflow */
+		if (s->log->alloc - get > s->log->sz)
+			return get;
+
+		if (partial_entry_size > sizeof(struct log_data_footer)) {
+			log_offset = get - partial_entry_size;
+			s->header.entry_size = partial_entry_size;
+		} else {
+			log_offset = get;
+			read_log_data(s, log_offset, sizeof(uint32_t), value);
+			s->header.entry_size = *(uint32_t *)(value);
+			get += s->header.entry_size;
+		}
+
+		/* check for overflow */
+		if (s->log->alloc - get > s->log->sz)
+			return get;
+
+		/* read footer */
+		offset = log_offset + s->header.entry_size -
+				sizeof(struct log_data_footer);
+		read_log_data(s, offset, sizeof(struct log_data_footer), value);
+		s->footer = *(struct log_data_footer *)(value);
+
+		/* read header */
+		header_len = s->header.entry_size -
+					sizeof(struct log_data_footer);
+		read_log_data(s, log_offset, header_len, value);
+
+		/* handle partial entry if available */
+		if (partial_entry_size >
+			(sizeof(struct log_data_footer) +
+						s->footer.app_name_len)) {
+			partial_log_len = partial_entry_size -
+						sizeof(struct log_data_footer);
+			if (partial_log_len >
+				(s->footer.log_len + s->footer.app_name_len))
+				partial_log_len = s->footer.log_len +
+						s->footer.app_name_len;
+
+			s->footer.log_len =
+				partial_log_len - s->footer.app_name_len;
+			if (s->footer.log_len > 0) {
+				for (k = partial_log_len - 1; k >= 0; k--)
+					s->header.data[k] = value[k];
+			} else {
+				/* discard it as there is no logtext */
+				partial_entry_size = 0;
+				continue;
+			}
+			partial_entry_size = 0;
+		} else {
+			s->header = *(struct log_data_header *)(value);
+		}
+
+		/* read log string */
+		for (j = 0; j < s->footer.log_len; j++) {
+			s->line_buffer[i++] = c = s->header.data[j];
+			if (c == '\n' || i >= sizeof(s->line_buffer) - 1)
+				break;
+		}
+		if (c == '\n')
+			break;
+	}
 	s->line_buffer[i] = '\0';
 
-	return i;
+	return get;
 }
 
 static void trusty_dump_logs(struct trusty_log_state *s)
 {
 	struct log_rb *log = s->log;
 	u32 get, put, alloc;
-	int read_chars;
+	uint32_t entry;
+	uint32_t entry_size, partial_entry_size = 0;
 
 	if (WARN_ON(!is_power_of_2(log->sz)))
 		return;
@@ -87,11 +183,12 @@ static void trusty_dump_logs(struct trusty_log_state *s)
 		rmb();
 
 		/* Read a line from the log */
-		read_chars = log_read_line(s, put, get);
+		get = log_read_line(s, put, get, partial_entry_size);
 
 		/* Force the loads from log_read_line to complete. */
 		rmb();
 		alloc = log->alloc;
+		partial_entry_size = 0;
 
 		/*
 		 * Discard the line that was just read if the data could
@@ -99,14 +196,53 @@ static void trusty_dump_logs(struct trusty_log_state *s)
 		 */
 		if (alloc - get > log->sz) {
 			dev_err(s->dev, "log overflow.");
-			get = alloc - log->sz;
+
+			/* traverse backwards till we get valid entry */
+			entry = alloc;
+			entry_size = get_previous_entry_size(s, entry);
+			while ((entry - entry_size) >= (alloc - log->sz)) {
+				/*
+				 * while traversing new entries might get added
+				 * then there is possibility of currupting the
+				 * entries which are already traversed.
+				 */
+				if (alloc != log->alloc) {
+					alloc = log->alloc;
+					if (entry <= (alloc - log->sz)) {
+						entry = alloc;
+						continue;
+					}
+				}
+				entry = entry - entry_size;
+				entry_size = get_previous_entry_size(s, entry);
+			}
+			/* handle partial entry if available */
+			if (entry - (alloc - log->sz) >
+					sizeof(struct log_data_footer)) {
+				partial_entry_size = entry - (alloc - log->sz);
+			} else {
+				partial_entry_size = 0;
+			}
+
+			get = entry;
 			continue;
 		}
 
-		if (__ratelimit(&trusty_log_rate_limit))
-			dev_info(s->dev, "%s", s->line_buffer);
+		if (__ratelimit(&trusty_log_rate_limit)) {
+			if (s->footer.app_name_len > 0) {
+				char *app_name =
+					&s->header.data[s->footer.log_len];
 
-		get += read_chars;
+				dev_info(s->dev, "%llu: %s: %s",
+					s->footer.timestamp,
+					app_name,
+					s->line_buffer);
+			} else {
+				dev_info(s->dev, "%llu: %s",
+					s->footer.timestamp,
+					s->line_buffer);
+			}
+		}
 	}
 	s->get = get;
 }
