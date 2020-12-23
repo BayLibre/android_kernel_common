@@ -12,7 +12,7 @@ struct oldold_utsname {
 	char machine[9];
 };
 
-#define __NEW_UTS_LEN 64
+#define __NEW_UTS_LEN 128
 
 struct old_utsname {
 	char sysname[65];
