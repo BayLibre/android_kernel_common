@@ -75,6 +75,18 @@ config ANDROID_VENDOR_HOOKS
 	  Allow vendor modules to attach to tracepoint "hooks" defined via
 	  DECLARE_HOOK or DECLARE_RESTRICTED_HOOK.
 
+config ANDROID_VENDOR_DEBUG_PARSER
+	bool "Android Vendor Hooks"
+	help
+	  Enable vendor debug parser for parsing kernel data structures,
+	  which can not be parsed from vendor modules, as required kernel
+	  structure definitions are not exposed. These data structures are
+	  useful for offline debugging of gki based kernel.
+
+	  This driver is statically compiled into kernel. It provides necessary
+	  interface to vendor modules for dumping parsed output into a
+	  sequential buffer in formatted manner.
+
 endif # if ANDROID
 
 endmenu
