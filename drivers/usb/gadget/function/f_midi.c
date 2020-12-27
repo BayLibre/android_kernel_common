@@ -1048,6 +1048,10 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
 		f->ss_descriptors = usb_copy_descriptors(midi_function);
 		if (!f->ss_descriptors)
 			goto fail_f_midi;
+<<<<<<< HEAD   (b9d8bc ANDROID: dma-buf: heap: export dma_heap_put)
+=======
+
+>>>>>>> BRANCH (021645 Linux 5.10.3)
 		if (gadget_is_superspeed_plus(c->cdev->gadget)) {
 			f->ssp_descriptors = usb_copy_descriptors(midi_function);
 			if (!f->ssp_descriptors)
