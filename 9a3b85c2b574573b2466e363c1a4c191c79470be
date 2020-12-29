@@ -16,6 +16,24 @@
       "message": "Yes, abi is broken, we can not take this patch, sorry.",
       "revId": "9a3b85c2b574573b2466e363c1a4c191c79470be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd521a54_956b0dd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1497372
+      },
+      "writtenOn": "2020-12-29T13:22:23Z",
+      "side": 1,
+      "message": "Okay, I will check how to fix this issue locally. Thanks.\nAnd could you correct me if my understanding of GKI patch is right:\n1\u003e after android11-5.4 kernel freeze (tag 5.4-android11-0 applied), if one patch breaks existed ABI, then it can not be merged ?\n2\u003e after kernel freeze, if one patch adds new ABI, then it can be accepted ?",
+      "parentUuid": "8fa4930e_f7d17515",
+      "revId": "9a3b85c2b574573b2466e363c1a4c191c79470be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
