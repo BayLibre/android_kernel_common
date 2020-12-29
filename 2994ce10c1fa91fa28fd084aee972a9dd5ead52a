@@ -16,6 +16,24 @@
       "message": "Please also enable for x86 gki_defconfig.\n\nAnd does this break the abi now?  If so, we can\u0027t do this 😞\n\nLet\u0027s see what the build system says...",
       "revId": "2994ce10c1fa91fa28fd084aee972a9dd5ead52a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d29ac0a_a1f3e2e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1497372
+      },
+      "writtenOn": "2020-12-29T12:30:44Z",
+      "side": 1,
+      "message": "Thanks Greg. Added for x86.\nAnd I think it will break the abi, see below code in include/linux/gpio/driver.h:\nstruct gpio_chip {\n...\n#if IS_ENABLED(CONFIG_GPIO_GENERIC)\n    unsigned long (*read_reg)(void __iomem *reg);\n    void (*write_reg)(void __iomem *reg, unsigned long data);\n    bool be_bits;\n    ...\n#endif /* CONFIG_GPIO_GENERIC */\n...\n}",
+      "parentUuid": "b6871890_4af862a4",
+      "revId": "2994ce10c1fa91fa28fd084aee972a9dd5ead52a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
