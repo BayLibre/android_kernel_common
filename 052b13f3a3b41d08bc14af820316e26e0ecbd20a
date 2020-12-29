@@ -16,6 +16,24 @@
       "message": "Messing with locks in a \"hook\" should not be something that is done.  Why do you need this?",
       "revId": "052b13f3a3b41d08bc14af820316e26e0ecbd20a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "186e434e_24687160",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1823900
+      },
+      "writtenOn": "2020-12-29T01:59:04Z",
+      "side": 1,
+      "message": "The waiters in the sem\u0027s wait_list which is waiting for the same sem lock, needed to be referenced in the vendor hook of alter_rwsem_list_add. It is not simply add the current waiter in the list\u0027s tail or head. So the waiters in the current sem\u0027s wait_list needed to be seen in the vendor module which needed to do the alter_rwsem_list_add. That\u0027s why the \"struct rwsem_waiter\" needed to be exported in the header.",
+      "parentUuid": "38429b78_43eaca0c",
+      "revId": "052b13f3a3b41d08bc14af820316e26e0ecbd20a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
