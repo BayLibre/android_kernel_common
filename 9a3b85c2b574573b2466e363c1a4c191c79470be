@@ -34,6 +34,24 @@
       "parentUuid": "8fa4930e_f7d17515",
       "revId": "9a3b85c2b574573b2466e363c1a4c191c79470be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f252e08c_1788a52c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2020-12-29T13:34:01Z",
+      "side": 1,
+      "message": "\u003e 1\u003e after android11-5.4 kernel freeze (tag 5.4-android11-0 applied), if one patch breaks existed ABI, then it can not be merged ?\n\nYes, that is correct.  We will take \"breaking\" abi patches at one point in the future, but that date it a long way from now (sorry, don\u0027t remember the exact timeframe, your google partner engineer will know that.)\n\n\u003e 2\u003e after kernel freeze, if one patch adds new ABI, then it can be accepted ?\n\nYes, adding new APIs is fine.\n\nI will now abandon this patch, thanks!",
+      "parentUuid": "bd521a54_956b0dd0",
+      "revId": "9a3b85c2b574573b2466e363c1a4c191c79470be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
