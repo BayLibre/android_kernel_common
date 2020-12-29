@@ -271,6 +271,7 @@ int driver_deferred_probe_check_state(struct device *dev)
 
 	return -ENODEV;
 }
+EXPORT_SYMBOL_GPL(driver_deferred_probe_check_state);
 
 /**
  * driver_deferred_probe_check_state_continue() - check deferred probe state
