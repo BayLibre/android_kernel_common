@@ -32,7 +32,9 @@
 
 enum slab_state slab_state;
 LIST_HEAD(slab_caches);
+EXPORT_SYMBOL_GPL(slab_caches);
 DEFINE_MUTEX(slab_mutex);
+EXPORT_SYMBOL_GPL(slab_mutex);
 struct kmem_cache *kmem_cache;
 
 #ifdef CONFIG_HARDENED_USERCOPY
