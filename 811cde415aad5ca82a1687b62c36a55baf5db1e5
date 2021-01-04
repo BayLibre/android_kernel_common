@@ -16,6 +16,24 @@
       "message": "These debug features should be handled using debug_symbols driver instead? Refer to https://android-review.googlesource.com/c/kernel/common/+/1535489 and associated bug for more details.",
       "revId": "811cde415aad5ca82a1687b62c36a55baf5db1e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fb09e6b_d8d50d28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1709452
+      },
+      "writtenOn": "2021-01-04T08:41:13Z",
+      "side": 1,
+      "message": "Sure, Will move this symbol to debug_symbols driver. \n\nI see function symbol exports are not handled by this driver, There are some function symbols in this series (for eg :pcpu_nr_pages, si_swapinfo) which would still need export.",
+      "parentUuid": "6f973cfb_caca3bb6",
+      "revId": "811cde415aad5ca82a1687b62c36a55baf5db1e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
