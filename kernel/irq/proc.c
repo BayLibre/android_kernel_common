@@ -159,7 +159,7 @@ static ssize_t write_irq_affinity(int type, struct file *file,
 	 * way to make the system unusable accidentally :-) At least
 	 * one online CPU still has to be targeted.
 	 */
-	if (!cpumask_intersects(new_value, cpu_online_mask)) {
+	if (!cpumask_intersects(new_value, cpu_active_mask)) {
 		/*
 		 * Special case for empty set - allow the architecture code
 		 * to set default SMP affinity.
