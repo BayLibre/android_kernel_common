@@ -47,6 +47,8 @@ static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
 	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+	bool anon_writable =
+		vma_is_anonymous(vma) && (vma->vm_flags & VM_WRITE);
 
 	/*
 	 * Can be called with only the mmap_lock for reading by
@@ -76,6 +78,7 @@ static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
 		if (pte_present(oldpte)) {
 			pte_t ptent;
 			bool preserve_write = prot_numa && pte_write(oldpte);
+			bool made_writable = false;
 
 			/*
 			 * Avoid trapping faults against the zero or KSM
@@ -136,8 +139,16 @@ static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
 					(pte_soft_dirty(ptent) ||
 					 !(vma->vm_flags & VM_SOFTDIRTY))) {
 				ptent = pte_mkwrite(ptent);
+				made_writable = true;
+			} else if (anon_writable &&
+				   page_mapcount(pte_page(ptent)) == 1) {
+				ptent = pte_mkwrite(ptent);
+				made_writable = true;
 			}
+
 			ptep_modify_prot_commit(vma, addr, pte, oldpte, ptent);
+			if (made_writable)
+				flush_tlb_page(vma, addr);
 			pages++;
 		} else if (is_swap_pte(oldpte)) {
 			swp_entry_t entry = pte_to_swp_entry(oldpte);
