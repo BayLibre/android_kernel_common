@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "955a3d00_8bf7b833",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-05T23:09:28Z",
+      "side": 1,
+      "message": "What if a file has fs-verity enabled without a signature (and fs.verity.require_signatures\u003d0)?  How is that represented on-disk?",
+      "range": {
+        "startLine": 264,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 11
+      },
+      "revId": "83767f1a68e20886790abe42d142096f3f1f4fb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a95efd7d_d9524afe",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-05T23:09:28Z",
+      "side": 1,
+      "message": "Isn\u0027t it possible to share more code with FS_IOC_ENABLE_VERITY?  It should be possible to have a function incfs_setup_fsverity(inode, filp, signature, sig_size) that computes the file digest (which includes filling in a fsverity_descriptor and hashing it), verifies the file digest against the signature if one is provided, and saves the file digest on the inode.  That all needs to be done both when opening a file that has fs-verity enabled, and when calling FS_IOC_ENABLE_VERITY.",
+      "range": {
+        "startLine": 395,
+        "startChar": 0,
+        "endLine": 412,
+        "endChar": 2
+      },
+      "revId": "83767f1a68e20886790abe42d142096f3f1f4fb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e76dcd5_2ebea716",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-05T23:09:28Z",
+      "side": 1,
+      "message": "Outdated.",
+      "range": {
+        "startLine": 424,
+        "startChar": 3,
+        "endLine": 424,
+        "endChar": 21
+      },
+      "revId": "83767f1a68e20886790abe42d142096f3f1f4fb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
