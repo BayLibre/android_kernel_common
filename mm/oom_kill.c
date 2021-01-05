@@ -339,8 +339,24 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
 	}
 
 	points = oom_badness(task, oc->totalpages);
-	if (points == LONG_MIN || points < oc->chosen_points)
+
+	if (points == LONG_MIN)
 		goto next;
+
+	if (points < oc->chosen_points) {
+
+		/*
+		 * This task isn't the one with the worst score seen
+		 * so far, but it still could the task with a
+		 * non-negative ADJ with the the worst score seen so
+		 * far.  Check accordingly.
+		 */
+		if (points < oc->chosen_non_negative_adj_points ||
+		    task->signal->oom_score_adj < 0)
+			goto next;
+
+		goto select_positive;
+	}
 
 select:
 	if (oc->chosen)
@@ -348,6 +364,20 @@ select:
 	get_task_struct(task);
 	oc->chosen = task;
 	oc->chosen_points = points;
+
+	/*
+	 * Check to see if this is the worst task with a non-negative
+	 * ADJ score seen so far
+	 */
+	if (task->signal->oom_score_adj < 0 ||
+	    points < oc->chosen_non_negative_adj_points)
+		goto next;
+select_positive:
+	if (oc->chosen_non_negative_adj)
+		put_task_struct(oc->chosen_non_negative_adj);
+	get_task_struct(task);
+	oc->chosen_non_negative_adj = task;
+	oc->chosen_non_negative_adj_points = points;
 next:
 	return 0;
 abort:
@@ -364,6 +394,7 @@ abort:
 static void select_bad_process(struct oom_control *oc)
 {
 	oc->chosen_points = LONG_MIN;
+	oc->chosen_non_negative_adj_points = LONG_MIN;
 
 	if (is_memcg_oom(oc))
 		mem_cgroup_scan_tasks(oc->memcg, oom_evaluate_task, oc);
@@ -375,6 +406,20 @@ static void select_bad_process(struct oom_control *oc)
 			if (oom_evaluate_task(p, oc))
 				break;
 		rcu_read_unlock();
+	}
+
+	/*
+	 * If oc->chosen has a negative ADJ, and we found a task with
+	 * a postive ADJ to kill, kill the task with the positive ADJ
+	 * instead. Note that oc->chosen == NULL implies that
+	 * oc->chosen_non_negative_adj is NULL as well, so there's no need
+	 * for a separate check to see if oc->chosen_non_negative_adj by
+	 * itself is non-NULL.
+	 */
+	if (oc->chosen && oc->chosen->signal->oom_score_adj < 0 &&
+	    oc->chosen_non_negative_adj) {
+		oc->chosen = oc->chosen_non_negative_adj;
+		oc->chosen_points = oc->chosen_non_negative_adj_points;
 	}
 }
 
