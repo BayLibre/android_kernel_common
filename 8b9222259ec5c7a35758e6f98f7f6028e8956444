@@ -87,6 +87,24 @@
       "parentUuid": "71ec2cc9_fd96e553",
       "revId": "8b9222259ec5c7a35758e6f98f7f6028e8956444",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "630dd1c6_b39ae07b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-05T14:15:32Z",
+      "side": 1,
+      "message": "This is due to the design of your debug symbol driver, not due to the way the kernel handles these variables.\n\nPlease just fix your design to work correctly with these, as if you were somehow treating these as a \"single\" variable, your usage model is totally broken.  At least the compiler is telling you this now and not latter on when you try to run it :)",
+      "parentUuid": "b5ffdefe_2bd83e0e",
+      "revId": "8b9222259ec5c7a35758e6f98f7f6028e8956444",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
