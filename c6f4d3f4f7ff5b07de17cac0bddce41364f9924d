@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e8cecaa_30cf0dc8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-01-05T09:11:27Z",
+      "side": 1,
+      "message": "If you can increase the frequency for the same voltage, chances are using the higher frequency _is_ the right thing to do no?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 71
+      },
+      "revId": "c6f4d3f4f7ff5b07de17cac0bddce41364f9924d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c870ba_729e2c71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-01-05T09:11:27Z",
+      "side": 1,
+      "message": "Why?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "c6f4d3f4f7ff5b07de17cac0bddce41364f9924d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e1700cf9_e612652b",
@@ -31,6 +77,46 @@
       "writtenOn": "2021-01-04T19:28:46Z",
       "side": 1,
       "message": "Quentin/Chris- thoughts on this? Should it be submitted upstream first?",
+      "revId": "c6f4d3f4f7ff5b07de17cac0bddce41364f9924d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccd39d55_8d226549",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-01-05T09:11:27Z",
+      "side": 1,
+      "message": "Yes, please post upstream for discussion. Also, FWIW, there have been attempts to exploit non-monotonically increasing freq / power ratios in the past (https://lore.kernel.org/lkml/20200122173538.1142069-1-douglas.raillard@arm.com/).\n\n-2 in the meantime to make sure we don\u0027t forget about it.",
+      "revId": "c6f4d3f4f7ff5b07de17cac0bddce41364f9924d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "266c0c14_83f9bf6b",
+        "filename": "kernel/power/energy_model.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-01-05T09:11:27Z",
+      "side": 1,
+      "message": "That\u0027s really not the EM\u0027s framework\u0027s job to do this IMO. The _users_ may decide to do that, but I don\u0027t see a reason to hardcode it here.",
+      "range": {
+        "startLine": 162,
+        "startChar": 2,
+        "endLine": 165,
+        "endChar": 3
+      },
       "revId": "c6f4d3f4f7ff5b07de17cac0bddce41364f9924d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
