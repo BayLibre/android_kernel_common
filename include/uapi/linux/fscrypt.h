@@ -18,8 +18,11 @@
 #define FSCRYPT_POLICY_FLAGS_PAD_32		0x03
 #define FSCRYPT_POLICY_FLAGS_PAD_MASK		0x03
 #define FSCRYPT_POLICY_FLAG_DIRECT_KEY		0x04
+<<<<<<< HEAD   (5ada35 Merge remote-tracking branch 'aosp/upstream-f2fs-stable-linu)
 #define FSCRYPT_POLICY_FLAG_IV_INO_LBLK_64	0x08
 #define FSCRYPT_POLICY_FLAG_IV_INO_LBLK_32	0x10
+=======
+>>>>>>> BRANCH (b3f656 Linux 5.4.87)
 
 /* Encryption algorithms */
 #define FSCRYPT_MODE_AES_256_XTS		1
