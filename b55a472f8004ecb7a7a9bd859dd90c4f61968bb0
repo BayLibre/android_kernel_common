@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f433a43_18510232",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1278660
+      },
+      "writtenOn": "2021-01-06T07:45:45Z",
+      "side": 1,
+      "message": "Now it says something different:\n\n[    4.726070][    T1] init: Loading module /lib/modules/virtio_net.ko with args \"\"\n[    4.738932][    T1] virtio_net: disagrees about version of symbol __traceiter_xdp_exception\n[    4.751118][    T1] virtio_net: Unknown symbol __traceiter_xdp_exception (err -22)\n[    4.762656][    T1] virtio_net: disagrees about version of symbol __tracepoint_xdp_exception\n[    4.775267][    T1] virtio_net: Unknown symbol __tracepoint_xdp_exception (err -22)\n[    4.822698][    T1] init: Failed to insmod \u0027/lib/modules/virtio_net.ko\u0027 with args \u0027\u0027\n[    4.828689][    T1] init: LoadWithAliases was unable to load virtio_net\n[    4.834535][    T1] init: Failed to load kernel modules",
+      "revId": "b55a472f8004ecb7a7a9bd859dd90c4f61968bb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
