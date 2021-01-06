@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c97a73a_f3e817d4",
+        "filename": "kernel/signal.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-01-06T06:40:22Z",
+      "side": 1,
+      "message": "I think check_kill_permission() already checks the capability and do_send_sig_info() return value should not be ignored. I suggest replacing this check with:\n\nif (!ret \u0026\u0026 sig \u003d\u003d SIGKILL \u0026\u0026 !strcmp(current-\u003ecomm, reaper_comm))",
+      "range": {
+        "startLine": 1429,
+        "startChar": 2,
+        "endLine": 1430,
+        "endChar": 39
+      },
+      "revId": "024915b7d5557e5b25720bae99b50d862757d04b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
