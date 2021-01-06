@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f467911b_4d2e7d61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2021-01-06T09:32:42Z",
+      "side": 1,
+      "message": "Hi.\n\nFYI, you missed this bit (it is not applicable to 4.4 but it is applicable to 4.9).\n\n--- a/fs/fuse/fuse_i.h\n+++ b/fs/fuse/fuse_i.h\n@@ -256,7 +256,7 @@ struct fuse_io_priv {\n \n #define FUSE_IO_PRIV_SYNC(f) \\\n {                                      \\\n-       .refcnt \u003d { ATOMIC_INIT(1) },   \\\n+       .refcnt \u003d KREF_INIT(1),         \\\n        .async \u003d 0,                     \\\n        .file \u003d f,                      \\\n }\n\nI got bitten by something like this a while ago, so (if I remember) I apply the cherry-pick from scratch or start with the most recent kernels and work backwards .\n\nGiuliano.",
+      "revId": "bf7f44e4748e6d862e0d9e633675a77a8a1df136",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
