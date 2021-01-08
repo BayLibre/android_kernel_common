@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "198c3ff5_44f2a17a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1769527
+      },
+      "writtenOn": "2021-01-08T02:24:45Z",
+      "side": 1,
+      "message": "we will upload the new version here.",
+      "revId": "d3dc858cffcf5eb0158e555a55c1ac1775af18ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "763ca6fc_5bbf8908",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2047,
+      "author": {
+        "id": 1769527
+      },
+      "writtenOn": "2021-01-08T02:24:45Z",
+      "side": 1,
+      "message": "The upstream patchset can not be applied clean as this is \"static\" in upstream.\nthus line2051 will be applied fail. BUT the code don\u0027t change. In this case, should we mark it \"BACKPORT\"?",
+      "revId": "d3dc858cffcf5eb0158e555a55c1ac1775af18ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
