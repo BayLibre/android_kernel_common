@@ -16,6 +16,282 @@
       "message": "Why isn\u0027t this sent upstream first for review and acceptance there?",
       "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48988a6a_01e7a363",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "need an SPDX line, and remove the boilerplate below.\n\nDid anyone run checkpatch on this?  It should have complained :(",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "514230ae_afdda5b4",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "we have functions for this already, right?  Please use them.",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 14
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d2d34b9_7fe20860",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "what is this for?",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 18
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8abf115_c4113fea",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "no, use the real Linux calls please.",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 14
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65389c73_d147b118",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "same as above.",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 13
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20ff999b_859cc655",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "if drivers work, they are quiet, this looks like debugging dumps.",
+      "range": {
+        "startLine": 477,
+        "startChar": 1,
+        "endLine": 477,
+        "endChar": 9
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3758ee7_4dbf7d45",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "error?",
+      "range": {
+        "startLine": 578,
+        "startChar": 2,
+        "endLine": 578,
+        "endChar": 10
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2d704b6_7ece29d9",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "error?",
+      "range": {
+        "startLine": 734,
+        "startChar": 2,
+        "endLine": 734,
+        "endChar": 10
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd18cb39_fbdeeaaa",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "remove debugging messages.",
+      "range": {
+        "startLine": 813,
+        "startChar": 1,
+        "endLine": 813,
+        "endChar": 9
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e20cdc8d_d60668bf",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "you control the callers, this does not need to be here.",
+      "range": {
+        "startLine": 871,
+        "startChar": 1,
+        "endLine": 871,
+        "endChar": 8
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749348d2_3def4bf9",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "return error value and check it?",
+      "range": {
+        "startLine": 897,
+        "startChar": 2,
+        "endLine": 897,
+        "endChar": 8
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aa79e92_36a763ba",
+        "filename": "drivers/gpu/drm/hisilicon/kirin/kirin960/dw_drm_dsi.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-08T09:28:59Z",
+      "side": 1,
+      "message": "quiet...",
+      "range": {
+        "startLine": 933,
+        "startChar": 1,
+        "endLine": 933,
+        "endChar": 9
+      },
+      "revId": "19b2b3d96b28244ce321930be71088c3d6806ee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
