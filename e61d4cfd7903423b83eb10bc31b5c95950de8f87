@@ -16,6 +16,24 @@
       "message": "Why isn\u0027t this sent upstream first?",
       "revId": "e61d4cfd7903423b83eb10bc31b5c95950de8f87",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69c8b571_4617d6d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1030767
+      },
+      "writtenOn": "2021-01-08T09:16:28Z",
+      "side": 1,
+      "message": "The code being fixed here (android_disconnect()) is Android-specific. This code was originally introduced here: https://android-review.googlesource.com/c/kernel/common/+/123182 and is referenced again here: https://android-review.googlesource.com/c/kernel/common/+/1170200 , neither of which are upstream.\n\nIn fact this change is removing the android_disconnect() completely to bring this driver a step closer to upstream.",
+      "parentUuid": "9c0b4a1b_0399a6f3",
+      "revId": "e61d4cfd7903423b83eb10bc31b5c95950de8f87",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
