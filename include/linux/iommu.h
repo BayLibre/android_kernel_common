@@ -436,6 +436,8 @@ extern int iommu_sva_unbind_gpasid(struct iommu_domain *domain,
 				   struct device *dev, ioasid_t pasid);
 extern struct iommu_domain *iommu_get_domain_for_dev(struct device *dev);
 extern struct iommu_domain *iommu_get_dma_domain(struct device *dev);
+extern size_t iommu_pgsize(unsigned long pgsize_bitmap, unsigned long addr_mer,
+			   size_t size);
 extern int iommu_map(struct iommu_domain *domain, unsigned long iova,
 		     phys_addr_t paddr, size_t size, int prot);
 extern int iommu_map_atomic(struct iommu_domain *domain, unsigned long iova,
@@ -686,6 +688,12 @@ static inline void iommu_detach_device(struct iommu_domain *domain,
 static inline struct iommu_domain *iommu_get_domain_for_dev(struct device *dev)
 {
 	return NULL;
+}
+
+static inline size_t iommu_pgsize(unsigned long pgsize_bitmap,
+				  unsigned long addr_merge, size_t size)
+{
+	return 0;
 }
 
 static inline int iommu_map(struct iommu_domain *domain, unsigned long iova,
