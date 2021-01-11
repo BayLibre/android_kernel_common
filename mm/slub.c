@@ -199,22 +199,6 @@ static inline bool kmem_cache_has_cpu_partial(struct kmem_cache *s)
 /* Use cmpxchg_double */
 #define __CMPXCHG_DOUBLE	((slab_flags_t __force)0x40000000U)
 
-/*
- * Tracking user of a slab.
- */
-#define TRACK_ADDRS_COUNT 16
-struct track {
-	unsigned long addr;	/* Called from address */
-#ifdef CONFIG_STACKTRACE
-	unsigned long addrs[TRACK_ADDRS_COUNT];	/* Called from address */
-#endif
-	int cpu;		/* Was running on cpu */
-	int pid;		/* Pid context */
-	unsigned long when;	/* When did the operation occur */
-};
-
-enum track_item { TRACK_ALLOC, TRACK_FREE };
-
 #ifdef CONFIG_SYSFS
 static int sysfs_slab_add(struct kmem_cache *);
 static int sysfs_slab_alias(struct kmem_cache *, const char *);
@@ -574,6 +558,49 @@ static struct track *get_track(struct kmem_cache *s, void *object,
 
 	return kasan_reset_tag(p + alloc);
 }
+
+/*
+ * This function will be used to loop through all the slab objects in
+ * a page to give track structure for each object, this returns the
+ * object after each iteration and NULL when it reaches last object.
+ * iter is used to loop through the objects, the first call to this
+ * function should always set iter to 0.
+ */
+void *get_track_all(struct kmem_cache *s,
+		struct page *page, int iter,
+		struct track *t, enum track_item alloc)
+{
+	int i;
+	void *addr, *object;
+	struct track *p;
+
+	if (!slub_debug)
+		return NULL;
+
+	if (iter == 0)
+		slab_lock(page);
+
+	if (iter > page->objects - 1)
+	{
+		slab_unlock(page);
+		return NULL;
+	}
+	addr = page_address(page);
+	object  = fixup_red_left(s, addr);
+	object += iter * s->size;
+	p = get_track(s, object, alloc);
+	t->addr = p->addr;
+	t->cpu = p->cpu;
+	t->pid = p->pid;
+	t->when = p->when;
+
+#ifdef CONFIG_STACKTRACE
+	for (i = 0; i < TRACK_ADDRS_COUNT; i++)
+		t->addrs[i] = p->addrs[i];
+#endif
+	return object;
+}
+EXPORT_SYMBOL_GPL(get_track_all);
 
 static void set_track(struct kmem_cache *s, void *object,
 			enum track_item alloc, unsigned long addr)
