@@ -33,6 +33,24 @@
       "message": "The upstream patchset can not be applied clean as this is \"static\" in upstream.\nthus line2051 will be applied fail. BUT the code don\u0027t change. In this case, should we mark it \"BACKPORT\"?",
       "revId": "d3dc858cffcf5eb0158e555a55c1ac1775af18ad",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cbe74b6_c7270d7d",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2047,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-01-11T19:32:45Z",
+      "side": 1,
+      "message": "Please add an annotation to the commit message about what was changed for the backport.\n```\n[yong.wu: removed \"static\" from ... ]\n```",
+      "parentUuid": "763ca6fc_5bbf8908",
+      "revId": "d3dc858cffcf5eb0158e555a55c1ac1775af18ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
