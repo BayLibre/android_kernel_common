@@ -133,11 +133,12 @@
  */
 #define MT_NORMAL		0
 #define MT_NORMAL_TAGGED	1
-#define MT_NORMAL_NC		2
-#define MT_NORMAL_WT		3
-#define MT_DEVICE_nGnRnE	4
-#define MT_DEVICE_nGnRE		5
-#define MT_DEVICE_GRE		6
+#define MT_NORMAL_SYS_CACHED	2
+#define MT_NORMAL_NC		3
+#define MT_NORMAL_WT		4
+#define MT_DEVICE_nGnRnE	5
+#define MT_DEVICE_nGnRE		6
+#define MT_DEVICE_GRE		7
 
 /*
  * Memory types for Stage-2 translation
