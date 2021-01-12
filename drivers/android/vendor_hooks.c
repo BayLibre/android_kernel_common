@@ -29,6 +29,7 @@
 #include <trace/hooks/preemptirq.h>
 #include <trace/hooks/ftrace_dump.h>
 #include <trace/hooks/ufshcd.h>
+#include <trace/hooks/cgroup.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -114,3 +115,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_prepare_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_update_sysfs);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_compl_command);
+<<<<<<< HEAD   (17254a ANDROID: block: keyslot-manager: move function declaration)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_uic_command);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_tm_command);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_check_int_errors);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wake_up_sync);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_uclamp_eff_value);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpufreq_transition);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_set_task);
+>>>>>>> CHANGE (d97a81 ANDROID: cgroup: Add vendor hook to the cgroup)
