@@ -96,6 +96,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_preempt_enable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_disable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_enable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_cgroup_attach);
+<<<<<<< HEAD   (601149 ANDROID: ABI: Update the tcpci symbols for pixel)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_cgroup_online);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_oops_enter);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_oops_exit);
@@ -186,3 +187,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);
+>>>>>>> CHANGE (a2d89d ANDROID: schedutil: add vendor hook for adjusting util to fr)
