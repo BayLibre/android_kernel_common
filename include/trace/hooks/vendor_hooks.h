@@ -11,6 +11,8 @@
 
 #define DECLARE_HOOK DECLARE_TRACE
 
+#if defined(CONFIG_TRACEPOINTS) && defined(CONFIG_ANDROID_VENDOR_HOOKS)
+
 #ifdef TRACE_HEADER_MULTI_READ
 
 #define DEFINE_HOOK_FN(_name, _reg, _unreg, proto, args)		\
@@ -102,3 +104,8 @@
 			PARAMS(__data, args))
 
 #endif /* TRACE_HEADER_MULTI_READ */
+
+#else
+#define DECLARE_RESTRICTED_HOOK(name, proto, args, cond)		\
+	DECLARE_TRACE(name, PARAMS(proto), PARAMS(args))
+#endif
