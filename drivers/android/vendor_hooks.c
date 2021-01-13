@@ -20,6 +20,11 @@
 #include <trace/hooks/minidump.h>
 #include <trace/hooks/wqlockup.h>
 #include <trace/hooks/sysrqcrash.h>
+<<<<<<< HEAD   (32ff5f ANDROID: GKI: bring back icmpv6_send)
+=======
+#include <trace/hooks/cgroup.h>
+#include <trace/hooks/sys.h>
+>>>>>>> CHANGE (6904f0 ANDROID: Add vendor hooks when syscall prctl finished)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -69,3 +74,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sysrq_crash);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_busiest_group);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_em_pd_energy);
+<<<<<<< HEAD   (32ff5f ANDROID: GKI: bring back icmpv6_send)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_set_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_syscall_prctl_finished);
+>>>>>>> CHANGE (6904f0 ANDROID: Add vendor hooks when syscall prctl finished)
