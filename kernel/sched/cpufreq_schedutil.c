@@ -6,12 +6,15 @@
  * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
  */
 
+<<<<<<< HEAD   (c4915f FROMLIST: scsi: ufs: Fix management of lrbp->cmd)
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include "sched.h"
 
 #include <linux/sched/cpufreq.h>
 #include <trace/events/power.h>
+=======
+>>>>>>> CHANGE (057fb5 ANDROID: schedutil: add vendor hook for adjusting util to fr)
 #include <trace/hooks/sched.h>
 
 #define IOWAIT_BOOST_MIN	(SCHED_CAPACITY_SCALE / 8)

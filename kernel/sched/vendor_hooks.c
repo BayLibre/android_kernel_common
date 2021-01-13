@@ -93,6 +93,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_est_update);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_setscheduler_uclamp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wake_up_sync);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
+<<<<<<< HEAD   (c4915f FROMLIST: scsi: ufs: Fix management of lrbp->cmd)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_effective_cpu_util);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_force_compatible_pre);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_force_compatible_post);
@@ -105,3 +106,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_by_task);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_energy_efficient_cpu);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);
+>>>>>>> CHANGE (057fb5 ANDROID: schedutil: add vendor hook for adjusting util to fr)
