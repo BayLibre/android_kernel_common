@@ -22,6 +22,7 @@
 #include <trace/hooks/wqlockup.h>
 #include <trace/hooks/debug.h>
 #include <trace/hooks/sysrqcrash.h>
+<<<<<<< HEAD   (3500ab ANDROID: build.config: Disable LTO for KASAN and Kprobes bui)
 #include <trace/hooks/printk.h>
 #include <trace/hooks/gic_v3.h>
 #include <trace/hooks/epoch.h>
@@ -38,6 +39,10 @@
 #include <trace/hooks/iommu.h>
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/ufshcd.h>
+=======
+#include <trace/hooks/cgroup.h>
+#include <trace/hooks/sys.h>
+>>>>>>> CHANGE (6904f0 ANDROID: Add vendor hooks when syscall prctl finished)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -140,6 +145,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_format_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_dump_buffer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_allow_domain_state);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);
+<<<<<<< HEAD   (3500ab ANDROID: build.config: Disable LTO for KASAN and Kprobes bui)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_em_cpu_energy);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_up);
@@ -172,3 +178,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wake_up_sync);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_uclamp_eff_value);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpufreq_transition);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_em_pd_energy);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_set_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_syscall_prctl_finished);
+>>>>>>> CHANGE (6904f0 ANDROID: Add vendor hooks when syscall prctl finished)
