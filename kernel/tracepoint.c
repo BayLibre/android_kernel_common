@@ -55,8 +55,15 @@ struct tp_probes {
 
 static inline void *allocate_probes(int count)
 {
-	struct tp_probes *p  = kmalloc(struct_size(p, probes, count),
-				       GFP_KERNEL);
+	struct tp_probes *p;
+	int flags;
+
+	if (in_atomic())
+		flags = GFP_ATOMIC;
+	else
+		flags = GFP_KERNEL;
+
+	p = kmalloc(struct_size(p, probes, count), flags);
 	return p == NULL ? NULL : p->probes;
 }
 
