@@ -37,6 +37,7 @@
 #include <trace/hooks/mm.h>
 #include <trace/hooks/dtask.h>
 #include <trace/hooks/ftrace_dump.h>
+#include <trace/hooks/fault.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -107,3 +108,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_large_alloced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_show_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_format_check);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_die_kernel_fault);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_sea);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_sp_pc_abort);
