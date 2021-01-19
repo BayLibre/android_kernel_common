@@ -31,6 +31,7 @@
 #include <trace/hooks/pm_domain.h>
 #include <trace/hooks/bug.h>
 #include <trace/hooks/power.h>
+#include <trace/hooks/rcu.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -135,3 +136,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo_unfrozen);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sync_rcu_expedited_wait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rcu_print_other_cpu_stall);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rcu_print_cpu_stall);
