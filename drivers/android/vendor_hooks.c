@@ -64,6 +64,7 @@
 #include <trace/hooks/fuse.h>
 #include <trace/hooks/madvise.h>
 #include <trace/hooks/dmabuf.h>
+#include <trace/hooks/softlockup.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -440,3 +441,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_vmalloc_stack);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_stack_hash);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calc_alloc_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_watchdog_timer_softlockup);
