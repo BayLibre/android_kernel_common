@@ -38,6 +38,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/topology.h>
 #include <trace/hooks/dtask.h>
+#include <trace/hooks/power.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -99,3 +100,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_mutex_list_add);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_unlock_slowpath);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_capacity_show);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo_unfrozen);
