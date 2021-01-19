@@ -44,6 +44,7 @@
 #include <trace/hooks/ftrace_dump.h>
 #include <trace/hooks/dtask.h>
 #include <trace/hooks/logbuf.h>
+#include <trace/hooks/traps.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -123,3 +124,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ep_create_wakeup_source);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_arm64_serror_panic);
