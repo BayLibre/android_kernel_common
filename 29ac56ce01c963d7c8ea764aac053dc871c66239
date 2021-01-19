@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1892a9c2_c0ca8afe",
+        "filename": "mm/slab.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-01-19T22:40:42Z",
+      "side": 1,
+      "message": "Please add a short comment describing this function.",
+      "range": {
+        "startLine": 220,
+        "startChar": 21,
+        "endLine": 220,
+        "endChar": 36
+      },
+      "revId": "29ac56ce01c963d7c8ea764aac053dc871c66239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2635a6d_f85116d0",
+        "filename": "mm/slub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-01-19T22:40:42Z",
+      "side": 1,
+      "message": "Will you need another function for TRACK_FREE? struct track has some additional members which seem useful, like \"pid\". If we will need these too at some point then making struct track, enum track_item public and exporting get_track() might be a better way to go.",
+      "range": {
+        "startLine": 585,
+        "startChar": 26,
+        "endLine": 585,
+        "endChar": 37
+      },
+      "revId": "29ac56ce01c963d7c8ea764aac053dc871c66239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
