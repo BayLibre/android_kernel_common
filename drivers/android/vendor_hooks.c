@@ -33,6 +33,7 @@
 #include <trace/hooks/power.h>
 #include <trace/hooks/rcu.h>
 #include <trace/hooks/softlockup.h>
+#include <trace/hooks/fault.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -142,3 +143,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rcu_print_other_cpu_stall);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rcu_print_cpu_stall);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task_idle);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_watchdog_timer_softlockup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_die_kernel_fault);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_sea);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_mem_abort);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_sp_pc_abort);
