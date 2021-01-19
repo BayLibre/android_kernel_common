@@ -39,6 +39,7 @@
 #include <trace/hooks/ftrace_dump.h>
 #include <trace/hooks/fault.h>
 #include <trace/hooks/traps.h>
+#include <trace/hooks/bug.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -117,3 +118,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_el1_bti);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_el1_fpac);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_panic_unhandled);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_arm64_serror_panic);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
