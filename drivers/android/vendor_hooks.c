@@ -139,3 +139,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo_unfrozen);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sync_rcu_expedited_wait);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rcu_print_other_cpu_stall);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rcu_print_cpu_stall);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task_idle);
