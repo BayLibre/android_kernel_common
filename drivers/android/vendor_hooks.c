@@ -30,6 +30,7 @@
 #include <trace/hooks/ftrace_dump.h>
 #include <trace/hooks/pm_domain.h>
 #include <trace/hooks/bug.h>
+#include <trace/hooks/softlockup.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -133,3 +134,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_allow_domain_state);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_em_cpu_energy);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_watchdog_timer_softlockup);
