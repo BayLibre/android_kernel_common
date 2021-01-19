@@ -125,3 +125,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_arm64_serror_panic);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_el1_undef);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_el1_bti);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_el1_fpac);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_panic_unhandled);
