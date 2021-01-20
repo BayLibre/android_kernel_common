@@ -492,7 +492,8 @@ static int system_heap_create(void)
 	if (IS_ERR(sys_heap))
 		return PTR_ERR(sys_heap);
 
-	exp_info.name = "system-uncached";
+	/*use the 'aosp,' prefix until this is upstream */
+	exp_info.name = "aosp,system-uncached";
 	exp_info.ops = &system_uncached_heap_ops;
 	exp_info.priv = NULL;
 
