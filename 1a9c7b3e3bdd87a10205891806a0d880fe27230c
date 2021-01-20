@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de9acbac_1eec0dea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-01-20T18:51:37Z",
+      "side": 1,
+      "message": "CHECK:CAMELCASE: Avoid CamelCase: \u003cExit\u003e\n#130: FILE: drivers/staging/android/debug_kinfo.c:66:\n+\t\tgoto Exit;\n\nCHECK:PARENTHESIS_ALIGNMENT: Alignment should match open parenthesis\n#141: FILE: drivers/staging/android/debug_kinfo.c:77:\n+\t\tpr_warn(\"%s: Build info buffer (len: %zd) can\u0027t hold entire string \u0027%s\u0027\\n\",\n+\t\t\t\t__func__, build_info_size, str);\n\nCHECK:PARENTHESIS_ALIGNMENT: Alignment should match open parenthesis\n#173: FILE: drivers/staging/android/debug_kinfo.c:109:\n+\t\tdev_warn(\u0026pdev-\u003edev, \"no such reserved mem of node name %s\\n\",\n+\t\t\t\tpdev-\u003edev.of_node-\u003ename);\n\nWARNING:STRLCPY: Prefer strscpy over strlcpy - see: https://lore.kernel.org/r/CAHk-\u003dwgfRnXz0W3D37d01q3JFkr_i_uTL\u003dV6A6G1oUZcprmknw@mail.gmail.com/\n#221: FILE: drivers/staging/android/debug_kinfo.c:157:\n+\tstrlcpy(info-\u003elast_uts_release, init_utsname()-\u003erelease, sizeof(info-\u003elast_uts_release));\n\nWARNING:SPDX_LICENSE_TAG: Improper SPDX comment style for \u0027drivers/staging/android/debug_kinfo.h\u0027, please use \u0027/*\u0027 instead\n#252: FILE: drivers/staging/android/debug_kinfo.h:1:\n+// SPDX-License-Identifier: GPL-2.0\n\nWARNING:SPDX_LICENSE_TAG: Missing or malformed SPDX-License-Identifier tag in line 1\n#252: FILE: drivers/staging/android/debug_kinfo.h:1:\n+// SPDX-License-Identifier: GPL-2.0\n\ntotal: 0 errors, 3 warnings, 3 checks, 265 lines checked",
+      "revId": "1a9c7b3e3bdd87a10205891806a0d880fe27230c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
