@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e70eff9f_f807bb3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-22T13:37:43Z",
+      "side": 1,
+      "message": "This still seems really odd, what is wrong with gcc that it can not compile this in the first place?",
+      "revId": "22bbef1b5cdff9cdc87d052942f789adfebb9a33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dcb5d6d_3ea5a200",
+        "filename": "include/linux/sysfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-22T13:37:43Z",
+      "side": 1,
+      "message": "No, this does not belong in sysfs.h without being upstream, sorry.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 44
+      },
+      "revId": "22bbef1b5cdff9cdc87d052942f789adfebb9a33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
