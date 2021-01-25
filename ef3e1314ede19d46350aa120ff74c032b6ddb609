@@ -70,6 +70,30 @@
       },
       "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d65927f_0dbf88b6",
+        "filename": "build.config.common",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-01-25T15:42:25Z",
+      "side": 1,
+      "message": "I think the reason is that Howard is trying to build the kernel with the regular platform AOSP manifest, so some stuff gets checked out in wrong or conflicting places. In clang\u0027s case, it\u0027s wrong (prebuilts-master -\u003e prebuilts) and in build\u0027s case it\u0027s conflicting.",
+      "parentUuid": "f9f18761_49900bf9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
