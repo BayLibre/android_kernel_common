@@ -118,6 +118,30 @@
       },
       "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30336b7d_a263da09",
+        "filename": "build.config.common",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-01-25T16:41:02Z",
+      "side": 1,
+      "message": "It conflicts because a platform checkout doesn\u0027t have a \"build.git\"; well, it does, but it\u0027s checkout to build/core. We\u0027re just checking out to build/. I don\u0027t have a strong opinion about this, but maybe we should be using kernel/build in platform checkouts, and if that\u0027s true, we update our kernel manifests to do that as well? (w/ symlink for backwards compat?)",
+      "parentUuid": "3d6e3b17_28b32ea1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
