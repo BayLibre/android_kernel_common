@@ -46,6 +46,30 @@
       },
       "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9f18761_49900bf9",
+        "filename": "build.config.common",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-01-25T15:29:44Z",
+      "side": 1,
+      "message": "we can actually move prebuilts-master/clang to prebuilts/clang. That would require a manifest+build.config change per branch.\n\nAnd, yes, I agree, the toolchain should not be overridden. That is my point above. At most it can be defined in sources in a derived config. But not via environment. What is the reason behind this?",
+      "parentUuid": "7c793e04_cb675be1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
