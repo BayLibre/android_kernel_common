@@ -94,6 +94,30 @@
       },
       "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d6e3b17_28b32ea1",
+        "filename": "build.config.common",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-01-25T15:55:02Z",
+      "side": 1,
+      "message": "ok, that makes sense (despite the typo in the patch: \"prebuiltsmaster\" vs \"prebuilts-master\")\n\nThe right solution would then to consolidate the paths, I suppose.\nThere should be nothing colliding for kernel/build, though.",
+      "parentUuid": "5d65927f_0dbf88b6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
