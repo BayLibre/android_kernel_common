@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d821afe_39b162f5",
+        "filename": "android/abi_gki_aarch64_unisoc",
+        "patchSetId": 3
+      },
+      "lineNbr": 1423,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-26T09:01:36Z",
+      "side": 1,
+      "message": "drivers should not be calling vfs functions, please remove this.",
+      "range": {
+        "startLine": 1422,
+        "startChar": 2,
+        "endLine": 1423,
+        "endChar": 11
+      },
+      "revId": "8923db2460ccebd46d3a013a1b30bb4bb845136a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddad36e1_257489ea",
+        "filename": "android/abi_gki_aarch64_unisoc",
+        "patchSetId": 3
+      },
+      "lineNbr": 2055,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-26T09:01:36Z",
+      "side": 1,
+      "message": "drivers can not directly read/write files, please remove.",
+      "range": {
+        "startLine": 2055,
+        "startChar": 0,
+        "endLine": 2055,
+        "endChar": 11
+      },
+      "revId": "8923db2460ccebd46d3a013a1b30bb4bb845136a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d6caedf_7ec37266",
+        "filename": "android/abi_gki_aarch64_unisoc",
+        "patchSetId": 3
+      },
+      "lineNbr": 2428,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-01-26T09:01:36Z",
+      "side": 1,
+      "message": "this should not be built as a kernel module anymore, are you sure your configuration was correct?",
+      "range": {
+        "startLine": 2428,
+        "startChar": 0,
+        "endLine": 2428,
+        "endChar": 30
+      },
+      "revId": "8923db2460ccebd46d3a013a1b30bb4bb845136a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
