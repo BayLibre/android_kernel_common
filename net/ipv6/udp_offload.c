@@ -146,7 +146,8 @@ skip:
 	NAPI_GRO_CB(skb)->is_ipv6 = 1;
 	rcu_read_lock();
 
-	if (static_branch_unlikely(&udpv6_encap_needed_key))
+	if (static_branch_unlikely(&udpv6_encap_needed_key) ||
+	    (skb->dev->features & NETIF_F_GRO_FRAGLIST))
 		sk = udp6_gro_lookup_skb(skb, uh->source, uh->dest);
 
 	pp = udp_gro_receive(head, skb, uh, sk);
