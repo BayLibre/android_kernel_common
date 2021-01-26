@@ -142,6 +142,30 @@
       },
       "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e307eaa_fd4b0807",
+        "filename": "build.config.common",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1135739
+      },
+      "writtenOn": "2021-01-26T07:11:57Z",
+      "side": 1,
+      "message": "Thanks for the clarification Alistair. Yes, it\u0027s for the path conflict. According to the comments above, we can consolidate paths like \n  https://android.googlesource.com/kernel/build \n    -\u003e ./kernel/build\n  https://..google../platform/prebuilts/clang/host/linux-x86\n    -\u003e ./prebuilts/clang/host/linux-x86\n\nI assume the https://..google../platform/prebuilts/clang/host/linux-x86 is synced perfectly with the https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86\nAlso plus symlink for backwards compatibility. I\u0027ll submit another CL if we all agree on this. Let me know.",
+      "parentUuid": "30336b7d_a263da09",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "ef3e1314ede19d46350aa120ff74c032b6ddb609",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
