@@ -455,7 +455,7 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
 
 	NAPI_GRO_CB(skb)->is_flist = 0;
 	if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
-		NAPI_GRO_CB(skb)->is_flist = sk ? !udp_sk(sk)->gro_enabled: 1;
+		NAPI_GRO_CB(skb)->is_flist = sk ? !udp_sk(sk)->gro_enabled : 0;
 
 	if ((sk && udp_sk(sk)->gro_enabled) || NAPI_GRO_CB(skb)->is_flist) {
 		pp = call_gro_receive(udp_gro_receive_segment, head, skb);
@@ -534,7 +534,8 @@ skip:
 	NAPI_GRO_CB(skb)->is_ipv6 = 0;
 	rcu_read_lock();
 
-	if (static_branch_unlikely(&udp_encap_needed_key))
+	if (static_branch_unlikely(&udp_encap_needed_key) ||
+	    (skb->dev->features & NETIF_F_GRO_FRAGLIST))
 		sk = udp4_gro_lookup_skb(skb, uh->source, uh->dest);
 
 	pp = udp_gro_receive(head, skb, uh, sk);
