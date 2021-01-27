@@ -56,6 +56,30 @@
       },
       "revId": "22bbef1b5cdff9cdc87d052942f789adfebb9a33",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b17e4372_64a7f115",
+        "filename": "include/linux/sysfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2021-01-27T05:49:13Z",
+      "side": 1,
+      "message": "I have committed this change to upstream [1] then and found similar requirement elsewhere in kernel, such as [2].\n\nThis author of inc-fs makes the trick with const variable of function, but it will depend on gcc v9 and above. From my opinion, it\u0027s not necessary to do like this if we could just add a new macro simply and directly.\n\n\n[1] https://lore.kernel.org/lkml/1611721162-29982-1-git-send-email-orsonzhai@gmail.com/\n\n[2] https://elixir.bootlin.com/linux/v5.11-rc5/source/drivers/media/pci/ddbridge/ddbridge-core.c#L2735",
+      "parentUuid": "1dcb5d6d_3ea5a200",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 44
+      },
+      "revId": "22bbef1b5cdff9cdc87d052942f789adfebb9a33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
