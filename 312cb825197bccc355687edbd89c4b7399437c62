@@ -33,6 +33,42 @@
       "message": "Also, no bug id, and most importantly, you don\u0027t actually wire up this hook 😞",
       "revId": "312cb825197bccc355687edbd89c4b7399437c62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2172404d_f2399627",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1839470
+      },
+      "writtenOn": "2021-01-27T09:17:38Z",
+      "side": 1,
+      "message": "update the bug id. display driver can use ths hook. and other modules like touch if it wants to use this event, it can reigster the hook in its driver.",
+      "parentUuid": "958924b6_97b81da8",
+      "revId": "312cb825197bccc355687edbd89c4b7399437c62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17502ef_2cbb161b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1839470
+      },
+      "writtenOn": "2021-01-27T09:17:38Z",
+      "side": 1,
+      "message": "There is no event notify on kernel-5.10 or older kernel-5.4. we made a change in drm_panel.h and drm_panel.c to support this notify callback. while for the GKI change, we could not change drm_panel.c/.h file. so we want to use the vendor hook.",
+      "parentUuid": "a1d1ebe8_e8cd68fc",
+      "revId": "312cb825197bccc355687edbd89c4b7399437c62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
