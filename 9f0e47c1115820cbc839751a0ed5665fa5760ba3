@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f7cda03_3b75cdd1",
+        "filename": "build.config.common",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-01-27T11:37:36Z",
+      "side": 1,
+      "message": "I am afraid my comments were misleading.\n\nConsolidating was meant as:\n - change the PATH here as you did for CLANG_PREBUILT_BIN\n - change the kernel/manifest (branch:common-android-mainline) to place clang there, actually\n\nThe kernel build dir should not be changed at all. When using with the platform build there should not ba a collision.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "9f0e47c1115820cbc839751a0ed5665fa5760ba3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a41467_2342f096",
+        "filename": "build.config.common",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-01-27T11:37:36Z",
+      "side": 1,
+      "message": "this line needs to remain as is",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 63
+      },
+      "revId": "9f0e47c1115820cbc839751a0ed5665fa5760ba3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
