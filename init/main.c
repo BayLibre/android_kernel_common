@@ -96,6 +96,7 @@
 #include <linux/rodata_test.h>
 #include <linux/jump_label.h>
 #include <linux/mem_encrypt.h>
+#include <linux/stackdepot.h>
 
 #include <asm/io.h>
 #include <asm/bugs.h>
@@ -815,6 +816,7 @@ static void __init mm_init(void)
 	init_debug_pagealloc();
 	kfence_alloc_pool();
 	report_meminit();
+	stack_depot_init();
 	mem_init();
 	kmem_cache_init();
 	kmemleak_init();
