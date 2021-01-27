@@ -419,7 +419,6 @@ static int register_chunk_heap(struct chunk_heap *chunk_heap_info)
 	buf[len] = '\0';
 
 	exp_info.name = buf;
-	exp_info.name = cma_get_name(chunk_heap_info->cma);
 	exp_info.ops = &chunk_heap_ops;
 	exp_info.priv = chunk_heap_info;
 
