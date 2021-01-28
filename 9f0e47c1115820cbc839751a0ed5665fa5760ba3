@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e475fe4_abae472c",
+        "filename": "build.config.common",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1135739
+      },
+      "writtenOn": "2021-01-28T03:59:50Z",
+      "side": 1,
+      "message": "There will be a separated CL for the manifest part. I can put it together and also remove one symlink.",
+      "parentUuid": "1f7cda03_3b75cdd1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "9f0e47c1115820cbc839751a0ed5665fa5760ba3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87a41467_2342f096",
         "filename": "build.config.common",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2021-01-27T11:37:36Z",
       "side": 1,
       "message": "this line needs to remain as is",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 63
+      },
+      "revId": "9f0e47c1115820cbc839751a0ed5665fa5760ba3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "988a54b7_b764c8dd",
+        "filename": "build.config.common",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1135739
+      },
+      "writtenOn": "2021-01-28T03:59:50Z",
+      "side": 1,
+      "message": "It will mix its content with the platform ./build directory. Currently the platform build directory looks like \n\n```\nblueprint  buildspec.mk.default  CleanSpec.mk  core  envsetup.sh  make  soong  target  tools\n```\n\nBy checking out kernel/build as is, it will looks like\n\n```\nabi        build_abi.sh           build.sh              build-tools   core         hermetic  METADATA                NOTICE         static_analysis  upstream\nbuild.config           buildspec.mk.default  CleanSpec.mk  envsetup.sh  LICENSE   MODULE_LICENSE_APACHE2  _setup_env.sh  target\nblueprint  build.config.net_test  build_test.sh         config.sh     gki          make      multi-switcher.sh       soong          tools\n```\nwith invalid links within. I\u0027m not sure.",
+      "parentUuid": "87a41467_2342f096",
       "range": {
         "startLine": 8,
         "startChar": 0,
