@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f81d6890_04180185",
+        "filename": "build.config.common",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-01-28T09:07:01Z",
+      "side": 1,
+      "message": "If doing so, please do it for all common-android* branches and submit those pairs of changes (build.config, manifest) in topics.",
+      "parentUuid": "2e475fe4_abae472c",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "9f0e47c1115820cbc839751a0ed5665fa5760ba3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87a41467_2342f096",
         "filename": "build.config.common",
         "patchSetId": 4
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "It will mix its content with the platform ./build directory. Currently the platform build directory looks like \n\n```\nblueprint  buildspec.mk.default  CleanSpec.mk  core  envsetup.sh  make  soong  target  tools\n```\n\nBy checking out kernel/build as is, it will looks like\n\n```\nabi        build_abi.sh           build.sh              build-tools   core         hermetic  METADATA                NOTICE         static_analysis  upstream\nbuild.config           buildspec.mk.default  CleanSpec.mk  envsetup.sh  LICENSE   MODULE_LICENSE_APACHE2  _setup_env.sh  target\nblueprint  build.config.net_test  build_test.sh         config.sh     gki          make      multi-switcher.sh       soong          tools\n```\nwith invalid links within. I\u0027m not sure.",
       "parentUuid": "87a41467_2342f096",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 63
+      },
+      "revId": "9f0e47c1115820cbc839751a0ed5665fa5760ba3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3497bc74_40d3532f",
+        "filename": "build.config.common",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-01-28T09:07:01Z",
+      "side": 1,
+      "message": "And that is why it is a bad idea to mix them. We depend a lot on the structure of the kernel build layout (including relative symbolic links between kernel/build and prebuilts/build-tools and prebuilts/kernel-build-tools). I am not sure we should actually go down this rabbit hole. Why do you need to absolutely combine those builds?",
+      "parentUuid": "988a54b7_b764c8dd",
       "range": {
         "startLine": 8,
         "startChar": 0,
