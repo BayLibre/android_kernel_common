@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4459d87b_353f82b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "signature?",
+      "range": {
+        "startLine": 7,
+        "startChar": 36,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "889ba304_845266c3",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "Unrelated whitespace change",
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4cb092f_77880c29",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 1495,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "EFSCORRUPTED?  EFAULT is conventionally only for memory access violations.",
+      "range": {
+        "startLine": 1495,
+        "startChar": 10,
+        "endLine": 1495,
+        "endChar": 16
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37397ed8_992e467c",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "INCFS_MD_VERITY_SIGNATURE",
+      "range": {
+        "startLine": 264,
+        "startChar": 49,
+        "endLine": 264,
+        "endChar": 75
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457c8e63_0fba5ba3",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "signature",
+      "range": {
+        "startLine": 264,
+        "startChar": 30,
+        "endLine": 264,
+        "endChar": 40
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10bcb62b_21c9d781",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "This should be \u0027signature\u0027 and \u0027sig_size\u0027.\n\nHow was this tested?  It can\u0027t work as-is since the code is always passing an empty signature.",
+      "range": {
+        "startLine": 221,
+        "startChar": 42,
+        "endLine": 222,
+        "endChar": 34
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a12a12e_1b951ee3",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-01-28T19:04:11Z",
+      "side": 1,
+      "message": "Shouldn\u0027t incfs already prevent opening files for writing if they have a Merkle tree?  So why is this separate check for verity files needed?",
+      "range": {
+        "startLine": 431,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 2
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
