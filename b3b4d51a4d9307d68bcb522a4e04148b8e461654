@@ -33,6 +33,75 @@
       "message": "If this is an ANDROID only change and not going upstream... why go to all the effort of making it configurable, why not just change the constant - it\u0027ll be easier to carry?",
       "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a831a73c_8fba74bd",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-01-30T02:43:26Z",
+      "side": 1,
+      "message": "you could have just\n#define VIRTIO_VSCOK_MAX_PKT_BUF_SIZE func()\n\ndiff would have been smaller",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 7
+      },
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d73368_b520db5b",
+        "filename": "net/vmw_vsock/virtio_transport_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-01-30T02:43:26Z",
+      "side": 1,
+      "message": "I assume you want this to be settable only from kernel commandline?\n(and that\u0027s why this isn\u0027t 0644)",
+      "range": {
+        "startLine": 169,
+        "startChar": 43,
+        "endLine": 169,
+        "endChar": 47
+      },
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81343815_015eff8e",
+        "filename": "net/vmw_vsock/virtio_transport_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-01-30T02:43:26Z",
+      "side": 1,
+      "message": "why make this a function instead of just using the int directly?",
+      "range": {
+        "startLine": 170,
+        "startChar": 5,
+        "endLine": 170,
+        "endChar": 44
+      },
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
