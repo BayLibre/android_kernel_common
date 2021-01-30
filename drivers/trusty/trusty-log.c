@@ -68,7 +68,7 @@ static uint32_t get_previous_entry_size(struct trusty_log_state *s,
 {
 	uint32_t offset;
         /* size should be enough to hold struct log_data_footer */
-	char value[20];
+	char value[24];
 
 	offset = log_offset - sizeof(struct log_data_footer);
 	if (offset < (s->log->alloc - s->log->sz)) {
@@ -236,13 +236,15 @@ static void trusty_dump_logs(struct trusty_log_state *s)
 				char *app_name =
 					&s->header.data[s->footer.log_len];
 
-				dev_info(s->dev, "%llu: %s: %s",
+				dev_info(s->dev, "%llu: %u: %s: %s",
 					s->footer.timestamp,
+					s->footer.log_level,
 					app_name,
 					s->line_buffer);
 			} else {
-				dev_info(s->dev, "%llu: %s",
+				dev_info(s->dev, "%llu: %u: %s",
 					s->footer.timestamp,
+					s->footer.log_level,
 					s->line_buffer);
 			}
 		}
