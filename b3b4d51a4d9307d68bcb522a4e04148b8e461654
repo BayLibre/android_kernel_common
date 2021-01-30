@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a782087_a2c2393a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-01-30T02:24:04Z",
+      "side": 1,
+      "message": "I would tweak the commit message slightly. The weird adb behavior isn\u0027t the cause of slab fragmentation, but it\u0027s affected by it. As the system remains up for longer, and allocates more memory, fragmentation will continue. Eventually, 64k slab objects cannot be satisfied immediately.",
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
