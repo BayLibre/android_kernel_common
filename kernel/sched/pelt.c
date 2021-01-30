@@ -28,6 +28,9 @@
 #include "sched.h"
 #include "pelt.h"
 
+int pelt_load_avg_period = LOAD_AVG_PERIOD;
+int pelt_load_avg_max = LOAD_AVG_MAX;
+
 /*
  * Approximate:
  *   val * y^n,    where y^32 ~= 0.5 (~1 scheduling period)
@@ -36,7 +39,7 @@ static u64 decay_load(u64 val, u64 n)
 {
 	unsigned int local_n;
 
-	if (unlikely(n > LOAD_AVG_PERIOD * 63))
+	if (unlikely(n > pelt_load_avg_period * 63))
 		return 0;
 
 	/* after bounds checking we can collapse to 32-bit */
@@ -49,12 +52,12 @@ static u64 decay_load(u64 val, u64 n)
 	 *
 	 * To achieve constant time decay_load.
 	 */
-	if (unlikely(local_n >= LOAD_AVG_PERIOD)) {
-		val >>= local_n / LOAD_AVG_PERIOD;
-		local_n %= LOAD_AVG_PERIOD;
+	if (unlikely(local_n >= pelt_load_avg_period)) {
+		val >>= local_n / pelt_load_avg_period;
+		local_n %= pelt_load_avg_period;
 	}
 
-	val = mul_u64_u32_shr(val, runnable_avg_yN_inv[local_n], 32);
+	val = mul_u64_u32_shr(val, pelt_runnable_avg_yN_inv[local_n], 32);
 	return val;
 }
 
@@ -76,7 +79,7 @@ static u32 __accumulate_pelt_segments(u64 periods, u32 d1, u32 d3)
 	 *    = 1024 ( \Sum y^n - \Sum y^n - y^0 )
 	 *              n=0        n=p
 	 */
-	c2 = LOAD_AVG_MAX - decay_load(LOAD_AVG_MAX, periods) - 1024;
+	c2 = pelt_load_avg_max - decay_load(pelt_load_avg_max, periods) - 1024;
 
 	return c1 + c2 + c3;
 }
@@ -242,13 +245,13 @@ ___update_load_sum(u64 now, struct sched_avg *sa,
  * The max value of *_sum varies with the position in the time segment and is
  * equals to :
  *
- *   LOAD_AVG_MAX*y + sa->period_contrib
+ *   pelt_load_avg_max*y + sa->period_contrib
  *
  * which can be simplified into:
  *
- *   LOAD_AVG_MAX - 1024 + sa->period_contrib
+ *   pelt_load_avg_max - 1024 + sa->period_contrib
  *
- * because LOAD_AVG_MAX*y == LOAD_AVG_MAX-1024
+ * because pelt_load_avg_max*y == pelt_load_avg_max-1024
  *
  * The same care must be taken when a sched entity is added, updated or
  * removed from a cfs_rq and we need to update sched_avg. Scheduler entities
