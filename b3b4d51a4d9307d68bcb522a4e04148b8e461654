@@ -16,6 +16,23 @@
       "message": "I would tweak the commit message slightly. The weird adb behavior isn\u0027t the cause of slab fragmentation, but it\u0027s affected by it. As the system remains up for longer, and allocates more memory, fragmentation will continue. Eventually, 64k slab objects cannot be satisfied immediately.",
       "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db3859e_308a061d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-01-30T02:38:33Z",
+      "side": 1,
+      "message": "If this is an ANDROID only change and not going upstream... why go to all the effort of making it configurable, why not just change the constant - it\u0027ll be easier to carry?",
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
