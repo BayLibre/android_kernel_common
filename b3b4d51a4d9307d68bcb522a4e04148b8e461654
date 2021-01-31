@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97512446_d7b294d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2021-01-31T21:22:15Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "1a782087_a2c2393a",
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a831a73c_8fba74bd",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-01-30T02:43:26Z",
       "side": 1,
       "message": "you could have just\n#define VIRTIO_VSCOK_MAX_PKT_BUF_SIZE func()\n\ndiff would have been smaller",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 7
+      },
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0d0c2f_f69773ab",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2021-01-31T21:22:15Z",
+      "side": 1,
+      "message": "Good suggestion. Done.",
+      "parentUuid": "a831a73c_8fba74bd",
       "range": {
         "startLine": 11,
         "startChar": 1,
@@ -81,6 +123,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8b26ff_eabcae64",
+        "filename": "net/vmw_vsock/virtio_transport_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2021-01-31T21:22:15Z",
+      "side": 1,
+      "message": "Exactly.",
+      "parentUuid": "00d73368_b520db5b",
+      "range": {
+        "startLine": 169,
+        "startChar": 43,
+        "endLine": 169,
+        "endChar": 47
+      },
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81343815_015eff8e",
@@ -94,6 +160,30 @@
       "writtenOn": "2021-01-30T02:43:26Z",
       "side": 1,
       "message": "why make this a function instead of just using the int directly?",
+      "range": {
+        "startLine": 170,
+        "startChar": 5,
+        "endLine": 170,
+        "endChar": 44
+      },
+      "revId": "b3b4d51a4d9307d68bcb522a4e04148b8e461654",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5901776_e7714b76",
+        "filename": "net/vmw_vsock/virtio_transport_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2021-01-31T21:22:15Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "81343815_015eff8e",
       "range": {
         "startLine": 170,
         "startChar": 5,
