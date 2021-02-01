@@ -51,6 +51,7 @@
 #include <trace/hooks/fault.h>
 #include <trace/hooks/traps.h>
 #include <trace/hooks/fips140.h>
+#include <trace/hooks/thermal.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -247,3 +248,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
