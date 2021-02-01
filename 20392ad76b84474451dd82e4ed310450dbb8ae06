@@ -33,6 +33,24 @@
       "message": "What driver uses this?  Why not just use a \"real\" callback or notifier chain from the drm core?  Shouldn\u0027t upstream already have something like this, how does it handle this type of thing today?",
       "revId": "20392ad76b84474451dd82e4ed310450dbb8ae06",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa2b440_2be4b16d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1732415
+      },
+      "writtenOn": "2021-02-01T22:10:30Z",
+      "side": 1,
+      "message": "\u003e\u003e\u003eWhat driver uses this?\nThis is used between Display and touch driver.\n\n\u003e\u003e\u003eWhy not just use a \"real\" callback or notifier chain from the drm core?  \nDRM core does not support any callback for this custom notification.\n\n\u003e\u003e\u003e Shouldn\u0027t upstream already have something like this, how does it handle this type of thing today?\nNope. Such support for custom FPS, display power state, etc. notification to touch driver does not exists in upstream code.",
+      "parentUuid": "fa606e07_4a3fe6f6",
+      "revId": "20392ad76b84474451dd82e4ed310450dbb8ae06",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
