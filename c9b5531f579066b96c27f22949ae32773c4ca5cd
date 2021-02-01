@@ -46,6 +46,30 @@
       },
       "revId": "c9b5531f579066b96c27f22949ae32773c4ca5cd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d4b7167_1ba00b62",
+        "filename": "include/linux/sched.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1307,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-02-01T14:50:48Z",
+      "side": 1,
+      "message": "I suppose we\u0027re already sort of open-coding ANDROID_KABI_USE(), so open coding those checks too would make sense -- we added them for a reason after all. But if you\u0027re confident this will be fine, no objection from me.",
+      "parentUuid": "6626540f_aa4308b5",
+      "range": {
+        "startLine": 1301,
+        "startChar": 0,
+        "endLine": 1307,
+        "endChar": 19
+      },
+      "revId": "c9b5531f579066b96c27f22949ae32773c4ca5cd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
