@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcf90833_daee14da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4459d87b_353f82b9",
+      "range": {
+        "startLine": 7,
+        "startChar": 36,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "889ba304_845266c3",
@@ -41,6 +65,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbc914c5_57acb812",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "889ba304_845266c3",
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4cb092f_77880c29",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-01-28T19:04:11Z",
       "side": 1,
       "message": "EFSCORRUPTED?  EFAULT is conventionally only for memory access violations.",
+      "range": {
+        "startLine": 1495,
+        "startChar": 10,
+        "endLine": 1495,
+        "endChar": 16
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0df6818_cb11082a",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 1495,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "EFAULT is used (incorrectly) throughout incfs for internal errors. When I tried to fix this, zyy@google.com pointed out that his user code is testing for it. I would rather be consistently wrong than change just a few of these, then find a way to change them all at once.",
+      "parentUuid": "d4cb092f_77880c29",
       "range": {
         "startLine": 1495,
         "startChar": 10,
@@ -110,6 +176,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14e26751_2802eb8d",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37397ed8_992e467c",
+      "range": {
+        "startLine": 264,
+        "startChar": 49,
+        "endLine": 264,
+        "endChar": 75
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52387bb9_cd274f65",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "457c8e63_0fba5ba3",
+      "range": {
+        "startLine": 264,
+        "startChar": 30,
+        "endLine": 264,
+        "endChar": 40
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10bcb62b_21c9d781",
@@ -133,6 +247,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c4b1c5b_d2713e0a",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Yes! Thank you. Unfortunately a zero sized signature is accepted by fs-verity if fsverity_require_signature is not set, which it wasn\u0027t in my test. So a bad signature would fail, but an empty one would not.\n\nAdded test where we try to use a bad signature, made sure it fails, and then fixed this error.",
+      "parentUuid": "10bcb62b_21c9d781",
+      "range": {
+        "startLine": 221,
+        "startChar": 42,
+        "endLine": 222,
+        "endChar": 34
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a12a12e_1b951ee3",
@@ -146,6 +284,30 @@
       "writtenOn": "2021-01-28T19:04:11Z",
       "side": 1,
       "message": "Shouldn\u0027t incfs already prevent opening files for writing if they have a Merkle tree?  So why is this separate check for verity files needed?",
+      "range": {
+        "startLine": 431,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 2
+      },
+      "revId": "287a43d950b07814524d67f929136bf17fe4ae2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b859359_f86266e6",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "2a12a12e_1b951ee3",
       "range": {
         "startLine": 431,
         "startChar": 0,

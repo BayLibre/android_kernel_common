@@ -211,6 +211,30 @@
       },
       "revId": "83767f1a68e20886790abe42d142096f3f1f4fb5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "032e4ca6_2c529f48",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-02T16:02:07Z",
+      "side": 1,
+      "message": "Now storing verity state in xattr which allows us to set it when the inode is instantiated, the same way we do for size",
+      "parentUuid": "aa7edb71_c2885517",
+      "range": {
+        "startLine": 446,
+        "startChar": 1,
+        "endLine": 446,
+        "endChar": 44
+      },
+      "revId": "83767f1a68e20886790abe42d142096f3f1f4fb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
