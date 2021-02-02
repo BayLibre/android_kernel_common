@@ -1134,6 +1134,31 @@ void __wait_drain_rq(struct cpumask *cpus)
 		sched_cpu_drain_rq_wait(cpu);
 }
 
+static int validate_32bit_paused_cpus(struct cpumask *cpus)
+{
+	cpumask_var_t active_32bit_cpus;
+	int cpu_reserved = 0;
+
+	if (!cpumask_empty(system_32bit_el0_cpumask())) {
+
+		if (!zalloc_cpumask_var(&active_32bit_cpus, GFP_KERNEL))
+			return -ENOMEM;
+
+		cpumask_and(active_32bit_cpus, cpu_active_mask, system_32bit_el0_cpumask());
+		cpu_reserved = cpumask_any(active_32bit_cpus);
+
+		if (cpu_reserved < nr_cpu_ids) {
+			cpumask_andnot(active_32bit_cpus, active_32bit_cpus, cpus);
+			if (cpumask_weight(active_32bit_cpus) == 0)
+				cpumask_clear_cpu(cpu_reserved, cpus);
+		}
+
+		free_cpumask_var(active_32bit_cpus);
+	}
+
+	return 0;
+}
+
 int pause_cpus(struct cpumask *cpus)
 {
 	int err = 0;
@@ -1163,6 +1188,10 @@ int pause_cpus(struct cpumask *cpus)
 		err = -EBUSY;
 		goto err_cpu_maps_update;
 	}
+
+	err = validate_32bit_paused_cpus(cpus);
+	if (err < 0)
+		goto err_cpu_maps_update;
 
 	if (cpumask_empty(cpus))
 		goto err_cpu_maps_update;
