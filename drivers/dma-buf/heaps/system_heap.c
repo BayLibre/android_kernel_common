@@ -20,8 +20,8 @@
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
-#include <net/page_pool.h>
 
+#include "page_pool.h"
 #include "deferred-free-helper.h"
 
 static struct dma_heap *sys_heap;
@@ -62,7 +62,7 @@ static gfp_t order_flags[] = {HIGH_ORDER_GFP, LOW_ORDER_GFP, LOW_ORDER_GFP};
  */
 static const unsigned int orders[] = {8, 4, 0};
 #define NUM_ORDERS ARRAY_SIZE(orders)
-struct page_pool *pools[NUM_ORDERS];
+struct dmabuf_page_pool *pools[NUM_ORDERS];
 
 static struct sg_table *dup_sg_table(struct sg_table *table)
 {
@@ -347,7 +347,7 @@ static void system_heap_buf_free(struct deferred_freelist_item *item,
 				if (compound_order(page) == orders[j])
 					break;
 			}
-			page_pool_put_full_page(pools[j], page, false);
+			dmabuf_page_pool_free(pools[j], page);
 		}
 	}
 	sg_free_table(table);
@@ -385,7 +385,7 @@ static struct page *alloc_largest_available(unsigned long size,
 			continue;
 		if (max_order < orders[i])
 			continue;
-		page = page_pool_alloc_pages(pools[i], order_flags[i]);
+		page = dmabuf_page_pool_alloc(pools[i]);
 		if (!page)
 			continue;
 		return page;
@@ -530,18 +530,14 @@ static int system_heap_create(void)
 	int i;
 
 	for (i = 0; i < NUM_ORDERS; i++) {
-		struct page_pool_params pp;
-
-		memset(&pp, 0, sizeof(pp));
-		pp.order = orders[i];
-		pools[i] = page_pool_create(&pp);
+		pools[i] = dmabuf_page_pool_create(order_flags[i], orders[i]);
 
 		if (IS_ERR(pools[i])) {
 			int j;
 
 			pr_err("%s: page pool creation failed!\n", __func__);
 			for (j = 0; j < i; j++)
-				page_pool_destroy(pools[j]);
+				dmabuf_page_pool_destroy(pools[j]);
 			return PTR_ERR(pools[i]);
 		}
 	}
