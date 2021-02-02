@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc03b122_8ef812fd",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-02T02:40:55Z",
+      "side": 1,
+      "message": "Wouldn\u0027t that skip kfree(attach)? I would expect \"err_sysfs\" label to be before \"err_attach\". What am I missing?",
+      "range": {
+        "startLine": 726,
+        "startChar": 2,
+        "endLine": 726,
+        "endChar": 17
+      },
+      "revId": "9113be5afbacb9068f33b40f75e35d859f1cb3e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ff2771_873adeb3",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-02T02:40:55Z",
+      "side": 1,
+      "message": "Related to my previous comment, shouldn\u0027t this block be before \"err_attach\"?",
+      "range": {
+        "startLine": 735,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 0
+      },
+      "revId": "9113be5afbacb9068f33b40f75e35d859f1cb3e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
