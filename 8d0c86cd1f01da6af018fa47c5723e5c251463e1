@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c55e52d_1779dcba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "There is now a new xattr too, so this commit message needs to be updated to properly describe what this commit does.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 54
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4659056a_bf50ee07",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "This is an existing field; is this fixing an existing memory leak?",
+      "range": {
+        "startLine": 333,
+        "startChar": 1,
+        "endLine": 333,
+        "endChar": 25
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f98e49d8_e384bbdd",
+        "filename": "fs/incfs/format.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "Is there a difference between this and the \u0027rollback_pos\u0027 variable from above?",
+      "range": {
+        "startLine": 378,
+        "startChar": 2,
+        "endLine": 378,
+        "endChar": 50
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61956451_273c1645",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "What is the purpose and meaning of the value of the xattr?  If only a flag is needed (present/absent), then an empty xattr would be sufficient -- either the xattr is there or it isn\u0027t.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 33
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9edd0dfb_0f1c020a",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "incfs_set_verity_digest()",
+      "range": {
+        "startLine": 156,
+        "startChar": 40,
+        "endLine": 156,
+        "endChar": 64
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b11c6c_9e130dbe",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "incfs_get_verity_digest()",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 28
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73c8c0c9_0ff1b7b4",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "This no longer happens here.  It would be helpful to replace this with a mention of why the check for !FMODE_WRITE isn\u0027t needed.",
+      "range": {
+        "startLine": 431,
+        "startChar": 3,
+        "endLine": 431,
+        "endChar": 66
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11ef12c8_8fb007cc",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-03T03:17:30Z",
+      "side": 1,
+      "message": "The user xattr namespace isn\u0027t appropriate for internal filesystem metadata, as this namespace is reserved for userspace to use.  These should all be using a dedicated namespace such as \"incfs\" (not \"user.incfs\" which is part of the \"user\" namespace).",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 66
+      },
+      "revId": "8d0c86cd1f01da6af018fa47c5723e5c251463e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
