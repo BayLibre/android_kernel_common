@@ -106,6 +106,24 @@
       "parentUuid": "1ad2feb1_2541b17d",
       "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "452bc351_22838dd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1732415
+      },
+      "writtenOn": "2021-02-04T04:28:05Z",
+      "side": 1,
+      "message": "@Greg / @Todd, Considering Display and touch driver needs to have communication with standard interface. Both are QC drivers. What is other approach if you want to reject this patch ?\n\n@Todd already suggested to avoid making customization in drm_panel.h/c file. I agree with such hesitation but we need alternative solution/guidance from Google team. We have pending features to support on GKI 2.0.\n\nAs I mentioned earlier, there is no support in upstream DRM framework for such event notification.",
+      "parentUuid": "d09fb804_55bcfcec",
+      "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
