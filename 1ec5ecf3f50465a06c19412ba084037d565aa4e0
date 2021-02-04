@@ -142,6 +142,24 @@
       "parentUuid": "452bc351_22838dd9",
       "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1964805_bccc6cd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1732415
+      },
+      "writtenOn": "2021-02-04T19:31:33Z",
+      "side": 1,
+      "message": "In that case Display driver can compile independently on ACK tree but touch driver can not compile independently on ACK tree.\n\nIt will always have dependency on  display driver to present and will cause the issue for touch driver.\n\nThat is the main reason for using APIs from either upstream header or vendor_hook driver.",
+      "parentUuid": "9a39487a_85497796",
+      "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
