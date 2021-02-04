@@ -70,6 +70,23 @@
       "parentUuid": "8a864e07_627d6d9a",
       "revId": "d308e234719265e3215f3c0743a820c51a21fae5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007679ec_8c044cc7",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1519,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-02-04T18:35:07Z",
+      "side": 1,
+      "message": "Attaching to the tracepoint shouldn\u0027t change the behavior. What if someone just attaches an event counter to trace_android_rvh_find_lowest_rq()? This is making too much of an assumption of how the trace_android_rvh_find_lowest_rq() hook is implemented.\n\nIf you can\u0027t use trace_android_rvh_select_task_rq_rt() at line 1469 as Quentin proposes, then it would be better to add a new hook here to change the control flow.",
+      "revId": "d308e234719265e3215f3c0743a820c51a21fae5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
