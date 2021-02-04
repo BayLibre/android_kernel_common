@@ -124,6 +124,24 @@
       "parentUuid": "d09fb804_55bcfcec",
       "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a39487a_85497796",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-02-04T11:39:36Z",
+      "side": 1,
+      "message": "If you control both the display and touch driver, out of this kernel tree, just have them call each other directly.  No need for any \"hook\" anywhere.\n\nOr, if you really want one, put it in your driver itself, no reason you can\u0027t use this same infrastructure yourself in your driver code.\n\nBut either way, there\u0027s no need for this in the core kernel.",
+      "parentUuid": "452bc351_22838dd9",
+      "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
