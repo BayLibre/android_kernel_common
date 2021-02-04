@@ -1516,7 +1516,8 @@ select_task_rq_rt(struct task_struct *p, int cpu, int sd_flag, int flags)
 			 (unlikely(rt_task(curr)) &&
 			  (curr->nr_cpus_allowed < 2 || curr->prio <= p->prio))));
 
-	if (test || !rt_task_fits_capacity(p, cpu)) {
+	if (trace_android_rvh_find_lowest_rq_enabled() ||
+				test || !rt_task_fits_capacity(p, cpu)) {
 		int target = find_lowest_rq(p);
 
 		/*
