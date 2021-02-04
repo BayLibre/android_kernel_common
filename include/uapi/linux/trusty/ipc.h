@@ -62,4 +62,17 @@ struct tipc_send_msg_req {
 #define TIPC_IOC_SEND_MSG		_IOW(TIPC_IOC_MAGIC, 0x81, \
 					     struct tipc_send_msg_req)
 
+/* Parentheses are used to prevent commas from being interpreted when they are
+ * passed in macro arguments. DELETE_PAREN is used to remove these parentheses
+ * inside the macro that uses the commas e.g.:
+ *
+ * MY_MACRO((1, 2, 3))
+ *
+ * #define MY_MACRO(arg)
+ *      DELETE_PAREN arg
+ */
+#define _Args(...)      __VA_ARGS__
+#define STRIP_PARENS(X) X
+#define DELETE_PAREN(X) STRIP_PARENS(_Args X)
+
 #endif
