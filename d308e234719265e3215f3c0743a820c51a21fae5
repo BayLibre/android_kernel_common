@@ -16,6 +16,24 @@
       "message": "Why not register the select_task_rq_rt hook instead?",
       "revId": "d308e234719265e3215f3c0743a820c51a21fae5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "175b11ba_6a1ebb74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2021-02-04T16:12:53Z",
+      "side": 1,
+      "message": "We believe find_lowest_rq() hook is the best place to implement any vendor changes as we go through that path from RT load balancer (push \u0026 pull algo) and we also will have lowest_mask available at that time which avoids duplication of code. We don\u0027t really need multiple hooks in case of RT. \n\nAlso, IMHO, we should always invoke find_lowest_rq() when respective hook is enabled irrespective of select_task_rq_rt hook is registered or not to find suitable CPU than just sticking to previous CPU.",
+      "parentUuid": "3730123e_2255f22b",
+      "revId": "d308e234719265e3215f3c0743a820c51a21fae5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
