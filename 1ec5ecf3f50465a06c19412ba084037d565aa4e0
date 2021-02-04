@@ -88,6 +88,24 @@
       "parentUuid": "bf5a87df_61b3734e",
       "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d09fb804_55bcfcec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1839470
+      },
+      "writtenOn": "2021-02-04T03:18:39Z",
+      "side": 1,
+      "message": "Touch driver must use this hook. since touch driver is common code, not QC vendor driver. so display and touch driver are separated. So we need this vendor hook as a common one to connect touch driver and display driver. display driver include the vendor hook, and implement the actual hook function. touch driver also include the vendor hook and register it. if there are no common code in kernel, touch and display code could not do any notify. As you konw at before we did a drm call back, that changed the common drm driver, in that way, touch and display can do notify. but now we did not want to do any change in upstream driver, so we think this vendor hook as a common one instead of drm_call back. the drm call back change we used before is here, https://android-review.googlesource.com/c/kernel/common/+/1144894. and now we have reverted it here, https://android-review.googlesource.com/c/kernel/common/+/1459284",
+      "parentUuid": "1ad2feb1_2541b17d",
+      "revId": "1ec5ecf3f50465a06c19412ba084037d565aa4e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
