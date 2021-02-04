@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7334e479_a2a53ec6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "Something like \"Store fs-verity state in backing file\" would be a better description, since it\u0027s not just about the signature anymore (and in fact the signature is optional).",
+      "range": {
+        "startLine": 7,
+        "startChar": 25,
+        "endLine": 7,
+        "endChar": 61
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ea5e80_3cece4f9",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "Is this still accurate?  It looks like \"no signature\" is now represented by the absence of INCFS_MD_VERITY_SIGNATURE, as I had suggested.",
+      "range": {
+        "startLine": 271,
+        "startChar": 32,
+        "endLine": 272,
+        "endChar": 37
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3200c5ae_b532e171",
+        "filename": "fs/incfs/format.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "Is this still accurate?  It looks like \"no signature\" is now represented by the absence of INCFS_MD_VERITY_SIGNATURE, as I had suggested.",
+      "range": {
+        "startLine": 277,
+        "startChar": 45,
+        "endLine": 278,
+        "endChar": 54
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79b72b33_8076f200",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "If an error occurs here, won\u0027t the file end up in a weird state?",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 17
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c86d82_a93273b4",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "This is only called for files that have verity enabled.  It would be clearer to write something like \"See if this file\u0027s verity file digest is already cached.\".",
+      "range": {
+        "startLine": 401,
+        "startChar": 4,
+        "endLine": 401,
+        "endChar": 46
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb0ce9b7_49c0f184",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "There\u0027s not actually any case in which this frees anything.",
+      "range": {
+        "startLine": 423,
+        "startChar": 1,
+        "endLine": 423,
+        "endChar": 32
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a12d7b21_33b4adb8",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-04T21:12:39Z",
+      "side": 1,
+      "message": "This checks if the xattr is present and empty.  Did you intend to check whether the xattr is present (and of any size)?",
+      "range": {
+        "startLine": 264,
+        "startChar": 2,
+        "endLine": 264,
+        "endChar": 6
+      },
+      "revId": "73e554de59fb9bf071905fca0e96e4ac297a25ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
