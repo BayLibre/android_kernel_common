@@ -45,6 +45,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_find_lowest_rq,
 			int ret, int *lowest_cpu),
 	TP_ARGS(p, local_cpu_mask, ret, lowest_cpu), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_force_find_lowest_rq,
+	TP_PROTO(bool *force_check),
+	TP_ARGS(force_check), 1);
+
 DECLARE_RESTRICTED_HOOK(android_rvh_prepare_prio_fork,
 	TP_PROTO(struct task_struct *p),
 	TP_ARGS(p), 1);

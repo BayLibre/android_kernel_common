@@ -48,6 +48,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_enqueue_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_can_migrate_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_lowest_rq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_force_find_lowest_rq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rtmutex_prepare_setprio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_prepare_prio_fork);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_finish_prio_fork);
