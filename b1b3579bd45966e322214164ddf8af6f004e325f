@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22709015_a9452a19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-05T21:12:36Z",
+      "side": 1,
+      "message": "Nope, we do not need CONFIG_GKI_OPT_FEATURES. This was a hack in android11-5.4 because we could not change ABI definition anymore.\nWhat you want to do is just add:\n\nCONFIG_TRANSPARENT_HUGEPAGE\u003dy\nCONFIG_TRANSPARENT_HUGEPAGE_ALWAYS\u003dn\n\nDevices that need THP support can enable it by doing:\n\necho always \u003e/sys/kernel/mm/transparent_hugepage/enabled\n\nfrom their .rc files.",
+      "revId": "b1b3579bd45966e322214164ddf8af6f004e325f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
