@@ -22,6 +22,30 @@
       },
       "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d9e7c85_18ba7241",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1521,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2021-02-05T16:30:30Z",
+      "side": 1,
+      "message": "Yes, I did looked into implementing select_task_rq_rt() hook before even working on patchset#1 of this CL. As I mentioned, we will need to duplicate code mostly and also, need to export local_cpu_mask \u0026 rt_task_fits_capacity etc which IMO are unnecessary and more maintenance from vendor PoV if there are any other changes/fixes etc.",
+      "parentUuid": "43bc8f88_2888a902",
+      "range": {
+        "startLine": 1521,
+        "startChar": 1,
+        "endLine": 1521,
+        "endChar": 59
+      },
+      "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
