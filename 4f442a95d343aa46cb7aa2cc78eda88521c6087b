@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f86b37_0f3481c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-02-05T21:56:43Z",
+      "side": 1,
+      "message": "this is done in init.rc",
+      "parentUuid": "9ae4e8af_c3b3aa5a",
+      "revId": "4f442a95d343aa46cb7aa2cc78eda88521c6087b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00590eaf_7b159855",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-02-05T18:14:47Z",
       "side": 1,
       "message": "do you mean cpuset controller? why cpusets would matter here?",
+      "range": {
+        "startLine": 16,
+        "startChar": 63,
+        "endLine": 16,
+        "endChar": 69
+      },
+      "revId": "4f442a95d343aa46cb7aa2cc78eda88521c6087b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42177ef6_1ad2244d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-02-05T21:56:43Z",
+      "side": 1,
+      "message": "this is meant 8 threads can run in any core, in another word, there is not cpuset restriction.",
+      "parentUuid": "00590eaf_7b159855",
       "range": {
         "startLine": 16,
         "startChar": 63,
