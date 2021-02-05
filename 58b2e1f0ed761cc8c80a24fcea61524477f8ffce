@@ -46,6 +46,30 @@
       },
       "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b4d8e54_95449480",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1521,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-02-05T16:52:29Z",
+      "side": 1,
+      "message": "What is local_cpu_mask? And is rt_task_fits_capacity() the right thing for your use-case? It ignores task utilization completely (we don\u0027t have per-entity PELT signals for RT), so is it correct with WALT? Other partners seemed happy enough with the hook, is there something specific about this use-case?",
+      "parentUuid": "3d9e7c85_18ba7241",
+      "range": {
+        "startLine": 1521,
+        "startChar": 1,
+        "endLine": 1521,
+        "endChar": 59
+      },
+      "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
