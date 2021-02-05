@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43bc8f88_2888a902",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1521,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-02-05T16:22:38Z",
+      "side": 1,
+      "message": "This is better, but you please explain why using the select_task_rq_rt() hook instead is not an option? It was introduced precisely to allow vendors to change the logic of this function, have you considered it? You will be perfectly able to call unconditionally your own version of find_lowest_rq() from there, so I believe the existing hooks should cover your use-case.",
+      "range": {
+        "startLine": 1521,
+        "startChar": 1,
+        "endLine": 1521,
+        "endChar": 59
+      },
+      "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
