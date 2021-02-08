@@ -1,4 +1,8 @@
+<<<<<<< HEAD   (a658db Merge dd86e7fa07a3 ("Merge tag 'pci-v5.11-fixes-2' of git://)
 #!/usr/bin/python
+=======
+#!/usr/bin/env python3
+>>>>>>> BRANCH (92bf22 Linux 5.11-rc7)
 # SPDX-License-Identifier: GPL-2.0
 #
 # Usage: unwcheck.py FILE
