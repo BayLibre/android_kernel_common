@@ -70,6 +70,30 @@
       },
       "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "624c9046_ddf29523",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1521,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2021-02-08T18:05:11Z",
+      "side": 1,
+      "message": "Thanks Quentin. We should be able manage the mask and rt_task_fits_capacity() related changes internally in module. So, we don\u0027t really need them. Will Abandon the change and re-open if there is a need.",
+      "parentUuid": "8b4d8e54_95449480",
+      "range": {
+        "startLine": 1521,
+        "startChar": 1,
+        "endLine": 1521,
+        "endChar": 59
+      },
+      "revId": "58b2e1f0ed761cc8c80a24fcea61524477f8ffce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
