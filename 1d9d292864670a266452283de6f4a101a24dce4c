@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07d4a9a6_ad7e153f",
+        "filename": "mm/slub.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1709452
+      },
+      "writtenOn": "2021-02-08T06:28:04Z",
+      "side": 1,
+      "message": "i\u0027ll rename it to get_track_object.",
+      "parentUuid": "ce68e2fd_5362b827",
+      "range": {
+        "startLine": 569,
+        "startChar": 6,
+        "endLine": 569,
+        "endChar": 19
+      },
+      "revId": "1d9d292864670a266452283de6f4a101a24dce4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c7ee2b96_ed526449",
         "filename": "mm/slub.c",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-05T23:46:30Z",
       "side": 1,
       "message": "This would be an issue if the user terminates the loop before reaching the end because then slab_unlock will not be called. Another bad case if user changes the page in the middle of the loop.\nA cleaner interface IMO would be smth like this:\n\nstruct track_iter {\n    struct page *page;\n    int pos;\n};\n\nstruct track_iter iter;\nstruct track *t;\n\nstart_track_iter(page, \u0026iter); // sets iter fields, slab_lock(page)\nwhile ((t \u003d get_track(iter)) !\u003d NULL) // gets the track, increments pos\n    print(t);\nend_track_iter(\u0026iter); // slab_unlock(page)",
+      "range": {
+        "startLine": 580,
+        "startChar": 1,
+        "endLine": 587,
+        "endChar": 2
+      },
+      "revId": "1d9d292864670a266452283de6f4a101a24dce4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5832f99e_a35fd97f",
+        "filename": "mm/slub.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 1709452
+      },
+      "writtenOn": "2021-02-08T06:28:04Z",
+      "side": 1,
+      "message": "Right, that\u0027s an issue. Since module would be needing access to each track structure i was thinking about adding an iterator on top of this function, that\u0027ll resolve the above two issues that you mentioned.\n\nSomething like this in mm/slab.h , \n\n    #define for_each_object_track(__s, __p, __object,  __iter, __track, __alloc) \\\n\t for (__object \u003d get_track_object(__s, __p, __iter, __track, __alloc); \\\n                 __object !\u003d NULL; \\\n                 __iter +\u003d 1, __object \u003d get_track_object(__s, __p, __iter, \n                 __track, __alloc))\n\nand module will use this macro \"for_each_object_track\" instead of directly using above function. Let me know if this looks fine for you.\n\nThanks.",
+      "parentUuid": "c7ee2b96_ed526449",
       "range": {
         "startLine": 580,
         "startChar": 1,
