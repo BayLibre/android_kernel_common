@@ -33,6 +33,24 @@
       "message": "Ok. I will provide the update through buganizer. ",
       "revId": "de4f547c4bad9f97f9f4aaf1625bbf61e4a088c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0a484ac_9359e14c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1471648
+      },
+      "writtenOn": "2021-02-08T17:36:52Z",
+      "side": 1,
+      "message": "FYI: we realized that CONFIG_CMDLINE should also be set with this change. Please include \"kasan.stacktrace\u003doff\" on the command line for your testing. Otherwise you\u0027ll see a significant perf/memory impact.\n\nI\u0027ll update the change soon.\n\nThanks!",
+      "parentUuid": "30c51388_45e158f4",
+      "revId": "de4f547c4bad9f97f9f4aaf1625bbf61e4a088c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
