@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19f9e77b_a65f1809",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 28
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-09T19:02:37Z",
+      "side": 1,
+      "message": "It would be more logical to add this mutex in the patch that added FS_IOC_ENABLE_VERITY initially, since that\u0027s when it\u0027s first needed.  It doesn\u0027t seem very related to the patch it\u0027s in now.",
+      "range": {
+        "startLine": 293,
+        "startChar": 1,
+        "endLine": 293,
+        "endChar": 55
+      },
+      "revId": "c49acbd05cad178b7773e64443b5e4dcf6bcb9ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0540b0_9a80751b",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 28
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-09T19:02:37Z",
+      "side": 1,
+      "message": "This error path calls mutex_unlock() without the mutex being locked.",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 295,
+        "endChar": 11
+      },
+      "revId": "c49acbd05cad178b7773e64443b5e4dcf6bcb9ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ba358c_455e579e",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 28
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-09T19:02:37Z",
+      "side": 1,
+      "message": "This case needs to set err \u003d -EEXIST.",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 298,
+        "endChar": 11
+      },
+      "revId": "c49acbd05cad178b7773e64443b5e4dcf6bcb9ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
