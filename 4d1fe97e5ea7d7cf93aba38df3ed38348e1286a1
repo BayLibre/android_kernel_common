@@ -22,6 +22,30 @@
       },
       "revId": "4d1fe97e5ea7d7cf93aba38df3ed38348e1286a1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c11fcb49_4dfa9016",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-02-09T16:33:24Z",
+      "side": 1,
+      "message": "The next time this task is woken up, wake_q_count \u003d 1 would mean, it is the only task being woken up. 0 would mean nothing is woken up, which is confusing because atleast this task is woken up.\n\nNow 1 is coming from correctness perspective. We can set it to 0 too - it wont affect our value add.",
+      "parentUuid": "c4ced8f7_3b037f4d",
+      "range": {
+        "startLine": 611,
+        "startChar": 2,
+        "endLine": 611,
+        "endChar": 24
+      },
+      "revId": "4d1fe97e5ea7d7cf93aba38df3ed38348e1286a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
