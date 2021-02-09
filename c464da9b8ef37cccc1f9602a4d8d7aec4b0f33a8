@@ -16,6 +16,24 @@
       "message": "What\u0027s preventing multiple threads from executing this at the same time on the same file?  ext4 and f2fs have a way of preventing this without holding a mutex the whole time.  But since incfs is already using a mutex to synchronize the Merkle tree construction (-\u003edf_build_merkle_tree), how about just extending that mutex to cover all of FS_IOC_ENABLE_VERITY (and renaming it back to -\u003edf_enable_verity)?",
       "revId": "c464da9b8ef37cccc1f9602a4d8d7aec4b0f33a8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58212ffb_9e113726",
+        "filename": "fs/incfs/verity.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-02-09T19:07:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3c3fd71_fd83583f",
+      "revId": "c464da9b8ef37cccc1f9602a4d8d7aec4b0f33a8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
