@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000008032455",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1581170?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "ddc6e622_3a9dbc60",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 12,
+                "startChar": 1,
+                "endLine": 12,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Alistair Delva \u003cadelva@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "92cc73e0_577dcb3e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-02-09T04:39:02Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Alistair Delva \u003cadelva@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 356272440 android-build.ayeaye-python-dispatcher_20210208.05_p0",
+      "revId": "0f058b5819efefaa0dc63b8458df110775aaca8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
