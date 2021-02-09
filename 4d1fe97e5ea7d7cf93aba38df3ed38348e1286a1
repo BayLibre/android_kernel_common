@@ -46,6 +46,30 @@
       },
       "revId": "4d1fe97e5ea7d7cf93aba38df3ed38348e1286a1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51cacd14_462a0356",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-02-09T16:45:22Z",
+      "side": 1,
+      "message": "I think the default wake_q_count for a task should be 0 when it is not currently in a wake_q -- this is what it gets after fork for instance. But the head-\u003ecount will be incremented to 1 as soon as the first task is added a queue, so that should propagate to task-\u003ewake_q_count.",
+      "parentUuid": "c11fcb49_4dfa9016",
+      "range": {
+        "startLine": 611,
+        "startChar": 2,
+        "endLine": 611,
+        "endChar": 24
+      },
+      "revId": "4d1fe97e5ea7d7cf93aba38df3ed38348e1286a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
