@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9df9b00_1cf09144",
+        "filename": "Documentation/admin-guide/kernel-parameters.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 2965,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-10T20:10:22Z",
+      "side": 1,
+      "message": "This name does not reflect what this parameter controls. I would call it \"kswapd_per_node\" or something along those lines.",
+      "range": {
+        "startLine": 2965,
+        "startChar": 1,
+        "endLine": 2965,
+        "endChar": 13
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfc7d68d_3f542ee5",
+        "filename": "mm/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-10T20:10:22Z",
+      "side": 1,
+      "message": "I don\u0027t think we need a separate config here since we have to enable it everywhere anyway and the number of kswapd threads is already configurable via kernel command line parameter.",
+      "range": {
+        "startLine": 884,
+        "startChar": 7,
+        "endLine": 884,
+        "endChar": 22
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bfec21_9736fc2f",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3972,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-10T20:10:22Z",
+      "side": 1,
+      "message": "break on error?",
+      "range": {
+        "startLine": 3972,
+        "startChar": 3,
+        "endLine": 3972,
+        "endChar": 30
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dec020b1_75d1d08b",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4107,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-10T20:10:22Z",
+      "side": 1,
+      "message": "I would like to keep kswapd name the same when kswapd_threads\u003d\u003d1. Maybe we can do this instead:\n\n\n        if (kswapd_threads \u003e 1)\n            return multi_kswapd_run(nid);\n\n        pgdat-\u003ekswapd \u003d kthread_run(kswapd, pgdat, \"kswapd%d\", nid);\n        ... \u003cthe same upstream code \u003e\n\nAnd multi_kswapd_run() would loop from 0 as:\n\n        for (hid \u003d 0; hid \u003c kswapd_threads; ++hid) {\n             ...",
+      "range": {
+        "startLine": 4098,
+        "startChar": 1,
+        "endLine": 4107,
+        "endChar": 29
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "905f25fd_756ea1b0",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4126,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-10T20:10:22Z",
+      "side": 1,
+      "message": "For consistency I would do the same here:\n\n        if (kswapd_threads \u003e 1) {\n             multi_kswapd_stop(nid);\n             return;\n        }\n\n        if (kswapd) {\n        ... \u003cupstream code\u003e\n\nand make multi_kswapd_stop() loop from 0.",
+      "range": {
+        "startLine": 4120,
+        "startChar": 0,
+        "endLine": 4126,
+        "endChar": 0
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
