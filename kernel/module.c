@@ -4501,7 +4501,7 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
 {
 	struct module *mod;
 	unsigned int i;
-	int ret;
+	int ret = 0;
 
 	module_assert_mutex();
 
