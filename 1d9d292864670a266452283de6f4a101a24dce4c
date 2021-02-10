@@ -93,6 +93,30 @@
       },
       "revId": "1d9d292864670a266452283de6f4a101a24dce4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efe8fbf9_8967b5d9",
+        "filename": "mm/slub.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-10T20:40:09Z",
+      "side": 1,
+      "message": "Yeah, that makes sense, however I\u0027m worried that someone can still call get_track_object directly and create locking issues.\nHow about instead get_track_object() and for_each_object_track() that calls it we have a do_for_each_object_track(s, page, track_item, callback) and you loop over each track calling the \"callback\" function and passing struct track as a parameter to it. All this without providing a separate get_track_object() function.\nThis way you completely control the iterating process and can ensure correct locking/unlocking.",
+      "parentUuid": "5832f99e_a35fd97f",
+      "range": {
+        "startLine": 580,
+        "startChar": 1,
+        "endLine": 587,
+        "endChar": 2
+      },
+      "revId": "1d9d292864670a266452283de6f4a101a24dce4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
