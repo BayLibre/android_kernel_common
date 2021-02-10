@@ -16,6 +16,29 @@
       "message": "This never got accepted by upstream, what happened?  Please work with them to get it merged properly.",
       "revId": "0765b9703813a812e73415e116bdaa5376f8bfe3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7a28e00_b50fea49",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5024,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2021-02-10T00:04:22Z",
+      "side": 1,
+      "message": "+static void exynos_ufs_compl_xfer_req(struct ufs_hba *hba, int tag, bool op)\n+{\n+\tif (op)\n+\t\texynos_ufs_cmd_log(hba, tag, 0);\n+}\n\nIsn\u0027t ufshcd_vops_compl_command() enough for this?",
+      "range": {
+        "startLine": 5024,
+        "startChar": 0,
+        "endLine": 5024,
+        "endChar": 63
+      },
+      "revId": "0765b9703813a812e73415e116bdaa5376f8bfe3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
