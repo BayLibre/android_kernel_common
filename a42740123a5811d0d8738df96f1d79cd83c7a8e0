@@ -52,6 +52,24 @@
       "parentUuid": "67e2c92c_c29943d8",
       "revId": "a42740123a5811d0d8738df96f1d79cd83c7a8e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ff8fe48_c2710f8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-02-10T17:51:04Z",
+      "side": 1,
+      "message": "We are scheduled to turn off CONFIG_ION later this month. We were not planning to remove the source code for ION in this branch though. Minchan, since devices launching with 12-5.10 will all use DMA-BUF heaps, shall we just backport the patch you have under review upstream for this branch instead of this one?",
+      "parentUuid": "aaf21909_61450c9a",
+      "revId": "a42740123a5811d0d8738df96f1d79cd83c7a8e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
