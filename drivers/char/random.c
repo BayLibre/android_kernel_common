@@ -2327,3 +2327,32 @@ void add_bootloader_randomness(const void *buf, unsigned int size)
 		add_device_randomness(buf, size);
 }
 EXPORT_SYMBOL_GPL(add_bootloader_randomness);
+
+#ifdef CONFIG_CRYPTO_DRBG_FIPS_PASSIVE_ENTROPY
+static void (*drbg_load_entropy)(const void *buf, size_t size);
+
+void register_drbg_entropy_func(void (*cb)(const void *buf, size_t size))
+{
+	drbg_load_entropy = cb;
+}
+EXPORT_SYMBOL_GPL(register_drbg_entropy_func);
+
+void unregister_drbg_entropy_func(void)
+{
+	drbg_load_entropy = NULL;
+}
+EXPORT_SYMBOL_GPL(unregister_drbg_entropy_func);
+
+void drbg_need_entropy(size_t size)
+{
+	u8 buf[128];
+
+	size = min(size, sizeof(buf));
+
+	get_random_bytes(buf, size);
+	(*drbg_load_entropy)(buf, size);
+
+	memzero_explicit(buf, size);
+}
+EXPORT_SYMBOL_GPL(drbg_need_entropy);
+#endif /* CONFIG_CRYPTO_DRBG_FIPS_PASSIVE_ENTROPY */
