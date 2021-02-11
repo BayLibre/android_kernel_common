@@ -16,6 +16,24 @@
       "message": "You should mention in the description that this patch is heavily trimmed from its original version. Not sure also why you need to carry the changes to arch/openrisc/kernel/dma.c. AFAIK we don\u0027t have devices using this architecture.",
       "revId": "72ea8626dbc969c85d78ee3764cbea9c54cea0f4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23258370_a2c92b3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1562839
+      },
+      "writtenOn": "2021-02-11T04:20:34Z",
+      "side": 1,
+      "message": "Added comment conflicts section, also removed arch/openrisc/kernel/dma.c as suggested since removing does not seem to cause any problem. It was there to be closer to original patch.",
+      "parentUuid": "9f42658c_849e5509",
+      "revId": "72ea8626dbc969c85d78ee3764cbea9c54cea0f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
