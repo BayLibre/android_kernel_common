@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff4c878_32f463e0",
+        "filename": "Documentation/admin-guide/kernel-parameters.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 2965,
+      "author": {
+        "id": 1810595
+      },
+      "writtenOn": "2021-02-11T16:55:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9df9b00_1cf09144",
+      "range": {
+        "startLine": 2965,
+        "startChar": 1,
+        "endLine": 2965,
+        "endChar": 13
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfc7d68d_3f542ee5",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-10T20:10:22Z",
       "side": 1,
       "message": "I don\u0027t think we need a separate config here since we have to enable it everywhere anyway and the number of kswapd threads is already configurable via kernel command line parameter.",
+      "range": {
+        "startLine": 884,
+        "startChar": 7,
+        "endLine": 884,
+        "endChar": 22
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24790b80_ca5998a7",
+        "filename": "mm/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 1810595
+      },
+      "writtenOn": "2021-02-11T16:55:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfc7d68d_3f542ee5",
       "range": {
         "startLine": 884,
         "startChar": 7,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28b66735_13ebf2bf",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3972,
+      "author": {
+        "id": 1810595
+      },
+      "writtenOn": "2021-02-11T16:55:17Z",
+      "side": 1,
+      "message": "Usually we do break the loop on the error conditions. I didn\u0027t really get why the original author didn\u0027t do this. Could this be because that we are not really caring this error return value when kswapd thread is failed to run? (even in the upstream implementations we are not really caring if kswapd thread really started running in the system. grepping the kswapd_run() shows this). What if only 1 in N kswapd threads can fail to spawn? with early breaking the loop we may loose the other threads. NO?",
+      "parentUuid": "59bfec21_9736fc2f",
+      "range": {
+        "startLine": 3972,
+        "startChar": 3,
+        "endLine": 3972,
+        "endChar": 30
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dec020b1_75d1d08b",
         "filename": "mm/vmscan.c",
         "patchSetId": 3
@@ -83,6 +155,30 @@
       "writtenOn": "2021-02-10T20:10:22Z",
       "side": 1,
       "message": "I would like to keep kswapd name the same when kswapd_threads\u003d\u003d1. Maybe we can do this instead:\n\n\n        if (kswapd_threads \u003e 1)\n            return multi_kswapd_run(nid);\n\n        pgdat-\u003ekswapd \u003d kthread_run(kswapd, pgdat, \"kswapd%d\", nid);\n        ... \u003cthe same upstream code \u003e\n\nAnd multi_kswapd_run() would loop from 0 as:\n\n        for (hid \u003d 0; hid \u003c kswapd_threads; ++hid) {\n             ...",
+      "range": {
+        "startLine": 4098,
+        "startChar": 1,
+        "endLine": 4107,
+        "endChar": 29
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6510a7a_0a2877e7",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4107,
+      "author": {
+        "id": 1810595
+      },
+      "writtenOn": "2021-02-11T16:55:17Z",
+      "side": 1,
+      "message": "But in either way, we need to fill the pgdat-\u003ekswapd(this is used to check If kswapd thread is already associated with the memory node while doing the memory hotplug). I mean multi_kswapd_run still looks like below:\n   pgdat-\u003ekswapd \u003d kthread_run(..,\"kswapd\");\n   for (hid \u003d 1; hid \u003c kswapd_threads; ++hid) {...}\n\nSo, with the current implementation, we can avoid the repetitive code of pgdat-\u003ekswapd\u003dkthread_run(...)... Or I am wrong here?",
+      "parentUuid": "dec020b1_75d1d08b",
       "range": {
         "startLine": 4098,
         "startChar": 1,
