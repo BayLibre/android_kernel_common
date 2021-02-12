@@ -34,6 +34,24 @@
       "parentUuid": "9f42658c_849e5509",
       "revId": "72ea8626dbc969c85d78ee3764cbea9c54cea0f4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90d0156d_aee0cf5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-12T19:33:47Z",
+      "side": 1,
+      "message": "The original patch contained 14 files, so keeping one would not make much difference.\nIn the conflicts cection you need to have:\n1. Dropped changes to unused architectures;\n2. Dropped changes to mm/* files because \u003creason why they are not needed\u003e\n3. Modifications done in include/linux/pagewalk.h",
+      "parentUuid": "23258370_a2c92b3e",
+      "revId": "72ea8626dbc969c85d78ee3764cbea9c54cea0f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
