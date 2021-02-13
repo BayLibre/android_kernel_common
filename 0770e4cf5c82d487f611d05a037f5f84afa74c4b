@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc9bc7a_a5b020c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-13T01:05:09Z",
+      "side": 1,
+      "message": "Note that the Presubmit-Verified-1 is from a false-positive checkpatch warning in one of the upstream commits:\n\n    WARNING:LONG_LINE_STRING: line length of 140 exceeds 100 columns\n    #540: FILE: drivers/md/dm-table.c:1421:\n    +\t\tDMWARN(\"Inline encryption capabilities of new DM table were more restrictive than the \n    old table\u0027s. This is not supported!\");\n\nBut it is supposed to be a long line, since line-breaking results in another checkpatch warning, \"WARNING: quoted string split across lines\".",
+      "revId": "0770e4cf5c82d487f611d05a037f5f84afa74c4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
