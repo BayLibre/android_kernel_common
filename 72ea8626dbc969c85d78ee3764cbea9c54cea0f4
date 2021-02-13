@@ -52,6 +52,24 @@
       "parentUuid": "23258370_a2c92b3e",
       "revId": "72ea8626dbc969c85d78ee3764cbea9c54cea0f4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79b6dd10_b39fca2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1562839
+      },
+      "writtenOn": "2021-02-13T02:29:47Z",
+      "side": 1,
+      "message": "Doing a bit more thorough review on why this changed so much is because this patch actually was already merged into 5.4. I missed that part, and this diff gets actually refactored in https://android-review.googlesource.com/c/kernel/common/+/1584104/3 . So, this patch is not even needed. Dropping it.",
+      "parentUuid": "90d0156d_aee0cf5c",
+      "revId": "72ea8626dbc969c85d78ee3764cbea9c54cea0f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
