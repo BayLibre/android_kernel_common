@@ -7403,7 +7403,7 @@ static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
  *      rewrite all of this once again.]
  */
 
-static unsigned long __read_mostly max_load_balance_interval = HZ/10;
+unsigned long __read_mostly max_load_balance_interval = HZ/10;
 
 enum fbq_type { regular, remote, all };
 
@@ -10043,6 +10043,7 @@ void update_max_interval(void)
 {
 	max_load_balance_interval = HZ*num_active_cpus()/10;
 }
+EXPORT_SYMBOL(max_load_balance_interval);
 
 /*
  * It checks each scheduling domain to see if it is due to be balanced,
