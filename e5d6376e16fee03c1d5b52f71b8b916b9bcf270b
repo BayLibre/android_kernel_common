@@ -16,6 +16,24 @@
       "message": "You are adding 34 new functions to the abi that must be properly tracked and agreed on here.\n\nTo do so, you need to regenerate the .xml file at the same time you add these symbols.\n\nWhy is this device needed for the 11-5.4 branch at all?",
       "revId": "e5d6376e16fee03c1d5b52f71b8b916b9bcf270b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b94930d7_8857e85b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-02-16T19:30:22Z",
+      "side": 1,
+      "message": "Hey, we had some requests for wifi support on db845c w/ android11-5.4, and when I ran it by ToddK he said it would be helpful for the their test lab as well (lets the network setup be consistent across kernels). So I wanted to submit it here. \n\nIts not a particularly high priority item for me (we\u0027ve helped 3rd party folks interested in it to apply the patches themselves), and we initially didn\u0027t submit the backport to android11-5.4 last summer just to not rock the boat, so if its better to skip it to avoid abi implications, that\u0027s ok by me. But I\u0027m also happy to re-spin/rework it if Todd thinks its worth pushing in.\n\n\nAs for the xml file, I\u0027m curious, as I was able to build and boot w/ GKI only after updating the db845c symbol list. But if folks want to continue with this, I\u0027ll go through and try to generate the xml update as well (I had some trouble my last go around with the new tooling).",
+      "parentUuid": "ed884b14_77ac0ada",
+      "revId": "e5d6376e16fee03c1d5b52f71b8b916b9bcf270b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
