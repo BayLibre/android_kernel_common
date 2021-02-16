@@ -189,6 +189,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64dff024_1fbd3e99",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4107,
+      "author": {
+        "id": 1810595
+      },
+      "writtenOn": "2021-02-16T04:46:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6510a7a_0a2877e7",
+      "range": {
+        "startLine": 4098,
+        "startChar": 1,
+        "endLine": 4107,
+        "endChar": 29
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "905f25fd_756ea1b0",
@@ -202,6 +226,30 @@
       "writtenOn": "2021-02-10T20:10:22Z",
       "side": 1,
       "message": "For consistency I would do the same here:\n\n        if (kswapd_threads \u003e 1) {\n             multi_kswapd_stop(nid);\n             return;\n        }\n\n        if (kswapd) {\n        ... \u003cupstream code\u003e\n\nand make multi_kswapd_stop() loop from 0.",
+      "range": {
+        "startLine": 4120,
+        "startChar": 0,
+        "endLine": 4126,
+        "endChar": 0
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db59ff5_6103184c",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4126,
+      "author": {
+        "id": 1810595
+      },
+      "writtenOn": "2021-02-16T04:46:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "905f25fd_756ea1b0",
       "range": {
         "startLine": 4120,
         "startChar": 0,
