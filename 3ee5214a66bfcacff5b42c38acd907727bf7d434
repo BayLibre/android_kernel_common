@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "035f69cc_173c3f6e",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3972,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-16T20:29:10Z",
+      "side": 1,
+      "message": "One issue with this approach is if the pgdat-\u003emkswapd[0] fails to start but some other threads succeed. In that scenario pgdat-\u003ekswapd will be NULL, so another call to kswapd_run() will try to restart all kthreads again, so we might end up with more than MAX_KSWAPD_THREADS active kswapd threads.\nI think this issue can be dealt with by setting pgdat-\u003ekswapd to the first kthread that got successfully started instead of doing pgdat-\u003ekswapd \u003d pgdat-\u003emkswapd[0].",
+      "parentUuid": "28b66735_13ebf2bf",
+      "range": {
+        "startLine": 3972,
+        "startChar": 3,
+        "endLine": 3972,
+        "endChar": 30
+      },
+      "revId": "3ee5214a66bfcacff5b42c38acd907727bf7d434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dec020b1_75d1d08b",
         "filename": "mm/vmscan.c",
         "patchSetId": 3
