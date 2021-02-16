@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459b799e_291ff776",
+        "filename": "mm/slub.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-16T19:16:10Z",
+      "side": 1,
+      "message": "This interface is made to serve a very specific usecase. I think it would be much more generic if it is changed to accept an opaque pointer that the user can use to pass a structure will all additional data it needs like this:\n\nbool (*fn)(struct kmem_cache *, void *object, struct track *, void *private);\n\nSo in your case you can have:\n\nstruct my_struct {\n    char *buf;\n    size_t size;\n    size_t offset;\n} s;\n\nbool my_func(struct kmem_cache *cache, void *object, struct track *track, void *private) {\n    struct my_struct st \u003d (struct my_struct*)private;\n\n    ...\n}\n\nget_each_object_track(..., my_func, \u0026s);\n\nThis way the function is much more generic.  get_each_object_track() can return the number of tracks that were processed.",
+      "range": {
+        "startLine": 572,
+        "startChar": 2,
+        "endLine": 573,
+        "endChar": 49
+      },
+      "revId": "49c250ea9213e1a4dd0981a9db0050ecd61265ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "181ec128_a8415679",
+        "filename": "mm/slub.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-16T19:16:10Z",
+      "side": 1,
+      "message": "With the proposed change this would look like:\n\nif (!fn(s, p, t, private))\n\tbreak;",
+      "range": {
+        "startLine": 586,
+        "startChar": 2,
+        "endLine": 591,
+        "endChar": 16
+      },
+      "revId": "49c250ea9213e1a4dd0981a9db0050ecd61265ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
