@@ -542,6 +542,28 @@ unsigned long get_pfnblock_flags_mask(struct page *page, unsigned long pfn,
 	return __get_pfnblock_flags_mask(page, pfn, mask);
 }
 
+unsigned long isolate_anon_lru_page(struct page *page)
+{
+	if (!PageLRU(page) || !PageAnon(page))
+		return -EINVAL;
+
+	if (!get_page_unless_zero(page))
+		return -EINVAL;
+
+	return isolate_lru_page(page);
+}
+EXPORT_SYMBOL_GPL(isolate_anon_lru_page);
+
+bool is_isolate_or_cma_migratetype(struct page *page)
+{
+	unsigned long mt;
+
+	mt = get_pageblock_migratetype(page);
+
+	return mt == MIGRATE_CMA || mt == MIGRATE_ISOLATE;
+}
+EXPORT_SYMBOL_GPL(is_isolate_or_cma_migratetype);
+
 static __always_inline int get_pfnblock_migratetype(struct page *page, unsigned long pfn)
 {
 	return __get_pfnblock_flags_mask(page, pfn, MIGRATETYPE_MASK);

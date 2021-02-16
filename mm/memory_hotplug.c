@@ -1662,6 +1662,33 @@ failed_removal:
 	return ret;
 }
 
+/*
+ * This function tries to migrate pages passed in list 'source' to the
+ * page allocated from 'migrate_alloc_page'.
+ */
+int migrate_list_pages(new_page_t migrate_alloc_page, free_page_t migrate_free_page,
+		struct list_head *source, void *data)
+{
+	int ret;
+
+	if (list_empty(source)) {
+		pr_debug("No pages are found to migrate\n");
+		return -EINVAL;
+	}
+
+	ret = migrate_pages(source, migrate_alloc_page, migrate_free_page,
+			(unsigned long)data,
+			MIGRATE_ASYNC, MR_MEMORY_HOTPLUG);
+	if (ret) {
+		putback_movable_pages(source);
+		if (ret == -ENOMEM)
+			return ret;
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(migrate_list_pages);
+
 static int check_memblock_offlined_cb(struct memory_block *mem, void *arg)
 {
 	int ret = !is_memblock_offlined(mem);
