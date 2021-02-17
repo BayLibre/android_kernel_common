@@ -51,6 +51,24 @@
       "message": "If this makes the merge easier, I\u0027m all for it, I\u0027ll defer to Eric about that as he usually helps me with that effort 😊",
       "revId": "d7afb756ee118b1d5d5bb72c466d1eef2a643702",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc1e79f_5bf4b80f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-17T17:50:51Z",
+      "side": 1,
+      "message": "Yes, this will make the merge with 5.12-rc1 a lot easier.  There will still be some conflicts, but not any \"silent\" ones (whereas without this there would be lots of silent conflicts you\u0027d have to manually fix up and would almost certainly get wrong, e.g. moving code between files, and adding handling of blk_keyslot_manager::features).  After this you\u0027ll just need to take android-mainline in the conflicts in block/keyslot-manager.c, drivers/md/dm-table.c, and include/linux/keyslot-manager.h, and upstream in the conflicts in drivers/md/dm-flakey.c and drivers/md/dm-linear.c.\n\nWe also needed to write this patch anyway because we\u0027ll need to cherry-pick it to android12-5.10 and android12-5.4.",
+      "parentUuid": "6dcd9527_e5043046",
+      "revId": "d7afb756ee118b1d5d5bb72c466d1eef2a643702",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
