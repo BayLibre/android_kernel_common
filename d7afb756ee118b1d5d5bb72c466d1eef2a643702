@@ -16,6 +16,24 @@
       "message": "Why not just wait a few days for these to hit Linus\u0027s tree and I sync up with it here?\n\nIf we take this here, will it cause merge issues?",
       "revId": "d7afb756ee118b1d5d5bb72c466d1eef2a643702",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa773de_3106efd3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1368904
+      },
+      "writtenOn": "2021-02-17T09:28:16Z",
+      "side": 1,
+      "message": "IIUC Eric wanted to get these changes in so that the merge from upstream in a few days will be easier. The upstream DM changes don\u0027t handle wrapped key support (because wrapped keys aren\u0027t upstream yet). So this patch updates the DM inline encryption patches to what upstream will have and also handles wrapped key support - both tasks would otherwise need to be done at merge time.",
+      "parentUuid": "60a8d5e7_ad4501a1",
+      "revId": "d7afb756ee118b1d5d5bb72c466d1eef2a643702",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
