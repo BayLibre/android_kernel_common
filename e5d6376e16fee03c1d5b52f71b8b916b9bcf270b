@@ -34,6 +34,24 @@
       "parentUuid": "ed884b14_77ac0ada",
       "revId": "e5d6376e16fee03c1d5b52f71b8b916b9bcf270b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a168c1c_645847df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-02-17T09:13:29Z",
+      "side": 1,
+      "message": "Ok, I\u0027ll deffer to Todd about the need for this feature, but we can\u0027t take this patch as-is because it breaks the build as the .xml file needs to be updated to add the new symbols.  Treehugger will complain (as it did here), and we can\u0027t submit a patch that it rejects as any later patches would also be broken.\n\nYou can add a follow-on patch in the series that updates the .xml file with the new symbols added if you want, but usually we like to keep it in the same commit to make everything work properly.",
+      "parentUuid": "b94930d7_8857e85b",
+      "revId": "e5d6376e16fee03c1d5b52f71b8b916b9bcf270b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
