@@ -34,6 +34,24 @@
       "parentUuid": "2ae202e6_b99534ef",
       "revId": "3020b2338575ccf4162e32b4dfd74faceb7ba085",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18bdef5c_bf0260fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-02-18T16:43:14Z",
+      "side": 1,
+      "message": "Vincent,\n\nAs I have mentioned in the commit description, nohz_balance_exit_idle() must be called from the local CPU, otherwise there is a warning that gets emitted. see nohz_balance_exit_idle(). \n\nDo you think we can remove that check? FWIW, when the upstream patch is brought in , we will get that error when pause_cpus() is called.",
+      "parentUuid": "ab050cc1_f992edc7",
+      "revId": "3020b2338575ccf4162e32b4dfd74faceb7ba085",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
