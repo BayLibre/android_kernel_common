@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8921e876_a21c35ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "A description of what this actually does (and why) would be helpful.  And how it differs from the existing CONFIG_CRYPTO_FIPS.",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "31d82952_1fddf382",
@@ -82,6 +99,413 @@
         "startChar": 0,
         "endLine": 7,
         "endChar": 44
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14b6acec_b97f5c97",
+        "filename": "crypto/api.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "This is a use-after-free.  Also this is dead code, since CONFIG_CRYPTO_FIPS_FUNC_TEST is never defined anywhere.",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1665ec4d_be91da20",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "It\u0027s hard to understand what\u0027s going on here.  Is there really not an easier way to do this?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 1
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de384e13_8491acb0",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "No point in using a keyed hash with a fixed key.  Just use an unkeyed hash.  I.e., sha256 instead of hmac(sha256).  (Unless FIPS says it *has* to be a keyed hash, even if it makes no sense?)",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09bfc0bc_cbbdf42b",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "This error path leaks memory.",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e942d57_cf604c4e",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "This error path leaks memory.",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef7fa5b8_f101fc8a",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "These checks aren\u0027t necessary since the caller already knows which hash algorithm it is using.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 2
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033ba982_105165b2",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "Why is disabling optimizations needed?",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 24
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6be4e0d_4200dd6f",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "Global functions need a proper function prefix, eg. \"fips_do_integrity_check\"",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 18
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55d29053_04fd8f3b",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "This is never defined anywhere.",
+      "range": {
+        "startLine": 147,
+        "startChar": 7,
+        "endLine": 147,
+        "endChar": 27
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9456d2ff_d1849869",
+        "filename": "crypto/fips140_integrity.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "This is only called by built-in code, so there\u0027s no need to export the symbol.",
+      "range": {
+        "startLine": 237,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 17
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd2be78_a1208ac3",
+        "filename": "crypto/fips140_post.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "Why is disabling optimizations needed?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 6
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04d1f69_28e23117",
+        "filename": "crypto/fips140_post.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "fips_enabled is something that already exists in the kernel.  It has some side effects such as forbidding certain crypto algorithms from being used.  Is that behavior desired?",
+      "range": {
+        "startLine": 52,
+        "startChar": 1,
+        "endLine": 52,
+        "endChar": 18
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3663a0c3_e0762e9f",
+        "filename": "crypto/fips140_post.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "This code is never built as a module, so the exit function isn\u0027t needed.",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 26
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "988025d2_5a25c042",
+        "filename": "crypto/fips140_post.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 6
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "061d1b17_4e35e7b6",
+        "filename": "crypto/fips140_test.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "What\u0027s wrong with the kernel\u0027s existing kvmalloc() function?",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e4b24a_6c90c2af",
+        "filename": "crypto/fips140_test.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "Using crypto_wait_req() would make this much simpler.",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 2
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4bfd6b_80dc70ee",
+        "filename": "crypto/fips140_test.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "There\u0027s no need to check for NULL before freeing memory.",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 20
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "823eda08_b8a36c16",
+        "filename": "crypto/fips140_test.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "Requesting potentially-vvmalloced memory is incorrect here, since the code below which builds the src/dest scatterlists assumes that the memory is physically contiguous.",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 56
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a15b2396_6bfd4a8c",
+        "filename": "crypto/fips140_test.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "What is the rationale for the specific choice of algorithms, and the specific choice of implementations of those algorithms, which are being tested here?",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 15
       },
       "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
@@ -174,6 +598,29 @@
         "startChar": 0,
         "endLine": 2,
         "endChar": 23
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b635517_a6d70cff",
+        "filename": "scripts/crypto/fips_crypto_integrity.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T19:58:06Z",
+      "side": 1,
+      "message": "What\u0027s the rationale behind this specific list of files?\n\nAnd is this something that should be automatically generated?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 28
       },
       "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
