@@ -79,6 +79,12 @@ DECLARE_HOOK(android_vh_mem_cgroup_css_online,
 DECLARE_HOOK(android_vh_mem_cgroup_css_offline,
 	TP_PROTO(struct cgroup_subsys_state *css, struct mem_cgroup *memcg),
 	TP_ARGS(css, memcg));
+DECLARE_HOOK(android_vh_rmqueue,
+	TP_PROTO(struct zone *preferred_zone, struct zone *zone,
+		unsigned int order, gfp_t gfp_flags,
+		unsigned int alloc_flags, int migratetype),
+	TP_ARGS(preferred_zone, zone, order,
+		gfp_flags, alloc_flags, migratetype));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
