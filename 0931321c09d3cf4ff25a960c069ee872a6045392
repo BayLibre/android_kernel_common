@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31d82952_1fddf382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-02-18T10:28:27Z",
+      "side": 1,
+      "message": "Seems to go around the existing in-kernel FIPS code?  Why?",
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b958dc57_7625c25b",
+        "filename": "crypto/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-02-18T10:28:27Z",
+      "side": 1,
+      "message": "is the default, no need to specify it here.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45d2d31_d6a0652b",
+        "filename": "crypto/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-02-18T10:28:27Z",
+      "side": 1,
+      "message": "so no more FIPS 200 support?  Why?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 60
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6db0a759_9d823191",
+        "filename": "crypto/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-02-18T10:28:27Z",
+      "side": 1,
+      "message": "obviously needs to be removed, along with all of the crazy code in the .c files that look for this 😊",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 44
+      },
+      "revId": "0931321c09d3cf4ff25a960c069ee872a6045392",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
