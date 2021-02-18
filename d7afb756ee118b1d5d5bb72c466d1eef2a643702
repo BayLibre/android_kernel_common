@@ -121,6 +121,23 @@
       "message": "Yes, we can ignore the checkpatch \"issue\".",
       "revId": "d7afb756ee118b1d5d5bb72c466d1eef2a643702",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73159feb_1c9c1b6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-02-18T18:10:02Z",
+      "side": 1,
+      "message": "The presubmit failures are the false-positive checkpatch warning in upstream code (as discussed above), and a boot failure in kernel/cts/cts-kernel-triggered-presubmit on kernel_virt_x86_64 which looks unrelated.  It had passed before, and it looks like it\u0027s already being tracked by b/180580629.",
+      "revId": "d7afb756ee118b1d5d5bb72c466d1eef2a643702",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
