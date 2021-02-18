@@ -88,6 +88,24 @@
       "parentUuid": "882ef9f6_1ce935cd",
       "revId": "e5d6376e16fee03c1d5b52f71b8b916b9bcf270b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc96f829_89897791",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-02-18T03:04:33Z",
+      "side": 1,
+      "message": "Matthias: Thanks for the pointer! That said when I ran w/ -u it  printed:\n\nABI dump has been created at /home/docker/repo/out_abi/android11-5.4/dist/abi-android11-5.4.86_r00-37-ge1dba5ff7299-dirty.xml\n\nBut there was no changes to the real xml file (\u0027git diff\u0027 only sees changes to android/abi_gki_aarch64_db845c).\n\nI\u0027m suspecting that that means there is no kabi changes (we\u0027re only adding symbols found in other symbol files), but am uncertain.",
+      "parentUuid": "c5a04e6b_b89a0b8c",
+      "revId": "e5d6376e16fee03c1d5b52f71b8b916b9bcf270b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
