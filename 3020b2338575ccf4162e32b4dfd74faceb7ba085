@@ -52,6 +52,24 @@
       "parentUuid": "ab050cc1_f992edc7",
       "revId": "3020b2338575ccf4162e32b4dfd74faceb7ba085",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cab68cf_125300ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-02-19T06:43:46Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to call from nohz_balance_exit_idle as it could race with the cpu exiting idle and entering etc, correct? in fact we may have to skip doing this (if we bring the upstream patch) for pause scenario where cpu deactivation happens remotely?",
+      "parentUuid": "18bdef5c_bf0260fd",
+      "revId": "3020b2338575ccf4162e32b4dfd74faceb7ba085",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
