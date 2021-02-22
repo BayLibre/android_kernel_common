@@ -6941,7 +6941,7 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf, bool force)
 			INIT_LIST_HEAD(&next->percpu_kthread_node);
 			list_add(&next->percpu_kthread_node, &percpu_kthreads);
 			deactivate_task(rq, next,
-					DEQUEUE_NOCLOCK | DEQUEUE_SAVE);
+					DEQUEUE_NOCLOCK);
 			continue;
 		}
 
@@ -6989,7 +6989,7 @@ static void migrate_tasks(struct rq *dead_rq, struct rq_flags *rf, bool force)
 
 	list_for_each_entry_safe(next, tmp, &percpu_kthreads,
 				 percpu_kthread_node) {
-		activate_task(rq, next, ENQUEUE_NOCLOCK | ENQUEUE_RESTORE);
+		activate_task(rq, next, ENQUEUE_NOCLOCK);
 		list_del(&next->percpu_kthread_node);
 	}
 
