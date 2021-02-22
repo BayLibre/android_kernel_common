@@ -41,6 +41,7 @@
 #include <trace/hooks/cgroup.h>
 #include <trace/hooks/sys.h>
 #include <trace/hooks/avc.h>
+#include <trace/hooks/creds.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -181,3 +182,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_insert);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_node_delete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_node_replace);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_lookup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_commit_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_override_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_revert_creds);
