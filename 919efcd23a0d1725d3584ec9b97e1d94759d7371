@@ -16,6 +16,24 @@
       "message": "I just noticed that we need #ifdef CONFIG_SLUB_DEBUG around this function. Please make sure it builds with this config enabled and disabled.",
       "revId": "919efcd23a0d1725d3584ec9b97e1d94759d7371",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde9ed08_923f4f3c",
+        "filename": "mm/slub.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1709452
+      },
+      "writtenOn": "2021-02-22T03:44:46Z",
+      "side": 1,
+      "message": "its already with in #ifdef CONFIG_SLUB_DEBUG (https://android-review.googlesource.com/c/kernel/common/+/1549616/13/mm/slub.c#422), I have built with config enabled and disabled.",
+      "parentUuid": "e8c902c8_9ea680bd",
+      "revId": "919efcd23a0d1725d3584ec9b97e1d94759d7371",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
