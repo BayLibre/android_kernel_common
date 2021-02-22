@@ -23,12 +23,18 @@ static inline void mmap_write_lock_nested(struct mm_struct *mm, int subclass)
 
 static inline int mmap_write_lock_killable(struct mm_struct *mm)
 {
-	return down_write_killable(&mm->mmap_lock);
+	int error;
+
+	error = down_write_killable(&mm->mmap_lock);
+	return error;
 }
 
 static inline bool mmap_write_trylock(struct mm_struct *mm)
 {
-	return down_write_trylock(&mm->mmap_lock) != 0;
+	bool ok;
+
+	ok = down_write_trylock(&mm->mmap_lock) != 0;
+	return ok;
 }
 
 static inline void mmap_write_unlock(struct mm_struct *mm)
@@ -48,12 +54,18 @@ static inline void mmap_read_lock(struct mm_struct *mm)
 
 static inline int mmap_read_lock_killable(struct mm_struct *mm)
 {
-	return down_read_killable(&mm->mmap_lock);
+	int error;
+
+	error = down_read_killable(&mm->mmap_lock);
+	return error;
 }
 
 static inline bool mmap_read_trylock(struct mm_struct *mm)
 {
-	return down_read_trylock(&mm->mmap_lock) != 0;
+	bool ok;
+
+	ok = down_read_trylock(&mm->mmap_lock) != 0;
+	return ok;
 }
 
 static inline void mmap_read_unlock(struct mm_struct *mm)
