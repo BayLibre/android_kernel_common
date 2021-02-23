@@ -17,6 +17,7 @@ enum task_work_notify_mode {
 	TWA_NONE,
 	TWA_RESUME,
 	TWA_SIGNAL,
+	TWA_GONE_FISHING,
 };
 
 int task_work_add(struct task_struct *task, struct callback_head *twork,
