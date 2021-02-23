@@ -675,8 +675,12 @@ dma_buf_attachment_is_dynamic(struct dma_buf_attachment *attach)
 	return !!attach->importer_ops;
 }
 
+<<<<<<< PATCH SET (f4e876 ANDROID: dma-buf: Export is_dma_buf_file)
+int is_dma_buf_file(struct file *file);
+=======
 int dma_buf_get_each(int (*callback)(const struct dma_buf *dmabuf,
 		     void *private), void *private);
+>>>>>>> BASE      (358f85 ANDROID: dma-buf: add dma_buf_get_each function)
 struct dma_buf_attachment *dma_buf_attach(struct dma_buf *dmabuf,
 					  struct device *dev);
 struct dma_buf_attachment *
