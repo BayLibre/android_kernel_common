@@ -204,6 +204,13 @@ static void etm_free_aux(void *data)
 	schedule_work(&event_data->work);
 }
 
+static bool sinks_match(struct coresight_device *a, struct coresight_device *b)
+{
+	if (!a || !b)
+		return false;
+	return (sink_ops(a) == sink_ops(b));
+}
+
 static void *etm_setup_aux(struct perf_event *event, void **pages,
 			   int nr_pages, bool overwrite)
 {
@@ -212,6 +219,7 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
 	cpumask_t *mask;
 	struct coresight_device *sink = NULL;
 	struct etm_event_data *event_data = NULL;
+	bool sink_forced = false;
 
 	event_data = alloc_event_data(cpu);
 	if (!event_data)
@@ -222,6 +230,7 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
 	if (event->attr.config2) {
 		id = (u32)event->attr.config2;
 		sink = coresight_get_sink_by_id(id);
+		sink_forced = true;
 	}
 
 	mask = &event_data->mask;
@@ -235,7 +244,7 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
 	 */
 	for_each_cpu(cpu, mask) {
 		struct list_head *path;
-		struct coresight_device *csdev;
+		struct coresight_device *csdev, *new_sink;
 
 		csdev = per_cpu(csdev_src, cpu);
 		/*
@@ -249,21 +258,35 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
 		}
 
 		/*
-		 * No sink provided - look for a default sink for one of the
-		 * devices. At present we only support topology where all CPUs
-		 * use the same sink [N:1], so only need to find one sink. The
-		 * coresight_build_path later will remove any CPU that does not
-		 * attach to the sink, or if we have not found a sink.
+		 * No sink provided - look for a default sink for all the devices.
+		 * We only support multiple sinks, only if all the default sinks
+		 * are of the same type, so that the sink buffer can be shared
+		 * as the event moves around. We don't trace on a CPU if it can't
+		 *
 		 */
-		if (!sink)
-			sink = coresight_find_default_sink(csdev);
+		if (!sink_forced) {
+			new_sink = coresight_find_default_sink(csdev);
+			if (!new_sink) {
+				cpumask_clear_cpu(cpu, mask);
+				continue;
+			}
+			/* Skip checks for the first sink */
+			if (!sink) {
+			       sink = new_sink;
+			} else if (!sinks_match(new_sink, sink)) {
+				cpumask_clear_cpu(cpu, mask);
+				continue;
+			}
+		} else {
+			new_sink = sink;
+		}
 
 		/*
 		 * Building a path doesn't enable it, it simply builds a
 		 * list of devices from source to sink that can be
 		 * referenced later when the path is actually needed.
 		 */
-		path = coresight_build_path(csdev, sink);
+		path = coresight_build_path(csdev, new_sink);
 		if (IS_ERR(path)) {
 			cpumask_clear_cpu(cpu, mask);
 			continue;
@@ -284,7 +307,12 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
 	if (!sink_ops(sink)->alloc_buffer || !sink_ops(sink)->free_buffer)
 		goto err;
 
-	/* Allocate the sink buffer for this session */
+	/*
+	 * Allocate the sink buffer for this session. All the sinks
+	 * where this event can be scheduled are ensured to be of the
+	 * same type. Thus the same sink configuration is used by the
+	 * sinks.
+	 */
 	event_data->snk_config =
 			sink_ops(sink)->alloc_buffer(sink, event, pages,
 						     nr_pages, overwrite);
