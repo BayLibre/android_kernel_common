@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e83a60a_ab0296db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-02-24T18:51:08Z",
+      "side": 1,
+      "message": "This series has build errors. For example (kernel_aarch64 build):\n\n/usr/local/google/buildbot/src/android/common-android12-5.4/common/net/mac80211/rx.c:3059:7: error: implicit declaration of function \u0027ieee80211_rx_status_to_khz\u0027 [-Werror,-Wimplicit-function-declaration]\n                                                ieee80211_rx_status_to_khz(status),\n                                                ^\n/usr/local/google/buildbot/src/android/common-android12-5.4/common/net/mac80211/rx.c:3059:7: note: did you mean \u0027ieee80211_tx_status_noskb\u0027?\n/usr/local/google/buildbot/src/android/common-android12-5.4/common/include/net/mac80211.h:4591:20: note: \u0027ieee80211_tx_status_noskb\u0027 declared here\nstatic inline void ieee80211_tx_status_noskb(struct ieee80211_hw *hw,\n                   ^\n/usr/local/google/buildbot/src/android/common-android12-5.4/common/net/mac80211/rx.c:3403:6: error: implicit declaration of function \u0027ieee80211_rx_status_to_khz\u0027 [-Werror,-Wimplicit-function-declaration]\n                                 ieee80211_rx_status_to_khz(status), sig,\n                                 ^\n2 errors generated.\nmake[3]: *** [/usr/local/google/buildbot/src/android/common-android12-5.4/common/scripts/Makefile.build:282: net/mac80211/rx.o] Error 1\nmake[3]: *** Waiting for unfinished jobs....\nmake[2]: *** [/usr/local/google/buildbot/src/android/common-android12-5.4/common/scripts/Makefile.build:552: net/mac80211] Error 2\nmake[2]: *** Waiting for unfinished jobs....\nIn file included from \u003cbuilt-in\u003e:1:\n./usr/include/linux/bcache.h:286:2: warning: field \u0027\u0027 with variable sized type \u0027union jset::(anonymous at ./usr/include/linux/bcache.h:286:2)\u0027 not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]\n        BKEY_PADDED(uuid_bucket);\n        ^\n./usr/include/linux/bcache.h:134:2: note: expanded from macro \u0027BKEY_PADDED\u0027\n        union { struct bkey key; __u64 key ## _pad[BKEY_PAD]; }\n        ^\n./usr/include/linux/bcache.h:287:2: warning: field \u0027\u0027 with variable sized type \u0027union jset::(anonymous at ./usr/include/linux/bcache.h:287:2)\u0027 not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]\n        BKEY_PADDED(btree_root);\n        ^\n./usr/include/linux/bcache.h:134:2: note: expanded from macro \u0027BKEY_PADDED\u0027\n        union { struct bkey key; __u64 key ## _pad[BKEY_PAD]; }\n        ^\n2 warnings generated.\nmake[1]: *** [/usr/local/google/buildbot/src/android/common-android12-5.4/common/Makefile:1808: net] Error 2\nmake[1]: *** Waiting for unfinished jobs....\nmake: *** [/usr/local/google/buildbot/src/android/common-android12-5.4/common/Makefile:179: sub-make] Error 2",
+      "revId": "f38c062553596a6860f575f769e3a8aa65e1a05c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
