@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa01c9c7_8c517346",
+        "filename": "lib/test_printf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-02-24T02:48:21Z",
+      "side": 1,
+      "message": "Build fails:\n\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/lib/test_printf.c:308:3: error: use of undeclared identifier \u0027skipped_tests\u0027; did you mean \u0027failed_tests\u0027?\n                skipped_tests +\u003d 2;\n                ^~~~~~~~~~~~~\n                failed_tests\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/lib/test_printf.c:34:17: note: \u0027failed_tests\u0027 declared here\nstatic unsigned failed_tests __initdata;\n                ^\n1 error generated.",
+      "range": {
+        "startLine": 308,
+        "startChar": 2,
+        "endLine": 308,
+        "endChar": 15
+      },
+      "revId": "b330ffc91bb683b37568391e95b0eca80ab9e1d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
