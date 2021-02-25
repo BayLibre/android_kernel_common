@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000008453272",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1500451?revision\u003d4",
+      "fixSuggestions": [
+        {
+          "fixId": "f22a9f16_f43883a2",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 19,
+                "startChar": 1,
+                "endLine": 19,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Satya Tangirala \u003csatyat@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "25ef29dc_afd09921",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-02-25T08:54:27Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Satya Tangirala \u003csatyat@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 359279154 android-build.ayeaye-python-dispatcher_20210224.05_p0",
+      "revId": "89e4695a0a8c4dddbd98a51a8aee0ec294572e56",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
