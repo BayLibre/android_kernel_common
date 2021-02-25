@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000008462975",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1600432?revision\u003d6",
+      "fixSuggestions": [
+        {
+          "fixId": "ab6ec04c_c7709e54",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 11,
+                "startChar": 1,
+                "endLine": 11,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Jaegeuk Kim \u003cjaegeuk@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "e83d53ad_f1091b78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-02-25T16:59:05Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Jaegeuk Kim \u003cjaegeuk@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 359279154 android-build.ayeaye-python-dispatcher_20210224.05_p0",
+      "revId": "ae3aca7a2cf8dbb0f570b49a5b5eccf8986c94bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
