@@ -628,6 +628,9 @@ struct dma_buf_export_info {
 	void *priv;
 };
 
+extern struct list_head debugfs_list;
+extern struct mutex debugfs_list_mutex;
+
 /**
  * DEFINE_DMA_BUF_EXPORT_INFO - helper macro for exporters
  * @name: export-info name
