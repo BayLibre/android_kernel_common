@@ -63,6 +63,39 @@ static void __dma_buf_debugfs_list_del(struct dma_buf *dmabuf)
 }
 #endif
 
+/**
+ * dma_buf_get_each - Helps in traversing the debugfs_list and calls the
+ * callback function which can extract required info out of each
+ * dmabuf.
+ * The debugfs_list needs to be locked to prevent it from being
+ * dynamically updated during the traversal process.
+ *
+ * @callback: [in]   Handle for each dmabuf buffer in debugfs_list.
+ * @private:  [in]   User-defined, used to pass in when callback is
+ *                   called.
+ *
+ * Returns 0 on success, otherwise returns a non-zero value for
+ * mutex_lock_interruptible or callback.
+ */
+int dma_buf_get_each(int (*callback)(const struct dma_buf *dmabuf,
+		     void *private), void *private)
+{
+	struct dma_buf *buf;
+	int ret = mutex_lock_interruptible(&debugfs_list_mutex);
+
+	if (ret)
+		return ret;
+
+	list_for_each_entry(buf, &debugfs_list, list_node) {
+		ret = callback(buf, private);
+		if (ret)
+			break;
+	}
+	mutex_unlock(&debugfs_list_mutex);
+	return ret;
+}
+EXPORT_SYMBOL_NS_GPL(dma_buf_get_each, MINIDUMP);
+
 static char *dmabuffs_dname(struct dentry *dentry, char *buffer, int buflen)
 {
 	struct dma_buf *dmabuf;
