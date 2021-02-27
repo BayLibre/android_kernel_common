@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000008512360",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1611277?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "8a71f0cb_dbc39fac",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 8,
+                "startChar": 1,
+                "endLine": 8,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Trilok Soni \u003ctsoni@codeaurora.org\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "9d2fd77b_7f765ce5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-02-27T01:41:04Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Trilok Soni \u003ctsoni@codeaurora.org\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 359526141 android-build.ayeaye-python-dispatcher_20210225.05_p0",
+      "revId": "6537b447bc36c2e45d6472b7b2e4889750dd66f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
