@@ -120,6 +120,24 @@
       "message": "We obviously need this for 5.10, but for Android T and 5.15 or whatever it ends up being we should perhaps come up with some correct solution.",
       "revId": "1ccc9caa3b1e99e8751333aa087e4821f28f40e7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c20817d8_12cef311",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1053408
+      },
+      "writtenOn": "2021-02-27T10:49:36Z",
+      "side": 1,
+      "message": "I don’t understand this comment. This change is being made for GKI. TEE is an upstream feature. If you feel there are bugs in the upstream implementation, you can post patches for it on netfilter-devel list. If there are bugs in a vendor usage, you can file a bug in that component.",
+      "parentUuid": "67943445_5d73ecbd",
+      "revId": "1ccc9caa3b1e99e8751333aa087e4821f28f40e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
