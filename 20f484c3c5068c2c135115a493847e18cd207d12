@@ -16,6 +16,29 @@
       "message": "Can\u0027t you just use a normal ftrace or bpf tracepoint for this instead of a \"vendor hook\"?",
       "revId": "20f484c3c5068c2c135115a493847e18cd207d12",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "100dcfac_f9aec1a8",
+        "filename": "include/trace/hooks/creds.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-02T19:01:01Z",
+      "side": 1,
+      "message": "These should be removed along with line 14",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "20f484c3c5068c2c135115a493847e18cd207d12",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
