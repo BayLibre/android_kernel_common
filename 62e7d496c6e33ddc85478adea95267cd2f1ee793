@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "259d9aed_23a12a60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-03-03T21:18:28Z",
+      "side": 1,
+      "message": "I\u0027m sorry, but I\u0027m not adding any driver support here. :) \n\nHiKey960 wifi used to work, and then recent changes (mmc crypto it seems) have added symbols it previously didn\u0027t need, and have caused a regression.\n\nI\u0027m just running the build_abi.sh scripts here to try to get things back to working order.",
+      "parentUuid": "28da2cb2_d706b744",
+      "revId": "62e7d496c6e33ddc85478adea95267cd2f1ee793",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71878162_8458119a",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-03-03T07:45:29Z",
       "side": 1,
       "message": "what driver is trying to open and close files?",
+      "range": {
+        "startLine": 981,
+        "startChar": 2,
+        "endLine": 981,
+        "endChar": 11
+      },
+      "revId": "62e7d496c6e33ddc85478adea95267cd2f1ee793",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "390f821c_cb85ce49",
+        "filename": "android/abi_gki_aarch64_hikey960",
+        "patchSetId": 5
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-03-03T21:18:28Z",
+      "side": 1,
+      "message": "From above here, it looks like nvmet.ko, and so I\u0027m guessing its here:\n  https://android.googlesource.com/kernel/common/+/refs/heads/android12-5.4/drivers/nvme/target/io-cmd-file.c#39",
+      "parentUuid": "71878162_8458119a",
       "range": {
         "startLine": 981,
         "startChar": 2,
