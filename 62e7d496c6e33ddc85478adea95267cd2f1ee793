@@ -81,6 +81,30 @@
       },
       "revId": "62e7d496c6e33ddc85478adea95267cd2f1ee793",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce844bcd_592196f2",
+        "filename": "android/abi_gki_aarch64_hikey960",
+        "patchSetId": 5
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-03-03T22:56:13Z",
+      "side": 1,
+      "message": "Digging in a bit, it seems the NVME_TARGET support isn\u0027t something we actually need. I\u0027ll remove it and resubmit.",
+      "parentUuid": "390f821c_cb85ce49",
+      "range": {
+        "startLine": 981,
+        "startChar": 2,
+        "endLine": 981,
+        "endChar": 11
+      },
+      "revId": "62e7d496c6e33ddc85478adea95267cd2f1ee793",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
