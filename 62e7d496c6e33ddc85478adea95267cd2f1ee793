@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28da2cb2_d706b744",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-03T07:45:29Z",
+      "side": 1,
+      "message": "Please do not add support for drivers opening and closing files directly like this list has in it, those symbols should not be exported for modules for 12-5.4.",
+      "revId": "62e7d496c6e33ddc85478adea95267cd2f1ee793",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71878162_8458119a",
+        "filename": "android/abi_gki_aarch64_hikey960",
+        "patchSetId": 5
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-03T07:45:29Z",
+      "side": 1,
+      "message": "what driver is trying to open and close files?",
+      "range": {
+        "startLine": 981,
+        "startChar": 2,
+        "endLine": 981,
+        "endChar": 11
+      },
+      "revId": "62e7d496c6e33ddc85478adea95267cd2f1ee793",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
