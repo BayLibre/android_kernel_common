@@ -283,6 +283,7 @@ DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_wakeup,
 	TP_ARGS(rq, p, preempt, nopreempt, wake_flags, se, pse, next_buddy_marked,
 			granularity), 1);
 
+<<<<<<< HEAD   (0eaf0d UPSTREAM: scsi: ufs: core: Export hibern8 entry and exit fun)
 DECLARE_RESTRICTED_HOOK(android_rvh_set_cpus_allowed_ptr_locked,
 	TP_PROTO(const struct cpumask *cpu_valid_mask, const struct cpumask *new_mask,
 		 unsigned int *dest_cpu),
@@ -338,6 +339,17 @@ DECLARE_RESTRICTED_HOOK(android_rvh_post_init_entity_util_avg,
 DECLARE_RESTRICTED_HOOK(android_rvh_find_new_ilb,
 	TP_PROTO(struct cpumask *nohz_idle_cpus_mask, int *ilb),
 	TP_ARGS(nohz_idle_cpus_mask, ilb), 1);
+=======
+DECLARE_HOOK(android_vh_do_wake_up_sync,
+	TP_PROTO(struct wait_queue_head *wq_head, int *done),
+	TP_ARGS(wq_head, done));
+
+DECLARE_HOOK(android_vh_set_wake_flags,
+	TP_PROTO(int *wake_flags, unsigned int *mode),
+	TP_ARGS(wake_flags, mode));
+
+/* macro versions of hooks are no longer required */
+>>>>>>> CHANGE (97368f ANDROID: Add a vendor hook that allow a module to modify the)
 
 #endif /* _TRACE_HOOK_SCHED_H */
 /* This part must be outside protection */
