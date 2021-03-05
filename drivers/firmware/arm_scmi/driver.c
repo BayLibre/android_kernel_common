@@ -1487,7 +1487,10 @@ static int scmi_remove(struct platform_device *pdev)
 	int ret = 0, id;
 	struct scmi_info *info = platform_get_drvdata(pdev);
 	struct idr *idr = &info->tx_idr;
+<<<<<<< HEAD   (9291f4 ANDROID: abi_gki_aarch64_qcom: Add CFS scheduler symbols)
 	struct device_node *child;
+=======
+>>>>>>> BRANCH (83be32 Linux 5.10.20)
 
 	mutex_lock(&scmi_list_mutex);
 	if (info->users)
@@ -1501,6 +1504,7 @@ static int scmi_remove(struct platform_device *pdev)
 
 	scmi_notification_exit(&info->handle);
 
+<<<<<<< HEAD   (9291f4 ANDROID: abi_gki_aarch64_qcom: Add CFS scheduler symbols)
 	mutex_lock(&info->protocols_mtx);
 	idr_destroy(&info->protocols);
 	mutex_unlock(&info->protocols_mtx);
@@ -1509,6 +1513,8 @@ static int scmi_remove(struct platform_device *pdev)
 		of_node_put(child);
 	idr_destroy(&info->active_protocols);
 
+=======
+>>>>>>> BRANCH (83be32 Linux 5.10.20)
 	/* Safe to free channels since no more users */
 	ret = idr_for_each(idr, info->desc->ops->chan_free, idr);
 	idr_destroy(&info->tx_idr);
