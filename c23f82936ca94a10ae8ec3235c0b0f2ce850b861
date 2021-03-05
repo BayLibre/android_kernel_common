@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0e16c826_8dc250e1",
+        "filename": "drivers/cpufreq/cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-03-05T09:12:46Z",
+      "side": 1,
+      "message": "The existing notifiers does not work for fast switch, so thought of adding a unified restricted vendor hook that works for all drivers.",
+      "parentUuid": "d7ec2e3a_11a2f665",
+      "range": {
+        "startLine": 394,
+        "startChar": 2,
+        "endLine": 394,
+        "endChar": 47
+      },
+      "revId": "c23f82936ca94a10ae8ec3235c0b0f2ce850b861",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c08dfc3_4d99713e",
         "filename": "drivers/cpufreq/cpufreq.c",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2021-03-05T09:06:20Z",
       "side": 1,
       "message": "Could this be done on the vendor side by hooking in the -\u003efast_switch() method of your cpufreq driver?",
+      "range": {
+        "startLine": 2099,
+        "startChar": 1,
+        "endLine": 2099,
+        "endChar": 46
+      },
+      "revId": "c23f82936ca94a10ae8ec3235c0b0f2ce850b861",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8378788a_d89e3874",
+        "filename": "drivers/cpufreq/cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2099,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-03-05T09:12:46Z",
+      "side": 1,
+      "message": "This is to have one unified hook that works across all chips irrespective of cpufrq driver capabilities. I believe cpufreq_policy structure is already covered under ABI. thought having a well defined rvh in cpufreq helps.\n\nLet me know your opinion",
+      "parentUuid": "5c08dfc3_4d99713e",
       "range": {
         "startLine": 2099,
         "startChar": 1,
