@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6665f20b_5fe19ba3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-05T07:20:22Z",
+      "side": 1,
+      "message": "Becasue we will register these vendor hooks in our modules and use some arm architecture-dependent operations, so we use vendor hook instead of bpf tracepoint.",
+      "parentUuid": "b2415065_d65680de",
+      "revId": "20f484c3c5068c2c135115a493847e18cd207d12",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "100dcfac_f9aec1a8",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-03-02T19:01:01Z",
       "side": 1,
       "message": "These should be removed along with line 14",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "20f484c3c5068c2c135115a493847e18cd207d12",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3600fc2_3cf8be57",
+        "filename": "include/trace/hooks/creds.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-05T07:20:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "100dcfac_f9aec1a8",
       "range": {
         "startLine": 22,
         "startChar": 0,
