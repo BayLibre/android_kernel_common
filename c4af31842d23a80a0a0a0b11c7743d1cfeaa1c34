@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5240875e_f7b6373f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-05T07:18:45Z",
+      "side": 1,
+      "message": "Becasue we will register these vendor hooks in our modules and use some arm architecture-dependent operations, so we think vendor hook is better than bpf tracepoint.",
+      "parentUuid": "0222bc32_0312116a",
+      "revId": "c4af31842d23a80a0a0a0b11c7743d1cfeaa1c34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f688c4bd_f4f9302b",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-03-02T18:59:33Z",
       "side": 1,
       "message": "These are no longer needed. Please remove along with line 14",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 0
+      },
+      "revId": "c4af31842d23a80a0a0a0b11c7743d1cfeaa1c34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7bea283_2a9ef52a",
+        "filename": "include/trace/hooks/avc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-05T07:18:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f688c4bd_f4f9302b",
       "range": {
         "startLine": 20,
         "startChar": 0,
