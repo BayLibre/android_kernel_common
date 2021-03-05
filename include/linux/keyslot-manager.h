@@ -128,11 +128,14 @@ void blk_ksm_reprogram_all_keys(struct blk_keyslot_manager *ksm);
 
 void blk_ksm_destroy(struct blk_keyslot_manager *ksm);
 
+<<<<<<< HEAD   (8cca4e ANDROID: gki_defconfig: enable CONFIG_MMC_CRYPTO)
 int blk_ksm_derive_raw_secret(struct blk_keyslot_manager *ksm,
 			      const u8 *wrapped_key,
 			      unsigned int wrapped_key_size,
 			      u8 *secret, unsigned int secret_size);
 
+=======
+>>>>>>> BRANCH (325b76 Merge tag 'for-5.12/dm-changes' of git://git.kernel.org/pub/)
 void blk_ksm_intersect_modes(struct blk_keyslot_manager *parent,
 			     const struct blk_keyslot_manager *child);
 
