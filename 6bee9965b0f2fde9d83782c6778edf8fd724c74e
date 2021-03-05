@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc623e5e_300fc152",
+        "filename": "include/trace/hooks/module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-05T09:47:36Z",
+      "side": 1,
+      "message": "these 2 bool variables do not make it easy to determine what is really happening here (see my previous comment on the bpf tracepoints).\n\nPlease rework to not be needed.\n\nAlso, \"rodata_enabled\" is a static variable, you can\u0027t export this, it should not be able to be read from modules.  Why is it needed here?",
+      "range": {
+        "startLine": 15,
+        "startChar": 82,
+        "endLine": 15,
+        "endChar": 118
+      },
+      "revId": "6bee9965b0f2fde9d83782c6778edf8fd724c74e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
