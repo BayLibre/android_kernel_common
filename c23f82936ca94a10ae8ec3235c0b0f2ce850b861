@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7ec2e3a_11a2f665",
+        "filename": "drivers/cpufreq/cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-03-05T09:06:20Z",
+      "side": 1,
+      "message": "Could you use the existing notifiers here?",
+      "range": {
+        "startLine": 394,
+        "startChar": 2,
+        "endLine": 394,
+        "endChar": 47
+      },
+      "revId": "c23f82936ca94a10ae8ec3235c0b0f2ce850b861",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c08dfc3_4d99713e",
+        "filename": "drivers/cpufreq/cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2099,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-03-05T09:06:20Z",
+      "side": 1,
+      "message": "Could this be done on the vendor side by hooking in the -\u003efast_switch() method of your cpufreq driver?",
+      "range": {
+        "startLine": 2099,
+        "startChar": 1,
+        "endLine": 2099,
+        "endChar": 46
+      },
+      "revId": "c23f82936ca94a10ae8ec3235c0b0f2ce850b861",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
