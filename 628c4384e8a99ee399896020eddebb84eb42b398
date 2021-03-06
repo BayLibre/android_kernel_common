@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1f30f52_801b2796",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1453330
+      },
+      "writtenOn": "2021-03-06T07:00:33Z",
+      "side": 1,
+      "message": "Seems like the following presubmit Lint warning is not related to my change.\n\"AbiAnalyzer - ABI is broken for \u0027kernel_abi_aarch64\u0027 on \u0027aosp_kernel-common-android12-5.10\u0027!\"\n\nAccording to go/kernel-abi-monitoring instruction, I had run the following abi build command to check and the abi.report.short summaries with and without my commit are the same.\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh -j`nproc`",
+      "revId": "628c4384e8a99ee399896020eddebb84eb42b398",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
