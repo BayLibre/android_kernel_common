@@ -47,6 +47,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fadaa796_da61024a",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2021-03-08T19:00:55Z",
+      "side": 1,
+      "message": "The only thing simple_getattr did was to try to set the blocks field, and it got it wrong (for us). Removed that line, and added a todo and a bug to fix blocks properly",
+      "parentUuid": "a5e58f7e_f73cd8d5",
+      "range": {
+        "startLine": 1579,
+        "startChar": 0,
+        "endLine": 1579,
+        "endChar": 62
+      },
+      "revId": "c562d52c0438104a579dd0b43f0733d7900259db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbf8ff8d_d464c264",
