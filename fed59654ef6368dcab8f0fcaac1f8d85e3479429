@@ -16,6 +16,24 @@
       "message": "Ah, I did that merge that way on purpose, adding new functions we add that are out-of-tree to the end to make it more \"obvious\" what is happening.  Sorry about that, I was trying to be \"clean\".",
       "revId": "fed59654ef6368dcab8f0fcaac1f8d85e3479429",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6435ae80_283e6beb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-03-08T20:33:13Z",
+      "side": 1,
+      "message": "I find it helpful to keep declarations in .h files in the same order as the definitions in the corresponding .c files.  Plus we already did it this way in android12-5.10 and android12-5.4, and it\u0027s helpful to get a clean diff between the branches in these backported files.",
+      "parentUuid": "d62ed41f_5db3cb5c",
+      "revId": "fed59654ef6368dcab8f0fcaac1f8d85e3479429",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
