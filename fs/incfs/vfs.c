@@ -57,6 +57,9 @@ static void evict_inode(struct inode *inode);
 
 static int incfs_setattr(struct user_namespace *ns, struct dentry *dentry,
 			 struct iattr *ia);
+static int incfs_getattr(struct user_namespace *ns, const struct path *path,
+			 struct kstat *stat, u32 request_mask,
+			 unsigned int query_flags);
 static ssize_t incfs_getxattr(struct dentry *d, const char *name,
 			void *value, size_t size);
 static ssize_t incfs_setxattr(struct user_namespace *ns, struct dentry *d,
@@ -125,7 +128,7 @@ const struct file_operations incfs_file_ops = {
 
 const struct inode_operations incfs_file_inode_ops = {
 	.setattr = incfs_setattr,
-	.getattr = simple_getattr,
+	.getattr = incfs_getattr,
 	.listxattr = incfs_listxattr
 };
 
@@ -1560,6 +1563,22 @@ static int incfs_setattr(struct user_namespace *ns, struct dentry *dentry,
 		ia->ia_mode &= ~0222;
 
 	return simple_setattr(ns, dentry, ia);
+}
+
+
+static int incfs_getattr(struct user_namespace *ns, const struct path *path,
+			 struct kstat *stat, u32 request_mask,
+			 unsigned int query_flags)
+{
+	struct inode *inode = d_inode(path->dentry);
+
+	if (IS_VERITY(inode))
+		stat->attributes |= STATX_ATTR_VERITY;
+	stat->attributes_mask |= STATX_ATTR_VERITY;
+	generic_fillattr(ns, inode, stat);
+	stat->blocks = inode->i_mapping->nrpages << (PAGE_SHIFT - 9);
+	return 0;
+
 }
 
 static ssize_t incfs_getxattr(struct dentry *d, const char *name,
