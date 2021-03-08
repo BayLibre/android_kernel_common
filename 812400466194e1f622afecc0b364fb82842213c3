@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43f20372_3065b683",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-03-08T07:34:02Z",
+      "side": 1,
+      "message": "I am afraid, the consumer is not an in-tree module. As per the GKI guidelines, submitting here.",
+      "parentUuid": "a6ae305c_e1d64613",
+      "revId": "812400466194e1f622afecc0b364fb82842213c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f7be3ae_b2cd289f",
         "filename": "drivers/cpufreq/cpufreq.c",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2021-03-08T06:59:49Z",
       "side": 1,
       "message": "please put this next to the symbol.",
+      "range": {
+        "startLine": 2542,
+        "startChar": 0,
+        "endLine": 2542,
+        "endChar": 51
+      },
+      "revId": "812400466194e1f622afecc0b364fb82842213c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73684f3e_de20dd96",
+        "filename": "drivers/cpufreq/cpufreq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2542,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-03-08T07:34:02Z",
+      "side": 1,
+      "message": "unlike other functions, this is a trace point. The symbol (trace point definition) is part of a header file (include/trace/events/power.h). So I have put the EXPORT here. Please let me know if you want me to move it to anywhere else. Thanks.",
+      "parentUuid": "3f7be3ae_b2cd289f",
       "range": {
         "startLine": 2542,
         "startChar": 0,
