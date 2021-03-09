@@ -177,6 +177,23 @@
       "parentUuid": "fbcaff64_c6f94959",
       "revId": "69799cf640fa9d60b9dca560aa28b3a0c9f270c2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8512e584_ee5b1b06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T11:36:59Z",
+      "side": 1,
+      "message": "Wait, no, none of this should be needed at all.\n\nThere already is a tracepoint in usb_ep_queue() that does this for you already.\n\nPlease just use that instead, no need to submit anything usptream, it\u0027s there already 😊",
+      "revId": "69799cf640fa9d60b9dca560aa28b3a0c9f270c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
