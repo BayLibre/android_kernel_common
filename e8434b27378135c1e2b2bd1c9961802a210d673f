@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000008822007",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1621952?revision\u003d4",
+      "fixSuggestions": [
+        {
+          "fixId": "2ffcebc6_0f78f648",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 11,
+                "startChar": 1,
+                "endLine": 11,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Sami Tolvanen \u003csamitolvanen@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "f68eafbb_103eaa74",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-03-09T19:29:30Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Sami Tolvanen \u003csamitolvanen@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 361575513 android-build.ayeaye-python-dispatcher_20210308.05_p0",
+      "revId": "e8434b27378135c1e2b2bd1c9961802a210d673f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
