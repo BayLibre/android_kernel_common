@@ -81,6 +81,30 @@ DECLARE_HOOK(android_vh_binder_has_work_ilocked,
 DECLARE_HOOK(android_vh_binder_preset,
 	TP_PROTO(struct hlist_head *hhead, struct mutex *lock),
 	TP_ARGS(hhead, lock));
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
+=======
+DECLARE_HOOK(android_vh_binder_proc_transaction_entry,
+	TP_PROTO(struct binder_proc *proc, struct binder_transaction *t,
+	struct binder_thread **thread, int node_debug_id, bool pending_async,
+	bool sync, bool *skip),
+	TP_ARGS(proc, t, thread, node_debug_id, pending_async, sync, skip));
+DECLARE_HOOK(android_vh_binder_select_worklist_ilocked,
+	TP_PROTO(struct list_head **list, struct binder_thread *thread, struct binder_proc *proc,
+	int wait_for_proc_work),
+	TP_ARGS(list, thread, proc, wait_for_proc_work));
+DECLARE_HOOK(android_vh_binder_alloc_new_buf_locked,
+	TP_PROTO(size_t size, size_t *free_async_space, int is_async),
+	TP_ARGS(size, free_async_space, is_async));
+struct binder_transaction_data;
+DECLARE_HOOK(android_vh_binder_reply,
+	TP_PROTO(struct binder_proc *target_proc, struct binder_proc *proc,
+		struct binder_thread *thread, struct binder_transaction_data *tr),
+	TP_ARGS(target_proc, proc, thread, tr));
+DECLARE_HOOK(android_vh_binder_trans,
+	TP_PROTO(struct binder_proc *target_proc, struct binder_proc *proc,
+		struct binder_thread *thread, struct binder_transaction_data *tr),
+	TP_ARGS(target_proc, proc, thread, tr));
+>>>>>>> CHANGE (7e4f8f ANDROID: Add vendor hooks for binder perf tuning)
 
 #endif /* _TRACE_HOOK_BINDER_H */
 /* This part must be outside protection */
