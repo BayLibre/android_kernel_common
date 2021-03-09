@@ -22,6 +22,30 @@
       },
       "revId": "6bee9965b0f2fde9d83782c6778edf8fd724c74e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44da216e_f11e1c91",
+        "filename": "include/trace/hooks/module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-09T07:08:17Z",
+      "side": 1,
+      "message": "after_init is used to identify what to do at current module init stage.\nrodata_enabled is just used to tell us some kernel boot-up setting.\n\nIs there any risk that we read the rodata_enabled from module?",
+      "parentUuid": "bc623e5e_300fc152",
+      "range": {
+        "startLine": 15,
+        "startChar": 82,
+        "endLine": 15,
+        "endChar": 118
+      },
+      "revId": "6bee9965b0f2fde9d83782c6778edf8fd724c74e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
