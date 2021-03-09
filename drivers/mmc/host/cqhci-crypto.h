@@ -22,12 +22,12 @@ int cqhci_crypto_init(struct cqhci_host *host);
  */
 static inline u64 cqhci_crypto_prep_task_desc(struct mmc_request *mrq)
 {
-	if (!mrq->crypto_enabled)
+	if (!mrq->crypto_ctx)
 		return 0;
 
 	return CQHCI_CRYPTO_ENABLE_BIT |
 	       CQHCI_CRYPTO_KEYSLOT(mrq->crypto_key_slot) |
-	       mrq->data_unit_num;
+	       mrq->crypto_ctx->bc_dun[0];
 }
 
 #else /* CONFIG_MMC_CRYPTO */
