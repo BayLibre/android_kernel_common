@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37498557_565583dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2021-03-09T14:21:37Z",
+      "side": 1,
+      "message": "We have another usb host IP from Mentor and it\u0027s driver is set to module in a12-5.4.\n\ndrivers/usb/musb/musb_host.c",
+      "parentUuid": "e3f7e134_fb0419b7",
+      "revId": "ab7cb1d39b552dac8b99e11d2a34deff6ef1d53c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51096522_089bc833",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-03-09T07:02:06Z",
       "side": 1,
       "message": "please use ANDROID_VENDOR_DATA() if you really need this.",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 38
+      },
+      "revId": "ab7cb1d39b552dac8b99e11d2a34deff6ef1d53c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "006e2688_2212c044",
+        "filename": "include/linux/usb/hcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1612695
+      },
+      "writtenOn": "2021-03-09T14:21:37Z",
+      "side": 1,
+      "message": "Please allow us to keep this in GKI 1.0 and we\u0027re going to remove from 5.10.",
+      "parentUuid": "51096522_089bc833",
       "range": {
         "startLine": 419,
         "startChar": 0,
