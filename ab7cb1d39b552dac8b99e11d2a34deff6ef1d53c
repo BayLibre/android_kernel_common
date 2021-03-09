@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ad05a21_19ecf43c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T14:45:11Z",
+      "side": 1,
+      "message": "Ah, musb, sad that is still being used 😊",
+      "parentUuid": "37498557_565583dc",
+      "revId": "ab7cb1d39b552dac8b99e11d2a34deff6ef1d53c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51096522_089bc833",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "Please allow us to keep this in GKI 1.0 and we\u0027re going to remove from 5.10.",
       "parentUuid": "51096522_089bc833",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 38
+      },
+      "revId": "ab7cb1d39b552dac8b99e11d2a34deff6ef1d53c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c893caae_740a985a",
+        "filename": "include/linux/usb/hcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T14:45:11Z",
+      "side": 1,
+      "message": "GKI 1 is already realeased, this is the \"GKI 2\" branch.\n\nIf this is needed, and it\u0027s fine if it is needed, then I just recommend using the ANDROID_VENDOR_DATA() macro instead of the old style that was done for GKI 1 before the macro was created.\n\nLet\u0027s do it properly this time please.",
+      "parentUuid": "006e2688_2212c044",
       "range": {
         "startLine": 419,
         "startChar": 0,
