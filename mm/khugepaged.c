@@ -457,7 +457,9 @@ static bool hugepage_vma_check(struct vm_area_struct *vma,
 
 	/* Read-only file mappings need to be aligned for THP to work. */
 	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && vma->vm_file &&
-	    (vm_flags & VM_DENYWRITE)) {
+	    ((vm_flags & VM_DENYWRITE) ||
+	    (!inode_is_open_for_write(vma->vm_file->f_inode) &&
+	     (execute_ok(vma->vm_file->f_inode))))) {
 		return IS_ALIGNED((vma->vm_start >> PAGE_SHIFT) - vma->vm_pgoff,
 				HPAGE_PMD_NR);
 	}
@@ -1863,6 +1865,9 @@ out_unlock:
 	else {
 		__inc_node_page_state(new_page, NR_FILE_THPS);
 		filemap_nr_thps_inc(mapping);
+		smp_mb();
+		if (inode_is_open_for_write(mapping->host))
+			result = SCAN_FAIL;
 	}
 
 	if (nr_none) {
