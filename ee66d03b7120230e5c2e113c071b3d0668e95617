@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2820555_de7c6e85",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2264,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T07:34:59Z",
+      "side": 1,
+      "message": "how is memory being set to rw and nx here?  Memory is being freed, it is not having the setting changed.\n\nWhy not just put the hook into module_memfree() instead?",
+      "range": {
+        "startLine": 2264,
+        "startChar": 1,
+        "endLine": 2264,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b655f994_96cd88ca",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2276,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T07:34:59Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "range": {
+        "startLine": 2276,
+        "startChar": 1,
+        "endLine": 2276,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb06c435_e0cee9be",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3552,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T07:34:59Z",
+      "side": 1,
+      "message": "same comment as above",
+      "range": {
+        "startLine": 3552,
+        "startChar": 1,
+        "endLine": 3552,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b160190_f84adedf",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3557,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-09T07:34:59Z",
+      "side": 1,
+      "message": "same comment as above",
+      "range": {
+        "startLine": 3557,
+        "startChar": 1,
+        "endLine": 3557,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
