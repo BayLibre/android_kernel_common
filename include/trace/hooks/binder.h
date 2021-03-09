@@ -12,6 +12,8 @@
  */
 /* struct binder_proc, struct binder_thread, struct binder_transaction */
 #include <../drivers/android/binder_internal.h>
+/* struct binder_alloc */
+#include <../drivers/android/binder_alloc.h>
 /* struct task_struct */
 #include <linux/sched.h>
 /* struct binder_transaction_data */
@@ -77,6 +79,17 @@ DECLARE_HOOK(android_vh_binder_read_done,
 DECLARE_HOOK(android_vh_binder_has_work_ilocked,
 	TP_PROTO(struct binder_thread *thread, bool do_proc_work, int *ret),
 	TP_ARGS(thread, do_proc_work, ret));
+DECLARE_HOOK(android_vh_binder_alloc_new_buf_locked,
+	TP_PROTO(size_t size, struct binder_alloc *alloc, int is_async),
+	TP_ARGS(size, alloc, is_async));
+DECLARE_HOOK(android_vh_binder_reply,
+	TP_PROTO(struct binder_proc *target_proc, struct binder_proc *proc,
+		struct binder_thread *thread, struct binder_transaction_data *tr),
+	TP_ARGS(target_proc, proc, thread, tr));
+DECLARE_HOOK(android_vh_binder_trans,
+	TP_PROTO(struct binder_proc *target_proc, struct binder_proc *proc,
+		struct binder_thread *thread, struct binder_transaction_data *tr),
+	TP_ARGS(target_proc, proc, thread, tr));
 DECLARE_HOOK(android_vh_binder_preset,
 	TP_PROTO(struct hlist_head *hhead, struct mutex *lock),
 	TP_ARGS(hhead, lock));
