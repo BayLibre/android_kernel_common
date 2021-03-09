@@ -25,6 +25,7 @@
 #include <linux/sizes.h>
 #include "binder_alloc.h"
 #include "binder_trace.h"
+#include <trace/hooks/binder.h>
 
 struct list_lru binder_alloc_lru;
 
@@ -407,6 +408,7 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
 		return ERR_PTR(-EINVAL);
 	}
 
+	trace_android_vh_binder_alloc_new_buf_locked(size, &alloc->free_async_space, is_async);
 	/* Pad 0-size buffers so they get assigned unique addresses */
 	size = max(size, sizeof(void *));
 
