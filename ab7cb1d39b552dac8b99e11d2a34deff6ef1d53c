@@ -123,6 +123,30 @@
       },
       "revId": "ab7cb1d39b552dac8b99e11d2a34deff6ef1d53c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d114fa_de13c582",
+        "filename": "include/linux/usb/hcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-09T17:37:28Z",
+      "side": 1,
+      "message": "The terminology is confusing here. android12-5.4 is the 2nd GKI 1.0 branch, but is not GKI 2.0 (which is android12-5.10). Greg is correct though, the macro should be used now, so please make this change.",
+      "parentUuid": "c893caae_740a985a",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 38
+      },
+      "revId": "ab7cb1d39b552dac8b99e11d2a34deff6ef1d53c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
