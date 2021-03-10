@@ -16,6 +16,24 @@
       "message": "We already have \"xhci offload hooks\" in the xhci driver, why are these additional exports also needed?",
       "revId": "eb4bf3250282edd58da62cd29a078982dd4aa525",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fb24b09_b9892d3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1030767
+      },
+      "writtenOn": "2021-03-10T21:40:43Z",
+      "side": 1,
+      "message": "I reviewed the offload hooks introduced by https://android-review.googlesource.com/c/kernel/common/+/1614778 and https://android-review.googlesource.com/c/kernel/common/+/1615519/ Unfortunately these hooks are not sufficient for our existing implementation. Namely that we need to allocate and set up entirely separate event ring on behalf of the coprocessor so that it can use it to handle its own interrupts directly from the controller.\n\nFrom what I can see with the existing offload hooks, they appear to pass control via the xhci_vendor_ops to a vendor kernel driver to alter the normal flow of execution, essentially what seems to be intercepting the existing TRB and interrupt handling and performing offload from there. Our implementation does not do this--our chips have the HW support to dedicate an entirely separate interrupter to the coprocessor to handle XHCI events on its own; we just need the additional support from the Linux xHCI driver to allow our vendor driver to do the initial setup.  Because of this, our vendor driver needs access to be able to call these xHCI utility functions for this setup. From there our vendor driver does not need to intercept anything further, so the existing offload hooks aren\u0027t useful to us as there\u0027s nothing further to handle.",
+      "parentUuid": "4986e718_eaee8ded",
+      "revId": "eb4bf3250282edd58da62cd29a078982dd4aa525",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
