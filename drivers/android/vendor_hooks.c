@@ -57,7 +57,20 @@
 #include <trace/hooks/traps.h>
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/audio_usboffload.h>
+<<<<<<< HEAD   (5fdf78 ANDROID: KVM: arm64: Clear the PTEs which are not refcounted)
 #include <trace/hooks/typec.h>
+=======
+#include <trace/hooks/drm_framebuffer.h>
+#include <trace/hooks/drm_atomic.h>
+#include <trace/hooks/psci.h>
+#include <trace/hooks/usb.h>
+#include <trace/hooks/regmap.h>
+#include <trace/hooks/dmabuf.h>
+#include <trace/hooks/mmc.h>
+#include <trace/hooks/evdev.h>
+#include <trace/hooks/ipv4.h>
+#include <trace/hooks/signal.h>
+>>>>>>> CHANGE (58e3f8 ANDROID: Add vendor hooks to signal.)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -69,6 +82,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_transaction_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_set_priority);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_restore_priority);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_wakeup_ilocked);
+<<<<<<< HEAD   (5fdf78 ANDROID: KVM: arm64: Clear the PTEs which are not refcounted)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_send_sig_info);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_futex_plist_add);
+>>>>>>> CHANGE (58e3f8 ANDROID: Add vendor hooks to signal.)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rtmutex_wait_start);
