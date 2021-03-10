@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd309d50_a09fe600",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2264,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-10T07:30:29Z",
+      "side": 1,
+      "message": "Because where we set is in EL1 S2 page table.\n\nIf putting in the module_memfree(), we cannot get the mapping size.",
+      "parentUuid": "f2820555_de7c6e85",
+      "range": {
+        "startLine": 2264,
+        "startChar": 1,
+        "endLine": 2264,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b655f994_96cd88ca",
