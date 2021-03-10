@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f96d7194_309788a1",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2264,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-10T09:07:37Z",
+      "side": 1,
+      "message": "But it should be the same way to determine this that the kernel uses to determine how much memory needs to be freed.\n\nWhy is this hook somehow \"special\" that it needs to be explicit on the size yet the kernel code does not need that?",
+      "parentUuid": "dd309d50_a09fe600",
+      "range": {
+        "startLine": 2264,
+        "startChar": 1,
+        "endLine": 2264,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b655f994_96cd88ca",
         "filename": "kernel/module.c",
         "patchSetId": 3
