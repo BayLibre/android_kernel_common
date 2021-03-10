@@ -194,6 +194,24 @@
       "message": "Wait, no, none of this should be needed at all.\n\nThere already is a tracepoint in usb_ep_queue() that does this for you already.\n\nPlease just use that instead, no need to submit anything usptream, it\u0027s there already 😊",
       "revId": "69799cf640fa9d60b9dca560aa28b3a0c9f270c2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49974224_22d21eb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1865570
+      },
+      "writtenOn": "2021-03-10T10:23:17Z",
+      "side": 1,
+      "message": "What I intend is not just monitoring. \nI have added a function as module. This function is to improve the usb performance according to the throughput by calculating the throughput using the buffer processed through the ep queue. \nThis patch is a vendor hook patch for calling the module functions from gadget.c.",
+      "parentUuid": "8512e584_ee5b1b06",
+      "revId": "69799cf640fa9d60b9dca560aa28b3a0c9f270c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
