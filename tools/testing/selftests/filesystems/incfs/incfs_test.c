@@ -4063,31 +4063,48 @@ static int mmap_test(const char *mount_dir)
 	int result = TEST_FAILURE;
 	char *backing_dir = NULL;
 	int cmd_fd = -1;
+	/*
+	 * File is big enough to have a two layer tree with two hashes in the
+	 * higher level, so we can corrupt the second one
+	 */
+	int shas_per_block = INCFS_DATA_FILE_BLOCK_SIZE / SHA256_DIGEST_SIZE;
 	struct test_file file = {
-		  .name = "file_one_block",
-		  .size = INCFS_DATA_FILE_BLOCK_SIZE,
+		  .name = "file",
+		  .size = INCFS_DATA_FILE_BLOCK_SIZE * shas_per_block * 2,
 	};
 	char *filename = NULL;
 	int fd = -1;
-	char buf[INCFS_DATA_FILE_BLOCK_SIZE];
-	void *addr = NULL;
+	char *addr = (void *)-1;
 
 	TEST(backing_dir = create_backing_dir(mount_dir), backing_dir);
 	TESTEQUAL(mount_fs(mount_dir, backing_dir, 0), 0);
 	TEST(cmd_fd = open_commands_file(mount_dir), cmd_fd != -1);
 
 	TESTEQUAL(build_mtree(&file), 0);
-	file.root_hash[0] ^= 0xff;
+	file.mtree[1].data[INCFS_DATA_FILE_BLOCK_SIZE] ^= 0xff;
 	TESTEQUAL(crypto_emit_file(cmd_fd, NULL, file.name, &file.id,
 			       file.size, file.root_hash,
 			       file.sig.add_data), 0);
 	TESTEQUAL(emit_test_file_data(mount_dir, &file), 0);
+	TESTEQUAL(load_hash_tree(mount_dir, &file), 0);
 	TEST(filename = concat_file_name(mount_dir, file.name), filename);
 	TEST(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
-	TESTEQUAL(read(fd, buf, sizeof(buf)), -1);
-	TESTEQUAL(errno, EBADMSG);
-	TEST(addr = mmap(NULL, file.size, PROT_READ, MAP_POPULATE, fd, 0),
-	     addr == (void *)-1);
+	TEST(addr = mmap(NULL, file.size, PROT_READ, MAP_PRIVATE, fd, 0),
+	     addr != (void *) -1);
+	TESTEQUAL(mlock(addr, INCFS_DATA_FILE_BLOCK_SIZE), 0);
+	TESTEQUAL(munlock(addr, INCFS_DATA_FILE_BLOCK_SIZE), 0);
+	TESTEQUAL(mlock(addr + shas_per_block * INCFS_DATA_FILE_BLOCK_SIZE,
+			INCFS_DATA_FILE_BLOCK_SIZE), -1);
+	TESTEQUAL(mlock(addr + (shas_per_block - 1) *
+			       INCFS_DATA_FILE_BLOCK_SIZE,
+			INCFS_DATA_FILE_BLOCK_SIZE), 0);
+	TESTEQUAL(munlock(addr + (shas_per_block - 1) *
+			         INCFS_DATA_FILE_BLOCK_SIZE,
+			  INCFS_DATA_FILE_BLOCK_SIZE), 0);
+	TESTEQUAL(mlock(addr + (shas_per_block - 1) *
+			       INCFS_DATA_FILE_BLOCK_SIZE,
+			INCFS_DATA_FILE_BLOCK_SIZE * 2), -1);
+	TESTEQUAL(munmap(addr, file.size), 0);
 
 	result = TEST_SUCCESS;
 out:
