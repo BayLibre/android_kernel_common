@@ -226,10 +226,6 @@ DECLARE_HOOK(android_vh_em_cpu_energy,
 		unsigned long *energy),
 	TP_ARGS(pd, max_util, sum_util, energy));
 
-DECLARE_HOOK(android_vh_build_sched_domains,
-	TP_PROTO(bool has_asym),
-	TP_ARGS(has_asym));
-
 DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_tick,
 	TP_PROTO(struct task_struct *p, unsigned long *ideal_runtime, bool *skip_preempt),
 	TP_ARGS(p, ideal_runtime, skip_preempt), 1);
