@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000008870288",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1627130?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "4c12da15_aad28154",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 13,
+                "startChar": 1,
+                "endLine": 13,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Farid Chahla \u003cfarid.chahla@sony.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "c96b2182_4a532bc4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-03-11T01:26:01Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Farid Chahla \u003cfarid.chahla@sony.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 362060759 android-build.ayeaye-python-dispatcher_20210310.05_p0",
+      "revId": "388bbcc192113a864c92eaf3156801fd8c3b4953",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
