@@ -86,6 +86,13 @@ DECLARE_HOOK(android_vh_kmalloc_slab,
 DECLARE_HOOK(android_vh_adjust_kvmalloc_flags,
 	TP_PROTO(unsigned int order, gfp_t *alloc_flags),
 	TP_ARGS(order, alloc_flags));
+DECLARE_HOOK(android_vh_print_slabinfo_header,
+	TP_PROTO(struct seq_file *m),
+	TP_ARGS(m));
+struct slabinfo;
+DECLARE_HOOK(android_vh_cache_show,
+	TP_PROTO(struct seq_file *m, struct slabinfo *sinfo, struct kmem_cache *s),
+	TP_ARGS(m, sinfo, s));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
