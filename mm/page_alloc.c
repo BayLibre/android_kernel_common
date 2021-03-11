@@ -52,6 +52,13 @@
 #include <linux/psi.h>
 #include <linux/khugepaged.h>
 #include <linux/delayacct.h>
+<<<<<<< HEAD
+=======
+#include <trace/hooks/mm.h>
+
+#include <asm/sections.h>
+#include <asm/tlbflush.h>
+>>>>>>> 573ba7b6e66e (ANDROID: vendor_hooks: Add hooks for memory when debug)
 #include <asm/div64.h>
 #include "internal.h"
 #include "shuffle.h"
@@ -3911,6 +3918,17 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
 	unsigned int cpuset_mems_cookie;
 	unsigned int zonelist_iter_cookie;
 	int reserve_flags;
+<<<<<<< HEAD
+=======
+	unsigned long alloc_start = jiffies;
+	/*
+	 * We also sanity check to catch abuse of atomic reserves being used by
+	 * callers that are not in atomic context.
+	 */
+	if (WARN_ON_ONCE((gfp_mask & (__GFP_ATOMIC|__GFP_DIRECT_RECLAIM)) ==
+				(__GFP_ATOMIC|__GFP_DIRECT_RECLAIM)))
+		gfp_mask &= ~__GFP_ATOMIC;
+>>>>>>> 573ba7b6e66e (ANDROID: vendor_hooks: Add hooks for memory when debug)
 
 restart:
 	compaction_retries = 0;
@@ -4169,6 +4187,7 @@ fail:
 	warn_alloc(gfp_mask, ac->nodemask,
 			"page allocation failure: order:%u", order);
 got_pg:
+	trace_android_vh_alloc_pages_slowpath(gfp_mask, order, alloc_start);
 	return page;
 }
 
