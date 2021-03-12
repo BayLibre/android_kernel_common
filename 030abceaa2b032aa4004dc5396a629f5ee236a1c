@@ -16,6 +16,24 @@
       "message": "Hi Greg,\n\nThese are register bits defined in the TCPCI spec but not used in the linux upstream yet.\nCan we merge these into android-mainline as I will not be able to send its users to upstream ?\n\nWhat do you advise ?",
       "revId": "030abceaa2b032aa4004dc5396a629f5ee236a1c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e011db8_1cc61144",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-03-12T08:40:56Z",
+      "side": 1,
+      "message": "upstream should take patches that just add defines for things that are in specs, like this.  It\u0027s hooks for code that upstream can not take.\n\nWe have loads of #defines for specs in header files for things we never use, in order to properly document things, so this patch should be fine, please submit it.",
+      "parentUuid": "31fe0a3b_cda3d366",
+      "revId": "030abceaa2b032aa4004dc5396a629f5ee236a1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
