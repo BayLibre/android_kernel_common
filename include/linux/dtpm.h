@@ -14,6 +14,7 @@
 
 struct dtpm {
 	struct powercap_zone zone;
+	struct kref kref;
 	struct dtpm *parent;
 	struct list_head sibling;
 	struct list_head children;
@@ -69,10 +70,17 @@ int dtpm_release_zone(struct powercap_zone *pcz);
 
 struct dtpm *dtpm_alloc(struct dtpm_ops *ops);
 
-void dtpm_unregister(struct dtpm *dtpm);
+void dtpm_destroy(struct dtpm *dtpm);
 
-int dtpm_register(const char *name, struct dtpm *dtpm, struct dtpm *parent);
+int dtpm_create(const char *name, struct dtpm *dtpm, struct dtpm *parent);
 
 int dtpm_register_cpu(struct dtpm *parent);
 
+int dtpm_register(const char *name, struct dtpm *dtpm);
+
+void dtpm_unregister(const char *name);
+
+struct dtpm *dtpm_get(const char *name);
+
+void dtpm_put(struct dtpm *dtpm);
 #endif
