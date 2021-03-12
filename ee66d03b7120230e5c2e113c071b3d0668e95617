@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93921a5e_61991791",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2264,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-12T07:12:26Z",
+      "side": 1,
+      "message": "Because kernel code of module_memfree() will use find_vm_area(addr) to get size information.\nThat function is not exported.\n\nWe can\u0027t get size information from kernel module because find_vm_area() doesn\u0027t export for module to use.",
+      "parentUuid": "f96d7194_309788a1",
+      "range": {
+        "startLine": 2264,
+        "startChar": 1,
+        "endLine": 2264,
+        "endChar": 31
+      },
+      "revId": "ee66d03b7120230e5c2e113c071b3d0668e95617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b655f994_96cd88ca",
