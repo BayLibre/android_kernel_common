@@ -2329,8 +2329,8 @@ phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
 }
 EXPORT_SYMBOL_GPL(iommu_iova_to_phys);
 
-static size_t iommu_pgsize(struct iommu_domain *domain,
-			   unsigned long addr_merge, size_t size)
+static size_t __iommu_pgsize(struct iommu_domain *domain,
+			     unsigned long addr_merge, size_t size)
 {
 	unsigned int pgsize_idx;
 	size_t pgsize;
@@ -2357,6 +2357,24 @@ static size_t iommu_pgsize(struct iommu_domain *domain,
 	/* pick the biggest page */
 	pgsize_idx = __fls(pgsize);
 	pgsize = 1UL << pgsize_idx;
+
+	return pgsize;
+}
+
+static size_t iommu_pgsize(struct iommu_domain *domain,
+			   unsigned long addr_merge, size_t size,
+			   size_t *pgcount)
+{
+	size_t pgsize = __iommu_pgsize(domain, addr_merge, size);
+	size_t pgs = 0;
+
+	do {
+		pgs++;
+		size -= pgsize;
+		addr_merge += pgsize;
+	} while (size && __iommu_pgsize(domain, addr_merge, size) == pgsize);
+
+	*pgcount = pgs;
 
 	return pgsize;
 }
@@ -2395,7 +2413,7 @@ static int __iommu_map(struct iommu_domain *domain, unsigned long iova,
 	pr_debug("map: iova 0x%lx pa %pa size 0x%zx\n", iova, &paddr, size);
 
 	while (size) {
-		size_t pgsize = iommu_pgsize(domain, iova | paddr, size);
+		size_t pgsize = __iommu_pgsize(domain, iova | paddr, size);
 
 		pr_debug("mapping: iova 0x%lx pa %pa pgsize 0x%zx\n",
 			 iova, &paddr, pgsize);
@@ -2446,6 +2464,21 @@ int iommu_map_atomic(struct iommu_domain *domain, unsigned long iova,
 }
 EXPORT_SYMBOL_GPL(iommu_map_atomic);
 
+static size_t __iommu_unmap_pages(struct iommu_domain *domain, unsigned long iova,
+				  size_t size, struct iommu_iotlb_gather *iotlb_gather)
+{
+	const struct iommu_ops *ops = domain->ops;
+	size_t pgsize, pgcount;
+
+	if (ops->unmap_pages) {
+		pgsize = iommu_pgsize(domain, iova, size, &pgcount);
+		return ops->unmap_pages(domain, iova, pgsize, pgcount, iotlb_gather);
+	}
+
+	pgsize = __iommu_pgsize(domain, iova, size);
+	return ops->unmap(domain, iova, pgsize, iotlb_gather);
+}
+
 static size_t __iommu_unmap(struct iommu_domain *domain,
 			    unsigned long iova, size_t size,
 			    struct iommu_iotlb_gather *iotlb_gather)
@@ -2483,9 +2516,8 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
 	 * or we hit an area that isn't mapped.
 	 */
 	while (unmapped < size) {
-		size_t pgsize = iommu_pgsize(domain, iova, size - unmapped);
-
-		unmapped_page = ops->unmap(domain, iova, pgsize, iotlb_gather);
+		unmapped_page = __iommu_unmap_pages(domain, iova, size - unmapped,
+						    iotlb_gather);
 		if (!unmapped_page)
 			break;
 
