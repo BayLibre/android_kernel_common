@@ -136,4 +136,6 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
 }
 #endif
 
+extern void (*get_entropy_for_fipsmodule)(void *buf, int nbytes);
+
 #endif /* _LINUX_RANDOM_H */

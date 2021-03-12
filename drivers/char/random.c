@@ -2297,3 +2297,17 @@ void add_bootloader_randomness(const void *buf, unsigned int size)
 		add_device_randomness(buf, size);
 }
 EXPORT_SYMBOL_GPL(add_bootloader_randomness);
+
+/*
+ * This function pointer is called by code in the "FIPS module" part of the
+ * kernel when it needs entropy directly, e.g. to seed SP800-90A DRBG instances.
+ *
+ * This indirection is required because the FIPS 140-2 certification requires
+ * that the "FIPS module" doesn't "actively retrieve" entropy from an entropy
+ * source that isn't SP800-90B compliant.  However, it is allowed be "spoon fed"
+ * its entropy.  Making the FIPS module depend on a function pointer rather than
+ * directly call get_random_bytes fulfills this requirement, as the "user" of
+ * the FIPS module could theoretically provide any function.
+ */
+void (*get_entropy_for_fipsmodule)(void *buf, int nbytes) = get_random_bytes;
+EXPORT_SYMBOL_GPL(get_entropy_for_fipsmodule);
