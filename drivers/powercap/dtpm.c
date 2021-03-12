@@ -20,6 +20,7 @@
 #include <linux/dtpm.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
+#include <linux/kref.h>
 #include <linux/powercap.h>
 #include <linux/slab.h>
 #include <linux/mutex.h>
@@ -33,6 +34,14 @@ static const char *constraint_name[] = {
 static DEFINE_MUTEX(dtpm_lock);
 static struct powercap_control_type *pct;
 static struct dtpm *root;
+
+struct dtpm_node {
+	const char *name;
+	struct dtpm *dtpm;
+	struct list_head node;
+};
+
+static LIST_HEAD(dtpm_list);
 
 static int get_time_window_us(struct powercap_zone *pcz, int cid, u64 *window)
 {
@@ -152,6 +161,140 @@ static int __dtpm_update_power(struct dtpm *dtpm)
 	return ret;
 }
 
+static struct dtpm *__dtpm_lookup(const char *name)
+{
+	struct dtpm_node *node;
+
+	list_for_each_entry(node, &dtpm_list, node) {
+		if (!strcmp(name, node->name))
+			return node->dtpm;
+	}
+
+	return NULL;
+}
+
+/**
+ * dtpm_get - Get a reference to a dtpm structure
+ * @name: the name of the dtpm device
+ *
+ * The function looks up in the list of the registered dtpm
+ * devices. If the dtpm device is not found, a virtual one is
+ * allocated. This function must be called to create a dtpm node in
+ * the powercap hierarchy.
+ *
+ * Return: a pointer to a dtpm structure, NULL if there is not enough
+ * memory
+ */
+struct dtpm *dtpm_get(const char *name)
+{
+	struct dtpm *dtpm;
+
+	mutex_lock(&dtpm_lock);
+	dtpm = __dtpm_lookup(name);
+	if (!dtpm)
+		dtpm = dtpm_alloc(NULL);
+	else
+		kref_get(&dtpm->kref);
+	mutex_unlock(&dtpm_lock);
+
+	return dtpm;
+}
+
+static void dtpm_release(struct kref *kref)
+{
+	struct dtpm *dtpm = container_of(kref, struct dtpm, kref);
+
+	kfree(dtpm);
+}
+
+/**
+ * dtpm_put - Release a reference on a dtpm device
+ * @dtpm: a pointer to a dtpm structure
+ *
+ * Release the reference on the specified dtpm device. The last
+ * reference leads to a memory release.
+ */
+void dtpm_put(struct dtpm *dtpm)
+{
+	mutex_lock(&dtpm_lock);
+	kref_put(&dtpm->kref, dtpm_release);
+	mutex_unlock(&dtpm_lock);
+}
+
+/**
+ * dtpm_register - Register the dtpm in the dtpm list
+ * @name: a name used as an identifier
+ * @dtpm: the dtpm node to be registered
+ *
+ * Stores the dtpm device in a list.
+ *
+ * Return: 0 on success, -EEXIST if the device name is already present
+ * in the list, -ENOMEM in case of memory allocation failure.
+ */
+int dtpm_register(const char *name, struct dtpm *dtpm)
+{
+	struct dtpm_node *node;
+	int ret;
+
+	mutex_lock(&dtpm_lock);
+
+	ret = -EEXIST;
+	if (__dtpm_lookup(name))
+		goto out_unlock;
+
+	ret = -ENOMEM;
+	node = kzalloc(sizeof(*node), GFP_KERNEL);
+	if (!node)
+		goto out_unlock;
+
+	node->name = kstrdup(name, GFP_KERNEL);
+	if (!node->name) {
+		kfree(node);
+		goto out_unlock;
+	}
+
+	node->dtpm = dtpm;
+
+	list_add(&node->node, &dtpm_list);
+
+	pr_debug("Registered %s\n", name);
+
+	ret = 0;
+out_unlock:
+	mutex_unlock(&dtpm_lock);
+
+	return ret;
+}
+
+/**
+ * dtpm_unregister - Remove the dtpm device from the list
+ * @name: the dtpm device name to be removed
+ *
+ * Remove the dtpm device from the list of the registered devices.
+ */
+void dtpm_unregister(const char *name)
+{
+	struct dtpm_node *node;
+
+	mutex_lock(&dtpm_lock);
+
+	list_for_each_entry(node, &dtpm_list, node) {
+
+		if (strcmp(name, node->name))
+			continue;
+
+		list_del(&node->node);
+		kfree(node->name);
+		kfree(node);
+
+		pr_debug("Unregistered %s\n", name);
+
+		break;
+	}
+
+	mutex_unlock(&dtpm_lock);
+}
+
 /**
  * dtpm_update_power - Update the power on the dtpm
  * @dtpm: a pointer to a dtpm structure to update
@@ -208,7 +351,7 @@ int dtpm_release_zone(struct powercap_zone *pcz)
 	if (root == dtpm)
 		root = NULL;
 
-	kfree(dtpm);
+	dtpm_put(dtpm);
 
 	return 0;
 }
@@ -370,6 +513,7 @@ struct dtpm *dtpm_alloc(struct dtpm_ops *ops)
 	if (dtpm) {
 		INIT_LIST_HEAD(&dtpm->children);
 		INIT_LIST_HEAD(&dtpm->sibling);
+		kref_init(&dtpm->kref);
 		dtpm->weight = 1024;
 		dtpm->ops = ops;
 	}
@@ -378,28 +522,29 @@ struct dtpm *dtpm_alloc(struct dtpm_ops *ops)
 }
 
 /**
- * dtpm_unregister - Unregister a dtpm node from the hierarchy tree
- * @dtpm: a pointer to a dtpm structure corresponding to the node to be removed
+ * dtpm_destroy - Destroy a dtpm node from the hierarchy tree
+ * @dtpm: a pointer to a dtpm structure corresponding to the node to be
+ *	  removed and destroyed
  *
  * Call the underlying powercap unregister function. That will call
  * the release callback of the powercap zone.
  */
-void dtpm_unregister(struct dtpm *dtpm)
+void dtpm_destroy(struct dtpm *dtpm)
 {
 	powercap_unregister_zone(pct, &dtpm->zone);
 
-	pr_info("Unregistered dtpm node '%s'\n", dtpm->zone.name);
+	pr_debug("Destroyed dtpm node '%s'\n", dtpm->zone.name);
 }
 
 /**
- * dtpm_register - Register a dtpm node in the hierarchy tree
+ * dtpm_create - Create a dtpm node in the hierarchy tree
  * @name: a string specifying the name of the node
  * @dtpm: a pointer to a dtpm structure corresponding to the new node
  * @parent: a pointer to a dtpm structure corresponding to the parent node
  *
  * Create a dtpm node in the tree. If no parent is specified, the node
  * is the root node of the hierarchy. If the root node already exists,
- * then the registration will fail. The powercap controller must be
+ * then the creation will fail. The powercap controller must be
  * initialized before calling this function.
  *
  * The dtpm structure must be initialized with the power numbers
@@ -413,7 +558,7 @@ void dtpm_unregister(struct dtpm *dtpm)
  *           * parent have ops which are reserved for leaves
  *   Other negative values are reported back from the powercap framework
  */
-int dtpm_register(const char *name, struct dtpm *dtpm, struct dtpm *parent)
+int dtpm_create(const char *name, struct dtpm *dtpm, struct dtpm *parent)
 {
 	struct powercap_zone *pcz;
 
@@ -457,7 +602,7 @@ int dtpm_register(const char *name, struct dtpm *dtpm, struct dtpm *parent)
 	if (dtpm->ops && !dtpm->ops->update_power_uw(dtpm))
 		__dtpm_add_power(dtpm);
 
-	pr_info("Registered dtpm node '%s' / %llu-%llu uW, \n",
+	pr_debug("Created dtpm node '%s' / %llu-%llu uW, \n",
 		dtpm->zone.name, dtpm->power_min, dtpm->power_max);
 
 	mutex_unlock(&dtpm_lock);
