@@ -202,6 +202,7 @@ struct dtpm *dtpm_get(const char *name)
 
 	return dtpm;
 }
+EXPORT_SYMBOL_GPL(dtpm_get);
 
 static void dtpm_release(struct kref *kref)
 {
@@ -221,6 +222,7 @@ void dtpm_put(struct dtpm *dtpm)
 {
 	kref_put(&dtpm->kref, dtpm_release);
 }
+EXPORT_SYMBOL_GPL(dtpm_put);
 
 /**
  * dtpm_register - Register the dtpm in the dtpm list
@@ -266,6 +268,7 @@ out_unlock:
 
 	return ret;
 }
+EXPORT_SYMBOL_GPL(dtpm_register);
 
 /**
  * dtpm_unregister - Remove the dtpm device from the list
@@ -295,6 +298,7 @@ void dtpm_unregister(const char *name)
 
 	mutex_unlock(&dtpm_lock);
 }
+EXPORT_SYMBOL_GPL(dtpm_unregister);
 
 /**
  * dtpm_update_power - Update the power on the dtpm
@@ -315,6 +319,7 @@ int dtpm_update_power(struct dtpm *dtpm)
 
 	return ret;
 }
+EXPORT_SYMBOL_GPL(dtpm_update_power);
 
 /**
  * dtpm_release_zone - Cleanup when the node is released
@@ -515,6 +520,7 @@ void dtpm_init(struct dtpm *dtpm, struct dtpm_ops *ops)
 		dtpm->ops = ops;
 	}
 }
+EXPORT_SYMBOL_GPL(dtpm_init);
 
 /**
  * dtpm_destroy - Destroy a dtpm node from the hierarchy tree
@@ -530,6 +536,7 @@ void dtpm_destroy(struct dtpm *dtpm)
 
 	pr_info("Destroyed dtpm node '%s'\n", dtpm->zone.name);
 }
+EXPORT_SYMBOL_GPL(dtpm_destroy);
 
 /**
  * dtpm_create - Create a dtpm node in the hierarchy tree
@@ -604,6 +611,7 @@ int dtpm_create(const char *name, struct dtpm *dtpm, struct dtpm *parent)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(dtpm_create);
 
 static int __init init_dtpm(void)
 {
