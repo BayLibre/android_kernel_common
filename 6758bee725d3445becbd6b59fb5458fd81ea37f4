@@ -16,6 +16,24 @@
       "message": "This is failing checkpatch:\n\nWARNING:FROM_SIGN_OFF_MISMATCH: From:/Signed-off-by: email name mismatch: \u0027From: xieliujie \u003cxieliujie@oppo.com\u003e\u0027 !\u003d \u0027Signed-off-by: weilinghan \u003cxieliujie@oppo.com\u003e\u0027\n\n\"Author:\" and \"Signed-off-by:\" should match -- and it looks like they should both be \"Liujie Xie \u003cxieliujie@oppo.com\u003e\"",
       "revId": "6758bee725d3445becbd6b59fb5458fd81ea37f4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "717081e2_6941ce08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-03-13T05:34:37Z",
+      "side": 1,
+      "message": "weilinghan@10-94-144-89:~/android-kernel/common$ ./scripts/checkpatch.pl v1-0001-ANDROID-vendor_hooks-Add-hooks-for-memory-and-fs-.patch\nperl: warning: Setting locale failed.\nperl: warning: Please check that your locale settings:\n        LANGUAGE \u003d (unset),\n        LC_ALL \u003d (unset),\n        LANG \u003d \"en_US.UTF-8\"\n    are supported and installed on your system.\nperl: warning: Falling back to the standard locale (\"C\").\nERROR: Remove Gerrit Change-Id\u0027s before submitting upstream\n#11:\nChange-Id: Ib81a8306925ddf9125f2445f76922c44d101d900\n\ntotal: 1 errors, 0 warnings, 126 lines checked\n\nNOTE: For some of the reported defects, checkpatch may be able to\n      mechanically convert to the typical style using --fix or --fix-inplace.\n\nv1-0001-ANDROID-vendor_hooks-Add-hooks-for-memory-and-fs-.patch has style problems, please review.\n\nNOTE: If any of the errors are false positives, please report\n      them to the maintainer, see CHECKPATCH in MAINTAINERS.\nweilinghan@10-94-144-89:~/android-kernel/common$\n\n----------\nHere was the result when I use check ./scripts/checkpatch.pl, it seems different from \nTreehugger robot.\nBy the way ,we juest have one account, so I have to use Xieliujie instead of my real name in signed-off-by 😞",
+      "parentUuid": "f761238c_4bdb6eef",
+      "revId": "6758bee725d3445becbd6b59fb5458fd81ea37f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
