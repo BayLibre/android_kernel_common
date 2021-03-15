@@ -33,6 +33,24 @@
       "message": "This fails checkpatch. Please update.\n\nWARNING:LONG_LINE: line length of 105 exceeds 100 columns\n#59: FILE: include/trace/hooks/module.h:15:\n+DECLARE_HOOK(android_vh_set_module_permit_before_init, TP_PROTO(const struct module *mod), TP_ARGS(mod));\n\nWARNING:LONG_LINE: line length of 104 exceeds 100 columns\n#60: FILE: include/trace/hooks/module.h:16:\n+DECLARE_HOOK(android_vh_set_module_permit_after_init, TP_PROTO(const struct module *mod), TP_ARGS(mod));\n\ntotal: 0 errors, 2 warnings, 97 lines checked",
       "revId": "36ed47558b055bf53b64c209335826467a16e16f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a967be45_2e0d3c79",
+        "filename": "include/trace/hooks/module.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2021-03-15T03:42:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7f83a64_8a1a2353",
+      "revId": "36ed47558b055bf53b64c209335826467a16e16f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
