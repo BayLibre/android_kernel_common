@@ -199,3 +199,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_bpf_syscall);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_uclamp_eff_get);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_est_update);
