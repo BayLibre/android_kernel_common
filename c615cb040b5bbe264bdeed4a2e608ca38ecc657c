@@ -16,6 +16,24 @@
       "message": "Is there any conflict between BFQ.weight vs. IOCOST?\nhttps://www.spinics.net/lists/linux-block/msg45000.html\n\nDo you have some numbers wrt WBT?",
       "revId": "c615cb040b5bbe264bdeed4a2e608ca38ecc657c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cfc1b85_d6fed109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1868497
+      },
+      "writtenOn": "2021-03-16T07:40:09Z",
+      "side": 1,
+      "message": "Only enable IOCOST, the blkio.weight still doesn\u0027t emit. \n If BFQ is disable, is IOCOST OK?\n\nWBT is disable.",
+      "parentUuid": "75401eb7_154e2628",
+      "revId": "c615cb040b5bbe264bdeed4a2e608ca38ecc657c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
