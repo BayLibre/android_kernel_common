@@ -28,6 +28,7 @@
 #include <trace/hooks/gic_v3.h>
 #include <trace/hooks/epoch.h>
 #include <trace/hooks/cpufreq.h>
+#include <trace/hooks/fs.h>
 #include <trace/hooks/mm.h>
 #include <trace/hooks/preemptirq.h>
 #include <trace/hooks/ftrace_dump.h>
@@ -338,6 +339,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_si_meminfo);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_override_toggling);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_typec_tcpci_get_vbus);
+<<<<<<< HEAD   (6c4ed9 UPSTREAM: ext4: avoid a potential slab-out-of-bounds in ext4)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
@@ -351,3 +353,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_account_task_time);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gpio_block_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ep_create_wakeup_source);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
+>>>>>>> CHANGE (0ff110 ANDROID: fs: Add vendor hooks for ep_create_wakeup_source & )
