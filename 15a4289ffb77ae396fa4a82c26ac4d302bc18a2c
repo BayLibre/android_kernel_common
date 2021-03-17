@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000009076875",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1641859?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "ad4756a0_a2b34f29",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 13,
+                "startChar": 1,
+                "endLine": 13,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Alistair Delva \u003cadelva@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "077ca733_a1a54982",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-03-17T15:33:10Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Alistair Delva \u003cadelva@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 363193145 android-build.ayeaye-python-dispatcher_20210316.05_p0",
+      "revId": "15a4289ffb77ae396fa4a82c26ac4d302bc18a2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000009076875",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1641859?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "6c845fd7_5d4647f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-03-17T15:33:10Z",
+      "side": 1,
+      "message": "Commit does not link to an upstream reference at lore\nPlease add a line like \u0027Link: https://lore.kernel.org/...\u0027\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 363193145 android-build.ayeaye-python-dispatcher_20210316.05_p0",
+      "revId": "15a4289ffb77ae396fa4a82c26ac4d302bc18a2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
