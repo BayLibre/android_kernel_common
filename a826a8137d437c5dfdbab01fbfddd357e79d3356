@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e7e6ffe_b9cda255",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2375,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2021-03-17T21:02:38Z",
+      "side": 1,
+      "message": "There\u0027s probably a more clever way/neater way of calculating pgcount, but I couldn\u0027t come up with one I was confident in WRT __iommu_map().\n\nThe way I\u0027ve set it up is such that we want to unmap as many pgsize pages as we can, until the pgsize changes or we\u0027ve gone past the buffer we\u0027re trying to unmap.\n\nI also tried the following approach, but I\u0027m not sure if it plays nicely when called from __iommu_map() / handling the case where pgsize \u003d\u003d the largest pagesize makes the code a little awkward (assume this is appended to the end of the original iommu_pgsize function, and I haven\u0027t split it the way I did in this patch):\n\n if (pgcount) {\n         next_pgsize_idx \u003d domain-\u003epgsize_bitmap \u0026 ~GENMASK(pgsize_idx, 0);\n         next_pgsize_idx \u003d next_pgsize_idx ? __ffs(next_pgsize_idx) : pgsize;\n         delta \u003d ALIGN(addr_merge, 1UL \u003c\u003c next_pgsize_idx) - addr_merge;\n         size \u003d min_t(size_t, size, delta);\n         *pgcount \u003d size \u003e\u003e pgsize;\n }",
+      "revId": "a826a8137d437c5dfdbab01fbfddd357e79d3356",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
