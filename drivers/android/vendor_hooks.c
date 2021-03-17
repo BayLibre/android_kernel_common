@@ -68,6 +68,7 @@
 #include <trace/hooks/ipv4.h>
 #include <trace/hooks/signal.h>
 #include <trace/hooks/cfg80211.h>
+#include <trace/hooks/typec.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -404,3 +405,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_read_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_preset);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_v2_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_override_toggling);
