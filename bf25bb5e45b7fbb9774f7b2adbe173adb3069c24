@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e790b4a_c51d22f0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2777,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-17T19:03:34Z",
+      "side": 1,
+      "message": "can\u0027t you use this hook instead of adding the ones at lines 2642 and 2695?",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd8c65b9_b3effd18",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3814,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-17T19:03:34Z",
+      "side": 1,
+      "message": "There is a similar request in aosp/1640360. Please sync with that developer so there is only 1 hook added to binder_wait_for_work().",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ede7d0bd_6e9a3f83",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4988,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-17T19:03:34Z",
+      "side": 1,
+      "message": "Please use a more generic name since other vendors might not \"get_hhead_and_lock\". How about just \"trace_android_vh_new_proc()\"? or something like that which describes the state but not the implementation behind the hook. Might as well pass the newly created proc as well to make this more generally useful.",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6118d69d_02996d38",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-17T19:03:34Z",
+      "side": 1,
+      "message": "why here and not after the error checking (like line 427)? Is this really even needed? Can\u0027t you do whatever bookkeeping you do behind this hook from the `trace_android_vh_binder_transaction_init(t)` hook in binder.c?",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
