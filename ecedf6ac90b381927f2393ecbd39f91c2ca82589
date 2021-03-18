@@ -16,6 +16,23 @@
       "message": "Alistair, can you please take a look?\nThis is the 5.10 counterpart of https://android-review.googlesource.com/c/kernel/common/+/1645447",
       "revId": "ecedf6ac90b381927f2393ecbd39f91c2ca82589",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ef75054_392fcef7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1471648
+      },
+      "writtenOn": "2021-03-18T15:59:50Z",
+      "side": 1,
+      "message": "This patch doesn\u0027t look right: it only changes one file, but the original changes many files:\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h\u003dakpm\u0026id\u003dbb15b6c4d75e1bfd383b4c39351d9b56e3605cb0\n\nYou also need to squash in this fix up:\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h\u003dakpm\u0026id\u003dbc26b4fc5ec73b62d574cbf6beb0c5d797ada0a6\n\nAnd there was another patch that touched lib/Kconfig.kasan that needs to be backported first:\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd9b571c885a8974fbb7d4ee639dbc643fd000f9e\n\nIdeally, just backport all patches that mention kasan. First from upstream, then from mm. Otherwise this results in a mess.",
+      "revId": "ecedf6ac90b381927f2393ecbd39f91c2ca82589",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
