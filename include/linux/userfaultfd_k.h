@@ -35,6 +35,22 @@ extern int sysctl_unprivileged_userfaultfd;
 
 extern vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason);
 
+/*
+ * The mode of operation for __mcopy_atomic and its helpers.
+ *
+ * This is almost an implementation detail (mcopy_atomic below doesn't take this
+ * as a parameter), but it's exposed here because memory-kind-specific
+ * implementations (e.g. hugetlbfs) need to know the mode of operation.
+ */
+enum mcopy_atomic_mode {
+	/* A normal copy_from_user into the destination range. */
+	MCOPY_ATOMIC_NORMAL,
+	/* Don't copy; map the destination range to the zero page. */
+	MCOPY_ATOMIC_ZEROPAGE,
+	/* Just install pte(s) with the existing page(s) in the page cache. */
+	MCOPY_ATOMIC_CONTINUE,
+};
+
 extern ssize_t mcopy_atomic(struct mm_struct *dst_mm, unsigned long dst_start,
 			    unsigned long src_start, unsigned long len,
 			    bool *mmap_changing);
@@ -42,6 +58,8 @@ extern ssize_t mfill_zeropage(struct mm_struct *dst_mm,
 			      unsigned long dst_start,
 			      unsigned long len,
 			      bool *mmap_changing);
+extern ssize_t mcopy_continue(struct mm_struct *dst_mm, unsigned long dst_start,
+			      unsigned long len, bool *mmap_changing);
 
 /* mm helpers */
 static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
@@ -120,32 +138,11 @@ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
 	return false;
 }
 
-<<<<<<< HEAD
-=======
-static inline bool userfaultfd_wp(struct vm_area_struct *vma)
-{
-	return false;
-}
-
 static inline bool userfaultfd_minor(struct vm_area_struct *vma)
 {
 	return false;
 }
 
-static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
-				      pte_t pte)
-{
-	return false;
-}
-
-static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
-					   pmd_t pmd)
-{
-	return false;
-}
-
-
->>>>>>> 82a150ec394f (userfaultfd: add minor fault registration mode)
 static inline bool userfaultfd_armed(struct vm_area_struct *vma)
 {
 	return false;
