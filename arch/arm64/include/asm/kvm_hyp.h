@@ -104,6 +104,7 @@ void __noreturn hyp_panic(void);
 #ifdef __KVM_NVHE_HYPERVISOR__
 void __noreturn __hyp_do_panic(struct kvm_cpu_context *host_ctxt, u64 spsr,
 			       u64 elr, u64 par);
+<<<<<<< HEAD   (14ed00 Merge 5.10.23 into android12-5.10)
 #endif
 
 #ifdef __KVM_NVHE_HYPERVISOR__
@@ -112,6 +113,8 @@ void __pkvm_init_switch_pgd(phys_addr_t phys, unsigned long size,
 int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long nr_cpus,
 		unsigned long *per_cpu_base, u32 hyp_va_bits);
 void __noreturn __host_enter(struct kvm_cpu_context *host_ctxt);
+=======
+>>>>>>> BRANCH (05d125 Linux 5.10.24)
 #endif
 
 #endif /* __ARM64_KVM_HYP_H__ */
