@@ -16,6 +16,148 @@
       "message": "Changes are made to write the trusty logs to debugfs.\nAs of now all the trusty logs are written to debugfs.\n[Old behavior of printing trusty-logs is not altered] ",
       "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2695d7f0_a371dd47",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "what is going on here? this api lets you iterate over a larger data source than the buffer in seq_file can hold, but you don\u0027t seem to keep track of the actual position to resume from here.",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9550ef29_5028df30",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "trusty_log_state contains a spinlock and other state that yo do not want to copy. It would be to have a separate struct for the state you need to keep track of here.",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87f8dbc_a539b7ea",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "this does not look correct. Don\u0027t claim to support write if you don\u0027t consume the data written",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f898ea48_4b6a8fec",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "why are you copying this again. log_read_line already copied it from the location that could get overwritten at any time.",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a815142_f64bfaf5",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "seq_write?",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 0
+      },
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6020dbec_fd1f0b02",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "I think we want to report overflows in the seqf case as well",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "485431f2_d3346842",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "if there are new log entries, we may also need to wake up blocking readers.",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "035b03ad_fc2e10f2",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-03-18T00:44:42Z",
+      "side": 1,
+      "message": "run checkpatch",
+      "revId": "c6df0242854b5586ac1469cb4d27e88861c58758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
