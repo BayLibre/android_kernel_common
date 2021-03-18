@@ -406,3 +406,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_preset);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_v2_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_override_toggling);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_check_contaminant);
