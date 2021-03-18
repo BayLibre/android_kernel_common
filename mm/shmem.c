@@ -2310,6 +2310,7 @@ bool shmem_mapping(struct address_space *mapping)
 	return mapping->a_ops == &shmem_aops;
 }
 
+#ifdef CONFIG_USERFAULTFD
 int shmem_mcopy_atomic_pte(struct mm_struct *dst_mm, pmd_t *dst_pmd,
 			   struct vm_area_struct *dst_vma,
 			   unsigned long dst_addr, unsigned long src_addr,
@@ -2452,6 +2453,7 @@ out_unacct_blocks:
 	shmem_inode_unacct_blocks(inode, 1);
 	goto out;
 }
+#endif /* CONFIG_USERFAULTFD */
 
 #ifdef CONFIG_TMPFS
 static const struct inode_operations shmem_symlink_inode_operations;
@@ -4233,3 +4235,4 @@ struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
 #endif
 }
 EXPORT_SYMBOL_GPL(shmem_read_mapping_page_gfp);
+
