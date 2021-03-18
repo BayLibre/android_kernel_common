@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b08014b_73965d45",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2777,
+      "author": {
+        "id": 1868576
+      },
+      "writtenOn": "2021-03-18T06:33:27Z",
+      "side": 1,
+      "message": "dear sir,\nLines 2642 \u0026 2695 have different logic with line 2777， if use line 2777， we will miss the right binder status.",
+      "parentUuid": "2e790b4a_c51d22f0",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd8c65b9_b3effd18",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -73,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74d5dccb_5519799f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3814,
+      "author": {
+        "id": 1868576
+      },
+      "writtenOn": "2021-03-18T06:33:27Z",
+      "side": 1,
+      "message": "Hi Liujie,\n\n1. I can add do_proc_work.\n2. it seems the solutions between ours are diffenet, in our solution, the struct binder_proc is copied to our module for compile reason.\n\nHi Todd,\n\nmay binder_proc and some other related structs be moved to a .h file ? if so , it is more convenient for oem vendor to implement hook solution.",
+      "parentUuid": "306e9b01_d14fd5ee",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ede7d0bd_6e9a3f83",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -90,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0af319c_6c644bce",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4988,
+      "author": {
+        "id": 1868576
+      },
+      "writtenOn": "2021-03-18T06:33:27Z",
+      "side": 1,
+      "message": "ok, it seems trace_android_vh_binder_preset() meet the requirement.",
+      "parentUuid": "ede7d0bd_6e9a3f83",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6118d69d_02996d38",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 4
@@ -101,6 +155,24 @@
       "writtenOn": "2021-03-17T19:03:34Z",
       "side": 1,
       "message": "why here and not after the error checking (like line 427)? Is this really even needed? Can\u0027t you do whatever bookkeeping you do behind this hook from the `trace_android_vh_binder_transaction_init(t)` hook in binder.c?",
+      "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36dae0d8_ed8949b1",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1868576
+      },
+      "writtenOn": "2021-03-18T06:33:27Z",
+      "side": 1,
+      "message": "dear sir, \n\nthe aim we add hook at this line is to get the binder space status: the free space will be filled full soon, so we have to add the hook before 427 line.",
+      "parentUuid": "6118d69d_02996d38",
       "revId": "bf25bb5e45b7fbb9774f7b2adbe173adb3069c24",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
