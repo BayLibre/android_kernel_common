@@ -121,3 +121,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_set_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_syscall_prctl_finished);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_override_toggling);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_check_contaminant);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_get_vbus);
