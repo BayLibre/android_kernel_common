@@ -47,6 +47,7 @@
 #include <trace/hooks/memory.h>
 #include <trace/hooks/typec.h>
 #include <trace/hooks/gpiolib.h>
+#include <trace/hooks/scsi.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -176,6 +177,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_uic_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_tm_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_check_int_errors);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_update_sdev);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scsi_send_cmd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scsi_set_request);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wake_up_sync);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_uclamp_eff_get);
