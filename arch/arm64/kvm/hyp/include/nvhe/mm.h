@@ -32,6 +32,7 @@ static inline void* pkvm_create_private_mapping(phys_addr_t phys, size_t size,
 {
 	return (void *)__pkvm_create_private_mapping(phys, size, prot);
 }
+unsigned long __allocate_private_range(size_t size);
 
 static inline void hyp_vmemmap_range(phys_addr_t phys, unsigned long size,
 				     unsigned long *start, unsigned long *end)

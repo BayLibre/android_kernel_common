@@ -35,6 +35,21 @@ static int __pkvm_create_mappings(unsigned long start, unsigned long size,
 	return err;
 }
 
+unsigned long __allocate_private_range(size_t size)
+{
+	unsigned long addr = __io_map_base;
+
+	__io_map_base += size;
+
+	/* Are we overflowing on the vmemmap ? */
+	if (__io_map_base > __hyp_vmemmap) {
+		__io_map_base -= size;
+		return (unsigned long)ERR_PTR(-ENOMEM);
+	}
+
+	return addr;
+}
+
 unsigned long __pkvm_create_private_mapping(phys_addr_t phys, size_t size,
 					    enum kvm_pgtable_prot prot)
 {
@@ -44,15 +59,9 @@ unsigned long __pkvm_create_private_mapping(phys_addr_t phys, size_t size,
 	hyp_spin_lock(&pkvm_pgd_lock);
 
 	size = PAGE_ALIGN(size + offset_in_page(phys));
-	addr = __io_map_base;
-	__io_map_base += size;
-
-	/* Are we overflowing on the vmemmap ? */
-	if (__io_map_base > __hyp_vmemmap) {
-		__io_map_base -= size;
-		addr = (unsigned long)ERR_PTR(-ENOMEM);
+	addr = __allocate_private_range(size);
+	if (IS_ERR_OR_NULL((void *)addr))
 		goto out;
-	}
 
 	err = kvm_pgtable_hyp_map(&pkvm_pgtable, addr, size, phys, prot);
 	if (err) {
