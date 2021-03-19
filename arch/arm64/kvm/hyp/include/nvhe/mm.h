@@ -27,6 +27,12 @@ int pkvm_create_mappings_locked(void *from, void *to, enum kvm_pgtable_prot prot
 unsigned long __pkvm_create_private_mapping(phys_addr_t phys, size_t size,
 					    enum kvm_pgtable_prot prot);
 
+static inline void* pkvm_create_private_mapping(phys_addr_t phys, size_t size,
+						enum kvm_pgtable_prot prot)
+{
+	return (void *)__pkvm_create_private_mapping(phys, size, prot);
+}
+
 static inline void hyp_vmemmap_range(phys_addr_t phys, unsigned long size,
 				     unsigned long *start, unsigned long *end)
 {

@@ -150,9 +150,8 @@ int hyp_map_vectors(void)
 		return 0;
 
 	phys = __hyp_pa(__bp_harden_hyp_vecs);
-	bp_base = (void *)__pkvm_create_private_mapping(phys,
-							__BP_HARDEN_HYP_VECS_SZ,
-							PAGE_HYP_EXEC);
+	bp_base = pkvm_create_private_mapping(phys, __BP_HARDEN_HYP_VECS_SZ,
+					      PAGE_HYP_EXEC);
 	if (IS_ERR_OR_NULL(bp_base))
 		return PTR_ERR(bp_base);
 
