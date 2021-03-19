@@ -153,6 +153,9 @@ SYM_FUNC_END(__host_hvc)
 
 .macro invalid_host_el2_vect
 	.align 7
+
+	test_sp_overflow PAGE_SHIFT, 0f
+
 	/* If a guest is loaded, panic out of it. */
 	stp	x0, x1, [sp, #-16]!
 	get_loaded_vcpu x0, x1
@@ -164,6 +167,16 @@ SYM_FUNC_END(__host_hvc)
 	 * context has been saved by __host_exit or after the hyp context has
 	 * been partially clobbered by __host_enter.
 	 */
+	b	hyp_panic
+
+0:
+	/*
+	 * We've overflowed the stack and are now in big trouble.
+	 * Rewind SP by stack size and panic
+
+	 * TODO: Add a separate stack for handling overflow
+	 */
+	add	sp, sp, #PAGE_SIZE
 	b	hyp_panic
 .endm
 
