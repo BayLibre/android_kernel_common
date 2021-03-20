@@ -2241,10 +2241,17 @@ static long fuse_dev_ioctl(struct file *file, unsigned int cmd,
 	int res;
 	int oldfd;
 	struct fuse_dev *fud = NULL;
+<<<<<<< HEAD   (e35d77 Revert "Revert "ANDROID: enable LLVM_IAS=1 for clang's integ)
 	struct fuse_passthrough_out pto;
+=======
+>>>>>>> BRANCH (6417f0 module: remove never implemented MODULE_SUPPORTED_DEVICE)
 
 	if (_IOC_TYPE(cmd) != FUSE_DEV_IOC_MAGIC)
+<<<<<<< HEAD   (e35d77 Revert "Revert "ANDROID: enable LLVM_IAS=1 for clang's integ)
 		return -EINVAL;
+=======
+		return -ENOTTY;
+>>>>>>> BRANCH (6417f0 module: remove never implemented MODULE_SUPPORTED_DEVICE)
 
 	switch (_IOC_NR(cmd)) {
 	case _IOC_NR(FUSE_DEV_IOC_CLONE):
@@ -2272,6 +2279,7 @@ static long fuse_dev_ioctl(struct file *file, unsigned int cmd,
 			}
 		}
 		break;
+<<<<<<< HEAD   (e35d77 Revert "Revert "ANDROID: enable LLVM_IAS=1 for clang's integ)
 	case _IOC_NR(FUSE_DEV_IOC_PASSTHROUGH_OPEN):
 		res = -EFAULT;
 		if (!copy_from_user(&pto,
@@ -2283,6 +2291,8 @@ static long fuse_dev_ioctl(struct file *file, unsigned int cmd,
 				res = fuse_passthrough_open(fud, &pto);
 		}
 		break;
+=======
+>>>>>>> BRANCH (6417f0 module: remove never implemented MODULE_SUPPORTED_DEVICE)
 	default:
 		res = -ENOTTY;
 		break;

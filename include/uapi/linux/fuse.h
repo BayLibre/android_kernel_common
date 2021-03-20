@@ -915,8 +915,11 @@ struct fuse_notify_retrieve_in {
 /* Device ioctls: */
 #define FUSE_DEV_IOC_MAGIC		229
 #define FUSE_DEV_IOC_CLONE		_IOR(FUSE_DEV_IOC_MAGIC, 0, uint32_t)
+<<<<<<< HEAD   (e35d77 Revert "Revert "ANDROID: enable LLVM_IAS=1 for clang's integ)
 /* 127 is reserved for the V1 interface implementation in Android */
 #define FUSE_DEV_IOC_PASSTHROUGH_OPEN	_IOW(FUSE_DEV_IOC_MAGIC, 127, struct fuse_passthrough_out)
+=======
+>>>>>>> BRANCH (6417f0 module: remove never implemented MODULE_SUPPORTED_DEVICE)
 
 struct fuse_lseek_in {
 	uint64_t	fh;
