@@ -275,6 +275,9 @@ DECLARE_RESTRICTED_HOOK(android_rvh_uclamp_eff_value,
 		 struct uclamp_se *uclamp_default, unsigned long *ret),
 	TP_ARGS(p, clamp_id, uclamp_default, ret), 1);
 
+DECLARE_HOOK(android_vh_account_task_time,
+	TP_PROTO(struct task_struct *p, struct rq *rq, int user_tick),
+	TP_ARGS(p, rq, user_tick));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
