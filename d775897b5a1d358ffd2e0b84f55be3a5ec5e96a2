@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "656f0c47_05c42a03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-03-22T13:03:04Z",
+      "side": 1,
+      "message": "We\u0027ve had a problem with the idletimer target ever since some code was merged upstream around ~5.6 and later 5.10/mainline picked it up via upstream merge with incorrect conflict resolution.\n\nI\u0027m of the opinion that we should entirely revert back to upstream for 5.10+, then reapply a clean patch and make sure it makes sense this time around.  I\u0027ve been meaning to do this... but... I don\u0027t actually understand what the IDLETIMER target does, nor what the true requirements are, and we have no unit tests.\n\nAs such I think a core requirement is going to be to write some sort of kernel net/tests unit test before we merge anything.",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
