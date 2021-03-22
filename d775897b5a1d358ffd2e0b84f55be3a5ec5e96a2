@@ -34,6 +34,24 @@
       "parentUuid": "656f0c47_05c42a03",
       "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c5c111_97f77166",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1319612
+      },
+      "writtenOn": "2021-03-22T13:13:05Z",
+      "side": 1,
+      "message": "Hi Maze,\n\nThis is the only issue that we know of from tests that we\u0027ve done on IDLETIMER on 5.4 and later. The usptream change that merged on 5.4 added timer type ALARM to the existing idletimer mechanism which was essentially a deferrable timer. The current change fixes the issue with the timestamp when the timer expires/starts as reset_timer wasn\u0027t added in the initial patch.\n\nWe didn\u0027t need to make any changes in userspace for this issue and verified all idletimer scenarios for default and alarm type timers.\n\nPlease let me know whether this patch can be approved based on the on target tests we have completed after the fix.",
+      "parentUuid": "a1ca952c_eed51de1",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
