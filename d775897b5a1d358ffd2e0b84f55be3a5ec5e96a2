@@ -52,6 +52,148 @@
       "parentUuid": "a1ca952c_eed51de1",
       "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f32249_8c695ca3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "Please add a much more thorough description of this reset time logic to the commit message. It also seems like there are unrelated changes in here that should probably be in a separate patch.\n\nIs all of this really android-specific? If it is fixing a problem introduced by another android-specific patch, please add a \"Fixes\" tag to the commit message citing the patch that introduced the issue. If this is fixing an upstream issue, then please submit the patch upstream.",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5345bb4_0e10258e",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "These format changes are not mentioned in the commit message. Are they needed? If so, please describe why in the commit message.",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44e6a1ae_18322561",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "Is there a potential overflow? Why is this not mentioned in the commit message. It seems like it should be a separate patch. Is this potential overflow upstream? Should the fix be sent there instead?",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cda27f2e_be09db92",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "Is this fixing a bug? Should it be sent upstream? Is this required for the new \"reset logic\"?",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8968f7a0_9d4a6428",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "Please add more to the commit message or comments here to describe why all of this is needed. If you did a kzalloc() above, it seems like all of these set-to-zeros wouldn\u0027t be needed",
+      "range": {
+        "startLine": 457,
+        "startChar": 2,
+        "endLine": 469,
+        "endChar": 0
+      },
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e497063_25014a56",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "Can you describe the overflow problem. That seems to be a big part of this patch so it should be part of the commit message.",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c87a8dd8_8b184a5d",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "why is it called \"_v1\"? I don\u0027t see a \"_v2\" anywhere.",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1bbe83b_619b3012",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-22T19:01:38Z",
+      "side": 1,
+      "message": "why is order reversed?",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
