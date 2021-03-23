@@ -124,6 +124,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "597ec7a4_a1de27d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-03-23T21:32:03Z",
+      "side": 1,
+      "message": "IDLETIMER in ACK since 5.7+ is a mess, and we don\u0027t have tests that verify it works - so it is not at all surprising that it doesn\u0027t.  (It\u0027s also messy in the iptables binary itself)\n\nIndeed we don\u0027t even know what it means for it to work as it\u0027s not really documented what it actually does.\n\nThat\u0027s why I\u0027d like to see a test added for this functionality and a description of what that it is supposed to do and what the behaviour is supposed to be.",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
