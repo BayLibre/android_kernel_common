@@ -67,7 +67,11 @@
 #include <linux/cgroup.h>
 #include <linux/wait.h>
 
+<<<<<<< HEAD   (c0fd3a UPSTREAM: ASoC: soc-pcm: fix BE handling of PAUSE_RELEASE)
 #include <trace/hooks/sched.h>
+=======
+#include <trace/hooks/cgroup.h>
+>>>>>>> CHANGE (8947e0 ANDROID: cgroup: Add vendor hook for cpuset.)
 
 DEFINE_STATIC_KEY_FALSE(cpusets_pre_enable_key);
 DEFINE_STATIC_KEY_FALSE(cpusets_enabled_key);
@@ -2962,7 +2966,24 @@ static void cpuset_bind(struct cgroup_subsys_state *root_css)
  */
 static void cpuset_fork(struct task_struct *task)
 {
+<<<<<<< HEAD   (c0fd3a UPSTREAM: ASoC: soc-pcm: fix BE handling of PAUSE_RELEASE)
 	if (task_css_is_root(task, cpuset_cgrp_id))
+=======
+	struct cpuset *cs;
+	bool same_cs, inherit_cpus = false;
+
+	rcu_read_lock();
+	cs = task_cs(task);
+	same_cs = (cs == task_cs(current));
+	rcu_read_unlock();
+	if (same_cs) {
+		if (cs == &top_cpuset)
+			return;
+		trace_android_rvh_cpuset_fork(task, &inherit_cpus);
+		if (!inherit_cpus)
+			set_cpus_allowed_ptr(task, current->cpus_ptr);
+		task->mems_allowed = current->mems_allowed;
+>>>>>>> CHANGE (8947e0 ANDROID: cgroup: Add vendor hook for cpuset.)
 		return;
 
 	set_cpus_allowed_ptr(task, current->cpus_ptr);
