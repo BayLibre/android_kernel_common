@@ -367,6 +367,30 @@
       },
       "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0c82c94_28fcc65e",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1319612
+      },
+      "writtenOn": "2021-03-23T10:44:49Z",
+      "side": 1,
+      "message": "Correcting one point above. The commit which caused this revision issue is actually the following:\n\ncommit\t6aea7b712969d8bb24c9707216ec957fe7e26e01\nMerge 1a323ea5356e (\"x86: get rid of \u0027errret\u0027 argument to __get_user_xyz() macross\") into android-mainline\n\nChange: https://android-review.googlesource.com/c/kernel/common/+/1277559/-1..2/net/netfilter/xt_IDLETIMER.c",
+      "parentUuid": "6992cd54_90a093ea",
+      "range": {
+        "startLine": 749,
+        "startChar": 13,
+        "endLine": 749,
+        "endChar": 14
+      },
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
