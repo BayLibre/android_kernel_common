@@ -516,4 +516,8 @@ err_reg:
 	kfree(idev);
 	return ret;
 }
+
 subsys_initcall(ion_device_create);
+
+MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("Ion memory allocator");
