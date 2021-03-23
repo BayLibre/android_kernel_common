@@ -7,6 +7,7 @@
 #include <linux/file.h>
 #include <linux/fsverity.h>
 #include <linux/gfp.h>
+#include <linux/kobject.h>
 #include <linux/ktime.h>
 #include <linux/lz4.h>
 #include <linux/mm.h>
@@ -19,6 +20,7 @@
 #include "data_mgmt.h"
 #include "format.h"
 #include "integrity.h"
+#include "sysfs.h"
 #include "verity.h"
 
 static int incfs_scan_metadata_chain(struct data_file *df);
@@ -49,6 +51,7 @@ struct mount_info *incfs_alloc_mount_info(struct super_block *sb,
 {
 	struct mount_info *mi = NULL;
 	int error = 0;
+	struct incfs_sysfs_node *node;
 
 	mi = kzalloc(sizeof(*mi), GFP_NOFS);
 	if (!mi)
@@ -74,6 +77,13 @@ struct mount_info *incfs_alloc_mount_info(struct super_block *sb,
 	error = incfs_realloc_mount_info(mi, options);
 	if (error)
 		goto err;
+
+	node = incfs_add_sysfs_node(options->sysfs_name);
+	if (IS_ERR(node)) {
+		error = PTR_ERR(node);
+		goto err;
+	}
+	mi->mi_sysfs_node = node;
 
 	return mi;
 
@@ -142,6 +152,7 @@ void incfs_free_mount_info(struct mount_info *mi)
 	for (i = 0; i < ARRAY_SIZE(mi->pseudo_file_xattr); ++i)
 		kfree(mi->pseudo_file_xattr[i].data);
 	kfree(mi->mi_per_uid_read_timeouts);
+	incfs_free_sysfs_node(mi->mi_sysfs_node);
 	kfree(mi);
 }
 
@@ -1088,9 +1099,8 @@ static int usleep_interruptible(u32 us)
 }
 
 static int wait_for_data_block(struct data_file *df, int block_index,
-			       u32 min_time_us, u32 min_pending_time_us,
-			       u32 max_pending_time_us,
-			       struct data_file_block *res_block)
+			       struct data_file_block *res_block,
+			       struct incfs_read_data_file_timeouts *timeouts)
 {
 	struct data_file_block block = {};
 	struct data_file_segment *segment = NULL;
@@ -1126,13 +1136,16 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 
 	/* If the block was found, just return it. No need to wait. */
 	if (is_data_block_present(&block)) {
-		if (min_time_us)
-			error = usleep_interruptible(min_time_us);
 		*res_block = block;
+		if (timeouts && timeouts->min_time_us) {
+			time = ktime_get_ns();
+			error = usleep_interruptible(timeouts->min_time_us);
+			goto out;
+		}
 		return error;
 	} else {
 		/* If it's not found, create a pending read */
-		if (max_pending_time_us != 0) {
+		if (timeouts && timeouts->max_pending_time_us) {
 			read = add_pending_read(df, block_index);
 			if (!read)
 				return -ENOMEM;
@@ -1142,14 +1155,18 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		}
 	}
 
-	if (min_pending_time_us)
-		time = ktime_get_ns();
+	/* Rest of function only applies if timeouts != NULL */
+	WARN_ON(!timeouts);
+	if (!timeouts)
+		return -EFSCORRUPTED;
+
+	time = ktime_get_ns();
 
 	/* Wait for notifications about block's arrival */
 	wait_res =
 		wait_event_interruptible_timeout(segment->new_data_arrival_wq,
-					(is_read_done(read)),
-					usecs_to_jiffies(max_pending_time_us));
+			(is_read_done(read)),
+			usecs_to_jiffies(timeouts->max_pending_time_us));
 
 	/* Woke up, the pending read is no longer needed. */
 	remove_pending_read(df, read);
@@ -1167,11 +1184,12 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		return wait_res;
 	}
 
-	if (min_pending_time_us) {
-		time = div_u64(ktime_get_ns() - time, 1000);
-		if (min_pending_time_us > time) {
+	if (timeouts->min_pending_time_us) {
+		u64 time_us = div_u64(ktime_get_ns() - time, 1000);
+
+		if (timeouts->min_pending_time_us > time_us) {
 			error = usleep_interruptible(
-						min_pending_time_us - time);
+				timeouts->min_pending_time_us - time_us);
 			if (error)
 				return error;
 		}
@@ -1182,7 +1200,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		return error;
 
 	/*
-	 * Re-read block's info now, it has just arrived and
+	 * Re-read blocks info now, it has just arrived and
 	 * should be available.
 	 */
 	error = get_data_file_block(df, block_index, &block);
@@ -1191,22 +1209,32 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 			*res_block = block;
 		else {
 			/*
-			 * Somehow wait finished successfully bug block still
+			 * Somehow wait finished successfully but block still
 			 * can't be found. It's not normal.
 			 */
 			pr_warn("incfs: Wait succeeded but block not found.\n");
 			error = -ENODATA;
 		}
 	}
-
 	up_read(&segment->rwsem);
+
+out:
+	if (mi->mi_sysfs_node && !error) {
+		if (timeouts->per_uid_timeouts)
+			mi->mi_sysfs_node->isn_reads_delayed_per_uid++;
+		else
+			mi->mi_sysfs_node->isn_reads_delayed_other++;
+
+		atomic64_add(ktime_get_ns() - time,
+			     &mi->mi_sysfs_node->isn_reads_total_delay_ns);
+	}
+
 	return error;
 }
 
 ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
-			int index, u32 min_time_us,
-			u32 min_pending_time_us, u32 max_pending_time_us,
-			struct mem_range tmp)
+			int index, struct mem_range tmp,
+			struct incfs_read_data_file_timeouts *timeouts)
 {
 	loff_t pos;
 	ssize_t result;
@@ -1225,8 +1253,7 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 	mi = df->df_mount_info;
 	bfc = df->df_backing_file_context;
 
-	result = wait_for_data_block(df, index, min_time_us,
-			min_pending_time_us, max_pending_time_us, &block);
+	result = wait_for_data_block(df, index, &block, timeouts);
 	if (result < 0)
 		goto out;
 
@@ -1269,6 +1296,15 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 		log_block_read(mi, &df->df_id, index);
 
 out:
+	if (mi->mi_sysfs_node) {
+		if (result == -ETIME)
+			mi->mi_sysfs_node->isn_reads_failed_timed_out++;
+		else if (result == -EBADMSG)
+			mi->mi_sysfs_node->isn_reads_failed_hash_verification++;
+		else if (result < 0)
+			mi->mi_sysfs_node->isn_reads_failed_other++;
+	}
+
 	return result;
 }
 
