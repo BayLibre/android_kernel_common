@@ -89,6 +89,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c27008fd_d5ae8a73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-23T16:06:54Z",
+      "side": 1,
+      "message": "It looks like maze@ is working on the cleanup he mentions here: aosp/1649073. Please coordinate this change with that effort.\n\nmaze@, looks like step #1 is restoring the upstream implementation... what is the plan for the android-specific patches on top of that?",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
@@ -120,6 +137,24 @@
       "side": 1,
       "message": "These were flagged in static analysis. snprintf usage wasn\u0027t allowed. I can remove this from the current patch as this is not related to the reset_timer logic.",
       "parentUuid": "a5345bb4_0e10258e",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1afabac1_e6b79cd2",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-23T16:06:54Z",
+      "side": 1,
+      "message": "Yes, please do -- and submit a separate patch that fixes the issues found via static analysis. If the issues were introduced in android-specific patches, then submit here, else upstream.\n\nUse the \"Fixes:\" tag to cite the patch that introduced the issue (you don\u0027t need a \"Bug\" tag for this kind of change).",
+      "parentUuid": "623bbdc4_b8824292",
       "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -383,6 +418,30 @@
       "side": 1,
       "message": "Correcting one point above. The commit which caused this revision issue is actually the following:\n\ncommit\t6aea7b712969d8bb24c9707216ec957fe7e26e01\nMerge 1a323ea5356e (\"x86: get rid of \u0027errret\u0027 argument to __get_user_xyz() macross\") into android-mainline\n\nChange: https://android-review.googlesource.com/c/kernel/common/+/1277559/-1..2/net/netfilter/xt_IDLETIMER.c",
       "parentUuid": "6992cd54_90a093ea",
+      "range": {
+        "startLine": 749,
+        "startChar": 13,
+        "endLine": 749,
+        "endChar": 14
+      },
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c5a8f08_eaab35e0",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-23T16:06:54Z",
+      "side": 1,
+      "message": "Thanks for the additional background. Can you add all of this to the commit message? (plus the additional background in your responses above).",
+      "parentUuid": "c0c82c94_28fcc65e",
       "range": {
         "startLine": 749,
         "startChar": 13,
