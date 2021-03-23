@@ -4151,6 +4151,11 @@ void scheduler_tick(void)
 	struct task_struct *curr = rq->curr;
 	struct rq_flags rf;
 	unsigned long thermal_pressure;
+	int skip = 0;
+
+	trace_android_vh_scheduler_tick_skip(rq, &skip);
+	if (skip)
+		return;
 
 	arch_scale_freq_tick();
 	sched_clock_tick();

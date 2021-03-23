@@ -28,6 +28,10 @@ DECLARE_HOOK(android_vh_scheduler_tick,
 	TP_PROTO(struct rq *rq),
 	TP_ARGS(rq));
 
+DECLARE_HOOK(android_vh_scheduler_tick_skip,
+	TP_PROTO(struct rq *rq, int *skip),
+	TP_ARGS(rq, skip));
+
 DECLARE_RESTRICTED_HOOK(android_rvh_enqueue_task,
 	TP_PROTO(struct rq *rq, struct task_struct *p, int flags),
 	TP_ARGS(rq, p, flags), 1);
