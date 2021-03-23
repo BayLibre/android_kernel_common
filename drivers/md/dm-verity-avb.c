@@ -207,6 +207,7 @@ static int __init dm_verity_avb_init(void)
 {
 	DMINFO("AVB error handler initialized with vbmeta device: %s",
 	       avb_vbmeta_device);
+	DMINFO("AVB error handler mod name: %s", MODULE_PARAM_PREFIX);
 	return 0;
 }
 
@@ -221,7 +222,12 @@ MODULE_AUTHOR("David Zeuthen <zeuthen@google.com>");
 MODULE_DESCRIPTION("AVB-specific error handler for dm-verity");
 MODULE_LICENSE("GPL");
 
-/* Declare parameter with no module prefix */
+/* Declare parameters with default module prefix of dm_verity */
+module_param_string(vbmeta_device, avb_vbmeta_device, sizeof(avb_vbmeta_device), 0);
+module_param_string(vbmeta_invalidate_on_error, avb_invalidate_on_error,
+		    sizeof(avb_invalidate_on_error), 0);
+
+/* Declare parameter with no module prefix for older devices */
 #undef MODULE_PARAM_PREFIX
 #define MODULE_PARAM_PREFIX	"androidboot.vbmeta."
 module_param_string(device, avb_vbmeta_device, sizeof(avb_vbmeta_device), 0);
