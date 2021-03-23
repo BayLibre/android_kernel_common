@@ -106,6 +106,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ecd0ca8_c4fa9e22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1319612
+      },
+      "writtenOn": "2021-03-23T16:30:34Z",
+      "side": 1,
+      "message": "Thanks Todd. In that case, we\u0027ll wait for aosp/1649073 to be merged and then we can rebase this gerrit on tip and add only reset_timer_v1 logic. The issue of XT_IDLETIMER_ALARM not firing would be resolved with aosp/1649073 which is a critical issue for us at this time.",
+      "parentUuid": "c27008fd_d5ae8a73",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
@@ -442,6 +460,30 @@
       "side": 1,
       "message": "Thanks for the additional background. Can you add all of this to the commit message? (plus the additional background in your responses above).",
       "parentUuid": "c0c82c94_28fcc65e",
+      "range": {
+        "startLine": 749,
+        "startChar": 13,
+        "endLine": 749,
+        "endChar": 14
+      },
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2252f781_4ac8e87f",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1319612
+      },
+      "writtenOn": "2021-03-23T16:30:34Z",
+      "side": 1,
+      "message": "Should I modify the commit text to be reset_timer specific only given that Maze\u0027s change would fix the conflict resolution with upstream?",
+      "parentUuid": "1c5a8f08_eaab35e0",
       "range": {
         "startLine": 749,
         "startChar": 13,
