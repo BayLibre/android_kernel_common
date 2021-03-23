@@ -7,6 +7,7 @@
 #include <linux/file.h>
 #include <linux/fsverity.h>
 #include <linux/gfp.h>
+#include <linux/kobject.h>
 #include <linux/ktime.h>
 #include <linux/lz4.h>
 #include <linux/mm.h>
@@ -19,6 +20,7 @@
 #include "data_mgmt.h"
 #include "format.h"
 #include "integrity.h"
+#include "sysfs.h"
 #include "verity.h"
 
 static int incfs_scan_metadata_chain(struct data_file *df);
@@ -72,6 +74,10 @@ struct mount_info *incfs_alloc_mount_info(struct super_block *sb,
 	INIT_DELAYED_WORK(&mi->mi_zstd_cleanup_work, zstd_free_workspace);
 
 	error = incfs_realloc_mount_info(mi, options);
+	if (error)
+		goto err;
+
+	error = incfs_add_sysfs_node(mi, options->sysfs_name);
 	if (error)
 		goto err;
 
@@ -142,6 +148,7 @@ void incfs_free_mount_info(struct mount_info *mi)
 	for (i = 0; i < ARRAY_SIZE(mi->pseudo_file_xattr); ++i)
 		kfree(mi->pseudo_file_xattr[i].data);
 	kfree(mi->mi_per_uid_read_timeouts);
+	incfs_free_sysfs_node(mi);
 	kfree(mi);
 }
 
@@ -1090,7 +1097,8 @@ static int usleep_interruptible(u32 us)
 static int wait_for_data_block(struct data_file *df, int block_index,
 			       u32 min_time_us, u32 min_pending_time_us,
 			       u32 max_pending_time_us,
-			       struct data_file_block *res_block)
+			       struct data_file_block *res_block,
+			       bool per_uid_timeouts)
 {
 	struct data_file_block block = {};
 	struct data_file_segment *segment = NULL;
@@ -1142,8 +1150,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		}
 	}
 
-	if (min_pending_time_us)
-		time = ktime_get_ns();
+	time = ktime_get_ns();
 
 	/* Wait for notifications about block's arrival */
 	wait_res =
@@ -1168,10 +1175,10 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 	}
 
 	if (min_pending_time_us) {
-		time = div_u64(ktime_get_ns() - time, 1000);
-		if (min_pending_time_us > time) {
+		u64 time_us = div_u64(ktime_get_ns() - time, 1000);
+		if (min_pending_time_us > time_us) {
 			error = usleep_interruptible(
-						min_pending_time_us - time);
+						min_pending_time_us - time_us);
 			if (error)
 				return error;
 		}
@@ -1182,7 +1189,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 		return error;
 
 	/*
-	 * Re-read block's info now, it has just arrived and
+	 * Re-read blocks info now, it has just arrived and
 	 * should be available.
 	 */
 	error = get_data_file_block(df, block_index, &block);
@@ -1191,12 +1198,22 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 			*res_block = block;
 		else {
 			/*
-			 * Somehow wait finished successfully bug block still
+			 * Somehow wait finished successfully but block still
 			 * can't be found. It's not normal.
 			 */
 			pr_warn("incfs: Wait succeeded but block not found.\n");
 			error = -ENODATA;
 		}
+	}
+
+	if (!error) {
+		if (per_uid_timeouts)
+			atomic_inc(&mi->mi_reads_delayed_per_uid);
+		else
+			atomic_inc(&mi->mi_reads_delayed_other);
+
+		atomic64_add(ktime_get_ns() - time,
+			     &mi->mi_reads_total_delay_ns);
 	}
 
 	up_read(&segment->rwsem);
@@ -1206,7 +1223,7 @@ static int wait_for_data_block(struct data_file *df, int block_index,
 ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 			int index, u32 min_time_us,
 			u32 min_pending_time_us, u32 max_pending_time_us,
-			struct mem_range tmp)
+			struct mem_range tmp, bool per_uid_timeouts)
 {
 	loff_t pos;
 	ssize_t result;
@@ -1226,7 +1243,8 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 	bfc = df->df_backing_file_context;
 
 	result = wait_for_data_block(df, index, min_time_us,
-			min_pending_time_us, max_pending_time_us, &block);
+			min_pending_time_us, max_pending_time_us, &block,
+			per_uid_timeouts);
 	if (result < 0)
 		goto out;
 
@@ -1269,6 +1287,13 @@ ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 		log_block_read(mi, &df->df_id, index);
 
 out:
+	if (result == -ETIME)
+		atomic_inc(&mi->mi_reads_failed_timed_out);
+	else if (result == -EBADMSG)
+		atomic_inc(&mi->mi_reads_failed_hash_verification);
+	else if (result < 0)
+		atomic_inc(&mi->mi_reads_failed_other);
+
 	return result;
 }
 

@@ -7,6 +7,7 @@
 
 #include <linux/cred.h>
 #include <linux/fs.h>
+#include <linux/kobject.h>
 #include <linux/types.h>
 #include <linux/mutex.h>
 #include <linux/spinlock.h>
@@ -122,6 +123,7 @@ struct mount_options {
 	unsigned int read_log_pages;
 	unsigned int read_log_wakeup_count;
 	bool report_uid;
+	char *sysfs_name;
 };
 
 struct mount_info {
@@ -188,6 +190,16 @@ struct mount_info {
 	void *mi_zstd_workspace;
 	ZSTD_DStream *mi_zstd_stream;
 	struct delayed_work mi_zstd_cleanup_work;
+
+	/* sysfs node */
+	bool mi_sysfs_node_exists;
+	struct kobject mi_sysfs_node;
+	atomic_t mi_reads_failed_timed_out;
+	atomic_t mi_reads_failed_hash_verification;
+	atomic_t mi_reads_failed_other;
+	atomic_t mi_reads_delayed_per_uid;
+	atomic_t mi_reads_delayed_other;
+	atomic64_t mi_reads_total_delay_ns;
 };
 
 struct data_file_block {
@@ -375,7 +387,7 @@ void incfs_free_dir_file(struct dir_file *dir);
 ssize_t incfs_read_data_file_block(struct mem_range dst, struct file *f,
 			int index, u32 min_time_us,
 			u32 min_pending_time_us, u32 max_pending_time_us,
-			struct mem_range tmp);
+			struct mem_range tmp, bool per_uid_timeouts);
 
 ssize_t incfs_read_merkle_tree_blocks(struct mem_range dst,
 				      struct data_file *df, size_t offset);
