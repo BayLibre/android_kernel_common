@@ -34,9 +34,13 @@ struct user_struct {
 
 	/* Miscellaneous per-user rate limit */
 	struct ratelimit_state ratelimit;
+<<<<<<< HEAD   (c4915f FROMLIST: scsi: ufs: Fix management of lrbp->cmd)
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
+=======
+	ANDROID_OEM_DATA_ARRAY(1, 2);
+>>>>>>> CHANGE (11199b ANDROID: sched: Add ANDROID_OEM_DATA_ARRAY in user_struct.)
 };
 
 extern int uids_sysfs_init(void);
