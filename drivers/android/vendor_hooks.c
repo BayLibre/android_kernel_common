@@ -58,6 +58,7 @@
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/timekeeping.h>
 #include <trace/hooks/audio_usboffload.h>
+<<<<<<< HEAD   (e56843 ANDROID: Update the ABI symbol list)
 #include <trace/hooks/drm_framebuffer.h>
 #include <trace/hooks/drm_atomic.h>
 #include <trace/hooks/psci.h>
@@ -69,6 +70,10 @@
 #include <trace/hooks/ipv4.h>
 #include <trace/hooks/signal.h>
 #include <trace/hooks/suspend.h>
+=======
+#include <trace/hooks/typec.h>
+#include <trace/hooks/sched.h>
+>>>>>>> CHANGE (563576 ANDROID: sched: Add vendor hooks for cpu affinity.)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -233,6 +238,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_audio_usb_offload_ep_action);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_audio_usb_offload_synctype);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_audio_usb_offload_connect);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_audio_usb_offload_disconnect);
+<<<<<<< HEAD   (e56843 ANDROID: Update the ABI symbol list)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_atomic_remove_fb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_drm_atomic_check_modeset);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_thermal_zone_device);
@@ -298,3 +304,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_si_meminfo);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_override_toggling);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_typec_tcpci_get_vbus);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_comm);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_setaffinity_early);
+>>>>>>> CHANGE (563576 ANDROID: sched: Add vendor hooks for cpu affinity.)
