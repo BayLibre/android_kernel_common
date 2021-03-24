@@ -485,6 +485,15 @@
 	}
 
 /*
+ * Non-instrumentable text section
+ */
+#define NOINSTR_TEXT							\
+		ALIGN_FUNCTION();					\
+		__noinstr_text_start = .;				\
+		*(.noinstr.text)					\
+		__noinstr_text_end = .;
+
+/*
  * .text section. Map to function alignment to avoid address changes
  * during second ld run in second ld pass when generating System.map
  *
@@ -498,7 +507,11 @@
 		*(TEXT_MAIN .text.fixup)				\
 		*(.text.unlikely .text.unlikely.*)			\
 		*(.text.unknown .text.unknown.*)			\
+<<<<<<< HEAD   (e6f7fd Merge 4.19.182 into android-4.19-stable)
 		*(TEXT_CFI_MAIN) 					\
+=======
+		NOINSTR_TEXT						\
+>>>>>>> BRANCH (78fec1 Linux 4.19.183)
 		*(.text..refcount)					\
 		*(.text..ftrace)					\
 		*(.ref.text)						\
