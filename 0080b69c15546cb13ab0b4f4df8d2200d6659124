@@ -70,6 +70,24 @@
       "parentUuid": "82b9b61b_4dd99ba7",
       "revId": "0080b69c15546cb13ab0b4f4df8d2200d6659124",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dab8a506_41b4aea7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-03-24T15:31:25Z",
+      "side": 1,
+      "message": "\u003e Yub, Android Framework doesn\u0027t relies on it.\n\nThat isn\u0027t the only concern. Once we merge this, partners can start to use it, and we cannot arbitrarily break them this late in the dev cycle. So, we should be careful not to merge non-final uapi like this. Once you are happy it will not change again, we can merge it (IMO).",
+      "parentUuid": "8c2ad36d_dbe08d28",
+      "revId": "0080b69c15546cb13ab0b4f4df8d2200d6659124",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
