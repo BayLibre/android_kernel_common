@@ -16,6 +16,23 @@
       "message": "Removed space to make checkpatch happier.",
       "revId": "216fe3b759643ecc1be174a3a6a561cf53467b36",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1fe0f3b_dba3dd96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-03-24T11:13:07Z",
+      "side": 1,
+      "message": "checkpatch still fails:\n\nBuildbot Version: androidbuild_buildbot_20210315.00_RC02\nMachine: prod23-g09h\nDIST_DIR\u003d/buildbot/dist_dirs/aosp_kernel-common-android12-5.10-linux-checkpatch/P21075648 BUILD_CONFIG\u003dcommon/build.config.gki.x86_64 build/static_analysis/checkpatch_presubmit.sh --bid P21075648\nErrors were reported from checkpatch.pl.\n\nSummary:\n\nWARNING:REPEATED_WORD: Possible repeated word: \u0027system\u0027\n#16: \n\nSee checkpatch.log for complete output.\n\n---\n\nWARNING:REPEATED_WORD: Possible repeated word: \u0027system\u0027\n#16: \ndrwxr-xr-x 3 system system u:object_r:configfs:s0  0 2020-12-28 06:03 b.1\n\ntotal: 0 errors, 1 warnings, 21 lines checked\n\n---\n\nbut it\u0027s wrong.  system system is quite intentional\n\nI think this means this will refuse to automerge.",
+      "revId": "216fe3b759643ecc1be174a3a6a561cf53467b36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
