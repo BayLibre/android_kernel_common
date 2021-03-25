@@ -16,6 +16,23 @@
       "message": "/usr/local/google/buildbot/src/android/common-android-mainline/common/fs/configfs/dir.c:1427:31: error: too few arguments to function call, expected 3, have 2\n                configfs_setattr(dentry, \u0026ia);\n\nI guess something has changed between 5.10 and 5.12.  Will need to fix it up.",
       "revId": "7571df82dacbcc6ef8181c3ceeb03557450864dd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae50b049_be771fc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-03-25T01:26:55Z",
+      "side": 1,
+      "message": "The problematic patch is:\n\ncommit 549c7297717c32ee53f156cd949e055e601f67bb\nAuthor: Christian Brauner \u003cchristian.brauner@ubuntu.com\u003e\nDate:   Thu Jan 21 14:19:43 2021 +0100\n\n    fs: make helpers idmap mount aware\n    \n    Extend some inode methods with an additional user namespace argument. A\n    filesystem that is aware of idmapped mounts will receive the user\n    namespace the mount has been marked with. This can be used for\n    additional permission checking and also to enable filesystems to\n    translate between uids and gids if they need to. We have implemented all\n    relevant helpers in earlier patches.\n    \n    As requested we simply extend the exisiting inode method instead of\n    introducing new ones. This is a little more code churn but it\u0027s mostly\n    mechanical and doesnt\u0027t leave us with additional inode methods.\n\nSince Android doesn\u0027t use user ns, a fix would be to just pass in \u0026init_user_ns as first arg.\nNot 100% certain of it being correct generically.",
+      "revId": "7571df82dacbcc6ef8181c3ceeb03557450864dd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
