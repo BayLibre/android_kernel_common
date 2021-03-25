@@ -250,6 +250,11 @@ DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_wakeup,
 	TP_PROTO(struct rq *rq, struct task_struct *p, bool *preempt),
 	TP_ARGS(rq, p, preempt), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_wakeup_entity,
+	TP_PROTO(struct rq *rq, struct task_struct *p, struct sched_entity *se,
+		struct sched_entity *pse, bool *preempt),
+	TP_ARGS(rq, p, se, pse, preempt), 1);
+
 DECLARE_HOOK(android_vh_do_wake_up_sync,
 	TP_PROTO(struct wait_queue_head *wq_head, int *done),
 	TP_ARGS(wq_head, done));
