@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387546cc_28228989",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1345812
+      },
+      "writtenOn": "2021-03-29T07:01:26Z",
+      "side": 1,
+      "message": "Revision #1 failed on TH because:\n\n\u003e TreeHugger finished with: 17 passed, 3 failed, 5 skipped.\n\u003e Status: https://android-build.googleplex.com/builds/treetop/android-review/1655247?ref\u003dCOMMENT\u0026revision\u003d1\u0026workplanId\u003dL46900000846130376\n\n-\u003e\n[    4.703950] init: init first stage started!\n[    4.708345] init: Failed to parse kernel version none)\n[    4.714316] init: InitFatalReboot: signal 6\n\nbool LoadKernelModules(bool recovery, bool want_console, int\u0026 modules_loaded) {\n    struct utsname uts;\n    if (uname(\u0026uts)) {\n        LOG(FATAL) \u003c\u003c \"Failed to get kernel version.\";\n    }\n    int major, minor;\n    if (sscanf(uts.release, \"%d.%d\", \u0026major, \u0026minor) !\u003d 2) {\n        LOG(FATAL) \u003c\u003c \"Failed to parse kernel version \" \u003c\u003c uts.release;\n    }\n\nThe \"struct utsname\" is shared between kernel and userspace. So modify it only in kernel leads inconsistence between kernel and userspace.",
+      "revId": "917d17ae4c6cbc726ebdd237096907d2bd46b177",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
