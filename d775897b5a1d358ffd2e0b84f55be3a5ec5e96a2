@@ -177,6 +177,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa98ebd_5060173b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-03-30T21:10:47Z",
+      "side": 1,
+      "message": "I *think* the next step is to merge the iptables userspace changes.\nThen we need to take this and the actual idletimer changes - this time reapplied without touching the .h [except to remove the \u0027unused\u0027 comment\u0027 on send_nl_msg field] and without adding the \u0027revision \u003d 1\u0027 line.\n\nI took a first stab at this and it\u0027s very painful due to code duplication.  There must be some way to refactor this so everything isn\u0027t in two copies?  Or maybe we don\u0027t care about v0 and only need changes for v1???",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
