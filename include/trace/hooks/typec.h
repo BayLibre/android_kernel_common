@@ -12,6 +12,7 @@
  */
 struct tcpci;
 struct tcpci_data;
+struct tcpm_port;
 
 DECLARE_HOOK(android_vh_typec_tcpci_override_toggling,
 	TP_PROTO(struct tcpci *tcpci, struct tcpci_data *data, int *override_toggling),
@@ -31,6 +32,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_typec_tcpci_chk_contaminant,
 DECLARE_RESTRICTED_HOOK(android_rvh_typec_tcpci_get_vbus,
 	TP_PROTO(struct tcpci *tcpci, struct tcpci_data *data, int *vbus, int *bypass),
 	TP_ARGS(tcpci, data, vbus, bypass), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_typec_store_partner_src_caps,
+	TP_PROTO(struct tcpm_port *port, unsigned int *nr_source_caps, u32 (*source_caps)[7]),
+	TP_ARGS(port, nr_source_caps, source_caps), 1);
 
 #endif /* _TRACE_HOOK_UFSHCD_H */
 /* This part must be outside protection */
