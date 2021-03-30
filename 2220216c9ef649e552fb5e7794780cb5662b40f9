@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000009462300",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1658860?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "f789baf2_72228a4f",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 27,
+                "startChar": 1,
+                "endLine": 27,
+                "endChar": 1
+              },
+              "replacement": "Signed-off-by: Paul Lawrence \u003cpaullawrence@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "35f06f91_1a4e07b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-03-30T18:21:20Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Paul Lawrence \u003cpaullawrence@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 365596339 android-build.ayeaye-python-dispatcher_20210329.05_p0",
+      "revId": "2220216c9ef649e552fb5e7794780cb5662b40f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
