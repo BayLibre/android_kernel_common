@@ -161,6 +161,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c6b2752_be7c7ea5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-30T16:10:53Z",
+      "side": 1,
+      "message": "aosp/1649073 is merged now.",
+      "parentUuid": "07d3fb92_4b3f6944",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5345bb4_0e10258e",
         "filename": "net/netfilter/xt_IDLETIMER.c",
         "patchSetId": 4
@@ -519,6 +537,30 @@
       "side": 1,
       "message": "Should I modify the commit text to be reset_timer specific only given that Maze\u0027s change would fix the conflict resolution with upstream?",
       "parentUuid": "1c5a8f08_eaab35e0",
+      "range": {
+        "startLine": 749,
+        "startChar": 13,
+        "endLine": 749,
+        "endChar": 14
+      },
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15ce8df7_ee9236ac",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-03-30T16:10:53Z",
+      "side": 1,
+      "message": "Yes, once this is on top of maze\u0027s changes, feel free to rework the commit message as appropriate for the new context. Thanks.",
+      "parentUuid": "2252f781_4ac8e87f",
       "range": {
         "startLine": 749,
         "startChar": 13,
