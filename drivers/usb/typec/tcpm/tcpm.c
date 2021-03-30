@@ -32,6 +32,7 @@
 #include <linux/usb/typec_altmode.h>
 
 #include <trace/hooks/typec.h>
+
 #include <uapi/linux/sched/types.h>
 
 #define FOREACH_STATE(S)			\
@@ -2275,6 +2276,9 @@ static void tcpm_pd_data_request(struct tcpm_port *port,
 
 		tcpm_validate_caps(port, port->source_caps,
 				   port->nr_source_caps);
+
+		trace_android_vh_typec_store_partner_src_caps(port, &port->nr_source_caps,
+							      &port->source_caps);
 
 		/*
 		 * Adjust revision in subsequent message headers, as required,
