@@ -230,6 +230,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1817d52_08160679",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1319612
+      },
+      "writtenOn": "2021-03-31T10:47:08Z",
+      "side": 1,
+      "message": "\u003e Patch Set 4:\n\u003e \n\u003e They should be yes and yes.\n\u003e The old implementation removed v0 support and replaced it with v1 support.\n\u003e Since the alarm changes were upstreamed, upstream iptables now has\n\u003e both v0 and v1 support,\n\u003e so when we merge that in, we get v0 and v1 support, but then we need\n\u003e to add back send_nl_msg support (to v1 as it was before).\n\u003e \n\u003e On Tue, Mar 30, 2021 at 2:16 PM Todd Kjos (Gerrit)\n\u003e \u003cnoreply-gerritcodereview-TF_4_GLeyamGiVIMcD8SCQ\u003d\u003d@google.com\u003e wrote:\n\nSo, when you bring back the send_nl_msg support in Google kernel, the versioning would change to v1 and v2 isn\u0027t it?\n\n",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
