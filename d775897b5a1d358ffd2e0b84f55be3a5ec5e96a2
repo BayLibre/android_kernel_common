@@ -247,6 +247,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c87ebf98_96b08a86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-03-31T12:08:40Z",
+      "side": 1,
+      "message": "Yes, that was the worry, but luckily I managed to convince upstream to accept a one line patch to define the \u0027send_nl_msg\u0027 field in the upstream .h in the v1 struct.\nI still \u0027owe\u0027 them an actual implementation.  But for that I\u0027d like to understand what it does, and how to test it.\n\nSo upstream has the field, it just never uses it (and upstream iptables doesn\u0027t set it, but that\u0027s out for review: +1 reviews welcome, I can\u0027t seem to find anyone to actually do the reviews of the above)",
+      "parentUuid": "b1817d52_08160679",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
