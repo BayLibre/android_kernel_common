@@ -1946,6 +1946,7 @@ struct xhci_driver_overrides {
 	void (*reset_bandwidth)(struct usb_hcd *, struct usb_device *);
 	int (*update_hub_device)(struct usb_hcd *hcd, struct usb_device *hdev,
 			    struct usb_tt *tt, gfp_t mem_flags);
+	int (*address_device)(struct usb_hcd *hcd, struct usb_device *udev);
 };
 
 #define	XHCI_CFC_DELAY		10
