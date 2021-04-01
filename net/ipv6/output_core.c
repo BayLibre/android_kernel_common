@@ -129,12 +129,18 @@ EXPORT_SYMBOL(ip6_dst_hoplimit);
 
 int __ip6_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	int len;
 
 	len = skb->len - sizeof(struct ipv6hdr);
 	if (len > IPV6_MAXPLEN)
 		len = 0;
 	ipv6_hdr(skb)->payload_len = htons(len);
+
+  struct ipv6hdr *iph = ipv6_hdr(skb);
+	// printk(KERN_ALERT "&(iph->saddr) %pI6 \n", &(iph->saddr));
+	// printk(KERN_ALERT "&(iph->daddr) %pI6 \n", &(iph->daddr));
+
 	IP6CB(skb)->nhoff = offsetof(struct ipv6hdr, nexthdr);
 
 	/* if egress device is enslaved to an L3 master device pass the

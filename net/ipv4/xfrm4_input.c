@@ -167,6 +167,7 @@ drop:
 
 int xfrm4_rcv(struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	return xfrm4_rcv_spi(skb, ip_hdr(skb)->protocol, 0);
 }
 EXPORT_SYMBOL(xfrm4_rcv);

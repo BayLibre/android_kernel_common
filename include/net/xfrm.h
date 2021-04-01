@@ -425,11 +425,18 @@ static inline int xfrm_af2proto(unsigned int family)
 
 static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
 {
+	// printk(KERN_ALERT "DEBUG: &x->inner_mode %d %s %d \n",x->inner_mode.family,__FUNCTION__,__LINE__);
+	// printk(KERN_ALERT "DEBUG: &x->inner_mode_iaf %d %s %d \n",x->inner_mode_iaf.family,__FUNCTION__,__LINE__);
 	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
-	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
+	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6)) {
+		// printk(KERN_ALERT "DEBUG: inner_mode %s %d \n",__FUNCTION__,__LINE__);
 		return &x->inner_mode;
-	else
+	}
+
+	else {
+		// printk(KERN_ALERT "DEBUG: inner_mode_iaf %s %d \n",__FUNCTION__,__LINE__);
 		return &x->inner_mode_iaf;
+	}
 }
 
 struct xfrm_tmpl {
@@ -1680,7 +1687,7 @@ struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
 int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 		 struct xfrm_migrate *m, int num_bundles,
 		 struct xfrm_kmaddress *k, struct net *net,
-		 struct xfrm_encap_tmpl *encap);
+		 struct xfrm_encap_tmpl *encap, u32 if_id);
 #endif
 
 int km_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr, __be16 sport);

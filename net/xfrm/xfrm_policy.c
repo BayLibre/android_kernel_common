@@ -3030,6 +3030,7 @@ struct dst_entry *xfrm_lookup_with_ifid(struct net *net,
 					const struct sock *sk,
 					int flags, u32 if_id)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	struct xfrm_policy *pols[XFRM_POLICY_TYPE_MAX];
 	struct xfrm_dst *xdst;
 	struct dst_entry *dst, *route;
@@ -3090,6 +3091,7 @@ struct dst_entry *xfrm_lookup_with_ifid(struct net *net,
 			goto nopol;
 
 		xdst = xfrm_bundle_lookup(net, fl, family, dir, &xflo, if_id);
+			// printk(KERN_ALERT "DEBUG: if_id %d %s %d \n",if_id,__FUNCTION__, __LINE__);
 		if (xdst == NULL)
 			goto nopol;
 		if (IS_ERR(xdst)) {
@@ -4237,7 +4239,7 @@ static bool xfrm_migrate_selector_match(const struct xfrm_selector *sel_cmp,
 }
 
 static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *sel,
-						    u8 dir, u8 type, struct net *net)
+						    u8 dir, u8 type, struct net *net, u32 if_id)
 {
 	struct xfrm_policy *pol, *ret = NULL;
 	struct hlist_head *chain;
@@ -4247,7 +4249,9 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
 	chain = policy_hash_direct(net, &sel->daddr, &sel->saddr, sel->family, dir);
 	hlist_for_each_entry(pol, chain, bydst) {
 		if (xfrm_migrate_selector_match(sel, &pol->selector) &&
-		    pol->type == type) {
+		    pol->type == type && (if_id == 0 || pol->if_id == if_id)) {
+			// printk(KERN_ALERT "DEBUG: if_id %d %s %d \n",if_id,__FUNCTION__,__LINE__);
+			// printk(KERN_ALERT "DEBUG: pol->if_id %d %s %d \n",pol->if_id,__FUNCTION__,__LINE__);
 			ret = pol;
 			priority = ret->priority;
 			break;
@@ -4259,7 +4263,9 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
 			break;
 
 		if (xfrm_migrate_selector_match(sel, &pol->selector) &&
-		    pol->type == type) {
+		    pol->type == type && (if_id == 0 || pol->if_id == if_id)) {
+			// printk(KERN_ALERT "DEBUG: if_id %d %s %d \n",if_id,__FUNCTION__,__LINE__);
+			// printk(KERN_ALERT "DEBUG: pol->if_id %d %s %d \n",pol->if_id,__FUNCTION__,__LINE__);
 			ret = pol;
 			break;
 		}
@@ -4374,7 +4380,8 @@ static int xfrm_migrate_check(const struct xfrm_migrate *m, int num_migrate)
 int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 		 struct xfrm_migrate *m, int num_migrate,
 		 struct xfrm_kmaddress *k, struct net *net,
-		 struct xfrm_encap_tmpl *encap)
+		 struct xfrm_encap_tmpl *encap,
+		 u32 if_id)
 {
 	int i, err, nx_cur = 0, nx_new = 0;
 	struct xfrm_policy *pol = NULL;
@@ -4393,14 +4400,18 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 	}
 
 	/* Stage 1 - find policy */
-	if ((pol = xfrm_migrate_policy_find(sel, dir, type, net)) == NULL) {
+	if ((pol = xfrm_migrate_policy_find(sel, dir, type, net, if_id)) == NULL) {
 		err = -ENOENT;
+		// printk(KERN_ALERT "DEBUG: ENOENT %s %d \n",__FUNCTION__,__LINE__);
 		goto out;
 	}
+	// printk(KERN_ALERT "DEBUG: pol->if_id %d %s %d \n",pol->if_id,__FUNCTION__,__LINE__);
 
 	/* Stage 2 - find and update state(s) */
 	for (i = 0, mp = m; i < num_migrate; i++, mp++) {
-		if ((x = xfrm_migrate_state_find(mp, net))) {
+		if ((x = xfrm_migrate_state_find(mp, net)) && (if_id == 0 || x->if_id == if_id)) {
+			// printk(KERN_ALERT "DEBUG: x->if_id %d %s %d \n",x->if_id,__FUNCTION__,__LINE__);
+			// printk(KERN_ALERT "DEBUG: x->id.spi %d %s %d\n",be32_to_cpu(x->id.spi),__FUNCTION__,__LINE__);
 			x_cur[nx_cur] = x;
 			nx_cur++;
 			xc = xfrm_state_migrate(x, mp, encap);
@@ -4415,8 +4426,10 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 	}
 
 	/* Stage 3 - update policy */
-	if ((err = xfrm_policy_migrate(pol, m, num_migrate)) < 0)
+	if ((err = xfrm_policy_migrate(pol, m, num_migrate)) < 0) {
+		// printk(KERN_ALERT "DEBUG: err %d %s %d \n",err,__FUNCTION__,__LINE__);
 		goto restore_state;
+	}
 
 	/* Stage 4 - delete old state(s) */
 	if (nx_cur) {

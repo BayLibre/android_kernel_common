@@ -273,6 +273,8 @@ static int xfrm4_beet_encap_add(struct xfrm_state *x, struct sk_buff *skb)
  */
 static int xfrm4_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
+
 	struct dst_entry *dst = skb_dst(skb);
 	struct iphdr *top_iph;
 	int flags;
@@ -318,6 +320,8 @@ static int xfrm4_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
 #if IS_ENABLED(CONFIG_IPV6)
 static int xfrm6_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
+	// printk(KERN_ALERT "xc->id.daddr %pI6 \n", &(x->id.daddr));
 	struct dst_entry *dst = skb_dst(skb);
 	struct ipv6hdr *top_iph;
 	int dsfield;
@@ -681,6 +685,8 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
 	struct net *net = dev_net(skb_dst(skb)->dev);
 	struct xfrm_state *x = skb_dst(skb)->xfrm;
 	int err;
+
+	// printk(KERN_ALERT "x->outer_mode.family %d %s %d \n",x->outer_mode.family, __FUNCTION__, __LINE__);
 
 	switch (x->outer_mode.family) {
 	case AF_INET:

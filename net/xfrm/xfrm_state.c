@@ -957,21 +957,34 @@ static struct xfrm_state *__xfrm_state_lookup(struct net *net, u32 mark,
 {
 	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
 	struct xfrm_state *x;
+	// printk(KERN_ALERT "DEBUG: Passed spi %s %d %d\n",__FUNCTION__,__LINE__,be32_to_cpu(spi));
+	// if (family == 2) {
+	// 	printk(KERN_ALERT "DEBUG: Passed %s %pI4\n", "daddr", daddr);
+	// } else {
+	// 	printk(KERN_ALERT "DEBUG: Passed %s %pI6\n", "daddr", daddr);
+	// }
 
 	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
+		// if (x->id.spi == spi) {
+		// 	printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
+		// }
+
 		if (x->props.family != family ||
 		    x->id.spi       != spi ||
 		    x->id.proto     != proto ||
-		    !xfrm_addr_equal(&x->id.daddr, daddr, family))
+		    !xfrm_addr_equal(&x->id.daddr, daddr, family)) {
 			continue;
+		}
 
 		if ((mark & x->mark.m) != x->mark.v)
 			continue;
 		if (!xfrm_state_hold_rcu(x))
 			continue;
+		// printk(KERN_ALERT "FOUND: Passed %s %d \n",__FUNCTION__,__LINE__);
 		return x;
 	}
 
+  // printk(KERN_ALERT "NOT FOUND: Passed %s %d \n",__FUNCTION__,__LINE__);
 	return NULL;
 }
 
@@ -1649,6 +1662,20 @@ struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *n
 }
 EXPORT_SYMBOL(xfrm_migrate_state_find);
 
+void print_address(xfrm_address_t address, u16 *family, char *tag) {
+	if (*family == 2) {
+		printk(KERN_ALERT "DEBUG: Passed %s %pI4 \n", tag, &address);
+	} else {
+		printk(KERN_ALERT "DEBUG: Passed %s %pI6 \n", tag, &address);
+	}
+}
+
+int get_Iphdr_len(u16 family) {
+	if (family == 2) return sizeof(struct iphdr);
+
+	return sizeof(struct ipv6hdr);
+}
+
 struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
 				      struct xfrm_migrate *m,
 				      struct xfrm_encap_tmpl *encap)
@@ -1659,8 +1686,31 @@ struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
 	if (!xc)
 		return NULL;
 
+	printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
+	print_address(xc->id.daddr, &xc->props.family, "xc->id.daddr");
+
 	memcpy(&xc->id.daddr, &m->new_daddr, sizeof(xc->id.daddr));
 	memcpy(&xc->props.saddr, &m->new_saddr, sizeof(xc->props.saddr));
+	// printk(KERN_ALERT "props.header_len %d \n", xc->props.header_len);
+	// printk(KERN_ALERT "props.trailer_len %d \n", xc->props.trailer_len);
+	// printk(KERN_ALERT "sizeof(struct ipv6hdr) %d \n", sizeof(struct ipv6hdr));
+	// printk(KERN_ALERT "sizeof(struct iphdr) %d \n", sizeof(struct iphdr));
+	xc->props.family = m->new_family;
+	xc->props.header_len = x->props.header_len - get_Iphdr_len(x->props.family) + get_Iphdr_len(m->new_family);
+
+	xc->outer_mode.family = m->new_family;
+
+	if (xc->sel.family == AF_UNSPEC) {
+		xc->inner_mode = *xfrm_get_mode(xc->props.mode, xc->props.family);
+
+		int iafamily = AF_INET;
+		if (xc->props.family == AF_INET)
+			iafamily = AF_INET6;
+			xc->inner_mode_iaf = *xfrm_get_mode(xc->props.mode, iafamily);
+	} else {
+		// inner_mode is decided by x->props.mode and x->sel.family, Thus
+		// Nothing need to do here
+	}
 
 	/* add state */
 	if (xfrm_addr_equal(&x->id.daddr, &m->new_daddr, m->new_family)) {

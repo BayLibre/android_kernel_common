@@ -169,6 +169,7 @@ EXPORT_SYMBOL(xfrm6_rcv_tnl);
 
 int xfrm6_rcv(struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	return xfrm6_rcv_tnl(skb, NULL);
 }
 EXPORT_SYMBOL(xfrm6_rcv);

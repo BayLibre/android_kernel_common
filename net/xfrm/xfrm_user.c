@@ -726,6 +726,7 @@ static struct xfrm_state *xfrm_user_state_lookup(struct net *net,
 	if (xfrm_id_proto_match(p->proto, IPSEC_PROTO_ANY)) {
 		err = -ESRCH;
 		x = xfrm_state_lookup(net, mark, &p->daddr, p->spi, p->proto, p->family);
+		// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
 	} else {
 		xfrm_address_t *saddr = NULL;
 
@@ -756,9 +757,12 @@ static int xfrm_del_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
 	struct km_event c;
 	struct xfrm_usersa_id *p = nlmsg_data(nlh);
 
+	// printk(KERN_ALERT "DEBUG: Passed %s %d %d \n",__FUNCTION__,__LINE__);
 	x = xfrm_user_state_lookup(net, p, attrs, &err);
-	if (x == NULL)
+	if (x == NULL) {
+		// printk(KERN_ALERT "DEBUG: Passed err %s %d %d \n",__FUNCTION__,__LINE__,err);
 		return err;
+	}
 
 	if ((err = security_xfrm_state_delete(x)) != 0)
 		goto out;
@@ -781,6 +785,7 @@ static int xfrm_del_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
 out:
 	xfrm_audit_state_delete(x, err ? 0 : 1, true);
 	xfrm_state_put(x);
+	// printk(KERN_ALERT "DEBUG: Passed %s %d %d \n",__FUNCTION__,__LINE__,err);
 	return err;
 }
 
@@ -2579,6 +2584,7 @@ static int xfrm_do_migrate(struct sk_buff *skb, struct nlmsghdr *nlh,
 	int n = 0;
 	struct net *net = sock_net(skb->sk);
 	struct xfrm_encap_tmpl  *encap = NULL;
+	u32 if_id = 0;
 
 	if (attrs[XFRMA_MIGRATE] == NULL)
 		return -EINVAL;
@@ -2603,10 +2609,14 @@ static int xfrm_do_migrate(struct sk_buff *skb, struct nlmsghdr *nlh,
 			return -ENOMEM;
 	}
 
-	err = xfrm_migrate(&pi->sel, pi->dir, type, m, n, kmp, net, encap);
+	if (attrs[XFRMA_IF_ID])
+		if_id = nla_get_u32(attrs[XFRMA_IF_ID]);
+
+	err = xfrm_migrate(&pi->sel, pi->dir, type, m, n, kmp, net, encap, if_id);
 
 	kfree(encap);
 
+  printk(KERN_ALERT "DEBUG: Migration SUCCEED %d %s %d \n",err,__FUNCTION__,__LINE__);
 	return err;
 }
 #else

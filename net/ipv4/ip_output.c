@@ -98,7 +98,11 @@ EXPORT_SYMBOL(ip_send_check);
 
 int __ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	struct iphdr *iph = ip_hdr(skb);
+
+	// printk(KERN_ALERT "&(iph->saddr) %pI4 \n", &(iph->saddr));
+	// printk(KERN_ALERT "&(iph->daddr) %pI4 \n", &(iph->daddr));
 
 	iph->tot_len = htons(skb->len);
 	ip_send_check(iph);

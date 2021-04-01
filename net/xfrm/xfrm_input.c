@@ -265,6 +265,7 @@ static void ipip6_ecn_decapsulate(struct sk_buff *skb)
 
 static int xfrm6_remove_tunnel_encap(struct xfrm_state *x, struct sk_buff *skb)
 {
+	printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	int err = -EINVAL;
 
 	if (XFRM_MODE_SKB_CB(skb)->protocol != IPPROTO_IPV6)
@@ -333,6 +334,7 @@ xfrm_inner_mode_encap_remove(struct xfrm_state *x,
 			     const struct xfrm_mode *inner_mode,
 			     struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__, __LINE__);
 	switch (inner_mode->encap) {
 	case XFRM_MODE_BEET:
 		if (inner_mode->family == AF_INET)
@@ -354,7 +356,10 @@ xfrm_inner_mode_encap_remove(struct xfrm_state *x,
 
 static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
 	const struct xfrm_mode *inner_mode = &x->inner_mode;
+
+	// printk(KERN_ALERT "PROCEED: x->outer_mode.family %d %s %d \n",x->outer_mode.family,__FUNCTION__,__LINE__);
 
 	switch (x->outer_mode.family) {
 	case AF_INET:
@@ -369,10 +374,14 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
 	}
 
 	if (x->sel.family == AF_UNSPEC) {
+		// printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 		inner_mode = xfrm_ip2inner_mode(x, XFRM_MODE_SKB_CB(skb)->protocol);
+		// printk(KERN_ALERT "PROCEED: inner_mode->family %d %s %d \n",inner_mode->family,__FUNCTION__,__LINE__);
 		if (!inner_mode)
 			return -EAFNOSUPPORT;
 	}
+
+	// printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 
 	switch (inner_mode->family) {
 	case AF_INET:
@@ -435,6 +444,7 @@ static int xfrm_inner_mode_input(struct xfrm_state *x,
 				 const struct xfrm_mode *inner_mode,
 				 struct sk_buff *skb)
 {
+	// printk(KERN_ALERT "PROCEED: inner_mode->encap %d %s %d \n",inner_mode->encap,__FUNCTION__,__LINE__);
 	switch (inner_mode->encap) {
 	case XFRM_MODE_BEET:
 	case XFRM_MODE_TUNNEL:
@@ -458,6 +468,8 @@ static int xfrm_inner_mode_input(struct xfrm_state *x,
 
 int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
 {
+	printk(KERN_ALERT "DEBUG: Passed spi %s %d %d\n",__FUNCTION__,__LINE__,be32_to_cpu(spi));
+
 	const struct xfrm_state_afinfo *afinfo;
 	struct net *net = dev_net(skb->dev);
 	const struct xfrm_mode *inner_mode;
@@ -577,13 +589,16 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
 			goto drop;
 		}
 
+		printk(KERN_ALERT "spi %d %s %d\n",be32_to_cpu(spi),__FUNCTION__,__LINE__);
 		x = xfrm_state_lookup(net, mark, daddr, spi, nexthdr, family);
 		if (x == NULL) {
 			secpath_reset(skb);
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
 			xfrm_audit_state_notfound(skb, family, spi, seq);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop;
 		}
+		printk(KERN_ALERT "DEBUG: Passed %s %d \n",__FUNCTION__,__LINE__);
 
 		skb->mark = xfrm_smark_get(skb->mark, x);
 
@@ -592,11 +607,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
 		skb_dst_force(skb);
 		if (!skb_dst(skb)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop;
 		}
 
 lock:
 		spin_lock(&x->lock);
+		printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 
 		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
 			if (x->km.state == XFRM_STATE_ACQ)
@@ -604,21 +621,25 @@ lock:
 			else
 				XFRM_INC_STATS(net,
 					       LINUX_MIB_XFRMINSTATEINVALID);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop_unlock;
 		}
 
 		if ((x->encap ? x->encap->encap_type : 0) != encap_type) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMISMATCH);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop_unlock;
 		}
 
 		if (xfrm_replay_check(x, skb, seq)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATESEQERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop_unlock;
 		}
 
 		if (xfrm_state_check_expire(x)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEEXPIRED);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop_unlock;
 		}
 
@@ -626,8 +647,10 @@ lock:
 
 		if (xfrm_tunnel_check(skb, x, family)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop;
 		}
+		printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 
 		seq_hi = htonl(xfrm_replay_seqhi(x, seq));
 
@@ -641,9 +664,15 @@ lock:
 		else
 			nexthdr = x->type->input(x, skb);
 
-		if (nexthdr == -EINPROGRESS)
+    printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
+		printk(KERN_ALERT "PROCEED: nexthdr %d %s %d \n",nexthdr,__FUNCTION__,__LINE__);
+		if (nexthdr == -EINPROGRESS) {
+			printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			return 0;
+		}
+			
 resume:
+    printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 		dev_put(skb->dev);
 
 		spin_lock(&x->lock);
@@ -654,6 +683,7 @@ resume:
 				x->stats.integrity_failed++;
 			}
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEPROTOERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop_unlock;
 		}
 
@@ -662,8 +692,10 @@ resume:
 
 		if (xfrm_replay_recheck(x, skb, seq)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATESEQERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop_unlock;
 		}
+		printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 
 		xfrm_replay_advance(x, seq);
 
@@ -676,16 +708,20 @@ resume:
 
 		inner_mode = &x->inner_mode;
 
+    printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 		if (x->sel.family == AF_UNSPEC) {
 			inner_mode = xfrm_ip2inner_mode(x, XFRM_MODE_SKB_CB(skb)->protocol);
 			if (inner_mode == NULL) {
 				XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
+				printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 				goto drop;
 			}
 		}
 
+    printk(KERN_ALERT "PROCEED: Passed %s %d \n",__FUNCTION__,__LINE__);
 		if (xfrm_inner_mode_input(x, inner_mode, skb)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop;
 		}
 
@@ -704,14 +740,17 @@ resume:
 		err = xfrm_parse_spi(skb, nexthdr, &spi, &seq);
 		if (err < 0) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINHDRERROR);
+			printk(KERN_ALERT "DROPPED: Passed %s %d \n",__FUNCTION__,__LINE__);
 			goto drop;
 		}
 		crypto_done = false;
 	} while (!err);
 
 	err = xfrm_rcv_cb(skb, family, x->type->proto, 0);
-	if (err)
+	if (err) {
+		printk(KERN_ALERT "DEBUG: Passed err %s %d %d\n",__FUNCTION__,__LINE__,err);
 		goto drop;
+	}
 
 	nf_reset_ct(skb);
 
