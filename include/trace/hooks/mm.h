@@ -147,6 +147,13 @@ DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
 DECLARE_HOOK(android_vh_save_track_hash,
 	TP_PROTO(bool alloc, struct track *p),
 	TP_ARGS(alloc, p));
+DECLARE_HOOK(android_vh_cma_alloc_start,
+	TP_PROTO(s64 *ts),
+	TP_ARGS(ts));
+DECLARE_HOOK(android_vh_cma_alloc_finish,
+	TP_PROTO(struct cma *cma, struct page *page, unsigned long count,
+		 unsigned int align, gfp_t gfp_mask, s64 ts),
+	TP_ARGS(cma, page, count, align, gfp_mask, ts));
 DECLARE_HOOK(android_vh_rmqueue,
 	TP_PROTO(struct zone *preferred_zone, struct zone *zone,
 		unsigned int order, gfp_t gfp_flags,
