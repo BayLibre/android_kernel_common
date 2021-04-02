@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7eb264_e419ad4b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-04-02T07:26:05Z",
+      "side": 1,
+      "message": "why would you want to do that?  What is wrong with the current calculation of this value in the existing code?\n\nIf the code currently does not calculate this correctly, the change should be sent upstream to do so, right?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "e4fb941be56248699b7ebe56934719dbf46a137a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18bc68ee_bec67900",
+        "filename": "drivers/usb/host/xhci-mem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1565,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-04-02T07:26:05Z",
+      "side": 1,
+      "message": "why does this call not need to know `max_packet` as well?",
+      "range": {
+        "startLine": 1565,
+        "startChar": 3,
+        "endLine": 1565,
+        "endChar": 18
+      },
+      "revId": "e4fb941be56248699b7ebe56934719dbf46a137a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
