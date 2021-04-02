@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d30ba61_b3448090",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1475437
+      },
+      "writtenOn": "2021-04-02T07:33:06Z",
+      "side": 1,
+      "message": "xhci_ring_alloc function needs max_packet. I agree with your comment that should be sent upstream.",
+      "parentUuid": "9c7eb264_e419ad4b",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "e4fb941be56248699b7ebe56934719dbf46a137a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18bc68ee_bec67900",
         "filename": "drivers/usb/host/xhci-mem.c",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2021-04-02T07:26:05Z",
       "side": 1,
       "message": "why does this call not need to know `max_packet` as well?",
+      "range": {
+        "startLine": 1565,
+        "startChar": 3,
+        "endLine": 1565,
+        "endChar": 18
+      },
+      "revId": "e4fb941be56248699b7ebe56934719dbf46a137a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57bd1823_d30e9611",
+        "filename": "drivers/usb/host/xhci-mem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1565,
+      "author": {
+        "id": 1475437
+      },
+      "writtenOn": "2021-04-02T07:33:06Z",
+      "side": 1,
+      "message": "This call also use max_packet.\n\nxhci_ring_alloc(xhci, 2, 1, ring_type, max_packet, mem_flags)",
+      "parentUuid": "18bc68ee_bec67900",
       "range": {
         "startLine": 1565,
         "startChar": 3,
