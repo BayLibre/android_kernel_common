@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "21157577_bdd6e19d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1475437
+      },
+      "writtenOn": "2021-04-02T04:44:33Z",
+      "side": 1,
+      "message": "It means vendor specific device context. xhci in linux kernel uses the term \"container_ctx\" for device context.",
+      "parentUuid": "9849f8c0_15c531ab",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 58
+      },
+      "revId": "5e29f55050cdd3cbd5bd97f84a15f7bf78ee3627",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b813fb23_dd6a4d64",
         "filename": "drivers/usb/host/xhci.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-04-01T11:10:07Z",
       "side": 1,
       "message": "you forgot to document these new callbacks up above, so this will cause build warning errors when building the kernel documentation 😞",
+      "range": {
+        "startLine": 2249,
+        "startChar": 0,
+        "endLine": 2249,
+        "endChar": 83
+      },
+      "revId": "5e29f55050cdd3cbd5bd97f84a15f7bf78ee3627",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "574d934e_fc967e9c",
+        "filename": "drivers/usb/host/xhci.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2249,
+      "author": {
+        "id": 1475437
+      },
+      "writtenOn": "2021-04-02T04:44:33Z",
+      "side": 1,
+      "message": "I\u0027ve added document about new callbacks. Thanks for letting me recognize it",
+      "parentUuid": "b813fb23_dd6a4d64",
       "range": {
         "startLine": 2249,
         "startChar": 0,
