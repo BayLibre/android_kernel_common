@@ -301,6 +301,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "682a6ab3_26cd7d3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-04-02T20:14:52Z",
+      "side": 1,
+      "message": "There was a minor bug in the final patch (fixed in patchset 2), hopefully it\u0027ll pass TreeHugger and it\u0027ll be merged.\n\nIt turns out the very minimal netd idletimer tests I was relying on for testing was already disabled on 5.10 kernels and thus cuttlefish (which is 5.10 based) testing didn\u0027t catch it :-(\n\nI\u0027m also sending a minor refactor for the kernel code upstream.\nhttps://patchwork.ozlabs.org/project/netfilter-devel/patch/20210402201156.2789453-1-zenczykowski@gmail.com/",
+      "parentUuid": "36c741d9_d4bf5fb2",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5345bb4_0e10258e",
