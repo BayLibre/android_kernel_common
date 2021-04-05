@@ -39,7 +39,6 @@
   complete
   __const_udelay
   consume_skb
-  contig_page_data
   __cpuhp_remove_state
   __cpuhp_setup_state
   __cpuhp_state_add_instance
@@ -103,7 +102,6 @@
   free_netdev
   __free_pages
   free_pages
-  freezing_slow_path
   fs_bio_set
   get_device
   __get_free_pages
@@ -148,7 +146,6 @@
   kstrdup
   kstrtoint
   kstrtoull
-  kthread_create_on_node
   ktime_get
   ktime_get_mono_fast_ns
   ktime_get_raw_ts64
@@ -255,12 +252,10 @@
   __rcu_read_unlock
   refcount_dec_and_test_checked
   refcount_inc_checked
-  __refrigerator
   register_blkdev
   register_netdev
   register_netdevice
   register_netdevice_notifier
-  register_shrinker
   register_virtio_device
   register_virtio_driver
   remap_pfn_range
@@ -339,7 +334,6 @@
   __sysfs_match_string
   sysfs_remove_group
   sysfs_remove_link
-  system_freezing_cnt
   system_wq
   trace_define_field
   trace_event_buffer_commit
@@ -389,11 +383,7 @@
   vring_transport_features
   wait_for_completion
   __wake_up
-  wake_up_process
   __warn_printk
-
-# required by deferred-free-helper.ko
-  sched_setscheduler
 
 # required by dummy-cpufreq.ko
   cpufreq_generic_attr
@@ -589,6 +579,7 @@
   kstrtobool
   kstrtoll
   kstrtouint
+  kthread_create_on_node
   kthread_parkme
   kthread_should_park
   kthread_should_stop
@@ -618,6 +609,7 @@
   unregister_reboot_notifier
   unregister_sysctl_table
   vfs_fsync
+  wake_up_process
 
 # required by nd_virtio.ko
   bio_chain
@@ -639,9 +631,6 @@
   netdev_lower_state_changed
   netdev_pick_tx
   pci_bus_type
-
-# required by page_pool.ko
-  mod_node_page_state
 
 # required by pulse8-cec.ko
   cec_allocate_adapter
@@ -759,7 +748,12 @@
   snd_pcm_hw_constraint_msbits
 
 # required by system_heap.ko
+  deferred_free
   dma_buf_export
+  dmabuf_page_pool_alloc
+  dmabuf_page_pool_create
+  dmabuf_page_pool_destroy
+  dmabuf_page_pool_free
   dma_direct_sync_sg_for_cpu
   dma_heap_add
   dma_heap_get_dev
@@ -826,7 +820,6 @@
   request_firmware
 
 # required by virtio-gpu.ko
-  dma_buf_get_uuid
   dma_fence_match_context
   dma_fence_wait_timeout
   dma_resv_add_excl_fence
@@ -886,7 +879,6 @@
   drm_gem_object_lookup
   drm_gem_object_put_unlocked
   drm_gem_object_release
-  drm_gem_prime_export
   drm_gem_prime_fd_to_handle
   drm_gem_prime_handle_to_fd
   drm_gem_prime_mmap
@@ -914,7 +906,6 @@
   __sg_alloc_table_from_pages
   sync_file_get_fence
   __tracepoint_dma_fence_emit
-  __tracepoint_gpu_mem_total
   ttm_bo_add_to_lru
   ttm_bo_del_sub_from_lru
   ttm_bo_device_init
@@ -925,7 +916,6 @@
   ttm_bo_init_mm
   ttm_bo_kmap
   ttm_bo_kunmap
-  ttm_bo_manager_func
   ttm_bo_mmap
   ttm_bo_move_to_lru_tail
   ttm_bo_put
@@ -936,7 +926,6 @@
   ttm_eu_backoff_reservation
   ttm_eu_fence_buffer_objects
   ttm_eu_reserve_buffers
-  ttm_tt_init
   ww_mutex_lock_interruptible
   ww_mutex_unlock
 
@@ -977,6 +966,7 @@
   debugfs_remove
   device_destroy
   fasync_helper
+  freezing_slow_path
   hvc_alloc
   hvc_instantiate
   hvc_kick
@@ -986,10 +976,12 @@
   kill_fasync
   pipe_lock
   pipe_unlock
+  __refrigerator
   __register_chrdev
   single_open
   single_release
   __splice_from_pipe
+  system_freezing_cnt
   __unregister_chrdev
 
 # required by virtio_input.ko
@@ -1147,6 +1139,7 @@
 # required by zsmalloc.ko
   alloc_anon_inode
   __ClearPageMovable
+  contig_page_data
   dec_zone_page_state
   inc_zone_page_state
   init_pseudo
@@ -1160,5 +1153,6 @@
   _raw_read_unlock
   _raw_write_lock
   _raw_write_unlock
+  register_shrinker
   __SetPageMovable
   unregister_shrinker
