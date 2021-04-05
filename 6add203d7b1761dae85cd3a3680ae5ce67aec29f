@@ -46,6 +46,30 @@
       },
       "revId": "6add203d7b1761dae85cd3a3680ae5ce67aec29f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee423331_77912f20",
+        "filename": "include/trace/hooks/typec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-04-05T17:48:40Z",
+      "side": 1,
+      "message": "From the usb-pd specification:\n\"6.4.1 Capabilities Message\nA Capabilities Message (Source_Capabilities Message or Sink_Capabilities Message) Shall have at least one Power\nData Object for vSafe5V. The Capabilities Message Shall also contain the sending Port’s information followed by up to\n6 additional Power Data Objects.\"\n\nDo you prefer having this in code as a comment here ?",
+      "parentUuid": "b5b49a33_78bd1336",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 25
+      },
+      "revId": "6add203d7b1761dae85cd3a3680ae5ce67aec29f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
