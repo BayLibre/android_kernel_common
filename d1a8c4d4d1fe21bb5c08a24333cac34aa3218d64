@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b332424f_c63fac1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2021-04-06T14:24:30Z",
+      "side": 1,
+      "message": "Not sure I understand this CL, but: is the intent that the kernel would drop DHCP packets before they reach any packet socket?\n\nIf so, that seems dangerous, and not something we should accept, because it could interact negatively with the DHCP client, which is not OEM code but is in the networkstack mainline module. Instead tht change should be made in the DHCP client itself: feel free to upload a CL to DhcpClient.java.\n\nPlease let me know if I misunderstood.",
+      "revId": "d1a8c4d4d1fe21bb5c08a24333cac34aa3218d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
