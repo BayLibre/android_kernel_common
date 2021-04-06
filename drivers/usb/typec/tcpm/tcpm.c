@@ -3873,6 +3873,8 @@ static void run_state_machine(struct tcpm_port *port)
 	unsigned int msecs, timer_val_msecs;
 	enum tcpm_state upcoming_state;
 	const char *state_name;
+	u32 current_limit;
+	bool adjust;
 
 	port->enter_state = port->state;
 	switch (port->state) {
@@ -4260,6 +4262,12 @@ static void run_state_machine(struct tcpm_port *port)
 		if (port->vbus_present) {
 			u32 current_lim = tcpm_get_current_limit(port);
 
+			trace_android_vh_typec_tcpm_adj_current_limit(tcpm_states[SNK_DISCOVERY],
+								      port->current_limit,
+								      port->supply_voltage,
+								      port->pd_capable,
+								      &current_lim, &adjust);
+
 			if (port->slow_charger_loop && (current_lim > PD_P_SNK_STDBY_MW / 5))
 				current_lim = PD_P_SNK_STDBY_MW / 5;
 			tcpm_set_current_limit(port, current_lim, 5000);
@@ -4389,6 +4397,17 @@ static void run_state_machine(struct tcpm_port *port)
 					     TYPEC_PWR_MODE_PD);
 			port->pwr_opmode = TYPEC_PWR_MODE_PD;
 		}
+
+		current_limit = tcpm_get_current_limit(port);
+		adjust = false;
+		trace_android_vh_typec_tcpm_adj_current_limit(tcpm_states[SNK_READY],
+							      port->current_limit,
+							      port->supply_voltage,
+							      port->pd_capable,
+							      &current_limit,
+							      &adjust);
+		if (adjust)
+			tcpm_set_current_limit(port, current_limit, 5000);
 
 		if (!port->pd_capable && port->slow_charger_loop)
 			tcpm_set_current_limit(port, tcpm_get_current_limit(port), 5000);
