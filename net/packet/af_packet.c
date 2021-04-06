@@ -90,6 +90,7 @@
 #include <net/compat.h>
 
 #include "internal.h"
+#include <trace/hooks/dhcp_packet.h>
 
 /*
    Assumptions:
@@ -2057,6 +2058,7 @@ static int packet_rcv(struct sk_buff *skb, struct net_device *dev,
 	int skb_len = skb->len;
 	unsigned int snaplen, res;
 	bool is_drop_n_account = false;
+	int do_drop = 0;
 
 	if (skb->pkt_type == PACKET_LOOPBACK)
 		goto drop;
@@ -2135,6 +2137,9 @@ static int packet_rcv(struct sk_buff *skb, struct net_device *dev,
 
 	/* drop conntrack reference */
 	nf_reset_ct(skb);
+	trace_android_vh_check_dhcp_pkt(sk, skb, dev, pt, &do_drop);
+	if (do_drop)
+		goto drop;
 
 	spin_lock(&sk->sk_receive_queue.lock);
 	po->stats.stats1.tp_packets++;
