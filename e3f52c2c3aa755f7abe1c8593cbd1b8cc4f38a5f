@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba7ed5de_907ec6b8",
+        "filename": "kernel/cgroup/cgroup.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2793,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-04-06T07:42:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1df402f_f2507498",
+      "range": {
+        "startLine": 2793,
+        "startChar": 4,
+        "endLine": 2793,
+        "endChar": 5
+      },
+      "revId": "e3f52c2c3aa755f7abe1c8593cbd1b8cc4f38a5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27cd476d_e3071d08",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-04-06T06:26:19Z",
       "side": 1,
       "message": "what about later on, GKI enabled CONFIG_RT_GROUP_SCHED?",
+      "range": {
+        "startLine": 2796,
+        "startChar": 0,
+        "endLine": 2801,
+        "endChar": 6
+      },
+      "revId": "e3f52c2c3aa755f7abe1c8593cbd1b8cc4f38a5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b7c04de_b18d1c1c",
+        "filename": "kernel/cgroup/cgroup.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2801,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-04-06T07:42:14Z",
+      "side": 1,
+      "message": "Then this patch becomes nop wrt kernel threads issue :-)\n\nMay be we have to depend on task-\u003eno_cgroup_migration in scheduler to run these tasks through their RT groups are throttled. We do that already in some cases where tasks are PI boosted.",
+      "parentUuid": "27cd476d_e3071d08",
       "range": {
         "startLine": 2796,
         "startChar": 0,
