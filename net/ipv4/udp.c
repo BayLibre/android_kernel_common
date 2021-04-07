@@ -116,6 +116,7 @@
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ipv6_stubs.h>
 #endif
+#include <trace/hooks/udp_packet.h>
 
 struct udp_table udp_table __read_mostly;
 EXPORT_SYMBOL(udp_table);
@@ -2162,6 +2163,10 @@ static int udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 {
 	struct sk_buff *next, *segs;
 	int ret;
+	int do_drop = 0;
+	trace_android_vh_check_udp_pkt(sk, skb, &do_drop);
+	if (do_drop)
+		return -1;
 
 	if (likely(!udp_unexpected_gso(sk, skb)))
 		return udp_queue_rcv_one_skb(sk, skb);

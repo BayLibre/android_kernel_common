@@ -39,6 +39,7 @@
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/dhcp_packet.h>
 #include <trace/hooks/ufshcd.h>
+#include <trace/hooks/udp_packet.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -166,3 +167,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_prepare_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_update_sysfs);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_compl_command);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_udp_pkt);
