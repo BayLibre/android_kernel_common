@@ -221,9 +221,10 @@ endif
 $(if $(word 2, $(KBUILD_EXTMOD)), \
 	$(error building multiple external modules is not supported))
 
-export KBUILD_CHECKSRC KBUILD_EXTMOD
+export KBUILD_CHECKSRC KBUILD_EXTMOD KBUILD_MIXED_TREE
 
 extmod-prefix = $(if $(KBUILD_EXTMOD),$(KBUILD_EXTMOD)/)
+mixed-build-prefix = $(if $(KBUILD_MIXED_TREE),$(KBUILD_MIXED_TREE)/)
 
 ifeq ($(abs_srctree),$(abs_objtree))
         # building in the source tree
@@ -1244,8 +1245,10 @@ cmd_link-vmlinux =                                                 \
 	$(CONFIG_SHELL) $< "$(LD)" "$(KBUILD_LDFLAGS)" "$(LDFLAGS_vmlinux)";    \
 	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
 
+ifndef KBUILD_MIXED_TREE
 vmlinux: scripts/link-vmlinux.sh autoksyms_recursive $(vmlinux-deps) FORCE
 	+$(call if_changed,link-vmlinux)
+endif
 
 targets := vmlinux
 
@@ -1461,7 +1464,9 @@ endif
 # using awk while concatenating to the final file.
 
 PHONY += modules
-modules: $(if $(KBUILD_BUILTIN),vmlinux) modules_check modules_prepare
+# if KBUILD_BUILTIN && !KBUILD_MIXED_TREE, depend on vmlinux
+modules: $(if $(KBUILD_BUILTIN), $(if $(KBUILD_MIXED_TREE),,vmlinux))
+modules: modules_check modules_prepare
 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modpost
 
 PHONY += modules_check
@@ -1495,8 +1500,8 @@ _modinst_:
 		ln -s $(CURDIR) $(MODLIB)/build ; \
 	fi
 	@sed 's:^:kernel/:' modules.order > $(MODLIB)/modules.order
-	@cp -f modules.builtin $(MODLIB)/
-	@cp -f $(objtree)/modules.builtin.modinfo $(MODLIB)/
+	@cp -f $(mixed-build-prefix)modules.builtin $(MODLIB)/
+	@cp -f $(or $(mixed-build-prefix),$(objtree)/)modules.builtin.modinfo $(MODLIB)/
 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
 
 # This depmod is only for convenience to give the initial
@@ -1875,7 +1880,7 @@ descend: $(build-dirs)
 $(build-dirs): prepare
 	$(Q)$(MAKE) $(build)=$@ \
 	single-build=$(if $(filter-out $@/, $(filter $@/%, $(KBUILD_SINGLE_TARGETS))),1) \
-	need-builtin=1 need-modorder=1
+	$(if $(KBUILD_MIXED_TREE),,need-builtin=1) need-modorder=1
 
 clean-dirs := $(addprefix _clean_, $(clean-dirs))
 PHONY += $(clean-dirs) clean
@@ -2009,7 +2014,7 @@ quiet_cmd_rmfiles = $(if $(wildcard $(rm-files)),CLEAN   $(wildcard $(rm-files))
 # Run depmod only if we have System.map and depmod is executable
 quiet_cmd_depmod = DEPMOD  $(KERNELRELEASE)
       cmd_depmod = $(CONFIG_SHELL) $(srctree)/scripts/depmod.sh $(DEPMOD) \
-                   $(KERNELRELEASE)
+                   $(KERNELRELEASE) $(mixed-build-prefix)
 
 # read saved command lines for existing targets
 existing-targets := $(wildcard $(sort $(targets)))
