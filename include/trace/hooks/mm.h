@@ -25,6 +25,7 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_readahead_gfp_mask,
 DECLARE_HOOK(android_vh_cma_alloc_start,
 	TP_PROTO(s64 *ts),
 	TP_ARGS(ts));
+struct cma;
 DECLARE_HOOK(android_vh_cma_alloc_finish,
 	TP_PROTO(struct cma *cma, struct page *page, unsigned long count,
 		 unsigned int align, gfp_t gfp_mask, s64 ts),
