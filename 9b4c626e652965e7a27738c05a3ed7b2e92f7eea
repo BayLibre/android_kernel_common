@@ -22,6 +22,30 @@
       },
       "revId": "9b4c626e652965e7a27738c05a3ed7b2e92f7eea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd3c9a2a_a94a70e9",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-04-07T01:49:57Z",
+      "side": 1,
+      "message": "The handler can potentially schedule i2c transactions. Hence was migrated to restricted hook https://android-review.googlesource.com/c/kernel/common/+/1647627",
+      "parentUuid": "48dbbb76_e7a76c33",
+      "range": {
+        "startLine": 220,
+        "startChar": 37,
+        "endLine": 220,
+        "endChar": 40
+      },
+      "revId": "9b4c626e652965e7a27738c05a3ed7b2e92f7eea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
