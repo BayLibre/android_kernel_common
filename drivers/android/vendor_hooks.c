@@ -36,6 +36,7 @@
 #include <trace/hooks/timer.h>
 #include <trace/hooks/fpsimd.h>
 #include <trace/hooks/signal.h>
+#include <trace/hooks/hung_task.h>
 #include <trace/hooks/topology.h>
 #include <trace/hooks/ftrace_dump.h>
 
@@ -96,4 +97,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks_dn);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_format_check);
