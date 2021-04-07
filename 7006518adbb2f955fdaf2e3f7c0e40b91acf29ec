@@ -36,6 +36,43 @@
       "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: JeongHyeon Lee \u003cjhs2.lee@samsung.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 367019277 android-build.ayeaye-python-dispatcher_20210406.05_p0",
       "revId": "7006518adbb2f955fdaf2e3f7c0e40b91acf29ec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000009662443",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1667373?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "dff31941_cdfb3b9a",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 33,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: JeongHyeon Lee \u003cjhs2.lee@samsung.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "c0eae171_8635b14a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-04-07T11:45:56Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: JeongHyeon Lee \u003cjhs2.lee@samsung.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 367019277 android-build.ayeaye-python-dispatcher_20210406.05_p0",
+      "revId": "7006518adbb2f955fdaf2e3f7c0e40b91acf29ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
