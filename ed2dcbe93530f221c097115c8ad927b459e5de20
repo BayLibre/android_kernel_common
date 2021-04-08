@@ -52,6 +52,24 @@
       "parentUuid": "7c61f7e9_965f68c1",
       "revId": "ed2dcbe93530f221c097115c8ad927b459e5de20",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0953bab7_39e309cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1301696
+      },
+      "writtenOn": "2021-04-08T14:48:09Z",
+      "side": 1,
+      "message": "It is unlikely to be accepted upstream.\n\nHow about we creating a module and move android_work() there. Remove all android_ callbacks, and in every configfs_composite_ callbacks, install vendor hooks calling to our module to do the Android works?",
+      "parentUuid": "5b867af1_3837ff4a",
+      "revId": "ed2dcbe93530f221c097115c8ad927b459e5de20",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
