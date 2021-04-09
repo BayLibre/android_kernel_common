@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a04b2f9c_1f8045b5",
+        "filename": "include/linux/vmalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-09T18:23:38Z",
+      "side": 1,
+      "message": "If my calculations are correct then this changes vm_struct size from 64 bytes into 72 bytes which results in these objects being allocated from the next slab cache of 96 byte objects (see: https://elixir.bootlin.com/linux/latest/source/mm/slab_common.c#L607).\n\nSo we lose 96-64\u003d32 bytes on each vmalloc allocation. Checking /proc/vmallocinfo there are ~10K records there. So if my calculations are right, this one field will cost us ~320K. Are you sure it\u0027s worth it?",
+      "range": {
+        "startLine": 60,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 21
+      },
+      "revId": "bf87531d7bfaf4c838f2a9b503f800b17cd81f04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9193d106_e707534a",
+        "filename": "mm/slab.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-09T18:23:38Z",
+      "side": 1,
+      "message": "GKI does not enable CONFIG_SLUB_DEBUG, so \"struct track\"s are not allocated. Why do you need this additional field?\n\nIf you want to enable CONFIG_SLUB_DEBUG then IIUC this additional field will add 8 bytes to each slab object. That would be prohibitive.",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 6
+      },
+      "revId": "bf87531d7bfaf4c838f2a9b503f800b17cd81f04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
