@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000009750573",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1665282?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "04897616_0d927abc",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 31,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Pavankumar Kondeti \u003cquic_pkondeti@quicinc.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "8a6b20ee_65dc869c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-04-09T09:10:58Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Pavankumar Kondeti \u003cquic_pkondeti@quicinc.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 367432802 android-build.ayeaye-python-dispatcher_20210408.05_p0",
+      "revId": "ec6a9229218d68b9f9ab3a33511d9a9bc6dbe38e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000009750573",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1665282?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "2d3d31a4_02da9a27",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-04-09T09:10:58Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 367432802 android-build.ayeaye-python-dispatcher_20210408.05_p0",
+      "revId": "ec6a9229218d68b9f9ab3a33511d9a9bc6dbe38e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
