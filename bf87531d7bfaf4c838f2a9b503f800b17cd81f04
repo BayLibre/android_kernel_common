@@ -45,6 +45,30 @@
       },
       "revId": "bf87531d7bfaf4c838f2a9b503f800b17cd81f04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2adb2c63_9f32bb80",
+        "filename": "mm/slab.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-09T23:17:10Z",
+      "side": 1,
+      "message": "Actually, looks like CONFIG_SLUB_DEBUG\u003dy by default and CONFIG_SLUB_DEBUG_ON\u003dn.\nHave you assessed the memory consumption impact of this change?",
+      "parentUuid": "9193d106_e707534a",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 6
+      },
+      "revId": "bf87531d7bfaf4c838f2a9b503f800b17cd81f04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
