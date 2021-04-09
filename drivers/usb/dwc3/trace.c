@@ -9,3 +9,10 @@
 
 #define CREATE_TRACE_POINTS
 #include "trace.h"
+<<<<<<< HEAD   (ca55c6 ANDROID: gki_defconfig: set DEFAULT_MMAP_MIN_ADDR=32768)
+=======
+
+EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_ep_queue);
+EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_readl);
+EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_writel);
+>>>>>>> CHANGE (1f99f7 ANDROID: usb: dwc3: export tracepoint for dwc3 read/write)
