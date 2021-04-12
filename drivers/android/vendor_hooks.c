@@ -303,3 +303,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_task_comm);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_acct_update_power);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
