@@ -1298,3 +1298,21 @@
   register_shrinker
   __SetPageMovable
   unregister_shrinker
+
+# required by virtio_balloon.ko
+  adjust_managed_page_count
+  all_vm_events
+  balloon_aops
+  balloon_page_alloc
+  balloon_page_dequeue
+  balloon_page_enqueue
+  init_on_free
+  page_reporting_register
+  page_reporting_unregister
+  register_oom_notifier
+  si_mem_available
+  si_meminfo
+  system_freezable_wq
+  unregister_oom_notifier
+  vm_event_states
+  vm_node_stat
