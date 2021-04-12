@@ -55,6 +55,7 @@
 #include <trace/hooks/psi.h>
 #include <trace/hooks/selinux.h>
 #include <trace/hooks/libsha256.h>
+#include <trace/hooks/libaes.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -264,3 +265,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prepare_update_load_avg_se);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_finish_update_load_avg_se);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_is_initialized);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
