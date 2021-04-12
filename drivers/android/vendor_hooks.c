@@ -53,6 +53,7 @@
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/vmscan.h>
 #include <trace/hooks/psi.h>
+#include <trace/hooks/libsha256.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -247,3 +248,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_event);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_group);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
