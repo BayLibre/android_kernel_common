@@ -53,6 +53,7 @@
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/vmscan.h>
 #include <trace/hooks/psi.h>
+#include <trace/hooks/libsha256.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -257,3 +258,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_entity);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_entity_tick);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_enqueue_task_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
