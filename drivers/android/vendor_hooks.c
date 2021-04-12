@@ -320,3 +320,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
