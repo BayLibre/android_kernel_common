@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d87440e8_eee70f35",
+        "filename": "drivers/usb/host/xhci-mem.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-04-13T17:25:42Z",
+      "side": 1,
+      "message": "But yes, if your callbacks do not have this new hook, it will work differently.  Please implement it, or submit a patch to handle this situtuation.",
+      "parentUuid": "0a2ca86c_4d4978d7",
+      "range": {
+        "startLine": 381,
+        "startChar": 1,
+        "endLine": 382,
+        "endChar": 51
+      },
+      "revId": "3390f5d0dca3bbe5f3b191dd5142a581dfe882e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1ccd9f44_2c75ca14",
         "filename": "drivers/usb/host/xhci-mem.c",
         "patchSetId": 8
