@@ -31,12 +31,24 @@
 #include <trace/hooks/ufshcd.h>
 #include <trace/hooks/cgroup.h>
 #include <trace/hooks/sys.h>
+<<<<<<< HEAD   (6a8789 ANDROID: sched: move blocked reason trace point to cover all)
 #include <trace/hooks/iommu.h>
 #include <trace/hooks/net.h>
 #include <trace/hooks/timer.h>
 #include <trace/hooks/pm_domain.h>
 #include <trace/hooks/cpuidle_psci.h>
 #include <trace/hooks/vmscan.h>
+=======
+#include <trace/hooks/traps.h>
+#include <trace/hooks/avc.h>
+#include <trace/hooks/creds.h>
+#include <trace/hooks/module.h>
+#include <trace/hooks/memory.h>
+#include <trace/hooks/typec.h>
+#include <trace/hooks/gpiolib.h>
+#include <trace/hooks/signal.h>
+#include <trace/hooks/logbuf.h>
+>>>>>>> CHANGE (34fde6 ANDROID: logbuf: vendor hook for logbuf dump on oops)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -159,6 +171,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_check_preempt_tick);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_check_preempt_wakeup_ignore);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_replace_next_task_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_build_sched_domains);
+<<<<<<< HEAD   (6a8789 ANDROID: sched: move blocked reason trace point to cover all)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_update_topology_flags_workfn);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_balance_rt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_pick_next_entity);
@@ -174,3 +187,48 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_entity);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_entity_tick);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_enqueue_task_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task_fair);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_mutex_list_add);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_unlock_slowpath);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_wake_finish);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_undefinstr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_bad_mode);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_arm64_serror_panic);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_insert);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_node_delete);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_node_replace);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_lookup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_commit_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_override_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_revert_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_memory_x);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_memory_nx);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_memory_ro);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_memory_rw);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_module_permit_before_init);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_module_permit_after_init);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_est_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_meminfo_proc_show);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_mm);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_slowpath);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_mem);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_print_slabinfo_header);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cache_show);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpci_override_toggling);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_typec_tcpci_chk_contaminant);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_typec_tcpci_get_vbus);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_account_task_time);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gpio_block_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ep_create_wakeup_source);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_alloc_new_buf_locked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_reply);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_preset);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_adj_current_limit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+>>>>>>> CHANGE (34fde6 ANDROID: logbuf: vendor hook for logbuf dump on oops)
