@@ -38,6 +38,7 @@
 #include <trace/hooks/module.h>
 #include <trace/hooks/selinux.h>
 #include <trace/hooks/syscall_check.h>
+#include <trace/hooks/logbuf.h>
 #include <trace/hooks/remoteproc.h>
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/futex.h>
@@ -147,3 +148,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterrupt_tasks_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_hibernation_swap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_cpu_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
