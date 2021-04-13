@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d682d88f_c57254de",
+        "filename": "drivers/usb/host/xhci-mem.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1427064
+      },
+      "writtenOn": "2021-04-13T02:43:24Z",
+      "side": 1,
+      "message": "I think you should handle the condition if there is no hook implementation, or it will cause entire host mode function failed",
+      "range": {
+        "startLine": 381,
+        "startChar": 1,
+        "endLine": 382,
+        "endChar": 51
+      },
+      "revId": "3390f5d0dca3bbe5f3b191dd5142a581dfe882e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccd9f44_2c75ca14",
+        "filename": "drivers/usb/host/xhci-mem.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1427064
+      },
+      "writtenOn": "2021-04-13T02:43:24Z",
+      "side": 1,
+      "message": "get a return value, and maybe do previous work(dma_pool_zalloc) if there is no hook implementation. or ctx-\u003ebytes will always be NULL and cause host mode failed",
+      "range": {
+        "startLine": 545,
+        "startChar": 2,
+        "endLine": 545,
+        "endChar": 58
+      },
+      "revId": "3390f5d0dca3bbe5f3b191dd5142a581dfe882e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
