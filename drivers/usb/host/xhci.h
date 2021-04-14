@@ -2248,7 +2248,7 @@ struct xhci_vendor_ops {
 			struct xhci_virt_device *virt_dev, unsigned int ep_index);
 	int (*sync_dev_ctx)(struct xhci_hcd *xhci, unsigned int slot_id);
 	bool (*usb_offload_skip_urb)(struct xhci_hcd *xhci, struct urb *urb);
-	void (*alloc_container_ctx)(struct xhci_hcd *xhci, struct xhci_container_ctx *ctx,
+	int (*alloc_container_ctx)(struct xhci_hcd *xhci, struct xhci_container_ctx *ctx,
 				    int type, gfp_t flags);
 	void (*free_container_ctx)(struct xhci_hcd *xhci, struct xhci_container_ctx *ctx);
 };

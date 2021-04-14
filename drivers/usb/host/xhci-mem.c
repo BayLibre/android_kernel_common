@@ -373,13 +373,15 @@ static void xhci_vendor_free_container_ctx(struct xhci_hcd *xhci, struct xhci_co
 		ops->free_container_ctx(xhci, ctx);
 }
 
-static void xhci_vendor_alloc_container_ctx(struct xhci_hcd *xhci, struct xhci_container_ctx *ctx,
+static int xhci_vendor_alloc_container_ctx(struct xhci_hcd *xhci, struct xhci_container_ctx *ctx,
 					    int type, gfp_t flags)
 {
 	struct xhci_vendor_ops *ops = xhci_vendor_get_ops(xhci);
 
 	if (ops && ops->alloc_container_ctx)
-		ops->alloc_container_ctx(xhci, ctx, type, flags);
+		return ops->alloc_container_ctx(xhci, ctx, type, flags);
+
+	return -EINVAL;
 }
 
 static struct xhci_ring *xhci_vendor_alloc_transfer_ring(struct xhci_hcd *xhci,
@@ -541,8 +543,10 @@ struct xhci_container_ctx *xhci_alloc_container_ctx(struct xhci_hcd *xhci,
 	if (type == XHCI_CTX_TYPE_INPUT)
 		ctx->size += CTX_SIZE(xhci->hcc_params);
 
-	if (xhci_vendor_is_usb_offload_enabled(xhci, NULL, 0))
-		xhci_vendor_alloc_container_ctx(xhci, ctx, type, flags);
+	if (xhci_vendor_is_usb_offload_enabled(xhci, NULL, 0)) {
+		if (xhci_vendor_alloc_container_ctx(xhci, ctx, type, flags))
+			ctx->bytes = dma_pool_zalloc(xhci->device_pool, flags, &ctx->dma);
+	}
 	else
 		ctx->bytes = dma_pool_zalloc(xhci->device_pool, flags, &ctx->dma);
 
