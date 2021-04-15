@@ -61,6 +61,8 @@
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/cgroup.h>
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/cgroup.h>
 
 #define CGROUP_FILE_NAME_MAX		(MAX_CGROUP_TYPE_NAMELEN +	\
 					 MAX_CFTYPE_NAME + 2)
@@ -78,10 +80,11 @@
  * cgroup.h can use them for lockdep annotations.
  */
 DEFINE_MUTEX(cgroup_mutex);
+EXPORT_SYMBOL_GPL(cgroup_mutex);
+
 DEFINE_SPINLOCK(css_set_lock);
 
 #ifdef CONFIG_PROVE_RCU
-EXPORT_SYMBOL_GPL(cgroup_mutex);
 EXPORT_SYMBOL_GPL(css_set_lock);
 #endif
 
@@ -102,6 +105,7 @@ static DEFINE_SPINLOCK(cgroup_idr_lock);
 static DEFINE_SPINLOCK(cgroup_file_kn_lock);
 
 DEFINE_PERCPU_RWSEM(cgroup_threadgroup_rwsem);
+EXPORT_PER_CPU_SYMBOL(cgroup_threadgroup_rwsem);
 
 #define cgroup_assert_mutex_or_rcu_locked()				\
 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&			\
@@ -4739,14 +4743,17 @@ static ssize_t cgroup_procs_write(struct kernfs_open_file *of,
 {
 	struct cgroup *src_cgrp, *dst_cgrp;
 	struct task_struct *task;
-	ssize_t ret;
+	ssize_t ret = 0;
 	bool locked;
 
 	dst_cgrp = cgroup_kn_lock_live(of->kn, false);
 	if (!dst_cgrp)
 		return -ENODEV;
 
-	task = cgroup_procs_write_start(buf, true, &locked);
+	trace_android_rvh_cgroup_procs_write_start(buf, true, &locked, dst_cgrp, &task, &ret);
+	if (ret == 0)
+		task = cgroup_procs_write_start(buf, true, &locked);
+
 	ret = PTR_ERR_OR_ZERO(task);
 	if (ret)
 		goto out_unlock;

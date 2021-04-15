@@ -491,14 +491,17 @@ static ssize_t __cgroup1_procs_write(struct kernfs_open_file *of,
 	struct cgroup *cgrp;
 	struct task_struct *task;
 	const struct cred *cred, *tcred;
-	ssize_t ret;
+	ssize_t ret = 0;
 	bool locked;
 
 	cgrp = cgroup_kn_lock_live(of->kn, false);
 	if (!cgrp)
 		return -ENODEV;
 
-	task = cgroup_procs_write_start(buf, threadgroup, &locked);
+	trace_android_rvh_cgroup_procs_write_start(buf, threadgroup, &locked, cgrp, &task, &ret);
+	if (ret == 0)
+		task = cgroup_procs_write_start(buf, threadgroup, &locked);
+
 	ret = PTR_ERR_OR_ZERO(task);
 	if (ret)
 		goto out_unlock;
