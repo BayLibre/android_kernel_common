@@ -254,7 +254,14 @@ void cgroup_attach_lock(enum cgroup_attach_lock_mode lock_mode,
 void cgroup_attach_unlock(enum cgroup_attach_lock_mode lock_mode,
 			  struct task_struct *tsk);
 struct task_struct *cgroup_procs_write_start(char *buf, bool threadgroup,
+<<<<<<< HEAD   (43538614dc82d1ee4334ccb0ece5c98440d293f0 ANDROID: ABI: Adding OEM data to mutex/rwsem)
 					     enum cgroup_attach_lock_mode *lock_mode)
+||||||| BASE   (94ce385c22d53db1262a414157710e3cfe7ea6f6 ANDROID: ashmem_rust: return EINVAL on offset > size)
+					     bool *locked)
+=======
+					     bool *locked,
+					     struct cgroup *dst_cgrp);
+>>>>>>> CHANGE (b4b782127573033c56fdb9edc9a9fcda95138984 ANDROID: cgroup: Add android_rvh_cgroup_force_kthread_migrat)
 	__acquires(&cgroup_threadgroup_rwsem);
 void cgroup_procs_write_finish(struct task_struct *task,
 			       enum cgroup_attach_lock_mode lock_mode)

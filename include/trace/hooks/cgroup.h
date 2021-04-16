@@ -14,6 +14,22 @@ DECLARE_HOOK(android_vh_cgroup_attach,
 	TP_PROTO(struct cgroup_subsys *ss, struct cgroup_taskset *tset),
 	TP_ARGS(ss, tset));
 
+<<<<<<< HEAD   (43538614dc82d1ee4334ccb0ece5c98440d293f0 ANDROID: ABI: Adding OEM data to mutex/rwsem)
+||||||| BASE   (94ce385c22d53db1262a414157710e3cfe7ea6f6 ANDROID: ashmem_rust: return EINVAL on offset > size)
+DECLARE_RESTRICTED_HOOK(android_rvh_cpuset_fork,
+	TP_PROTO(struct task_struct *p, bool *inherit_cpus),
+	TP_ARGS(p, inherit_cpus), 1);
+
+=======
+DECLARE_RESTRICTED_HOOK(android_rvh_cgroup_force_kthread_migration,
+	TP_PROTO(struct task_struct *tsk, struct cgroup *dst_cgrp, bool *force_migration),
+	TP_ARGS(tsk, dst_cgrp, force_migration), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_cpuset_fork,
+	TP_PROTO(struct task_struct *p, bool *inherit_cpus),
+	TP_ARGS(p, inherit_cpus), 1);
+
+>>>>>>> CHANGE (b4b782127573033c56fdb9edc9a9fcda95138984 ANDROID: cgroup: Add android_rvh_cgroup_force_kthread_migrat)
 DECLARE_RESTRICTED_HOOK(android_rvh_cpu_cgroup_attach,
 	TP_PROTO(struct cgroup_taskset *tset),
 	TP_ARGS(tset), 1);

@@ -3055,10 +3055,18 @@ int cgroup_attach_task(struct cgroup *dst_cgrp, struct task_struct *leader,
 }
 
 struct task_struct *cgroup_procs_write_start(char *buf, bool threadgroup,
+<<<<<<< HEAD   (43538614dc82d1ee4334ccb0ece5c98440d293f0 ANDROID: ABI: Adding OEM data to mutex/rwsem)
 					     enum cgroup_attach_lock_mode *lock_mode)
+||||||| BASE   (94ce385c22d53db1262a414157710e3cfe7ea6f6 ANDROID: ashmem_rust: return EINVAL on offset > size)
+					     bool *threadgroup_locked)
+=======
+					     bool *threadgroup_locked,
+					     struct cgroup *dst_cgrp)
+>>>>>>> CHANGE (b4b782127573033c56fdb9edc9a9fcda95138984 ANDROID: cgroup: Add android_rvh_cgroup_force_kthread_migrat)
 {
 	struct task_struct *tsk;
 	pid_t pid;
+	bool force_migration = false;
 
 	if (kstrtoint(strstrip(buf), 0, &pid) || pid < 0)
 		return ERR_PTR(-EINVAL);
@@ -3078,13 +3086,16 @@ retry_find_task:
 	if (threadgroup)
 		tsk = tsk->group_leader;
 
+	if (tsk->flags & PF_KTHREAD)
+		trace_android_rvh_cgroup_force_kthread_migration(tsk, dst_cgrp, &force_migration);
+
 	/*
 	 * kthreads may acquire PF_NO_SETAFFINITY during initialization.
 	 * If userland migrates such a kthread to a non-root cgroup, it can
 	 * become trapped in a cpuset, or RT kthread may be born in a
 	 * cgroup with no rt_runtime allocated.  Just say no.
 	 */
-	if (tsk->no_cgroup_migration || (tsk->flags & PF_NO_SETAFFINITY)) {
+	if (!force_migration && (tsk->no_cgroup_migration || (tsk->flags & PF_NO_SETAFFINITY))) {
 		tsk = ERR_PTR(-EINVAL);
 		goto out_unlock_rcu;
 	}
@@ -5378,7 +5389,13 @@ static ssize_t __cgroup_procs_write(struct kernfs_open_file *of, char *buf,
 	if (!dst_cgrp)
 		return -ENODEV;
 
+<<<<<<< HEAD   (43538614dc82d1ee4334ccb0ece5c98440d293f0 ANDROID: ABI: Adding OEM data to mutex/rwsem)
 	task = cgroup_procs_write_start(buf, threadgroup, &lock_mode);
+||||||| BASE   (94ce385c22d53db1262a414157710e3cfe7ea6f6 ANDROID: ashmem_rust: return EINVAL on offset > size)
+	task = cgroup_procs_write_start(buf, threadgroup, &threadgroup_locked);
+=======
+	task = cgroup_procs_write_start(buf, threadgroup, &threadgroup_locked, dst_cgrp);
+>>>>>>> CHANGE (b4b782127573033c56fdb9edc9a9fcda95138984 ANDROID: cgroup: Add android_rvh_cgroup_force_kthread_migrat)
 	ret = PTR_ERR_OR_ZERO(task);
 	if (ret)
 		goto out_unlock;

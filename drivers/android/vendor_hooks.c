@@ -120,6 +120,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_prepare_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_update_sysfs);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_compl_command);
+<<<<<<< HEAD   (43538614dc82d1ee4334ccb0ece5c98440d293f0 ANDROID: ABI: Adding OEM data to mutex/rwsem)
+||||||| BASE   (94ce385c22d53db1262a414157710e3cfe7ea6f6 ANDROID: ashmem_rust: return EINVAL on offset > size)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_set_task);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_set_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cgroup_force_kthread_migration);
+>>>>>>> CHANGE (b4b782127573033c56fdb9edc9a9fcda95138984 ANDROID: cgroup: Add android_rvh_cgroup_force_kthread_migrat)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_syscall_prctl_finished);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_uic_command);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_send_tm_command);

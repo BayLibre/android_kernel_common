@@ -509,7 +509,13 @@ static ssize_t __cgroup1_procs_write(struct kernfs_open_file *of,
 	if (!cgrp)
 		return -ENODEV;
 
+<<<<<<< HEAD   (43538614dc82d1ee4334ccb0ece5c98440d293f0 ANDROID: ABI: Adding OEM data to mutex/rwsem)
 	task = cgroup_procs_write_start(buf, threadgroup, &lock_mode);
+||||||| BASE   (94ce385c22d53db1262a414157710e3cfe7ea6f6 ANDROID: ashmem_rust: return EINVAL on offset > size)
+	task = cgroup_procs_write_start(buf, threadgroup, &locked);
+=======
+	task = cgroup_procs_write_start(buf, threadgroup, &locked, cgrp);
+>>>>>>> CHANGE (b4b782127573033c56fdb9edc9a9fcda95138984 ANDROID: cgroup: Add android_rvh_cgroup_force_kthread_migrat)
 	ret = PTR_ERR_OR_ZERO(task);
 	if (ret)
 		goto out_unlock;
