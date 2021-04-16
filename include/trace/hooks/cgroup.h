@@ -12,6 +12,10 @@ struct task_struct;
 DECLARE_HOOK(android_vh_cgroup_set_task,
 	TP_PROTO(int ret, struct task_struct *task),
 	TP_ARGS(ret, task));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_cgroup_want_kthread_migration,
+	TP_PROTO(struct task_struct *tsk, struct cgroup *dst_cgrp, bool *want_migration),
+	TP_ARGS(tsk, dst_cgrp, want_migration), 1);
 #endif
 
 #include <trace/define_trace.h>
