@@ -192,6 +192,13 @@ struct mount_info {
 
 	/* sysfs node */
 	struct incfs_sysfs_node *mi_sysfs_node;
+
+	/* Last error information */
+	struct mutex	mi_le_mutex;
+	incfs_uuid_t	mi_le_file_id;
+	ktime_t		mi_le_time;
+	int		mi_le_page;
+	int		mi_le_errno;
 };
 
 struct data_file_block {
