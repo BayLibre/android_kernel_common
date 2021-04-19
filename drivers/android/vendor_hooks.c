@@ -104,16 +104,23 @@
 #include <trace/hooks/mmc.h>
 #include <trace/hooks/evdev.h>
 #include <trace/hooks/signal.h>
+<<<<<<< HEAD
 #include <trace/hooks/cfg80211.h>
 #include <trace/hooks/bl_hib.h>
 #include <trace/hooks/dm.h>
 #include <trace/hooks/direct_io.h>
 #include <trace/hooks/loop.h>
-/*
+	=======
+#include <trace/hooks/logbuf.h>
+#include <trace/hooks/vmscan.h>
+#include <trace/hooks/psi.h>
+
+	>>>>>>> b79d1815c400 (ANDROID: psi: Add vendor hooks for PSI tracing)
+	/*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
  */
-EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_refrigerator);
+	EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_refrigerator);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sk_alloc);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sk_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_nf_conn_alloc);
@@ -417,6 +424,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dm_update_clone_bio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ctl_dirty_rate);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_io_update_bio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_loop_prepare_cmd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_event);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_group);
 /*
  * For type visibility
  */
