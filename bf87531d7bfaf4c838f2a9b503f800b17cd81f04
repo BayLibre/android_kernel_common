@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da53c13d_6d21c4bb",
+        "filename": "include/linux/vmalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-20T20:26:51Z",
+      "side": 1,
+      "message": "You are correct. Indeed, with min object size of 128 this additional field should not increase memory consumption.",
+      "parentUuid": "8e16328b_8a5ead24",
+      "range": {
+        "startLine": 60,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 21
+      },
+      "revId": "bf87531d7bfaf4c838f2a9b503f800b17cd81f04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9193d106_e707534a",
         "filename": "mm/slab.h",
         "patchSetId": 2
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "The \"struct track\" is used for slab with the SLAB_STOREUSER flag, so the most slabs do not use this struct.\nWe only use it in a debug version.",
       "parentUuid": "2adb2c63_9f32bb80",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 6
+      },
+      "revId": "bf87531d7bfaf4c838f2a9b503f800b17cd81f04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbdcc024_08783344",
+        "filename": "mm/slab.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-20T20:26:51Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "40252cd4_156ea084",
       "range": {
         "startLine": 107,
         "startChar": 0,
