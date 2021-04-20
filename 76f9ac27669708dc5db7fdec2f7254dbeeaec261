@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93af2595_9ba88553",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2021-04-20T17:40:15Z",
+      "side": 1,
+      "message": "we\u0027ve never used prefixes for the struct field names. Why starting today?",
+      "range": {
+        "startLine": 565,
+        "startChar": 14,
+        "endLine": 565,
+        "endChar": 17
+      },
+      "revId": "76f9ac27669708dc5db7fdec2f7254dbeeaec261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38f4d873_15938958",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2021-04-20T17:40:15Z",
+      "side": 1,
+      "message": "do we use this for anything else? Curious if the userspace has to treat this field differently from other timestamps",
+      "range": {
+        "startLine": 569,
+        "startChar": 9,
+        "endLine": 569,
+        "endChar": 24
+      },
+      "revId": "76f9ac27669708dc5db7fdec2f7254dbeeaec261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e632e93_93dfda14",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2021-04-20T17:40:15Z",
+      "side": 1,
+      "message": "nit: can add a reserved u64 field just in case to make extending the struct a bit easier - 0 will simply mean \u0027not used\u0027. unless Greg doesn\u0027t like this idea, of course",
+      "range": {
+        "startLine": 578,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 2
+      },
+      "revId": "76f9ac27669708dc5db7fdec2f7254dbeeaec261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
