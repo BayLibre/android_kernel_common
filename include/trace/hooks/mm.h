@@ -7,6 +7,8 @@
 #if !defined(_TRACE_HOOK_MM_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _TRACE_HOOK_MM_H
 
+#include <linux/mm.h>
+#include <linux/oom.h>
 #include <trace/hooks/vendor_hooks.h>
 /*
 
@@ -34,6 +36,9 @@ DECLARE_HOOK(android_vh_mem_cgroup_alloc,
 DECLARE_HOOK(android_vh_mem_cgroup_free,
 	TP_PROTO(struct mem_cgroup *memcg),
 	TP_ARGS(memcg));
+DECLARE_HOOK(android_vh_oom_check_panic,
+	TP_PROTO(struct oom_control *oc, int *ret),
+	TP_ARGS(oc, ret));
 
 #endif /* _TRACE_HOOK_MM_H */
 
