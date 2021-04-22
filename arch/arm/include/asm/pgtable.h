@@ -196,6 +196,10 @@ static inline pte_t *pmd_page_vaddr(pmd_t pmd)
 #define pte_young(pte)		(pte_isset((pte), L_PTE_YOUNG))
 #define pte_exec(pte)		(pte_isclear((pte), L_PTE_XN))
 
+#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
+#define pte_special(pte)	(pte_isset((pte), L_PTE_SPECIAL))
+#endif
+
 #define pte_valid_user(pte)	\
 	(pte_valid(pte) && pte_isset((pte), L_PTE_USER) && pte_young(pte))
 
@@ -274,6 +278,13 @@ static inline pte_t pte_mknexec(pte_t pte)
 	return set_pte_bit(pte, __pgprot(L_PTE_XN));
 }
 
+#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
+static inline pte_t pte_mkspecial(pte_t pte)
+{
+	return set_pte_bit(pte, __pgprot(L_PTE_SPECIAL));
+}
+#endif
+
 static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 {
 	const pteval_t mask = L_PTE_XN | L_PTE_RDONLY | L_PTE_USER |
@@ -321,6 +332,26 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
  */
 #define HAVE_ARCH_UNMAPPED_AREA
 #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+
+#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL) && !defined(CONFIG_ARM_LPAE)
+#define HAVE_ARCH_PGD_NONE_OR_BAD
+static inline bool pgd_none_or_bad(pgd_t *pgd)
+{
+	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
+		return true;
+
+	return false;
+}
+
+#define HAVE_ARCH_P4D_NONE_OR_BAD
+static inline bool p4d_none_or_bad(p4d_t *p4d)
+{
+	if (p4d_none(*p4d) || unlikely(p4d_bad(*p4d)))
+		return true;
+
+	return false;
+}
+#endif
 
 #endif /* !__ASSEMBLY__ */
 
