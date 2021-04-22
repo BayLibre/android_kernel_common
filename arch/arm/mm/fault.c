@@ -201,15 +201,12 @@ static inline bool access_error(unsigned int fsr, struct vm_area_struct *vma)
 }
 
 static vm_fault_t __kprobes
-__do_page_fault(struct mm_struct *mm, unsigned long addr, unsigned int fsr,
+__do_page_fault(struct vm_area_struct *vma, unsigned long addr, unsigned int fsr,
 		unsigned int flags, struct task_struct *tsk,
 		struct pt_regs *regs)
 {
-	struct vm_area_struct *vma;
-	vm_fault_t fault;
+	vm_fault_t fault = VM_FAULT_BADMAP;
 
-	vma = find_vma(mm, addr);
-	fault = VM_FAULT_BADMAP;
 	if (unlikely(!vma))
 		goto out;
 	if (unlikely(vma->vm_start > addr))
@@ -244,6 +241,7 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 	int sig, code;
 	vm_fault_t fault;
 	unsigned int flags = FAULT_FLAG_DEFAULT;
+	struct vm_area_struct *vma = NULL;
 
 	if (kprobe_page_fault(regs, fsr))
 		return 0;
@@ -270,6 +268,14 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
 
 	/*
+	 * let's try a speculative page fault without grabbing the
+	 * mmap_sem.
+	 */
+	fault = handle_speculative_fault(mm, addr, flags, &vma);
+	if (fault != VM_FAULT_RETRY)
+		goto done;
+
+	/*
 	 * As per x86, we may deadlock here.  However, since the kernel only
 	 * validly references user space from well defined areas of the code,
 	 * we can bug out early if this is from code which shouldn't.
@@ -293,7 +299,9 @@ retry:
 #endif
 	}
 
-	fault = __do_page_fault(mm, addr, fsr, flags, tsk, regs);
+	if (!vma || !can_reuse_spf_vma(vma, addr))
+		vma = find_vma(mm, addr);
+	fault = __do_page_fault(vma, addr, fsr, flags, tsk, regs);
 
 	/* If we need to retry but a fatal signal is pending, handle the
 	 * signal first. We do not need to release the mmap_lock because
@@ -308,11 +316,20 @@ retry:
 	if (!(fault & VM_FAULT_ERROR) && flags & FAULT_FLAG_ALLOW_RETRY) {
 		if (fault & VM_FAULT_RETRY) {
 			flags |= FAULT_FLAG_TRIED;
+
+			/*
+			 * Do not try to reuse this vma and fetch it
+			 * again since we will release the mmap_sem.
+			 */
+			vma = NULL;
+
 			goto retry;
 		}
 	}
 
 	mmap_read_unlock(mm);
+
+done:
 
 	/*
 	 * Handle the "normal" case first - VM_FAULT_MAJOR
