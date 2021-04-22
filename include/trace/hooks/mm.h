@@ -7,6 +7,8 @@
 #if !defined(_TRACE_HOOK_MM_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _TRACE_HOOK_MM_H
 
+#include <linux/mm.h>
+#include <linux/oom.h>
 #include <trace/hooks/vendor_hooks.h>
 /*
 
@@ -37,6 +39,9 @@ struct compact_control;
 DECLARE_HOOK(android_vh_isolate_freepages,
 	TP_PROTO(struct compact_control *cc, struct page *page, bool *bypass),
 	TP_ARGS(cc, page, bypass));
+DECLARE_HOOK(android_vh_oom_check_panic,
+	TP_PROTO(struct oom_control *oc, int *ret),
+	TP_ARGS(oc, ret));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
