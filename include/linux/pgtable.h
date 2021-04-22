@@ -1440,6 +1440,32 @@ static inline bool arch_has_pfn_modify_check(void)
 /* Page-Table Modification Mask */
 typedef unsigned int pgtbl_mod_mask;
 
+#ifndef HAVE_ARCH_PGD_NONE_OR_BAD
+static inline bool pgd_none_or_bad(pgd_t *pgd)
+{
+	pgd_t pgdval;
+
+	pgdval = READ_ONCE(*pgd);
+	if (pgd_none(pgdval) || unlikely(pgd_bad(pgdval)))
+		return true;
+
+	return false;
+}
+#endif
+
+#ifndef HAVE_ARCH_P4D_NONE_OR_BAD
+static inline bool p4d_none_or_bad(p4d_t *p4d)
+{
+	p4d_t p4dval;
+
+	p4dval = READ_ONCE(*p4d);
+	if (p4d_none(p4dval) || unlikely(p4d_bad(p4dval)))
+		return true;
+
+	return false;
+}
+#endif
+
 #endif /* !__ASSEMBLY__ */
 
 #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)

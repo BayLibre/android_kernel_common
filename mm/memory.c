@@ -4885,8 +4885,8 @@ static vm_fault_t ___handle_speculative_fault(struct mm_struct *mm,
 #ifdef CONFIG_NUMA
 	struct mempolicy *pol;
 #endif
-	pgd_t *pgd, pgdval;
-	p4d_t *p4d, p4dval;
+	pgd_t *pgd;
+	p4d_t *p4d;
 	pud_t pudval;
 	int seq;
 	vm_fault_t ret;
@@ -4963,13 +4963,11 @@ static vm_fault_t ___handle_speculative_fault(struct mm_struct *mm,
 	 */
 	local_irq_disable();
 	pgd = pgd_offset(mm, address);
-	pgdval = READ_ONCE(*pgd);
-	if (pgd_none(pgdval) || unlikely(pgd_bad(pgdval)))
+	if (pgd_none_or_bad(pgd))
 		goto out_walk;
 
 	p4d = p4d_offset(pgd, address);
-	p4dval = READ_ONCE(*p4d);
-	if (p4d_none(p4dval) || unlikely(p4d_bad(p4dval)))
+	if (p4d_none_or_bad(p4d))
 		goto out_walk;
 
 	vmf.pud = pud_offset(p4d, address);
