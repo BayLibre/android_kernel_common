@@ -24,9 +24,9 @@ DECLARE_RESTRICTED_HOOK(android_rvh_select_fallback_rq,
 	TP_ARGS(cpu, p, new_cpu), 1);
 
 struct rq;
-DECLARE_HOOK(android_vh_scheduler_tick,
+DECLARE_RESTRICTED_HOOK(android_rvh_scheduler_tick,
 	TP_PROTO(struct rq *rq),
-	TP_ARGS(rq));
+	TP_ARGS(rq), 1);
 
 DECLARE_RESTRICTED_HOOK(android_rvh_enqueue_task,
 	TP_PROTO(struct rq *rq, struct task_struct *p),
