@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92d8f098_4d90ac03",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5074,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-23T01:08:17Z",
+      "side": 1,
+      "message": "The unconditional trace here would trigger on every allocation, not only on costly allocations. You need a check involving PAGE_ALLOC_COSTLY_ORDER if your intentions are to trace only costly allocations.",
+      "range": {
+        "startLine": 5074,
+        "startChar": 1,
+        "endLine": 5074,
+        "endChar": 30
+      },
+      "revId": "b22d9419173d8ee3b498c7ba608a9345ce44c37f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
