@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff9cf43_2ad7d9dc",
+        "filename": "mm/gup.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-04-27T19:04:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ac2d5c5a_2d04b13f",
+      "range": {
+        "startLine": 150,
+        "startChar": 1,
+        "endLine": 150,
+        "endChar": 25
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "965fa2fd_97381b3d",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Good spot.\n\nActually, it was used for page_owner to give a handle for those pages who were allocated before page_owner initialized.\nHowever, since this is not page_owner, we don\u0027t need it. Let\u0027s remove it.",
       "parentUuid": "965fa2fd_97381b3d",
+      "range": {
+        "startLine": 80,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 13
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "715b663e_7a45c441",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-04-27T19:04:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b69bfc81_b49e4c54",
       "range": {
         "startLine": 80,
         "startChar": 1,
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "There are more race in design but just allow rather than closing the race due to performance stuff based on usecase(i.e., debugging aid).\nLet\u0027s just leave it since there are many cases we need to note once we start to enumerate them.",
       "parentUuid": "59fa49df_a0c6b093",
+      "range": {
+        "startLine": 397,
+        "startChar": 4,
+        "endLine": 397,
+        "endChar": 43
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5c2b071_d8f92b3f",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-04-27T19:04:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "136c7294_5975d131",
       "range": {
         "startLine": 397,
         "startChar": 4,
