@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52690f1d_c0f275f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-04-27T08:46:34Z",
+      "side": 1,
+      "message": "This is mixing 2 things in one patch, please break up into a patch series (one for the exports, and one for the hook.)\n\nIt\u0027s not obvious why if you have a hook in the function, the call needs to be exported, please explain what code will be calling these core mm functions?  No driver should ever be doing this.",
+      "revId": "db833ea26a199c126b02c80760639f2572c1e50a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "623356f0_2feaf551",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1247,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-04-27T08:46:34Z",
+      "side": 1,
+      "message": "must be EXPORT_SYMBOL_GPL() if this is to be done.",
+      "range": {
+        "startLine": 1247,
+        "startChar": 0,
+        "endLine": 1247,
+        "endChar": 13
+      },
+      "revId": "db833ea26a199c126b02c80760639f2572c1e50a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beb9e422_68396012",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-04-27T08:46:34Z",
+      "side": 1,
+      "message": "why does this need to be exported?\n\nAnd again _GPL() please.",
+      "range": {
+        "startLine": 719,
+        "startChar": 0,
+        "endLine": 719,
+        "endChar": 13
+      },
+      "revId": "db833ea26a199c126b02c80760639f2572c1e50a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
