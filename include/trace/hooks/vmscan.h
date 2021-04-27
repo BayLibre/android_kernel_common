@@ -52,6 +52,9 @@ DECLARE_HOOK(android_vh_tune_scan_control,
 DECLARE_HOOK(android_vh_page_referenced_check_bypass,
 	TP_PROTO(struct folio *folio, unsigned long nr_to_scan, int lru, bool *bypass),
 	TP_ARGS(folio, nr_to_scan, lru, bypass));
+DECLARE_HOOK(android_vh_shrink_slab_bypass,
+	TP_PROTO(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg, int priority, bool *bypass),
+	TP_ARGS(gfp_mask, nid, memcg, priority, bypass));
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
