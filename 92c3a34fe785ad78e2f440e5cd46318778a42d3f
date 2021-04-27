@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd0aa69_e5df9e06",
+        "filename": "mm/gup.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-27T18:02:50Z",
+      "side": 1,
+      "message": "I think I asked before why we reset page pinner only for FOLL_GET and the answer IIRC was that for FOLL_PIN we do not set page pinner. However try_get_compound_head sets page pinner and it is called on L113 for FOLL_PIN. What am I missing?",
+      "range": {
+        "startLine": 150,
+        "startChar": 1,
+        "endLine": 150,
+        "endChar": 25
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "965fa2fd_97381b3d",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-27T18:02:50Z",
+      "side": 1,
+      "message": "It seems early_handle is not used after stack creation. What is it for?",
+      "range": {
+        "startLine": 80,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 13
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a2df422_4cc6fb7f",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-27T18:02:50Z",
+      "side": 1,
+      "message": "nit: extra space",
+      "range": {
+        "startLine": 395,
+        "startChar": 3,
+        "endLine": 395,
+        "endChar": 4
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59fa49df_a0c6b093",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-04-27T18:02:50Z",
+      "side": 1,
+      "message": "I would add that if lt_pinner.index changes in between reads the same record might be reported more than once, but this is ok.",
+      "range": {
+        "startLine": 397,
+        "startChar": 4,
+        "endLine": 397,
+        "endChar": 43
+      },
+      "revId": "92c3a34fe785ad78e2f440e5cd46318778a42d3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
