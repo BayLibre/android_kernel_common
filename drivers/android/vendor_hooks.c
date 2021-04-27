@@ -114,6 +114,24 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpuidle_psci_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpufreq_transition);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_show_max_freq);
+<<<<<<< HEAD   (17142d ANDROID: iommu: add vendor hooks for change dma property)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_referenced_check_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_drain_all_pages_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_drain_all_pages_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pcplist_add_cma_pages_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_irqtime_account_process_tick);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_slab_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dup_task_struct);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_after_enqueue_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_after_dequeue_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_enqueue_entity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_entity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_entity_tick);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_enqueue_task_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task_fair);
+>>>>>>> CHANGE (348b14 ANDROID: vendor_hooks: bypass shrink slab)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_insert);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_delete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);
