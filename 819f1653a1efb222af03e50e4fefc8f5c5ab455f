@@ -16,6 +16,24 @@
       "message": "\u0027as soon as\u0027 is a little confusing.\nper my understanding, it is \u0027at a later point after all cpu finished init it\u0027s feature\u0027s reg read. not as soon as detect the first cpu that have the mismatch el0 32bit support.\u0027",
       "revId": "819f1653a1efb222af03e50e4fefc8f5c5ab455f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5311fba9_5ba081ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2021-04-28T08:10:42Z",
+      "side": 1,
+      "message": "I see what you mean, but this is where we flip the static key, so I would argue that it\u0027s the point that we detect the mismatch.",
+      "parentUuid": "6a71cf9f_e6ea2c13",
+      "revId": "819f1653a1efb222af03e50e4fefc8f5c5ab455f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
