@@ -255,7 +255,13 @@ struct prctl_mm_map {
 # define SYSCALL_DISPATCH_FILTER_ALLOW	0
 # define SYSCALL_DISPATCH_FILTER_BLOCK	1
 
+<<<<<<< HEAD   (9d00e6 ANDROID: Incremental fs: Fix pseudo-file attributes)
 #define PR_SET_VMA		0x53564d41
 # define PR_SET_VMA_ANON_NAME		0
+=======
+/* Set/get enabled arm64 pointer authentication keys */
+#define PR_PAC_SET_ENABLED_KEYS		60
+#define PR_PAC_GET_ENABLED_KEYS		61
+>>>>>>> BRANCH (acd3d2 Merge tag 'fixes-v5.13' of git://git.kernel.org/pub/scm/linu)
 
 #endif /* _LINUX_PRCTL_H */

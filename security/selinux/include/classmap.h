@@ -242,11 +242,18 @@ struct security_class_mapping secclass_map[] = {
 	{ "infiniband_endport",
 	  { "manage_subnet", NULL } },
 	{ "bpf",
-	  {"map_create", "map_read", "map_write", "prog_load", "prog_run"} },
+	  { "map_create", "map_read", "map_write", "prog_load", "prog_run",
+	    NULL } },
 	{ "xdp_socket",
 	  { COMMON_SOCK_PERMS, NULL } },
 	{ "perf_event",
+<<<<<<< HEAD   (9d00e6 ANDROID: Incremental fs: Fix pseudo-file attributes)
 	  {"open", "cpu", "kernel", "tracepoint", "read", "write"} },
+=======
+	  { "open", "cpu", "kernel", "tracepoint", "read", "write", NULL } },
+	{ "lockdown",
+	  { "integrity", "confidentiality", NULL } },
+>>>>>>> BRANCH (acd3d2 Merge tag 'fixes-v5.13' of git://git.kernel.org/pub/scm/linu)
 	{ "anon_inode",
 	  { COMMON_FILE_PERMS, NULL } },
 	{ NULL }
