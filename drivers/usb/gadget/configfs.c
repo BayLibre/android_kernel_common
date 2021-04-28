@@ -6,34 +6,35 @@
 #include <linux/nls.h>
 #include <linux/usb/composite.h>
 #include <linux/usb/gadget_configfs.h>
+#include <trace/hooks/usb.h>
 #include "configfs.h"
 #include "u_f.h"
 #include "u_os_desc.h"
 
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
-#include <linux/platform_device.h>
-#include <linux/kdev_t.h>
-#include <linux/usb/ch9.h>
+//#include <linux/platform_device.h>
+//#include <linux/kdev_t.h>
+//#include <linux/usb/ch9.h>
 
-#ifdef CONFIG_USB_CONFIGFS_F_ACC
-extern int acc_ctrlrequest(struct usb_composite_dev *cdev,
-				const struct usb_ctrlrequest *ctrl);
-void acc_disconnect(void);
-#endif
-static struct class *android_class;
-static struct device *android_device;
-static int index;
-static int gadget_index;
+//#ifdef CONFIG_USB_CONFIGFS_F_ACC
+//extern int acc_ctrlrequest(struct usb_composite_dev *cdev,
+//				const struct usb_ctrlrequest *ctrl);
+//void acc_disconnect(void);
+//#endif
+//static struct class *android_class;
+//static struct device *android_device;
+//static int index;
+//static int gadget_index;
 
-struct device *create_function_device(char *name)
-{
-	if (android_device && !IS_ERR(android_device))
-		return device_create(android_class, android_device,
-			MKDEV(0, index++), NULL, name);
-	else
-		return ERR_PTR(-EINVAL);
-}
-EXPORT_SYMBOL_GPL(create_function_device);
+//struct device *create_function_device(char *name)
+//{
+//	if (android_device && !IS_ERR(android_device))
+//		return device_create(android_class, android_device,
+//			MKDEV(0, index++), NULL, name);
+//	else
+//		return ERR_PTR(-EINVAL);
+//}
+//EXPORT_SYMBOL_GPL(create_function_device);
 #endif
 
 int check_user_usb_string(const char *name,
@@ -78,10 +79,10 @@ struct gadget_info {
 	spinlock_t spinlock;
 	bool unbind;
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
-	bool connected;
-	bool sw_connected;
-	struct work_struct work;
-	struct device *dev;
+//	bool connected;
+//	bool sw_connected;
+//	struct work_struct work;
+//	struct device *dev;
 #endif
 };
 
@@ -630,6 +631,7 @@ static struct config_group *function_make(
 	*instance_name = '\0';
 	instance_name++;
 
+	pr_err("[kyle] func_name: %s\n", func_name);
 	fi = usb_get_function_instance(func_name);
 	if (IS_ERR(fi))
 		return ERR_CAST(fi);
@@ -1455,6 +1457,7 @@ err_comp_cleanup:
 }
 
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
+#if 0
 static void android_work(struct work_struct *data)
 {
 	struct gadget_info *gi = container_of(data, struct gadget_info, work);
@@ -1504,6 +1507,7 @@ static void android_work(struct work_struct *data)
 	}
 }
 #endif
+#endif
 
 static void configfs_composite_unbind(struct usb_gadget *gadget)
 {
@@ -1530,7 +1534,8 @@ static void configfs_composite_unbind(struct usb_gadget *gadget)
 	spin_unlock_irqrestore(&gi->spinlock, flags);
 }
 
-#ifdef CONFIG_USB_CONFIGFS_UEVENT
+//#ifdef CONFIG_USB_CONFIGFS_UEVENT
+#if 0
 static int android_setup(struct usb_gadget *gadget,
 			const struct usb_ctrlrequest *c)
 {
@@ -1601,8 +1606,8 @@ static void android_disconnect(struct usb_gadget *gadget)
 	schedule_work(&gi->work);
 	composite_disconnect(gadget);
 }
-
-#else // CONFIG_USB_CONFIGFS_UEVENT
+#endif
+//#else // CONFIG_USB_CONFIGFS_UEVENT
 
 static int configfs_composite_setup(struct usb_gadget *gadget,
 		const struct usb_ctrlrequest *ctrl)
@@ -1624,7 +1629,15 @@ static int configfs_composite_setup(struct usb_gadget *gadget,
 		return 0;
 	}
 
-	ret = composite_setup(gadget, ctrl);
+	ret = -EOPNOTSUPP;
+	// kyle: vendor_hook here
+	trace_android_vh_usb_configfs_pre_setup(&gi->available_func, ctrl, &ret);
+	if (ret < 0)
+		ret = composite_setup(gadget, ctrl);
+
+	// kyle: vendor_hook here
+	trace_android_vh_usb_configfs_post_setup(&ctrl->bRequest);
+
 	spin_unlock_irqrestore(&gi->spinlock, flags);
 	return ret;
 }
@@ -1646,6 +1659,9 @@ static void configfs_composite_disconnect(struct usb_gadget *gadget)
 		spin_unlock_irqrestore(&gi->spinlock, flags);
 		return;
 	}
+
+	// kyle: vendor_hook here
+	trace_android_vh_usb_configfs_pre_disconnect(cdev);
 
 	composite_disconnect(gadget);
 	spin_unlock_irqrestore(&gi->spinlock, flags);
@@ -1669,11 +1685,14 @@ static void configfs_composite_reset(struct usb_gadget *gadget)
 		return;
 	}
 
+	// kyle: vendor_hook here
+	trace_android_vh_usb_configfs_pre_disconnect(cdev);
+
 	composite_reset(gadget);
 	spin_unlock_irqrestore(&gi->spinlock, flags);
 }
 
-#endif // CONFIG_USB_CONFIGFS_UEVENT
+//#endif // CONFIG_USB_CONFIGFS_UEVENT
 
 static void configfs_composite_suspend(struct usb_gadget *gadget)
 {
@@ -1723,15 +1742,15 @@ static const struct usb_gadget_driver configfs_driver_template = {
 	.bind           = configfs_composite_bind,
 	.unbind         = configfs_composite_unbind,
 
-#ifdef CONFIG_USB_CONFIGFS_UEVENT
-	.setup          = android_setup,
-	.reset          = android_disconnect,
-	.disconnect     = android_disconnect,
-#else
+//#ifdef CONFIG_USB_CONFIGFS_UEVENT
+//	.setup          = android_setup,
+//	.reset          = android_disconnect,
+//	.disconnect     = android_disconnect,
+//#else
 	.setup          = configfs_composite_setup,
 	.reset          = configfs_composite_reset,
 	.disconnect     = configfs_composite_disconnect,
-#endif
+//#endif
 	.suspend	= configfs_composite_suspend,
 	.resume		= configfs_composite_resume,
 
@@ -1743,6 +1762,7 @@ static const struct usb_gadget_driver configfs_driver_template = {
 	.match_existing_only = 1,
 };
 
+#if 0
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
 static ssize_t state_show(struct device *pdev, struct device_attribute *attr,
 			char *buf)
@@ -1827,12 +1847,14 @@ static inline void android_device_destroy(struct gadget_info *gi)
 {
 }
 #endif
+#endif
 
 static struct config_group *gadgets_make(
 		struct config_group *group,
 		const char *name)
 {
 	struct gadget_info *gi;
+	int ret = 0;
 
 	gi = kzalloc(sizeof(*gi), GFP_KERNEL);
 	if (!gi)
@@ -1880,7 +1902,9 @@ static struct config_group *gadgets_make(
 	if (!gi->composite.gadget_driver.function)
 		goto err;
 
-	if (android_device_create(gi) < 0)
+	// Kyle
+	trace_android_vh_usb_configfs_adev_create(&gi->cdev, &ret);
+	if (ret < 0)
 		goto err;
 
 	return &gi->group;
@@ -1896,7 +1920,8 @@ static void gadgets_drop(struct config_group *group, struct config_item *item)
 
 	gi = container_of(to_config_group(item), struct gadget_info, group);
 	config_item_put(item);
-	android_device_destroy(gi);
+	// kyle
+	trace_android_vh_usb_configfs_adev_destroy(&gi->cdev);
 }
 
 static struct configfs_group_operations gadgets_ops = {
@@ -1937,10 +1962,12 @@ static int __init gadget_cfs_init(void)
 
 	ret = configfs_register_subsystem(&gadget_subsys);
 
+#if 0
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
 	android_class = class_create(THIS_MODULE, "android_usb");
 	if (IS_ERR(android_class))
 		return PTR_ERR(android_class);
+#endif
 #endif
 
 	return ret;
@@ -1950,10 +1977,10 @@ module_init(gadget_cfs_init);
 static void __exit gadget_cfs_exit(void)
 {
 	configfs_unregister_subsystem(&gadget_subsys);
-#ifdef CONFIG_USB_CONFIGFS_UEVENT
-	if (!IS_ERR(android_class))
-		class_destroy(android_class);
-#endif
+//#ifdef CONFIG_USB_CONFIGFS_UEVENT
+//	if (!IS_ERR(android_class))
+//		class_destroy(android_class);
+//#endif
 
 }
 module_exit(gadget_cfs_exit);

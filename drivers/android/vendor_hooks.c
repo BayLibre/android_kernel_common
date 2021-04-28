@@ -52,6 +52,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/vmscan.h>
+#include <trace/hooks/usb.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -243,3 +244,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_adj_current_limit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
+//EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_configfs_create_func_dev);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_configfs_pre_setup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_configfs_post_setup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_configfs_pre_disconnect);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_configfs_adev_create);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_configfs_adev_destroy);
