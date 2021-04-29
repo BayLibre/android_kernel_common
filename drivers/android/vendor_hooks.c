@@ -394,6 +394,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_offline);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_online);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_alloc);
+<<<<<<< HEAD   (1624bf ANDROID: abi_gki_aarch64_qcom: Update symbol list)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_state_registered);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_thread_read);
@@ -408,3 +409,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_reply);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_preset);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_thermal_stats);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_inactive_ratio);
+>>>>>>> CHANGE (19ba9c ANDROID: vendor_hooks: tune reclaim inactive ratio)
