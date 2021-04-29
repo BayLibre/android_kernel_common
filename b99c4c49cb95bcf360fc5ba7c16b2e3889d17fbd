@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000010343336",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1690565?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "831f8162_b93c5b26",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 8,
+                "startChar": 0,
+                "endLine": 8,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: zhouhuacai \u003czhouohuacai@oppo.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "0db8f3eb_c7ed7750",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-04-29T09:38:49Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: zhouhuacai \u003czhouohuacai@oppo.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 370916260 android-build.ayeaye-python-dispatcher_20210428.05_p0",
+      "revId": "b99c4c49cb95bcf360fc5ba7c16b2e3889d17fbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
