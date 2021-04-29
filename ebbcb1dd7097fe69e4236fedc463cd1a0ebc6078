@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000010340901",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1689634?revision\u003d3",
+      "fixSuggestions": [
+        {
+          "fixId": "93d24742_ff73b229",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 9,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Giuliano Procida \u003cgprocida@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "915cc47e_2defedfb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-04-29T07:41:12Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Giuliano Procida \u003cgprocida@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 370916260 android-build.ayeaye-python-dispatcher_20210428.05_p0",
+      "revId": "ebbcb1dd7097fe69e4236fedc463cd1a0ebc6078",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
