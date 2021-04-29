@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000010361378",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1690494?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "9c19b5c1_b5d01462",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 8,
+                "startChar": 0,
+                "endLine": 8,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Arve Hjønnevåg \u003carve@android.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "ca38350a_684ce425",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-04-29T21:02:14Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Arve Hjønnevåg \u003carve@android.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 370916260 android-build.ayeaye-python-dispatcher_20210428.05_p0",
+      "revId": "011d0548b10ead1d19d165ab1638a3ae8b0a25a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
