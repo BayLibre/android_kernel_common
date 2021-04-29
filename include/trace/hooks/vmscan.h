@@ -57,6 +57,9 @@ DECLARE_HOOK(android_vh_remove_mapping,
 DECLARE_HOOK(android_vh_remove_mapping_failed,
 	TP_PROTO(struct address_space *mapping, struct folio *folio, bool reclaimed),
 	TP_ARGS(mapping, folio, reclaimed));
+DECLARE_HOOK(android_vh_tune_inactive_ratio,
+	TP_PROTO(unsigned long *inactive_ratio, int file),
+	TP_ARGS(inactive_ratio, file));
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
