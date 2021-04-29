@@ -308,3 +308,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_inactive_ratio);

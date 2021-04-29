@@ -28,12 +28,16 @@ DECLARE_HOOK(android_vh_shrink_slab_bypass,
 DECLARE_HOOK(android_vh_do_shrink_slab,
 	TP_PROTO(struct shrinker *shrinker, struct shrink_control *shrinkctl, int priority),
 	TP_ARGS(shrinker, shrinkctl, priority));
+<<<<<<< HEAD
 DECLARE_HOOK(android_vh_tune_scan_type,
 	TP_PROTO(char *scan_type),
 	TP_ARGS(scan_type));
 DECLARE_HOOK(android_vh_tune_swappiness,
 	TP_PROTO(int *swappiness),
 	TP_ARGS(swappiness));
+DECLARE_HOOK(android_vh_tune_inactive_ratio,
+	TP_PROTO(unsigned long *inactive_ratio, int file),
+	TP_ARGS(inactive_ratio, file))
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
