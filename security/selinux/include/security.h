@@ -106,6 +106,14 @@ struct selinux_state {
 	bool initialized;
 	bool policycap[__POLICYDB_CAPABILITY_MAX];
 	bool android_netlink_route;
+<<<<<<< HEAD   (7133a4 FROMLIST: bootconfig: Share the checksum function with tools)
+=======
+	bool android_netlink_getneigh;
+
+	struct page *status_page;
+	struct mutex status_lock;
+
+>>>>>>> CHANGE (fac075 ANDROID: selinux: modify RTM_GETNEIGH{TBL})
 	struct selinux_avc *avc;
 	struct selinux_ss *ss;
 };
@@ -185,6 +193,23 @@ static inline bool selinux_android_nlroute_getlink(void)
 	return state->android_netlink_route;
 }
 
+<<<<<<< HEAD   (7133a4 FROMLIST: bootconfig: Share the checksum function with tools)
+=======
+static inline bool selinux_android_nlroute_getneigh(void)
+{
+	struct selinux_state *state = &selinux_state;
+
+	return state->android_netlink_getneigh;
+}
+
+struct selinux_policy_convert_data;
+
+struct selinux_load_state {
+	struct selinux_policy *policy;
+	struct selinux_policy_convert_data *convert_data;
+};
+
+>>>>>>> CHANGE (fac075 ANDROID: selinux: modify RTM_GETNEIGH{TBL})
 int security_mls_enabled(struct selinux_state *state);
 int security_load_policy(struct selinux_state *state,
 			 void *data, size_t len);
