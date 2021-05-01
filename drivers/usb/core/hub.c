@@ -2191,6 +2191,12 @@ void usb_disconnect(struct usb_device **pdev)
 	struct usb_hub *hub = NULL;
 	int port1 = 1;
 
+	if (IS_ERR_OR_NULL(udev))
+		return;
+
+	if (udev->devnum == -1)
+		return;
+
 	/* mark the device as inactive, so any further urb submissions for
 	 * this device (and any of its children) will fail immediately.
 	 * this quiesces everything except pending urbs.
