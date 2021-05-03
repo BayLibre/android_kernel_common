@@ -199,6 +199,7 @@ struct mount_info {
 	u64		mi_le_time_us;
 	u32		mi_le_page;
 	u32		mi_le_errno;
+	uid_t		mi_le_uid;
 };
 
 struct data_file_block {
