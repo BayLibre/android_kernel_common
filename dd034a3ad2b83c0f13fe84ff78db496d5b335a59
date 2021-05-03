@@ -16,6 +16,24 @@
       "message": "Please wait for these to be reviewed and accepted by upstream as there should not be a rush, right?",
       "revId": "dd034a3ad2b83c0f13fe84ff78db496d5b335a59",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45179b84_4e287a03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1764430
+      },
+      "writtenOn": "2021-05-03T19:45:40Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nWe\u0027ve been starting our performance/throughput validation on different interfaces, and w/o the TXFIFO resize changes it significantly degrades the performance on the TX (IN endpoints) path.  I believe there will be a milestone coming up for us, in which they need the throughput numbers to be at the expected benchmarks.  \n\nI did get a few comments on the changes within the dwc3-qcom (which we don\u0027t use), to enable it by default.  Will fix those and try to get this upstreamed again.\n\nThanks again for following up with these changes so quick!",
+      "parentUuid": "4a8714c2_a0101065",
+      "revId": "dd034a3ad2b83c0f13fe84ff78db496d5b335a59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
