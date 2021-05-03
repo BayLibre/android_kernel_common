@@ -346,6 +346,8 @@ struct queue_limits {
 	unsigned char		discard_misaligned;
 	unsigned char		raid_partial_stripes_expensive;
 	enum blk_zoned_model	zoned;
+
+	unsigned int		bio_max_bytes;
 };
 
 typedef int (*report_zones_cb)(struct blk_zone *zone, unsigned int idx,
