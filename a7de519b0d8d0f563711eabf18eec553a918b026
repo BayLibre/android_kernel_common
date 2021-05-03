@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03986e66_17a95c07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1352498
+      },
+      "writtenOn": "2021-05-03T02:36:10Z",
+      "side": 1,
+      "message": "error\n```\n ABI DIFFERENCES HAVE BEEN DETECTED! (RC\u003d8)\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nLeaf changes summary: 33 artifacts changed\nChanged leaf types summary: 2 leaf types changed\nRemoved/Changed/Added functions summary: 0 Removed, 31 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\n31 functions with some sub-type change:\n\n  [C] \u0027function spi_controller* __devm_spi_alloc_controller(device*, unsigned int, bool)\u0027 at spi.c:2471:1 has some sub-type changes:\n    CRC (modversions) changed from 0x13032747 to 0x139be01d\n\n  [C] \u0027function dma_chan* __dma_request_channel(const dma_cap_mask_t*, dma_filter_fn, void*, device_node*)\u0027 at dmaengine.c:755:1 has some sub-type changes:\n    CRC (modversions) changed from 0x5938f71e to 0xd9e2e632\n\n  [C] \u0027function spi_controller* __spi_alloc_controller(device*, unsigned int, bool)\u0027 at spi.c:2422:1 has some sub-type changes:\n    CRC (modversions) changed from 0xfa18e24f to 0x77ffb28f\n\n  ... 28 omitted; 31 symbols have only CRC changes\n\n\u0027struct dma_async_tx_descriptor at dmaengine.h:603:1\u0027 changed:\n  type size changed from 704 to 896 (in bits)\n  3 data member insertions:\n    \u0027dma_async_tx_descriptor* next\u0027, at offset 704 (in bits) at dmaengine.h:617:1\n    \u0027dma_async_tx_descriptor* parent\u0027, at offset 768 (in bits) at dmaengine.h:618:1\n    \u0027spinlock_t lock\u0027, at offset 832 (in bits) at dmaengine.h:619:1\n  31 impacted interfaces\n\n\u0027struct virt_dma_desc at virt-dma.h:15:1\u0027 changed (indirectly):\n  type size changed from 896 to 1088 (in bits)\n  there are data member changes:\n    type \u0027struct dma_async_tx_descriptor\u0027 of \u0027virt_dma_desc::tx\u0027 changed, as reported earlier\n    2 (\u0027dmaengine_result tx_result\u0027 .. \u0027list_head node\u0027) offsets changed (by +192 bits)\n  3 impacted interfaces\n```",
+      "revId": "a7de519b0d8d0f563711eabf18eec553a918b026",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
