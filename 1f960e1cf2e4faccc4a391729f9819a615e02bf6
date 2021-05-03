@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e58c950_ecdd255b",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2021-05-03T20:51:36Z",
+      "side": 1,
+      "message": "pending read -\u003e read error",
+      "range": {
+        "startLine": 583,
+        "startChar": 16,
+        "endLine": 583,
+        "endChar": 23
+      },
+      "revId": "1f960e1cf2e4faccc4a391729f9819a615e02bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12c9adbc_726cd5ed",
+        "filename": "include/uapi/linux/incrementalfs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2021-05-03T20:51:36Z",
+      "side": 1,
+      "message": "the struct isn\u0027t packed - better to explicitly add the padding u32 fields IMO, we\u0027ve already been bitten when doing otherwise",
+      "range": {
+        "startLine": 586,
+        "startChar": 1,
+        "endLine": 586,
+        "endChar": 6
+      },
+      "revId": "1f960e1cf2e4faccc4a391729f9819a615e02bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
