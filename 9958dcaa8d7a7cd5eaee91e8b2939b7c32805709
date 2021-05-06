@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f93e52f_441bf9ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-05-06T15:32:32Z",
+      "side": 1,
+      "message": "Right, I\u0027ll change that to \"topology:\"",
+      "parentUuid": "3212da70_f94011c9",
+      "revId": "9958dcaa8d7a7cd5eaee91e8b2939b7c32805709",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "262c72aa_26849cce",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-05-06T08:11:41Z",
       "side": 1,
       "message": "sorry, but no, you have a hook here, just use that instead.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 40
+      },
+      "revId": "9958dcaa8d7a7cd5eaee91e8b2939b7c32805709",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e61149a2_4a191e73",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-05-06T15:32:32Z",
+      "side": 1,
+      "message": "The module (at times) gets insmoded way after the trace hook gets invoked. We need a flag to indicate the initialization was done.",
+      "parentUuid": "262c72aa_26849cce",
       "range": {
         "startLine": 119,
         "startChar": 0,
