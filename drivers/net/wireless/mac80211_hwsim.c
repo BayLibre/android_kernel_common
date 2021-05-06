@@ -1168,7 +1168,7 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
 	if (nla_put_u32(skb, HWSIM_ATTR_FLAGS, hwsim_flags))
 		goto nla_put_failure;
 
-	if (nla_put_u32(skb, HWSIM_ATTR_FREQ, data->channel->center_freq))
+	if (nla_put_u32(skb, HWSIM_ATTR_FREQ, channel->center_freq))
 		goto nla_put_failure;
 
 	/* We get the tx control (rate and retries) info*/
@@ -2355,10 +2355,17 @@ static void mac80211_hwsim_remove_chanctx(struct ieee80211_hw *hw,
 	mutex_lock(&hwsim->mutex);
 	hwsim->chanctx = NULL;
 	mutex_unlock(&hwsim->mutex);
+<<<<<<< HEAD   (7b8eb8 UPSTREAM: tcp: fix tcp_rmem documentation)
 	wiphy_debug(hw->wiphy,
 		    "remove channel context control: %d MHz/width: %d/cfreqs:%d/%d MHz\n",
 		    ctx->def.chan->center_freq, ctx->def.width,
 		    ctx->def.center_freq1, ctx->def.center_freq2);
+=======
+	wiphy_dbg(hw->wiphy,
+		  "remove channel context control: %d MHz/width: %d/cfreqs:%d/%d MHz\n",
+		  ctx->def.chan->center_freq, ctx->def.width,
+		  ctx->def.center_freq1, ctx->def.center_freq2);
+>>>>>>> CHANGE (b6a441 FROMGIT: mac80211_hwsim: add concurrent channels scanning su)
 	hwsim_check_chanctx_magic(ctx);
 	hwsim_clear_chanctx_magic(ctx);
 }
@@ -2824,10 +2831,13 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
 		data->if_combination.radar_detect_widths = 0;
 		data->if_combination.num_different_channels = data->channels;
 		data->chanctx = NULL;
+<<<<<<< HEAD   (7b8eb8 UPSTREAM: tcp: fix tcp_rmem documentation)
 	} else if (param->p2p_device) {
 		hw->wiphy->iface_combinations = hwsim_if_comb_p2p_dev;
 		hw->wiphy->n_iface_combinations =
 			ARRAY_SIZE(hwsim_if_comb_p2p_dev);
+=======
+>>>>>>> CHANGE (b6a441 FROMGIT: mac80211_hwsim: add concurrent channels scanning su)
 	} else {
 		hw->wiphy->iface_combinations = hwsim_if_comb;
 		hw->wiphy->n_iface_combinations = ARRAY_SIZE(hwsim_if_comb);
@@ -3329,6 +3339,17 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
 	if (!channel)
 		goto out;
 
+	if (data2->use_chanctx) {
+		if (data2->tmp_chan)
+			channel = data2->tmp_chan;
+		else if (data2->chanctx)
+			channel = data2->chanctx->def.chan;
+	} else {
+		channel = data2->channel;
+	}
+	if (!channel)
+		goto out;
+
 	if (!hwsim_virtio_enabled) {
 		if (hwsim_net_get_netgroup(genl_info_net(info)) !=
 		    data2->netgroup)
@@ -3363,8 +3384,11 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
 	}
 
 	rx_status.band = channel->band;
+<<<<<<< HEAD   (7b8eb8 UPSTREAM: tcp: fix tcp_rmem documentation)
 	rx_status.freq = data2->channel->center_freq;
 	rx_status.band = data2->channel->band;
+=======
+>>>>>>> CHANGE (b6a441 FROMGIT: mac80211_hwsim: add concurrent channels scanning su)
 	rx_status.rate_idx = nla_get_u32(info->attrs[HWSIM_ATTR_RX_RATE]);
 	if (rx_status.rate_idx >= data2->hw->wiphy->bands[rx_status.band]->n_bitrates)
 		goto out;
