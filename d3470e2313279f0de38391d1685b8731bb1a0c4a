@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e8b75a_1e587d5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-07T19:42:39Z",
+      "side": 1,
+      "message": "This is all to handle a race between walt_probe() and update_topology_flags_workfn(). Is there a way to make the ordering deterministic instead? Is this a race between the loading of two modules -- can a dependency be expressed that will guarantee that one or the other always occurs first?",
+      "parentUuid": "eadad440_38eb6346",
+      "revId": "d3470e2313279f0de38391d1685b8731bb1a0c4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cce32b5_3dcd2f14",
