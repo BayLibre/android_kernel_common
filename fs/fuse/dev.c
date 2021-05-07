@@ -2243,11 +2243,16 @@ static long fuse_dev_ioctl(struct file *file, unsigned int cmd,
 	struct fuse_dev *fud = NULL;
 	struct fuse_passthrough_out pto;
 
+<<<<<<< HEAD   (b47960 ANDROID: Sync ext4 casefolded encryption with patches going )
 	if (_IOC_TYPE(cmd) != FUSE_DEV_IOC_MAGIC)
 		return -EINVAL;
 
 	switch (_IOC_NR(cmd)) {
 	case _IOC_NR(FUSE_DEV_IOC_CLONE):
+=======
+	switch (cmd) {
+	case FUSE_DEV_IOC_CLONE:
+>>>>>>> BRANCH (d665ea Merge tag 'for-linus-5.13-rc1' of git://git.kernel.org/pub/s)
 		res = -EFAULT;
 		if (!get_user(oldfd, (__u32 __user *)arg)) {
 			struct file *old = fget(oldfd);

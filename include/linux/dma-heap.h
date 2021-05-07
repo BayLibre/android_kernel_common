@@ -51,6 +51,7 @@ struct dma_heap_export_info {
 void *dma_heap_get_drvdata(struct dma_heap *heap);
 
 /**
+<<<<<<< HEAD   (b47960 ANDROID: Sync ext4 casefolded encryption with patches going )
  * dma_heap_get_dev() - get device struct for the heap
  * @heap: DMA-Heap to retrieve device struct from
  *
@@ -60,6 +61,8 @@ void *dma_heap_get_drvdata(struct dma_heap *heap);
 struct device *dma_heap_get_dev(struct dma_heap *heap);
 
 /**
+=======
+>>>>>>> BRANCH (d665ea Merge tag 'for-linus-5.13-rc1' of git://git.kernel.org/pub/s)
  * dma_heap_get_name() - get heap name
  * @heap: DMA-Heap to retrieve private data for
  *
