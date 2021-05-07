@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eadad440_38eb6346",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-05-07T19:28:03Z",
+      "side": 1,
+      "message": "Short answer - we need both\n\nThe module psuedo code is this:\n\n walt_init()\n {\n     if (atomic_cmpxchg(\u0026already_inited, 0, 1))\n                return;\n\n     /* rest of the initialization */\n }\n\n walt_probe()\n {\n       register_trace_android_vh_update_topology_flags_workfn(\n                        walt_init, NULL);\n\n        if (topology_update_done) {\n                walt_init();\n        }\n }\n\n\nw/o the hook we will need to do some looping around topology_update_done and sleep if its not yet set. It will cause us to loose time sleeping when walt features are required early in the boot phase.\n\n walt_probe() \n {\n    while (true) {\n             if (topology_upate_done) {\n                    walt_init()\n                    break;\n             } else {\n                 sleep (XmS);\n             }\n \n   }  \n }",
+      "parentUuid": "638684f3_9aeebf69",
+      "revId": "d3470e2313279f0de38391d1685b8731bb1a0c4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cce32b5_3dcd2f14",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-07T18:09:11Z",
       "side": 1,
       "message": "Isn\u0027t there are artifact of rebuild_sched_domains() that you can use instead of creating this flag? Don\u0027t you have access to the sched domains?",
+      "revId": "d3470e2313279f0de38391d1685b8731bb1a0c4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04d42d4_5d51f8c0",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-05-07T19:28:03Z",
+      "side": 1,
+      "message": "Walt is unaware of topology - its gets all that info from the kernel proper (policy, cpu_scale etc). Walt module doesn\u0027t look at domains.",
+      "parentUuid": "9cce32b5_3dcd2f14",
       "revId": "d3470e2313279f0de38391d1685b8731bb1a0c4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
