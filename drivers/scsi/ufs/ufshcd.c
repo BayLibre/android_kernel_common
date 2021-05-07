@@ -2861,7 +2861,17 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
 	 * Even though we use wait_event() which sleeps indefinitely,
 	 * the maximum wait time is bounded by SCSI request timeout.
 	 */
+<<<<<<< HEAD   (d9b5c5 Merge 5.4.116 into android11-5.4-lts)
 	wait_event(hba->dev_cmd.tag_wq, ufshcd_get_dev_cmd_tag(hba, &tag));
+=======
+	req = blk_get_request(q, REQ_OP_DRV_OUT, 0);
+	if (IS_ERR(req)) {
+		err = PTR_ERR(req);
+		goto out_unlock;
+	}
+	tag = req->tag;
+	WARN_ON_ONCE(!ufshcd_valid_tag(hba, tag));
+>>>>>>> BRANCH (b5dbcd Linux 5.4.117)
 
 	init_completion(&wait);
 	lrbp = &hba->lrb[tag];
@@ -2885,8 +2895,13 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
 			err ? "query_complete_err" : "query_complete");
 
 out_put_tag:
+<<<<<<< HEAD   (d9b5c5 Merge 5.4.116 into android11-5.4-lts)
 	ufshcd_put_dev_cmd_tag(hba, tag);
 	wake_up(&hba->dev_cmd.tag_wq);
+=======
+	blk_put_request(req);
+out_unlock:
+>>>>>>> BRANCH (b5dbcd Linux 5.4.117)
 	up_read(&hba->clk_scaling_lock);
 	return err;
 }
@@ -6443,7 +6458,17 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
 
 	down_read(&hba->clk_scaling_lock);
 
+<<<<<<< HEAD   (d9b5c5 Merge 5.4.116 into android11-5.4-lts)
 	wait_event(hba->dev_cmd.tag_wq, ufshcd_get_dev_cmd_tag(hba, &tag));
+=======
+	req = blk_get_request(q, REQ_OP_DRV_OUT, 0);
+	if (IS_ERR(req)) {
+		err = PTR_ERR(req);
+		goto out_unlock;
+	}
+	tag = req->tag;
+	WARN_ON_ONCE(!ufshcd_valid_tag(hba, tag));
+>>>>>>> BRANCH (b5dbcd Linux 5.4.117)
 
 	init_completion(&wait);
 	lrbp = &hba->lrb[tag];
@@ -6517,8 +6542,13 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
 		}
 	}
 
+<<<<<<< HEAD   (d9b5c5 Merge 5.4.116 into android11-5.4-lts)
 	ufshcd_put_dev_cmd_tag(hba, tag);
 	wake_up(&hba->dev_cmd.tag_wq);
+=======
+	blk_put_request(req);
+out_unlock:
+>>>>>>> BRANCH (b5dbcd Linux 5.4.117)
 	up_read(&hba->clk_scaling_lock);
 	return err;
 }
