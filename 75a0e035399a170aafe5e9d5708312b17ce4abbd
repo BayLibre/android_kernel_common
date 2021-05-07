@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000010580337",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1699252?revision\u003d3",
+      "fixSuggestions": [
+        {
+          "fixId": "1eb63b91_c3d163e4",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 9,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Matthias Maennich \u003cmaennich@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "5c0f6e71_bc8815f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-05-07T06:08:47Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Matthias Maennich \u003cmaennich@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 372350482 android-build.ayeaye-python-dispatcher_20210506.05_p0",
+      "revId": "75a0e035399a170aafe5e9d5708312b17ce4abbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
