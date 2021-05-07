@@ -16,6 +16,24 @@
       "message": "Please provide a link to OWNERS syntax documentation either in the commit message or in top-level OWNERS files. I cannot really review without this.\n\nNeither of\n\n* https://gerrit.googlesource.com/plugins/find-owners/+/master/src/main/resources/Documentation/syntax.md\n* https://gerrit.googlesource.com/plugins/code-owners/+/HEAD/resources/Documentation/backend-find-owners.md\n\nappear to mention the ** syntax, for example.\n",
       "revId": "527047b0a0704f4cd9d7f8876191811df5ea2c7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16135611_63bd6766",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-05-07T08:29:33Z",
+      "side": 1,
+      "message": "Sorry, when doing this I discovered a mismatch in the documentation. Those are the fixes:\n\nhttps://gerrit-review.googlesource.com/c/plugins/code-owners/+/305417\nhttps://gerrit-review.googlesource.com/c/plugins/code-owners/+/305567\n\nBased on the second change and the clarification there, I likely need to rework this change a bit.\n\nSo, please hold on for a sec for the next patch set.",
+      "parentUuid": "7377c619_250a28d6",
+      "revId": "527047b0a0704f4cd9d7f8876191811df5ea2c7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
