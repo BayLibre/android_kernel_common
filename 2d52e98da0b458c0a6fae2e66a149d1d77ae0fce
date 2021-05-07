@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1278fe_6aa8e735",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-07T01:24:11Z",
+      "side": 1,
+      "message": "I get an \u0027allmodconfig\u0027 build error:\n```\nERROR: \"bio_max_size\" [fs/xfs/xfs.ko] undefined!\n```\nLooks like an EXPORT is needed for bio_max_size().",
+      "revId": "2d52e98da0b458c0a6fae2e66a149d1d77ae0fce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
