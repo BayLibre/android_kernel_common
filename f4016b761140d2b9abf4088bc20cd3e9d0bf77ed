@@ -16,6 +16,24 @@
       "message": "does this remain bio_max_bytes? what\u0027s the plan?",
       "revId": "f4016b761140d2b9abf4088bc20cd3e9d0bf77ed",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95bab27f_ae7fbc95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2021-05-10T17:32:38Z",
+      "side": 1,
+      "message": "This patch reverts all changes introduced by the patch \"bio: limit bio max size\" except that it does not remove the \u0027bio_max_bytes\u0027 member from struct queue_limits. I\u0027d like to keep that member in struct queue_limits because:\n- Retaining that member means that this revert does not modify the ABI.\n- Retaining that member will allow to reintroduce the functionality for limiting the bio size without modifying the ABI again.",
+      "parentUuid": "eefddaf2_a0d11df6",
+      "revId": "f4016b761140d2b9abf4088bc20cd3e9d0bf77ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
