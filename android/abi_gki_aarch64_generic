@@ -817,6 +817,7 @@
   handle_simple_irq
   handle_sysrq
   have_governor_per_policy
+  hex2bin
   hex_dump_to_buffer
   hex_to_bin
   hid_add_device
@@ -998,6 +999,7 @@
   kobject_init_and_add
   kobject_put
   kobject_uevent
+  kobject_uevent_env
   kobj_sysfs_ops
   krealloc
   kstat
@@ -1825,6 +1827,7 @@
   __traceiter_android_vh_of_i2c_get_board_info
   __traceiter_android_vh_pagecache_get_page
   __traceiter_android_vh_rmqueue
+  __traceiter_android_vh_thermal_pm_notify_suspend
   __traceiter_android_vh_timerfd_create
   __traceiter_android_vh_typec_store_partner_src_caps
   __traceiter_android_vh_typec_tcpci_override_toggling
@@ -1885,6 +1888,7 @@
   __tracepoint_android_vh_of_i2c_get_board_info
   __tracepoint_android_vh_pagecache_get_page
   __tracepoint_android_vh_rmqueue
+  __tracepoint_android_vh_thermal_pm_notify_suspend
   __tracepoint_android_vh_timerfd_create
   __tracepoint_android_vh_typec_store_partner_src_caps
   __tracepoint_android_vh_typec_tcpci_override_toggling
