@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c3f2bc_50a7652d",
+        "filename": "include/linux/vmalloc.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-05-10T20:15:23Z",
+      "side": 1,
+      "message": "Some build configurations fail with:\n\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/include/linux/vmalloc.h:60:2: error: type name requires a specifier or qualifier\n        ANDROID_OEM_DATA(1);\n        ^\n\nI think you are missing:\n\n#include \u003clinux/android_vendor.h\u003e\n\nin this file.",
+      "range": {
+        "startLine": 60,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "6362b865a3500874be1e17d24691ec70a38158e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
