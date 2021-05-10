@@ -16,6 +16,23 @@
       "message": "This breaks the KMI so it needs to wait until the 5/21 KMI change.",
       "revId": "d22ce31d931bbef0569422465af4f208934176c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a616385_196473d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-05-10T08:44:42Z",
+      "side": 1,
+      "message": "These symbols are listed on the exynos symbol list, so please update it as well to fix the build error this change causes:\n\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n - __traceiter_android_vh_gic_v3_set_affinity\n - __tracepoint_android_vh_gic_v3_set_affinity",
+      "revId": "d22ce31d931bbef0569422465af4f208934176c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
