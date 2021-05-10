@@ -16,6 +16,24 @@
       "message": "The UAPI changes have to land upstream before we can accept them.",
       "revId": "790b8e751e3df53e0f6b0bd39a0db50f0e6e7a34",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3464b3e1_05cb7fcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1475635
+      },
+      "writtenOn": "2021-05-10T01:56:47Z",
+      "side": 1,
+      "message": "The new field request_fd is only to replace original reserved field, see the change in media.h, it\u0027s backward compatible.\n\nstruct media_link_desc {\n\tstruct media_pad_desc source;\n\tstruct media_pad_desc sink;\n\t__u32 flags;\n\t__s32 request_fd;\n\t__u32 reserved[1];\n};",
+      "parentUuid": "304a6208_d292f37b",
+      "revId": "790b8e751e3df53e0f6b0bd39a0db50f0e6e7a34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
