@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f6ae5a2_2ad14c16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-05-10T19:16:50Z",
+      "side": 1,
+      "message": "It is a bit involved:\n\nThe cpufreq driver has to probe and it has other dependencies on clks and regulators.  Its probe order is non deterministic.\n\nwalt doesnt probe - has no devices. walt_init() needs to wait for update_topology_flags_workfn().\n\n\nupdate_topology_flags_workfn() gets called (in an asynchronous work) when cpufreq driver has probed and instantiated all the policies. Highlight \"asynchronous\" - so even if walt were to somehow init() right after the cpufreq driver is done, update_topology_flags_workfn() may not have completed.",
+      "parentUuid": "33e8b75a_1e587d5d",
+      "revId": "d3470e2313279f0de38391d1685b8731bb1a0c4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cce32b5_3dcd2f14",
