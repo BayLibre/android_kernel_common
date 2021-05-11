@@ -1818,6 +1818,12 @@ static int f2fs_setflags_common(struct inode *inode, u32 iflags, u32 mask)
 	struct f2fs_inode_info *fi = F2FS_I(inode);
 	u32 masked_flags = fi->i_flags & mask;
 
+	printk("LEE: %s %s()[%d]: mask: 0x%x iflags: 0x%x\n", __FILE__, __func__, __LINE__, mask, iflags);
+
+	printk("LEE: %s %s()[%d]: ~mask: 0x%x iflags: 0x%x\n", __FILE__, __func__, __LINE__, ~mask, iflags);
+
+	printk("LEE: %s %s()[%d]: (iflags & ~mask): 0x%x\n", __FILE__, __func__, __LINE__, (iflags & ~mask));
+
 	f2fs_bug_on(F2FS_I_SB(inode), (iflags & ~mask));
 
 	/* Is it quota file? Do not allow user to mess with it */
@@ -3065,6 +3071,8 @@ int f2fs_fileattr_set(struct user_namespace *mnt_userns,
 	u32 iflags;
 	int err;
 
+	printk("LEE: %s %s()[%d]: mask: 0x%x fsflags: 0x%x\n", __FILE__, __func__, __LINE__, mask, fsflags);
+
 	if (unlikely(f2fs_cp_error(F2FS_I_SB(inode))))
 		return -EIO;
 	if (!f2fs_is_checkpoint_ready(F2FS_I_SB(inode)))
@@ -3072,12 +3080,18 @@ int f2fs_fileattr_set(struct user_namespace *mnt_userns,
 	if (fsflags & ~F2FS_GETTABLE_FS_FL)
 		return -EOPNOTSUPP;
 	fsflags &= F2FS_SETTABLE_FS_FL;
+	printk("LEE: %s %s()[%d]: mask: 0x%x fsflags: 0x%x\n", __FILE__, __func__, __LINE__, mask, fsflags);
 	if (!fa->flags_valid)
 		mask &= FS_COMMON_FL;
+	printk("LEE: %s %s()[%d]: mask: 0x%x fsflags: 0x%x\n", __FILE__, __func__, __LINE__, mask, fsflags);
 
 	iflags = f2fs_fsflags_to_iflags(fsflags);
+	printk("LEE: %s %s()[%d]: mask: 0x%x iflags: 0x%x\n", __FILE__, __func__, __LINE__, mask, iflags);
 	if (f2fs_mask_flags(inode->i_mode, iflags) != iflags)
 		return -EOPNOTSUPP;
+
+	printk("LEE: %s %s()[%d]: iflags(mask): 0x%x iflags: 0x%x\n",
+	       __FILE__, __func__, __LINE__, f2fs_fsflags_to_iflags(mask), iflags);
 
 	err = f2fs_setflags_common(inode, iflags, f2fs_fsflags_to_iflags(mask));
 	if (!err)
