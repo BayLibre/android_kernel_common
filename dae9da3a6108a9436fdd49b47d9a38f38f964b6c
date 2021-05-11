@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e676d72_f84eaf6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2021-05-11T17:49:59Z",
+      "side": 1,
+      "message": "Seems fine; clever use of --start-address\u003d/--stop-address\u003d.  You can use --disassemble-symbols\u003d if you had a list, but I don\u0027t think introducing a pair of symbols to track the section boundaries are bad at all.  I don\u0027t spot anything immediately wrong with the regexes, though, that might come back to bite us.  Also, I\u0027m generally unfamiliar with Perl, so no comment on coding style/standards there.",
+      "revId": "dae9da3a6108a9436fdd49b47d9a38f38f964b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f67bc3_0f9fcdba",
+        "filename": "scripts/generate_cfi_kallsyms.pl",
+        "patchSetId": 11
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2021-05-11T17:49:59Z",
+      "side": 1,
+      "message": "I\u0027m unfamiliar with all of the sigils in Perl, but is $line unused?  Below you use $target in find_text_symbol, but I don\u0027t see that pattern here in is_symbol, or is_hint.  Perhaps $_ is referring to $line?",
+      "revId": "dae9da3a6108a9436fdd49b47d9a38f38f964b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7bd0053_a70feb2b",
+        "filename": "scripts/generate_cfi_kallsyms.pl",
+        "patchSetId": 11
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2021-05-11T17:49:59Z",
+      "side": 1,
+      "message": "should be \"failed to execute $objdump\"",
+      "revId": "dae9da3a6108a9436fdd49b47d9a38f38f964b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
