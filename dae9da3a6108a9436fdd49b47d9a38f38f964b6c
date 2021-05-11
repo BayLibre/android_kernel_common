@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ca12b04_17a1b4e6",
+        "filename": "scripts/generate_cfi_kallsyms.pl",
+        "patchSetId": 11
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2021-05-11T19:18:02Z",
+      "side": 1,
+      "message": "Ugh yes. This should use $line, but it does work nevertheless because $_ is the same as $line in this case. It is impressive that this code produces no warnings though, even with:\n\n  use strict;\n  use warnings;",
+      "parentUuid": "f1f67bc3_0f9fcdba",
+      "revId": "dae9da3a6108a9436fdd49b47d9a38f38f964b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7bd0053_a70feb2b",
         "filename": "scripts/generate_cfi_kallsyms.pl",
         "patchSetId": 11
@@ -48,6 +66,24 @@
       "writtenOn": "2021-05-11T17:49:59Z",
       "side": 1,
       "message": "should be \"failed to execute $objdump\"",
+      "revId": "dae9da3a6108a9436fdd49b47d9a38f38f964b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0376808a_120bb486",
+        "filename": "scripts/generate_cfi_kallsyms.pl",
+        "patchSetId": 11
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2021-05-11T19:18:02Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "f7bd0053_a70feb2b",
       "revId": "dae9da3a6108a9436fdd49b47d9a38f38f964b6c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
