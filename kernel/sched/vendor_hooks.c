@@ -88,9 +88,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_effective_cpu_util);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dup_task_struct);
+<<<<<<< HEAD   (6e6c50 ANDROID: ABI: Update oplus symbol list)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_task_comm);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_energy_efficient_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_util_cfs_boost);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_account_process_tick_gran);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_irqtime_account_process_tick);
+>>>>>>> CHANGE (527e7b ANDROID: vendor_hooks: Add hooks for account irqtime process)
