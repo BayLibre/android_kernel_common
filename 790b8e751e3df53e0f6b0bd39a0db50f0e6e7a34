@@ -34,6 +34,24 @@
       "parentUuid": "304a6208_d292f37b",
       "revId": "790b8e751e3df53e0f6b0bd39a0db50f0e6e7a34",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ecc479a_d1e51d68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-12T19:53:45Z",
+      "side": 1,
+      "message": "It is not safe since upstream might use that reserved field for something else and then we have to maintain binary compatibility with this version -- this is not supportable.",
+      "parentUuid": "3464b3e1_05cb7fcc",
+      "revId": "790b8e751e3df53e0f6b0bd39a0db50f0e6e7a34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
