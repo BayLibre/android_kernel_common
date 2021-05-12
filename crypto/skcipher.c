@@ -517,6 +517,8 @@ static int skcipher_walk_aead_common(struct skcipher_walk *walk,
 	walk->nbytes = 0;
 	walk->iv = req->iv;
 	walk->oiv = req->iv;
+	walk->buffer = NULL;
+	walk->page = NULL;
 
 	if (unlikely(!walk->total))
 		return 0;
