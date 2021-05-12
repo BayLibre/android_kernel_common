@@ -35,6 +35,7 @@
 #include <asm/fixmap.h>
 #include <asm/kasan.h>
 #include <asm/kernel-pgtable.h>
+#include <asm/kvm_host.h>
 #include <asm/memory.h>
 #include <asm/numa.h>
 #include <asm/sections.h>
@@ -220,6 +221,7 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 int pfn_valid(unsigned long pfn)
 {
 	phys_addr_t addr = PFN_PHYS(pfn);
+	struct mem_section *ms;
 
 	/*
 	 * Ensure the upper PAGE_SHIFT bits are clear in the
@@ -229,10 +231,6 @@ int pfn_valid(unsigned long pfn)
 	 */
 	if (PHYS_PFN(addr) != pfn)
 		return 0;
-
-#ifdef CONFIG_SPARSEMEM
-{
-	struct mem_section *ms;
 
 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
 		return 0;
@@ -252,8 +250,7 @@ int pfn_valid(unsigned long pfn)
 	 */
 	if (!early_section(ms))
 		return pfn_section_valid(ms, pfn);
-}
-#endif
+
 	return memblock_is_map_memory(addr);
 }
 EXPORT_SYMBOL(pfn_valid);
@@ -451,6 +448,8 @@ void __init bootmem_init(void)
 #endif
 
 	dma_pernuma_cma_reserve();
+
+	kvm_hyp_reserve();
 
 	/*
 	 * sparse_init() tries to allocate memory from memblock, so must be
