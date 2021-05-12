@@ -740,7 +740,7 @@ static u64 sched_vslice(struct cfs_rq *cfs_rq, struct sched_entity *se)
 
 static int select_idle_sibling(struct task_struct *p, int prev_cpu, int cpu);
 static unsigned long task_h_load(struct task_struct *p);
-static unsigned long capacity_of(int cpu);
+unsigned long capacity_of(int cpu);
 
 /* Give new sched_entity start runnable values to heavy its load in infant time */
 void init_entity_runnable_average(struct sched_entity *se)
@@ -1557,7 +1557,7 @@ struct task_numa_env {
 
 static unsigned long cpu_load(struct rq *rq);
 static unsigned long cpu_runnable(struct rq *rq);
-static unsigned long cpu_util(int cpu);
+unsigned long cpu_util(int cpu);
 static inline long adjust_numa_imbalance(int imbalance, int nr_running);
 
 static inline enum
@@ -3884,10 +3884,11 @@ static void remove_entity_load_avg(struct sched_entity *se)
 	raw_spin_unlock_irqrestore(&cfs_rq->removed.lock, flags);
 }
 
-static inline unsigned long cfs_rq_runnable_avg(struct cfs_rq *cfs_rq)
+unsigned long cfs_rq_runnable_avg(struct cfs_rq *cfs_rq)
 {
 	return cfs_rq->avg.runnable_avg;
 }
+EXPORT_SYMBOL_GPL(cfs_rq_runnable_avg);
 
 static inline unsigned long cfs_rq_load_avg(struct cfs_rq *cfs_rq)
 {
@@ -5477,7 +5478,7 @@ static inline void hrtick_update(struct rq *rq)
 #endif
 
 #ifdef CONFIG_SMP
-static inline unsigned long cpu_util(int cpu);
+unsigned long cpu_util(int cpu);
 
 static inline bool cpu_overutilized(int cpu)
 {
@@ -5776,10 +5777,11 @@ static unsigned long cpu_runnable_without(struct rq *rq, struct task_struct *p)
 	return runnable;
 }
 
-static unsigned long capacity_of(int cpu)
+unsigned long capacity_of(int cpu)
 {
 	return cpu_rq(cpu)->cpu_capacity;
 }
+EXPORT_SYMBOL_GPL(capacity_of);
 
 static void record_wakee(struct task_struct *p)
 {
@@ -6400,7 +6402,7 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
  *
  * Return: the (estimated) utilization for the specified CPU
  */
-static inline unsigned long cpu_util(int cpu)
+unsigned long cpu_util(int cpu)
 {
 	struct cfs_rq *cfs_rq;
 	unsigned int util;
@@ -6413,6 +6415,7 @@ static inline unsigned long cpu_util(int cpu)
 
 	return min_t(unsigned long, util, capacity_orig_of(cpu));
 }
+EXPORT_SYMBOL_GPL(cpu_util);
 
 /*
  * cpu_util_without: compute cpu utilization without any contributions from *p
@@ -6427,7 +6430,7 @@ static inline unsigned long cpu_util(int cpu)
  * utilization of the specified task, whenever the task is currently
  * contributing to the CPU utilization.
  */
-static unsigned long cpu_util_without(int cpu, struct task_struct *p)
+unsigned long cpu_util_without(int cpu, struct task_struct *p)
 {
 	struct cfs_rq *cfs_rq;
 	unsigned int util;
@@ -6502,6 +6505,7 @@ static unsigned long cpu_util_without(int cpu, struct task_struct *p)
 	 */
 	return min_t(unsigned long, util, capacity_orig_of(cpu));
 }
+EXPORT_SYMBOL_GPL(cpu_util_without);
 
 /*
  * Predicts what cpu_util(@cpu) would return if @p was migrated (and enqueued)
