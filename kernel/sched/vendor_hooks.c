@@ -87,6 +87,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wake_up_sync);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_wake_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_util_cfs_boost);
+<<<<<<< HEAD   (c589e3 FROMGIT: rust: fixup MODVERSIONS series)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dup_task_struct);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_energy_efficient_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);
@@ -104,3 +105,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg_blocked_se);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg_se);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg_cfs_rq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg_internal);
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_account_process_tick_gran);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_account_process_tick_gran);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_irqtime_account_process_tick);
+>>>>>>> CHANGE (788b91 ANDROID: vendor_hooks: Add hooks for account irqtime process)
