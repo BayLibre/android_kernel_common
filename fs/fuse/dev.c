@@ -2243,11 +2243,16 @@ static long fuse_dev_ioctl(struct file *file, unsigned int cmd,
 	struct fuse_dev *fud = NULL;
 	struct fuse_passthrough_out pto;
 
+<<<<<<< HEAD   (163e8b Merge d652502ef4689 Merge tag 'ovl-update-5.13' of git://git)
 	if (_IOC_TYPE(cmd) != FUSE_DEV_IOC_MAGIC)
 		return -EINVAL;
 
 	switch (_IOC_NR(cmd)) {
 	case _IOC_NR(FUSE_DEV_IOC_CLONE):
+=======
+	switch (cmd) {
+	case FUSE_DEV_IOC_CLONE:
+>>>>>>> BRANCH (9ec1ef Merge tag 'fuse-update-5.13' of git://git.kernel.org/pub/scm)
 		res = -EFAULT;
 		if (!get_user(oldfd, (__u32 __user *)arg)) {
 			struct file *old = fget(oldfd);
