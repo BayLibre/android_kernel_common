@@ -495,6 +495,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 			}
 		}
 		bitmap_set(cma->bitmap, bitmap_no, bitmap_count);
+		trace_android_vh_cma_set_owner(cma, bitmap_no, bitmap_count);
 		/*
 		 * It's safe to drop the lock here. We've marked this region for
 		 * our exclusive use. If the migration fails we will take the
@@ -510,6 +511,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 		}
 
 		cma_clear_bitmap(cma, pfn, count);
+		trace_android_vh_cma_clear_owner(cma, pfn, count);
 		if (ret != -EBUSY)
 			break;
 
@@ -538,6 +540,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 		pr_err("%s: %s: alloc failed, req-size: %zu pages, ret: %d\n",
 		       __func__, cma->name, count, ret);
 		cma_debug_show_areas(cma);
+		trace_android_vh_cma_show_owner(cma);
 	}
 
 	pr_debug("%s(): returned %p\n", __func__, page);
@@ -584,6 +587,7 @@ bool cma_release(struct cma *cma, const struct page *pages, unsigned int count)
 
 	free_contig_range(pfn, count);
 	cma_clear_bitmap(cma, pfn, count);
+	trace_android_vh_cma_clear_owner(cma, pfn, count);
 	trace_cma_release(cma->name, pfn, pages, count);
 
 	return true;

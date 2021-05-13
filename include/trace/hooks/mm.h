@@ -31,6 +31,17 @@ DECLARE_HOOK(android_vh_cma_alloc_finish,
 	TP_PROTO(struct cma *cma, struct page *page, unsigned long count,
 		 unsigned int align, gfp_t gfp_mask, s64 ts),
 	TP_ARGS(cma, page, count, align, gfp_mask, ts));
+DECLARE_HOOK(android_vh_cma_set_owner,
+	TP_PROTO(struct cma *cma, unsigned int bitmap_no,
+		unsigned int bitmap_count),
+	TP_ARGS(cma, bitmap_no, bitmap_count));
+DECLARE_HOOK(android_vh_cma_clear_owner,
+	TP_PROTO(struct cma *cma, unsigned long pfn,
+		unsigned int count),
+	TP_ARGS(cma, pfn, count));
+DECLARE_HOOK(android_vh_cma_show_owner,
+	TP_PROTO(struct cma *cma),
+	TP_ARGS(cma));
 DECLARE_HOOK(android_vh_rmqueue,
 	TP_PROTO(struct zone *preferred_zone, struct zone *zone,
 		unsigned int order, gfp_t gfp_flags,
