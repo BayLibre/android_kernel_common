@@ -542,7 +542,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 
 	pr_debug("%s(): returned %p\n", __func__, page);
 out:
-	trace_android_vh_cma_alloc_finish(cma, page, count, align, gfp_mask, ts);
+	trace_android_vh_cma_alloc_finish(cma, pfn, page, count, align, gfp_mask, ret, ts);
 	if (page) {
 		count_vm_event(CMA_ALLOC_SUCCESS);
 		cma_sysfs_account_success_pages(cma, count);
