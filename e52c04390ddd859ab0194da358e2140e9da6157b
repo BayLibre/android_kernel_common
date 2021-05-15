@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000010822207",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1708135?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "6b5ed15f_19e96fcd",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 28,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Stanley Chu \u003cstanley.chu@mediatek.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "75878bbd_4e9aaba5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-05-15T09:30:57Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Stanley Chu \u003cstanley.chu@mediatek.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 373583104 android-build.ayeaye-python-dispatcher_20210513.05_p0",
+      "revId": "e52c04390ddd859ab0194da358e2140e9da6157b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
