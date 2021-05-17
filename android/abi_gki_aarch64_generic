@@ -50,8 +50,11 @@
   bio_endio
   bio_init
   bio_put
+  __bitmap_andnot
   __bitmap_clear
+  __bitmap_equal
   bitmap_from_arr32
+  __bitmap_or
   bitmap_parse
   bitmap_parselist
   bitmap_print_to_pagebuf
@@ -159,6 +162,8 @@
   clk_hw_get_name
   clk_hw_get_parent
   __clk_is_enabled
+  clk_notifier_register
+  clk_notifier_unregister
   clk_prepare
   clk_put
   clk_register
@@ -503,6 +508,7 @@
   downgrade_write
   down_interruptible
   down_read
+  down_read_trylock
   down_timeout
   down_trylock
   down_write
@@ -1580,6 +1586,7 @@
   __sg_page_iter_next
   __sg_page_iter_start
   sg_scsi_ioctl
+  shmem_file_setup
   simple_attr_open
   simple_attr_read
   simple_attr_release
@@ -1763,6 +1770,7 @@
   sysrq_mask
   system_freezing_cnt
   system_highpri_wq
+  system_long_wq
   system_power_efficient_wq
   system_state
   system_unbound_wq
@@ -1773,6 +1781,7 @@
   __tasklet_schedule
   task_may_not_preempt
   __task_pid_nr_ns
+  task_rq_lock
   tcpci_get_tcpm_port
   tcpci_irq
   tcpci_register_port
@@ -2025,6 +2034,7 @@
   usb_role_switch_get_drvdata
   usb_role_switch_register
   usb_role_switch_unregister
+  usb_speed_string
   usb_string_id
   usb_unregister_notify
   __usecs_to_jiffies
