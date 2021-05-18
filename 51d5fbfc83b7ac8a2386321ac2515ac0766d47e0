@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f622790_e7e06d62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1876150
+      },
+      "writtenOn": "2021-05-18T02:51:13Z",
+      "side": 1,
+      "message": "Modify the vendor hook trace_android_vh_cma_alloc_finish() for cma memory leak debugging.\n\nWhy do we need pfn? \nWe need to set the owner who use the pages of a cma, those pages can posited by bitmap_no and bitmap_count.\nHow to get the bitmap_no and bitmap_count?\nbitmap_no \u003d (pfn - cma-\u003ebase_pfn) \u003e\u003e cma-\u003eorder_per_bit; //pfn to bitmap_no\nbitmap_count \u003d cma_bitmap_pages_to_bits(cma, count); // count to bitmap_count\n\nWhy do we need ret?\nIf we check the ret \u003d\u003d -ENOMEM or other errno, we can print out more cma memory information.",
+      "revId": "51d5fbfc83b7ac8a2386321ac2515ac0766d47e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44270a3a_2d95f390",
@@ -14,6 +31,30 @@
       "writtenOn": "2021-05-17T15:11:15Z",
       "side": 1,
       "message": "I have no idea the how those parameters are used since there is no implementation in vendor hook and description also doesn\u0027t have it.\n\nWhy do we need pfn? \n\nWhy do we need ret?\n\nPlease mention it in the CL description so that others can understand what\u0027s purpose. It will prevent future change of those value would break the semantic.",
+      "range": {
+        "startLine": 545,
+        "startChar": 40,
+        "endLine": 545,
+        "endChar": 43
+      },
+      "revId": "51d5fbfc83b7ac8a2386321ac2515ac0766d47e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "976b1b4d_c6a3d5ce",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1876150
+      },
+      "writtenOn": "2021-05-18T02:51:13Z",
+      "side": 1,
+      "message": "Modify the vendor hook trace_android_vh_cma_alloc_finish() for cma memory leak debugging.\n\nWhy do we need pfn? \nWe need to set the owner who use the pages of a cma, those pages can posited by bitmap_no and bitmap_count.\nHow to get the bitmap_no and bitmap_count?\nbitmap_no \u003d (pfn - cma-\u003ebase_pfn) \u003e\u003e cma-\u003eorder_per_bit; //pfn to bitmap_no\nbitmap_count \u003d cma_bitmap_pages_to_bits(cma, count); // count to bitmap_count\n\nWhy do we need ret?\nIf we check the ret \u003d\u003d -ENOMEM or other errno, we can print out more cma memory information.",
+      "parentUuid": "44270a3a_2d95f390",
       "range": {
         "startLine": 545,
         "startChar": 40,
