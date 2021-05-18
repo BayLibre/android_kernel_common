@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b5366ce_c6d0a68e",
+        "filename": "arch/arm64/include/asm/rwonce.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-18T23:32:39Z",
+      "side": 1,
+      "message": "This change will make this __READ_ONCE() definition be #ifdef\u0027ed out as well.\n\nIs this unintentional, given that the commit message seems to only be talking about the __LOAD_RCPC() definition above?",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 25
+      },
+      "revId": "ee116b2a59ef319341e504203dfab2c88744e749",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
