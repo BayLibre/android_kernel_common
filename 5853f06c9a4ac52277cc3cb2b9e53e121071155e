@@ -33,6 +33,29 @@
       "message": "That should rather go upstream.",
       "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9385d3f_938385d8",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-05-18T17:28:59Z",
+      "side": 1,
+      "message": "High order kernel allocations are usually done using alloc_pages/cma_alloc/dmabuf heaps, not with buddy allocator. Please check if you can use them instead of increasing max zoneorder for buddy allocator. You are likely to get better results.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
