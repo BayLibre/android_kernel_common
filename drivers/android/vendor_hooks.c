@@ -56,6 +56,7 @@
 #include <trace/hooks/psi.h>
 #include <trace/hooks/selinux.h>
 #include <trace/hooks/hung_task.h>
+#include <trace/hooks/mi_power.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -286,3 +287,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cgroup_attach);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_dirty_limits);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks_dn);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clk_debug_init);
+
