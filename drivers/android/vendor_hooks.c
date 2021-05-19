@@ -70,7 +70,11 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/suspend.h>
 #include <trace/hooks/typec.h>
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
 #include <trace/hooks/sound.h>
+=======
+#include <trace/hooks/user.h>
+>>>>>>> CHANGE (32cfb8 ANDROID: user: Add vendor hook to user for GKI purpose)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -328,6 +332,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sound_usb_support_cpu_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_usb_dev_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+
+>>>>>>> CHANGE (32cfb8 ANDROID: user: Add vendor hook to user for GKI purpose)
