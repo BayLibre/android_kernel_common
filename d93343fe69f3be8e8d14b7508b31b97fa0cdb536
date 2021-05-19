@@ -16,6 +16,24 @@
       "message": "What drivers need access to cgroups like this?",
       "revId": "d93343fe69f3be8e8d14b7508b31b97fa0cdb536",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1936b2e9_69ce8f0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1878106
+      },
+      "writtenOn": "2021-05-19T08:30:35Z",
+      "side": 1,
+      "message": "Tasks put on cgroup represents its requirement of performance.\nOur vendor module will get the task information to change our performance state when tasks changed cgroup.\nWe want to update task information when initial a cgroup or tasks change/add to a cgroup, so we need to traverse the task of cgroup list to update the tasks information.",
+      "parentUuid": "e18bff07_bb9e53f3",
+      "revId": "d93343fe69f3be8e8d14b7508b31b97fa0cdb536",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
