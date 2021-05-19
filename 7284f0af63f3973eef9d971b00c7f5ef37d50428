@@ -1,0 +1,233 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14696213_b856d571",
+        "filename": "arch/arm64/include/asm/module.lds.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "A comment that explains this part would be helpful.  It\u0027s related to having to build multiple __init functions into the fips140.ko module, right?  How is it guaranteed that they are run in the right order?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f2b174_6874f82f",
+        "filename": "crypto/Kconfig",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "This should be disabled by default, and enabled by gki_defconfig.\n\nAlso, what is the plan for when fips140.ko will be built?  Will it be build as part of GKI, or as part of the modules for a particular device?  I guess the former, since we\u0027ll want to do the certification just once, for GKI?  Do we have a way to build modules as part of GKI?  I recall there was going to be a way to do that, but I don\u0027t know whether it went through or not -- as-is I don\u0027t see anything set to \u0027m\u0027 in gki_defconfig.",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdb97ac0_ddb795e5",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "The officially approved copyright notice these days is \"Copyright 2021 Google LLC\" (see go/copyright)",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f60ed520_ec296cb1",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "Expand this comment to explain the purpose of this file?",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56b66dda_6a0297f5",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "Add a comment which explains that HMAC with a fixed key is used because this is what FIPS requires, and that this is not intended to be an authenticity check?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 87
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db73415_43c7508e",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "Add a comment which explains why this list of algorithms was chosen?",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cbb3e9e_26698ff4",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "This should be %ld",
+      "range": {
+        "startLine": 257,
+        "startChar": 39,
+        "endLine": 257,
+        "endChar": 41
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "431a4f98_8b071542",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "crypto_shash_driver_name()",
+      "range": {
+        "startLine": 263,
+        "startChar": 2,
+        "endLine": 263,
+        "endChar": 46
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5156053_0948af61",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "How about just:\n\n   pr_err(\"provided_digest  : %*phN\\n\", (int)sizeof(digest), fips140_integ_hmac_digest);\n\nLikewise below.",
+      "range": {
+        "startLine": 282,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 16
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52078c68_377a4cb3",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "Before doing these function pointer replacements, as a safety check shouldn\u0027t it be verified that cra_ctxsize and cra_alignmask match?  It won\u0027t catch every difference, so we\u0027ll still need to be careful, but it should catch a lot of them.",
+      "range": {
+        "startLine": 298,
+        "startChar": 19,
+        "endLine": 298,
+        "endChar": 44
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a89edb_7197e371",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-05-19T04:09:21Z",
+      "side": 1,
+      "message": "The design doc mentions that non-cryptographic helper routines can be excluded from the FIPS module.  How can this be reconciled with the code here?",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
