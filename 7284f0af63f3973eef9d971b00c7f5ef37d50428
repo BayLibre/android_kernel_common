@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9298913_4c695201",
+        "filename": "arch/arm64/include/asm/module.lds.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "\u003e A comment that explains this part would be helpful.  It\u0027s related to having to build multiple __init functions into the fips140.ko module, right?\n\nYes.\n\n\u003e How is it guaranteed that they are run in the right order?\n\nThey are executed in ascending initcall level order, just like they are when they are built into vmlinux. This is due to the fact that all crypto objects are gathered into a pair of .a files that are built as built-ins, which are linked into the fips140.ko module.",
+      "parentUuid": "14696213_b856d571",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "25f2b174_6874f82f",
         "filename": "crypto/Kconfig",
         "patchSetId": 18
@@ -64,6 +88,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed66441f_80a96c91",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fdb97ac0_ddb795e5",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f60ed520_ec296cb1",
@@ -81,6 +129,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c153a43f_20f7d410",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f60ed520_ec296cb1",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56b66dda_6a0297f5",
@@ -94,6 +160,30 @@
       "writtenOn": "2021-05-19T04:09:21Z",
       "side": 1,
       "message": "Add a comment which explains that HMAC with a fixed key is used because this is what FIPS requires, and that this is not intended to be an authenticity check?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 87
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0b3e24_dd8e5a7b",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "56b66dda_6a0297f5",
       "range": {
         "startLine": 22,
         "startChar": 0,
@@ -123,6 +213,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90127509_25d701a6",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Good point. If only I had a good reason for choosing this set - it was created rather arbitrarily, and it would be nice to get some guidance from the lab which algorithms they actually care about, but I am not sure that is forthcoming.",
+      "parentUuid": "8db73415_43c7508e",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cbb3e9e_26698ff4",
         "filename": "crypto/fips140-integrity.c",
         "patchSetId": 18
@@ -134,6 +242,30 @@
       "writtenOn": "2021-05-19T04:09:21Z",
       "side": 1,
       "message": "This should be %ld",
+      "range": {
+        "startLine": 257,
+        "startChar": 39,
+        "endLine": 257,
+        "endChar": 41
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96df2ae7_f16a9b7a",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7cbb3e9e_26698ff4",
       "range": {
         "startLine": 257,
         "startChar": 39,
@@ -167,6 +299,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d215f4f_fcc20c48",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "431a4f98_8b071542",
+      "range": {
+        "startLine": 263,
+        "startChar": 2,
+        "endLine": 263,
+        "endChar": 46
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5156053_0948af61",
@@ -180,6 +336,30 @@
       "writtenOn": "2021-05-19T04:09:21Z",
       "side": 1,
       "message": "How about just:\n\n   pr_err(\"provided_digest  : %*phN\\n\", (int)sizeof(digest), fips140_integ_hmac_digest);\n\nLikewise below.",
+      "range": {
+        "startLine": 282,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 16
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aa8eec3_9b3c18d6",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e5156053_0948af61",
       "range": {
         "startLine": 282,
         "startChar": 0,
@@ -215,6 +395,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa999383_76671255",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "The replacements are selected based on the cra_driver_name, so I am not sure how we would ever deviate here (unless we have a cra_driver_name clash)",
+      "parentUuid": "52078c68_377a4cb3",
+      "range": {
+        "startLine": 298,
+        "startChar": 19,
+        "endLine": 298,
+        "endChar": 44
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9a89edb_7197e371",
         "filename": "crypto/fips140-integrity.c",
         "patchSetId": 18
@@ -226,6 +430,24 @@
       "writtenOn": "2021-05-19T04:09:21Z",
       "side": 1,
       "message": "The design doc mentions that non-cryptographic helper routines can be excluded from the FIPS module.  How can this be reconciled with the code here?",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "874b31f4_02b69371",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:06:27Z",
+      "side": 1,
+      "message": "The guidelines given by the lab are extremely vague, and crypto_xor()\u0027s name sounds like it may be misidentified as something cryptographic. So just erring on the side of caution here.",
+      "parentUuid": "a9a89edb_7197e371",
       "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
