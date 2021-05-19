@@ -22,6 +22,30 @@
       },
       "revId": "ee116b2a59ef319341e504203dfab2c88744e749",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f4a5d9a_6e7ea3f9",
+        "filename": "arch/arm64/include/asm/rwonce.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T08:14:53Z",
+      "side": 1,
+      "message": "Ah yes, thanks for spotting that. The FIPS140 module needs the __READ_ONCE() override, just not the one that gets patched up at runtime.",
+      "parentUuid": "7b5366ce_c6d0a68e",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 25
+      },
+      "revId": "ee116b2a59ef319341e504203dfab2c88744e749",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
