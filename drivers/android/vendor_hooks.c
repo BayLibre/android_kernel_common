@@ -66,6 +66,7 @@
 #include <trace/hooks/dmabuf.h>
 #include <trace/hooks/signal.h>
 #include <trace/hooks/compaction.h>
+<<<<<<< HEAD   (275bcc ANDROID: GKI: Update symbol list for xiaomi)
 #include <trace/hooks/madvise.h>
 #include <trace/events/android_vendor_lmk.h>
 #include <trace/hooks/blk.h>
@@ -73,6 +74,12 @@
 #include <trace/hooks/fuse.h>
 #include <trace/hooks/ogki_honor.h>
 #include <trace/hooks/suspend.h>
+||||||| BASE
+#include <trace/hooks/sd.h>
+=======
+#include <trace/hooks/sd.h>
+#include <trace/hooks/user.h>
+>>>>>>> CHANGE (f0b0ff ANDROID: user: Add vendor hook to user for GKI purpose)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -547,6 +554,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapmem_gather_add_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapmem_gather_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_finish);
+<<<<<<< HEAD   (275bcc ANDROID: GKI: Update symbol list for xiaomi)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shmem_swapin_folio);
@@ -568,3 +576,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_charge);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_add_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+||||||| BASE
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+>>>>>>> CHANGE (f0b0ff ANDROID: user: Add vendor hook to user for GKI purpose)
