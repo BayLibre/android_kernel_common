@@ -72,6 +72,13 @@
 #include <trace/hooks/fsnotify.h>
 #include <trace/hooks/fuse.h>
 #include <trace/hooks/ogki_honor.h>
+<<<<<<< HEAD   (df0679 UPSTREAM: erofs: impersonate the opener's credentials when a)
+||||||| BASE
+#include <trace/hooks/suspend.h>
+=======
+#include <trace/hooks/suspend.h>
+#include <trace/hooks/user.h>
+>>>>>>> CHANGE (4e873a ANDROID: user: Add vendor hook to user for GKI purpose)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -550,3 +557,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node_memcgs);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_charge);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_add_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node);
+<<<<<<< HEAD   (df0679 UPSTREAM: erofs: impersonate the opener's credentials when a)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+>>>>>>> CHANGE (4e873a ANDROID: user: Add vendor hook to user for GKI purpose)
