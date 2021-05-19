@@ -16,6 +16,24 @@
       "message": "Why does a driver need to mess with cgroup?",
       "revId": "07076e89921c4dcb799e4c9c75387af31c803f2f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eb2d462_73bba115",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1878106
+      },
+      "writtenOn": "2021-05-19T08:29:43Z",
+      "side": 1,
+      "message": "Tasks put on cgroup represents its requirement of performance.\nOur vendor module will get the task information to change our performance state when tasks changed cgroup.\nWe want to update task information when initial a cgroup or tasks change/add to a cgroup, so we need to traverse the task of cgroup list to update the tasks information.",
+      "parentUuid": "67febaba_14acf150",
+      "revId": "07076e89921c4dcb799e4c9c75387af31c803f2f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
