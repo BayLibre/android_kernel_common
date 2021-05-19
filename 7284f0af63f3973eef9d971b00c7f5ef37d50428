@@ -443,6 +443,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1e05e76_8e98a790",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-05-19T17:28:41Z",
+      "side": 1,
+      "message": "Yes, but you are right that that requires some hygiene on our part to ensure that code that gets pulled into the fips140.ko module remains compatible with the copies that live in vmlinux.",
+      "parentUuid": "17077a27_0bb334d3",
+      "range": {
+        "startLine": 298,
+        "startChar": 19,
+        "endLine": 298,
+        "endChar": 44
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9a89edb_7197e371",
         "filename": "crypto/fips140-integrity.c",
         "patchSetId": 18
