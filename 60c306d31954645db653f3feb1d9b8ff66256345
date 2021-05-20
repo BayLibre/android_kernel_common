@@ -16,6 +16,24 @@
       "message": "Any particular reason you are combining several upstream patches into one?",
       "revId": "60c306d31954645db653f3feb1d9b8ff66256345",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f088dc14_68f956cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2021-05-20T16:53:33Z",
+      "side": 1,
+      "message": "I thought since the patch from which the uffd_stats_report() was picked mainly introduces a write-protect test, which we don\u0027t need; so it\u0027s ok to pick what we needed and combine in this.\n\nAnyways, as we discussed, I have CP\u0027ed the upstreamed patch which introduced uffd_stats_report() and omitted the write-protect test related code changes and added a note in the commit message. PTAL",
+      "parentUuid": "094a672d_a69e7bc6",
+      "revId": "60c306d31954645db653f3feb1d9b8ff66256345",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
