@@ -2306,6 +2306,7 @@ static unsigned int tcpm_pd_select_pps_apdo(struct tcpm_port *port)
 		src = port->source_caps[src_pdo];
 		snk = port->snk_pdo[snk_pdo];
 
+<<<<<<< HEAD   (06fadb ANDROID: dm-user: Drop additional reference)
 		port->pps_data.min_volt = max(pdo_pps_apdo_min_voltage(src),
 					      pdo_pps_apdo_min_voltage(snk));
 		port->pps_data.max_volt = min(pdo_pps_apdo_max_voltage(src),
@@ -2317,6 +2318,18 @@ static unsigned int tcpm_pd_select_pps_apdo(struct tcpm_port *port)
 		port->pps_data.op_curr = min(port->pps_data.max_curr,
 					     port->pps_data.op_curr);
 		power_supply_changed(port->psy);
+=======
+		port->pps_data.req_min_volt = max(pdo_pps_apdo_min_voltage(src),
+						  pdo_pps_apdo_min_voltage(snk));
+		port->pps_data.req_max_volt = min(pdo_pps_apdo_max_voltage(src),
+						  pdo_pps_apdo_max_voltage(snk));
+		port->pps_data.req_max_curr = min_pps_apdo_current(src, snk);
+		port->pps_data.req_out_volt = min(port->pps_data.req_max_volt,
+						  max(port->pps_data.req_min_volt,
+						      port->pps_data.req_out_volt));
+		port->pps_data.req_op_curr = min(port->pps_data.req_max_curr,
+						 port->pps_data.req_op_curr);
+>>>>>>> BRANCH (e05d38 Linux 5.4.120)
 	}
 
 	return src_pdo;
