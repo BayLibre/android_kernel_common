@@ -1665,7 +1665,11 @@ next_alloc:
 		down_write(&sbi->pin_sem);
 
 		f2fs_lock_op(sbi);
+<<<<<<< HEAD   (f0fb44 ANDROID: Update the ABI xml)
 		f2fs_allocate_new_section(sbi, CURSEG_COLD_DATA_PINNED, false);
+=======
+		f2fs_allocate_new_section(sbi, CURSEG_COLD_DATA_PINNED);
+>>>>>>> BRANCH (689e89 Linux 5.10.38)
 		f2fs_unlock_op(sbi);
 
 		map.m_seg_type = CURSEG_COLD_DATA_PINNED;
@@ -3973,8 +3977,13 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD   (f0fb44 ANDROID: Update the ABI xml)
 static int f2fs_ioc_get_compress_option(struct file *filp, unsigned long arg)
+=======
+static long __f2fs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+>>>>>>> BRANCH (689e89 Linux 5.10.38)
 {
+<<<<<<< HEAD   (f0fb44 ANDROID: Update the ABI xml)
 	struct inode *inode = file_inode(filp);
 	struct f2fs_comp_option option;
 
@@ -4234,6 +4243,8 @@ out:
 
 static long __f2fs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
+=======
+>>>>>>> BRANCH (689e89 Linux 5.10.38)
 	switch (cmd) {
 	case FS_IOC_GETFLAGS:
 		return f2fs_ioc_getflags(filp, arg);
