@@ -1,0 +1,48 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "sources",
+    srcs = glob(
+        ["**"],
+        exclude = [
+            "build.config.*",
+            "android/*",
+        ],
+    ),
+)
+
+filegroup(
+    name = "build_configs",
+    srcs = glob(["build.config.*"]),
+)
+
+genrule(
+    name = "kernel",
+    srcs = [
+        "//build:env.sh",
+        "//build:kernel-build-scripts",
+        "//build:host-tools",
+        "//common:sources",
+        "//prebuilts-master/clang/host/linux-x86/clang-r416183b:binaries",
+        "//prebuilts/build-tools:linux-x86",
+        "//prebuilts/kernel-build-tools:linux-x86",
+    ],
+    outs = [
+        "abi.prop",
+        "Image",
+        "Image.lz4",
+        "System.map",
+        "modules.builtin",
+        "modules.builtin.modinfo",
+        "kernel-headers.tar.gz",
+        "kernel-uapi-headers.tar.gz",
+        "vmlinux",
+        "vmlinux.btf",
+        "vmlinux.symvers",
+    ],
+    cmd =
+        "   source $(location //build:env.sh)" +
+        "\n export PATH=$$PATH:$$PWD/$$(dirname $$( echo $(locations //build:host-tools) | tr ' ' '\n' | head -n 1 ) )" +
+        "\n DIST_DIR=$$PWD/$$(dirname $(location vmlinux)) build/build.sh 2>&1",
+    message = "Building kernel",
+)
