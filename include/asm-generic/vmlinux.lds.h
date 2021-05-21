@@ -426,6 +426,15 @@
 #endif
 
 /*
+ * Keep .eh_frame with CFI.
+ */
+#ifdef CONFIG_CFI_CLANG
+#define EH_FRAME *(.eh_frame);
+#else
+#define EH_FRAME
+#endif
+
+/*
  * Read only Data
  */
 #define RO_DATA(align)							\
@@ -435,6 +444,7 @@
 		*(.rodata) *(.rodata.*)					\
 		SCHED_DATA						\
 		RO_AFTER_INIT_DATA	/* Read only after init */	\
+		EH_FRAME						\
 		. = ALIGN(8);						\
 		__start___tracepoints_ptrs = .;				\
 		KEEP(*(__tracepoints_ptrs)) /* Tracepoints: pointer array */ \
