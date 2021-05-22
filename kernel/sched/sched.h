@@ -1179,6 +1179,7 @@ struct rq {
 	u64			core_forceidle_start;
 #endif
 
+<<<<<<< HEAD   (ff3ecc ANDROID: ABI: Update oplus symbol list)
 	/* Scratch cpumask to be temporarily used under rq_lock */
 	cpumask_var_t		scratch_mask;
 
@@ -1186,6 +1187,10 @@ struct rq {
 	call_single_data_t	cfsb_csd;
 	struct list_head	cfsb_csd_list;
 #endif
+=======
+	ANDROID_VENDOR_DATA_ARRAY(1, 1);
+	ANDROID_OEM_DATA_ARRAY(1, 16);
+>>>>>>> CHANGE (a10d9e ANDROID: sched: Add oem data in struct rq)
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
