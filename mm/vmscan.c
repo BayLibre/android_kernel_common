@@ -51,6 +51,7 @@
 #include <linux/printk.h>
 #include <linux/dax.h>
 #include <linux/psi.h>
+#include <linux/android_vendor.h>
 
 #include <asm/tlbflush.h>
 #include <asm/div64.h>
@@ -153,6 +154,8 @@ struct scan_control {
 
 	/* for recording the reclaimed slab by now */
 	struct reclaim_state reclaim_state;
+
+	ANDROID_OEM_DATA(1);
 };
 
 #ifdef ARCH_HAS_PREFETCHW
