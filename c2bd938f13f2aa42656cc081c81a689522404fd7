@@ -142,6 +142,24 @@
       "parentUuid": "de267ba0_e49b73b6",
       "revId": "c2bd938f13f2aa42656cc081c81a689522404fd7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ea09e87_a11a6032",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1876972
+      },
+      "writtenOn": "2021-05-24T02:42:29Z",
+      "side": 1,
+      "message": "Dear sir:\nAs you said in the comments above, I have tried your advice, our function can be implemented by syscall existing tracepoint, but the module does not have permission to access, so need to export these two tracepoints sys_enter and sys_exit in ptrace.c, please help me review! \n\nthanks!",
+      "parentUuid": "c275ae8c_28136016",
+      "revId": "c2bd938f13f2aa42656cc081c81a689522404fd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
