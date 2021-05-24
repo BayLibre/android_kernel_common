@@ -16,6 +16,52 @@
       "message": "No driver should ever need these.",
       "revId": "aab4cca0dad3efa887eaaa93636fd619b1e830a1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f71ca862_a13feed5",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-05-24T17:33:52Z",
+      "side": 1,
+      "message": "This symbol is already exported using debug_symbols driver: https://android-review.googlesource.com/c/kernel/common/+/1667041/11/drivers/android/debug_symbols.c#46",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 33
+      },
+      "revId": "aab4cca0dad3efa887eaaa93636fd619b1e830a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25046107_909921c7",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5767,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-05-24T17:33:52Z",
+      "side": 1,
+      "message": "This data is available via /proc/meminfo and /proc/zoneinfo. If you need to dump this data at specific time known only to you driver, your driver should expose a pollable file to userspace and signal a userspace process to dump the data whenever needed.",
+      "range": {
+        "startLine": 5767,
+        "startChar": 18,
+        "endLine": 5767,
+        "endChar": 33
+      },
+      "revId": "aab4cca0dad3efa887eaaa93636fd619b1e830a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
