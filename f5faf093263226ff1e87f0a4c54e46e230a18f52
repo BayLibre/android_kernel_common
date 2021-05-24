@@ -16,6 +16,24 @@
       "message": "Would it make more sense to include this as part of the dm_user ctr (eg an optional parameter in the target string?)",
       "revId": "f5faf093263226ff1e87f0a4c54e46e230a18f52",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67bbd241_cb1a9919",
+        "filename": "drivers/md/dm-user.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2021-05-24T23:50:02Z",
+      "side": 1,
+      "message": "We can do that but we won\u0027t be able to change it runtime. This will give flexibility to debug as we can change the time runtime. That said, setting it in user_ctr gives control on setting up per target whereas this is a global parameter. Do we need per target timeout ?",
+      "parentUuid": "0ae609b9_d20eb630",
+      "revId": "f5faf093263226ff1e87f0a4c54e46e230a18f52",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
