@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e4783ff_bce69458",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2021-05-25T00:20:23Z",
+      "side": 1,
+      "message": "Hey Arve,\n\nsee my response, please let me know.\n\n-Armelle",
+      "revId": "98378d0b768f682526568797cf4080969fa80da1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3316c984_1f9350db",
@@ -14,6 +31,24 @@
       "writtenOn": "2021-05-24T23:39:27Z",
       "side": 1,
       "message": "check dev-\u003edriver to make sure platform_get_drvdata will actually point to a struct trusty_state (see trusty_transfer_memory for an example)",
+      "revId": "98378d0b768f682526568797cf4080969fa80da1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0a5f475_f025b5e3",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2021-05-25T00:20:23Z",
+      "side": 1,
+      "message": "you mean this:\n\tif (WARN_ON(dev-\u003edriver !\u003d \u0026trusty_driver.driver))\n\t\treturn -EINVAL;\n\nshouldn\u0027t this rather be BUG_ON(dev-\u003edriver !\u003d \u0026trusty_driver.driver)?\n\nif we want to keep it with an error code returned, then should the signature be:\nint trusty_get_panic_status(struct device *dev) andwith -EINVAL, 0, 1 as possible return value.\nOr should we rather do int trusty_get_panic_status(struct device *dev, bool* status)?",
+      "parentUuid": "3316c984_1f9350db",
       "revId": "98378d0b768f682526568797cf4080969fa80da1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
