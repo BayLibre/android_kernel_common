@@ -22,6 +22,8 @@
 #include <linux/usb/gadget.h>
 #include <linux/usb/composite.h>
 
+#include <trace/hooks/usb.h>
+
 #include "core.h"
 #include "debug.h"
 #include "gadget.h"
@@ -812,6 +814,7 @@ static void dwc3_ep0_inspect_setup(struct dwc3 *dwc,
 		ret = dwc3_ep0_std_request(dwc, ctrl);
 	else
 		ret = dwc3_ep0_delegate_req(dwc, ctrl);
+	trace_android_vh_dwc3_ep0_inspect_setup(dwc, ctrl, ret);
 
 	if (ret == USB_GADGET_DELAYED_STATUS)
 		dwc->delayed_status = true;
@@ -927,6 +930,7 @@ static void dwc3_ep0_xfer_complete(struct dwc3 *dwc,
 	dep->resource_index = 0;
 	dwc->setup_packet_pending = false;
 
+	trace_android_vh_dwc3_ep0_xfer_complete(dwc);
 	switch (dwc->ep0state) {
 	case EP0_SETUP_PHASE:
 		dwc3_ep0_inspect_setup(dwc, event);
