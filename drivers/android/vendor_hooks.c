@@ -57,6 +57,7 @@
 #include <trace/hooks/selinux.h>
 #include <trace/hooks/hung_task.h>
 #include <trace/hooks/mmc_core.h>
+#include <trace/hooks/usb.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -297,3 +298,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_gpio_cd_irqt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_vmalloc_stack);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_stack_hash);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_track_hash);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_config_usb_cfg_link);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_config_usb_cfg_unlink);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dwc3_process_event_entry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dwc3_gadget_pullup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dwc3_ep0_inspect_setup);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dwc3_ep0_xfer_complete);

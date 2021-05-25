@@ -22,6 +22,8 @@
 #include <linux/usb/ch9.h>
 #include <linux/usb/gadget.h>
 
+#include <trace/hooks/usb.h>
+
 #include "debug.h"
 #include "core.h"
 #include "gadget.h"
@@ -2304,6 +2306,7 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 	}
 
 	ret = dwc3_gadget_run_stop(dwc, is_on, false);
+	trace_android_vh_dwc3_gadget_pullup(dwc, is_on, ret);
 	spin_unlock_irqrestore(&dwc->lock, flags);
 	pm_runtime_put(dwc->dev);
 
@@ -3800,6 +3803,7 @@ static void dwc3_process_event_entry(struct dwc3 *dwc,
 		const union dwc3_event *event)
 {
 	trace_dwc3_event(event->raw, dwc);
+	trace_android_vh_dwc3_process_event_entry(dwc, event);
 
 	if (!event->type.is_devspec)
 		dwc3_endpoint_interrupt(dwc, &event->depevt);
