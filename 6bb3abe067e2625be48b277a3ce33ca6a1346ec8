@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb7dd4f0_f75bc774",
+        "filename": "include/linux/sched.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-05-25T16:55:27Z",
+      "side": 1,
+      "message": "64 fields should be plenty. If you have fields not used in the hotpath then you can separate them into a separate structure and have a pointer from task_struct to it, which would require only one field.",
+      "range": {
+        "startLine": 1371,
+        "startChar": 30,
+        "endLine": 1371,
+        "endChar": 32
+      },
+      "revId": "6bb3abe067e2625be48b277a3ce33ca6a1346ec8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
