@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24892edf_dd11a00a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-05-25T07:55:43Z",
+      "side": 1,
+      "message": "This should add the __tracepoint_* symbol as well as the __traceiter_* symbol, otherwise ABI stability of vendor hooks cannot be monitored properly. build_abi.sh should do that for you though.",
+      "revId": "ca5257d4822b4b1de531886c8cef130d6aa67000",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
