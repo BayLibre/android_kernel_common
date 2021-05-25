@@ -51,6 +51,24 @@
       "parentUuid": "3316c984_1f9350db",
       "revId": "98378d0b768f682526568797cf4080969fa80da1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4692fb04_d4256103",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-05-25T00:41:22Z",
+      "side": 1,
+      "message": "Just return false. There is no need to crash the kernel if this happens, but it should log a warning as the caller has a bug.",
+      "parentUuid": "e0a5f475_f025b5e3",
+      "revId": "98378d0b768f682526568797cf4080969fa80da1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
