@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa29d4f_06f93ec3",
+        "filename": "include/linux/blk_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-05-26T12:45:14Z",
+      "side": 1,
+      "message": "why here and not at the end?  I think you just introduced a \"hole\" in the structure 😞\n\nPlease put this right before the ANDROID_KABI() lines below.",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 21
+      },
+      "revId": "e750d4af972ccf04ca9954b62300d4bf5636c3e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
