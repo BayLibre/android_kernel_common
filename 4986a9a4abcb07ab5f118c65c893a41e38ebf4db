@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e4b33d_a25b3c3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-05-26T12:43:50Z",
+      "side": 1,
+      "message": "Why does the host template need this?  This is not allocated by drivers, but by scsi host controllers, right?  The private pointer should be all you need to hang things off of, or am I missing something here?",
+      "revId": "4986a9a4abcb07ab5f118c65c893a41e38ebf4db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
