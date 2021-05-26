@@ -3926,3 +3926,14 @@ static int __init blk_mq_init(void)
 	return 0;
 }
 subsys_initcall(blk_mq_init);
+
+int oem_vivo = 0;
+
+static int __init oem_setup(char *str)
+{
+	if (!strncmp(line, "VIVO", 4))
+		oem_vivo = 1;
+
+	return 1;
+}
+__setup("oem=", oem_setup);
