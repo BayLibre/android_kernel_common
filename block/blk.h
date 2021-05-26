@@ -15,6 +15,7 @@
 #define BLK_MAX_TIMEOUT		(5 * HZ)
 
 extern int oem_vivo;
+extern int oem_request_data;
 
 extern struct dentry *blk_debugfs_root;
 
