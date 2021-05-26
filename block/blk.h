@@ -16,6 +16,7 @@
 
 extern int oem_vivo;
 extern int oem_request_data;
+extern int oem_bio_data;
 
 extern struct dentry *blk_debugfs_root;
 

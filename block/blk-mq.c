@@ -3935,12 +3935,14 @@ subsys_initcall(blk_mq_init);
 
 int oem_vivo = 0;
 int oem_request_data = 0;
+int oem_bio_data = 0;
 
 static int __init oem_setup(char *str)
 {
 	if (!strncmp(line, "VIVO", 4)) {
 		oem_vivo = 1;
 		oem_request_data = sizeof(u64) * 15;
+		oem_bio_data = sizeof(u64) * 13;
 	}
 
 	return 1;

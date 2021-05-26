@@ -263,10 +263,19 @@ static void bio_free(struct bio *bio)
 		p = bio;
 		p -= bs->front_pad;
 
+		if (oem_vivo)
+			p -= oem_bio_data;
+
 		mempool_free(p, &bs->bio_pool);
 	} else {
 		/* Bio was allocated by bio_kmalloc() */
-		kfree(bio);
+		if (oem_vivo) {
+			p = bio;
+			p -= oem_bio_data;
+			kfree(p);
+		} else {
+			kfree(bio);
+		}
 	}
 }
 
@@ -448,8 +457,14 @@ struct bio *bio_alloc_bioset(gfp_t gfp_mask, unsigned int nr_iovecs,
 		if (nr_iovecs > UIO_MAXIOV)
 			return NULL;
 
-		p = kmalloc(struct_size(bio, bi_inline_vecs, nr_iovecs), gfp_mask);
-		front_pad = 0;
+		if (oem_vivo) {
+			p = kmalloc(struct_size(bio, bi_inline_vecs, nr_iovecs) +
+					oem_bio_data, gfp_mask);
+			front_pad = oem_bio_data;
+		} else {
+			p = kmalloc(struct_size(bio, bi_inline_vecs, nr_iovecs), gfp_mask);
+			front_pad = 0;
+		}
 		inline_vecs = nr_iovecs;
 	} else {
 		/* should not use nobvec bioset for nr_iovecs > 0 */
@@ -491,6 +506,8 @@ struct bio *bio_alloc_bioset(gfp_t gfp_mask, unsigned int nr_iovecs,
 		}
 
 		front_pad = bs->front_pad;
+		if (oem_vivo)
+			front_pad += oem_bio_data;
 		inline_vecs = BIO_INLINE_VECS;
 	}
 
@@ -1587,7 +1604,11 @@ int bioset_init(struct bio_set *bs,
 	bio_list_init(&bs->rescue_list);
 	INIT_WORK(&bs->rescue_work, bio_alloc_rescue);
 
-	bs->bio_slab = bio_find_or_create_slab(front_pad + back_pad);
+	if (oem_vivo)
+		bs->bio_slab = bio_find_or_create_slab(oem_bio_data +
+				front_pad + back_pad);
+	else
+		bs->bio_slab = bio_find_or_create_slab(front_pad + back_pad);
 	if (!bs->bio_slab)
 		return -ENOMEM;
 
