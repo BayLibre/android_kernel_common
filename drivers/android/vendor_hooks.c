@@ -187,3 +187,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_build_sched_domains);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_mutex_list_add);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_unlock_slowpath);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_wake_finish);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dma_heap_buffer_alloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dma_heap_buffer_free);
