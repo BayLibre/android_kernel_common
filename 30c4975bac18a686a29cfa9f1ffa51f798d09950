@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef371c4_a0d55fa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-05-27T09:36:24Z",
+      "side": 1,
+      "message": "Hello,\n\nWe have come to realize that vendor hooks in schedutil are particularly difficult to define in a way that can be shared by multiple partners. The preferred approach is for vendors/OEM to have their own governor in a module (which can easily be done based on schedutil) should they need customization in this area. So please investigate using a modular governor for your use-case, as the vast majority of partners are already doing.\n\nThanks",
+      "revId": "30c4975bac18a686a29cfa9f1ffa51f798d09950",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
