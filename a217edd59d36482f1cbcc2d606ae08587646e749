@@ -52,6 +52,24 @@
       "parentUuid": "9b21cc16_2a061d23",
       "revId": "a217edd59d36482f1cbcc2d606ae08587646e749",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f4a6c0_c31c069a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2021-05-27T07:13:43Z",
+      "side": 1,
+      "message": "How about this? I guess this doesn\u0027t cause many side-effects whether req_extra set or not.\n\ndiff --git a/block/blk-flush.c b/block/blk-flush.c\nindex 7ee7e5e8905d..2d0094697a10 100644\n--- a/block/blk-flush.c\n+++ b/block/blk-flush.c\n@@ -464,7 +464,8 @@ struct blk_flush_queue *blk_alloc_flush_queue(int node, int cmd_size,\n \n        spin_lock_init(\u0026fq-\u003emq_flush_lock);\n \n-       rq_sz \u003d round_up(rq_sz + cmd_size, cache_line_size());\n+       rq_sz \u003d round_up(rq_sz + ALIGN(cmd_size, 8) + oem_request_data,\n+                               cache_line_size());\n        fq-\u003eflush_rq \u003d kzalloc_node(rq_sz, flags, node);\n        if (!fq-\u003eflush_rq)\n                goto fail_rq;\ndiff --git a/block/blk-mq.c b/block/blk-mq.c\nindex 2323c4593ee8..fe71fef3ce49 100644\n--- a/block/blk-mq.c\n+++ b/block/blk-mq.c\n@@ -2386,8 +2386,8 @@ int blk_mq_alloc_rqs(struct blk_mq_tag_set *set, struct blk_mq_tags *tags,\n         * rq_size is the size of the request plus driver payload, rounded\n         * to the cacheline size\n         */\n-       rq_size \u003d round_up(sizeof(struct request) + set-\u003ecmd_size,\n-                               cache_line_size());\n+       rq_size \u003d round_up(sizeof(struct request) + ALIGN(set-\u003ecmd_size, 8) +\n+                               oem_request_data, cache_line_size());\n        left \u003d rq_size * depth;\n \n        for (i \u003d 0; i \u003c depth; ) {\n@@ -3926,3 +3926,20 @@ static int __init blk_mq_init(void)\n        return 0;\n }\n subsys_initcall(blk_mq_init);\n+\n+u8 oem_request_data \u003d 0;\n+\n+static int __init oem_setup(char *str)\n+{\n+       u8 tmp;\n+\n+       if (kstrtou8(str, 0, \u0026tmp))\n+               return -EINVAL;\n+\n+       BUG_ON(tmp \u003e 16);\n+\n+       oem_request_data \u003d sizeof(u64) * tmp;\n+\n+       return 1;\n+}\n+__setup(\"req_extra\u003d\", oem_setup);\ndiff --git a/block/blk.h b/block/blk.h\nindex dfab98465db9..62d7361fe1e7 100644\n--- a/block/blk.h\n+++ b/block/blk.h\n@@ -14,6 +14,8 @@\n /* Max future timer expiry for timeouts */\n #define BLK_MAX_TIMEOUT                (5 * HZ)\n \n+extern u8 oem_request_data;\n+\n extern struct dentry *blk_debugfs_root;\n \n struct blk_flush_queue {",
+      "parentUuid": "e34af34a_283f8eeb",
+      "revId": "a217edd59d36482f1cbcc2d606ae08587646e749",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
