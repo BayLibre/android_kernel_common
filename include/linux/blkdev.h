@@ -242,6 +242,8 @@ struct request {
 	 */
 	rq_end_io_fn *end_io;
 	void *end_io_data;
+
+	ANDROID_OEM_DATA(1);
 };
 
 static inline bool blk_op_is_scsi(unsigned int op)
