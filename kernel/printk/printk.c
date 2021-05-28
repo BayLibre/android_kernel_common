@@ -3272,6 +3272,7 @@ void kmsg_dump(enum kmsg_dump_reason reason)
 	}
 	rcu_read_unlock();
 }
+EXPORT_SYMBOL_GPL(kmsg_dump);
 
 /**
  * kmsg_dump_get_line_nolock - retrieve one kmsg log line (unlocked version)
