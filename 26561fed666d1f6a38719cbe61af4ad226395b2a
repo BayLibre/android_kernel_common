@@ -1,6 +1,75 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "be86c060_2a12a3ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-28T14:59:20Z",
+      "side": 1,
+      "message": "typo?",
+      "range": {
+        "startLine": 10,
+        "startChar": 40,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be166484_bfa62e1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-28T14:59:20Z",
+      "side": 1,
+      "message": "typo?",
+      "range": {
+        "startLine": 10,
+        "startChar": 84,
+        "endLine": 10,
+        "endChar": 98
+      },
+      "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "345cb489_58b9b49c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-28T14:59:20Z",
+      "side": 1,
+      "message": "typo?",
+      "range": {
+        "startLine": 11,
+        "startChar": 63,
+        "endLine": 11,
+        "endChar": 69
+      },
+      "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "acfe3c48_d989bde1",
@@ -14,6 +83,24 @@
       "writtenOn": "2021-05-28T10:54:17Z",
       "side": 1,
       "message": "Should be added to the debugging driver only, not exported for everyone to use.",
+      "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ada72389_bb17ed9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-28T14:59:20Z",
+      "side": 1,
+      "message": "The debugging driver has been for data objects that need to be included in a dump. I don\u0027t think we\u0027ve used it for vendors to obtain function pointers (which would bypass KMI).",
+      "parentUuid": "acfe3c48_d989bde1",
       "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -49,6 +136,24 @@
       "side": 1,
       "message": "Not yet, is need upstream to the Linux?",
       "parentUuid": "49631396_81a620d8",
+      "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca5cdd54_7462b5fd",
+        "filename": "kernel/printk/printk.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3275,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-05-28T14:59:20Z",
+      "side": 1,
+      "message": "No, it can\u0027t be sent upstream unless you also upstream the vendor module that uses it.",
+      "parentUuid": "d4bad3c5_207c2aa4",
       "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
