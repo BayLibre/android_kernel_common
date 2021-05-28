@@ -16,6 +16,24 @@
       "message": "Hello,\n\nWe have come to realize that vendor hooks in schedutil are particularly difficult to define in a way that can be shared by multiple partners. The preferred approach is for vendors/OEM to have their own governor in a module (which can easily be done based on schedutil) should they need customization in this area. So please investigate using a modular governor for your use-case, as the vast majority of partners are already doing.\n\nThanks",
       "revId": "30c4975bac18a686a29cfa9f1ffa51f798d09950",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3ff35f_a214f6c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1808439
+      },
+      "writtenOn": "2021-05-28T02:43:39Z",
+      "side": 1,
+      "message": "ok, then I will move the logic to OEM/VENDOR cpufreq governor. Thanks for the comment.",
+      "parentUuid": "9ef371c4_a0d55fa0",
+      "revId": "30c4975bac18a686a29cfa9f1ffa51f798d09950",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
