@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32f09d26_987d70ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-05-28T14:17:46Z",
+      "side": 1,
+      "message": "The changelog needs a lot more work, to describe why this is needed and what is going to use these hooks.\n\nAlso you need a bug id.\n\nBut most importantly, as you control when these calls get made from userspace, why do you need a hook at all?",
+      "revId": "4869ccf31513fa95ef31b26a9dc12580edf7cf67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b36a11_7f697997",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-05-28T14:17:46Z",
+      "side": 1,
+      "message": "you know when this happens, as you asked for it to happen from userspace, why do you need a hook to tell you this again?",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 493,
+        "endChar": 47
+      },
+      "revId": "4869ccf31513fa95ef31b26a9dc12580edf7cf67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5055a59e_53498a5b",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-05-28T14:17:46Z",
+      "side": 1,
+      "message": "same here, you asked this to happen from userspace, who is going to do anything with this that the usb gadget driver isn\u0027t already going to properly handle?",
+      "range": {
+        "startLine": 524,
+        "startChar": 0,
+        "endLine": 524,
+        "endChar": 46
+      },
+      "revId": "4869ccf31513fa95ef31b26a9dc12580edf7cf67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
