@@ -46,6 +46,30 @@
       },
       "revId": "74f7a0ead69322ded2b1a9e27293e5cdf42d9fec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb560760_02cbab0d",
+        "filename": "drivers/scsi/ufs/ufshpb.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 1195398
+      },
+      "writtenOn": "2021-05-30T10:53:54Z",
+      "side": 1,
+      "message": "This is going back and forth few times now.\nThis worker is being scheduled repeatedly from itself,  but also on resume.\nOriginally, I had this protection because I was scheduling this worker using different timeouts.\nDaejun made a similar comment like yours on the mainline\u0027s v4, so I removed it on my v5.\n\nOn v5, CanG commented that since I am not protecting the expired_list, \"If two\nread_to_handler works are running in parallel, one can be inserting it to its expired_list while another can be deleting it.\"\nMy answer was: \"The timeout handler, being a delayed work, is meant to run every polling period.  Originally, I had it protected from 2 handlers running concurrently, But I removed it following Daejun\u0027s comment, which I accepted, Since it is always scheduled using the same polling period.\"\n\nBut then CanG made a winning argument: \"But one can set the delay to 0 through sysfs, right?\"\n\nSo I put that protection on.  What do you think?\n\nThanks.",
+      "parentUuid": "766e5f6e_f07401f9",
+      "range": {
+        "startLine": 1040,
+        "startChar": 0,
+        "endLine": 1041,
+        "endChar": 9
+      },
+      "revId": "74f7a0ead69322ded2b1a9e27293e5cdf42d9fec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
