@@ -16,6 +16,23 @@
       "message": "Through this debug information, We can know the processing flow of the usb gadget\nand confirm whether the user space is switched correctly.",
       "revId": "4c659118c5cb94d62588acae78ca12d0112185da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b0b6923_64b62a18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-05-31T07:21:00Z",
+      "side": 1,
+      "message": "If the userspace request comes back as successful, the kernel did what it said it was going to do, so there should not be any need for this hook within the kernel itself.",
+      "revId": "4c659118c5cb94d62588acae78ca12d0112185da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
