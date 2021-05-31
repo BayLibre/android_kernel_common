@@ -4112,6 +4112,7 @@ void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
 	dump_stack();
 	warn_alloc_show_mem(gfp_mask, nodemask);
 }
+EXPORT_SYMBOL_GPL(warn_alloc);
 
 static inline struct page *
 __alloc_pages_cpuset_fallback(gfp_t gfp_mask, unsigned int order,
