@@ -67,17 +67,33 @@ static struct kmem_cache *sigqueue_cachep;
 
 int print_fatal_signals __read_mostly;
 
-static char reaper_comm[TASK_COMM_LEN];
+#define MAX_REAP_TASK 2
+static char reaper_comm[MAX_REAP_TASK][TASK_COMM_LEN];
 
 static __init int setup_mem_reap(char *str)
 {
-	if (!str)
+	static int count;
+
+	if (!str || (count >= MAX_REAP_TASK))
 		return 0;
-	strlcpy(reaper_comm, str, TASK_COMM_LEN);
+	strlcpy(reaper_comm[count++], str, TASK_COMM_LEN);
 
 	return 1;
 }
 __setup("reap_mem_when_killed_by=", setup_mem_reap);
+
+static inline bool is_eligible_for_reap(struct task_struct *task)
+{
+	int i;
+
+	for (i = 0; i < MAX_REAP_TASK; ++i)
+	{
+		if (!strcmp(task->comm, reaper_comm[i]))
+			return true;
+	}
+
+	return false;
+}
 
 static void __user *sig_handler(struct task_struct *t, int sig)
 {
@@ -1429,7 +1445,7 @@ int group_send_sig_info(int sig, struct kernel_siginfo *info,
 	if (!ret && sig) {
 		ret = do_send_sig_info(sig, info, p, type);
 		if (!ret && sig == SIGKILL &&
-			!strcmp(current->comm, reaper_comm))
+			is_eligible_for_reap(current))
 			add_to_oom_reaper(p);
 	}
 

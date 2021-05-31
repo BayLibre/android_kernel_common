@@ -4685,7 +4685,8 @@
 
 	reap_mem_when_killed_by=
 			The name of a process, the kill signal from which to a process
-			make its memory reaped with oom reaper.
+			make its memory reaped with oom reaper. Currently we can give
+			a maximum of two processes names by using this parameter twice.
 
 	retain_initrd	[RAM] Keep initrd memory after extraction
 
