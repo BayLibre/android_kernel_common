@@ -22,6 +22,8 @@
 #include <linux/usb/ch9.h>
 #include <linux/usb/gadget.h>
 
+#include <trace/hooks/usb.h>
+
 #include "debug.h"
 #include "core.h"
 #include "gadget.h"
@@ -3800,6 +3802,7 @@ static void dwc3_process_event_entry(struct dwc3 *dwc,
 		const union dwc3_event *event)
 {
 	trace_dwc3_event(event->raw, dwc);
+	trace_android_vh_dwc3_process_event_entry(dwc, event);
 
 	if (!event->type.is_devspec)
 		dwc3_endpoint_interrupt(dwc, &event->depevt);
