@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "178beae8_78050a90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1873735
+      },
+      "writtenOn": "2021-05-31T11:49:32Z",
+      "side": 1,
+      "message": "If use the existing hook, I need export EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_event) in drivers/android/vendor_hook.c, then i can regiseter my own trace func. Can export EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_event) in vendor_hook.c",
+      "revId": "4c7cc4a1e3550936bb8eb132c9d9ed232a805919",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f712824_aae33c54",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "If use the existing hook, I need export EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_process_event_entry) in drivers/android/vendor_hook.c, then i can regiseter my own trace func. Can export EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_process_event_entry) in vendor_hook.c",
       "parentUuid": "5f712824_aae33c54",
+      "range": {
+        "startLine": 3805,
+        "startChar": 0,
+        "endLine": 3805,
+        "endChar": 55
+      },
+      "revId": "4c7cc4a1e3550936bb8eb132c9d9ed232a805919",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc2eaeda_0b2d1587",
+        "filename": "drivers/usb/dwc3/gadget.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3805,
+      "author": {
+        "id": 1873735
+      },
+      "writtenOn": "2021-05-31T11:49:32Z",
+      "side": 1,
+      "message": "If use the existing hook, I need export EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_event) in drivers/android/vendor_hook.c or export this symbol in drivers/usb/dwc3/trace.c. Then i can regiseter my own trace func. Can i export EXPORT_TRACEPOINT_SYMBOL_GPL(dwc3_event) in vendor_hook.c or trace.c.",
+      "parentUuid": "940f70c6_085c0b04",
       "range": {
         "startLine": 3805,
         "startChar": 0,
