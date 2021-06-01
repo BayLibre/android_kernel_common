@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efc2eab0_85c73473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T17:45:29Z",
+      "side": 1,
+      "message": "Can we expect that more changes like this will be needed in the future, as alternatives are used in other places?  And if any such change is missing, can we expect the FIPS integrity check to succeed or fail depending on the CPU features, which would make such issues hard to reproduce?  I wonder if this is the right way to solve the problem.  How about instead changing the ALTERNATIVE() macro itself to not emit the alternative instruction when defined(BUILD_FIPS140_KO)?  Or, how about removing the .altinstructions section from fips140.ko (or not including it in the first place)?",
+      "revId": "0ef38a4e29ab858020b44bc87983945cf1aae209",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
