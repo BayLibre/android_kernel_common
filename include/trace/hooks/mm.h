@@ -91,6 +91,9 @@ DECLARE_HOOK(android_vh_show_stack_hash,
 DECLARE_HOOK(android_vh_save_track_hash,
 	TP_PROTO(unsigned long p),
 	TP_ARGS(p));
+DECLARE_RESTRICTED_HOOK(android_rvh_set_balance_anon_file_reclaim,
+			TP_PROTO(bool *balance_anon_file_reclaim),
+			TP_ARGS(balance_anon_file_reclaim), 1);
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_MM_H */
