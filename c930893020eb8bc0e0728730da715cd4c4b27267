@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43884f9a_6dfea578",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-06-01T18:37:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6438f1d_8281f9cc",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 603,
+        "endChar": 32
+      },
+      "revId": "c930893020eb8bc0e0728730da715cd4c4b27267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e515a084_dbd3e810",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bc8ee10_84900a24",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-06-01T18:37:47Z",
+      "side": 1,
+      "message": "This function would be called whenever CONFIG_DEBUG_FS is not enabled i.e. in \"user\" flavor builds. The function is called in multiple places in tcpm.c whenever an event needs to be logged.\n\nIf android_vendor_data1 was set by trace_android_vh_typec_tcpm_enable_log handler, then, the variable argument list would be converted to string and passed down to trace_android_vh_typec_tcpm_log\u0027s handler as a string since vendor hooks don\u0027t support variable argument.",
+      "parentUuid": "e515a084_dbd3e810",
+      "range": {
+        "startLine": 769,
+        "startChar": 0,
+        "endLine": 769,
+        "endChar": 72
+      },
+      "revId": "c930893020eb8bc0e0728730da715cd4c4b27267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16cfa0f1_713f67ef",
         "filename": "drivers/usb/typec/tcpm/tcpm.c",
         "patchSetId": 2
@@ -60,6 +108,30 @@
       "writtenOn": "2021-06-01T05:59:53Z",
       "side": 1,
       "message": "what is using this new static function?",
+      "range": {
+        "startLine": 782,
+        "startChar": 0,
+        "endLine": 782,
+        "endChar": 72
+      },
+      "revId": "c930893020eb8bc0e0728730da715cd4c4b27267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675cefba_9216f285",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-06-01T18:37:47Z",
+      "side": 1,
+      "message": "Same as above.",
+      "parentUuid": "16cfa0f1_713f67ef",
       "range": {
         "startLine": 782,
         "startChar": 0,
