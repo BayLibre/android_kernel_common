@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a8faac2_b66a7fa0",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-06-01T20:11:07Z",
+      "side": 1,
+      "message": "Ah I see CONFIG_DEBUG_FS is enabled, however, debugfs will NOT be mounted in user builds. Will update the change.",
+      "parentUuid": "9aefe3bb_43c6120b",
+      "range": {
+        "startLine": 769,
+        "startChar": 0,
+        "endLine": 769,
+        "endChar": 72
+      },
+      "revId": "c930893020eb8bc0e0728730da715cd4c4b27267",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16cfa0f1_713f67ef",
         "filename": "drivers/usb/typec/tcpm/tcpm.c",
         "patchSetId": 2
