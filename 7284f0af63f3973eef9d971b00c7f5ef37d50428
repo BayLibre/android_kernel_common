@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8901ef5c_a0de87f6",
+        "filename": "arch/arm64/include/asm/module.lds.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9298913_4c695201",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25f2b174_6874f82f",
@@ -465,6 +489,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a03b39a1_18c57a03",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1e05e76_8e98a790",
+      "range": {
+        "startLine": 298,
+        "startChar": 19,
+        "endLine": 298,
+        "endChar": 44
+      },
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9a89edb_7197e371",
@@ -496,6 +544,24 @@
       "side": 1,
       "message": "The guidelines given by the lab are extremely vague, and crypto_xor()\u0027s name sounds like it may be misidentified as something cryptographic. So just erring on the side of caution here.",
       "parentUuid": "a9a89edb_7197e371",
+      "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9340d3a_954d9e9a",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "Could you make the comment explain this?  Maybe:\n\n/*                                                                               \n * Crypto-related helper functions, reproduced here so that they will be covered \n * by the FIPS 140 integrity check.                                              \n *                                                                               \n * Non-cryptographic helper functions such as memcpy() can be excluded from the  \n * FIPS module, but there is ambiguity about other helper functions like         \n * __crypto_xor() and crypto_inc() which aren\u0027t cryptographic by themselves, but \n * are more closely associated with cryptography than e.g. memcpy().  To error   \n * on the side of caution, we include copies of these in the FIPS module.        \n */",
+      "parentUuid": "874b31f4_02b69371",
       "revId": "7284f0af63f3973eef9d971b00c7f5ef37d50428",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

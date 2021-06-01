@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e936aaa_0a87170f",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "In preparation for adding the self-tests, this file should be called fips140-module.c or similar instead of fips140-integrity.c, as integrity won\u0027t be the only purpose.  I.e., the purpose of this kernel module is to implement a FIPS 140 cryptographic software module, which involves several different things.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "284088d5_6603e2b6",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "relevent \u003d\u003e relevant",
+      "range": {
+        "startLine": 49,
+        "startChar": 56,
+        "endLine": 49,
+        "endChar": 64
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d2ae50_951efbe2",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "fips140_ciphers \u003d\u003e fips140_algorithms (an algorithm is not necessarily a cipher)",
+      "range": {
+        "startLine": 56,
+        "startChar": 18,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7272be1_2620de12",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "A comment here would help.  Something like: \"The FIPS module\u0027s algorithms are expected to be built from the same source code as the in-kernel ones so that they are fully compatible.  In general there\u0027s no way to verify full compatibility at runtime, but we can at least verify that the algorithm properties match.\"",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 53
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b882ff74_b65dd654",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "Isn\u0027t this racy?  If someone requests an algorithm after this, but before the fips implementations are registered, then it won\u0027t be found.\n\nIs there actually a need to unregister the builtin algorithms at all?  You already aren\u0027t unregistering the builtin templates, but instead are relying on the fips templates being prepended to the list (so that they will take priority).  Couldn\u0027t the same be done for the fips algorithms too?\n\nSo, something like:\n\n1. Append \"-builtin\" to cra_driver_name of any algorithm that has a fips copy (to avoid naming collisions in the next step)\n2. Register the fips algorithms and templates\n3. Remove template instances that use algorithms that have a fips copy\n4. Update the live algorithms",
+      "range": {
+        "startLine": 482,
+        "startChar": 1,
+        "endLine": 482,
+        "endChar": 37
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e28ab60_5ab95bc5",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "Is it okay for the self-tests to run after the fips implementations are already potentially in-use?  I.e. is this going to be handled by documenting that the module is not \"in FIPS mode\" until it has been successfully loaded, or similar?",
+      "range": {
+        "startLine": 506,
+        "startChar": 1,
+        "endLine": 506,
+        "endChar": 29
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "341a02a4_92093e6f",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-01T19:55:48Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the integrity check be the first thing that module_init does, not the last thing?",
+      "range": {
+        "startLine": 508,
+        "startChar": 6,
+        "endLine": 508,
+        "endChar": 31
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
