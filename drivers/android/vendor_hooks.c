@@ -241,4 +241,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmap_region);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_unmap_one);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_event);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_group);
+<<<<<<< PATCH SET (fad29a ANDROID: vendor_hooks: Add hooks for cpufreq_acct_update_pow)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_acct_update_power);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
+>>>>>>> BASE      (cffbdd ANDROID: ABI: Update oplus symbol list)
