@@ -33,6 +33,24 @@
       "message": "If this is needed by the \"dump\" module, please place it in the debug driver which has other symbols like this.",
       "revId": "4aa5a78c314d80ad71bae5a11ba4e2bda67aaae1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f71edd_0f5db648",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-01T15:58:41Z",
+      "side": 1,
+      "message": "That was also my first reaction but then I remembered that we do not export functions using debug_symbols, only variables AFAIK (please correct me if that\u0027s not so).\nI can see how this function can be used for dumping fdinfo and the function is exported upstream. Therefore I do not object to this change if Greg buys my arguments.",
+      "parentUuid": "88f9e821_66b47abe",
+      "revId": "4aa5a78c314d80ad71bae5a11ba4e2bda67aaae1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
