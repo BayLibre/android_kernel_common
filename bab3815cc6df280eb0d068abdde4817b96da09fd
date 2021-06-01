@@ -117,6 +117,29 @@
       },
       "revId": "bab3815cc6df280eb0d068abdde4817b96da09fd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6b2c1d_f46dccdb",
+        "filename": "kernel/signal.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-01T21:06:00Z",
+      "side": 1,
+      "message": "This mechanism seems to be evolving and I don\u0027t want to change UAPI every time another change is needed. Let\u0027s remove reap_mem_when_killed_by and have this implemented as a vendor hook like this:\n\nif (!ret \u0026\u0026 sig \u003d\u003d SIGKIL) {\n  bool reap \u003d false;\n  android_vh_process_killed(current, \u0026reap);\n  if (reap)\n    add_to_oom_reaper(p);\n}\n\nThis way you will have enough flexibility to extend this further without UAPI changes until userspace reaping is upstreamed.",
+      "range": {
+        "startLine": 1448,
+        "startChar": 3,
+        "endLine": 1448,
+        "endChar": 32
+      },
+      "revId": "bab3815cc6df280eb0d068abdde4817b96da09fd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
