@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b919515_6f4473be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1771193
+      },
+      "writtenOn": "2021-06-01T03:09:53Z",
+      "side": 1,
+      "message": "Hi todd and Greg,\n\nI check printk.c, and find symbol kmsg_dump_get_buffer() and kmsg_dump_rewind() are export, may be I can use these two functions to dump kmsg in vendor module.\nThank you for your review, I will abandon this patch.",
+      "parentUuid": "e54a8e32_fb6cadad",
+      "revId": "26561fed666d1f6a38719cbe61af4ad226395b2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49631396_81a620d8",
         "filename": "kernel/printk/printk.c",
         "patchSetId": 3
