@@ -1428,9 +1428,13 @@ int group_send_sig_info(int sig, struct kernel_siginfo *info,
 
 	if (!ret && sig) {
 		ret = do_send_sig_info(sig, info, p, type);
-		if (!ret && sig == SIGKILL &&
-			!strcmp(current->comm, reaper_comm))
-			add_to_oom_reaper(p);
+		if (!ret && sig == SIGKILL) {
+			bool reap = false;
+
+			trace_android_vh_process_killed(current, &reap);
+			if (reap)
+				add_to_oom_reaper(p);
+		}
 	}
 
 	return ret;
