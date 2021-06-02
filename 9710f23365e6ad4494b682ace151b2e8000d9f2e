@@ -70,6 +70,30 @@
       },
       "revId": "9710f23365e6ad4494b682ace151b2e8000d9f2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d64100ff_6922939f",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-06-02T15:34:32Z",
+      "side": 1,
+      "message": "Trying to optimize for a reason 😊\n\nCutting down any duplicate work would help as TCPM has hard deadlines to meet. i.e. It should respond to packets within ~20msecs in certain scenarios.\nStill a strong no ?",
+      "parentUuid": "902e0553_41e7b2c8",
+      "range": {
+        "startLine": 603,
+        "startChar": 5,
+        "endLine": 603,
+        "endChar": 15
+      },
+      "revId": "9710f23365e6ad4494b682ace151b2e8000d9f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
