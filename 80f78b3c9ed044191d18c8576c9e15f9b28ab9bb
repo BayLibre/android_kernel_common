@@ -71,6 +71,42 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf32ceb3_938832bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-06-02T19:40:48Z",
+      "side": 1,
+      "message": "added  Bug: in Patchset 2",
+      "parentUuid": "235cba94_550a808d",
+      "revId": "80f78b3c9ed044191d18c8576c9e15f9b28ab9bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e6c6756_85a09c7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-06-02T19:40:48Z",
+      "side": 1,
+      "message": "Updated the commit  text in Patchset2",
+      "parentUuid": "23db808c_07322f4b",
+      "revId": "80f78b3c9ed044191d18c8576c9e15f9b28ab9bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ad1392f_76c76b25",
@@ -84,6 +120,30 @@
       "writtenOn": "2021-06-02T08:40:44Z",
       "side": 1,
       "message": "This effectively serialises execve() of 32-bit programs across the whole system, which isn\u0027t necessary.",
+      "range": {
+        "startLine": 2104,
+        "startChar": 1,
+        "endLine": 2104,
+        "endChar": 22
+      },
+      "revId": "80f78b3c9ed044191d18c8576c9e15f9b28ab9bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc1d80c8_353ad192",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2104,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2021-06-02T19:40:48Z",
+      "side": 1,
+      "message": "Will a tracehook do?",
+      "parentUuid": "1ad1392f_76c76b25",
       "range": {
         "startLine": 2104,
         "startChar": 1,
