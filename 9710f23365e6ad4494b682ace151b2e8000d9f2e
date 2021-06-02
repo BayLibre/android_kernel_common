@@ -94,6 +94,30 @@
       },
       "revId": "9710f23365e6ad4494b682ace151b2e8000d9f2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92d094ae_ec426ccf",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2021-06-02T16:58:27Z",
+      "side": 1,
+      "message": "https://paste.googleplex.com/5379545751355392 has the log stub when connected to PPS charger. Having bypass_log will remove redundant work every time a new log line is printed by calling tcpm_log_* function. In this case, ~233 redundant scnprintf\u0027s can be avoided within a span of 4 seconds.",
+      "parentUuid": "d64100ff_6922939f",
+      "range": {
+        "startLine": 603,
+        "startChar": 5,
+        "endLine": 603,
+        "endChar": 15
+      },
+      "revId": "9710f23365e6ad4494b682ace151b2e8000d9f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
