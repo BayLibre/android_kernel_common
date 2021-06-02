@@ -16,6 +16,47 @@
       "message": "upstream first?",
       "revId": "80f78b3c9ed044191d18c8576c9e15f9b28ab9bb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "135c7bec_6a39290b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2021-06-02T08:40:44Z",
+      "side": 1,
+      "message": "None of the CPU pause stuff is upstream afaik",
+      "parentUuid": "dd0041df_e721429b",
+      "revId": "80f78b3c9ed044191d18c8576c9e15f9b28ab9bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ad1392f_76c76b25",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2104,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2021-06-02T08:40:44Z",
+      "side": 1,
+      "message": "This effectively serialises execve() of 32-bit programs across the whole system, which isn\u0027t necessary.",
+      "range": {
+        "startLine": 2104,
+        "startChar": 1,
+        "endLine": 2104,
+        "endChar": 22
+      },
+      "revId": "80f78b3c9ed044191d18c8576c9e15f9b28ab9bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
