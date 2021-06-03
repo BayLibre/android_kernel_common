@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6273e21_d748f9fe",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2738,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-03T18:35:38Z",
+      "side": 1,
+      "message": "This hook seems to be doing two things:\n1. Obtaining the page from the cache, which is fine with me.\n2. Causing a jump to out_retry, which seems strange to me. In what case do you need to skip and retry?",
+      "range": {
+        "startLine": 2738,
+        "startChar": 1,
+        "endLine": 2738,
+        "endChar": 40
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb5e919_d21dcb1e",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-03T18:35:38Z",
+      "side": 1,
+      "message": "I assume you do a get_page() inside this vendor hook, otherwise there is no guarantee it is still valid after put_page() at line 2847 is called. And this opens up another possible issue that keeping the page in a cache might prevent the system from freeing it. Something to keep in mind.",
+      "range": {
+        "startLine": 2845,
+        "startChar": 49,
+        "endLine": 2845,
+        "endChar": 53
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d318e77_d4811891",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-03T18:35:38Z",
+      "side": 1,
+      "message": "I assume you cache the page only if (page !\u003d NULL). If so it makes sense to move this hook under the \"if (page)\" condition below at line 2847.",
+      "range": {
+        "startLine": 2845,
+        "startChar": 1,
+        "endLine": 2845,
+        "endChar": 42
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ca6e179_93058fc4",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-03T18:35:38Z",
+      "side": 1,
+      "message": "Do you really need a pointer to the page of the page itself here? IOW, why do you pass \"struct page**\" instead of \"page*\"?",
+      "range": {
+        "startLine": 2845,
+        "startChar": 48,
+        "endLine": 2845,
+        "endChar": 49
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
