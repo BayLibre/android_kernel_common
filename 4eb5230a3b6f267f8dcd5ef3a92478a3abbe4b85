@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8abc37ac_11799bf4",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9e936aaa_0a87170f",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "284088d5_6603e2b6",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-01T19:55:48Z",
       "side": 1,
       "message": "relevent \u003d\u003e relevant",
+      "range": {
+        "startLine": 49,
+        "startChar": 56,
+        "endLine": 49,
+        "endChar": 64
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfcfe533_6b3cfc67",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "284088d5_6603e2b6",
       "range": {
         "startLine": 49,
         "startChar": 56,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a27464_b10dcbd7",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8d2ae50_951efbe2",
+      "range": {
+        "startLine": 56,
+        "startChar": 18,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7272be1_2620de12",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-06-01T19:55:48Z",
       "side": 1,
       "message": "A comment here would help.  Something like: \"The FIPS module\u0027s algorithms are expected to be built from the same source code as the in-kernel ones so that they are fully compatible.  In general there\u0027s no way to verify full compatibility at runtime, but we can at least verify that the algorithm properties match.\"",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 53
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a3e86ac_7b52677c",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7272be1_2620de12",
       "range": {
         "startLine": 347,
         "startChar": 0,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1173afde_6501d28a",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "I\u0027d prefer to unregister anything that gets superseded, but the set of templates is not exposed in the same way, and I have been trying to make as few changes to the kernel proper as possible to accommodate this.\n\nI wonder if keeping the -builtin drivers registered in a way that leaves them accessible via the ordinary API violates the lab\u0027s requirements - I suppose we could check.",
+      "parentUuid": "b882ff74_b65dd654",
+      "range": {
+        "startLine": 482,
+        "startChar": 1,
+        "endLine": 482,
+        "endChar": 37
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e28ab60_5ab95bc5",
         "filename": "crypto/fips140-integrity.c",
         "patchSetId": 22
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e498c979_8ea9af19",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "I don\u0027t think the lab has any problems with this.",
+      "parentUuid": "6e28ab60_5ab95bc5",
+      "range": {
+        "startLine": 506,
+        "startChar": 1,
+        "endLine": 506,
+        "endChar": 29
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "341a02a4_92093e6f",
         "filename": "crypto/fips140-integrity.c",
         "patchSetId": 22
@@ -152,6 +296,30 @@
       "writtenOn": "2021-06-01T19:55:48Z",
       "side": 1,
       "message": "Shouldn\u0027t the integrity check be the first thing that module_init does, not the last thing?",
+      "range": {
+        "startLine": 508,
+        "startChar": 6,
+        "endLine": 508,
+        "endChar": 31
+      },
+      "revId": "4eb5230a3b6f267f8dcd5ef3a92478a3abbe4b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16d0b6a2_77e1dd34",
+        "filename": "crypto/fips140-integrity.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-03T16:17:17Z",
+      "side": 1,
+      "message": "If we allocate a hmac(sha256) shash TFM any earlier, it will be provided by builtin code, and the whole point of this little dance (however pointless) is that the code checks its own integrity. Therefore, I don\u0027t see how we could do this any differently.",
+      "parentUuid": "341a02a4_92093e6f",
       "range": {
         "startLine": 508,
         "startChar": 6,
