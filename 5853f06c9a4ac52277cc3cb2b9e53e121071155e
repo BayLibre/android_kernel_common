@@ -116,6 +116,30 @@
       },
       "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b82b9e_0a8421a1",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1165870
+      },
+      "writtenOn": "2021-06-04T01:59:50Z",
+      "side": 1,
+      "message": "We enlarge the CONFIG_FORCE_MAX_ZONEORDER to 14 based on below request.\nNormally these buffers are used for VPU, GPU 2D or DPU 2D which only acceptable physical continue memory.\nAnd these buffers will allocated from CMA first, but then CMA use up it will allocate memory from system through alloc_pages(Gfp, order) API. So we request to enlarge the default CONFIG_FORCE_MAX_ZONEORDER to 14.\n1080p RGBA layer need 8MB memory (request CONFIG_FORCE_MAX_ZONEORDER 12).\n4K YUV layer need 16MB memory (request CONFIG_FORCE_MAX_ZONEORDER 13).\n4K RGBA layer need 32MB memory (request CONFIG_FORCE_MAX_ZONEORDER 14).",
+      "parentUuid": "cea5c567_11f372d0",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
