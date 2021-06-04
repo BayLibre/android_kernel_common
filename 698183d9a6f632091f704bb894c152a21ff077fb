@@ -70,6 +70,30 @@
       },
       "revId": "698183d9a6f632091f704bb894c152a21ff077fb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "021a9e35_58f6dcfd",
+        "filename": "scripts/Makefile.build",
+        "patchSetId": 22
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-04T08:55:43Z",
+      "side": 1,
+      "message": "I don\u0027t think we can do partial linking of a combination of .a and .o files into a single .o/.ko without LTO, at least not in a way where we end up with a single .text and a single .rodata section of which we can take the HMAC.\n\nIn any case, supporting both may be possible but definitely not without cost, and with little benefit, as a non-LTO fips140 module serves no purpose at all, given that GKI will ship in LTO form.",
+      "parentUuid": "0169fd2f_ba53095d",
+      "range": {
+        "startLine": 445,
+        "startChar": 54,
+        "endLine": 445,
+        "endChar": 64
+      },
+      "revId": "698183d9a6f632091f704bb894c152a21ff077fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
