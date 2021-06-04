@@ -22,6 +22,30 @@
       },
       "revId": "26ed284fe95812e5a521b16f5b6453481f5fd259",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b74ed93_8b5a2eac",
+        "filename": "arch/arm64/include/asm/alternative-macros.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-04T12:30:14Z",
+      "side": 1,
+      "message": "The FIPS140 module consists of code that gets built into the core kernel as well, and it gets built a second time with BUILD_FIPS140_KO set. So there has to be a shared #include *somewhere*, that picks a different definition when rebuilding the code. So it is going to be something like this, or something based on -include fips140.h on the compiler command line, but this would involve making these #define\u0027s conditional rather than the fips140.h ones (and having the code in asm/alternative-macros.h at least makes it obvious to anyone applying changes here that there is a third definition which needs to remain in sync)",
+      "parentUuid": "4a9dbb1b_619ef22f",
+      "range": {
+        "startLine": 220,
+        "startChar": 1,
+        "endLine": 244,
+        "endChar": 65
+      },
+      "revId": "26ed284fe95812e5a521b16f5b6453481f5fd259",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
