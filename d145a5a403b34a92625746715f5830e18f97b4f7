@@ -47,6 +47,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7267d6e4_3d35942a",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2738,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2021-06-04T02:01:30Z",
+      "side": 1,
+      "message": "This question is replyed in the issue, I\u0027ll rename the ret to retry as you suggested in the issue.",
+      "parentUuid": "e6273e21_d748f9fe",
+      "range": {
+        "startLine": 2738,
+        "startChar": 1,
+        "endLine": 2738,
+        "endChar": 40
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea64cfd_7324e889",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2738,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2021-06-04T02:01:30Z",
+      "side": 1,
+      "message": "I\u0027ll take you advice.",
+      "parentUuid": "f9763e9d_c2b424a9",
+      "range": {
+        "startLine": 2738,
+        "startChar": 54,
+        "endLine": 2738,
+        "endChar": 57
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bb5e919_d21dcb1e",
@@ -106,6 +154,78 @@
       "writtenOn": "2021-06-03T18:35:38Z",
       "side": 1,
       "message": "Do you really need a pointer to the page of the page itself here? IOW, why do you pass \"struct page**\" instead of \"page*\"?",
+      "range": {
+        "startLine": 2845,
+        "startChar": 48,
+        "endLine": 2845,
+        "endChar": 49
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eca9e86_71d525b2",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2021-06-04T02:01:30Z",
+      "side": 1,
+      "message": "Yes, we cached the page only if(page !\u003d NULL). But as I explained above, we want to jump over the put_page() below.",
+      "parentUuid": "4d318e77_d4811891",
+      "range": {
+        "startLine": 2845,
+        "startChar": 1,
+        "endLine": 2845,
+        "endChar": 42
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56ef6941_55bfa1aa",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2021-06-04T02:01:30Z",
+      "side": 1,
+      "message": "The page is obtained from the origin path at the first time, the page is doing a get_page() there.\n\nThen after the page is put in the cache, we mark the pointer `page` to NULL, this will prevent the page being freed by the put_page() at line 2874. And this is why we use the \"struct page**\".\n\nThe put_page() will be called when we foud the cached page not valid with the fault page in the first hook for the next page fault.\n\nSo, we didn\u0027t do a extra get_page() in this hook, instead, we prevent the put_page at line 2847 to be called. Maybe I should change the code to do a get_page() like you suggest, which would be more clear.",
+      "parentUuid": "4bb5e919_d21dcb1e",
+      "range": {
+        "startLine": 2845,
+        "startChar": 49,
+        "endLine": 2845,
+        "endChar": 53
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd1eee33_26ab95f3",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2021-06-04T02:01:30Z",
+      "side": 1,
+      "message": "Replyed above.",
+      "parentUuid": "7ca6e179_93058fc4",
       "range": {
         "startLine": 2845,
         "startChar": 48,
