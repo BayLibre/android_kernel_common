@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8888d10c_29feac6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-04T17:51:11Z",
+      "side": 1,
+      "message": "Why isn\u0027t this being sent upstream?  Upstream supports CFI now as well.",
+      "revId": "49b9ad4efe78aed9755619dce787c2a9e10e9fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6842305c_285c4d27",
+        "filename": "crypto/shash.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-04T17:51:11Z",
+      "side": 1,
+      "message": "How about checking for NULL shash-\u003esetkey here?\n\n        if (!shash-\u003esetkey)\n                return -ENOSYS;\n\nThen it won\u0027t need to be done in two places.",
+      "revId": "49b9ad4efe78aed9755619dce787c2a9e10e9fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ece49db_03dd4ce2",
+        "filename": "include/crypto/internal/hash.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-04T17:51:11Z",
+      "side": 1,
+      "message": "Would un-inlining this function fix this issue without having to add a NULL check to crypto_shash_setkey()?",
+      "range": {
+        "startLine": 78,
+        "startChar": 19,
+        "endLine": 78,
+        "endChar": 46
+      },
+      "revId": "49b9ad4efe78aed9755619dce787c2a9e10e9fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
