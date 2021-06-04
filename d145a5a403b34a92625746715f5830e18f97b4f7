@@ -234,6 +234,54 @@
       },
       "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac0cc91f_80e1a060",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-04T15:48:19Z",
+      "side": 1,
+      "message": "Yeah, resetting it to NULL sounds like magic trick. It would be clearer if you simply do get_page() in the vendor hoop and pass page* to the hook. This way there are no unexpected mutations of the page.",
+      "parentUuid": "56ef6941_55bfa1aa",
+      "range": {
+        "startLine": 2845,
+        "startChar": 49,
+        "endLine": 2845,
+        "endChar": 53
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500db79d_1d763b18",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2845,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-04T15:48:19Z",
+      "side": 1,
+      "message": "Ok, then changing as I suggested to have vendor hook do get_page() would make this part also simpler and easier to read.",
+      "parentUuid": "6eca9e86_71d525b2",
+      "range": {
+        "startLine": 2845,
+        "startChar": 1,
+        "endLine": 2845,
+        "endChar": 42
+      },
+      "revId": "d145a5a403b34a92625746715f5830e18f97b4f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
