@@ -20,13 +20,6 @@
 
 static const struct crypto_type crypto_shash_type;
 
-int shash_no_setkey(struct crypto_shash *tfm, const u8 *key,
-		    unsigned int keylen)
-{
-	return -ENOSYS;
-}
-EXPORT_SYMBOL_GPL(shash_no_setkey);
-
 static int shash_setkey_unaligned(struct crypto_shash *tfm, const u8 *key,
 				  unsigned int keylen)
 {
@@ -43,7 +36,7 @@ static int shash_setkey_unaligned(struct crypto_shash *tfm, const u8 *key,
 
 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
 	memcpy(alignbuffer, key, keylen);
-	err = shash->setkey(tfm, alignbuffer, keylen);
+	err = shash->setkey ? shash->setkey(tfm, alignbuffer, keylen) : -ENOSYS;
 	kfree_sensitive(buffer);
 	return err;
 }
@@ -64,7 +57,7 @@ int crypto_shash_setkey(struct crypto_shash *tfm, const u8 *key,
 	if ((unsigned long)key & alignmask)
 		err = shash_setkey_unaligned(tfm, key, keylen);
 	else
-		err = shash->setkey(tfm, key, keylen);
+		err = shash->setkey ? shash->setkey(tfm, key, keylen) : -ENOSYS;
 
 	if (unlikely(err)) {
 		shash_set_needkey(tfm, shash);
@@ -534,8 +527,6 @@ static int shash_prepare_alg(struct shash_alg *alg)
 		alg->import = shash_default_import;
 		alg->statesize = alg->descsize;
 	}
-	if (!alg->setkey)
-		alg->setkey = shash_no_setkey;
 
 	return 0;
 }
