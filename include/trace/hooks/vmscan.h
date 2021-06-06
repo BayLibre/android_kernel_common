@@ -28,6 +28,12 @@ DECLARE_HOOK(android_vh_do_shrink_slab,
 DECLARE_RESTRICTED_HOOK(android_rvh_set_balance_anon_file_reclaim,
 			TP_PROTO(bool *balance_anon_file_reclaim),
 			TP_ARGS(balance_anon_file_reclaim), 1);
+DECLARE_HOOK(android_vh_direct_reclaim_begin,
+	TP_PROTO(unsigned long *ts),
+	TP_ARGS(ts));
+DECLARE_HOOK(android_vh_direct_reclaim_end,
+	TP_PROTO(int order, gfp_t gfp_flags, unsigned long nr_reclaimed, unsigned long ts),
+	TP_ARGS(order, gfp_flags, nr_reclaimed, ts));
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
