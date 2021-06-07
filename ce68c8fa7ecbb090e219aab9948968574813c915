@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5846ab6e_0700f623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-07T12:23:59Z",
+      "side": 1,
+      "message": "please use the existing panic callback function, that is exactly what it is here for.",
+      "parentUuid": "4525464b_991acea3",
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d944547_24bdca69",
         "filename": "kernel/panic.c",
         "patchSetId": 1
@@ -156,6 +174,30 @@
       "side": 1,
       "message": "Thanks for you suggestions. However, I have tried to use DECLARE_TRACE_NOARGS but failed. Could you kindly tell me how to add a hook without a parameter?",
       "parentUuid": "f7a832c1_8733d646",
+      "range": {
+        "startLine": 226,
+        "startChar": 43,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdba8ba3_4bc85b51",
+        "filename": "kernel/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-07T12:23:59Z",
+      "side": 1,
+      "message": "I do not know, but you can not just add a random number here 😊",
+      "parentUuid": "616c7ea3_0c8fa9cd",
       "range": {
         "startLine": 226,
         "startChar": 43,
