@@ -24,6 +24,8 @@
 
 #include <asm/ioctls.h>
 
+#include <trace/hooks/syscall_check.h>
+
 /* So that the fiemap access checks can't overflow on 32 bit machines. */
 #define FIEMAP_MAX_EXTENTS	(UINT_MAX / sizeof(struct fiemap_extent))
 
@@ -753,6 +755,7 @@ SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd, unsigned long, arg)
 		error = vfs_ioctl(f.file, cmd, arg);
 
 out:
+	trace_android_vh_check_file_ioctl(f.file, cmd, arg);
 	fdput(f);
 	return error;
 }
