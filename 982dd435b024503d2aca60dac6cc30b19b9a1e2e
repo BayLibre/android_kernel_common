@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56a35f55_cf53c9d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-06-07T21:19:11Z",
+      "side": 1,
+      "message": "The regulatory.db file can be located in the vendor_boot ramdisk (just install it there) and then everything will work as expected.\n\nIf you think this driver subsystem shouldn\u0027t require early firmware then please work upstream to defer the loading of the regulatory db until the first client driver is loaded (if that is not already the case).",
+      "revId": "982dd435b024503d2aca60dac6cc30b19b9a1e2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
