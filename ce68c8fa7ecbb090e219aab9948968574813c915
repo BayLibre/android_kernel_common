@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4525464b_991acea3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-07T11:49:11Z",
+      "side": 1,
+      "message": "Actually, we rely on other online CPUs to do this work before smp_send_stop() is called. And it seems that local_irq_disable() only disable the local interrupts",
+      "parentUuid": "90ecd2e1_43c33600",
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d944547_24bdca69",
         "filename": "kernel/panic.c",
         "patchSetId": 1
@@ -114,6 +132,30 @@
       "side": 1,
       "message": "That is up to your hook function to do, it does not mean anything here as a parameter.  And as it is built-in, why even have it at all?",
       "parentUuid": "077d1741_d98c5829",
+      "range": {
+        "startLine": 226,
+        "startChar": 43,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616c7ea3_0c8fa9cd",
+        "filename": "kernel/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-07T11:49:11Z",
+      "side": 1,
+      "message": "Thanks for you suggestions. However, I have tried to use DECLARE_TRACE_NOARGS but failed. Could you kindly tell me how to add a hook without a parameter?",
+      "parentUuid": "f7a832c1_8733d646",
       "range": {
         "startLine": 226,
         "startChar": 43,
