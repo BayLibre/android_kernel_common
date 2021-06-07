@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90ecd2e1_43c33600",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-07T09:37:20Z",
+      "side": 1,
+      "message": "Then perhaps you should not be attempting to do those types of \"complex operations\"?\n\nWhen panic happens, interrupts WILL NOT WORK PROPERLY, so you should never rely on them.",
+      "parentUuid": "e638660c_6ad0b930",
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d944547_24bdca69",
         "filename": "kernel/panic.c",
         "patchSetId": 1
@@ -72,6 +90,30 @@
       "side": 1,
       "message": "This “2000” sets a timeout period to ensure that the function is executed here for a maximum of two seconds",
       "parentUuid": "6d944547_24bdca69",
+      "range": {
+        "startLine": 226,
+        "startChar": 43,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a832c1_8733d646",
+        "filename": "kernel/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-07T09:37:20Z",
+      "side": 1,
+      "message": "That is up to your hook function to do, it does not mean anything here as a parameter.  And as it is built-in, why even have it at all?",
+      "parentUuid": "077d1741_d98c5829",
       "range": {
         "startLine": 226,
         "startChar": 43,
