@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4bfac359_ed34c6c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-07T15:50:42Z",
+      "side": 1,
+      "message": "Can you provide some more details about these complex operations and why the panic callback can\u0027t work for you when it does seem to work for everyone else.",
+      "parentUuid": "5846ab6e_0700f623",
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d944547_24bdca69",
         "filename": "kernel/panic.c",
         "patchSetId": 1
@@ -198,6 +216,30 @@
       "side": 1,
       "message": "I do not know, but you can not just add a random number here 😊",
       "parentUuid": "616c7ea3_0c8fa9cd",
+      "range": {
+        "startLine": 226,
+        "startChar": 43,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "563c36dc_2a20514a",
+        "filename": "kernel/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-07T15:50:42Z",
+      "side": 1,
+      "message": "Declare the hook with a single int parameter (\"dummy\") and pass 0.",
+      "parentUuid": "cdba8ba3_4bc85b51",
       "range": {
         "startLine": 226,
         "startChar": 43,
