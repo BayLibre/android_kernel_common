@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50f1e94a_f7f28dcf",
+        "filename": "mm/swap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-07T18:53:27Z",
+      "side": 1,
+      "message": "Don\u0027t you need:\n\n__count_vm_events(PGLAZYFREE, nr_pages);\n__count_memcg_events(lruvec_memcg(lruvec), PGLAZYFREE, nr_pages);\n\nhere as well?",
+      "revId": "03660445dd003b0150364f08e045116e4abd6435",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
