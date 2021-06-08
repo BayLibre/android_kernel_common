@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55bbb30e_532fa19b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-08T07:09:27Z",
+      "side": 1,
+      "message": "What do you mean by \"general requirement\"?\n\nAnd when panic happens, you can not do much at all, the system is corrupted, save the state and exit as soon as possible.\n\nAnd you can NOT sleep when panic has happened, that is why it is not allowed, the kernel is telling you not to attempt to do something like this, please do not try to work around it as that is a bad idea (the developers did this on purpose.)",
+      "parentUuid": "0957c59f_07b3966f",
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d944547_24bdca69",
         "filename": "kernel/panic.c",
         "patchSetId": 1
