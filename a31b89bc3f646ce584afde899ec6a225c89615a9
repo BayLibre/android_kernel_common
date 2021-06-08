@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70bfe9ef_a81e2187",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-08T09:47:47Z",
+      "side": 1,
+      "message": "syscalls should not be interrupted like this, as we have stated in the past.\n\nPlease place individual hooks where needed for specific requirements not generic locations like that slow down everything and can cause information leakage.",
+      "revId": "a31b89bc3f646ce584afde899ec6a225c89615a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
