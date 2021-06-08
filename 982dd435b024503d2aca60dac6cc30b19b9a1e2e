@@ -16,6 +16,24 @@
       "message": "The regulatory.db file can be located in the vendor_boot ramdisk (just install it there) and then everything will work as expected.\n\nIf you think this driver subsystem shouldn\u0027t require early firmware then please work upstream to defer the loading of the regulatory db until the first client driver is loaded (if that is not already the case).",
       "revId": "982dd435b024503d2aca60dac6cc30b19b9a1e2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d40f6bf8_aa2ffb08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1497372
+      },
+      "writtenOn": "2021-06-08T06:02:34Z",
+      "side": 1,
+      "message": "I am very appreciate for your help.\nNow I learn that vendor_boot ramdisk is mounted very early before kernel driver probe. After put firmware on vendor-ramdisk/lib/firmware, they can be loaded directly.\nThank you again.",
+      "parentUuid": "56a35f55_cf53c9d7",
+      "revId": "982dd435b024503d2aca60dac6cc30b19b9a1e2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
