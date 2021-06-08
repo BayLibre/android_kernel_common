@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8267e01f_84660f36",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-08T22:32:35Z",
+      "side": 1,
+      "message": "Both SHMEM_I and READ_ONCE are defined in header files, so you should be able to perform all these operations without introducing a new function. If so, do we really need this new export?",
+      "range": {
+        "startLine": 807,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 16
+      },
+      "revId": "b0971f0885d61ebe98448d029baa5064054ccd22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
