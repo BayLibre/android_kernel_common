@@ -119,7 +119,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_cfs_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_se_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_switch);
+<<<<<<< HEAD   (c4ad4a ANDROID: ABI: Update oplus symbol list)
 #if defined(CONFIG_SCHEDSTATS)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_waking);
+#ifdef CONFIG_SCHEDSTATS
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_sleep);
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_wait);
+>>>>>>> CHANGE (443379 ANDROID: vendor_hooks: Export the tracepoints sched_stat_sle)
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_iowait);
 #endif
 
