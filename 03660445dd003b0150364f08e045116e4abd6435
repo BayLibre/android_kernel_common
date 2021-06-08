@@ -16,6 +16,24 @@
       "message": "Don\u0027t you need:\n\n__count_vm_events(PGLAZYFREE, nr_pages);\n__count_memcg_events(lruvec_memcg(lruvec), PGLAZYFREE, nr_pages);\n\nhere as well?",
       "revId": "03660445dd003b0150364f08e045116e4abd6435",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38f8d3e4_8610da3a",
+        "filename": "mm/swap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1875935
+      },
+      "writtenOn": "2021-06-08T06:06:54Z",
+      "side": 1,
+      "message": "I did think about it while implementing and dropped it concluding that it would dilute the PGLAZYFREE counter used to track madvise lazyfree. If someone is using that counter and thinking that only madvise modifies it. But I am fine to add it. Let me know.",
+      "parentUuid": "50f1e94a_f7f28dcf",
+      "revId": "03660445dd003b0150364f08e045116e4abd6435",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
