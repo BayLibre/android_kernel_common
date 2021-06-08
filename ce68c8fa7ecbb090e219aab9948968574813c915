@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cb7b4ec_331806da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-08T02:32:32Z",
+      "side": 1,
+      "message": "We called a function which might sleep. But SLEEP IS NOT ALLOWED where the function is called(Not in panic, nor in atomic notification chain). So we tried to run a thread and set the timeout time to avoid panic flow being stuck. Unluckily, All other CPUs won\u0027t work where the panic notifier is called.\n\nSo we have to add vendor hooks to meet our requirements.",
+      "parentUuid": "4bfac359_ed34c6c3",
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d944547_24bdca69",
         "filename": "kernel/panic.c",
         "patchSetId": 1
@@ -240,6 +258,30 @@
       "side": 1,
       "message": "Declare the hook with a single int parameter (\"dummy\") and pass 0.",
       "parentUuid": "cdba8ba3_4bc85b51",
+      "range": {
+        "startLine": 226,
+        "startChar": 43,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "ce68c8fa7ecbb090e219aab9948968574813c915",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b561da_3b6f2257",
+        "filename": "kernel/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-08T02:32:32Z",
+      "side": 1,
+      "message": "Thanks a lot and I have uploaded the patch.",
+      "parentUuid": "563c36dc_2a20514a",
       "range": {
         "startLine": 226,
         "startChar": 43,
