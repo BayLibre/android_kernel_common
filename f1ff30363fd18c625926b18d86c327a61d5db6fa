@@ -46,6 +46,30 @@
       },
       "revId": "f1ff30363fd18c625926b18d86c327a61d5db6fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35a939be_af60d4fb",
+        "filename": "drivers/irqchip/irq-gic-v3.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-08T18:51:18Z",
+      "side": 1,
+      "message": "But why does a vendor module need to invoke it given that it does nothing more than a vendor hook? Why can\u0027t your vendor module directly call the handler for the vendor hook and avoid this extra hop through gic_resume()?",
+      "parentUuid": "ae7695ca_158915d7",
+      "range": {
+        "startLine": 1273,
+        "startChar": 0,
+        "endLine": 1273,
+        "endChar": 13
+      },
+      "revId": "f1ff30363fd18c625926b18d86c327a61d5db6fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
