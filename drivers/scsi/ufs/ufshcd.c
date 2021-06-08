@@ -7275,6 +7275,7 @@ static int ufshcd_scsi_add_wlus(struct ufs_hba *hba)
 remove_sdev_ufs_device:
 	scsi_remove_device(hba->sdev_ufs_device);
 out:
+        trace_android_vh_ufs_gen_devinfo(hba);
 	return ret;
 }
 
@@ -8505,7 +8506,9 @@ static int ufshcd_set_dev_pwr_mode(struct ufs_hba *hba,
 			scsi_print_sense_hdr(sdp, NULL, &sshdr);
 	}
 
-	if (!ret)
+        trace_android_vh_ufs_pwr_mode(hba, pwr_mode);
+
+        if (!ret)
 		hba->curr_dev_pwr_mode = pwr_mode;
 
 	scsi_device_put(sdp);
