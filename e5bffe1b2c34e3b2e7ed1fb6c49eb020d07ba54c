@@ -16,6 +16,24 @@
       "message": "Why is your vendor driver not merged upstream so that these types of crazy exports have to be done here?\n\nLooping back from an exported symbol through a tracepoint is quite, well, odd...",
       "revId": "e5bffe1b2c34e3b2e7ed1fb6c49eb020d07ba54c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4ab444c_9c827faa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1582959
+      },
+      "writtenOn": "2021-06-09T13:45:27Z",
+      "side": 1,
+      "message": "The vendor code is for a debug and may keep change depending on the issues so not in upstream. One such use is to dump GICD_* registers and figure out the wakeup HWIRQ.",
+      "parentUuid": "53f86896_85e5cc3a",
+      "revId": "e5bffe1b2c34e3b2e7ed1fb6c49eb020d07ba54c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
