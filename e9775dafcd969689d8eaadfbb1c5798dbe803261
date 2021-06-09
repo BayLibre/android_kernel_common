@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55e1725a_e7ea60ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1770429
+      },
+      "writtenOn": "2021-06-09T02:42:56Z",
+      "side": 1,
+      "message": "No new symbol addition. short log is as follows.\n\nLeaf changes summary: 0 artifact changed\nChanged leaf types summary: 0 leaf type changed\nRemoved/Changed/Added functions summary: 0 Removed, 0 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\nI need to add it to the commit, right? \nBTW, If there are no new symbol addition, do I need to upload xml file?\n\nThanks",
+      "parentUuid": "75df6920_9c9155f0",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 71
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b46668d4_db282a86",
         "filename": "android/abi_gki_aarch64_xiaomi",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-08T11:51:37Z",
       "side": 1,
       "message": "not allowed for kernel drivers, sorry.",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 12
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5be960a5_32dcd5f3",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1770429
+      },
+      "writtenOn": "2021-06-09T02:42:56Z",
+      "side": 1,
+      "message": "sorry for that, I will delete it.\n\nCan I understand that the symbol exported by EXPORT_SYMBOL() can\u0027t be used for ko?",
+      "parentUuid": "b46668d4_db282a86",
       "range": {
         "startLine": 109,
         "startChar": 2,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ff59f10_448aab1b",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1770429
+      },
+      "writtenOn": "2021-06-09T02:42:56Z",
+      "side": 1,
+      "message": "sorry for that, I will delete it.",
+      "parentUuid": "0b42b18c_ac30ec19",
+      "range": {
+        "startLine": 110,
+        "startChar": 2,
+        "endLine": 110,
+        "endChar": 11
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "168d8f49_b3e2a7f0",
         "filename": "android/abi_gki_aarch64_xiaomi",
         "patchSetId": 1
@@ -83,6 +155,30 @@
       "writtenOn": "2021-06-08T11:51:37Z",
       "side": 1,
       "message": "this is built into the kernel, are you sure you have your configuration file set up properly?",
+      "range": {
+        "startLine": 112,
+        "startChar": 14,
+        "endLine": 112,
+        "endChar": 27
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5558fe32_b145bea8",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1770429
+      },
+      "writtenOn": "2021-06-09T02:42:56Z",
+      "side": 1,
+      "message": "INCREMENTAL_FS is tristate, and we set CONFIG_INCREMENTAL_FS\u003dm in our project\n\ncommon/fs/incfs/Kconfig\n\n1config INCREMENTAL_FS\n2\ttristate \"Incremental file system support\"",
+      "parentUuid": "168d8f49_b3e2a7f0",
       "range": {
         "startLine": 112,
         "startChar": 14,
