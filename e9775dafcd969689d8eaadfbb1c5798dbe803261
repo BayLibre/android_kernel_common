@@ -95,6 +95,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea5a86c_020f1726",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-09T06:14:51Z",
+      "side": 1,
+      "message": "drivers should never read/write files from a filesystem, that is why we are not allowing this exported.",
+      "parentUuid": "5be960a5_32dcd5f3",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 12
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b42b18c_ac30ec19",
@@ -142,6 +166,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75949d45_167701b6",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-09T06:14:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ff59f10_448aab1b",
+      "range": {
+        "startLine": 110,
+        "startChar": 2,
+        "endLine": 110,
+        "endChar": 11
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "168d8f49_b3e2a7f0",
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "INCREMENTAL_FS is tristate, and we set CONFIG_INCREMENTAL_FS\u003dm in our project\n\ncommon/fs/incfs/Kconfig\n\n1config INCREMENTAL_FS\n2\ttristate \"Incremental file system support\"",
       "parentUuid": "168d8f49_b3e2a7f0",
+      "range": {
+        "startLine": 112,
+        "startChar": 14,
+        "endLine": 112,
+        "endChar": 27
+      },
+      "revId": "e9775dafcd969689d8eaadfbb1c5798dbe803261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d71cf5e2_41a978fb",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-09T06:14:51Z",
+      "side": 1,
+      "message": "That conflicts with the GKI defconfig, and can not be done.  Please make sure you are not changing any config options that are already set in the gki kernel image, otherwise you will have major problems.\n\nThis should have not worked if you ever tried to load this kernel module.",
+      "parentUuid": "5558fe32_b145bea8",
       "range": {
         "startLine": 112,
         "startChar": 14,
