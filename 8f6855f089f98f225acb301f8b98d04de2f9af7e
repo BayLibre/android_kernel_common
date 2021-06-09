@@ -1,0 +1,268 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cd23a5_98142ea6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 26
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "This is okay for now, but given that self-tests will need to be added, it would make sense to split this into two patches: one that adds the fips140 module, and one that adds the integrity check to that module.  A third patch later would then add the self-tests to the module.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62941748_efd159f8",
+        "filename": "crypto/Kconfig",
+        "patchSetId": 26
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "As it is planned for fips140.ko to do self-tests as well (not just an integrity check), it would make more sense to call this option something like CRYPTO_FIPS140_MODULE.",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 35,
+        "endChar": 37
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a320247_e5b4efd0",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "Doesn\u0027t this also apply to unchecked_fips140_algos?  If so, this comment should be somewhere above rather than here.",
+      "range": {
+        "startLine": 166,
+        "startChar": 34,
+        "endLine": 168,
+        "endChar": 28
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5868b1db_6be6bf35",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "How is this protected against concurrent calls to crypto_unregister_alg()?",
+      "range": {
+        "startLine": 322,
+        "startChar": 37,
+        "endLine": 322,
+        "endChar": 60
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0d36406_166e7bf1",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "This acquires a reference which is never dropped.",
+      "range": {
+        "startLine": 336,
+        "startChar": 12,
+        "endLine": 336,
+        "endChar": 33
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb36d789_e2c1d61e",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "IS_ERR(new_alg)",
+      "range": {
+        "startLine": 340,
+        "startChar": 6,
+        "endLine": 340,
+        "endChar": 14
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a746c556_e85ae8f5",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "Appending something like \"+orig\" would be more intuitive because this is the original algorithm, not the one that the FIPS module registered.",
+      "range": {
+        "startLine": 369,
+        "startChar": 25,
+        "endLine": 369,
+        "endChar": 32
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4a3a044_739c3a65",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "A comment about why disabling CFI is needed here would be helpful.  Is it because of the calls to the init() functions below?",
+      "range": {
+        "startLine": 484,
+        "startChar": 11,
+        "endLine": 484,
+        "endChar": 50
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b63066_6f821617",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "We should log something when starting to load this module, e.g.:\n\n  pr_info(\"Loading FIPS 140-2 module\\n\")\n\nNormally \"silence is golden\" in kernel code, but what this module does is so unusual, I think it will be helpful to be able to blame it more easily if something goes wrong while it is loading...",
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b28b96b_9e768ef8",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "\"FIPS 140-2 integrity check successful\\n\"?",
+      "range": {
+        "startLine": 526,
+        "startChar": 10,
+        "endLine": 526,
+        "endChar": 36
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c28f676e_667c2c5f",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "pr_info()?",
+      "range": {
+        "startLine": 526,
+        "startChar": 1,
+        "endLine": 526,
+        "endChar": 8
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f4d367_b9b1b8aa",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:08:16Z",
+      "side": 1,
+      "message": "An extra message at the end would be helpful too:\n\n    pr_info(\"FIPS 140-2 module successfully loaded\\n\");",
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
