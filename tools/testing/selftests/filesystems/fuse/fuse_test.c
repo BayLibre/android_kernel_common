@@ -360,6 +360,14 @@ out:
 	return result;
 }
 
+int bpf_test(const char *mount_dir)
+{
+	int result = TEST_FAILURE;
+	result = TEST_SUCCESS;
+
+	return result;
+}
+
 int parse_options(int argc, char *const *argv)
 {
 	signed char c;
@@ -433,6 +441,7 @@ int main(int argc, char *argv[])
 	}
 	struct test_case cases[] = {
 		MAKE_TEST(basic_test),
+		MAKE_TEST(bpf_test),
 	};
 #undef MAKE_TEST
 
