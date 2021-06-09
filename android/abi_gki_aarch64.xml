@@ -4129,12 +4129,14 @@
       <elf-symbol name='__num_online_cpus' size='4' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc60d0620'/>
       <elf-symbol name='__per_cpu_offset' size='256' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x280f9f14'/>
       <elf-symbol name='__stack_chk_guard' size='8' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8f678b07'/>
+      <elf-symbol name='__tracepoint_clock_set_rate' size='48' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe86cdf49'/>
       <elf-symbol name='__tracepoint_dma_fence_emit' size='48' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x349ac524'/>
       <elf-symbol name='__tracepoint_gpu_mem_total' size='48' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfbeb6f2f'/>
       <elf-symbol name='__tracepoint_xdp_exception' size='48' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x666b755a'/>
       <elf-symbol name='_ctype' size='256' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x11089ac7'/>
       <elf-symbol name='_totalram_pages' size='8' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x944375db'/>
       <elf-symbol name='amba_bustype' size='208' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x21206f97'/>
+      <elf-symbol name='arch_timer_read_counter' size='8' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x75fb9062'/>
       <elf-symbol name='arm64_const_caps_ready' size='16' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x14b89635'/>
       <elf-symbol name='arp_tbl' size='552' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x65bb6642'/>
       <elf-symbol name='balloon_aops' size='200' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd5345125'/>
@@ -31890,7 +31892,7 @@
           <var-decl name='in6' type-id='f6ed712a' visibility='default' filepath='include/uapi/linux/xfrm.h' line='18' column='1'/>
         </data-member>
       </union-decl>
-      <union-decl name='__anonymous_union__1' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/cfg80211.h' line='2488' column='1' id='0532d6f6'>
+      <union-decl name='__anonymous_union__10' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/cfg80211.h' line='2488' column='1' id='0532d6f6'>
         <data-member access='public'>
           <var-decl name='band_pref' type-id='3eaa0294' visibility='default' filepath='include/net/cfg80211.h' line='2489' column='1'/>
         </data-member>
@@ -41984,62 +41986,7 @@
         </data-member>
       </class-decl>
       <class-decl name='pci_vpd' is-struct='yes' visibility='default' is-declaration-only='yes' id='059a2256'/>
-      <class-decl name='pcie_link_state' size-in-bits='1216' is-struct='yes' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='49' column='1' id='2b7bb54d'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='pdev' type-id='85196e3f' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='50' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='downstream' type-id='85196e3f' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='51' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='128'>
-          <var-decl name='root' type-id='fe2d9f1d' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='52' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='192'>
-          <var-decl name='parent' type-id='fe2d9f1d' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='53' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='256'>
-          <var-decl name='sibling' type-id='72f469ec' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='54' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='aspm_support' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='57' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='7'>
-          <var-decl name='aspm_enabled' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='58' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='14'>
-          <var-decl name='aspm_capable' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='59' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='21'>
-          <var-decl name='aspm_default' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='60' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='aspm_disable' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='61' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='7'>
-          <var-decl name='clkpm_capable' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='64' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='8'>
-          <var-decl name='clkpm_enabled' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='65' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='9'>
-          <var-decl name='clkpm_default' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='66' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='10'>
-          <var-decl name='clkpm_disable' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='67' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='448'>
-          <var-decl name='latency_up' type-id='d0622163' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='70' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='512'>
-          <var-decl name='latency_dw' type-id='d0622163' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='71' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='576'>
-          <var-decl name='acceptable' type-id='fa0d0a7f' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='76' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='1088'>
-          <var-decl name='l1ss' type-id='a1d8a938' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='84' column='1'/>
-        </data-member>
-      </class-decl>
+      <class-decl name='pcie_link_state' is-struct='yes' visibility='default' is-declaration-only='yes' id='2b7bb54d'/>
       <array-type-def dimensions='1' type-id='c9d64c0d' size-in-bits='256' id='774e8b2d'>
         <subrange length='4' type-id='7ff19f0f' id='16fe7105'/>
       </array-type-def>
@@ -42653,31 +42600,6 @@
         <parameter type-id='95e97e5e' name='offset' filepath='block/blk-mq-pci.c' line='27' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <array-type-def dimensions='1' type-id='d0622163' size-in-bits='512' id='fa0d0a7f'>
-        <subrange length='8' type-id='7ff19f0f' id='56e0c0b1'/>
-      </array-type-def>
-      <class-decl name='aspm_latency' size-in-bits='64' is-struct='yes' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='44' column='1' id='d0622163'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='l0s' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='45' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='32'>
-          <var-decl name='l1' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='46' column='1'/>
-        </data-member>
-      </class-decl>
-      <class-decl name='__anonymous_struct__' size-in-bits='128' is-struct='yes' is-anonymous='yes' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='79' column='1' id='a1d8a938'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='up_cap_ptr' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='80' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='32'>
-          <var-decl name='dw_cap_ptr' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='81' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='ctl1' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='82' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='96'>
-          <var-decl name='ctl2' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='83' column='1'/>
-        </data-member>
-      </class-decl>
       <pointer-type-def type-id='61872327' size-in-bits='64' id='94bc2d77'/>
       <function-type size-in-bits='64' id='6334ba8a'>
         <parameter type-id='d1feb554'/>
@@ -51616,10 +51538,6 @@
         <parameter type-id='7d0bc0eb' name='clk' filepath='drivers/clk/clk.c' line='863' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='clk_get_rate' mangled-name='clk_get_rate' filepath='drivers/clk/clk.c' line='1671' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='clk_get_rate'>
-        <parameter type-id='7d0bc0eb' name='clk' filepath='drivers/clk/clk.c' line='1671' column='1'/>
-        <return type-id='7359adad'/>
-      </function-decl>
       <function-decl name='clk_set_rate' mangled-name='clk_set_rate' filepath='drivers/clk/clk.c' line='2283' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='clk_set_rate'>
         <parameter type-id='7d0bc0eb' name='clk' filepath='drivers/clk/clk.c' line='2283' column='1'/>
         <parameter type-id='7359adad' name='rate' filepath='drivers/clk/clk.c' line='2283' column='1'/>
@@ -51784,6 +51702,10 @@
       </function-decl>
       <function-decl name='clk_hw_get_flags' mangled-name='clk_hw_get_flags' filepath='drivers/clk/clk.c' line='511' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='clk_hw_get_flags'>
         <parameter type-id='9e6d4b4e' name='hw' filepath='drivers/clk/clk.c' line='511' column='1'/>
+        <return type-id='7359adad'/>
+      </function-decl>
+      <function-decl name='clk_get_rate' mangled-name='clk_get_rate' filepath='drivers/clk/clk.c' line='1671' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='clk_get_rate'>
+        <parameter type-id='7d0bc0eb' name='clk' filepath='drivers/clk/clk.c' line='1671' column='1'/>
         <return type-id='7359adad'/>
       </function-decl>
       <function-decl name='clk_get_parent' mangled-name='clk_get_parent' filepath='drivers/clk/clk.c' line='2463' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='clk_get_parent'>
@@ -51961,6 +51883,7 @@
       <qualified-type-def type-id='a3e4c395' const='yes' id='8bd3aaa6'/>
       <pointer-type-def type-id='8bd3aaa6' size-in-bits='64' id='aa357a64'/>
       <pointer-type-def type-id='428b7011' size-in-bits='64' id='d91eb3a5'/>
+      <var-decl name='arch_timer_read_counter' type-id='0e70db3e' mangled-name='arch_timer_read_counter' visibility='default' filepath='drivers/clocksource/arm_arch_timer.c' line='175' column='1' elf-symbol-id='arch_timer_read_counter'/>
       <var-decl name='timer_unstable_counter_workaround' type-id='aa357a64' mangled-name='timer_unstable_counter_workaround' visibility='default' filepath='drivers/clocksource/arm_arch_timer.c' line='379' column='1' elf-symbol-id='timer_unstable_counter_workaround'/>
       <function-type size-in-bits='64' id='428b7011'>
         <return type-id='19c2251e'/>
@@ -98069,31 +97992,6 @@
       </array-type-def>
     </abi-instr>
     <abi-instr address-size='64' path='drivers/pci/pcie/aspm.c' language='LANG_C89'>
-      <array-type-def dimensions='1' type-id='d0622163' size-in-bits='512' id='fa0d0a7f'>
-        <subrange length='8' type-id='7ff19f0f' id='56e0c0b1'/>
-      </array-type-def>
-      <class-decl name='aspm_latency' size-in-bits='64' is-struct='yes' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='44' column='1' id='d0622163'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='l0s' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='45' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='32'>
-          <var-decl name='l1' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='46' column='1'/>
-        </data-member>
-      </class-decl>
-      <class-decl name='__anonymous_struct__' size-in-bits='128' is-struct='yes' is-anonymous='yes' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='79' column='1' id='a1d8a938'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='up_cap_ptr' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='80' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='32'>
-          <var-decl name='dw_cap_ptr' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='81' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='ctl1' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='82' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='96'>
-          <var-decl name='ctl2' type-id='19c2251e' visibility='default' filepath='drivers/pci/pcie/aspm.c' line='83' column='1'/>
-        </data-member>
-      </class-decl>
       <function-decl name='pcie_aspm_enabled' mangled-name='pcie_aspm_enabled' filepath='drivers/pci/pcie/aspm.c' line='1171' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pcie_aspm_enabled'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pcie/aspm.c' line='1171' column='1'/>
         <return type-id='b50a4934'/>
@@ -147540,6 +147438,9 @@
         <return type-id='48b5725f'/>
       </function-decl>
     </abi-instr>
+    <abi-instr address-size='64' path='kernel/trace/power-traces.c' language='LANG_C89'>
+      <var-decl name='__tracepoint_clock_set_rate' type-id='4ca0c298' mangled-name='__tracepoint_clock_set_rate' visibility='default' filepath='include/trace/events/power.h' line='322' column='1' elf-symbol-id='__tracepoint_clock_set_rate'/>
+    </abi-instr>
     <abi-instr address-size='64' path='kernel/trace/trace.c' language='LANG_C89'>
       <class-decl name='prog_entry' is-struct='yes' visibility='default' is-declaration-only='yes' id='da952956'/>
       <array-type-def dimensions='1' type-id='19c2251e' size-in-bits='infinite' id='c165e8b9'>
@@ -153083,22 +152984,22 @@
       </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='mm/shmem.c' language='LANG_C89'>
-      <function-decl name='shmem_read_mapping_page_gfp' mangled-name='shmem_read_mapping_page_gfp' filepath='mm/shmem.c' line='4211' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='shmem_read_mapping_page_gfp'>
-        <parameter type-id='f57039f0' name='mapping' filepath='mm/shmem.c' line='4211' column='1'/>
-        <parameter type-id='7359adad' name='index' filepath='mm/shmem.c' line='4212' column='1'/>
-        <parameter type-id='3eb7c31c' name='gfp' filepath='mm/shmem.c' line='4212' column='1'/>
+      <function-decl name='shmem_read_mapping_page_gfp' mangled-name='shmem_read_mapping_page_gfp' filepath='mm/shmem.c' line='4170' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='shmem_read_mapping_page_gfp'>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/shmem.c' line='4170' column='1'/>
+        <parameter type-id='7359adad' name='index' filepath='mm/shmem.c' line='4171' column='1'/>
+        <parameter type-id='3eb7c31c' name='gfp' filepath='mm/shmem.c' line='4171' column='1'/>
         <return type-id='02f11ed4'/>
       </function-decl>
-      <function-decl name='shmem_truncate_range' mangled-name='shmem_truncate_range' filepath='mm/shmem.c' line='989' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='shmem_truncate_range'>
-        <parameter type-id='7e666abe' name='inode' filepath='mm/shmem.c' line='989' column='1'/>
-        <parameter type-id='69bf7bee' name='lstart' filepath='mm/shmem.c' line='989' column='1'/>
-        <parameter type-id='69bf7bee' name='lend' filepath='mm/shmem.c' line='989' column='1'/>
+      <function-decl name='shmem_truncate_range' mangled-name='shmem_truncate_range' filepath='mm/shmem.c' line='990' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='shmem_truncate_range'>
+        <parameter type-id='7e666abe' name='inode' filepath='mm/shmem.c' line='990' column='1'/>
+        <parameter type-id='69bf7bee' name='lstart' filepath='mm/shmem.c' line='990' column='1'/>
+        <parameter type-id='69bf7bee' name='lend' filepath='mm/shmem.c' line='990' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='shmem_file_setup' mangled-name='shmem_file_setup' filepath='mm/shmem.c' line='4143' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='shmem_file_setup'>
-        <parameter type-id='80f4b756' name='name' filepath='mm/shmem.c' line='4143' column='1'/>
-        <parameter type-id='69bf7bee' name='size' filepath='mm/shmem.c' line='4143' column='1'/>
-        <parameter type-id='7359adad' name='flags' filepath='mm/shmem.c' line='4143' column='1'/>
+      <function-decl name='shmem_file_setup' mangled-name='shmem_file_setup' filepath='mm/shmem.c' line='4102' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='shmem_file_setup'>
+        <parameter type-id='80f4b756' name='name' filepath='mm/shmem.c' line='4102' column='1'/>
+        <parameter type-id='69bf7bee' name='size' filepath='mm/shmem.c' line='4102' column='1'/>
+        <parameter type-id='7359adad' name='flags' filepath='mm/shmem.c' line='4102' column='1'/>
         <return type-id='77e79a4b'/>
       </function-decl>
     </abi-instr>
@@ -169169,7 +169070,7 @@
         <enumerator name='__NL80211_BSS_SELECT_ATTR_AFTER_LAST' value='4'/>
         <enumerator name='NL80211_BSS_SELECT_ATTR_MAX' value='3'/>
       </enum-decl>
-      <union-decl name='__anonymous_union__1' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/cfg80211.h' line='2488' column='1' id='0532d6f6'>
+      <union-decl name='__anonymous_union__10' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/cfg80211.h' line='2488' column='1' id='0532d6f6'>
         <data-member access='public'>
           <var-decl name='band_pref' type-id='3eaa0294' visibility='default' filepath='include/net/cfg80211.h' line='2489' column='1'/>
         </data-member>
