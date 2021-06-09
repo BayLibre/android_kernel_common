@@ -16,6 +16,24 @@
       "message": "Can\u0027t you get the same information using existing tracepoints? You can use ftrace to get timestamps on the trace events. You can consider `trace_binder_transaction()` or `trace_android_vh_binder_transaction_init()` as the beginning of a transaction and `trace_android_vh_binder_reply()` to detect a reply transaction. Your vendor module can attach to any of these to do the book-keeping if you prefer.\n\nIf you really need to include this with the binder state dump, you can add a vendor hook in `print_binder_transaction_ilocked()` to add it to the end of the transaction output.",
       "revId": "2b7ab41841dc49641aa25b947ac334d67841d8a9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dc7069b_b2bd8926",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1720452
+      },
+      "writtenOn": "2021-06-09T05:25:40Z",
+      "side": 1,
+      "message": "Thank you for your suggestion, I tried to modify it in the way of vendor hook",
+      "parentUuid": "dce425db_4799820e",
+      "revId": "2b7ab41841dc49641aa25b947ac334d67841d8a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
