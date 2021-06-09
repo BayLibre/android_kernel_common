@@ -70,6 +70,30 @@
       },
       "revId": "f1ff30363fd18c625926b18d86c327a61d5db6fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3900317b_3bcb7f35",
+        "filename": "drivers/irqchip/irq-gic-v3.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 1582959
+      },
+      "writtenOn": "2021-06-09T11:40:18Z",
+      "side": 1,
+      "message": "Since vendor module don\u0027t have access to the arguments (gic_data.domain, gic_data.dist_base) passed so has to call gic_resume().\n\nThe sequence of calls are something like\n\n1. A vendor module registers for s2idle notifications and decides the first cpu waking up from s2idle.\n2. It then invokes gic_resume()\n3. gic_resume() already calls another vendor hook which does GIC enhancements.",
+      "parentUuid": "35a939be_af60d4fb",
+      "range": {
+        "startLine": 1273,
+        "startChar": 0,
+        "endLine": 1273,
+        "endChar": 13
+      },
+      "revId": "f1ff30363fd18c625926b18d86c327a61d5db6fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
