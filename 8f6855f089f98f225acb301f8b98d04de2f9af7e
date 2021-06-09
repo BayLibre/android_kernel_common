@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be35e04c_53f2fb55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-09T23:17:40Z",
+      "side": 1,
+      "message": "There are some warnings when compiling with W\u003d1, e.g.:\n\n    crypto/fips140-module.c: In function ‘unapply_text_relocations’:\n    ./include/linux/kern_levels.h:5:18: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘long long unsigned int’ [-Wformat\u003d]\n",
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62941748_efd159f8",
         "filename": "crypto/Kconfig",
         "patchSetId": 26
