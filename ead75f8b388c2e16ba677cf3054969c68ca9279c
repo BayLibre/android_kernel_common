@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a390526d_1d96bc4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-06-09T09:04:32Z",
+      "side": 1,
+      "message": "The abi.xml update indicates that you are using an outdated version of libabigail. Please `repo sync` to get the latest prebuilt version.\n\nAlso, in this case you are not adding any symbols to the effective symbol list and you might not need to update the xml at all. (based on your commit message)",
+      "revId": "ead75f8b388c2e16ba677cf3054969c68ca9279c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
