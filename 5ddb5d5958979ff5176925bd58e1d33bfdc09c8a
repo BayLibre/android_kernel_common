@@ -16,6 +16,24 @@
       "message": "Again, if you need this type of control, do it in your scheduler logic, not for all rwsem instances in the kernel, that way is crazy and the overhead involved is going to be huge.",
       "revId": "5ddb5d5958979ff5176925bd58e1d33bfdc09c8a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e2ddd4b_c7adb65c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-10T10:45:56Z",
+      "side": 1,
+      "message": "I need add hook to set flag in rwsem logic, this function can not achieve in scheduler logic",
+      "parentUuid": "721c91a9_e29a2125",
+      "revId": "5ddb5d5958979ff5176925bd58e1d33bfdc09c8a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
