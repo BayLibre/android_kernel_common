@@ -123,6 +123,24 @@
       "parentUuid": "5879e47f_6a8d22d1",
       "revId": "bd10cef779c6078cd595835338f068cdfc5b312b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84d0f0f_46669bb1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-10T10:32:06Z",
+      "side": 1,
+      "message": "Your device-specific UFS driver should handle this just fine for you.  Or the core power management code, no need to add random hooks to the UFS code for something generic like this.",
+      "parentUuid": "ddcdbbf5_b6ddf042",
+      "revId": "bd10cef779c6078cd595835338f068cdfc5b312b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
