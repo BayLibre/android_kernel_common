@@ -51,6 +51,24 @@
       "parentUuid": "e057ec80_bd703fa1",
       "revId": "e8ed5c94402c0b227cae0b6610852e5e3c118e99",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2103330d_23161966",
+        "filename": "include/trace/hooks/ufshcd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-10T03:05:49Z",
+      "side": 1,
+      "message": "For what? What breaks if you remove this inclusion? Your declarations need `struct ufs_hba` and `enum ufs_dev_pwr_mode`. What else is needed from drivers/scsi/ufs/ufs.h?",
+      "parentUuid": "1862cf1c_1c53e213",
+      "revId": "e8ed5c94402c0b227cae0b6610852e5e3c118e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
