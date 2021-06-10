@@ -85,11 +85,16 @@ struct usbnet {
 #		define EVENT_LINK_CHANGE	11
 #		define EVENT_SET_RX_MODE	12
 #		define EVENT_NO_IP_ALIGN	13
+<<<<<<< HEAD   (ea6ea8 Merge 4.19.193 into android-4.19-stable)
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
+=======
+	u32			rx_speed;	/* in bps - NOT Mbps */
+	u32			tx_speed;	/* in bps - NOT Mbps */
+>>>>>>> BRANCH (9a2dc0 Linux 4.19.194)
 };
 
 static inline struct usb_driver *driver_of(struct usb_interface *intf)
