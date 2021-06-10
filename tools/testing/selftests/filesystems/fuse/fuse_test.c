@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <linux/bpf.h>
 #include <linux/random.h>
 #include <linux/stat.h>
 #include <linux/unistd.h>
@@ -33,6 +34,8 @@
 
 #define TEST_FAILURE 1
 #define TEST_SUCCESS 0
+
+#define ptr_to_u64(p) ((__u64)p)
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define le16_to_cpu(x)          (x)
@@ -363,8 +366,41 @@ out:
 int bpf_test(const char *mount_dir)
 {
 	int result = TEST_FAILURE;
-	result = TEST_SUCCESS;
+	char path[PATH_MAX];
+	char *last_slash;
+	struct stat st;
+	uint8_t *filter = NULL;
+	int filter_fd = -1;
+	union bpf_attr bpf_attr;
+	int prog_fd = -1;
+	char log[4096];
 
+	TESTNE(readlink("/proc/self/exe", path, PATH_MAX), -1);
+	TEST(last_slash = strrchr(path, '/'), last_slash);
+	strcpy(last_slash + 1, "test_trace.raw");
+	TESTSYSCALL(stat(path, &st));
+	TEST(filter = malloc(st.st_size), filter);
+	TEST(filter_fd = open(path, O_RDONLY | O_CLOEXEC), filter_fd != -1);
+	TESTEQUAL(read(filter_fd, filter, st.st_size), st.st_size);
+	print_bytes(filter, st.st_size);
+	bpf_attr = (union bpf_attr) {
+		.prog_type = 1,
+		.insn_cnt = st.st_size / 8,
+		.insns = ptr_to_u64(filter),
+		.license = ptr_to_u64("GPL"),
+		.log_buf = ptr_to_u64(log),
+		.log_size = sizeof(log),
+		.log_level = 2,
+	};
+	TEST(prog_fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr,
+			       sizeof(bpf_attr)),
+	     prog_fd != -1);
+
+	result = TEST_SUCCESS;
+out:
+	close(prog_fd);
+	close(filter_fd);
+	free(filter);
 	return result;
 }
 
