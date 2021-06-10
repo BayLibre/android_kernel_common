@@ -69,6 +69,24 @@
       "parentUuid": "d02d4c24_79f19e8f",
       "revId": "bd10cef779c6078cd595835338f068cdfc5b312b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a018c207_98f21c2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-10T02:02:14Z",
+      "side": 1,
+      "message": "Q: vendor name and such can be, and should be, done in userspace, not in the kernel.\nA: The reason why we add it here, is that we have a  of creating whole devices infomation and \u0027proc\u0027 nodes in kernel (Such as TP LCD Sensor...also UFS).\n\nQ:Same for power consumption, that can be done in userspace using the perf tools.\nA: We hope to collect the power changing in runtime.And caculating power consumption exactly, by \u0027power mode\u0027 \u0027transfer data size\u0027.",
+      "parentUuid": "89b7aa1c_a754b53a",
+      "revId": "bd10cef779c6078cd595835338f068cdfc5b312b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

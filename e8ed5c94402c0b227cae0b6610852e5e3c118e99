@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0894eb35_08d91c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-10T02:02:14Z",
+      "side": 1,
+      "message": "Dear google engineer, could you plz check below reply?\n\nQ: vendor name and such can be, and should be, done in userspace, not in the kernel.\nA: The reason why we add it here, is that we have a  of creating whole devices infomation and \u0027proc\u0027 nodes in kernel (Such as TP LCD Sensor...also UFS).\n\nQ:Same for power consumption, that can be done in userspace using the perf tools.\nA: We hope to collect the power changing in runtime.And caculating power consumption exactly, by \u0027power mode\u0027 \u0027transfer data size\u0027.",
+      "revId": "e8ed5c94402c0b227cae0b6610852e5e3c118e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e057ec80_bd703fa1",
@@ -14,6 +31,24 @@
       "writtenOn": "2021-06-08T23:35:29Z",
       "side": 1,
       "message": "is this inclusion needed given you declare \u0027enum ufs_dev_pwr_mode\u0027 at line 17",
+      "revId": "e8ed5c94402c0b227cae0b6610852e5e3c118e99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1862cf1c_1c53e213",
+        "filename": "include/trace/hooks/ufshcd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-10T02:02:14Z",
+      "side": 1,
+      "message": "Yes, it is.",
+      "parentUuid": "e057ec80_bd703fa1",
       "revId": "e8ed5c94402c0b227cae0b6610852e5e3c118e99",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
