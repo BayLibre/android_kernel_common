@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26720780_be19f876",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 26
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "The module exists because of the integrity selfcheck. Without it, we could put the known-answer selftests in the core kernel (and we could still do so, btw)\n\nSo decoupling the module from the selfcheck does not seem that useful to me, especially given the fact that the peculiar way this module is constructed, in terms of section layout, ordering of operations, etc, exists solely for the purpose of the selfcheck.",
+      "parentUuid": "b6cd23a5_98142ea6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be35e04c_53f2fb55",
@@ -41,6 +65,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6155cee8_a7921fd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be35e04c_53f2fb55",
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62941748_efd159f8",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-06-09T23:08:16Z",
       "side": 1,
       "message": "As it is planned for fips140.ko to do self-tests as well (not just an integrity check), it would make more sense to call this option something like CRYPTO_FIPS140_MODULE.",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 35,
+        "endChar": 37
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6539367c_5bb34f83",
+        "filename": "crypto/Kconfig",
+        "patchSetId": 26
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62941748_efd159f8",
       "range": {
         "startLine": 35,
         "startChar": 7,
@@ -87,6 +153,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d92c7ec_23254322",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "This was not entirely correct: it is true that crypto_unregister_alg() will happily unregister the algorithm if it is moved to another list, but that doesn\u0027t mean the two list_del() / list_empty() invocations can safely overlap. So I will need to hold on to the lock here a bit longer, so that crypto_unregister_alg() observes the algo as being on one list or the other, but not in a limbo state.\n\nI prefer to keep the comment as-is, though (with the above added). The other case below needs some additional locking as well.",
+      "parentUuid": "8a320247_e5b4efd0",
+      "range": {
+        "startLine": 166,
+        "startChar": 34,
+        "endLine": 168,
+        "endChar": 28
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5868b1db_6be6bf35",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-06-09T23:08:16Z",
       "side": 1,
       "message": "How is this protected against concurrent calls to crypto_unregister_alg()?",
+      "range": {
+        "startLine": 322,
+        "startChar": 37,
+        "endLine": 322,
+        "endChar": 60
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0deded1_e164f8c3",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "I am updating this to take the algo off the list first, with crypto_alg_sem held. That should ensure that crypto_unregister_alg() and this code are not both freeing the algo.",
+      "parentUuid": "5868b1db_6be6bf35",
       "range": {
         "startLine": 322,
         "startChar": 37,
@@ -133,6 +247,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aae07741_7a5f735b",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "This is intentional: the algo\u0027s function pointers are copied into another algo, so it is never safe to drop the reference again, unless we add special code to the core kernel to keep track of this.\n\nI\u0027ll add a comment.",
+      "parentUuid": "f0d36406_166e7bf1",
+      "range": {
+        "startLine": 336,
+        "startChar": 12,
+        "endLine": 336,
+        "endChar": 33
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb36d789_e2c1d61e",
@@ -146,6 +284,30 @@
       "writtenOn": "2021-06-09T23:08:16Z",
       "side": 1,
       "message": "IS_ERR(new_alg)",
+      "range": {
+        "startLine": 340,
+        "startChar": 6,
+        "endLine": 340,
+        "endChar": 14
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3aaa77_c96ff199",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb36d789_e2c1d61e",
       "range": {
         "startLine": 340,
         "startChar": 6,
@@ -179,6 +341,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e692c80_ea70611e",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a746c556_e85ae8f5",
+      "range": {
+        "startLine": 369,
+        "startChar": 25,
+        "endLine": 369,
+        "endChar": 32
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4a3a044_739c3a65",
@@ -202,6 +388,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd58753_d501b741",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4a3a044_739c3a65",
+      "range": {
+        "startLine": 484,
+        "startChar": 11,
+        "endLine": 484,
+        "endChar": 50
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36b63066_6f821617",
@@ -215,6 +425,24 @@
       "writtenOn": "2021-06-09T23:08:16Z",
       "side": 1,
       "message": "We should log something when starting to load this module, e.g.:\n\n  pr_info(\"Loading FIPS 140-2 module\\n\")\n\nNormally \"silence is golden\" in kernel code, but what this module does is so unusual, I think it will be helpful to be able to blame it more easily if something goes wrong while it is loading...",
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f992d721_c5a3a259",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36b63066_6f821617",
       "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -265,6 +493,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90dfb916_7d232f09",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b28b96b_9e768ef8",
+      "range": {
+        "startLine": 526,
+        "startChar": 10,
+        "endLine": 526,
+        "endChar": 36
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a63d70a_786f4f7c",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c28f676e_667c2c5f",
+      "range": {
+        "startLine": 526,
+        "startChar": 1,
+        "endLine": 526,
+        "endChar": 8
+      },
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40f4d367_b9b1b8aa",
@@ -278,6 +554,24 @@
       "writtenOn": "2021-06-09T23:08:16Z",
       "side": 1,
       "message": "An extra message at the end would be helpful too:\n\n    pr_info(\"FIPS 140-2 module successfully loaded\\n\");",
+      "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b568eea7_b1f75efe",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 26
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T14:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40f4d367_b9b1b8aa",
       "revId": "8f6855f089f98f225acb301f8b98d04de2f9af7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
