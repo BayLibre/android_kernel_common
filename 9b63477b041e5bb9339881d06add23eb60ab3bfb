@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adf2ea52_f8dddc34",
+        "filename": "arch/arm64/configs/fips140_gki.fragment",
+        "patchSetId": 27
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2021-06-10T18:37:14Z",
+      "side": 1,
+      "message": "In particular, GKI will need the code in arch/arm64/kernel/module-plts.c that is covered by #ifdef CONFIG_CRYPTO_FIPS140.  Otherwise the module won\u0027t load.",
+      "parentUuid": "031dcedf_c143a00a",
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a70bc57_00ca20b9",
         "filename": "arch/arm64/crypto/Kbuild.fips140",
         "patchSetId": 27
