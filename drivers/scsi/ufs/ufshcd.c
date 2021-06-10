@@ -4814,6 +4814,7 @@ static int ufshcd_slave_configure(struct scsi_device *sdev)
 {
 	struct ufs_hba *hba = shost_priv(sdev->host);
 	struct request_queue *q = sdev->request_queue;
+	unsigned int max_bio_bytes;
 
 	blk_queue_update_dma_pad(q, PRDT_DATA_BYTE_COUNT_PAD - 1);
 	if (hba->quirks & UFSHCD_QUIRK_ALIGN_SG_WITH_PAGE_SIZE)
@@ -4825,6 +4826,10 @@ static int ufshcd_slave_configure(struct scsi_device *sdev)
 	ufshcd_crypto_setup_rq_keyslot_manager(hba, q);
 
 	trace_android_vh_ufs_update_sdev(sdev);
+
+	if (!check_shl_overflow(queue_max_sectors(q),
+				SECTOR_SHIFT, &max_bio_bytes))
+		blk_queue_max_bio_bytes(q, max_bio_bytes);
 
 	return 0;
 }

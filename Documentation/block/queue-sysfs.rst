@@ -273,4 +273,11 @@ devices are described in the ZBC (Zoned Block Commands) and ZAC
 do not support zone commands, they will be treated as regular block devices
 and zoned will report "none".
 
+max_bio_bytes (RO)
+---------------------------
+This is the maximum number of bytes that bio size to be submitted will be
+limited. A value of 4,294,967,295(UINT_MAX) means no limit of bio size,
+and it's a default value. The minimum value is 1MB. It's legacy maximum
+bio size. (=BIO_MAX_VECS * PAGE_SIZE)
+
 Jens Axboe <jens.axboe@oracle.com>, February 2009

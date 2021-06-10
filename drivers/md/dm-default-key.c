@@ -384,12 +384,16 @@ static void default_key_io_hints(struct dm_target *ti,
 {
 	const struct default_key_c *dkc = ti->private;
 	const unsigned int sector_size = dkc->sector_size;
+	struct request_queue *bdev_q = bdev_get_queue(dkc->dev->bdev);
 
 	limits->logical_block_size =
 		max_t(unsigned int, limits->logical_block_size, sector_size);
 	limits->physical_block_size =
 		max_t(unsigned int, limits->physical_block_size, sector_size);
 	limits->io_min = max_t(unsigned int, limits->io_min, sector_size);
+
+	limits->max_bio_bytes = max_t(unsigned int,
+		bdev_q->limits.max_bio_bytes, BIO_MAX_PAGES * PAGE_SIZE);
 }
 
 static struct target_type default_key_target = {

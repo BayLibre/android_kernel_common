@@ -37,6 +37,7 @@ EXPORT_SYMBOL_GPL(blk_queue_rq_timeout);
  */
 void blk_set_default_limits(struct queue_limits *lim)
 {
+	lim->max_bio_bytes = UINT_MAX;
 	lim->max_segments = BLK_MAX_SEGMENTS;
 	lim->max_discard_segments = 1;
 	lim->max_integrity_segments = 0;
@@ -126,6 +127,27 @@ void blk_queue_bounce_limit(struct request_queue *q, u64 max_addr)
 	}
 }
 EXPORT_SYMBOL(blk_queue_bounce_limit);
+
+/**
+ * blk_queue_max_bio_bytes - set max_bio_size of queue
+ * @q: the request queue for the device
+ * @bytes : bio max bytes to be set
+ *
+ * Description:
+ *    Set proper bio max size to optimize queue operating.
+ *    Minimum value of max_bio_bytes is "BIO_MAX_PAGES * PAGE_SIZE". It is
+ *    legacy bio max bytes, and for kernel stability. max_bio_bytes will
+ *    be aligned with PAGE_SIZE.
+ **/
+void blk_queue_max_bio_bytes(struct request_queue *q, unsigned int bytes)
+{
+	struct queue_limits *limits = &q->limits;
+	unsigned int max_bio_bytes = round_up(bytes, PAGE_SIZE);
+
+	limits->max_bio_bytes = max_t(unsigned int, max_bio_bytes,
+				      BIO_MAX_PAGES * PAGE_SIZE);
+}
+EXPORT_SYMBOL(blk_queue_max_bio_bytes);
 
 /**
  * blk_queue_max_hw_sectors - set max sectors for a request for this queue
@@ -501,6 +523,8 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
 		     sector_t start)
 {
 	unsigned int top, bottom, alignment, ret = 0;
+
+	t->max_bio_bytes = min_not_zero(t->max_bio_bytes, b->max_bio_bytes);
 
 	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
 	t->max_hw_sectors = min_not_zero(t->max_hw_sectors, b->max_hw_sectors);
