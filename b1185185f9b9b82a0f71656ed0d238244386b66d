@@ -16,6 +16,24 @@
       "message": "Hi Todd,\n\nWould you please help to review this change, it is related with aosp/1651834,\nthanks!",
       "revId": "b1185185f9b9b82a0f71656ed0d238244386b66d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccc79d50_478401be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869300
+      },
+      "writtenOn": "2021-06-10T02:19:46Z",
+      "side": 1,
+      "message": "more information,this export symbol requirement is from vendor hook trace_android_vh_sched_setaffinity_early in sched_setaffinity() of core.c of aosp/1651834, we need use the symbol in the vendor hook of ko module, to do cpuset operation in oem\u0027s tuning solution, thanks!",
+      "parentUuid": "e1ec90bc_bf96f163",
+      "revId": "b1185185f9b9b82a0f71656ed0d238244386b66d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
