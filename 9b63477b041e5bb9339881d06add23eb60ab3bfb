@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "262aa538_fb1f6c5b",
+        "filename": "arch/arm64/configs/fips140_gki.fragment",
+        "patchSetId": 27
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T20:06:31Z",
+      "side": 1,
+      "message": "Yes, you are right. The problem I attempted to solve here is that this module relies on LTO, and this leads to a problem with the defconfigs, which will be different depending on whether LTO is enabled, leading to a build error.\n\nI will address this by splitting the Kconfig symbol into two: one for the support code in the core kernel, which is always enabled in GKI, and one for the FIPS140 module, which is only enabled in the FIPS140 fragment.",
+      "parentUuid": "adf2ea52_f8dddc34",
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a70bc57_00ca20b9",
@@ -49,6 +67,30 @@
       "writtenOn": "2021-06-10T18:27:32Z",
       "side": 1,
       "message": "I think that generally we should write \"FIPS 140\" in the code rather than \"FIPS 140-2\", except for things that are actually specific to FIPS 140-2.  This way we won\u0027t have to go back and update everything if/when we go for FIPS 140-3 certification instead of FIPS 140-2.",
+      "range": {
+        "startLine": 4,
+        "startChar": 6,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a82cc1f_b060cc93",
+        "filename": "arch/arm64/crypto/Kbuild.fips140",
+        "patchSetId": 27
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T20:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a70bc57_00ca20b9",
       "range": {
         "startLine": 4,
         "startChar": 6,
@@ -82,6 +124,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a306a28_c7c6dfb2",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T20:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59ca793a_b06122fa",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 11
+      },
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf687be7_79978ac0",
@@ -95,6 +161,30 @@
       "writtenOn": "2021-06-10T18:27:32Z",
       "side": 1,
       "message": "How can this happen, given that crypto_alg_sem is now held for write here?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 29
+      },
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5dbd6de_54987837",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T20:06:31Z",
+      "side": 1,
+      "message": "Maybe \u0027racing\u0027 is no longer the right term, but a call to crypto_unregister_alg() could definitely be in progress, and be blocked on the semaphore. I\u0027ll rework this accordingly.",
+      "parentUuid": "bf687be7_79978ac0",
       "range": {
         "startLine": 162,
         "startChar": 0,
@@ -122,6 +212,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ff1c468_662145dc",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T20:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcff5240_192d7c35",
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b87adac_71ca9f79",
@@ -135,6 +243,30 @@
       "writtenOn": "2021-06-10T18:27:32Z",
       "side": 1,
       "message": "It would be better to start this comment with something like:\n\n/*\n * Initialize the FIPS 140 module.\n * \n * Note: this routine iterates over ...\n */\n\nOtherwise the sentence starting with \"This routine iterates over\" reads like the one-line description of the whole function, rather than a note about one specific thing.",
+      "range": {
+        "startLine": 505,
+        "startChar": 2,
+        "endLine": 505,
+        "endChar": 3
+      },
+      "revId": "9b63477b041e5bb9339881d06add23eb60ab3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e5611a_5bd9fc23",
+        "filename": "crypto/fips140-module.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-06-10T20:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b87adac_71ca9f79",
       "range": {
         "startLine": 505,
         "startChar": 2,
