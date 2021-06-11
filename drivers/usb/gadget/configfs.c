@@ -9,6 +9,7 @@
 #include "configfs.h"
 #include "u_f.h"
 #include "u_os_desc.h"
+#include <trace/hooks/gadget.h>
 
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
 #include <linux/platform_device.h>
@@ -1553,6 +1554,8 @@ static int android_setup(struct usb_gadget *gadget,
 				break;
 		}
 	}
+
+	trace_android_vh_ucar_ncm_ctrlrequest(cdev, c, &value);
 
 #ifdef CONFIG_USB_CONFIGFS_F_ACC
 	if (value < 0)
