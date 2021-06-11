@@ -16,6 +16,24 @@
       "message": "There are already several hooks in rwsem to solve the same issue -- provide hints to the scheduler when an \"important\" thread blocks on an rwsem. Please use the existing hooks.",
       "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e86fbd0_78889ab9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-11T02:38:38Z",
+      "side": 1,
+      "message": "but if a thread try to aquire the writer sem, sem-\u003eowner maybe not be the real holder of rwsem, so it is necessary to add hooks in down path.",
+      "parentUuid": "34021043_9b01f979",
+      "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
