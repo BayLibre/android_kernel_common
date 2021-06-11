@@ -33,6 +33,24 @@
       "message": "Marco (CCed) probably knows this code well enough.\nLet\u0027s also wait for Qais to confirm the patch fixes the crashes he is seeing.",
       "revId": "2975020cd06cc96fd46258494e5ee10e62fbbeb1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22252aa1_17fd0722",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-06-11T18:23:08Z",
+      "side": 1,
+      "message": "Yep, it looks good. We had two runs from tip of android12-5.4 (e5f6b8e5e384) one with and one without this patch. The one without the patch produced the KASAN out-of-bounds BUG splat. The one with the patch didn\u0027t. The test takes 15hours to finish, so we had a single run of each case.",
+      "parentUuid": "9d1a1db6_5e419073",
+      "revId": "2975020cd06cc96fd46258494e5ee10e62fbbeb1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
