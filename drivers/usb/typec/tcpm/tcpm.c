@@ -2668,6 +2668,12 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 			port->req_supply_voltage = port->pps_data.req_out_volt;
 			port->req_current_limit = port->pps_data.req_op_curr;
 			power_supply_changed(port->psy);
+//kyle
+			tcpm_set_auto_vbus_discharge_threshold(port,
+							       TYPEC_PWR_MODE_PD,
+							       port->pps_data.active,
+							       port->req_supply_voltage);
+
 			tcpm_set_state(port, SNK_TRANSITION_SINK, 0);
 			break;
 		case SOFT_RESET_SEND:
