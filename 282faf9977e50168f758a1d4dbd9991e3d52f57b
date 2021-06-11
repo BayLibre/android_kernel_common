@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000011668347",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1734619?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "4b275ed0_ded09832",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 21,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Mauro Carvalho Chehab \u003cmchehab+huawei@kernel.org\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "a247b0dd_36208993",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-06-11T03:27:43Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Mauro Carvalho Chehab \u003cmchehab+huawei@kernel.org\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 378664320 android-build.ayeaye-python-dispatcher_20210610.05_p0",
+      "revId": "282faf9977e50168f758a1d4dbd9991e3d52f57b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
