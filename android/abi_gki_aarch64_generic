@@ -726,6 +726,7 @@
   extcon_set_property
   extcon_set_property_capability
   extcon_set_state_sync
+  extcon_unregister_notifier
   failure_tracking
   fasync_helper
   __fdget
@@ -1836,6 +1837,7 @@
   trace_handle_return
   __traceiter_android_rvh_cgroup_force_kthread_migration
   __traceiter_android_rvh_check_preempt_wakeup
+  __traceiter_android_rvh_cpu_cgroup_online
   __traceiter_android_rvh_cpu_overutilized
   __traceiter_android_rvh_dequeue_task
   __traceiter_android_rvh_find_energy_efficient_cpu
@@ -1901,6 +1903,7 @@
   trace_output_call
   __tracepoint_android_rvh_cgroup_force_kthread_migration
   __tracepoint_android_rvh_check_preempt_wakeup
+  __tracepoint_android_rvh_cpu_cgroup_online
   __tracepoint_android_rvh_cpu_overutilized
   __tracepoint_android_rvh_dequeue_task
   __tracepoint_android_rvh_find_energy_efficient_cpu
