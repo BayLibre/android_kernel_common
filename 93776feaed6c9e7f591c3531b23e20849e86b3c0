@@ -33,6 +33,24 @@
       "message": "No modules should be messing with the task structure, if you need to do that, use SELinux to control the proper access.",
       "revId": "93776feaed6c9e7f591c3531b23e20849e86b3c0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a525df2_0fe48dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1876972
+      },
+      "writtenOn": "2021-06-11T08:37:08Z",
+      "side": 1,
+      "message": "sorry, my fault. we will change the oem_data not the vendor_data in task_struct, the oem_data is defined by ourself, this will not mess the task structure, we only change our own data when enter and exit the syscall.\n\nstruct task_struct {\n       .......\n       ANDROID_OEM_DATA_ARRAY(1, 2); // this is our own data \n}",
+      "parentUuid": "3d8bf159_91af0907",
+      "revId": "93776feaed6c9e7f591c3531b23e20849e86b3c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
