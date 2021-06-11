@@ -506,6 +506,24 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 	if (fuse_is_bad(dir))
 		return ERR_PTR(-EIO);
 
+	if (get_fuse_inode(dir)->bpf != -1) {
+		struct bpf_prog *bpf_prog =
+			bpf_prog_get(get_fuse_inode(dir)->bpf);
+
+		if (IS_ERR(bpf_prog)) {
+			pr_debug("Paul: fuckup!\n");
+		} else {
+			int result;
+			unsigned long ctx[16] = {};
+
+			pr_debug("Paul: got it %px!\n", bpf_prog);
+			result = bpf_iter_run_prog(bpf_prog, ctx);
+			pr_debug("Paul: ran with result %d\n", result);
+
+			bpf_prog_put(bpf_prog);
+		}
+	}
+
 	locked = fuse_lock_inode(dir);
 	err = fuse_lookup_name(dir->i_sb, get_node_id(dir), &entry->d_name,
 			       &outarg, &inode);

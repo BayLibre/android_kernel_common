@@ -352,6 +352,7 @@ done:
 	fi->nlookup++;
 	spin_unlock(&fi->lock);
 	fuse_change_attributes(inode, attr, attr_valid, attr_version);
+	fi->bpf = -1;
 
 	return inode;
 }
@@ -506,6 +507,7 @@ enum {
 	OPT_ALLOW_OTHER,
 	OPT_MAX_READ,
 	OPT_BLKSIZE,
+	OPT_ROOT_BPF,
 	OPT_ERR
 };
 
@@ -520,6 +522,7 @@ static const struct fs_parameter_spec fuse_fs_parameters[] = {
 	fsparam_u32	("max_read",		OPT_MAX_READ),
 	fsparam_u32	("blksize",		OPT_BLKSIZE),
 	fsparam_string	("subtype",		OPT_SUBTYPE),
+	fsparam_u32	("root_bpf",		OPT_ROOT_BPF),
 	{}
 };
 
@@ -601,6 +604,11 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
 		if (!ctx->is_bdev)
 			return invalfc(fc, "blksize only supported for fuseblk");
 		ctx->blksize = result.uint_32;
+		break;
+
+	case OPT_ROOT_BPF:
+		ctx->root_bpf = result.uint_32;
+		ctx->root_bpf_present = true;
 		break;
 
 	default:
@@ -751,15 +759,20 @@ struct fuse_mount *fuse_mount_get(struct fuse_mount *fm)
 }
 EXPORT_SYMBOL_GPL(fuse_mount_get);
 
-static struct inode *fuse_get_root_inode(struct super_block *sb, unsigned mode)
+static struct inode *fuse_get_root_inode(struct super_block *sb, unsigned mode, int root_bpf)
 {
 	struct fuse_attr attr;
-	memset(&attr, 0, sizeof(attr));
+	struct inode *inode;
 
+	memset(&attr, 0, sizeof(attr));
 	attr.mode = mode;
 	attr.ino = FUSE_ROOT_ID;
 	attr.nlink = 1;
-	return fuse_iget(sb, 1, 0, &attr, 0, 0);
+	inode = fuse_iget(sb, 1, 0, &attr, 0, 0);
+	if (inode)
+		get_fuse_inode(inode)->bpf = root_bpf;
+
+	return inode;
 }
 
 struct fuse_inode_handle {
@@ -1397,7 +1410,8 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 	fc->no_force_umount = ctx->no_force_umount;
 
 	err = -ENOMEM;
-	root = fuse_get_root_inode(sb, ctx->rootmode);
+	root = fuse_get_root_inode(sb, ctx->rootmode,
+				   ctx->root_bpf_present ? ctx->root_bpf : -1);
 	sb->s_d_op = &fuse_root_dentry_operations;
 	root_dentry = d_make_root(root);
 	if (!root_dentry)

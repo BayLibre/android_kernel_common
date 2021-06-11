@@ -162,6 +162,8 @@ struct fuse_inode {
 	 */
 	struct fuse_inode_dax *dax;
 #endif
+
+	int bpf;
 };
 
 /** FUSE inode state bits */
@@ -519,9 +521,11 @@ struct fuse_fs_context {
 	bool no_force_umount:1;
 	bool legacy_opts_show:1;
 	bool dax:1;
+	bool root_bpf_present:1;
 	unsigned int max_read;
 	unsigned int blksize;
 	const char *subtype;
+	int root_bpf;
 
 	/* DAX device, may be NULL */
 	struct dax_device *dax_dev;

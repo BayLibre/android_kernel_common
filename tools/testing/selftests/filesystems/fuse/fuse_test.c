@@ -49,7 +49,7 @@ struct {
 	int file;
 	int test;
 	bool verbose;
-} options;
+} test_options;
 
 #define TESTCOND(condition)						\
 	do {								\
@@ -57,7 +57,7 @@ struct {
 			ksft_print_msg("%s failed %d\n",		\
 				       __func__, __LINE__);		\
 			goto out;					\
-		} else if (options.verbose)				\
+		} else if (test_options.verbose)			\
 			ksft_print_msg("%s succeeded %d\n",		\
 				       __func__, __LINE__);		\
 	} while (false)
@@ -70,7 +70,7 @@ struct {
 			ksft_print_msg("Error %d (\"%s\")\n",		\
 				       errno, strerror(errno));		\
 			goto out;					\
-		} else if (options.verbose)				\
+		} else if (test_options.verbose)			\
 			ksft_print_msg("%s succeeded %d\n",		\
 				       __func__, __LINE__);		\
 	} while (false)
@@ -116,7 +116,7 @@ bool test_equal_unsigned(long long unsigned a, long long unsigned b)
 			ksft_print_msg("%s failed %d\n",		\
 				       __func__, __LINE__);		\
 			goto out;					\
-		} else if (options.verbose)				\
+		} else if (test_options.verbose)			\
 			ksft_print_msg("%s succeeded %d\n",		\
 				       __func__, __LINE__);		\
 	} while (false)
@@ -219,7 +219,7 @@ static char *setup_mount_dir()
 			  out_header->len);				\
 	} while(false)
 
-#define TESTFUSEOUTEMPTY(out_struct)					\
+#define TESTFUSEOUTEMPTY()						\
 	do {								\
 		struct fuse_in_header *in_header =			\
 				(struct fuse_in_header *)bytes_in;	\
@@ -272,31 +272,19 @@ static char *setup_mount_dir()
 			TESTEQUAL(waitpid(pid, &status, 0), pid);	\
 			TESTEQUAL(status, TEST_SUCCESS);
 
-int basic_test(const char *mount_dir)
+int mount_fuse(const char *mount_dir, const char *options, int *fuse_dev_ptr)
 {
-	const char *test_name = "test";
-	const char *test_data = "data";
-
 	int result = TEST_FAILURE;
-	char mount_options[FILENAME_MAX];
 	int fuse_dev = -1;
+	char mount_options[FILENAME_MAX];
 	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
 	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
 	DECL_FUSE(init);
-	DECL_FUSE_OUT(entry);
-	DECL_FUSE(open);
-	DECL_FUSE_IN(read);
-	DECL_FUSE_IN(flush);
-	DECL_FUSE_IN(release);
-	char *filename = NULL;
-	int fd = -1;
-	int pid = -1;
-	int status;
 
 	TEST(fuse_dev = open("/dev/fuse", O_RDWR | O_CLOEXEC), fuse_dev != -1);
 	snprintf(mount_options, FILENAME_MAX,
-		 "fd=%d,user_id=0,group_id=0,rootmode=0040000",
-		 fuse_dev);
+		 "fd=%d,user_id=0,group_id=0,rootmode=0040000%s",
+		 fuse_dev, options);
 	TESTSYSCALL(mount("ABC", mount_dir, "fuse", 0, mount_options));
 
 	TESTFUSEIN(FUSE_INIT, init_in);
@@ -316,6 +304,34 @@ int basic_test(const char *mount_dir)
 	};
 	TESTFUSEOUT(init_out);
 
+	*fuse_dev_ptr = fuse_dev;
+	fuse_dev = -1;
+	result = TEST_SUCCESS;
+out:
+	close(fuse_dev);
+	return result;
+}
+
+int basic_test(const char *mount_dir)
+{
+	const char *test_name = "test";
+	const char *test_data = "data";
+
+	int result = TEST_FAILURE;
+	int fuse_dev = -1;
+	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
+	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
+	DECL_FUSE_OUT(entry);
+	DECL_FUSE(open);
+	DECL_FUSE_IN(read);
+	DECL_FUSE_IN(flush);
+	DECL_FUSE_IN(release);
+	char *filename = NULL;
+	int fd = -1;
+	int pid = -1;
+	int status;
+
+	TESTEQUAL(mount_fuse(mount_dir, "", &fuse_dev), 0);
 	FUSE_ACTION
 		char data[256];
 
@@ -363,7 +379,7 @@ out:
 	return result;
 }
 
-int bpf_test(const char *mount_dir)
+int install_bpf(const char *name, int *fd)
 {
 	int result = TEST_FAILURE;
 	char path[PATH_MAX];
@@ -372,12 +388,11 @@ int bpf_test(const char *mount_dir)
 	uint8_t *filter = NULL;
 	int filter_fd = -1;
 	union bpf_attr bpf_attr;
-	int prog_fd = -1;
 	char log[4096];
 
 	TESTNE(readlink("/proc/self/exe", path, PATH_MAX), -1);
 	TEST(last_slash = strrchr(path, '/'), last_slash);
-	strcpy(last_slash + 1, "test_trace.raw");
+	strcpy(last_slash + 1, name);
 	TESTSYSCALL(stat(path, &st));
 	TEST(filter = malloc(st.st_size), filter);
 	TEST(filter_fd = open(path, O_RDONLY | O_CLOEXEC), filter_fd != -1);
@@ -392,15 +407,88 @@ int bpf_test(const char *mount_dir)
 		.log_size = sizeof(log),
 		.log_level = 2,
 	};
-	TEST(prog_fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr,
+	TEST(*fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr,
 			       sizeof(bpf_attr)),
-	     prog_fd != -1);
+	     *fd != -1);
 
 	result = TEST_SUCCESS;
 out:
-	close(prog_fd);
 	close(filter_fd);
 	free(filter);
+	return result;
+}
+
+int bpf_test(const char *mount_dir)
+{
+	const char *test_name = "test";
+	int result = TEST_FAILURE;
+	int bpf_fd = -1;
+	char options[256];
+	int fuse_dev = -1;
+	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
+	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
+	DECL_FUSE_OUT(entry);
+	DECL_FUSE(open);
+	DECL_FUSE_IN(flush);
+	DECL_FUSE_IN(release);
+	char *filename = NULL;
+	int fd = -1;
+	int pid = -1;
+	int status;
+	int tp = -1;
+	char trace_buffer[256];
+	ssize_t bytes_read;
+
+	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
+	snprintf(options, sizeof(options), ",root_bpf=%d", bpf_fd);
+	TESTEQUAL(mount_fuse(mount_dir, options, &fuse_dev), 0);
+
+	FUSE_ACTION
+		filename = concat_file_name(mount_dir, test_name);
+		TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
+		TESTSYSCALL(close(fd));
+		fd = -1;
+	FUSE_DAEMON
+		TESTFUSELOOKUP(test_name);
+		*entry_out = (struct fuse_entry_out) {
+			.nodeid		= 2,
+			.generation	= 1,
+			.attr = (struct fuse_attr) {
+				.ino = 100,
+				.size = 4,
+				.blksize = 512,
+				.mode = S_IFREG,
+			},
+		};
+		TESTFUSEOUT(entry_out);
+		TESTFUSEIN(FUSE_OPEN, open_in);
+		*open_out = (struct fuse_open_out) {
+			.fh = 1,
+			.open_flags = open_in->flags,
+		};
+		TESTFUSEOUT(open_out);
+		TESTFUSEIN(FUSE_FLUSH, flush_in);
+		TESTFUSEOUTEMPTY();
+		TESTFUSEIN(FUSE_RELEASE, release_in);
+		TESTFUSEOUTEMPTY();
+	FUSE_DONE
+
+	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
+		       O_RDONLY | O_CLOEXEC), tp != -1);
+	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
+	     bytes_read > 0);
+	TESTNE(strstr(trace_buffer, "Hello Paul\n"), NULL);
+	printf("%s", trace_buffer);
+
+
+	result = TEST_SUCCESS;
+out:
+	close(tp);
+	close(fuse_dev);
+	close(fd);
+	free(filename);
+	umount("dst");
+	close(bpf_fd);
 	return result;
 }
 
@@ -411,15 +499,15 @@ int parse_options(int argc, char *const *argv)
 	while ((c = getopt(argc, argv, "f:t:v")) != -1)
 		switch (c) {
 		case 'f':
-			options.file = strtol(optarg, NULL, 10);
+			test_options.file = strtol(optarg, NULL, 10);
 			break;
 
 		case 't':
-			options.test = strtol(optarg, NULL, 10);
+			test_options.test = strtol(optarg, NULL, 10);
 			break;
 
 		case 'v':
-			options.verbose = true;
+			test_options.verbose = true;
 			break;
 
 		default:
@@ -481,12 +569,13 @@ int main(int argc, char *argv[])
 	};
 #undef MAKE_TEST
 
-	if (options.test) {
-		if (options.test <= 0 || options.test > ARRAY_SIZE(cases))
+	if (test_options.test) {
+		if (test_options.test <= 0 ||
+		    test_options.test > ARRAY_SIZE(cases))
 			ksft_exit_fail_msg("Invalid test\n");
 
 		ksft_set_plan(1);
-		run_one_test(mount_dir, &cases[options.test - 1]);
+		run_one_test(mount_dir, &cases[test_options.test - 1]);
 	} else {
 		ksft_set_plan(ARRAY_SIZE(cases));
 		for (i = 0; i < ARRAY_SIZE(cases); ++i)
