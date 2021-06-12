@@ -52,6 +52,24 @@
       "parentUuid": "1e86fbd0_78889ab9",
       "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14abf9b5_703ab8d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-12T01:39:10Z",
+      "side": 1,
+      "message": "I need the real owner when there is a new waiters.The case below is not envolved:\nThread A gets read rwsem with owner updated to A, then B gets read rwsem with owner updated to B. In critical area A is preempted, and B run out of critical area first. At this time owner is saved as B, but the real owner is A, and it thread C try to get writer rwsem, it can not get the correct owner. So hooks in rwsem_down_read_slowpath are not sufficient. Thanks!",
+      "parentUuid": "e495667b_23f9fa64",
+      "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
