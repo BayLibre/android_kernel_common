@@ -385,7 +385,7 @@ int install_bpf(const char *name, int *fd)
 	char path[PATH_MAX];
 	char *last_slash;
 	struct stat st;
-	uint8_t *filter = NULL;
+	uint64_t *filter = NULL;
 	int filter_fd = -1;
 	union bpf_attr bpf_attr;
 	char log[4096];
@@ -397,9 +397,11 @@ int install_bpf(const char *name, int *fd)
 	TEST(filter = malloc(st.st_size), filter);
 	TEST(filter_fd = open(path, O_RDONLY | O_CLOEXEC), filter_fd != -1);
 	TESTEQUAL(read(filter_fd, filter, st.st_size), st.st_size);
+	if (filter[st.st_size / sizeof(filter[0]) - 1] == 0)
+		st.st_size -= sizeof(filter[0]);
 	print_bytes(filter, st.st_size);
 	bpf_attr = (union bpf_attr) {
-		.prog_type = 1,
+		.prog_type = BPF_PROG_TYPE_TRACEPOINT,
 		.insn_cnt = st.st_size / 8,
 		.insns = ptr_to_u64(filter),
 		.license = ptr_to_u64("GPL"),
@@ -407,9 +409,9 @@ int install_bpf(const char *name, int *fd)
 		.log_size = sizeof(log),
 		.log_level = 2,
 	};
-	TEST(*fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr,
-			       sizeof(bpf_attr)),
-	     *fd != -1);
+	*fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr, sizeof(bpf_attr));
+	printf("%s", log);
+	TESTNE(*fd, -1);
 
 	result = TEST_SUCCESS;
 out:
@@ -477,8 +479,8 @@ int bpf_test(const char *mount_dir)
 		       O_RDONLY | O_CLOEXEC), tp != -1);
 	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
 	     bytes_read > 0);
-	TESTNE(strstr(trace_buffer, "Hello Paul\n"), NULL);
 	printf("%s", trace_buffer);
+	TESTNE(strstr(trace_buffer, "Hello Paul"), NULL);
 
 
 	result = TEST_SUCCESS;
