@@ -23,7 +23,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <linux/bpf.h>
 #include <linux/random.h>
 #include <linux/stat.h>
 #include <linux/unistd.h>
@@ -31,6 +30,7 @@
 #include <kselftest.h>
 
 #include <include/uapi/linux/fuse.h>
+#include <include/uapi/linux/bpf.h>
 
 #define TEST_FAILURE 1
 #define TEST_SUCCESS 0
@@ -401,7 +401,7 @@ int install_bpf(const char *name, int *fd)
 		st.st_size -= sizeof(filter[0]);
 	print_bytes(filter, st.st_size);
 	bpf_attr = (union bpf_attr) {
-		.prog_type = BPF_PROG_TYPE_TRACEPOINT,
+		.prog_type = BPF_PROG_TYPE_FUSE,
 		.insn_cnt = st.st_size / 8,
 		.insns = ptr_to_u64(filter),
 		.license = ptr_to_u64("GPL"),

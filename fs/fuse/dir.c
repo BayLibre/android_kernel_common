@@ -515,10 +515,11 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 			pr_debug("Paul: fuckup!\n");
 		} else {
 			int result;
-			u32 ctx[64] = {[2] = 234};
+			struct bpf_fuse_data_kern ctx;
 
+			strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
 			pr_debug("Paul: got it %px!\n", bpf_prog);
-			result = BPF_PROG_RUN(bpf_prog, ctx);
+			result = BPF_PROG_RUN(bpf_prog, &ctx);
 			pr_debug("Paul: ran with result %d\n", result);
 
 			bpf_prog_put(bpf_prog);
