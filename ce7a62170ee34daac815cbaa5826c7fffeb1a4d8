@@ -33,6 +33,24 @@
       "message": "Hi Peter,\n\nThe patch looks good to me. If you don\u0027t mind, could you please split it into two patches to exactly match what we have on linux-next(just to avoid confusion during cherry-picks and merges).\n\nThanks,\nHridya",
       "revId": "ce7a62170ee34daac815cbaa5826c7fffeb1a4d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fef6a3cb_3d7d155a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2021-06-14T20:57:24Z",
+      "side": 1,
+      "message": "Ideally it would have been one patch since the first one contains a bug and the next one contains the fix (so if the first one is cherry-picked on its own it will introduce the bug). Let me ask akpm whether he can merge the two patches into one.",
+      "parentUuid": "5a286f4f_123e165b",
+      "revId": "ce7a62170ee34daac815cbaa5826c7fffeb1a4d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
