@@ -36,6 +36,10 @@ void page_writeback_init(void);
 
 vm_fault_t do_swap_page(struct vm_fault *vmf);
 
+#ifndef numa_off_fastpath
+#define numa_off_fastpath()	false
+#endif
+
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 extern struct vm_area_struct *get_vma(struct mm_struct *mm,
 				      unsigned long addr);

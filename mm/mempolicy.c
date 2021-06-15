@@ -2196,6 +2196,9 @@ alloc_pages_vma(gfp_t gfp, int order, struct vm_area_struct *vma,
 	int preferred_nid;
 	nodemask_t *nmask;
 
+	if (numa_off_fastpath())
+		return __alloc_pages_nodemask(gfp, order, 0, NULL);
+
 	pol = get_vma_policy(vma, addr);
 
 	if (pol->mode == MPOL_INTERLEAVE) {
