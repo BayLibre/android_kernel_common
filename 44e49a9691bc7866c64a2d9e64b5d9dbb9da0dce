@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a655e008_fcd720bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "I don\u0027t really know how to review this.",
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a93dd327_ead32060",
+        "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "this is an invalid uapi change.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db612607_5ca67d2c",
+        "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "this comment is actually wrong, since send_nl_msg doesn\u0027t actually generate netlink messages - it generates uevents.\n\n(we should probably rename it to send_event instead, but that\u0027s a separate issue)",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 65
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aca29e37_5dac92d2",
+        "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "this is spurious",
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f63b357f_f4889ace",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "why?",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 48
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e755186_ec8b341c",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "why move?",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 333,
+        "endChar": 59
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e66d887_71ba46ed",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "this violates uapi",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 53
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "073477ab_e8c7e604",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-16T18:34:08Z",
+      "side": 1,
+      "message": "space is spurious",
+      "range": {
+        "startLine": 392,
+        "startChar": 39,
+        "endLine": 392,
+        "endChar": 40
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
