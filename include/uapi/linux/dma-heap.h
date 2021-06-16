@@ -21,6 +21,9 @@
 /* Currently no heap flags */
 #define DMA_HEAP_VALID_HEAP_FLAGS (0)
 
+/* For MTK heaps, it is used to as 1MB alignment */
+#define DMA_HEAP_ALIGN_1MB_FLAGS (1)
+
 /**
  * struct dma_heap_allocation_data - metadata passed from userspace for
  *                                      allocations

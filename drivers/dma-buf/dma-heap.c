@@ -82,8 +82,6 @@ struct dma_buf *dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,
 	if (fd_flags & ~DMA_HEAP_VALID_FD_FLAGS)
 		return ERR_PTR(-EINVAL);
 
-	if (heap_flags & ~DMA_HEAP_VALID_HEAP_FLAGS)
-		return ERR_PTR(-EINVAL);
 	/*
 	 * Allocations from all heaps have to begin
 	 * and end on page boundaries.
