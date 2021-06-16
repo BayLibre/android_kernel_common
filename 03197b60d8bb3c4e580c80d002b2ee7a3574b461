@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd63188f_fc4c0cfc",
+        "filename": "arch/arm64/configs/rockpi4_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-16T23:24:51Z",
+      "side": 0,
+      "message": "Sorry Greg, I didn\u0027t realize missing aosp/1673803 was actually getting merged by this commit.",
+      "parentUuid": "f8213b16_8aef5440",
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6f9a7b2_527d823c",
@@ -102,6 +120,53 @@
         "startChar": 0,
         "endLine": 31,
         "endChar": 61
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446cafa6_831a1167",
+        "filename": "build.config.gki.aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-16T23:24:51Z",
+      "side": 0,
+      "message": "Hey Saravana, is it actually useful to override these values if they are not being set by default? If that is the case I can volunteer to add such patch on top:\n```\ndiff --git a/build.config.gki.aarch64 b/build.config.gki.aarch64\nindex dc73b746cb82..f9a9ae3f1936 100644\n--- a/build.config.gki.aarch64\n+++ b/build.config.gki.aarch64\n@@ -24,6 +24,9 @@ android/abi_gki_aarch64_fips140\n FILES\u003d\"${FILES}\n arch/arm64/boot/Image.lz4\n \"\n+\n+TRIM_NONLISTED_KMI\u003d${TRIM_NONLISTED_KMI:-0}\n+KMI_SYMBOL_LIST_STRICT_MODE\u003d${KMI_SYMBOL_LIST_STRICT_MODE:-0}\n MODULES_ORDER\u003dandroid/gki_aarch64_modules\n \n if [ -n \"${GKI_DEFCONFIG_FRAGMENT}\" ]; then\n```",
+      "parentUuid": "8170b7a2_21cf23ac",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 61
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3297793_2dc4a4ed",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1664,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-16T23:24:51Z",
+      "side": 0,
+      "message": "Isn\u0027t this supposed to get deleted by `bb6f011afcc3f (\"FROMGIT: usb: typec: tcpm: Fix misuses of AMS invocation\")` ?",
+      "range": {
+        "startLine": 1664,
+        "startChar": 3,
+        "endLine": 1664,
+        "endChar": 35
       },
       "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
