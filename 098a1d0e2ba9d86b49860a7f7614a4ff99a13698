@@ -16,6 +16,23 @@
       "message": "Posting current comment, will resume review later.",
       "revId": "098a1d0e2ba9d86b49860a7f7614a4ff99a13698",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73ff30f_88a229d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-16T18:41:40Z",
+      "side": 1,
+      "message": "Removing -2 to avoid holding up lots of patches. But need to revisit the deletion of\nTRIM_NONLISTED_KMI\u003d${TRIM_NONLISTED_KMI:-1}\nKMI_SYMBOL_LIST_STRICT_MODE\u003d${KMI_SYMBOL_LIST_STRICT_MODE:-1}\n\nI think they should be instead resolved as:\nTRIM_NONLISTED_KMI\u003d${TRIM_NONLISTED_KMI:-0}\nKMI_SYMBOL_LIST_STRICT_MODE\u003d${KMI_SYMBOL_LIST_STRICT_MODE:-0}",
+      "revId": "098a1d0e2ba9d86b49860a7f7614a4ff99a13698",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
