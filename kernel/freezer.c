@@ -12,6 +12,12 @@
 #include <linux/freezer.h>
 #include <linux/kthread.h>
 #include <linux/mmu_context.h>
+<<<<<<< HEAD   (82ea18 Revert "Revert "can: dev: Move device back to init netns on )
+=======
+
+#undef CREATE_TRACE_POINT
+#include <trace/hooks/cgroup.h>
+>>>>>>> BRANCH (76081a FROMLIST: kbuild: mkcompile_h: consider timestamp if KBUILD_)
 
 /* total number of freezing conditions in effect */
 atomic_t system_freezing_cnt = ATOMIC_INIT(0);
@@ -71,6 +77,7 @@ bool __refrigerator(bool check_kthr_stop)
 		if (!freezing(current) ||
 		    (check_kthr_stop && kthread_should_stop()))
 			current->flags &= ~PF_FROZEN;
+		trace_android_rvh_refrigerator(pm_nosig_freezing);
 		spin_unlock_irq(&freezer_lock);
 
 		if (!(current->flags & PF_FROZEN))

@@ -8,6 +8,10 @@
 #include <linux/power_supply.h>
 #include <linux/types.h>
 #include <linux/usb/typec.h>
+<<<<<<< HEAD   (82ea18 Revert "Revert "can: dev: Move device back to init netns on )
+=======
+#include <linux/usb/pd.h>
+>>>>>>> BRANCH (76081a FROMLIST: kbuild: mkcompile_h: consider timestamp if KBUILD_)
 #include <linux/usb/role.h>
 #include <linux/usb/pd.h>
 
