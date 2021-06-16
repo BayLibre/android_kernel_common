@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8213b16_8aef5440",
+        "filename": "arch/arm64/configs/rockpi4_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-16T18:31:23Z",
+      "side": 0,
+      "message": "This file was deleted in this branch, which is why I deleted it here as well.",
+      "parentUuid": "f0bfdd05_b5ec6ed0",
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6f9a7b2_527d823c",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-06-16T18:24:33Z",
       "side": 0,
       "message": "Can you pull in this part please but use -0 instead of -1? That\u0027ll allow these values to be overridden. Which is what these lines are trying to do.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 61
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b10864_021741f5",
+        "filename": "build.config.gki.aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-16T18:31:23Z",
+      "side": 0,
+      "message": "No, that\u0027s not what is in android13-5.10 right now.  All of this is turned off, I do not want to add anything special in the merge that is not already part of the tree.\n\nif you want this added, wonderful, we can add it to this branch as a stand-alone patch.  This merge resolution is to handle the bottom fragment below being added in the android12-5.10 branch and not in this one.",
+      "parentUuid": "b6f9a7b2_527d823c",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61cf24f6_e888980a",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1989,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-16T18:31:23Z",
+      "side": 0,
+      "message": "They do, I did a diff of the files.  There is one odd exception that is not in android12-5.10 for some odd reason, but I will follow up on that later, it\u0027s not an android13-5.10 issue.",
+      "parentUuid": "3754dc5f_3ad5b1ed",
+      "range": {
+        "startLine": 1984,
+        "startChar": 0,
+        "endLine": 1989,
+        "endChar": 84
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33395a78_943bf605",
@@ -77,6 +143,30 @@
       "writtenOn": "2021-06-16T18:24:33Z",
       "side": 0,
       "message": "Can you figure out who made this change in android12-5.10 and get their review please?",
+      "range": {
+        "startLine": 1852,
+        "startChar": 0,
+        "endLine": 1859,
+        "endChar": 0
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d2867bb_624f866c",
+        "filename": "mm/memory_hotplug.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1859,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-16T18:31:23Z",
+      "side": 0,
+      "message": "This was removed in android12-5.10 in commit 813d6c91217e (\"ANDROID: mm/memory_hotplug: Relax remove_memory_subsection error checking\")\n\nSo I want to keep this in sync here as well as obviously it was wanted 😊",
+      "parentUuid": "33395a78_943bf605",
       "range": {
         "startLine": 1852,
         "startChar": 0,
