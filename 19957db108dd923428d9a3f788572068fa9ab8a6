@@ -87,6 +87,24 @@
       "message": "Dear Greg,\n    Todd is away, can you check our comment with this patch. Thanks.",
       "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eb188cf_3e5c8102",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-16T08:46:16Z",
+      "side": 1,
+      "message": "Why does the \"owner\" mattter?  Trying to \"tune\" things by looking at the usage of a random rw semaphore in the kernel feels like a huge hammer and will affect all users of the kernel.  Why not solve this at the root of the problem?\n\nWhat specific rwlock are you concerned about that you need to mess around with the owner of?",
+      "parentUuid": "14abf9b5_703ab8d2",
+      "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
