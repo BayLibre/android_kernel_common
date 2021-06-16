@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0bfdd05_b5ec6ed0",
+        "filename": "arch/arm64/configs/rockpi4_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-16T17:52:39Z",
+      "side": 0,
+      "message": "I think this file was was not auto-merged because android13-5.10 is missing aosp/1673803 which removes `DM_VERITY_AVB` option. Judging by commit message it seems we would want to have it there. So I\u0027ve uploaded aosp/1738435 for review.",
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
