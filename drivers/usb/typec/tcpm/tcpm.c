@@ -6498,7 +6498,10 @@ void tcpm_unregister_port(struct tcpm_port *port)
 {
 	int i;
 
+<<<<<<< HEAD   (3c79e1 Merge branch 'android12-5.10' 'android12-5.10-lts')
 	hrtimer_cancel(&port->send_discover_timer);
+=======
+>>>>>>> BRANCH (f2b1fc Linux 5.10.44)
 	hrtimer_cancel(&port->enable_frs_timer);
 	hrtimer_cancel(&port->vdm_state_machine_timer);
 	hrtimer_cancel(&port->state_machine_timer);
