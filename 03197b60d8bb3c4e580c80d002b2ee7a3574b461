@@ -16,6 +16,75 @@
       "message": "I think this file was was not auto-merged because android13-5.10 is missing aosp/1673803 which removes `DM_VERITY_AVB` option. Judging by commit message it seems we would want to have it there. So I\u0027ve uploaded aosp/1738435 for review.",
       "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6f9a7b2_527d823c",
+        "filename": "build.config.gki.aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-16T18:24:33Z",
+      "side": 0,
+      "message": "Can you pull in this part please but use -0 instead of -1? That\u0027ll allow these values to be overridden. Which is what these lines are trying to do.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 61
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3754dc5f_3ad5b1ed",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1989,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-16T18:24:33Z",
+      "side": 0,
+      "message": "I\u0027d expect all TCPM changes to match android12-5.10.",
+      "range": {
+        "startLine": 1984,
+        "startChar": 0,
+        "endLine": 1989,
+        "endChar": 84
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33395a78_943bf605",
+        "filename": "mm/memory_hotplug.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1859,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-16T18:24:33Z",
+      "side": 0,
+      "message": "Can you figure out who made this change in android12-5.10 and get their review please?",
+      "range": {
+        "startLine": 1852,
+        "startChar": 0,
+        "endLine": 1859,
+        "endChar": 0
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
