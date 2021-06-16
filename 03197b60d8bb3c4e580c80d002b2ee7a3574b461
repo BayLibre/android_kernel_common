@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8170b7a2_21cf23ac",
+        "filename": "build.config.gki.aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-16T18:37:55Z",
+      "side": 0,
+      "message": "Isn\u0027t the whole point of these merges that people don\u0027t need to cherrypick these changes? By dropping this, you are preventing these values from being overridden. I\u0027m not asking you to enable it (0 to 1).",
+      "parentUuid": "45b10864_021741f5",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 61
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3754dc5f_3ad5b1ed",
         "filename": "drivers/usb/typec/tcpm/tcpm.c",
         "patchSetId": 2
@@ -120,6 +144,30 @@
       "side": 0,
       "message": "They do, I did a diff of the files.  There is one odd exception that is not in android12-5.10 for some odd reason, but I will follow up on that later, it\u0027s not an android13-5.10 issue.",
       "parentUuid": "3754dc5f_3ad5b1ed",
+      "range": {
+        "startLine": 1984,
+        "startChar": 0,
+        "endLine": 1989,
+        "endChar": 84
+      },
+      "revId": "03197b60d8bb3c4e580c80d002b2ee7a3574b461",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1c3fda6_28a1e6a8",
+        "filename": "drivers/usb/typec/tcpm/tcpm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1989,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-16T18:37:55Z",
+      "side": 0,
+      "message": "Thanks.",
+      "parentUuid": "61cf24f6_e888980a",
       "range": {
         "startLine": 1984,
         "startChar": 0,
