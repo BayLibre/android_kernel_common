@@ -70,6 +70,24 @@
       "parentUuid": "ea11c8cc_6335bcd3",
       "revId": "7d512ab4de248f1f4d5a4d0aa1d520051b8e2017",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c40a8e4_e7616fc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-06-17T14:11:00Z",
+      "side": 1,
+      "message": "I think this is ok for now since we are not yet freezing and additions are always possible. Nevertheless, you can set KMI_SYMBOL_LIST_ADD_ONLY and the symbol list update will preserve existing symbols.\n\nhttps://android.googlesource.com/kernel/build/+/refs/heads/master/build_abi.sh#46",
+      "parentUuid": "ea11c8cc_6335bcd3",
+      "revId": "7d512ab4de248f1f4d5a4d0aa1d520051b8e2017",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
