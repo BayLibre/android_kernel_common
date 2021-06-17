@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7e00fca_19491b9c",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "could we perhaps add comments which of these fields are only used in ALARM or SEND_NL_MSG mode?  maybe that would help clarify some of my problems understanding the code...",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 21
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7df1a219_56ab71af",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "note, idletimer_tg_create and idletimer_tg_create_v1 should be trivially identical if v1 is being called with info-\u003ealarm \u003d\u003d 0, info-\u003esend_nl_msg \u003d\u003d 0.",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 68
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "479b78e8_2ba60a9a",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "if we\u0027re changing to pr_debug here, we should also make the printk in create_v0 match.",
+      "range": {
+        "startLine": 427,
+        "startChar": 3,
+        "endLine": 427,
+        "endChar": 11
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8489b558_683bf8d8",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "is this entire block indented wrong?\n\nthere\u0027s no {} on the if (ret)",
+      "range": {
+        "startLine": 429,
+        "startChar": 2,
+        "endLine": 429,
+        "endChar": 3
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b57dcbe9_fba826bc",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "one tab too many",
+      "range": {
+        "startLine": 431,
+        "startChar": 3,
+        "endLine": 431,
+        "endChar": 4
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e372406_cf029b7f",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "previously reset_timer was never called in ALARM mode,\nthis appear to be changing now.",
+      "range": {
+        "startLine": 473,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 51
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6299cf81_a593690d",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 1,
+      "message": "what about this?",
+      "range": {
+        "startLine": 497,
+        "startChar": 1,
+        "endLine": 505,
+        "endChar": 50
+      },
+      "revId": "b0d5243efa9ee2c3533d4d173dd55ae2af8537f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

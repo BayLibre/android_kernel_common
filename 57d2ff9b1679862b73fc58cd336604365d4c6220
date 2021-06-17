@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cf42a4e_f0fdc46d",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 0,
+      "message": "moving this piece doesn\u0027t seem to accomplish anything afaict,\nare these fields simply not used in XT_IDLETIMER_ALARM mode?\n\nwhy move them?",
+      "range": {
+        "startLine": 407,
+        "startChar": 1,
+        "endLine": 410,
+        "endChar": 22
+      },
+      "revId": "57d2ff9b1679862b73fc58cd336604365d4c6220",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab4e8816_26343600",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 0,
+      "message": "this part I\u0027m less sure of, but again, not sure why it\u0027s being moved into the if, is this unused by the XT_IDLETIMER_ALARM mode?",
+      "range": {
+        "startLine": 411,
+        "startChar": 1,
+        "endLine": 412,
+        "endChar": 44
+      },
+      "revId": "57d2ff9b1679862b73fc58cd336604365d4c6220",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76be2fca_59cfd8cc",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T21:16:04Z",
+      "side": 0,
+      "message": "is the goal that the pm notifier only be used by non ALARM mode?\n\nwhat does \u0027XT_IDLETIMER_ALARM\u0027 really mean?",
+      "range": {
+        "startLine": 414,
+        "startChar": 1,
+        "endLine": 415,
+        "endChar": 49
+      },
+      "revId": "57d2ff9b1679862b73fc58cd336604365d4c6220",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
