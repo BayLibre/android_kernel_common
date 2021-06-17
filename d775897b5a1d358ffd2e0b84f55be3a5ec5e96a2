@@ -444,6 +444,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a368d536_07c7faa0",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T17:57:43Z",
+      "side": 1,
+      "message": "Resolved/dropped.",
+      "parentUuid": "1afabac1_e6b79cd2",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44e6a1ae_18322561",
@@ -475,6 +493,24 @@
       "side": 1,
       "message": "These were flagged in static analysis. snprintf usage wasn\u0027t allowed. I can remove this from the current patch as this is not related to the reset_timer logic.",
       "parentUuid": "44e6a1ae_18322561",
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a6656b_e09b3515",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T17:57:43Z",
+      "side": 1,
+      "message": "Resolved/dropped.",
+      "parentUuid": "e7d2cc26_f7be97ee",
       "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -775,6 +811,30 @@
       "side": 1,
       "message": "Yes, once this is on top of maze\u0027s changes, feel free to rework the commit message as appropriate for the new context. Thanks.",
       "parentUuid": "2252f781_4ac8e87f",
+      "range": {
+        "startLine": 749,
+        "startChar": 13,
+        "endLine": 749,
+        "endChar": 14
+      },
+      "revId": "d775897b5a1d358ffd2e0b84f55be3a5ec5e96a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9915ded3_aec06d9d",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-17T17:57:43Z",
+      "side": 1,
+      "message": "Resolving - I think this thread is no longer relevant, since the merge conflict was re-resolved as a result of the revert and then my patch.",
+      "parentUuid": "15ce8df7_ee9236ac",
       "range": {
         "startLine": 749,
         "startChar": 13,
