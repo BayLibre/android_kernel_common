@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b436adf6_ea9710de",
+        "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "i was trying to match msm 5.4 kernel structures. I have removed it with latest patch . Please check",
+      "parentUuid": "a93dd327_ead32060",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db612607_5ca67d2c",
         "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
         "patchSetId": 6
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33bb82c4_02b5c531",
+        "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "Removed comment in latest patch",
+      "parentUuid": "db612607_5ca67d2c",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 65
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aca29e37_5dac92d2",
         "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
         "patchSetId": 6
@@ -77,6 +125,24 @@
       "writtenOn": "2021-06-16T18:34:08Z",
       "side": 1,
       "message": "this is spurious",
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26ffa157_bfd83c07",
+        "filename": "include/uapi/linux/netfilter/xt_IDLETIMER.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "Removed it with latest patch",
+      "parentUuid": "aca29e37_5dac92d2",
       "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -130,6 +196,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9590aaef_926644c2",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "I remember this was introduced to avoid printing negative values .\nUpdated with latest patch",
+      "parentUuid": "0818abdc_bd56be09",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 48
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e755186_ec8b341c",
         "filename": "net/netfilter/xt_IDLETIMER.c",
         "patchSetId": 6
@@ -141,6 +231,30 @@
       "writtenOn": "2021-06-16T18:34:08Z",
       "side": 1,
       "message": "why move?",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 333,
+        "endChar": 59
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "862ed099_aef03483",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "Yeah not required , retained like earlier with latest patch",
+      "parentUuid": "8e755186_ec8b341c",
       "range": {
         "startLine": 333,
         "startChar": 0,
@@ -176,6 +290,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "909f1f6e_deab3c6f",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "got it . Updated with latest patch",
+      "parentUuid": "0e66d887_71ba46ed",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 53
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "073477ab_e8c7e604",
         "filename": "net/netfilter/xt_IDLETIMER.c",
         "patchSetId": 6
@@ -187,6 +325,30 @@
       "writtenOn": "2021-06-16T18:34:08Z",
       "side": 1,
       "message": "space is spurious",
+      "range": {
+        "startLine": 392,
+        "startChar": 39,
+        "endLine": 392,
+        "endChar": 40
+      },
+      "revId": "44e49a9691bc7866c64a2d9e64b5d9dbb9da0dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da6ef89_722561ab",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-17T11:49:54Z",
+      "side": 1,
+      "message": "Updated with latest patch",
+      "parentUuid": "073477ab_e8c7e604",
       "range": {
         "startLine": 392,
         "startChar": 39,
