@@ -123,6 +123,24 @@
       "parentUuid": "2eb188cf_3e5c8102",
       "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e766d63c_4a1d2df5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-17T16:11:46Z",
+      "side": 1,
+      "message": "That sounds like a scheduler issue, why not address this in that location as that is the best solution and is where other vendors have modified in order to prevent these types of stalls.\n\nHooking into a rwsem is not a good way to do this type of balancing.",
+      "parentUuid": "3c5b40d0_6bd1b8ce",
+      "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
