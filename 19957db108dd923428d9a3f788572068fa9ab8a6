@@ -105,6 +105,24 @@
       "parentUuid": "14abf9b5_703ab8d2",
       "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5b40d0_6bd1b8ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-17T01:56:45Z",
+      "side": 1,
+      "message": "I concernd many rwsems, such as mmap_sem of mm_struct, i_rwsem in inode. When there are many apps in background, it often happens that the holders of rwsem are preempted, this case will lead to a long hang, such as several hundreds ms uninterrupt sleep",
+      "parentUuid": "2eb188cf_3e5c8102",
+      "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
