@@ -39,6 +39,24 @@
       "message": "Matches the upstream commit, although I don\u0027t really see the point in adding a couple of unused symbols to android12-5.10 at this stage (these aren\u0027t in the ABI afaict).",
       "revId": "93e0d10ee30509b95d3f85531daf91c8dd2bd51f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4b38c60_0d6b9756",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1044503
+      },
+      "writtenOn": "2021-06-17T18:15:31Z",
+      "side": 1,
+      "message": "As I mentioned to Serban in an email thread, this is for early adoption of FF-A standards, Arm prefers to enable vendors to be able to build FF-A driver queued for upstream as vendor modules for now which requires this SMCCCv1.2 patch to be ideally part of GKI instead of forcing a vendor kernel build for that.\n\nAt least I prefer to avoid a vendor kernel build for just SMCCC v1.2 patch if that opens door for lots of other crap they can add 😄. It is quite independent change and doesn\u0027t affect any other parts of the kernel as there are no users within the kernel for now.",
+      "parentUuid": "bbbb824a_b47b6575",
+      "revId": "93e0d10ee30509b95d3f85531daf91c8dd2bd51f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
