@@ -79,6 +79,7 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
 
 	fi->i_time = 0;
 	fi->inval_mask = 0;
+	fi->backing_inode = NULL;
 	fi->nodeid = 0;
 	fi->nlookup = 0;
 	fi->attr_version = 0;
@@ -107,6 +108,7 @@ static void fuse_free_inode(struct inode *inode)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
+	iput(fi->backing_inode);
 	mutex_destroy(&fi->mutex);
 	kfree(fi->forget);
 #ifdef CONFIG_FUSE_DAX
@@ -159,6 +161,28 @@ static ino_t fuse_squash_ino(u64 ino64)
 	if (sizeof(ino_t) < sizeof(u64))
 		ino ^= ino64 >> (sizeof(u64) - sizeof(ino_t)) * 8;
 	return ino;
+}
+
+static void fuse_fill_attr_from_inode(struct fuse_attr *attr,
+				      const struct inode *inode)
+{
+	*attr = (struct fuse_attr){
+		.ino		= inode->i_ino,
+		.size		= inode->i_size,
+		.blocks		= inode->i_blocks,
+		.atime		= inode->i_atime.tv_sec,
+		.mtime		= inode->i_mtime.tv_sec,
+		.ctime		= inode->i_ctime.tv_sec,
+		.atimensec	= inode->i_atime.tv_nsec,
+		.mtimensec	= inode->i_mtime.tv_nsec,
+		.ctimensec	= inode->i_ctime.tv_nsec,
+		.mode		= inode->i_mode,
+		.nlink		= inode->i_nlink,
+		.uid		= inode->i_uid.val,
+		.gid		= inode->i_gid.val,
+		.rdev		= inode->i_rdev,
+		.blksize	= 1u << inode->i_blkbits,
+	};
 }
 
 void fuse_change_attributes_common(struct inode *inode, struct fuse_attr *attr,
@@ -285,20 +309,67 @@ static void fuse_init_inode(struct inode *inode, struct fuse_attr *attr)
 		BUG();
 }
 
+struct fuse_inode_identifier {
+	u64 nodeid;
+	struct inode *backing_inode;
+};
+
 static int fuse_inode_eq(struct inode *inode, void *_nodeidp)
 {
-	u64 nodeid = *(u64 *) _nodeidp;
-	if (get_node_id(inode) == nodeid)
-		return 1;
-	else
-		return 0;
+	struct fuse_inode_identifier *fii =
+		(struct fuse_inode_identifier *) _nodeidp;
+	struct fuse_inode *fi = get_fuse_inode(inode);
+
+	return fii->nodeid == fi->nodeid &&
+	       fii->backing_inode == fi->backing_inode;
 }
 
 static int fuse_inode_set(struct inode *inode, void *_nodeidp)
 {
-	u64 nodeid = *(u64 *) _nodeidp;
-	get_fuse_inode(inode)->nodeid = nodeid;
+	struct fuse_inode_identifier *fii =
+		(struct fuse_inode_identifier *) _nodeidp;
+	struct fuse_inode *fi = get_fuse_inode(inode);
+
+	fi->nodeid = fii->nodeid;
+	fi->backing_inode = fii->backing_inode;
+	if (fi->backing_inode)
+		ihold(fi->backing_inode);
+
 	return 0;
+}
+
+struct inode *fuse_iget_backing(struct super_block *sb,
+				struct inode *backing_inode)
+{
+	struct inode *inode;
+	struct fuse_inode *fi;
+	struct fuse_conn *fc = get_fuse_conn_super(sb);
+	struct fuse_inode_identifier fii = {
+		.backing_inode = backing_inode,
+	};
+	struct fuse_attr attr;
+
+	fuse_fill_attr_from_inode(&attr, backing_inode);
+	inode = iget5_locked(sb, (unsigned long) backing_inode, fuse_inode_eq,
+			     fuse_inode_set, &fii);
+	if (!inode)
+		return NULL;
+
+	if ((inode->i_state & I_NEW)) {
+		inode->i_flags |= S_NOATIME;
+		if (!fc->writeback_cache)
+			inode->i_flags |= S_NOCMTIME;
+		fuse_init_common(inode);
+		unlock_new_inode(inode);
+	}
+
+	fi = get_fuse_inode(inode);
+	fuse_init_inode(inode, &attr);
+	spin_lock(&fi->lock);
+	fi->nlookup++;
+	spin_unlock(&fi->lock);
+
+	return inode;
 }
 
 struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
@@ -308,6 +379,9 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
 	struct inode *inode;
 	struct fuse_inode *fi;
 	struct fuse_conn *fc = get_fuse_conn_super(sb);
+	struct fuse_inode_identifier fii = {
+		.nodeid = nodeid,
+	};
 
 	/*
 	 * Auto mount points get their node id from the submount root, which is
@@ -329,7 +403,7 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
 	}
 
 retry:
-	inode = iget5_locked(sb, nodeid, fuse_inode_eq, fuse_inode_set, &nodeid);
+	inode = iget5_locked(sb, nodeid, fuse_inode_eq, fuse_inode_set, &fii);
 	if (!inode)
 		return NULL;
 
@@ -352,7 +426,6 @@ done:
 	fi->nlookup++;
 	spin_unlock(&fi->lock);
 	fuse_change_attributes(inode, attr, attr_valid, attr_version);
-	fi->bpf = -1;
 
 	return inode;
 }
@@ -362,13 +435,16 @@ struct inode *fuse_ilookup(struct fuse_conn *fc, u64 nodeid,
 {
 	struct fuse_mount *fm_iter;
 	struct inode *inode;
+	struct fuse_inode_identifier fii = {
+		.nodeid = nodeid,
+	};
 
 	WARN_ON(!rwsem_is_locked(&fc->killsb));
 	list_for_each_entry(fm_iter, &fc->mounts, fc_entry) {
 		if (!fm_iter->sb)
 			continue;
 
-		inode = ilookup5(fm_iter->sb, nodeid, fuse_inode_eq, &nodeid);
+		inode = ilookup5(fm_iter->sb, nodeid, fuse_inode_eq, &fii);
 		if (inode) {
 			if (fm)
 				*fm = fm_iter;
@@ -508,6 +584,7 @@ enum {
 	OPT_MAX_READ,
 	OPT_BLKSIZE,
 	OPT_ROOT_BPF,
+	OPT_ROOT_DIR,
 	OPT_ERR
 };
 
@@ -523,6 +600,7 @@ static const struct fs_parameter_spec fuse_fs_parameters[] = {
 	fsparam_u32	("blksize",		OPT_BLKSIZE),
 	fsparam_string	("subtype",		OPT_SUBTYPE),
 	fsparam_u32	("root_bpf",		OPT_ROOT_BPF),
+	fsparam_u32	("root_dir",		OPT_ROOT_DIR),
 	{}
 };
 
@@ -607,8 +685,17 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
 		break;
 
 	case OPT_ROOT_BPF:
-		ctx->root_bpf = result.uint_32;
-		ctx->root_bpf_present = true;
+		ctx->root_bpf = bpf_prog_get(result.uint_32);
+		if (IS_ERR(ctx->root_bpf)) {
+			ctx->root_bpf = NULL;
+			return invalfc(fc, "Unable to open bpf program");
+		}
+		break;
+
+	case OPT_ROOT_DIR:
+		ctx->root_dir = fget(result.uint_32);
+		if (!ctx->root_dir)
+			return invalfc(fc, "Unable to open root directory");
 		break;
 
 	default:
@@ -623,6 +710,10 @@ static void fuse_free_fc(struct fs_context *fc)
 	struct fuse_fs_context *ctx = fc->fs_private;
 
 	if (ctx) {
+		if (ctx->root_dir)
+			fput(ctx->root_dir);
+		if (ctx->root_bpf)
+			bpf_prog_put(ctx->root_bpf);
 		kfree(ctx->subtype);
 		kfree(ctx);
 	}
@@ -759,7 +850,9 @@ struct fuse_mount *fuse_mount_get(struct fuse_mount *fm)
 }
 EXPORT_SYMBOL_GPL(fuse_mount_get);
 
-static struct inode *fuse_get_root_inode(struct super_block *sb, unsigned mode, int root_bpf)
+static struct inode *fuse_get_root_inode(struct super_block *sb, unsigned mode,
+					 struct bpf_prog *root_bpf,
+					 struct file *backing_fd)
 {
 	struct fuse_attr attr;
 	struct inode *inode;
@@ -769,8 +862,15 @@ static struct inode *fuse_get_root_inode(struct super_block *sb, unsigned mode, 
 	attr.ino = FUSE_ROOT_ID;
 	attr.nlink = 1;
 	inode = fuse_iget(sb, 1, 0, &attr, 0, 0);
-	if (inode)
-		get_fuse_inode(inode)->bpf = root_bpf;
+	if (!inode)
+		return NULL;
+
+	get_fuse_inode(inode)->bpf = root_bpf;
+
+	if (backing_fd) {
+		get_fuse_inode(inode)->backing_inode = backing_fd->f_inode;
+		ihold(backing_fd->f_inode);
+	}
 
 	return inode;
 }
@@ -787,11 +887,14 @@ static struct dentry *fuse_get_dentry(struct super_block *sb,
 	struct inode *inode;
 	struct dentry *entry;
 	int err = -ESTALE;
+	struct fuse_inode_identifier fii = {
+		.nodeid = handle->nodeid,
+	};
 
 	if (handle->nodeid == 0)
 		goto out_err;
 
-	inode = ilookup5(sb, handle->nodeid, fuse_inode_eq, &handle->nodeid);
+	inode = ilookup5(sb, handle->nodeid, fuse_inode_eq, &fii);
 	if (!inode) {
 		struct fuse_entry_out outarg;
 		const struct qstr name = QSTR_INIT(".", 1);
@@ -1266,28 +1369,6 @@ void fuse_dev_free(struct fuse_dev *fud)
 }
 EXPORT_SYMBOL_GPL(fuse_dev_free);
 
-static void fuse_fill_attr_from_inode(struct fuse_attr *attr,
-				      const struct fuse_inode *fi)
-{
-	*attr = (struct fuse_attr){
-		.ino		= fi->inode.i_ino,
-		.size		= fi->inode.i_size,
-		.blocks		= fi->inode.i_blocks,
-		.atime		= fi->inode.i_atime.tv_sec,
-		.mtime		= fi->inode.i_mtime.tv_sec,
-		.ctime		= fi->inode.i_ctime.tv_sec,
-		.atimensec	= fi->inode.i_atime.tv_nsec,
-		.mtimensec	= fi->inode.i_mtime.tv_nsec,
-		.ctimensec	= fi->inode.i_ctime.tv_nsec,
-		.mode		= fi->inode.i_mode,
-		.nlink		= fi->inode.i_nlink,
-		.uid		= fi->inode.i_uid.val,
-		.gid		= fi->inode.i_gid.val,
-		.rdev		= fi->inode.i_rdev,
-		.blksize	= 1u << fi->inode.i_blkbits,
-	};
-}
-
 static void fuse_sb_defaults(struct super_block *sb)
 {
 	sb->s_magic = FUSE_SUPER_MAGIC;
@@ -1331,7 +1412,7 @@ int fuse_fill_super_submount(struct super_block *sb,
 	if (parent_sb->s_subtype && !sb->s_subtype)
 		return -ENOMEM;
 
-	fuse_fill_attr_from_inode(&root_attr, parent_fi);
+	fuse_fill_attr_from_inode(&root_attr, &parent_fi->inode);
 	root = fuse_iget(sb, parent_fi->nodeid, 0, &root_attr, 0, 0);
 	/*
 	 * This inode is just a duplicate, so it is not looked up and
@@ -1410,12 +1491,13 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 	fc->no_force_umount = ctx->no_force_umount;
 
 	err = -ENOMEM;
-	root = fuse_get_root_inode(sb, ctx->rootmode,
-				   ctx->root_bpf_present ? ctx->root_bpf : -1);
+	root = fuse_get_root_inode(sb, ctx->rootmode, ctx->root_bpf,
+				   ctx->root_dir);
 	sb->s_d_op = &fuse_root_dentry_operations;
 	root_dentry = d_make_root(root);
 	if (!root_dentry)
 		goto err_dev_free;
+	fuse_init_dentry_root(root_dentry, ctx->root_dir);
 	/* Root dentry doesn't have .d_revalidate */
 	sb->s_d_op = &fuse_dentry_operations;
 

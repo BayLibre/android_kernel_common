@@ -16,10 +16,27 @@ static long (*bpf_trace_printk)(const char *fmt, __u32 fmt_size, ...)
 		                 ##__VA_ARGS__);                \
 	})
 
+SEC("dummy")
+
+#define fake_name "fake"
+
+inline int strcmp(const char *a, const char *b)
+{
+	int i;
+
+	for (i = 0; i < __builtin_strlen(b) + 1; ++i)
+		if (a[i] != b[i])
+			return -1;
+
+	return 0;
+}
+
 SEC("test_trace")
 
 int trace(struct bpf_fuse_data *ctx)
 {
-	bpf_printk("Hello Paul: %s\n", ctx->name);
-	return 2;
+	int fake = strcmp(ctx->name, "fake");
+
+	bpf_printk("Hello Paul: %s %d\n", ctx->name, fake);
+	return fake ? 1 : 0;
 }

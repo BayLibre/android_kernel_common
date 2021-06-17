@@ -68,6 +68,18 @@ struct fuse_inode {
 	/** Inode data */
 	struct inode inode;
 
+	/**
+	 * Backing inode, if this inode is from a backing file system.
+	 * If this is set, nodeid is 0.
+	 */
+	struct inode *backing_inode;
+
+	/**
+	 * bpf_prog, run on all operations to determine whether to pass through
+	 * or handle in place
+	 */
+	struct bpf_prog *bpf;
+
 	/** Unique ID, which identifies the inode between userspace
 	 * and kernel */
 	u64 nodeid;
@@ -162,8 +174,6 @@ struct fuse_inode {
 	 */
 	struct fuse_inode_dax *dax;
 #endif
-
-	int bpf;
 };
 
 /** FUSE inode state bits */
@@ -521,11 +531,11 @@ struct fuse_fs_context {
 	bool no_force_umount:1;
 	bool legacy_opts_show:1;
 	bool dax:1;
-	bool root_bpf_present:1;
 	unsigned int max_read;
 	unsigned int blksize;
 	const char *subtype;
-	int root_bpf;
+	struct bpf_prog *root_bpf;
+	struct file *root_dir;
 
 	/* DAX device, may be NULL */
 	struct dax_device *dax_dev;
@@ -908,6 +918,8 @@ extern const struct dentry_operations fuse_root_dentry_operations;
 /**
  * Get a filled in inode
  */
+struct inode *fuse_iget_backing(struct super_block *sb,
+				struct inode *backing_inode);
 struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
 			int generation, struct fuse_attr *attr,
 			u64 attr_valid, u64 attr_version);
@@ -1047,6 +1059,7 @@ void fuse_invalidate_entry_cache(struct dentry *entry);
 void fuse_invalidate_atime(struct inode *inode);
 
 u64 entry_attr_timeout(struct fuse_entry_out *o);
+void fuse_init_dentry_root(struct dentry *root, struct file *backing_dir);
 void fuse_change_entry_timeout(struct dentry *entry, struct fuse_entry_out *o);
 
 /**

@@ -27,3 +27,7 @@ $(TEST_GEN_PROGS) : $(EXTRA_SOURCES)
 %.bpf: %.c
 	bpf-gcc $(BPF_FLAGS) -c $< -o $@
 
+# Phony target to print out the assembly - useful for debugging
+.PHONY: asm
+asm: test_bpf.bpf
+	bpf-objdump -d test_bpf.bpf

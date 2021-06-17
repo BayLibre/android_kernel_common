@@ -26,33 +26,23 @@ static void fuse_advise_use_readdirplus(struct inode *dir)
 	set_bit(FUSE_I_ADVISE_RDPLUS, &fi->state);
 }
 
-#if BITS_PER_LONG >= 64
-static inline void __fuse_dentry_settime(struct dentry *entry, u64 time)
-{
-	entry->d_fsdata = (void *) time;
-}
-
-static inline u64 fuse_dentry_time(const struct dentry *entry)
-{
-	return (u64)entry->d_fsdata;
-}
-
-#else
-union fuse_dentry {
-	u64 time;
-	struct rcu_head rcu;
+struct fuse_dentry {
+	union {
+		u64 time;
+		struct rcu_head rcu;
+	};
+	struct dentry *backing_dentry;
 };
 
-static inline void __fuse_dentry_settime(struct dentry *dentry, u64 time)
+static inline void __fuse_dentry_settime(struct dentry *entry, u64 time)
 {
-	((union fuse_dentry *) dentry->d_fsdata)->time = time;
+	((struct fuse_dentry*) entry->d_fsdata)->time = time;
 }
 
 static inline u64 fuse_dentry_time(const struct dentry *entry)
 {
-	return ((union fuse_dentry *) entry->d_fsdata)->time;
+	return ((struct fuse_dentry*) entry->d_fsdata)->time;
 }
-#endif
 
 static void fuse_dentry_settime(struct dentry *dentry, u64 time)
 {
@@ -73,6 +63,16 @@ static void fuse_dentry_settime(struct dentry *dentry, u64 time)
 	}
 
 	__fuse_dentry_settime(dentry, time);
+}
+
+void fuse_init_dentry_root(struct dentry *root, struct file *backing_dir)
+{
+	struct fuse_dentry* fuse_dentry = root->d_fsdata;
+
+	if (backing_dir) {
+		fuse_dentry->backing_dentry = backing_dir->f_path.dentry;
+		dget(fuse_dentry->backing_dentry);
+	}
 }
 
 /*
@@ -281,21 +281,22 @@ invalid:
 	goto out;
 }
 
-#if BITS_PER_LONG < 64
 static int fuse_dentry_init(struct dentry *dentry)
 {
-	dentry->d_fsdata = kzalloc(sizeof(union fuse_dentry),
+	dentry->d_fsdata = kzalloc(sizeof(struct fuse_dentry),
 				   GFP_KERNEL_ACCOUNT | __GFP_RECLAIMABLE);
 
 	return dentry->d_fsdata ? 0 : -ENOMEM;
 }
 static void fuse_dentry_release(struct dentry *dentry)
 {
-	union fuse_dentry *fd = dentry->d_fsdata;
+	struct fuse_dentry *fd = dentry->d_fsdata;
+
+	if (fd && fd->backing_dentry)
+		dput(fd->backing_dentry);
 
 	kfree_rcu(fd, rcu);
 }
-#endif
 
 static int fuse_dentry_delete(const struct dentry *dentry)
 {
@@ -417,19 +418,15 @@ default_path:
 const struct dentry_operations fuse_dentry_operations = {
 	.d_revalidate	= fuse_dentry_revalidate,
 	.d_delete	= fuse_dentry_delete,
-#if BITS_PER_LONG < 64
 	.d_init		= fuse_dentry_init,
 	.d_release	= fuse_dentry_release,
-#endif
 	.d_automount	= fuse_dentry_automount,
 	.d_canonical_path = fuse_dentry_canonical_path,
 };
 
 const struct dentry_operations fuse_root_dentry_operations = {
-#if BITS_PER_LONG < 64
 	.d_init		= fuse_dentry_init,
 	.d_release	= fuse_dentry_release,
-#endif
 };
 
 int fuse_valid_type(int m)
@@ -494,6 +491,64 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
 	return err;
 }
 
+static bool fuse_lookup_use_passthrough(struct inode *dir, struct dentry *entry)
+{
+	struct bpf_fuse_data_kern ctx;
+	struct fuse_inode *fuse_dir_inode = get_fuse_inode(dir);
+
+	if (!fuse_dir_inode || !fuse_dir_inode->bpf)
+		return false;
+
+	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
+	return BPF_PROG_RUN(fuse_dir_inode->bpf, &ctx) == 1;
+}
+
+static struct dentry *fuse_lookup_passthrough(struct inode *dir,
+				struct dentry *entry, unsigned int flags)
+{
+	struct fuse_inode *fuse_dir_inode;
+	struct dentry *backing_dentry = NULL;
+	struct dentry *newent = NULL;
+	struct inode *inode = NULL;
+	struct fuse_dentry *parent_fuse_dentry = entry->d_parent->d_fsdata;
+	int err = 0;
+
+	fuse_dir_inode = get_fuse_inode(dir);
+	if (!fuse_dir_inode) {
+		err = -EIO;
+		goto out;
+	}
+
+	inode_lock_nested(fuse_dir_inode->backing_inode, I_MUTEX_NORMAL);
+	backing_dentry = lookup_one_len(entry->d_name.name,
+					parent_fuse_dentry->backing_dentry,
+					strlen(entry->d_name.name));
+	inode_unlock(fuse_dir_inode->backing_inode);
+
+	if (!d_really_is_positive(backing_dentry)) {
+		d_add(entry, NULL);
+		goto out;
+	}
+
+	inode = fuse_iget_backing(dir->i_sb, backing_dentry->d_inode);
+	if (IS_ERR(inode)) {
+		err = PTR_ERR(inode);
+		goto out;
+	}
+	newent = d_splice_alias(inode, entry);
+	if (IS_ERR(newent)) {
+		err = PTR_ERR(newent);
+		goto out;
+	}
+
+out:
+	dput(backing_dentry);
+	if (err)
+		return ERR_PTR(err);
+	return newent;
+}
+
+
 static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 				  unsigned int flags)
 {
@@ -507,24 +562,8 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 	if (fuse_is_bad(dir))
 		return ERR_PTR(-EIO);
 
-	if (get_fuse_inode(dir)->bpf != -1) {
-		struct bpf_prog *bpf_prog =
-			bpf_prog_get(get_fuse_inode(dir)->bpf);
-
-		if (IS_ERR(bpf_prog)) {
-			pr_debug("Paul: fuckup!\n");
-		} else {
-			int result;
-			struct bpf_fuse_data_kern ctx;
-
-			strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
-			pr_debug("Paul: got it %px!\n", bpf_prog);
-			result = BPF_PROG_RUN(bpf_prog, &ctx);
-			pr_debug("Paul: ran with result %d\n", result);
-
-			bpf_prog_put(bpf_prog);
-		}
-	}
+	if (fuse_lookup_use_passthrough(dir, entry))
+		return fuse_lookup_passthrough(dir, entry, flags);
 
 	locked = fuse_lock_inode(dir);
 	err = fuse_lookup_name(dir->i_sb, get_node_id(dir), &entry->d_name,
@@ -587,6 +626,7 @@ static int fuse_create_open(struct inode *dir, struct dentry *entry,
 	/* Userspace expects S_IFREG in create mode */
 	BUG_ON((mode & S_IFMT) != S_IFREG);
 
+	pr_debug("Paul\n");
 	forget = fuse_alloc_forget();
 	err = -ENOMEM;
 	if (!forget)

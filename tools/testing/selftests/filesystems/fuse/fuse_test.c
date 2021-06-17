@@ -87,43 +87,35 @@ struct {
 		TESTCONDERR(condition);					\
 	} while (false)
 
+#define GET_FORMAT_SPECIFIER(a)						\
+	_Generic((a),							\
+		int: "%d",						\
+		unsigned int: "%u",					\
+		long unsigned int: "%lu",				\
+		ssize_t: "%lld",					\
+		void *: "%px",						\
+		char *: "%px"						\
+	)
 
-bool test_equal_signed(long long int a, long long int b)
-{
-	if (a == b)
-		return true;
-
-	ksft_print_msg("Failed: %lld != %lld\n", a, b);
-	return false;
-}
-
-bool test_equal_unsigned(long long unsigned a, long long unsigned b)
-{
-	if (a == b)
-		return true;
-
-	ksft_print_msg("Failed: %lld != %lld\n", a, b);
-	return false;
-}
-
-#define TESTEQUAL(a, b)							\
+#define TESTOPERATOR(a, b, o)						\
 	do{								\
-		if (!_Generic((a),					\
-		int: test_equal_signed((a), (b)),			\
-		ssize_t: test_equal_signed((a), (b)),			\
-		uint32_t: test_equal_unsigned((a), (b)),		\
-		default: ((a) == (b)))) {				\
-			ksft_print_msg("%s failed %d\n",		\
-				       __func__, __LINE__);		\
+		if ((a) o (b)) {					\
+			char fs[256];					\
+									\
+			snprintf(fs, sizeof(fs),			\
+				"Failed: %%s at line %%d, %s " #o	\
+				"%s\n",					\
+				GET_FORMAT_SPECIFIER(a),		\
+				GET_FORMAT_SPECIFIER(b));		\
+			ksft_print_msg(fs, __func__, __LINE__, a, b);	\
 			goto out;					\
 		} else if (test_options.verbose)			\
-			ksft_print_msg("%s succeeded %d\n",		\
+			ksft_print_msg("Success %s %d\n",		\
 				       __func__, __LINE__);		\
 	} while (false)
 
-
-#define TESTNE(statement, res)						\
-	TESTCOND((statement) != (res))
+#define TESTEQUAL(a, b) TESTOPERATOR(a, b, !=)
+#define TESTNE(a, b) TESTOPERATOR(a, b, ==)
 
 /* For testing a syscall that returns 0 on success and sets errno otherwise */
 #define TESTSYSCALL(statement) TESTCONDERR((statement) == 0)
@@ -388,7 +380,7 @@ int install_bpf(const char *name, int *fd)
 	uint64_t *filter = NULL;
 	int filter_fd = -1;
 	union bpf_attr bpf_attr;
-	char log[4096];
+	char log[65536];
 
 	TESTNE(readlink("/proc/self/exe", path, PATH_MAX), -1);
 	TEST(last_slash = strrchr(path, '/'), last_slash);
@@ -399,7 +391,6 @@ int install_bpf(const char *name, int *fd)
 	TESTEQUAL(read(filter_fd, filter, st.st_size), st.st_size);
 	if (filter[st.st_size / sizeof(filter[0]) - 1] == 0)
 		st.st_size -= sizeof(filter[0]);
-	print_bytes(filter, st.st_size);
 	bpf_attr = (union bpf_attr) {
 		.prog_type = BPF_PROG_TYPE_FUSE,
 		.insn_cnt = st.st_size / 8,
@@ -410,7 +401,10 @@ int install_bpf(const char *name, int *fd)
 		.log_level = 2,
 	};
 	*fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr, sizeof(bpf_attr));
-	printf("%s", log);
+	if (test_options.verbose)
+		ksft_print_msg("%s\n", log);
+	if (*fd == -1 && errno == ENOSPC)
+		ksft_print_msg("bpf log size too small!\n");
 	TESTNE(*fd, -1);
 
 	result = TEST_SUCCESS;
@@ -422,66 +416,40 @@ out:
 
 int bpf_test(const char *mount_dir)
 {
-	const char *test_name = "test";
+	const char *test_name = "real";
 	int result = TEST_FAILURE;
 	int bpf_fd = -1;
+	int dir_fd = -1;
 	char options[256];
 	int fuse_dev = -1;
-	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-	DECL_FUSE_OUT(entry);
-	DECL_FUSE(open);
-	DECL_FUSE_IN(flush);
-	DECL_FUSE_IN(release);
 	char *filename = NULL;
 	int fd = -1;
-	int pid = -1;
-	int status;
 	int tp = -1;
 	char trace_buffer[256];
 	ssize_t bytes_read;
 
+	TEST(fd = creat(test_name, 0777), fd != -1);
+	TESTSYSCALL(close(fd));
+	fd = -1;
+
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
-	snprintf(options, sizeof(options), ",root_bpf=%d", bpf_fd);
+	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     dir_fd != -1);
+	snprintf(options, sizeof(options), ",root_bpf=%d,root_dir=%d",
+		 bpf_fd, dir_fd);
 	TESTEQUAL(mount_fuse(mount_dir, options, &fuse_dev), 0);
 
-	FUSE_ACTION
-		filename = concat_file_name(mount_dir, test_name);
-		TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
-		TESTSYSCALL(close(fd));
-		fd = -1;
-	FUSE_DAEMON
-		TESTFUSELOOKUP(test_name);
-		*entry_out = (struct fuse_entry_out) {
-			.nodeid		= 2,
-			.generation	= 1,
-			.attr = (struct fuse_attr) {
-				.ino = 100,
-				.size = 4,
-				.blksize = 512,
-				.mode = S_IFREG,
-			},
-		};
-		TESTFUSEOUT(entry_out);
-		TESTFUSEIN(FUSE_OPEN, open_in);
-		*open_out = (struct fuse_open_out) {
-			.fh = 1,
-			.open_flags = open_in->flags,
-		};
-		TESTFUSEOUT(open_out);
-		TESTFUSEIN(FUSE_FLUSH, flush_in);
-		TESTFUSEOUTEMPTY();
-		TESTFUSEIN(FUSE_RELEASE, release_in);
-		TESTFUSEOUTEMPTY();
-	FUSE_DONE
+	filename = concat_file_name(mount_dir, test_name);
+	TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1)
+	TESTSYSCALL(close(fd));
+	fd = -1;
 
 	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
 		       O_RDONLY | O_CLOEXEC), tp != -1);
 	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
 	     bytes_read > 0);
-	printf("%s", trace_buffer);
+	ksft_print_msg("%s\n", trace_buffer);
 	TESTNE(strstr(trace_buffer, "Hello Paul"), NULL);
-
 
 	result = TEST_SUCCESS;
 out:
@@ -490,6 +458,7 @@ out:
 	close(fd);
 	free(filename);
 	umount("dst");
+	close(dir_fd);
 	close(bpf_fd);
 	return result;
 }
