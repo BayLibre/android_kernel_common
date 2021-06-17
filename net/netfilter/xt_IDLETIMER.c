@@ -181,7 +181,8 @@ static ssize_t idletimer_tg_show(struct device *dev,
 			time_diff = ktimespec.tv_sec;
 		} else {
 			expires = timer->timer.expires;
-			time_diff = jiffies_to_msecs(expires - now) / 1000;
+			time_diff =
+				jiffies_to_msecs(abs(expires - now)) / 1000;
 		}
 	}
 
@@ -191,9 +192,8 @@ static ssize_t idletimer_tg_show(struct device *dev,
 		return scnprintf(buf, PAGE_SIZE, "%ld\n", time_diff);
 
 	if (timer->send_nl_msg)
-		return scnprintf(buf, PAGE_SIZE, "0 %d\n",
-				 jiffies_to_msecs(now - expires) / 1000);
-
+		return scnprintf(buf, PAGE_SIZE, "0 %ld\n", time_diff);
+	else
 	return scnprintf(buf, PAGE_SIZE, "0\n");
 }
 
@@ -276,7 +276,7 @@ static enum alarmtimer_restart idletimer_tg_alarmproc(struct alarm *alarm,
 							  ktime_t now)
 {
 	struct idletimer_tg *timer = alarm->data;
-
+	timer->active = false;
 	pr_debug("alarm %s expired\n", timer->attr.attr.name);
 	schedule_work(&timer->work);
 	return ALARMTIMER_NORESTART;
@@ -329,9 +329,10 @@ static int idletimer_tg_create(struct idletimer_tg_info *info)
 
 	list_add(&info->timer->entry, &idletimer_tg_list);
 	pr_debug("timer type value is 0.");
-	info->timer->timer_type = 0;
+
+	timer_setup(&info->timer->timer, idletimer_tg_expired, 0);
 	info->timer->refcnt = 1;
-	info->timer->send_nl_msg = false;
+	info->timer->send_nl_msg = (info->send_nl_msg != 0);
 	info->timer->active = true;
 	info->timer->timeout = info->timeout;
 
@@ -350,7 +351,6 @@ static int idletimer_tg_create(struct idletimer_tg_info *info)
 
 	INIT_WORK(&info->timer->work, idletimer_tg_work);
 
-	timer_setup(&info->timer->timer, idletimer_tg_expired, 0);
 	mod_timer(&info->timer->timer,
 		  msecs_to_jiffies(info->timeout * 1000) + jiffies);
 
@@ -389,7 +389,7 @@ static int idletimer_tg_create_v1(struct idletimer_tg_info_v1 *info)
 
 	ret = sysfs_create_file(idletimer_tg_kobj, &info->timer->attr.attr);
 	if (ret < 0) {
-		pr_debug("couldn't add file to sysfs");
+		pr_debug("couldn't add file to sysfs \n");
 		goto out_free_attr;
 	}
 
@@ -397,39 +397,40 @@ static int idletimer_tg_create_v1(struct idletimer_tg_info_v1 *info)
 	kobject_uevent(idletimer_tg_kobj,KOBJ_ADD);
 
 	list_add(&info->timer->entry, &idletimer_tg_list);
-	pr_debug("timer type value is %u", info->timer_type);
+	pr_debug("timer type value is %u\n", info->timer_type);
 	info->timer->timer_type = info->timer_type;
 	info->timer->refcnt = 1;
 	info->timer->send_nl_msg = (info->send_nl_msg != 0);
 	info->timer->active = true;
 	info->timer->timeout = info->timeout;
 
-	info->timer->delayed_timer_trigger.tv_sec = 0;
-	info->timer->delayed_timer_trigger.tv_nsec = 0;
-	info->timer->work_pending = false;
-	info->timer->uid = 0;
-	info->timer->last_modified_timer =
-		ktime_to_timespec64(ktime_get_boottime());
-
-	info->timer->pm_nb.notifier_call = idletimer_resume;
-	ret = register_pm_notifier(&info->timer->pm_nb);
-	if (ret)
-		printk(KERN_WARNING "[%s] Failed to register pm notifier %d\n",
-		       __func__, ret);
-
 	INIT_WORK(&info->timer->work, idletimer_tg_work);
 
 	if (info->timer->timer_type & XT_IDLETIMER_ALARM) {
 		ktime_t tout;
+
 		alarm_init(&info->timer->alarm, ALARM_BOOTTIME,
 			   idletimer_tg_alarmproc);
+
 		info->timer->alarm.data = info->timer;
 		tout = ktime_set(info->timeout, 0);
 		alarm_start_relative(&info->timer->alarm, tout);
 	} else {
-		timer_setup(&info->timer->timer, idletimer_tg_expired, 0);
-		mod_timer(&info->timer->timer,
-			  msecs_to_jiffies(info->timeout * 1000) + jiffies);
+	        info->timer->delayed_timer_trigger.tv_sec = 0;
+	        info->timer->delayed_timer_trigger.tv_nsec = 0;
+	        info->timer->work_pending = false;
+	        info->timer->uid = 0;
+	        info->timer->last_modified_timer =
+			ktime_to_timespec64(ktime_get_boottime());
+
+	        info->timer->pm_nb.notifier_call = idletimer_resume;
+	        ret = register_pm_notifier(&info->timer->pm_nb);
+                if (ret)
+			pr_debug("[%s] Failed to register pm notifier %d\n",
+		             __func__, ret);
+			timer_setup(&info->timer->timer, idletimer_tg_expired, 0);
+			mod_timer(&info->timer->timer,
+					  msecs_to_jiffies(info->timeout * 1000) + jiffies);
 	}
 
 	return 0;
@@ -471,9 +472,15 @@ static void reset_timer(struct idletimer_tg * const info_timer,
 			schedule_work(&info_timer->work);
 		}
 	}
+	if (info_timer->timer_type & XT_IDLETIMER_ALARM) {
+		ktime_t tout = ktime_set(info_timeout, 0);
 
-	info_timer->last_modified_timer = ktime_to_timespec64(ktime_get_boottime());
-	mod_timer(&info_timer->timer, msecs_to_jiffies(info_timeout * 1000) + now);
+		alarm_start_relative(&info_timer->alarm, tout);
+	} else {
+
+		info_timer->last_modified_timer = ktime_to_timespec64(ktime_get_boottime());
+		mod_timer(&info_timer->timer, msecs_to_jiffies(info_timeout * 1000) + now);
+	}
 	spin_unlock_bh(&timestamp_lock);
 }
 
@@ -510,26 +517,11 @@ static unsigned int idletimer_tg_target_v1(struct sk_buff *skb,
 					 const struct xt_action_param *par)
 {
 	const struct idletimer_tg_info_v1 *info = par->targinfo;
-	unsigned long now = jiffies;
 
 	pr_debug("resetting timer %s, timeout period %u\n",
 		 info->label, info->timeout);
 
-	if (info->timer->timer_type & XT_IDLETIMER_ALARM) {
-		ktime_t tout = ktime_set(info->timeout, 0);
-		alarm_start_relative(&info->timer->alarm, tout);
-	} else {
-		info->timer->active = true;
-
-		if (time_before(info->timer->timer.expires, now)) {
-			schedule_work(&info->timer->work);
-			pr_debug("Starting timer %s (Expired, Jiffies): %lu, %lu\n",
-				 info->label, info->timer->timer.expires, now);
-		}
-
-		/* TODO: Avoid modifying timers on each packet */
-		reset_timer(info->timer, info->timeout, skb);
-	}
+	reset_timer(info->timer, info->timeout skb);
 
 	return XT_CONTINUE;
 }
@@ -552,7 +544,6 @@ static int idletimer_tg_helper(struct idletimer_tg_info *info)
 	}
 	return 0;
 }
-
 
 static int idletimer_tg_checkentry(const struct xt_tgchk_param *par)
 {
@@ -693,9 +684,9 @@ static void idletimer_tg_destroy_v1(const struct xt_tgdtor_param *par)
 			alarm_cancel(&info->timer->alarm);
 		} else {
 			del_timer_sync(&info->timer->timer);
+			unregister_pm_notifier(&info->timer->pm_nb);
 		}
 		sysfs_remove_file(idletimer_tg_kobj, &info->timer->attr.attr);
-		unregister_pm_notifier(&info->timer->pm_nb);
 		cancel_work_sync(&info->timer->work);
 		kfree(info->timer->attr.attr.name);
 		kfree(info->timer);
@@ -706,7 +697,6 @@ static void idletimer_tg_destroy_v1(const struct xt_tgdtor_param *par)
 
 	mutex_unlock(&list_mutex);
 }
-
 
 static struct xt_target idletimer_tg[] __read_mostly = {
 	{
@@ -730,8 +720,6 @@ static struct xt_target idletimer_tg[] __read_mostly = {
 	.destroy        = idletimer_tg_destroy_v1,
 	.me		= THIS_MODULE,
 	},
-
-
 };
 
 static struct class *idletimer_tg_class;
