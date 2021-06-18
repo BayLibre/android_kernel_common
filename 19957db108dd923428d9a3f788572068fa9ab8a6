@@ -141,6 +141,24 @@
       "parentUuid": "3c5b40d0_6bd1b8ce",
       "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcefe551_959a6ba5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-06-18T03:34:02Z",
+      "side": 1,
+      "message": "ok, I have a substitute, but i need give the task that does not hold any lock a flag for scheduler. I want to add hooks like that:\n\nasmlinkage void do_notify_resume(struct pt_regs *regs,\n\t\t\t\t unsigned long thread_flags)\n{\n\t/*\n\t * The assembly code enters us with IRQs off, but it hasn\u0027t\n\t * informed the tracing code of that for efficiency reasons.\n\t * Update the trace code with the current status.\n\t */\n\ttrace_hardirqs_off();\n\n\tdo {\n\t\t/* Check valid user FS if needed */\n\t\taddr_limit_user_check();\n\n\t\tif (thread_flags \u0026 _TIF_NEED_RESCHED) {\n\t\t\t/* Unmask Debug and SError for the next task */\n\t\t\tlocal_daif_restore(DAIF_PROCCTX_NOIRQ);\n\t\t\t/*add hook set flag*/\n\t\t\tschedule();\n\t\t\t/*add hook clear flag*/\n\t\t\t\nIf the tasks with this flag are in runnable status, they will not hang the whole system. Can i add hooks above?",
+      "parentUuid": "e766d63c_4a1d2df5",
+      "revId": "19957db108dd923428d9a3f788572068fa9ab8a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
