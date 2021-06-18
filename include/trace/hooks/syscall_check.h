@@ -16,6 +16,10 @@ DECLARE_HOOK(android_vh_check_file_ioctl,
 	TP_PROTO(const struct file *file, unsigned int cmd, unsigned long arg),
 	TP_ARGS(file, cmd, arg));
 
+DECLARE_HOOK(android_vh_check_mmap_file,
+	TP_PROTO(const struct file *file, unsigned long prot, unsigned long flag),
+	TP_ARGS(file, prot, flag));
+
 #endif /* _TRACE_HOOK_SYSCALL_CHECK_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
