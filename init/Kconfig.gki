@@ -226,6 +226,14 @@ config GKI_HIDDEN_ETHERNET_CONFIGS
 	  Dummy config option used to enable the hidden Ethernet PHYLINK
 	  configs, required by various ethernet devices.
 
+config GKI_HIDDEN_IMX_CONFIGS
+	bool "Hidden i.MX configs needed for GKI"
+	select STMP_DEVICE
+	help
+	  Dummy config option used to enable hidden i.MX configs.
+	  These are normally selected implicitly when a module
+	  that relies on it is configured.
+
 # Atrocities needed for
 # a) building GKI modules in separate tree, or
 # b) building drivers that are not modularizable
@@ -257,6 +265,7 @@ config GKI_HACKS_TO_FIX
 	select GKI_HIDDEN_MM_CONFIGS
 	select GKI_HIDDEN_DMA_CONFIGS
 	select GKI_HIDDEN_ETHERNET_CONFIGS
+	select GKI_HIDDEN_IMX_CONFIGS
 	help
 	  Dummy config option used to enable core functionality used by
 	  modules that may not be selectable in this config.
