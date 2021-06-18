@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e9b72b_3a21fcc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2021-06-18T17:33:36Z",
+      "side": 1,
+      "message": "Strange, ToT android12-5.4 does not contain the code in question.\n\nFor example, see commit:\n\n0472716d9972 (\"Revert \"ANDROID: init: ensure initcall ordering with LTO\"\")\n\nWhich then was re-added as commit:\n\n110784e04600 (\"FROMLIST: init: lto: ensure initcall ordering\")\n\nwithout any references to LLVM_NM.\n\nLecopzer, are you perhaps working off an older copy of android12-5.4 that\u0027s not sync\u0027d or up to date?",
+      "revId": "3b125b3f236e3f1d3a11c6d5fe8ca2eda87df579",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
