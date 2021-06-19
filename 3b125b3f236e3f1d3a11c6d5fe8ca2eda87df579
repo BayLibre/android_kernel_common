@@ -34,6 +34,24 @@
       "parentUuid": "87e9b72b_3a21fcc4",
       "revId": "3b125b3f236e3f1d3a11c6d5fe8ca2eda87df579",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea99fd8f_56829c7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1767641
+      },
+      "writtenOn": "2021-06-19T07:37:56Z",
+      "side": 1,
+      "message": "\u003e HI Nick\n\u003e \n\u003e By following\n\u003e https://source.android.com/setup/build/building-kernels?hl\u003den\n\u003e \n\u003e $ mkdir android-kernel \u0026\u0026 cd android-kernel\n\u003e $ repo init -u https://android.googlesource.com/kernel/manifest -b common-android-12-5.4\nSorry here is a typo: common-android12-5.4\n\n\u003e $ repo sync\n\u003e \n\u003e I can find that LLVM_NM does exist in the code.\n\u003e \n\u003e \n\u003e Also in the Android git, it exists too.\n\u003e https://android.googlesource.com/kernel/common/+/refs/heads/android12-5.4/Makefile#677\n\u003e \n\u003e If is doesn\u0027t contain the code, it should have a merge conflict?\n\u003e \n\u003e thanks for your review",
+      "parentUuid": "b849cc25_7b2f2b00",
+      "revId": "3b125b3f236e3f1d3a11c6d5fe8ca2eda87df579",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
