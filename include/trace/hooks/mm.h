@@ -44,6 +44,7 @@ DECLARE_HOOK(android_vh_cache_show,
 DECLARE_HOOK(android_vh_oom_check_panic,
 	TP_PROTO(struct oom_control *oc, int *ret),
 	TP_ARGS(oc, ret));
+<<<<<<< HEAD   (53df1b ANDROID: vendor_hooks: Add hooks for account irqtime process)
 DECLARE_HOOK(android_vh_drain_all_pages_bypass,
 	TP_PROTO(gfp_t gfp_mask, unsigned int order, unsigned long alloc_flags,
 		int migratetype, unsigned long did_some_progress,
@@ -61,6 +62,22 @@ DECLARE_HOOK(android_vh_mmap_region,
 DECLARE_HOOK(android_vh_try_to_unmap_one,
 	TP_PROTO(struct vm_area_struct *vma, struct page *page, unsigned long addr, bool ret),
 	TP_ARGS(vma, page, addr, ret));
+=======
+DECLARE_HOOK(android_vh_save_vmalloc_stack,
+	TP_PROTO(unsigned long flags, struct vm_struct *vm),
+	TP_ARGS(flags, vm));
+DECLARE_HOOK(android_vh_show_stack_hash,
+	TP_PROTO(struct seq_file *m, struct vm_struct *v),
+	TP_ARGS(m, v));
+DECLARE_HOOK(android_vh_save_track_hash,
+	TP_PROTO(bool alloc, unsigned long p),
+	TP_ARGS(alloc, p));
+struct mem_cgroup;
+DECLARE_HOOK(android_vh_vmpressure,
+	TP_PROTO(struct mem_cgroup *memcg, bool *bypass),
+	TP_ARGS(memcg, bypass));
+/* macro versions of hooks are no longer required */
+>>>>>>> CHANGE (444a0b ANDROID: mm: add vendor hook for vmpressure)
 
 #endif /* _TRACE_HOOK_MM_H */
 

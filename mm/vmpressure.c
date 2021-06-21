@@ -21,6 +21,8 @@
 #include <linux/printk.h>
 #include <linux/vmpressure.h>
 
+#include <trace/hooks/mm.h>
+
 /*
  * The window size (vmpressure_win) is the number of scanned pages before
  * we try to analyze scanned/reclaimed ratio. So the window is used as a
@@ -239,12 +241,21 @@ static void vmpressure_work_fn(struct work_struct *work)
 void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, bool tree,
 		unsigned long scanned, unsigned long reclaimed)
 {
+<<<<<<< HEAD   (53df1b ANDROID: vendor_hooks: Add hooks for account irqtime process)
 	struct vmpressure *vmpr;
 
 	if (mem_cgroup_disabled())
 		return;
 
 	vmpr = memcg_to_vmpressure(memcg);
+=======
+	struct vmpressure *vmpr = memcg_to_vmpressure(memcg);
+	bool bypass = false;
+
+	trace_android_vh_vmpressure(memcg, &bypass);
+	if (unlikely(bypass))
+		return;
+>>>>>>> CHANGE (444a0b ANDROID: mm: add vendor hook for vmpressure)
 
 	/*
 	 * Here we only want to account pressure that userland is able to
