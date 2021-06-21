@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e2697f9_39357069",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2836,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-21T22:00:43Z",
+      "side": 1,
+      "message": "Why is a new hook needed? Can\u0027t you get this information by attaching to the existing tracepoint at line 2876? or the one at 2800?",
+      "revId": "2ca60dac8a2302c49db50a680573c50424b5a56d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ecdeb33_b5a4116f",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-21T22:00:43Z",
+      "side": 1,
+      "message": "If these are declared as vendor data, then the SoC vendor is free to use them. I suspect what you intended instead was (use the array variant when more than 1 element):\n\n  ANDROID_OEM_DATA_ARRAY(1, 2);\n  \nAlso, the commit message says that pid and tid are needed. Both are 32-bit, so you really only need 1 element here to store both, correct?\n\n  ANDROID_OEM_DATA(1)",
+      "revId": "2ca60dac8a2302c49db50a680573c50424b5a56d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
