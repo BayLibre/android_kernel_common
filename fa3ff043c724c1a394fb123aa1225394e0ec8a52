@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9c8e654_2c24c22a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-21T20:33:52Z",
+      "side": 1,
+      "message": "Please post a separate patch fixing this issue. It\u0027s not a good practice to mix multiple changes into one patch.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 92
+      },
+      "revId": "fa3ff043c724c1a394fb123aa1225394e0ec8a52",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fffecf2_3308e64e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-21T20:33:52Z",
+      "side": 1,
+      "message": "This patch should be slit into 3 patches:\n1. Fixes for vendor hook names introduced in https://android-review.googlesource.com/c/kernel/common/+/1699406/\n2. Additions to the debug_symbols\n3. New exported functions (exported the way Greg suggested).",
+      "revId": "fa3ff043c724c1a394fb123aa1225394e0ec8a52",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d560a39_41d198e9",
         "filename": "mm/mmap.c",
         "patchSetId": 2
