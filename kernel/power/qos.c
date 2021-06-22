@@ -39,6 +39,8 @@
 #include <linux/export.h>
 #include <trace/events/power.h>
 
+#include <trace/hooks/power.h>
+
 /*
  * locking rule: all changes to constraints or notifiers lists
  * or pm_qos_object list and pm_qos_objects need to happen with pm_qos_lock
@@ -135,6 +137,8 @@ int pm_qos_update_target(struct pm_qos_constraints *c, struct plist_node *node,
 	spin_unlock_irqrestore(&pm_qos_lock, flags);
 
 	trace_pm_qos_update_target(action, prev_value, curr_value);
+
+	trace_android_vh_pm_qos_update_value(&curr_value);
 
 	if (prev_value == curr_value)
 		return 0;

@@ -20,6 +20,10 @@ DECLARE_HOOK(android_vh_try_to_freeze_todo_unfrozen,
 	TP_PROTO(struct task_struct *p),
 	TP_ARGS(p));
 
+DECLARE_HOOK(android_vh_pm_qos_update_value,
+	TP_PROTO(int *value),
+	TP_ARGS(value));
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_POWER_H */
