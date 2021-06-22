@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a63b6d21_98b41438",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2836,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-22T15:39:07Z",
+      "side": 1,
+      "message": "Can you use trace_binder_transaction(line 2887)? Then you have \"reply\", \"t\", and \"target_node\".\n\nWhat do you need in binder_thread that isn\u0027t available in \"current\"?",
+      "parentUuid": "fd4ab78c_d36837c9",
+      "revId": "2ca60dac8a2302c49db50a680573c50424b5a56d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ecdeb33_b5a4116f",
         "filename": "drivers/android/binder_internal.h",
         "patchSetId": 3
