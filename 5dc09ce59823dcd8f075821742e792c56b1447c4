@@ -46,6 +46,30 @@
       },
       "revId": "5dc09ce59823dcd8f075821742e792c56b1447c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7e6a614_e592e488",
+        "filename": "kernel/power/qos.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-22T11:16:14Z",
+      "side": 1,
+      "message": "Use the trace_pm_qos_update_target() tracepoint, it has the curr_value you need, and the pid is current(), right?",
+      "parentUuid": "7de21543_f77e6631",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 51
+      },
+      "revId": "5dc09ce59823dcd8f075821742e792c56b1447c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
