@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba2e4fc9_d574c6f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-22T17:54:35Z",
+      "side": 1,
+      "message": "I\u0027m trying to review code that I don\u0027t understand which is making this very difficult.\n\nAdditionally it looks like only a tiny fraction of the Android-specific changes to idletimer are actually Android specific (and even that, to the best of my knowledge, for no good reason).\n\nMost of the changes seem to be around how the alarm/timer stuff works which is all upstream code.\n\n(AFAICT the only part which is Android specific is the single function notify_netlink_uevent() and it\u0027s single call site)\n\nWe should really pursue getting this all upstreamed.\n\nI\u0027d love it if I understood what the actual fields mean and what the invariants we\u0027re trying to maintain are.  ie. stuff like what does the \u0027active\u0027 boolean mean.",
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26f34034_301dbf92",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-22T17:54:35Z",
+      "side": 1,
+      "message": "I don\u0027t understand why we\u0027re clearing it here...\n\nactive seems to be about the timer not about the alarm.\n\n(it\u0027s cleared when we delete the timer, or when it expires and the handler gets called)",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 23
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c82622f_9d6d2acb",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-22T17:54:35Z",
+      "side": 1,
+      "message": "it\u0027s possible the bug is here.\n\nmaybe this should be\n\n\u003d (info-\u003etimer_timer_type \u0026 XT_IDLETIMER_ALARM);\n\nor just set it to false here...",
+      "range": {
+        "startLine": 404,
+        "startChar": 23,
+        "endLine": 404,
+        "endChar": 27
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e9dc930_be841171",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-22T17:54:35Z",
+      "side": 1,
+      "message": "...and only set it to true here",
+      "range": {
+        "startLine": 430,
+        "startChar": 1,
+        "endLine": 430,
+        "endChar": 2
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d49ddb75_a2077a82",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-22T17:54:35Z",
+      "side": 1,
+      "message": "is it expected/desired that we can now apparently have both the alarm and the work happening at the same time (see line 471 which might have scheduled the work)\n\nI thought alarm mode used alarms (and the alarm expiring would trigger the work), while non-alarm mode used just the work event...\n\nThat said, I really don\u0027t understand any of this code... so I may be utterly wrong.",
+      "range": {
+        "startLine": 477,
+        "startChar": 0,
+        "endLine": 477,
+        "endChar": 49
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "119d2486_e507350d",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-22T17:54:35Z",
+      "side": 1,
+      "message": "the implementation of idletimer_tg_target_v1 with the 2 extra v1 parameters set to 0 (ie. alarm \u003d 0, send_nl_msg \u003d 0) should precisely match the implementation of idletimer_tg_target (_v0)\n\n[this is because v1 with those parameters set to 0 is equivalent to v0, which simply doesn\u0027t have those parameters]\n\nThis is true for every function which has both a v0 and a v1 version.\n\nie. basically the change you\u0027re making to this function should be mirrored into the function just above this one.",
+      "range": {
+        "startLine": 523,
+        "startChar": 0,
+        "endLine": 523,
+        "endChar": 46
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
