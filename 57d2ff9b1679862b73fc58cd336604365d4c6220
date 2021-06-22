@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7caf25e0_cc02d9a1",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-22T13:42:39Z",
+      "side": 0,
+      "message": "these are the common variables, somehow there was little confusion while comparing with upstream patch . I have update the patch and added these as common variables",
+      "parentUuid": "9cf42a4e_f0fdc46d",
+      "range": {
+        "startLine": 407,
+        "startChar": 1,
+        "endLine": 410,
+        "endChar": 22
+      },
+      "revId": "57d2ff9b1679862b73fc58cd336604365d4c6220",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab4e8816_26343600",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2deb4d0f_851841a5",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-22T13:42:39Z",
+      "side": 0,
+      "message": "same as above .. updated the latest patch with common variables",
+      "parentUuid": "ab4e8816_26343600",
+      "range": {
+        "startLine": 411,
+        "startChar": 1,
+        "endLine": 412,
+        "endChar": 44
+      },
+      "revId": "57d2ff9b1679862b73fc58cd336604365d4c6220",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76be2fca_59cfd8cc",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-06-17T21:16:04Z",
       "side": 0,
       "message": "is the goal that the pm notifier only be used by non ALARM mode?\n\nwhat does \u0027XT_IDLETIMER_ALARM\u0027 really mean?",
+      "range": {
+        "startLine": 414,
+        "startChar": 1,
+        "endLine": 415,
+        "endChar": 49
+      },
+      "revId": "57d2ff9b1679862b73fc58cd336604365d4c6220",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85173d0_3cea5b09",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-22T13:42:39Z",
+      "side": 0,
+      "message": "Sorry for the confusion , I have updated the patch . PTAL",
+      "parentUuid": "76be2fca_59cfd8cc",
       "range": {
         "startLine": 414,
         "startChar": 1,
