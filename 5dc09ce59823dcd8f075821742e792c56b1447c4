@@ -94,6 +94,30 @@
       },
       "revId": "5dc09ce59823dcd8f075821742e792c56b1447c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa60cf57_7ca7158f",
+        "filename": "kernel/power/qos.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-22T12:08:38Z",
+      "side": 1,
+      "message": "get_pid(task_pid(current)); will always return you the current PID of the task calling this function, isn\u0027t that what you need here?\n\nIf not, then I do not understand at all.  Why does the trace_pm_qos_update_target() tracepoint not provide you with the needed information for your hook?  You should not be modifying the curr_value, only reading it as lots of things have just been acted upon earlier based on that value.",
+      "parentUuid": "9df1f6cb_52120bd8",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 51
+      },
+      "revId": "5dc09ce59823dcd8f075821742e792c56b1447c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
