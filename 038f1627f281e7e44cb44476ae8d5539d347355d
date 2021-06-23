@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000012123106",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1744323?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "8e67c693_587e29ca",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 40,
+                "startChar": 0,
+                "endLine": 40,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Nick Desaulniers \u003cndesaulniers@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "1a759a81_5ae1af8d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-06-23T18:25:15Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Nick Desaulniers \u003cndesaulniers@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 380822050 android-build.ayeaye-python-dispatcher_20210622.05_p0",
+      "revId": "038f1627f281e7e44cb44476ae8d5539d347355d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
