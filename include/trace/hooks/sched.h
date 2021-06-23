@@ -258,6 +258,14 @@ DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_wakeup,
 	TP_PROTO(struct rq *rq, struct task_struct *p, bool *preempt),
 	TP_ARGS(rq, p, preempt), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_force_compatible_pre,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_force_compatible_post,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused), 1);
+
 #endif /* _TRACE_HOOK_SCHED_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
