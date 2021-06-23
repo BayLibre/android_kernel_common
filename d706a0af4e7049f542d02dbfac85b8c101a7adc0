@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a8a2ce_5625db87",
+        "filename": "drivers/scsi/ufs/ufshpb.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2021-06-23T18:13:41Z",
+      "side": 1,
+      "message": "This differs from the code posted on the linux-scsi mailing list. This is what I found in v38 of the patch series:\n\nfor (i \u003d 0; i \u003c rgn_idx)\n        kvfree(rgn_table[i].srgn_tbl);\n\nI think that kvfree(NULL) is allowed. checkpatch complains about guarding kvfree() calls with an if-test.",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 2
+      },
+      "revId": "d706a0af4e7049f542d02dbfac85b8c101a7adc0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
