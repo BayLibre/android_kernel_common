@@ -118,6 +118,30 @@
       },
       "revId": "5dc09ce59823dcd8f075821742e792c56b1447c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04dcc21e_e4ffc2ed",
+        "filename": "kernel/power/qos.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1879700
+      },
+      "writtenOn": "2021-06-23T02:27:33Z",
+      "side": 1,
+      "message": "1. we wan\u0027t get the call stack, may be the get_pid () not set the qos value pid.\n2. we only read the curr_value, not modify",
+      "parentUuid": "fa60cf57_7ca7158f",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 51
+      },
+      "revId": "5dc09ce59823dcd8f075821742e792c56b1447c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
