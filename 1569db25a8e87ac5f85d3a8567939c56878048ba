@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6199df_16f53d5b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2021-06-23T10:02:13Z",
+      "side": 1,
+      "message": "I guess these aren\u0027t using the DMA API?",
+      "range": {
+        "startLine": 14,
+        "startChar": 55,
+        "endLine": 15,
+        "endChar": 62
+      },
+      "revId": "1569db25a8e87ac5f85d3a8567939c56878048ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e9998419_6809498d",
@@ -14,6 +37,29 @@
       "writtenOn": "2021-06-23T01:59:36Z",
       "side": 1,
       "message": "Will, any concerns about this patch? It is similar to https://android-review.googlesource.com/c/kernel/common/+/1538707 which you reviewed before.",
+      "revId": "1569db25a8e87ac5f85d3a8567939c56878048ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aa53614_d2ba97d2",
+        "filename": "include/linux/iommu.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2021-06-23T10:02:13Z",
+      "side": 1,
+      "message": "I think it would be better to rename IOMMU_SYS_CACHE_ONLY and IOMMU_SYS_CACHE_ONLY_NWA to IOMMU_SYS_CACHE and IOMMU_SYS_CACHE_NWA respectively, then we could encode this new flag as IOMMU_CACHE | IOMMU_SYS_CACHE_NWA and avoid introducing an additional definition here.",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 32
+      },
       "revId": "1569db25a8e87ac5f85d3a8567939c56878048ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
