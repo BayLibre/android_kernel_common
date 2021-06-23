@@ -33,6 +33,24 @@
       "message": "won\u0027t this break devices that used the old DT specification? We need this to be compatible.",
       "revId": "7aef62023112df662537d4e2a07d2b7f1311193e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "947adab1_c73a1089",
+        "filename": "fs/pstore/ram.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1584799
+      },
+      "writtenOn": "2021-06-23T23:46:36Z",
+      "side": 1,
+      "message": "I don\u0027t think so. The old specification still uses a reserved memory region, meaning that it exists in the global array that of_reserved_mem_lookup() uses when it searches for a particular region. I believe this should work for either dynamically allocated regions or fixed ones.",
+      "parentUuid": "e528c28f_6b50302e",
+      "revId": "7aef62023112df662537d4e2a07d2b7f1311193e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
