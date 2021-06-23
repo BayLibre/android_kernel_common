@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000012113618",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1744333?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "eba651e3_4b729459",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: wangchenggang \u003c11061793@bbktel.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "b50c56d6_c7ca5f1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-06-23T11:18:13Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: wangchenggang \u003c11061793@bbktel.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 380822050 android-build.ayeaye-python-dispatcher_20210622.05_p0",
+      "revId": "09eb768984d244b6ae451e65619b86cfdbfbf79b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
