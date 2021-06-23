@@ -440,7 +440,7 @@ int bpf_test(const char *mount_dir)
 	TESTEQUAL(mount_fuse(mount_dir, options, &fuse_dev), 0);
 
 	filename = concat_file_name(mount_dir, test_name);
-	TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1)
+	TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
 	TESTSYSCALL(close(fd));
 	fd = -1;
 

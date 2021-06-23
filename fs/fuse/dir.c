@@ -19,20 +19,14 @@
 #include <linux/iversion.h>
 #include <linux/posix_acl.h>
 
+#include "../internal.h"
+
 static void fuse_advise_use_readdirplus(struct inode *dir)
 {
 	struct fuse_inode *fi = get_fuse_inode(dir);
 
 	set_bit(FUSE_I_ADVISE_RDPLUS, &fi->state);
 }
-
-struct fuse_dentry {
-	union {
-		u64 time;
-		struct rcu_head rcu;
-	};
-	struct dentry *backing_dentry;
-};
 
 static inline void __fuse_dentry_settime(struct dentry *entry, u64 time)
 {
@@ -70,8 +64,8 @@ void fuse_init_dentry_root(struct dentry *root, struct file *backing_dir)
 	struct fuse_dentry* fuse_dentry = root->d_fsdata;
 
 	if (backing_dir) {
-		fuse_dentry->backing_dentry = backing_dir->f_path.dentry;
-		dget(fuse_dentry->backing_dentry);
+		fuse_dentry->backing_path = backing_dir->f_path;
+		path_get(&fuse_dentry->backing_path);
 	}
 }
 
@@ -292,8 +286,8 @@ static void fuse_dentry_release(struct dentry *dentry)
 {
 	struct fuse_dentry *fd = dentry->d_fsdata;
 
-	if (fd && fd->backing_dentry)
-		dput(fd->backing_dentry);
+	if (fd && fd->backing_path.dentry)
+		path_put(&fd->backing_path);
 
 	kfree_rcu(fd, rcu);
 }
@@ -506,31 +500,33 @@ static bool fuse_lookup_use_passthrough(struct inode *dir, struct dentry *entry)
 static struct dentry *fuse_lookup_passthrough(struct inode *dir,
 				struct dentry *entry, unsigned int flags)
 {
-	struct fuse_inode *fuse_dir_inode;
-	struct dentry *backing_dentry = NULL;
+	struct fuse_inode *dir_fuse_inode = get_fuse_inode(dir);
+	struct fuse_dentry *dir_fuse_dentry = get_fuse_dentry(entry->d_parent);
+	struct path *dir_backing_path = &dir_fuse_dentry->backing_path;
 	struct dentry *newent = NULL;
 	struct inode *inode = NULL;
-	struct fuse_dentry *parent_fuse_dentry = entry->d_parent->d_fsdata;
 	int err = 0;
 
-	fuse_dir_inode = get_fuse_inode(dir);
-	if (!fuse_dir_inode) {
+	if (!dir_fuse_inode) {
 		err = -EIO;
 		goto out;
 	}
 
-	inode_lock_nested(fuse_dir_inode->backing_inode, I_MUTEX_NORMAL);
-	backing_dentry = lookup_one_len(entry->d_name.name,
-					parent_fuse_dentry->backing_dentry,
-					strlen(entry->d_name.name));
-	inode_unlock(fuse_dir_inode->backing_inode);
+	err = vfs_path_lookup(dir_backing_path->dentry, dir_backing_path->mnt,
+		    entry->d_name.name, LOOKUP_FOLLOW,
+		    &get_fuse_dentry(entry)->backing_path);
 
-	if (!d_really_is_positive(backing_dentry)) {
+	/* TODO check negative dentries work correctly */
+	if (err == -ENOENT) {
 		d_add(entry, NULL);
 		goto out;
 	}
 
-	inode = fuse_iget_backing(dir->i_sb, backing_dentry->d_inode);
+	if (err)
+		goto out;
+
+	inode = fuse_iget_backing(dir->i_sb,
+			get_fuse_dentry(entry)->backing_path.dentry->d_inode);
 	if (IS_ERR(inode)) {
 		err = PTR_ERR(inode);
 		goto out;
@@ -542,7 +538,6 @@ static struct dentry *fuse_lookup_passthrough(struct inode *dir,
 	}
 
 out:
-	dput(backing_dentry);
 	if (err)
 		return ERR_PTR(err);
 	return newent;

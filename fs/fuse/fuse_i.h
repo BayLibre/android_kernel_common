@@ -63,6 +63,20 @@ struct fuse_forget_link {
 	struct fuse_forget_link *next;
 };
 
+/** FUSE specific dentry data */
+struct fuse_dentry {
+	union {
+		u64 time;
+		struct rcu_head rcu;
+	};
+	struct path backing_path;
+};
+
+static inline struct fuse_dentry *get_fuse_dentry(struct dentry *entry)
+{
+	return entry->d_fsdata;
+}
+
 /** FUSE inode */
 struct fuse_inode {
 	/** Inode data */
@@ -250,6 +264,12 @@ struct fuse_file {
 
 	/** Container for data related to the passthrough functionality */
 	struct fuse_passthrough passthrough;
+
+	/**
+	 * TODO: Reconcile with passthrough file
+	 * backing file when in bpf mode
+	 */
+	struct file *backing_file;
 
 	/** RB node to be linked on fuse_conn->polled_files */
 	struct rb_node polled_node;

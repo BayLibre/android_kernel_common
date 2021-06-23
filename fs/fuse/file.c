@@ -230,7 +230,26 @@ static bool fuse_open_common_use_passthrough(struct file* file)
 int fuse_open_common_passthrough(struct inode *inode, struct file *file,
 				 bool isdir)
 {
-	pr_debug("Paul\n");
+	struct fuse_mount *fm = get_fuse_mount(inode);
+	struct fuse_dentry *backing_fuse_dentry =
+		get_fuse_dentry(file->f_path.dentry);
+	struct fuse_file *fuse_file;
+	struct file *backing_file;
+
+	fuse_file = fuse_file_alloc(fm);
+	if (!fuse_file)
+		return -ENOMEM;
+	file->private_data = fuse_file;
+
+	pr_debug("Paul %s\n", file->f_path.dentry->d_name.name);
+	backing_file = dentry_open(&backing_fuse_dentry->backing_path, O_RDWR,
+				   current_cred());
+	pr_debug("Paul %px\n", backing_file);
+
+	if (IS_ERR(backing_file))
+		return PTR_ERR(backing_file);
+
+	fuse_file->backing_file = backing_file;
 	return 0;
 }
 
@@ -363,7 +382,10 @@ static bool fuse_release_use_passthrough(struct file* file)
 
 int fuse_release_passthrough(struct inode *inode, struct file *file)
 {
+	struct fuse_file *fuse_file = file->private_data;
+
 	pr_debug("Paul\n");
+	fput(fuse_file->backing_file);
 	return 0;
 }
 
