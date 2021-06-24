@@ -10,7 +10,6 @@
 
 #include <linux/pagemap.h>
 #include <linux/file.h>
-#include <linux/filter.h>
 #include <linux/fs_context.h>
 #include <linux/sched.h>
 #include <linux/namei.h>
@@ -18,8 +17,6 @@
 #include <linux/xattr.h>
 #include <linux/iversion.h>
 #include <linux/posix_acl.h>
-
-#include "../internal.h"
 
 static void fuse_advise_use_readdirplus(struct inode *dir)
 {
@@ -485,65 +482,6 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
 	return err;
 }
 
-static bool fuse_lookup_use_passthrough(struct inode *dir, struct dentry *entry)
-{
-	struct bpf_fuse_data_kern ctx;
-	struct fuse_inode *fuse_dir_inode = get_fuse_inode(dir);
-
-	if (!fuse_dir_inode || !fuse_dir_inode->bpf)
-		return false;
-
-	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
-	return BPF_PROG_RUN(fuse_dir_inode->bpf, &ctx) == 1;
-}
-
-static struct dentry *fuse_lookup_passthrough(struct inode *dir,
-				struct dentry *entry, unsigned int flags)
-{
-	struct fuse_inode *dir_fuse_inode = get_fuse_inode(dir);
-	struct fuse_dentry *dir_fuse_dentry = get_fuse_dentry(entry->d_parent);
-	struct path *dir_backing_path = &dir_fuse_dentry->backing_path;
-	struct dentry *newent = NULL;
-	struct inode *inode = NULL;
-	int err = 0;
-
-	if (!dir_fuse_inode) {
-		err = -EIO;
-		goto out;
-	}
-
-	err = vfs_path_lookup(dir_backing_path->dentry, dir_backing_path->mnt,
-		    entry->d_name.name, LOOKUP_FOLLOW,
-		    &get_fuse_dentry(entry)->backing_path);
-
-	/* TODO check negative dentries work correctly */
-	if (err == -ENOENT) {
-		d_add(entry, NULL);
-		goto out;
-	}
-
-	if (err)
-		goto out;
-
-	inode = fuse_iget_backing(dir->i_sb,
-			get_fuse_dentry(entry)->backing_path.dentry->d_inode);
-	if (IS_ERR(inode)) {
-		err = PTR_ERR(inode);
-		goto out;
-	}
-	newent = d_splice_alias(inode, entry);
-	if (IS_ERR(newent)) {
-		err = PTR_ERR(newent);
-		goto out;
-	}
-
-out:
-	if (err)
-		return ERR_PTR(err);
-	return newent;
-}
-
-
 static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 				  unsigned int flags)
 {
@@ -557,8 +495,8 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 	if (fuse_is_bad(dir))
 		return ERR_PTR(-EIO);
 
-	if (fuse_lookup_use_passthrough(dir, entry))
-		return fuse_lookup_passthrough(dir, entry, flags);
+	if (fuse_lookup_use_backing(dir, entry))
+		return fuse_lookup_backing(dir, entry, flags);
 
 	locked = fuse_lock_inode(dir);
 	err = fuse_lookup_name(dir->i_sb, get_node_id(dir), &entry->d_name,

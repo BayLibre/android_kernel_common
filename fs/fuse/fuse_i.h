@@ -1294,4 +1294,21 @@ ssize_t fuse_passthrough_read_iter(struct kiocb *iocb, struct iov_iter *to);
 ssize_t fuse_passthrough_write_iter(struct kiocb *iocb, struct iov_iter *from);
 ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
 
+/* backing.c */
+bool fuse_open_common_use_backing(struct file* file);
+int fuse_open_common_backing(struct inode *inode, struct file *file,
+			     bool isdir);
+bool fuse_release_use_backing(struct file* file);
+int fuse_release_backing(struct inode *inode, struct file *file);
+bool fuse_flush_use_backing(struct file* file);
+int fuse_flush_backing(struct file *file, fl_owner_t id);
+bool fuse_readpage_use_backing(struct file *file, struct page *page);
+int fuse_readpage_backing(struct file *file, struct page *page);
+bool fuse_readahead_use_backing(struct readahead_control *rac);
+void fuse_readahead_backing(struct readahead_control *rac);
+bool fuse_readahead_use_backing(struct readahead_control *rac);
+bool fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
+struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
+				   unsigned int flags);
+
 #endif /* _FS_FUSE_I_H */

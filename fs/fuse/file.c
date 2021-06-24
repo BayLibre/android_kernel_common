@@ -215,44 +215,6 @@ void fuse_finish_open(struct inode *inode, struct file *file)
 		fuse_link_write_file(file);
 }
 
-static bool fuse_open_common_use_passthrough(struct file* file)
-{
-	/*
-	 * For open, if the lookup was done passthrough there is no known use
-	 * case for not passing through the open.
-	 *
-	 * Add bpf here if such a use case appears.
-	 */
-
-	return get_fuse_inode(file->f_inode)->backing_inode;
-}
-
-int fuse_open_common_passthrough(struct inode *inode, struct file *file,
-				 bool isdir)
-{
-	struct fuse_mount *fm = get_fuse_mount(inode);
-	struct fuse_dentry *backing_fuse_dentry =
-		get_fuse_dentry(file->f_path.dentry);
-	struct fuse_file *fuse_file;
-	struct file *backing_file;
-
-	fuse_file = fuse_file_alloc(fm);
-	if (!fuse_file)
-		return -ENOMEM;
-	file->private_data = fuse_file;
-
-	pr_debug("Paul %s\n", file->f_path.dentry->d_name.name);
-	backing_file = dentry_open(&backing_fuse_dentry->backing_path, O_RDWR,
-				   current_cred());
-	pr_debug("Paul %px\n", backing_file);
-
-	if (IS_ERR(backing_file))
-		return PTR_ERR(backing_file);
-
-	fuse_file->backing_file = backing_file;
-	return 0;
-}
-
 int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 {
 	struct fuse_mount *fm = get_fuse_mount(inode);
@@ -271,8 +233,8 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 	if (err)
 		return err;
 
-	if (fuse_open_common_use_passthrough(file))
-		return fuse_open_common_passthrough(inode, file, isdir);
+	if (fuse_open_common_use_backing(file))
+		return fuse_open_common_backing(inode, file, isdir);
 
 	if (is_wb_truncate || dax_truncate) {
 		inode_lock(inode);
@@ -368,33 +330,12 @@ static int fuse_open(struct inode *inode, struct file *file)
 	return fuse_open_common(inode, file, false);
 }
 
-static bool fuse_release_use_passthrough(struct file* file)
-{
-	/*
-	 * For release, if the lookup was done passthrough there is no known use
-	 * case for not passing through the open.
-	 *
-	 * Add bpf here if such a use case appears.
-	 */
-
-	return get_fuse_inode(file->f_inode)->backing_inode;
-}
-
-int fuse_release_passthrough(struct inode *inode, struct file *file)
-{
-	struct fuse_file *fuse_file = file->private_data;
-
-	pr_debug("Paul\n");
-	fput(fuse_file->backing_file);
-	return 0;
-}
-
 static int fuse_release(struct inode *inode, struct file *file)
 {
 	struct fuse_conn *fc = get_fuse_conn(inode);
 
-	if (fuse_release_use_passthrough(file))
-		return fuse_release_passthrough(inode, file);
+	if (fuse_release_use_backing(file))
+		return fuse_release_backing(inode, file);
 
 	/* see fuse_vma_close() for !writeback_cache case */
 	if (fc->writeback_cache)
@@ -524,24 +465,6 @@ static void fuse_sync_writes(struct inode *inode)
 	fuse_release_nowrite(inode);
 }
 
-static bool fuse_flush_use_passthrough(struct file* file)
-{
-	/*
-	 * For flush, if the lookup was done passthrough there is no known use
-	 * case for not passing through the open.
-	 *
-	 * Add bpf here if such a use case appears.
-	 */
-
-	return get_fuse_inode(file->f_inode)->backing_inode;
-}
-
-int fuse_flush_passthrough(struct file *file, fl_owner_t id)
-{
-	pr_debug("Paul\n");
-	return 0;
-}
-
 static int fuse_flush(struct file *file, fl_owner_t id)
 {
 	struct inode *inode = file_inode(file);
@@ -551,8 +474,8 @@ static int fuse_flush(struct file *file, fl_owner_t id)
 	FUSE_ARGS(args);
 	int err;
 
-	if (fuse_flush_use_passthrough(file))
-		return fuse_flush_passthrough(file, id);
+	if (fuse_flush_use_backing(file))
+		return fuse_flush_backing(file, id);
 
 	if (fuse_is_bad(inode))
 		return -EIO;
@@ -944,39 +867,13 @@ static int fuse_do_readpage(struct file *file, struct page *page)
 	return 0;
 }
 
-static bool fuse_readpage_use_passthrough(struct file *file, struct page *page)
-{
-	struct fuse_file *ff = file->private_data;
-
-	pr_debug("Paul\n");
-	return ff->backing_file;
-}
-
-static int fuse_readpage_passthrough(struct file *file, struct page *page)
-{
-	struct fuse_file *ff = file->private_data;
-	void *page_start = kmap(page);
-	loff_t offset = page_offset(page);
-	ssize_t res = kernel_read(ff->backing_file, page_start, PAGE_SIZE,
-				  &offset);
-
-	pr_debug("Paul %lu %.*s\n", res, (int) res, (char *) page_start);
-	dump_stack();
-	pr_debug("Paul %llu\n", i_size_read(file->f_inode));
-	SetPageUptodate(page);
-	flush_dcache_page(page);
-	kunmap(page);
-	unlock_page(page);
-	return res;
-}
-
 static int fuse_readpage(struct file *file, struct page *page)
 {
 	struct inode *inode = page->mapping->host;
 	int err;
 
-	if (fuse_readpage_use_passthrough(file, page))
-		return fuse_readpage_passthrough(file, page);
+	if (fuse_readpage_use_backing(file, page))
+		return fuse_readpage_backing(file, page);
 
 	err = -EIO;
 	if (fuse_is_bad(inode))
@@ -1066,32 +963,14 @@ static void fuse_send_readpages(struct fuse_io_args *ia, struct file *file)
 	fuse_readpages_end(fm, &ap->args, err);
 }
 
-static bool fuse_readahead_use_passthrough(struct readahead_control *rac)
-{
-	struct fuse_file *ff = rac->file->private_data;
-
-	pr_debug("Paul\n");
-	if (!ff)
-		return false;
-
-	/* TODO call bpf to make this decision */
-	return ff->backing_file;
-}
-
-static void fuse_readahead_passthrough(struct readahead_control *rac)
-{
-	pr_debug("Paul\n");
-	return;
-}
-
 static void fuse_readahead(struct readahead_control *rac)
 {
 	struct inode *inode = rac->mapping->host;
 	struct fuse_conn *fc = get_fuse_conn(inode);
 	unsigned int i, max_pages, nr_pages = 0;
 
-	if (fuse_readahead_use_passthrough(rac)) {
-		fuse_readahead_passthrough(rac);
+	if (fuse_readahead_use_backing(rac)) {
+		fuse_readahead_backing(rac);
 		return;
 	}
 
