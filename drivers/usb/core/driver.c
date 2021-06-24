@@ -1404,6 +1404,12 @@ static int usb_suspend_both(struct usb_device *udev, pm_message_t msg)
 	int			i = 0, n = 0;
 	struct usb_interface	*intf;
 
+	if (udev->bus->busnum != 1) {
+		//skip this function except dummy_hcd
+		dev_info(&udev->dev, "[PU]%s: busnum:%d, skip\n", __func__, udev->bus->busnum);
+		return 0;
+	}
+
 	if (udev->state == USB_STATE_NOTATTACHED ||
 			udev->state == USB_STATE_SUSPENDED)
 		goto done;
@@ -1504,6 +1510,12 @@ static int usb_resume_both(struct usb_device *udev, pm_message_t msg)
 	int			status = 0;
 	int			i;
 	struct usb_interface	*intf;
+
+	if (udev->bus->busnum != 1) {
+		//skip this function except dummy_hcd
+		dev_info(&udev->dev, "[PU]%s: busnum:%d, skip\n", __func__, udev->bus->busnum);
+		return 0;
+	}
 
 	if (udev->state == USB_STATE_NOTATTACHED) {
 		status = -ENODEV;
