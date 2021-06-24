@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac6f171_fe9f6b33",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-24T07:07:38Z",
+      "side": 1,
+      "message": "issue happened when the user space module install iptable rules with send_nl_msg . Client was parsing timer start and timer expiry timestamps with every uevent triggered from IDLETIMER module. These timestamps were not changing due to missing reset_timer logic and not updating some of timestamp values .",
+      "parentUuid": "afe4178e_e82ea42f",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 9
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ba2e4fc9_d574c6f7",
@@ -314,6 +338,30 @@
       "side": 1,
       "message": "Hi Maze,\n\nAre you saying we should replace 498-504 with reset_timer()? Could you please clarify that because its not clear to me?\n\nPlease note, all v1 functions were added in accordance with upstream community comments and are already available in upstream. The current fix only adds reset_timer functionality which is not present in upstream code as is send_nl_msg.",
       "parentUuid": "74968d16_fb8f2538",
+      "range": {
+        "startLine": 523,
+        "startChar": 0,
+        "endLine": 523,
+        "endChar": 46
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c89b9d7e_c5cda0ba",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-24T07:07:38Z",
+      "side": 1,
+      "message": "in idletimer_tg_target all we are doing is reset the timer whenever the packet matches with iptable rule . \n\nunsigned long now \u003d jiffies;\ninfo-\u003etimer-\u003eactive \u003d true;\n\n// We are resetting the timer when the timer.expires(specified timeout) \u003e now (current time)\nif (time_before(info-\u003etimer-\u003etimer.expires, now)) {\n\tschedule_work(\u0026info-\u003etimer-\u003ework);\n\tpr_debug(\"Starting timer %s (Expired, Jiffies): %lu, %lu\\n\",\n\t           info-\u003elabel, info-\u003etimer-\u003etimer.expires, now);\n}\n\nThe same logic , i,e resetting the timer with timer.expires is taken care in reset_timer function . \n\nPlease check line number 449 ,454 , 456 , 471 . We have removed this block in idletimer_tg_target_v1 as this seems to be duplicate code . \n\nTest cases with respect to timer reset logic are passing for both IDLETIMERs and ALARMTIMERS.",
+      "parentUuid": "c7a34257_e1571733",
       "range": {
         "startLine": 523,
         "startChar": 0,
