@@ -226,7 +226,7 @@ static long media_device_setup_link(struct media_device *mdev, void *arg)
 	/* Setup the link on both entities */
 	trace_android_vh_media_device_setup_link(link, linkd, &ret);
 	if (ret)
-		return ret;
+		return (ret > 0) ? 0 : ret;
 
 	memset(linkd->reserved, 0, sizeof(linkd->reserved));
 	return __media_entity_setup_link(link, linkd->flags);
