@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89f5bd6a_e4f515a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1876972
+      },
+      "writtenOn": "2021-06-24T11:41:45Z",
+      "side": 1,
+      "message": "To Todd Kjos:\n\n      more information:\n      when the process enter the syscall and  exit the syscall , we  will change the vendor data of task_struct to mark the syscall for our feature ,  so we want use the  tranpoint trace_sys_enter in function syscall_trace_enter , but the transpoint symbol does not exported , our module can not access it ,  so we need to export it . please help me review.",
+      "revId": "5ec6fa46f5371ab934fd9505497b769353df7305",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
