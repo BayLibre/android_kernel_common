@@ -51,6 +51,24 @@
       "parentUuid": "e528c28f_6b50302e",
       "revId": "7aef62023112df662537d4e2a07d2b7f1311193e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03c8fe8e_0f0adf04",
+        "filename": "fs/pstore/ram.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-06-24T19:29:45Z",
+      "side": 1,
+      "message": "While it\u0027s probably safe, the population of the global array in of_reserved_mem_lookup() still has a  bunch of limitations. For example, the max it can parse and remember is 64 reserved mem regions. It has a bunch of other logic too when filling up the global array. Feels too late in the game to comfortable say this is safe for all partners.\n\nWhy can\u0027t you fall back to this approach if the values are not filled up in DT? And then in your DT you could omit those values.",
+      "parentUuid": "947adab1_c73a1089",
+      "revId": "7aef62023112df662537d4e2a07d2b7f1311193e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
