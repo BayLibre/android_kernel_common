@@ -298,6 +298,30 @@
       },
       "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a34257_e1571733",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1319612
+      },
+      "writtenOn": "2021-06-24T04:27:47Z",
+      "side": 1,
+      "message": "Hi Maze,\n\nAre you saying we should replace 498-504 with reset_timer()? Could you please clarify that because its not clear to me?\n\nPlease note, all v1 functions were added in accordance with upstream community comments and are already available in upstream. The current fix only adds reset_timer functionality which is not present in upstream code as is send_nl_msg.",
+      "parentUuid": "74968d16_fb8f2538",
+      "range": {
+        "startLine": 523,
+        "startChar": 0,
+        "endLine": 523,
+        "endChar": 46
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
