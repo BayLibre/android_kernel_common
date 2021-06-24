@@ -24,6 +24,14 @@ DECLARE_HOOK(android_vh_clear_mask_adjust,
 	TP_PROTO(unsigned int ctrl, int *n),
 	TP_ARGS(ctrl, n));
 
+struct v4l2_subdev;
+struct v4l2_subdev_pad_config;
+struct v4l2_subdev_selection;
+DECLARE_HOOK(android_vh_subdev_set_selection,
+	TP_PROTO(struct v4l2_subdev *sd, struct v4l2_subdev_pad_config *cfg,
+	struct v4l2_subdev_selection *sel, int *ret),
+	TP_ARGS(sd, cfg, sel, ret));
+
 #endif /* _TRACE_HOOK_V4L2CORE_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
