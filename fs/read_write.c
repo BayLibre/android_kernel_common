@@ -476,7 +476,9 @@ EXPORT_SYMBOL(kernel_read);
 ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 {
 	ssize_t ret;
+	bool debug = !strcmp(file->f_path.dentry->d_name.name, "real");
 
+	if (debug) pr_debug("Paul\n");
 	if (!(file->f_mode & FMODE_READ))
 		return -EBADF;
 	if (!(file->f_mode & FMODE_CAN_READ))
@@ -490,6 +492,7 @@ ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 	if (count > MAX_RW_COUNT)
 		count =  MAX_RW_COUNT;
 
+	if (debug) pr_debug("Paul %px, %px\n", file->f_op->read, file->f_op->read_iter);
 	if (file->f_op->read)
 		ret = file->f_op->read(file, buf, count, pos);
 	else if (file->f_op->read_iter)
@@ -500,6 +503,7 @@ ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 		fsnotify_access(file);
 		add_rchar(current, ret);
 	}
+	if (debug) pr_debug("Paul: %lu, %.*s\n", ret, (int) ret, (char*) buf);
 	inc_syscr(current);
 	return ret;
 }

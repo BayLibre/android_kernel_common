@@ -2209,6 +2209,8 @@ ssize_t generic_file_buffered_read(struct kiocb *iocb,
 	unsigned int prev_offset;
 	int error = 0;
 
+	bool debug = strcmp(iocb->ki_filp->f_path.dentry->d_name.name, "real") == 0;
+	if (debug) pr_debug("Paul %px, %lu\n", iter->iov->iov_base, iter->iov->iov_len);
 	if (unlikely(*ppos >= inode->i_sb->s_maxbytes))
 		return 0;
 	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
@@ -2244,9 +2246,11 @@ find_page:
 		if (!page) {
 			if (iocb->ki_flags & IOCB_NOIO)
 				goto would_block;
+	if(debug) pr_debug("Paul\n");
 			page_cache_sync_readahead(mapping,
 					ra, filp,
 					index, last_index - index);
+	if(debug) pr_debug("Paul\n");
 			page = find_get_page(mapping, index);
 			if (unlikely(page == NULL))
 				goto no_cached_page;
@@ -2256,9 +2260,11 @@ find_page:
 				put_page(page);
 				goto out;
 			}
+	if(debug) pr_debug("Paul\n");
 			page_cache_async_readahead(mapping,
 					ra, filp, page,
 					index, last_index - index);
+	if(debug) pr_debug("Paul\n");
 		}
 		if (!PageUptodate(page)) {
 			/*

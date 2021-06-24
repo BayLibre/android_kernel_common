@@ -104,7 +104,7 @@ struct {
 									\
 			snprintf(fs, sizeof(fs),			\
 				"Failed: %%s at line %%d, %s " #o	\
-				"%s\n",					\
+				" %s\n",				\
 				GET_FORMAT_SPECIFIER(a),		\
 				GET_FORMAT_SPECIFIER(b));		\
 			ksft_print_msg(fs, __func__, __LINE__, a, b);	\
@@ -417,6 +417,7 @@ out:
 int bpf_test(const char *mount_dir)
 {
 	const char *test_name = "real";
+	const char *test_data = "Weebles wobble but they don't fall down";
 	int result = TEST_FAILURE;
 	int bpf_fd = -1;
 	int dir_fd = -1;
@@ -425,10 +426,12 @@ int bpf_test(const char *mount_dir)
 	char *filename = NULL;
 	int fd = -1;
 	int tp = -1;
-	char trace_buffer[256];
+	char trace_buffer[256] = {};
+	char read_buffer[256] = {};
 	ssize_t bytes_read;
 
 	TEST(fd = creat(test_name, 0777), fd != -1);
+	TESTEQUAL(write(fd, test_data, strlen(test_data)), strlen(test_data));
 	TESTSYSCALL(close(fd));
 	fd = -1;
 
@@ -441,6 +444,11 @@ int bpf_test(const char *mount_dir)
 
 	filename = concat_file_name(mount_dir, test_name);
 	TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
+	bytes_read = read(fd, read_buffer, strlen(test_data));
+	printf("Read %lu bytes: %s\n", bytes_read, read_buffer);
+	print_bytes(read_buffer, bytes_read);
+	TESTEQUAL(bytes_read, strlen(test_data));
+	TESTEQUAL(strcmp(test_data, read_buffer), 0);
 	TESTSYSCALL(close(fd));
 	fd = -1;
 

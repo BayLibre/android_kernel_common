@@ -944,10 +944,39 @@ static int fuse_do_readpage(struct file *file, struct page *page)
 	return 0;
 }
 
+static bool fuse_readpage_use_passthrough(struct file *file, struct page *page)
+{
+	struct fuse_file *ff = file->private_data;
+
+	pr_debug("Paul\n");
+	return ff->backing_file;
+}
+
+static int fuse_readpage_passthrough(struct file *file, struct page *page)
+{
+	struct fuse_file *ff = file->private_data;
+	void *page_start = kmap(page);
+	loff_t offset = page_offset(page);
+	ssize_t res = kernel_read(ff->backing_file, page_start, PAGE_SIZE,
+				  &offset);
+
+	pr_debug("Paul %lu %.*s\n", res, (int) res, (char *) page_start);
+	dump_stack();
+	pr_debug("Paul %llu\n", i_size_read(file->f_inode));
+	SetPageUptodate(page);
+	flush_dcache_page(page);
+	kunmap(page);
+	unlock_page(page);
+	return res;
+}
+
 static int fuse_readpage(struct file *file, struct page *page)
 {
 	struct inode *inode = page->mapping->host;
 	int err;
+
+	if (fuse_readpage_use_passthrough(file, page))
+		return fuse_readpage_passthrough(file, page);
 
 	err = -EIO;
 	if (fuse_is_bad(inode))
@@ -1037,11 +1066,34 @@ static void fuse_send_readpages(struct fuse_io_args *ia, struct file *file)
 	fuse_readpages_end(fm, &ap->args, err);
 }
 
+static bool fuse_readahead_use_passthrough(struct readahead_control *rac)
+{
+	struct fuse_file *ff = rac->file->private_data;
+
+	pr_debug("Paul\n");
+	if (!ff)
+		return false;
+
+	/* TODO call bpf to make this decision */
+	return ff->backing_file;
+}
+
+static void fuse_readahead_passthrough(struct readahead_control *rac)
+{
+	pr_debug("Paul\n");
+	return;
+}
+
 static void fuse_readahead(struct readahead_control *rac)
 {
 	struct inode *inode = rac->mapping->host;
 	struct fuse_conn *fc = get_fuse_conn(inode);
 	unsigned int i, max_pages, nr_pages = 0;
+
+	if (fuse_readahead_use_passthrough(rac)) {
+		fuse_readahead_passthrough(rac);
+		return;
+	}
 
 	if (fuse_is_bad(inode))
 		return;
@@ -3580,7 +3632,7 @@ static const struct file_operations fuse_file_operations = {
 
 static const struct address_space_operations fuse_file_aops  = {
 	.readpage	= fuse_readpage,
-	.readahead	= fuse_readahead,
+//	.readahead	= fuse_readahead,
 	.writepage	= fuse_writepage,
 	.writepages	= fuse_writepages,
 	.launder_page	= fuse_launder_page,
