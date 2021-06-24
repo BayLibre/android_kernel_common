@@ -4,14 +4,14 @@
  */
 #define _GNU_SOURCE
 
+#include "test_framework.h"
+
 #include <alloca.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
-#include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -27,117 +27,10 @@
 #include <linux/stat.h>
 #include <linux/unistd.h>
 
-#include <kselftest.h>
-
 #include <include/uapi/linux/fuse.h>
 #include <include/uapi/linux/bpf.h>
 
-#define TEST_FAILURE 1
-#define TEST_SUCCESS 0
-
-#define ptr_to_u64(p) ((__u64)p)
-
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#define le16_to_cpu(x)          (x)
-#define le32_to_cpu(x)          (x)
-#define le64_to_cpu(x)          (x)
-#else
-#error Big endian not supported!
-#endif
-
-struct {
-	int file;
-	int test;
-	bool verbose;
-} test_options;
-
-#define TESTCOND(condition)						\
-	do {								\
-		if (!(condition)) {					\
-			ksft_print_msg("%s failed %d\n",		\
-				       __func__, __LINE__);		\
-			goto out;					\
-		} else if (test_options.verbose)			\
-			ksft_print_msg("%s succeeded %d\n",		\
-				       __func__, __LINE__);		\
-	} while (false)
-
-#define TESTCONDERR(condition)						\
-	do {								\
-		if (!(condition)) {					\
-			ksft_print_msg("%s failed %d\n",		\
-				       __func__, __LINE__);		\
-			ksft_print_msg("Error %d (\"%s\")\n",		\
-				       errno, strerror(errno));		\
-			goto out;					\
-		} else if (test_options.verbose)			\
-			ksft_print_msg("%s succeeded %d\n",		\
-				       __func__, __LINE__);		\
-	} while (false)
-
-#define TEST(statement, condition)					\
-	do {								\
-		statement;						\
-		TESTCOND(condition);					\
-	} while (false)
-
-#define TESTERR(statement, condition)					\
-	do {								\
-		statement;						\
-		TESTCONDERR(condition);					\
-	} while (false)
-
-#define GET_FORMAT_SPECIFIER(a)						\
-	_Generic((a),							\
-		int: "%d",						\
-		unsigned int: "%u",					\
-		long unsigned int: "%lu",				\
-		ssize_t: "%lld",					\
-		void *: "%px",						\
-		char *: "%px"						\
-	)
-
-#define TESTOPERATOR(a, b, o)						\
-	do{								\
-		if ((a) o (b)) {					\
-			char fs[256];					\
-									\
-			snprintf(fs, sizeof(fs),			\
-				"Failed: %%s at line %%d, %s " #o	\
-				" %s\n",				\
-				GET_FORMAT_SPECIFIER(a),		\
-				GET_FORMAT_SPECIFIER(b));		\
-			ksft_print_msg(fs, __func__, __LINE__, a, b);	\
-			goto out;					\
-		} else if (test_options.verbose)			\
-			ksft_print_msg("Success %s %d\n",		\
-				       __func__, __LINE__);		\
-	} while (false)
-
-#define TESTEQUAL(a, b) TESTOPERATOR(a, b, !=)
-#define TESTNE(a, b) TESTOPERATOR(a, b, ==)
-
-/* For testing a syscall that returns 0 on success and sets errno otherwise */
-#define TESTSYSCALL(statement) TESTCONDERR((statement) == 0)
-
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
-
-void print_bytes(const void *data, size_t size)
-{
-	const uint8_t *bytes = data;
-	int i;
-
-	for (i = 0; i < size; ++i) {
-		if (i % 0x10 == 0)
-			printf("%08x:", i);
-		printf("%02x ", (unsigned int) bytes[i]);
-		if (i % 0x10 == 0x0f)
-			printf("\n");
-	}
-
-	if (i % 0x10 != 0)
-		printf("\n");
-}
+struct _test_options test_options;
 
 static char *concat_file_name(const char *dir, const char *file)
 {

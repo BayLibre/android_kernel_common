@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 // Copyright (c) 2021 Google
 
+#define __EXPORTED_HEADERS__
+
 #include <uapi/linux/types.h>
 #include <uapi/linux/bpf_fuse.h>
 
