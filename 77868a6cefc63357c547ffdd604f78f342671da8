@@ -58,6 +58,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80de811a_aa760064",
+        "filename": "arch/arm64/configs/hikey960_gki.fragment",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-26T22:52:32Z",
+      "side": 1,
+      "message": "This was a QC requirement. This would not need to be turned on if not needed for a given device. It is added here to avoid changing the settings for the hikey960 dev board as part of moving to module.",
+      "parentUuid": "3181dafb_c675bf9e",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 25
+      },
+      "revId": "77868a6cefc63357c547ffdd604f78f342671da8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30004553_e43cdab0",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-06-26T00:36:23Z",
       "side": 1,
       "message": "do we need those two commented lines",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "77868a6cefc63357c547ffdd604f78f342671da8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1a92d9e_bc15e13a",
+        "filename": "arch/arm64/configs/hikey960_gki.fragment",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-26T22:52:32Z",
+      "side": 1,
+      "message": "Yes, otherwise they default to \"y\". Since it is in the config fragment, these are per device. For Pixel, you could choose to leave these commented lines out (resulting in \"\u003dy\" for them).",
+      "parentUuid": "30004553_e43cdab0",
       "range": {
         "startLine": 55,
         "startChar": 0,
