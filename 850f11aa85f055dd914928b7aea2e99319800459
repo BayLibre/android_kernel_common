@@ -51,6 +51,47 @@
       "parentUuid": "c4df09a7_06dc8856",
       "revId": "850f11aa85f055dd914928b7aea2e99319800459",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edec29bd_d332d4bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2021-06-27T20:46:44Z",
+      "side": 1,
+      "message": "Thank you for the clarification. I will mark this comment as \"resolved\".",
+      "parentUuid": "024ae49a_33ccc2bd",
+      "revId": "850f11aa85f055dd914928b7aea2e99319800459",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7c88077_99d234c7",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5137,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2021-06-27T20:46:44Z",
+      "side": 1,
+      "message": "My understanding is that test_and_clear_bit() is an atomic operation while this function is called with the SCSI host lock held. Do you agree that it is not necessary to use an atomic operation here?\n\nHow about adding lockdep_assert_held(hba-\u003ehost-\u003ehost_lock) to document the assumption that the host lock is held by all callers of this function?",
+      "range": {
+        "startLine": 5137,
+        "startChar": 7,
+        "endLine": 5137,
+        "endChar": 25
+      },
+      "revId": "850f11aa85f055dd914928b7aea2e99319800459",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
