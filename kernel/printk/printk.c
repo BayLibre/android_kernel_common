@@ -539,7 +539,7 @@ static int log_store(u32 caller_id, int facility, int level,
 	else
 		prb_final_commit(&e);
 
-	trace_android_vh_logbuf(prb, &r);
+	trace_android_vh_logbuf(prb, &r, false, r.info->text_len);
 
 	return (text_len + trunc_msg_len);
 }
@@ -1958,6 +1958,8 @@ static size_t log_output(int facility, int level, enum log_flags lflags,
 			} else {
 				prb_commit(&e);
 			}
+
+			trace_android_vh_logbuf(prb, &r, true, text_len);
 			return text_len;
 		}
 	}
