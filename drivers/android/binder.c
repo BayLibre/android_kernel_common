@@ -123,6 +123,8 @@ module_param_named(devices, binder_devices_param, charp, 0444);
 static DECLARE_WAIT_QUEUE_HEAD(binder_user_error_wait);
 static int binder_stop_on_user_error;
 
+static struct binder_capabilities user_caps;
+
 static int binder_set_stop_on_user_error(const char *val,
 					 const struct kernel_param *kp)
 {
@@ -4860,6 +4862,24 @@ static int binder_ioctl_get_freezer_info(
 	return 0;
 }
 
+static int binder_ioctl_capabilities(struct binder_capabilities *caps)
+{
+	/* store userspace binder capabilities */
+	bitmap_copy(user_caps.bits, caps->bits, BINDER_CAP_NBITS);
+
+	/* populate kernel binder capabilities */
+	bitmap_zero(caps->bits, BINDER_CAP_NBITS);
+	set_bit(BINDER_CAP_SET_IDLE_TIMEOUT, caps->bits);
+	set_bit(BINDER_CAP_SET_MAX_THREADS, caps->bits);
+	set_bit(BINDER_CAP_GET_NODE_DEBUG_INFO, caps->bits);
+	set_bit(BINDER_CAP_GET_NODE_INFO_FOR_REF, caps->bits);
+	set_bit(BINDER_CAP_FREEZE, caps->bits);
+	set_bit(BINDER_CAP_GET_FROZEN_INFO, caps->bits);
+	set_bit(BINDER_CAP_ONEWAY_SPAM_DETECTION, caps->bits);
+
+	return 0;
+}
+
 static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	int ret;
@@ -5066,6 +5086,29 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		binder_inner_proc_lock(proc);
 		proc->oneway_spam_detection_enabled = (bool)enable;
 		binder_inner_proc_unlock(proc);
+		break;
+	}
+	case BINDER_CAPABILITIES: {
+		struct binder_capabilities caps;
+
+		if (size != sizeof(caps)) {
+			ret = -EINVAL;
+			goto err;
+		}
+
+		if (copy_from_user(&caps, ubuf, sizeof(caps))) {
+			ret = -EFAULT;
+			goto err;
+		}
+
+		ret = binder_ioctl_capabilities(&caps);
+		if (ret < 0)
+			goto err;
+
+		if (copy_to_user(ubuf, &caps, sizeof(caps))) {
+			ret = -EFAULT;
+			goto err;
+		}
 		break;
 	}
 	default:

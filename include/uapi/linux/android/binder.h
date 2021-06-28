@@ -290,6 +290,25 @@ struct binder_frozen_status_info {
 #define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
 #define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
 #define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
+#define BINDER_CAPABILITIES		_IOWR('b', 17, struct binder_capabilities)
+
+/* TODO: understand how to gather the list of "features"
+ */
+enum {
+	BINDER_CAP_SET_IDLE_TIMEOUT,
+	BINDER_CAP_SET_MAX_THREADS,
+	BINDER_CAP_GET_NODE_DEBUG_INFO,
+	BINDER_CAP_GET_NODE_INFO_FOR_REF,
+	BINDER_CAP_FREEZE,
+	BINDER_CAP_GET_FROZEN_INFO,
+	BINDER_CAP_ONEWAY_SPAM_DETECTION,
+};
+
+#define BINDER_CAP_NBITS 128
+
+struct binder_capabilities {
+	DECLARE_BITMAP(bits, BINDER_CAP_NBITS);
+};
 
 /*
  * NOTE: Two special error codes you should check for when calling
