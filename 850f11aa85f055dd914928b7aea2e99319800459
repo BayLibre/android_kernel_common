@@ -92,6 +92,30 @@
       },
       "revId": "850f11aa85f055dd914928b7aea2e99319800459",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5621397e_b9d8ab5f",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5137,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2021-06-28T01:17:36Z",
+      "side": 1,
+      "message": "Sure, we can, but I tried to copy the original change in \"BACKPORT: FROMGIT: scsi: ufs: Optimize host lock on transfer requests send/compl paths\" as much as possible to avoid diverging off from the upstream change. We\u0027ll revert this hack back in 7/2, if we have a right fix from upstream. Will that work?",
+      "parentUuid": "c7c88077_99d234c7",
+      "range": {
+        "startLine": 5137,
+        "startChar": 7,
+        "endLine": 5137,
+        "endChar": 25
+      },
+      "revId": "850f11aa85f055dd914928b7aea2e99319800459",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
