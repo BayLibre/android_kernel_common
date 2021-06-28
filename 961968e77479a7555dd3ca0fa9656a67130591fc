@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7eeaefe_d9ebb6ff",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1120458
+      },
+      "writtenOn": "2021-06-28T21:50:34Z",
+      "side": 1,
+      "message": "for features that have already been added, I thought we could drop them? They will always be implied by this capability list. If we ever try to turn the capability off, then it could break clients that expect it to work before this is added, right?",
+      "range": {
+        "startLine": 298,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 28
+      },
+      "revId": "961968e77479a7555dd3ca0fa9656a67130591fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
