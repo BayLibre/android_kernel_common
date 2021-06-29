@@ -8727,21 +8727,9 @@ int alloc_contig_range(unsigned long start, unsigned long end,
 
 	drain_all_pages(cc.zone);
 
-	/*
-	 * In case of -EBUSY, we'd like to know which page causes problem.
-	 * So, just fall through. test_pages_isolated() has a tracepoint
-	 * which will report the busy page.
-	 *
-	 * It is possible that busy pages could become available before
-	 * the call to test_pages_isolated, and the range will actually be
-	 * allocated.  So, if we fall through be sure to clear ret so that
-	 * -EBUSY is not accidentally used or returned to caller.
-	 */
 	ret = __alloc_contig_migrate_range(&cc, start, end, info);
-	if (ret && ret != -EBUSY)
+	if (ret)
 		goto done;
-	ret =0;
-
 	/*
 	 * Pages from [start, end) are within a MAX_ORDER_NR_PAGES
 	 * aligned blocks that are marked as MIGRATE_ISOLATE.  What's
