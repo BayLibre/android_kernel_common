@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea2a39d9_d284d3a0",
+        "filename": "mm/memory_hotplug.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-06-29T02:03:23Z",
+      "side": 1,
+      "message": "I see that there are calls to memory_notify(MEM_GOING_ONLINE, \u0026arg) and memory_notify(MEM_GOING_OFFLINE, \u0026arg) in the places where you need these hooks. Can you use exported register_memory_notifier() to register your driver for these notifications and use that instead of vendor hooks?",
+      "range": {
+        "startLine": 854,
+        "startChar": 1,
+        "endLine": 854,
+        "endChar": 27
+      },
+      "revId": "49dfe51b3fdc0c34ce3cfe99727391192a67afad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
