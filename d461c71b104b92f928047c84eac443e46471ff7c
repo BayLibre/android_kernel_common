@@ -121,6 +121,24 @@
       "parentUuid": "008b0410_add5396c",
       "revId": "d461c71b104b92f928047c84eac443e46471ff7c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f533cd_35b42906",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-29T20:49:27Z",
+      "side": 1,
+      "message": "```\nupstream has not talked to Weilun since 5/6 \n```\nDoes this mean it was sent upstream but there was no response?\n\n```\nWe have an option to copy this module to our directory and apply this change there\n```\nThat would be my preference -- especially since cfg80211 and mac80211 will become vendor modules on July 2 so \"other Android devices\" will be able to apply the change if they need it.",
+      "parentUuid": "6a1512bd_af69b53e",
+      "revId": "d461c71b104b92f928047c84eac443e46471ff7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
