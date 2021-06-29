@@ -361,6 +361,7 @@ struct acr_info {
 	unsigned long nr_migrated;
 	unsigned long nr_reclaimed;
 	unsigned int err;
+	unsigned long failed_pfn;
 };
 
 /* The below functions must be run on a range from a single zone. */
