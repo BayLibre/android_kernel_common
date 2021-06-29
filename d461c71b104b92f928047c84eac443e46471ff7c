@@ -139,6 +139,24 @@
       "parentUuid": "6a1512bd_af69b53e",
       "revId": "d461c71b104b92f928047c84eac443e46471ff7c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50c722f6_bd552897",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121388
+      },
+      "writtenOn": "2021-06-29T20:54:48Z",
+      "side": 1,
+      "message": "FYI, the patch is here https://www.spinics.net/lists/linux-wireless/msg210619.html\n\nAFAIK, only Android Studio emulator uses mac80211_hwsim in production. We will copy this module to kernel/common-modules/virtual-device to unblock for release purpose. Also, we should keep this CL open for reference.",
+      "parentUuid": "05f533cd_35b42906",
+      "revId": "d461c71b104b92f928047c84eac443e46471ff7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
