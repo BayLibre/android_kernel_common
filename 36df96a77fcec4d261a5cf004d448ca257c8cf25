@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b350e5db_e207f84f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-29T19:29:19Z",
+      "side": 1,
+      "message": "So I *believe* this is precisely the testing I did on my CL.\n\nSee the final comment on https://android-review.googlesource.com/c/kernel/common/+/1734120 which shows the timestamps are being modified.\n\nI\u0027d still like to understand how this CL changes/fixes things?",
+      "parentUuid": "cac6f171_fe9f6b33",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 9
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ba2e4fc9_d574c6f7",
@@ -255,6 +279,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c1554ec_0cb5abc5",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-29T19:29:19Z",
+      "side": 1,
+      "message": "this code needs to be modified to match idletimer_tg_target_v1\n\nsomething like\n\n{\n\tconst struct idletimer_tg_info *info \u003d par-\u003etarginfo;\n\n\tpr_debug(\"resetting timer %s, timeout period %u\\n\",\n\t\t info-\u003elabel, info-\u003etimeout);\n\n\treset_timer(info-\u003etimer, info-\u003etimeout, skb);\n\n\treturn XT_CONTINUE;\n}",
+      "range": {
+        "startLine": 489,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 20
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "119d2486_e507350d",
         "filename": "net/netfilter/xt_IDLETIMER.c",
         "patchSetId": 12
@@ -362,6 +409,30 @@
       "side": 1,
       "message": "in idletimer_tg_target all we are doing is reset the timer whenever the packet matches with iptable rule . \n\nunsigned long now \u003d jiffies;\ninfo-\u003etimer-\u003eactive \u003d true;\n\n// We are resetting the timer when the timer.expires(specified timeout) \u003e now (current time)\nif (time_before(info-\u003etimer-\u003etimer.expires, now)) {\n\tschedule_work(\u0026info-\u003etimer-\u003ework);\n\tpr_debug(\"Starting timer %s (Expired, Jiffies): %lu, %lu\\n\",\n\t           info-\u003elabel, info-\u003etimer-\u003etimer.expires, now);\n}\n\nThe same logic , i,e resetting the timer with timer.expires is taken care in reset_timer function . \n\nPlease check line number 449 ,454 , 456 , 471 . We have removed this block in idletimer_tg_target_v1 as this seems to be duplicate code . \n\nTest cases with respect to timer reset logic are passing for both IDLETIMERs and ALARMTIMERS.",
       "parentUuid": "c7a34257_e1571733",
+      "range": {
+        "startLine": 523,
+        "startChar": 0,
+        "endLine": 523,
+        "endChar": 46
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2eb5d90_34f239e6",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-06-29T19:29:19Z",
+      "side": 1,
+      "message": "The fact we have separate functions for v0 and v1 is a bit unfortunate.\nv0 and v1 differ in the struct coming in from userspace, so need separate implementations.  But the implementations should be the same - in as much as possible.\n\nWhether userspace gives us a v0 struct or a v1 struct with the 2 extra fields set to zero, should not matter at all.\n\nThe behaviour in both cases should be identical.\n\nThat should always be the case for *all* functions which have both v0 and v1 cases.",
+      "parentUuid": "c89b9d7e_c5cda0ba",
       "range": {
         "startLine": 523,
         "startChar": 0,
