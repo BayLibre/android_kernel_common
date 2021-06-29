@@ -642,9 +642,23 @@ static inline bool pm_suspended_storage(void)
 #endif /* CONFIG_PM_SLEEP */
 
 #ifdef CONFIG_CONTIG_ALLOC
+enum acr_failure {
+	ACR_FAIL_ISOLATE,
+	ACR_FAIL_MIGRATE,
+	ACR_FAIL_TEST,
+};
+
+struct acr_info {
+	unsigned long nr_mapped;
+	unsigned long nr_migrated;
+	unsigned long nr_reclaimed;
+	enum acr_failure fail;
+};
+
 /* The below functions must be run on a range from a single zone. */
 extern int alloc_contig_range(unsigned long start, unsigned long end,
-			      unsigned migratetype, gfp_t gfp_mask);
+			      unsigned migratetype, gfp_t gfp_mask,
+			      struct acr_info *info);
 extern struct page *alloc_contig_pages(unsigned long nr_pages, gfp_t gfp_mask,
 				       int nid, nodemask_t *nodemask);
 #endif
