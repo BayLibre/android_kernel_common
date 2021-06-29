@@ -174,6 +174,24 @@
       "message": "I\u0027m not a huge fan of copying the module...\nThat just leads to code duplication and inability to figure out what code we\u0027re even running...\n\nCould we just change this to a FROMLIST or FROMGIT patch then?\n\nBut is this https://patchwork.kernel.org/project/linux-wireless/patch/20210506180530.3418576-1-wdu@google.com/ which is listed as accepted?\n\ncommit 626c30f9e77354301ff9162c3bdddaf92d9b5cf3\nAuthor: Weilun Du \u003cwdu@google.com\u003e\nDate:   Thu May 6 11:05:29 2021 -0700\n\n    mac80211_hwsim: add concurrent channels scanning support over virtio\n    \n    This fixed the crash when setting channels to 2 or more when\n    communicating over virtio.\n    \n    Signed-off-by: Weilun Du \u003cwdu@google.com\u003e\n    Link: https://lore.kernel.org/r/20210506180530.3418576-1-wdu@google.com\n    Signed-off-by: Johannes Berg \u003cjohannes.berg@intel.com\u003e\n    \nis the patch I see in net-next/master",
       "revId": "d461c71b104b92f928047c84eac443e46471ff7c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f519482_acb39dbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-29T21:18:10Z",
+      "side": 1,
+      "message": "I\u0027m fine with taking the patch into android12-5.10 as FROMGIT if it has been accepted upstream.",
+      "parentUuid": "0f92e463_45504035",
+      "revId": "d461c71b104b92f928047c84eac443e46471ff7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
