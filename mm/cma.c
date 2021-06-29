@@ -34,6 +34,7 @@
 #include <linux/io.h>
 #include <linux/kmemleak.h>
 #include <linux/sched.h>
+#include <linux/swap.h>
 #include <linux/jiffies.h>
 #include <trace/events/cma.h>
 
@@ -466,6 +467,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 	if (bitmap_count > bitmap_maxno)
 		goto out;
 
+	lru_cache_disable();
 	for (;;) {
 		struct acr_info info = {0};
 
@@ -534,6 +536,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 		/* try again with a bit different memory target */
 		start = bitmap_no + mask + 1;
 	}
+	lru_cache_enable();
 
 	trace_cma_alloc_finish(cma->name, pfn, page, count, align);
 	trace_cma_alloc_info(cma->name, page, count, align, &cma_info);
