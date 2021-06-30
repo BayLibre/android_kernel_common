@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8b93a6_eb3d6f67",
+        "filename": "drivers/cpuidle/cpuidle.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-30T16:45:24Z",
+      "side": 1,
+      "message": "That\u0027s your vendor hook -- why can\u0027t you verify correctness in the handler? Or is the real intent that your handler will use this mechanism to force an early return? If that is the intent, why -EINVAL? and can\u0027t you just check for index \u003c 0?",
+      "revId": "f8590aeec8cb5bcd14d230b4028ff68cd5a62134",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
