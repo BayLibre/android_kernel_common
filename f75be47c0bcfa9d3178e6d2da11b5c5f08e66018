@@ -129,6 +129,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b322ce5e_fc380870",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4871,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T16:34:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c68a36c0_e8571efc",
+      "range": {
+        "startLine": 4871,
+        "startChar": 0,
+        "endLine": 4871,
+        "endChar": 48
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05c4cc1c_ef77da4e",
@@ -178,6 +202,24 @@
       "side": 1,
       "message": "In that future scenario, wouldn\u0027t we have to add some code to binder to use it? Why not just add binder_user_caps then? As-is, the only way it could be used is either in a memory dump or gdb -- seems unlikely to be useful.",
       "parentUuid": "47cc9025_be8c20d5",
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4575a914_73af4bac",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4875,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T16:34:09Z",
+      "side": 1,
+      "message": "I believe the idea is to have userspace binder report this info now, and start using it on the driver as/when needed. You are still correct though, the driver doesn\u0027t actually need to pull this info yet; even if it\u0027s being provided by the binder. So I\u0027ll get rid of `ucaps`.",
+      "parentUuid": "d8b9424e_47d5d2a0",
       "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -243,6 +285,30 @@
       "side": 1,
       "message": "We\u0027ve needed this in the past due to the lack of good error handling between the driver and userspace. I think this should be removed as part of the fix for b/28321379 which will add better error handling for T.",
       "parentUuid": "aa73b77c_ae2c9d8a",
+      "range": {
+        "startLine": 5108,
+        "startChar": 2,
+        "endLine": 5108,
+        "endChar": 9
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47f2af51_3c545328",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5108,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T16:34:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a71e8f57_dcf04813",
       "range": {
         "startLine": 5108,
         "startChar": 2,
