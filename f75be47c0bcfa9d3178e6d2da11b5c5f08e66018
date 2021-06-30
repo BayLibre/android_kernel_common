@@ -58,6 +58,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acaa1d1d_423c5235",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4868,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T15:34:03Z",
+      "side": 1,
+      "message": "refactored to __u64 per prev comment",
+      "parentUuid": "c7a3406c_e8ce8d07",
+      "range": {
+        "startLine": 4868,
+        "startChar": 11,
+        "endLine": 4868,
+        "endChar": 36
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c20104a_44d613b8",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-06-30T08:53:17Z",
       "side": 1,
       "message": "how can this happen?",
+      "range": {
+        "startLine": 4871,
+        "startChar": 0,
+        "endLine": 4871,
+        "endChar": 48
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c68a36c0_e8571efc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4871,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T15:34:03Z",
+      "side": 1,
+      "message": "oh you are right, this is hardcoded on the ioctl number which is implicitly checked by the switch case. Taking a closer look it seems BINDER_VERSION and BINDER_WRITE_READ are also double checking the size.",
+      "parentUuid": "2c20104a_44d613b8",
       "range": {
         "startLine": 4871,
         "startChar": 0,
@@ -100,6 +148,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47cc9025_be8c20d5",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4875,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T15:34:03Z",
+      "side": 1,
+      "message": "There is no usage for as of now. However, in a future scenario where userspace binder is older than the driver this info could come handy. b/191910201#comment12\n\nPerhaps it makes sense to reduce the scope of this variable to function local instead and the refactor once (if ever) is needed?",
+      "parentUuid": "05c4cc1c_ef77da4e",
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02e6fbe4_2704b3ec",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -123,6 +189,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa73b77c_ae2c9d8a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5108,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T15:34:03Z",
+      "side": 1,
+      "message": "this is the behavior that started the conversation for this patch and it makes sense to fix it. I\u0027ll sync with smoreland@ if we want to keep this. Either way this seems small and trivial enough to add to this change. I can send a separate commit with s/pr_info/pr_err or whatever it is otherwise.",
+      "parentUuid": "02e6fbe4_2704b3ec",
+      "range": {
+        "startLine": 5108,
+        "startChar": 2,
+        "endLine": 5108,
+        "endChar": 9
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f15181d0_2111337d",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 2
@@ -134,6 +224,30 @@
       "writtenOn": "2021-06-30T08:53:17Z",
       "side": 1,
       "message": "why a structure at all?  Why not just use a __u64 in the ioctl?",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 286,
+        "endChar": 13
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5523388a_cae883fb",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-06-30T15:34:03Z",
+      "side": 1,
+      "message": "Oops, this was left over from a bitmap refactor. done!",
+      "parentUuid": "f15181d0_2111337d",
       "range": {
         "startLine": 286,
         "startChar": 0,
