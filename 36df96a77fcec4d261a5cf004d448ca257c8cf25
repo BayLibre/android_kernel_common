@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "88e58722_96ad5152",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-30T06:08:05Z",
+      "side": 1,
+      "message": "I think the commit text is carried from initial patch . \nPlease ref the patch set 2 , in \"idletimer_tg_target_v1 function\" ,we were not using reset_timer logic to reset IDLE and ALARM timers in idletimer_tg_target_v1 function. Reset timer function modifies the timestamp values which we missed to update. But with latest patch, due to change in reset_timer argument list we can reuse the same function in both idletimer_tg_target and idletimer_tg_taget_v1 functions.",
+      "parentUuid": "b350e5db_e207f84f",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 9
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ba2e4fc9_d574c6f7",
@@ -302,6 +326,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "101d710e_3bd50dbe",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-30T06:08:05Z",
+      "side": 1,
+      "message": "As this is aligned with upstream kernel code , do we need to modify here ?",
+      "parentUuid": "3c1554ec_0cb5abc5",
+      "range": {
+        "startLine": 489,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 20
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "119d2486_e507350d",
         "filename": "net/netfilter/xt_IDLETIMER.c",
         "patchSetId": 12
@@ -433,6 +481,30 @@
       "side": 1,
       "message": "The fact we have separate functions for v0 and v1 is a bit unfortunate.\nv0 and v1 differ in the struct coming in from userspace, so need separate implementations.  But the implementations should be the same - in as much as possible.\n\nWhether userspace gives us a v0 struct or a v1 struct with the 2 extra fields set to zero, should not matter at all.\n\nThe behaviour in both cases should be identical.\n\nThat should always be the case for *all* functions which have both v0 and v1 cases.",
       "parentUuid": "c89b9d7e_c5cda0ba",
+      "range": {
+        "startLine": 523,
+        "startChar": 0,
+        "endLine": 523,
+        "endChar": 46
+      },
+      "revId": "36df96a77fcec4d261a5cf004d448ca257c8cf25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e04c071_73d5151b",
+        "filename": "net/netfilter/xt_IDLETIMER.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1664259
+      },
+      "writtenOn": "2021-06-30T06:08:05Z",
+      "side": 1,
+      "message": "We have not changed the existing v0 functions to align with upstream kernel code .\nBut we have retained the existing functionality of v0 struct in all v1 functions.",
+      "parentUuid": "c2eb5d90_34f239e6",
       "range": {
         "startLine": 523,
         "startChar": 0,
