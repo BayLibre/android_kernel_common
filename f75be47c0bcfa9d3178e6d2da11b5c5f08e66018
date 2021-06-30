@@ -37,6 +37,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7a3406c_e8ce8d07",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4868,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-30T08:53:17Z",
+      "side": 1,
+      "message": "Please add trailing comma, if you keep this.",
+      "range": {
+        "startLine": 4868,
+        "startChar": 11,
+        "endLine": 4868,
+        "endChar": 36
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c20104a_44d613b8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4871,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-30T08:53:17Z",
+      "side": 1,
+      "message": "how can this happen?",
+      "range": {
+        "startLine": 4871,
+        "startChar": 0,
+        "endLine": 4871,
+        "endChar": 48
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05c4cc1c_ef77da4e",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -48,6 +94,52 @@
       "writtenOn": "2021-06-30T00:49:53Z",
       "side": 1,
       "message": "how do we expect to use binder_user_caps?",
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02e6fbe4_2704b3ec",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5108,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-30T08:53:17Z",
+      "side": 1,
+      "message": "not this patch\u0027s problem, but why are we allowing userspace to spam the kernel log for sending an invalid ioctl?  That feels wrong.\n\nAnd it should be \"pr_err()\" if  you really want to do this...",
+      "range": {
+        "startLine": 5108,
+        "startChar": 2,
+        "endLine": 5108,
+        "endChar": 9
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f15181d0_2111337d",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-06-30T08:53:17Z",
+      "side": 1,
+      "message": "why a structure at all?  Why not just use a __u64 in the ioctl?",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 286,
+        "endChar": 13
+      },
       "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
