@@ -14,8 +14,6 @@
  * don't need to meet these requirements.
  */
 
-#define pr_fmt(fmt) "fips140: " fmt
-
 #include <linux/ctype.h>
 #include <linux/module.h>
 #include <crypto/aead.h>
@@ -26,7 +24,17 @@
 #include <crypto/rng.h>
 #include <trace/hooks/fips140.h>
 
+#include "fips140-module.h"
 #include "internal.h"
+
+/*
+ * This option allows deliberately failing the self-tests for a particular
+ * algorithm.  This is for FIPS lab testing only.
+ */
+#ifdef CONFIG_CRYPTO_FIPS140_MOD_ERROR_INJECTION
+char *fips140_broken_alg;
+module_param_named(broken_alg, fips140_broken_alg, charp, 0);
+#endif
 
 /*
  * FIPS 140-2 prefers the use of HMAC with a public key over a plain hash.
@@ -558,7 +566,8 @@ fips140_init(void)
 	 */
 	synchronize_rcu_tasks();
 
-	/* insert self tests here */
+	if (!fips140_run_selftests())
+		goto panic;
 
 	/*
 	 * It may seem backward to perform the integrity check last, but this
