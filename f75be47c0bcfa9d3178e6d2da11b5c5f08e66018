@@ -166,6 +166,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8b9424e_47d5d2a0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4875,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-30T15:39:53Z",
+      "side": 1,
+      "message": "In that future scenario, wouldn\u0027t we have to add some code to binder to use it? Why not just add binder_user_caps then? As-is, the only way it could be used is either in a memory dump or gdb -- seems unlikely to be useful.",
+      "parentUuid": "47cc9025_be8c20d5",
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02e6fbe4_2704b3ec",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
@@ -201,6 +219,30 @@
       "side": 1,
       "message": "this is the behavior that started the conversation for this patch and it makes sense to fix it. I\u0027ll sync with smoreland@ if we want to keep this. Either way this seems small and trivial enough to add to this change. I can send a separate commit with s/pr_info/pr_err or whatever it is otherwise.",
       "parentUuid": "02e6fbe4_2704b3ec",
+      "range": {
+        "startLine": 5108,
+        "startChar": 2,
+        "endLine": 5108,
+        "endChar": 9
+      },
+      "revId": "f75be47c0bcfa9d3178e6d2da11b5c5f08e66018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71e8f57_dcf04813",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5108,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-30T15:39:53Z",
+      "side": 1,
+      "message": "We\u0027ve needed this in the past due to the lack of good error handling between the driver and userspace. I think this should be removed as part of the fix for b/28321379 which will add better error handling for T.",
+      "parentUuid": "aa73b77c_ae2c9d8a",
       "range": {
         "startLine": 5108,
         "startChar": 2,
