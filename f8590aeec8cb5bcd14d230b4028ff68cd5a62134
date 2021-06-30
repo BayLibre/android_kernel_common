@@ -34,6 +34,24 @@
       "parentUuid": "dc8b93a6_eb3d6f67",
       "revId": "f8590aeec8cb5bcd14d230b4028ff68cd5a62134",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89133e4c_4cf4498c",
+        "filename": "drivers/cpuidle/cpuidle.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-06-30T17:36:09Z",
+      "side": 1,
+      "message": "\"someone else\" has to be a vendor or oem and they should know what they are doing. Let\u0027s use index \u003c 0 as the way to force an early return.\n\nI don\u0027t really like -EINVAL as the return since the caller didn\u0027t do anything wrong. Maybe the best would be:\n\n  if (index \u003c 0)\n    return index;\n    \nThen the hook can surface a reason (in case anyone cares). You can obviously implement your hook to return index \u003d\u003d -EINVAL if you want.",
+      "parentUuid": "850b97e3_6a44c5de",
+      "revId": "f8590aeec8cb5bcd14d230b4028ff68cd5a62134",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
