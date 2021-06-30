@@ -41,6 +41,7 @@ void mte_zero_clear_page_tags(void *addr);
 void mte_sync_tags(pte_t *ptep, pte_t pte);
 void mte_copy_page_tags(void *kto, const void *kfrom);
 void flush_mte_state(void);
+void mte_update_sctlr_user(struct task_struct *task);
 void mte_thread_switch(struct task_struct *next);
 void mte_suspend_enter(void);
 void mte_suspend_exit(void);
@@ -64,6 +65,9 @@ static inline void mte_copy_page_tags(void *kto, const void *kfrom)
 {
 }
 static inline void flush_mte_state(void)
+{
+}
+static inline void mte_update_sctlr_user(struct task_struct *task)
 {
 }
 static inline void mte_thread_switch(struct task_struct *next)
