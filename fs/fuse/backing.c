@@ -22,7 +22,20 @@ bool fuse_open_common_use_backing(struct file* file)
 	 * Add bpf here if such a use case appears.
 	 */
 
-	return get_fuse_inode(file->f_inode)->backing_inode;
+	struct bpf_fuse_data_kern ctx;
+	struct fuse_inode *fuse_inode = get_fuse_inode(file->f_inode);
+	struct dentry *entry = file->f_path.dentry;
+
+	pr_debug("Paul: %px %px\n", fuse_inode->backing_inode, fuse_inode->bpf);
+
+	if (!fuse_inode || !fuse_inode->backing_inode)
+		return false;
+
+	ctx = (struct bpf_fuse_data_kern) {
+		.fuse_opcode = FUSE_OPEN,
+	};
+	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
+	return BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
 }
 
 int fuse_open_common_backing(struct inode *inode, struct file *file,
@@ -60,14 +73,15 @@ bool fuse_release_use_backing(struct file* file)
 	 * Add bpf here if such a use case appears.
 	 */
 
-	return get_fuse_inode(file->f_inode)->backing_inode;
+	struct fuse_file *fuse_file = file->private_data;
+
+	return fuse_file->backing_file;
 }
 
 int fuse_release_backing(struct inode *inode, struct file *file)
 {
 	struct fuse_file *fuse_file = file->private_data;
 
-	pr_debug("Paul\n");
 	fput(fuse_file->backing_file);
 	return 0;
 }
@@ -81,7 +95,9 @@ bool fuse_flush_use_backing(struct file* file)
 	 * Add bpf here if such a use case appears.
 	 */
 
-	return get_fuse_inode(file->f_inode)->backing_inode;
+	struct fuse_file *fuse_file = file->private_data;
+
+	return fuse_file->backing_file;
 }
 
 int fuse_flush_backing(struct file *file, fl_owner_t id)
@@ -106,9 +122,6 @@ int fuse_readpage_backing(struct file *file, struct page *page)
 	ssize_t res = kernel_read(ff->backing_file, page_start, PAGE_SIZE,
 				  &offset);
 
-	pr_debug("Paul %lu %.*s\n", res, (int) res, (char *) page_start);
-	dump_stack();
-	pr_debug("Paul %llu\n", i_size_read(file->f_inode));
 	SetPageUptodate(page);
 	flush_dcache_page(page);
 	kunmap(page);
@@ -146,6 +159,9 @@ bool fuse_lookup_use_backing(struct inode *dir, struct dentry *entry)
 	if (!fuse_dir_inode || !fuse_dir_inode->bpf)
 		return false;
 
+	ctx = (struct bpf_fuse_data_kern) {
+		.fuse_opcode = FUSE_LOOKUP,
+	};
 	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
 	return BPF_PROG_RUN(fuse_dir_inode->bpf, &ctx) == 1;
 }
@@ -184,6 +200,8 @@ struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 		err = PTR_ERR(inode);
 		goto out;
 	}
+
+	get_fuse_inode(inode)->bpf = dir_fuse_inode->bpf;
 	newent = d_splice_alias(inode, entry);
 	if (IS_ERR(newent)) {
 		err = PTR_ERR(newent);

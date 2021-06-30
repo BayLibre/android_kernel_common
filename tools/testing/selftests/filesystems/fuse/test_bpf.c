@@ -5,6 +5,7 @@
 
 #include <uapi/linux/types.h>
 #include <uapi/linux/bpf_fuse.h>
+#include <uapi/linux/fuse.h>
 
 #define SEC(NAME) __attribute__((section(NAME), used))
 
@@ -35,10 +36,32 @@ inline int strcmp(const char *a, const char *b)
 
 SEC("test_trace")
 
+/* return 1 to use backing fs, 0 to pass to usermode */
 int trace(struct bpf_fuse_data *ctx)
 {
-	int fake = strcmp(ctx->name, "fake");
+	switch (ctx->fuse_opcode) {
+	case FUSE_LOOKUP: {
+		/* real and partial use backing file */
+		int backing = strcmp(ctx->name, "real") == 0 ||
+			strcmp(ctx->name, "partial") == 0;
 
-	bpf_printk("Hello Paul: %s %d\n", ctx->name, fake);
-	return fake ? 1 : 0;
+		bpf_printk("Paul: lookup %s %d", ctx->name, backing);
+		return backing ? 1 : 0;
+	}
+
+	case FUSE_OPEN: {
+		/* only real uses backing file unconditionally */
+		int backing = strcmp(ctx->name, "real") == 0;
+
+		bpf_printk("Paul: open %s %d", ctx->name, backing);
+		return backing ? 1 : 0;
+	}
+
+	case FUSE_READ: {
+		return 0;
+	}
+
+	default:
+		return 0;
+	}
 }

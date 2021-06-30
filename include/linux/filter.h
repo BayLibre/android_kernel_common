@@ -1441,6 +1441,7 @@ static inline bool bpf_sk_lookup_run_v6(struct net *net, int protocol,
 #endif /* IS_ENABLED(CONFIG_IPV6) */
 
 struct bpf_fuse_data_kern {
+	int fuse_opcode;
 	s8 name[NAME_MAX];
 };
 

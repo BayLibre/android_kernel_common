@@ -267,7 +267,7 @@ out:
 int install_bpf(const char *name, int *fd)
 {
 	int result = TEST_FAILURE;
-	char path[PATH_MAX];
+	char path[PATH_MAX] = {};
 	char *last_slash;
 	struct stat st;
 	uint64_t *filter = NULL;
@@ -307,7 +307,26 @@ out:
 	return result;
 }
 
-int bpf_test(const char *mount_dir)
+int bpf_test_trace(const char *substr)
+{
+	int result = TEST_FAILURE;
+	int tp = -1;
+	char trace_buffer[256] = {};
+	ssize_t bytes_read;
+	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
+		       O_RDONLY | O_CLOEXEC), tp != -1);
+	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
+	     bytes_read > 0);
+	if (test_options.verbose)
+		ksft_print_msg("%s\n", trace_buffer);
+	TESTNE(strstr(trace_buffer, substr), NULL);
+	result = TEST_SUCCESS;
+out:
+	close(tp);
+	return result;
+}
+
+int bpf_test_real(const char *mount_dir)
 {
 	const char *test_name = "real";
 	const char *test_data = "Weebles wobble but they don't fall down";
@@ -318,8 +337,6 @@ int bpf_test(const char *mount_dir)
 	int fuse_dev = -1;
 	char *filename = NULL;
 	int fd = -1;
-	int tp = -1;
-	char trace_buffer[256] = {};
 	char read_buffer[256] = {};
 	ssize_t bytes_read;
 
@@ -338,23 +355,87 @@ int bpf_test(const char *mount_dir)
 	filename = concat_file_name(mount_dir, test_name);
 	TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
 	bytes_read = read(fd, read_buffer, strlen(test_data));
-	printf("Read %lu bytes: %s\n", bytes_read, read_buffer);
-	print_bytes(read_buffer, bytes_read);
 	TESTEQUAL(bytes_read, strlen(test_data));
 	TESTEQUAL(strcmp(test_data, read_buffer), 0);
-	TESTSYSCALL(close(fd));
-	fd = -1;
-
-	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
-		       O_RDONLY | O_CLOEXEC), tp != -1);
-	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
-	     bytes_read > 0);
-	ksft_print_msg("%s\n", trace_buffer);
-	TESTNE(strstr(trace_buffer, "Hello Paul"), NULL);
+	TESTEQUAL(bpf_test_trace("Paul"), 0);
 
 	result = TEST_SUCCESS;
 out:
-	close(tp);
+	close(fuse_dev);
+	close(fd);
+	free(filename);
+	umount("dst");
+	close(dir_fd);
+	close(bpf_fd);
+	return result;
+}
+
+int bpf_test_partial(const char *mount_dir)
+{
+	const char *test_name = "partial";
+	const char *file_data = "Wobbles weeble and they do    fall down";
+	const char *test_data = "Weebles wobble but they don't fall down";
+	int result = TEST_FAILURE;
+	int bpf_fd = -1;
+	int dir_fd = -1;
+	char options[256];
+	int fuse_dev = -1;
+	char *filename = NULL;
+	int fd = -1;
+	int pid = -1;
+	int status;
+
+	TEST(fd = creat(test_name, 0777), fd != -1);
+	TESTEQUAL(write(fd, file_data, strlen(file_data)), strlen(file_data));
+	TESTSYSCALL(close(fd));
+	fd = -1;
+
+	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
+	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     dir_fd != -1);
+	snprintf(options, sizeof(options), ",root_bpf=%d,root_dir=%d",
+		 bpf_fd, dir_fd);
+	TESTEQUAL(mount_fuse(mount_dir, options, &fuse_dev), 0);
+
+	FUSE_ACTION
+		char read_buffer[256] = {};
+		ssize_t bytes_read;
+
+		filename = concat_file_name(mount_dir, test_name);
+		TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
+		bytes_read = read(fd, read_buffer, strlen(test_data));
+		printf("Read %lu bytes: %s\n", bytes_read, read_buffer);
+		TESTEQUAL(bytes_read, strlen(test_data));
+		TESTEQUAL(strcmp(test_data, read_buffer), 0);
+		TESTSYSCALL(close(fd));
+		fd = -1;
+		TESTEQUAL(bpf_test_trace("Paul"), 0);
+	FUSE_DAEMON
+		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
+		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
+		DECL_FUSE(open);
+		DECL_FUSE_IN(read);
+		DECL_FUSE_IN(flush);
+		DECL_FUSE_IN(release);
+
+		TESTFUSEIN(FUSE_OPEN, open_in);
+		*open_out = (struct fuse_open_out) {
+			.fh = 1,
+			.open_flags = open_in->flags,
+		};
+		TESTFUSEOUT(open_out);
+		TESTFUSEIN(FUSE_READ, read_in);
+		TESTFUSEOUTREAD(test_data, strlen(test_data));
+		TESTFUSEIN(FUSE_FLUSH, flush_in);
+		TESTFUSEOUTEMPTY();
+		TESTFUSEIN(FUSE_RELEASE, release_in);
+		TESTFUSEOUTEMPTY();
+	FUSE_DONE
+
+	result = TEST_SUCCESS;
+out:
+	if (!pid)
+		exit(TEST_FAILURE);
 	close(fuse_dev);
 	close(fd);
 	free(filename);
@@ -437,7 +518,8 @@ int main(int argc, char *argv[])
 	}
 	struct test_case cases[] = {
 		MAKE_TEST(basic_test),
-		MAKE_TEST(bpf_test),
+		MAKE_TEST(bpf_test_real),
+		MAKE_TEST(bpf_test_partial),
 	};
 #undef MAKE_TEST
 
