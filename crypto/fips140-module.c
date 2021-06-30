@@ -52,26 +52,27 @@ const u32 *__initcall_start = &__initcall_start_marker;
 const u8 *__text_start = &__fips140_text_start;
 const u8 *__rodata_start = &__fips140_rodata_start;
 
+/* Keep this in sync with fips140_selftests[]. */
 static const char fips140_algorithms[][22] __initconst = {
 	"aes",
 
-	"gcm(aes)",
-
-	"ecb(aes)",
 	"cbc(aes)",
 	"ctr(aes)",
+	"ecb(aes)",
+	"gcm(aes)",
 	"xts(aes)",
+
+	"sha1",
+	"sha224",
+	"sha256",
+	"sha384",
+	"sha512",
 
 	"hmac(sha1)",
 	"hmac(sha224)",
 	"hmac(sha256)",
 	"hmac(sha384)",
 	"hmac(sha512)",
-	"sha1",
-	"sha224",
-	"sha256",
-	"sha384",
-	"sha512",
 
 	"drbg_nopr_ctr_aes256",
 	"drbg_nopr_ctr_aes192",
