@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000012567418",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1752563?revision\u003d4",
+      "fixSuggestions": [
+        {
+          "fixId": "a5abef12_14d4f44c",
+          "description": "Add committer\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Todd Kjos \u003ctkjos@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "e962a7cf_a0196c31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-07-01T00:06:21Z",
+      "side": 1,
+      "message": "Commit is not signed off by the committer!\n\nMissing tag: Signed-off-by: Todd Kjos \u003ctkjos@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 382309817 android-build.ayeaye-python-dispatcher_20210630.05_p0",
+      "revId": "21f366de483f89c2b405d133887afe839a1e65b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
