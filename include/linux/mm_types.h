@@ -226,6 +226,8 @@ struct page {
 #ifdef LAST_CPUPID_NOT_IN_PAGE_FLAGS
 	int _last_cpupid;
 #endif
+
+	ANDROID_KABI_RESERVE(1);
 } _struct_page_alignment;
 
 static inline atomic_t *compound_mapcount_ptr(struct page *page)
@@ -598,6 +600,8 @@ struct mm_struct {
 #ifdef CONFIG_IOMMU_SUPPORT
 		u32 pasid;
 #endif
+
+		ANDROID_KABI_RESERVE(1);
 	} __randomize_layout;
 
 	/*
