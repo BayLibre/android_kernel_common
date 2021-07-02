@@ -1564,10 +1564,12 @@ int usb_set_interface(struct usb_device *dev, int interface, int alternate)
 	for (i = 0; i < iface->cur_altsetting->desc.bNumEndpoints; i++)
 		iface->cur_altsetting->endpoint[i].streams = 0;
 
+	dev_info(&dev->dev, "[PU][%s] call usb_hcd_alloc_bandwidth() ++\n", __func__);
+	//dump_stack();
 	ret = usb_hcd_alloc_bandwidth(dev, NULL, iface->cur_altsetting, alt);
 	if (ret < 0) {
-		dev_info(&dev->dev, "Not enough bandwidth for altsetting %d\n",
-				alternate);
+		dev_info(&dev->dev, "[PU][%s] Not enough bandwidth for altsetting %d, ret=%d\n", __func__,
+				alternate, ret);
 		usb_enable_lpm(dev);
 		mutex_unlock(hcd->bandwidth_mutex);
 		return ret;
@@ -1586,12 +1588,13 @@ int usb_set_interface(struct usb_device *dev, int interface, int alternate)
 	 * request if the interface only has one alternate setting.
 	 */
 	if (ret == -EPIPE && iface->num_altsetting == 1) {
-		dev_dbg(&dev->dev,
-			"manual set_interface for iface %d, alt %d\n",
+		dev_info(&dev->dev,
+			"[PU][%s] manual set_interface for iface %d, alt %d\n", __func__,
 			interface, alternate);
 		manual = 1;
 	} else if (ret) {
 		/* Re-instate the old alt setting */
+		dev_info(&dev->dev, "[PU][%s] elseif ret=%d, call usb_hcd_alloc_bandwidth() ++\n", __func__, ret);
 		usb_hcd_alloc_bandwidth(dev, NULL, alt, iface->cur_altsetting);
 		usb_enable_lpm(dev);
 		mutex_unlock(hcd->bandwidth_mutex);
@@ -1650,6 +1653,7 @@ int usb_set_interface(struct usb_device *dev, int interface, int alternate)
 		usb_create_sysfs_intf_files(iface);
 		create_intf_ep_devs(iface);
 	}
+	dev_info(&dev->dev, "[PU][%s] done, --\n", __func__);
 	return 0;
 }
 EXPORT_SYMBOL_GPL(usb_set_interface);

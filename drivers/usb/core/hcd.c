@@ -1842,6 +1842,9 @@ int usb_hcd_alloc_bandwidth(struct usb_device *udev,
 	struct usb_hcd *hcd;
 	struct usb_host_endpoint *ep;
 
+	dev_info(&udev->dev, "[PU][%s] ++, dump ++\n", __func__);
+	dump_stack();
+
 	hcd = bus_to_hcd(udev->bus);
 	if (!hcd->driver->check_bandwidth)
 		return 0;
@@ -1905,9 +1908,12 @@ int usb_hcd_alloc_bandwidth(struct usb_device *udev,
 	if (cur_alt && new_alt) {
 		struct usb_interface *iface = usb_ifnum_to_if(udev,
 				cur_alt->desc.bInterfaceNumber);
+		dev_info(&udev->dev, "[PU][%s] cur_alt->desc.bInterfaceNumber:%d\n", __func__, cur_alt->desc.bInterfaceNumber);
 
-		if (!iface)
+		if (!iface) {
+			dev_err(&udev->dev, "[PU][%s] return -EINVAL\n", __func__);
 			return -EINVAL;
+		}
 		if (iface->resetting_device) {
 			/*
 			 * The USB core just reset the device, so the xHCI host
@@ -1927,21 +1933,27 @@ int usb_hcd_alloc_bandwidth(struct usb_device *udev,
 		for (i = 0; i < cur_alt->desc.bNumEndpoints; i++) {
 			ret = hcd->driver->drop_endpoint(hcd, udev,
 					&cur_alt->endpoint[i]);
-			if (ret < 0)
+			if (ret < 0) {
+				dev_info(&udev->dev, "[PU][%s]1, ret = hcd->driver->drop_endpoint[%d] = %d\n", __func__, i, ret);
 				goto reset;
+			}
 		}
 		/* Add all the endpoints in the new alt setting */
 		for (i = 0; i < new_alt->desc.bNumEndpoints; i++) {
 			ret = hcd->driver->add_endpoint(hcd, udev,
 					&new_alt->endpoint[i]);
-			if (ret < 0)
+			if (ret < 0) {
+				dev_info(&udev->dev, "[PU][%s]2, ret = hcd->driver->add_endpoint[%d] = %d\n", __func__, i, ret);
 				goto reset;
+			}
 		}
 	}
 	ret = hcd->driver->check_bandwidth(hcd, udev);
+	dev_info(&udev->dev, "[PU][%s]3 ret = hcd->driver->check_bandwidth() = %d\n", __func__, ret);
 reset:
 	if (ret < 0)
 		hcd->driver->reset_bandwidth(hcd, udev);
+	dev_info(&udev->dev, "[PU][%s]4 done --, ret = %d\n", __func__, ret);
 	return ret;
 }
 
