@@ -538,8 +538,17 @@ int __init __attribute__((__no_sanitize__("cfi"))) fips140_init(void)
 	     initcall < &__initcall_end_marker;
 	     initcall++) {
 		int (*init)(void) = offset_to_ptr(initcall);
+		int err = init();
 
-		init();
+		/*
+		 * ENODEV is expected from initcalls that only register
+		 * algorithms that depend on non-present CPU features.  Besides
+		 * that, errors aren't expected here.
+		 */
+		if (err && err != -ENODEV) {
+			pr_err("initcall %ps() failed: %d\n", init, err);
+			goto panic;
+		}
 	}
 
 	if (!update_live_fips140_algos())
