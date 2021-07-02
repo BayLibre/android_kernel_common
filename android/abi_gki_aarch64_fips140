@@ -16,11 +16,14 @@
   crypto_alg_list
   crypto_alg_mod_lookup
   crypto_alg_sem
+  crypto_alloc_aead
   crypto_alloc_base
   crypto_alloc_rng
   crypto_alloc_shash
+  crypto_alloc_skcipher
   crypto_attr_alg_name
   crypto_check_attr_type
+  crypto_cipher_decrypt_one
   crypto_cipher_encrypt_one
   crypto_cipher_setkey
   crypto_destroy_tfm
@@ -43,6 +46,7 @@
   crypto_remove_final
   crypto_remove_spawns
   crypto_req_done
+  crypto_rng_reset
   crypto_shash_alg_has_setkey
   crypto_shash_digest
   crypto_shash_final
@@ -77,6 +81,7 @@
   kmalloc_caches
   kmalloc_order_trace
   kmem_cache_alloc_trace
+  kmemdup
   __list_add_valid
   __list_del_entry_valid
   memcpy

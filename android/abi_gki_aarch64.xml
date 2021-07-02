@@ -920,6 +920,7 @@
       <elf-symbol name='crypto_alloc_sync_skcipher' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6adbbe42'/>
       <elf-symbol name='crypto_attr_alg_name' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9a11a0fc'/>
       <elf-symbol name='crypto_check_attr_type' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4934bdd0'/>
+      <elf-symbol name='crypto_cipher_decrypt_one' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x93f31d0'/>
       <elf-symbol name='crypto_cipher_encrypt_one' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb06c0638'/>
       <elf-symbol name='crypto_cipher_setkey' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3f7520ac'/>
       <elf-symbol name='crypto_comp_compress' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5428a43c'/>
@@ -953,6 +954,7 @@
       <elf-symbol name='crypto_remove_final' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3de9cae1'/>
       <elf-symbol name='crypto_remove_spawns' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4d5d3af8'/>
       <elf-symbol name='crypto_req_done' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfd8d285b'/>
+      <elf-symbol name='crypto_rng_reset' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7563898b'/>
       <elf-symbol name='crypto_sha1_finup' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x133d4800'/>
       <elf-symbol name='crypto_sha1_update' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x37c900ce'/>
       <elf-symbol name='crypto_shash_alg_has_setkey' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x65845d3a'/>
@@ -43880,6 +43882,12 @@
         <parameter type-id='bbaf3419' name='src' filepath='crypto/cipher.c' line='81' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+      <function-decl name='crypto_cipher_decrypt_one' mangled-name='crypto_cipher_decrypt_one' filepath='crypto/cipher.c' line='87' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='crypto_cipher_decrypt_one'>
+        <parameter type-id='75f72758' name='tfm' filepath='crypto/cipher.c' line='87' column='1'/>
+        <parameter type-id='8bff8096' name='dst' filepath='crypto/cipher.c' line='88' column='1'/>
+        <parameter type-id='bbaf3419' name='src' filepath='crypto/cipher.c' line='88' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='crypto/compress.c' language='LANG_C89'>
       <class-decl name='crypto_comp' size-in-bits='1024' is-struct='yes' visibility='default' filepath='include/linux/crypto.h' line='642' column='1' id='50982b2a'>
@@ -44001,6 +44009,12 @@
         <parameter type-id='090a6ee7' name='algs' filepath='crypto/rng.c' line='218' column='1'/>
         <parameter type-id='95e97e5e' name='count' filepath='crypto/rng.c' line='218' column='1'/>
         <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='crypto_rng_reset' mangled-name='crypto_rng_reset' filepath='crypto/rng.c' line='31' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='crypto_rng_reset'>
+        <parameter type-id='5474f420' name='tfm' filepath='crypto/rng.c' line='31' column='1'/>
+        <parameter type-id='bbaf3419' name='seed' filepath='crypto/rng.c' line='31' column='1'/>
+        <parameter type-id='f0981eeb' name='slen' filepath='crypto/rng.c' line='31' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='crypto_register_rngs' mangled-name='crypto_register_rngs' filepath='crypto/rng.c' line='198' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='crypto_register_rngs'>
         <parameter type-id='090a6ee7' name='algs' filepath='crypto/rng.c' line='198' column='1'/>
@@ -125461,20 +125475,6 @@
       <array-type-def dimensions='1' type-id='72a973b7' size-in-bits='49600' id='cec4db9b'>
         <subrange length='31' type-id='7ff19f0f' id='ae5e1d19'/>
       </array-type-def>
-      <union-decl name='xhci_trb' size-in-bits='128' visibility='default' filepath='drivers/usb/host/xhci.h' line='1345' column='1' id='73956807'>
-        <data-member access='public'>
-          <var-decl name='link' type-id='80702149' visibility='default' filepath='drivers/usb/host/xhci.h' line='1346' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='trans_event' type-id='b913a5e6' visibility='default' filepath='drivers/usb/host/xhci.h' line='1347' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='event_cmd' type-id='e5ddb711' visibility='default' filepath='drivers/usb/host/xhci.h' line='1348' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='generic' type-id='c74233fc' visibility='default' filepath='drivers/usb/host/xhci.h' line='1349' column='1'/>
-        </data-member>
-      </union-decl>
       <typedef-decl name='xhci_get_quirks_t' type-id='da11b16a' filepath='drivers/usb/host/xhci.h' line='2093' column='1' id='67f831c0'/>
       <class-decl name='xhci_hcd' size-in-bits='59392' is-struct='yes' visibility='default' filepath='drivers/usb/host/xhci.h' line='1753' column='1' id='b8f49971'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -126033,6 +126033,20 @@
           <var-decl name='sp_buffers' type-id='63e171df' visibility='default' filepath='drivers/usb/host/xhci.h' line='1658' column='1'/>
         </data-member>
       </class-decl>
+      <union-decl name='xhci_trb' size-in-bits='128' visibility='default' filepath='drivers/usb/host/xhci.h' line='1345' column='1' id='73956807'>
+        <data-member access='public'>
+          <var-decl name='link' type-id='80702149' visibility='default' filepath='drivers/usb/host/xhci.h' line='1346' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='trans_event' type-id='b913a5e6' visibility='default' filepath='drivers/usb/host/xhci.h' line='1347' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='event_cmd' type-id='e5ddb711' visibility='default' filepath='drivers/usb/host/xhci.h' line='1348' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='generic' type-id='c74233fc' visibility='default' filepath='drivers/usb/host/xhci.h' line='1349' column='1'/>
+        </data-member>
+      </union-decl>
       <class-decl name='xhci_virt_device' size-in-bits='50240' is-struct='yes' visibility='default' filepath='drivers/usb/host/xhci.h' line='1004' column='1' id='7607667c'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='slot_id' type-id='95e97e5e' visibility='default' filepath='drivers/usb/host/xhci.h' line='1005' column='1'/>
@@ -180741,17 +180755,6 @@
           <var-decl name='__pad4' type-id='7e3959e3' visibility='default' filepath='include/uapi/sound/asound.h' line='585' column='1'/>
         </data-member>
       </class-decl>
-      <union-decl name='snd_pcm_sync_id' size-in-bits='128' visibility='default' filepath='include/uapi/sound/asound.h' line='337' column='1' id='85b4e5de'>
-        <data-member access='public'>
-          <var-decl name='id' type-id='92a46553' visibility='default' filepath='include/uapi/sound/asound.h' line='338' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='id16' type-id='ff13edc1' visibility='default' filepath='include/uapi/sound/asound.h' line='339' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='id32' type-id='49580a63' visibility='default' filepath='include/uapi/sound/asound.h' line='340' column='1'/>
-        </data-member>
-      </union-decl>
       <class-decl name='snd_pcm_hardware' size-in-bits='640' is-struct='yes' visibility='default' filepath='include/sound/pcm.h' line='31' column='1' id='eacd353c'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='info' type-id='f0981eeb' visibility='default' filepath='include/sound/pcm.h' line='32' column='1'/>
@@ -180827,6 +180830,17 @@
           <var-decl name='private' type-id='eaa32e2f' visibility='default' filepath='include/sound/pcm.h' line='235' column='1'/>
         </data-member>
       </class-decl>
+      <union-decl name='snd_pcm_sync_id' size-in-bits='128' visibility='default' filepath='include/uapi/sound/asound.h' line='337' column='1' id='85b4e5de'>
+        <data-member access='public'>
+          <var-decl name='id' type-id='92a46553' visibility='default' filepath='include/uapi/sound/asound.h' line='338' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='id16' type-id='ff13edc1' visibility='default' filepath='include/uapi/sound/asound.h' line='339' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='id32' type-id='49580a63' visibility='default' filepath='include/uapi/sound/asound.h' line='340' column='1'/>
+        </data-member>
+      </union-decl>
       <typedef-decl name='snd_pcm_hw_rule_func_t' type-id='657a5cf1' filepath='include/sound/pcm.h' line='226' column='1' id='58d3b2a5'/>
       <class-decl name='snd_timer' size-in-bits='3456' is-struct='yes' visibility='default' filepath='include/sound/timer.h' line='57' column='1' id='73595e52'>
         <data-member access='public' layout-offset-in-bits='0'>
