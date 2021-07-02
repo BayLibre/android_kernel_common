@@ -1295,7 +1295,7 @@ ssize_t fuse_passthrough_write_iter(struct kiocb *iocb, struct iov_iter *from);
 ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
 
 /* backing.c */
-bool fuse_open_common_use_backing(struct file* file);
+int fuse_open_common_use_backing(struct file* file);
 int fuse_open_common_backing(struct inode *inode, struct file *file,
 			     bool isdir);
 bool fuse_release_use_backing(struct file* file);

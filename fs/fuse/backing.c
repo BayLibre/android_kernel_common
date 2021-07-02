@@ -13,7 +13,7 @@
 
 #include "../internal.h"
 
-bool fuse_open_common_use_backing(struct file* file)
+int fuse_open_common_use_backing(struct file* file)
 {
 	/*
 	 * For open, if the lookup was done passthrough there is no known use
@@ -26,8 +26,6 @@ bool fuse_open_common_use_backing(struct file* file)
 	struct fuse_inode *fuse_inode = get_fuse_inode(file->f_inode);
 	struct dentry *entry = file->f_path.dentry;
 
-	pr_debug("Paul: %px %px\n", fuse_inode->backing_inode, fuse_inode->bpf);
-
 	if (!fuse_inode || !fuse_inode->backing_inode)
 		return false;
 
@@ -35,7 +33,7 @@ bool fuse_open_common_use_backing(struct file* file)
 		.fuse_opcode = FUSE_OPEN,
 	};
 	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
-	return BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
+	return BPF_PROG_RUN(fuse_inode->bpf, &ctx);
 }
 
 int fuse_open_common_backing(struct inode *inode, struct file *file,
@@ -52,10 +50,8 @@ int fuse_open_common_backing(struct inode *inode, struct file *file,
 		return -ENOMEM;
 	file->private_data = fuse_file;
 
-	pr_debug("Paul %s\n", file->f_path.dentry->d_name.name);
 	backing_file = dentry_open(&backing_fuse_dentry->backing_path, O_RDWR,
 				   current_cred());
-	pr_debug("Paul %px\n", backing_file);
 
 	if (IS_ERR(backing_file))
 		return PTR_ERR(backing_file);
@@ -109,9 +105,21 @@ int fuse_flush_backing(struct file *file, fl_owner_t id)
 bool fuse_readpage_use_backing(struct file *file, struct page *page)
 {
 	struct fuse_file *ff = file->private_data;
+	struct fuse_inode *fuse_inode = get_fuse_inode(file->f_inode);
+	struct bpf_fuse_data_kern ctx;
 
-	pr_debug("Paul\n");
-	return ff->backing_file;
+	pr_debug("Paul %px %pxi %px\n", ff->backing_file, fuse_inode,
+		 fuse_inode ? fuse_inode->backing_inode : NULL);
+	if (!ff->backing_file || !fuse_inode || !fuse_inode->backing_inode)
+		return false;
+
+	ctx = (struct bpf_fuse_data_kern) {
+		.fuse_opcode = FUSE_READ,
+		.file_handle = ff->fh,
+		.offset = page_offset(page),
+	};
+	pr_debug("Paul %llu %llu\n", ctx.file_handle, ctx.offset);
+	return BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
 }
 
 int fuse_readpage_backing(struct file *file, struct page *page)

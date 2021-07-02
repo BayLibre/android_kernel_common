@@ -137,7 +137,11 @@ int fuse_do_open(struct fuse_mount *fm, u64 nodeid, struct file *file,
 	struct fuse_file *ff;
 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
 
-	ff = fuse_file_alloc(fm);
+	if (file->private_data) {
+		ff = file->private_data;
+		file->private_data = NULL;
+	} else
+		ff = fuse_file_alloc(fm);
 	if (!ff)
 		return -ENOMEM;
 
@@ -233,8 +237,19 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 	if (err)
 		return err;
 
-	if (fuse_open_common_use_backing(file))
+	switch (fuse_open_common_use_backing(file)) {
+	case 0:
+		break;
+	case 1:
 		return fuse_open_common_backing(inode, file, isdir);
+	case 2:
+		err = fuse_open_common_backing(inode, file, isdir);
+		if (err)
+			return err;
+		break;
+	default:
+		return -EINVAL;
+	}
 
 	if (is_wb_truncate || dax_truncate) {
 		inode_lock(inode);

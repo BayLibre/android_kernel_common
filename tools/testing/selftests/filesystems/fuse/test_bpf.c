@@ -50,15 +50,24 @@ int trace(struct bpf_fuse_data *ctx)
 	}
 
 	case FUSE_OPEN: {
-		/* only real uses backing file unconditionally */
-		int backing = strcmp(ctx->name, "real") == 0;
+		int backing = 0;
+
+		if (strcmp(ctx->name, "real") == 0)
+			backing = 1;
+
+		else if (strcmp(ctx->name, "partial") == 0)
+			backing = 2;
 
 		bpf_printk("Paul: open %s %d", ctx->name, backing);
-		return backing ? 1 : 0;
+		return backing;
 	}
 
 	case FUSE_READ: {
-		return 0;
+		bpf_printk("Paul: read %llu %llu",
+			   ctx->file_handle, ctx->offset);
+		if (ctx->file_handle == 1 && ctx->offset == 0)
+			return 0;
+		return 1;
 	}
 
 	default:

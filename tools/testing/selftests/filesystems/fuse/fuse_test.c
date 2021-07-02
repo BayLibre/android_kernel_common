@@ -434,7 +434,7 @@ int bpf_test_partial(const char *mount_dir)
 	int pid = -1;
 	int status;
 
-	TESTEQUAL(create_file(test_name, 1, 1), 0);
+	TESTEQUAL(create_file(test_name, 1, 2), 0);
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
 	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     dir_fd != -1);
@@ -446,18 +446,20 @@ int bpf_test_partial(const char *mount_dir)
 		filename = concat_file_name(mount_dir, test_name);
 		TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
 		TESTEQUAL(read(fd, data, PAGE_SIZE), PAGE_SIZE);
+		TESTEQUAL(bpf_test_trace("Paul"), 0);
 		TESTCOND(test_buffer(data, PAGE_SIZE, 2, 0));
 		TESTCOND(!test_buffer(data, PAGE_SIZE, 1, 0));
+		TESTEQUAL(read(fd, data, PAGE_SIZE), PAGE_SIZE);
+		TESTCOND(test_buffer(data, PAGE_SIZE, 1, 1));
+		TESTCOND(!test_buffer(data, PAGE_SIZE, 2, 1));
 		TESTSYSCALL(close(fd));
 		fd = -1;
-		TESTEQUAL(bpf_test_trace("Paul"), 0);
 	FUSE_DAEMON
 		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
 		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
 		DECL_FUSE(open);
 		DECL_FUSE_IN(read);
-		DECL_FUSE_IN(flush);
-		DECL_FUSE_IN(release);
+		DECL_FUSE_IN(forget);
 		uint8_t data[PAGE_SIZE];
 
 		fill_buffer(data, PAGE_SIZE, 2, 0);
@@ -469,10 +471,7 @@ int bpf_test_partial(const char *mount_dir)
 		TESTFUSEOUT(open_out);
 		TESTFUSEIN(FUSE_READ, read_in);
 		TESTFUSEOUTREAD(data, PAGE_SIZE);
-		TESTFUSEIN(FUSE_FLUSH, flush_in);
-		TESTFUSEOUTEMPTY();
-		TESTFUSEIN(FUSE_RELEASE, release_in);
-		TESTFUSEOUTEMPTY();
+		TESTFUSEIN(FUSE_FORGET, forget_in);
 	FUSE_DONE
 
 	result = TEST_SUCCESS;

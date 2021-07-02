@@ -1442,7 +1442,17 @@ static inline bool bpf_sk_lookup_run_v6(struct net *net, int protocol,
 
 struct bpf_fuse_data_kern {
 	int fuse_opcode;
-	s8 name[NAME_MAX];
+
+	union {
+		struct { /* FUSE_LOOKUP, FUSE_OPEN */
+			s8 name[NAME_MAX];
+		};
+
+		struct { /* FUSE_READ */
+			u64 file_handle;
+			u64 offset;
+		};
+	};
 };
 
 #endif /* __LINUX_FILTER_H__ */
