@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20577220_9b4a5c67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-02T21:23:20Z",
+      "side": 1,
+      "message": "I guess debug_symbols driver additions are also considered an ABI change... So we have to wait for 7.14 merge:\n\n ABI DIFFERENCES HAVE BEEN DETECTED! (RC\u003d8)\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nLeaf changes summary: 2 artifacts changed\nChanged leaf types summary: 1 leaf type changed\nRemoved/Changed/Added functions summary: 0 Removed, 1 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\n1 function with some sub-type change:\n\n  [C] \u0027function void* android_debug_symbol(android_debug_symbol)\u0027 at debug_symbols.c:93:1 has some sub-type changes:\n    CRC (modversions) changed from 0x6d742d72 to 0x9fd75310\n\n\u0027enum android_debug_symbol at android_debug_symbols.h:9:1\u0027 changed:\n  type size hasn\u0027t changed\n  3 enumerator insertions:\n    \u0027android_debug_symbol::ADS_MMAP_MIN_ADDR\u0027 value \u002715\u0027\n    \u0027android_debug_symbol::ADS_STACK_GUARD_GAP\u0027 value \u002716\u0027\n    \u0027android_debug_symbol::ADS_SYSCTL_LEGACY_VA_LAYOUT\u0027 value \u002717\u0027\n  1 enumerator change:\n    \u0027android_debug_symbol::ADS_END\u0027 from value \u002715\u0027 to \u002718\u0027 at android_debug_symbols.h:9:1\n  one impacted interface",
+      "revId": "2b9c923707caa539cae5c6cac9e3fff7000e823c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
