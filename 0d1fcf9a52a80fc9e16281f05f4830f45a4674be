@@ -64,6 +64,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57bbff4a_b665b369",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-07-02T14:38:59Z",
+      "side": 1,
+      "message": "It lives until -\u003ekill_sb() is called. It\u0027s not conditional on any binder dynamics, so it exist as long as the binderfs is mounted. I don\u0027t think there is a need to remove it sooner.",
+      "parentUuid": "de4a77f8_e1615a6a",
+      "range": {
+        "startLine": 609,
+        "startChar": 8,
+        "endLine": 609,
+        "endChar": 27
+      },
+      "revId": "0d1fcf9a52a80fc9e16281f05f4830f45a4674be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32b1baae_407b4e31",
@@ -77,6 +101,30 @@
       "writtenOn": "2021-07-02T07:17:25Z",
       "side": 1,
       "message": "if this fails, do you want to remove the directory?",
+      "range": {
+        "startLine": 620,
+        "startChar": 7,
+        "endLine": 620,
+        "endChar": 10
+      },
+      "revId": "0d1fcf9a52a80fc9e16281f05f4830f45a4674be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33ebdbee_ed6d6ba6",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-07-02T14:38:59Z",
+      "side": 1,
+      "message": "yes, this will also be done through -\u003ekill_sb() since we are propagating an error to the stack. The `mount -t binder ...` command fails.",
+      "parentUuid": "32b1baae_407b4e31",
       "range": {
         "startLine": 620,
         "startChar": 7,
