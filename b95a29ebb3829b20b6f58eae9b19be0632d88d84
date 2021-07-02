@@ -39,6 +39,30 @@
       },
       "revId": "b95a29ebb3829b20b6f58eae9b19be0632d88d84",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e6e3742_8beb97de",
+        "filename": "drivers/android/debug_symbols.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-02T17:57:26Z",
+      "side": 1,
+      "message": "The usecase is described in https://buganizer.corp.google.com/issues/191439466#comment4 and the stack_guard_gap \n symbol is used when open-coding mmap_base() in the driver.\nIMHO exporting mmap_base() might be a cleaner solution but OTOH using debug_symbols here avoids new exports...",
+      "parentUuid": "04436311_2a87bd7b",
+      "range": {
+        "startLine": 67,
+        "startChar": 33,
+        "endLine": 67,
+        "endChar": 48
+      },
+      "revId": "b95a29ebb3829b20b6f58eae9b19be0632d88d84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
