@@ -260,7 +260,7 @@ out:
 	close(fuse_dev);
 	close(fd);
 	free(filename);
-	umount("dst");
+	umount(mount_dir);
 	return result;
 }
 
@@ -364,7 +364,7 @@ out:
 	close(fuse_dev);
 	close(fd);
 	free(filename);
-	umount("dst");
+	umount(mount_dir);
 	close(dir_fd);
 	close(bpf_fd);
 	return result;
@@ -439,7 +439,7 @@ out:
 	close(fuse_dev);
 	close(fd);
 	free(filename);
-	umount("dst");
+	umount(mount_dir);
 	close(dir_fd);
 	close(bpf_fd);
 	return result;
