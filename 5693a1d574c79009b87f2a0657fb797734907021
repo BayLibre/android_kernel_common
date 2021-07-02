@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a399698_178ab90f",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5353,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-02T19:19:54Z",
+      "side": 1,
+      "message": "Do you need this hook? mem_cgroup_alloc() is called only from this function, so every time trace_android_vh_mem_cgroup_alloc is hit trace_android_vh_mem_cgroup_css_alloc will be hit as well. I think you need only one of them.\n\nAlso not that both trace_android_vh_mem_cgroup_alloc and trace_android_vh_mem_cgroup_css_alloc are only hit if allocation was successful, so you can hit trace_android_vh_mem_cgroup_id_remove without corresponding trace_android_vh_mem_cgroup_alloc/trace_android_vh_mem_cgroup_css_alloc.",
+      "range": {
+        "startLine": 5353,
+        "startChar": 1,
+        "endLine": 5353,
+        "endChar": 38
+      },
+      "revId": "5693a1d574c79009b87f2a0657fb797734907021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e020495d_7f8adba8",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5420,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-02T19:19:54Z",
+      "side": 1,
+      "message": "I think it is safer to place this hook at the very end of the function, otherwise you might assume the css is already online while css_get was not yet called.",
+      "range": {
+        "startLine": 5420,
+        "startChar": 1,
+        "endLine": 5420,
+        "endChar": 52
+      },
+      "revId": "5693a1d574c79009b87f2a0657fb797734907021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
