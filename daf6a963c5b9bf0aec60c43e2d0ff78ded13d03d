@@ -16,6 +16,24 @@
       "message": "Drivers should not be calling these functions, what is wrong with the default memory allocation functions?\n\nAnd please break this into multiple patches, one per export at the very least.  That way we can review and comment on them individually.",
       "revId": "daf6a963c5b9bf0aec60c43e2d0ff78ded13d03d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a5fc323_26b6ae9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-02T18:05:31Z",
+      "side": 1,
+      "message": "+1 for breaking into separate patches.\n\nvm_unmapped_area is needed because partner wants to modify the VMA search logic, described in https://buganizer.corp.google.com/issues/191439466#comment4\n\narch_mmap_rnd is a pretty simple function. I wonder if it can be open-coded in the driver instead of exporting it.",
+      "parentUuid": "18cb0366_de25a539",
+      "revId": "daf6a963c5b9bf0aec60c43e2d0ff78ded13d03d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
