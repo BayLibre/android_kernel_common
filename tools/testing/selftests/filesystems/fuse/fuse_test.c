@@ -30,6 +30,8 @@
 #include <include/uapi/linux/fuse.h>
 #include <include/uapi/linux/bpf.h>
 
+#define PAGE_SIZE 4096
+
 struct _test_options test_options;
 
 static char *concat_file_name(const char *dir, const char *file)
@@ -157,20 +159,27 @@ static char *setup_mount_dir()
 			TESTEQUAL(waitpid(pid, &status, 0), pid);	\
 			TESTEQUAL(status, TEST_SUCCESS);
 
-int mount_fuse(const char *mount_dir, const char *options, int *fuse_dev_ptr)
+int mount_fuse(const char *mount_dir, int bpf_fd, int dir_fd, int *fuse_dev_ptr)
 {
 	int result = TEST_FAILURE;
 	int fuse_dev = -1;
-	char mount_options[FILENAME_MAX];
+	char options[FILENAME_MAX];
 	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
 	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
 	DECL_FUSE(init);
 
 	TEST(fuse_dev = open("/dev/fuse", O_RDWR | O_CLOEXEC), fuse_dev != -1);
-	snprintf(mount_options, FILENAME_MAX,
-		 "fd=%d,user_id=0,group_id=0,rootmode=0040000%s",
-		 fuse_dev, options);
-	TESTSYSCALL(mount("ABC", mount_dir, "fuse", 0, mount_options));
+	snprintf(options, FILENAME_MAX, "fd=%d,user_id=0,group_id=0,rootmode=0040000",
+		 fuse_dev);
+	if (bpf_fd != -1)
+		snprintf(options + strlen(options),
+			 sizeof(options) - strlen(options),
+			 ",root_bpf=%d", bpf_fd);
+	if (dir_fd != -1)
+		snprintf(options + strlen(options),
+			 sizeof(options) - strlen(options),
+			 ",root_dir=%d", dir_fd);
+	TESTSYSCALL(mount("ABC", mount_dir, "fuse", 0, options));
 
 	TESTFUSEIN(FUSE_INIT, init_in);
 	TESTEQUAL(init_in->major, FUSE_KERNEL_VERSION);
@@ -197,6 +206,31 @@ out:
 	return result;
 }
 
+static void fill_buffer(uint8_t *data, size_t len, int file, int block)
+{
+	int i;
+	int seed = 7919 * file + block;
+
+	for (i = 0; i < len; i++) {
+		seed = 1103515245 * seed + 12345;
+		data[i] = (uint8_t)(seed >> (i % 13));
+	}
+}
+
+static bool test_buffer(uint8_t *data, size_t len, int file, int block)
+{
+	int i;
+	int seed = 7919 * file + block;
+
+	for (i = 0; i < len; i++) {
+		seed = 1103515245 * seed + 12345;
+		if (data[i] != (uint8_t)(seed >> (i % 13)))
+			return false;
+	}
+
+	return true;
+}
+
 int basic_test(const char *mount_dir)
 {
 	const char *test_name = "test";
@@ -216,7 +250,7 @@ int basic_test(const char *mount_dir)
 	int pid = -1;
 	int status;
 
-	TESTEQUAL(mount_fuse(mount_dir, "", &fuse_dev), 0);
+	TESTEQUAL(mount_fuse(mount_dir, -1, -1, &fuse_dev), 0);
 	FUSE_ACTION
 		char data[256];
 
@@ -333,7 +367,6 @@ int bpf_test_real(const char *mount_dir)
 	int result = TEST_FAILURE;
 	int bpf_fd = -1;
 	int dir_fd = -1;
-	char options[256];
 	int fuse_dev = -1;
 	char *filename = NULL;
 	int fd = -1;
@@ -348,9 +381,7 @@ int bpf_test_real(const char *mount_dir)
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
 	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     dir_fd != -1);
-	snprintf(options, sizeof(options), ",root_bpf=%d,root_dir=%d",
-		 bpf_fd, dir_fd);
-	TESTEQUAL(mount_fuse(mount_dir, options, &fuse_dev), 0);
+	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, dir_fd, &fuse_dev), 0);
 
 	filename = concat_file_name(mount_dir, test_name);
 	TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
@@ -370,43 +401,53 @@ out:
 	return result;
 }
 
+
+static int create_file(const char *name, int index, size_t blocks)
+{
+	int result = TEST_FAILURE;
+	int fd = -1;
+	int i;
+	uint8_t data[PAGE_SIZE];
+
+	TEST(fd = creat(name, 0777), fd != -1);
+	for (i = 0; i < blocks; ++i) {
+		fill_buffer(data, PAGE_SIZE, index, i);
+		TESTEQUAL(write(fd, data, sizeof(data)), PAGE_SIZE);
+	}
+	TESTSYSCALL(close(fd));
+	result = TEST_SUCCESS;
+
+out:
+	close(fd);
+	return result;
+}
+
 int bpf_test_partial(const char *mount_dir)
 {
 	const char *test_name = "partial";
-	const char *file_data = "Wobbles weeble and they do    fall down";
-	const char *test_data = "Weebles wobble but they don't fall down";
 	int result = TEST_FAILURE;
 	int bpf_fd = -1;
 	int dir_fd = -1;
-	char options[256];
 	int fuse_dev = -1;
 	char *filename = NULL;
 	int fd = -1;
 	int pid = -1;
 	int status;
 
-	TEST(fd = creat(test_name, 0777), fd != -1);
-	TESTEQUAL(write(fd, file_data, strlen(file_data)), strlen(file_data));
-	TESTSYSCALL(close(fd));
-	fd = -1;
-
+	TESTEQUAL(create_file(test_name, 1, 1), 0);
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
 	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     dir_fd != -1);
-	snprintf(options, sizeof(options), ",root_bpf=%d,root_dir=%d",
-		 bpf_fd, dir_fd);
-	TESTEQUAL(mount_fuse(mount_dir, options, &fuse_dev), 0);
+	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, dir_fd, &fuse_dev), 0);
 
 	FUSE_ACTION
-		char read_buffer[256] = {};
-		ssize_t bytes_read;
+		uint8_t data[PAGE_SIZE];
 
 		filename = concat_file_name(mount_dir, test_name);
 		TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
-		bytes_read = read(fd, read_buffer, strlen(test_data));
-		printf("Read %lu bytes: %s\n", bytes_read, read_buffer);
-		TESTEQUAL(bytes_read, strlen(test_data));
-		TESTEQUAL(strcmp(test_data, read_buffer), 0);
+		TESTEQUAL(read(fd, data, PAGE_SIZE), PAGE_SIZE);
+		TESTCOND(test_buffer(data, PAGE_SIZE, 2, 0));
+		TESTCOND(!test_buffer(data, PAGE_SIZE, 1, 0));
 		TESTSYSCALL(close(fd));
 		fd = -1;
 		TESTEQUAL(bpf_test_trace("Paul"), 0);
@@ -417,7 +458,9 @@ int bpf_test_partial(const char *mount_dir)
 		DECL_FUSE_IN(read);
 		DECL_FUSE_IN(flush);
 		DECL_FUSE_IN(release);
+		uint8_t data[PAGE_SIZE];
 
+		fill_buffer(data, PAGE_SIZE, 2, 0);
 		TESTFUSEIN(FUSE_OPEN, open_in);
 		*open_out = (struct fuse_open_out) {
 			.fh = 1,
@@ -425,7 +468,7 @@ int bpf_test_partial(const char *mount_dir)
 		};
 		TESTFUSEOUT(open_out);
 		TESTFUSEIN(FUSE_READ, read_in);
-		TESTFUSEOUTREAD(test_data, strlen(test_data));
+		TESTFUSEOUTREAD(data, PAGE_SIZE);
 		TESTFUSEIN(FUSE_FLUSH, flush_in);
 		TESTFUSEOUTEMPTY();
 		TESTFUSEIN(FUSE_RELEASE, release_in);
