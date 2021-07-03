@@ -58,6 +58,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ef816f8_bba23ecb",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5353,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-07-03T07:07:01Z",
+      "side": 1,
+      "message": "Yes, you are right.\nI updated it, please help review it.\n\nThanks",
+      "parentUuid": "6a399698_178ab90f",
+      "range": {
+        "startLine": 5353,
+        "startChar": 1,
+        "endLine": 5353,
+        "endChar": 38
+      },
+      "revId": "5693a1d574c79009b87f2a0657fb797734907021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e020495d_7f8adba8",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-07-02T19:19:54Z",
       "side": 1,
       "message": "I think it is safer to place this hook at the very end of the function, otherwise you might assume the css is already online while css_get was not yet called.",
+      "range": {
+        "startLine": 5420,
+        "startChar": 1,
+        "endLine": 5420,
+        "endChar": 52
+      },
+      "revId": "5693a1d574c79009b87f2a0657fb797734907021",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5487ca2_9df77e06",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5420,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-07-03T07:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e020495d_7f8adba8",
       "range": {
         "startLine": 5420,
         "startChar": 1,
