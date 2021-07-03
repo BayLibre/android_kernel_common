@@ -323,6 +323,8 @@ struct mem_cgroup {
 	spinlock_t event_list_lock;
 #endif /* CONFIG_MEMCG_V1 */
 
+	ANDROID_OEM_DATA_ARRAY(1, 2);
+
 	struct mem_cgroup_per_node *nodeinfo[];
 };
 
