@@ -692,6 +692,9 @@ int snd_usb_enable_audio_stream(struct snd_usb_substream *subs,
 	int ret;
 
 	if (!enable) {
+		if (snd_vendor_support_cpu_suspend(subs->dev))
+			snd_usb_autoresume(subs->stream->chip);
+
 		if (subs->interface >= 0) {
 			usb_set_interface(subs->dev, subs->interface, 0);
 			subs->altset_idx = 0;
@@ -751,6 +754,9 @@ int snd_usb_enable_audio_stream(struct snd_usb_substream *subs,
 
 	subs->interface = fmt->iface;
 	subs->altset_idx = fmt->altset_idx;
+
+	if (snd_vendor_support_cpu_suspend(subs->dev))
+		snd_usb_autosuspend(subs->stream->chip);
 
 	return 0;
 }
@@ -1532,6 +1538,10 @@ static int snd_usb_pcm_open(struct snd_pcm_substream *substream)
 		if (ret)
 			snd_usb_autosuspend(subs->stream->chip);
 	}
+
+	if (!ret && snd_vendor_support_cpu_suspend(subs->dev))
+		snd_usb_autosuspend(subs->stream->chip);
+
 	return ret;
 }
 
@@ -1546,6 +1556,9 @@ static int snd_usb_pcm_close(struct snd_pcm_substream *substream)
 					    direction);
 	if (ret)
 		return ret;
+
+	if (snd_vendor_support_cpu_suspend(subs->dev))
+		snd_usb_autoresume(subs->stream->chip);
 
 	snd_media_stop_pipeline(subs);
 
