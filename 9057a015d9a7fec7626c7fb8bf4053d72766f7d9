@@ -22,6 +22,30 @@
       },
       "revId": "9057a015d9a7fec7626c7fb8bf4053d72766f7d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01a2e45e_40bca6f6",
+        "filename": "android/abi_gki_aarch64_mtk",
+        "patchSetId": 1
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1247389
+      },
+      "writtenOn": "2021-07-06T01:08:35Z",
+      "side": 1,
+      "message": "Yes. mtk implement a composite usb driver with \"mass storage\" and virtual comport. The reason is to keep PC usb driver compatible although mass storage is no use.\n\nAnd this is mtk proprietary feature. Thus mtk cannot build it as built-in driver.",
+      "parentUuid": "073c7c64_92907e52",
+      "range": {
+        "startLine": 658,
+        "startChar": 2,
+        "endLine": 662,
+        "endChar": 24
+      },
+      "revId": "9057a015d9a7fec7626c7fb8bf4053d72766f7d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
