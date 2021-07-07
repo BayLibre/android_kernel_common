@@ -298,7 +298,7 @@ void __dump_page_pinner(struct page *page)
 	}
 }
 
-void __page_pinner_migration_failed(struct page *page)
+void __page_pinner_record(struct page *page)
 {
 	struct page_ext *page_ext = lookup_page_ext(page);
 	struct page_pinner *page_pinner;
@@ -326,7 +326,7 @@ void __page_pinner_migration_failed(struct page *page)
 	acf_pinner.pinner[idx].pfn = page_to_pfn(page);
 	spin_unlock_irqrestore(&acf_pinner.lock, flags);
 }
-EXPORT_SYMBOL(__page_pinner_migration_failed);
+EXPORT_SYMBOL(__page_pinner_record);
 
 void __page_pinner_mark_migration_failed_pages(struct list_head *page_list)
 {
