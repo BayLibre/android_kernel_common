@@ -24,14 +24,19 @@ struct page_pinner {
 };
 
 struct captured_pinner {
+	enum pp_failure_state state;
 	depot_stack_handle_t handle;
 	union {
 		s64 ts_usec;
 		s64 elapsed;
 	};
-	int page_mt;
-	unsigned long page_flags;
+
+	/* struct page fields */
 	unsigned long pfn;
+	int count;
+	int mapcount;
+	struct address_space *mapping;
+	unsigned long flags;
 };
 
 struct longterm_pinner {
@@ -117,9 +122,11 @@ static noinline depot_stack_handle_t save_stack(gfp_t flags)
 static void capture_page_state(struct page *page,
 			       struct captured_pinner *record)
 {
-	record->page_flags = page->flags;
-	record->page_mt = get_pageblock_migratetype(page);
+	record->flags = page->flags;
+	record->mapping = page_mapping(page);
 	record->pfn = page_to_pfn(page);
+	record->count = page_count(page);
+	record->mapcount = page_mapcount(page);
 }
 
 static void check_longterm_pin(struct page_pinner *page_pinner,
@@ -141,6 +148,7 @@ static void check_longterm_pin(struct page_pinner *page_pinner,
 
 	record.handle = page_pinner->handle;
 	record.elapsed = delta;
+	record.state = PP_FAILURE_PUT;
 	capture_page_state(page, &record);
 
 	spin_lock_irqsave(&lt_pinner.lock, flags);
@@ -168,6 +176,7 @@ void __reset_page_pinner(struct page *page, unsigned int order, bool free)
 
 		page_pinner = get_page_pinner(page_ext);
 		if (free) {
+			__page_pinner_record(page, PP_FAILURE_FREE);
 			atomic_set(&page_pinner->count, 0);
 			__clear_bit(PAGE_EXT_PINNER_MIGRATION_FAILED, &page_ext->flags);
 		} else {
@@ -226,10 +235,18 @@ print_page_pinner(bool longterm, char __user *buf, size_t count, struct captured
 			       record->elapsed);
 	} else {
 		unsigned long rem_usec = do_div(record->ts_usec, 1000000);
+		char *state = "";
+
+		if (record->state == PP_FAILURE_DETECT)
+			state = "detected";
+		else if (record->state == PP_FAILURE_PUT)
+			state = "put";
+		else if (record->state == PP_FAILURE_FREE)
+			state = "freed";
 
 		ret = snprintf(kbuf, count,
-			       "Page pinned ts [%5lu.%06lu]\n",
-			       (unsigned long)record->ts_usec, rem_usec);
+			       "Page pinned ts [%5lu.%06lu] state %s\n",
+			       (unsigned long)record->ts_usec, rem_usec, state);
 	}
 
 	if (ret >= count)
@@ -237,11 +254,12 @@ print_page_pinner(bool longterm, char __user *buf, size_t count, struct captured
 
 	/* Print information relevant to grouping pages by mobility */
 	ret += snprintf(kbuf + ret, count - ret,
-			"PFN %lu Block %lu type %s Flags %#lx(%pGp)\n",
+			"PFN 0x%lx Block %lu count %d mapcount %d mapping %pS Flags %#lx(%pGp)\n",
 			record->pfn,
 			record->pfn >> pageblock_order,
-			migratetype_names[record->page_mt],
-			record->page_flags, &record->page_flags);
+			record->count, record->mapcount,
+			record->mapping,
+			record->flags, &record->flags);
 
 	if (ret >= count)
 		goto err;
@@ -313,7 +331,7 @@ void __dump_page_pinner(struct page *page)
 	}
 }
 
-void __page_pinner_record(struct page *page)
+void __page_pinner_record(struct page *page, enum pp_failure_state state)
 {
 	struct page_ext *page_ext = lookup_page_ext(page);
 	struct page_pinner *page_pinner;
@@ -330,6 +348,7 @@ void __page_pinner_record(struct page *page)
 
 	record.handle = save_stack(GFP_NOWAIT|__GFP_NOWARN);
 	record.ts_usec = ktime_to_us(ktime_get_boottime());
+	record.state = state;
 	capture_page_state(page, &record);
 
 	spin_lock_irqsave(&acf_pinner.lock, flags);
@@ -353,6 +372,7 @@ void __page_pinner_mark_migration_failed_pages(struct list_head *page_list)
 		if (unlikely(!page_ext))
 			continue;
 		__set_bit(PAGE_EXT_PINNER_MIGRATION_FAILED, &page_ext->flags);
+		__page_pinner_record(page, PP_FAILURE_DETECT);
 	}
 }
 
