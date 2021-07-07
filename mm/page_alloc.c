@@ -3296,6 +3296,8 @@ static void free_unref_page_commit(struct page *page, unsigned long pfn)
 	struct per_cpu_pages *pcp;
 	int migratetype;
 
+	page_pinner_free_page(page);
+
 	migratetype = get_pcppage_migratetype(page);
 	__count_vm_event(PGFREE);
 
