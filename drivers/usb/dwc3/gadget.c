@@ -27,6 +27,8 @@
 #include "gadget.h"
 #include "io.h"
 
+#include <trace/hooks/dwc3.h>
+
 #define DWC3_ALIGN_FRAME(d, n)	(((d)->frame_number + ((d)->interval * (n))) \
 					& ~((d)->interval - 1))
 
@@ -646,6 +648,7 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
 	int			ret;
 
 	if (!(dep->flags & DWC3_EP_ENABLED)) {
+		trace_android_vh___dwc3_gadget_ep_enable(dep, action);
 		ret = dwc3_gadget_start_config(dep);
 		if (ret)
 			return ret;
