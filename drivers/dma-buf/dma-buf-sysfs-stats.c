@@ -23,6 +23,21 @@ struct dma_buf_stats_attribute {
 };
 #define to_dma_buf_stats_attr(x) container_of(x, struct dma_buf_stats_attribute, attr)
 
+struct attachment_work_info {
+	struct list_head list;
+	struct dma_buf_attach_sysfs_entry *sysfs_entry;
+	struct device *attachment_dev;
+	union {
+		struct dma_buf *buf;
+		unsigned long uid;
+	};
+	bool is_setup_work;
+};
+
+static LIST_HEAD(attachment_work_list);
+static DEFINE_SPINLOCK(work_lock);
+static struct work_struct attachment_work_struct;
+
 static ssize_t dma_buf_stats_attribute_show(struct kobject *kobj,
 					    struct attribute *attr,
 					    char *buf)
@@ -143,26 +158,101 @@ static struct kobj_type dma_buf_attach_ktype = {
 	.default_groups = dma_buf_attach_stats_default_groups,
 };
 
-void dma_buf_attach_stats_teardown(struct dma_buf_attachment *attach)
+static void dma_buf_attach_stats_do_teardown_work(struct dma_buf_attach_sysfs_entry *sysfs_entry,
+						  struct device *attachment_dev,
+						  struct dma_buf *buf)
 {
-	struct dma_buf_attach_sysfs_entry *sysfs_entry;
+	if (!sysfs_entry->is_valid)
+		goto teardown_invalid_entry;
 
-	sysfs_entry = attach->sysfs_entry;
-	if (!sysfs_entry)
-		return;
-
-	sysfs_delete_link(&sysfs_entry->kobj, &attach->dev->kobj, "device");
+	sysfs_delete_link(&sysfs_entry->kobj, &attachment_dev->kobj, "device");
 
 	kobject_del(&sysfs_entry->kobj);
+
+teardown_invalid_entry:
 	kobject_put(&sysfs_entry->kobj);
+	dma_buf_put(buf);
+	put_device(attachment_dev);
+}
+
+static void dma_buf_attach_stats_do_setup_work(struct dma_buf_attach_sysfs_entry *sysfs_entry,
+					       struct device *attachment_dev,
+					       unsigned int uid)
+{
+	int ret;
+
+	ret = kobject_add(&sysfs_entry->kobj, NULL, "%u", uid);
+	if (ret)
+		return;
+
+	ret = sysfs_create_link(&sysfs_entry->kobj, &attachment_dev->kobj,
+				"device");
+	if (ret)
+		goto link_err;
+
+	sysfs_entry->is_valid = true;
+	return;
+
+link_err:
+	kobject_del(&sysfs_entry->kobj);
+}
+
+static void process_attachment_workqueue(struct work_struct *work)
+{
+	struct attachment_work_info *attachment_work, *tmp;
+	unsigned long flags;
+
+	spin_lock_irqsave(&work_lock, flags);
+	list_for_each_entry_safe(attachment_work, tmp,
+				 &attachment_work_list, list) {
+		list_del(&attachment_work->list);
+		spin_unlock_irqrestore(&work_lock, flags);
+
+		if (attachment_work->is_setup_work)
+			dma_buf_attach_stats_do_setup_work(attachment_work->sysfs_entry,
+							   attachment_work->attachment_dev,
+							   attachment_work->uid);
+		else
+			dma_buf_attach_stats_do_teardown_work(attachment_work->sysfs_entry,
+							      attachment_work->attachment_dev,
+							      attachment_work->buf);
+
+		kfree(attachment_work);
+		spin_lock_irqsave(&work_lock, flags);
+	}
+	spin_unlock_irqrestore(&work_lock, flags);
+}
+
+void dma_buf_attach_stats_teardown(struct dma_buf_attachment *attach)
+{
+	struct attachment_work_info *attachment_work;
+	unsigned long flags;
+
+	attachment_work = kmalloc(sizeof(struct dma_buf_attach_sysfs_entry),
+				  GFP_KERNEL);
+	if (!attachment_work)
+		return;
+
+	attachment_work->is_setup_work = false;
+	attachment_work->sysfs_entry = attach->sysfs_entry;
+	attachment_work->attachment_dev = attach->dev;
+	attachment_work->buf = attach->dmabuf;
+
+	spin_lock_irqsave(&work_lock, flags);
+	list_add(&attachment_work->list, &attachment_work_list);
+	spin_unlock_irqrestore(&work_lock, flags);
+
+	queue_work(system_wq, &attachment_work_struct);
 }
 
 int dma_buf_attach_stats_setup(struct dma_buf_attachment *attach,
 			       unsigned int uid)
 {
-	struct dma_buf_attach_sysfs_entry *sysfs_entry;
-	int ret;
 	struct dma_buf *dmabuf;
+	struct dma_buf_attach_sysfs_entry *sysfs_entry;
+	struct attachment_work_info *attachment_work;
+	unsigned long flags;
+	int ret = 0;
 
 	if (!attach)
 		return -EINVAL;
@@ -174,30 +264,43 @@ int dma_buf_attach_stats_setup(struct dma_buf_attachment *attach,
 	if (!sysfs_entry)
 		return -ENOMEM;
 
+	attachment_work = kmalloc(sizeof(struct dma_buf_attach_sysfs_entry),
+				  GFP_KERNEL);
+	if (!attachment_work) {
+		ret = -ENOMEM;
+		goto free_attachment_work;
+	}
+
+	attachment_work->is_setup_work = true;
+	attachment_work->sysfs_entry = sysfs_entry;
+	attachment_work->attachment_dev = attach->dev;
+	attachment_work->uid = uid;
+
+	/*
+	 * The corresponding puts for dmabuf and attach->dev are in
+	 * dma_buf_attach_stats_do_teardown_work()
+	 */
+	get_dma_buf(dmabuf);
+	get_device(attach->dev);
+
 	sysfs_entry->kobj.kset = dmabuf->sysfs_entry->attach_stats_kset;
-
 	attach->sysfs_entry = sysfs_entry;
+	kobject_init(&sysfs_entry->kobj, &dma_buf_attach_ktype);
 
-	ret = kobject_init_and_add(&sysfs_entry->kobj, &dma_buf_attach_ktype,
-				   NULL, "%u", uid);
-	if (ret)
-		goto kobj_err;
+	spin_lock_irqsave(&work_lock, flags);
+	list_add(&attachment_work->list, &attachment_work_list);
+	spin_unlock_irqrestore(&work_lock, flags);
 
-	ret = sysfs_create_link(&sysfs_entry->kobj, &attach->dev->kobj,
-				"device");
-	if (ret)
-		goto link_err;
+	queue_work(system_wq, &attachment_work_struct);
 
 	return 0;
 
-link_err:
-	kobject_del(&sysfs_entry->kobj);
-kobj_err:
-	kobject_put(&sysfs_entry->kobj);
-	attach->sysfs_entry = NULL;
+free_attachment_work:
+	kfree(attachment_work);
 
 	return ret;
 }
+
 void dma_buf_stats_teardown(struct dma_buf *dmabuf)
 {
 	struct dma_buf_sysfs_entry *sysfs_entry;
@@ -240,6 +343,8 @@ int dma_buf_init_sysfs_statistics(void)
 		kset_unregister(dma_buf_stats_kset);
 		return -ENOMEM;
 	}
+
+	INIT_WORK(&attachment_work_struct, process_attachment_workqueue);
 
 	return 0;
 }

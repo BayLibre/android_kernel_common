@@ -503,6 +503,7 @@ struct dma_buf_attachment {
 	struct dma_buf_attach_sysfs_entry {
 		struct kobject kobj;
 		unsigned int map_counter;
+		bool is_valid;
 	} *sysfs_entry;
 #endif
 };
