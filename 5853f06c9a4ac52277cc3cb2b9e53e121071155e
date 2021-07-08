@@ -181,6 +181,30 @@
       },
       "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80624d3d_cce59cf7",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1165870
+      },
+      "writtenOn": "2021-07-08T01:59:06Z",
+      "side": 1,
+      "message": "As IP or function limits, some memory is reverved for other purpose (such as share with MCU)and cannot be accessed in linux. So the whole memory linux can access has some holes. It is splited into several memory partition and cannot be used as larger contigious memory. So the memory is enough but CMA size limited. We need to enlarge CONFIG_FORCE_MAX_ZONEORDER to avoid failure when GPU allocate memory.",
+      "parentUuid": "517b973f_a2999547",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
