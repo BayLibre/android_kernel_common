@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3d26254_a7c4995f",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5452,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-08T00:55:27Z",
+      "side": 1,
+      "message": "In here I think you actually want to call this vendor hook at the very beginning of mem_cgroup_css_offline like you did before so that you can stop using any data which might be destroyed by mem_cgroup_css_offline. So original placement of this call was correct.",
+      "range": {
+        "startLine": 5452,
+        "startChar": 1,
+        "endLine": 5452,
+        "endChar": 53
+      },
+      "revId": "0a5738e157c7846f3e5e7c3d630eed67bf74defb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
