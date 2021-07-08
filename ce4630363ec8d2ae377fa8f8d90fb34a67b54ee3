@@ -24,6 +24,26 @@
       "robotId": "ayeaye",
       "robotRunId": "AR00000000000012939072",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/1759910?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "addadf41_35ee376b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-07-08T11:30:16Z",
+      "side": 1,
+      "message": "Commit needs to contain a properly formatted Bug: or Fixes: line\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 383418276 android-build.ayeaye-python-dispatcher_20210707.05_p0",
+      "revId": "ce4630363ec8d2ae377fa8f8d90fb34a67b54ee3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000012939072",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1759910?revision\u003d1",
       "fixSuggestions": [
         {
           "fixId": "e6322e79_ee322738",
@@ -52,6 +72,49 @@
         "id": 1757831
       },
       "writtenOn": "2021-07-08T11:30:11Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Robert Lee \u003clerobert@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 383418276 android-build.ayeaye-python-dispatcher_20210707.05_p0",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "ce4630363ec8d2ae377fa8f8d90fb34a67b54ee3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000012939072",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1759910?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "9f225a01_76a9242f",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 11,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Robert Lee \u003clerobert@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "167151db_ce48462d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-07-08T11:30:16Z",
       "side": 1,
       "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Robert Lee \u003clerobert@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 383418276 android-build.ayeaye-python-dispatcher_20210707.05_p0",
       "range": {
