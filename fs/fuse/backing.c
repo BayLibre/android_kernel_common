@@ -13,7 +13,7 @@
 
 #include "../internal.h"
 
-int fuse_open_common_use_backing(struct file* file)
+int fuse_open_common_use_backing(struct file* file, bool isdir)
 {
 	/*
 	 * For open, if the lookup was done passthrough there is no known use
@@ -30,7 +30,7 @@ int fuse_open_common_use_backing(struct file* file)
 		return false;
 
 	ctx = (struct bpf_fuse_data_kern) {
-		.fuse_opcode = FUSE_OPEN,
+		.fuse_opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN,
 	};
 	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
 	return BPF_PROG_RUN(fuse_inode->bpf, &ctx);

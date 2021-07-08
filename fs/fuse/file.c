@@ -237,7 +237,7 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 	if (err)
 		return err;
 
-	switch (fuse_open_common_use_backing(file)) {
+	switch (fuse_open_common_use_backing(file, isdir)) {
 	case 0:
 		break;
 	case 1:
