@@ -120,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1659e486_4016be3c",
+        "filename": "include/linux/skbuff.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-07-08T03:34:24Z",
+      "side": 1,
+      "message": "ANDROID_OEM_DATA_ARRAY() was added for Android 12 kernels. Please see https://docs.partner.android.com/partners/guides/gki/kernel-code#adding-vendor-fields-to-structures.\n\nBasically, if you are an OEM and want to reserve data fields in a struct, you must use the OEM variant. If you use the VENDOR variant then they are reserved for SoC vendors.\n\nKMI freeze is July 14. So just do it.",
+      "parentUuid": "61ce5f88_6b39faac",
+      "revId": "5e6ffc8e266b69baab534167127ab891fa06c619",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf3156f1_e9939134",
         "filename": "include/net/netfilter/nf_conntrack.h",
         "patchSetId": 3
