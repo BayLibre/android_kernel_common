@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86d308d3_b94e2b94",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5253,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-08T22:23:59Z",
+      "side": 1,
+      "message": "Sorry, I missed this before. I think this one should be also at the beginning of the function, similar to how trace_android_vh_mem_cgroup_css_offline() is placed due to the same reasoning (you want to notify the module before actually releasing the resources).",
+      "range": {
+        "startLine": 5253,
+        "startChar": 1,
+        "endLine": 5253,
+        "endChar": 33
+      },
+      "revId": "683b0631ec00cf3473feac7ce62584e5a5da8b94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
