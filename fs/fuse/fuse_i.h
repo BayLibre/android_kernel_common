@@ -1310,5 +1310,7 @@ bool fuse_readahead_use_backing(struct readahead_control *rac);
 bool fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
 struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 				   unsigned int flags);
-
+bool fuse_getattr_use_backing(const struct path *path);
+int fuse_getattr_backing(const struct path *path, struct kstat *stat,
+			u32 request_mask, unsigned int flags);
 #endif /* _FS_FUSE_I_H */

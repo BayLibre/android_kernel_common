@@ -1844,6 +1844,9 @@ static int fuse_getattr(const struct path *path, struct kstat *stat,
 	struct inode *inode = d_inode(path->dentry);
 	struct fuse_conn *fc = get_fuse_conn(inode);
 
+	if (fuse_getattr_use_backing(path))
+		return fuse_getattr_backing(path, stat, request_mask, flags);
+
 	if (fuse_is_bad(inode))
 		return -EIO;
 

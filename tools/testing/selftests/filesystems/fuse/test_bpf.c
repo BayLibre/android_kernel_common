@@ -49,6 +49,65 @@ int trace(struct bpf_fuse_data *ctx)
 		return backing ? 1 : 0;
 	}
 
+	case FUSE_GETATTR: {
+		/* real and partial use backing file */
+		int backing = strcmp(ctx->name, "real") == 0 ||
+			strcmp(ctx->name, "partial") == 0;
+
+		bpf_printk("Paul: getattr %s %d", ctx->name, backing);
+		return backing ? 1 : 0;
+	}
+
+	case FUSE_OPEN: {
+		int backing = 0;
+
+		if (strcmp(ctx->name, "real") == 0)
+			backing = 1;
+
+		else if (strcmp(ctx->name, "partial") == 0)
+			backing = 2;
+
+		bpf_printk("Paul: open %s %d", ctx->name, backing);
+		return backing;
+	}
+
+	case FUSE_READ: {
+		bpf_printk("Paul: read %llu %llu",
+			   ctx->file_handle, ctx->offset);
+		if (ctx->file_handle == 1 && ctx->offset == 0)
+			return 0;
+		return 1;
+	}
+
+	default:
+		return 0;
+	}
+}
+
+SEC("test_daemon")
+
+/* return 1 to use backing fs, 0 to pass to usermode */
+int trace2(struct bpf_fuse_data *ctx)
+{
+	switch (ctx->fuse_opcode) {
+	case FUSE_LOOKUP: {
+		/* real and partial use backing file */
+		int backing = strcmp(ctx->name, "real") == 0 ||
+			strcmp(ctx->name, "partial") == 0;
+
+		bpf_printk("Paul: lookup %s %d", ctx->name, backing);
+		return backing ? 1 : 0;
+	}
+
+	case FUSE_GETATTR: {
+		/* real and partial use backing file */
+		int backing = strcmp(ctx->name, "/") == 0 ||
+			strcmp(ctx->name, "partial") == 0;
+
+		bpf_printk("Paul: getattr %s %d", ctx->name, backing);
+		return backing ? 1 : 0;
+	}
+
 	case FUSE_OPEN: {
 		int backing = 0;
 

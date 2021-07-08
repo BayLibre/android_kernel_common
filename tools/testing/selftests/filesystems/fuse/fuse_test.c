@@ -4,207 +4,7 @@
  */
 #define _GNU_SOURCE
 
-#include "test_framework.h"
-
-#include <alloca.h>
-#include <dirent.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <poll.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-
-#include <sys/mman.h>
-#include <sys/mount.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include <linux/random.h>
-#include <linux/stat.h>
-#include <linux/unistd.h>
-
-#include <include/uapi/linux/fuse.h>
-#include <include/uapi/linux/bpf.h>
-
-#define PAGE_SIZE 4096
-
-struct _test_options test_options;
-
-static char *concat_file_name(const char *dir, const char *file)
-{
-	char full_name[FILENAME_MAX] = "";
-
-	if (snprintf(full_name, ARRAY_SIZE(full_name), "%s/%s", dir, file) < 0)
-		return NULL;
-	return strdup(full_name);
-}
-
-static char *setup_mount_dir()
-{
-	struct stat st;
-	char *current_dir = getcwd(NULL, 0);
-	char *mount_dir = concat_file_name(current_dir, "incfs-mount-dir");
-
-	free(current_dir);
-	if (stat(mount_dir, &st) == 0) {
-		if (S_ISDIR(st.st_mode))
-			return mount_dir;
-
-		ksft_print_msg("%s is a file, not a dir.\n", mount_dir);
-		return NULL;
-	}
-
-	if (mkdir(mount_dir, 0777)) {
-		ksft_print_msg("Can't create mount dir.");
-		return NULL;
-	}
-
-	return mount_dir;
-}
-
-#define TESTFUSEIN(_opcode, in_struct)					\
-	do {								\
-		struct fuse_in_header *in_header =			\
-				(struct fuse_in_header *)bytes_in;	\
-		ssize_t res = read(fuse_dev, &bytes_in,			\
-			sizeof(bytes_in));				\
-									\
-		TESTEQUAL(in_header->opcode, _opcode);			\
-		TESTEQUAL(res, sizeof(*in_header) + sizeof(*in_struct));\
-	} while(false)
-
-/* Special case lookup since it is asymmetric */
-#define TESTFUSELOOKUP(expected)					\
-	do {								\
-		struct fuse_in_header *in_header =			\
-				(struct fuse_in_header *)bytes_in;	\
-		char *name = (char *) (bytes_in + sizeof(*in_header));	\
-									\
-		TESTEQUAL(read(fuse_dev, &bytes_in, sizeof(bytes_in)),	\
-			  sizeof(*in_header) + strlen(expected) + 1);	\
-		TESTEQUAL(in_header->opcode, FUSE_LOOKUP);		\
-		TESTCOND(!strcmp(name, expected));			\
-	} while(false)
-
-#define TESTFUSEOUT(out_struct)						\
-	do {								\
-		struct fuse_in_header *in_header =			\
-				(struct fuse_in_header *)bytes_in;	\
-		struct fuse_out_header *out_header =			\
-			(struct fuse_out_header *)bytes_out;		\
-									\
-		*out_header = (struct fuse_out_header) {		\
-			.len = sizeof(*out_header) +			\
-				sizeof(*out_struct),			\
-			.unique = in_header->unique,			\
-		};							\
-		TESTEQUAL(write(fuse_dev, bytes_out, out_header->len),	\
-			  out_header->len);				\
-	} while(false)
-
-#define TESTFUSEOUTEMPTY()						\
-	do {								\
-		struct fuse_in_header *in_header =			\
-				(struct fuse_in_header *)bytes_in;	\
-		struct fuse_out_header *out_header =			\
-			(struct fuse_out_header *)bytes_out;		\
-									\
-		*out_header = (struct fuse_out_header) {		\
-			.len = sizeof(*out_header),			\
-			.unique = in_header->unique,			\
-		};							\
-		TESTEQUAL(write(fuse_dev, bytes_out, out_header->len),	\
-			  out_header->len);				\
-	} while(false)
-
-#define TESTFUSEOUTREAD(data, length)					\
-	do {								\
-		struct fuse_in_header *in_header =			\
-				(struct fuse_in_header *)bytes_in;	\
-		struct fuse_out_header *out_header =			\
-			(struct fuse_out_header *)bytes_out;		\
-									\
-		*out_header = (struct fuse_out_header) {		\
-			.len = sizeof(*out_header) + length,		\
-			.unique = in_header->unique,			\
-		};							\
-		memcpy(bytes_out + sizeof(*out_header), data, length);	\
-		TESTEQUAL(write(fuse_dev, bytes_out, out_header->len),	\
-			  out_header->len);				\
-	} while(false)
-
-#define DECL_FUSE_IN(name)						\
-	struct fuse_##name##_in *name##_in =				\
-		(struct fuse_##name##_in *)				\
-		(bytes_in + sizeof(struct fuse_in_header));
-
-#define DECL_FUSE_OUT(name)						\
-	struct fuse_##name##_out *name##_out =				\
-		(struct fuse_##name##_out *)				\
-		(bytes_out + sizeof(struct fuse_out_header))
-
-#define DECL_FUSE(name)							\
-	DECL_FUSE_IN(name);						\
-	DECL_FUSE_OUT(name)
-
-#define FUSE_ACTION	TEST(pid = fork(), pid != -1);			\
-			if (pid) {
-#define FUSE_DAEMON	} else {
-#define FUSE_DONE		exit(TEST_SUCCESS);			\
-			}						\
-			TESTEQUAL(waitpid(pid, &status, 0), pid);	\
-			TESTEQUAL(status, TEST_SUCCESS);
-
-int mount_fuse(const char *mount_dir, int bpf_fd, int dir_fd, int *fuse_dev_ptr)
-{
-	int result = TEST_FAILURE;
-	int fuse_dev = -1;
-	char options[FILENAME_MAX];
-	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-	DECL_FUSE(init);
-
-	TEST(fuse_dev = open("/dev/fuse", O_RDWR | O_CLOEXEC), fuse_dev != -1);
-	snprintf(options, FILENAME_MAX, "fd=%d,user_id=0,group_id=0,rootmode=0040000",
-		 fuse_dev);
-	if (bpf_fd != -1)
-		snprintf(options + strlen(options),
-			 sizeof(options) - strlen(options),
-			 ",root_bpf=%d", bpf_fd);
-	if (dir_fd != -1)
-		snprintf(options + strlen(options),
-			 sizeof(options) - strlen(options),
-			 ",root_dir=%d", dir_fd);
-	TESTSYSCALL(mount("ABC", mount_dir, "fuse", 0, options));
-
-	TESTFUSEIN(FUSE_INIT, init_in);
-	TESTEQUAL(init_in->major, FUSE_KERNEL_VERSION);
-	TESTEQUAL(init_in->minor, FUSE_KERNEL_MINOR_VERSION);
-	*init_out = (struct fuse_init_out) {
-		.major = FUSE_KERNEL_VERSION,
-		.minor = FUSE_KERNEL_MINOR_VERSION,
-		.max_readahead = 4096,
-		.flags = 0,
-		.max_background = 0,
-		.congestion_threshold = 0,
-		.max_write = 4096,
-		.time_gran = 1000,
-		.max_pages = 12,
-		.map_alignment = 4096,
-	};
-	TESTFUSEOUT(init_out);
-
-	*fuse_dev_ptr = fuse_dev;
-	fuse_dev = -1;
-	result = TEST_SUCCESS;
-out:
-	close(fuse_dev);
-	return result;
-}
+#include "test_fuse.h"
 
 static void fill_buffer(uint8_t *data, size_t len, int file, int block)
 {
@@ -231,7 +31,46 @@ static bool test_buffer(uint8_t *data, size_t len, int file, int block)
 	return true;
 }
 
-int basic_test(const char *mount_dir)
+static int create_file(const char *name, int index, size_t blocks)
+{
+	int result = TEST_FAILURE;
+	int fd = -1;
+	int i;
+	uint8_t data[PAGE_SIZE];
+
+	TEST(fd = creat(name, 0777), fd != -1);
+	for (i = 0; i < blocks; ++i) {
+		fill_buffer(data, PAGE_SIZE, index, i);
+		TESTEQUAL(write(fd, data, sizeof(data)), PAGE_SIZE);
+	}
+	TESTSYSCALL(close(fd));
+	result = TEST_SUCCESS;
+
+out:
+	close(fd);
+	return result;
+}
+
+static int bpf_test_trace(const char *substr)
+{
+	int result = TEST_FAILURE;
+	int tp = -1;
+	char trace_buffer[256] = {};
+	ssize_t bytes_read;
+	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
+		       O_RDONLY | O_CLOEXEC), tp != -1);
+	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
+	     bytes_read > 0);
+	if (test_options.verbose)
+		ksft_print_msg("%s\n", trace_buffer);
+	TESTNE(strstr(trace_buffer, substr), NULL);
+	result = TEST_SUCCESS;
+out:
+	close(tp);
+	return result;
+}
+
+static int basic_test(const char *mount_dir)
 {
 	const char *test_name = "test";
 	const char *test_data = "data";
@@ -298,69 +137,7 @@ out:
 	return result;
 }
 
-int install_bpf(const char *name, int *fd)
-{
-	int result = TEST_FAILURE;
-	char path[PATH_MAX] = {};
-	char *last_slash;
-	struct stat st;
-	uint64_t *filter = NULL;
-	int filter_fd = -1;
-	union bpf_attr bpf_attr;
-	char log[65536];
-
-	TESTNE(readlink("/proc/self/exe", path, PATH_MAX), -1);
-	TEST(last_slash = strrchr(path, '/'), last_slash);
-	strcpy(last_slash + 1, name);
-	TESTSYSCALL(stat(path, &st));
-	TEST(filter = malloc(st.st_size), filter);
-	TEST(filter_fd = open(path, O_RDONLY | O_CLOEXEC), filter_fd != -1);
-	TESTEQUAL(read(filter_fd, filter, st.st_size), st.st_size);
-	if (filter[st.st_size / sizeof(filter[0]) - 1] == 0)
-		st.st_size -= sizeof(filter[0]);
-	bpf_attr = (union bpf_attr) {
-		.prog_type = BPF_PROG_TYPE_FUSE,
-		.insn_cnt = st.st_size / 8,
-		.insns = ptr_to_u64(filter),
-		.license = ptr_to_u64("GPL"),
-		.log_buf = ptr_to_u64(log),
-		.log_size = sizeof(log),
-		.log_level = 2,
-	};
-	*fd = syscall(__NR_bpf, BPF_PROG_LOAD, &bpf_attr, sizeof(bpf_attr));
-	if (test_options.verbose)
-		ksft_print_msg("%s\n", log);
-	if (*fd == -1 && errno == ENOSPC)
-		ksft_print_msg("bpf log size too small!\n");
-	TESTNE(*fd, -1);
-
-	result = TEST_SUCCESS;
-out:
-	close(filter_fd);
-	free(filter);
-	return result;
-}
-
-int bpf_test_trace(const char *substr)
-{
-	int result = TEST_FAILURE;
-	int tp = -1;
-	char trace_buffer[256] = {};
-	ssize_t bytes_read;
-	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
-		       O_RDONLY | O_CLOEXEC), tp != -1);
-	TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
-	     bytes_read > 0);
-	if (test_options.verbose)
-		ksft_print_msg("%s\n", trace_buffer);
-	TESTNE(strstr(trace_buffer, substr), NULL);
-	result = TEST_SUCCESS;
-out:
-	close(tp);
-	return result;
-}
-
-int bpf_test_real(const char *mount_dir)
+static int bpf_test_real(const char *mount_dir)
 {
 	const char *test_name = "real";
 	const char *test_data = "Weebles wobble but they don't fall down";
@@ -402,27 +179,7 @@ out:
 }
 
 
-static int create_file(const char *name, int index, size_t blocks)
-{
-	int result = TEST_FAILURE;
-	int fd = -1;
-	int i;
-	uint8_t data[PAGE_SIZE];
-
-	TEST(fd = creat(name, 0777), fd != -1);
-	for (i = 0; i < blocks; ++i) {
-		fill_buffer(data, PAGE_SIZE, index, i);
-		TESTEQUAL(write(fd, data, sizeof(data)), PAGE_SIZE);
-	}
-	TESTSYSCALL(close(fd));
-	result = TEST_SUCCESS;
-
-out:
-	close(fd);
-	return result;
-}
-
-int bpf_test_partial(const char *mount_dir)
+static int bpf_test_partial(const char *mount_dir)
 {
 	const char *test_name = "partial";
 	int result = TEST_FAILURE;
@@ -443,7 +200,8 @@ int bpf_test_partial(const char *mount_dir)
 	FUSE_ACTION
 		uint8_t data[PAGE_SIZE];
 
-		filename = concat_file_name(mount_dir, test_name);
+		TEST(filename = concat_file_name(mount_dir, test_name),
+		     filename);
 		TESTERR(fd = open(filename, O_RDONLY | O_CLOEXEC), fd != -1);
 		TESTEQUAL(read(fd, data, PAGE_SIZE), PAGE_SIZE);
 		TESTEQUAL(bpf_test_trace("Paul"), 0);
@@ -487,7 +245,36 @@ out:
 	return result;
 }
 
-int parse_options(int argc, char *const *argv)
+static int bpf_test_attrs(const char *mount_dir)
+{
+	const char *test_name = "partial";
+	int result = TEST_FAILURE;
+	int bpf_fd = -1;
+	int dir_fd = -1;
+	int fuse_dev = -1;
+	char *filename = NULL;
+	struct stat st;
+
+	TESTEQUAL(create_file(test_name, 1, 2), 0);
+	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
+	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     dir_fd != -1);
+	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, dir_fd, &fuse_dev), 0);
+
+	TEST(filename = concat_file_name(mount_dir, test_name), filename);
+	TESTSYSCALL(stat(filename, &st));
+
+	result = TEST_SUCCESS;
+out:
+	close(fuse_dev);
+	free(filename);
+	umount(mount_dir);
+	close(dir_fd);
+	close(bpf_fd);
+	return result;
+}
+
+static int parse_options(int argc, char *const *argv)
 {
 	signed char c;
 
@@ -517,7 +304,7 @@ struct test_case {
 	const char *name;
 };
 
-void run_one_test(const char *mount_dir, struct test_case *test_case)
+static void run_one_test(const char *mount_dir, struct test_case *test_case)
 {
 	ksft_print_msg("Running %s\n", test_case->name);
 	if (test_case->pfunc(mount_dir) == TEST_SUCCESS)
@@ -562,6 +349,7 @@ int main(int argc, char *argv[])
 		MAKE_TEST(basic_test),
 		MAKE_TEST(bpf_test_real),
 		MAKE_TEST(bpf_test_partial),
+		MAKE_TEST(bpf_test_attrs),
 	};
 #undef MAKE_TEST
 
