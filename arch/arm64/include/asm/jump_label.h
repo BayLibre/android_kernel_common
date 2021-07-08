@@ -18,6 +18,22 @@
 static __always_inline bool arch_static_branch(struct static_key *key,
 					       bool branch)
 {
+#ifdef BUILD_FIPS140_KO
+	/*
+	 * The fips140 module doesn't support jump labels, as they would
+	 * invalidate the hash of the .text section.  So we must override them
+	 * with regular branches.
+	 *
+	 * arch_static_branch{,_jump}() must return "was the branch taken?".
+	 * The 'branch' argument is true if the branch is taken in the
+	 * "disabled" case.  So the correct logic is (enabled && !branch) ||
+	 * (!enabled && branch), a.k.a. enabled ^ branch.
+	 *
+	 * This should use atomic_read(&key->enabled), but atomic.h indirectly
+	 * includes this header.  So we have to use READ_ONCE() directly.
+	 */
+	return (bool)READ_ONCE(key->enabled.counter) ^ branch;
+#else
 	asm_volatile_goto(
 		"1:	nop					\n\t"
 		 "	.pushsection	__jump_table, \"aw\"	\n\t"
@@ -30,11 +46,15 @@ static __always_inline bool arch_static_branch(struct static_key *key,
 	return false;
 l_yes:
 	return true;
+#endif /* !BUILD_FIPS140_KO */
 }
 
 static __always_inline bool arch_static_branch_jump(struct static_key *key,
 						    bool branch)
 {
+#ifdef BUILD_FIPS140_KO
+	return arch_static_branch(key, branch);
+#else
 	asm_volatile_goto(
 		"1:	b		%l[l_yes]		\n\t"
 		 "	.pushsection	__jump_table, \"aw\"	\n\t"
@@ -47,6 +67,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key,
 	return false;
 l_yes:
 	return true;
+#endif /* !BUILD_FIPS140_KO */
 }
 
 #endif  /* __ASSEMBLY__ */
