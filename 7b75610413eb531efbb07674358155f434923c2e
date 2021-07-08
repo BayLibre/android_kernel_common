@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db8f265e_a1bd160d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1872722
+      },
+      "writtenOn": "2021-07-08T10:02:48Z",
+      "side": 1,
+      "message": "Hi Matthias,\n\nRequest Help~ \n\nWhen I trigger the ABI build locally, the update_symbol_list didn\u0027t generate the android/abi_gki_aarch64.xml. So I update android/abi_gki_aarch64_generic only. (I am confused about it. In my expectation, it should generate the xml)\n\nMethod:\n./update_symbol_list.sh --prepare-aosp-abi 143292884\n\nI see that the build system shows the error. Is it normal? \nDo you have any idea about what the problem is, please?\n\nThanks~\nLopy\n\n\n",
+      "revId": "7b75610413eb531efbb07674358155f434923c2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
