@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5780b66_d5328221",
+        "filename": "net/core/dev.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-07-08T23:48:08Z",
+      "side": 1,
+      "message": "why a list_head when it isn\u0027t used as a list_head anywhere. How about:\n```\n\tstruct list_head *vendor_pt \u003d NULL;\n\n\ttrace_android_vh_ptype_head(pt, \u0026vendor_pt);\n\tif (vendor_pt)\n\t\treturn vendor_pt;\n```",
+      "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
