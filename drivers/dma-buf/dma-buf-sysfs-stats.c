@@ -59,13 +59,36 @@ static ssize_t size_show(struct dma_buf *dmabuf,
 	return sysfs_emit(buf, "%zu\n", dmabuf->size);
 }
 
+static ssize_t attachments_show(struct dma_buf *dmabuf,
+				 struct dma_buf_stats_attribute *attr,
+				 char *buf)
+{
+	ssize_t ret;
+	struct dma_buf_attachment *attachment;
+
+	ret = dma_resv_lock_interruptible(dmabuf->resv, NULL);
+	if (ret)
+		return ret;
+
+	list_for_each_entry(attachment, &dmabuf->attachments, node) {
+			ret += sysfs_emit_at(buf, ret, "%s ",
+					     dev_name(attachment->dev));
+	}
+	dma_resv_unlock(dmabuf->resv);
+
+	ret += sysfs_emit_at(buf, ret, "\n");
+	return ret;
+}
+
 static struct dma_buf_stats_attribute exporter_name_attribute =
 	__ATTR_RO(exporter_name);
 static struct dma_buf_stats_attribute size_attribute = __ATTR_RO(size);
+static struct dma_buf_stats_attribute attachments_attribute = __ATTR_RO(attachments);
 
 static struct attribute *dma_buf_stats_default_attrs[] = {
 	&exporter_name_attribute.attr,
 	&size_attribute.attr,
+	&attachments_attribute.attr,
 	NULL,
 };
 ATTRIBUTE_GROUPS(dma_buf_stats_default);
