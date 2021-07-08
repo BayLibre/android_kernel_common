@@ -15,6 +15,11 @@
 
 #include <linux/bitops.h>
 #include <linux/compiler.h>
+<<<<<<< HEAD   (4fb413 ANDROID: abi_gki_aarch64_qcom: Update qcom abi symbol list)
+=======
+#include <linux/android_vendor.h>
+#include <linux/android_kabi.h>
+>>>>>>> CHANGE (280c9b ANDROID: GKI: add vendor padding variable in struct nf_conn)
 
 #include <linux/netfilter/nf_conntrack_common.h>
 #include <linux/netfilter/nf_conntrack_tcp.h>
@@ -119,6 +124,14 @@ struct nf_conn {
 
 	/* Storage reserved for other modules, must be the last member */
 	union nf_conntrack_proto proto;
+<<<<<<< HEAD   (4fb413 ANDROID: abi_gki_aarch64_qcom: Update qcom abi symbol list)
+=======
+
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
+
+	ANDROID_OEM_DATA(1);
+>>>>>>> CHANGE (280c9b ANDROID: GKI: add vendor padding variable in struct nf_conn)
 };
 
 static inline struct nf_conn *
