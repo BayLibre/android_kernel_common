@@ -223,6 +223,30 @@
       },
       "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eca9783_6799eedf",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-08T21:57:37Z",
+      "side": 1,
+      "message": "So, if I understand your reply correctly, you can\u0027t increase your CMA area because there are holes in the entire address space created by reserved areas and CMA needs contiguous memory that does not have any holes in it. So the size of your CMA area is limited by the largest contiguous area between these holes.\nIn this case, how about defining several CMA areas in your device tree? This would allow you to increase CMA.\n\nAnother possible alternative would be to dynamically preallocate several 14-order pages for this special use, which is viable if you the number of such buffers in use at the same time is limited.\n\nEither way, I don\u0027t think increasing CONFIG_FORCE_MAX_ZONEORDER would really help much because buddy allocator easily breaks larger page order blocks to satisfy smaller order allocations and in high memory pressure case it should exhaust its high-order pages much fasted than CMA.",
+      "parentUuid": "80624d3d_cce59cf7",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
