@@ -16,6 +16,24 @@
       "message": "Hi Greg,\n\nThe patch on DMA-BUF sysfs statistics is still in drm-misc-next. Since Qualcomm has reported a perf regression on one of their drivers due to sysfs file creation in the DMA-BUF attach/detach path, I would like to delete the attachment statistics(a subset of the DMA-BUF sysfs statistics). Could you please take a look if this looks ok to you? If so, I will send it out to the list as well(and modify this commit message to FROMLIST). The details of the perf regression is summarized here: https://b.corp.google.com/issues/192621117#comment10\n\nThank you.\n\nRegards,\nHridya",
       "revId": "54a4cda9e5a40f45ed1495c5ab40cfa6df63b93c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69436525_5743c606",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-08T18:08:06Z",
+      "side": 1,
+      "message": "Makes sense to me, sorry to see them go.",
+      "parentUuid": "8ab503b1_2896e13b",
+      "revId": "54a4cda9e5a40f45ed1495c5ab40cfa6df63b93c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
