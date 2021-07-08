@@ -51,6 +51,24 @@
       "parentUuid": "24ed7a07_902ad258",
       "revId": "7b75610413eb531efbb07674358155f434923c2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1d3f069_fbc607b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-07-08T10:50:19Z",
+      "side": 1,
+      "message": "update_symbol_list.sh is only updating the symbol list I assume. You need to do a full ABI update.\n\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh --update\n\nhttps://source.android.com/devices/architecture/kernel/abi-monitor#update-abi-rep",
+      "parentUuid": "db8f265e_a1bd160d",
+      "revId": "7b75610413eb531efbb07674358155f434923c2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
