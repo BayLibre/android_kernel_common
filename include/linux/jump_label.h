@@ -82,7 +82,7 @@ extern bool static_key_initialized;
 				    "%s(): static key '%pS' used before call to jump_label_init()", \
 				    __func__, (key))
 
-#ifdef CONFIG_JUMP_LABEL
+#if defined(CONFIG_JUMP_LABEL) && !defined(BUILD_FIPS140_KO)
 
 struct static_key {
 	atomic_t enabled;
@@ -113,7 +113,7 @@ struct static_key {
 #endif	/* CONFIG_JUMP_LABEL */
 #endif /* __ASSEMBLY__ */
 
-#ifdef CONFIG_JUMP_LABEL
+#if defined(CONFIG_JUMP_LABEL) && !defined(BUILD_FIPS140_KO)
 #include <asm/jump_label.h>
 
 #ifndef __ASSEMBLY__
@@ -188,7 +188,7 @@ enum jump_label_type {
 
 struct module;
 
-#ifdef CONFIG_JUMP_LABEL
+#if defined(CONFIG_JUMP_LABEL) && !defined(BUILD_FIPS140_KO)
 
 #define JUMP_TYPE_FALSE		0UL
 #define JUMP_TYPE_TRUE		1UL
@@ -393,7 +393,7 @@ extern bool ____wrong_branch_error(void);
 	static_key_count((struct static_key *)x) > 0;				\
 })
 
-#ifdef CONFIG_JUMP_LABEL
+#if defined(CONFIG_JUMP_LABEL) && !defined(BUILD_FIPS140_KO)
 
 /*
  * Combine the right initial value (type) with the right branch order
