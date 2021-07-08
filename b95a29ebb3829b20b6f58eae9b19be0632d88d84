@@ -63,6 +63,30 @@
       },
       "revId": "b95a29ebb3829b20b6f58eae9b19be0632d88d84",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2d88b4f_fdd640b7",
+        "filename": "drivers/android/debug_symbols.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2021-07-08T04:51:31Z",
+      "side": 1,
+      "message": "in mm/util.c, the function mmap_base is static, so we can\u0027t export the symbol.",
+      "parentUuid": "3e6e3742_8beb97de",
+      "range": {
+        "startLine": 67,
+        "startChar": 33,
+        "endLine": 67,
+        "endChar": 48
+      },
+      "revId": "b95a29ebb3829b20b6f58eae9b19be0632d88d84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
