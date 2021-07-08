@@ -105,6 +105,24 @@
       "parentUuid": "2ba810f2_a04762e9",
       "revId": "7aef62023112df662537d4e2a07d2b7f1311193e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84572429_a1ffbd33",
+        "filename": "fs/pstore/ram.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1869925
+      },
+      "writtenOn": "2021-07-08T17:56:51Z",
+      "side": 1,
+      "message": "I see that of_reserved_mem_lookup api is used by many upstream drivers. why you think it is not safe?\nIf you see these changes, OEMS or other partner can reserve memory anywhere in the memory map and it is really good to follow this approach.\n\nI dont see any good reason to maintain backward compatibility in this case. If you still insist that, I dont have option 😊 other than uploading new patch set.",
+      "parentUuid": "f47700b1_33211c97",
+      "revId": "7aef62023112df662537d4e2a07d2b7f1311193e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
