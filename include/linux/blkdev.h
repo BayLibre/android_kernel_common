@@ -25,6 +25,7 @@
 #include <linux/srcu.h>
 #include <linux/uuid.h>
 #include <linux/xarray.h>
+#include <linux/android_vendor.h>
 
 struct module;
 struct request_queue;
@@ -1426,6 +1427,7 @@ struct block_device_operations {
 	 * driver.
 	 */
 	int (*alternative_gpt_sector)(struct gendisk *disk, sector_t *sector);
+	ANDROID_OEM_DATA(1);
 };
 
 #ifdef CONFIG_COMPAT
