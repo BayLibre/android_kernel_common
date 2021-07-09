@@ -1313,4 +1313,6 @@ struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 bool fuse_getattr_use_backing(const struct path *path);
 int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 			u32 request_mask, unsigned int flags);
+bool fuse_readdir_use_backing(struct file *file);
+int fuse_readdir_backing(struct file *file, struct dir_context *ctx);
 #endif /* _FS_FUSE_I_H */

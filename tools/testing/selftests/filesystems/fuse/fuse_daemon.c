@@ -36,8 +36,9 @@ int main(int argc, char *argv[])
 {
 	int result = TEST_FAILURE;
 	char *mount_dir = NULL;
+	char *src_dir = NULL;
 	int bpf_fd = -1;
-	int dir_fd = -1;
+	int src_fd = -1;
 	int fuse_dev = -1;
 
 	if (geteuid() != 0)
@@ -45,11 +46,12 @@ int main(int argc, char *argv[])
 
 	display_trace();
 
-	TEST(mount_dir = setup_mount_dir(), mount_dir);
+	TEST(src_dir = setup_mount_dir("fd-src"), src_dir);
+	TEST(mount_dir = setup_mount_dir("fd-dst"), mount_dir);
 	TESTEQUAL(install_bpf("test_daemon.raw", &bpf_fd), 0);
-	TEST(dir_fd = open(".", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
-	     dir_fd != -1);
-	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, dir_fd, &fuse_dev), 0);
+	TEST(src_fd = open("fd-src", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     src_fd != -1);
+	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
 	for(;;) {
 		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
@@ -57,7 +59,8 @@ int main(int argc, char *argv[])
 			(struct fuse_in_header *)bytes_in;
 		ssize_t res = read(fuse_dev, &bytes_in,	sizeof(bytes_in));
 
-		TESTNE(res, -1);
+		if (res == -1)
+			break;
 		printf("opcode is %d\n", in_header->opcode);
 	}
 
@@ -65,6 +68,11 @@ int main(int argc, char *argv[])
 
 out:
 	umount2(mount_dir, MNT_FORCE);
+	delete_dir_tree(mount_dir);
 	rmdir(mount_dir);
+	free(mount_dir);
+	delete_dir_tree(src_dir);
+	rmdir(src_dir);
+	free(src_dir);
 	return result;
 }

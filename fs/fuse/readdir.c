@@ -568,6 +568,9 @@ int fuse_readdir(struct file *file, struct dir_context *ctx)
 	struct inode *inode = file_inode(file);
 	int err;
 
+	if (fuse_readdir_use_backing(file))
+		return fuse_readdir_backing(file, ctx);
+
 	if (fuse_is_bad(inode))
 		return -EIO;
 

@@ -108,7 +108,6 @@ static void fuse_free_inode(struct inode *inode)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
-	iput(fi->backing_inode);
 	mutex_destroy(&fi->mutex);
 	kfree(fi->forget);
 #ifdef CONFIG_FUSE_DAX
@@ -121,6 +120,7 @@ static void fuse_evict_inode(struct inode *inode)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
+	iput(fi->backing_inode);
 	truncate_inode_pages_final(&inode->i_data);
 	clear_inode(inode);
 	if (inode->i_sb->s_flags & SB_ACTIVE) {

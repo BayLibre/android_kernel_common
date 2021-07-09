@@ -98,7 +98,7 @@ bool fuse_flush_use_backing(struct file* file)
 
 int fuse_flush_backing(struct file *file, fl_owner_t id)
 {
-	pr_debug("Paul\n");
+	pr_debug("TODO: Paul\n");
 	return 0;
 }
 
@@ -108,8 +108,6 @@ bool fuse_readpage_use_backing(struct file *file, struct page *page)
 	struct fuse_inode *fuse_inode = get_fuse_inode(file->f_inode);
 	struct bpf_fuse_data_kern ctx;
 
-	pr_debug("Paul %px %pxi %px\n", ff->backing_file, fuse_inode,
-		 fuse_inode ? fuse_inode->backing_inode : NULL);
 	if (!ff->backing_file || !fuse_inode || !fuse_inode->backing_inode)
 		return false;
 
@@ -118,7 +116,6 @@ bool fuse_readpage_use_backing(struct file *file, struct page *page)
 		.file_handle = ff->fh,
 		.offset = page_offset(page),
 	};
-	pr_debug("Paul %llu %llu\n", ctx.file_handle, ctx.offset);
 	return BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
 }
 
@@ -141,7 +138,6 @@ bool fuse_readahead_use_backing(struct readahead_control *rac)
 {
 	struct fuse_file *ff = rac->file->private_data;
 
-	pr_debug("Paul\n");
 	if (!ff)
 		return false;
 
@@ -151,7 +147,7 @@ bool fuse_readahead_use_backing(struct readahead_control *rac)
 
 void fuse_readahead_backing(struct readahead_control *rac)
 {
-	pr_debug("Paul\n");
+	pr_debug("\n");
 	return;
 }
 
@@ -228,11 +224,9 @@ bool fuse_getattr_use_backing(const struct path *path)
 	struct dentry *entry = path->dentry;
 	struct fuse_inode *fuse_inode = get_fuse_inode(entry->d_inode);
 
-	pr_debug("Paul\n");
 	if (!fuse_inode || !fuse_inode->bpf)
 		return false;
 
-	pr_debug("Paul\n");
 	ctx = (struct bpf_fuse_data_kern) {
 		.fuse_opcode = FUSE_GETATTR,
 	};
@@ -246,7 +240,28 @@ int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 	struct path *backing_path =
 		&get_fuse_dentry(path->dentry)->backing_path;
 
-	pr_debug("Paul\n");
 	return vfs_getattr(backing_path, stat, request_mask, flags);
+}
+
+bool fuse_readdir_use_backing(struct file *file)
+{
+	struct bpf_fuse_data_kern ctx = {
+		.fuse_opcode = FUSE_READDIR,
+	};
+	struct fuse_file *ff = file->private_data;
+	struct file *backing_dir = ff->backing_file;
+	struct fuse_inode *fi = get_fuse_inode(file->f_inode);
+
+	strlcpy(ctx.name, file->f_path.dentry->d_name.name, sizeof(ctx.name));
+	pr_debug("Paul: %s\n", ctx.name);
+	return BPF_PROG_RUN(fi->bpf, &ctx) == 1;
+}
+
+int fuse_readdir_backing(struct file *file, struct dir_context *ctx)
+{
+	struct fuse_file *ff = file->private_data;
+	struct file *backing_dir = ff->backing_file;
+
+	return iterate_dir(backing_dir, ctx);
 }
 

@@ -47,11 +47,11 @@ static inline char *concat_file_name(const char *dir, const char *file)
 	return strdup(full_name);
 }
 
-static inline char *setup_mount_dir()
+static inline char *setup_mount_dir(const char *name)
 {
 	struct stat st;
 	char *current_dir = getcwd(NULL, 0);
-	char *mount_dir = concat_file_name(current_dir, "incfs-mount-dir");
+	char *mount_dir = concat_file_name(current_dir, name);
 
 	free(current_dir);
 	if (stat(mount_dir, &st) == 0) {
@@ -68,6 +68,42 @@ static inline char *setup_mount_dir()
 	}
 
 	return mount_dir;
+}
+
+static int delete_dir_tree(const char *dir_path)
+{
+	DIR *dir = NULL;
+	struct dirent *dp;
+	int result = 0;
+
+	dir = opendir(dir_path);
+	if (!dir) {
+		result = -errno;
+		goto out;
+	}
+
+	while ((dp = readdir(dir))) {
+		char *full_path;
+
+		if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
+			continue;
+
+		full_path = concat_file_name(dir_path, dp->d_name);
+		if (dp->d_type == DT_DIR)
+			result = delete_dir_tree(full_path);
+		else
+			result = unlink(full_path);
+		free(full_path);
+		if (result)
+			goto out;
+	}
+
+out:
+	if (dir)
+		closedir(dir);
+	if (!result)
+		rmdir(dir_path);
+	return result;
 }
 
 #define TESTFUSEIN(_opcode, in_struct)					\

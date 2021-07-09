@@ -350,7 +350,7 @@ static int fuse_release(struct inode *inode, struct file *file)
 	struct fuse_conn *fc = get_fuse_conn(inode);
 
 	if (fuse_release_use_backing(file))
-		return fuse_release_backing(inode, file);
+		fuse_release_backing(inode, file);
 
 	/* see fuse_vma_close() for !writeback_cache case */
 	if (fc->writeback_cache)

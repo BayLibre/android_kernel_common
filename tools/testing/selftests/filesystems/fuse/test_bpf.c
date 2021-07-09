@@ -131,6 +131,16 @@ int trace2(struct bpf_fuse_data *ctx)
 		return backing;
 	}
 
+	case FUSE_READDIR: {
+		int backing = 0;
+
+		if (strcmp(ctx->name, "/") == 0)
+			backing = 1;
+
+		bpf_printk("Paul: readdir %s %d", ctx->name, backing);
+		return backing;
+	}
+
 	case FUSE_READ: {
 		bpf_printk("Paul: read %llu %llu",
 			   ctx->file_handle, ctx->offset);
