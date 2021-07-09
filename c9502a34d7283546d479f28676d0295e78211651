@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ffc0df_7604bbc8",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-09T02:08:36Z",
+      "side": 1,
+      "message": "This will modify record-\u003ets_usec... I think for the way you are currently using print_page_pinner() with temporary record this is not an issue but I think we better add a comment at the top of this function warning that it modifies \"record\" parameter, so only a temporary copy should be passed in this parameter.",
+      "range": {
+        "startLine": 228,
+        "startChar": 34,
+        "endLine": 228,
+        "endChar": 49
+      },
+      "revId": "c9502a34d7283546d479f28676d0295e78211651",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
