@@ -70,6 +70,24 @@
       "parentUuid": "d6e8e42a_0a436c42",
       "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae77b5f_7bbbd0b4",
+        "filename": "net/core/dev.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-07-09T02:05:03Z",
+      "side": 1,
+      "message": "Yes, with my suggestion, you\u0027d change the parameter list for the hook to:\n```\nDECLARE_HOOK(android_vh_ptype_head,\n\tTP_PROTO(const struct packet_type *pt, struct list_head **vendor_pt),\n\tTP_ARGS(pt, vendor_pt));\n```\n(\"struct list_head **\" instead of \"struct list_head *\")\n\nThen you\u0027d change your handler to:\n```\nstruct list_head ptype_log __read_mostly;\nvoid drd_ptype_head(const struct packet_type *pt, struct list_head **vendor_pt)\n{\n\n\tif (pt-\u003etype \u003d\u003d htons(ETH_P_LOG))\n\t\t*vendor_pt \u003d \u0026ptype_log;\n}\n```",
+      "parentUuid": "f534d343_624d10a0",
+      "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
