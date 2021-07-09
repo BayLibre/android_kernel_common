@@ -16,6 +16,24 @@
       "message": "why a list_head when it isn\u0027t used as a list_head anywhere. How about:\n```\n\tstruct list_head *vendor_pt \u003d NULL;\n\n\ttrace_android_vh_ptype_head(pt, \u0026vendor_pt);\n\tif (vendor_pt)\n\t\treturn vendor_pt;\n```",
       "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06339190_b0de3185",
+        "filename": "net/core/dev.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1728636
+      },
+      "writtenOn": "2021-07-09T00:40:30Z",
+      "side": 1,
+      "message": "When our logging is working, we add additional list to \u0027pt\u0027, and return it by \u0027vendor_pt\u0027 at \u0027vh_ptype_head\u0027 function.\nThen \u0027vendor_pt\u0027 will have not null and be returned.\n\nIn other hand, when logging is not working, \u0027vendor_pt\u0027 will maintain null pointer.\nThen original code path and \u0027pt\u0027 will be used.",
+      "parentUuid": "a5780b66_d5328221",
+      "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
