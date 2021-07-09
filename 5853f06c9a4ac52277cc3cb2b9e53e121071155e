@@ -247,6 +247,30 @@
       },
       "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124382e9_30319099",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1140781
+      },
+      "writtenOn": "2021-07-09T04:30:13Z",
+      "side": 1,
+      "message": "Hello Suren,\n\nThanks for your feedback.\nWe enlarge the CONFIG_FORCE_MAX_ZONEORDER to 14 based on below request.\nNormally these buffers are used for VPU, GPU 2D or DPU 2D which only acceptable physical continue memory as VPU and DPU2D not MMU can\u0027t handle virtual memory.\nAnd these buffers will allocated from CMA first, but when CMA use up it will allocate memory from system through alloc_pages(Gfp, order) API, configure CMA to larger it may still has the risk of CMA use up for corner case, currently we set a suitable CMA size based on the total DDR memory size. So we request to enlarge the default CONFIG_FORCE_MAX_ZONEORDER to 14 (default 11 is too small, only support 4MB continue memory) which allow allocate large continue memory from system memory. Based on my test I also found configure CONFIG_FORCE_MAX_ZONEORDER to 14 help memory fragmentation issue when keep monkey test several days (while true;do monkey --pct-syskeys 0 -v 100000;done)\n1080p RGBA buffer need 8MB memory (request CONFIG_FORCE_MAX_ZONEORDER 12).\n4K YUV buffer need 16MB memory (request CONFIG_FORCE_MAX_ZONEORDER 13).\n4K RGBA buffer need 32MB memory (request CONFIG_FORCE_MAX_ZONEORDER 14).",
+      "parentUuid": "2eca9783_6799eedf",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
