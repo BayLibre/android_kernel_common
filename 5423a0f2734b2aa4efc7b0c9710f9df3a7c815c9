@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ce3142_dded6baf",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1544,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-09T14:04:10Z",
+      "side": 1,
+      "message": "how can this be NULL?\n\nAnd what prevents it from changing before you grab the lock below?",
+      "range": {
+        "startLine": 1544,
+        "startChar": 0,
+        "endLine": 1544,
+        "endChar": 11
+      },
+      "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
