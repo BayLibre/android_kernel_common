@@ -271,6 +271,30 @@
       },
       "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a9f04f_83c278e4",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-09T16:46:01Z",
+      "side": 1,
+      "message": "This solution can not be accepted in GKI because it will affect all other vendors and changing max zone order will have noticeable side-effects (CMA uses it and with more orders there will be increase in splits/merges in the buddy allocator).\nThat\u0027s why I\u0027m suggesting alternative solutions in my comments. Please review and consider them instead of reiterating your request.\nAlso, please follow up on the questions asked in the associated bug: https://b.corp.google.com/issues/193071440#comment5",
+      "parentUuid": "124382e9_30319099",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "5853f06c9a4ac52277cc3cb2b9e53e121071155e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
