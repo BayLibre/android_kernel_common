@@ -34,6 +34,24 @@
       "parentUuid": "a5780b66_d5328221",
       "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6e8e42a_0a436c42",
+        "filename": "net/core/dev.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-07-09T01:05:15Z",
+      "side": 1,
+      "message": "With my suggested change (vendor_pt is a pointer, not a list_head), don\u0027t you get that exact behavior? I don\u0027t see why you need a dummy list_head. In your module, you can have the list_head and then update \"vendor_pt\" with your private list.next.",
+      "parentUuid": "06339190_b0de3185",
+      "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
