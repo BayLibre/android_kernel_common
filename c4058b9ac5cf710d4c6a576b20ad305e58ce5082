@@ -52,6 +52,24 @@
       "parentUuid": "06339190_b0de3185",
       "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f534d343_624d10a0",
+        "filename": "net/core/dev.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1728636
+      },
+      "writtenOn": "2021-07-09T01:44:11Z",
+      "side": 1,
+      "message": "\u003e When our logging is working, we add additional list to \u0027pt\u0027, and return it by \u0027vendor_pt\u0027 at \u0027vh_ptype_head\u0027 function.\n\nCorrect previous comment,\nNot adding new list to pt, but return new one instead of pt.\n\nSo we need to change the return value of ptype_head() function.\nAnd this way is Google recommended at GKI document.\n\n\nFYI, include related code.\n\nstruct list_head ptype_log __read_mostly;\nvoid drd_ptype_head(const struct packet_type *pt, struct list_head *vendor_pt)\n{\n\tif (pt-\u003etype \u003d\u003d htons(ETH_P_LOG))\n\t\tvendor_pt-\u003enext \u003d \u0026ptype_log;\n}\n\nrc \u003d register_trace_android_vh_ptype_head(drd_ptype_head_handler, NULL);",
+      "parentUuid": "d6e8e42a_0a436c42",
+      "revId": "c4058b9ac5cf710d4c6a576b20ad305e58ce5082",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
