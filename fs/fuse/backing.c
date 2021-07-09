@@ -248,8 +248,6 @@ bool fuse_readdir_use_backing(struct file *file)
 	struct bpf_fuse_data_kern ctx = {
 		.fuse_opcode = FUSE_READDIR,
 	};
-	struct fuse_file *ff = file->private_data;
-	struct file *backing_dir = ff->backing_file;
 	struct fuse_inode *fi = get_fuse_inode(file->f_inode);
 
 	strlcpy(ctx.name, file->f_path.dentry->d_name.name, sizeof(ctx.name));
@@ -265,3 +263,22 @@ int fuse_readdir_backing(struct file *file, struct dir_context *ctx)
 	return iterate_dir(backing_dir, ctx);
 }
 
+bool fuse_access_use_backing(struct inode *inode)
+{
+	struct bpf_fuse_data_kern ctx = {
+		.fuse_opcode = FUSE_ACCESS,
+	};
+	struct fuse_inode *fi = get_fuse_inode(inode);
+
+	if (!fi || !fi->bpf)
+		return false;
+	return BPF_PROG_RUN(fi->bpf, &ctx) == 1;
+}
+
+int fuse_access_backing(struct inode *inode, int mask)
+{
+	struct fuse_inode *fi = get_fuse_inode(inode);
+
+	return inode_permission(/* For mainline: init_user_ns,*/
+				fi->backing_inode, mask);
+}

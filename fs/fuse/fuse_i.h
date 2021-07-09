@@ -1315,4 +1315,6 @@ int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 			u32 request_mask, unsigned int flags);
 bool fuse_readdir_use_backing(struct file *file);
 int fuse_readdir_backing(struct file *file, struct dir_context *ctx);
+bool fuse_access_use_backing(struct inode *inode);
+int fuse_access_backing(struct inode *inode, int mask);
 #endif /* _FS_FUSE_I_H */

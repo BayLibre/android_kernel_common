@@ -149,6 +149,11 @@ int trace2(struct bpf_fuse_data *ctx)
 		return 1;
 	}
 
+	case FUSE_ACCESS: {
+		bpf_printk("Paul: access");
+		return 1;
+	}
+
 	default:
 		return 0;
 	}
