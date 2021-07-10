@@ -70,6 +70,7 @@
 #include <trace/hooks/regmap.h>
 #include <trace/hooks/compaction.h>
 #include <trace/hooks/suspend.h>
+#include <trace/hooks/usb.h>
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
@@ -376,3 +377,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_ioctl_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_exited);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_spawn_new_thread);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_has_special_work_ilocked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_usb_dev_suspend);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);
