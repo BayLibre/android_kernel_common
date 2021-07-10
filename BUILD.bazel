@@ -23,16 +23,17 @@ common_outs = [
 ]
 
 aarch64_outs = common_outs + [
-    "Image",
-    "Image.lz4",
+    "arch/arm64/boot/Image",
+    "arch/arm64/boot/Image.lz4",
 ]
 
-x86_64_outs = common_outs + ["bzImage"]
+x86_64_outs = common_outs + [
+    "arch/x86/boot/bzImage",
+    "arch/x86_64/boot/bzImage",
+]
 
 [kernel_build(
     name = name,
-    outs = outs,
-    build_config = config,
     srcs = glob(
         ["**"],
         exclude = [
@@ -41,6 +42,8 @@ x86_64_outs = common_outs + ["bzImage"]
             "**/*.bzl",
         ],
     ),
+    outs = outs,
+    build_config = config,
 ) for name, config, outs in [
     (
         "kernel_aarch64",
