@@ -22,6 +22,30 @@
       },
       "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e83a5a_d3b4b98e",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1544,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2021-07-10T17:19:06Z",
+      "side": 1,
+      "message": "The call stack is shown as follows.\n\n[27683.605534][T10268] Call trace:\n[27683.605547][T10268]  android_setup+0x78/0x4dc\n[27683.605557][T10268]  dwc3_ep0_inspect_setup+0x344/0x7c8\n[27683.605568][T10268]  dwc3_ep0_interrupt+0xa4/0x478\n[27683.605579][T10268]  dwc3_process_event_entry+0x7c/0x980\n[27683.605589][T10268]  dwc3_process_event_buf+0x74/0x5dc\n[27683.605602][T10268]  dwc3_thread_interrupt+0x80/0x184\n[27683.605619][T10268]  irq_thread_fn+0x48/0xd4\n[27683.605629][T10268]  irq_thread+0x3ac/0x76c\n[27683.605646][T10268]  kthread+0x150/0x200\n[27683.605660][T10268]  ret_from_fork+0x10/0x30\n\nI think it is related to the failure of starting gadget so that the cdev will be NULL.\n\nAfter I grab the lock, cdev will be set by get_gadget_data() again.",
+      "parentUuid": "38ce3142_dded6baf",
+      "range": {
+        "startLine": 1544,
+        "startChar": 0,
+        "endLine": 1544,
+        "endChar": 11
+      },
+      "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
