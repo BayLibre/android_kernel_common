@@ -331,3 +331,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_amu_fie);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scan_abort_check_wmarks);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sound_usb_support_cpu_suspend);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_usb_dev_suspend);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);
