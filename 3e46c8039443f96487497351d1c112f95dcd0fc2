@@ -22,6 +22,30 @@
       },
       "revId": "3e46c8039443f96487497351d1c112f95dcd0fc2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e1a71b2_cc66d723",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-07-11T19:54:40Z",
+      "side": 0,
+      "message": "munlock_vma_pages_range is rather complicated to handle pin/unpin pair correctly at this moment so we left them without annotating to preventing false positive to keep upstream code clean in last review.",
+      "parentUuid": "ee48e012_e363c093",
+      "range": {
+        "startLine": 160,
+        "startChar": 29,
+        "endLine": 160,
+        "endChar": 47
+      },
+      "revId": "3e46c8039443f96487497351d1c112f95dcd0fc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
