@@ -46,6 +46,30 @@
       },
       "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04cc412a_39efd129",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1544,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-11T19:27:53Z",
+      "side": 1,
+      "message": "You need to grab the lock _before_ you can know that you really have the data, otherwise it can change right after you assigned the pointer here, right?  What is protecting this?",
+      "parentUuid": "c2e83a5a_d3b4b98e",
+      "range": {
+        "startLine": 1544,
+        "startChar": 0,
+        "endLine": 1544,
+        "endChar": 11
+      },
+      "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
