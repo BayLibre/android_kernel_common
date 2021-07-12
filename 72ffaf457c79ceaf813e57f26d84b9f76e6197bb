@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb88336_e3d38d12",
+        "filename": "mm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1306,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-12T22:32:53Z",
+      "side": 1,
+      "message": "Is this a reliable way to detect that cma allocation is in progress? Could there be other cases when lru_cache_disabled() returns true and we break this loop prematurely?",
+      "range": {
+        "startLine": 1306,
+        "startChar": 9,
+        "endLine": 1306,
+        "endChar": 27
+      },
+      "revId": "72ffaf457c79ceaf813e57f26d84b9f76e6197bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
