@@ -33,6 +33,8 @@
 #include <sound/compress_offload.h>
 #include <sound/compress_driver.h>
 
+#include <trace/hooks/snd_compr.h>
+
 /* struct snd_compr_codec_caps overflows the ioctl bit size for some
  * architectures, so we need to disable the relevant ioctls.
  */
@@ -708,24 +710,54 @@ snd_compr_tstamp(struct snd_compr_stream *stream, unsigned long arg)
 static int snd_compr_pause(struct snd_compr_stream *stream)
 {
 	int retval;
+	bool use_pause_in_drain = false, leave_draining_state = false;
 
-	if (stream->runtime->state != SNDRV_PCM_STATE_RUNNING)
+	trace_android_vh_snd_compr_use_pause_in_drain(&use_pause_in_drain,
+				&leave_draining_state);
+
+	switch (stream->runtime->state) {
+	case SNDRV_PCM_STATE_RUNNING:
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_PUSH);
+		if (!retval)
+			stream->runtime->state = SNDRV_PCM_STATE_PAUSED;
+		break;
+	case SNDRV_PCM_STATE_DRAINING:
+		if (!use_pause_in_drain)
+			return -EPERM;
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_PUSH);
+		if (!retval && leave_draining_state) {
+			stream->runtime->state = SNDRV_PCM_STATE_PAUSED;
+			wake_up(&stream->runtime->sleep);
+		}
+		break;
+	default:
 		return -EPERM;
-	retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_PUSH);
-	if (!retval)
-		stream->runtime->state = SNDRV_PCM_STATE_PAUSED;
+	}
 	return retval;
 }
 
 static int snd_compr_resume(struct snd_compr_stream *stream)
 {
 	int retval;
+	bool use_pause_in_drain = false, leave_draining_state = false;
 
-	if (stream->runtime->state != SNDRV_PCM_STATE_PAUSED)
+	trace_android_vh_snd_compr_use_pause_in_drain(&use_pause_in_drain,
+				&leave_draining_state);
+
+	switch (stream->runtime->state) {
+	case SNDRV_PCM_STATE_PAUSED:
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_RELEASE);
+		if (!retval)
+			stream->runtime->state = SNDRV_PCM_STATE_RUNNING;
+		break;
+	case SNDRV_PCM_STATE_DRAINING:
+		if (!use_pause_in_drain)
+			return -EPERM;
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_RELEASE);
+		break;
+	default:
 		return -EPERM;
-	retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_RELEASE);
-	if (!retval)
-		stream->runtime->state = SNDRV_PCM_STATE_RUNNING;
+	}
 	return retval;
 }
 
