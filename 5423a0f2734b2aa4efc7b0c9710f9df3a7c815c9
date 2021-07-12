@@ -94,6 +94,30 @@
       },
       "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea928c7a_04958e04",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1544,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-12T06:00:59Z",
+      "side": 1,
+      "message": "Yes, but what if someone sets the gadget_data to NULL right after you check this, and before you call container_of()?  You are reducing the race window, but you are not solving it fully.  You need an lock outside of the structure to ensure that the pointer you are getting really is a valid pointer.",
+      "parentUuid": "0aaf17ca_08652bd9",
+      "range": {
+        "startLine": 1544,
+        "startChar": 0,
+        "endLine": 1544,
+        "endChar": 11
+      },
+      "revId": "5423a0f2734b2aa4efc7b0c9710f9df3a7c815c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
