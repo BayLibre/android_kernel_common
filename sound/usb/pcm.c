@@ -14,7 +14,11 @@
 #include <sound/pcm.h>
 #include <sound/pcm_params.h>
 
+<<<<<<< HEAD   (11a15a ANDROID: Update the ABI symbol list)
 #include <trace/hooks/audio_usboffload.h>
+=======
+#include <trace/hooks/sound.h>
+>>>>>>> CHANGE (e8516f ANDROID: sound: usb: add vendor hook for cpu suspend support)
 
 #include "usbaudio.h"
 #include "card.h"
@@ -1131,6 +1135,7 @@ static int snd_usb_pcm_open(struct snd_pcm_substream *substream)
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_usb_substream *subs = &as->substream[direction];
 	int ret;
+	bool is_support = false;
 
 	runtime->hw = snd_usb_hardware;
 	/* need an explicit sync to catch applptr update in low-latency mode */
@@ -1147,6 +1152,7 @@ static int snd_usb_pcm_open(struct snd_pcm_substream *substream)
 	subs->dsd_dop.marker = 1;
 
 	ret = setup_hw_info(runtime, subs);
+<<<<<<< HEAD   (11a15a ANDROID: Update the ABI symbol list)
 	if (ret < 0)
 		return ret;
 	ret = snd_usb_autoresume(subs->stream->chip);
@@ -1155,6 +1161,18 @@ static int snd_usb_pcm_open(struct snd_pcm_substream *substream)
 	ret = snd_media_stream_init(subs, as->pcm, direction);
 	if (ret < 0)
 		snd_usb_autosuspend(subs->stream->chip);
+=======
+	if (ret == 0) {
+		ret = snd_media_stream_init(subs, as->pcm, direction);
+		if (ret)
+			snd_usb_autosuspend(subs->stream->chip);
+	}
+
+	trace_android_vh_sound_usb_support_cpu_suspend(subs->dev, direction, &is_support);
+	if (!ret && is_support)
+		snd_usb_autosuspend(subs->stream->chip);
+
+>>>>>>> CHANGE (e8516f ANDROID: sound: usb: add vendor hook for cpu suspend support)
 	return ret;
 }
 
@@ -1164,7 +1182,20 @@ static int snd_usb_pcm_close(struct snd_pcm_substream *substream)
 	struct snd_usb_stream *as = snd_pcm_substream_chip(substream);
 	struct snd_usb_substream *subs = &as->substream[direction];
 	int ret;
+	bool is_support = false;
 
+<<<<<<< HEAD   (11a15a ANDROID: Update the ABI symbol list)
+=======
+	ret = snd_vendor_set_pcm_connection(subs->dev, SOUND_PCM_CLOSE,
+					    direction);
+	if (ret)
+		return ret;
+
+	trace_android_vh_sound_usb_support_cpu_suspend(subs->dev, direction, &is_support);
+	if (!ret && is_support)
+		snd_usb_autoresume(subs->stream->chip);
+
+>>>>>>> CHANGE (e8516f ANDROID: sound: usb: add vendor hook for cpu suspend support)
 	snd_media_stop_pipeline(subs);
 
 	if (!snd_usb_lock_shutdown(subs->stream->chip)) {

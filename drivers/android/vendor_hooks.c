@@ -62,6 +62,7 @@
 #include <trace/hooks/drm_atomic.h>
 #include <trace/hooks/psci.h>
 #include <trace/hooks/usb.h>
+<<<<<<< HEAD   (11a15a ANDROID: Update the ABI symbol list)
 #include <trace/hooks/regmap.h>
 #include <trace/hooks/dmabuf.h>
 #include <trace/hooks/mmc.h>
@@ -70,6 +71,10 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/suspend.h>
 #include <trace/hooks/typec.h>
+=======
+#include <trace/hooks/ipv6.h>
+#include <trace/hooks/sound.h>
+>>>>>>> CHANGE (e8516f ANDROID: sound: usb: add vendor hook for cpu suspend support)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -306,3 +311,41 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+<<<<<<< HEAD   (11a15a ANDROID: Update the ABI symbol list)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_media_device_setup_link);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_reserved_fmt_fields);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fill_ext_fmtdesc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_mask_adjust);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2subdev_set_selection);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2subdev_set_fmt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2subdev_set_frame_interval);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scmi_timeout_sync);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_add_request);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_update_request);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_remove_request);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpuidle_psci_enter);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpuidle_psci_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_force_compatible_pre);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_force_compatible_post);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_print_transaction_info);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_setscheduler_uclamp);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ptype_head);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kfree_skb);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_mmap_file);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_file_open);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_bpf_syscall);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_suspend);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ipv6_gen_linklocal_addr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sound_usb_support_cpu_suspend);
+>>>>>>> CHANGE (e8516f ANDROID: sound: usb: add vendor hook for cpu suspend support)
