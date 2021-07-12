@@ -22,6 +22,30 @@
       },
       "revId": "0d9355ed216bbe5ce42d7292d5b4f449a686cd2b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff57cd1_010294cc",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1543,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2021-07-12T08:43:43Z",
+      "side": 1,
+      "message": "The android_device will be set after gadgets_make() is complete, and it will be clear after gadgets_drop() is finished.",
+      "parentUuid": "03eab164_11ce5921",
+      "range": {
+        "startLine": 1543,
+        "startChar": 6,
+        "endLine": 1543,
+        "endChar": 20
+      },
+      "revId": "0d9355ed216bbe5ce42d7292d5b4f449a686cd2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
