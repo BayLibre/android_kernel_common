@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f506573c_fd3635da",
+        "filename": "include/linux/gfp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-12T22:13:34Z",
+      "side": 1,
+      "message": "IMHO this parameter does not fit in this structure. All other members are \"out\" parameters reporting the results and this one is \"in\" parameter reporting the behavior of this function. I think if should be a separate parameter.",
+      "range": {
+        "startLine": 656,
+        "startChar": 1,
+        "endLine": 656,
+        "endChar": 25
+      },
+      "revId": "3e0fac908e363237d88faf69acce35e557344e22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
