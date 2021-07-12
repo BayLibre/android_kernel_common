@@ -2924,6 +2924,7 @@ static struct ctl_table vm_table[] = {
 		.extra2		= &one_thousand,
 	},
 	{
+<<<<<<< HEAD   (bb61c7 ANDROID: kleaf: sources -> srcs.)
 		.procname	= "extra_free_kbytes",
 		.data		= &extra_free_kbytes,
 		.maxlen		= sizeof(extra_free_kbytes),
@@ -2935,8 +2936,13 @@ static struct ctl_table vm_table[] = {
 		.procname	= "percpu_pagelist_fraction",
 		.data		= &percpu_pagelist_fraction,
 		.maxlen		= sizeof(percpu_pagelist_fraction),
+=======
+		.procname	= "percpu_pagelist_high_fraction",
+		.data		= &percpu_pagelist_high_fraction,
+		.maxlen		= sizeof(percpu_pagelist_high_fraction),
+>>>>>>> BRANCH (c288d9 Merge tag 'for-5.14/io_uring-2021-06-30' of git://git.kernel)
 		.mode		= 0644,
-		.proc_handler	= percpu_pagelist_fraction_sysctl_handler,
+		.proc_handler	= percpu_pagelist_high_fraction_sysctl_handler,
 		.extra1		= SYSCTL_ZERO,
 	},
 	{
@@ -2972,14 +2978,6 @@ static struct ctl_table vm_table[] = {
 		.maxlen		= sizeof(laptop_mode),
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec_jiffies,
-	},
-	{
-		.procname	= "block_dump",
-		.data		= &block_dump,
-		.maxlen		= sizeof(block_dump),
-		.mode		= 0644,
-		.proc_handler	= proc_dointvec_minmax,
-		.extra1		= SYSCTL_ZERO,
 	},
 	{
 		.procname	= "vfs_cache_pressure",

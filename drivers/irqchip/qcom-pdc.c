@@ -461,6 +461,7 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD   (bb61c7 ANDROID: kleaf: sources -> srcs.)
 static int qcom_pdc_probe(struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
@@ -484,5 +485,10 @@ static struct platform_driver qcom_pdc_driver = {
 	},
 };
 module_platform_driver(qcom_pdc_driver);
+=======
+IRQCHIP_PLATFORM_DRIVER_BEGIN(qcom_pdc)
+IRQCHIP_MATCH("qcom,pdc", qcom_pdc_init)
+IRQCHIP_PLATFORM_DRIVER_END(qcom_pdc)
+>>>>>>> BRANCH (c288d9 Merge tag 'for-5.14/io_uring-2021-06-30' of git://git.kernel)
 MODULE_DESCRIPTION("Qualcomm Technologies, Inc. Power Domain Controller");
 MODULE_LICENSE("GPL v2");
