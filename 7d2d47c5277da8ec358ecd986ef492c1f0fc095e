@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09e9149_9eece26f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-12T08:26:10Z",
+      "side": 1,
+      "message": "please make this simpler.",
+      "revId": "7d2d47c5277da8ec358ecd986ef492c1f0fc095e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59fc572b_14f1c28d",
+        "filename": "sound/core/compress_offload.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-12T08:26:10Z",
+      "side": 1,
+      "message": "one line per variable please.",
+      "range": {
+        "startLine": 713,
+        "startChar": 0,
+        "endLine": 713,
+        "endChar": 63
+      },
+      "revId": "7d2d47c5277da8ec358ecd986ef492c1f0fc095e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ba8573e_705afab2",
+        "filename": "sound/core/compress_offload.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-12T08:26:10Z",
+      "side": 1,
+      "message": "please do not change the original code so much.  Please leave it \"as-is\" and just add your needed hook, as this modifies the code too much for long term maintenance.\n\nSame comments apply below as well.",
+      "range": {
+        "startLine": 718,
+        "startChar": 2,
+        "endLine": 720,
+        "endChar": 31
+      },
+      "revId": "7d2d47c5277da8ec358ecd986ef492c1f0fc095e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
