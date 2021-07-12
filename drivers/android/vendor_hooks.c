@@ -61,12 +61,16 @@
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/audio_usboffload.h>
 #include <trace/hooks/typec.h>
+<<<<<<< HEAD   (4b3ab9 UPSTREAM: net: nfc: Fix use-after-free caused by nfc_llcp_fi)
 #include <trace/hooks/user.h>
 #include <trace/hooks/signal.h>
 #include <trace/hooks/psci.h>
 #include <trace/hooks/psi.h>
 #include <trace/hooks/bl_hib.h>
 #include <trace/hooks/regmap.h>
+=======
+#include <trace/hooks/sound.h>
+>>>>>>> CHANGE (4cbf19 ANDROID: sound: usb: add vendor hook for cpu suspend support)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -246,6 +250,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+<<<<<<< HEAD   (4b3ab9 UPSTREAM: net: nfc: Fix use-after-free caused by nfc_llcp_fi)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_mutex_list_add);
@@ -326,3 +331,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sound_usb_support_cpu_suspend);
+>>>>>>> CHANGE (4cbf19 ANDROID: sound: usb: add vendor hook for cpu suspend support)
