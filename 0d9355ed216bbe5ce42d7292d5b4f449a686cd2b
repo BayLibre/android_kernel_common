@@ -70,6 +70,30 @@
       },
       "revId": "0d9355ed216bbe5ce42d7292d5b4f449a686cd2b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7596fa49_eb656865",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1543,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2021-07-12T08:55:00Z",
+      "side": 1,
+      "message": "The main purpose is the driver can grab the lock before it access cdev.\nThe check \"if (!android_device)\" is used to confirm the gadget is made so the driver can get gadget_info struct.",
+      "parentUuid": "04f70657_80036faa",
+      "range": {
+        "startLine": 1543,
+        "startChar": 6,
+        "endLine": 1543,
+        "endChar": 20
+      },
+      "revId": "0d9355ed216bbe5ce42d7292d5b4f449a686cd2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
