@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc78aba_4cf6e336",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-12T21:42:41Z",
+      "side": 1,
+      "message": "Do you need the comma? Wouldn\u0027t cma_info \u003d { 0 } work?",
+      "range": {
+        "startLine": 446,
+        "startChar": 34,
+        "endLine": 446,
+        "endChar": 39
+      },
+      "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a69ace0_29e76567",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-12T21:42:41Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 470,
+        "startChar": 25,
+        "endLine": 470,
+        "endChar": 30
+      },
+      "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae5be96_977ce92c",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-12T21:42:41Z",
+      "side": 1,
+      "message": "Why not pass cma_info here directly and allow alloc_contig_range to modify it?\nThis would eliminate the need for struct acr_info and enum acr_failure. That seems simpler considering that struct acr_info is a strict subset of struct cma_alloc_info.",
+      "range": {
+        "startLine": 509,
+        "startChar": 68,
+        "endLine": 509,
+        "endChar": 73
+      },
+      "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
