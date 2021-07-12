@@ -22,6 +22,29 @@
       },
       "revId": "3e0fac908e363237d88faf69acce35e557344e22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04cf3932_19b00a63",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8607,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-12T22:22:17Z",
+      "side": 1,
+      "message": "Why not simply check for lru_cache_disabled() like this:\n\nbool disabled_lru_cache \u003d false;\n...\n\nif (!lru_cache_disabled()) {\n    lru_cache_disable();\n    disabled_lru_cache \u003d true;\n}\n...\nif (disabled_lru_cache)\n    lru_cache_enable();\n\n?\nThis would eliminate the need for the new info-\u003elru_cache_disabled member.",
+      "range": {
+        "startLine": 8607,
+        "startChar": 1,
+        "endLine": 8607,
+        "endChar": 31
+      },
+      "revId": "3e0fac908e363237d88faf69acce35e557344e22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
