@@ -140,6 +140,30 @@
       },
       "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4656eecf_81e7fc73",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-13T01:01:01Z",
+      "side": 1,
+      "message": "Ok. Delete the original struct acr_info, rename struct cma_alloc_info into struct acr_info and pass it to alloc_contig_range(). I don\u0027t see any other usage for cma_alloc_info anywhere else other than with alloc_contig_range(). Am I missing something?",
+      "parentUuid": "70357c19_ad536ca8",
+      "range": {
+        "startLine": 509,
+        "startChar": 68,
+        "endLine": 509,
+        "endChar": 73
+      },
+      "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
