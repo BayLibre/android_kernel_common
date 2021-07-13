@@ -164,6 +164,30 @@
       },
       "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9956696b_10bc72e1",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-07-13T01:09:57Z",
+      "side": 1,
+      "message": "cma_info aimed for just gathering statistics from acr_info. \nIf we remove the cma_info, we need to introduce other structures or variables anyway. And then the cma_info is passed into trace_cma_alloc_info. I am not sure it\u0027s a good idea to pass acr_info to cma trace. \nAny thought?",
+      "parentUuid": "4656eecf_81e7fc73",
+      "range": {
+        "startLine": 509,
+        "startChar": 68,
+        "endLine": 509,
+        "endChar": 73
+      },
+      "revId": "75931eaa9f6f0bb362659fa834cd5f7ee3a9e477",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
