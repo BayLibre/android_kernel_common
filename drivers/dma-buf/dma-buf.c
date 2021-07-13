@@ -580,6 +580,7 @@ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info)
 		goto err_module;
 	}
 
+	kref_init(&dmabuf->ref);
 	dmabuf->priv = exp_info->priv;
 	dmabuf->ops = exp_info->ops;
 	dmabuf->size = exp_info->size;
@@ -653,6 +654,11 @@ int dma_buf_fd(struct dma_buf *dmabuf, int flags)
 		return fd;
 
 	fd_install(fd, dmabuf->file);
+	/**
+	 * add a file count here,
+	 * this file count is used for userspace
+	 */
+	get_file(dmabuf->file);
 
 	return fd;
 }
@@ -663,12 +669,13 @@ EXPORT_SYMBOL_GPL(dma_buf_fd);
  * @fd:	[in]	fd associated with the dma_buf to be returned
  *
  * On success, returns the dma_buf structure associated with an fd; uses
- * file's refcounting done by fget to increase refcount. returns ERR_PTR
- * otherwise.
+ * dma_buf's ref refcounting done by kref_get to increase refcount.
+ * Returns ERR_PTR otherwise.
  */
 struct dma_buf *dma_buf_get(int fd)
 {
 	struct file *file;
+	struct dma_buf * dmabuf;
 
 	file = fget(fd);
 
@@ -679,10 +686,23 @@ struct dma_buf *dma_buf_get(int fd)
 		fput(file);
 		return ERR_PTR(-EINVAL);
 	}
+	dmabuf = file->private_data;
+	/**
+	 * Kernel api related handle is controlled by kref
+	 * Replace file count change as kernel ref change.
+	 */
+	kref_get(&dmabuf->ref);
+	fput(file);
 
-	return file->private_data;
+	return dmabuf;
 }
 EXPORT_SYMBOL_GPL(dma_buf_get);
+
+static void _dma_buf_put(struct kref *kref)
+{
+	struct dma_buf *dmabuf = container_of(kref, struct dma_buf, ref);
+	fput(dmabuf->file);
+}
 
 /**
  * dma_buf_put - decreases refcount of the buffer
@@ -696,10 +716,10 @@ EXPORT_SYMBOL_GPL(dma_buf_get);
  */
 void dma_buf_put(struct dma_buf *dmabuf)
 {
-	if (WARN_ON(!dmabuf || !dmabuf->file))
+	if (WARN_ON(!dmabuf || !dmabuf->file || !kref_read(&dmabuf->ref)))
 		return;
 
-	fput(dmabuf->file);
+	kref_put(&dmabuf->ref, _dma_buf_put);
 }
 EXPORT_SYMBOL_GPL(dma_buf_put);
 

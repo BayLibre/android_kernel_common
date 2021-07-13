@@ -21,6 +21,7 @@
 #include <linux/fs.h>
 #include <linux/dma-fence.h>
 #include <linux/wait.h>
+#include <linux/kref.h>
 
 struct device;
 struct dma_buf;
@@ -394,6 +395,7 @@ struct dma_buf_ops {
 struct dma_buf {
 	size_t size;
 	struct file *file;
+	struct kref ref;
 	struct list_head attachments;
 	const struct dma_buf_ops *ops;
 	struct mutex lock;
@@ -542,7 +544,7 @@ struct dma_buf_export_info {
 					 .owner = THIS_MODULE }
 
 /**
- * get_dma_buf - convenience wrapper for get_file.
+ * get_dma_buf - add dma-buf kernel count.
  * @dmabuf:	[in]	pointer to dma_buf
  *
  * Increments the reference count on the dma-buf, needed in case of drivers
@@ -552,7 +554,7 @@ struct dma_buf_export_info {
  */
 static inline void get_dma_buf(struct dma_buf *dmabuf)
 {
-	get_file(dmabuf->file);
+	kref_get(&dmabuf->ref);
 }
 
 /**
