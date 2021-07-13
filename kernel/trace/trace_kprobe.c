@@ -849,15 +849,18 @@ static int trace_kprobe_create(int argc, const char *argv[])
 	argc -= 2; argv += 2;
 
 	/* parse arguments */
+	pr_info("cyb: trace_kprobe_create, arg count %d\n", argc);
 	for (i = 0; i < argc && i < MAX_TRACE_ARGS; i++) {
 		tmp = kstrdup(argv[i], GFP_KERNEL);
 		if (!tmp) {
 			ret = -ENOMEM;
 			goto error;
 		}
+		pr_info("cyb: trace_kprobe_create arg[%d] = %s\n", i, tmp);
 
 		trace_probe_log_set_index(i + 2);
 		ret = traceprobe_parse_probe_arg(&tk->tp, i, tmp, flags);
+		//pr_info("cyb: trace_kprobe_create arg[%d] name %s\n", tk->tp.args[i].name);
 		kfree(tmp);
 		if (ret)
 			goto error;	/* This can be -ENOMEM */
