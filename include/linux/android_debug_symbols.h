@@ -43,6 +43,8 @@ enum android_debug_per_cpu_symbol {
 void *android_debug_symbol(enum android_debug_symbol symbol);
 void *android_debug_per_cpu_symbol(enum android_debug_per_cpu_symbol symbol);
 
+void android_debug_for_each_module(int (*fn)(struct module *module, void *data), void *data);
+
 #else /* !CONFIG_ANDROID_DEBUG_SYMBOLS */
 
 static inline void *android_debug_symbol(enum android_debug_symbol symbol)
@@ -53,6 +55,9 @@ static inline void *android_debug_per_cpu_symbol(enum android_debug_per_cpu_symb
 {
 	return NULL;
 }
+
+static inline void android_debug_for_each_module(int (*fn)(struct module *module, void *data),
+	void *data) {}
 #endif /* CONFIG_ANDROID_DEBUG_SYMBOLS */
 
 #endif /* _ANDROID_DEBUG_SYMBOLS_H */
