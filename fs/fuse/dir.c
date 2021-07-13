@@ -1097,12 +1097,17 @@ static int fuse_do_getattr(struct inode *inode, struct kstat *stat,
 }
 
 static int fuse_update_get_attr(struct inode *inode, struct file *file,
+				const struct path *path,
 				struct kstat *stat, u32 request_mask,
 				unsigned int flags)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 	int err = 0;
 	bool sync;
+
+	if (fuse_getattr_use_backing(path))
+		return fuse_getattr_backing(path, stat, request_mask,
+					    flags);
 
 	if (flags & AT_STATX_FORCE_SYNC)
 		sync = true;
@@ -1128,7 +1133,7 @@ static int fuse_update_get_attr(struct inode *inode, struct file *file,
 int fuse_update_attributes(struct inode *inode, struct file *file)
 {
 	/* Do *not* need to get atime for internal purposes */
-	return fuse_update_get_attr(inode, file, NULL,
+	return fuse_update_get_attr(inode, file, &file->f_path, NULL,
 				    STATX_BASIC_STATS & ~STATX_ATIME, 0);
 }
 
@@ -1847,9 +1852,6 @@ static int fuse_getattr(const struct path *path, struct kstat *stat,
 	struct inode *inode = d_inode(path->dentry);
 	struct fuse_conn *fc = get_fuse_conn(inode);
 
-	if (fuse_getattr_use_backing(path))
-		return fuse_getattr_backing(path, stat, request_mask, flags);
-
 	if (fuse_is_bad(inode))
 		return -EIO;
 
@@ -1866,7 +1868,8 @@ static int fuse_getattr(const struct path *path, struct kstat *stat,
 		return -EACCES;
 	}
 
-	return fuse_update_get_attr(inode, NULL, stat, request_mask, flags);
+	return fuse_update_get_attr(inode, NULL, path, stat, request_mask,
+				    flags);
 }
 
 static const struct inode_operations fuse_dir_inode_operations = {

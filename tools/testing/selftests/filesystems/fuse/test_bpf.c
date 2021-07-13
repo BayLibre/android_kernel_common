@@ -102,7 +102,7 @@ int trace2(struct bpf_fuse_data *ctx)
 	case FUSE_GETATTR: {
 		/* real and partial use backing file */
 		int backing = strcmp(ctx->name, "/") == 0 ||
-			strcmp(ctx->name, "partial") == 0;
+			strcmp(ctx->name, "real") == 0;
 
 		bpf_printk("Paul: getattr %s %d", ctx->name, backing);
 		return backing ? 1 : 0;

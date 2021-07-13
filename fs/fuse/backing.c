@@ -240,6 +240,9 @@ int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 	struct path *backing_path =
 		&get_fuse_dentry(path->dentry)->backing_path;
 
+	if (!stat)
+		return 0;
+
 	return vfs_getattr(backing_path, stat, request_mask, flags);
 }
 

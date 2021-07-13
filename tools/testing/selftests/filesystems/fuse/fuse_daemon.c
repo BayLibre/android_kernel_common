@@ -10,7 +10,7 @@ static int display_trace()
 	int result = TEST_FAILURE;
 	int pid = -1;
 	int tp = -1;
-	char trace_buffer[256] = {};
+	char trace_buffer;
 	ssize_t bytes_read;
 
 	TEST(pid = fork(), pid != -1);
@@ -20,9 +20,9 @@ static int display_trace()
 	TEST(tp = open("/sys/kernel/debug/tracing/trace_pipe",
 		       O_RDONLY | O_CLOEXEC), tp != -1);
 	for(;;) {
-		TEST(bytes_read = read(tp, trace_buffer, sizeof(trace_buffer)),
-		     bytes_read > 0);
-		printf("%s\n", trace_buffer);
+		TEST(bytes_read = read(tp, &trace_buffer, sizeof(trace_buffer)),
+		     bytes_read == 1);
+		printf("%c", trace_buffer);
 	}
 out:
 	if (pid == 0) {
