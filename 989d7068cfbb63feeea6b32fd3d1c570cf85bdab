@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a84e8a3_437a2783",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-14T12:21:59Z",
+      "side": 1,
+      "message": "No other kernel code should care about a module list, this feels like a huge hole you could be doing \"not good\" things with.\n\nWhat use case is needed to get this list from within the kernel?  Why not just see the list from userspace?",
+      "revId": "989d7068cfbb63feeea6b32fd3d1c570cf85bdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
