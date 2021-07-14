@@ -55,13 +55,37 @@ int main(int argc, char *argv[])
 
 	for(;;) {
 		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
+		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
+		DECL_FUSE(open);
 		struct fuse_in_header *in_header =
 			(struct fuse_in_header *)bytes_in;
 		ssize_t res = read(fuse_dev, &bytes_in,	sizeof(bytes_in));
 
 		if (res == -1)
 			break;
-		printf("opcode is %d\n", in_header->opcode);
+
+		switch(in_header->opcode) {
+		case FUSE_OPEN:
+			*open_out = (struct fuse_open_out) {
+				.fh = 1,
+				.open_flags = open_in->flags,
+			};
+			TESTFUSEOUT(open_out);
+			break;
+		case FUSE_READ: {
+			const char *fake_data = "fake data";
+			TESTFUSEOUTREAD(fake_data, strlen(fake_data));
+			break;
+		}
+
+		case FUSE_FORGET:
+		case FUSE_RELEASE:
+		case FUSE_RELEASEDIR:
+			break;
+
+		default:
+			printf("opcode is %d\n", in_header->opcode);
+		}
 	}
 
 	result = TEST_SUCCESS;
