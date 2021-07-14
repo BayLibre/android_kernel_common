@@ -84,6 +84,29 @@
       "message": "Please resubmit this with no added symbols and we can easily take it now.  Then submit a new commit that just adds the symbols that are not currently being tracked and we will be glad to discuss that.  This way the huge majority of the symbols are added now without any conflicts.",
       "revId": "76490a2a368c880978eaed94bfbb262bab1b8285",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b1b78d1_48c459c0",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 5
+      },
+      "lineNbr": 4202,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-14T12:14:59Z",
+      "side": 1,
+      "message": "these should not be needed for drivers.  Especially rmdir and unlink.",
+      "range": {
+        "startLine": 4197,
+        "startChar": 0,
+        "endLine": 4202,
+        "endChar": 10
+      },
+      "revId": "76490a2a368c880978eaed94bfbb262bab1b8285",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
