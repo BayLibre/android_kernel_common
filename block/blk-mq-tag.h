@@ -26,8 +26,11 @@ struct blk_mq_tags {
 	 * request pool
 	 */
 	spinlock_t lock;
+<<<<<<< HEAD   (b1a676 Merge branch 'android12-5.10' into `android12-5.10-lts`)
 
 	ANDROID_OEM_DATA(1);
+=======
+>>>>>>> BRANCH (43b074 Linux 5.10.50)
 };
 
 extern struct blk_mq_tags *blk_mq_init_tags(unsigned int nr_tags,
