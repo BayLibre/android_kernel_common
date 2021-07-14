@@ -70,6 +70,24 @@
       "parentUuid": "10439dbd_edcfc155",
       "revId": "989d7068cfbb63feeea6b32fd3d1c570cf85bdab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d61be8f_ea7a8b23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2021-07-14T22:33:03Z",
+      "side": 1,
+      "message": "To original point about creating a hole to do \"not good\" things with -- I thought of same concern. Vendors can already register on the module notifier chain and do similar fishy things.\n\nI could change the hook to only pass name/load address, e.g.\n\n  int (*fn)(char const *name, void *base, void *data)",
+      "parentUuid": "705a654b_97b0a168",
+      "revId": "989d7068cfbb63feeea6b32fd3d1c570cf85bdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
