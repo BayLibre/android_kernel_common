@@ -16,6 +16,24 @@
       "message": "I try on aosp/1764306 to find out why ABI fail, but it breaks ABI when  #include \u003ctrace/hooks/snd_compr.h\u003e in compress_offload.c.\nIt is so strange.",
       "revId": "ba734cb35a91ebf40d8a6700974eb56a2a151639",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d8d378_c02404f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-14T06:05:09Z",
+      "side": 1,
+      "message": "That happens, see the GKI 2 docs for why and how to determine what is happening here and how to fix it if you want to in the future.",
+      "parentUuid": "4e0a124c_474a2ba3",
+      "revId": "ba734cb35a91ebf40d8a6700974eb56a2a151639",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
