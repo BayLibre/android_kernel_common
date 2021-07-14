@@ -16,6 +16,24 @@
       "message": "No other kernel code should care about a module list, this feels like a huge hole you could be doing \"not good\" things with.\n\nWhat use case is needed to get this list from within the kernel?  Why not just see the list from userspace?",
       "revId": "989d7068cfbb63feeea6b32fd3d1c570cf85bdab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "110de001_c304366a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2021-07-14T16:03:07Z",
+      "side": 1,
+      "message": "/proc/modules has this info, but we wouldn\u0027t be able to collect this info if crash happens before the userspace code runs.",
+      "parentUuid": "6a84e8a3_437a2783",
+      "revId": "989d7068cfbb63feeea6b32fd3d1c570cf85bdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
