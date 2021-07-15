@@ -22,6 +22,30 @@
       },
       "revId": "58f828a39c6497fb1496b187c1c4ad87901f2fa5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67697788_4938453f",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4798,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-07-15T18:26:40Z",
+      "side": 1,
+      "message": "And even if we don\u0027t care about GKI modules, just feels too risky to give direct access to the nodes in the list. This implementation is not very different from actually opening up the `modules` variable.",
+      "parentUuid": "7074e5c5_5bd23715",
+      "range": {
+        "startLine": 4798,
+        "startChar": 9,
+        "endLine": 4798,
+        "endChar": 15
+      },
+      "revId": "58f828a39c6497fb1496b187c1c4ad87901f2fa5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
