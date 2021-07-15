@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f99c267_f751db08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-07-15T04:18:54Z",
+      "side": 1,
+      "message": "Could you please add some more information on how the information would be used,who would invoke the API etc in the commit message so that it would be easier to understand why its needed?",
+      "revId": "b1bdf432a43365a14d655feca5557877be465bcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afee1d7b_7f203e2c",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-07-15T04:18:54Z",
+      "side": 1,
+      "message": "nit: I think it might be a little bit more readable if you refactor this part into a separate function instead and invoke it from dma_buf_set_name() and dma_buf_set_name_user(). That way, dma_buf_set_name_user would not have to copy the name twice(once into the buffer allocated in L394 and then into the buffer allocated in L368).",
+      "range": {
+        "startLine": 374,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 33
+      },
+      "revId": "b1bdf432a43365a14d655feca5557877be465bcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
