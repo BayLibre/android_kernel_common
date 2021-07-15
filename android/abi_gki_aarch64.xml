@@ -556,6 +556,7 @@
       <elf-symbol name='amba_driver_unregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x79525c69'/>
       <elf-symbol name='amba_release_regions' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x282efeff'/>
       <elf-symbol name='amba_request_regions' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8623af6f'/>
+      <elf-symbol name='android_debug_for_each_module' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5ec6ee3b'/>
       <elf-symbol name='android_debug_per_cpu_symbol' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8ee3d8d9'/>
       <elf-symbol name='android_debug_symbol' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9fd75310'/>
       <elf-symbol name='android_rvh_probe_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7fbbd0bb'/>
@@ -1349,6 +1350,7 @@
       <elf-symbol name='devm_watchdog_register_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x56a6e251'/>
       <elf-symbol name='devres_add' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x215b8cfc'/>
       <elf-symbol name='devres_alloc_node' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x54915ecc'/>
+      <elf-symbol name='devres_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfc6a0503'/>
       <elf-symbol name='devres_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe93e49c3'/>
       <elf-symbol name='devres_release' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf06d8a99'/>
       <elf-symbol name='disable_irq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3ce4ca6f'/>
@@ -3331,6 +3333,7 @@
       <elf-symbol name='put_iova_domain' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb75aa2d6'/>
       <elf-symbol name='put_pid' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd3c5d4d0'/>
       <elf-symbol name='put_sg_io_hdr' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5ec4aee6'/>
+      <elf-symbol name='put_task_stack' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc8cd8f63'/>
       <elf-symbol name='put_unused_fd' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3f4547a7'/>
       <elf-symbol name='put_vaddr_frames' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1b700d37'/>
       <elf-symbol name='putback_movable_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbd6f03f7'/>
@@ -21827,6 +21830,11 @@
           <var-decl name='android_kabi_reserved4' type-id='91ce1af9' visibility='default' filepath='kernel/sched/sched.h' line='443' column='1'/>
         </data-member>
       </class-decl>
+      <class-decl name='robust_list' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/uapi/linux/futex.h' line='58' column='1' id='2d8e2e2d'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='next' type-id='3ca5030d' visibility='default' filepath='include/uapi/linux/futex.h' line='59' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='53ecac3a' size-in-bits='64' id='2d92dd30'/>
       <pointer-type-def type-id='b68346f7' size-in-bits='64' id='2da88de7'/>
       <union-decl name='__anonymous_union__' size-in-bits='128' is-anonymous='yes' visibility='default' filepath='include/linux/xarray.h' line='1129' column='1' id='2db4cfe9'>
@@ -24440,6 +24448,11 @@
           <var-decl name='map' type-id='c99b5ecd' visibility='default' filepath='include/linux/memcontrol.h' line='101' column='1'/>
         </data-member>
       </class-decl>
+      <function-type size-in-bits='64' id='366e4f9b'>
+        <parameter type-id='2730d015'/>
+        <parameter type-id='eaa32e2f'/>
+        <return type-id='95e97e5e'/>
+      </function-type>
       <enum-decl name='vfl_devnode_direction' filepath='include/media/v4l2-dev.h' line='56' column='1' id='366ec232'>
         <underlying-type type-id='9cac1fee'/>
         <enumerator name='VFL_DIR_RX' value='0'/>
@@ -26802,6 +26815,7 @@
           <var-decl name='link' type-id='e84b031a' visibility='default' filepath='include/media/media-entity.h' line='92' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='2d8e2e2d' size-in-bits='64' id='3ca5030d'/>
       <function-type size-in-bits='64' id='3cab519e'>
         <parameter type-id='db9d03e3'/>
         <parameter type-id='f0981eeb'/>
@@ -63773,7 +63787,17 @@
         <parameter type-id='b53e8dbb'/>
         <return type-id='95e97e5e'/>
       </function-type>
-      <class-decl name='robust_list_head' is-struct='yes' visibility='default' is-declaration-only='yes' id='999b38a0'/>
+      <class-decl name='robust_list_head' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/uapi/linux/futex.h' line='70' column='1' id='999b38a0'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='list' type-id='2d8e2e2d' visibility='default' filepath='include/uapi/linux/futex.h' line='74' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='futex_offset' type-id='bd54fe1a' visibility='default' filepath='include/uapi/linux/futex.h' line='82' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='list_op_pending' type-id='3ca5030d' visibility='default' filepath='include/uapi/linux/futex.h' line='94' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='ab23f61a' size-in-bits='64' id='999c8d90'/>
       <typedef-decl name='splice_actor' type-id='69c72ccd' filepath='include/linux/splice.h' line='65' column='1' id='99adf786'/>
       <pointer-type-def type-id='97e76825' size-in-bits='64' id='99baf115'/>
@@ -80189,6 +80213,7 @@
         <enumerator name='OF_GPIO_PULL_UP' value='16'/>
         <enumerator name='OF_GPIO_PULL_DOWN' value='32'/>
       </enum-decl>
+      <pointer-type-def type-id='366e4f9b' size-in-bits='64' id='be0f1a07'/>
       <array-type-def dimensions='1' type-id='39ec6fe5' size-in-bits='9152' id='be1ad65f'>
         <subrange length='11' type-id='7ff19f0f' id='847bc017'/>
       </array-type-def>
@@ -100521,24 +100546,24 @@
       <class-decl name='ip_tunnel_parm' is-struct='yes' visibility='default' is-declaration-only='yes' id='ed9e49a6'/>
       <pointer-type-def type-id='4852a8ec' size-in-bits='64' id='ed9f97a6'/>
       <pointer-type-def type-id='d6e6975e' size-in-bits='64' id='eda08098'/>
-      <class-decl name='kmem_cache_node' size-in-bits='512' is-struct='yes' visibility='default' filepath='mm/slab.h' line='591' column='1' id='edac1e8f'>
+      <class-decl name='kmem_cache_node' size-in-bits='512' is-struct='yes' visibility='default' filepath='mm/slab.h' line='598' column='1' id='edac1e8f'>
         <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='list_lock' type-id='fb4018a0' visibility='default' filepath='mm/slab.h' line='592' column='1'/>
+          <var-decl name='list_lock' type-id='fb4018a0' visibility='default' filepath='mm/slab.h' line='599' column='1'/>
         </data-member>
         <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='nr_partial' type-id='7359adad' visibility='default' filepath='mm/slab.h' line='610' column='1'/>
+          <var-decl name='nr_partial' type-id='7359adad' visibility='default' filepath='mm/slab.h' line='617' column='1'/>
         </data-member>
         <data-member access='public' layout-offset-in-bits='128'>
-          <var-decl name='partial' type-id='72f469ec' visibility='default' filepath='mm/slab.h' line='611' column='1'/>
+          <var-decl name='partial' type-id='72f469ec' visibility='default' filepath='mm/slab.h' line='618' column='1'/>
         </data-member>
         <data-member access='public' layout-offset-in-bits='256'>
-          <var-decl name='nr_slabs' type-id='f22a8abb' visibility='default' filepath='mm/slab.h' line='613' column='1'/>
+          <var-decl name='nr_slabs' type-id='f22a8abb' visibility='default' filepath='mm/slab.h' line='620' column='1'/>
         </data-member>
         <data-member access='public' layout-offset-in-bits='320'>
-          <var-decl name='total_objects' type-id='f22a8abb' visibility='default' filepath='mm/slab.h' line='614' column='1'/>
+          <var-decl name='total_objects' type-id='f22a8abb' visibility='default' filepath='mm/slab.h' line='621' column='1'/>
         </data-member>
         <data-member access='public' layout-offset-in-bits='384'>
-          <var-decl name='full' type-id='72f469ec' visibility='default' filepath='mm/slab.h' line='615' column='1'/>
+          <var-decl name='full' type-id='72f469ec' visibility='default' filepath='mm/slab.h' line='622' column='1'/>
         </data-member>
       </class-decl>
       <function-type size-in-bits='64' id='edae512d'>
@@ -111122,6 +111147,11 @@
         <parameter type-id='80f4b756' name='name' filepath='drivers/amba/bus.c' line='797' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='android_debug_for_each_module' mangled-name='android_debug_for_each_module' filepath='kernel/module.c' line='4792' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='android_debug_for_each_module'>
+        <parameter type-id='be0f1a07' name='fn' filepath='kernel/module.c' line='4792' column='1'/>
+        <parameter type-id='eaa32e2f' name='data' filepath='kernel/module.c' line='4792' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
       <function-decl name='android_debug_per_cpu_symbol' mangled-name='android_debug_per_cpu_symbol' filepath='drivers/android/debug_symbols.c' line='110' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='android_debug_per_cpu_symbol'>
         <parameter type-id='06dde89f' name='symbol' filepath='drivers/android/debug_symbols.c' line='110' column='1'/>
         <return type-id='eaa32e2f'/>
@@ -115377,6 +115407,13 @@
         <parameter type-id='3eb7c31c' name='gfp' filepath='drivers/base/devres.c' line='165' column='1'/>
         <parameter type-id='95e97e5e' name='nid' filepath='drivers/base/devres.c' line='165' column='1'/>
         <return type-id='eaa32e2f'/>
+      </function-decl>
+      <function-decl name='devres_destroy' mangled-name='devres_destroy' filepath='drivers/base/devres.c' line='392' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devres_destroy'>
+        <parameter type-id='fa0b179b' name='dev' filepath='drivers/base/devres.c' line='392' column='1'/>
+        <parameter type-id='b6609e5b' name='release' filepath='drivers/base/devres.c' line='392' column='1'/>
+        <parameter type-id='4a798fcf' name='match' filepath='drivers/base/devres.c' line='393' column='1'/>
+        <parameter type-id='eaa32e2f' name='match_data' filepath='drivers/base/devres.c' line='393' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='devres_free' mangled-name='devres_free' filepath='drivers/base/devres.c' line='225' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devres_free'>
         <parameter type-id='eaa32e2f' name='res' filepath='drivers/base/devres.c' line='225' column='1'/>
@@ -122676,12 +122713,12 @@
         <parameter type-id='7359adad' name='expires' filepath='kernel/time/timer.c' line='1084' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='module_layout' mangled-name='module_layout' filepath='kernel/module.c' line='4794' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='module_layout'>
-        <parameter type-id='2730d015' name='mod' filepath='kernel/module.c' line='4794' column='1'/>
-        <parameter type-id='3a498c74' name='ver' filepath='kernel/module.c' line='4795' column='1'/>
-        <parameter type-id='a7c6e908' name='kp' filepath='kernel/module.c' line='4796' column='1'/>
-        <parameter type-id='eefd7061' name='ks' filepath='kernel/module.c' line='4797' column='1'/>
-        <parameter type-id='e525e121' name='tp' filepath='kernel/module.c' line='4798' column='1'/>
+      <function-decl name='module_layout' mangled-name='module_layout' filepath='kernel/module.c' line='4810' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='module_layout'>
+        <parameter type-id='2730d015' name='mod' filepath='kernel/module.c' line='4810' column='1'/>
+        <parameter type-id='3a498c74' name='ver' filepath='kernel/module.c' line='4811' column='1'/>
+        <parameter type-id='a7c6e908' name='kp' filepath='kernel/module.c' line='4812' column='1'/>
+        <parameter type-id='eefd7061' name='ks' filepath='kernel/module.c' line='4813' column='1'/>
+        <parameter type-id='e525e121' name='tp' filepath='kernel/module.c' line='4814' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='module_put' mangled-name='module_put' filepath='kernel/module.c' line='1154' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='module_put'>
@@ -125552,6 +125589,10 @@
         <parameter type-id='8a390024' name='hdr' filepath='block/scsi_ioctl.c' line='548' column='1'/>
         <parameter type-id='eaa32e2f' name='argp' filepath='block/scsi_ioctl.c' line='548' column='1'/>
         <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='put_task_stack' mangled-name='put_task_stack' filepath='kernel/fork.c' line='441' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='put_task_stack'>
+        <parameter type-id='f23e2572' name='tsk' filepath='kernel/fork.c' line='441' column='1'/>
+        <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='put_unused_fd' mangled-name='put_unused_fd' filepath='fs/file.c' line='575' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='put_unused_fd'>
         <parameter type-id='f0981eeb' name='fd' filepath='fs/file.c' line='575' column='1'/>
