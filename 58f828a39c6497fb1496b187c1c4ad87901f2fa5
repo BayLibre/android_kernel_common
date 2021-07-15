@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7074e5c5_5bd23715",
+        "filename": "kernel/module.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4798,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-07-15T18:17:27Z",
+      "side": 1,
+      "message": "This allows all kinds of mucking up of modules. If we have some non-overrideable modules, this might allow partners to disable/change some of them.\n\nCan you copy over only the data you need into a temp buffer before calling the callback function please? And clear out any pointers that would allow someone to modify the actual nodes in the modules list or the module text.",
+      "range": {
+        "startLine": 4798,
+        "startChar": 9,
+        "endLine": 4798,
+        "endChar": 15
+      },
+      "revId": "58f828a39c6497fb1496b187c1c4ad87901f2fa5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
