@@ -1338,6 +1338,7 @@
       <elf-symbol name='devm_watchdog_register_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x56a6e251'/>
       <elf-symbol name='devres_add' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x215b8cfc'/>
       <elf-symbol name='devres_alloc_node' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x54915ecc'/>
+      <elf-symbol name='devres_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfc6a0503'/>
       <elf-symbol name='devres_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe93e49c3'/>
       <elf-symbol name='devres_release' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf06d8a99'/>
       <elf-symbol name='disable_irq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3ce4ca6f'/>
@@ -64136,20 +64137,7 @@
           <var-decl name='private_value' type-id='7359adad' visibility='default' filepath='include/sound/control.h' line='56' column='1'/>
         </data-member>
       </class-decl>
-      <class-decl name='udp_table' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/udp.h' line='72' column='1' id='9a516b13'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='hash' type-id='9cc41107' visibility='default' filepath='include/net/udp.h' line='73' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='hash2' type-id='9cc41107' visibility='default' filepath='include/net/udp.h' line='74' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='128'>
-          <var-decl name='mask' type-id='f0981eeb' visibility='default' filepath='include/net/udp.h' line='75' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='160'>
-          <var-decl name='log' type-id='f0981eeb' visibility='default' filepath='include/net/udp.h' line='76' column='1'/>
-        </data-member>
-      </class-decl>
+      <class-decl name='udp_table' is-struct='yes' visibility='default' is-declaration-only='yes' id='9a516b13'/>
       <pointer-type-def type-id='6661a698' size-in-bits='64' id='9a537bbe'/>
       <pointer-type-def type-id='2bc6669b' size-in-bits='64' id='9a53a8a3'/>
       <function-type size-in-bits='64' id='9a54e634'>
@@ -65014,7 +65002,6 @@
       <array-type-def dimensions='1' type-id='00205383' size-in-bits='3072' id='9cc39ce1'>
         <subrange length='24' type-id='7ff19f0f' id='fdd3342b'/>
       </array-type-def>
-      <pointer-type-def type-id='fa07ab8f' size-in-bits='64' id='9cc41107'/>
       <class-decl name='snd_kcontrol_volatile' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/sound/control.h' line='59' column='1' id='9cd807f4'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='owner' type-id='ed27ccc9' visibility='default' filepath='include/sound/control.h' line='60' column='1'/>
@@ -105027,17 +105014,6 @@
       </class-decl>
       <pointer-type-def type-id='12506762' size-in-bits='64' id='fa013de0'/>
       <pointer-type-def type-id='91f77fa3' size-in-bits='64' id='fa058983'/>
-      <class-decl name='udp_hslot' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/net/udp.h' line='58' column='1' id='fa07ab8f'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='head' type-id='e151255a' visibility='default' filepath='include/net/udp.h' line='59' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='count' type-id='95e97e5e' visibility='default' filepath='include/net/udp.h' line='60' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='96'>
-          <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='include/net/udp.h' line='61' column='1'/>
-        </data-member>
-      </class-decl>
       <array-type-def dimensions='2' type-id='8f048e17' size-in-bits='304' id='fa0a1f4c'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
         <subrange length='19' type-id='7ff19f0f' id='448ee30f'/>
@@ -115242,6 +115218,13 @@
         <parameter type-id='3eb7c31c' name='gfp' filepath='drivers/base/devres.c' line='165' column='1'/>
         <parameter type-id='95e97e5e' name='nid' filepath='drivers/base/devres.c' line='165' column='1'/>
         <return type-id='eaa32e2f'/>
+      </function-decl>
+      <function-decl name='devres_destroy' mangled-name='devres_destroy' filepath='drivers/base/devres.c' line='392' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devres_destroy'>
+        <parameter type-id='fa0b179b' name='dev' filepath='drivers/base/devres.c' line='392' column='1'/>
+        <parameter type-id='b6609e5b' name='release' filepath='drivers/base/devres.c' line='392' column='1'/>
+        <parameter type-id='4a798fcf' name='match' filepath='drivers/base/devres.c' line='393' column='1'/>
+        <parameter type-id='eaa32e2f' name='match_data' filepath='drivers/base/devres.c' line='393' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='devres_free' mangled-name='devres_free' filepath='drivers/base/devres.c' line='225' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devres_free'>
         <parameter type-id='eaa32e2f' name='res' filepath='drivers/base/devres.c' line='225' column='1'/>
