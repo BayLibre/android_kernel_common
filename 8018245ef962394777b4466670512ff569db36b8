@@ -16,6 +16,24 @@
       "message": "LGTM\nShouldn\u0027t references to upstream commits look as if picked by `git cherry-pick -x`?",
       "revId": "8018245ef962394777b4466670512ff569db36b8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4ab4a48_5527f22f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-07-16T20:41:38Z",
+      "side": 1,
+      "message": "Yes but in this case this fix was rolled into the original patch is is fixing. I don\u0027t think we have a standard way to indicate this case.\nAnother option is to revert aosp/1651227 and then apply the upstream version of that patch which already includes this fix. This way was simpler but I can do the revert as well.",
+      "parentUuid": "387e896d_523936ca",
+      "revId": "8018245ef962394777b4466670512ff569db36b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
