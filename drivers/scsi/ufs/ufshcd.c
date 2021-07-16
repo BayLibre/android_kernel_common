@@ -2750,6 +2750,11 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
 	if (err) {
 		lrbp->cmd = NULL;
 		ufshcd_release(hba);
+		if (err == -EINVAL) {
+			set_host_byte(cmd, DID_ERROR);
+			cmd->scsi_done(cmd);
+			err = 0;
+		}
 		goto out;
 	}
 
