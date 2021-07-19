@@ -16,6 +16,24 @@
       "message": "Although I\u0027m fine with increasing the UIC timeout, if CPU\u0027s are busy then the wait_for_completion_timeout() call will start later instead of earlier. Is the root cause perhaps that the UFS device is busy and does not respond in time?",
       "revId": "5a88f3dc375d7909acdf7ae672d6afa592475288",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75aed941_c5331686",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1601171
+      },
+      "writtenOn": "2021-07-19T17:00:29Z",
+      "side": 1,
+      "message": "Sometimes the interrupt delivery may be delayed at the hypervisor too. It doesn\u0027t appear to be a delay from UFS device yet because this is seen across UFS vendors.\n\ne.g.\n[  628.001706][T18854] ufshcd-qcom 1d84000.ufshc: pwr ctrl cmd 0x18 with mode 0x0 completion timeout \u003c- timeout occurred here – 628.001706s\n[…]\n[  628.103441][T18854] ufshcd-qcom 1d84000.ufshc: last intr at 628009941 us, last intr status\u003d0x420 \u003c- isr was invoked here 628.009941s",
+      "parentUuid": "92cb0ffd_161b2f2d",
+      "revId": "5a88f3dc375d7909acdf7ae672d6afa592475288",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
