@@ -4612,6 +4612,8 @@ static void run_state_machine(struct tcpm_port *port)
 		break;
 
 	case FR_SWAP_SEND:
+		tcpm_log(port, "[kyle] calling tcpm_set_charge, vbus_source %d", port->vbus_source);
+		tcpm_set_charge(port, false);
 		if (tcpm_pd_send_control(port, PD_CTRL_FR_SWAP)) {
 			tcpm_set_state(port, ERROR_RECOVERY, 0);
 			break;
