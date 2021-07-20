@@ -238,6 +238,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
 	}
 
 #ifdef CONFIG_X86_64
+	//
 	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
 #else
 	/* Netburst reports 64 bytes clflush size, but does IO in 128 bytes */
