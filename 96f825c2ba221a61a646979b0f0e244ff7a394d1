@@ -22,6 +22,30 @@
       },
       "revId": "96f825c2ba221a61a646979b0f0e244ff7a394d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "004fe747_47e02515",
+        "filename": "android/abi_gki_aarch64_mtk",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1878106
+      },
+      "writtenOn": "2021-07-20T03:35:09Z",
+      "side": 1,
+      "message": "cpufreq_update_util_data is export at kernel/sched/cpufreq.c:\n\nDEFINE_PER_CPU(struct update_util_data __rcu *, cpufreq_update_util_data);\nEXPORT_PER_CPU_SYMBOL_GPL(cpufreq_update_util_data);",
+      "parentUuid": "ae581997_904d8790",
+      "range": {
+        "startLine": 193,
+        "startChar": 2,
+        "endLine": 193,
+        "endChar": 26
+      },
+      "revId": "96f825c2ba221a61a646979b0f0e244ff7a394d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
