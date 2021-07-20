@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000013536762",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1772986?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "895a298a_bdf895a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-07-20T18:41:45Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 385567977 android-build.ayeaye-python-dispatcher_20210719.05_p0",
+      "revId": "ec6e3f4d1a453340b804150da4194e375aef4b53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000013536762",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1772986?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "d18695b2_88df19c2",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 17,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Yahan Zhou \u003cyahan@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "2c0ad276_8a4aee24",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-07-20T18:41:45Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Yahan Zhou \u003cyahan@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 385567977 android-build.ayeaye-python-dispatcher_20210719.05_p0",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "ec6e3f4d1a453340b804150da4194e375aef4b53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
