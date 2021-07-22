@@ -5265,6 +5265,7 @@
       <elf-symbol name='param_ops_ulong' size='32' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x21d6537'/>
       <elf-symbol name='param_ops_ushort' size='32' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6df585df'/>
       <elf-symbol name='pci_bus_type' size='208' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x34945c88'/>
+      <elf-symbol name='pcpu_base_addr' size='8' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe7ffe877'/>
       <elf-symbol name='platform_bus_type' size='208' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb1454ef1'/>
       <elf-symbol name='pm_power_off' size='8' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x60a32ea9'/>
       <elf-symbol name='pm_suspend_global_flags' size='4' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x42635d55'/>
@@ -61797,6 +61798,9 @@
         <parameter type-id='78c01427'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <array-type-def dimensions='1' type-id='95e97e5e' size-in-bits='2048' id='93e41790'>
+        <subrange length='64' type-id='7ff19f0f' id='b10be967'/>
+      </array-type-def>
       <array-type-def dimensions='1' type-id='3b0abfc6' size-in-bits='768' id='93f82aba'>
         <subrange length='6' type-id='7ff19f0f' id='52fa524b'/>
       </array-type-def>
@@ -71465,7 +71469,11 @@
       <pointer-type-def type-id='512ac7cc' size-in-bits='64' id='ac58af12'/>
       <pointer-type-def type-id='b254b8db' size-in-bits='64' id='ac5f2363'/>
       <pointer-type-def type-id='49a0ad34' size-in-bits='64' id='ac6963b2'/>
-      <class-decl name='prot_inuse' is-struct='yes' visibility='default' is-declaration-only='yes' id='ac763c5d'/>
+      <class-decl name='prot_inuse' size-in-bits='2048' is-struct='yes' visibility='default' filepath='net/core/sock.c' line='3311' column='1' id='ac763c5d'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='val' type-id='93e41790' visibility='default' filepath='net/core/sock.c' line='3312' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='ac765b39'>
         <parameter type-id='2ba25712'/>
         <parameter type-id='14bde5bf'/>
@@ -108462,9 +108470,9 @@
         <parameter type-id='2730d015' name='owner' filepath='drivers/net/phy/mdio_bus.c' line='518' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='__media_device_register' mangled-name='__media_device_register' filepath='drivers/media/mc/mc-device.c' line='737' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__media_device_register'>
-        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='737' column='1'/>
-        <parameter type-id='2730d015' name='owner' filepath='drivers/media/mc/mc-device.c' line='738' column='1'/>
+      <function-decl name='__media_device_register' mangled-name='__media_device_register' filepath='drivers/media/mc/mc-device.c' line='738' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__media_device_register'>
+        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='738' column='1'/>
+        <parameter type-id='2730d015' name='owner' filepath='drivers/media/mc/mc-device.c' line='739' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='__media_entity_setup_link' mangled-name='__media_entity_setup_link' filepath='drivers/media/mc/mc-entity.c' line='830' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__media_entity_setup_link'>
@@ -122054,21 +122062,21 @@
         <parameter type-id='19c2251e' name='flags' filepath='drivers/media/mc/mc-entity.c' line='660' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='media_device_cleanup' mangled-name='media_device_cleanup' filepath='drivers/media/mc/mc-device.c' line='727' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_cleanup'>
-        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='727' column='1'/>
+      <function-decl name='media_device_cleanup' mangled-name='media_device_cleanup' filepath='drivers/media/mc/mc-device.c' line='728' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_cleanup'>
+        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='728' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='media_device_init' mangled-name='media_device_init' filepath='drivers/media/mc/mc-device.c' line='709' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_init'>
-        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='709' column='1'/>
+      <function-decl name='media_device_init' mangled-name='media_device_init' filepath='drivers/media/mc/mc-device.c' line='710' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_init'>
+        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='710' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='media_device_register_entity' mangled-name='media_device_register_entity' filepath='drivers/media/mc/mc-device.c' line='621' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_register_entity'>
-        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='621' column='1'/>
-        <parameter type-id='19e05b5f' name='entity' filepath='drivers/media/mc/mc-device.c' line='622' column='1'/>
+      <function-decl name='media_device_register_entity' mangled-name='media_device_register_entity' filepath='drivers/media/mc/mc-device.c' line='622' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_register_entity'>
+        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='622' column='1'/>
+        <parameter type-id='19e05b5f' name='entity' filepath='drivers/media/mc/mc-device.c' line='623' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='media_device_unregister' mangled-name='media_device_unregister' filepath='drivers/media/mc/mc-device.c' line='806' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_unregister'>
-        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='806' column='1'/>
+      <function-decl name='media_device_unregister' mangled-name='media_device_unregister' filepath='drivers/media/mc/mc-device.c' line='807' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_device_unregister'>
+        <parameter type-id='e2929c1c' name='mdev' filepath='drivers/media/mc/mc-device.c' line='807' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='media_devnode_create' mangled-name='media_devnode_create' filepath='drivers/media/mc/mc-entity.c' line='939' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='media_devnode_create'>
@@ -124568,6 +124576,7 @@
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='2012' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <var-decl name='pcpu_base_addr' type-id='eaa32e2f' mangled-name='pcpu_base_addr' visibility='default' filepath='mm/percpu.c' line='141' column='1' elf-symbol-id='pcpu_base_addr'/>
       <function-decl name='pcpu_nr_pages' mangled-name='pcpu_nr_pages' filepath='mm/percpu.c' line='3167' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pcpu_nr_pages'>
         <return type-id='7359adad'/>
       </function-decl>
@@ -132520,20 +132529,20 @@
         <return type-id='95e97e5e'/>
       </function-decl>
       <var-decl name='v4l2_subdev_call_wrappers' type-id='3a7813d3' mangled-name='v4l2_subdev_call_wrappers' visibility='default' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='350' column='1' elf-symbol-id='v4l2_subdev_call_wrappers'/>
-      <function-decl name='v4l2_subdev_init' mangled-name='v4l2_subdev_init' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='912' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_subdev_init'>
-        <parameter type-id='f5438ac7' name='sd' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='912' column='1'/>
-        <parameter type-id='040770fb' name='ops' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='912' column='1'/>
+      <function-decl name='v4l2_subdev_init' mangled-name='v4l2_subdev_init' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='917' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_subdev_init'>
+        <parameter type-id='f5438ac7' name='sd' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='917' column='1'/>
+        <parameter type-id='040770fb' name='ops' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='917' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='v4l2_subdev_link_validate' mangled-name='v4l2_subdev_link_validate' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='853' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_subdev_link_validate'>
-        <parameter type-id='b4de78ea' name='link' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='853' column='1'/>
+      <function-decl name='v4l2_subdev_link_validate' mangled-name='v4l2_subdev_link_validate' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='858' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_subdev_link_validate'>
+        <parameter type-id='b4de78ea' name='link' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='858' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='v4l2_subdev_link_validate_default' mangled-name='v4l2_subdev_link_validate_default' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='810' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_subdev_link_validate_default'>
-        <parameter type-id='f5438ac7' name='sd' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='810' column='1'/>
-        <parameter type-id='b4de78ea' name='link' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='811' column='1'/>
-        <parameter type-id='cdea97c3' name='source_fmt' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='812' column='1'/>
-        <parameter type-id='cdea97c3' name='sink_fmt' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='813' column='1'/>
+      <function-decl name='v4l2_subdev_link_validate_default' mangled-name='v4l2_subdev_link_validate_default' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='815' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_subdev_link_validate_default'>
+        <parameter type-id='f5438ac7' name='sd' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='815' column='1'/>
+        <parameter type-id='b4de78ea' name='link' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='816' column='1'/>
+        <parameter type-id='cdea97c3' name='source_fmt' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='817' column='1'/>
+        <parameter type-id='cdea97c3' name='sink_fmt' filepath='drivers/media/v4l2-core/v4l2-subdev.c' line='818' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='v4l_bound_align_image' mangled-name='v4l_bound_align_image' filepath='drivers/media/v4l2-core/v4l2-common.c' line='119' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l_bound_align_image'>

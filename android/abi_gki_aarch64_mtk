@@ -365,6 +365,7 @@
   devm_input_allocate_device
   devm_ioremap
   devm_ioremap_resource
+  devm_ioremap_wc
   devm_kasprintf
   devm_kfree
   devm_kmalloc
@@ -477,7 +478,6 @@
   dma_heap_add
   dma_heap_buffer_alloc
   dma_heap_bufferfd_alloc
-  dma_heap_buffer_free
   dma_heap_find
   dma_heap_get_dev
   dma_heap_get_name
@@ -742,7 +742,6 @@
   get_task_exe_file
   get_task_mm
   get_unused_fd_flags
-  get_user_pages
   get_user_pages_remote
   get_vaddr_frames
   get_zeroed_page
@@ -1268,6 +1267,7 @@
   param_set_uint
   param_set_ulong
   pause_cpus
+  pcpu_base_addr
   PDE_DATA
   __per_cpu_offset
   perf_event_create_kernel_counter
@@ -1311,6 +1311,7 @@
   pinctrl_utils_add_map_configs
   pinctrl_utils_free_map
   pinctrl_utils_reserve_map
+  pin_user_pages
   pin_user_pages_fast
   platform_bus_type
   platform_device_add
@@ -1873,7 +1874,6 @@
   __traceiter_rwmmio_read
   __traceiter_rwmmio_write
   __traceiter_sched_update_nr_running_tp
-  __traceiter_xhci_urb_giveback
   __tracepoint_android_rvh_cpu_overutilized
   __tracepoint_android_rvh_dequeue_task
   __tracepoint_android_rvh_dequeue_task_fair
@@ -1933,7 +1933,6 @@
   __tracepoint_rwmmio_write
   __tracepoint_sched_update_nr_running_tp
   tracepoint_srcu
-  __tracepoint_xhci_urb_giveback
   trace_print_array_seq
   trace_print_symbols_seq
   __trace_puts
@@ -1990,6 +1989,7 @@
   ufshcd_shutdown
   ufshcd_uic_hibern8_exit
   unlock_page
+  unpin_user_page
   unpin_user_pages
   unregister_blkdev
   __unregister_chrdev
@@ -2132,6 +2132,7 @@
   v4l2_fh_is_singular
   v4l2_fh_open
   v4l2_i2c_subdev_init
+  v4l2_m2m_buf_copy_metadata
   v4l2_m2m_buf_queue
   v4l2_m2m_buf_remove
   v4l2_m2m_ctx_init
@@ -2154,11 +2155,14 @@
   v4l2_m2m_job_finish
   v4l2_m2m_next_buf
   v4l2_m2m_qbuf
+  v4l2_m2m_register_media_controller
   v4l2_m2m_release
+  v4l2_m2m_request_queue
   v4l2_m2m_resume
   v4l2_m2m_streamoff
   v4l2_m2m_suspend
   v4l2_m2m_try_schedule
+  v4l2_m2m_unregister_media_controller
   v4l2_src_change_event_subscribe
   v4l2_subdev_call_wrappers
   v4l2_subdev_init
@@ -2242,6 +2246,7 @@
   wake_up_process
   wakeup_source_add
   wakeup_source_create
+  wakeup_source_destroy
   wakeup_source_register
   wakeup_source_remove
   wakeup_source_unregister
@@ -2252,7 +2257,7 @@
   woken_wake_function
   work_busy
   work_on_cpu
-  ww_mutex_lock_interruptible
+  ww_mutex_lock
   ww_mutex_unlock
   xhci_add_endpoint
   xhci_check_bandwidth
@@ -2299,6 +2304,7 @@
   dma_buf_mmap
   dma_fence_get_status
   dma_fence_remove_callback
+  dma_heap_buffer_free
   dma_sync_single_for_device
   downgrade_write
   down_read_trylock
@@ -2312,6 +2318,7 @@
   fwnode_graph_parse_endpoint
   fwnode_property_get_reference_args
   fwnode_property_read_u64_array
+  get_user_pages
   get_user_pages_fast
   gpiod_set_raw_value
   hci_alloc_dev
@@ -2410,6 +2417,7 @@
   __traceiter_android_vh_v4l2subdev_set_selection
   __traceiter_gpu_mem_total
   __traceiter_task_newtask
+  __traceiter_xhci_urb_giveback
   trace_output_call
   __tracepoint_android_rvh_after_enqueue_task
   __tracepoint_android_rvh_sched_rebalance_domains
@@ -2426,6 +2434,7 @@
   __tracepoint_android_vh_v4l2subdev_set_selection
   __tracepoint_gpu_mem_total
   __tracepoint_task_newtask
+  __tracepoint_xhci_urb_giveback
   trace_print_flags_seq
   try_module_get
   tty_driver_flush_buffer
@@ -2433,7 +2442,6 @@
   tty_unregister_ldisc
   ufshcd_pltfrm_shutdown
   unmap_mapping_range
-  unpin_user_page
   unregister_syscore_ops
   v4l2_async_notifier_add_subdev
   v4l2_async_notifier_cleanup
@@ -2447,16 +2455,12 @@
   v4l2_ctrl_subdev_subscribe_event
   __v4l2_find_nearest_size
   v4l2_format_info
-  v4l2_m2m_buf_copy_metadata
   v4l2_m2m_buf_remove_by_buf
-  v4l2_m2m_register_media_controller
-  v4l2_m2m_request_queue
-  v4l2_m2m_unregister_media_controller
   v4l2_pipeline_link_notify
   vmf_insert_pfn_prot
   wait_for_completion_killable_timeout
   wireless_send_event
-  ww_mutex_lock
+  ww_mutex_lock_interruptible
   zlib_deflate
   zlib_deflateEnd
   zlib_deflateInit2
