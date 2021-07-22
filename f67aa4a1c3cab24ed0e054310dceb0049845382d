@@ -52,6 +52,24 @@
       "parentUuid": "ad3b4bd2_79582d7d",
       "revId": "f67aa4a1c3cab24ed0e054310dceb0049845382d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35cea3f3_d17e10d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1118753
+      },
+      "writtenOn": "2021-07-22T19:17:47Z",
+      "side": 1,
+      "message": "\u003e and there is no LTO in 4.14...\n\u003e device kernels use LTO with 4.14, even if it\u0027s not enabled in android-4.14-stable\n\nIt is enabled for cuttlefish:\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-4.14-stable/arch/arm64/configs/cuttlefish_defconfig#42\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-4.14-stable/arch/x86/configs/x86_64_cuttlefish_defconfig#43\n\nThat is how this bug was originally noticed.\n\nThank you both for the review, can someone handle merging this for the various trees that I pushed it to?",
+      "parentUuid": "62a628f9_3c2e92dd",
+      "revId": "f67aa4a1c3cab24ed0e054310dceb0049845382d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
