@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "85e53ccc_57a89011",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1275292
+      },
+      "writtenOn": "2021-07-22T01:35:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1a2159dd_0268147c",
+      "range": {
+        "startLine": 16,
+        "startChar": 15,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "57990445fc2a7dabd98eafd5e641ccd6c3a7ca2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e93b97b4_b241dac9",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -37,6 +61,41 @@
       "writtenOn": "2021-07-21T11:07:40Z",
       "side": 1,
       "message": "Why is this needed for the mainline branch?  Please work to get your changes upstream so they do not need this export going forward.",
+      "revId": "57990445fc2a7dabd98eafd5e641ccd6c3a7ca2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c34c70e7_9aaa82d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275292
+      },
+      "writtenOn": "2021-07-22T01:35:29Z",
+      "side": 1,
+      "message": "this patch cherry-pick from android12-5.10\nhttps://android-review.googlesource.com/c/kernel/common/+/1764387\n\nMTK debug kernel module can\u0027t upstream, so we can\u0027t upstream export put_task_strack patch due to no kernel module access put_task_stack.\nWe will try to upstream kernel.org first, thanks",
+      "parentUuid": "e93b97b4_b241dac9",
+      "revId": "57990445fc2a7dabd98eafd5e641ccd6c3a7ca2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "854f3fc5_a80ce9be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275292
+      },
+      "writtenOn": "2021-07-22T01:35:29Z",
+      "side": 1,
+      "message": "this patch cherry-pick from android12-5.10\nhttps://android-review.googlesource.com/c/kernel/common/+/1764387\n\nMTK debug kernel module can\u0027t upstream, so we can\u0027t upstream export put_task_strack patch due to no kernel module access put_task_stack. Have you any suggestion about it? Thanks",
       "revId": "57990445fc2a7dabd98eafd5e641ccd6c3a7ca2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
