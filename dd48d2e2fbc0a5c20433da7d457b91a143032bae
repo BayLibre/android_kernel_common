@@ -16,6 +16,24 @@
       "message": "This symbol should not be needed by any driver at all.  Only initial setup code uses it, it should not even be exported.\n\nWhy is this needed?",
       "revId": "dd48d2e2fbc0a5c20433da7d457b91a143032bae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd2e758e_48ef4bc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1656502
+      },
+      "writtenOn": "2021-07-22T17:44:00Z",
+      "side": 1,
+      "message": "Hi, we want to set up the permission specifically for pcpu static area in stage-2 translation, so we need to know the start address.",
+      "parentUuid": "5253605f_ae93e391",
+      "revId": "dd48d2e2fbc0a5c20433da7d457b91a143032bae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
