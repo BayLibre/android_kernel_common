@@ -175,6 +175,30 @@
       },
       "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "931c5111_8ef46d0a",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4321,
+      "author": {
+        "id": 1350392
+      },
+      "writtenOn": "2021-07-23T11:53:53Z",
+      "side": 1,
+      "message": "struct xhci_driver_overrides also observed in \n    xhci-histb.c\n    xhci-mtk.c\n    xhci-pci.c\n    xhci-tegra.c\nin the tree and they don\u0027t define extra_priv_size..",
+      "parentUuid": "f0900fa0_ec3e3d73",
+      "range": {
+        "startLine": 4321,
+        "startChar": 0,
+        "endLine": 4321,
+        "endChar": 60
+      },
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
