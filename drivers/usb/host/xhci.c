@@ -4315,30 +4315,6 @@ static int __maybe_unused xhci_change_max_exit_latency(struct xhci_hcd *xhci,
 	return ret;
 }
 
-struct xhci_vendor_ops *xhci_vendor_get_ops(struct xhci_hcd *xhci)
-{
-	return xhci_to_priv(xhci)->vendor_ops;
-}
-EXPORT_SYMBOL_GPL(xhci_vendor_get_ops);
-
-int xhci_vendor_sync_dev_ctx(struct xhci_hcd *xhci, unsigned int slot_id)
-{
-	struct xhci_vendor_ops *ops = xhci_vendor_get_ops(xhci);
-
-	if (ops && ops->sync_dev_ctx)
-		return ops->sync_dev_ctx(xhci, slot_id);
-	return 0;
-}
-
-bool xhci_vendor_usb_offload_skip_urb(struct xhci_hcd *xhci, struct urb *urb)
-{
-	struct xhci_vendor_ops *ops = xhci_vendor_get_ops(xhci);
-
-	if (ops && ops->usb_offload_skip_urb)
-		return ops->usb_offload_skip_urb(xhci, urb);
-	return false;
-}
-
 #ifdef CONFIG_PM
 
 /* BESL to HIRD Encoding array for USB2 LPM */
@@ -5395,6 +5371,32 @@ static const struct hc_driver xhci_hc_driver = {
 	.find_raw_port_number =	xhci_find_raw_port_number,
 	.clear_tt_buffer_complete = xhci_clear_tt_buffer_complete,
 };
+
+struct xhci_vendor_ops *xhci_vendor_get_ops(struct xhci_hcd *xhci)
+{
+	if (xhci_hc_driver.hcd_priv_size > sizeof(struct xhci_hcd))
+		return xhci_to_priv(xhci)->vendor_ops;
+	return NULL;
+}
+EXPORT_SYMBOL_GPL(xhci_vendor_get_ops);
+
+int xhci_vendor_sync_dev_ctx(struct xhci_hcd *xhci, unsigned int slot_id)
+{
+	struct xhci_vendor_ops *ops = xhci_vendor_get_ops(xhci);
+
+	if (ops && ops->sync_dev_ctx)
+		return ops->sync_dev_ctx(xhci, slot_id);
+	return 0;
+}
+
+bool xhci_vendor_usb_offload_skip_urb(struct xhci_hcd *xhci, struct urb *urb)
+{
+	struct xhci_vendor_ops *ops = xhci_vendor_get_ops(xhci);
+
+	if (ops && ops->usb_offload_skip_urb)
+		return ops->usb_offload_skip_urb(xhci, urb);
+	return false;
+}
 
 void xhci_init_driver(struct hc_driver *drv,
 		      const struct xhci_driver_overrides *over)
