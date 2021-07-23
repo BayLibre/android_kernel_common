@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bee7cfc6_548daf96",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4318,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-23T11:46:18Z",
+      "side": 1,
+      "message": "Ah.  Then move this call down below that as it is not obvious.",
+      "parentUuid": "ed1051f4_10588e04",
+      "range": {
+        "startLine": 4318,
+        "startChar": 0,
+        "endLine": 4318,
+        "endChar": 45
+      },
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c62d4334_ccc98b21",
         "filename": "drivers/usb/host/xhci.c",
         "patchSetId": 4
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "It\u0027s a runtime issue, hcd_priv_size will be changed in xhci_init_driver() according to extra_priv_size and hcd driver allocates the extra memory for it. If the xhci platform drivers don\u0027t define extra_priv_size, then it would cause a out-of-bound memory error.",
       "parentUuid": "c62d4334_ccc98b21",
+      "range": {
+        "startLine": 4321,
+        "startChar": 0,
+        "endLine": 4321,
+        "endChar": 60
+      },
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0900fa0_ec3e3d73",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4321,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-23T11:46:18Z",
+      "side": 1,
+      "message": "Why would a xhci platform driver not define the extra size, and still try to make this call?  How can this happen with any in-kernel driver?\n\nOut of tree drivers need to do this properly, or they will crash, that is up to them to get correct, let us not paper over errors in their implementation in the core please.",
+      "parentUuid": "f2934d32_290b3c3a",
       "range": {
         "startLine": 4321,
         "startChar": 0,
