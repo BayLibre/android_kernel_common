@@ -199,6 +199,30 @@
       },
       "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "593bbc20_4be81240",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4321,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-23T12:02:28Z",
+      "side": 1,
+      "message": "So how do you know that vendor_ops really is at this location for those other drivers?  This feels like an odd check, shouldn\u0027t the vendor_ops be part of the main structure?",
+      "parentUuid": "931c5111_8ef46d0a",
+      "range": {
+        "startLine": 4321,
+        "startChar": 0,
+        "endLine": 4321,
+        "endChar": 60
+      },
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
