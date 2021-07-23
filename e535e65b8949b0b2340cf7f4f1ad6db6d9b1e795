@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b6f8c3a_48400e94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-23T11:26:09Z",
+      "side": 1,
+      "message": "How can a xhci driver mess this up?  I do not understand this change...",
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c60c5434_6ed3088a",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4318,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-23T11:26:09Z",
+      "side": 1,
+      "message": "Why is this needed?  We have to be able to handle more than one host controller in the system at a time.  And drivers at a time.",
+      "range": {
+        "startLine": 4318,
+        "startChar": 0,
+        "endLine": 4318,
+        "endChar": 45
+      },
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c62d4334_ccc98b21",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4321,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-23T11:26:09Z",
+      "side": 1,
+      "message": "is this a built-time issue?  How can this change at runtime?",
+      "range": {
+        "startLine": 4321,
+        "startChar": 0,
+        "endLine": 4321,
+        "endChar": 60
+      },
+      "revId": "e535e65b8949b0b2340cf7f4f1ad6db6d9b1e795",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
