@@ -724,6 +724,7 @@ F2FS_FEATURE_RO_ATTR(lost_found);
 #ifdef CONFIG_FS_VERITY
 F2FS_FEATURE_RO_ATTR(verity);
 #endif
+<<<<<<< HEAD   (7f17b6 Merge branch 'android12-5.4' into 'android12-5.4-lts')
 F2FS_FEATURE_RO_ATTR(sb_checksum);
 #ifdef CONFIG_UNICODE
 F2FS_FEATURE_RO_ATTR(casefold);
@@ -742,6 +743,12 @@ F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_candidate_ratio, candidate_ratio);
 F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_candidate_count, max_candidate_count);
 F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_age_weight, age_weight);
 F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_age_threshold, age_threshold);
+=======
+F2FS_FEATURE_RO_ATTR(sb_checksum, FEAT_SB_CHECKSUM);
+#ifdef CONFIG_UNICODE
+F2FS_FEATURE_RO_ATTR(casefold, FEAT_CASEFOLD);
+#endif
+>>>>>>> BRANCH (0a0beb Linux 5.4.135)
 
 #define ATTR_LIST(name) (&f2fs_attr_##name.attr)
 static struct attribute *f2fs_attrs[] = {
@@ -845,11 +852,14 @@ static struct attribute *f2fs_feat_attrs[] = {
 #ifdef CONFIG_UNICODE
 	ATTR_LIST(casefold),
 #endif
+<<<<<<< HEAD   (7f17b6 Merge branch 'android12-5.4' into 'android12-5.4-lts')
 	ATTR_LIST(readonly),
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 	ATTR_LIST(compression),
 #endif
 	ATTR_LIST(pin_file),
+=======
+>>>>>>> BRANCH (0a0beb Linux 5.4.135)
 	NULL,
 };
 ATTRIBUTE_GROUPS(f2fs_feat);
