@@ -45,16 +45,17 @@ int trace(struct bpf_fuse_data *ctx)
 		int backing = strcmp(ctx->name, "real") == 0 ||
 			strcmp(ctx->name, "partial") == 0;
 
-		bpf_printk("Paul: lookup %s %d", ctx->name, backing);
+		bpf_printk("lookup %s %d", ctx->name, backing);
 		return backing ? 1 : 0;
 	}
 
 	case FUSE_GETATTR: {
 		/* real and partial use backing file */
-		int backing = strcmp(ctx->name, "real") == 0 ||
+		int backing = strcmp(ctx->name, "/") == 0 ||
+			strcmp(ctx->name, "real") == 0 ||
 			strcmp(ctx->name, "partial") == 0;
 
-		bpf_printk("Paul: getattr %s %d", ctx->name, backing);
+		bpf_printk("getattr %s %d", ctx->name, backing);
 		return backing ? 1 : 0;
 	}
 
@@ -67,16 +68,48 @@ int trace(struct bpf_fuse_data *ctx)
 		else if (strcmp(ctx->name, "partial") == 0)
 			backing = 2;
 
-		bpf_printk("Paul: open %s %d", ctx->name, backing);
+		bpf_printk("open %s %d", ctx->name, backing);
 		return backing;
 	}
 
 	case FUSE_READ: {
-		bpf_printk("Paul: read %llu %llu",
+		bpf_printk("read %llu %llu",
 			   ctx->file_handle, ctx->offset);
 		if (ctx->file_handle == 1 && ctx->offset == 0)
 			return 0;
 		return 1;
+	}
+
+	case FUSE_OPENDIR: {
+		int backing = 0;
+
+		if (strcmp(ctx->name, "/") == 0)
+			backing = 1;
+
+		bpf_printk("opendir %s %d", ctx->name, backing);
+		return backing;
+	}
+
+	case FUSE_READDIR: {
+		int backing = 0;
+
+		if (strcmp(ctx->name, "/") == 0)
+			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
+				  FUSE_BPF_POST_FILTER;
+
+		bpf_printk("readdir %s %d", ctx->name, backing);
+		return backing;
+	}
+
+	case FUSE_READDIR | FUSE_POSTFILTER: {
+		int backing = 0;
+
+		if (strcmp(ctx->name, "/") == 0)
+			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
+				  FUSE_BPF_POST_FILTER;
+
+		bpf_printk("readdir postfilter %s %d", ctx->name, backing);
+		return backing;
 	}
 
 	default:
@@ -96,7 +129,7 @@ int trace2(struct bpf_fuse_data *ctx)
 			strcmp(ctx->name, "partial") == 0 ||
 			strcmp(ctx->name, "MAILPATH") == 0;
 
-		bpf_printk("Paul: lookup %s %d", ctx->name, backing);
+		bpf_printk("lookup %s %d", ctx->name, backing);
 		return backing ? 1 : 0;
 	}
 
@@ -106,7 +139,7 @@ int trace2(struct bpf_fuse_data *ctx)
 			strcmp(ctx->name, "real") == 0 ||
 			strcmp(ctx->name, "partial") == 0;
 
-		bpf_printk("Paul: getattr %s %d", ctx->name, backing);
+		bpf_printk("getattr %s %d", ctx->name, backing);
 		return backing ? 1 : 0;
 	}
 
@@ -119,7 +152,7 @@ int trace2(struct bpf_fuse_data *ctx)
 		else if (strcmp(ctx->name, "partial") == 0)
 			backing = 2;
 
-		bpf_printk("Paul: open %s %d", ctx->name, backing);
+		bpf_printk("open %s %d", ctx->name, backing);
 		return backing;
 	}
 
@@ -129,7 +162,7 @@ int trace2(struct bpf_fuse_data *ctx)
 		if (strcmp(ctx->name, "/") == 0)
 			backing = 1;
 
-		bpf_printk("Paul: opendir %s %d", ctx->name, backing);
+		bpf_printk("opendir %s %d", ctx->name, backing);
 		return backing;
 	}
 
@@ -137,22 +170,33 @@ int trace2(struct bpf_fuse_data *ctx)
 		int backing = 0;
 
 		if (strcmp(ctx->name, "/") == 0)
-			backing = 1;
+			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
+				  FUSE_BPF_POST_FILTER;
 
-		bpf_printk("Paul: readdir %s %d", ctx->name, backing);
+		bpf_printk("readdir %s %d", ctx->name, backing);
+		return backing;
+	}
+
+	case FUSE_READDIR | FUSE_POSTFILTER: {
+		int backing = 0;
+
+		if (strcmp(ctx->name, "/") == 0)
+			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
+				  FUSE_BPF_POST_FILTER;
+
+		bpf_printk("readdir postfilter %s %d", ctx->name, backing);
 		return backing;
 	}
 
 	case FUSE_READ: {
-		bpf_printk("Paul: read %llu %llu",
-			   ctx->file_handle, ctx->offset);
+		bpf_printk("read %llu %llu", ctx->file_handle, ctx->offset);
 		if (ctx->file_handle == 1 && ctx->offset == 0)
 			return 0;
 		return 1;
 	}
 
 	case FUSE_ACCESS: {
-		bpf_printk("Paul: access");
+		bpf_printk("access");
 		return 1;
 	}
 

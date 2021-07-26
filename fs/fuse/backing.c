@@ -8,6 +8,7 @@
 
 #include "fuse_i.h"
 
+#include <linux/bpf_fuse.h>
 #include <linux/filter.h>
 #include <linux/namei.h>
 
@@ -98,7 +99,6 @@ bool fuse_flush_use_backing(struct file* file)
 
 int fuse_flush_backing(struct file *file, fl_owner_t id)
 {
-	pr_debug("TODO: Paul\n");
 	return 0;
 }
 
@@ -246,7 +246,7 @@ int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 	return vfs_getattr(backing_path, stat, request_mask, flags);
 }
 
-bool fuse_readdir_use_backing(struct file *file)
+int fuse_readdir_use_backing(struct file *file)
 {
 	struct bpf_fuse_data_kern ctx = {
 		.fuse_opcode = FUSE_READDIR,
@@ -254,16 +254,118 @@ bool fuse_readdir_use_backing(struct file *file)
 	struct fuse_inode *fi = get_fuse_inode(file->f_inode);
 
 	strlcpy(ctx.name, file->f_path.dentry->d_name.name, sizeof(ctx.name));
-	pr_debug("Paul: %s\n", ctx.name);
-	return BPF_PROG_RUN(fi->bpf, &ctx) == 1;
+	return BPF_PROG_RUN(fi->bpf, &ctx);
 }
 
-int fuse_readdir_backing(struct file *file, struct dir_context *ctx)
+struct extfuse_ctx {
+	struct dir_context ctx;
+	u8 *addr;
+	size_t offset;
+};
+
+static int filldir(struct dir_context *ctx, const char *name, int namelen,
+				   loff_t offset, u64 ino, unsigned int d_type)
+{
+	struct extfuse_ctx *ec = container_of(ctx, struct extfuse_ctx, ctx);
+
+	struct fuse_dirent *fd = (struct fuse_dirent *) (ec->addr + ec->offset);
+
+	*fd = (struct fuse_dirent) {
+		.ino = ino,
+		.off = offset,
+		.namelen = namelen,
+		.type = d_type,
+	};
+
+	/* TODO handle directories larger than one page */
+	/* TODO don't use raw strcpy, and check for overflows */
+	strcpy(fd->name, name);
+	ec->offset += FUSE_DIRENT_SIZE(fd);
+
+	return 0;
+}
+
+int fuse_readdir_backing(struct file *file, struct dir_context *ctx,
+			 int ext_flags)
 {
 	struct fuse_file *ff = file->private_data;
+	struct fuse_inode *fi = get_fuse_inode(file->f_inode);
+	struct fuse_mount *fm = get_fuse_mount(file->f_inode);
 	struct file *backing_dir = ff->backing_file;
+	struct extfuse_ctx ec;
+	int err;
+	struct bpf_fuse_data_kern bpf_ctx = {
+		.fuse_opcode = FUSE_READDIR | FUSE_POSTFILTER,
+	};
+	struct fuse_args fa;
+	u8 *page = NULL;
+	bool locked;
+	ssize_t res;
 
-	return iterate_dir(backing_dir, ctx);
+	/* TODO Manage non zero pos calls properly */
+	if (ctx->pos)
+		return 0;
+
+	ec = (struct extfuse_ctx) {
+		.ctx.actor = filldir,
+		.ctx.pos = 0,
+		.addr = (u8 *) __get_free_page(GFP_NOFS),
+	};
+
+	if (!ec.addr)
+		return -ENOMEM;
+
+	err = iterate_dir(backing_dir, &ec.ctx);
+	if (err)
+		goto out;
+
+	strlcpy(bpf_ctx.name, file->f_path.dentry->d_name.name,
+		sizeof(bpf_ctx.name));
+	ext_flags = BPF_PROG_RUN(fi->bpf, &bpf_ctx);
+
+	/* No post filter, just parse and end */
+	if (!(ext_flags & FUSE_BPF_USER_FILTER)) {
+		err = fuse_parse_dirfile(ec.addr, ec.offset, file, ctx);
+		goto out;
+	}
+
+	page = (u8 *) __get_free_page(GFP_KERNEL);
+	if (!page) {
+		err = -ENOMEM;
+		goto out;
+	}
+
+	fa = (struct fuse_args) {
+		.nodeid = ff->nodeid,
+		.opcode = FUSE_READDIR | FUSE_POSTFILTER,
+		.in_numargs = 1,
+		.out_argvar = true,
+		.out_numargs = 1,
+		.in_args[0] = (struct fuse_in_arg) {
+			.size = ec.offset,
+			.value = ec.addr,
+		},
+		.out_args[0] = (struct fuse_arg) {
+			.size = PAGE_SIZE,
+			.value = page,
+		},
+	};
+
+	locked = fuse_lock_inode(file->f_inode);
+	res = fuse_simple_request(fm, &fa);
+	fuse_unlock_inode(file->f_inode, locked);
+
+	if (res < 0) {
+		err = res;
+		goto out;
+	}
+
+	err = fuse_parse_dirfile(page, res, file, ctx);
+
+out:
+	free_page((unsigned long) ec.addr);
+	free_page((unsigned long) page);
+	return err;
 }
 
 bool fuse_access_use_backing(struct inode *inode)
