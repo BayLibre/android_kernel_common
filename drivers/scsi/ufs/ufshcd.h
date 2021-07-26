@@ -913,7 +913,7 @@ struct ufs_hba {
 	struct delayed_work rpm_dev_flush_recheck_work;
 
 #ifdef CONFIG_SCSI_UFS_HPB
-	struct ufshpb_dev_info ufshpb_dev;
+	ANDROID_KABI_USE(1, struct ufshpb_dev_info *ufshpb_dev;);
 #endif
 
 	struct ufs_hba_monitor	monitor;
@@ -928,7 +928,6 @@ struct ufs_hba {
 	struct dentry *debugfs_root;
 #endif
 
-	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);

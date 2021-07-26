@@ -7496,16 +7496,19 @@ static int ufs_get_device_desc(struct ufs_hba *hba)
 	    (b_ufs_feature_sup & UFS_DEV_HPB_SUPPORT)) {
 		bool hpb_en = false;
 
-		ufshpb_get_dev_info(hba, desc_buf);
+		hba->ufshpb_dev = kzalloc(sizeof(struct ufshpb_dev_info), GFP_KERNEL);
+		if (hba->ufshpb_dev) {
+			ufshpb_get_dev_info(hba, desc_buf);
 
-		if (!ufshpb_is_legacy(hba))
-			err = ufshcd_query_flag_retry(hba,
+			if (!ufshpb_is_legacy(hba))
+				err = ufshcd_query_flag_retry(hba,
 						      UPIU_QUERY_OPCODE_READ_FLAG,
 						      QUERY_FLAG_IDN_HPB_EN, 0,
 						      &hpb_en);
 
-		if (ufshpb_is_legacy(hba) || (!err && hpb_en))
-			dev_info->hpb_enabled = true;
+			if (ufshpb_is_legacy(hba) || (!err && hpb_en))
+				dev_info->hpb_enabled = true;
+		}
 	}
 
 	err = ufshcd_read_string_desc(hba, model_index,
