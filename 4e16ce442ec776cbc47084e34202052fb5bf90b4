@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46f6f782_1317648d",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 1
+      },
+      "lineNbr": 1270,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-27T09:46:30Z",
+      "side": 1,
+      "message": "Please do not do that in a display driver, just export the needed symbols from your driver itself if they need to communicate somehow.",
+      "parentUuid": "67c9ceb3_9199820d",
+      "range": {
+        "startLine": 1270,
+        "startChar": 0,
+        "endLine": 1270,
+        "endChar": 11
+      },
+      "revId": "4e16ce442ec776cbc47084e34202052fb5bf90b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e127e9b_caf59782",
         "filename": "android/abi_gki_aarch64_galaxy",
         "patchSetId": 1
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "This symbol is used by the security driver. It was also used in android11-5.4.",
       "parentUuid": "2e127e9b_caf59782",
+      "range": {
+        "startLine": 1802,
+        "startChar": 0,
+        "endLine": 1802,
+        "endChar": 15
+      },
+      "revId": "4e16ce442ec776cbc47084e34202052fb5bf90b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e1e2fd_a3199563",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 1
+      },
+      "lineNbr": 1802,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-27T09:46:30Z",
+      "side": 1,
+      "message": "I had hoped you would have found a proper solution for this by now.  Please work on getting your \"security driver\" merged upstream so that this is not needed.\n\nAlso, this can be a big security hole, I really do not want to export this to all drivers as it can cause big problems.  What exactly are you using this for?",
+      "parentUuid": "f341b3c5_f55ff92a",
       "range": {
         "startLine": 1802,
         "startChar": 0,
