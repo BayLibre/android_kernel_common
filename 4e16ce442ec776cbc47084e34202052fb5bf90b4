@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67c9ceb3_9199820d",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 1
+      },
+      "lineNbr": 1270,
+      "author": {
+        "id": 1859255
+      },
+      "writtenOn": "2021-07-27T08:18:18Z",
+      "side": 1,
+      "message": "This symbol uses at display driver.",
+      "parentUuid": "213ae57d_ce9ca1e7",
+      "range": {
+        "startLine": 1270,
+        "startChar": 0,
+        "endLine": 1270,
+        "endChar": 11
+      },
+      "revId": "4e16ce442ec776cbc47084e34202052fb5bf90b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e127e9b_caf59782",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-27T06:53:45Z",
       "side": 1,
       "message": "drivers should not be calling this function.",
+      "range": {
+        "startLine": 1802,
+        "startChar": 0,
+        "endLine": 1802,
+        "endChar": 15
+      },
+      "revId": "4e16ce442ec776cbc47084e34202052fb5bf90b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f341b3c5_f55ff92a",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 1
+      },
+      "lineNbr": 1802,
+      "author": {
+        "id": 1859255
+      },
+      "writtenOn": "2021-07-27T08:18:18Z",
+      "side": 1,
+      "message": "This symbol is used by the security driver. It was also used in android11-5.4.",
+      "parentUuid": "2e127e9b_caf59782",
       "range": {
         "startLine": 1802,
         "startChar": 0,
