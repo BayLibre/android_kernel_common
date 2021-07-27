@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a2925e87_1728633b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-07-27T21:05:14Z",
+      "side": 1,
+      "message": "Fixed the commit message to also mention how the patch solves the problem. \n\nThe issue needs to fixed in ACK branches for 4.9, 4.14 and 4.19. Earlier ACK versions did not have the DMA-BUF sync IOCTL and hence did not have the issue. Kernel version 5.4 does not have the issue since it has already removed kmap()/kunmap()invocations from the begin/end_cpu_access() DMA-BUF ops(a straight backport from 5.4 to the older kernels would not work though since we did a big ION refactoring in the ACK 5.4 branch to support modular ION heaps). Once we are done with the review for this patch, I will cherrypick them to older kernel versions with the issue.",
+      "parentUuid": "b741c8a5_fa149326",
+      "revId": "a95e4a47d9ea9ded8f9d7a457e72b2bc53f34232",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5595b12e_2e98754c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2021-07-27T20:05:57Z",
       "side": 1,
       "message": "Is this the right bug?",
+      "range": {
+        "startLine": 22,
+        "startChar": 5,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "a95e4a47d9ea9ded8f9d7a457e72b2bc53f34232",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea87f3c_8e2a26f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-07-27T21:05:14Z",
+      "side": 1,
+      "message": "Sorry no, updated the bug number with the correct one.",
+      "parentUuid": "5595b12e_2e98754c",
       "range": {
         "startLine": 22,
         "startChar": 5,
