@@ -22,6 +22,30 @@
       },
       "revId": "84e8391c76fa0090c7882f78e2e90e0c121f3a3d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "865d4850_9bc81955",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 5377,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-28T12:13:35Z",
+      "side": 1,
+      "message": "Why are you not getting these from `static struct xhci_plat_priv_overwrite xhci_plat_vendor_overwrite` ?  Isn\u0027t that where these are stored?\n\nAnd ick, that is a per-system structure, that too was missed 😞",
+      "parentUuid": "299bdc92_d51a35be",
+      "range": {
+        "startLine": 5377,
+        "startChar": 0,
+        "endLine": 5377,
+        "endChar": 60
+      },
+      "revId": "84e8391c76fa0090c7882f78e2e90e0c121f3a3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
