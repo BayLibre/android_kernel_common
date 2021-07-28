@@ -491,6 +491,7 @@ static struct xhci_virt_ep *xhci_get_virt_ep(struct xhci_hcd *xhci,
 	return &xhci->devs[slot_id]->eps[ep_index];
 }
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
 static struct xhci_ring *xhci_virt_ep_to_ring(struct xhci_hcd *xhci,
 					      struct xhci_virt_ep *ep,
 					      unsigned int stream_id)
@@ -511,6 +512,8 @@ static struct xhci_ring *xhci_virt_ep_to_ring(struct xhci_hcd *xhci,
 	return ep->stream_info->stream_rings[stream_id];
 }
 
+=======
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 /* Get the right ring for the given slot_id, ep_index and stream_id.
  * If the endpoint supports streams, boundary check the URB's stream ID.
  * If the endpoint doesn't support streams, return the singular endpoint ring.
@@ -523,6 +526,20 @@ struct xhci_ring *xhci_triad_to_transfer_ring(struct xhci_hcd *xhci,
 
 	ep = xhci_get_virt_ep(xhci, slot_id, ep_index);
 	if (!ep)
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
+=======
+		return NULL;
+
+	/* Common case: no streams */
+	if (!(ep->ep_state & EP_HAS_STREAMS))
+		return ep->ring;
+
+	if (stream_id == 0) {
+		xhci_warn(xhci,
+				"WARN: Slot ID %u, ep index %u has streams, "
+				"but URB has no stream ID.\n",
+				slot_id, ep_index);
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 		return NULL;
 
 	return xhci_virt_ep_to_ring(xhci, ep, stream_id);
@@ -1032,10 +1049,20 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
 	if (!ep)
 		return;
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
 	ep_ctx = xhci_get_ep_ctx(xhci, ep->vdev->out_ctx, ep_index);
 
+=======
+	ep = xhci_get_virt_ep(xhci, slot_id, ep_index);
+	if (!ep)
+		return;
+
+	vdev = xhci->devs[slot_id];
+	ep_ctx = xhci_get_ep_ctx(xhci, vdev->out_ctx, ep_index);
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 	trace_xhci_handle_cmd_stop_ep(ep_ctx);
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
 	if (comp_code == COMP_CONTEXT_STATE_ERROR) {
 	/*
 	 * If stop endpoint command raced with a halting endpoint we need to
@@ -1050,6 +1077,21 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
 	 * We use -EPROTO, if device is stalled it should return a stall error on
 	 * next transfer, which then will return -EPIPE, and device side stall is
 	 * noted and cleared by class driver.
+=======
+	last_unlinked_td = list_last_entry(&ep->cancelled_td_list,
+			struct xhci_td, cancelled_td_list);
+
+	if (list_empty(&ep->cancelled_td_list)) {
+		xhci_stop_watchdog_timer_in_irq(xhci, ep);
+		ring_doorbell_for_active_rings(xhci, slot_id, ep_index);
+		return;
+	}
+
+	/* Fix up the ep ring first, so HW stops executing cancelled TDs.
+	 * We have the xHCI lock, so nothing can modify this list until we drop
+	 * it.  We're also in the event handler, so we can't get re-interrupted
+	 * if another Stop Endpoint command completes
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 	 */
 		switch (GET_EP_CTX_STATE(ep_ctx)) {
 		case EP_STATE_HALTED:
@@ -1315,7 +1357,12 @@ static void xhci_handle_cmd_set_deq(struct xhci_hcd *xhci, int slot_id,
 	if (!ep)
 		return;
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
 	ep_ring = xhci_virt_ep_to_ring(xhci, ep, stream_id);
+=======
+	dev = xhci->devs[slot_id];
+	ep_ring = xhci_stream_id_to_ring(dev, ep_index, stream_id);
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 	if (!ep_ring) {
 		xhci_warn(xhci, "WARN Set TR deq ptr command for freed stream ID %u\n",
 				stream_id);
@@ -1405,6 +1452,10 @@ cleanup:
 static void xhci_handle_cmd_reset_ep(struct xhci_hcd *xhci, int slot_id,
 		union xhci_trb *trb, u32 cmd_comp_code)
 {
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
+=======
+	struct xhci_virt_device *vdev;
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 	struct xhci_virt_ep *ep;
 	struct xhci_ep_ctx *ep_ctx;
 	unsigned int ep_index;
@@ -1414,7 +1465,12 @@ static void xhci_handle_cmd_reset_ep(struct xhci_hcd *xhci, int slot_id,
 	if (!ep)
 		return;
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
 	ep_ctx = xhci_get_ep_ctx(xhci, ep->vdev->out_ctx, ep_index);
+=======
+	vdev = xhci->devs[slot_id];
+	ep_ctx = xhci_get_ep_ctx(xhci, vdev->out_ctx, ep_index);
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 	trace_xhci_handle_cmd_reset_ep(ep_ctx);
 
 	/* This command will only fail if the endpoint wasn't halted,
@@ -1431,7 +1487,20 @@ static void xhci_handle_cmd_reset_ep(struct xhci_hcd *xhci, int slot_id,
 	/* Clear our internal halted state */
 	ep->ep_state &= ~EP_HALTED;
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
 	xhci_giveback_invalidated_tds(ep);
+=======
+		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
+				"Queueing configure endpoint command");
+		xhci_queue_configure_endpoint(xhci, command,
+				xhci->devs[slot_id]->in_ctx->dma, slot_id,
+				false);
+		xhci_ring_cmd_db(xhci);
+	} else {
+		/* Clear our internal halted state */
+		ep->ep_state &= ~EP_HALTED;
+	}
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 
 	/* if this was a soft reset, then restart */
 	if ((le32_to_cpu(trb->generic.field[3])) & TRB_TSP)
@@ -2551,6 +2620,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 		goto err_out;
 	}
 
+<<<<<<< HEAD   (2b90fd Revert "ANDROID: ABI: hikey960_gki.fragment: Add cfg80211 an)
+=======
+	xdev = xhci->devs[slot_id];
+>>>>>>> BRANCH (08277b Linux 5.10.54)
 	ep_ring = xhci_dma_to_transfer_ring(ep, ep_trb_dma);
 	ep_ctx = xhci_get_ep_ctx(xhci, ep->vdev->out_ctx, ep_index);
 
