@@ -62,6 +62,10 @@ DECLARE_HOOK(android_vh_ufs_clock_scaling,
 DECLARE_HOOK(android_vh_ufs_compl_uic_command,
 	TP_PROTO(struct ufs_hba *hba),
 	TP_ARGS(hba));
+
+DECLARE_HOOK(android_vh_ufs_sl_intr,
+	TP_PROTO(struct ufs_hba *hba, int *info),
+	TP_ARGS(hba, info));
 #endif /* _TRACE_HOOK_UFSHCD_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
