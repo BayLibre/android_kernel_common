@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "299bdc92_d51a35be",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 5377,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-28T12:11:22Z",
+      "side": 1,
+      "message": "ouch, no, this isn\u0027t going to work.\n\nIt is up to the platform-specific driver to do whatever they want in their \"private\" space.  I missed the fact that you were just tacking this into that area without having a real pointer in the xhci controller at all.\n\nAs it is, this check would pass if any driver happened to put some private data in this area, you have no way to check that it really is a vendor ops or not, right?",
+      "range": {
+        "startLine": 5377,
+        "startChar": 0,
+        "endLine": 5377,
+        "endChar": 60
+      },
+      "revId": "84e8391c76fa0090c7882f78e2e90e0c121f3a3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
