@@ -34,6 +34,24 @@
       "parentUuid": "1788d613_bfa207f5",
       "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c985fa_7cf44741",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-07-29T08:22:05Z",
+      "side": 1,
+      "message": "\u003e Is this going to break existing apps who are used to being able to modify clamp values?\n\nSadly, it\u0027s not impossible. What will happen is that those apps (if there are any) will not get the clamp they requested and that\u0027s pretty much it. The only reason things could break is because sched_getattr() would now return -EPERM instead of 0, so there _is_ a possibility some apps can\u0027t deal with that !\u003d0 return values. But -EPERM is already a valid return code for sched_setattr() for a number of other things, so there is hope.\n\nOTOH, not merging this patch means it is pretty much impossible to e.g. have the framework in control of per-task clamp values, so any Android feature that would rely on that will be in trouble ...\n\n\u003e We can ask QMC to help check\n\nI have no idea how we can ask this, but if that\u0027s not too complicated I think that would be valuable. Could you help out with that Wei?",
+      "parentUuid": "acba016d_3431e12c",
+      "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
