@@ -1434,6 +1434,9 @@ event_trigger_unlock_commit_regs(struct trace_event_file *file,
  */
 #define MAX_FILTER_PRED		16384
 
+/* The max number of trace event fields that can be used in a single filter. */
+#define MAX_FILTER_PRED_FIELDS	2
+
 struct filter_pred;
 struct regex;
 
@@ -1463,9 +1466,10 @@ struct filter_pred {
 	struct regex		regex;
 	unsigned short		*ops;
 	struct ftrace_event_field *field;
-	int 			offset;
+	int			offset[MAX_FILTER_PRED_FIELDS];
 	int			not;
 	int 			op;
+	bool			rhs_is_field;
 };
 
 static inline bool is_string_field(struct ftrace_event_field *field)

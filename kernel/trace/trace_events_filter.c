@@ -60,6 +60,7 @@ static const char * ops[] = { OPS };
 	C(EXPECT_DIGIT,		"Expecting numeric field"),		\
 	C(ILLEGAL_FIELD_OP,	"Illegal operation for field type"),	\
 	C(FIELD_NOT_FOUND,	"Field not found"),			\
+	C(FIELD_TYPE_MISMATCH,	"Fields must be of the same type"),	\
 	C(ILLEGAL_INTVAL,	"Illegal integer value"),		\
 	C(BAD_SUBSYS_FILTER,	"Couldn't find or set field in one of a subsystem's events"), \
 	C(TOO_MANY_PREDS,	"Too many terms in predicate expression"), \
@@ -589,36 +590,39 @@ out_free:
 	return ERR_PTR(ret);
 }
 
+#define DEFINE_COMPARISON_ARGS(type)					\
+	type lhs = *((type *)(event + pred->offset[0]));		\
+	type rhs;							\
+	if (pred->rhs_is_field)						\
+		rhs = *((type *)(event + pred->offset[1]));		\
+	else								\
+		rhs = (type)pred->val;					\
+
 #define DEFINE_COMPARISON_PRED(type)					\
 static int filter_pred_LT_##type(struct filter_pred *pred, void *event)	\
 {									\
-	type *addr = (type *)(event + pred->offset);			\
-	type val = (type)pred->val;					\
-	return *addr < val;						\
+	DEFINE_COMPARISON_ARGS(type)			\
+	return lhs < rhs;						\
 }									\
 static int filter_pred_LE_##type(struct filter_pred *pred, void *event)	\
 {									\
-	type *addr = (type *)(event + pred->offset);			\
-	type val = (type)pred->val;					\
-	return *addr <= val;						\
+	DEFINE_COMPARISON_ARGS(type)			\
+	return lhs <= rhs;						\
 }									\
 static int filter_pred_GT_##type(struct filter_pred *pred, void *event)	\
 {									\
-	type *addr = (type *)(event + pred->offset);			\
-	type val = (type)pred->val;					\
-	return *addr > val;					\
+	DEFINE_COMPARISON_ARGS(type)			\
+	return lhs > rhs;						\
 }									\
 static int filter_pred_GE_##type(struct filter_pred *pred, void *event)	\
 {									\
-	type *addr = (type *)(event + pred->offset);			\
-	type val = (type)pred->val;					\
-	return *addr >= val;						\
+	DEFINE_COMPARISON_ARGS(type)			\
+	return lhs >= rhs;						\
 }									\
 static int filter_pred_BAND_##type(struct filter_pred *pred, void *event) \
 {									\
-	type *addr = (type *)(event + pred->offset);			\
-	type val = (type)pred->val;					\
-	return !!(*addr & val);						\
+	DEFINE_COMPARISON_ARGS(type)			\
+	return !!(lhs & rhs);						\
 }									\
 static const filter_pred_fn_t pred_funcs_##type[] = {			\
 	filter_pred_LE_##type,						\
@@ -631,13 +635,14 @@ static const filter_pred_fn_t pred_funcs_##type[] = {			\
 #define DEFINE_EQUALITY_PRED(size)					\
 static int filter_pred_##size(struct filter_pred *pred, void *event)	\
 {									\
-	u##size *addr = (u##size *)(event + pred->offset);		\
-	u##size val = (u##size)pred->val;				\
-	int match;							\
+	u##size lhs = *((u##size *)(event + pred->offset[0]));		\
+	u##size rhs;							\
+	if (pred->rhs_is_field)						\
+		rhs = *((u##size *)(event + pred->offset[1]));		\
+	else								\
+		rhs = (u##size)pred->val;				\
 									\
-	match = (val == *addr) ^ pred->not;				\
-									\
-	return match;							\
+	return (lhs == rhs) ^ pred->not;				\
 }
 
 DEFINE_COMPARISON_PRED(s64);
@@ -657,7 +662,7 @@ DEFINE_EQUALITY_PRED(8);
 /* Filter predicate for fixed sized arrays of characters */
 static int filter_pred_string(struct filter_pred *pred, void *event)
 {
-	char *addr = (char *)(event + pred->offset);
+	char *addr = (char *)(event + pred->offset[0]);
 	int cmp, match;
 
 	cmp = pred->regex.match(addr, &pred->regex, pred->regex.field_len);
@@ -670,7 +675,7 @@ static int filter_pred_string(struct filter_pred *pred, void *event)
 /* Filter predicate for char * pointers */
 static int filter_pred_pchar(struct filter_pred *pred, void *event)
 {
-	char **addr = (char **)(event + pred->offset);
+	char **addr = (char **)(event + pred->offset[0]);
 	int cmp, match;
 	int len = strlen(*addr) + 1;	/* including tailing '\0' */
 
@@ -693,7 +698,7 @@ static int filter_pred_pchar(struct filter_pred *pred, void *event)
  */
 static int filter_pred_strloc(struct filter_pred *pred, void *event)
 {
-	u32 str_item = *(u32 *)(event + pred->offset);
+	u32 str_item = *(u32 *)(event + pred->offset[0]);
 	int str_loc = str_item & 0xffff;
 	int str_len = str_item >> 16;
 	char *addr = (char *)(event + str_loc);
@@ -1154,7 +1159,7 @@ static int parse_pred(const char *str, void *data,
 		      struct filter_pred **pred_ptr)
 {
 	struct trace_event_call *call = data;
-	struct ftrace_event_field *field;
+	struct ftrace_event_field *fields[MAX_FILTER_PRED_FIELDS];
 	struct filter_pred *pred = NULL;
 	char num_buf[24];	/* Big enough to hold an address */
 	char *field_name;
@@ -1185,9 +1190,9 @@ static int parse_pred(const char *str, void *data,
 
 	/* Make sure that the field exists */
 
-	field = trace_find_event_field(call, field_name);
+	fields[0] = trace_find_event_field(call, field_name);
 	kfree(field_name);
-	if (!field) {
+	if (!fields[0]) {
 		parse_error(pe, FILT_ERR_FIELD_NOT_FOUND, pos + i);
 		return -EINVAL;
 	}
@@ -1218,8 +1223,8 @@ static int parse_pred(const char *str, void *data,
 	if (!pred)
 		return -ENOMEM;
 
-	pred->field = field;
-	pred->offset = field->offset;
+	pred->field = fields[0];
+	pred->offset[0] = fields[0]->offset;
 	pred->op = op;
 
 	if (ftrace_event_is_function(call)) {
@@ -1230,7 +1235,7 @@ static int parse_pred(const char *str, void *data,
 		 * If it is a string, the assigned function as a nop,
 		 * (perf doesn't use it) and grab everything.
 		 */
-		if (strcmp(field->name, "ip") != 0) {
+		if (strcmp(fields[0]->name, "ip") != 0) {
 			parse_error(pe, FILT_ERR_IP_FIELD_ONLY, pos + i);
 			goto err_free;
 		}
@@ -1283,7 +1288,7 @@ static int parse_pred(const char *str, void *data,
 		}
 
 		/* Make sure the field is OK for strings */
-		if (!is_string_field(field)) {
+		if (!is_string_field(fields[0])) {
 			parse_error(pe, FILT_ERR_EXPECT_DIGIT, pos + i);
 			goto err_free;
 		}
@@ -1311,25 +1316,28 @@ static int parse_pred(const char *str, void *data,
 
 		filter_build_regex(pred);
 
-		if (field->filter_type == FILTER_COMM) {
+		if (fields[0]->filter_type == FILTER_COMM) {
 			pred->fn = filter_pred_comm;
 
-		} else if (field->filter_type == FILTER_STATIC_STRING) {
+		} else if (fields[0]->filter_type == FILTER_STATIC_STRING) {
 			pred->fn = filter_pred_string;
-			pred->regex.field_len = field->size;
+			pred->regex.field_len = fields[0]->size;
 
-		} else if (field->filter_type == FILTER_DYN_STRING)
+		} else if (fields[0]->filter_type == FILTER_DYN_STRING)
 			pred->fn = filter_pred_strloc;
 		else
 			pred->fn = filter_pred_pchar;
+
+		pred->rhs_is_field = false;
+
 		/* go past the last quote */
 		i++;
 
 	} else if (isdigit(str[i]) || str[i] == '-') {
 
 		/* Make sure the field is not a string */
-		if (is_string_field(field)) {
-			parse_error(pe, FILT_ERR_EXPECT_STRING, pos + i);
+		if (is_string_field(fields[0])) {
+			parse_error(pe, FILT_ERR_EXPECT_DIGIT, pos + i);
 			goto err_free;
 		}
 
@@ -1356,7 +1364,7 @@ static int parse_pred(const char *str, void *data,
 		num_buf[len] = 0;
 
 		/* Make sure it is a value */
-		if (field->is_signed)
+		if (fields[0]->is_signed)
 			ret = kstrtoll(num_buf, 0, &val);
 		else
 			ret = kstrtoull(num_buf, 0, &val);
@@ -1367,15 +1375,57 @@ static int parse_pred(const char *str, void *data,
 
 		pred->val = val;
 
-		if (field->filter_type == FILTER_CPU)
+		if (fields[0]->filter_type == FILTER_CPU)
 			pred->fn = filter_pred_cpu;
 		else {
-			pred->fn = select_comparison_fn(pred->op, field->size,
-							field->is_signed);
+			pred->fn = select_comparison_fn(pred->op, fields[0]->size,
+							fields[0]->is_signed);
 			if (pred->op == OP_NE)
 				pred->not = 1;
 		}
 
+		pred->rhs_is_field = false;
+	} else if (isalnum(str[i]) || str[i] == '_') {
+		/* Second field to associate to */
+		while (isalnum(str[i]) || str[i] == '_')
+			i++;
+
+		len = i - s;
+
+		if (!len)
+			goto err_free;
+
+		field_name = kmemdup_nul(str + s, len, GFP_KERNEL);
+		if (!field_name)
+			goto err_free;
+
+		/* Make sure that the field exists */
+
+		fields[1] = trace_find_event_field(call, field_name);
+		kfree(field_name);
+		if (!fields[1]) {
+			parse_error(pe, FILT_ERR_FIELD_NOT_FOUND, pos + i);
+			goto err_free;
+		}
+
+		if (fields[0]->type != fields[1]->type) {
+			parse_error(pe, FILT_ERR_FIELD_TYPE_MISMATCH, pos + i);
+			goto err_free;
+		}
+
+		/* Only numeric fields are currently supported */
+		if (is_string_field(fields[0]) || (fields[0]->filter_type == FILTER_CPU)) {
+			parse_error(pe, FILT_ERR_EXPECT_DIGIT, pos + i);
+			goto err_free;
+		}
+
+		pred->fn = select_comparison_fn(pred->op, fields[0]->size,
+						fields[0]->is_signed);
+		if (pred->op == OP_NE)
+			pred->not = 1;
+
+		pred->offset[1] = fields[1]->offset;
+		pred->rhs_is_field = true;
 	} else {
 		parse_error(pe, FILT_ERR_INVALID_VALUE, pos + i);
 		goto err_free;
