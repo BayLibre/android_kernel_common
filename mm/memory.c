@@ -3781,6 +3781,7 @@ out_release:
 	}
 	return ret;
 }
+EXPORT_SYMBOL(do_swap_page);
 
 /*
  * We enter with non-exclusive mmap_lock (to exclude vma changes,
