@@ -16,6 +16,24 @@
       "message": "Is this going to break existing apps who are used to being able to modify clamp values?",
       "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acba016d_3431e12c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-07-29T04:29:26Z",
+      "side": 1,
+      "message": "fwiw, I never see any app setting it so far on a device supporting uclamp in kernel. We can ask QMC to help check but I am surprised to see a wide app doing such as there isn\u0027t too many devices supporting uclamp (and even if it supports, the per-task uclamp is going to conflict with the cgroup setting in the upstream implementation).\n\nBeing said, right now the concern is low but we should probably consider doing it sooner than later as uclamp is being ramping up.",
+      "parentUuid": "1788d613_bfa207f5",
+      "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
