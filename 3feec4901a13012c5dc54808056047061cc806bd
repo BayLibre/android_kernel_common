@@ -34,6 +34,23 @@
       "parentUuid": "a7d2c2c7_71a31861",
       "revId": "3feec4901a13012c5dc54808056047061cc806bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "567dd6ea_4da9578c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-30T11:41:54Z",
+      "side": 1,
+      "message": "Wait, just use the point in the xhci platform data field directly?  Why are you randomly casting deep into an unknown field here?  If this is not an xhci platform driver, you should not even be messing with these operations, and you should \"know\" if you have a set of vendor operations already, right?\n\nWhat am I missing here?",
+      "revId": "3feec4901a13012c5dc54808056047061cc806bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
