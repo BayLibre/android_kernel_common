@@ -49,26 +49,28 @@ static const char * ops[] = { OPS };
 #define PRED_FUNC_START			OP_LE
 #define PRED_FUNC_MAX			(OP_BAND - PRED_FUNC_START)
 
-#define ERRORS								\
-	C(NONE,			"No error"),				\
-	C(INVALID_OP,		"Invalid operator"),			\
-	C(TOO_MANY_OPEN,	"Too many '('"),			\
-	C(TOO_MANY_CLOSE,	"Too few '('"),				\
-	C(MISSING_QUOTE,	"Missing matching quote"),		\
-	C(OPERAND_TOO_LONG,	"Operand too long"),			\
-	C(EXPECT_STRING,	"Expecting string field"),		\
-	C(EXPECT_DIGIT,		"Expecting numeric field"),		\
-	C(ILLEGAL_FIELD_OP,	"Illegal operation for field type"),	\
-	C(FIELD_NOT_FOUND,	"Field not found"),			\
-	C(FIELD_TYPE_MISMATCH,	"Fields must be of the same type"),	\
-	C(ILLEGAL_INTVAL,	"Illegal integer value"),		\
-	C(BAD_SUBSYS_FILTER,	"Couldn't find or set field in one of a subsystem's events"), \
-	C(TOO_MANY_PREDS,	"Too many terms in predicate expression"), \
-	C(INVALID_FILTER,	"Meaningless filter expression"),	\
-	C(IP_FIELD_ONLY,	"Only 'ip' field is supported for function trace"), \
-	C(INVALID_VALUE,	"Invalid value (did you forget quotes)?"), \
-	C(ERRNO,		"Error"),				\
-	C(NO_FILTER,		"No filter found")
+#define ERRORS									\
+	C(NONE,				"No error"),				\
+	C(INVALID_OP,			"Invalid operator"),			\
+	C(TOO_MANY_OPEN,		"Too many '('"),			\
+	C(TOO_MANY_CLOSE,		"Too few '('"),				\
+	C(MISSING_QUOTE,		"Missing matching quote"),		\
+	C(OPERAND_TOO_LONG,		"Operand too long"),			\
+	C(EXPECT_STRING,		"Expecting string field"),		\
+	C(EXPECT_DIGIT,			"Expecting numeric field"),		\
+	C(ILLEGAL_FIELD_OP,		"Illegal operation for field type"),	\
+	C(FIELD_NOT_FOUND,		"Field not found"),			\
+	C(FIELD_TYPE_MISMATCH,		"Fields must be of the same type"),	\
+	C(ILLEGAL_INTVAL,		"Illegal integer value"),		\
+	C(BAD_SUBSYS_FILTER,		"Couldn't find or set field in one of a subsystem's events"), \
+	C(TOO_MANY_PREDS,		"Too many terms in predicate expression"), \
+	C(INVALID_FILTER,		"Meaningless filter expression"),	\
+	C(IP_FIELD_ONLY,		"Only 'ip' field is supported for function trace"), \
+	C(INVALID_VALUE,		"Invalid value (did you forget quotes)?"), \
+	C(KEYWORD_ARGS_EXPECT_DELIMITER,"Expecting ',' or ']' after keyword filter arg"), \
+	C(KEYWORD_ARGS_INVALID_COUNT,	"Invalid argument count for keyword filter"), \
+	C(ERRNO,			"Error"),				\
+	C(NO_FILTER,			"No filter found")
 
 #undef C
 #define C(a, b)		FILT_ERR_##a
@@ -645,6 +647,10 @@ static int filter_pred_##size(struct filter_pred *pred, void *event)	\
 	return (lhs == rhs) ^ pred->not;				\
 }
 
+#define DEFINE_KEYWORD_PRED(type)						\
+static const filter_pred_fn_t pred_keyword_funcs_##type[] = {			\
+};
+
 DEFINE_COMPARISON_PRED(s64);
 DEFINE_COMPARISON_PRED(u64);
 DEFINE_COMPARISON_PRED(s32);
@@ -658,6 +664,15 @@ DEFINE_EQUALITY_PRED(64);
 DEFINE_EQUALITY_PRED(32);
 DEFINE_EQUALITY_PRED(16);
 DEFINE_EQUALITY_PRED(8);
+
+DEFINE_KEYWORD_PRED(s64);
+DEFINE_KEYWORD_PRED(u64);
+DEFINE_KEYWORD_PRED(s32);
+DEFINE_KEYWORD_PRED(u32);
+DEFINE_KEYWORD_PRED(s16);
+DEFINE_KEYWORD_PRED(u16);
+DEFINE_KEYWORD_PRED(s8);
+DEFINE_KEYWORD_PRED(u8);
 
 /* Filter predicate for fixed sized arrays of characters */
 static int filter_pred_string(struct filter_pred *pred, void *event)
@@ -1153,8 +1168,13 @@ static filter_pred_fn_t select_comparison_fn(enum filter_op_ids op,
 	return fn;
 }
 
-/* Called when a predicate is encountered by predicate_parse() */
-static int parse_pred(const char *str, void *data,
+/*
+ * Parses a trace event filter of the format:
+ *	FIELD OP VALUE
+ *   or
+ *	FIELD OP FIELD
+ */
+static int parse_normal_pred(const char *str, void *data,
 		      int pos, struct filter_parse_error *pe,
 		      struct filter_pred **pred_ptr)
 {
@@ -1171,11 +1191,9 @@ static int parse_pred(const char *str, void *data,
 	int s;
 	int i = 0;
 
-	/* First find the field to associate to */
-	while (isspace(str[i]))
-		i++;
 	s = i;
 
+	/* First field to associate to */
 	while (isalnum(str[i]) || str[i] == '_')
 		i++;
 
@@ -1437,6 +1455,254 @@ static int parse_pred(const char *str, void *data,
 err_free:
 	kfree(pred);
 	return -EINVAL;
+}
+
+static filter_pred_fn_t select_keyword_fn(enum filter_op_ids op,
+		int field_size, int field_is_signed)
+{
+	filter_pred_fn_t fn = NULL;
+	int pred_keyword_func_index = -1;
+
+	if (WARN_ON_ONCE(pred_keyword_func_index < 0))
+		return NULL;
+
+	switch (field_size) {
+	case 8:
+		if (field_is_signed)
+			fn = pred_keyword_funcs_s64[pred_keyword_func_index];
+		else
+			fn = pred_keyword_funcs_u64[pred_keyword_func_index];
+		break;
+	case 4:
+		if (field_is_signed)
+			fn = pred_keyword_funcs_s32[pred_keyword_func_index];
+		else
+			fn = pred_keyword_funcs_u32[pred_keyword_func_index];
+		break;
+	case 2:
+		if (field_is_signed)
+			fn = pred_keyword_funcs_s16[pred_keyword_func_index];
+		else
+			fn = pred_keyword_funcs_u16[pred_keyword_func_index];
+		break;
+	case 1:
+		if (field_is_signed)
+			fn = pred_keyword_funcs_s8[pred_keyword_func_index];
+		else
+			fn = pred_keyword_funcs_u8[pred_keyword_func_index];
+		break;
+	}
+
+	return fn;
+}
+
+static int validate_keyword_op_args(int op, int nr_fields, int nr_vals) {
+	switch (op) {
+	default:
+		return -EINVAL;
+	}
+
+	return -EINVAL;
+}
+
+/*
+ * Parses a trace event filters of formats:
+ *	@KEYWORD[field1, [..., fieldN], [value]]
+ *  where: N = MAX_FILTER_PRED_FIELDS
+ */
+static int parse_keyword_pred(const char *str, void *data,
+		      int pos, struct filter_parse_error *pe,
+		      struct filter_pred **pred_ptr)
+{
+	struct trace_event_call *call = data;
+	struct ftrace_event_field *fields[MAX_FILTER_PRED_FIELDS];
+	struct filter_pred *pred = NULL;
+	char num_buf[24];	/* Big enough to hold an address */
+	char *field_name;
+	u64 val;
+	int len;
+	int ret;
+	int op;
+	int s;
+	int j;
+	int i = 0;
+	int nr_fields = 0;
+	int nr_vals = 0;
+
+	/* Make sure this op is supported */
+	for (op = 0; ops[op]; op++) {
+		/* This is why '<=' must come before '<' in ops[] */
+		if (strncmp(str + i, ops[op], strlen(ops[op])) == 0)
+			break;
+	}
+
+	if (!ops[op]) {
+		parse_error(pe, FILT_ERR_INVALID_OP, pos + i);
+		return -EINVAL;
+	}
+
+	i += strlen(ops[op]);
+
+	while (isspace(str[i]))
+		i++;
+
+	if (str[i] != '[') {
+		parse_error(pe, FILT_ERR_KEYWORD_ARGS_EXPECT_DELIMITER, pos + i);
+		return -EINVAL;
+	}
+	i++;
+
+	/* Allocate the predicate */
+	pred = kzalloc(sizeof(*pred), GFP_KERNEL);
+	if (!pred)
+		return -ENOMEM;
+
+	/* Parse the field names */
+	for (j = 0; j < MAX_FILTER_PRED_FIELDS; j++) {
+		while (isspace(str[i]))
+			i++;
+		s = i;
+
+		while (isalnum(str[i]) || str[i] == '_')
+			i++;
+
+		len = i - s;
+
+		if (!len)
+			goto err_free;
+
+		/* Make sure that the field exists */
+		field_name = kmemdup_nul(str + s, len, GFP_KERNEL);
+		if (!field_name)
+			goto err_free;
+
+		fields[j] = trace_find_event_field(call, field_name);
+		kfree(field_name);
+		if (!fields[j]) {
+			parse_error(pe, FILT_ERR_FIELD_NOT_FOUND, pos + i);
+			goto err_free;
+		}
+
+		/* Keyword ops only supports numeric fields */
+		if (is_string_field(fields[j]) || (fields[j]->filter_type == FILTER_CPU)) {
+			parse_error(pe, FILT_ERR_EXPECT_DIGIT, pos + i);
+			goto err_free;
+		}
+
+		if (j > 0 && (fields[j]->type != fields[j-1]->type)) {
+			parse_error(pe, FILT_ERR_FIELD_TYPE_MISMATCH, pos + i);
+			goto err_free;
+		}
+
+		pred->offset[j] = fields[j]->offset;
+
+		while (isspace(str[i]))
+			i++;
+
+		/* The only possible tokens here are ',' and ']' */
+		if (str[i] != ',' && str[i] != ']') {
+			parse_error(pe, FILT_ERR_KEYWORD_ARGS_EXPECT_DELIMITER, pos + i);
+			goto err_free;
+		}
+
+		i++;
+
+		nr_fields++;
+
+		/* ']' is only valid after the last argument (field) in the filter. */
+		if (str[i-1] != ']')
+			break;
+	}
+
+	/* There is an additional val argument to parse */
+	if (str[i-1] == ',') {
+		while (isspace(str[i]))
+			i++;
+
+		s = i;
+
+		if (!isdigit(str[i]) && str[i] != '-') {
+			parse_error(pe, FILT_ERR_INVALID_VALUE, pos + i);
+			goto err_free;
+		}
+
+		if (str[i] == '-')
+			i++;
+
+		/* We allow 0xDEADBEEF */
+		while (isalnum(str[i]))
+			i++;
+
+		len = i - s;
+		/* 0xfeedfacedeadbeef is 18 chars max */
+		if (len >= sizeof(num_buf)) {
+			parse_error(pe, FILT_ERR_OPERAND_TOO_LONG, pos + i);
+			goto err_free;
+		}
+
+		strncpy(num_buf, str + s, len);
+		num_buf[len] = 0;
+
+		/* Make sure it is a value */
+		if (fields[0]->is_signed)
+			ret = kstrtoll(num_buf, 0, &val);
+		else
+			ret = kstrtoull(num_buf, 0, &val);
+		if (ret) {
+			parse_error(pe, FILT_ERR_ILLEGAL_INTVAL, pos + s);
+			goto err_free;
+		}
+
+		/* The only possible token here is ']' */
+		if (str[i] != ']') {
+			parse_error(pe, FILT_ERR_KEYWORD_ARGS_EXPECT_DELIMITER, pos + i);
+			goto err_free;
+		}
+
+		/* Skip ']' */
+		i++;
+
+		nr_vals++;
+	}
+
+	/* Validate the arguments for this keyword filter */
+	if (validate_keyword_op_args(op, nr_fields, nr_vals)) {
+		parse_error(pe, FILT_ERR_KEYWORD_ARGS_INVALID_COUNT, pos + i - 1);
+		goto err_free;
+	}
+
+	pred->field = fields[0];
+	pred->op = op;
+	pred->val = val;
+	pred->fn = select_keyword_fn(pred->op, fields[0]->size,
+					fields[0]->is_signed);
+
+	*pred_ptr = pred;
+	return i;
+
+err_free:
+	kfree(pred);
+	return -EINVAL;
+}
+
+/* Called when a predicate is encountered by predicate_parse() */
+static inline int parse_pred(const char *str, void *data,
+		      int pos, struct filter_parse_error *pe,
+		      struct filter_pred **pred_ptr)
+{
+	int ret, i = 0;
+
+	/* Find the first non-whitespace character */
+	while (isspace(str[i]))
+		i++;
+
+	/* Is keyword filter? */
+	if (str[i] == '@')
+		ret = parse_keyword_pred(str + i, data, pos + i, pe, pred_ptr);
+	else
+		ret = parse_normal_pred(str + i, data, pos + i, pe, pred_ptr);
+
+	return (ret < 0) ? ret : i + ret;
 }
 
 enum {
