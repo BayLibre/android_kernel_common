@@ -22,6 +22,30 @@
       },
       "revId": "bd50b5dc98a9af89a99509015a3cea461abd1432",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8297b28d_e2d04416",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 4320,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-30T11:47:03Z",
+      "side": 0,
+      "message": "Horrible hack, you can check the reset or start callback pointer and compare it to xhci_plat_set() or xhci_plat_reset(), right?  That will tell you that this is a xhci platform device, and that way you do not have to guess about the size of the extra data here.\n\nIn the future, this all needs to be fixed up properly, put the vendor ops in the xhci hcd structure.  But even then, you need to let the xhci platform driver be able to override that, right?",
+      "parentUuid": "168aa89f_779d4a59",
+      "range": {
+        "startLine": 4320,
+        "startChar": 0,
+        "endLine": 4320,
+        "endChar": 39
+      },
+      "revId": "bd50b5dc98a9af89a99509015a3cea461abd1432",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
