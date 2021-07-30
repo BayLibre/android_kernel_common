@@ -70,6 +70,29 @@
       "parentUuid": "46c985fa_7cf44741",
       "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccad827a_80adb9d2",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5586,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-07-30T14:05:58Z",
+      "side": 1,
+      "message": "I am not keen on this part. The use case that matter today is on/off. I think better be conservative and exact since this is a temporary solution. It is easier to relax this restriction if it becomes apparent it\u0027s a real major blocker. But harder to take it away if it proves problematic.",
+      "range": {
+        "startLine": 5586,
+        "startChar": 51,
+        "endLine": 5586,
+        "endChar": 74
+      },
+      "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
