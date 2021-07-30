@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "168aa89f_779d4a59",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 4320,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-07-30T11:43:04Z",
+      "side": 0,
+      "message": "can you tell if you are a xhci platform driver here or not?  If so, just check that, and then use the proper platform structure pointer.\n\nIf not, then that can be added, right?",
+      "range": {
+        "startLine": 4320,
+        "startChar": 0,
+        "endLine": 4320,
+        "endChar": 39
+      },
+      "revId": "bd50b5dc98a9af89a99509015a3cea461abd1432",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
