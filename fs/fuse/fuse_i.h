@@ -1310,9 +1310,9 @@ int fuse_readpage_backing(struct file *file, struct page *page);
 bool fuse_readahead_use_backing(struct readahead_control *rac);
 void fuse_readahead_backing(struct readahead_control *rac);
 bool fuse_readahead_use_backing(struct readahead_control *rac);
-bool fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
+int fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
 struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
-				   unsigned int flags);
+				   unsigned int flags, unsigned int ext_flags);
 bool fuse_getattr_use_backing(const struct path *path);
 int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 			u32 request_mask, unsigned int flags);

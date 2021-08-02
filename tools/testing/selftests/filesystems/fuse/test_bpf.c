@@ -37,7 +37,7 @@ inline int strcmp(const char *a, const char *b)
 SEC("test_trace")
 
 /* return 1 to use backing fs, 0 to pass to usermode */
-int trace(struct bpf_fuse_data *ctx)
+int trace_test(struct bpf_fuse_data *ctx)
 {
 	switch (ctx->fuse_opcode) {
 	case FUSE_LOOKUP: {
@@ -46,7 +46,7 @@ int trace(struct bpf_fuse_data *ctx)
 			strcmp(ctx->name, "partial") == 0;
 
 		bpf_printk("lookup %s %d", ctx->name, backing);
-		return backing ? 1 : 0;
+		return backing ? FUSE_BPF_BACKING : 0;
 	}
 
 	case FUSE_GETATTR: {
@@ -120,17 +120,35 @@ int trace(struct bpf_fuse_data *ctx)
 SEC("test_daemon")
 
 /* return 1 to use backing fs, 0 to pass to usermode */
-int trace2(struct bpf_fuse_data *ctx)
+int trace_daemon(struct bpf_fuse_data *ctx)
 {
 	switch (ctx->fuse_opcode) {
 	case FUSE_LOOKUP: {
 		/* real and partial use backing file */
-		int backing = strcmp(ctx->name, "real") == 0 ||
-			strcmp(ctx->name, "partial") == 0 ||
-			strcmp(ctx->name, "MAILPATH") == 0;
+		int backing = 0;
+
+		if (strcmp(ctx->name, "real") == 0 ||
+		    strcmp(ctx->name, "MAILPATH") == 0)
+			backing = FUSE_BPF_BACKING;
+
+		if(strcmp(ctx->name, "partial") == 0)
+			backing = FUSE_BPF_BACKING | FUSE_BPF_POST_FILTER;
 
 		bpf_printk("lookup %s %d", ctx->name, backing);
-		return backing ? 1 : 0;
+		return backing;
+	}
+
+	case FUSE_LOOKUP | FUSE_POSTFILTER: {
+		/* real and partial use backing file */
+		int backing = 0;
+
+		if(strcmp(ctx->name, "partial")) {
+			bpf_printk("lookup postfiler on %s - error", ctx->name);
+			return 0;
+		}
+
+		bpf_printk("lookup postfilter %s", ctx->name);
+		return FUSE_BPF_USER_FILTER;
 	}
 
 	case FUSE_GETATTR: {
@@ -201,6 +219,7 @@ int trace2(struct bpf_fuse_data *ctx)
 	}
 
 	default:
+		bpf_printk("bad opcode: %x", ctx->fuse_opcode);
 		return 0;
 	}
 }

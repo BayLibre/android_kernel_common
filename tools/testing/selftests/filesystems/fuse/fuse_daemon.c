@@ -90,14 +90,12 @@ int main(int argc, char *argv[])
 		case FUSE_LOOKUP: {
 			DECL_FUSE_OUT(entry);
 
-			printf("Paul: Lookup %s\n",
-			       (char *)(bytes_in + sizeof(*in_header)));
 			*entry_out = (struct fuse_entry_out) {
 				.nodeid		= 2,
 				.generation	= 1,
 				.attr = (struct fuse_attr) {
 					.ino = 100,
-					.size = 4,
+					.size = 10,
 					.blksize = 512,
 					.mode = S_IFREG,
 				},
@@ -106,22 +104,45 @@ int main(int argc, char *argv[])
 			break;
 		}
 
+		case FUSE_LOOKUP | FUSE_POSTFILTER: {
+			DECL_FUSE_OUT(entry);
+
+			*entry_out = (struct fuse_entry_out) {
+				.nodeid		= 3,
+				.generation	= 1,
+			};
+			TESTFUSEOUT(entry_out);
+			break;
+		}
+
 		case FUSE_OPEN:
-			printf("Paul: Open %lu\n", in_header->nodeid);
 			*open_out = (struct fuse_open_out) {
 				.fh = 1,
 				.open_flags = open_in->flags,
 			};
+
+			switch (in_header->nodeid) {
+			case 2: open_out->fh = 200; break;
+			case 3: open_out->fh = 300; break;
+			};
+
 			TESTFUSEOUT(open_out);
 			break;
 
 		case FUSE_READ: {
-			const char *fake_data = "fake data";
+			const char *fake_data = "fake data\n";
+			const char *partial_data = "partial data\n";
 			DECL_FUSE_IN(read);
 
-			printf("Paul: Read %lu %lu\n",
-			       in_header->nodeid, read_in->fh);
-			TESTFUSEOUTREAD(fake_data, strlen(fake_data));
+			switch (read_in->fh) {
+			case 200:
+				TESTFUSEOUTREAD(fake_data, strlen(fake_data));
+				break;
+
+			case 300:
+				TESTFUSEOUTREAD(partial_data, strlen(partial_data));
+				break;
+			}
 			break;
 		}
 
@@ -168,7 +189,7 @@ int main(int argc, char *argv[])
 		}
 
 		default:
-			printf("opcode is %d\n", in_header->opcode);
+			printf("opcode is %x\n", in_header->opcode);
 			break;
 		}
 	}

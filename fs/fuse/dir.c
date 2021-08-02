@@ -18,6 +18,8 @@
 #include <linux/iversion.h>
 #include <linux/posix_acl.h>
 
+#include <uapi/linux/bpf_fuse.h>
+
 static void fuse_advise_use_readdirplus(struct inode *dir)
 {
 	struct fuse_inode *fi = get_fuse_inode(dir);
@@ -492,11 +494,16 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 	bool outarg_valid = true;
 	bool locked;
 
+	int ext_flags = fuse_lookup_use_backing(dir, entry);
+
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
+		return fuse_lookup_backing(dir, entry, flags, ext_flags);
+
 	if (fuse_is_bad(dir))
 		return ERR_PTR(-EIO);
-
-	if (fuse_lookup_use_backing(dir, entry))
-		return fuse_lookup_backing(dir, entry, flags);
 
 	locked = fuse_lock_inode(dir);
 	err = fuse_lookup_name(dir->i_sb, get_node_id(dir), &entry->d_name,
