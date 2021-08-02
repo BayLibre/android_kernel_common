@@ -35,6 +35,21 @@ out:
 	return result;
 }
 
+static int create_file(int dir, const char *name, const char *data)
+{
+	int result = TEST_FAILURE;
+	int fd = -1;
+
+	TEST(fd = openat(dir, name, O_CREAT | O_WRONLY, 0777), fd != -1);
+	TESTEQUAL(write(fd, data, strlen(data)), strlen(data));
+	TESTSYSCALL(close(fd));
+	result = TEST_SUCCESS;
+
+out:
+	close(fd);
+	return result;
+}
+
 int main(int argc, char *argv[])
 {
 	int result = TEST_FAILURE;
@@ -49,11 +64,15 @@ int main(int argc, char *argv[])
 
 	display_trace();
 
+	delete_dir_tree("fd-src");
 	TEST(src_dir = setup_mount_dir("fd-src"), src_dir);
+	delete_dir_tree("fd-dst");
 	TEST(mount_dir = setup_mount_dir("fd-dst"), mount_dir);
 	TESTEQUAL(install_bpf("test_daemon.raw", &bpf_fd), 0);
 	TEST(src_fd = open("fd-src", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     src_fd != -1);
+	TESTEQUAL(create_file(src_fd, "real", "real data"), 0);
+	TESTEQUAL(create_file(src_fd, "partial", "partial data"), 0);
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
 	for(;;) {
@@ -68,15 +87,40 @@ int main(int argc, char *argv[])
 			break;
 
 		switch(in_header->opcode) {
+		case FUSE_LOOKUP: {
+			DECL_FUSE_OUT(entry);
+
+			printf("Paul: Lookup %s\n",
+			       (char *)(bytes_in + sizeof(*in_header)));
+			*entry_out = (struct fuse_entry_out) {
+				.nodeid		= 2,
+				.generation	= 1,
+				.attr = (struct fuse_attr) {
+					.ino = 100,
+					.size = 4,
+					.blksize = 512,
+					.mode = S_IFREG,
+				},
+			};
+			TESTFUSEOUT(entry_out);
+			break;
+		}
+
 		case FUSE_OPEN:
+			printf("Paul: Open %lu\n", in_header->nodeid);
 			*open_out = (struct fuse_open_out) {
 				.fh = 1,
 				.open_flags = open_in->flags,
 			};
 			TESTFUSEOUT(open_out);
 			break;
+
 		case FUSE_READ: {
 			const char *fake_data = "fake data";
+			DECL_FUSE_IN(read);
+
+			printf("Paul: Read %lu %lu\n",
+			       in_header->nodeid, read_in->fh);
 			TESTFUSEOUTREAD(fake_data, strlen(fake_data));
 			break;
 		}
@@ -107,23 +151,6 @@ int main(int argc, char *argv[])
 			break;
 		}
 
-		case FUSE_LOOKUP: {
-			DECL_FUSE_OUT(entry);
-
-			*entry_out = (struct fuse_entry_out) {
-				.nodeid		= 2,
-				.generation	= 1,
-				.attr = (struct fuse_attr) {
-					.ino = 100,
-					.size = 4,
-					.blksize = 512,
-					.mode = S_IFREG,
-				},
-			};
-			TESTFUSEOUT(entry_out);
-			break;
-		}
-
 		case FUSE_GETATTR: {
 			DECL_FUSE_OUT(attr);
 
@@ -151,10 +178,8 @@ int main(int argc, char *argv[])
 out:
 	umount2(mount_dir, MNT_FORCE);
 	delete_dir_tree(mount_dir);
-	rmdir(mount_dir);
 	free(mount_dir);
 	delete_dir_tree(src_dir);
-	rmdir(src_dir);
 	free(src_dir);
 	return result;
 }
