@@ -8,6 +8,7 @@
 #include <linux/rcupdate.h>
 #include <linux/sched/cpufreq.h>
 #include <linux/sched/topology.h>
+#include <linux/mutex.h>
 #include <linux/types.h>
 
 /**
@@ -37,10 +38,24 @@ struct em_perf_state {
 #define EM_PERF_STATE_INEFFICIENT BIT(0)
 
 /**
+ * struct em_perf_rt_table - Runtime modifiable performance states table
+ *		protected with RCU
+ * @state:	List of performance states, in ascending order
+ * @rcu:	RCU used for safe access and destruction
+ */
+struct em_perf_rt_table {
+	struct em_perf_state *state;
+	struct rcu_head rcu;
+};
+
+/**
  * struct em_perf_domain - Performance domain
  * @table:		List of performance states, in ascending order
+ * @rt_table:		Pointer to the runtime modified em_perf_rt_table
  * @nr_perf_states:	Number of performance states
  * @flags:		See "em_perf_domain flags"
+ * @lock:		Protection for concurrent writers trying to modify the
+ *			EM values.
  * @cpus:		Cpumask covering the CPUs of the domain. It's here
  *			for performance reasons to avoid potential cache
  *			misses during energy calculations in the scheduler
@@ -54,8 +69,10 @@ struct em_perf_state {
  */
 struct em_perf_domain {
 	struct em_perf_state *table;
+	struct em_perf_rt_table __rcu *rt_table;
 	int nr_perf_states;
 	unsigned long flags;
+	struct mutex lock;
 	unsigned long cpus[];
 };
 
@@ -171,6 +188,8 @@ struct em_data_callback {
 
 struct em_perf_domain *em_cpu_get(int cpu);
 struct em_perf_domain *em_pd_get(struct device *dev);
+int em_dev_update_perf_domain(struct device *dev, struct em_data_callback *cb,
+			      void *priv);
 int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
 				struct em_data_callback *cb, cpumask_t *span,
 				bool microwatts);
@@ -344,6 +363,12 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
 static inline int em_pd_nr_perf_states(struct em_perf_domain *pd)
 {
 	return 0;
+}
+static inline
+int em_dev_update_perf_domain(struct device *dev, struct em_data_callback *cb,
+			      void *priv);
+{
+	return -EINVAL;
 }
 #endif
 
