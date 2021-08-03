@@ -34,6 +34,24 @@
       "parentUuid": "95a912c8_852e8b56",
       "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f107c2f0_3faee122",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-03T08:33:34Z",
+      "side": 1,
+      "message": "file_open_block is ONLY allowed because of the zram driver which we did not want to build into the GKI kernel for various reasons.\n\nVirtual drivers should not be opening files either, that is not how kernel drivers work.  Please point me at the code involved and I will be glad to provide the correct apis that should be used instead.",
+      "parentUuid": "afb23f4e_5b504b28",
+      "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
