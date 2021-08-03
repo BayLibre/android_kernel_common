@@ -80,6 +80,7 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
 	fi->i_time = 0;
 	fi->inval_mask = 0;
 	fi->backing_inode = NULL;
+	fi->bpf = NULL;
 	fi->nodeid = 0;
 	fi->nlookup = 0;
 	fi->attr_version = 0;

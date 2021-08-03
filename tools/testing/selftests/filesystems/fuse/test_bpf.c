@@ -208,7 +208,7 @@ int trace_daemon(struct bpf_fuse_data *ctx)
 
 	case FUSE_READ: {
 		bpf_printk("read %llu %llu", ctx->file_handle, ctx->offset);
-		if (ctx->file_handle == 1 && ctx->offset == 0)
+		if (ctx->file_handle == 300 && ctx->offset == 4096)
 			return 0;
 		return 1;
 	}

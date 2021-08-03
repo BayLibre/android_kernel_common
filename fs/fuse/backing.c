@@ -263,7 +263,6 @@ bool fuse_getattr_use_backing(const struct path *path)
 	struct bpf_fuse_data_kern ctx;
 	struct dentry *entry = path->dentry;
 	struct fuse_inode *fuse_inode = get_fuse_inode(entry->d_inode);
-	bool result;
 
 	if (!fuse_inode || !fuse_inode->bpf)
 		return false;
@@ -272,8 +271,7 @@ bool fuse_getattr_use_backing(const struct path *path)
 		.fuse_opcode = FUSE_GETATTR,
 	};
 	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
-	result = BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
-	return result;
+	return BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
 }
 
 int fuse_getattr_backing(const struct path *path, struct kstat *stat,

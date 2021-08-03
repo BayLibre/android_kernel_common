@@ -41,7 +41,8 @@ static int create_file(int dir, const char *name, const char *data)
 	int fd = -1;
 
 	TEST(fd = openat(dir, name, O_CREAT | O_WRONLY, 0777), fd != -1);
-	TESTEQUAL(write(fd, data, strlen(data)), strlen(data));
+	while (lseek(fd, 0, SEEK_CUR) < 16384)
+		TESTEQUAL(write(fd, data, strlen(data)), strlen(data));
 	TESTSYSCALL(close(fd));
 	result = TEST_SUCCESS;
 
@@ -71,8 +72,8 @@ int main(int argc, char *argv[])
 	TESTEQUAL(install_bpf("test_daemon.raw", &bpf_fd), 0);
 	TEST(src_fd = open("fd-src", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     src_fd != -1);
-	TESTEQUAL(create_file(src_fd, "real", "real data"), 0);
-	TESTEQUAL(create_file(src_fd, "partial", "partial data"), 0);
+	TESTEQUAL(create_file(src_fd, "real", "real data "), 0);
+	TESTEQUAL(create_file(src_fd, "partial", "partial data "), 0);
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
 	for(;;) {
@@ -95,7 +96,7 @@ int main(int argc, char *argv[])
 				.generation	= 1,
 				.attr = (struct fuse_attr) {
 					.ino = 100,
-					.size = 10,
+					.size = 16384,
 					.blksize = 512,
 					.mode = S_IFREG,
 				},
@@ -130,19 +131,24 @@ int main(int argc, char *argv[])
 			break;
 
 		case FUSE_READ: {
-			const char *fake_data = "fake data\n";
-			const char *partial_data = "partial data\n";
+			const char *fake_data = "fake data ";
+			const char *partial_data = "partially fake data ";
+			char buffer[4096];
+			const char *text;
+			char *index;
 			DECL_FUSE_IN(read);
 
 			switch (read_in->fh) {
-			case 200:
-				TESTFUSEOUTREAD(fake_data, strlen(fake_data));
-				break;
-
-			case 300:
-				TESTFUSEOUTREAD(partial_data, strlen(partial_data));
-				break;
+			case 200: text = fake_data; break;
+			case 300: text = partial_data; break;
 			}
+
+			memset(buffer, '\n', sizeof(buffer));
+			for (index = buffer;
+			     index + strlen(text) < buffer + sizeof(buffer);
+			     index += strlen(text))
+				memcpy(index, text, strlen(text));
+			TESTFUSEOUTREAD(buffer, sizeof(buffer));
 			break;
 		}
 
@@ -179,7 +185,7 @@ int main(int argc, char *argv[])
 				.attr_valid = 1,
 				.attr = (struct fuse_attr) {
 					.ino = 100,
-					.size = 4,
+					.size = 16384,
 					.blksize = 512,
 					.mode = S_IFREG,
 				},
