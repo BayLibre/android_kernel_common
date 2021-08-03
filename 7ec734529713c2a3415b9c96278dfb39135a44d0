@@ -88,6 +88,24 @@
       "parentUuid": "2e71c42f_f32dede6",
       "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bd9e76f_8218d853",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-03T10:55:39Z",
+      "side": 1,
+      "message": "Um, this \"driver\" is opening device nodes of other drivers and attempting to pass data through to them.  The locking looks incorrect and totally lacking in many places, and error handling seems quite odd if not busted in others.  But more importantly, this is a huge layering and security violation and should not be used at all.\n\nYou can not control random other drivers from within the kernel in this manner, it circumvents all access control rules (and selinux), and messes with namespaces in ways I do not want to think about.  If I did not know better, I would think this is a root-kit as that is what it allows you to do here.\n\nIf you wish to tie into a specific driver subsystem, then tie into that subsystem directly and write a driver for that subsystem.  Do not try to emulate userspace from within the kernel to allow a driver to emulate any subsystem interaction.\n\nAgain, please use virtio.  If there is not a needed virtio backend for your use case, please work on that upstream, but given the recent additions of graphics and hardware control to virtio, I think you are covered already here.",
+      "parentUuid": "034befb9_4800b15e",
+      "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
