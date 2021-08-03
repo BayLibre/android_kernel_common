@@ -106,6 +106,24 @@
       "parentUuid": "034befb9_4800b15e",
       "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f2261ca_ed57eee1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1885381
+      },
+      "writtenOn": "2021-08-03T12:14:45Z",
+      "side": 1,
+      "message": "We are preparing virt-io solution for another project.\nIn this project, there is no choice but to use this method because too much progress has been proceeded. Which is why, we have to find an alternative other than virt-io.\n\nAlso, each pv driver is implemented to access only the native driver it uses. If you think about being kernel hacked, I think everything is dangerous.\n\nAlso, filp_open is listed as an export symbol in the linux kernel, and there are quite a few upstream drivers that already use filp_open in the linux kernel. Do you think these drivers are all wrong?",
+      "parentUuid": "6bd9e76f_8218d853",
+      "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
