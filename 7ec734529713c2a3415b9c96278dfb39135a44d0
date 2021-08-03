@@ -124,6 +124,24 @@
       "parentUuid": "6bd9e76f_8218d853",
       "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b99a5567_e6cfbee1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-03T13:18:08Z",
+      "side": 1,
+      "message": "\u003e We are preparing virt-io solution for another project.\n\u003e In this project, there is no choice but to use this method because too much progress has been proceeded. Which is why, we have to find an alternative other than virt-io.\n\nWhat is missing from virtio in this kernel that prevents you from using it?\n\n\u003e Also, each pv driver is implemented to access only the native driver it uses. If you think about being kernel hacked, I think everything is dangerous.\n\nThat is not how this code is set up, it can open and access any /dev/ node on the system.\n\n\u003e Also, filp_open is listed as an export symbol in the linux kernel, and there are quite a few upstream drivers that already use filp_open in the linux kernel. Do you think these drivers are all wrong?\n\nNo driver should access file_open, and especially not in this manner.\n\nThere are real uses for file_open in the kernel today for other types of configurations and usages, but not for anything on an Android system, sorry.\n\nAgain, this implementation is an end-run around the selinux protections in the kernel and should not be used on any Android system as it invalidates all of the built-in protections.\n\nAnd again, it looks to be quite buggy in places, so I wouldn\u0027t recommend it being used for that reason alone, file_open usage aside.",
+      "parentUuid": "1f2261ca_ed57eee1",
+      "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
