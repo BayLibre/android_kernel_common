@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdbcda17_6dedace0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1350392
+      },
+      "writtenOn": "2021-08-03T05:37:36Z",
+      "side": 1,
+      "message": "I have tested build and boot this on the known one, with this change, build and boot are pass.\nFor usb offload, the out-of-tree drivers need to do the same thing as xhci-plat if they\u0027re using the vendor_ops.",
+      "parentUuid": "8a79c03e_a87c9d8f",
+      "revId": "7f55482861739ec416dec7261f2d3bfdd8e727a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02259fc2_b217a33c",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-07-30T14:51:08Z",
       "side": 1,
       "message": "is this still needed anymore?",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 65
+      },
+      "revId": "7f55482861739ec416dec7261f2d3bfdd8e727a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef8990db_4538526d",
+        "filename": "drivers/usb/host/xhci-plat.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1350392
+      },
+      "writtenOn": "2021-08-03T05:37:36Z",
+      "side": 1,
+      "message": "This is needed because vendor_ops needs to be temporary stored in the overwrite structure, and put them into xhci main structure during probe.",
+      "parentUuid": "02259fc2_b217a33c",
       "range": {
         "startLine": 205,
         "startChar": 0,
