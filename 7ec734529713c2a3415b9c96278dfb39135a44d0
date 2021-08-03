@@ -16,6 +16,24 @@
       "message": "No, please do this properly using the correct kernel apis, do not attempt to open a file directly, no driver should ever do that.\n\n",
       "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb23f4e_5b504b28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1885381
+      },
+      "writtenOn": "2021-08-03T07:25:42Z",
+      "side": 1,
+      "message": "Could you explain why not? file_open_block is allowed already for block devices, but I don\u0027t know why other devices don\u0027t. I explained enough why it\u0027s necessary via commit message.\nDrivers virtualized at the kernel level are required to access native drivers. Any alternatives you can think of?",
+      "parentUuid": "95a912c8_852e8b56",
+      "revId": "7ec734529713c2a3415b9c96278dfb39135a44d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
