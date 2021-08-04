@@ -22,6 +22,30 @@
       },
       "revId": "5760963f2641eb9c0aca8572f82b2f425c476ac3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de3567a9_2e89f47e",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1345100
+      },
+      "writtenOn": "2021-08-04T10:33:48Z",
+      "side": 1,
+      "message": "Not sure I understand.\nThe hook is to use usleep_range() instead of msleep() to get closer to the desired delay .. in our case 10ms.",
+      "parentUuid": "78811a8d_f7fa1b20",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 32
+      },
+      "revId": "5760963f2641eb9c0aca8572f82b2f425c476ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
