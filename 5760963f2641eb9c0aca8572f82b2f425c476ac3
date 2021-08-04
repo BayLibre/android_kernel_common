@@ -72,6 +72,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f4f09b7_e4c2578d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-04T14:17:27Z",
+      "side": 1,
+      "message": "using msleep() for less than 20ms is known to not work properly, so would think that upstream would like to fix this there as well.  Odds are, no one has noticed enough to send a patch.\n\nShould be a trivial fix 😊",
+      "revId": "5760963f2641eb9c0aca8572f82b2f425c476ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78811a8d_f7fa1b20",
