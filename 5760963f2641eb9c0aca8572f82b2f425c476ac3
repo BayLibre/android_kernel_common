@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "398a78a1_8f9cee60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1345100
+      },
+      "writtenOn": "2021-08-04T12:49:59Z",
+      "side": 1,
+      "message": "For the upstream change, bhelgaas wanted me to change other instances of msleep() to usleep_range() as well. I am prioritizing this vendor hook as an immediate need for our current product schedule and the need to optimize resume time specifically, to improve the performance of user facing features as the phone comes out of suspend. As soon as I am off the critical path (getting this vendor hook merged) I will work on the upstream changes i.e. investigate which other msleep() calls in the pci driver need to be changed to usleep_range().\n\nThe PCIe spec requires a minimum of 10 ms for the D3_hot-\u003eD0 delay.\n\nBy adding trace_printk() in the entry and exit of this function, I noticed that even though a delay of 10 ms is used, msleep() ends up sleeping for 20 ms. Changing msleep() to usleep_range() gets me the 10 ms I need, meeting the spec and optimizing resume time.\n\nI have added the kernel reference that supports the above change in the commit message.\nReference: Documentation/timers/timers-howto.rst",
+      "parentUuid": "087a5759_ead5a355",
+      "revId": "5760963f2641eb9c0aca8572f82b2f425c476ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78811a8d_f7fa1b20",
