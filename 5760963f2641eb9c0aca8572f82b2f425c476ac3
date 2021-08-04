@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91f45213_d897c318",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1438165
+      },
+      "writtenOn": "2021-08-04T20:05:31Z",
+      "side": 1,
+      "message": "How about just a new function (or macro), and using it all over the place without needing to consider all possible values each call site can pick?\n\nPossibly something as simple as the following (but with a better name):\n\n```\n#define MSECS_THRESHOLD_BELOW_WHICH_MSLEEP_IS_FINICKY 20\nvoid dont_over_msleep(unsigned int msecs) {\n  if (msecs \u003c MSECS_THRESHOLD_BELOW_WHICH_MSLEEP_IS_FINICKY)\n     usleep_range(msecs * 1000, msecs * 1000);\n  else\n     msleep(delay);\n}\n```\n\nThat leaves unresolved whether we should go back to the matter of msleep oversleeping and whether msleep itself should be fixed, but needing such a function may be a signal that the question should be revisited",
+      "parentUuid": "eedb5072_a21e737d",
+      "revId": "5760963f2641eb9c0aca8572f82b2f425c476ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78811a8d_f7fa1b20",
         "filename": "drivers/pci/pci.c",
         "patchSetId": 5
