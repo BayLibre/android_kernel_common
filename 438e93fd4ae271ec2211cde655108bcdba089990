@@ -33,6 +33,24 @@
       "message": "this patch added to fix the following build breakage\n\n./common/fs/userfaultfd.c:1875:32: error: incompatible pointer to integer conversion passing \u0027__u64 *\u0027 (aka \u0027unsigned long long *\u0027) to parameter of type \u0027__u64\u0027 (aka \u0027unsigned long long\u0027); remove \u0026 [-Werror,-Wint-conversion]\n\n        ret \u003d validate_range(ctx-\u003emm, \u0026uffdio_continue.range.start,\n                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/usr/local/google/home/aaronding/src/goog/Kernel-WHI-Pro/common/fs/userfaultfd.c:1245:14: note: passing argument to parameter \u0027start\u0027 here\n                                          __u64 start, __u64 len)\n                                                ^\n  CC      drivers/usb/class/cdc-acm.o\n  AR      drivers/net/ethernet/ni/built-in.a\n1 error generated.",
       "revId": "438e93fd4ae271ec2211cde655108bcdba089990",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36e51366_0d395c41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-08-05T16:27:35Z",
+      "side": 1,
+      "message": "This should be in the commit message. And if it is an issue with the upstream implementation, it needs to be fixed there.",
+      "parentUuid": "f3df9eb5_b3654a7f",
+      "revId": "438e93fd4ae271ec2211cde655108bcdba089990",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
