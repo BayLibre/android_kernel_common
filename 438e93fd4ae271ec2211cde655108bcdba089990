@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc4108d6_faa9030f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2021-08-05T17:06:03Z",
+      "side": 1,
+      "message": "Yes, I think what has happened here is that we have a bunch of userfaultfs backports in Android (such as 4a5cf92412ab (\"BACKPORT: FROMGIT: userfaultfd: add UFFDIO_CONTINUE ioctl\")) which mean that pcc\u0027s untagging fix which came in via the upstream stable merges _applies_ cleanly, but breaks the build because it misses the backported cases.\n\nSo I think it\u0027s worth calling out that 0b591c020d28 (\"userfaultfd: do not untag user pointers\") broke the build because of the backport in 4a5cf92412ab (\"BACKPORT: FROMGIT: userfaultfd: add UFFDIO_CONTINUE ioctl\").\n\nI\u0027ve added pcc@ to cc.",
+      "parentUuid": "afa80c93_5aa802fb",
+      "revId": "438e93fd4ae271ec2211cde655108bcdba089990",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f3df9eb5_b3654a7f",
