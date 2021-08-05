@@ -72,6 +72,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c04c653_bac3635c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2021-08-05T17:14:05Z",
+      "side": 1,
+      "message": "I think the underlying issue is as follows:\n\nThe upstream commit\n\ne71e2ace5721 userfaultfd: do not untag user pointers\n\nchanged the signature of validate_range and adapted all call sites accordingly.\n\nThe following android commit added a new validate_range call site on a different git branch:\n\n4a5cf92412ab BACKPORT: FROMGIT: userfaultfd: add UFFDIO_CONTINUE ioctl\n\nWhen both got merged, the new call site wasn\u0027t adapted for the new function signature of validate_range. I believe this should have been done as part of the merge commit.",
+      "parentUuid": "fc4108d6_faa9030f",
+      "revId": "438e93fd4ae271ec2211cde655108bcdba089990",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f3df9eb5_b3654a7f",
