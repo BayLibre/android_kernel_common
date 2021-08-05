@@ -21,16 +21,17 @@
 	"# If no events are modified, an error message will be displayed here"
 
 /* Due to token parsing '<=' must be before '<' and '>=' must be before '>' */
-#define OPS					\
-	C( OP_GLOB,	"~"  ),			\
-	C( OP_NE,	"!=" ),			\
-	C( OP_EQ,	"==" ),			\
-	C( OP_LE,	"<=" ),			\
-	C( OP_LT,	"<"  ),			\
-	C( OP_GE,	">=" ),			\
-	C( OP_GT,	">"  ),			\
-	C( OP_BAND,	"&"  ),			\
-	C( OP_MAX,	NULL )
+#define OPS						\
+	C( OP_GLOB,		"~"  ),			\
+	C( OP_NE,		"!=" ),			\
+	C( OP_EQ,		"==" ),			\
+	C( OP_LE,		"<=" ),			\
+	C( OP_LT,		"<"  ),			\
+	C( OP_GE,		">=" ),			\
+	C( OP_GT,		">"  ),			\
+	C( OP_BAND,		"&"  ),			\
+	C( OP_GRANULARITY,	"@GRANULARITY" ),	\
+	C( OP_MAX,		NULL )
 
 #undef C
 #define C(a, b)	a
@@ -48,6 +49,13 @@ static const char * ops[] = { OPS };
  */
 #define PRED_FUNC_START			OP_LE
 #define PRED_FUNC_MAX			(OP_BAND - PRED_FUNC_START)
+
+/*
+ * pred keyword functions are currently only OP_GRANULARITY
+ * pred_keyword_funcs_##type below must match the order of them above.
+ */
+#define PRED_KEYWORD_FUNC_START		OP_GRANULARITY
+#define PRED_KEYWORD_FUNC_MAX		(OP_GRANULARITY - PRED_KEYWORD_FUNC_START)
 
 #define ERRORS									\
 	C(NONE,				"No error"),				\
@@ -648,7 +656,15 @@ static int filter_pred_##size(struct filter_pred *pred, void *event)	\
 }
 
 #define DEFINE_KEYWORD_PRED(type)						\
+static int filter_pred_GRANULARITY_##type(struct filter_pred *pred, void *event)\
+{										\
+	type *val = (type *)(event + pred->offset[0]);				\
+	type *delta = (type *)(event + pred->offset[1]);			\
+	type granularity = (type)pred->val;					\
+	return (*val / granularity) != ((*val - *delta) / granularity);		\
+}										\
 static const filter_pred_fn_t pred_keyword_funcs_##type[] = {			\
+	filter_pred_GRANULARITY_##type,						\
 };
 
 DEFINE_COMPARISON_PRED(s64);
@@ -1463,7 +1479,11 @@ static filter_pred_fn_t select_keyword_fn(enum filter_op_ids op,
 	filter_pred_fn_t fn = NULL;
 	int pred_keyword_func_index = -1;
 
-	if (WARN_ON_ONCE(pred_keyword_func_index < 0))
+	if (WARN_ON_ONCE(op < PRED_KEYWORD_FUNC_START))
+		return NULL;
+
+	pred_keyword_func_index = op - PRED_KEYWORD_FUNC_START;
+	if (WARN_ON_ONCE(pred_keyword_func_index > PRED_KEYWORD_FUNC_MAX))
 		return NULL;
 
 	switch (field_size) {
@@ -1498,6 +1518,11 @@ static filter_pred_fn_t select_keyword_fn(enum filter_op_ids op,
 
 static int validate_keyword_op_args(int op, int nr_fields, int nr_vals) {
 	switch (op) {
+	case OP_GRANULARITY:
+		/* Syntax: @GRANULARITY[field1, field2, val] */
+		if (nr_fields == 2 && nr_vals == 1)
+			return 0;
+		break;
 	default:
 		return -EINVAL;
 	}
