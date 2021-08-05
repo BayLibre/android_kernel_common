@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f73b9d8_a17ceb12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-05T12:00:52Z",
+      "side": 1,
+      "message": "no bug number?",
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0fbff2a_1188ad81",
@@ -102,6 +119,30 @@
       "side": 1,
       "message": "I tested it on gs21 (exynos) and redmi-k40 (Qualcomm) and It worked.\nI am compiling the kernel (not the whole android) and replacing the boot.img.\nWhat should I do then? Not using ANDROID_KABI is causing cyclic reboots.\n\nThanks,\nAvri",
       "parentUuid": "90b9e57a_4547c5e1",
+      "range": {
+        "startLine": 916,
+        "startChar": 0,
+        "endLine": 916,
+        "endChar": 58
+      },
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b628a519_eb2e80f8",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-05T12:00:52Z",
+      "side": 1,
+      "message": "Test the abi by building with build_abi.sh it will show you the errors involved here.  This is not how to use the ANDROID_KABI_USE() field even if it were allowed for this feature.",
+      "parentUuid": "b016b796_b52909e5",
       "range": {
         "startLine": 916,
         "startChar": 0,
