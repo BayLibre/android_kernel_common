@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8120361a_a1c84da7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-05T11:33:20Z",
+      "side": 1,
+      "message": "the abi reserved fields are for future support of the stable abi, not for adding new features like this.",
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0fbff2a_1188ad81",
@@ -19,6 +36,29 @@
         "startChar": 0,
         "endLine": 304,
         "endChar": 21
+      },
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b9e57a_4547c5e1",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-05T11:33:20Z",
+      "side": 1,
+      "message": "No, that is not going to work at all.\n\nRebuild the abi and see 😞",
+      "range": {
+        "startLine": 916,
+        "startChar": 0,
+        "endLine": 916,
+        "endChar": 58
       },
       "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
