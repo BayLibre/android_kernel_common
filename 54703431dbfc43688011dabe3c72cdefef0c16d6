@@ -89,6 +89,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5dbfb55_5eff2fc4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2021-08-06T03:19:12Z",
+      "side": 1,
+      "message": "I tried reverting the change and cherry-picking it again, but I find that it doesn\u0027t look pretty. Btw, did you mean to revert \"BACKPORT: FROMGIT: userfaultfd: add UFFDIO_CONTINUE ioctl\" originally from the android12-5.10 branch or \"userfaultfd: do not untag user pointers\" from the stable branch?\nI tried both and can upload the reverts and cherry-picks if there is interest.\n\nFor now, I uploaded a new commit message for this change that explains the situation. My suggestion would be to submit this change instead of going the revert/cherry-pick route.",
+      "parentUuid": "7e77461c_ac7c07f1",
+      "revId": "54703431dbfc43688011dabe3c72cdefef0c16d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "33e8f04b_b80a22bb",
