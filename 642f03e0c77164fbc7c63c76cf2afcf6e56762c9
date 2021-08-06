@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f88c208_969af803",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-08-06T08:25:42Z",
+      "side": 1,
+      "message": "Hmm, so we\u0027re currently guaranteed to run this before the scheduler has been initialised (it\u0027s an early_param). But with this change, we\u0027re now subject to concurrency issues. How is it OK for a CPU to observe inconsistent values of pelt_load_avg_period, pelt_load_avg_max and pelt_runnable_avg_yN_inv?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 37
+      },
+      "revId": "642f03e0c77164fbc7c63c76cf2afcf6e56762c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
