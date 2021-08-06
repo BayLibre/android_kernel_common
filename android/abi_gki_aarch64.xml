@@ -1468,6 +1468,7 @@
       <elf-symbol name='filemap_fdatawrite_range' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5adf7791'/>
       <elf-symbol name='filp_close' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x95382c36'/>
       <elf-symbol name='filp_open_block' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8219190f'/>
+      <elf-symbol name='find_get_pid' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdea86425'/>
       <elf-symbol name='find_last_bit' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb6a68816'/>
       <elf-symbol name='find_next_bit' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc0a3d105'/>
       <elf-symbol name='find_next_zero_bit' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x479c3c86'/>
@@ -2881,6 +2882,7 @@
       <elf-symbol name='register_netdevice' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x82a0fc5c'/>
       <elf-symbol name='register_netdevice_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd2da1048'/>
       <elf-symbol name='register_netevent_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4761f17c'/>
+      <elf-symbol name='register_oom_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x622c7922'/>
       <elf-symbol name='register_pernet_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x241c81db'/>
       <elf-symbol name='register_pernet_subsys' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe9c4fed0'/>
       <elf-symbol name='register_pm_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9cc4f70a'/>
@@ -3747,6 +3749,7 @@
       <elf-symbol name='unregister_netdevice_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9d0d6206'/>
       <elf-symbol name='unregister_netdevice_queue' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbdb6faa2'/>
       <elf-symbol name='unregister_netevent_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4fe1eddf'/>
+      <elf-symbol name='unregister_oom_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc617f82c'/>
       <elf-symbol name='unregister_pernet_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5c8edd1e'/>
       <elf-symbol name='unregister_pernet_subsys' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9156a215'/>
       <elf-symbol name='unregister_pm_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7681946c'/>
@@ -140635,6 +140638,10 @@
         <parameter type-id='b816e1d0' name='ns' filepath='kernel/pid.c' line='428' column='1'/>
         <return type-id='587f89d2'/>
       </function-decl>
+      <function-decl name='find_get_pid' mangled-name='find_get_pid' filepath='kernel/pid.c' line='395' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='find_get_pid'>
+        <parameter type-id='587f89d2' name='nr' filepath='kernel/pid.c' line='395' column='1'/>
+        <return type-id='b94e5398'/>
+      </function-decl>
       <function-decl name='get_pid_task' mangled-name='get_pid_task' filepath='kernel/pid.c' line='383' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='get_pid_task'>
         <parameter type-id='b94e5398' name='pid' filepath='kernel/pid.c' line='383' column='1'/>
         <parameter type-id='ce78cf46' name='type' filepath='kernel/pid.c' line='383' column='1'/>
@@ -154703,6 +154710,16 @@
         <parameter type-id='df4b7819' name='mm' filepath='mm/mmap.c' line='2246' column='1'/>
         <parameter type-id='7359adad' name='addr' filepath='mm/mmap.c' line='2246' column='1'/>
         <return type-id='2ae08426'/>
+      </function-decl>
+    </abi-instr>
+    <abi-instr address-size='64' path='mm/oom_kill.c' language='LANG_C89'>
+      <function-decl name='unregister_oom_notifier' mangled-name='unregister_oom_notifier' filepath='mm/oom_kill.c' line='1030' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unregister_oom_notifier'>
+        <parameter type-id='d504f73d' name='nb' filepath='mm/oom_kill.c' line='1030' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='register_oom_notifier' mangled-name='register_oom_notifier' filepath='mm/oom_kill.c' line='1024' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='register_oom_notifier'>
+        <parameter type-id='d504f73d' name='nb' filepath='mm/oom_kill.c' line='1024' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='mm/page-writeback.c' language='LANG_C89'>
@@ -176961,6 +176978,17 @@
           <var-decl name='accuracy' type-id='19c2251e' visibility='default' filepath='include/sound/pcm.h' line='322' column='1'/>
         </data-member>
       </class-decl>
+      <union-decl name='snd_pcm_sync_id' size-in-bits='128' visibility='default' filepath='include/uapi/sound/asound.h' line='324' column='1' id='85b4e5de'>
+        <data-member access='public'>
+          <var-decl name='id' type-id='92a46553' visibility='default' filepath='include/uapi/sound/asound.h' line='325' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='id16' type-id='ff13edc1' visibility='default' filepath='include/uapi/sound/asound.h' line='326' column='1'/>
+        </data-member>
+        <data-member access='public'>
+          <var-decl name='id32' type-id='49580a63' visibility='default' filepath='include/uapi/sound/asound.h' line='327' column='1'/>
+        </data-member>
+      </union-decl>
       <class-decl name='snd_pcm_runtime' size-in-bits='6080' is-struct='yes' visibility='default' filepath='include/sound/pcm.h' line='342' column='1' id='bc78c060'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='trigger_master' type-id='06b2cd14' visibility='default' filepath='include/sound/pcm.h' line='344' column='1'/>
@@ -177131,17 +177159,6 @@
           <var-decl name='driver_tstamp' type-id='a9c79a1f' visibility='default' filepath='include/sound/pcm.h' line='421' column='1'/>
         </data-member>
       </class-decl>
-      <union-decl name='snd_pcm_sync_id' size-in-bits='128' visibility='default' filepath='include/uapi/sound/asound.h' line='324' column='1' id='85b4e5de'>
-        <data-member access='public'>
-          <var-decl name='id' type-id='92a46553' visibility='default' filepath='include/uapi/sound/asound.h' line='325' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='id16' type-id='ff13edc1' visibility='default' filepath='include/uapi/sound/asound.h' line='326' column='1'/>
-        </data-member>
-        <data-member access='public'>
-          <var-decl name='id32' type-id='49580a63' visibility='default' filepath='include/uapi/sound/asound.h' line='327' column='1'/>
-        </data-member>
-      </union-decl>
       <typedef-decl name='snd_pcm_sframes_t' type-id='bd54fe1a' filepath='include/uapi/sound/asound.h' line='160' column='1' id='721b74e7'/>
       <typedef-decl name='snd_pcm_access_t' type-id='95e97e5e' filepath='include/uapi/sound/asound.h' line='184' column='1' id='6459083c'/>
       <typedef-decl name='snd_pcm_format_t' type-id='95e97e5e' filepath='include/uapi/sound/asound.h' line='192' column='1' id='67fa9bd5'/>

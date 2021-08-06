@@ -128,6 +128,8 @@
   __dynamic_netdev_dbg
   d_make_root
   d_splice_alias
+  debugfs_attr_read
+  debugfs_attr_write
   debugfs_create_bool
   debugfs_create_dir
   debugfs_create_file
@@ -259,6 +261,7 @@
   extcon_get_state
   fb_mode_option
   __find_get_block
+  find_get_pid
   find_next_bit
   finish_wait
   flush_work
@@ -672,6 +675,7 @@
   read_cache_page
   read_cache_page_gfp
   register_filesystem
+  register_oom_notifier
   register_pernet_subsys
   register_pm_notifier
   regmap_exit
@@ -858,6 +862,7 @@
   unlock_page
   unregister_filesystem
   unregister_chrdev_region
+  unregister_oom_notifier
   unregister_pernet_subsys
   up
   usb_add_gadget_udc
@@ -1393,8 +1398,10 @@
   of_hwspin_lock_get_id_byname
   of_modalias_node
   on_each_cpu
+  pid_task
   prepare_to_wait
   proc_remove
+  put_pid
   put_unused_fd
   _raw_read_lock_bh
   _raw_read_unlock_bh
