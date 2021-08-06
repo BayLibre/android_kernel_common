@@ -46,6 +46,30 @@
       },
       "revId": "642f03e0c77164fbc7c63c76cf2afcf6e56762c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20b545c2_c2d88cf6",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-08-06T09:27:00Z",
+      "side": 1,
+      "message": "If so I think the stop_machine() call should be called from here directly and not rely on the modules to do it.",
+      "parentUuid": "6331b54a_7a4f1ca7",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 37
+      },
+      "revId": "642f03e0c77164fbc7c63c76cf2afcf6e56762c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
