@@ -2881,6 +2881,7 @@
       <elf-symbol name='register_netdevice' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x82a0fc5c'/>
       <elf-symbol name='register_netdevice_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd2da1048'/>
       <elf-symbol name='register_netevent_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4761f17c'/>
+      <elf-symbol name='register_oom_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x622c7922'/>
       <elf-symbol name='register_pernet_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x241c81db'/>
       <elf-symbol name='register_pernet_subsys' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe9c4fed0'/>
       <elf-symbol name='register_pm_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9cc4f70a'/>
@@ -3747,6 +3748,7 @@
       <elf-symbol name='unregister_netdevice_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9d0d6206'/>
       <elf-symbol name='unregister_netdevice_queue' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbdb6faa2'/>
       <elf-symbol name='unregister_netevent_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4fe1eddf'/>
+      <elf-symbol name='unregister_oom_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc617f82c'/>
       <elf-symbol name='unregister_pernet_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5c8edd1e'/>
       <elf-symbol name='unregister_pernet_subsys' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9156a215'/>
       <elf-symbol name='unregister_pm_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7681946c'/>
@@ -154703,6 +154705,16 @@
         <parameter type-id='df4b7819' name='mm' filepath='mm/mmap.c' line='2246' column='1'/>
         <parameter type-id='7359adad' name='addr' filepath='mm/mmap.c' line='2246' column='1'/>
         <return type-id='2ae08426'/>
+      </function-decl>
+    </abi-instr>
+    <abi-instr address-size='64' path='mm/oom_kill.c' language='LANG_C89'>
+      <function-decl name='unregister_oom_notifier' mangled-name='unregister_oom_notifier' filepath='mm/oom_kill.c' line='1030' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unregister_oom_notifier'>
+        <parameter type-id='d504f73d' name='nb' filepath='mm/oom_kill.c' line='1030' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='register_oom_notifier' mangled-name='register_oom_notifier' filepath='mm/oom_kill.c' line='1024' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='register_oom_notifier'>
+        <parameter type-id='d504f73d' name='nb' filepath='mm/oom_kill.c' line='1024' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='mm/page-writeback.c' language='LANG_C89'>
