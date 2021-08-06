@@ -22,6 +22,30 @@
       },
       "revId": "642f03e0c77164fbc7c63c76cf2afcf6e56762c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6331b54a_7a4f1ca7",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1445936
+      },
+      "writtenOn": "2021-08-06T08:49:49Z",
+      "side": 1,
+      "message": "Actually, we will use stop_machine() to quiesce schedule and switch pelt half-life  to prevent concurrency issue.",
+      "parentUuid": "0f88c208_969af803",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 37
+      },
+      "revId": "642f03e0c77164fbc7c63c76cf2afcf6e56762c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
