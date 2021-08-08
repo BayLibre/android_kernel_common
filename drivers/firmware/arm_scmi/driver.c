@@ -520,9 +520,19 @@ static int do_xfer_with_response(const struct scmi_protocol_handle *ph,
 
 	xfer->async_done = &async_response;
 
+<<<<<<< HEAD   (afeb95 Merge branch 'android12-5.10' into `android12-5.10-lts`)
 	ret = do_xfer(ph, xfer);
 	if (!ret && !wait_for_completion_timeout(xfer->async_done, timeout))
 		ret = -ETIMEDOUT;
+=======
+	ret = scmi_do_xfer(handle, xfer);
+	if (!ret) {
+		if (!wait_for_completion_timeout(xfer->async_done, timeout))
+			ret = -ETIMEDOUT;
+		else if (xfer->hdr.status)
+			ret = scmi_to_linux_errno(xfer->hdr.status);
+	}
+>>>>>>> BRANCH (1cd6e3 Linux 5.10.57)
 
 	xfer->async_done = NULL;
 	return ret;
