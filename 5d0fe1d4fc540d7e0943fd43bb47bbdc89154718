@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67003ecc_1da69d22",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1876972
+      },
+      "writtenOn": "2021-08-09T01:48:54Z",
+      "side": 1,
+      "message": "Dear Sir:\n  free_uid and find_user symbol is related to our Feature , we use the find_user to get the user_struct by a uid , and we use the free_uid to free the user_struct when enter our logic . example as follows:\n  a. user \u003d find_user(uid);\n  b. free_uid(user);",
+      "parentUuid": "2627ddfc_48db898b",
+      "range": {
+        "startLine": 135,
+        "startChar": 2,
+        "endLine": 135,
+        "endChar": 10
+      },
+      "revId": "5d0fe1d4fc540d7e0943fd43bb47bbdc89154718",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d15e4af2_72c1f955",
         "filename": "android/abi_gki_aarch64_xiaomi",
         "patchSetId": 1
