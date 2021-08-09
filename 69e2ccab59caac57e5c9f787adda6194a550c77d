@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8cb387_d0daa29b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2021-08-09T22:49:37Z",
+      "side": 1,
+      "message": "The ABI change is intentional. We no longer emit __stack_chk_guard because I added support for per task stack canaries to LLVM, which KBUILD defaults on if toolchain support is detected; this version of AOSP LLVM contains that feature.",
+      "revId": "69e2ccab59caac57e5c9f787adda6194a550c77d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
