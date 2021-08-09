@@ -686,7 +686,8 @@ static int fuse_parse_param(struct fs_context *fc, struct fs_parameter *param)
 		break;
 
 	case OPT_ROOT_BPF:
-		ctx->root_bpf = bpf_prog_get(result.uint_32);
+		ctx->root_bpf = bpf_prog_get_type_dev(result.uint_32,
+						BPF_PROG_TYPE_FUSE, false);
 		if (IS_ERR(ctx->root_bpf)) {
 			ctx->root_bpf = NULL;
 			return invalfc(fc, "Unable to open bpf program");
