@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6322e6f8_50945bb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-08-10T20:55:16Z",
+      "side": 1,
+      "message": "Looks like this is not KMI compatible:\n```\n\u0027struct ufs_hba at ufshcd.h:786:1\u0027 changed:\n  type size hasn\u0027t changed\n  1 data member insertion:\n    \u0027ufshpb_dev_info ufshpb_dev_array[]\u0027, at offset 37696 (in bits) at ufshcd.h:933:1\n  40 impacted interfaces\n```",
+      "revId": "a0e1233c3be8064638dcb2a24cdf4902ddbda834",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
