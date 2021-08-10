@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecab5fbb_9d2a669a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-08-10T10:57:24Z",
+      "side": 1,
+      "message": "\u003e not everything is in BG group, we still have services not in BG group and it doesn\u0027t sounds good if they vote 1024 and hog big cores.\n\nTrue. But these services are not instantiated by the user, right? So you should have full control over them. Kernel threads should not tinker with uclamp values on their own, if they do we need to fix that.\n\nAnyway. I\u0027m fully onboard on enforcing CAP_SYS_NICE. I do have reservation on the uclamp_reduce() hunk though. I don\u0027t think it makes sense and adds unnecessary ABI. It\u0027s either the framework wants to specify the performance requirements of the task or they can do it themselves. The model of where there\u0027s partial control from both sides still needs clarity and I don\u0027t see the uclamp_reduce() is fit for purpose personally.",
+      "parentUuid": "3698ce48_8d8bb46b",
+      "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccad827a_80adb9d2",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
@@ -180,6 +198,30 @@
       "side": 1,
       "message": "it is also harder to remove once things picked up.",
       "parentUuid": "ccad827a_80adb9d2",
+      "range": {
+        "startLine": 5586,
+        "startChar": 51,
+        "endLine": 5586,
+        "endChar": 74
+      },
+      "revId": "4ddd6b85f07a7f0afa3e91db5eae439004c545ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6f51c5e_461c984c",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5586,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-08-10T10:57:24Z",
+      "side": 1,
+      "message": "I read this as you\u0027re agreeing with me. In case I misread it, can you elaborate please?",
+      "parentUuid": "06146ead_be842b2c",
       "range": {
         "startLine": 5586,
         "startChar": 51,
