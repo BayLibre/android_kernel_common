@@ -34,6 +34,24 @@
       "parentUuid": "6322e6f8_50945bb9",
       "revId": "a0e1233c3be8064638dcb2a24cdf4902ddbda834",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8830c57e_4fe421cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-08-10T21:25:28Z",
+      "side": 1,
+      "message": "I don\u0027t understand your statement.\n\nBy enabling CONFIG_SCSI_UFS_HPB, this patch is adding a field to \u0027struct ufs_hba\u0027 which is part of the KMI. The tooling is correct -- this is a KMI break and cannot be accepted.\n\nThe pattern exactly matches the example of a KMI break in the GKI Guide -- where there is also an example of how it can be resolved. See https://android-review.googlesource.com/c/kernel/common/+/1792307/comments/6322e6f8_50945bb9",
+      "parentUuid": "46d24d66_b66ef933",
+      "revId": "a0e1233c3be8064638dcb2a24cdf4902ddbda834",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
