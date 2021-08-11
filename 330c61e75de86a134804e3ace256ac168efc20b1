@@ -175,6 +175,30 @@
       },
       "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12bfea08_dbfde535",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1207838
+      },
+      "writtenOn": "2021-08-11T05:47:49Z",
+      "side": 1,
+      "message": "Should this be moved to line #931 - I am thinking this is how the ANDROID_KABI_RESERVE/ANDROID_KABI_RESERVE are supposed to work, right? \n\nHere is the abi.report I got with the line moved to #931:\n\n--------------------------------------------------------------\nLeaf changes summary: 1 artifact changed\nChanged leaf types summary: 1 leaf type changed\nRemoved/Changed/Added functions summary: 0 Removed, 0 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\n\u0027struct ufs_hba at ufshcd.h:786:1\u0027 changed:\n  type size hasn\u0027t changed\n  there are data member changes:\n    data member u64 android_kabi_reserved1 at offset 37440 (in bits) became anonymous data member \u0027union {ufshpb_dev_info* ufshpb_dev; struct {u64 android_kabi_reserved1;} __UNIQUE_ID_android_kabi_hide398; union {};}\u0027\n  39 impacted interfaces\n-------------------------------------------------------------\n \nI am not sure, is this being considering as a KMI breaking?",
+      "parentUuid": "f520f142_8aec27e6",
+      "range": {
+        "startLine": 916,
+        "startChar": 0,
+        "endLine": 916,
+        "endChar": 58
+      },
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
