@@ -111,6 +111,7 @@ struct hist_var {
 	char				*name;
 	struct hist_trigger_data	*hist_data;
 	unsigned int			idx;
+	u64				constant;
 };
 
 struct hist_field {
@@ -160,6 +161,15 @@ static u64 hist_field_none(struct hist_field *field,
 			   void *event)
 {
 	return 0;
+}
+
+static u64 hist_field_var_const(struct hist_field *field,
+			   struct tracing_map_elt *elt,
+			   struct trace_buffer *buffer,
+			   struct ring_buffer_event *rbe,
+			   void *event)
+{
+	return field->var.constant;
 }
 
 static u64 hist_field_counter(struct hist_field *field,
@@ -318,6 +328,7 @@ enum hist_field_flags {
 	HIST_FIELD_FL_VAR_REF		= 1 << 14,
 	HIST_FIELD_FL_CPU		= 1 << 15,
 	HIST_FIELD_FL_ALIAS		= 1 << 16,
+	HIST_FIELD_FL_VAR_CONST		= 1 << 17,
 };
 
 struct var_defs {
@@ -1480,6 +1491,10 @@ static void expr_field_str(struct hist_field *field, char *expr)
 {
 	if (field->flags & HIST_FIELD_FL_VAR_REF)
 		strcat(expr, "$");
+	else if (field->flags & HIST_FIELD_FL_VAR_CONST) {
+		strcat(expr, "$");
+		strcat(expr, field->var.name);
+	}
 
 	strcat(expr, hist_field_name(field, 0));
 
@@ -1646,6 +1661,15 @@ static struct hist_field *create_hist_field(struct hist_trigger_data *hist_data,
 
 	if (flags & HIST_FIELD_FL_HITCOUNT) {
 		hist_field->fn = hist_field_counter;
+		hist_field->size = sizeof(u64);
+		hist_field->type = kstrdup("u64", GFP_KERNEL);
+		if (!hist_field->type)
+			goto free;
+		goto out;
+	}
+
+	if (flags & HIST_FIELD_FL_VAR_CONST) {
+		hist_field->fn = hist_field_var_const;
 		hist_field->size = sizeof(u64);
 		hist_field->type = kstrdup("u64", GFP_KERNEL);
 		if (!hist_field->type)
@@ -2042,6 +2066,35 @@ static struct hist_field *create_alias(struct hist_trigger_data *hist_data,
 	return alias;
 }
 
+static struct hist_field *parse_var_const(struct hist_trigger_data *hist_data,
+				       char *str, char *var_name)
+{
+	struct hist_field *field = NULL;
+	unsigned long flags = HIST_FIELD_FL_VAR_CONST | HIST_FIELD_FL_VAR;
+	u64 constant;
+
+	/*
+	 * A literal must first be assigned to a variable
+	 *    e.g. x=1234,y=2345
+	 * before being used in an expression (where it must be a reference)
+	 *    e.g. z=$y-$x
+	 */
+	if (!var_name)
+		return NULL;
+
+	/* Not a valid numeric literal? */
+	if (kstrtoull(str, 0, &constant))
+		return NULL;
+
+	field = create_hist_field(hist_data, NULL, flags, var_name);
+	if (!field)
+		return NULL;
+
+	field->var.constant = constant;
+
+	return field;
+}
+
 static struct hist_field *parse_atom(struct hist_trigger_data *hist_data,
 				     struct trace_event_file *file, char *str,
 				     unsigned long *flags, char *var_name)
@@ -2050,6 +2103,26 @@ static struct hist_field *parse_atom(struct hist_trigger_data *hist_data,
 	struct ftrace_event_field *field = NULL;
 	struct hist_field *hist_field = NULL;
 	int ret = 0;
+
+	/* var const variable? */
+	if (isdigit(str[0])) {
+		hist_field = parse_var_const(hist_data, str, var_name);
+		if (!hist_field) {
+			ret = -EINVAL;
+			goto out;
+		}
+		return hist_field;
+	}
+
+	/*
+	 * Allow referencing a local var const variable in subsequent expressions
+	 * on the hist trigger currently being defined.
+	 */
+	if (is_var_ref(str)) {
+		hist_field = find_var_field(hist_data, ++str);
+		if (hist_field && (hist_field->flags & HIST_FIELD_FL_VAR_CONST))
+			return hist_field;
+	}
 
 	s = strchr(str, '.');
 	if (s) {
@@ -4855,6 +4928,8 @@ static void hist_field_debug_show_flags(struct seq_file *m,
 
 	if (flags & HIST_FIELD_FL_ALIAS)
 		seq_puts(m, "        HIST_FIELD_FL_ALIAS\n");
+	else if (flags & HIST_FIELD_FL_VAR_CONST)
+		seq_puts(m, "        HIST_FIELD_FL_VAR_CONST\n");
 }
 
 static int hist_field_debug_show(struct seq_file *m,
@@ -4874,6 +4949,8 @@ static int hist_field_debug_show(struct seq_file *m,
 		seq_printf(m, "      var.name: %s\n", field->var.name);
 		seq_printf(m, "      var.idx (into tracing_map_elt.vars[]): %u\n",
 			   field->var.idx);
+		if (field->flags & HIST_FIELD_FL_VAR_CONST)
+			seq_printf(m, "      var.constant: %llu\n", field->var.constant);
 	}
 
 	if (field->flags & HIST_FIELD_FL_ALIAS)
@@ -5118,6 +5195,8 @@ static void hist_field_print(struct seq_file *m, struct hist_field *hist_field)
 
 	if (hist_field->flags & HIST_FIELD_FL_CPU)
 		seq_puts(m, "common_cpu");
+	else if (hist_field->flags & HIST_FIELD_FL_VAR_CONST)
+		seq_printf(m, "%llu", hist_field->var.constant);
 	else if (field_name) {
 		if (hist_field->flags & HIST_FIELD_FL_VAR_REF ||
 		    hist_field->flags & HIST_FIELD_FL_ALIAS)
