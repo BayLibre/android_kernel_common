@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7a0749b_80e54eb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-11T17:16:27Z",
+      "side": 1,
+      "message": "You can easily do this module by module by doing the following:\n\n- take the existing list and break it up per-module, like you did, but do not add any new functions to the abi.  Submit that.\n- Then add new functions that you need, per module, as needed, as add-on patches, updating the .xml file for each as well.",
+      "parentUuid": "61a3d6f8_cda2fa17",
+      "revId": "3a78ff8e55f7ca8830d15433f78e51d719b0646a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "807d6979_7c6e9ea5",
         "filename": "android/abi_gki_aarch64_rockchip",
         "patchSetId": 1
