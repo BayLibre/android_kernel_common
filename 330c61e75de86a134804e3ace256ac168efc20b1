@@ -247,6 +247,30 @@
       },
       "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e9e62c5_82a20f78",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1207838
+      },
+      "writtenOn": "2021-08-11T09:13:46Z",
+      "side": 1,
+      "message": "Hi, Greg,\n\nThe filed \"struct ufshpb_dev_info ufshpb_dev;\" is not current built in GKI(CONFIG_SCSI_UFS_HPB is not set in GKI), so removing the filed does not impact the freezed KABI.\n\nBy replacing the ANDROID_KABI_RESERVED(1) -\u003e ANDROID_KABI_USE(1, name), it can be  consider a new \"filed\" being added to the struct and using the reserved padding filed(the android_kabi_reserved1) - the struct\u0027s size are not get changed and all existing fileds\u0027 offset remain the untouched - so even this is considered a breaking of kabi? \n\nCould you kindly please let me know if there is a way to add new \"filed\" into thie struct once kabi is freezed.",
+      "parentUuid": "bb093764_9f8b80dd",
+      "range": {
+        "startLine": 916,
+        "startChar": 0,
+        "endLine": 916,
+        "endChar": 58
+      },
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
