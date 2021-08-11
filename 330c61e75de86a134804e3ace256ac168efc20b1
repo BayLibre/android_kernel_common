@@ -271,6 +271,30 @@
       },
       "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78c7bc0f_b0b4f091",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-11T11:55:55Z",
+      "side": 1,
+      "message": "Again, the ANDROID_KABI_RESERVED() fields are for LTS merges upstream, they are NOT for new feature enablement at all.\n\nAlso, even if it were allowed for this option, you just moved the fields around after this one, breaking the KABI, so this use of the macro is not correct at all either.",
+      "parentUuid": "1e9e62c5_82a20f78",
+      "range": {
+        "startLine": 916,
+        "startChar": 0,
+        "endLine": 916,
+        "endChar": 58
+      },
+      "revId": "330c61e75de86a134804e3ace256ac168efc20b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
