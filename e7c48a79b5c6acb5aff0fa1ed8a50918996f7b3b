@@ -70,6 +70,24 @@
       "parentUuid": "8e97d915_42d1668c",
       "revId": "e7c48a79b5c6acb5aff0fa1ed8a50918996f7b3b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6809ecb4_0d42ebff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-08-12T21:03:35Z",
+      "side": 1,
+      "message": "...but they aren\u0027t in stable 5.4? Normally patches like this that are upstream but not in stable should get an UPSTREAM tag. This lets us look for matching \"Fixes:\" tags upstream that need to be backported. Perhaps this is not needed for F2FS since you are actively maintaining it. I\u0027ll let sspatil comment based on the outcome of your sync.",
+      "parentUuid": "df08fb24_cda2dddc",
+      "revId": "e7c48a79b5c6acb5aff0fa1ed8a50918996f7b3b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
