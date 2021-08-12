@@ -1608,10 +1608,205 @@ static const struct config_item_type ncm_func_type = {
 	.ct_owner	= THIS_MODULE,
 };
 
+#ifdef CONFIG_USB_F_NCM
+struct ncm_setup_desc {
+	struct work_struct work;
+	struct device *device;
+};
+
+typedef enum {
+	CAR_VID = 0,
+	CAR_PID,
+	CAR_PORT,
+	CAR_NAME,
+	CAR_VIN = 5
+} ucarlink_msg_type;
+
+static struct ncm_setup_desc *_ncm_setup_desc;
+static ucarlink_msg_type _ucarlink_msg_type;
+
+#define UCARLINK_STRING_LENGTH_MAX 32
+#define UCARLINK_SWITCH_NCM_STRING  "UCARLINK_ACTION"
+#define UCARLINK_GET_VERSION 0x81
+#define UCARLINK_SEND_STRING 0x82
+#define UCARLINK_SWITCH_NCM  0x83
+#define UCARLINK_REPLY_VERSION 0x01
+static void android_setup_complete(struct usb_ep *ep, struct usb_request *req)
+{
+	struct usb_composite_dev *cdev;
+
+	if (req->status || req->actual != req->length)
+		DBG((struct usb_composite_dev *) ep->driver_data,
+				"setup complete --> %d, %d/%d\n",
+				req->status, req->actual, req->length);
+
+	if (!req->context)
+		return;
+
+	cdev = req->context;
+
+	if (cdev->req == req)
+		cdev->setup_pending = false;
+	else if (cdev->os_desc_req == req)
+		cdev->os_desc_pending = false;
+	else
+		WARN(1, "unknown request %pK\n", req);
+}
+
+static void android_read_string(struct usb_ep *ep, struct usb_request *req)
+{
+	struct usb_composite_dev *cdev;
+	char ucarlink_string[UCARLINK_STRING_LENGTH_MAX] = { 0 };
+	char *ucarlink_info[2] = { ucarlink_string, NULL };
+	int i = 0;
+
+	if (req->status || req->actual != req->length)
+		DBG((struct usb_composite_dev *) ep->driver_data,
+				"setup complete --> %d, %d/%d\n",
+				req->status, req->actual, req->length);
+
+	if (!req->context) {
+		return;
+	}
+
+	cdev = req->context;
+
+	if (cdev->req == req) {
+		*((uint8_t *)req->buf + req->length) = 0;
+		switch (_ucarlink_msg_type) {
+		case CAR_VID:
+			snprintf(ucarlink_string, UCARLINK_STRING_LENGTH_MAX,
+					"UCARLINK_VID=%s", (uint8_t *)req->buf);
+				kobject_uevent_env(&_ncm_setup_desc->device->kobj, KOBJ_CHANGE, ucarlink_info);
+			break;
+		case CAR_PID:
+			snprintf(ucarlink_string, UCARLINK_STRING_LENGTH_MAX,
+					"UCARLINK_PID=%s", (uint8_t *)req->buf);
+				kobject_uevent_env(&_ncm_setup_desc->device->kobj, KOBJ_CHANGE, ucarlink_info);
+			break;
+		case CAR_PORT:
+				snprintf(ucarlink_string, UCARLINK_STRING_LENGTH_MAX,
+					"UCARLINK_PORT=%s", (uint8_t *)req->buf);
+				kobject_uevent_env(&_ncm_setup_desc->device->kobj, KOBJ_CHANGE, ucarlink_info);
+			break;
+		case CAR_NAME:
+			snprintf(ucarlink_string, UCARLINK_STRING_LENGTH_MAX,
+					"UCARLINK_NAME=%s", (uint8_t *)req->buf);
+				kobject_uevent_env(&_ncm_setup_desc->device->kobj, KOBJ_CHANGE, ucarlink_info);
+			break;
+		case CAR_VIN:
+			snprintf(ucarlink_string, UCARLINK_STRING_LENGTH_MAX,
+					"UCARLINK_VIN=%s", (uint8_t *)req->buf);
+				kobject_uevent_env(&_ncm_setup_desc->device->kobj, KOBJ_CHANGE, ucarlink_info);
+			break;
+		default:
+			WARN(1, "unknown ucarlink_msg_type %d\n", _ucarlink_msg_type);
+			break;
+		}
+		cdev->setup_pending = false;
+	} else if (cdev->os_desc_req == req) {
+		cdev->os_desc_pending = false;
+	} else {
+		WARN(1, "unknown request %pK\n", req);
+	}
+}
+
+static int android_ep0_queue(struct usb_composite_dev *cdev,
+		struct usb_request *req, gfp_t gfp_flags)
+{
+	int ret;
+
+	ret = usb_ep_queue(cdev->gadget->ep0, req, gfp_flags);
+	if (ret == 0) {
+		if (cdev->req == req)
+			cdev->setup_pending = true;
+		else if (cdev->os_desc_req == req)
+			cdev->os_desc_pending = true;
+		else
+			WARN(1, "unknown request %pK\n", req);
+	}
+
+	return ret;
+}
+
+static void ncm_setup_work(struct work_struct *data)
+{
+	char ucarlink_string[UCARLINK_STRING_LENGTH_MAX];
+	char *ucarlink_envp[2] = { ucarlink_string, NULL };
+
+	snprintf(ucarlink_string, UCARLINK_STRING_LENGTH_MAX,
+		"%s=start", UCARLINK_SWITCH_NCM_STRING);
+	kobject_uevent_env(&_ncm_setup_desc->device->kobj, KOBJ_CHANGE, ucarlink_envp);
+}
+
+int ncm_ctrlrequest(struct usb_composite_dev *cdev,
+			const struct usb_ctrlrequest *ctrl)
+{
+	struct usb_request	*req = cdev->req;
+	int value = -EOPNOTSUPP;
+	int retValue = -EOPNOTSUPP;
+	uint16_t w_length = le16_to_cpu(ctrl->wLength);
+	uint8_t flag;
+
+	if (ctrl->bRequest == UCARLINK_SEND_STRING) {
+		req->complete = android_read_string;
+	} else {
+		req->complete = android_setup_complete;
+	}
+
+    if (ctrl->bRequestType == (USB_DIR_IN | USB_TYPE_VENDOR)) {
+		if (ctrl->bRequest == UCARLINK_GET_VERSION) {
+			flag = 1;
+			value = 0;
+		}
+	} else if (ctrl->bRequestType == (USB_DIR_OUT | USB_TYPE_VENDOR)) {
+		if (ctrl->bRequest == UCARLINK_SEND_STRING) {
+			flag = 2;
+			value = 0;
+			_ucarlink_msg_type = ctrl->wIndex;
+		} else if (ctrl->bRequest == UCARLINK_SWITCH_NCM) {
+			value = 0;
+			schedule_work(&_ncm_setup_desc->work);
+		}
+	}
+
+	if (flag == 1 || flag == 2) {
+		if (flag == 1) {
+			retValue = min(w_length, (u16) 1);
+			req->length = retValue;
+			req->context = cdev;
+			req->zero = retValue < w_length;
+			*(u8 *)req->buf = UCARLINK_REPLY_VERSION;
+		} else {
+			req->length = w_length;
+			req->context = cdev;
+			req->zero = 0;
+		}
+
+		retValue = android_ep0_queue(cdev, req, GFP_ATOMIC);
+		if (retValue < 0) {
+			DBG(cdev, "ncm_ctrlrequest: ep_queue --> %d\n", retValue);
+			req->status = 0;
+			if (retValue != -ESHUTDOWN)
+				android_setup_complete(cdev->gadget->ep0, req);
+		}
+	}
+
+	return value;
+}
+#endif /* CONFIG_USB_F_NCM */
+
 static void ncm_free_inst(struct usb_function_instance *f)
 {
 	struct f_ncm_opts *opts;
 
+#ifdef CONFIG_USB_F_NCM
+	cancel_work_sync(&_ncm_setup_desc->work);
+	/* release _ncm_setup_desc related resource */
+	device_destroy(_ncm_setup_desc->device->class,
+		_ncm_setup_desc->device->devt);
+	kfree(_ncm_setup_desc);
+#endif /* CONFIG_USB_F_NCM */
 	opts = container_of(f, struct f_ncm_opts, func_inst);
 	if (opts->bound)
 		gether_cleanup(netdev_priv(opts->net));
@@ -1655,6 +1850,14 @@ static struct usb_function_instance *ncm_alloc_inst(void)
 		return ERR_CAST(ncm_interf_group);
 	}
 	opts->ncm_interf_group = ncm_interf_group;
+
+#ifdef CONFIG_USB_F_NCM
+	_ncm_setup_desc = kzalloc(sizeof(*_ncm_setup_desc), GFP_KERNEL);
+	if (!_ncm_setup_desc)
+		return ERR_PTR(-ENOMEM);
+	INIT_WORK(&_ncm_setup_desc->work, ncm_setup_work);
+	_ncm_setup_desc->device = create_function_device("f_ncm");
+#endif /* CONFIG_USB_F_NCM */
 
 	return &opts->func_inst;
 }
