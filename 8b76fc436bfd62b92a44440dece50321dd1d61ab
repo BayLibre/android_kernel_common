@@ -34,6 +34,24 @@
       "parentUuid": "53791c32_9b9ecde9",
       "revId": "8b76fc436bfd62b92a44440dece50321dd1d61ab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "177d97b3_e9dbb207",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2021-08-12T19:23:47Z",
+      "side": 1,
+      "message": "Greg, another way to check for this is to kick off a presubmit and look at the warnings in the \"Check\" results. If there\u0027s an ABI change (with or without XML) it should still be captured there.",
+      "parentUuid": "4bad9f66_00561eab",
+      "revId": "8b76fc436bfd62b92a44440dece50321dd1d61ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
