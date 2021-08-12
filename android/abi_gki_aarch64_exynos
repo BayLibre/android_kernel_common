@@ -5,6 +5,7 @@
   add_timer_on
   add_uevent_var
   add_wait_queue
+  add_wait_queue_exclusive
   adjust_managed_page_count
   alarm_cancel
   alarm_init
@@ -112,6 +113,9 @@
   __class_create
   class_create_file_ns
   class_destroy
+  class_dev_iter_exit
+  class_dev_iter_init
+  class_dev_iter_next
   class_find_device
   __class_register
   class_unregister
@@ -171,6 +175,7 @@
   __const_udelay
   consume_skb
   contig_page_data
+  _copy_from_iter_full
   __cpu_active_mask
   cpu_all_bits
   cpu_bit_bitmap
@@ -207,6 +212,8 @@
   cpu_hwcap_keys
   cpu_hwcaps
   cpuidle_get_cpu_driver
+  cpuidle_pause_and_lock
+  cpuidle_resume_and_unlock
   cpumask_next
   cpumask_next_and
   cpu_number
@@ -238,6 +245,7 @@
   _ctype
   dapm_pinctrl_event
   dapm_regulator_event
+  datagram_poll
   deactivate_task
   debugfs_create_bool
   debugfs_create_dir
@@ -334,6 +342,7 @@
   devm_gpio_request_one
   devm_hwrng_register
   devm_i2c_new_dummy_device
+  devm_iio_channel_get
   devm_iio_device_alloc
   __devm_iio_device_register
   devm_input_allocate_device
@@ -923,11 +932,14 @@
   ignore_console_lock_warning
   iio_channel_get
   iio_channel_release
+  iio_convert_raw_to_processed
   iio_device_alloc
   iio_device_free
   __iio_device_register
   iio_device_unregister
+  iio_get_channel_type
   iio_read_channel_processed
+  iio_read_channel_raw
   inc_zone_page_state
   inet_csk_get_port
   init_dummy_netdev
@@ -1116,6 +1128,7 @@
   __local_bh_enable_ip
   __lock_buffer
   __lock_page
+  lock_sock_nested
   __log_post_read_mmio
   __log_read_mmio
   __log_write_mmio
@@ -1227,6 +1240,7 @@
   nla_put_64bit
   nla_put_nohdr
   nla_reserve
+  nla_strlcpy
   __nla_validate
   __nlmsg_put
   no_llseek
@@ -1467,10 +1481,13 @@
   proc_create_data
   proc_create_seq_private
   proc_mkdir
+  proc_mkdir_data
   proc_remove
   proc_set_size
   proc_set_user
   proc_symlink
+  proto_register
+  proto_unregister
   __pskb_copy_fclone
   __pskb_pull_tail
   put_device
@@ -1583,6 +1600,7 @@
   release_firmware
   release_pages
   __release_region
+  release_sock
   remap_pfn_range
   remap_vmalloc_range
   remove_cpu
@@ -1637,6 +1655,7 @@
   scsi_print_sense_hdr
   sdev_prefix_printk
   sdio_signal_irq
+  security_sock_graft
   seq_lseek
   seq_open
   seq_printf
@@ -1676,13 +1695,16 @@
   single_open
   single_open_size
   single_release
+  sk_alloc
   skb_add_rx_frag
   skb_clone
   skb_copy
   skb_copy_bits
+  skb_copy_datagram_iter
   skb_copy_expand
   skb_dequeue
   skb_dequeue_tail
+  skb_free_datagram
   skb_pull
   skb_push
   skb_put
@@ -1690,7 +1712,10 @@
   skb_queue_purge
   skb_queue_tail
   skb_realloc_headroom
+  skb_recv_datagram
   skb_trim
+  skb_unlink
+  sk_free
   smp_call_function
   smp_call_function_many
   smp_call_function_single
@@ -1786,8 +1811,25 @@
   snd_vendor_set_ops
   snprintf
   soc_device_register
+  sock_alloc_send_skb
   __sock_create
+  sock_init_data
+  sock_no_accept
+  sock_no_bind
+  sock_no_connect
+  sock_no_getname
+  sock_no_ioctl
+  sock_no_listen
+  sock_no_mmap
+  sock_no_sendmsg
+  sock_no_shutdown
+  sock_no_socketpair
+  sock_queue_rcv_skb
+  __sock_recv_timestamp
+  __sock_recv_wifi_status
+  sock_register
   sock_release
+  sock_unregister
   softnet_data
   sort
   __spi_alloc_controller
