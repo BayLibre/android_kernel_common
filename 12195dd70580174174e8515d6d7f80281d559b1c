@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a0e8b97_61faaab4",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5665,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-08-12T12:50:59Z",
+      "side": 1,
+      "message": "Hmm no, I think this should only be called if SCHED_FLAG_KEEP_PARAMS is not set, so move it to the if block just above?",
+      "parentUuid": "aca67c17_65dc9c56",
+      "range": {
+        "startLine": 5665,
+        "startChar": 0,
+        "endLine": 5665,
+        "endChar": 35
+      },
+      "revId": "12195dd70580174174e8515d6d7f80281d559b1c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "918feaab_283c0415",
         "filename": "kernel/tracepoint.c",
         "patchSetId": 1
