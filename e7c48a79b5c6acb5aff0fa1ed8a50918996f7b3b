@@ -34,6 +34,24 @@
       "parentUuid": "e97a7b9c_26f0db9e",
       "revId": "e7c48a79b5c6acb5aff0fa1ed8a50918996f7b3b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e97d915_42d1668c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-08-12T18:23:15Z",
+      "side": 1,
+      "message": "So, these patches from don\u0027t match what is going into stable or what is going into android12-5.10? Are they android specific? If so, they should be cherry-picked with an ANDROID: tag. I had naively thought that these f2fs merges were the same as taking them from the stable branch, but if they aren\u0027t, we need to revisit using merges for these submissions.\n\nAre all of these patches in mainline?",
+      "parentUuid": "02c57f1f_7958d59f",
+      "revId": "e7c48a79b5c6acb5aff0fa1ed8a50918996f7b3b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
