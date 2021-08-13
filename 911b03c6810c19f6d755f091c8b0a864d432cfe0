@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "120b4f25_115d23bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1718267
+      },
+      "writtenOn": "2021-08-13T02:15:51Z",
+      "side": 1,
+      "message": "I partially agree with you. Logically yes, you are right.\n\nOur nfc driver committer added \"CONFIG_NFC\u003dm and CONFIG_NFC_EXYNOS\u003dm\" to enable NFC module driver for our SOC. \nAnd he checked with \"CONFIG_NFC\u003dy\" in gki_defconfig, and functionality has no problem.\n\nBut is it acceptable change NOW? I\u0027m just worrying about other SOC vendor or ODM.\n\nBecause, I think other soc and ODM vendors have to change their own defconfig and \nother vendor (ODM) can have suffering from \"CONFIG_NFC\u003dy\" change, if they already fixed their own code in it.\n\nYes, I know they have to push their changes to Linux mainline or ACK before, but if they didn\u0027t because it remained \"not y\", then they have not enough time to do.\n(I\u0027ve heard that our USB engineer had some hard time with \"CONFIG_USB_DWC3\u003dy\" in development stage - finally reverted in android12)\n\nIf we have to insert \"CONFIG_NFC\u003dy\" now, I\u0027m going to push that patch with other commit and issuetracker number, and update abi list (excepting nfc.ko) again.\n\n\nThanks.",
+      "parentUuid": "8b3f745b_ecf35363",
+      "revId": "911b03c6810c19f6d755f091c8b0a864d432cfe0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "16c94180_99aa7f48",
         "filename": "android/abi_gki_aarch64_exynos",
         "patchSetId": 1
