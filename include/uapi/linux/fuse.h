@@ -514,6 +514,12 @@ struct fuse_entry_out {
 	uint32_t	entry_valid_nsec;
 	uint32_t	attr_valid_nsec;
 	struct fuse_attr attr;
+
+	/* TODO can we extend this? If not (likely) find other solution */
+	uint32_t	replace_backing_file;
+	uint32_t	replace_bpf;
+	uint64_t	backing_file;
+	uint64_t	bpf;
 };
 
 struct fuse_forget_in {

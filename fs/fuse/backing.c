@@ -16,13 +16,6 @@
 
 int fuse_open_common_use_backing(struct file* file, bool isdir)
 {
-	/*
-	 * For open, if the lookup was done passthrough there is no known use
-	 * case for not passing through the open.
-	 *
-	 * Add bpf here if such a use case appears.
-	 */
-
 	struct bpf_fuse_data_kern ctx;
 	struct fuse_inode *fuse_inode = get_fuse_inode(file->f_inode);
 	struct dentry *entry = file->f_path.dentry;
@@ -59,6 +52,87 @@ int fuse_open_common_backing(struct inode *inode, struct file *file,
 
 	fuse_file->backing_file = backing_file;
 	return 0;
+}
+
+int fuse_create_open_use_backing(struct inode *dir, struct dentry *entry,
+			    struct file *file, unsigned flags, umode_t mode)
+{
+	struct bpf_fuse_data_kern ctx = {
+		.fuse_opcode = FUSE_CREATE,
+	};
+	struct fuse_inode *fuse_dir_inode = get_fuse_inode(dir);
+
+	if (!fuse_dir_inode || !fuse_dir_inode->backing_inode)
+		return false;
+
+	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
+	return BPF_PROG_RUN(fuse_dir_inode->bpf, &ctx);
+}
+
+static int fuse_open_file_backing(struct inode *inode, struct file *file)
+{
+	return fuse_open_common_backing(inode, file, false);
+}
+
+int fuse_create_open_backing(struct inode *dir, struct dentry *entry,
+			    struct file *file, unsigned flags, umode_t mode,
+			    unsigned int ext_flags)
+{
+	struct fuse_inode *dir_fuse_inode = get_fuse_inode(dir);
+	struct fuse_dentry *dir_fuse_dentry = get_fuse_dentry(entry->d_parent);
+	struct dentry *backing_dentry = NULL;
+	struct inode *inode = NULL;
+	struct dentry *newent;
+	int err = 0;
+
+	if (!dir_fuse_inode || !dir_fuse_dentry)
+		return -EIO;
+
+        inode_lock_nested(dir_fuse_inode->backing_inode, I_MUTEX_PARENT);
+        backing_dentry = lookup_one_len(entry->d_name.name,
+					dir_fuse_dentry->backing_path.dentry,
+					strlen(entry->d_name.name));
+        inode_unlock(dir_fuse_inode->backing_inode);
+
+	if (IS_ERR(backing_dentry))
+		return PTR_ERR(backing_dentry);
+
+	if (d_really_is_positive(backing_dentry)) {
+		err = -EIO;
+		goto out;
+	}
+
+	err = vfs_create(dir_fuse_inode->backing_inode, backing_dentry,
+			 mode, true );
+	if (err)
+		goto out;
+
+	get_fuse_dentry(entry)->backing_path = (struct path) {
+		.mnt = dir_fuse_dentry->backing_path.mnt,
+		.dentry = backing_dentry,
+	};
+	path_get(&get_fuse_dentry(entry)->backing_path);
+
+	inode = fuse_iget_backing(dir->i_sb,
+			get_fuse_dentry(entry)->backing_path.dentry->d_inode);
+	if (IS_ERR(inode)) {
+		err = PTR_ERR(inode);
+		goto out;
+	}
+	get_fuse_inode(inode)->bpf = dir_fuse_inode->bpf;
+
+	newent = d_splice_alias(inode, entry);
+	if (IS_ERR(newent)) {
+		err = PTR_ERR(newent);
+		goto out;
+	}
+
+	entry = newent ? newent : entry;
+	err = finish_open(file, entry, fuse_open_file_backing);
+
+out:
+	dput(backing_dentry);
+	return err;
 }
 
 bool fuse_release_use_backing(struct file* file)
@@ -197,10 +271,9 @@ struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 		    entry->d_name.name, LOOKUP_FOLLOW,
 		    &get_fuse_dentry(entry)->backing_path);
 
-	/* TODO check negative dentries work correctly */
 	if (err == -ENOENT) {
-		d_add(entry, NULL);
-		goto out;
+		fuse_invalidate_entry_cache(entry);
+		return NULL;
 	}
 
 	if (err)
@@ -230,7 +303,6 @@ struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 	fa = (struct fuse_args) {
 		.opcode = FUSE_LOOKUP | FUSE_POSTFILTER,
 		.in_numargs = 1,
-	//	.out_argvar = true,
 		.out_numargs = 1,
 		.in_args[0] = (struct fuse_in_arg) {
 			.size = entry->d_name.len,

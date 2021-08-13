@@ -1301,6 +1301,11 @@ ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
 int fuse_open_common_use_backing(struct file* file, bool isdir);
 int fuse_open_common_backing(struct inode *inode, struct file *file,
 			     bool isdir);
+int fuse_create_open_use_backing(struct inode *dir, struct dentry *entry,
+			    struct file *file, unsigned flags, umode_t mode);
+int fuse_create_open_backing(struct inode *dir, struct dentry *entry,
+			    struct file *file, unsigned flags, umode_t mode,
+			    unsigned int ext_flags);
 bool fuse_release_use_backing(struct file* file);
 int fuse_release_backing(struct inode *inode, struct file *file);
 bool fuse_flush_use_backing(struct file* file);

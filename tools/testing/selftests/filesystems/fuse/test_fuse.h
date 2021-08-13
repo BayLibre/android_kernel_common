@@ -71,7 +71,7 @@ static inline char *setup_mount_dir(const char *name)
 	return mount_dir;
 }
 
-static int delete_dir_tree(const char *dir_path)
+static int delete_dir_tree(const char *dir_path, bool remove_root)
 {
 	DIR *dir = NULL;
 	struct dirent *dp;
@@ -91,7 +91,7 @@ static int delete_dir_tree(const char *dir_path)
 
 		full_path = concat_file_name(dir_path, dp->d_name);
 		if (dp->d_type == DT_DIR)
-			result = delete_dir_tree(full_path);
+			result = delete_dir_tree(full_path, true);
 		else
 			result = unlink(full_path);
 		free(full_path);
@@ -102,7 +102,7 @@ static int delete_dir_tree(const char *dir_path)
 out:
 	if (dir)
 		closedir(dir);
-	if (!result)
+	if (!result && remove_root)
 		rmdir(dir_path);
 	return result;
 }
@@ -118,16 +118,43 @@ out:
 		TESTEQUAL(res, sizeof(*in_header) + sizeof(*in_struct));\
 	} while(false)
 
+#define TESTFUSEINEXT(_opcode, in_struct, extra)			\
+	do {								\
+		struct fuse_in_header *in_header =			\
+				(struct fuse_in_header *)bytes_in;	\
+		ssize_t res = read(fuse_dev, &bytes_in,			\
+			sizeof(bytes_in));				\
+									\
+		TESTEQUAL(in_header->opcode, _opcode);			\
+		TESTEQUAL(res,						\
+		       sizeof(*in_header) + sizeof(*in_struct) + extra);\
+	} while(false)
+
+#define TESTFUSEINUNKNOWN()						\
+	do {								\
+		struct fuse_in_header *in_header =			\
+				(struct fuse_in_header *)bytes_in;	\
+		ssize_t res = read(fuse_dev, &bytes_in,			\
+			sizeof(bytes_in));				\
+									\
+		TESTGE(res, sizeof(*in_header));			\
+		TESTEQUAL(in_header->opcode, -1);			\
+	} while(false)
+
 /* Special case lookup since it is asymmetric */
 #define TESTFUSELOOKUP(expected)					\
 	do {								\
 		struct fuse_in_header *in_header =			\
 				(struct fuse_in_header *)bytes_in;	\
 		char *name = (char *) (bytes_in + sizeof(*in_header));	\
+		ssize_t res;						\
 									\
-		TESTEQUAL(read(fuse_dev, &bytes_in, sizeof(bytes_in)),	\
-			  sizeof(*in_header) + strlen(expected) + 1);	\
+		TEST(res = read(fuse_dev, &bytes_in, sizeof(bytes_in)),	\
+			  res != -1);					\
+		TESTGE(res, sizeof(*in_header));			\
 		TESTEQUAL(in_header->opcode, FUSE_LOOKUP);		\
+		TESTEQUAL(res,						\
+			  sizeof(*in_header) + strlen(expected) + 1);	\
 		TESTCOND(!strcmp(name, expected));			\
 	} while(false)
 
@@ -162,6 +189,22 @@ out:
 			  out_header->len);				\
 	} while(false)
 
+#define TESTFUSEOUTERROR(errno)						\
+	do {								\
+		struct fuse_in_header *in_header =			\
+				(struct fuse_in_header *)bytes_in;	\
+		struct fuse_out_header *out_header =			\
+			(struct fuse_out_header *)bytes_out;		\
+									\
+		*out_header = (struct fuse_out_header) {		\
+			.len = sizeof(*out_header),			\
+			.error = errno,					\
+			.unique = in_header->unique,			\
+		};							\
+		TESTEQUAL(write(fuse_dev, bytes_out, out_header->len),	\
+			  out_header->len);				\
+	} while(false)
+
 #define TESTFUSEOUTREAD(data, length)					\
 	do {								\
 		struct fuse_in_header *in_header =			\
@@ -176,6 +219,44 @@ out:
 		memcpy(bytes_out + sizeof(*out_header), data, length);	\
 		TESTEQUAL(write(fuse_dev, bytes_out, out_header->len),	\
 			  out_header->len);				\
+	} while(false)
+
+#define TESTFUSEOUT1(type1, obj1)					\
+	do {								\
+		*(struct fuse_out_header *) bytes_out			\
+			= (struct fuse_out_header) {			\
+			.len = sizeof(struct fuse_out_header)		\
+				+ sizeof(struct type1),			\
+			.unique = ((struct fuse_in_header *)		\
+				   bytes_in)->unique,			\
+		};							\
+		*(struct type1 *) (bytes_out				\
+			+ sizeof(struct fuse_out_header))		\
+			= obj1;						\
+		TESTEQUAL(write(fuse_dev, bytes_out,			\
+			((struct fuse_out_header *)bytes_out)->len),	\
+			((struct fuse_out_header *)bytes_out)->len);	\
+	} while(false)
+#define TESTFUSEOUT2(type1, obj1, type2, obj2)				\
+	do {								\
+		*(struct fuse_out_header *) bytes_out			\
+			= (struct fuse_out_header) {			\
+			.len = sizeof(struct fuse_out_header)		\
+				+ sizeof(struct type1)			\
+				+ sizeof(struct type2),			\
+			.unique = ((struct fuse_in_header *)		\
+				   bytes_in)->unique,			\
+		};							\
+		*(struct type1 *) (bytes_out				\
+			+ sizeof(struct fuse_out_header))		\
+			= obj1;						\
+		*(struct type2 *) (bytes_out				\
+			+ sizeof(struct fuse_out_header)		\
+			+ sizeof(struct type1))				\
+			= obj2;						\
+		TESTEQUAL(write(fuse_dev, bytes_out,			\
+			((struct fuse_out_header *)bytes_out)->len),	\
+			((struct fuse_out_header *)bytes_out)->len);	\
 	} while(false)
 
 #define DECL_FUSE_IN(name)						\

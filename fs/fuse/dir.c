@@ -551,7 +551,7 @@ static int fuse_create_open(struct inode *dir, struct dentry *entry,
 			    struct file *file, unsigned flags,
 			    umode_t mode)
 {
-	int err;
+	int ext_flags, err;
 	struct inode *inode;
 	struct fuse_conn *fc = get_fuse_conn(dir);
 	struct fuse_mount *fm = get_fuse_mount(dir);
@@ -565,6 +565,16 @@ static int fuse_create_open(struct inode *dir, struct dentry *entry,
 
 	/* Userspace expects S_IFREG in create mode */
 	BUG_ON((mode & S_IFMT) != S_IFREG);
+
+	ext_flags = fuse_create_open_use_backing(dir, entry, file, flags,
+						     mode);
+
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
+		return fuse_create_open_backing(dir, entry, file, flags, mode,
+						ext_flags);
 
 	forget = fuse_alloc_forget();
 	err = -ENOMEM;

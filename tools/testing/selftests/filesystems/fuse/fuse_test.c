@@ -9,6 +9,124 @@
 static const char *ft_src = "ft-src";
 static const char *ft_dst = "ft-dst";
 
+/* Slow but semantically easy string functions */
+
+/*
+ * struct s just wraps a char pointer
+ * It is a pointer to a malloc'd string, or null
+ * All consumers handle null input correctly
+ * All consumers free the string
+ */
+struct s {
+	char *s;
+};
+
+struct s s(const char *s1)
+{
+	struct s s = {0};
+	if (!s1)
+		return s;
+
+	s.s = malloc(strlen(s1) + 1);
+	if (!s.s)
+		return s;
+
+	strcpy(s.s, s1);
+	return s;
+}
+
+struct s s_cat(struct s s1, struct s s2)
+{
+	struct s s = {0};
+	if (!s1.s || !s2.s)
+		goto out;
+
+	s.s = malloc(strlen(s1.s) + strlen(s2.s) + 1);
+	if (!s.s)
+		goto out;
+
+	strcpy(s.s, s1.s);
+	strcat(s.s, s2.s);
+out:
+	free(s1.s);
+	free(s2.s);
+	return s;
+}
+
+struct s s_path(struct s s1, struct s s2)
+{
+	return s_cat(s_cat(s1, s("/")), s2);
+}
+
+/*static int s_mkdirat(int dirfd, struct s pathname, mode_t mode)
+{
+	int res;
+	if (!pathname.s) {
+		errno = ENOMEM;
+		return -1;
+	}
+
+	res = mkdirat(dirfd, pathname.s, mode);
+	free(pathname.s);
+	return res;
+}*/
+
+int s_open(struct s pathname, int flags, ...)
+{
+	va_list ap;
+	int res;
+
+	va_start (ap, flags);
+	if (!pathname.s) {
+		errno = ENOMEM;
+		return -1;
+	}
+
+	if (flags & (O_CREAT | O_TMPFILE))
+		res = open(pathname.s, flags, va_arg(ap, mode_t));
+	else
+		res = open(pathname.s, flags);
+
+	free(pathname.s);
+	va_end(ap);
+	return res;
+}
+
+int s_openat(int dirfd, struct s pathname, int flags, ...)
+{
+	va_list ap;
+	int res;
+
+	va_start (ap, flags);
+	if (!pathname.s) {
+		errno = ENOMEM;
+		return -1;
+	}
+
+	if (flags & (O_CREAT | O_TMPFILE))
+		res = openat(dirfd, pathname.s, flags, va_arg(ap, mode_t));
+	else
+		res = openat(dirfd, pathname.s, flags);
+
+	free(pathname.s);
+	va_end(ap);
+	return res;
+}
+
+int s_creat(struct s pathname, mode_t mode)
+{
+	int res;
+
+	if (!pathname.s) {
+		errno = ENOMEM;
+		return -1;
+	}
+
+	res = creat(pathname.s, mode);
+	free(pathname.s);
+	return res;
+}
+
 static void fill_buffer(uint8_t *data, size_t len, int file, int block)
 {
 	int i;
@@ -34,14 +152,14 @@ static bool test_buffer(uint8_t *data, size_t len, int file, int block)
 	return true;
 }
 
-static int create_file(int dir, const char *name, int index, size_t blocks)
+static int create_file(int dir, struct s name, int index, size_t blocks)
 {
 	int result = TEST_FAILURE;
 	int fd = -1;
 	int i;
 	uint8_t data[PAGE_SIZE];
 
-	TEST(fd = openat(dir, name, O_CREAT | O_WRONLY, 0777), fd != -1);
+	TEST(fd = s_openat(dir, name, O_CREAT | O_WRONLY, 0777), fd != -1);
 	for (i = 0; i < blocks; ++i) {
 		fill_buffer(data, PAGE_SIZE, index, i);
 		TESTEQUAL(write(fd, data, sizeof(data)), PAGE_SIZE);
@@ -196,7 +314,7 @@ static int bpf_test_partial(const char *mount_dir)
 
 	TEST(src_fd = open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     src_fd != -1);
-	TESTEQUAL(create_file(src_fd, test_name, 1, 2), 0);
+	TESTEQUAL(create_file(src_fd, s(test_name), 1, 2), 0);
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
@@ -263,7 +381,7 @@ static int bpf_test_attrs(const char *mount_dir)
 
 	TEST(src_fd = open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     src_fd != -1);
-	TESTEQUAL(create_file(src_fd, test_name, 1, 2), 0);
+	TESTEQUAL(create_file(src_fd, s(test_name), 1, 2), 0);
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
@@ -294,8 +412,8 @@ static int bpf_test_readdir(const char *mount_dir)
 
 	TEST(src_fd = open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     src_fd != -1);
-	TESTEQUAL(create_file(src_fd, names[0], 1, 2), 0);
-	TESTEQUAL(create_file(src_fd, names[1], 1, 2), 0);
+	TESTEQUAL(create_file(src_fd, s(names[0]), 1, 2), 0);
+	TESTEQUAL(create_file(src_fd, s(names[1]), 1, 2), 0);
 	TESTEQUAL(install_bpf("test_trace.raw", &bpf_fd), 0);
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
@@ -348,6 +466,122 @@ out:
 	umount(mount_dir);
 	close(src_fd);
 	close(bpf_fd);
+	return result;
+}
+
+/*
+ * This test is more to show what classic fuse does with a creat in a subdir
+ * than a test of any new functionality
+ */
+static int bpf_test_creat(const char *mount_dir)
+{
+	const char *dir_name = "show";
+	const char *file_name = "file";
+	int result = TEST_FAILURE;
+	int fuse_dev = -1;
+	int pid = -1;
+	int status;
+	int fd = -1;
+
+	TESTEQUAL(mount_fuse(mount_dir, -1, -1, &fuse_dev), 0);
+
+	FUSE_ACTION
+		TEST(fd = s_creat(s_path(s_path(s(mount_dir), s(dir_name)),
+					 s(file_name)),
+				  0777),
+		     fd != -1);
+		TESTSYSCALL(close(fd));
+	FUSE_DAEMON
+		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
+		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
+		DECL_FUSE_IN(create);
+		DECL_FUSE_IN(release);
+		DECL_FUSE_IN(flush);
+
+		TESTFUSELOOKUP(dir_name);
+		TESTFUSEOUT1(fuse_entry_out, ((struct fuse_entry_out) {
+			.nodeid		= 3,
+			.generation	= 1,
+			.attr.ino = 100,
+			.attr.size = 4,
+			.attr.blksize = 512,
+			.attr.mode = S_IFDIR | 0777,
+			}));
+
+		TESTFUSELOOKUP(file_name);
+		TESTFUSEOUTERROR(-ENOENT);
+
+		TESTFUSEINEXT(FUSE_CREATE, create_in, strlen(file_name) + 1);
+		TESTFUSEOUT2(fuse_entry_out, ((struct fuse_entry_out) {
+			.nodeid		= 2,
+			.generation	= 1,
+			.attr.ino = 200,
+			.attr.size = 4,
+			.attr.blksize = 512,
+			.attr.mode = S_IFREG,
+			}),
+			fuse_open_out, ((struct fuse_open_out) {
+			.fh = 1,
+			.open_flags = create_in->flags,
+			}));
+
+		TESTFUSEIN(FUSE_FLUSH, flush_in);
+		TESTFUSEOUTEMPTY();
+
+		TESTFUSEIN(FUSE_RELEASE, release_in);
+		TESTFUSEOUTEMPTY();
+	FUSE_DONE
+
+	result = TEST_SUCCESS;
+out:
+	close(fuse_dev);
+	umount(mount_dir);
+	return result;
+}
+
+static int bpf_test_hidden_entries(const char *mount_dir)
+{
+	const char *dir_names[] = {
+		"show",
+		"hide",
+	};
+	const char *file_name = "file";
+	int result = TEST_FAILURE;
+	int src_fd = -1;
+	int bpf_fd = -1;
+	int fuse_dev = -1;
+	int pid = -1;
+	int status;
+	int fd = -1;
+
+	TEST(src_fd = open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     src_fd != -1);
+	TESTSYSCALL(mkdirat(src_fd, dir_names[0], 0777));
+	TESTSYSCALL(mkdirat(src_fd, dir_names[1], 0777));
+	TESTEQUAL(install_bpf("test_hidden.raw", &bpf_fd), 0);
+	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
+
+	FUSE_ACTION
+		TEST(fd = s_creat(s_path(s_path(s(mount_dir), s(dir_names[0])),
+					 s(file_name)),
+				  0777),
+		     fd != -1);
+		TESTSYSCALL(close(fd));
+	FUSE_DAEMON
+		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
+		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
+		DECL_FUSE_IN(release);
+
+		TESTFUSEIN(FUSE_RELEASE, release_in);
+		TESTFUSEOUTEMPTY();
+	FUSE_DONE
+
+	result = TEST_SUCCESS;
+out:
+	close(fuse_dev);
+	umount(mount_dir);
+	close(bpf_fd);
+	close(src_fd);
 	return result;
 }
 
@@ -430,6 +664,8 @@ int main(int argc, char *argv[])
 		MAKE_TEST(bpf_test_partial),
 		MAKE_TEST(bpf_test_attrs),
 		MAKE_TEST(bpf_test_readdir),
+		MAKE_TEST(bpf_test_creat),
+		MAKE_TEST(bpf_test_hidden_entries),
 	};
 #undef MAKE_TEST
 
@@ -439,15 +675,20 @@ int main(int argc, char *argv[])
 			ksft_exit_fail_msg("Invalid test\n");
 
 		ksft_set_plan(1);
+		delete_dir_tree(mount_dir, false);
+		delete_dir_tree(src_dir, false);
 		run_one_test(mount_dir, &cases[test_options.test - 1]);
 	} else {
 		ksft_set_plan(ARRAY_SIZE(cases));
-		for (i = 0; i < ARRAY_SIZE(cases); ++i)
+		for (i = 0; i < ARRAY_SIZE(cases); ++i) {
+			delete_dir_tree(mount_dir, false);
+			delete_dir_tree(src_dir, false);
 			run_one_test(mount_dir, &cases[i]);
+		}
 	}
 
 	umount2(mount_dir, MNT_FORCE);
-	delete_dir_tree(mount_dir);
-	delete_dir_tree(src_dir);
+	delete_dir_tree(mount_dir, true);
+	delete_dir_tree(src_dir, true);
 	return !ksft_get_fail_cnt() ? ksft_exit_pass() : ksft_exit_fail();
 }

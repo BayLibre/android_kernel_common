@@ -117,6 +117,31 @@ int trace_test(struct bpf_fuse_data *ctx)
 	}
 }
 
+SEC("test_hidden")
+
+/* return 1 to use backing fs, 0 to pass to usermode */
+int trace_hidden(struct bpf_fuse_data *ctx)
+{
+	switch (ctx->fuse_opcode) {
+	case FUSE_LOOKUP:
+		bpf_printk("Lookup: %s", ctx->name);
+		if (!strcmp(ctx->name, "show"))
+			return FUSE_BPF_BACKING;
+		if (!strcmp(ctx->name, "hide"))
+			return FUSE_BPF_ERROR;
+
+		return FUSE_BPF_BACKING;
+
+	case FUSE_CREATE:
+		bpf_printk("Create: %s", ctx->name);
+		return FUSE_BPF_BACKING;
+
+	default:
+		bpf_printk("Unknown opcode: %x", ctx->fuse_opcode);
+		return 0;
+	}
+}
+
 SEC("test_daemon")
 
 /* return 1 to use backing fs, 0 to pass to usermode */

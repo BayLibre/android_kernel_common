@@ -2,7 +2,7 @@
 CFLAGS += -D_FILE_OFFSET_BITS=64 -Wall -Werror -I../.. -I../../../../..
 LDLIBS := -lpthread
 TEST_GEN_PROGS := fuse_test fuse_daemon
-TEST_GEN_FILES := test_trace.raw test_daemon.raw
+TEST_GEN_FILES := test_trace.raw test_daemon.raw test_hidden.raw
 EXTRA_CLEAN := *.bpf
 BPF_FLAGS = -g \
 	    -D__TARGET_ARCH_x86 \
