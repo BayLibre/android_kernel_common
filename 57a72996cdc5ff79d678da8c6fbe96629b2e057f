@@ -70,6 +70,24 @@
       "parentUuid": "b1615c40_acde5dd0",
       "revId": "57a72996cdc5ff79d678da8c6fbe96629b2e057f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0dcb2ee_2eac211b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2021-08-16T11:53:52Z",
+      "side": 1,
+      "message": "If we remove the symbol files, the xml will have hardly any content left. We might as well remove that as well as it is anyway outdated if not enforced. It will not break anything as we basically fall back to the mode we have on android-mainline.\n\nSo, I would say we have two options:\n1) remove everything (incl. the configuration for it) and reintroduce once we get to the releasing part.\n2) remove everything except the main symbol list and the fips symbol list (also remove the xml), this would keep the technical process in place and we are ready track and enforce whenever we need it.",
+      "parentUuid": "91c05338_d8fe9d7b",
+      "revId": "57a72996cdc5ff79d678da8c6fbe96629b2e057f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
