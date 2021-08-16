@@ -33,6 +33,24 @@
       "message": "kicking off TH...",
       "revId": "35bb09e269c4b1540046c4d7d37fa2afe4c622d3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "699276ed_5d10ed49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2021-08-16T06:40:26Z",
+      "side": 1,
+      "message": "Yes, this will break the ABI, for the data structure change in the header file.\nSo I will need to make a change to update the xml file, right?\nBut I think I can\u0027t get a clean build for xml, it changes every time when I build with latest source code 😞 \nJust like another peinding patch set from me to add the symbol for rockchip vendor code, I don\u0027t understand how do you decide which change in xml is needed and which is not, do you review\u0026decided all by manuel?",
+      "parentUuid": "b09d7650_42229585",
+      "revId": "35bb09e269c4b1540046c4d7d37fa2afe4c622d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
