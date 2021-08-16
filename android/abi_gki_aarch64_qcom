@@ -1926,6 +1926,7 @@
   register_filesystem
   register_inet6addr_notifier
   register_inetaddr_notifier
+  register_kprobe
   register_netdev
   register_netdevice
   register_netdevice_notifier
@@ -2537,6 +2538,7 @@
   unregister_gadget_item
   unregister_inet6addr_notifier
   unregister_inetaddr_notifier
+  unregister_kprobe
   unregister_netdev
   unregister_netdevice_many
   unregister_netdevice_notifier
