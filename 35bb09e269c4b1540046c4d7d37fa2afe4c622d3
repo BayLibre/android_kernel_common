@@ -68,6 +68,24 @@
       "message": "series breaks the kernel abi",
       "revId": "35bb09e269c4b1540046c4d7d37fa2afe4c622d3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24c91d4a_9f1ee998",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-08-16T08:43:48Z",
+      "side": 1,
+      "message": "No, you can not break the kernel abi at this point in the release cycle, sorry.  It has been \"frozen\" for quite some time now.\n\nWe can only add new symbols to the list of symbols we track for the abi, we can not change the values of existing ones, nor can we remove existing ones.",
+      "parentUuid": "699276ed_5d10ed49",
+      "revId": "35bb09e269c4b1540046c4d7d37fa2afe4c622d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
