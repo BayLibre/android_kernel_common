@@ -158,22 +158,6 @@ out:
 		TESTCOND(!strcmp(name, expected));			\
 	} while(false)
 
-#define TESTFUSEOUT(out_struct)						\
-	do {								\
-		struct fuse_in_header *in_header =			\
-				(struct fuse_in_header *)bytes_in;	\
-		struct fuse_out_header *out_header =			\
-			(struct fuse_out_header *)bytes_out;		\
-									\
-		*out_header = (struct fuse_out_header) {		\
-			.len = sizeof(*out_header) +			\
-				sizeof(*out_struct),			\
-			.unique = in_header->unique,			\
-		};							\
-		TESTEQUAL(write(fuse_dev, bytes_out, out_header->len),	\
-			  out_header->len);				\
-	} while(false)
-
 #define TESTFUSEOUTEMPTY()						\
 	do {								\
 		struct fuse_in_header *in_header =			\
@@ -237,6 +221,7 @@ out:
 			((struct fuse_out_header *)bytes_out)->len),	\
 			((struct fuse_out_header *)bytes_out)->len);	\
 	} while(false)
+
 #define TESTFUSEOUT2(type1, obj1, type2, obj2)				\
 	do {								\
 		*(struct fuse_out_header *) bytes_out			\
@@ -264,18 +249,15 @@ out:
 		(struct fuse_##name##_in *)				\
 		(bytes_in + sizeof(struct fuse_in_header));
 
-#define DECL_FUSE_OUT(name)						\
-	struct fuse_##name##_out *name##_out =				\
-		(struct fuse_##name##_out *)				\
-		(bytes_out + sizeof(struct fuse_out_header))
-
-#define DECL_FUSE(name)							\
-	DECL_FUSE_IN(name);						\
-	DECL_FUSE_OUT(name)
-
 #define FUSE_ACTION	TEST(pid = fork(), pid != -1);			\
 			if (pid) {
-#define FUSE_DAEMON	} else {
+
+#define FUSE_DAEMON	} else {					\
+				uint8_t bytes_in[FUSE_MIN_READ_BUFFER]	\
+					__attribute__((unused));	\
+				uint8_t bytes_out[FUSE_MIN_READ_BUFFER]	\
+					__attribute__((unused));
+
 #define FUSE_DONE		exit(TEST_SUCCESS);			\
 			}						\
 			TESTEQUAL(waitpid(pid, &status, 0), pid);	\
@@ -289,7 +271,7 @@ static inline int mount_fuse(const char *mount_dir, int bpf_fd, int dir_fd,
 	char options[FILENAME_MAX];
 	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
 	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-	DECL_FUSE(init);
+	DECL_FUSE_IN(init);
 
 	TEST(fuse_dev = open("/dev/fuse", O_RDWR | O_CLOEXEC), fuse_dev != -1);
 	snprintf(options, FILENAME_MAX, "fd=%d,user_id=0,group_id=0,rootmode=0040000",
@@ -307,7 +289,7 @@ static inline int mount_fuse(const char *mount_dir, int bpf_fd, int dir_fd,
 	TESTFUSEIN(FUSE_INIT, init_in);
 	TESTEQUAL(init_in->major, FUSE_KERNEL_VERSION);
 	TESTEQUAL(init_in->minor, FUSE_KERNEL_MINOR_VERSION);
-	*init_out = (struct fuse_init_out) {
+	TESTFUSEOUT1(fuse_init_out, ((struct fuse_init_out) {
 		.major = FUSE_KERNEL_VERSION,
 		.minor = FUSE_KERNEL_MINOR_VERSION,
 		.max_readahead = 4096,
@@ -318,8 +300,7 @@ static inline int mount_fuse(const char *mount_dir, int bpf_fd, int dir_fd,
 		.time_gran = 1000,
 		.max_pages = 12,
 		.map_alignment = 4096,
-	};
-	TESTFUSEOUT(init_out);
+	}));
 
 	*fuse_dev_ptr = fuse_dev;
 	fuse_dev = -1;

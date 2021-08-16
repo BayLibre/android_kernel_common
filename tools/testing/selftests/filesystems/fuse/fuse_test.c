@@ -198,13 +198,6 @@ static int basic_test(const char *mount_dir)
 
 	int result = TEST_FAILURE;
 	int fuse_dev = -1;
-	uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-	uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-	DECL_FUSE_OUT(entry);
-	DECL_FUSE(open);
-	DECL_FUSE_IN(read);
-	DECL_FUSE_IN(flush);
-	DECL_FUSE_IN(release);
 	char *filename = NULL;
 	int fd = -1;
 	int pid = -1;
@@ -221,28 +214,33 @@ static int basic_test(const char *mount_dir)
 		TESTSYSCALL(close(fd));
 		fd = -1;
 	FUSE_DAEMON
+		DECL_FUSE_IN(open);
+		DECL_FUSE_IN(read);
+		DECL_FUSE_IN(flush);
+		DECL_FUSE_IN(release);
+
 		TESTFUSELOOKUP(test_name);
-		*entry_out = (struct fuse_entry_out) {
+		TESTFUSEOUT1(fuse_entry_out, ((struct fuse_entry_out) {
 			.nodeid		= 2,
 			.generation	= 1,
-			.attr = (struct fuse_attr) {
-				.ino = 100,
-				.size = 4,
-				.blksize = 512,
-				.mode = S_IFREG,
-			},
-		};
-		TESTFUSEOUT(entry_out);
+			.attr.ino = 100,
+			.attr.size = 4,
+			.attr.blksize = 512,
+			.attr.mode = S_IFREG | 0777,
+			}));
+
 		TESTFUSEIN(FUSE_OPEN, open_in);
-		*open_out = (struct fuse_open_out) {
+		TESTFUSEOUT1(fuse_open_out, ((struct fuse_open_out) {
 			.fh = 1,
 			.open_flags = open_in->flags,
-		};
-		TESTFUSEOUT(open_out);
+		}));
+
 		TESTFUSEIN(FUSE_READ, read_in);
 		TESTFUSEOUTREAD(test_data, strlen(test_data));
+
 		TESTFUSEIN(FUSE_FLUSH, flush_in);
 		TESTFUSEOUTEMPTY();
+
 		TESTFUSEIN(FUSE_RELEASE, release_in);
 		TESTFUSEOUTEMPTY();
 	FUSE_DONE
@@ -334,25 +332,25 @@ static int bpf_test_partial(const char *mount_dir)
 		TESTSYSCALL(close(fd));
 		fd = -1;
 	FUSE_DAEMON
-		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-		DECL_FUSE(open);
+		DECL_FUSE_IN(open);
 		DECL_FUSE_IN(read);
 		DECL_FUSE_IN(forget);
 		DECL_FUSE_IN(release);
 		uint8_t data[PAGE_SIZE];
 
-		fill_buffer(data, PAGE_SIZE, 2, 0);
 		TESTFUSEIN(FUSE_OPEN, open_in);
-		*open_out = (struct fuse_open_out) {
+		TESTFUSEOUT1(fuse_open_out, ((struct fuse_open_out) {
 			.fh = 1,
 			.open_flags = open_in->flags,
-		};
-		TESTFUSEOUT(open_out);
+		}));
+
 		TESTFUSEIN(FUSE_READ, read_in);
+		fill_buffer(data, PAGE_SIZE, 2, 0);
 		TESTFUSEOUTREAD(data, PAGE_SIZE);
+
 		TESTFUSEIN(FUSE_RELEASE, release_in);
 		TESTFUSEOUTEMPTY();
+
 		TESTFUSEIN(FUSE_FORGET, forget_in);
 	FUSE_DONE
 
@@ -437,8 +435,6 @@ static int bpf_test_readdir(const char *mount_dir)
 		dir = NULL;
 		TESTEQUAL(bpf_test_trace("readdir"), 0);
 	FUSE_DAEMON
-		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
 		struct fuse_in_header *in_header =
 			(struct fuse_in_header *)bytes_in;
 		ssize_t res = read(fuse_dev, bytes_in, sizeof(bytes_in));
@@ -492,8 +488,6 @@ static int bpf_test_creat(const char *mount_dir)
 		     fd != -1);
 		TESTSYSCALL(close(fd));
 	FUSE_DAEMON
-		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
 		DECL_FUSE_IN(create);
 		DECL_FUSE_IN(release);
 		DECL_FUSE_IN(flush);
@@ -568,8 +562,6 @@ static int bpf_test_hidden_entries(const char *mount_dir)
 		     fd != -1);
 		TESTSYSCALL(close(fd));
 	FUSE_DAEMON
-		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
 		DECL_FUSE_IN(release);
 
 		TESTFUSEIN(FUSE_RELEASE, release_in);
