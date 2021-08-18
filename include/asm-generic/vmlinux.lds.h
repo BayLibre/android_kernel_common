@@ -628,7 +628,11 @@
 		NOINSTR_TEXT						\
 		*(.text..refcount)					\
 		*(.ref.text)						\
+<<<<<<< HEAD   (3bb092 ANDROID: GKI: remove all symbols for android13-5.10 branch)
 		TEXT_CFI_JT						\
+=======
+		*(.text.asan.* .text.tsan.*)				\
+>>>>>>> BRANCH (2c5bd9 Linux 5.10.60)
 	MEM_KEEP(init.text*)						\
 	MEM_KEEP(exit.text*)						\
 
