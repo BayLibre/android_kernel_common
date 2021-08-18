@@ -345,7 +345,7 @@ config RENESAS_H8S_INTC
 	  on Renesas H8S SoCs.
 
 config IMX_GPCV2
-	bool
+	bool "GPCV2 interrupt controller"
 	select IRQ_DOMAIN
 	help
 	  Enables the wakeup IRQs for IMX platforms with GPCv2 block
