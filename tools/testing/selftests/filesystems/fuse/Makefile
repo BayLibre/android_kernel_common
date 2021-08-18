@@ -7,6 +7,7 @@ EXTRA_CLEAN := *.bpf
 BPF_FLAGS = -g \
 	    -D__TARGET_ARCH_x86 \
 	    -mlittle-endian \
+	    -Wall -Werror \
 	    -I ../../../../../include \
 	    -idirafter /usr/lib/gcc/x86_64-linux-gnu/10/include \
 	    -idirafter /usr/local/include \

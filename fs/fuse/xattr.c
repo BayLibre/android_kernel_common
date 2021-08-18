@@ -8,6 +8,7 @@
 
 #include "fuse_i.h"
 
+#include <linux/bpf_fuse.h>
 #include <linux/xattr.h>
 #include <linux/posix_acl_xattr.h>
 
@@ -181,7 +182,17 @@ static int fuse_xattr_get(const struct xattr_handler *handler,
 			 struct dentry *dentry, struct inode *inode,
 			 const char *name, void *value, size_t size, int flags)
 {
-	if (fuse_is_bad(inode))
+	int ext_flags;
+
+	ext_flags = fuse_getxattr_use_backing(dentry, name, value, size);
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
+		return fuse_getxattr_backing(dentry, name, value, size,
+					     ext_flags);
+
+if (fuse_is_bad(inode))
 		return -EIO;
 
 	return fuse_getxattr(inode, name, value, size);

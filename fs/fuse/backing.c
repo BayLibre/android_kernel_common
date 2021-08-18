@@ -176,6 +176,44 @@ int fuse_flush_backing(struct file *file, fl_owner_t id)
 	return 0;
 }
 
+int fuse_getxattr_use_backing(struct dentry *dentry, const char *name,
+			      void *value, size_t size)
+{
+	struct fuse_inode *fi;
+	struct bpf_fuse_data_kern ctx;
+	int res = 0;
+
+	if (!dentry->d_inode)
+		return 0;
+
+	fi = get_fuse_inode(dentry->d_inode);
+	if (!fi)
+		return 0;
+
+	if (fi->bpf) {
+		ctx = (struct bpf_fuse_data_kern) {
+			.fuse_opcode = FUSE_GETXATTR,
+			.nodeid = fi->nodeid,
+		};
+		res = BPF_PROG_RUN(fi->bpf, &ctx);
+
+		/* TODO handle user filter */
+	}
+
+	if (!fi->nodeid)
+		res |= FUSE_BPF_BACKING;
+
+	return res;
+}
+
+ssize_t fuse_getxattr_backing(struct dentry *dentry, const char *name,
+			      void *value, size_t size, int ext_flags)
+{
+	/* TODO handle postfilter and user postfilter*/
+	return vfs_getxattr(get_fuse_dentry(dentry)->backing_path.dentry,
+			    name, value, size);
+}
+
 bool fuse_readpage_use_backing(struct file *file, struct page *page)
 {
 	struct fuse_file *ff = file->private_data;
@@ -223,6 +261,45 @@ void fuse_readahead_backing(struct readahead_control *rac)
 {
 	pr_debug("\n");
 	return;
+}
+
+int fuse_file_write_iter_use_backing(struct kiocb *iocb,
+				      struct iov_iter *from)
+{
+	struct file *file = iocb->ki_filp;
+	struct fuse_file *ff = file->private_data;
+	struct fuse_inode *fi = get_fuse_inode(file->f_inode);
+	struct bpf_fuse_data_kern ctx;
+	int res = 0;
+
+	if (!ff || !fi)
+		return 0;
+
+	if (fi->bpf) {
+		ctx = (struct bpf_fuse_data_kern) {
+			.fuse_opcode = FUSE_WRITE,
+			.file_handle = ff->fh,
+			.offset = iocb->ki_pos,
+		};
+		res = BPF_PROG_RUN(fi->bpf, &ctx);
+
+		/* TODO handle user filter */
+	}
+
+	if (!ff->fh)
+		res |= FUSE_BPF_BACKING;
+
+	return res;
+}
+
+ssize_t fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *from,
+				     int ext_flags)
+{
+	struct file *file = iocb->ki_filp;
+	struct fuse_file *ff = file->private_data;
+
+	pr_debug("Paul: %px\n", ff->backing_file);
+	return vfs_iter_write(ff->backing_file,	from, &iocb->ki_pos, 0);
 }
 
 /*******************************************************************************

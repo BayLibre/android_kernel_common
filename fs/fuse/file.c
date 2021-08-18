@@ -8,6 +8,7 @@
 
 #include "fuse_i.h"
 
+#include <linux/bpf_fuse.h>
 #include <linux/pagemap.h>
 #include <linux/slab.h>
 #include <linux/kernel.h>
@@ -1628,12 +1629,20 @@ static ssize_t fuse_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
 	struct file *file = iocb->ki_filp;
 	struct fuse_file *ff = file->private_data;
 	struct inode *inode = file_inode(file);
+	int ext_flags;
 
 	if (fuse_is_bad(inode))
 		return -EIO;
 
 	if (FUSE_IS_DAX(inode))
 		return fuse_dax_write_iter(iocb, from);
+
+	ext_flags = fuse_file_write_iter_use_backing(iocb, from);
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
+		return fuse_file_write_iter_backing(iocb, from, ext_flags);
 
 	if (ff->passthrough.filp)
 		return fuse_passthrough_write_iter(iocb, from);
@@ -1977,6 +1986,7 @@ err:
 static int fuse_writepage(struct page *page, struct writeback_control *wbc)
 {
 	int err;
+	int ext_flags;
 
 	if (fuse_page_is_writeback(page->mapping->host, page->index)) {
 		/*

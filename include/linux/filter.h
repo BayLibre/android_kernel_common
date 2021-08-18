@@ -1448,9 +1448,13 @@ struct bpf_fuse_data_kern {
 			s8 name[NAME_MAX];
 		};
 
-		struct { /* FUSE_READ */
+		struct { /* FUSE_READ, FUSE_WRITE */
 			u64 file_handle;
 			u64 offset;
+		};
+
+		struct { /* FUSE_GETXATTR */
+			u64 nodeid;
 		};
 	};
 };

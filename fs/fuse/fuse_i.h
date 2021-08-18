@@ -1310,11 +1310,18 @@ bool fuse_release_use_backing(struct file* file);
 int fuse_release_backing(struct inode *inode, struct file *file);
 bool fuse_flush_use_backing(struct file* file);
 int fuse_flush_backing(struct file *file, fl_owner_t id);
+int fuse_getxattr_use_backing(struct dentry *dentry, const char *name,
+			      void *value, size_t size);
+ssize_t fuse_getxattr_backing(struct dentry *dentry, const char *name,
+			      void *value, size_t size, int ext_flags);
 bool fuse_readpage_use_backing(struct file *file, struct page *page);
 int fuse_readpage_backing(struct file *file, struct page *page);
 bool fuse_readahead_use_backing(struct readahead_control *rac);
 void fuse_readahead_backing(struct readahead_control *rac);
-bool fuse_readahead_use_backing(struct readahead_control *rac);
+int fuse_file_write_iter_use_backing(struct kiocb *iocb,
+				      struct iov_iter *from);
+ssize_t fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *from,
+				     int ext_flags);
 int fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
 struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 				   unsigned int flags, unsigned int ext_flags);

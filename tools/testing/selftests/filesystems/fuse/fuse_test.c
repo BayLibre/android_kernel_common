@@ -540,6 +540,7 @@ static int bpf_test_hidden_entries(const char *mount_dir)
 		"hide",
 	};
 	const char *file_name = "file";
+	const char *data = "The quick brown fox jumps over the lazy dog\n";
 	int result = TEST_FAILURE;
 	int src_fd = -1;
 	int bpf_fd = -1;
@@ -560,10 +561,12 @@ static int bpf_test_hidden_entries(const char *mount_dir)
 					 s(file_name)),
 				  0777),
 		     fd != -1);
+		TEST(write(fd, data, strlen(data)), strlen(data));
 		TESTSYSCALL(close(fd));
 	FUSE_DAEMON
 		DECL_FUSE_IN(release);
 
+		TESTFUSEINUNKNOWN();
 		TESTFUSEIN(FUSE_RELEASE, release_in);
 		TESTFUSEOUTEMPTY();
 	FUSE_DONE
