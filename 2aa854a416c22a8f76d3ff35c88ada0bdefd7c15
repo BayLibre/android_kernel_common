@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57ceacdf_34f35e2e",
+        "filename": "drivers/irqchip/qcom-pdc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2021-08-18T09:40:10Z",
+      "side": 1,
+      "message": "This seems to only paper over the core problem. If you are starting to discard part of the hierarchy, then a lot of the code in the PDC driver becomes completely useless. You also are cutting it one level too late (no hwirq should ever end-up in a irqdomain with GPIO_NO_WAKE_IRQ).\n\nI have replied to your external email for this patch with a more ambitious patch[1]. Please have a look.\n\n[1] https://lore.kernel.org/linux-arm-msm/87tujnrtev.wl-maz@kernel.org/",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 2
+      },
+      "revId": "2aa854a416c22a8f76d3ff35c88ada0bdefd7c15",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
