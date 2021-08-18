@@ -566,7 +566,6 @@ static int bpf_test_hidden_entries(const char *mount_dir)
 	FUSE_DAEMON
 		DECL_FUSE_IN(release);
 
-		TESTFUSEINUNKNOWN();
 		TESTFUSEIN(FUSE_RELEASE, release_in);
 		TESTFUSEOUTEMPTY();
 	FUSE_DONE

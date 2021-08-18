@@ -65,9 +65,9 @@ int main(int argc, char *argv[])
 
 	display_trace();
 
-	delete_dir_tree("fd-src");
+	delete_dir_tree("fd-src", true);
 	TEST(src_dir = setup_mount_dir("fd-src"), src_dir);
-	delete_dir_tree("fd-dst");
+	delete_dir_tree("fd-dst", true);
 	TEST(mount_dir = setup_mount_dir("fd-dst"), mount_dir);
 	TESTEQUAL(install_bpf("test_daemon.raw", &bpf_fd), 0);
 	TEST(src_fd = open("fd-src", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	for(;;) {
 		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
 		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-		DECL_FUSE(open);
+		DECL_FUSE_IN(open);
 		struct fuse_in_header *in_header =
 			(struct fuse_in_header *)bytes_in;
 		ssize_t res = read(fuse_dev, bytes_in, sizeof(bytes_in));
@@ -89,9 +89,7 @@ int main(int argc, char *argv[])
 
 		switch(in_header->opcode) {
 		case FUSE_LOOKUP: {
-			DECL_FUSE_OUT(entry);
-
-			*entry_out = (struct fuse_entry_out) {
+			TESTFUSEOUT1(fuse_entry_out, ((struct fuse_entry_out) {
 				.nodeid		= 2,
 				.generation	= 1,
 				.attr = (struct fuse_attr) {
@@ -100,35 +98,32 @@ int main(int argc, char *argv[])
 					.blksize = 512,
 					.mode = S_IFREG,
 				},
-			};
-			TESTFUSEOUT(entry_out);
+			}));
 			break;
 		}
 
 		case FUSE_LOOKUP | FUSE_POSTFILTER: {
-			DECL_FUSE_OUT(entry);
-
-			*entry_out = (struct fuse_entry_out) {
+			TESTFUSEOUT1(fuse_entry_out, ((struct fuse_entry_out) {
 				.nodeid		= 3,
 				.generation	= 1,
-			};
-			TESTFUSEOUT(entry_out);
+			}));
 			break;
 		}
 
-		case FUSE_OPEN:
-			*open_out = (struct fuse_open_out) {
-				.fh = 1,
-				.open_flags = open_in->flags,
-			};
+		case FUSE_OPEN: {
+			int fh = 1;
 
 			switch (in_header->nodeid) {
-			case 2: open_out->fh = 200; break;
-			case 3: open_out->fh = 300; break;
+			case 2: fh = 200; break;
+			case 3: fh = 300; break;
 			};
 
-			TESTFUSEOUT(open_out);
+			TESTFUSEOUT1(fuse_open_out, ((struct fuse_open_out) {
+				.fh = fh,
+				.open_flags = open_in->flags,
+			}));
 			break;
+		}
 
 		case FUSE_READ: {
 			const char *fake_data = "fake data ";
@@ -179,9 +174,7 @@ int main(int argc, char *argv[])
 		}
 
 		case FUSE_GETATTR: {
-			DECL_FUSE_OUT(attr);
-
-			*attr_out = (struct fuse_attr_out) {
+			TESTFUSEOUT1(fuse_attr_out, ((struct fuse_attr_out) {
 				.attr_valid = 1,
 				.attr = (struct fuse_attr) {
 					.ino = 100,
@@ -189,8 +182,7 @@ int main(int argc, char *argv[])
 					.blksize = 512,
 					.mode = S_IFREG,
 				},
-			};
-			TESTFUSEOUT(attr_out);
+			}));
 			break;
 		}
 
@@ -204,9 +196,9 @@ int main(int argc, char *argv[])
 
 out:
 	umount2(mount_dir, MNT_FORCE);
-	delete_dir_tree(mount_dir);
+	delete_dir_tree(mount_dir, true);
 	free(mount_dir);
-	delete_dir_tree(src_dir);
+	delete_dir_tree(src_dir, true);
 	free(src_dir);
 	return result;
 }

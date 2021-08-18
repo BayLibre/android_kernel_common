@@ -298,7 +298,6 @@ ssize_t fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *from,
 	struct file *file = iocb->ki_filp;
 	struct fuse_file *ff = file->private_data;
 
-	pr_debug("Paul: %px\n", ff->backing_file);
 	return vfs_iter_write(ff->backing_file,	from, &iocb->ki_pos, 0);
 }
 
