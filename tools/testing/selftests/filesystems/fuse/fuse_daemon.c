@@ -35,22 +35,6 @@ out:
 	return result;
 }
 
-static int create_file(int dir, const char *name, const char *data)
-{
-	int result = TEST_FAILURE;
-	int fd = -1;
-
-	TEST(fd = openat(dir, name, O_CREAT | O_WRONLY, 0777), fd != -1);
-	while (lseek(fd, 0, SEEK_CUR) < 16384)
-		TESTEQUAL(write(fd, data, strlen(data)), strlen(data));
-	TESTSYSCALL(close(fd));
-	result = TEST_SUCCESS;
-
-out:
-	close(fd);
-	return result;
-}
-
 int main(int argc, char *argv[])
 {
 	int result = TEST_FAILURE;
@@ -72,14 +56,13 @@ int main(int argc, char *argv[])
 	TESTEQUAL(install_bpf("test_daemon.raw", &bpf_fd), 0);
 	TEST(src_fd = open("fd-src", O_DIRECTORY | O_RDONLY | O_CLOEXEC),
 	     src_fd != -1);
-	TESTEQUAL(create_file(src_fd, "real", "real data "), 0);
-	TESTEQUAL(create_file(src_fd, "partial", "partial data "), 0);
+	TESTSYSCALL(mkdirat(src_fd, "show", 0777));
+	TESTSYSCALL(mkdirat(src_fd, "hide", 0777));
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
 	for(;;) {
 		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
-		uint8_t bytes_out[FUSE_MIN_READ_BUFFER];
-		DECL_FUSE_IN(open);
+		uint8_t bytes_out[FUSE_MIN_READ_BUFFER] __attribute__((unused));
 		struct fuse_in_header *in_header =
 			(struct fuse_in_header *)bytes_in;
 		ssize_t res = read(fuse_dev, bytes_in, sizeof(bytes_in));
@@ -88,106 +71,8 @@ int main(int argc, char *argv[])
 			break;
 
 		switch(in_header->opcode) {
-		case FUSE_LOOKUP: {
-			TESTFUSEOUT1(fuse_entry_out, ((struct fuse_entry_out) {
-				.nodeid		= 2,
-				.generation	= 1,
-				.attr = (struct fuse_attr) {
-					.ino = 100,
-					.size = 16384,
-					.blksize = 512,
-					.mode = S_IFREG,
-				},
-			}));
-			break;
-		}
-
-		case FUSE_LOOKUP | FUSE_POSTFILTER: {
-			TESTFUSEOUT1(fuse_entry_out, ((struct fuse_entry_out) {
-				.nodeid		= 3,
-				.generation	= 1,
-			}));
-			break;
-		}
-
-		case FUSE_OPEN: {
-			int fh = 1;
-
-			switch (in_header->nodeid) {
-			case 2: fh = 200; break;
-			case 3: fh = 300; break;
-			};
-
-			TESTFUSEOUT1(fuse_open_out, ((struct fuse_open_out) {
-				.fh = fh,
-				.open_flags = open_in->flags,
-			}));
-			break;
-		}
-
-		case FUSE_READ: {
-			const char *fake_data = "fake data ";
-			const char *partial_data = "partially fake data ";
-			char buffer[4096];
-			const char *text;
-			char *index;
-			DECL_FUSE_IN(read);
-
-			switch (read_in->fh) {
-			case 200: text = fake_data; break;
-			case 300: text = partial_data; break;
-			}
-
-			memset(buffer, '\n', sizeof(buffer));
-			for (index = buffer;
-			     index + strlen(text) < buffer + sizeof(buffer);
-			     index += strlen(text))
-				memcpy(index, text, strlen(text));
-			TESTFUSEOUTREAD(buffer, sizeof(buffer));
-			break;
-		}
-
-		case FUSE_FORGET:
-		case FUSE_RELEASE:
-		case FUSE_RELEASEDIR:
-			break;
-
-		case FUSE_FLUSH:
-			TESTFUSEOUTEMPTY();
-			break;
-
-		case FUSE_READDIR | FUSE_POSTFILTER: {
-			struct fuse_dirent *fuse_dirent =
-				(struct fuse_dirent *) (bytes_in + res);
-
-			*fuse_dirent = (struct fuse_dirent) {
-				.ino = 100,
-				.off = 5,
-				.namelen = strlen("fake"),
-				.type = DT_REG,
-			};
-			strcpy((char*)(bytes_in + res + sizeof(*fuse_dirent)), "fake");
-			res += FUSE_DIRENT_ALIGN(sizeof(*fuse_dirent) + strlen("fake") + 1);
-			TESTFUSEOUTREAD(bytes_in + sizeof(struct fuse_in_header),
-					res - sizeof(struct fuse_in_header));
-			break;
-		}
-
-		case FUSE_GETATTR: {
-			TESTFUSEOUT1(fuse_attr_out, ((struct fuse_attr_out) {
-				.attr_valid = 1,
-				.attr = (struct fuse_attr) {
-					.ino = 100,
-					.size = 16384,
-					.blksize = 512,
-					.mode = S_IFREG,
-				},
-			}));
-			break;
-		}
-
 		default:
-			printf("opcode is %x\n", in_header->opcode);
+			printf("opcode is %d\n", in_header->opcode);
 			break;
 		}
 	}

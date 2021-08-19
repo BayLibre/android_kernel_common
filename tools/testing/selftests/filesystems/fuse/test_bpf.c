@@ -56,21 +56,25 @@ int trace_test(struct bpf_fuse_data *ctx)
 			strcmp((char *)ctx->name, "partial") == 0;
 
 		bpf_printk("getattr %s %d", ctx->name, backing);
-		return backing ? 1 : 0;
+		return backing ? FUSE_BPF_BACKING : 0;
 	}
 
 	case FUSE_OPEN: {
 		int backing = 0;
 
 		if (strcmp((char *)ctx->name, "real") == 0)
-			backing = 1;
+			backing = FUSE_BPF_BACKING;
 
 		else if (strcmp((char *)ctx->name, "partial") == 0)
-			backing = 2;
+			backing = FUSE_BPF_BACKING | FUSE_BPF_POST_FILTER;
 
 		bpf_printk("open %s %d", ctx->name, backing);
 		return backing;
 	}
+
+	case FUSE_OPEN | FUSE_POSTFILTER:
+		bpf_printk("open postfilter");
+		return FUSE_BPF_USER_FILTER;
 
 	case FUSE_READ: {
 		bpf_printk("read %llu %llu",
@@ -84,7 +88,7 @@ int trace_test(struct bpf_fuse_data *ctx)
 		int backing = 0;
 
 		if (strcmp((char *)ctx->name, "/") == 0)
-			backing = 1;
+			backing = FUSE_BPF_BACKING;
 
 		bpf_printk("opendir %s %d", ctx->name, backing);
 		return backing;
@@ -141,7 +145,7 @@ int trace_hidden(struct bpf_fuse_data *ctx)
 		return FUSE_BPF_BACKING;
 
 	default:
-		bpf_printk("Unknown opcode: %x", ctx->fuse_opcode);
+		bpf_printk("Unknown opcode: %d", ctx->fuse_opcode);
 		return 0;
 	}
 }
@@ -153,100 +157,19 @@ int trace_daemon(struct bpf_fuse_data *ctx)
 {
 	switch (ctx->fuse_opcode) {
 	case FUSE_LOOKUP: {
-		/* real and partial use backing file */
-		int backing = 0;
+		bpf_printk("Lookup: %s", ctx->name);
+		if (!strcmp((char *)ctx->name, "hide"))
+		    return FUSE_BPF_ERROR;
 
-		if (strcmp((char *)ctx->name, "real") == 0 ||
-		    strcmp((char *)ctx->name, "MAILPATH") == 0)
-			backing = FUSE_BPF_BACKING;
-
-		if(strcmp((char *)ctx->name, "partial") == 0)
-			backing = FUSE_BPF_BACKING | FUSE_BPF_POST_FILTER;
-
-		bpf_printk("lookup %s %d", ctx->name, backing);
-		return backing;
-	}
-
-	case FUSE_LOOKUP | FUSE_POSTFILTER: {
-		/* real and partial use backing file */
-		if(strcmp((char *)ctx->name, "partial")) {
-			bpf_printk("lookup postfiler on %s - error", ctx->name);
-			return 0;
-		}
-
-		bpf_printk("lookup postfilter %s", ctx->name);
-		return FUSE_BPF_USER_FILTER;
-	}
-
-	case FUSE_GETATTR: {
-		/* real and partial use backing file */
-		int backing = strcmp((char *)ctx->name, "/") == 0 ||
-			strcmp((char *)ctx->name, "real") == 0 ||
-			strcmp((char *)ctx->name, "partial") == 0;
-
-		bpf_printk("getattr %s %d", ctx->name, backing);
-		return backing ? 1 : 0;
-	}
-
-	case FUSE_OPEN: {
-		int backing = 0;
-
-		if (strcmp((char *)ctx->name, "real") == 0)
-			backing = 1;
-
-		else if (strcmp((char *)ctx->name, "partial") == 0)
-			backing = 2;
-
-		bpf_printk("open %s %d", ctx->name, backing);
-		return backing;
-	}
-
-	case FUSE_OPENDIR: {
-		int backing = 0;
-
-		if (strcmp((char *)ctx->name, "/") == 0)
-			backing = 1;
-
-		bpf_printk("opendir %s %d", ctx->name, backing);
-		return backing;
-	}
-
-	case FUSE_READDIR: {
-		int backing = 0;
-
-		if (strcmp((char *)ctx->name, "/") == 0)
-			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
-				  FUSE_BPF_POST_FILTER;
-
-		bpf_printk("readdir %s %d", ctx->name, backing);
-		return backing;
-	}
-
-	case FUSE_READDIR | FUSE_POSTFILTER: {
-		int backing = 0;
-
-		if (strcmp((char *)ctx->name, "/") == 0)
-			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
-				  FUSE_BPF_POST_FILTER;
-
-		bpf_printk("readdir postfilter %s %d", ctx->name, backing);
-		return backing;
-	}
-
-	case FUSE_READ: {
-		bpf_printk("read %llu %llu", ctx->file_handle, ctx->offset);
-		if (ctx->file_handle == 300 && ctx->offset == 4096)
-			return 0;
-		return 1;
-	}
-
-	case FUSE_ACCESS: {
-		bpf_printk("access");
-		return 1;
+		return FUSE_BPF_BACKING;
 	}
 
 	default:
-		bpf_printk("bad opcode: %x", ctx->fuse_opcode);
-		return 0;
+		if (ctx->fuse_opcode & FUSE_POSTFILTER)
+			bpf_printk("postfilter opcode: %d",
+				   ctx->fuse_opcode & ~FUSE_POSTFILTER);
+		else
+			bpf_printk("opcode: %d", ctx->fuse_opcode);
+		return FUSE_BPF_BACKING;
 	}
 }

@@ -1300,7 +1300,7 @@ ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
 /* backing.c */
 int fuse_open_common_use_backing(struct file* file, bool isdir);
 int fuse_open_common_backing(struct inode *inode, struct file *file,
-			     bool isdir);
+			     bool isdir, int ext_flags);
 int fuse_create_open_use_backing(struct inode *dir, struct dentry *entry,
 			    struct file *file, unsigned flags, umode_t mode);
 int fuse_create_open_backing(struct inode *dir, struct dentry *entry,
@@ -1325,12 +1325,12 @@ ssize_t fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *from,
 int fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
 struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 				   unsigned int flags, unsigned int ext_flags);
-bool fuse_getattr_use_backing(const struct path *path);
+int fuse_getattr_use_backing(const struct path *path);
 int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 			u32 request_mask, unsigned int flags);
 int fuse_readdir_use_backing(struct file *file);
 int fuse_readdir_backing(struct file *file, struct dir_context *ctx,
 			 int ext_flags);
-bool fuse_access_use_backing(struct inode *inode);
+int fuse_access_use_backing(struct inode *inode);
 int fuse_access_backing(struct inode *inode, int mask);
 #endif /* _FS_FUSE_I_H */

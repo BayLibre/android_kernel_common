@@ -118,6 +118,21 @@ out:
 		TESTEQUAL(res, sizeof(*in_header) + sizeof(*in_struct));\
 	} while(false)
 
+#define TESTFUSEIN2(_opcode, in_struct1, in_struct2)			\
+	do {								\
+		struct fuse_in_header *in_header =			\
+				(struct fuse_in_header *)bytes_in;	\
+		ssize_t res = read(fuse_dev, &bytes_in,			\
+			sizeof(bytes_in));				\
+									\
+		TESTEQUAL(in_header->opcode, _opcode);			\
+		TESTEQUAL(res, sizeof(*in_header) + sizeof(*in_struct1) \
+						+ sizeof(*in_struct2)); \
+		in_struct1 = (void *)(bytes_in + sizeof(*in_header));	\
+		in_struct2 = (void *)(bytes_in + sizeof(*in_header)	\
+				      + sizeof(*in_struct1));		\
+	} while(false)
+
 #define TESTFUSEINEXT(_opcode, in_struct, extra)			\
 	do {								\
 		struct fuse_in_header *in_header =			\
@@ -247,7 +262,11 @@ out:
 #define DECL_FUSE_IN(name)						\
 	struct fuse_##name##_in *name##_in =				\
 		(struct fuse_##name##_in *)				\
-		(bytes_in + sizeof(struct fuse_in_header));
+		(bytes_in + sizeof(struct fuse_in_header))
+
+#define DECL_FUSE(name)							\
+	struct fuse_##name##_in *name##_in __attribute__((unused));	\
+	struct fuse_##name##_out *name##_out __attribute__((unused))
 
 #define FUSE_ACTION	TEST(pid = fork(), pid != -1);			\
 			if (pid) {

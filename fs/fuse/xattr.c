@@ -192,7 +192,7 @@ static int fuse_xattr_get(const struct xattr_handler *handler,
 		return fuse_getxattr_backing(dentry, name, value, size,
 					     ext_flags);
 
-if (fuse_is_bad(inode))
+	if (fuse_is_bad(inode))
 		return -EIO;
 
 	return fuse_getxattr(inode, name, value, size);

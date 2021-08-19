@@ -224,7 +224,7 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 {
 	struct fuse_mount *fm = get_fuse_mount(inode);
 	struct fuse_conn *fc = fm->fc;
-	int err;
+	int err, ext_flags;
 	bool is_wb_truncate = (file->f_flags & O_TRUNC) &&
 			  fc->atomic_o_trunc &&
 			  fc->writeback_cache;
@@ -238,19 +238,15 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 	if (err)
 		return err;
 
-	switch (fuse_open_common_use_backing(file, isdir)) {
-	case 0:
-		break;
-	case 1:
-		return fuse_open_common_backing(inode, file, isdir);
-	case 2:
-		err = fuse_open_common_backing(inode, file, isdir);
-		if (err)
-			return err;
-		break;
-	default:
-		return -EINVAL;
-	}
+	ext_flags = fuse_open_common_use_backing(file, isdir);
+	if (ext_flags & FUSE_BPF_ERROR)
+		return -ENOENT;
+
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
+		return fuse_open_common_backing(inode, file, isdir, ext_flags);
 
 	if (is_wb_truncate || dax_truncate) {
 		inode_lock(inode);

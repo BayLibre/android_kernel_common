@@ -332,13 +332,13 @@ static int bpf_test_partial(const char *mount_dir)
 		TESTSYSCALL(close(fd));
 		fd = -1;
 	FUSE_DAEMON
-		DECL_FUSE_IN(open);
-		DECL_FUSE_IN(read);
-		DECL_FUSE_IN(forget);
-		DECL_FUSE_IN(release);
+		DECL_FUSE(open);
+		DECL_FUSE(read);
+		DECL_FUSE(forget);
+		DECL_FUSE(release);
 		uint8_t data[PAGE_SIZE];
 
-		TESTFUSEIN(FUSE_OPEN, open_in);
+		TESTFUSEIN2(FUSE_OPEN | FUSE_POSTFILTER, open_in, open_out);
 		TESTFUSEOUT1(fuse_open_out, ((struct fuse_open_out) {
 			.fh = 1,
 			.open_flags = open_in->flags,

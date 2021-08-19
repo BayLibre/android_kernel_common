@@ -21,7 +21,7 @@ int fuse_open_common_use_backing(struct file* file, bool isdir)
 	struct dentry *entry = file->f_path.dentry;
 
 	if (!fuse_inode || !fuse_inode->backing_inode)
-		return false;
+		return 0;
 
 	ctx = (struct bpf_fuse_data_kern) {
 		.fuse_opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN,
@@ -31,26 +31,82 @@ int fuse_open_common_use_backing(struct file* file, bool isdir)
 }
 
 int fuse_open_common_backing(struct inode *inode, struct file *file,
-				 bool isdir)
+				 bool isdir, int ext_flags)
 {
 	struct fuse_mount *fm = get_fuse_mount(inode);
-	struct fuse_dentry *backing_fuse_dentry =
-		get_fuse_dentry(file->f_path.dentry);
+	struct dentry *entry = file->f_path.dentry;
+	struct fuse_dentry *fuse_dentry = get_fuse_dentry(entry);
 	struct fuse_file *fuse_file;
 	struct file *backing_file;
+	struct bpf_fuse_data_kern ctx;
+	struct fuse_inode *fuse_inode = get_fuse_inode(inode);
+	struct fuse_open_in foi;
+	struct fuse_open_out foo;
+	struct fuse_args fa;
+	bool locked;
+	int res;
 
 	fuse_file = fuse_file_alloc(fm);
 	if (!fuse_file)
 		return -ENOMEM;
+
 	file->private_data = fuse_file;
-
-	backing_file = dentry_open(&backing_fuse_dentry->backing_path, O_RDWR,
+	backing_file = dentry_open(&fuse_dentry->backing_path, O_RDWR,
 				   current_cred());
-
 	if (IS_ERR(backing_file))
 		return PTR_ERR(backing_file);
-
 	fuse_file->backing_file = backing_file;
+
+	/* If no post filter, we are done */
+	if (!(ext_flags & FUSE_BPF_POST_FILTER))
+		return 0;
+
+	ctx = (struct bpf_fuse_data_kern) {
+		.fuse_opcode = (isdir ? FUSE_OPENDIR : FUSE_OPEN) |
+			FUSE_POSTFILTER,
+	};
+	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
+	ext_flags = BPF_PROG_RUN(fuse_inode->bpf, &ctx);
+
+	/* If no post user filter, we are done */
+	if (!(ext_flags & FUSE_BPF_USER_FILTER))
+		return 0;
+
+	/*
+	 * TODO (ish) populate these fields. Not acutally that important for
+	 * FUSE_OPEN since we only really care about the nodeid
+	 */
+	foi = (struct fuse_open_in) {
+	};
+
+	foo = (struct fuse_open_out) {
+	};
+
+	fa = (struct fuse_args) {
+		.opcode = FUSE_OPEN | FUSE_POSTFILTER,
+		.in_numargs = 2,
+		.out_numargs = 1,
+		.in_args[0] = (struct fuse_in_arg) {
+			.size = sizeof(foi),
+			.value = &foi,
+		},
+		.in_args[1] = (struct fuse_in_arg) {
+			.size = sizeof(foo),
+			.value = &foo,
+		},
+		.out_args[0] = (struct fuse_arg) {
+			.size = sizeof(foo),
+			.value = &foo,
+		},
+	};
+
+	locked = fuse_lock_inode(inode);
+	res = fuse_simple_request(fm, &fa);
+	fuse_unlock_inode(inode, locked);
+	if (res < 0)
+		return res;
+
+	fuse_file->fh = foo.fh;
 	return 0;
 }
 
@@ -71,7 +127,7 @@ int fuse_create_open_use_backing(struct inode *dir, struct dentry *entry,
 
 static int fuse_open_file_backing(struct inode *inode, struct file *file)
 {
-	return fuse_open_common_backing(inode, file, false);
+	return fuse_open_common_backing(inode, file, false, 0);
 }
 
 int fuse_create_open_backing(struct inode *dir, struct dentry *entry,
@@ -406,7 +462,7 @@ out:
 	return newent;
 }
 
-bool fuse_getattr_use_backing(const struct path *path)
+int fuse_getattr_use_backing(const struct path *path)
 {
 	struct bpf_fuse_data_kern ctx;
 	struct dentry *entry = path->dentry;
@@ -419,7 +475,7 @@ bool fuse_getattr_use_backing(const struct path *path)
 		.fuse_opcode = FUSE_GETATTR,
 	};
 	strlcpy(ctx.name, entry->d_name.name, sizeof(ctx.name));
-	return BPF_PROG_RUN(fuse_inode->bpf, &ctx) == 1;
+	return BPF_PROG_RUN(fuse_inode->bpf, &ctx);
 }
 
 int fuse_getattr_backing(const struct path *path, struct kstat *stat,
@@ -505,17 +561,18 @@ int fuse_readdir_backing(struct file *file, struct dir_context *ctx,
 
 	err = iterate_dir(backing_dir, &ec.ctx);
 	if (err)
-		goto out;
+		return err;;
+
+	if (!(ext_flags & FUSE_BPF_POST_FILTER))
+		return fuse_parse_dirfile(ec.addr, ec.offset, file, ctx);
 
 	strlcpy(bpf_ctx.name, file->f_path.dentry->d_name.name,
 		sizeof(bpf_ctx.name));
 	ext_flags = BPF_PROG_RUN(fi->bpf, &bpf_ctx);
 
 	/* No post filter, just parse and end */
-	if (!(ext_flags & FUSE_BPF_USER_FILTER)) {
-		err = fuse_parse_dirfile(ec.addr, ec.offset, file, ctx);
-		goto out;
-	}
+	if (!(ext_flags & FUSE_BPF_USER_FILTER))
+		return fuse_parse_dirfile(ec.addr, ec.offset, file, ctx);
 
 	page = (u8 *) __get_free_page(GFP_KERNEL);
 	if (!page) {
@@ -556,22 +613,24 @@ out:
 	return err;
 }
 
-bool fuse_access_use_backing(struct inode *inode)
+int fuse_access_use_backing(struct inode *inode)
 {
 	struct bpf_fuse_data_kern ctx = {
 		.fuse_opcode = FUSE_ACCESS,
 	};
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
+	pr_debug("Paul\n");
 	if (!fi || !fi->bpf)
-		return false;
-	return BPF_PROG_RUN(fi->bpf, &ctx) == 1;
+		return 0;
+	return BPF_PROG_RUN(fi->bpf, &ctx);
 }
 
 int fuse_access_backing(struct inode *inode, int mask)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
+	pr_debug("Paul\n");
 	return inode_permission(/* For mainline: init_user_ns,*/
 				fi->backing_inode, mask);
 }

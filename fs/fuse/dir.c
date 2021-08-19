@@ -496,6 +496,9 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 
 	int ext_flags = fuse_lookup_use_backing(dir, entry);
 
+	if (ext_flags & FUSE_BPF_ERROR)
+		return -ENOENT;
+
 	if (ext_flags & FUSE_BPF_USER_FILTER)
 		/* TODO: user prefilter */;
 
@@ -1120,8 +1123,12 @@ static int fuse_update_get_attr(struct inode *inode, struct file *file,
 	struct fuse_inode *fi = get_fuse_inode(inode);
 	int err = 0;
 	bool sync;
+	int ext_flags = fuse_getattr_use_backing(path);
 
-	if (fuse_getattr_use_backing(path))
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
 		return fuse_getattr_backing(path, stat, request_mask,
 					    flags);
 
@@ -1258,7 +1265,12 @@ static int fuse_access(struct inode *inode, int mask)
 	struct fuse_access_in inarg;
 	int err;
 
-	if (fuse_access_use_backing(inode))
+	int ext_flags = fuse_access_use_backing(inode);
+
+	if (ext_flags & FUSE_BPF_USER_FILTER)
+		/* TODO: user prefilter */;
+
+	if (ext_flags & FUSE_BPF_BACKING)
 		return fuse_access_backing(inode, mask);
 
 	BUG_ON(mask & MAY_NOT_BLOCK);
