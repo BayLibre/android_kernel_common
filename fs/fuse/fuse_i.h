@@ -1324,7 +1324,8 @@ ssize_t fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *from,
 				     int ext_flags);
 int fuse_lookup_use_backing(struct inode *dir, struct dentry *entry);
 struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
-				   unsigned int flags, unsigned int ext_flags);
+				   unsigned int flags, unsigned int ext_flags,
+				   bool splice);
 int fuse_getattr_use_backing(const struct path *path);
 int fuse_getattr_backing(const struct path *path, struct kstat *stat,
 			u32 request_mask, unsigned int flags);

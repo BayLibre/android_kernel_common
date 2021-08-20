@@ -1982,7 +1982,6 @@ err:
 static int fuse_writepage(struct page *page, struct writeback_control *wbc)
 {
 	int err;
-	int ext_flags;
 
 	if (fuse_page_is_writeback(page->mapping->host, page->index)) {
 		/*

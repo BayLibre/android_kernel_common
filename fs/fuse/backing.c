@@ -377,7 +377,8 @@ int fuse_lookup_use_backing(struct inode *dir, struct dentry *entry)
 }
 
 struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
-				   unsigned int flags, unsigned int ext_flags)
+				   unsigned int flags, unsigned int ext_flags,
+				   bool splice)
 {
 	struct fuse_inode *dir_fuse_inode = get_fuse_inode(dir);
 	struct fuse_mount *fm = get_fuse_mount(dir);
@@ -411,6 +412,36 @@ struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 	if (err)
 		goto out;
 
+	strlcpy(bpf_ctx.name, entry->d_name.name, sizeof(bpf_ctx.name));
+	ext_flags = BPF_PROG_RUN(dir_fuse_inode->bpf, &bpf_ctx);
+
+	/* Run post filter? */
+	if (ext_flags & FUSE_BPF_USER_FILTER) {
+		fa = (struct fuse_args) {
+			.opcode = FUSE_LOOKUP | FUSE_POSTFILTER,
+			.in_numargs = 1,
+			.out_numargs = 1,
+			.in_args[0] = (struct fuse_in_arg) {
+				.size = entry->d_name.len,
+				.value = entry->d_name.name,
+			},
+			.out_args[0] = (struct fuse_arg) {
+				.size = sizeof(feo),
+				.value = &feo,
+			},
+		};
+
+		locked = fuse_lock_inode(dir);
+		res = fuse_simple_request(fm, &fa);
+		fuse_unlock_inode(inode, dir);
+
+		if (res < 0) {
+			err = res;
+			goto out;
+		}
+	}
+
+	/* Success! Get, update and splice inode */
 	inode = fuse_iget_backing(dir->i_sb,
 			get_fuse_dentry(entry)->backing_path.dentry->d_inode);
 	if (IS_ERR(inode)) {
@@ -419,43 +450,17 @@ struct dentry *fuse_lookup_backing(struct inode *dir, struct dentry *entry,
 	}
 
 	get_fuse_inode(inode)->bpf = dir_fuse_inode->bpf;
-	newent = d_splice_alias(inode, entry);
-	if (IS_ERR(newent)) {
-		err = PTR_ERR(newent);
-		goto out;
-	}
-
-	strlcpy(bpf_ctx.name, entry->d_name.name, sizeof(bpf_ctx.name));
-	ext_flags = BPF_PROG_RUN(dir_fuse_inode->bpf, &bpf_ctx);
-
-	/* No post filter, we're done */
-	if (!(ext_flags & FUSE_BPF_USER_FILTER))
-		goto out;
-
-	fa = (struct fuse_args) {
-		.opcode = FUSE_LOOKUP | FUSE_POSTFILTER,
-		.in_numargs = 1,
-		.out_numargs = 1,
-		.in_args[0] = (struct fuse_in_arg) {
-			.size = entry->d_name.len,
-			.value = entry->d_name.name,
-		},
-		.out_args[0] = (struct fuse_arg) {
-			.size = sizeof(feo),
-			.value = &feo,
-		},
-	};
-
-	locked = fuse_lock_inode(inode);
-	res = fuse_simple_request(fm, &fa);
-	fuse_unlock_inode(inode, locked);
-
-	if (res < 0) {
-		err = res;
-		goto out;
-	}
-
 	get_fuse_inode(inode)->nodeid = feo.nodeid;
+
+	if (splice) {
+		newent = d_splice_alias(inode, entry);
+		if (IS_ERR(newent)) {
+			err = PTR_ERR(newent);
+			goto out;
+		}
+	} else
+		iput(inode);
+
 out:
 	if (err)
 		return ERR_PTR(err);

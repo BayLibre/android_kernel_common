@@ -204,6 +204,7 @@ static int fuse_dentry_revalidate(struct dentry *entry, unsigned int flags)
 		FUSE_ARGS(args);
 		struct fuse_forget_link *forget;
 		u64 attr_version;
+		int ext_flags;
 
 		/* For negative dentries, always do a fresh lookup */
 		if (!inode)
@@ -212,6 +213,19 @@ static int fuse_dentry_revalidate(struct dentry *entry, unsigned int flags)
 		ret = -ECHILD;
 		if (flags & LOOKUP_RCU)
 			goto out;
+
+		/* Need to reapply bpf filters and backing file */
+		ext_flags = fuse_lookup_use_backing(entry->d_parent->d_inode,
+						    entry);
+		if (ext_flags & FUSE_BPF_ERROR)
+			return -ENOENT;
+
+		if (ext_flags & FUSE_BPF_USER_FILTER)
+			/* TODO: user prefilter */;
+
+		if (ext_flags & FUSE_BPF_BACKING)
+			return PTR_ERR(fuse_lookup_backing(entry->d_parent->d_inode,
+						entry, flags, ext_flags, false));
 
 		fm = get_fuse_mount(inode);
 
@@ -223,6 +237,7 @@ static int fuse_dentry_revalidate(struct dentry *entry, unsigned int flags)
 		attr_version = fuse_get_attr_version(fm->fc);
 
 		parent = dget_parent(entry);
+
 		fuse_lookup_init(fm->fc, &args, get_node_id(d_inode(parent)),
 				 &entry->d_name, &outarg);
 		ret = fuse_simple_request(fm, &args);
@@ -497,13 +512,13 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 	int ext_flags = fuse_lookup_use_backing(dir, entry);
 
 	if (ext_flags & FUSE_BPF_ERROR)
-		return -ENOENT;
+		return ERR_PTR(-ENOENT);
 
 	if (ext_flags & FUSE_BPF_USER_FILTER)
 		/* TODO: user prefilter */;
 
 	if (ext_flags & FUSE_BPF_BACKING)
-		return fuse_lookup_backing(dir, entry, flags, ext_flags);
+		return fuse_lookup_backing(dir, entry, flags, ext_flags, true);
 
 	if (fuse_is_bad(dir))
 		return ERR_PTR(-EIO);
