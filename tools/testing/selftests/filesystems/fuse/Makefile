@@ -2,7 +2,7 @@
 CFLAGS += -D_FILE_OFFSET_BITS=64 -Wall -Werror -I../.. -I../../../../..
 LDLIBS := -lpthread
 TEST_GEN_PROGS := fuse_test fuse_daemon
-TEST_GEN_FILES := test_trace.raw test_daemon.raw test_hidden.raw
+TEST_GEN_FILES := test_trace.raw test_daemon.raw test_hidden.raw fd.sh
 EXTRA_CLEAN := *.bpf
 BPF_FLAGS = -g \
 	    -D__TARGET_ARCH_x86 \
@@ -22,11 +22,15 @@ include ../../lib.mk
 EXTRA_SOURCES :=
 $(TEST_GEN_PROGS) : $(EXTRA_SOURCES)
 
-%.raw: test_bpf.bpf
+%.raw: $(OUTPUT)/test_bpf.bpf
 	bpf-objcopy -O binary --only-section=$(notdir $(basename $@)) $< $@
 
-%.bpf: %.c
+$(OUTPUT)/%.bpf: %.c
 	bpf-gcc $(BPF_FLAGS) -c $< -o $@
+
+$(OUTPUT)/fd.sh: fd.txt
+	cp $< $@
+	chmod 755 $@
 
 # Phony target to print out the assembly - useful for debugging
 .PHONY: asm

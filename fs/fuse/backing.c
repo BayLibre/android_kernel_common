@@ -620,7 +620,6 @@ int fuse_access_use_backing(struct inode *inode)
 	};
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
-	pr_debug("Paul\n");
 	if (!fi || !fi->bpf)
 		return 0;
 	return BPF_PROG_RUN(fi->bpf, &ctx);
@@ -630,7 +629,6 @@ int fuse_access_backing(struct inode *inode, int mask)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
-	pr_debug("Paul\n");
 	return inode_permission(/* For mainline: init_user_ns,*/
 				fi->backing_inode, mask);
 }

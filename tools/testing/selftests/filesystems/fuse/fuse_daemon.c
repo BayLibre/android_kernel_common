@@ -60,6 +60,9 @@ int main(int argc, char *argv[])
 	TESTSYSCALL(mkdirat(src_fd, "hide", 0777));
 	TESTEQUAL(mount_fuse(mount_dir, bpf_fd, src_fd, &fuse_dev), 0);
 
+	if (fork())
+		return 0;
+
 	for(;;) {
 		uint8_t bytes_in[FUSE_MIN_READ_BUFFER];
 		uint8_t bytes_out[FUSE_MIN_READ_BUFFER] __attribute__((unused));
