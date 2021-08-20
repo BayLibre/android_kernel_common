@@ -14,6 +14,7 @@
 #include <linux/syscore_ops.h>
 #include <linux/smp.h>
 #include <linux/cpuidle.h>
+#include <trace/hooks/smp.h>
 
 #define FSL_SIP_GPC                     0xC2000000
 #define FSL_SIP_CONFIG_GPC_MASK         0x00
@@ -328,6 +329,8 @@ static int __init imx_gpcv2_irqchip_init(struct device_node *node,
 	const struct of_device_id *id;
 	unsigned long core_num;
 	int i;
+
+	register_trace_android_gpcv2_raise_softirq(imx_gpcv2_raise_softirq, NULL);
 
 	if (!parent) {
 		pr_err("%pOF: no parent, giving up\n", node);
