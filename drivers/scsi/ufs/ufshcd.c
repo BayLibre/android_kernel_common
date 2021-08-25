@@ -8073,6 +8073,8 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
 	if (ret)
 		goto out;
 
+	trace_android_rvh_ufs_complete_init(hba);
+
 	/* Probe and add UFS logical units  */
 	ret = ufshcd_add_lus(hba);
 out:
@@ -9040,6 +9042,8 @@ static int ufshcd_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
 	}
 
 	ufshcd_clear_ua_wluns(hba);
+
+	trace_android_rvh_ufs_complete_init(hba);
 
 	/* Schedule clock gating in case of no access to UFS device yet */
 	ufshcd_release(hba);
