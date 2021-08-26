@@ -166,7 +166,7 @@ void mte_check_tfsr_el1(void)
 }
 #endif
 
-static void mte_update_sctlr_user(struct task_struct *task)
+static void mte_update_sctlr_user_and_gcr_excl(struct task_struct *task)
 {
 	/*
 	 * This must be called with preemption disabled and can only be called
@@ -186,6 +186,24 @@ static void mte_update_sctlr_user(struct task_struct *task)
 	else if (resolved_mte_tcf & MTE_CTRL_TCF_SYNC)
 		sctlr |= SCTLR_EL1_TCF0_SYNC;
 	task->thread.sctlr_user = sctlr;
+
+	/*
+	 * SYS_GCR_EL1 will be set to current->thread.mte_ctrl value by
+	 * mte_set_user_gcr() in kernel_exit, but only if KASAN is enabled.
+	 */
+	if (!kasan_hw_tags_enabled())
+		write_sysreg_s(((mte_ctrl >> MTE_CTRL_GCR_USER_EXCL_SHIFT) &
+				SYS_GCR_EL1_EXCL_MASK) | SYS_GCR_EL1_RRND,
+			       SYS_GCR_EL1);
+}
+
+void __init kasan_hw_tags_enable(struct alt_instr *alt, __le32 *origptr,
+				 __le32 *updptr, int nr_inst)
+{
+	BUG_ON(nr_inst != 1); /* Branch -> NOP */
+
+	if (kasan_hw_tags_enabled())
+		*updptr = cpu_to_le32(aarch64_insn_gen_nop());
 }
 
 void mte_thread_init_user(void)
@@ -203,7 +221,7 @@ void mte_thread_init_user(void)
 
 void mte_thread_switch(struct task_struct *next)
 {
-	mte_update_sctlr_user(next);
+	mte_update_sctlr_user_and_gcr_excl(next);
 
 	/*
 	 * Check if an async tag exception occurred at EL1.
@@ -248,7 +266,7 @@ long set_mte_ctrl(struct task_struct *task, unsigned long arg)
 	task->thread.mte_ctrl = mte_ctrl;
 	if (task == current) {
 		preempt_disable();
-		mte_update_sctlr_user(task);
+		mte_update_sctlr_user_and_gcr_excl(task);
 		update_sctlr_el1(task->thread.sctlr_user);
 		preempt_enable();
 	}
