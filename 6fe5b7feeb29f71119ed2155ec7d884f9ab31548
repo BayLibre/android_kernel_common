@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ecfd84e_5f27b181",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2021-09-01T13:56:31Z",
+      "side": 1,
+      "message": "--update option along with using common/build.config.gki.aarch64 as build config to update the ABI seemed to have done the trick.",
+      "parentUuid": "f1684a3c_8f7644a8",
+      "revId": "6fe5b7feeb29f71119ed2155ec7d884f9ab31548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0d86e6_6e28d7b5",
         "filename": "android/abi_gki_aarch64_db845c",
         "patchSetId": 1
@@ -84,6 +102,30 @@
       "writtenOn": "2021-09-01T11:52:45Z",
       "side": 1,
       "message": "why is this one needed now?",
+      "range": {
+        "startLine": 1502,
+        "startChar": 0,
+        "endLine": 1502,
+        "endChar": 33
+      },
+      "revId": "6fe5b7feeb29f71119ed2155ec7d884f9ab31548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "295a1c86_09a9c80d",
+        "filename": "android/abi_gki_aarch64_db845c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1502,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2021-09-01T13:56:31Z",
+      "side": 1,
+      "message": "irq_domain_disconnect_hierarchy symbol is added recently as well but only android/abi_gki_aarch64_qcom got updated.\n\nSharing the reference commits for reference:\n...\nffa937b6db7b ANDROID: abi_gki_aarch64_qcom: Add irq_domain_disconnect_hierarchy symbol\n34f60eead217 FROMGIT: irqchip/qcom-pdc: Trim unused levels of the interrupt hierarchy\n4c9aa4c6f09c FROMGIT: irqdomain: Export irq_domain_disconnect_hierarchy()\n...",
+      "parentUuid": "ea0d86e6_6e28d7b5",
       "range": {
         "startLine": 1502,
         "startChar": 0,
