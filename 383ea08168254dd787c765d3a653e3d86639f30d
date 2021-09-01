@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d74cce81_755e0cd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2021-09-01T14:47:40Z",
+      "side": 1,
+      "message": "Updated the symbols list by running:\n  BUILD_CONFIG\u003dcommon/build.config.db845c build/build_abi.sh -s\n    \nAnd the abi_gki_aarch64 ABI by running:\n  BUILD_CONFIG\u003dcommon/build.config.gki.aarch64 ABI_DEFINITION\u003dabi_gki_aarch64.xml build/build_abi.sh --update --print-report\"\n\nBut 26k lines of change scares me. I\u0027m not sure if I did it right.",
+      "revId": "383ea08168254dd787c765d3a653e3d86639f30d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
