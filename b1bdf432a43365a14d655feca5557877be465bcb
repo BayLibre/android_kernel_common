@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b75b613d_36b31a62",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1878921
+      },
+      "writtenOn": "2021-09-01T13:12:41Z",
+      "side": 1,
+      "message": "actually we really need it at MTK side, it\u0027s our camera related code, and we also implement one at mtk system heap(It\u0027s a compromise).\nBut they don\u0027t need upstream, and it\u0027s same for also most of users.\nSo, here is no user can help with this.",
+      "parentUuid": "2f99c267_f751db08",
+      "revId": "b1bdf432a43365a14d655feca5557877be465bcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afee1d7b_7f203e2c",
         "filename": "drivers/dma-buf/dma-buf.c",
         "patchSetId": 1
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "yes, You are right!\nThanks for your advice, I will update here after ABI freeze.",
       "parentUuid": "afee1d7b_7f203e2c",
+      "range": {
+        "startLine": 374,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 33
+      },
+      "revId": "b1bdf432a43365a14d655feca5557877be465bcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03ee78f2_cd09c457",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1878921
+      },
+      "writtenOn": "2021-09-01T13:12:41Z",
+      "side": 1,
+      "message": "updated, please help take a look, thanks!",
+      "parentUuid": "4e3da6a6_1dc544be",
       "range": {
         "startLine": 374,
         "startChar": 0,
