@@ -16,6 +16,29 @@
       "message": "rejected from upstream as there needs to be an in-kernel user.",
       "revId": "8fcba49237049be93c54c74cdeaf8808dcf06866",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2775ad0e_9e71b55f",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-09-02T17:57:49Z",
+      "side": 1,
+      "message": "I think it might not be correct to free @name here(or L361) since its an input parameter for this function. It was ok to do in the original code because the buffer was allocated inside the function. One solution could be to make a copy of @name so that code handling can remain the same between dma_buf_set_name() and dma_buf_set_name_user().",
+      "range": {
+        "startLine": 391,
+        "startChar": 2,
+        "endLine": 391,
+        "endChar": 13
+      },
+      "revId": "8fcba49237049be93c54c74cdeaf8808dcf06866",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
