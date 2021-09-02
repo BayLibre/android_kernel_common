@@ -450,7 +450,11 @@ void put_task_stack(struct task_struct *tsk)
 
 void free_task(struct task_struct *tsk)
 {
+<<<<<<< HEAD   (0fada0 Merge 230bda0873a6 ("Merge tag 'x86_cleanups_for_v5.15' of g)
 	cpufreq_task_times_exit(tsk);
+=======
+	release_user_cpus_ptr(tsk);
+>>>>>>> BRANCH (5d3c0d Merge tag 'sched-core-2021-08-30' of git://git.kernel.org/pu)
 	scs_release(tsk);
 
 #ifndef CONFIG_THREAD_INFO_IN_TASK
@@ -929,6 +933,7 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
 #endif
 	if (orig->cpus_ptr == &orig->cpus_mask)
 		tsk->cpus_ptr = &tsk->cpus_mask;
+	dup_user_cpus_ptr(tsk, orig, node);
 
 	/*
 	 * One for the user space visible state that goes away when reaped.
