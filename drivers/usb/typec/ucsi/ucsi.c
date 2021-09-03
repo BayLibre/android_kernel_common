@@ -664,7 +664,10 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 	struct ucsi_connector_status pre_ack_status;
 	struct ucsi_connector_status post_ack_status;
 	enum typec_role role;
+<<<<<<< HEAD   (a3fbac ANDROID: GKI: Update the generic symbol list.)
 	enum usb_role u_role = USB_ROLE_NONE;
+=======
+>>>>>>> BRANCH (f6dd00 Linux 5.10.62)
 	u16 inferred_changes;
 	u16 changed_flags;
 	u64 command;
@@ -811,6 +814,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 
 		ucsi_port_psy_changed(con);
 
+<<<<<<< HEAD   (a3fbac ANDROID: GKI: Update the generic symbol list.)
 		/* Only notify USB controller if partner supports USB data */
 		if (!(UCSI_CONSTAT_PARTNER_FLAGS(con->status.flags) &
 				UCSI_CONSTAT_PARTNER_FLAG_USB))
@@ -822,6 +826,8 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 				con->num, u_role);
 	}
 
+=======
+>>>>>>> BRANCH (f6dd00 Linux 5.10.62)
 	if (con->status.change & UCSI_CONSTAT_PARTNER_CHANGE)
 		ucsi_partner_change(con);
 
