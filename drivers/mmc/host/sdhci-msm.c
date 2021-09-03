@@ -1597,6 +1597,7 @@ out:
 	__sdhci_msm_set_clock(host, clock);
 }
 
+<<<<<<< HEAD   (cc3b22 Revert "virtio: Protect vqs list access")
 /*****************************************************************************\
  *                                                                           *
  * Inline Crypto Engine (ICE) support                                        *
@@ -1973,6 +1974,23 @@ static int sdhci_msm_cqe_add_host(struct sdhci_host *host,
 cleanup:
 	sdhci_cleanup_host(host);
 	return ret;
+=======
+static void sdhci_msm_set_timeout(struct sdhci_host *host, struct mmc_command *cmd)
+{
+	u32 count, start = 15;
+
+	__sdhci_set_timeout(host, cmd);
+	count = sdhci_readb(host, SDHCI_TIMEOUT_CONTROL);
+	/*
+	 * Update software timeout value if its value is less than hardware data
+	 * timeout value. Qcom SoC hardware data timeout value was calculated
+	 * using 4 * MCLK * 2^(count + 13). where MCLK = 1 / host->clock.
+	 */
+	if (cmd && cmd->data && host->clock > 400000 &&
+	    host->clock <= 50000000 &&
+	    ((1 << (count + start)) > (10 * host->clock)))
+		host->data_timeout = 22LL * NSEC_PER_SEC;
+>>>>>>> BRANCH (c6bf0e Linux 5.4.144)
 }
 
 /*
@@ -2146,7 +2164,11 @@ static const struct sdhci_ops sdhci_msm_ops = {
 	.set_uhs_signaling = sdhci_msm_set_uhs_signaling,
 	.write_w = sdhci_msm_writew,
 	.write_b = sdhci_msm_writeb,
+<<<<<<< HEAD   (cc3b22 Revert "virtio: Protect vqs list access")
 	.irq	= sdhci_msm_cqe_irq,
+=======
+	.set_timeout = sdhci_msm_set_timeout,
+>>>>>>> BRANCH (c6bf0e Linux 5.4.144)
 };
 
 static const struct sdhci_pltfm_data sdhci_msm_pdata = {
