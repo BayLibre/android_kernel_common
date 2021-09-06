@@ -296,6 +296,9 @@ DECLARE_HOOK(android_vh_filemap_get_folio_end,
 DECLARE_HOOK(android_vh_adjust_swap_info_flags,
 	TP_PROTO(unsigned long *flags),
 	TP_ARGS(flags));
+DECLARE_HOOK(android_vh_mmap_region,
+	TP_PROTO(struct vm_area_struct *vma, unsigned long addr),
+	TP_ARGS(vma, addr));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
