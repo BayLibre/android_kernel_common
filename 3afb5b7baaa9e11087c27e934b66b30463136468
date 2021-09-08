@@ -94,6 +94,30 @@
       },
       "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a887f5e_80300a7c",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1079098
+      },
+      "writtenOn": "2021-09-08T23:41:05Z",
+      "side": 1,
+      "message": "Greg, I don\u0027t understand.\nThis patch is from kernel-mainline. \nWe used that reserve field as Google did to prevent potential merge conflict issue of sound/soc/soc-pcm.c.\n\nIf we use refactored struct suggested by https://docs.partner.android.com/partners/guides/gki/kmi-kernels#changes-that-modify-the-kmi, soc-pcm.c will slightly different with kernel-mainline.",
+      "parentUuid": "6df5048d_ba6e9e9c",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1103,
+        "endChar": 56
+      },
+      "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
