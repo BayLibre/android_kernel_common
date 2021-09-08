@@ -46,6 +46,30 @@
       },
       "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79910a9b_f77b65e5",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-08T10:10:30Z",
+      "side": 1,
+      "message": "Sorry, there is some misunderstanding here.\n\nUsing the ANDROID_KABI_* macros is ONLY for google engineers doing merges with the upstream LTS releases in order to keep the KABI stable over the lifetime of the branch (i.e. for many many years.)\n\nThese macros are NOT to be used by anyone else for anything else.\n\nThe android12-5.10-lts branch is for doing the upstream LTS merges into, it is not for addition of any other patches as it is not needed there (it receives merges from the android12-5.10 branch at regular intervals.)",
+      "parentUuid": "cacf733f_fe12449e",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1103,
+        "endChar": 56
+      },
+      "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
