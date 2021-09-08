@@ -104,6 +104,11 @@ ssize_t fuse_passthrough_write_iter(struct kiocb *iocb_fuse,
 	inode_lock(fuse_inode);
 
 	old_cred = override_creds(ff->passthrough.cred);
+
+	ret = file_update_time(fuse_filp);
+	if (ret)
+		goto out;
+
 	if (is_sync_kiocb(iocb_fuse)) {
 		file_start_write(passthrough_filp);
 		ret = vfs_iter_write(passthrough_filp, iter, &iocb_fuse->ki_pos,
