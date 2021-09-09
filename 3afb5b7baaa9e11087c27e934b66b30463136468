@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5194d1b_3ed7442f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1079098
+      },
+      "writtenOn": "2021-09-09T23:40:08Z",
+      "side": 1,
+      "message": "This patch is accepted by the mainline with Nividia driver\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h\u003dv5.14\u0026id\u003d202e2f7745437aa5b694de92cbd30bb43b23fbed",
+      "parentUuid": "e00b89d0_f8386008",
+      "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac43e209_6f1d0bd1",
@@ -151,6 +169,30 @@
       "side": 1,
       "message": "Yes, this patch is from upstream, but it is not coming from an LTS release, which is what these fields are reserved for.\n\nIf this is just a bugfix, wonderful, get it merged into the stable/lts releases and then I will handle the ABI issues when it gets merged into this branch.  But if this is a new feature addition, then you can not break the abi for this kernel release and use these fields.",
       "parentUuid": "5a887f5e_80300a7c",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1103,
+        "endChar": 56
+      },
+      "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "933b58fa_bf764fbf",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1079098
+      },
+      "writtenOn": "2021-09-09T23:40:08Z",
+      "side": 1,
+      "message": "OK! Mediatek need this new feature, and we will refactor it to meet ABI.\nthanks",
+      "parentUuid": "5cab4720_c676d9d9",
       "range": {
         "startLine": 1103,
         "startChar": 0,
