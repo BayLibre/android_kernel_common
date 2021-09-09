@@ -118,6 +118,30 @@
       },
       "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cab4720_c676d9d9",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-09T15:53:17Z",
+      "side": 1,
+      "message": "Yes, this patch is from upstream, but it is not coming from an LTS release, which is what these fields are reserved for.\n\nIf this is just a bugfix, wonderful, get it merged into the stable/lts releases and then I will handle the ABI issues when it gets merged into this branch.  But if this is a new feature addition, then you can not break the abi for this kernel release and use these fields.",
+      "parentUuid": "5a887f5e_80300a7c",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1103,
+        "endChar": 56
+      },
+      "revId": "3afb5b7baaa9e11087c27e934b66b30463136468",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
