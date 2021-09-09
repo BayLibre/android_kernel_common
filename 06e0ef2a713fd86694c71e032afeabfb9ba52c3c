@@ -16,6 +16,24 @@
       "message": "why is this not a problem with the already exposed KMI?",
       "revId": "06e0ef2a713fd86694c71e032afeabfb9ba52c3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b286f52_69189f15",
+        "filename": "include/linux/spi/spi.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-09T10:36:52Z",
+      "side": 1,
+      "message": "The problem was in how the spi core set this value, it would receive the incorrect value if it was signed.\n\nSPI controllers (i.e. spi drivers) only read this value, so either way is fine.",
+      "parentUuid": "c2b2aa42_664fd9b1",
+      "revId": "06e0ef2a713fd86694c71e032afeabfb9ba52c3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
