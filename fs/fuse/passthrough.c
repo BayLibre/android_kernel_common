@@ -20,6 +20,8 @@ static void fuse_copyattr(struct file *dst_file, struct file *src_file)
 	struct inode *src = file_inode(src_file);
 
 	i_size_write(dst, i_size_read(src));
+	dst->i_mtime = src->i_mtime;
+	dst->i_ctime = src->i_ctime;
 }
 
 static void fuse_aio_cleanup_handler(struct fuse_aio_req *aio_req)
