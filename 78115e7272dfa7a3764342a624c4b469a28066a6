@@ -33,6 +33,24 @@
       "message": "Hi Greg and Alistair,\n\nThere is currently a way to set debug tags to DMA-BUFs from userspace using an IOCTL. All of our current DMA-BUF debugging tools print out these debug tags for every DMA-BUF. This patch from MTK adds an in-kernel API to do the same. MTK\u0027s kernel drivers would like to use it to tag the buffers with debug info. They sent the patch upstream but it was rejected due to lack of an in-kernel user(MTK\u0027s user is not yet ready for upstreaming). \n\nI am ok with taking this patch to 12-5.10 and following up on upstreaming it with MTK for our Android T branches. Could you please let me know if you have any concerns with doing so? Thank you!\n\nRegards,\nHridya",
       "revId": "78115e7272dfa7a3764342a624c4b469a28066a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d87b75_ab0fd032",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-12T09:14:04Z",
+      "side": 1,
+      "message": "That\u0027s fine with me.",
+      "parentUuid": "2e6ba351_40ea447b",
+      "revId": "78115e7272dfa7a3764342a624c4b469a28066a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
