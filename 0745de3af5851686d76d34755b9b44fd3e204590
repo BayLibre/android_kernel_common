@@ -16,6 +16,75 @@
       "message": "For reference: The original version of this in android12-5.10 was:\n\nhttps://android-review.googlesource.com/c/kernel/common/+/1535489\nChange-Id: I92053450bd74788889d1b7a569e291a35cd525ea\n",
       "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e83aefa_573133d4",
+        "filename": "drivers/android/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-13T15:41:22Z",
+      "side": 1,
+      "message": "can we call this \"android_debug_symbols.ko\"?",
+      "range": {
+        "startLine": 7,
+        "startChar": 39,
+        "endLine": 7,
+        "endChar": 52
+      },
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1e51b69_7c29efce",
+        "filename": "drivers/android/debug_symbols.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-13T15:41:22Z",
+      "side": 1,
+      "message": "can we put all of these in a namespace please?",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 17
+      },
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7bc2842_44f6b1ff",
+        "filename": "kernel/module.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4773,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-13T15:41:22Z",
+      "side": 1,
+      "message": "can we put this in a namespace only for the debugging driver?",
+      "range": {
+        "startLine": 4773,
+        "startChar": 0,
+        "endLine": 4773,
+        "endChar": 17
+      },
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
