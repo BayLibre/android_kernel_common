@@ -74,6 +74,7 @@
 #include <trace/hooks/snd_compr.h>
 #include <trace/hooks/ipv4.h>
 #include <trace/hooks/pci.h>
+#include <trace/hooks/panic.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -383,3 +384,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_pci_d3_sleep);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_slab);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmap_region);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_unmap_one);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_panic_prepare);
