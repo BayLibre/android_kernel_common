@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57546a85_3361a387",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2021-09-15T22:17:11Z",
+      "side": 1,
+      "message": "Unfortunately, we found that this change noticeably slows down our builds. The variable DTC_FLAGS is a recursively expanded makefile variable which means that it is re-expanded every time it is referenced. In other words, a try-run is performed every time this variable is referenced which is wasteful because the result will always be the same.\nIn addition, if dtc is invoked with $(call if_changed_dep,dtc,dtb), DTC_FLAGS is apparently expanded three times. As a result, we observe 3 try-runs per dtc-option of which there are 9. This means that every compilation of a device tree file is preceded by 27 try-runs! Every invocation of dtc turns into 28 invocations!\nAdditionally, it appears as if Make prohibits parallelization if a recipe contains a reference to the $(shell ....) function. That hurts build performance even worse.\n\nI therefore request for this change to be reverted.\n\nAlternatively, can we skip try-runs for flags that have been around for a long time and where we expect these try-runs to always succeed? We should also try turning this makefile variable into a simply expanded variable. The kernel build system is doing something similar for KBUILD_CFLAGS, and it\u0027s apparently not suffering from these issues:\n\nKBUILD_CFLAGS   +\u003d $(call cc-disable-warning,frame-address,)",
+      "revId": "47b5470fd1be67460ff2147f0fc910ea7ac36c33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
