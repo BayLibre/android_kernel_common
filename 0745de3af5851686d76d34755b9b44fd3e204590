@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff27482e_42295f6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-16T18:43:31Z",
+      "side": 1,
+      "message": "-2 for now as we discuss all the pieces of minidump for android-mainline.",
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e83aefa_573133d4",
@@ -197,6 +214,30 @@
       "side": 1,
       "message": "One more query, which one you preferred ANDROID_SYMBOLS or QC_ANDROID_SYMBOLS (as these symbols will be used by QC specific module, ie. minidump).",
       "parentUuid": "301aa666_671e479f",
+      "range": {
+        "startLine": 4773,
+        "startChar": 0,
+        "endLine": 4773,
+        "endChar": 17
+      },
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f462e1ce_e3e52cc8",
+        "filename": "kernel/module.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4773,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-16T18:43:31Z",
+      "side": 1,
+      "message": "We ultimately want all of this to be upstream friendly and useable by anyone. Please read the comments in b/199236943.\n\nSince minidump is this driver + exported symbols + minidump vendor driver, we\u0027d like to see a plan for how this can be upstreamed (or rationale for why it can\u0027t) before taking this into android-mainline where it becomes permanent.\n\nSee the bug and continue the discussion there.",
+      "parentUuid": "0f37d1f9_efa44fc6",
       "range": {
         "startLine": 4773,
         "startChar": 0,
