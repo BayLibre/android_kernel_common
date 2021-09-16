@@ -89,6 +89,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5978182_ded13fc0",
+        "filename": "kernel/module.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4773,
+      "author": {
+        "id": 1873752
+      },
+      "writtenOn": "2021-09-16T02:22:28Z",
+      "side": 1,
+      "message": "I tried with EXPORT_SYMBOL_NS_GPL(android_debug_per_cpu_symbol, DEBUG);\nBut have one query, as minidump will go in production images, what if in future all DEBUG SYMBOL in product image was striped ?",
+      "parentUuid": "a7bc2842_44f6b1ff",
+      "range": {
+        "startLine": 4773,
+        "startChar": 0,
+        "endLine": 4773,
+        "endChar": 17
+      },
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7e8bb8b_4e59a77b",
         "filename": "kernel/module.c",
         "patchSetId": 1
