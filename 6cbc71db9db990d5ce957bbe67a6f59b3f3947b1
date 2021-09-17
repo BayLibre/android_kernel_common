@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28737285_eff85042",
+        "filename": "android/abi_gki_aarch64_unisoc",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-09-17T07:13:10Z",
+      "side": 1,
+      "message": "sorry, but no driver should ever be invoking userspace programs directly, this is not ok.\n\nAlso note that this symbol is gone in newer kernels, please use the proper user/kernel apis instead of spawning userspace programs like this.",
+      "range": {
+        "startLine": 267,
+        "startChar": 2,
+        "endLine": 267,
+        "endChar": 20
+      },
+      "revId": "6cbc71db9db990d5ce957bbe67a6f59b3f3947b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
