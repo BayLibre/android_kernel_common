@@ -35,6 +35,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1488f97_8efbdb6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-17T21:26:01Z",
+      "side": 1,
+      "message": "Can we group all of the minidump-related patches together (I added the ones I know about into a \u0027minidump\u0027 topic). If I missed any, please add them to the topic.\n\nGreg has a great suggestion in this patch to use namespaces to make functions available to this minidump feature, but not for general use. Can we do the same with all of the other related patches (eg aosp/1821479) that also add new functions to support minidump?\n\n...or even better, instead of exports, can this driver use those functions on behalf of the minidump module and export a higher-level function for the minidump module?\n\nMaybe this built-in driver should be renamed if it provides some services for the module in addition to just the symbol lookups. Maybe something like \"minidump_support\".",
+      "revId": "0745de3af5851686d76d34755b9b44fd3e204590",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e83aefa_573133d4",
