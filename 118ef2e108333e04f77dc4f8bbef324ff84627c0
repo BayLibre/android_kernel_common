@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02453afe_cd7679a2",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3412,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-17T01:12:42Z",
+      "side": 1,
+      "message": "Since there is already a dedicated built-in driver to support minidump (debug_symbols), can we use that driver to call this function and return the data (along with the rest of the debug info)? There are 2 benefits:\n1) This patch is not needed\n2) It is obvious how the returned sysinfo is being used (for minidump)\n\nMaybe \"debug_symbols\" should be renamed to \"crash_debug_info\" since it would now go beyond just symbols.",
+      "revId": "118ef2e108333e04f77dc4f8bbef324ff84627c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
