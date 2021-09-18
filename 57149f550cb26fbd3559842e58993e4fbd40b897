@@ -16,6 +16,24 @@
       "message": "should this just go into the stable kernels instead of being forced to be cherry-picked everywhere?",
       "revId": "57149f550cb26fbd3559842e58993e4fbd40b897",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "017aeab7_2dd1e94e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1896910
+      },
+      "writtenOn": "2021-09-18T16:17:55Z",
+      "side": 1,
+      "message": "This did get auto selected by Sasha at some point and I indicated that given that the bcm7271_serial driver was only added in 5.13, this would not be necessary:\n\nhttps://lkml.org/lkml/2021/7/17/348\n\nThe submission of the bcm7271_serial driver does come next in the patch set that Pierre was going to submit in our behalf, so if we accept the driver, we must also take that CONFIG_SERIAL_8250_BCM7271 change. It was submitted ahead of the actual serial driver because that is logically how it should have been done upstream as well to help with running bisections.\n\nIf you want me to submit that patch alone to the stable 5.10 queue, despite 5.10 have no CONFIG_SERIAL_8250_BCM7271 symbol, I am fine with that, it just does not feel very appropriate to me.\n\nLet me know.",
+      "parentUuid": "8e340da4_ff973f9a",
+      "revId": "57149f550cb26fbd3559842e58993e4fbd40b897",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
