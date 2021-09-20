@@ -16,6 +16,24 @@
       "message": "Please work upstream to resolve this first.",
       "revId": "9ab7190047128323b85c2c27ca27f002d00f591e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa1119f_1ef2645b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-09-20T19:18:10Z",
+      "side": 1,
+      "message": "This is not a new patch, we\u0027ve carried 056f12819b75 (\"ANDROID: arm64: copy CONFIG_CMDLINE_EXTEND from ARM\") since 2014. The issue is that a very similar patch landed upstream: 1e40d105dae5 (\"arm64: Extend the kernel command line from the bootloader\") which also added CMDLINE_EXTEND for arm64. We even had merge conflicts with it: https://android-review.googlesource.com/c/kernel/common/+/1530042/3/arch/arm64/Kconfig.\n\nWill\u0027s removal of CMDLINE_EXTEND in cae118b6acc3 (\"arm64: Drop support for CMDLINE_EXTEND\") was only targeting upstream and not android (See b/120440972#comment12). However, by pulling this from upstream we also broke the android patch.\n\nI could help out get the new approach upstream (append and prepend). In the meantime we need to restore CMDLINE_EXTEND on arm64 for android. Otherwise this decade old patch becomes useless for arm64: d9a2a3f2c2c4 (\"ANDROID: of: Support CONFIG_CMDLINE_EXTEND config option\").",
+      "parentUuid": "02d247d0_47ef6d93",
+      "revId": "9ab7190047128323b85c2c27ca27f002d00f591e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
