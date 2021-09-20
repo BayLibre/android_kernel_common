@@ -70,7 +70,9 @@ DECLARE_HOOK(android_vh_binder_print_transaction_info,
 	TP_PROTO(struct seq_file *m, struct binder_proc *proc,
 		 const char *prefix, struct binder_transaction *t),
 	TP_ARGS(m, proc, prefix, t));
-
+DECLARE_RESTRICTED_HOOK(android_rvh_binder_wakeup_ilocked,
+	TP_PROTO(struct task_struct *task, bool sync, struct binder_proc *proc),
+	TP_ARGS(task, sync, proc), 1);
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_BINDER_H */
