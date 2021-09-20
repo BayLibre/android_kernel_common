@@ -33,6 +33,23 @@
       "message": "does this need to go to all android12 branches?",
       "revId": "3145448e2d56657157101467ac4239477e4ef94c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a1c74d8_9ef04a0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-09-20T20:08:25Z",
+      "side": 1,
+      "message": "I\u0027ve verified this indeed fixes things in a cuttlefish x86_64 instance running android12-5.4 with this patch.\n\nls -lZ /sys/fs/bpf\n...\n-r--r----- 1 root system       u:object_r:fs_bpf:s0            0 2021-09-20 20:00 prog_time_in_state_tracepoint_sched_sched_switch\ndrwxrwxrwt 2 root root         u:object_r:fs_bpf_tethering:s0  0 2021-09-20 20:00 tethering\n\nuname -r\n5.4.125-android12-9-00010-geaa5da2d619c\n\nuname -m\nx86_64",
+      "revId": "3145448e2d56657157101467ac4239477e4ef94c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
