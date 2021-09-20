@@ -386,3 +386,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_unmap_one);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_binder_wakeup_ilocked);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_binder_set_priority);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_binder_restore_priority);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_scheduler_tick);
