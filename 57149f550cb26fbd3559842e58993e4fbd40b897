@@ -52,6 +52,24 @@
       "parentUuid": "017aeab7_2dd1e94e",
       "revId": "57149f550cb26fbd3559842e58993e4fbd40b897",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a231c8da_3a6fe5eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1896910
+      },
+      "writtenOn": "2021-09-20T16:22:02Z",
+      "side": 1,
+      "message": "This patch is part of a bigger patch set that does add the bcm7271_8250 serial driver which should have been submitted as a single Gerrit submission containing the following back ports of these upstream commits (in that order), Pierre is going to be submitting the following changes, in that order:\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml?id\u003d88a499cd70d4f205092b2ac6bc66354c1b30464c\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/tty/serial/8250/8250_bcm7271.c?id\u003d41a469482de257ea8db43cf74b6311bd055de030\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/tty/serial/8250/8250_bcm7271.c?id\u003d64b1510642f845d90ad2aa35111582a4492e801b\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/tty/serial/8250/8250_bcm7271.c?id\u003db0b07762bfa41b292c45f78e0b37870e6c30bb27\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/tty/serial/8250/8250_bcm7271.c?id\u003d8a66b31a15966ea4a206819804ae627874b90d15\n\nAs I said, when this patch was auto-selected alone to the stable 5.10 tree, because the driver did not make it until 5.13, it did not make sense to be included in the upstream stable 5.10. As soon as we try to get the bcm7271_serial driver though, we need that patch included, and *ideally* we want it before 41a469482de257ea8db43cf74b6311bd055de030 (\"\tserial: 8250: Add new 8250-core based Broadcom STB driver\") in order to avoid bisection issues, if it does not happen to be placed in that order, but in the order in which it got included upstream, that is fine.",
+      "parentUuid": "2da8a3f1_b305e847",
+      "revId": "57149f550cb26fbd3559842e58993e4fbd40b897",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
