@@ -16,6 +16,24 @@
       "message": "Just a heads up: This change is causing major issues on HiKey960 (haven\u0027t yet tested db845c, but I suspect it will be suffering too). Is there something we need to do for the module builds to adapt for this strict mode?",
       "revId": "205d5f733f3683a7d97e7db4751a05ec2fd21cf4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e273790_72919930",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2021-09-21T22:14:46Z",
+      "side": 1,
+      "message": "Yeah you need to create symbol list for these configs. Can you post the build configs for these devices so I can help you with that? You might be able to just use `build/build_abi.sh -s` but it depends on how the build config is configured.",
+      "parentUuid": "4e80e296_4e373f6b",
+      "revId": "205d5f733f3683a7d97e7db4751a05ec2fd21cf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
