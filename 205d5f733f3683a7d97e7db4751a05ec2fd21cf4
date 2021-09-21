@@ -52,6 +52,24 @@
       "parentUuid": "9e273790_72919930",
       "revId": "205d5f733f3683a7d97e7db4751a05ec2fd21cf4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e45986ee_8bff452a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2021-09-21T22:22:31Z",
+      "side": 1,
+      "message": "okay, make sure to apply the below patch before you run build_abi.sh -s. Also run \"touch common/android/abi_gki_aarch64_db845c\" first so that the file exists.  The build_abi.sh script should update the symbol list which you can commit all these changes together.\n\n```\ndiff --git a/build.config.db845c b/build.config.db845c\nindex 2e59c3f018d8..0cf98815f3be 100644\n--- a/build.config.db845c\n+++ b/build.config.db845c\n@@ -17,4 +17,5 @@ arch/arm64/boot/Image.gz\n arch/arm64/boot/dts/qcom/sdm845-db845c.dtb\n vmlinux\n \"\n+KMI_SYMBOL_LIST\u003dandroid/abi_gki_aarch64_db845c\n GKI_MODULES_LIST\u003dandroid/gki_aarch64_modules\ndiff --git a/build.config.gki.aarch64 b/build.config.gki.aarch64\nindex 7cabed17450b..a2441d5108ac 100644\n--- a/build.config.gki.aarch64\n+++ b/build.config.gki.aarch64\n@@ -13,6 +13,7 @@ android/abi_gki_aarch64_core\n android/abi_gki_aarch64_fips140\n android/abi_gki_aarch64_generic\n android/abi_gki_aarch64_virtual_device\n+android/abi_gki_aarch64_db845c\n \"\n \n FILES\u003d\"${FILES}\n```",
+      "parentUuid": "06dbf14f_a5424433",
+      "revId": "205d5f733f3683a7d97e7db4751a05ec2fd21cf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
