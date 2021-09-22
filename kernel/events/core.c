@@ -8457,8 +8457,16 @@ static void perf_event_addr_filters_apply(struct perf_event *event)
 		if (!mm)
 			goto restart;
 
+<<<<<<< HEAD   (4b5389 Merge 4.14.246 into android-4.14-stable)
 		down_read(&mm->mmap_sem);
 	}
+=======
+	mm = get_task_mm(task);
+	if (!mm)
+		goto restart;
+
+	down_read(&mm->mmap_sem);
+>>>>>>> BRANCH (8ea4f7 Linux 4.14.247)
 
 	raw_spin_lock_irqsave(&ifh->lock, flags);
 	list_for_each_entry(filter, &ifh->list, entry) {

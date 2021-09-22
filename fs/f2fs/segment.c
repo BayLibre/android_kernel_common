@@ -4240,6 +4240,7 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 		if (IS_NODESEG(se->type))
 			total_node_blocks += se->valid_blocks;
 
+<<<<<<< HEAD   (4b5389 Merge 4.14.246 into android-4.14-stable)
 		if (is_set_ckpt_flags(sbi, CP_TRIMMED_FLAG)) {
 			memset(se->discard_map, 0xff, SIT_VBLOCK_MAP_SIZE);
 		} else {
@@ -4247,9 +4248,25 @@ static int build_sit_entries(struct f2fs_sb_info *sbi)
 						SIT_VBLOCK_MAP_SIZE);
 			sbi->discard_blks += old_valid_blocks;
 			sbi->discard_blks -= se->valid_blocks;
+=======
+		if (f2fs_discard_en(sbi)) {
+			if (is_set_ckpt_flags(sbi, CP_TRIMMED_FLAG)) {
+				memset(se->discard_map, 0xff,
+							SIT_VBLOCK_MAP_SIZE);
+			} else {
+				memcpy(se->discard_map, se->cur_valid_map,
+							SIT_VBLOCK_MAP_SIZE);
+				sbi->discard_blks += old_valid_blocks;
+				sbi->discard_blks -= se->valid_blocks;
+			}
+>>>>>>> BRANCH (8ea4f7 Linux 4.14.247)
 		}
 
+<<<<<<< HEAD   (4b5389 Merge 4.14.246 into android-4.14-stable)
 		if (__is_large_section(sbi)) {
+=======
+		if (sbi->segs_per_sec > 1) {
+>>>>>>> BRANCH (8ea4f7 Linux 4.14.247)
 			get_sec_entry(sbi, start)->valid_blocks +=
 							se->valid_blocks;
 			get_sec_entry(sbi, start)->valid_blocks -=
