@@ -843,6 +843,12 @@ struct ufs_hba {
 
 	struct blk_mq_tag_set tmf_tag_set;
 	struct request_queue *tmf_queue;
+#if 0
+	/*
+	 * This has been moved into struct ufs_hba_with_hpb because of the GKI.
+	 */
+	struct request **tmf_rqs;
+#endif
 
 	struct uic_command *active_uic_cmd;
 	struct mutex uic_cmd_mutex;
@@ -941,10 +947,16 @@ struct ufs_hba {
  */
 struct ufs_hba_add_info {
 	struct ufs_hba hba;
+	struct request **tmf_rqs;
 #ifdef CONFIG_SCSI_UFS_HPB
 	struct ufshpb_dev_info hpb_dev;
 #endif
 };
+
+static inline struct ufs_hba_add_info *ufs_hba_add_info(struct ufs_hba *hba)
+{
+	return container_of(hba, struct ufs_hba_add_info, hba);
+}
 
 /* Returns true if clocks can be gated. Otherwise false */
 static inline bool ufshcd_is_clkgating_allowed(struct ufs_hba *hba)
