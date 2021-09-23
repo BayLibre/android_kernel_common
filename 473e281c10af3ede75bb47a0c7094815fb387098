@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1cdd550_b33e189b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1897551
+      },
+      "writtenOn": "2021-09-23T16:54:37Z",
+      "side": 1,
+      "message": "Todd, we are seeing performance improvements as a consequence of skipping CFI checks in our usecases. As such, we need these hooks to be restricted hooks. IIRC, we saw the same thing when we were doing module evaluations last year as well. \n\nIt takes time for hooks to trickle into our tree, and so we would need these to be merged asap. \n\nDoes google intend on removing cfi checks with regular trace hooks?",
+      "parentUuid": "39ad6b3a_43f11cfd",
+      "revId": "473e281c10af3ede75bb47a0c7094815fb387098",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "463a757f_6df3fad4",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
