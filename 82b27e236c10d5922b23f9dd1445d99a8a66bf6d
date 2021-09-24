@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1096cea0_f6f524e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-24T14:43:39Z",
+      "side": 1,
+      "message": "This series is causing a build-break:\n```\n+++ /usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common/defconfig\t2021-09-24 14:39:13.820381962 +0000\n@@ -667,7 +667,6 @@\n CONFIG_UBSAN\u003dy\n CONFIG_UBSAN_TRAP\u003dy\n CONFIG_UBSAN_LOCAL_BOUNDS\u003dy\n-# CONFIG_UBSAN_MISC is not set\n CONFIG_PAGE_OWNER\u003dy\n CONFIG_PAGE_PINNER\u003dy\n CONFIG_DEBUG_MEMORY_INIT\u003dy\n++ RES\u003d1\n++ \u0027[\u0027 1 -ne 0 \u0027]\u0027\n++ echo ERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig\nERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig\n++ return 1\n```",
+      "revId": "82b27e236c10d5922b23f9dd1445d99a8a66bf6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
