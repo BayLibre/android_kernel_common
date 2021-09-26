@@ -69,6 +69,23 @@
       "parentUuid": "6f7f9764_7b54ea75",
       "revId": "ae2919532318e15e724a7c073dc4cf866cb5577d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "819352e9_21c27a41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2021-09-26T10:30:18Z",
+      "side": 1,
+      "message": "This patch seem break the xml file format? \nThis diff was mad manuelly, beacuase the build output of will generate the diff for all the module, I just pickup the difference for the HID module in this patch.\n\nI got error report which this change for later build:\n\nTraceback (most recent call last):\n  File \"/home/kever/src/android/build/abi/diff_abi\", line 60, in \u003cmodule\u003e\n    sys.exit(main())\n  File \"/home/kever/src/android/build/abi/diff_abi\", line 49, in main\n    abi_changed \u003d diff_abi(args.abi_tool,\n  File \"/home/kever/src/android/build/abi/diff_abi\", line 27, in diff_abi\n    return tool.diff_abi(baseline, new, report, short_report, symbol_list,\n  File \"/home/kever/src/android/build/abi/abitool.py\", line 222, in diff_abi\n    subprocess.check_call(diff_abi_cmd, stdout\u003dout, stderr\u003dout)\n  File \"/usr/lib/python3.8/subprocess.py\", line 364, in check_call\n    raise CalledProcessError(retcode, cmd)\nsubprocess.CalledProcessError: Command \u0027[\u0027abidiff\u0027, \u0027--flag-indirect\u0027, \u0027common/android/abi_gki_aarch64.xml\u0027, \u0027/home/kever/src/android/out_abi/android12-5.10/dist/abi-ASB-2021-09-05_12-5.10-80869-g948a6385b5a8-dirty.xml\u0027, \u0027--leaf-changes-only\u0027, \u0027--impacted-interfaces\u0027]\u0027 died with \u003cSignals.SIGSEGV: 11\u003e.\n",
+      "revId": "ae2919532318e15e724a7c073dc4cf866cb5577d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
