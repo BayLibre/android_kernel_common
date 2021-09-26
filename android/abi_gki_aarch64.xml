@@ -1399,6 +1399,7 @@
       <elf-symbol name='devm_gpiod_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2b64bf51'/>
       <elf-symbol name='devm_gpiod_get_array' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2ad78a61'/>
       <elf-symbol name='devm_gpiod_get_index' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7e37641e'/>
+      <elf-symbol name='devm_gpiod_get_index_optional' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x401251e3'/>
       <elf-symbol name='devm_gpiod_get_optional' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd96311'/>
       <elf-symbol name='devm_gpiod_put' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd825ff99'/>
       <elf-symbol name='devm_gpiod_put_array' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa177b3d3'/>
@@ -2339,6 +2340,7 @@
       <elf-symbol name='gpiod_get_raw_value_cansleep' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7ee96f3'/>
       <elf-symbol name='gpiod_get_value' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6606192c'/>
       <elf-symbol name='gpiod_get_value_cansleep' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x421f2ad'/>
+      <elf-symbol name='gpiod_is_active_low' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb5606728'/>
       <elf-symbol name='gpiod_set_array_value_cansleep' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe92664b6'/>
       <elf-symbol name='gpiod_set_consumer_name' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe1aa88cb'/>
       <elf-symbol name='gpiod_set_debounce' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7221e927'/>
@@ -118514,6 +118516,13 @@
         <parameter type-id='38d4936d' name='flags' filepath='drivers/gpio/gpiolib-devres.c' line='96' column='1'/>
         <return type-id='26760480'/>
       </function-decl>
+      <function-decl name='devm_gpiod_get_index_optional' mangled-name='devm_gpiod_get_index_optional' filepath='drivers/gpio/gpiolib-devres.c' line='241' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devm_gpiod_get_index_optional'>
+        <parameter type-id='fa0b179b' name='dev' filepath='drivers/gpio/gpiolib-devres.c' line='241' column='1'/>
+        <parameter type-id='80f4b756' name='con_id' filepath='drivers/gpio/gpiolib-devres.c' line='242' column='1'/>
+        <parameter type-id='f0981eeb' name='index' filepath='drivers/gpio/gpiolib-devres.c' line='243' column='1'/>
+        <parameter type-id='38d4936d' name='flags' filepath='drivers/gpio/gpiolib-devres.c' line='244' column='1'/>
+        <return type-id='26760480'/>
+      </function-decl>
       <function-decl name='devm_gpiod_get_optional' mangled-name='devm_gpiod_get_optional' filepath='drivers/gpio/gpiolib-devres.c' line='74' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devm_gpiod_get_optional'>
         <parameter type-id='fa0b179b' name='dev' filepath='drivers/gpio/gpiolib-devres.c' line='74' column='1'/>
         <parameter type-id='80f4b756' name='con_id' filepath='drivers/gpio/gpiolib-devres.c' line='75' column='1'/>
@@ -123477,6 +123486,10 @@
       </function-decl>
       <function-decl name='gpiod_get_value_cansleep' mangled-name='gpiod_get_value_cansleep' filepath='drivers/gpio/gpiolib.c' line='3415' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='gpiod_get_value_cansleep'>
         <parameter type-id='5bed570d' name='desc' filepath='drivers/gpio/gpiolib.c' line='3415' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='gpiod_is_active_low' mangled-name='gpiod_is_active_low' filepath='drivers/gpio/gpiolib.c' line='2584' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='gpiod_is_active_low'>
+        <parameter type-id='5bed570d' name='desc' filepath='drivers/gpio/gpiolib.c' line='2584' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='gpiod_set_array_value_cansleep' mangled-name='gpiod_set_array_value_cansleep' filepath='drivers/gpio/gpiolib.c' line='3575' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='gpiod_set_array_value_cansleep'>
