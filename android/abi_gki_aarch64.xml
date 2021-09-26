@@ -107,6 +107,8 @@
       <elf-symbol name='__get_task_comm' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc2a656d9'/>
       <elf-symbol name='__get_vm_area_caller' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x87eb7b44'/>
       <elf-symbol name='__getblk_gfp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4c9af7f2'/>
+      <elf-symbol name='__hid_register_driver' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbe362106'/>
+      <elf-symbol name='__hid_request' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x62d87780'/>
       <elf-symbol name='__hrtimer_get_remaining' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xed269ad2'/>
       <elf-symbol name='__hvc_resize' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb7ef2ce8'/>
       <elf-symbol name='__hw_addr_init' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf389fe60'/>
@@ -2383,8 +2385,16 @@
       <elf-symbol name='hid_add_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4770d7dd'/>
       <elf-symbol name='hid_allocate_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x77526c8a'/>
       <elf-symbol name='hid_destroy_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x67deb5af'/>
+      <elf-symbol name='hid_hw_close' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x28a8a7db'/>
+      <elf-symbol name='hid_hw_open' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x943ae811'/>
+      <elf-symbol name='hid_hw_start' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2f71a7a9'/>
+      <elf-symbol name='hid_hw_stop' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdae460c7'/>
       <elf-symbol name='hid_input_report' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe5b38773'/>
+      <elf-symbol name='hid_open_report' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcc0f3a8c'/>
       <elf-symbol name='hid_parse_report' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8ec262a0'/>
+      <elf-symbol name='hid_report_raw_event' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcdd650a6'/>
+      <elf-symbol name='hid_unregister_driver' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5954b3b9'/>
+      <elf-symbol name='hid_validate_values' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4aad7e86'/>
       <elf-symbol name='hmm_range_fault' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc611b02'/>
       <elf-symbol name='housekeeping_cpumask' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xee49ad1d'/>
       <elf-symbol name='hrtimer_active' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xecd991f'/>
@@ -2539,6 +2549,7 @@
       <elf-symbol name='input_close_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1edc8012'/>
       <elf-symbol name='input_event' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3b938c8d'/>
       <elf-symbol name='input_ff_create' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xafd0f173'/>
+      <elf-symbol name='input_ff_create_memless' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x231c132e'/>
       <elf-symbol name='input_ff_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x28b46b32'/>
       <elf-symbol name='input_free_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd329e1c6'/>
       <elf-symbol name='input_mt_assign_slots' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4a3d248c'/>
@@ -110981,6 +110992,18 @@
         <parameter type-id='3eb7c31c' name='gfp' filepath='fs/buffer.c' line='1357' column='1'/>
         <return type-id='c485c22c'/>
       </function-decl>
+      <function-decl name='__hid_register_driver' mangled-name='__hid_register_driver' filepath='drivers/hid/hid-core.c' line='2543' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__hid_register_driver'>
+        <parameter type-id='cbd2074d' name='hdrv' filepath='drivers/hid/hid-core.c' line='2543' column='1'/>
+        <parameter type-id='2730d015' name='owner' filepath='drivers/hid/hid-core.c' line='2543' column='1'/>
+        <parameter type-id='80f4b756' name='mod_name' filepath='drivers/hid/hid-core.c' line='2544' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='__hid_request' mangled-name='__hid_request' filepath='drivers/hid/hid-core.c' line='1709' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__hid_request'>
+        <parameter type-id='37175e4d' name='hid' filepath='drivers/hid/hid-core.c' line='1709' column='1'/>
+        <parameter type-id='5b4284d1' name='report' filepath='drivers/hid/hid-core.c' line='1709' column='1'/>
+        <parameter type-id='95e97e5e' name='reqtype' filepath='drivers/hid/hid-core.c' line='1710' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='__hrtimer_get_remaining' mangled-name='__hrtimer_get_remaining' filepath='kernel/time/hrtimer.c' line='1309' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__hrtimer_get_remaining'>
         <parameter type-id='1ce53783' name='timer' filepath='kernel/time/hrtimer.c' line='1309' column='1'/>
         <parameter type-id='b50a4934' name='adjust' filepath='kernel/time/hrtimer.c' line='1309' column='1'/>
@@ -123675,6 +123698,23 @@
         <parameter type-id='37175e4d' name='hdev' filepath='drivers/hid/hid-core.c' line='2505' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+      <function-decl name='hid_hw_close' mangled-name='hid_hw_close' filepath='drivers/hid/hid-core.c' line='2117' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_hw_close'>
+        <parameter type-id='37175e4d' name='hdev' filepath='drivers/hid/hid-core.c' line='2117' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='hid_hw_open' mangled-name='hid_hw_open' filepath='drivers/hid/hid-core.c' line='2089' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_hw_open'>
+        <parameter type-id='37175e4d' name='hdev' filepath='drivers/hid/hid-core.c' line='2089' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='hid_hw_start' mangled-name='hid_hw_start' filepath='include/linux/hid.h' line='1040' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_hw_start'>
+        <parameter type-id='37175e4d'/>
+        <parameter type-id='f0981eeb'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='hid_hw_stop' mangled-name='hid_hw_stop' filepath='drivers/hid/hid-core.c' line='2074' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_hw_stop'>
+        <parameter type-id='37175e4d' name='hdev' filepath='drivers/hid/hid-core.c' line='2074' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
       <function-decl name='hid_input_report' mangled-name='hid_input_report' filepath='drivers/hid/hid-core.c' line='1810' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_input_report'>
         <parameter type-id='37175e4d' name='hid' filepath='drivers/hid/hid-core.c' line='1810' column='1'/>
         <parameter type-id='95e97e5e' name='type' filepath='drivers/hid/hid-core.c' line='1810' column='1'/>
@@ -123683,11 +123723,35 @@
         <parameter type-id='95e97e5e' name='interrupt' filepath='drivers/hid/hid-core.c' line='1810' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='hid_open_report' mangled-name='hid_open_report' filepath='include/linux/hid.h' line='903' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_open_report'>
+        <parameter type-id='37175e4d'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='hid_parse_report' mangled-name='hid_parse_report' filepath='drivers/hid/hid-core.c' line='937' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_parse_report'>
         <parameter type-id='37175e4d' name='hid' filepath='drivers/hid/hid-core.c' line='937' column='1'/>
         <parameter type-id='474e5dcc' name='start' filepath='drivers/hid/hid-core.c' line='937' column='1'/>
         <parameter type-id='f0981eeb' name='size' filepath='drivers/hid/hid-core.c' line='937' column='1'/>
         <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='hid_report_raw_event' mangled-name='hid_report_raw_event' filepath='include/linux/hid.h' line='1163' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_report_raw_event'>
+        <parameter type-id='37175e4d'/>
+        <parameter type-id='95e97e5e'/>
+        <parameter type-id='cf536864'/>
+        <parameter type-id='f0981eeb'/>
+        <parameter type-id='95e97e5e'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='hid_unregister_driver' mangled-name='hid_unregister_driver' filepath='include/linux/hid.h' line='864' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_unregister_driver'>
+        <parameter type-id='cbd2074d'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='hid_validate_values' mangled-name='hid_validate_values' filepath='drivers/hid/hid-core.c' line='964' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hid_validate_values'>
+        <parameter type-id='37175e4d' name='hid' filepath='drivers/hid/hid-core.c' line='964' column='1'/>
+        <parameter type-id='f0981eeb' name='type' filepath='drivers/hid/hid-core.c' line='965' column='1'/>
+        <parameter type-id='f0981eeb' name='id' filepath='drivers/hid/hid-core.c' line='965' column='1'/>
+        <parameter type-id='f0981eeb' name='field_index' filepath='drivers/hid/hid-core.c' line='966' column='1'/>
+        <parameter type-id='f0981eeb' name='report_counts' filepath='drivers/hid/hid-core.c' line='967' column='1'/>
+        <return type-id='5b4284d1'/>
       </function-decl>
       <function-decl name='hmm_range_fault' mangled-name='hmm_range_fault' filepath='mm/hmm.c' line='568' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hmm_range_fault'>
         <parameter type-id='f9d3500f' name='range' filepath='mm/hmm.c' line='568' column='1'/>
@@ -124477,6 +124541,12 @@
       <function-decl name='input_ff_create' mangled-name='input_ff_create' filepath='drivers/input/ff-core.c' line='305' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_ff_create'>
         <parameter type-id='74b427eb' name='dev' filepath='drivers/input/ff-core.c' line='305' column='1'/>
         <parameter type-id='f0981eeb' name='max_effects' filepath='drivers/input/ff-core.c' line='305' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='input_ff_create_memless' mangled-name='input_ff_create_memless' filepath='drivers/input/ff-memless.c' line='510' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_ff_create_memless'>
+        <parameter type-id='74b427eb' name='dev' filepath='drivers/input/ff-memless.c' line='510' column='1'/>
+        <parameter type-id='eaa32e2f' name='data' filepath='drivers/input/ff-memless.c' line='510' column='1'/>
+        <parameter type-id='2d974d69' name='play_effect' filepath='drivers/input/ff-memless.c' line='511' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='input_ff_destroy' mangled-name='input_ff_destroy' filepath='drivers/input/ff-core.c' line='365' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_ff_destroy'>
