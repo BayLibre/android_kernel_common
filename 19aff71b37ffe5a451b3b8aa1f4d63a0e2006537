@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbeca406_ff05f67c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-27T14:43:53Z",
+      "side": 1,
+      "message": "You need to make this change in arch/x86/configs/gki_defconfig as well. Same build break:\n```\n@@ -601,7 +601,6 @@\n CONFIG_UBSAN\u003dy\n CONFIG_UBSAN_TRAP\u003dy\n CONFIG_UBSAN_LOCAL_BOUNDS\u003dy\n-# CONFIG_UBSAN_MISC is not set\n CONFIG_PAGE_OWNER\u003dy\n CONFIG_PAGE_PINNER\u003dy\n CONFIG_DEBUG_MEMORY_INIT\u003dy\n++ RES\u003d1\n++ \u0027[\u0027 1 -ne 0 \u0027]\u0027\n++ echo ERROR: savedefconfig does not match common/arch/x86/configs/gki_defconfig\nERROR: savedefconfig does not match common/arch/x86/configs/gki_defconfig\n++ return 1\n```",
+      "revId": "19aff71b37ffe5a451b3b8aa1f4d63a0e2006537",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
