@@ -4936,6 +4936,7 @@
       <elf-symbol name='usb_add_gadget' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7ed67fe3'/>
       <elf-symbol name='usb_add_gadget_udc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xde6d5c6f'/>
       <elf-symbol name='usb_add_hcd' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe7b94b3f'/>
+      <elf-symbol name='usb_add_phy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x86f48f44'/>
       <elf-symbol name='usb_add_phy_dev' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcfba1162'/>
       <elf-symbol name='usb_alloc_coherent' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe2ceddab'/>
       <elf-symbol name='usb_alloc_dev' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd97c0fff'/>
@@ -5186,6 +5187,7 @@
       <elf-symbol name='v4l2_m2m_unregister_media_controller' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf13ff84d'/>
       <elf-symbol name='v4l2_match_dv_timings' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd034392d'/>
       <elf-symbol name='v4l2_pipeline_link_notify' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8b4f4749'/>
+      <elf-symbol name='v4l2_querymenu' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xae9f2785'/>
       <elf-symbol name='v4l2_s_ctrl' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x81f0747c'/>
       <elf-symbol name='v4l2_s_parm_cap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb1e6233e'/>
       <elf-symbol name='v4l2_spi_subdev_init' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd7f32d29'/>
@@ -65902,7 +65904,20 @@
           <var-decl name='private_value' type-id='7359adad' visibility='default' filepath='include/sound/control.h' line='56' column='1'/>
         </data-member>
       </class-decl>
-      <class-decl name='udp_table' is-struct='yes' visibility='default' is-declaration-only='yes' id='9a516b13'/>
+      <class-decl name='udp_table' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/udp.h' line='72' column='1' id='9a516b13'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='hash' type-id='9cc41107' visibility='default' filepath='include/net/udp.h' line='73' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='hash2' type-id='9cc41107' visibility='default' filepath='include/net/udp.h' line='74' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='mask' type-id='f0981eeb' visibility='default' filepath='include/net/udp.h' line='75' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='log' type-id='f0981eeb' visibility='default' filepath='include/net/udp.h' line='76' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='6661a698' size-in-bits='64' id='9a537bbe'/>
       <pointer-type-def type-id='2bc6669b' size-in-bits='64' id='9a53a8a3'/>
       <function-type size-in-bits='64' id='9a54e634'>
@@ -66780,6 +66795,7 @@
       <array-type-def dimensions='1' type-id='00205383' size-in-bits='3072' id='9cc39ce1'>
         <subrange length='24' type-id='7ff19f0f' id='fdd3342b'/>
       </array-type-def>
+      <pointer-type-def type-id='fa07ab8f' size-in-bits='64' id='9cc41107'/>
       <class-decl name='snd_kcontrol_volatile' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/sound/control.h' line='59' column='1' id='9cd807f4'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='owner' type-id='ed27ccc9' visibility='default' filepath='include/sound/control.h' line='60' column='1'/>
@@ -107917,6 +107933,17 @@
       </class-decl>
       <pointer-type-def type-id='12506762' size-in-bits='64' id='fa013de0'/>
       <pointer-type-def type-id='91f77fa3' size-in-bits='64' id='fa058983'/>
+      <class-decl name='udp_hslot' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/net/udp.h' line='58' column='1' id='fa07ab8f'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='head' type-id='e151255a' visibility='default' filepath='include/net/udp.h' line='59' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='count' type-id='95e97e5e' visibility='default' filepath='include/net/udp.h' line='60' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='include/net/udp.h' line='61' column='1'/>
+        </data-member>
+      </class-decl>
       <array-type-def dimensions='2' type-id='8f048e17' size-in-bits='304' id='fa0a1f4c'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
         <subrange length='19' type-id='7ff19f0f' id='448ee30f'/>
@@ -136893,6 +136920,11 @@
         <parameter type-id='7359adad' name='irqflags' filepath='drivers/usb/core/hcd.c' line='2639' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='usb_add_phy' mangled-name='usb_add_phy' filepath='drivers/usb/phy/phy.c' line='626' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_add_phy'>
+        <parameter type-id='ca9354d1' name='x' filepath='drivers/usb/phy/phy.c' line='626' column='1'/>
+        <parameter type-id='d95f4827' name='type' filepath='drivers/usb/phy/phy.c' line='626' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='usb_add_phy_dev' mangled-name='usb_add_phy_dev' filepath='drivers/usb/phy/phy.c' line='672' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_add_phy_dev'>
         <parameter type-id='ca9354d1' name='x' filepath='drivers/usb/phy/phy.c' line='672' column='1'/>
         <return type-id='95e97e5e'/>
@@ -138157,6 +138189,11 @@
         <parameter type-id='b4de78ea' name='link' filepath='drivers/media/v4l2-core/v4l2-mc.c' line='556' column='1'/>
         <parameter type-id='19c2251e' name='flags' filepath='drivers/media/v4l2-core/v4l2-mc.c' line='556' column='1'/>
         <parameter type-id='f0981eeb' name='notification' filepath='drivers/media/v4l2-core/v4l2-mc.c' line='557' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='v4l2_querymenu' mangled-name='v4l2_querymenu' filepath='include/media/v4l2-ctrls.h' line='1362' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_querymenu'>
+        <parameter type-id='2b59fa5e'/>
+        <parameter type-id='4394e2c1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='v4l2_s_ctrl' mangled-name='v4l2_s_ctrl' filepath='drivers/media/v4l2-core/v4l2-ctrls.c' line='4413' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='v4l2_s_ctrl'>
