@@ -81,6 +81,30 @@
       },
       "revId": "50551ed88661774a45596fabff3f109442a1534b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b88225d_570da23a",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1878921
+      },
+      "writtenOn": "2021-09-27T07:47:16Z",
+      "side": 1,
+      "message": "\u003e oh, it should be same as \"dma_coerce_mask_and_coherent(heap_dev, DMA_BIT_MASK(64));\", seems 64 is more better?\n\nupdated as 64",
+      "parentUuid": "ecbcadc0_5c726ca9",
+      "range": {
+        "startLine": 561,
+        "startChar": 53,
+        "endLine": 561,
+        "endChar": 69
+      },
+      "revId": "50551ed88661774a45596fabff3f109442a1534b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
