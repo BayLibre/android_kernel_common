@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be4fd9c9_98c087ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-09-28T23:51:35Z",
+      "side": 1,
+      "message": "It might be useful to clarify what negative side effect from the default 64k size that we are trying to avoid with this change.",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54511bea_093ae01f",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-09-28T23:51:35Z",
+      "side": 1,
+      "message": "Sorry, a bit of an ignorant question: The patch seems reasonable (we likely may map more then 64k so it seems we might want larger then the default max 64k segment size). \n\nBut why is it important to set the segment size for system-uncached heap, but not also the regular system heap (as well as cma heap)?\n\nIn the commit message, you do mention the implicit flush in the allocation, but I worry the same effect may exist for explicit flushes as well?",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
