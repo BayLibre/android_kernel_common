@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39a56908_e221466e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-28T19:56:01Z",
+      "side": 1,
+      "message": "The first build-break is fixed, but the allmodconfig builds fail for arm64 and x86_64. Please fix. We can\u0027t allow breakage of any x86/arm build flavors.\n```\nBuildbot Version: androidbuild_buildbot_20210920.00_RC00\nMachine: prod20-l5gs\nDIST_DIR\u003d/buildbot/dist_dirs/aosp_kernel-common-android12-5.10-linux-kernel_x86_64_allmodconfig/P26382165 BUILD_CONFIG\u003dcommon/build.config.allmodconfig.x86_64 build/build.sh -j80\n+ cd common\n+ make LLVM\u003d1 LLVM_IAS\u003d1 DEPMOD\u003ddepmod DTC\u003ddtc O\u003d/usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common -j80 mrproper\n+ set +x\n+ cd common\n+ make LLVM\u003d1 LLVM_IAS\u003d1 DEPMOD\u003ddepmod DTC\u003ddtc O\u003d/usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common -j80 allmodconfig\n+ set +x\n+ eval update_config\n++ update_config\n++ common/scripts/config --file /usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common/.config -d TEST_KMOD -d CPU_BIG_ENDIAN -d DYNAMIC_FTRACE -e UNWINDER_FRAME_POINTER\n++ cd /usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common\n++ make O\u003d/usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common CROSS_COMPILE\u003dx86_64-linux-gnu- LLVM\u003d1 LLVM_IAS\u003d1 DEPMOD\u003ddepmod DTC\u003ddtc -j80 olddefconfig\n.config:14189:warning: override: UNWINDER_FRAME_POINTER changes choice state\n+ set +x\n+ cd /usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common\n+ make O\u003d/usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common LLVM\u003d1 LLVM_IAS\u003d1 DEPMOD\u003ddepmod DTC\u003ddtc -j80 bzImage modules prepare-objtool\nwarning: Cannot use CONFIG_STACK_VALIDATION\u003dy, please install libelf-dev, libelf-devel or elfutils-libelf-devel\nusr/include/linux/fuse.h:888: found __[us]{8,16,32,64} type without #include \u003clinux/types.h\u003e\nIn file included from \u003cbuilt-in\u003e:1:\n./usr/include/linux/bcache.h:354:2: warning: field \u0027\u0027 with variable sized type \u0027union jset::(anonymous at ./usr/include/linux/bcache.h:354:2)\u0027 not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]\n        BKEY_PADDED(uuid_bucket);\n        ^\n./usr/include/linux/bcache.h:134:2: note: expanded from macro \u0027BKEY_PADDED\u0027\n        union { struct bkey key; __u64 key ## _pad[BKEY_PAD]; }\n        ^\n./usr/include/linux/bcache.h:355:2: warning: field \u0027\u0027 with variable sized type \u0027union jset::(anonymous at ./usr/include/linux/bcache.h:355:2)\u0027 not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]\n        BKEY_PADDED(btree_root);\n        ^\n./usr/include/linux/bcache.h:134:2: note: expanded from macro \u0027BKEY_PADDED\u0027\n        union { struct bkey key; __u64 key ## _pad[BKEY_PAD]; }\n        ^\n2 warnings generated.\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/staging/greybus/audio_topology.c:977:12: warning: stack frame size of 3288 bytes in function \u0027gbaudio_tplg_create_widget\u0027 [-Wframe-larger-than\u003d]\nstatic int gbaudio_tplg_create_widget(struct gbaudio_module_info *module,\n           ^\n1 warning generated.\nld.lld: error: undefined symbol: __compiletime_assert_1261\n\u003e\u003e\u003e referenced by mremap.c\n\u003e\u003e\u003e               mremap.o:(get_extent) in archive mm/built-in.a\nmake[1]: *** [/usr/local/google/buildbot/src/android/common-android12-5.10/common/Makefile:1275: vmlinux] Error 1\nmake: *** [/usr/local/google/buildbot/src/android/common-android12-5.10/common/Makefile:185: __sub-make] Error 2\n```\n",
+      "revId": "b6041dbd4792c7713710363d3922869e29e72441",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
