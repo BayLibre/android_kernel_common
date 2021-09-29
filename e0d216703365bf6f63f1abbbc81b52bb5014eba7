@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "923c8df7_5706517f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1878921
+      },
+      "writtenOn": "2021-09-29T01:37:29Z",
+      "side": 1,
+      "message": "seems no harmful side effect, just a warning. I mentioned in Google Bug, like below, I will also update it in commit message.\n\n[   60.741596] [T1400576] allocator@4.0-s: ------------[ cut here ]------------\n[   60.742895] [T1400576] allocator@4.0-s: DMA-API: dma_heap mtk_mm-uncached: mapping sg segment longer than device claims to support [len\u003d1048576] [max\u003d65536]\n[   60.744749] [T1400576] allocator@4.0-s: WARNING: CPU: 4 PID: 576 at kernel/dma/debug.c:1173 debug_dma_map_sg+0x214/0x438\n[   60.998800] [T1400576] allocator@4.0-s: CPU: 4 PID: 576 Comm: allocator@4.0-s Tainted: G S      W  O      5.10.43-android12-9-g54d6088f6389 #1\n[   60.998812] [T1400576] allocator@4.0-s: Hardware name: MTxxxx(ENG) (DT)\n[   61.001672] [T1400576] allocator@4.0-s: pstate: 60400005 (nZCv daif +PAN -UAO -TCO BTYPE\u003d--)\n[   61.002751] [T1400576] allocator@4.0-s: pc : debug_dma_map_sg+0x214/0x438\n[   61.003705] [T1400576] allocator@4.0-s: lr : debug_dma_map_sg+0x214/0x438\n[   61.048682] [T1400576] allocator@4.0-s: Call trace:\n[   61.049674] [T1400576] allocator@4.0-s:  debug_dma_map_sg+0x214/0x438\n[   61.050649] [T1400576] allocator@4.0-s:  dma_map_sg_attrs+0x94/0x108\n[   61.051657] [T1400576] allocator@4.0-s:  system_heap_do_allocate+0x440/0x484 [system_heap]\n[   61.052714] [T1400576] allocator@4.0-s:  mtk_mm_uncached_heap_allocate+0x20/0x30 [system_heap]\n[   61.054547] [T1400576] allocator@4.0-s:  dma_heap_ioctl+0x180/0x230\n[   61.055536] [T1400576] allocator@4.0-s:  __arm64_sys_ioctl+0xa8/0x110\n[   61.056429] [T1400576] allocator@4.0-s:  el0_svc_common+0xc4/0x1e8\n[   61.057491] [T1400576] allocator@4.0-s:  do_el0_svc+0x28/0xa0\n[   61.058404] [T1400576] allocator@4.0-s:  el0_svc+0x24/0x38",
+      "parentUuid": "be4fd9c9_98c087ea",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54511bea_093ae01f",
         "filename": "drivers/dma-buf/heaps/system_heap.c",
         "patchSetId": 7
@@ -31,6 +49,24 @@
       "writtenOn": "2021-09-28T23:51:35Z",
       "side": 1,
       "message": "Sorry, a bit of an ignorant question: The patch seems reasonable (we likely may map more then 64k so it seems we might want larger then the default max 64k segment size). \n\nBut why is it important to set the segment size for system-uncached heap, but not also the regular system heap (as well as cma heap)?\n\nIn the commit message, you do mention the implicit flush in the allocation, but I worry the same effect may exist for explicit flushes as well?",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33916090_2a07fced",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1878921
+      },
+      "writtenOn": "2021-09-29T01:37:29Z",
+      "side": 1,
+      "message": "Actually, I think all these heaps need it, but for cached heap and cma heap, we won\u0027t use (struct dma_heap).heap_dev to do cache sync at memory allocate stage, so I just added uncached heap.\n\nSeems to add all it to all heaps is more better， I will update it again.",
+      "parentUuid": "54511bea_093ae01f",
       "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
