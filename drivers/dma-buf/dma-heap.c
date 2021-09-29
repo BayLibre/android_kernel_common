@@ -293,6 +293,31 @@ const char *dma_heap_get_name(struct dma_heap *heap)
 }
 EXPORT_SYMBOL_GPL(dma_heap_get_name);
 
+static int set_heap_dev_dma(struct device *heap_dev)
+{
+	int err = 0;
+
+	if (!heap_dev)
+		return -EINVAL;
+
+	dma_coerce_mask_and_coherent(heap_dev, DMA_BIT_MASK(64));
+
+	if (!heap_dev->dma_parms) {
+		heap_dev->dma_parms = devm_kzalloc(heap_dev,
+						   sizeof(*heap_dev->dma_parms),
+						   GFP_KERNEL);
+		if (!heap_dev->dma_parms)
+			return -ENOMEM;
+
+		err = dma_set_max_seg_size(heap_dev, (unsigned int)DMA_BIT_MASK(64));
+		if (err) {
+			dev_err(heap_dev, "Failed to set DMA segment size, err:%d\n", err);
+			return err;
+		}
+	}
+	return 0;
+}
+
 struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info)
 {
 	struct dma_heap *heap, *err_ret;
@@ -355,6 +380,13 @@ struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info)
 	if (IS_ERR(heap->heap_dev)) {
 		pr_err("dma_heap: Unable to create device\n");
 		err_ret = ERR_CAST(heap->heap_dev);
+		goto err2;
+	}
+
+	ret = set_heap_dev_dma(heap->heap_dev);
+	if (ret) {
+		pr_err("dma_heap: set heap(%s) dma err:%d\n", heap->name, ret);
+		put_device(heap->heap_dev);
 		goto err2;
 	}
 
