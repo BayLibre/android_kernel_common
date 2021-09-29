@@ -16,6 +16,63 @@
       "message": "build pass",
       "revId": "2bd92fc8bbfcba4ee6b20933a617398c16c2a821",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "335cec8d_b6cdcfd2",
+        "filename": "include/trace/hooks/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-29T15:40:02Z",
+      "side": 1,
+      "message": "No, this creates dependancy issues that can manifest as false KMI failures later. Please use \"struct iova_domain;\" etc to define the structure.",
+      "revId": "2bd92fc8bbfcba4ee6b20933a617398c16c2a821",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d457c4b_77320bb5",
+        "filename": "include/trace/hooks/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-29T15:40:02Z",
+      "side": 1,
+      "message": "Add \"struct iova_domain;\" here.",
+      "revId": "2bd92fc8bbfcba4ee6b20933a617398c16c2a821",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44365913_aa0206f0",
+        "filename": "include/trace/hooks/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-09-29T15:40:02Z",
+      "side": 1,
+      "message": "This is no longer needed. Please remove (along with line 16).\n\nSplit this into 2 patches:\n1) remove the obsolete #if..#else..#endif\n2) add the new hook (without including iova.h)",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "2bd92fc8bbfcba4ee6b20933a617398c16c2a821",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
