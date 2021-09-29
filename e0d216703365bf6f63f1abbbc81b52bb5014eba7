@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e300eda_ac70552a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-09-29T03:46:38Z",
+      "side": 1,
+      "message": "Thanks, as I don\u0027t have any visibility to the google bugs.",
+      "parentUuid": "923c8df7_5706517f",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54511bea_093ae01f",
         "filename": "drivers/dma-buf/heaps/system_heap.c",
         "patchSetId": 7
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Actually, I think all these heaps need it, but for cached heap and cma heap, we won\u0027t use (struct dma_heap).heap_dev to do cache sync at memory allocate stage, so I just added uncached heap.\n\nSeems to add all it to all heaps is more better， I will update it again.",
       "parentUuid": "54511bea_093ae01f",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a8a577_8dd8de80",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-09-29T03:46:38Z",
+      "side": 1,
+      "message": "I\u0027m still not sure I fully understand the mechanics (I don\u0027t recall seeing this in ION, but I\u0027ll have to double check). But if the other heaps do need similar calls, please submit as 3 separate patches (one change per heap), so we can make sure to submit the system/cma versions upstream.",
+      "parentUuid": "33916090_2a07fced",
       "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
