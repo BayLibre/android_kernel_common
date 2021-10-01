@@ -203,12 +203,11 @@ void em_dev_unregister_perf_domain(struct device *dev);
  * It is called from the scheduler code quite frequently and as a consequence
  * doesn't implement any check.
  *
- * Return: An efficient performance state, high enough to meet @freq
+ * Return: An efficient performance state index, high enough to meet @freq
  * requirement.
  */
-static inline
-struct em_perf_state *em_pd_get_efficient_state(struct em_perf_domain *pd,
-						unsigned long freq)
+static inline int
+em_pd_get_efficient_state(struct em_perf_domain *pd, unsigned long freq)
 {
 	struct em_perf_state *ps;
 	int i;
@@ -219,11 +218,11 @@ struct em_perf_state *em_pd_get_efficient_state(struct em_perf_domain *pd,
 			if (pd->flags & EM_PERF_DOMAIN_SKIP_INEFFICIENCIES &&
 			    ps->flags & EM_PERF_STATE_INEFFICIENT)
 				continue;
-			break;
+			return i;
 		}
 	}
 
-	return ps;
+	return pd->nr_perf_states - 1;
 }
 
 /**
@@ -246,9 +245,10 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
 				unsigned long max_util, unsigned long sum_util,
 				unsigned long allowed_cpu_cap)
 {
+	struct em_perf_rt_table *rt_table;
 	unsigned long freq, scale_cpu;
 	struct em_perf_state *ps;
-	int cpu;
+	int cpu, i;
 
 	if (!sum_util)
 		return 0;
@@ -263,7 +263,13 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
 	 */
 	cpu = cpumask_first(to_cpumask(pd->cpus));
 	scale_cpu = arch_scale_cpu_capacity(cpu);
-	ps = &pd->table[pd->nr_perf_states - 1];
+
+	/* No rcu_read_lock() since it's already called by task scheduler. */
+	rt_table = rcu_dereference(pd->rt_table);
+	if (!rt_table)
+		return 0;
+
+	ps = &rt_table->state[pd->nr_perf_states - 1];
 
 	max_util = map_util_perf(max_util);
 	max_util = min(max_util, allowed_cpu_cap);
@@ -273,7 +279,8 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
 	 * Find the lowest performance state of the Energy Model above the
 	 * requested frequency.
 	 */
-	ps = em_pd_get_efficient_state(pd, freq);
+	i = em_pd_get_efficient_state(pd, freq);
+	ps = &rt_table->state[i];
 
 	/*
 	 * The capacity of a CPU in the domain at the performance state (ps)
