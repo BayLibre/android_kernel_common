@@ -913,7 +913,7 @@ struct ufs_hba {
 	struct delayed_work rpm_dev_flush_recheck_work;
 
 #if 0
-	/* This has been moved into struct ufs_hba_with_hpb. */
+	/* This has been moved into struct ufs_hba_add_info. */
 	struct ufshpb_dev_info ufshpb_dev;
 #endif
 
@@ -937,9 +937,9 @@ struct ufs_hba {
 
 /*
  * Compared to the upstream equivalent, @hpb_dev has been moved from struct
- * ufs_hba into struct ufs_hba_with_hpb to satisfy the Android ABI checks.
+ * ufs_hba into struct ufs_hba_add_info to satisfy the Android ABI checks.
  */
-struct ufs_hba_with_hpb {
+struct ufs_hba_add_info {
 	struct ufs_hba hba;
 #ifdef CONFIG_SCSI_UFS_HPB
 	struct ufshpb_dev_info hpb_dev;
