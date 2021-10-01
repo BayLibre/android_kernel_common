@@ -22,6 +22,30 @@
       },
       "revId": "d69751309bfeeaf220aac03fe0a24766ff914677",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2adbb793_197b4d57",
+        "filename": "include/linux/list_sort.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-10-01T12:03:22Z",
+      "side": 1,
+      "message": "Yeah, the goal here was to take the upstream change that _should_ have matched what we have in our kernel.  I\u0027ll run some tests to see why the crc is changing, it might just be a include file ordering somehow...",
+      "parentUuid": "c5e143bf_4533a6a3",
+      "range": {
+        "startLine": 10,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 53
+      },
+      "revId": "d69751309bfeeaf220aac03fe0a24766ff914677",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
