@@ -196,6 +196,46 @@ static u32 get_sustainable_power(struct thermal_zone_device *tz,
 	return sustainable_power;
 }
 
+struct thermal_context {
+	int control_temp;
+	int temp;
+};
+
+static int get_updated_power(struct device *dev, unsigned long freq,
+			     unsigned long *power, void *priv)
+{
+	struct em_perf_state *table = dev->em_pd->table;
+	int t_factor, i;
+	struct thermal_context *ctx = priv;
+
+	t_factor = ((ctx->temp / 1000) % (ctx->control_temp / 1000 - 5));
+	t_factor *= 100;
+	t_factor += 1024;
+
+	for (i = 0; i < dev->em_pd->nr_perf_states; i++) {
+		if (freq == table[i].frequency) {
+			*power = (table[i].power * t_factor) >> 10;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+void modify_em_values(int tc, int control)
+{
+	struct em_data_callback em_cb = EM_UPDATE_CB(get_updated_power);
+	struct device *dev;
+	struct thermal_context thermal_ctx = {
+		.control_temp = control,
+		.temp = tc
+	};
+
+	dev = get_cpu_device(4);
+
+	em_dev_update_perf_domain(dev, &em_cb, &thermal_ctx);
+}
+
 /**
  * pid_controller() - PID controller
  * @tz:	thermal zone we are operating in
@@ -496,6 +536,8 @@ static int allocate_power(struct thermal_zone_device *tz,
 				      control_temp - tz->temperature);
 
 	kfree(req_power);
+
+	modify_em_values(tz->temperature, control_temp);
 unlock:
 	mutex_unlock(&tz->lock);
 
@@ -726,6 +768,7 @@ static int power_allocator_throttle(struct thermal_zone_device *tz, int trip)
 		tz->passive = 0;
 		reset_pid_controller(params);
 		allow_maximum_power(tz, update);
+		modify_em_values(tz->temperature, switch_on_temp);
 		return 0;
 	}
 
