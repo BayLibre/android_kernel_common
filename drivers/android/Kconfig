@@ -74,6 +74,13 @@ config ANDROID_VENDOR_HOOKS
 	  Allow vendor modules to attach to tracepoint "hooks" defined via
 	  DECLARE_HOOK or DECLARE_RESTRICTED_HOOK.
 
+config ANDROID_PSI_WATCHDOG
+	bool "PSI watchdog driver"
+	help
+	  PSI watchdog driver for Android to detect a process handling PSI
+	  events getting stuck and generate an OOM kill if that happens to
+	  relieve memory pressure.
+
 endif # if ANDROID
 
 endmenu
