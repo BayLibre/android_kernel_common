@@ -37,6 +37,7 @@
 #include <trace/hooks/pm_domain.h>
 #include <trace/hooks/cpuidle_psci.h>
 #include <trace/hooks/vmscan.h>
+#include <trace/hooks/creds.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -166,3 +167,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_check_preempt_wakeup);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpufreq_transition);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_show_max_freq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_commit_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_override_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_revert_creds);
