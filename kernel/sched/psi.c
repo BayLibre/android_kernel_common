@@ -135,6 +135,7 @@
 #include <linux/uaccess.h>
 #include <linux/cgroup.h>
 #include <linux/module.h>
+#include <linux/psi_wd.h>
 #include <linux/sched.h>
 #include <linux/ctype.h>
 #include <linux/file.h>
@@ -540,6 +541,7 @@ static u64 update_triggers(struct psi_group *group, u64 now)
 		if (now < t->last_event_time + t->win.size)
 			continue;
 
+		psi_wd_start(t);
 		trace_android_vh_psi_event(t);
 
 		/* Generate an event */
@@ -1294,8 +1296,10 @@ __poll_t psi_trigger_poll(void **trigger_ptr,
 
 	poll_wait(file, &t->event_wait, wait);
 
-	if (cmpxchg(&t->event, 1, 0) == 1)
+	if (cmpxchg(&t->event, 1, 0) == 1) {
+		psi_wd_stop(current, t);
 		ret |= EPOLLPRI;
+	}
 
 	kref_put(&t->refcount, psi_trigger_destroy);
 
