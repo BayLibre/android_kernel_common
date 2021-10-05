@@ -36,6 +36,7 @@
 #include <trace/hooks/timer.h>
 #include <trace/hooks/pm_domain.h>
 #include <trace/hooks/cpuidle_psci.h>
+#include <trace/hooks/avc.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -163,3 +164,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_balance_rt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_pick_next_entity);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_check_preempt_wakeup);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpufreq_transition);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_insert);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_node_delete);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_node_replace);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_selinux_avc_lookup);
