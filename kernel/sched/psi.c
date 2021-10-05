@@ -1294,8 +1294,10 @@ __poll_t psi_trigger_poll(void **trigger_ptr,
 
 	poll_wait(file, &t->event_wait, wait);
 
-	if (cmpxchg(&t->event, 1, 0) == 1)
+	if (cmpxchg(&t->event, 1, 0) == 1) {
 		ret |= EPOLLPRI;
+		trace_android_vh_psi_arm_trigger(current, t);
+	}
 
 	kref_put(&t->refcount, psi_trigger_destroy);
 
