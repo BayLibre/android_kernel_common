@@ -123,6 +123,24 @@
       "parentUuid": "45a8a577_8dd8de80",
       "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b828896_51f55b27",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-10-06T05:48:04Z",
+      "side": 1,
+      "message": "I am not very clear on why we think the patch applies to all heaps :( Only the uncached heap uses the heap device to do a cache sync right after allocation right?",
+      "parentUuid": "8cf286ec_909dcc3a",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
