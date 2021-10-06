@@ -22,6 +22,12 @@
  */
 unsigned int zone_dma_bits __ro_after_init = 24;
 
+/*
+ * provide a run-time mean of disabling zone_dma32 if it is enabled via
+ * CONFIG_ZONE_DMA32.
+ */
+bool disable_dma32 __ro_after_init;
+
 static inline dma_addr_t phys_to_dma_direct(struct device *dev,
 		phys_addr_t phys)
 {
@@ -61,7 +67,8 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
 	*phys_limit = dma_to_phys(dev, dma_limit);
 	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
 		return GFP_DMA;
-	if (*phys_limit <= DMA_BIT_MASK(32))
+	if (*phys_limit <= DMA_BIT_MASK(32) &&
+		!disable_dma32)
 		return GFP_DMA32;
 	return 0;
 }
@@ -101,7 +108,8 @@ again:
 
 		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
 		    phys_limit < DMA_BIT_MASK(64) &&
-		    !(gfp & (GFP_DMA32 | GFP_DMA))) {
+		    !(gfp & (GFP_DMA32 | GFP_DMA)) &&
+		    !disable_dma32) {
 			gfp |= GFP_DMA32;
 			goto again;
 		}

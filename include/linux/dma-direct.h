@@ -14,6 +14,8 @@
 
 extern unsigned int zone_dma_bits;
 
+extern bool disable_dma32;
+
 /*
  * Record the mapping of CPU physical to DMA addresses for a given region.
  */
