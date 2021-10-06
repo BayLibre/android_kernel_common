@@ -34,6 +34,24 @@
       "parentUuid": "26d0bca4_1358bb68",
       "revId": "65d041497cce869675a6339c17f037bab1ec2998",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "413c705c_27c446e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2021-10-06T14:33:18Z",
+      "side": 1,
+      "message": "I guess the one case where the sender/receiver confusion could be interesting from a security perspective would be if the victim process is a privileged executable (like crash_dump or runas) that was previously executing in a less trusted context, and did an execute-transition into a more privileged context. In that case an attacker might have opened another /dev/binder instance for the victim process before the execute-transition, so if the victim process then looked up an attacker-supplied binder (which is owned by the attacker-created /dev/binder instance), and did a transaction with an FDA to it, and that transaction failed, then you\u0027d hit this bug and incorrectly close FDs in the victim process, I believe? Which would then lead to file descriptor lifetime issues.\n\nThere aren\u0027t many execute-transitions on Android where privileges get increased though (runas and crash_dump are the only important examples I can think of), and I don\u0027t think they use binder very much.\n\nSo I\u0027d probably count that one as a bit risky in terms of security, but probably not currently exploitable?",
+      "parentUuid": "9c0fbca1_78020475",
+      "revId": "65d041497cce869675a6339c17f037bab1ec2998",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
