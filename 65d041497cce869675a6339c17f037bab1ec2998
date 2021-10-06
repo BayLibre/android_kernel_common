@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26d0bca4_1358bb68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2021-10-06T02:13:48Z",
+      "side": 1,
+      "message": "Yeah, looks good to me.\n\nWith this, the only remaining users of -\u003etsk are:\n\n - the PID lookup for -\u003esender_pid (which AFAIK isn\u0027t\n   security-relevant because PIDs are racy anyway)\n - \"if (proc-\u003etsk !\u003d current-\u003egroup_leader)\", which\n   attempts to figure out whether the code is running\n   in sender or receiver context. It\u0027s a weird way to\n   do that check, because it\u0027d break if the same process\n   was using two binder instances - it would then think\n   that it\u0027s running in receiver context when it\u0027s actually\n   in sender context.\n   So if binder_transaction() fails, I think you would then\n   probably incorrectly close files on the sending side?\n   But that\u0027s not related to the SELinux/UID security context stuff.\n   It\u0027s also probably not exploitable because it requires\n   that a task opens the same binder instance twice, which\n   AFAIK isn\u0027t normally done.\n - binder_mmap(), which tries to prevent mapping binder\n   in other processes (but that\u0027s not entirely effective\n   because binder can be inherited across fork() if you\n   first clear the VM_DONTCOPY flag with madvise(MADV_DOFORK))",
+      "revId": "65d041497cce869675a6339c17f037bab1ec2998",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
