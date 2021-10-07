@@ -34,6 +34,23 @@
       "parentUuid": "ab78a0e4_03e0f739",
       "revId": "ae9882bb565365db12cbb01f38a309f8a11c31c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a90faa5_fd235a00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2021-10-07T16:45:04Z",
+      "side": 1,
+      "message": "I think we pushed out BLK_MQ_VIRTIO because we were concerned it would add another symbol surface to GKI which only one driver (virtio_blk) uses. But it should be okay to be module or built in. It doesn\u0027t have anything to do with virtio_blk modularity.",
+      "revId": "ae9882bb565365db12cbb01f38a309f8a11c31c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
