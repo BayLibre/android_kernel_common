@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb88b836_ca1131f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-08T13:12:46Z",
+      "side": 1,
+      "message": "This causes a build-break because the new hooks are not exported. Please add the exports to drivers/android/vendor_hooks.c.\n```\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n - __traceiter_android_vh_iommu_iovad_alloc_iova\n - __traceiter_android_vh_iommu_iovad_free_iova\n - __tracepoint_android_vh_iommu_iovad_alloc_iova\n - __tracepoint_android_vh_iommu_iovad_free_iova\nSymbols missing from symbol list:\n```",
+      "revId": "6e97d68122431c23d3598beedb7d50a7de2994ce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
