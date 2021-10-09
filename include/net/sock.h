@@ -420,9 +420,14 @@ struct sock {
 	u32			sk_max_ack_backlog;
 	__u32			sk_priority;
 	__u32			sk_mark;
+<<<<<<< HEAD   (c919c9 Merge 4.9.285 into android-4.9-o)
 	kuid_t			sk_uid;
+=======
+	spinlock_t		sk_peer_lock;
+>>>>>>> BRANCH (9e8a7b Linux 4.9.286)
 	struct pid		*sk_peer_pid;
 	const struct cred	*sk_peer_cred;
+
 	long			sk_rcvtimeo;
 	long			sk_sndtimeo;
 	struct timer_list	sk_timer;
