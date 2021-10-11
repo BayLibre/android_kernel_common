@@ -16,6 +16,23 @@
       "message": "Hridya, John, do you see any potential issues if we remove the const here?",
       "revId": "d4b10d010168d7d73aa882a322704b4356f1665f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfd6099d_5ab24d8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-10-11T18:06:46Z",
+      "side": 1,
+      "message": "This seems related to the patch being discussed upstream here:\n  https://lore.kernel.org/lkml/20211009055504.68272-1-guangming.cao@mediatek.com/\n(which could use some discussion on the list from Android devs to ensure its safe)\n\nCould we clarify in the commit why this is an ANDROID patch and not upstream bound?",
+      "revId": "d4b10d010168d7d73aa882a322704b4356f1665f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
