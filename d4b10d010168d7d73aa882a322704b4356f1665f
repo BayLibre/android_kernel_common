@@ -33,6 +33,24 @@
       "message": "This seems related to the patch being discussed upstream here:\n  https://lore.kernel.org/lkml/20211009055504.68272-1-guangming.cao@mediatek.com/\n(which could use some discussion on the list from Android devs to ensure its safe)\n\nCould we clarify in the commit why this is an ANDROID patch and not upstream bound?",
       "revId": "d4b10d010168d7d73aa882a322704b4356f1665f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fab4fcd5_26b0543e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-10-11T19:49:09Z",
+      "side": 1,
+      "message": "Wouldn\u0027t the const removal cause a KMI breakage though, hence making it ineligible for 12-5.10?",
+      "parentUuid": "5d14d4c4_454083f6",
+      "revId": "d4b10d010168d7d73aa882a322704b4356f1665f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
