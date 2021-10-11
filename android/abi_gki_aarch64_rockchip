@@ -131,7 +131,9 @@
   devm_clk_get_optional
   devm_clk_hw_register
   devm_clk_register
+  devm_devfreq_add_device
   devm_devfreq_event_add_edev
+  devm_devfreq_register_opp_notifier
   devm_extcon_dev_allocate
   devm_extcon_dev_register
   devm_extcon_register_notifier
@@ -195,12 +197,14 @@
   dma_buf_vmap
   dma_buf_vunmap
   dma_free_attrs
+  dma_get_sgtable_attrs
   dma_heap_add
   dma_heap_get_name
   dmam_alloc_attrs
   dma_map_page_attrs
   dma_map_sg_attrs
   dmam_free_coherent
+  dma_mmap_attrs
   dma_release_channel
   dma_request_chan
   dma_set_coherent_mask
@@ -218,25 +222,51 @@
   drm_atomic_helper_connector_destroy_state
   drm_atomic_helper_connector_duplicate_state
   drm_atomic_helper_connector_reset
+  drm_compat_ioctl
   drm_connector_attach_encoder
   drm_connector_cleanup
   drm_connector_init
   drm_connector_update_edid_property
+  __drm_dbg
   drm_detect_hdmi_monitor
+  drm_dev_alloc
+  drm_dev_dbg
+  drm_dev_put
+  drm_dev_register
+  drm_dev_unregister
   drm_display_info_set_bus_formats
   __drm_err
+  drm_gem_dumb_map_offset
+  drm_gem_handle_create
+  drm_gem_mmap
+  drm_gem_mmap_obj
+  drm_gem_object_free
+  drm_gem_object_init
+  drm_gem_object_lookup
+  drm_gem_object_release
+  drm_gem_prime_fd_to_handle
+  drm_gem_prime_handle_to_fd
+  drm_gem_vm_close
   drm_get_edid
   drm_hdmi_avi_infoframe_from_display_mode
   drm_helper_hpd_irq_event
   drm_helper_probe_single_connector_modes
+  drm_ioctl
   drm_mode_copy
   drm_mode_create
   drm_mode_duplicate
   drm_mode_probed_add
   drm_mode_set_name
   drm_mode_vrefresh
+  drm_open
   drm_panel_disable
   drm_panel_unprepare
+  drm_poll
+  drm_prime_gem_destroy
+  drm_prime_pages_to_sg
+  drm_prime_sg_to_page_addr_arrays
+  drm_read
+  drm_release
   dummy_irq_chip
   enable_irq
   extcon_get_edev_by_phandle
@@ -325,6 +355,7 @@
   input_set_abs_params
   iommu_attach_device
   iommu_detach_device
+  iommu_get_domain_for_dev
   __ioremap
   iounmap
   __irq_domain_add
@@ -394,6 +425,7 @@
   mutex_lock
   mutex_unlock
   no_llseek
+  noop_llseek
   nr_cpu_ids
   ns_to_timespec64
   nvmem_cell_put
@@ -406,6 +438,7 @@
   of_clk_get_by_name
   of_clk_src_simple_get
   of_count_phandle_with_args
+  of_devfreq_cooling_register_power
   of_device_get_match_data
   of_device_is_available
   of_device_is_compatible
@@ -456,6 +489,7 @@
   platform_bus_type
   platform_device_put
   platform_device_register_full
+  platform_device_unregister
   __platform_driver_probe
   __platform_driver_register
   platform_driver_unregister
@@ -659,6 +693,7 @@
   vfree
   vmalloc
   vmap
+  vm_get_page_prot
   vm_map_pages
   vm_map_ram
   vm_unmap_ram
@@ -699,7 +734,6 @@
   ce_aes_expandkey
 
 # required by ch.ko
-  noop_llseek
   param_array_ops
   scsi_device_lookup
   __scsi_execute
@@ -1291,6 +1325,25 @@
   blocking_notifier_chain_register
   blocking_notifier_chain_unregister
 
+# required by rknpu.ko
+  dma_buf_mmap
+  dma_fence_context_alloc
+  dma_fence_init
+  dma_fence_release
+  dma_fence_signal
+  drm_gem_create_mmap_offset
+  drm_gem_dumb_destroy
+  drm_gem_handle_delete
+  drm_gem_prime_export
+  drm_gem_prime_import_dev
+  drm_gem_vm_open
+  fd_install
+  get_unused_fd_flags
+  of_dma_configure_id
+  set_user_nice
+  sync_file_create
+  vmf_insert_mixed
+
 # required by rockchip-iommu.ko
   bus_set_iommu
   get_zeroed_page
@@ -1342,8 +1395,6 @@
   devfreq_resume_device
   devfreq_suspend_device
   devfreq_update_interval
-  devm_devfreq_add_device
-  devm_devfreq_register_opp_notifier
   _dev_notice
   dev_pm_opp_add
   input_close_device
@@ -1352,7 +1403,6 @@
   input_register_handler
   input_unregister_handle
   __memset_io
-  of_devfreq_cooling_register_power
 
 # required by rockchip_dmc_common.ko
   down_write_trylock
@@ -1395,8 +1445,6 @@
   component_unbind_all
   devm_of_phy_get_by_index
   devm_phy_optional_get
-  dma_get_sgtable_attrs
-  dma_mmap_attrs
   drm_add_modes_noedid
   drm_atomic_commit
   drm_atomic_get_connector_state
@@ -1433,7 +1481,6 @@
   drm_atomic_state_alloc
   __drm_atomic_state_free
   drm_bridge_attach
-  drm_compat_ioctl
   drm_connector_init_with_ddc
   drm_connector_list_iter_begin
   drm_connector_list_iter_end
@@ -1450,15 +1497,9 @@
   drm_crtc_vblank_off
   drm_crtc_vblank_on
   drm_crtc_vblank_put
-  __drm_dbg
   drm_debugfs_create_files
   drm_detect_monitor_audio
-  drm_dev_alloc
-  drm_dev_dbg
   drm_dev_printk
-  drm_dev_put
-  drm_dev_register
-  drm_dev_unregister
   drm_do_get_edid
   drm_dp_bw_code_to_link_rate
   drm_dp_channel_eq_ok
@@ -1479,32 +1520,20 @@
   drm_gem_dmabuf_release
   drm_gem_dmabuf_vmap
   drm_gem_dmabuf_vunmap
-  drm_gem_dumb_map_offset
   drm_gem_fb_afbc_init
   drm_gem_fb_create_handle
   drm_gem_fb_init_with_funcs
   drm_gem_get_pages
-  drm_gem_handle_create
   drm_gem_map_attach
   drm_gem_map_detach
   drm_gem_map_dma_buf
-  drm_gem_mmap
-  drm_gem_mmap_obj
-  drm_gem_object_free
-  drm_gem_object_init
-  drm_gem_object_lookup
   drm_gem_object_put_locked
-  drm_gem_object_release
-  drm_gem_prime_fd_to_handle
-  drm_gem_prime_handle_to_fd
   drm_gem_put_pages
   drm_gem_unmap_dma_buf
-  drm_gem_vm_close
   drm_get_format_info
   drm_get_format_name
   drm_hdmi_vendor_infoframe_from_display_mode
   drm_helper_mode_fill_fb_struct
-  drm_ioctl
   drm_kms_helper_hotplug_event
   drm_kms_helper_poll_enable
   drm_kms_helper_poll_fini
@@ -1537,7 +1566,6 @@
   drm_of_crtc_port_mask
   drm_of_encoder_active_endpoint
   drm_of_find_panel_or_bridge
-  drm_open
   drm_panel_enable
   drm_panel_get_modes
   drm_panel_prepare
@@ -1546,18 +1574,12 @@
   drm_plane_create_blend_mode_property
   drm_plane_create_rotation_property
   drm_plane_create_zpos_property
-  drm_poll
-  drm_prime_gem_destroy
   drm_prime_get_contiguous_size
-  drm_prime_pages_to_sg
-  drm_prime_sg_to_page_addr_arrays
   __drm_printfn_seq_file
   drm_property_create_bitmask
   drm_property_create_object
   drm_property_create_range
   __drm_puts_seq_file
-  drm_read
-  drm_release
   drm_send_event_locked
   drm_simple_encoder_init
   drm_universal_plane_init
@@ -1578,7 +1600,6 @@
   of_graph_get_remote_port
   of_graph_get_remote_port_parent
   of_property_match_string
-  platform_device_unregister
   platform_find_device_by_driver
   __platform_register_drivers
   platform_unregister_drivers
@@ -1588,7 +1609,6 @@
   __sw_hweight32
   __sw_hweight8
   __vmalloc
-  vm_get_page_prot
 
 # required by rtc-rk808.ko
   _bcd2bin
@@ -1773,7 +1793,6 @@
   v4l2_async_notifier_unregister
 
 # required by video_rkisp.ko
-  iommu_get_domain_for_dev
   __kfifo_out
   kmalloc_order_trace
   media_device_cleanup
