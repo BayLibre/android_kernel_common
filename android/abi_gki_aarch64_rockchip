@@ -15,6 +15,7 @@
   atomic_notifier_chain_register
   bdget_disk
   bdput
+  __bitmap_set
   blk_cleanup_queue
   blk_execute_rq_nowait
   blk_mq_free_request
@@ -35,7 +36,6 @@
   blk_rq_unmap_user
   cancel_delayed_work_sync
   cancel_work_sync
-  capable
   cdev_device_add
   cdev_device_del
   cdev_init
@@ -52,6 +52,7 @@
   clk_enable
   clk_get
   __clk_get_name
+  clk_get_parent
   clk_get_rate
   clk_hw_get_name
   clk_notifier_register
@@ -64,6 +65,8 @@
   clk_set_rate
   clk_unprepare
   clk_unregister
+  cma_alloc
+  cma_release
   compat_ptr_ioctl
   complete
   completion_done
@@ -96,11 +99,14 @@
   __crypto_xor
   debugfs_create_dir
   debugfs_create_file
+  debugfs_create_regset32
   debugfs_remove
   delayed_work_timer_fn
   del_gendisk
+  del_timer
   del_timer_sync
   destroy_workqueue
+  dev_driver_string
   _dev_err
   dev_err_probe
   devfreq_recommended_opp
@@ -112,7 +118,10 @@
   device_get_next_child_node
   device_initialize
   device_init_wakeup
+  device_link_add
+  device_link_del
   device_property_present
+  device_property_read_string
   device_property_read_u32_array
   _dev_info
   devm_add_action
@@ -125,6 +134,8 @@
   devm_devfreq_event_add_edev
   devm_extcon_dev_allocate
   devm_extcon_dev_register
+  devm_extcon_register_notifier
+  devm_free_irq
   devm_fwnode_gpiod_get_index
   devm_gpiod_get
   devm_gpiod_get_index
@@ -137,6 +148,7 @@
   devm_kfree
   devm_kmalloc
   devm_kmemdup
+  devm_kstrdup
   devm_led_classdev_register_ext
   devm_nvmem_register
   devm_of_clk_add_hw_provider
@@ -173,30 +185,62 @@
   _dev_warn
   disable_irq
   dma_alloc_attrs
+  dma_buf_attach
+  dma_buf_detach
   dma_buf_export
+  dma_buf_fd
+  dma_buf_map_attachment
+  dma_buf_put
+  dma_buf_unmap_attachment
+  dma_buf_vmap
+  dma_buf_vunmap
   dma_free_attrs
   dma_heap_add
   dma_heap_get_name
   dmam_alloc_attrs
+  dma_map_page_attrs
   dma_map_sg_attrs
+  dmam_free_coherent
   dma_release_channel
   dma_request_chan
   dma_set_coherent_mask
   dma_set_mask
   dma_sync_sg_for_cpu
   dma_sync_sg_for_device
+  dma_sync_single_for_cpu
+  dma_sync_single_for_device
+  dma_unmap_page_attrs
   dma_unmap_sg_attrs
   down_read
   down_write
   driver_unregister
   drm_add_edid_modes
+  drm_atomic_helper_connector_destroy_state
+  drm_atomic_helper_connector_duplicate_state
+  drm_atomic_helper_connector_reset
+  drm_connector_attach_encoder
+  drm_connector_cleanup
+  drm_connector_init
   drm_connector_update_edid_property
+  drm_detect_hdmi_monitor
   drm_display_info_set_bus_formats
+  __drm_err
   drm_get_edid
+  drm_hdmi_avi_infoframe_from_display_mode
+  drm_helper_hpd_irq_event
+  drm_helper_probe_single_connector_modes
+  drm_mode_copy
+  drm_mode_create
+  drm_mode_duplicate
+  drm_mode_probed_add
+  drm_mode_set_name
   drm_mode_vrefresh
+  drm_panel_disable
+  drm_panel_unprepare
   dummy_irq_chip
   enable_irq
   extcon_get_edev_by_phandle
+  extcon_get_property
   extcon_get_state
   extcon_register_notifier
   extcon_set_state_sync
@@ -207,14 +251,22 @@
   finish_wait
   flush_delayed_work
   flush_work
+  flush_workqueue
   fpsimd_context_busy
+  frame_vector_to_pages
   __free_pages
   free_pages
   fwnode_handle_put
   fwnode_property_present
   fwnode_property_read_string
   fwnode_property_read_u32_array
+  gcd
   generic_handle_irq
+  gen_pool_add_owner
+  gen_pool_alloc_algo_owner
+  gen_pool_create
+  gen_pool_destroy
+  gen_pool_free_owner
   get_device
   gic_nonsecure_priorities
   gpiochip_add_pin_range
@@ -271,6 +323,8 @@
   input_ff_create_memless
   input_register_device
   input_set_abs_params
+  iommu_attach_device
+  iommu_detach_device
   __ioremap
   iounmap
   __irq_domain_add
@@ -282,17 +336,26 @@
   irq_set_chip_data
   irq_set_irq_type
   irq_set_irq_wake
+  is_vmalloc_addr
   jiffies
   jiffies_to_msecs
   kasan_flag_enabled
   kasprintf
   kernel_neon_begin
   kernel_neon_end
+  __kfifo_alloc
+  __kfifo_free
+  __kfifo_in
   kfree
   kfree_const
   __kmalloc
   kmalloc_caches
+  kmem_cache_alloc
   kmem_cache_alloc_trace
+  kmem_cache_create
+  kmem_cache_destroy
+  kmem_cache_free
+  kmemdup
   kstrdup_const
   kstrtoint
   kstrtouint
@@ -313,6 +376,7 @@
   __log_read_mmio
   __log_write_mmio
   lzo1x_decompress_safe
+  media_create_pad_link
   media_entity_pads_init
   media_entity_remote_pad
   memcpy
@@ -325,8 +389,8 @@
   module_put
   __msecs_to_jiffies
   msleep
-  msleep_interruptible
   __mutex_init
+  mutex_is_locked
   mutex_lock
   mutex_unlock
   no_llseek
@@ -345,6 +409,7 @@
   of_device_get_match_data
   of_device_is_available
   of_device_is_compatible
+  of_find_device_by_node
   of_find_node_by_name
   of_find_property
   of_get_child_by_name
@@ -369,6 +434,7 @@
   of_property_read_u32_index
   of_property_read_variable_u32_array
   of_regulator_match
+  of_reserved_mem_device_init_by_idx
   of_usb_get_dr_mode_by_phy
   __page_pinner_migration_failed
   panic_notifier_list
@@ -381,9 +447,15 @@
   phy_init
   phy_power_off
   phy_power_on
+  phy_set_mode_ext
   pinctrl_dev_get_drvdata
   pinctrl_lookup_state
+  pinctrl_pm_select_default_state
+  pinctrl_pm_select_sleep_state
   pinctrl_select_state
+  platform_bus_type
+  platform_device_put
+  platform_device_register_full
   __platform_driver_probe
   __platform_driver_register
   platform_driver_unregister
@@ -397,6 +469,7 @@
   pm_runtime_enable
   pm_runtime_force_resume
   pm_runtime_force_suspend
+  pm_runtime_get_if_active
   __pm_runtime_idle
   __pm_runtime_resume
   pm_runtime_set_autosuspend_delay
@@ -424,10 +497,10 @@
   ___ratelimit
   rational_best_approximation
   _raw_spin_lock
-  _raw_spin_lock_bh
+  _raw_spin_lock_irq
   _raw_spin_lock_irqsave
   _raw_spin_unlock
-  _raw_spin_unlock_bh
+  _raw_spin_unlock_irq
   _raw_spin_unlock_irqrestore
   rdev_get_drvdata
   rdev_get_id
@@ -493,7 +566,11 @@
   sdhci_suspend_host
   seq_lseek
   seq_printf
+  seq_puts
   seq_read
+  set_page_dirty_lock
+  sg_alloc_table
+  sg_alloc_table_from_pages
   sg_free_table
   sg_next
   simple_strtol
@@ -529,7 +606,9 @@
   strlen
   strncmp
   strnlen
-  synchronize_rcu
+  strscpy
+  strstr
+  synchronize_irq
   syscon_node_to_regmap
   syscon_regmap_lookup_by_phandle
   sysfs_create_file_ns
@@ -539,6 +618,8 @@
   sysfs_remove_link
   system_unbound_wq
   system_wq
+  tasklet_init
+  tasklet_kill
   __tasklet_schedule
   thermal_zone_get_zone_by_name
   __traceiter_rwmmio_post_read
@@ -560,17 +641,30 @@
   v4l2_async_register_subdev
   v4l2_async_subdev_notifier_register
   v4l2_async_unregister_subdev
+  v4l2_ctrl_find
+  v4l2_ctrl_g_ctrl
   v4l2_ctrl_handler_free
   v4l2_ctrl_handler_init_class
   v4l2_ctrl_handler_setup
   v4l2_ctrl_new_std
   v4l2_ctrl_new_std_menu_items
   v4l2_i2c_subdev_init
+  v4l2_querymenu
+  v4l2_subdev_call_wrappers
+  v4l2_subdev_init
   vabits_actual
+  vb2_common_vm_ops
+  vb2_create_framevec
+  vb2_destroy_framevec
   vfree
+  vmalloc
   vmap
+  vm_map_pages
+  vm_map_ram
+  vm_unmap_ram
   vunmap
   wait_for_completion
+  wait_for_completion_timeout
   __wake_up
   wakeup_source_add
   __warn_printk
@@ -623,7 +717,6 @@
   clk_fractional_divider_ops
   clk_gate_ops
   __clk_get_hw
-  clk_get_parent
   clk_hw_get_flags
   clk_hw_get_parent
   clk_hw_get_rate
@@ -638,8 +731,6 @@
   clk_register_gate
   clk_register_mux_table
   divider_get_val
-  gcd
-  kmemdup
   match_string
   of_clk_src_onecell_get
   register_restart_handler
@@ -653,12 +744,9 @@
   scmi_driver_unregister
 
 # required by cma_heap.ko
-  cma_alloc
   cma_get_name
-  cma_release
   dma_contiguous_default_area
   dma_heap_get_drvdata
-  sg_alloc_table_from_pages
 
 # required by cpufreq-dt.ko
   cpufreq_enable_boost_support
@@ -700,7 +788,6 @@
 
 # required by cqhci.ko
   devm_blk_ksm_init
-  dmam_free_coherent
   mmc_cqe_request_done
 
 # required by cw2015_battery.ko
@@ -718,7 +805,6 @@
 # required by dw_mmc.ko
   debugfs_create_u32
   debugfs_create_x64
-  del_timer
   device_property_read_string_array
   mmc_add_host
   mmc_alloc_host
@@ -732,14 +818,14 @@
   mmc_regulator_set_vqmmc
   mmc_remove_host
   mmc_request_done
+  _raw_spin_lock_bh
+  _raw_spin_unlock_bh
   sdio_signal_irq
   sg_miter_next
   sg_miter_start
   sg_miter_stop
-  tasklet_init
 
 # required by dw_wdt.ko
-  debugfs_create_regset32
   platform_get_irq_optional
   watchdog_init_timeout
   watchdog_register_device
@@ -749,19 +835,14 @@
 # required by dwc2.ko
   __bitmap_clear
   bitmap_find_next_zero_area_off
-  dev_driver_string
   device_set_wakeup_capable
   device_wakeup_enable
   devm_usb_get_phy
-  dma_sync_single_for_cpu
-  dma_sync_single_for_device
   hrtimer_cancel
   hrtimer_init
   hrtimer_start_range_ns
-  is_vmalloc_addr
   phy_reset
   _raw_spin_trylock
-  synchronize_irq
   usb_add_gadget_udc
   usb_add_hcd
   usb_calc_bus_time
@@ -800,7 +881,6 @@
   gf128mul_lle
 
 # required by gpio-regulator.ko
-  devm_kstrdup
   gpiod_count
 
 # required by gpio-rockchip.ko
@@ -892,9 +972,6 @@
   regulator_unregister_notifier
 
 # required by kfifo_buf.ko
-  __kfifo_alloc
-  __kfifo_free
-  __kfifo_in
   __kfifo_to_user
   mutex_lock_interruptible
 
@@ -942,6 +1019,7 @@
   bpf_trace_run1
   bpf_trace_run2
   bpf_trace_run3
+  capable
   cleanup_srcu_struct
   device_add
   device_del
@@ -964,6 +1042,7 @@
   set_capacity_revalidate_and_notify
   set_disk_ro
   __srcu_read_unlock
+  synchronize_rcu
   synchronize_srcu
   trace_event_buffer_commit
   trace_event_buffer_reserve
@@ -997,16 +1076,13 @@
   blk_put_queue
   __blk_rq_map_sg
   device_release_driver
-  dma_map_page_attrs
   dma_max_mapping_size
   dma_pool_alloc
   dma_pool_create
   dma_pool_destroy
   dma_pool_free
-  dma_unmap_page_attrs
   __do_once_done
   __do_once_start
-  flush_workqueue
   mempool_alloc
   mempool_create_node
   mempool_destroy
@@ -1044,9 +1120,6 @@
   sysfs_remove_file_from_group
   wait_for_completion_io_timeout
 
-# required by nvmem-rockchip-otp.ko
-  __bitmap_set
-
 # required by optee-rng.ko
   driver_register
   hwrng_register
@@ -1055,7 +1128,6 @@
 # required by optee.ko
   alloc_pages_exact
   __arm_smccc_hvc
-  device_property_read_string
   device_register
   find_vma
   free_pages_exact
@@ -1064,6 +1136,7 @@
   ktime_get_real_ts64
   memremap
   memunmap
+  msleep_interruptible
   wait_for_completion_interruptible
 
 # required by ov2680.ko
@@ -1072,8 +1145,6 @@
   __v4l2_find_nearest_size
 
 # required by ov5695.ko
-  pm_runtime_get_if_active
-  strscpy
   __v4l2_ctrl_modify_range
   v4l2_ctrl_new_int_menu
 
@@ -1081,16 +1152,10 @@
   drm_bus_flags_from_videomode
   drm_connector_set_panel_orientation
   drm_display_mode_from_videomode
-  drm_mode_create
-  drm_mode_duplicate
-  drm_mode_probed_add
-  drm_mode_set_name
   drm_panel_add
-  drm_panel_disable
   drm_panel_init
   drm_panel_of_backlight
   drm_panel_remove
-  drm_panel_unprepare
   mipi_dsi_attach
   mipi_dsi_dcs_write_buffer
   mipi_dsi_detach
@@ -1113,7 +1178,6 @@
   dw_pcie_write_dbi
   kthread_create_on_node
   of_prop_next_string
-  phy_set_mode_ext
   wake_up_process
 
 # required by pcierockchiphost.ko
@@ -1127,15 +1191,6 @@
   pci_stop_root_bus
   regulator_get_current_limit
 
-# required by phy-rockchip-csi2-dphy.ko
-  media_create_pad_link
-  of_find_device_by_node
-  v4l2_ctrl_find
-  v4l2_ctrl_g_ctrl
-  v4l2_querymenu
-  v4l2_subdev_call_wrappers
-  v4l2_subdev_init
-
 # required by phy-rockchip-inno-dsidphy.ko
   phy_mipi_dphy_config_validate
 
@@ -1143,7 +1198,6 @@
   nvmem_cell_get
 
 # required by phy-rockchip-inno-usb2.ko
-  devm_extcon_register_notifier
   extcon_set_state
   extcon_sync
   wakeup_source_remove
@@ -1153,8 +1207,8 @@
   strcasecmp
   usb_add_phy
 
-# required by phy-rockchip-typec.ko
-  extcon_get_property
+# required by phy-rockchip-mipi-rx.ko
+  of_graph_get_remote_node
 
 # required by phy-rockchip-usb.ko
   __of_reset_control_get
@@ -1170,7 +1224,6 @@
 # required by pl330.ko
   amba_driver_register
   amba_driver_unregister
-  devm_free_irq
   dma_async_device_register
   dma_async_device_unregister
   dma_async_tx_descriptor_init
@@ -1182,8 +1235,6 @@
   of_dma_controller_free
   of_dma_controller_register
   pm_runtime_irq_safe
-  seq_puts
-  tasklet_kill
   tasklet_setup
 
 # required by pm_domains.ko
@@ -1231,7 +1282,6 @@
   kobject_create_and_add
   platform_device_add
   platform_device_alloc
-  platform_device_put
   regmap_add_irq_chip
   regmap_del_irq_chip
   regmap_irq_get_domain
@@ -1243,8 +1293,6 @@
 
 # required by rockchip-iommu.ko
   bus_set_iommu
-  device_link_add
-  device_link_del
   get_zeroed_page
   iommu_device_register
   iommu_device_sysfs_add
@@ -1254,10 +1302,8 @@
   iommu_group_put
   iommu_group_ref_get
   iommu_put_dma_cookie
-  platform_bus_type
   platform_irq_count
   report_iommu_fault
-  strstr
 
 # required by rockchip-rng.ko
   devm_hwrng_register
@@ -1326,7 +1372,6 @@
   iio_get_time_ns
   iio_push_to_buffers
   iio_trigger_notify_done
-  wait_for_completion_timeout
 
 # required by rockchip_sip.ko
   sched_clock
@@ -1349,10 +1394,7 @@
   component_match_add_release
   component_unbind_all
   devm_of_phy_get_by_index
-  dma_buf_attach
-  dma_buf_detach
-  dma_buf_map_attachment
-  dma_buf_unmap_attachment
+  devm_phy_optional_get
   dma_get_sgtable_attrs
   dma_mmap_attrs
   drm_add_modes_noedid
@@ -1478,7 +1520,6 @@
   drm_mode_config_helper_resume
   drm_mode_config_helper_suspend
   drm_mode_config_reset
-  drm_mode_copy
   drm_mode_create_tv_properties
   drm_mode_crtc_set_gamma_size
   drm_mode_debug_printmodeline
@@ -1497,8 +1538,6 @@
   drm_of_encoder_active_endpoint
   drm_of_find_panel_or_bridge
   drm_open
-  drm_panel_bridge_add_typed
-  drm_panel_bridge_remove
   drm_panel_enable
   drm_panel_get_modes
   drm_panel_prepare
@@ -1527,8 +1566,6 @@
   drm_writeback_queue_job
   drm_writeback_signal_completion
   hdmi_infoframe_pack
-  iommu_attach_device
-  iommu_detach_device
   iommu_domain_alloc
   iommu_domain_free
   iommu_map
@@ -1541,7 +1578,6 @@
   of_graph_get_remote_port
   of_graph_get_remote_port_parent
   of_property_match_string
-  of_reserved_mem_device_init_by_idx
   platform_device_unregister
   platform_find_device_by_driver
   __platform_register_drivers
@@ -1553,7 +1589,6 @@
   __sw_hweight8
   __vmalloc
   vm_get_page_prot
-  vm_map_pages
 
 # required by rtc-rk808.ko
   _bcd2bin
@@ -1622,44 +1657,13 @@
   irq_stat
 
 # required by sii902x.ko
-  drm_atomic_helper_connector_destroy_state
-  drm_atomic_helper_connector_duplicate_state
-  drm_atomic_helper_connector_reset
   drm_bridge_add
   drm_bridge_remove
-  drm_connector_attach_encoder
-  drm_connector_cleanup
-  drm_connector_init
-  drm_detect_hdmi_monitor
-  __drm_err
-  drm_hdmi_avi_infoframe_from_display_mode
-  drm_helper_hpd_irq_event
-  drm_helper_probe_single_connector_modes
+  drm_display_mode_to_videomode
   hdmi_audio_infoframe_pack
   hdmi_avi_infoframe_pack
   of_graph_parse_endpoint
   of_property_read_variable_u8_array
-  platform_device_register_full
-
-# required by slip.ko
-  alloc_netdev_mqs
-  consume_skb
-  dev_close
-  free_netdev
-  __netdev_alloc_skb
-  netif_rx_ni
-  netif_tx_wake_queue
-  __rcu_read_lock
-  __rcu_read_unlock
-  register_netdevice
-  rtnl_lock
-  rtnl_unlock
-  skb_put
-  tty_hangup
-  tty_mode_ioctl
-  tty_register_ldisc
-  tty_unregister_ldisc
-  unregister_netdev
 
 # required by snd-soc-cx2072x.ko
   __devm_regmap_init
@@ -1708,17 +1712,12 @@
 
 # required by spi-rockchip.ko
   devm_spi_register_controller
-  of_property_read_variable_u16_array
-  pinctrl_pm_select_default_state
-  pinctrl_pm_select_sleep_state
   __spi_alloc_controller
   spi_controller_resume
   spi_controller_suspend
   spi_finalize_current_transfer
 
 # required by spidev.ko
-  _raw_spin_lock_irq
-  _raw_spin_unlock_irq
   __spi_register_driver
   spi_setup
   spi_sync
@@ -1731,10 +1730,8 @@
   dmabuf_page_pool_destroy
   dmabuf_page_pool_free
   dma_heap_get_dev
-  sg_alloc_table
   __sg_page_iter_next
   __sg_page_iter_start
-  vmalloc
 
 # required by tee.ko
   bus_register
@@ -1743,14 +1740,7 @@
   crypto_alloc_shash
   crypto_shash_final
   crypto_shash_update
-  dma_buf_fd
-  dma_buf_put
-  gen_pool_add_owner
-  gen_pool_alloc_algo_owner
   gen_pool_best_fit
-  gen_pool_create
-  gen_pool_destroy
-  gen_pool_free_owner
   gen_pool_set_algo
   gen_pool_virt_to_phys
   get_kernel_pages
@@ -1782,6 +1772,75 @@
   v4l2_async_notifier_add_subdev
   v4l2_async_notifier_unregister
 
+# required by video_rkisp.ko
+  iommu_get_domain_for_dev
+  __kfifo_out
+  kmalloc_order_trace
+  media_device_cleanup
+  media_device_init
+  __media_device_register
+  media_device_unregister
+  media_graph_walk_cleanup
+  media_graph_walk_init
+  media_graph_walk_next
+  media_graph_walk_start
+  media_pipeline_start
+  media_pipeline_stop
+  __memcpy_fromio
+  __memcpy_toio
+  of_property_read_u64
+  param_ops_string
+  param_ops_ullong
+  PDE_DATA
+  proc_create_data
+  remove_proc_entry
+  v4l2_async_notifier_register
+  v4l2_ctrl_g_ctrl_int64
+  v4l2_device_register
+  v4l2_device_register_subdev
+  __v4l2_device_register_subdev_nodes
+  v4l2_device_unregister
+  v4l2_device_unregister_subdev
+  v4l2_event_queue
+  v4l2_event_subdev_unsubscribe
+  v4l2_event_subscribe
+  v4l2_event_unsubscribe
+  v4l2_fh_open
+  v4l2_pipeline_link_notify
+  v4l2_pipeline_pm_get
+  v4l2_pipeline_pm_put
+  v4l2_subdev_link_validate
+  v4l2_type_names
+  vb2_buffer_done
+  vb2_dma_contig_memops
+  vb2_fop_mmap
+  vb2_fop_poll
+  vb2_fop_release
+  vb2_ioctl_create_bufs
+  vb2_ioctl_dqbuf
+  vb2_ioctl_expbuf
+  vb2_ioctl_prepare_buf
+  vb2_ioctl_qbuf
+  vb2_ioctl_querybuf
+  vb2_ioctl_reqbufs
+  vb2_ioctl_streamoff
+  vb2_ioctl_streamon
+  vb2_ops_wait_finish
+  vb2_ops_wait_prepare
+  vb2_plane_cookie
+  vb2_plane_vaddr
+  vb2_queue_init
+  vb2_queue_release
+  vb2_vmalloc_memops
+  video_devdata
+  video_device_release_empty
+  video_ioctl2
+  __video_register_device
+  video_unregister_device
+
+# required by videobuf2-dma-sg.ko
+  split_page
+
 # required by zram.ko
   __alloc_percpu
   bio_endio
@@ -1804,7 +1863,6 @@
   kstrtou16
   memparse
   memset64
-  mutex_is_locked
   __num_online_cpus
   page_endio
   register_blkdev
@@ -1825,10 +1883,6 @@
   kern_mount
   kern_unmount
   kill_anon_super
-  kmem_cache_alloc
-  kmem_cache_create
-  kmem_cache_destroy
-  kmem_cache_free
   kstrdup
   __lock_page
   page_mapping
