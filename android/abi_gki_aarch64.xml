@@ -1916,6 +1916,7 @@
       <elf-symbol name='drm_gem_free_mmap_offset' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xca14f36c'/>
       <elf-symbol name='drm_gem_get_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x73b1db7d'/>
       <elf-symbol name='drm_gem_handle_create' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2e99166e'/>
+      <elf-symbol name='drm_gem_handle_delete' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5c41545a'/>
       <elf-symbol name='drm_gem_lock_reservations' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6b8c06d8'/>
       <elf-symbol name='drm_gem_map_attach' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7cde20c1'/>
       <elf-symbol name='drm_gem_map_detach' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x459697c7'/>
@@ -123760,6 +123761,11 @@
         <parameter type-id='9e99ecc1' name='file_priv' filepath='drivers/gpu/drm/drm_gem.c' line='443' column='1'/>
         <parameter type-id='abd62a96' name='obj' filepath='drivers/gpu/drm/drm_gem.c' line='444' column='1'/>
         <parameter type-id='f9409001' name='handlep' filepath='drivers/gpu/drm/drm_gem.c' line='445' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='drm_gem_handle_delete' mangled-name='drm_gem_handle_delete' filepath='drivers/gpu/drm/drm_gem.c' line='275' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_gem_handle_delete'>
+        <parameter type-id='9e99ecc1' name='filp' filepath='drivers/gpu/drm/drm_gem.c' line='275' column='1'/>
+        <parameter type-id='19c2251e' name='handle' filepath='drivers/gpu/drm/drm_gem.c' line='275' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='drm_gem_lock_reservations' mangled-name='drm_gem_lock_reservations' filepath='drivers/gpu/drm/drm_gem.c' line='1265' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_gem_lock_reservations'>
