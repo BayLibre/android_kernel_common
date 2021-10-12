@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "985754ca_d698b508",
+        "filename": "crypto/fips140-alg-registration.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-10-12T07:58:31Z",
+      "side": 1,
+      "message": "Perhaps add a note here that allocating TFMs is only permitted in task context, and so (current \u003d\u003d fips140_init_thread) can only hold for invocations that are part of the fips140 init code?",
+      "revId": "997256fe9be2bb467e12e4c169eb22da87c57946",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
