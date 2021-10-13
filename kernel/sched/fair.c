@@ -4522,6 +4522,7 @@ void set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
 
 	se->prev_sum_exec_runtime = se->sum_exec_runtime;
 }
+EXPORT_SYMBOL_GPL(set_next_entity);
 
 static int
 wakeup_preempt_entity(struct sched_entity *curr, struct sched_entity *se);
