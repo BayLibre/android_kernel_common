@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bed28853_b352c458",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2021-10-13T07:22:44Z",
+      "side": 1,
+      "message": "Is this a vendor hook for the bpf syscall itself? If so, that really does not seem like a good idea because mainline code uses that syscall very extensively.\n\nIs there some reason that this change cannot be made in the core kernel?",
+      "revId": "134c0f7c097107f58454112ba8a4f93847321f88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
