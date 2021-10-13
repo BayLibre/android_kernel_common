@@ -213,6 +213,24 @@
       "parentUuid": "0d9916c7_682f8859",
       "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e43bff84_6df4a4dd",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-10-13T04:06:30Z",
+      "side": 1,
+      "message": "I see it now, apologies, we\u0027re setting the max segment on the dummy device, not the dmabuf. So with cma and system heap, the real device segment size in map/unmap will be used.\n\nI withdraw my suggestion! Terribly sorry.",
+      "parentUuid": "0e94cf76_26ac0482",
+      "revId": "e0d216703365bf6f63f1abbbc81b52bb5014eba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
