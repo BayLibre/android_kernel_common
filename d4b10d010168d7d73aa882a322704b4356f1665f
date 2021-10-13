@@ -87,6 +87,24 @@
       "parentUuid": "565d18b3_90c54e19",
       "revId": "d4b10d010168d7d73aa882a322704b4356f1665f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2dc06f6_a7cd42de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-10-13T17:45:22Z",
+      "side": 1,
+      "message": "Hi Guangming,\n\nI don\u0027t see a problem with removing the const but its too late to take the change into the 12-5.10 branch since it breaks KMI(https://android-build.googleplex.com/builds/pending/P26725233/kernel_abi_aarch64/latest/view/logs/build_error.log). \n\nI would be ok with adding another version of the function with the const removed just for the 12-5.10 branch. Suren, do you have any better ideas? Thanks!",
+      "parentUuid": "565d18b3_90c54e19",
+      "revId": "d4b10d010168d7d73aa882a322704b4356f1665f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
