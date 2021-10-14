@@ -34,6 +34,24 @@
       "parentUuid": "fffffc4f_bac70369",
       "revId": "72e4b75e517747dd0766f06815be28162717bd96",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b52c823_55fb88c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-14T20:00:40Z",
+      "side": 1,
+      "message": "It was reverted in aosp/1533942. So instead of submitting a new version, please revert that reversion to restore the original patch. Do this for all the cases where you are re-submitting a patch that was reverted.",
+      "parentUuid": "f059310c_0cf38597",
+      "revId": "72e4b75e517747dd0766f06815be28162717bd96",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
