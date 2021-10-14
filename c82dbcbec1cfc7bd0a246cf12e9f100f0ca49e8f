@@ -141,6 +141,24 @@
       "parentUuid": "f4007ae8_8e2575ac",
       "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c90be792_91f343b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1895247
+      },
+      "writtenOn": "2021-10-14T08:27:16Z",
+      "side": 1,
+      "message": "I think I will not revise it unless there is a new approach to modify the original patch,\nhttps://lore.kernel.org/all/1604329814-24779-3-git-send-email-spujar@nvidia.com/\n\nFor now, we need to allocate a new card_ext to store the additional field to avoid violate KMI, thus I will keep the approach, thanks.",
+      "parentUuid": "a1f22958_2ab3367d",
+      "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
