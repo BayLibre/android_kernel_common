@@ -33,6 +33,24 @@
       "message": "Hello,\nI met below kernel panic with this patch.\n\n Unable to handle kernel read from unreadable memory at virtual address 0000000000000088\n Mem abort info:\n   ESR \u003d 0x96000005\n   EC \u003d 0x25: DABT (current EL), IL \u003d 32 bits\n   SET \u003d 0, FnV \u003d 0\n   EA \u003d 0, S1PTW \u003d 0\n Data abort info:\n   ISV \u003d 0, ISS \u003d 0x00000005\n   CM \u003d 0, WnR \u003d 0\n user pgtable: 4k pages, 39-bit VAs, pgdp\u003d000000010530a000\n [0000000000000088] pgd\u003d0000000105313003, p4d\u003d0000000105313003, pud\u003d0000000105313003, pmd\u003d0000000000000000\n Internal error: Oops: 96000005 [#1] PREEMPT SMP\n CPU: 3 PID: 190 Comm: kworker/3:3 Tainted: G         C O      5.10.72-11459-g90ff4f4d21b0 #10\n Hardware name: NXP i.MX8MPlus EVK board (DT)\n Workqueue: events gpio_work                                                                         [1715/46492]\n pstate: 80400005 (Nzcv daif +PAN -UAO -TCO BTYPE\u003d--)\n pc : __ww_mutex_lock+0xab8/0xef8\n lr : snd_soc_dapm_enable_pin+0x28/0x60\n sp : ffffffc012e4bc70\n x29: ffffffc012e4bc70 x28: 0000000000000402\n x27: ffffff81775f46a0 x26: 00000000775f8b05\n x25: 0000000000000002 x24: 0000000000000000\n x23: ffffffc011212e84 x22: ffffffc009aed80c\n x21: 0000000000000000 x20: ffffff80c6e1e910\n x19: ffffffc009aeef7e x18: ffffffc012ab3048\n x17: 0000000000000000 x16: 0000000000000002\n x15: 0000000000000000 x14: 0000000000000c00\n x13: 0000000000013f5b x12: 0000000000007ffb\n x11: 000000000000ffff x10: 00000000000006cc\n x9 : 0000000000000000 x8 : 0000000000000088\n x7 : 362e36202020205b x6 : ffffffc01234b1a0\n x5 : ffffffffffffffff x4 : 0000000000000000\n x3 : ffffff80c0264ae8 x2 : ffffff80c0c4a500\n x1 : ffffffc009aeef7e x0 : 0000000000000088\n Call trace:\n  __ww_mutex_lock+0xab8/0xef8\n  snd_soc_dapm_enable_pin+0x28/0x60\n  hp_jack_event+0x28/0x78 [snd_soc_fsl_asoc_card]\n  blocking_notifier_call_chain+0x7c/0x100\n  snd_soc_jack_report+0xd8/0x24c\n  gpio_work+0x8c/0xc8\n  process_one_work+0x218/0x574\n  worker_thread+0x28c/0x580\n  kthread+0x158/0x1b0\n  ret_from_fork+0x10/0x30\n Code: c80a7d02 35ffff8a 17fff9af f9800111 (c85ffd00)\n ---[ end trace 85fc72c57eddb1a7 ]---\n Kernel panic - not syncing: Oops: Fatal exception\n SMP: stopping secondary CPUs\n Kernel Offset: disabled\n CPU features: 0x000,10240002,2000200c\n Memory Limit: none\n",
       "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5670d735_2659d3bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1895247
+      },
+      "writtenOn": "2021-10-14T06:44:21Z",
+      "side": 1,
+      "message": "can you show the machine driver which register the jack ?",
+      "parentUuid": "f28144db_37dba574",
+      "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
