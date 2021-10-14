@@ -16,6 +16,24 @@
       "message": "Why wasn\u0027t the users of these hooks submitted upstream already?  Why are they all still needed?",
       "revId": "17b614bfb01387b4d2d133a67de134cf28794d6d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8517ef38_b0bac726",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1656502
+      },
+      "writtenOn": "2021-10-14T08:55:14Z",
+      "side": 1,
+      "message": "Because the users of these vendor hooks heavily rely on the platform-specific(currently for arm64 on android) operations which are not common.\nSo there are no suitable reasons for upstream to official kernel.",
+      "parentUuid": "0e9b2d14_8b3dfbc6",
+      "revId": "17b614bfb01387b4d2d133a67de134cf28794d6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
