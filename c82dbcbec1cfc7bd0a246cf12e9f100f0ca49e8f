@@ -69,6 +69,24 @@
       "parentUuid": "5670d735_2659d3bb",
       "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e055c0da_7f9c3ca5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1895247
+      },
+      "writtenOn": "2021-10-14T07:17:04Z",
+      "side": 1,
+      "message": "due to the card address will be changed\nthus the card stored in priv will be changed\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/fsl/fsl-asoc-card.c?h\u003dv5.15-rc5\u0026id\u003da8437f05384cb472518ec21bf4fffbe8f0a47378#n95\n\ncan use init to get rtd-\u003ecard and get the priv data\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/fsl/fsl-asoc-card.c?h\u003dv5.15-rc5\u0026id\u003da8437f05384cb472518ec21bf4fffbe8f0a47378#n300\n\nstatic int fsl_asoc_card_init(struct snd_soc_pcm_runtime *rtd)\n{\n        struct fsl_asoc_card_priv *priv \u003d snd_soc_card_get_drvdata(rtd-\u003ecard);\n        int ret \u003d 0;\n\n        ret \u003d asoc_simple_init_jack(rtd-\u003ecard, \u0026priv-\u003ehp_jack,\n                                     1, NULL, \"Headphone Jack\");\n}\n\n\t/* Default ASoC DAI Link*/\n\t{\n\t\t.name \u003d \"HiFi\",\n\t\t.stream_name \u003d \"HiFi\",\n\t\t.ops \u003d \u0026fsl_asoc_card_ops,\n\t\t.init \u003d fsl_asoc_card_init,\n\t\tSND_SOC_DAILINK_REG(hifi),\n\t},",
+      "parentUuid": "2a88b5ab_288fdee5",
+      "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
