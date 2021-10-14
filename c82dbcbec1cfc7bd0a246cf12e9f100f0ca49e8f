@@ -51,6 +51,24 @@
       "parentUuid": "f28144db_37dba574",
       "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a88b5ab_288fdee5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1895247
+      },
+      "writtenOn": "2021-10-14T06:54:41Z",
+      "side": 1,
+      "message": "take the file for example,\nsound/soc/fsl/imx-es8328.c\n\nsuggest to store private data in imx_es8328_probe\nsnd_soc_card_set_drvdata(card, data);\n\nand then get the priv via\nsnd_soc_card_get_drvdata(rtd-\u003ecard);",
+      "parentUuid": "5670d735_2659d3bb",
+      "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
