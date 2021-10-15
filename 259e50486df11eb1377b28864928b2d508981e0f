@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e396d67e_77cc843a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-10-15T11:41:49Z",
+      "side": 1,
+      "message": "I guess one part I\u0027m not sure about is that the userspace process could now modify the data buffer while we are parsing objects. For example, it could perhaps change offsets in one of the _PTR types right after we have verified that it is correct and doesn\u0027t refer to an earlier object. Do you think this is an issue? I need to give it a bit more thought.",
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e4b6f42_401ab741",
