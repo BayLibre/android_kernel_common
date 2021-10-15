@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c162be6d_fc4076ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-15T21:33:44Z",
+      "side": 1,
+      "message": "Hmm. Good one. I think it isn\u0027t an issue for the cases where we read the user ptr once, verify it and write the fixed-up version. We just wouldn\u0027t see the modification since we never look at it again. But we do have at least 1 case where we go back and re-read the source proc version of the PTR in preparation for calling binder_translate_fd_array() (the 2nd patch in this series).\n\nIn this case, the source proc could corrupt uparent-\u003ebuffer which would result in a bogus address for copy_from_user() when we read each untranslated fd from the array. This corruption would either result in bogus fds if the pointer is valid or EFAULT if it isn\u0027t.\n\nEFAULT would fail gracefully. Bogus fds might accidentally work (in which case the target has some random fds open which no doubt would cause issues). If any fd is invalid, the transaction would fail when the fd fixups are applied.\n\nSince the source process could pass bogus fds any time it wants anyway, this failure mode seems reasonable for a source process that misbehaves in this way.\n\nDo you see any other ways this could bite us?",
+      "parentUuid": "e396d67e_77cc843a",
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e4b6f42_401ab741",
         "filename": "drivers/android/binder.c",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2021-10-15T11:34:47Z",
       "side": 1,
       "message": "@object?",
+      "range": {
+        "startLine": 1741,
+        "startChar": 52,
+        "endLine": 1741,
+        "endChar": 58
+      },
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc828e1c_2cd3559b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1741,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-15T21:33:44Z",
+      "side": 1,
+      "message": "fixed in my copy.",
+      "parentUuid": "7e4b6f42_401ab741",
       "range": {
         "startLine": 1741,
         "startChar": 52,
@@ -78,6 +120,30 @@
       "side": 1,
       "message": "mmm it does fixup fds...",
       "parentUuid": "abfecc49_ca826d19",
+      "range": {
+        "startLine": 3156,
+        "startChar": 2,
+        "endLine": 3160,
+        "endChar": 31
+      },
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0de5a30b_40d5c263",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3160,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-15T21:33:44Z",
+      "side": 1,
+      "message": "It fixes up the parent (if there is one). FD fixups are deferred -- but even if they they were done now, they not part of the binder_fd_array_object. So the binder_fd_array_object we are currently working on doesn\u0027t change here (or am I missing a case where it is modified?). If it isn\u0027t modified and doesn\u0027t contain a user address in the source process, then it can just be copied directly from the user buffer to the target.",
+      "parentUuid": "0a80c3fb_08ae21f6",
       "range": {
         "startLine": 3156,
         "startChar": 2,
