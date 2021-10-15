@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bbb4479_1deb5667",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-10-15T08:31:38Z",
+      "side": 1,
+      "message": "Giving this CR-2 not because of code quality, but because we should really post this upstream if we\u0027re confident there is value in changing the PELT HL, especially if we\u0027re adding a userspace interface. We\u0027ll happily apply the UPSTREAM/FROMGUT patch once it lands, thanks!",
+      "revId": "03c2b34a917449364ce0b3cd3e6e2ba6a95fb83e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb24ab2c_b29c471d",
@@ -31,6 +48,24 @@
       "writtenOn": "2021-10-14T18:34:41Z",
       "side": 1,
       "message": "we will need to set the default sched_pelt_lshit via cmdline param.",
+      "revId": "03c2b34a917449364ce0b3cd3e6e2ba6a95fb83e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47843a7e_a67760eb",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-10-15T08:31:38Z",
+      "side": 1,
+      "message": "I think that should be doable for all sysctl parameters already:\n\nhttps://elixir.bootlin.com/linux/latest/source/Documentation/admin-guide/kernel-parameters.txt#L5531",
+      "parentUuid": "fb24ab2c_b29c471d",
       "revId": "03c2b34a917449364ce0b3cd3e6e2ba6a95fb83e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
