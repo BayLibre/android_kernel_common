@@ -212,6 +212,30 @@
       },
       "revId": "259e50486df11eb1377b28864928b2d508981e0f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cad711e8_4db2f29a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3160,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-18T21:51:52Z",
+      "side": 1,
+      "message": "based on our other comment thread, now I think this might be an issue since we read and processed the FDA object, but now we are going to read it again for the copy. The user could change the parent offset or the type between when we read the object and when it gets copied.\n\nSo I think this should be changed to write the object out here and start the next copy after the object.",
+      "parentUuid": "a1c378ea_9905b847",
+      "range": {
+        "startLine": 3156,
+        "startChar": 2,
+        "endLine": 3160,
+        "endChar": 31
+      },
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
