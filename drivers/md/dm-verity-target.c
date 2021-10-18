@@ -538,7 +538,11 @@ static int verity_verify_io(struct dm_verity_io *io)
 				return -EIO;
 			}
 			if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA,
+<<<<<<< HEAD   (161302 Merge 304040fb4909 ("Merge tag 's390-5.15-6' of git://git.ke)
 					   cur_block))
+=======
+					      cur_block))
+>>>>>>> BRANCH (dcd619 Merge tag 'for-5.15/dm-fixes' of git://git.kernel.org/pub/sc)
 				return -EIO;
 		}
 	}
