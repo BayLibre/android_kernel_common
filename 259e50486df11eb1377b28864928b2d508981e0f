@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62ecba0b_985cc4bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-10-18T14:35:38Z",
+      "side": 1,
+      "message": "I was thinking whether something like b/11355082 would be possible with this; eg modifying offsets that would make us write into earlier already validated objects. I think we\u0027ve added some checks since then, but need to convince myself this covers all cases",
+      "parentUuid": "c162be6d_fc4076ff",
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e4b6f42_401ab741",
         "filename": "drivers/android/binder.c",
         "patchSetId": 3
@@ -144,6 +162,30 @@
       "side": 1,
       "message": "It fixes up the parent (if there is one). FD fixups are deferred -- but even if they they were done now, they not part of the binder_fd_array_object. So the binder_fd_array_object we are currently working on doesn\u0027t change here (or am I missing a case where it is modified?). If it isn\u0027t modified and doesn\u0027t contain a user address in the source process, then it can just be copied directly from the user buffer to the target.",
       "parentUuid": "0a80c3fb_08ae21f6",
+      "range": {
+        "startLine": 3156,
+        "startChar": 2,
+        "endLine": 3160,
+        "endChar": 31
+      },
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c378ea_9905b847",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3160,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-10-18T14:35:38Z",
+      "side": 1,
+      "message": "yeah you\u0027re right, I think this is fine to copy as-is.",
+      "parentUuid": "0de5a30b_40d5c263",
       "range": {
         "startLine": 3156,
         "startChar": 2,
