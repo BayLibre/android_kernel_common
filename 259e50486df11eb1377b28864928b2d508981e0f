@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "657bc691_faef0136",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-10-18T21:40:49Z",
+      "side": 1,
+      "message": "I think we are ok on that kind of issue because we copy/process the offsets and the buffer in-order reading every object once (with the one exception mentioned above for FDA objects). If the user goes back and changes the object type or offsets after it has been processed, that change will never be seen. In fact, if we process and validate it in-order and only copy it once, is there really anything that the user can do that is different from today\u0027s code? (from the pov of the kernel driver, it doesn\u0027t matter *when* the data is written)\n\nFor the FDA case, if they were to change the object type, that would result in an error. So the worst case there is that we have a corrupt list of pre-translated fds -- which is no different than the sender initially creating a bogus list of fds which they can do today.",
+      "parentUuid": "62ecba0b_985cc4bf",
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e4b6f42_401ab741",
         "filename": "drivers/android/binder.c",
         "patchSetId": 3
