@@ -16,6 +16,24 @@
       "message": "What driver needs to call this?  That feels like a driver bug, please fix up the caller to not do this.",
       "revId": "b0c9affe9426ff123ea58854ede6f8bbb200a07d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3294e98_0294a62e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1712300
+      },
+      "writtenOn": "2021-10-19T19:51:15Z",
+      "side": 1,
+      "message": "This is for a scheduler vendor hook used by a QC specific module. printk_deferred is being used because of the atomic nature of the scheduler.",
+      "parentUuid": "d4bfbce3_4216984e",
+      "revId": "b0c9affe9426ff123ea58854ede6f8bbb200a07d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
