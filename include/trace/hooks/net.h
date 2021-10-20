@@ -18,11 +18,7 @@ DECLARE_HOOK(android_vh_ptype_head,
 DECLARE_HOOK(android_vh_kfree_skb,
 	TP_PROTO(struct sk_buff *skb), TP_ARGS(skb));
 
-struct nf_conn;
-DECLARE_RESTRICTED_HOOK(android_rvh_nf_conn_alloc,
-	TP_PROTO(struct nf_conn *nf_conn), TP_ARGS(nf_conn), 1);
-DECLARE_RESTRICTED_HOOK(android_rvh_nf_conn_free,
-	TP_PROTO(struct nf_conn *nf_conn), TP_ARGS(nf_conn), 1);
+struct nf_conn;	/* needed for CRC preservation */
 
 /* macro versions of hooks are no longer required */
 
