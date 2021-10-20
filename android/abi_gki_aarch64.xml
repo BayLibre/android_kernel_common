@@ -244,6 +244,7 @@
       <elf-symbol name='__wake_up' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3eeb2322'/>
       <elf-symbol name='__wake_up_locked' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2773c485'/>
       <elf-symbol name='__warn_printk' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x56470118'/>
+      <elf-symbol name='__xa_alloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf40e7a73'/>
       <elf-symbol name='__xfrm_state_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf6d16b25'/>
       <elf-symbol name='_atomic_dec_and_lock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcf4fdd4d'/>
       <elf-symbol name='_bcd2bin' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb6936ffe'/>
@@ -4160,6 +4161,8 @@
       <elf-symbol name='ww_mutex_lock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1fc5b6d7'/>
       <elf-symbol name='ww_mutex_lock_interruptible' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf5196ddb'/>
       <elf-symbol name='ww_mutex_unlock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7f59a34e'/>
+      <elf-symbol name='xa_erase' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x745a981'/>
+      <elf-symbol name='xa_load' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa85a3e6d'/>
       <elf-symbol name='xdp_convert_zc_to_xdp_frame' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xff015373'/>
       <elf-symbol name='xdp_do_flush_map' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x559b27f8'/>
       <elf-symbol name='xdp_do_redirect' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x288dccdc'/>
@@ -26396,7 +26399,7 @@
           <var-decl name='skb_mstamp_ns' type-id='91ce1af9' visibility='default' filepath='include/linux/skbuff.h' line='718' column='1'/>
         </data-member>
       </union-decl>
-      <union-decl name='__anonymous_union__' size-in-bits='128' is-anonymous='yes' visibility='default' filepath='include/net/ip6_fib.h' line='151' column='1' id='faf198da'>
+      <union-decl name='__anonymous_union__2' size-in-bits='128' is-anonymous='yes' visibility='default' filepath='include/net/ip6_fib.h' line='151' column='1' id='faf198da'>
         <data-member access='public'>
           <var-decl name='fib6_siblings' type-id='72f469ec' visibility='default' filepath='include/net/ip6_fib.h' line='152' column='1'/>
         </data-member>
@@ -28563,7 +28566,7 @@
           <var-decl name='' type-id='1285aa79' visibility='default' filepath='include/linux/skbuff.h' line='698' column='1'/>
         </data-member>
       </class-decl>
-      <class-decl name='__anonymous_struct__1' size-in-bits='32' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/cpu_rmap.h' line='28' column='1' id='bb08c7e1'>
+      <class-decl name='__anonymous_struct__' size-in-bits='32' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/cpu_rmap.h' line='28' column='1' id='bb08c7e1'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='index' type-id='1dc6a898' visibility='default' filepath='include/linux/cpu_rmap.h' line='29' column='1'/>
         </data-member>
@@ -30525,7 +30528,7 @@
           <var-decl name='dev_scratch' type-id='7359adad' visibility='default' filepath='include/linux/skbuff.h' line='704' column='1'/>
         </data-member>
       </union-decl>
-      <union-decl name='__anonymous_union__1' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/nexthop.h' line='96' column='1' id='21fca59c'>
+      <union-decl name='__anonymous_union__3' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/nexthop.h' line='96' column='1' id='21fca59c'>
         <data-member access='public'>
           <var-decl name='nh_info' type-id='e55edb2e' visibility='default' filepath='include/net/nexthop.h' line='97' column='1'/>
         </data-member>
@@ -31557,7 +31560,7 @@
           <var-decl name='nulls_head' type-id='af86905d' visibility='default' filepath='include/net/inet_hashtables.h' line='117' column='1'/>
         </data-member>
       </union-decl>
-      <union-decl name='__anonymous_union__1' size-in-bits='128' is-anonymous='yes' visibility='default' filepath='include/net/xfrm.h' line='149' column='1' id='fc320d58'>
+      <union-decl name='__anonymous_union__20' size-in-bits='128' is-anonymous='yes' visibility='default' filepath='include/net/xfrm.h' line='149' column='1' id='fc320d58'>
         <data-member access='public'>
           <var-decl name='gclist' type-id='03a4a074' visibility='default' filepath='include/net/xfrm.h' line='150' column='1'/>
         </data-member>
@@ -32801,7 +32804,7 @@
           <var-decl name='rt_gw6' type-id='f6ed712a' visibility='default' filepath='include/net/route.h' line='64' column='1'/>
         </data-member>
       </union-decl>
-      <union-decl name='__anonymous_union__2' size-in-bits='832' is-anonymous='yes' visibility='default' filepath='include/net/nexthop.h' line='56' column='1' id='757a0dbc'>
+      <union-decl name='__anonymous_union__4' size-in-bits='832' is-anonymous='yes' visibility='default' filepath='include/net/nexthop.h' line='56' column='1' id='757a0dbc'>
         <data-member access='public'>
           <var-decl name='fib_nhc' type-id='e1f89457' visibility='default' filepath='include/net/nexthop.h' line='57' column='1'/>
         </data-member>
@@ -154171,6 +154174,34 @@
         <return type-id='95e97e5e'/>
       </function-decl>
     </abi-instr>
+    <abi-instr address-size='64' path='lib/xarray.c' language='LANG_C89'>
+      <class-decl name='xa_limit' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/linux/xarray.h' line='236' column='1' id='5066733a'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='max' type-id='19c2251e' visibility='default' filepath='include/linux/xarray.h' line='237' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='min' type-id='19c2251e' visibility='default' filepath='include/linux/xarray.h' line='238' column='1'/>
+        </data-member>
+      </class-decl>
+      <function-decl name='__xa_alloc' mangled-name='__xa_alloc' filepath='lib/xarray.c' line='1804' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__xa_alloc'>
+        <parameter type-id='60075f2a' name='xa' filepath='lib/xarray.c' line='1804' column='1'/>
+        <parameter type-id='f9409001' name='id' filepath='lib/xarray.c' line='1804' column='1'/>
+        <parameter type-id='eaa32e2f' name='entry' filepath='lib/xarray.c' line='1804' column='1'/>
+        <parameter type-id='5066733a' name='limit' filepath='lib/xarray.c' line='1805' column='1'/>
+        <parameter type-id='3eb7c31c' name='gfp' filepath='lib/xarray.c' line='1805' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='xa_erase' mangled-name='xa_erase' filepath='lib/xarray.c' line='1505' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='xa_erase'>
+        <parameter type-id='60075f2a' name='xa' filepath='lib/xarray.c' line='1505' column='1'/>
+        <parameter type-id='7359adad' name='index' filepath='lib/xarray.c' line='1505' column='1'/>
+        <return type-id='eaa32e2f'/>
+      </function-decl>
+      <function-decl name='xa_load' mangled-name='xa_load' filepath='lib/xarray.c' line='1448' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='xa_load'>
+        <parameter type-id='60075f2a' name='xa' filepath='lib/xarray.c' line='1448' column='1'/>
+        <parameter type-id='7359adad' name='index' filepath='lib/xarray.c' line='1448' column='1'/>
+        <return type-id='eaa32e2f'/>
+      </function-decl>
+    </abi-instr>
     <abi-instr address-size='64' path='lib/zlib_deflate/deflate.c' language='LANG_C89'>
       <function-decl name='zlib_deflateReset' mangled-name='zlib_deflateReset' filepath='lib/zlib_deflate/deflate.c' line='253' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='zlib_deflateReset'>
         <parameter type-id='fb4f8c25' name='strm' filepath='lib/zlib_deflate/deflate.c' line='254' column='1'/>
@@ -156557,7 +156588,7 @@
           <var-decl name='ifa_tstamp' type-id='7359adad' visibility='default' filepath='include/linux/inetdevice.h' line='156' column='1'/>
         </data-member>
       </class-decl>
-      <class-decl name='__anonymous_struct__1' size-in-bits='32' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/cpu_rmap.h' line='28' column='1' id='bb08c7e1'>
+      <class-decl name='__anonymous_struct__' size-in-bits='32' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/cpu_rmap.h' line='28' column='1' id='bb08c7e1'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='index' type-id='1dc6a898' visibility='default' filepath='include/linux/cpu_rmap.h' line='29' column='1'/>
         </data-member>
@@ -156641,7 +156672,7 @@
           <var-decl name='buckets' type-id='29c3368c' visibility='default' filepath='include/linux/netdevice.h' line='3054' column='1'/>
         </data-member>
       </class-decl>
-      <class-decl name='__anonymous_struct__2' size-in-bits='32' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/netdevice.h' line='3084' column='1' id='75fc4829'>
+      <class-decl name='__anonymous_struct__1' size-in-bits='32' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/netdevice.h' line='3084' column='1' id='75fc4829'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='recursion' type-id='1dc6a898' visibility='default' filepath='include/linux/netdevice.h' line='3085' column='1'/>
         </data-member>
@@ -160135,7 +160166,7 @@
           <var-decl name='ipi6_ifindex' type-id='95e97e5e' visibility='default' filepath='include/uapi/linux/ipv6.h' line='23' column='1'/>
         </data-member>
       </class-decl>
-      <union-decl name='__anonymous_union__19' size-in-bits='16' is-anonymous='yes' visibility='default' filepath='include/linux/ipv6.h' line='255' column='1' id='23d43bd5'>
+      <union-decl name='__anonymous_union__' size-in-bits='16' is-anonymous='yes' visibility='default' filepath='include/linux/ipv6.h' line='255' column='1' id='23d43bd5'>
         <data-member access='public'>
           <var-decl name='bits' type-id='9ebd5abd' visibility='default' filepath='include/linux/ipv6.h' line='273' column='1'/>
         </data-member>
@@ -160335,7 +160366,7 @@
           <var-decl name='segments_left' type-id='8f048e17' visibility='default' filepath='include/uapi/linux/ipv6.h' line='52' column='1'/>
         </data-member>
       </class-decl>
-      <union-decl name='__anonymous_union__20' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/ipv6.h' line='321' column='1' id='f3980da2'>
+      <union-decl name='__anonymous_union__1' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/net/ipv6.h' line='321' column='1' id='f3980da2'>
         <data-member access='public'>
           <var-decl name='pid' type-id='b94e5398' visibility='default' filepath='include/net/ipv6.h' line='322' column='1'/>
         </data-member>
