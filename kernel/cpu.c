@@ -41,7 +41,6 @@
 
 #undef CREATE_TRACE_POINTS
 #include <trace/hooks/sched.h>
-#include <trace/hooks/cpu.h>
 
 #include "smpboot.h"
 
@@ -1073,8 +1072,6 @@ static int cpu_down(unsigned int cpu, enum cpuhp_state target)
 {
 	int err;
 
-	trace_android_vh_cpu_down(NULL);
-
 	cpu_maps_update_begin();
 	err = cpu_down_maps_locked(cpu, target);
 	cpu_maps_update_done();
@@ -1537,8 +1534,6 @@ static int cpu_up(unsigned int cpu, enum cpuhp_state target)
 #endif
 		return -EINVAL;
 	}
-
-	trace_android_vh_cpu_up(NULL);
 
 	/*
 	 * CPU hotplug operations consists of many steps and each step
