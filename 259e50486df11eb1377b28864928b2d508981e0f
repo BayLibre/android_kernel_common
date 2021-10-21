@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "230144fa_ad72784b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-10-21T14:57:06Z",
+      "side": 1,
+      "message": "Ok, gave this some more thought. I agree the FDA case doesn\u0027t really open up any new attack vectors, since as you said we could already randomly put bogus FDs in there. And copy_from_user() failing was also already possible if userspace provided a bogus address to begin with.\n\nI haven\u0027t had time to review your last patch in this series yet; but assuming that also there the offsets and buffer pointer from userspace are read only once, then verified, and then we fixup and copy, I think that should be safe, too.",
+      "parentUuid": "657bc691_faef0136",
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e4b6f42_401ab741",
         "filename": "drivers/android/binder.c",
         "patchSetId": 3
@@ -228,6 +246,30 @@
       "side": 1,
       "message": "based on our other comment thread, now I think this might be an issue since we read and processed the FDA object, but now we are going to read it again for the copy. The user could change the parent offset or the type between when we read the object and when it gets copied.\n\nSo I think this should be changed to write the object out here and start the next copy after the object.",
       "parentUuid": "a1c378ea_9905b847",
+      "range": {
+        "startLine": 3156,
+        "startChar": 2,
+        "endLine": 3160,
+        "endChar": 31
+      },
+      "revId": "259e50486df11eb1377b28864928b2d508981e0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4de75990_fb75c174",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3160,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-10-21T14:57:06Z",
+      "side": 1,
+      "message": "Haha. Yeah agreed, it\u0027s safer to just copy the object here. I think auto-generated userspace code on the receiving side has some checks, too (eg checking offsets match what we expect), but it won\u0027t be bullet proof.",
+      "parentUuid": "cad711e8_4db2f29a",
       "range": {
         "startLine": 3156,
         "startChar": 2,
