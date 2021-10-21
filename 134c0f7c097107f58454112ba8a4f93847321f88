@@ -104,6 +104,24 @@
       "message": "This functionality should be sent upstream.",
       "revId": "134c0f7c097107f58454112ba8a4f93847321f88",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce09ef1_d0a53801",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1656502
+      },
+      "writtenOn": "2021-10-21T08:01:25Z",
+      "side": 1,
+      "message": "Hi Maciej,thanks for your suggestion:)\n\nTo upstream this functionality, the code would be formatted according to the following constraints,\n\n1. No corresponding recovery functions like set_memory_rw/nx during the free of bpf images because they are released directly by destroying the mapping(eg. vfree for arm64)\n\nSo there must be pairs of set_memory_ro/x and set_memory_rw/nx put correctly in the creation and release path.\n\n2. To utilize more ARM64 EL2 capabilities on this patch, there may be two ways of implementations,\na. through tracepoints at corresponding bpf image creation/release for driver\u0027s probing.\nb. through standard set_memory_xx, and add corresponding platform-dependent implementation\n\nFor 2.a, it likes the way we use here. Is this suitable in official kernel or what the reason we could use for this upstream?\nFor 2.b, this will affect all users of set_memory_xx, and we do not sure how many cases there will be like the bpf which has the condition 1.?\n\nCould you give us more suggestion? Thanks.\n\nBTW, we will remove this bpf modification from the patch series for further trial of ACK merge. Thank you.",
+      "parentUuid": "724d6d5a_5b93f6ca",
+      "revId": "134c0f7c097107f58454112ba8a4f93847321f88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
