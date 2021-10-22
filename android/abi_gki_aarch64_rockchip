@@ -15,6 +15,7 @@
   atomic_notifier_call_chain
   atomic_notifier_chain_register
   atomic_notifier_chain_unregister
+  bcmp
   bdget_disk
   bdput
   __bitmap_set
@@ -154,6 +155,7 @@
   devm_gpiod_get_index_optional
   devm_gpiod_get_optional
   devm_gpio_request
+  devm_gpio_request_one
   devm_input_allocate_device
   devm_ioremap
   devm_ioremap_resource
@@ -200,6 +202,7 @@
   dev_set_name
   _dev_warn
   disable_irq
+  disable_irq_nosync
   dma_alloc_attrs
   dma_buf_attach
   dma_buf_detach
@@ -340,11 +343,13 @@
   gpiod_cansleep
   gpiod_direction_input
   gpiod_direction_output
+  gpiod_direction_output_raw
   gpiod_get_optional
   gpiod_get_raw_value
   gpiod_get_value
   gpiod_get_value_cansleep
   gpiod_set_consumer_name
+  gpiod_set_raw_value
   gpiod_set_value
   gpiod_set_value_cansleep
   gpiod_to_irq
@@ -385,10 +390,16 @@
   init_timer_key
   init_wait_entry
   __init_waitqueue_head
+  input_allocate_device
   input_event
   input_ff_create_memless
+  input_free_device
+  input_mt_init_slots
+  input_mt_report_slot_state
   input_register_device
   input_set_abs_params
+  input_set_capability
+  input_unregister_device
   iommu_attach_device
   iommu_detach_device
   iommu_get_domain_for_dev
@@ -431,6 +442,7 @@
   kstrtoint
   kstrtouint
   kstrtoull
+  kthread_create_on_node
   ktime_get
   ktime_get_mono_fast_ns
   ktime_get_with_offset
@@ -496,6 +508,7 @@
   of_device_is_compatible
   of_find_device_by_node
   of_find_node_by_name
+  of_find_node_opts_by_path
   of_find_property
   of_get_child_by_name
   of_get_named_gpio_flags
@@ -504,6 +517,7 @@
   of_get_parent
   of_get_property
   of_get_regulator_init_data
+  of_graph_get_next_endpoint
   of_graph_get_remote_node
   of_graph_parse_endpoint
   of_iomap
@@ -582,6 +596,7 @@
   prepare_to_wait_event
   print_hex_dump
   printk
+  proc_create
   proc_create_data
   put_device
   put_disk
@@ -684,20 +699,25 @@
   skcipher_walk_aead_encrypt
   skcipher_walk_done
   snd_pcm_format_width
+  snd_soc_add_component_controls
   snd_soc_component_read
   snd_soc_component_update_bits
   snd_soc_component_write
+  snd_soc_dapm_add_routes
+  snd_soc_dapm_disable_pin_unlocked
   snd_soc_dapm_force_enable_pin_unlocked
   snd_soc_dapm_get_enum_double
   snd_soc_dapm_get_volsw
   snd_soc_dapm_put_enum_double
   snd_soc_dapm_put_volsw
+  snd_soc_dapm_sync_unlocked
   snd_soc_get_enum_double
   snd_soc_get_volsw
   snd_soc_info_enum_double
   snd_soc_info_volsw
   snd_soc_jack_add_gpios
   snd_soc_jack_report
+  snd_soc_params_to_frame_size
   snd_soc_put_enum_double
   snd_soc_put_volsw
   snprintf
@@ -756,6 +776,8 @@
   v4l2_ctrl_handler_free
   v4l2_ctrl_handler_init_class
   v4l2_ctrl_handler_setup
+  __v4l2_ctrl_modify_range
+  v4l2_ctrl_new_int_menu
   v4l2_ctrl_new_std
   v4l2_ctrl_new_std_menu_items
   v4l2_device_register
@@ -816,6 +838,7 @@
   wait_for_completion
   wait_for_completion_timeout
   __wake_up
+  wake_up_process
   wakeup_source_add
   __warn_printk
 
@@ -976,7 +999,6 @@
   sha1_transform
 
 # required by dw-hdmi.ko
-  bcmp
   cancel_delayed_work
   cec_fill_conn_info_from_drm
   cec_notifier_conn_register
@@ -1086,12 +1108,8 @@
   usb_speed_string
   usb_wakeup_enabled_descendants
 
-# required by fan53555.ko
-  gpiod_set_raw_value
-
 # required by fusb302.ko
   device_get_named_child_node
-  disable_irq_nosync
   extcon_get_extcon_dev
   fwnode_create_software_node
   i2c_smbus_read_i2c_block_data
@@ -1105,6 +1123,13 @@
   tcpm_unregister_port
   tcpm_vbus_change
   vsnprintf
+
+# required by gc2145.ko
+  v4l2_ctrl_subdev_log_status
+  v4l2_ctrl_subdev_subscribe_event
+
+# required by gc8034.ko
+  __v4l2_ctrl_s_ctrl
 
 # required by ghash-ce.ko
   aes_expandkey
@@ -1131,13 +1156,17 @@
 # required by grf.ko
   of_find_matching_node_and_match
 
+# required by gt1x-ts.ko
+  filp_close
+  filp_open
+  gpio_free
+  gpio_request
+  kern_path
+  path_put
+
 # required by hid-alps.ko
   down
   input_alloc_absinfo
-  input_allocate_device
-  input_free_device
-  input_mt_init_slots
-  input_mt_report_slot_state
   input_mt_sync_frame
   up
 
@@ -1200,9 +1229,6 @@
 # required by kfifo_buf.ko
   __kfifo_to_user
   mutex_lock_interruptible
-
-# required by leds-gpio.ko
-  devm_gpio_request_one
 
 # required by ledtrig-heartbeat.ko
   avenrun
@@ -1369,10 +1395,6 @@
   v4l2_ctrl_new_std_menu
   __v4l2_find_nearest_size
 
-# required by ov5695.ko
-  __v4l2_ctrl_modify_range
-  v4l2_ctrl_new_int_menu
-
 # required by panel-simple.ko
   drm_bus_flags_from_videomode
   drm_connector_set_panel_orientation
@@ -1401,9 +1423,7 @@
   dw_pcie_setup_rc
   dw_pcie_write
   dw_pcie_write_dbi
-  kthread_create_on_node
   of_prop_next_string
-  wake_up_process
 
 # required by pcierockchiphost.ko
   devm_of_phy_get
@@ -1507,7 +1527,6 @@
 
 # required by rk805-pwrkey.ko
   devm_request_any_context_irq
-  input_set_capability
 
 # required by rk806-core.ko
   devm_regmap_add_irq_chip
@@ -1624,7 +1643,6 @@
   dev_pm_opp_of_add_table
   dev_pm_opp_put_opp_table
   dev_pm_opp_set_prop_name
-  of_find_node_opts_by_path
   regulator_get_optional
   regulator_put
 
@@ -1796,7 +1814,6 @@
   iommu_set_fault_handler
   iommu_unmap
   memblock_free
-  of_graph_get_next_endpoint
   of_graph_get_port_by_id
   of_graph_get_remote_port
   of_graph_get_remote_port_parent
@@ -1885,12 +1902,9 @@
 
 # required by snd-soc-cx2072x.ko
   regmap_multi_reg_write
-  snd_soc_params_to_frame_size
 
 # required by snd-soc-es8316.ko
   snd_pcm_hw_constraint_list
-  snd_soc_dapm_disable_pin_unlocked
-  snd_soc_dapm_sync_unlocked
 
 # required by snd-soc-hdmi-codec.ko
   hdmi_audio_infoframe_init
@@ -1899,13 +1913,18 @@
   snd_pcm_add_chmap_ctls
   snd_pcm_create_iec958_consumer_hw_params
   snd_pcm_hw_constraint_eld
-  snd_soc_dapm_add_routes
 
 # required by snd-soc-rk817.ko
-  snd_soc_add_component_controls
   snd_soc_component_exit_regmap
   snd_soc_component_init_regmap
   snd_soc_unregister_component
+
+# required by snd-soc-rt5640.ko
+  gpiod_set_raw_value_cansleep
+  regmap_register_patch
+  snd_soc_dapm_force_bias_level
+  snd_soc_dapm_new_controls
+  system_long_wq
 
 # required by snd-soc-simple-card-utils.ko
   devm_kasprintf
