@@ -140,6 +140,24 @@
       "tag": "mailMessageId\u003d\u003cCANP3RGf-tEeZAi2FDOYEJtuXNJwS-90OTXx390cJS8cE8E8taA@mail.gmail.com\u003e",
       "revId": "134c0f7c097107f58454112ba8a4f93847321f88",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ece8d1e_6c7b1930",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1656502
+      },
+      "writtenOn": "2021-10-22T05:19:15Z",
+      "side": 1,
+      "message": "Many thanks for your kindly suggestion:)\n\nYes, it\u0027s to make use of some better nx/ro protection, for ARM64, it needs to notify hypervisor to complete the remaining validation and setting.\n\nThe code-flow @callee is,\ntrace_android_vh_set_memory_ro -\u003e (through kernel module\u0027s impl, here is through HVC call) -(trap to EL2)-\u003e hypervisor checks and sets it.\n\nIt relies on ARMv8 EL2 and can be processed by one HVC call.\n\nYes. tracepoints are mainly for the purpose of debugging and analysis, not suitable for implementing functionality.\n\n\nTo be clearer for [1], here is an example for your reference,\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n(Set ro|x)\nbpf_struct_ops_map_update_elem\n-\u003e set_memory_ro((long)st_map-\u003eimage, 1);// -\u003e set ro in S1(linux kernel) mapping\n\n(Recovery - Call vfree directly w/o clear ro|x)\nbpf_struct_ops_map_free\n-\u003e bpf_jit_free_exec(st_map-\u003eimage);\n---\u003e vfree(addr); // -\u003e clear ro in S1(linux kernel) mapping\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\nBecause vfree will destroy the mapping of bpf binary in S1(linux kernel), it doesn\u0027t need to set_memory_rw|nx here.\n\nWhen we add the \"better protection of least permission\" for 2.b, it would be\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n(Set ro|x)\nbpf_struct_ops_map_update_elem\n-\u003e set_memory_ro((long)st_map-\u003eimage, 1);// -\u003e set ro in S1(linux kernel) mapping\n---\u003e set_memory_ro_better(...);// ------\u003e set ro in S2(hypervisor) mapping\n\n(Recovery - Call vfree directly w/o clear ro|x)\nbpf_struct_ops_map_free\n-\u003e bpf_jit_free_exec(st_map-\u003eimage);\n---\u003e vfree(addr); // -\u003e clear ro in S1(linux kernel) mapping\n(OOPS, no corresponding set_memory_rw-\u003eset_memory_rw_better to clear ro. This will leak an error S2 mapping which may lead to RW trap when doing write-ops at the same page...)\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\nSo, to make 2.b feasible, all missed set_memory_xx @Recovery must be added.",
+      "parentUuid": "012c81c1_0227685f",
+      "revId": "134c0f7c097107f58454112ba8a4f93847321f88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
