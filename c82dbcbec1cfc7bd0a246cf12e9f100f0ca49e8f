@@ -249,6 +249,47 @@
       "parentUuid": "b048b132_02800ccf",
       "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "229b96c0_cde9d551",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1497372
+      },
+      "writtenOn": "2021-10-25T02:33:37Z",
+      "side": 1,
+      "message": "The vendor_hook() can\u0027t add new struct member, but you can use it to change the fourth parameter of snd_soc_dapm_dai_get_connected_widgets(). See pseudo code.\nThen you can register the vendor hook in your driver, to set the component_chaining as true.\nNot sure whether this can meet your requirement.",
+      "parentUuid": "3f2b676e_28247337",
+      "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a4f0c5d_cf02f548",
+        "filename": "sound/soc/soc-pcm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1288,
+      "author": {
+        "id": 1497372
+      },
+      "writtenOn": "2021-10-25T02:33:37Z",
+      "side": 1,
+      "message": "bool component_chaining \u003d false;\n\n        trace_android_vh_support_component_chaining(xxx, \u0026component_chaining);\n\n\tpaths \u003d snd_soc_dapm_dai_get_connected_widgets(cpu_dai, stream, list,\n\t\t\tcomponent_chaining ?\n\t\t\t\t\tNULL : dpcm_end_walk_at_be);",
+      "range": {
+        "startLine": 1288,
+        "startChar": 0,
+        "endLine": 1288,
+        "endChar": 1
+      },
+      "revId": "c82dbcbec1cfc7bd0a246cf12e9f100f0ca49e8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
