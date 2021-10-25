@@ -15,12 +15,6 @@ DECLARE_RESTRICTED_HOOK(android_rvh_select_task_rq_fair,
 	TP_PROTO(struct task_struct *p, int prev_cpu, int sd_flag, int wake_flags, int *new_cpu),
 	TP_ARGS(p, prev_cpu, sd_flag, wake_flags, new_cpu), 1);
 
-struct rq;
-struct sched_group;
-DECLARE_RESTRICTED_HOOK(android_rvh_find_busiest_group,
-	TP_PROTO(struct sched_group *busiest, struct rq *dst_rq, int *out_balance),
-		TP_ARGS(busiest, dst_rq, out_balance), 1);
-
 DECLARE_HOOK(android_vh_map_util_freq,
 	TP_PROTO(unsigned long util, unsigned long freq,
 		unsigned long cap, unsigned long *next_freq),
