@@ -16,6 +16,24 @@
       "message": "We don\u0027t typically take \"FROM*\" patches into android-mainline since they should be merging down from upstream soon-ish.\n\nIs there a reason why this is so urgent we can\u0027t wait?",
       "revId": "aabe8bb39c8419e6d470352afeb021754d730e86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19fe585f_a9f06eac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2021-10-25T19:01:28Z",
+      "side": 1,
+      "message": "Ack. I wasn\u0027t aware of the strict FROM* policies for android-mainline. I\u0027ll go nudge the maintainer of the qcom dts tree again for this particular fix because RB5 is broken otherwise. Rest two patches in this series can surely wait till v5.16-rc1.",
+      "parentUuid": "6184c5fe_3ca6ad4b",
+      "revId": "aabe8bb39c8419e6d470352afeb021754d730e86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
