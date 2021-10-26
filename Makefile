@@ -136,6 +136,22 @@ endif
 
 export KBUILD_EXTMOD
 
+# Use make EXT_TREE=dir or set the environment variable KBUILD_EXT_TREE to
+# specify the directory of an external kernel tree to include into this kernel
+# tree. Setting EXT_TREE= takes precedence.
+ifeq ("$(origin EXT_TREE)", "command line")
+  KBUILD_EXT_TREE := $(EXT_TREE)
+endif
+
+$(if $(word 2, $(KBUILD_EXT_TREE)), \
+	$(error building multiple extended trees is not supported))
+
+# Remove trailing slashes
+ifneq ($(filter %/, $(KBUILD_EXT_TREE)),)
+KBUILD_EXT_TREE := $(shell dirname $(KBUILD_EXT_TREE).)
+endif
+export KBUILD_EXT_TREE
+
 # ANDROID: set up mixed-build support. mixed-build allows device kernel modules
 # to be compiled against a GKI kernel. This approach still uses the headers and
 # Kbuild from device kernel, so care must be taken to ensure that those headers match.
@@ -679,6 +695,9 @@ drivers-y	:= drivers/ sound/
 drivers-$(CONFIG_SAMPLES) += samples/
 drivers-$(CONFIG_NET) += net/
 drivers-y	+= virt/
+ifdef KBUILD_EXT_TREE
+drivers-y += $(KBUILD_EXT_TREE)/
+endif # KBUILD_EXT_TREE
 libs-y		:= lib/
 endif # KBUILD_EXTMOD
 
