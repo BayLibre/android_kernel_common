@@ -1080,65 +1080,6 @@ static bool ufshcd_is_devfreq_scaling_required(struct ufs_hba *hba,
 	return false;
 }
 
-static int ufshcd_wait_for_doorbell_clr(struct ufs_hba *hba,
-					u64 wait_timeout_us)
-{
-	unsigned long flags;
-	int ret = 0;
-	u32 tm_doorbell;
-	u32 tr_doorbell;
-	bool timeout = false, do_last_check = false;
-	ktime_t start;
-
-	ufshcd_hold(hba, false);
-	spin_lock_irqsave(hba->host->host_lock, flags);
-	/*
-	 * Wait for all the outstanding tasks/transfer requests.
-	 * Verify by checking the doorbell registers are clear.
-	 */
-	start = ktime_get();
-	do {
-		if (hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL) {
-			ret = -EBUSY;
-			goto out;
-		}
-
-		tm_doorbell = ufshcd_readl(hba, REG_UTP_TASK_REQ_DOOR_BELL);
-		tr_doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
-		if (!tm_doorbell && !tr_doorbell) {
-			timeout = false;
-			break;
-		} else if (do_last_check) {
-			break;
-		}
-
-		spin_unlock_irqrestore(hba->host->host_lock, flags);
-		schedule();
-		if (ktime_to_us(ktime_sub(ktime_get(), start)) >
-		    wait_timeout_us) {
-			timeout = true;
-			/*
-			 * We might have scheduled out for long time so make
-			 * sure to check if doorbells are cleared by this time
-			 * or not.
-			 */
-			do_last_check = true;
-		}
-		spin_lock_irqsave(hba->host->host_lock, flags);
-	} while (tm_doorbell || tr_doorbell);
-
-	if (timeout) {
-		dev_err(hba->dev,
-			"%s: timedout waiting for doorbell to clear (tm=0x%x, tr=0x%x)\n",
-			__func__, tm_doorbell, tr_doorbell);
-		ret = -EBUSY;
-	}
-out:
-	spin_unlock_irqrestore(hba->host->host_lock, flags);
-	ufshcd_release(hba);
-	return ret;
-}
-
 /**
  * ufshcd_scale_gear - scale up/down UFS gear
  * @hba: per adapter instance
@@ -1186,37 +1127,63 @@ static int ufshcd_scale_gear(struct ufs_hba *hba, bool scale_up)
 
 static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba)
 {
-	#define DOORBELL_CLR_TOUT_US		(1000 * 1000) /* 1 sec */
-	int ret = 0;
+	struct scsi_device *sdev;
+
 	/*
-	 * make sure that there are no outstanding requests when
-	 * clock scaling is in progress
+	 * Make sure that no commands are in progress while the clock frequency
+	 * is being modified.
+	 *
+	 * Since ufshcd_exec_dev_cmd() and ufshcd_issue_devman_upiu_cmd() lock
+	 * the clk_scaling_lock before calling blk_get_request(), lock
+	 * clk_scaling_lock before freezing the request queues to prevent lock
+	 * inversion.
 	 */
-	ufshcd_scsi_block_requests(hba);
 	down_write(&hba->clk_scaling_lock);
-
-	if (!hba->clk_scaling.is_allowed ||
-	    ufshcd_wait_for_doorbell_clr(hba, DOORBELL_CLR_TOUT_US)) {
-		ret = -EBUSY;
-		up_write(&hba->clk_scaling_lock);
-		ufshcd_scsi_unblock_requests(hba);
-		goto out;
-	}
-
+	if (!hba->clk_scaling.is_allowed)
+		goto busy;
+	blk_freeze_queue_start(hba->tmf_queue);
+	blk_freeze_queue_start(hba->cmd_queue);
+	shost_for_each_device(sdev, hba->host)
+		blk_freeze_queue_start(sdev->request_queue);
+	/*
+	 * Calling synchronize_rcu_expedited() reduces the time required to
+	 * freeze request queues from milliseconds to microseconds.
+	 */
+	synchronize_rcu_expedited();
+	shost_for_each_device(sdev, hba->host)
+		if (blk_mq_freeze_queue_wait_timeout(sdev->request_queue, HZ)
+		    <= 0)
+			goto unfreeze;
+	if (blk_mq_freeze_queue_wait_timeout(hba->cmd_queue, HZ) <= 0 ||
+	    blk_mq_freeze_queue_wait_timeout(hba->tmf_queue, HZ / 10) <= 0)
+		goto unfreeze;
 	/* let's not get into low power until clock scaling is completed */
 	ufshcd_hold(hba, false);
+	return 0;
 
-out:
-	return ret;
+unfreeze:
+	shost_for_each_device(sdev, hba->host)
+		blk_mq_unfreeze_queue(sdev->request_queue);
+	blk_mq_unfreeze_queue(hba->cmd_queue);
+	blk_mq_unfreeze_queue(hba->tmf_queue);
+
+busy:
+	up_write(&hba->clk_scaling_lock);
+	return -EBUSY;
 }
 
 static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, bool writelock)
 {
+	struct scsi_device *sdev;
+
+	shost_for_each_device(sdev, hba->host)
+		blk_mq_unfreeze_queue(sdev->request_queue);
+	blk_mq_unfreeze_queue(hba->cmd_queue);
+	blk_mq_unfreeze_queue(hba->tmf_queue);
 	if (writelock)
 		up_write(&hba->clk_scaling_lock);
 	else
 		up_read(&hba->clk_scaling_lock);
-	ufshcd_scsi_unblock_requests(hba);
 	ufshcd_release(hba);
 }
 
@@ -2712,9 +2679,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
 
 	WARN_ONCE(tag < 0, "Invalid tag %d\n", tag);
 
-	if (!down_read_trylock(&hba->clk_scaling_lock))
-		return SCSI_MLQUEUE_HOST_BUSY;
-
 	/*
 	 * Allows the UFS error handler to wait for prior ufshcd_queuecommand()
 	 * calls.
@@ -2802,8 +2766,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
 
 out:
 	rcu_read_unlock();
-
-	up_read(&hba->clk_scaling_lock);
 
 	if (ufs_trigger_eh()) {
 		unsigned long flags;
