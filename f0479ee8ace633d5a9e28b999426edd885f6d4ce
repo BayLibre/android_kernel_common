@@ -33,6 +33,24 @@
       "message": "looks like there is a crc checksum change now that you included a new .h file in here.\n\nIs that .h file really needed?  Can you just define the structure instead at this point in time?\n\nOr if that does not work, use the genksyms #ifdef for the .h file to fix this up.",
       "revId": "f0479ee8ace633d5a9e28b999426edd885f6d4ce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab7b1321_4eb7afe8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1895247
+      },
+      "writtenOn": "2021-10-27T06:30:21Z",
+      "side": 1,
+      "message": "Thanks I will remove the #include \u003csound/soc.h\u003e\nIt not needed.",
+      "parentUuid": "cf456b95_01cf1726",
+      "revId": "f0479ee8ace633d5a9e28b999426edd885f6d4ce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
