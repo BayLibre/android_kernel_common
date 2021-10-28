@@ -16,6 +16,24 @@
       "message": "We\u0027re getting some build failures:\n```\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/staging/greybus/audio_topology.c:977:12: warning: stack frame size of 3312 bytes in function \u0027gbaudio_tplg_create_widget\u0027 [-Wframe-larger-than\u003d]\nstatic int gbaudio_tplg_create_widget(struct gbaudio_module_info *module,\n           ^\n1 warning generated.\nERROR: modpost: too long symbol \"__tracepoint_android_vh_snd_soc_card_get_component_chaining\" [sound/soc/snd-soc-core.ko]\n```\n\nLooks like the hook name needs to change.",
       "revId": "8732c69e73acda9d491cf6dc3bffa531667b0bdd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cad6e17_a61b2d00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1895247
+      },
+      "writtenOn": "2021-10-28T01:43:04Z",
+      "side": 1,
+      "message": "Thanks, let me shorter the naming.",
+      "parentUuid": "a5f3a249_f83da57f",
+      "revId": "8732c69e73acda9d491cf6dc3bffa531667b0bdd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
