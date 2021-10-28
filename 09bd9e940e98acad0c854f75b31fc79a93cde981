@@ -16,6 +16,41 @@
       "message": "This patch caused build-breaks in kernelci for several configs (including qcom_defconfig):\n\nSee https://linux.kernelci.org/build/id/617879f0d39e0a8a733358de/logs/\n\n```\nkernel/cpu.c:1368:2: error: implicit declaration of function ‘cpuset_update_active_cpus_affine’; did you mean ‘cpuset_update_active_cpus’? [-Werror\u003dimplicit-function-declaration]\n```\n\nPlease fix ASAP or we\u0027ll have to revert the patch.",
       "revId": "09bd9e940e98acad0c854f75b31fc79a93cde981",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b5d255_980b5b24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1901352
+      },
+      "writtenOn": "2021-10-28T02:58:05Z",
+      "side": 1,
+      "message": "for fix compile error",
+      "revId": "09bd9e940e98acad0c854f75b31fc79a93cde981",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94f96293_1939253a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1901352
+      },
+      "writtenOn": "2021-10-28T02:58:05Z",
+      "side": 1,
+      "message": "have pushed one new change for fix this error:\nhttps://android-review.googlesource.com/c/kernel/common/+/1872894",
+      "parentUuid": "1b961cad_1f646798",
+      "revId": "09bd9e940e98acad0c854f75b31fc79a93cde981",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
