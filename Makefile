@@ -688,6 +688,12 @@ ifdef need-config
 include include/config/auto.conf
 endif
 
+ifdef KBUILD_EXT_TREE
+# Include the $(KBUILD_EXT_TREE) Makefile.include to setup the proper includes
+# within the extended kernel tree.
+-include $(KBUILD_EXT_TREE)/Makefile.include
+endif # KBUILD_EXT_TREE
+
 ifeq ($(KBUILD_EXTMOD),)
 # Objects we will link into vmlinux / subdirs we need to visit
 core-y		:= init/ usr/ arch/$(SRCARCH)/
