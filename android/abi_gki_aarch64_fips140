@@ -7,9 +7,13 @@
   add_random_ready_callback
   aead_register_instance
   arm64_const_caps_ready
+  ahash_register_instance
+  arch_timer_read_counter
   bcmp
   cancel_work_sync
   __cfi_slowpath
+  complete_all
+  completion_done
   cpu_have_feature
   cpu_hwcap_keys
   crypto_aead_decrypt
@@ -38,13 +42,20 @@
   crypto_grab_ahash
   crypto_grab_shash
   crypto_grab_skcipher
+  crypto_grab_spawn
   crypto_inst_setname
   crypto_put_default_null_skcipher
   crypto_register_aead
+  crypto_register_aeads
+  crypto_register_ahash
+  crypto_register_ahashes
   crypto_register_alg
+  crypto_register_algs
+  crypto_register_rng
   crypto_register_rngs
   crypto_register_shash
   crypto_register_shashes
+  crypto_register_skcipher
   crypto_register_skciphers
   crypto_register_template
   crypto_register_templates
@@ -63,8 +74,10 @@
   crypto_skcipher_encrypt
   crypto_skcipher_setkey
   crypto_spawn_tfm2
+  crypto_spawn_tfm
   crypto_unregister_aead
   crypto_unregister_alg
+  crypto_unregister_rng
   crypto_unregister_rngs
   crypto_unregister_shash
   crypto_unregister_shashes
@@ -87,6 +100,7 @@
   kmalloc_order_trace
   kmem_cache_alloc_trace
   kmemdup
+  ktime_get
   __list_add_valid
   __list_del_entry_valid
   memcpy
@@ -99,6 +113,9 @@
   preempt_schedule_notrace
   printk
   queue_work_on
+  ___ratelimit
+  _raw_spin_lock
+  _raw_spin_unlock
   refcount_warn_saturate
   scatterwalk_ffwd
   scatterwalk_map_and_copy
@@ -134,6 +151,8 @@
   tracepoint_probe_register
   up_write
   wait_for_completion
+  xa_load
+  xa_store
 
 # needed by fips140.ko but not identified by the tooling
 # TODO(b/189327973): [GKI: ABI] Build of fips140.ko module fails to identify some symbols
