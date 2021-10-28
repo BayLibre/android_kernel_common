@@ -10,6 +10,7 @@
 #include <linux/compiler.h>
 #include <linux/kvm_host.h>
 #include <asm/alternative.h>
+#include <asm/kvm_pgtable.h>
 #include <asm/sysreg.h>
 
 DECLARE_PER_CPU(struct kvm_cpu_context, kvm_hyp_ctxt);
@@ -119,6 +120,11 @@ void __noreturn __host_enter(struct kvm_cpu_context *host_ctxt);
 extern u64 kvm_nvhe_sym(id_aa64mmfr0_el1_sys_val);
 extern u64 kvm_nvhe_sym(id_aa64mmfr1_el1_sys_val);
 
+struct kvm_mem_range {
+	u64 start;
+	u64 end;
+};
+
 struct kvm_iommu_ops {
 	int (*init)(void);
 	bool (*host_smc_handler)(struct kvm_cpu_context *host_ctxt);
@@ -126,6 +132,8 @@ struct kvm_iommu_ops {
 				       phys_addr_t fault_pa, unsigned int len,
 				       bool is_write, int rd);
 	void (*host_stage2_set_owner)(phys_addr_t addr, size_t size, u8 owner_id);
+	int (*host_stage2_adjust_mmio_range)(phys_addr_t addr,
+					     struct kvm_mem_range *range);
 };
 
 extern struct kvm_iommu_ops kvm_iommu_ops;

@@ -173,11 +173,6 @@ static int host_stage2_unmap_dev_all(void)
 	return kvm_pgtable_stage2_unmap(pgt, addr, BIT(pgt->ia_bits) - addr);
 }
 
-struct kvm_mem_range {
-	u64 start;
-	u64 end;
-};
-
 static bool find_mem_range(phys_addr_t addr, struct kvm_mem_range *range)
 {
 	int cur, left = 0, right = hyp_memblock_nr;
@@ -347,6 +342,16 @@ static int host_stage2_idmap(u64 addr)
 	int ret;
 
 	prot = is_memory ? PKVM_HOST_MEM_PROT : PKVM_HOST_MMIO_PROT;
+
+	/**
+	 * Let device drivers adjust the permitted range first.
+	 * host_stage2_adjust_range() should be last to also properly align it.
+	 */
+	if (!is_memory && kvm_iommu_ops.host_stage2_adjust_mmio_range) {
+		ret = kvm_iommu_ops.host_stage2_adjust_mmio_range(addr, &range);
+		if (ret)
+			return ret;
+	}
 
 	hyp_spin_lock(&host_kvm.lock);
 	ret = host_stage2_adjust_range(addr, &range);
