@@ -16,6 +16,24 @@
       "message": "Since there is already a dedicated built-in driver to support minidump (debug_symbols), can we use that driver to call this function and return the data (along with the rest of the debug info)? There are 2 benefits:\n1) This patch is not needed\n2) It is obvious how pcpu_nr_pages is being used (for minidump)\n\nMaybe \"debug_symbols\" should be renamed to \"crash_debug_info\" since it would now go beyond just symbols.",
       "revId": "5ed6762e4cf306bbe977cbb0f0aa1036414b57ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c820c00_82a3216b",
+        "filename": "mm/percpu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3367,
+      "author": {
+        "id": 1709452
+      },
+      "writtenOn": "2021-10-29T10:39:54Z",
+      "side": 1,
+      "message": "Sure, Will move this to debug symbol driver to avoid the export.",
+      "parentUuid": "8f62fd4b_45dd811e",
+      "revId": "5ed6762e4cf306bbe977cbb0f0aa1036414b57ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
