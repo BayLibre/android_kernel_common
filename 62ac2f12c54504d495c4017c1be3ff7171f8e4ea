@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e71583e5_518f1ad5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-11-02T14:25:00Z",
+      "side": 1,
+      "message": "You could make this slightly less intrusive by not passing this around -- we\u0027re reading the ESR again in this function. But not a big deal.",
+      "range": {
+        "startLine": 471,
+        "startChar": 62,
+        "endLine": 471,
+        "endChar": 74
+      },
+      "revId": "62ac2f12c54504d495c4017c1be3ff7171f8e4ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
