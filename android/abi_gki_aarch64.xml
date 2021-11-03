@@ -554,11 +554,13 @@
       <elf-symbol name='__traceiter_sched_overutilized_tp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2f8c3cab'/>
       <elf-symbol name='__traceiter_sched_stat_blocked' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc2cd96a8'/>
       <elf-symbol name='__traceiter_sched_stat_iowait' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6461e7d1'/>
+      <elf-symbol name='__traceiter_sched_stat_sleep' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xff54028f'/>
       <elf-symbol name='__traceiter_sched_stat_wait' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc79e7a63'/>
       <elf-symbol name='__traceiter_sched_switch' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa6611adb'/>
       <elf-symbol name='__traceiter_sched_update_nr_running_tp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd7c2d8e'/>
       <elf-symbol name='__traceiter_sched_util_est_cfs_tp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x78c05973'/>
       <elf-symbol name='__traceiter_sched_util_est_se_tp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd1253e5b'/>
+      <elf-symbol name='__traceiter_sched_waking' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x19560a8b'/>
       <elf-symbol name='__traceiter_suspend_resume' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5883efb'/>
       <elf-symbol name='__traceiter_task_newtask' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x48c55435'/>
       <elf-symbol name='__traceiter_task_rename' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x985e9799'/>
@@ -5929,11 +5931,13 @@
       <elf-symbol name='__tracepoint_sched_overutilized_tp' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xad25602f'/>
       <elf-symbol name='__tracepoint_sched_stat_blocked' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcc6130e1'/>
       <elf-symbol name='__tracepoint_sched_stat_iowait' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3dcb44d9'/>
+      <elf-symbol name='__tracepoint_sched_stat_sleep' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf3492e73'/>
       <elf-symbol name='__tracepoint_sched_stat_wait' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc977be89'/>
       <elf-symbol name='__tracepoint_sched_switch' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4044ba28'/>
       <elf-symbol name='__tracepoint_sched_update_nr_running_tp' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x365b45d1'/>
       <elf-symbol name='__tracepoint_sched_util_est_cfs_tp' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2c790d4a'/>
       <elf-symbol name='__tracepoint_sched_util_est_se_tp' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3a74e484'/>
+      <elf-symbol name='__tracepoint_sched_waking' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x36772c03'/>
       <elf-symbol name='__tracepoint_suspend_resume' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfede9222'/>
       <elf-symbol name='__tracepoint_task_newtask' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6ba3f1e6'/>
       <elf-symbol name='__tracepoint_task_rename' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x990f1219'/>
@@ -116182,6 +116186,12 @@
         <parameter type-id='91ce1af9' name='delay' filepath='include/trace/events/sched.h' line='397' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='__traceiter_sched_stat_sleep' mangled-name='__traceiter_sched_stat_sleep' filepath='include/trace/events/sched.h' line='389' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_sched_stat_sleep'>
+        <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/events/sched.h' line='389' column='1'/>
+        <parameter type-id='f23e2572' name='tsk' filepath='include/trace/events/sched.h' line='389' column='1'/>
+        <parameter type-id='91ce1af9' name='delay' filepath='include/trace/events/sched.h' line='389' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='__traceiter_sched_stat_wait' mangled-name='__traceiter_sched_stat_wait' filepath='include/trace/events/sched.h' line='381' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_sched_stat_wait'>
         <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/events/sched.h' line='381' column='1'/>
         <parameter type-id='f23e2572' name='tsk' filepath='include/trace/events/sched.h' line='381' column='1'/>
@@ -116209,6 +116219,11 @@
       <function-decl name='__traceiter_sched_util_est_se_tp' mangled-name='__traceiter_sched_util_est_se_tp' filepath='include/trace/events/sched.h' line='672' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_sched_util_est_se_tp'>
         <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/events/sched.h' line='672' column='1'/>
         <parameter type-id='ff2b3d10' name='se' filepath='include/trace/events/sched.h' line='672' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='__traceiter_sched_waking' mangled-name='__traceiter_sched_waking' filepath='include/trace/events/sched.h' line='88' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_sched_waking'>
+        <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/events/sched.h' line='88' column='1'/>
+        <parameter type-id='f23e2572' name='p' filepath='include/trace/events/sched.h' line='88' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='__traceiter_suspend_resume' mangled-name='__traceiter_suspend_resume' filepath='include/trace/events/power.h' line='226' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_suspend_resume'>
@@ -116589,11 +116604,13 @@
       <var-decl name='__tracepoint_sched_overutilized_tp' type-id='4ca0c298' mangled-name='__tracepoint_sched_overutilized_tp' visibility='default' filepath='include/trace/events/sched.h' line='664' column='1' elf-symbol-id='__tracepoint_sched_overutilized_tp'/>
       <var-decl name='__tracepoint_sched_stat_blocked' type-id='4ca0c298' mangled-name='__tracepoint_sched_stat_blocked' visibility='default' filepath='include/trace/events/sched.h' line='404' column='1' elf-symbol-id='__tracepoint_sched_stat_blocked'/>
       <var-decl name='__tracepoint_sched_stat_iowait' type-id='4ca0c298' mangled-name='__tracepoint_sched_stat_iowait' visibility='default' filepath='include/trace/events/sched.h' line='397' column='1' elf-symbol-id='__tracepoint_sched_stat_iowait'/>
+      <var-decl name='__tracepoint_sched_stat_sleep' type-id='4ca0c298' mangled-name='__tracepoint_sched_stat_sleep' visibility='default' filepath='include/trace/events/sched.h' line='389' column='1' elf-symbol-id='__tracepoint_sched_stat_sleep'/>
       <var-decl name='__tracepoint_sched_stat_wait' type-id='4ca0c298' mangled-name='__tracepoint_sched_stat_wait' visibility='default' filepath='include/trace/events/sched.h' line='381' column='1' elf-symbol-id='__tracepoint_sched_stat_wait'/>
       <var-decl name='__tracepoint_sched_switch' type-id='4ca0c298' mangled-name='__tracepoint_sched_switch' visibility='default' filepath='include/trace/events/sched.h' line='138' column='1' elf-symbol-id='__tracepoint_sched_switch'/>
       <var-decl name='__tracepoint_sched_update_nr_running_tp' type-id='4ca0c298' mangled-name='__tracepoint_sched_update_nr_running_tp' visibility='default' filepath='include/trace/events/sched.h' line='676' column='1' elf-symbol-id='__tracepoint_sched_update_nr_running_tp'/>
       <var-decl name='__tracepoint_sched_util_est_cfs_tp' type-id='4ca0c298' mangled-name='__tracepoint_sched_util_est_cfs_tp' visibility='default' filepath='include/trace/events/sched.h' line='668' column='1' elf-symbol-id='__tracepoint_sched_util_est_cfs_tp'/>
       <var-decl name='__tracepoint_sched_util_est_se_tp' type-id='4ca0c298' mangled-name='__tracepoint_sched_util_est_se_tp' visibility='default' filepath='include/trace/events/sched.h' line='672' column='1' elf-symbol-id='__tracepoint_sched_util_est_se_tp'/>
+      <var-decl name='__tracepoint_sched_waking' type-id='4ca0c298' mangled-name='__tracepoint_sched_waking' visibility='default' filepath='include/trace/events/sched.h' line='88' column='1' elf-symbol-id='__tracepoint_sched_waking'/>
       <var-decl name='__tracepoint_suspend_resume' type-id='4ca0c298' mangled-name='__tracepoint_suspend_resume' visibility='default' filepath='include/trace/events/power.h' line='226' column='1' elf-symbol-id='__tracepoint_suspend_resume'/>
       <var-decl name='__tracepoint_task_newtask' type-id='4ca0c298' mangled-name='__tracepoint_task_newtask' visibility='default' filepath='include/trace/events/task.h' line='9' column='1' elf-symbol-id='__tracepoint_task_newtask'/>
       <var-decl name='__tracepoint_task_rename' type-id='4ca0c298' mangled-name='__tracepoint_task_rename' visibility='default' filepath='include/trace/events/task.h' line='34' column='1' elf-symbol-id='__tracepoint_task_rename'/>
@@ -116997,12 +117014,12 @@
         <parameter type-id='e0ea832a' name='lock' filepath='drivers/media/common/videobuf2/videobuf2-v4l2.c' line='1109' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='access_process_vm' mangled-name='access_process_vm' filepath='mm/memory.c' line='5560' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='access_process_vm'>
-        <parameter type-id='f23e2572' name='tsk' filepath='mm/memory.c' line='5560' column='1'/>
-        <parameter type-id='7359adad' name='addr' filepath='mm/memory.c' line='5560' column='1'/>
-        <parameter type-id='eaa32e2f' name='buf' filepath='mm/memory.c' line='5561' column='1'/>
-        <parameter type-id='95e97e5e' name='len' filepath='mm/memory.c' line='5561' column='1'/>
-        <parameter type-id='f0981eeb' name='gup_flags' filepath='mm/memory.c' line='5561' column='1'/>
+      <function-decl name='access_process_vm' mangled-name='access_process_vm' filepath='mm/memory.c' line='5562' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='access_process_vm'>
+        <parameter type-id='f23e2572' name='tsk' filepath='mm/memory.c' line='5562' column='1'/>
+        <parameter type-id='7359adad' name='addr' filepath='mm/memory.c' line='5562' column='1'/>
+        <parameter type-id='eaa32e2f' name='buf' filepath='mm/memory.c' line='5563' column='1'/>
+        <parameter type-id='95e97e5e' name='len' filepath='mm/memory.c' line='5563' column='1'/>
+        <parameter type-id='f0981eeb' name='gup_flags' filepath='mm/memory.c' line='5563' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='ack_all_badblocks' mangled-name='ack_all_badblocks' filepath='block/badblocks.c' line='433' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='ack_all_badblocks'>
@@ -125631,10 +125648,10 @@
         <parameter type-id='242e3d19' name='wq' filepath='kernel/workqueue.c' line='2788' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='follow_pfn' mangled-name='follow_pfn' filepath='mm/memory.c' line='5396' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='follow_pfn'>
-        <parameter type-id='2ae08426' name='vma' filepath='mm/memory.c' line='5396' column='1'/>
-        <parameter type-id='7359adad' name='address' filepath='mm/memory.c' line='5396' column='1'/>
-        <parameter type-id='1d2c2b85' name='pfn' filepath='mm/memory.c' line='5397' column='1'/>
+      <function-decl name='follow_pfn' mangled-name='follow_pfn' filepath='mm/memory.c' line='5398' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='follow_pfn'>
+        <parameter type-id='2ae08426' name='vma' filepath='mm/memory.c' line='5398' column='1'/>
+        <parameter type-id='7359adad' name='address' filepath='mm/memory.c' line='5398' column='1'/>
+        <parameter type-id='1d2c2b85' name='pfn' filepath='mm/memory.c' line='5399' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <var-decl name='font_vga_8x16' type-id='d2d06e23' mangled-name='font_vga_8x16' visibility='default' filepath='lib/fonts/font_8x16.c' line='4625' column='1' elf-symbol-id='font_vga_8x16'/>
@@ -139800,11 +139817,11 @@
         <parameter type-id='02f11ed4' name='page' filepath='mm/filemap.c' line='1468' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
-      <function-decl name='unmap_mapping_range' mangled-name='unmap_mapping_range' filepath='mm/memory.c' line='3548' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unmap_mapping_range'>
-        <parameter type-id='f57039f0' name='mapping' filepath='mm/memory.c' line='3548' column='1'/>
-        <parameter type-id='bf352dfe' name='holebegin' filepath='mm/memory.c' line='3549' column='1'/>
-        <parameter type-id='bf352dfe' name='holelen' filepath='mm/memory.c' line='3549' column='1'/>
-        <parameter type-id='95e97e5e' name='even_cows' filepath='mm/memory.c' line='3549' column='1'/>
+      <function-decl name='unmap_mapping_range' mangled-name='unmap_mapping_range' filepath='mm/memory.c' line='3550' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unmap_mapping_range'>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/memory.c' line='3550' column='1'/>
+        <parameter type-id='bf352dfe' name='holebegin' filepath='mm/memory.c' line='3551' column='1'/>
+        <parameter type-id='bf352dfe' name='holelen' filepath='mm/memory.c' line='3551' column='1'/>
+        <parameter type-id='95e97e5e' name='even_cows' filepath='mm/memory.c' line='3551' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='unpin_user_page' mangled-name='unpin_user_page' filepath='mm/gup.c' line='252' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unpin_user_page'>
@@ -141419,9 +141436,9 @@
         <return type-id='48b5725f'/>
       </function-decl>
       <var-decl name='vb2_common_vm_ops' type-id='92e9b57c' mangled-name='vb2_common_vm_ops' visibility='default' filepath='drivers/media/common/videobuf2/videobuf2-memops.c' line='122' column='1' elf-symbol-id='vb2_common_vm_ops'/>
-      <function-decl name='vb2_create_bufs' mangled-name='vb2_create_bufs' filepath='include/media/videobuf2-v4l2.h' line='104' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vb2_create_bufs'>
-        <parameter type-id='a05f1ecd'/>
-        <parameter type-id='0bb617a4'/>
+      <function-decl name='vb2_create_bufs' mangled-name='vb2_create_bufs' filepath='drivers/media/common/videobuf2/videobuf2-v4l2.c' line='753' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vb2_create_bufs'>
+        <parameter type-id='a05f1ecd' name='q' filepath='drivers/media/common/videobuf2/videobuf2-v4l2.c' line='753' column='1'/>
+        <parameter type-id='0bb617a4' name='create' filepath='drivers/media/common/videobuf2/videobuf2-v4l2.c' line='753' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='vb2_create_framevec' mangled-name='vb2_create_framevec' filepath='drivers/media/common/videobuf2/videobuf2-memops.c' line='36' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vb2_create_framevec'>
