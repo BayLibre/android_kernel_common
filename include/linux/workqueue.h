@@ -15,6 +15,7 @@
 #include <linux/cpumask.h>
 #include <linux/rcupdate.h>
 #include <linux/android_kabi.h>
+#include <linux/android_vendor.h>
 
 struct workqueue_struct;
 
@@ -107,6 +108,8 @@ struct work_struct {
 #ifdef CONFIG_LOCKDEP
 	struct lockdep_map lockdep_map;
 #endif
+	ANDROID_OEM_DATA(1);
+
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 };

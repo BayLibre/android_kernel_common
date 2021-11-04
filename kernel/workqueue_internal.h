@@ -11,6 +11,7 @@
 #include <linux/workqueue.h>
 #include <linux/kthread.h>
 #include <linux/preempt.h>
+#include <linux/android_vendor.h>
 
 struct worker_pool;
 
@@ -57,6 +58,7 @@ struct worker {
 
 	/* used by the scheduler to determine a worker's last known identity */
 	work_func_t		last_func;
+	ANDROID_OEM_DATA_ARRAY(1, 2);
 };
 
 /**

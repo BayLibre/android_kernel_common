@@ -51,6 +51,7 @@
 #include <linux/sched/isolation.h>
 #include <linux/nmi.h>
 #include <linux/kvm_para.h>
+#include <linux/android_vendor.h>
 
 #include "workqueue_internal.h"
 
@@ -194,6 +195,7 @@ struct worker_pool {
 	 * from get_work_pool().
 	 */
 	struct rcu_head		rcu;
+	ANDROID_OEM_DATA_ARRAY(1, 2);
 } ____cacheline_aligned_in_smp;
 
 /*
