@@ -7,6 +7,7 @@
 #include <linux/rcupdate.h>
 #include <linux/sched.h>
 #include <linux/sched/task.h>
+#include <linux/slab.h>
 #include <linux/errno.h>
 
 int __percpu_init_rwsem(struct percpu_rw_semaphore *sem,
@@ -268,3 +269,47 @@ void percpu_up_write(struct percpu_rw_semaphore *sem)
 	rcu_sync_exit(&sem->rss);
 }
 EXPORT_SYMBOL_GPL(percpu_up_write);
+
+static LIST_HEAD(destroy_list);
+static DEFINE_SPINLOCK(destroy_list_lock);
+
+static void destroy_list_workfn(struct work_struct *work)
+{
+	struct percpu_rw_semaphore *sem, *sem2;
+	LIST_HEAD(to_destroy);
+
+	spin_lock(&destroy_list_lock);
+	list_splice_init(&destroy_list, &to_destroy);
+	spin_unlock(&destroy_list_lock);
+
+	if (list_empty(&to_destroy))
+		return;
+
+	list_for_each_entry_safe(sem, sem2, &to_destroy, dtor_list) {
+		percpu_free_rwsem(sem);
+		if (sem->dtor)
+			sem->dtor(sem);
+		else
+			kfree(sem);
+	}
+}
+
+static DECLARE_WORK(destroy_list_work, destroy_list_workfn);
+
+void percpu_rwsem_destroy(struct percpu_rw_semaphore *sem,
+			  void (*dtor)(struct percpu_rw_semaphore *))
+{
+	if (in_atomic()) {
+		spin_lock(&destroy_list_lock);
+		sem->dtor = dtor;
+		list_add_tail(&sem->dtor_list, &destroy_list);
+		spin_unlock(&destroy_list_lock);
+		schedule_work(&destroy_list_work);
+	} else {
+		percpu_free_rwsem(sem);
+		if (dtor)
+			dtor(sem);
+		else
+			kfree(sem);
+	}
+}
