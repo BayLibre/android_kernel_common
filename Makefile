@@ -1192,6 +1192,12 @@ ifeq ($(KBUILD_EXTMOD),)
 endif
 	$(Q)$(MAKE) $(hdr-inst)=$(hdr-prefix)include/uapi
 	$(Q)$(MAKE) $(hdr-inst)=$(hdr-prefix)arch/$(SRCARCH)/include/uapi
+ifdef KBUILD_EXT_TREE
+	$(if $(wildcard $(srctree)/$(hdr-prefix)$(KBUILD_EXT_TREE)/include/uapi), \
+	  $(Q)$(MAKE) $(hdr-inst)=$(hdr-prefix)$(KBUILD_EXT_TREE)/include/uapi skip-clean=1)
+	$(if $(wildcard $(srctree)/$(hdr-prefix)$(KBUILD_EXT_TREE)/arch/$(SRCARCH)/include/uapi), \
+	  $(Q)$(MAKE) $(hdr-inst)=$(hdr-prefix)$(KBUILD_EXT_TREE)/arch/$(SRCARCH)/include/uapi skip-clean=1)
+endif # KBUILD_EXT_TREE
 
 ifeq ($(KBUILD_EXTMOD),)
 core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/
