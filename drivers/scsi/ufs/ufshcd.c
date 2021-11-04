@@ -7045,8 +7045,12 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
 
 	ufshcd_hold(hba, false);
 	reg = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
-	/* If command is already aborted/completed, return FAILED. */
-	if (!(test_bit(tag, &hba->outstanding_reqs))) {
+	/*
+	 * If the command is already aborted/completed, return FAILED. This
+	 * should never happen since the SCSI core serializes error handling
+	 * and scsi_done() calls.
+	 */
+	if (WARN_ON_ONCE(!(test_bit(tag, &hba->outstanding_reqs)))) {
 		dev_err(hba->dev,
 			"%s: cmd at tag %d already completed, outstanding=0x%lx, doorbell=0x%x\n",
 			__func__, tag, hba->outstanding_reqs, reg);
@@ -7116,7 +7120,16 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
 		goto release;
 	}
 
-	lrbp->cmd = NULL;
+	/*
+	 * Clear the corresponding bit from outstanding_reqs since the command
+	 * has been aborted successfully.
+	 */
+	spin_lock_irqsave(&hba->outstanding_lock, flags);
+	__clear_bit(tag, &hba->outstanding_reqs);
+	spin_unlock_irqrestore(&hba->outstanding_lock, flags);
+
+	ufshcd_release_scsi_cmd(hba, lrbp);
+
 	err = SUCCESS;
 
 release:
