@@ -3152,6 +3152,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, mm,
 				vmf->address & PAGE_MASK,
 				(vmf->address & PAGE_MASK) + PAGE_SIZE);
+	mmu_notifier_lock(mm);
 	mmu_notifier_invalidate_range_start(&range);
 
 	/*
@@ -3233,6 +3234,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
 	 * the above ptep_clear_flush_notify() did already call it.
 	 */
 	mmu_notifier_invalidate_range_only_end(&range);
+	mmu_notifier_unlock(mm);
 	if (old_page) {
 		/*
 		 * Don't let another task, with possibly unlocked vma,

@@ -6,6 +6,8 @@
 #include <linux/spinlock.h>
 #include <linux/mm_types.h>
 #include <linux/mmap_lock.h>
+#include <linux/percpu-rwsem.h>
+#include <linux/slab.h>
 #include <linux/srcu.h>
 #include <linux/interval_tree.h>
 #include <linux/android_kabi.h>
@@ -504,6 +506,10 @@ static inline void mmu_notifier_invalidate_range(struct mm_struct *mm,
 
 static inline void mmu_notifier_subscriptions_init(struct mm_struct *mm)
 {
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	mm->mmu_notifier_lock = kmalloc(sizeof(struct percpu_rw_semaphore), GFP_KERNEL);
+	percpu_init_rwsem(mm->mmu_notifier_lock);
+#endif
 	mm->notifier_subscriptions = NULL;
 }
 
@@ -511,8 +517,25 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
 {
 	if (mm_has_notifiers(mm))
 		__mmu_notifier_subscriptions_destroy(mm);
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	percpu_free_rwsem(mm->mmu_notifier_lock);
+	kfree(mm->mmu_notifier_lock);
+#endif
 }
 
+static inline void mmu_notifier_lock(struct mm_struct *mm)
+{
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	percpu_down_read(mm->mmu_notifier_lock);
+#endif
+}
+
+static inline void mmu_notifier_unlock(struct mm_struct *mm)
+{
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	percpu_up_read(mm->mmu_notifier_lock);
+#endif
+}
 
 static inline void mmu_notifier_range_init(struct mmu_notifier_range *range,
 					   enum mmu_notifier_event event,
@@ -732,6 +755,14 @@ static inline void mmu_notifier_subscriptions_init(struct mm_struct *mm)
 }
 
 static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
+{
+}
+
+static inline void mmu_notifier_lock(struct mm_struct *mm)
+{
+}
+
+static inline void mmu_notifier_unlock(struct mm_struct *mm)
 {
 }
 
