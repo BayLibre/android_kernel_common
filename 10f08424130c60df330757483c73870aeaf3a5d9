@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb002abb_feae9822",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1883825
+      },
+      "writtenOn": "2021-11-04T18:04:45Z",
+      "side": 1,
+      "message": "Hi David, Observing compilation failure with incompatible pointer type.",
+      "revId": "10f08424130c60df330757483c73870aeaf3a5d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa0a29ba_a423b35a",
+        "filename": "fs/overlayfs/overlayfs.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1883825
+      },
+      "writtenOn": "2021-11-04T18:04:45Z",
+      "side": 1,
+      "message": "error: incompatible pointer types initializing \u0027struct ovl_inode *\u0027 with an expression of type \u0027struct inode *\u0027 [-Werror,-Wincompatible-pointer-types]\n        struct ovl_inode *ip \u003d d_inode(dentry);",
+      "range": {
+        "startLine": 190,
+        "startChar": 24,
+        "endLine": 190,
+        "endChar": 31
+      },
+      "revId": "10f08424130c60df330757483c73870aeaf3a5d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
