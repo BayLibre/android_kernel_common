@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c5743b2_7ec8719b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-11-09T18:24:27Z",
+      "side": 1,
+      "message": "Nit, some form of this should be at the top:\n\nThis patch enables distinguishing SAs and SPs based on if_id during the xfrm_migrate flow. This ensures support for xfrm interfaces throughout the SA/SP lifecycle.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 57
+      },
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8c60d2ab_5ee79efa",
@@ -14,6 +37,52 @@
       "writtenOn": "2021-11-09T02:58:13Z",
       "side": 1,
       "message": "Verified with aosp/1668886 XfrmInterfaceMigrateTest",
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc2e3e3_e7f047fb",
+        "filename": "include/net/xfrm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1677,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-11-09T18:24:27Z",
+      "side": 1,
+      "message": "Nit align with opening brace",
+      "range": {
+        "startLine": 1677,
+        "startChar": 5,
+        "endLine": 1677,
+        "endChar": 16
+      },
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fe07bc7_6b56b331",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4248,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-11-09T18:24:27Z",
+      "side": 1,
+      "message": "Just double-checking: presumably this is to preserve backward compatibility? So if it isn\u0027t set, the behavior doesn\u0027t change?\n\nWhat happens if the policy if_id is 0 (unset)? I guess then if the user passes in an if_id, they\u0027re doing it wrong and this fails correctly...",
+      "range": {
+        "startLine": 4248,
+        "startChar": 28,
+        "endLine": 4248,
+        "endChar": 38
+      },
       "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
