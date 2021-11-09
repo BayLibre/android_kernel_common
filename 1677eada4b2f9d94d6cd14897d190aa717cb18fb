@@ -85,6 +85,30 @@
       },
       "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a30138_8e0a36c9",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4248,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2021-11-09T19:40:48Z",
+      "side": 1,
+      "message": "AFAICT this allows a single-interface match on xfrm_migrate, which avoids breaking an older implementation doing MOBIKE on a that uses the selectors for matching.\n\nI think it would be better to move the IFID match to the top though since that will be much faster than doing a selector match and in the success case all the conditions are checked anyway.",
+      "parentUuid": "7fe07bc7_6b56b331",
+      "range": {
+        "startLine": 4248,
+        "startChar": 28,
+        "endLine": 4248,
+        "endChar": 38
+      },
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
