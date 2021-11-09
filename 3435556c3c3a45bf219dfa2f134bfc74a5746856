@@ -33,6 +33,98 @@
       "message": "Verified with aosp/1885354 InjectMigrateParameterizedTests(XfrmInterfaceMigrateTest)",
       "revId": "3435556c3c3a45bf219dfa2f134bfc74a5746856",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2addec7d_7a5c0e4b",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1658,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2021-11-09T18:17:55Z",
+      "side": 1,
+      "message": "static inline (I think there\u0027s an inline macro)",
+      "range": {
+        "startLine": 1658,
+        "startChar": 0,
+        "endLine": 1658,
+        "endChar": 3
+      },
+      "revId": "3435556c3c3a45bf219dfa2f134bfc74a5746856",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa7bdf40_3f128ad9",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1659,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2021-11-09T18:17:55Z",
+      "side": 1,
+      "message": "Is there not a constant for this?",
+      "range": {
+        "startLine": 1659,
+        "startChar": 15,
+        "endLine": 1659,
+        "endChar": 16
+      },
+      "revId": "3435556c3c3a45bf219dfa2f134bfc74a5746856",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27abe20b_6a547c35",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1682,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2021-11-09T18:17:55Z",
+      "side": 1,
+      "message": "so many tabs! It\u0027s almost a Chrome browser.",
+      "range": {
+        "startLine": 1682,
+        "startChar": 4,
+        "endLine": 1682,
+        "endChar": 11
+      },
+      "revId": "3435556c3c3a45bf219dfa2f134bfc74a5746856",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "940f527a_8c78f0e4",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2676,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2021-11-09T18:17:55Z",
+      "side": 1,
+      "message": "xfrm_set_inner_mode() returns -EPROTONOSUPPORT.\n\nBetter IMO to do:\n\nif (err \u003d xfrm_set_inner_mode(x))\n        goto err;",
+      "range": {
+        "startLine": 2676,
+        "startChar": 1,
+        "endLine": 2676,
+        "endChar": 24
+      },
+      "revId": "3435556c3c3a45bf219dfa2f134bfc74a5746856",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
