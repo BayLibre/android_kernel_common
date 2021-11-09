@@ -2076,8 +2076,8 @@ static void ath11k_peer_assoc_h_smps(struct ieee80211_sta *sta,
 		smps = ht_cap->cap & IEEE80211_HT_CAP_SM_PS;
 		smps >>= IEEE80211_HT_CAP_SM_PS_SHIFT;
 	} else {
-		smps = FIELD_GET(IEEE80211_HE_6GHZ_CAP_SM_PS,
-				 le16_to_cpu(sta->he_6ghz_capa.capa));
+		smps = le16_get_bits(sta->he_6ghz_capa.capa,
+				     IEEE80211_HE_6GHZ_CAP_SM_PS);
 	}
 
 	switch (smps) {
@@ -5797,7 +5797,7 @@ err_vdev_del:
 	idr_for_each(&ar->txmgmt_idr,
 		     ath11k_mac_vif_txmgmt_idr_remove, vif);
 
-	for (i = 0; i < DP_TCL_NUM_RING_MAX; i++) {
+	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
 		spin_lock_bh(&ab->dp.tx_ring[i].tx_idr_lock);
 		idr_for_each(&ab->dp.tx_ring[i].txbuf_idr,
 			     ath11k_mac_vif_unref, vif);
@@ -7081,7 +7081,7 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
 
 		if (!ath11k_mac_validate_vht_he_fixed_rate_settings(ar, band, mask))
 			ath11k_warn(ar->ab,
-				    "could not update fixed rate settings to all peers due to mcs/nss incompaitiblity\n");
+				    "could not update fixed rate settings to all peers due to mcs/nss incompatibility\n");
 		nss = min_t(u32, ar->num_tx_chains,
 			    max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
 				    ath11k_mac_max_vht_nss(vht_mcs_mask)),

@@ -166,9 +166,45 @@ static const char *phylink_an_mode_str(unsigned int mode)
 	return mode < ARRAY_SIZE(modestr) ? modestr[mode] : "unknown";
 }
 
+static int phylink_validate_any(struct phylink *pl, unsigned long *supported,
+				struct phylink_link_state *state)
+{
+	__ETHTOOL_DECLARE_LINK_MODE_MASK(all_adv) = { 0, };
+	__ETHTOOL_DECLARE_LINK_MODE_MASK(all_s) = { 0, };
+	__ETHTOOL_DECLARE_LINK_MODE_MASK(s);
+	struct phylink_link_state t;
+	int intf;
+
+	for (intf = 0; intf < PHY_INTERFACE_MODE_MAX; intf++) {
+		if (test_bit(intf, pl->config->supported_interfaces)) {
+			linkmode_copy(s, supported);
+
+			t = *state;
+			t.interface = intf;
+			pl->mac_ops->validate(pl->config, s, &t);
+			linkmode_or(all_s, all_s, s);
+			linkmode_or(all_adv, all_adv, t.advertising);
+		}
+	}
+
+	linkmode_copy(supported, all_s);
+	linkmode_copy(state->advertising, all_adv);
+
+	return phylink_is_empty_linkmode(supported) ? -EINVAL : 0;
+}
+
 static int phylink_validate(struct phylink *pl, unsigned long *supported,
 			    struct phylink_link_state *state)
 {
+	if (!phy_interface_empty(pl->config->supported_interfaces)) {
+		if (state->interface == PHY_INTERFACE_MODE_NA)
+			return phylink_validate_any(pl, supported, state);
+
+		if (!test_bit(state->interface,
+			      pl->config->supported_interfaces))
+			return -EINVAL;
+	}
+
 	pl->mac_ops->validate(pl->config, supported, state);
 
 	return phylink_is_empty_linkmode(supported) ? -EINVAL : 0;
@@ -551,9 +587,15 @@ static void phylink_mac_pcs_get_state(struct phylink *pl,
 	linkmode_zero(state->lp_advertising);
 	state->interface = pl->link_config.interface;
 	state->an_enabled = pl->link_config.an_enabled;
-	state->speed = SPEED_UNKNOWN;
-	state->duplex = DUPLEX_UNKNOWN;
-	state->pause = MLO_PAUSE_NONE;
+	if  (state->an_enabled) {
+		state->speed = SPEED_UNKNOWN;
+		state->duplex = DUPLEX_UNKNOWN;
+		state->pause = MLO_PAUSE_NONE;
+	} else {
+		state->speed =  pl->link_config.speed;
+		state->duplex = pl->link_config.duplex;
+		state->pause = pl->link_config.pause;
+	}
 	state->an_complete = 0;
 	state->link = 1;
 
@@ -1612,20 +1654,11 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
 	linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, config.advertising,
 			 config.an_enabled);
 
-	/* Validate without changing the current supported mask. */
-	linkmode_copy(support, pl->supported);
-	if (phylink_validate(pl, support, &config))
-		return -EINVAL;
-
-	/* If autonegotiation is enabled, we must have an advertisement */
-	if (config.an_enabled && phylink_is_empty_linkmode(config.advertising))
-		return -EINVAL;
-
 	/* If this link is with an SFP, ensure that changes to advertised modes
 	 * also cause the associated interface to be selected such that the
 	 * link can be configured correctly.
 	 */
-	if (pl->sfp_port && pl->sfp_bus) {
+	if (pl->sfp_bus) {
 		config.interface = sfp_select_interface(pl->sfp_bus,
 							config.advertising);
 		if (config.interface == PHY_INTERFACE_MODE_NA) {
@@ -1645,7 +1678,16 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
 				    __ETHTOOL_LINK_MODE_MASK_NBITS, support);
 			return -EINVAL;
 		}
+	} else {
+		/* Validate without changing the current supported mask. */
+		linkmode_copy(support, pl->supported);
+		if (phylink_validate(pl, support, &config))
+			return -EINVAL;
 	}
+
+	/* If autonegotiation is enabled, we must have an advertisement */
+	if (config.an_enabled && phylink_is_empty_linkmode(config.advertising))
+		return -EINVAL;
 
 	mutex_lock(&pl->state_mutex);
 	pl->link_config.speed = config.speed;
@@ -1738,7 +1780,7 @@ int phylink_ethtool_set_pauseparam(struct phylink *pl,
 		return -EOPNOTSUPP;
 
 	if (!phylink_test(pl->supported, Asym_Pause) &&
-	    !pause->autoneg && pause->rx_pause != pause->tx_pause)
+	    pause->rx_pause != pause->tx_pause)
 		return -EINVAL;
 
 	pause_state = 0;
@@ -2536,12 +2578,10 @@ EXPORT_SYMBOL_GPL(phylink_decode_usxgmii_word);
 void phylink_mii_c22_pcs_get_state(struct mdio_device *pcs,
 				   struct phylink_link_state *state)
 {
-	struct mii_bus *bus = pcs->bus;
-	int addr = pcs->addr;
 	int bmsr, lpa;
 
-	bmsr = mdiobus_read(bus, addr, MII_BMSR);
-	lpa = mdiobus_read(bus, addr, MII_LPA);
+	bmsr = mdiodev_read(pcs, MII_BMSR);
+	lpa = mdiodev_read(pcs, MII_LPA);
 	if (bmsr < 0 || lpa < 0) {
 		state->link = false;
 		return;
@@ -2549,7 +2589,10 @@ void phylink_mii_c22_pcs_get_state(struct mdio_device *pcs,
 
 	state->link = !!(bmsr & BMSR_LSTATUS);
 	state->an_complete = !!(bmsr & BMSR_ANEGCOMPLETE);
-	if (!state->link)
+	/* If there is no link or autonegotiation is disabled, the LP advertisement
+	 * data is not meaningful, so don't go any further.
+	 */
+	if (!state->link || !state->an_enabled)
 		return;
 
 	switch (state->interface) {
@@ -2594,8 +2637,6 @@ int phylink_mii_c22_pcs_set_advertisement(struct mdio_device *pcs,
 					  phy_interface_t interface,
 					  const unsigned long *advertising)
 {
-	struct mii_bus *bus = pcs->bus;
-	int addr = pcs->addr;
 	u16 adv;
 
 	switch (interface) {
@@ -2609,12 +2650,10 @@ int phylink_mii_c22_pcs_set_advertisement(struct mdio_device *pcs,
 				      advertising))
 			adv |= ADVERTISE_1000XPSE_ASYM;
 
-		return mdiobus_modify_changed(bus, addr, MII_ADVERTISE,
-					      0xffff, adv);
+		return mdiodev_modify_changed(pcs, MII_ADVERTISE, 0xffff, adv);
 
 	case PHY_INTERFACE_MODE_SGMII:
-		return mdiobus_modify_changed(bus, addr, MII_ADVERTISE,
-					      0xffff, 0x0001);
+		return mdiodev_modify_changed(pcs, MII_ADVERTISE, 0xffff, 0x0001);
 
 	default:
 		/* Nothing to do for other modes */
@@ -2651,9 +2690,13 @@ int phylink_mii_c22_pcs_config(struct mdio_device *pcs, unsigned int mode,
 	changed = ret > 0;
 
 	/* Ensure ISOLATE bit is disabled */
-	bmcr = mode == MLO_AN_INBAND ? BMCR_ANENABLE : 0;
-	ret = mdiobus_modify(pcs->bus, pcs->addr, MII_BMCR,
-			     BMCR_ANENABLE | BMCR_ISOLATE, bmcr);
+	if (mode == MLO_AN_INBAND &&
+	    linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, advertising))
+		bmcr = BMCR_ANENABLE;
+	else
+		bmcr = 0;
+
+	ret = mdiodev_modify(pcs, MII_BMCR, BMCR_ANENABLE | BMCR_ISOLATE, bmcr);
 	if (ret < 0)
 		return ret;
 
@@ -2674,14 +2717,12 @@ EXPORT_SYMBOL_GPL(phylink_mii_c22_pcs_config);
  */
 void phylink_mii_c22_pcs_an_restart(struct mdio_device *pcs)
 {
-	struct mii_bus *bus = pcs->bus;
-	int val, addr = pcs->addr;
+	int val = mdiodev_read(pcs, MII_BMCR);
 
-	val = mdiobus_read(bus, addr, MII_BMCR);
 	if (val >= 0) {
 		val |= BMCR_ANRESTART;
 
-		mdiobus_write(bus, addr, MII_BMCR, val);
+		mdiodev_write(pcs, MII_BMCR, val);
 	}
 }
 EXPORT_SYMBOL_GPL(phylink_mii_c22_pcs_an_restart);

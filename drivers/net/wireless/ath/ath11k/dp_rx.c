@@ -499,7 +499,7 @@ static int ath11k_dp_rxdma_ring_buf_setup(struct ath11k *ar,
 
 	rx_ring->bufs_max = num_entries;
 	ath11k_dp_rxbufs_replenish(ar->ab, dp->mac_id, rx_ring, num_entries,
-				   HAL_RX_BUF_RBM_SW3_BM);
+				   ar->ab->hw_params.hal_params->rx_buf_rbm);
 	return 0;
 }
 
@@ -2756,7 +2756,7 @@ try_again:
 		rx_ring = &ar->dp.rx_refill_buf_ring;
 
 		ath11k_dp_rxbufs_replenish(ab, i, rx_ring, num_buffs_reaped[i],
-					   HAL_RX_BUF_RBM_SW3_BM);
+					   ab->hw_params.hal_params->rx_buf_rbm);
 	}
 
 	ath11k_dp_rx_process_received_packets(ab, napi, &msdu_list,
@@ -2949,6 +2949,7 @@ static int ath11k_dp_rx_reap_mon_status_ring(struct ath11k_base *ab, int mac_id,
 					     int *budget, struct sk_buff_head *skb_list)
 {
 	struct ath11k *ar;
+	const struct ath11k_hw_hal_params *hal_params;
 	struct ath11k_pdev_dp *dp;
 	struct dp_rxdma_ring *rx_ring;
 	struct hal_srng *srng;
@@ -3019,8 +3020,9 @@ move_next:
 							&buf_id);
 
 		if (!skb) {
+			hal_params = ab->hw_params.hal_params;
 			ath11k_hal_rx_buf_addr_info_set(rx_mon_status_desc, 0, 0,
-							HAL_RX_BUF_RBM_SW3_BM);
+							hal_params->rx_buf_rbm);
 			num_buffs_reaped++;
 			break;
 		}
@@ -3030,7 +3032,8 @@ move_next:
 			 FIELD_PREP(DP_RXDMA_BUF_COOKIE_BUF_ID, buf_id);
 
 		ath11k_hal_rx_buf_addr_info_set(rx_mon_status_desc, rxcb->paddr,
-						cookie, HAL_RX_BUF_RBM_SW3_BM);
+						cookie,
+						ab->hw_params.hal_params->rx_buf_rbm);
 		ath11k_hal_srng_src_get_next_entry(ab, srng);
 		num_buffs_reaped++;
 	}
@@ -3419,7 +3422,8 @@ static int ath11k_dp_rx_h_defrag_reo_reinject(struct ath11k *ar, struct dp_rx_ti
 	cookie = FIELD_PREP(DP_RXDMA_BUF_COOKIE_PDEV_ID, dp->mac_id) |
 		 FIELD_PREP(DP_RXDMA_BUF_COOKIE_BUF_ID, buf_id);
 
-	ath11k_hal_rx_buf_addr_info_set(msdu0, paddr, cookie, HAL_RX_BUF_RBM_SW3_BM);
+	ath11k_hal_rx_buf_addr_info_set(msdu0, paddr, cookie,
+					ab->hw_params.hal_params->rx_buf_rbm);
 
 	/* Fill mpdu details into reo entrace ring */
 	srng = &ab->hal.srng_list[ab->dp.reo_reinject_ring.ring_id];
@@ -3796,7 +3800,7 @@ int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
 		ath11k_hal_rx_msdu_link_info_get(link_desc_va, &num_msdus, msdu_cookies,
 						 &rbm);
 		if (rbm != HAL_RX_BUF_RBM_WBM_IDLE_DESC_LIST &&
-		    rbm != HAL_RX_BUF_RBM_SW3_BM) {
+		    rbm != ab->hw_params.hal_params->rx_buf_rbm) {
 			ab->soc_stats.invalid_rbm++;
 			ath11k_warn(ab, "invalid return buffer manager %d\n", rbm);
 			ath11k_dp_rx_link_desc_return(ab, desc,
@@ -3852,7 +3856,7 @@ exit:
 		rx_ring = &ar->dp.rx_refill_buf_ring;
 
 		ath11k_dp_rxbufs_replenish(ab, i, rx_ring, n_bufs_reaped[i],
-					   HAL_RX_BUF_RBM_SW3_BM);
+					   ab->hw_params.hal_params->rx_buf_rbm);
 	}
 
 	return tot_n_bufs_reaped;
@@ -4148,7 +4152,7 @@ int ath11k_dp_rx_process_wbm_err(struct ath11k_base *ab,
 		rx_ring = &ar->dp.rx_refill_buf_ring;
 
 		ath11k_dp_rxbufs_replenish(ab, i, rx_ring, num_buffs_reaped[i],
-					   HAL_RX_BUF_RBM_SW3_BM);
+					   ab->hw_params.hal_params->rx_buf_rbm);
 	}
 
 	rcu_read_lock();
@@ -4257,7 +4261,7 @@ int ath11k_dp_process_rxdma_err(struct ath11k_base *ab, int mac_id, int budget)
 
 	if (num_buf_freed)
 		ath11k_dp_rxbufs_replenish(ab, mac_id, rx_ring, num_buf_freed,
-					   HAL_RX_BUF_RBM_SW3_BM);
+					   ab->hw_params.hal_params->rx_buf_rbm);
 
 	return budget - quota;
 }
@@ -4828,15 +4832,13 @@ ath11k_dp_rx_mon_merg_msdus(struct ath11k *ar,
 			    struct ieee80211_rx_status *rxs)
 {
 	struct ath11k_base *ab = ar->ab;
-	struct sk_buff *msdu, *mpdu_buf, *prev_buf;
+	struct sk_buff *msdu, *prev_buf;
 	u32 wifi_hdr_len;
 	struct hal_rx_desc *rx_desc;
 	char *hdr_desc;
 	u8 *dest, decap_format;
 	struct ieee80211_hdr_3addr *wh;
 	struct rx_attention *rx_attention;
-
-	mpdu_buf = NULL;
 
 	if (!head_msdu)
 		goto err_merge_fail;
@@ -4920,12 +4922,6 @@ ath11k_dp_rx_mon_merg_msdus(struct ath11k *ar,
 	return head_msdu;
 
 err_merge_fail:
-	if (mpdu_buf && decap_format != DP_RX_DECAP_TYPE_RAW) {
-		ath11k_dbg(ab, ATH11K_DBG_DATA,
-			   "err_merge_fail mpdu_buf %pK", mpdu_buf);
-		/* Free the head buffer */
-		dev_kfree_skb_any(mpdu_buf);
-	}
 	return NULL;
 }
 
@@ -4984,6 +4980,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
 {
 	struct ath11k_pdev_dp *dp = &ar->dp;
 	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
+	const struct ath11k_hw_hal_params *hal_params;
 	void *ring_entry;
 	void *mon_dst_srng;
 	u32 ppdu_id;
@@ -5047,16 +5044,18 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
 
 	if (rx_bufs_used) {
 		rx_mon_stats->dest_ppdu_done++;
+		hal_params = ar->ab->hw_params.hal_params;
+
 		if (ar->ab->hw_params.rxdma1_enable)
 			ath11k_dp_rxbufs_replenish(ar->ab, dp->mac_id,
 						   &dp->rxdma_mon_buf_ring,
 						   rx_bufs_used,
-						   HAL_RX_BUF_RBM_SW3_BM);
+						   hal_params->rx_buf_rbm);
 		else
 			ath11k_dp_rxbufs_replenish(ar->ab, dp->mac_id,
 						   &dp->rx_refill_buf_ring,
 						   rx_bufs_used,
-						   HAL_RX_BUF_RBM_SW3_BM);
+						   hal_params->rx_buf_rbm);
 	}
 }
 
