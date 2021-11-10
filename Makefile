@@ -151,6 +151,7 @@ $(warning KBUILD_MIXED_TREE=$(KBUILD_MIXED_TREE))
 
 mixed-build-prefix = $(if $(KBUILD_MIXED_TREE),$(KBUILD_MIXED_TREE)/)
 export KBUILD_MIXED_TREE
+export mixed-build-prefix
 
 $(warning mixed-build-prefix=$(mixed-build-prefix))
 
