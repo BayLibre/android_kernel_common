@@ -147,8 +147,12 @@ $(if $(filter-out $(words $(required_mixed_files)), \
 	$(error KBUILD_MIXED_TREE=$(KBUILD_MIXED_TREE) doesn't contain $(required_mixed_files)))
 endif
 
+$(warning KBUILD_MIXED_TREE=$(KBUILD_MIXED_TREE))
+
 mixed-build-prefix = $(if $(KBUILD_MIXED_TREE),$(KBUILD_MIXED_TREE)/)
 export KBUILD_MIXED_TREE
+
+$(warning mixed-build-prefix=$(mixed-build-prefix))
 
 # Kbuild will save output files in the current working directory.
 # This does not need to match to the root of the kernel source tree.
@@ -1535,6 +1539,8 @@ __modinst_pre:
 		ln -s $(CURDIR) $(MODLIB)/build ; \
 	fi
 	@sed 's:^:kernel/:' modules.order > $(MODLIB)/modules.order
+	echo "KBUILD_MIXED_TREE="$(KBUILD_MIXED_TREE)
+	echo "mixed-build-prefix="$(mixed-build-prefix)
 	@cp -f $(mixed-build-prefix)modules.builtin $(MODLIB)/
 	@cp -f $(or $(mixed-build-prefix),$(objtree)/)modules.builtin.modinfo $(MODLIB)/
 

@@ -14,6 +14,8 @@ include $(srctree)/scripts/Makefile.lib
 
 mixed-build-prefix = $(if $(KBUILD_MIXED_TREE),$(KBUILD_MIXED_TREE)/)
 
+$(warning mixed-build-prefix=$(mixed-build-prefix))
+
 # find all modules listed in modules.order
 modules := $(sort $(shell cat $(MODORDER)))
 

@@ -46,6 +46,8 @@ include $(srctree)/scripts/Makefile.lib
 
 mixed-build-prefix = $(if $(KBUILD_MIXED_TREE),$(KBUILD_MIXED_TREE)/)
 
+$(warning mixed-build-prefix=$(mixed-build-prefix))
+
 MODPOST = scripts/mod/modpost								\
 	$(if $(CONFIG_MODVERSIONS),-m)							\
 	$(if $(CONFIG_MODULE_SRCVERSION_ALL),-a)					\
