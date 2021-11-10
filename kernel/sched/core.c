@@ -6347,6 +6347,8 @@ static void do_sched_yield(void)
 	rq_unlock_irq(rq, &rf);
 	sched_preempt_enable_no_resched();
 
+	trace_android_rvh_do_sched_yield(rq);
+
 	schedule();
 }
 
