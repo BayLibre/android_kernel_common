@@ -216,6 +216,33 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_drain_all_pages_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_drain_all_pages_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pcplist_add_cma_pages_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_irqtime_account_process_tick);
+<<<<<<< HEAD   (53df1b ANDROID: vendor_hooks: Add hooks for account irqtime process)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gpio_block_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ep_create_wakeup_source);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_alloc_new_buf_locked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_reply);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_binder_transaction);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_preset);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_proc_transaction);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_new_ref);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_del_ref);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_adj_current_limit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_slab_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_event);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_group);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_comm);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_setaffinity_early);
+>>>>>>> CHANGE (2f3f57 ANDROID: GKI: Add vendor hook to binder transaction)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_after_enqueue_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_after_dequeue_task);
