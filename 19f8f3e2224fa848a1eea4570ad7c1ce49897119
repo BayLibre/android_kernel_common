@@ -16,6 +16,23 @@
       "message": "ardb@, any comment on this?",
       "revId": "19f8f3e2224fa848a1eea4570ad7c1ce49897119",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5abb7cd5_bd2140af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2021-11-10T11:24:18Z",
+      "side": 1,
+      "message": "This looks fine to me, but I will note that generally, using these version macros may trigger spurious rebuilds of certain objects, which can be annoying at development time.\n\nHowever, in this particular case, the code is guaranteed to be modular, and only built if you are building the fips140 config explicitly, so I don\u0027t think that will be an issue in this case.",
+      "revId": "19f8f3e2224fa848a1eea4570ad7c1ce49897119",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
