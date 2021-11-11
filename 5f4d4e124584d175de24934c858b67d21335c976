@@ -16,6 +16,24 @@
       "message": "this could probably have been easily fixed by a change to the bpfloader.rc\n\nhttp://cs/android/system/bpf/bpfloader/bpfloader.rc?l\u003d20\u0026rcl\u003df9ebfde9f6f31078618fcb77306f4c5c88584a75",
       "revId": "5f4d4e124584d175de24934c858b67d21335c976",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f0210f6_7a0d6913",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2021-11-11T01:01:26Z",
+      "side": 1,
+      "message": "$ adb shell su root cat /proc/sys/kernel/unprivileged_bpf_disabled\n0",
+      "parentUuid": "e2e0b701_ca1fe930",
+      "revId": "5f4d4e124584d175de24934c858b67d21335c976",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
