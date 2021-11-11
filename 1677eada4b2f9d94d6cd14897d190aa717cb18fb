@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "290c9aa0_33354212",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2021-11-11T00:28:13Z",
+      "side": 1,
+      "message": "Thanks. Added a top level description as you suggested. I will still keep this paragraph for clarification.",
+      "parentUuid": "5c5743b2_7ec8719b",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 57
+      },
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8c60d2ab_5ee79efa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-09T18:24:27Z",
       "side": 1,
       "message": "Nit align with opening brace",
+      "range": {
+        "startLine": 1677,
+        "startChar": 5,
+        "endLine": 1677,
+        "endChar": 16
+      },
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4fcaae6_dd0f8d70",
+        "filename": "include/net/xfrm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1677,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2021-11-11T00:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecc2e3e3_e7f047fb",
       "range": {
         "startLine": 1677,
         "startChar": 5,
@@ -101,6 +149,30 @@
       "side": 1,
       "message": "AFAICT this allows a single-interface match on xfrm_migrate, which avoids breaking an older implementation doing MOBIKE on a that uses the selectors for matching.\n\nI think it would be better to move the IFID match to the top though since that will be much faster than doing a selector match and in the success case all the conditions are checked anyway.",
       "parentUuid": "7fe07bc7_6b56b331",
+      "range": {
+        "startLine": 4248,
+        "startChar": 28,
+        "endLine": 4248,
+        "endChar": 38
+      },
+      "revId": "1677eada4b2f9d94d6cd14897d190aa717cb18fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01684c80_c6e50d14",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4248,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2021-11-11T00:28:13Z",
+      "side": 1,
+      "message": "Yes it is for compatibility if the old users do not use if_id.",
+      "parentUuid": "d5a30138_8e0a36c9",
       "range": {
         "startLine": 4248,
         "startChar": 28,
