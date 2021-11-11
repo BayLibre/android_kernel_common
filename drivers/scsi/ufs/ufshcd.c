@@ -2947,6 +2947,7 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
 {
 	struct request_queue *q = hba->cmd_queue;
 	DECLARE_COMPLETION_ONSTACK(wait);
+	struct scsi_cmnd *scmd;
 	struct request *req;
 	struct ufshcd_lrb *lrbp;
 	int err;
@@ -2954,15 +2955,15 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
 
 	down_read(&hba->clk_scaling_lock);
 
-	req = blk_mq_alloc_request(q, REQ_OP_DRV_OUT, BLK_MQ_REQ_RESERVED);
-	if (IS_ERR(req)) {
-		err = PTR_ERR(req);
+	scmd = scsi_get_internal_cmd(q, DMA_TO_DEVICE, BLK_MQ_REQ_RESERVED);
+	if (IS_ERR(scmd)) {
+		err = PTR_ERR(scmd);
 		goto out_unlock;
 	}
+	req = scsi_cmd_to_rq(scmd);
 	tag = req->tag;
 	WARN_ONCE(tag < 0, "Invalid tag %d\n", tag);
-	/* Set the timeout such that the SCSI error handler is not activated. */
-	req->timeout = msecs_to_jiffies(2 * timeout);
+	/* Start the request such that blk_mq_tagset_busy_iter() can find it. */
 	blk_mq_start_request(req);
 
 	lrbp = &hba->lrb[tag];
@@ -2981,7 +2982,8 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
 				    (struct utp_upiu_req *)lrbp->ucd_rsp_ptr);
 
 out:
-	blk_put_request(req);
+	scsi_put_internal_cmd(scmd);
+
 out_unlock:
 	up_read(&hba->clk_scaling_lock);
 	return err;
@@ -6575,17 +6577,16 @@ static int __ufshcd_issue_tm_cmd(struct ufs_hba *hba,
 	struct request_queue *q = hba->tmf_queue;
 	struct Scsi_Host *host = hba->host;
 	DECLARE_COMPLETION_ONSTACK(wait);
+	struct scsi_cmnd *scmd;
 	struct request *req;
 	unsigned long flags;
 	int task_tag, err;
 
-	/*
-	 * blk_get_request() is used here only to get a free tag.
-	 */
-	req = blk_get_request(q, REQ_OP_DRV_OUT, 0);
-	if (IS_ERR(req))
-		return PTR_ERR(req);
+	scmd = scsi_get_internal_cmd(q, DMA_TO_DEVICE, 0);
+	if (IS_ERR(scmd))
+		return PTR_ERR(scmd);
 
+	req = scsi_cmd_to_rq(scmd);
 	req->end_io_data = &wait;
 	ufshcd_hold(hba, false);
 
@@ -6638,7 +6639,8 @@ static int __ufshcd_issue_tm_cmd(struct ufs_hba *hba,
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
 
 	ufshcd_release(hba);
-	blk_put_request(req);
+
+	scsi_put_internal_cmd(scmd);
 
 	return err;
 }
@@ -6715,6 +6717,7 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
 {
 	struct request_queue *q = hba->cmd_queue;
 	DECLARE_COMPLETION_ONSTACK(wait);
+	struct scsi_cmnd *scmd;
 	struct request *req;
 	struct ufshcd_lrb *lrbp;
 	int err = 0;
@@ -6723,13 +6726,16 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
 
 	down_read(&hba->clk_scaling_lock);
 
-	req = blk_get_request(q, REQ_OP_DRV_OUT, 0);
-	if (IS_ERR(req)) {
-		err = PTR_ERR(req);
+	scmd = scsi_get_internal_cmd(q, DMA_TO_DEVICE, 0);
+	if (IS_ERR(scmd)) {
+		err = PTR_ERR(scmd);
 		goto out_unlock;
 	}
+	req = scsi_cmd_to_rq(scmd);
 	tag = req->tag;
 	WARN_ONCE(tag < 0, "Invalid tag %d\n", tag);
+	/* Start the request such that blk_mq_tagset_busy_iter() can find it. */
+	blk_mq_start_request(req);
 
 	lrbp = &hba->lrb[tag];
 	WARN_ON(lrbp->cmd);
@@ -6798,7 +6804,8 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
 	ufshcd_add_query_upiu_trace(hba, err ? UFS_QUERY_ERR : UFS_QUERY_COMP,
 				    (struct utp_upiu_req *)lrbp->ucd_rsp_ptr);
 
-	blk_put_request(req);
+	scsi_put_internal_cmd(scmd);
+
 out_unlock:
 	up_read(&hba->clk_scaling_lock);
 	return err;
