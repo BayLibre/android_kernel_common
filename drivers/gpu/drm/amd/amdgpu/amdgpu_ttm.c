@@ -1066,8 +1066,6 @@ static void amdgpu_ttm_backend_destroy(struct ttm_device *bdev,
 {
 	struct amdgpu_ttm_tt *gtt = (void *)ttm;
 
-	amdgpu_ttm_backend_unbind(bdev, ttm);
-	ttm_tt_destroy_common(bdev, ttm);
 	if (gtt->usertask)
 		put_task_struct(gtt->usertask);
 
@@ -1148,7 +1146,13 @@ static void amdgpu_ttm_tt_unpopulate(struct ttm_device *bdev,
 	struct amdgpu_ttm_tt *gtt = (void *)ttm;
 	struct amdgpu_device *adev;
 
+<<<<<<< HEAD   (b57a50 Merge d1b803f4ca4f ("Merge drm/drm-next into drm-intel-next")
 	if (gtt->userptr) {
+=======
+	amdgpu_ttm_backend_unbind(bdev, ttm);
+
+	if (gtt && gtt->userptr) {
+>>>>>>> BRANCH (08994e Merge tag 'drm-misc-intel-oob-hotplug-v1' of git://git.kerne)
 		amdgpu_ttm_tt_set_user_pages(ttm, NULL);
 		kfree(ttm->sg);
 		ttm->sg = NULL;
