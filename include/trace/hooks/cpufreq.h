@@ -23,6 +23,25 @@ DECLARE_HOOK(android_vh_freq_table_limits,
 DECLARE_RESTRICTED_HOOK(android_rvh_cpufreq_transition,
 	TP_PROTO(struct cpufreq_policy *policy),
 	TP_ARGS(policy), 1);
+<<<<<<< HEAD   (c22d8a BACKPORT: vsock: each transport cycles only on its own socke)
+=======
+
+DECLARE_HOOK(android_vh_cpufreq_resolve_freq,
+	TP_PROTO(struct cpufreq_policy *policy, unsigned int *target_freq,
+		unsigned int old_target_freq),
+	TP_ARGS(policy, target_freq, old_target_freq));
+
+DECLARE_HOOK(android_vh_cpufreq_fast_switch,
+	TP_PROTO(struct cpufreq_policy *policy, unsigned int *target_freq,
+		unsigned int old_target_freq),
+	TP_ARGS(policy, target_freq, old_target_freq));
+
+DECLARE_HOOK(android_vh_cpufreq_target,
+	TP_PROTO(struct cpufreq_policy *policy, unsigned int *target_freq,
+		unsigned int old_target_freq),
+	TP_ARGS(policy, target_freq, old_target_freq));
+/* macro versions of hooks are no longer required */
+>>>>>>> CHANGE (cf551f ANDROID: vendor_hooks: Add hooks for frequency optimization)
 
 #endif /* _TRACE_HOOK_CPUFREQ_H */
 /* This part must be outside protection */
