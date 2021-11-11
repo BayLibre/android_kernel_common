@@ -64,6 +64,27 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_printk_hotplug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_suspend_epoch_val);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_resume_epoch_val);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_table_limits);
+<<<<<<< HEAD   (09ad10 ANDROID: GKI: Remove CONFIG_LOCALVERSION="-mainline" on 6.1 )
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_resolve_freq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_fast_switch);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_target);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_newidle_balance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_nohz_balancer_kick);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_rebalance_domains);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_busiest_queue);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_migrate_queued_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_energy_efficient_cpu);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_sugov_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_overutilized);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_setaffinity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_cpus_allowed);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_skip_swapcache_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
+>>>>>>> CHANGE (d5aece ANDROID: vendor_hooks: Add hooks for frequency optimization)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_preempt_disable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_preempt_enable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_disable);
