@@ -220,10 +220,13 @@ int scsi_add_host_with_dma(struct Scsi_Host *shost, struct device *dev,
 		goto fail;
 	}
 
+<<<<<<< HEAD   (bb235e Merge 5.10.78 into android12-5.10-lts)
 	/* Use min_t(int, ...) in case shost->can_queue exceeds SHRT_MAX */
 	shost->cmd_per_lun = min_t(int, shost->cmd_per_lun,
 				   shost->can_queue);
 
+=======
+>>>>>>> BRANCH (1ba7c9 ANDROID: cpufreq: times: record fast switch frequency transi)
 	error = scsi_init_sense_cache(shost);
 	if (error)
 		goto fail;
@@ -231,6 +234,10 @@ int scsi_add_host_with_dma(struct Scsi_Host *shost, struct device *dev,
 	error = scsi_mq_setup_tags(shost);
 	if (error)
 		goto fail;
+
+	shost->can_queue = shost->tag_set.queue_depth;
+	shost->cmd_per_lun = min_t(short, shost->cmd_per_lun,
+				   shost->can_queue);
 
 	if (!shost->shost_gendev.parent)
 		shost->shost_gendev.parent = dev ? dev : &platform_bus;
