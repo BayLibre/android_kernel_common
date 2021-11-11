@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d639460b_15965fc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000414
+      },
+      "writtenOn": "2021-11-11T19:17:16Z",
+      "side": 1,
+      "message": "You may need to add these changes too:\n$ git diff\ndiff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c\nindex 614a9f59e478..aec9331f814a 100644\n--- a/fs/ecryptfs/inode.c\n+++ b/fs/ecryptfs/inode.c\n@@ -1050,7 +1050,7 @@ ecryptfs_getxattr_lower(struct dentry *lower_dentry, struct inode *lower_inode,\n                goto out;\n        }\n        inode_lock(lower_inode);\n-       rc \u003d __vfs_getxattr(lower_dentry, lower_inode, name, value, size,\n+       rc \u003d __vfs_getxattr(\u0026init_user_ns, lower_dentry, lower_inode, name, value, size,\n                            XATTR_NOSECURITY);\n        inode_unlock(lower_inode);\n out:\ndiff --git a/fs/ecryptfs/mmap.c b/fs/ecryptfs/mmap.c\nindex 72b3c19b15be..2e03a78cbaea 100644\n--- a/fs/ecryptfs/mmap.c\n+++ b/fs/ecryptfs/mmap.c\n@@ -422,7 +422,7 @@ static int ecryptfs_write_inode_size_to_xattr(struct inode *ecryptfs_inode)\n                goto out;\n        }\n        inode_lock(lower_inode);\n-       size \u003d __vfs_getxattr(lower_dentry, lower_inode, ECRYPTFS_XATTR_NAME,\n+       size \u003d __vfs_getxattr(\u0026init_user_ns, lower_dentry, lower_inode, ECRYPTFS_XATTR_NAME,\n                              xattr_virt, PAGE_SIZE, XATTR_NOSECURITY);\n        if (size \u003c 0)\n                size \u003d 8;",
+      "revId": "cee73f6b53af1ec27d140bfba501868ee070618d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
