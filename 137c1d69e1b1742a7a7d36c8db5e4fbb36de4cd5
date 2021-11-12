@@ -16,6 +16,24 @@
       "message": "This, and the other symbol exports, need to be _before_ the module that uses them, otherwise the build is broken for that code.  Please reorder this series.",
       "revId": "137c1d69e1b1742a7a7d36c8db5e4fbb36de4cd5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4886f3f4_e34f94c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-11-12T16:58:37Z",
+      "side": 1,
+      "message": "debug_symbols driver does not use these symbols. They are needed for minidump feature described in b/199236943",
+      "parentUuid": "5f063e6d_764a4e73",
+      "revId": "137c1d69e1b1742a7a7d36c8db5e4fbb36de4cd5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
