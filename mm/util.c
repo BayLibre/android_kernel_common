@@ -31,6 +31,9 @@
 #include <trace/hooks/syscall_check.h>
 #endif
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/mm.h>
+
 /**
  * kfree_const - conditionally free memory
  * @x: pointer to the memory
@@ -576,6 +579,8 @@ void *kvmalloc_node(size_t size, gfp_t flags, int node)
 		if (!(kmalloc_flags & __GFP_RETRY_MAYFAIL))
 			kmalloc_flags |= __GFP_NORETRY;
 	}
+
+	trace_android_vh_kvmalloc_node(size, &kmalloc_flags);
 
 	ret = kmalloc_node(size, kmalloc_flags, node);
 
