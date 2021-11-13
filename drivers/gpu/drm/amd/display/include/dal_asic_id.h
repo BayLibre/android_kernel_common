@@ -228,7 +228,11 @@ enum {
 #define FAMILY_YELLOW_CARP                     146
 
 #define YELLOW_CARP_A0 0x01
+<<<<<<< HEAD   (18961d Merge 8d6b006e1f51 ("drm/virtio: implement context init: han)
 #define YELLOW_CARP_B0 0x1A
+=======
+#define YELLOW_CARP_B0 0x20
+>>>>>>> BRANCH (56d337 Merge tag 'drm-next-2021-11-03' of git://anongit.freedesktop)
 #define YELLOW_CARP_UNKNOWN 0xFF
 
 #ifndef ASICREV_IS_YELLOW_CARP
