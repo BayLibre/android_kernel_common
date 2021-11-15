@@ -278,7 +278,6 @@ int scsi_track_queue_full(struct scsi_device *sdev, int depth)
 
 	return scsi_change_queue_depth(sdev, depth);
 }
-EXPORT_SYMBOL(scsi_track_queue_full);
 
 /**
  * scsi_vpd_inquiry - Request a device provide us with a VPD page
