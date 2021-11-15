@@ -20,9 +20,7 @@
 #define FIPS140_MODULE_NAME "Android Kernel Cryptographic Module"
 #define FIPS140_MODULE_VERSION UTS_RELEASE
 
-#ifdef CONFIG_CRYPTO_FIPS140_MOD_ERROR_INJECTION
 extern char *fips140_broken_alg;
-#endif
 
 extern struct completion fips140_tests_done;
 extern struct task_struct *fips140_init_thread;

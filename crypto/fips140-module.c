@@ -33,10 +33,8 @@
  * This option allows deliberately failing the self-tests for a particular
  * algorithm.  This is for FIPS lab testing only.
  */
-#ifdef CONFIG_CRYPTO_FIPS140_MOD_ERROR_INJECTION
 char *fips140_broken_alg;
 module_param_named(broken_alg, fips140_broken_alg, charp, 0);
-#endif
 
 /*
  * FIPS 140-2 prefers the use of HMAC with a public key over a plain hash.
