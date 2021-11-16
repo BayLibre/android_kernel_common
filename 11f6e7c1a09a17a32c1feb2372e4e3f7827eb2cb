@@ -16,6 +16,23 @@
       "message": "This patch causes serious performance downgrade, so we need an emergent action, reverting this patch is one option. aaronding@ of BSP team will help handle it.\n\nps: the main culprit should be this patch, the other 2 patches may not be culprit but they are relevant changes, so we revert them together.",
       "revId": "11f6e7c1a09a17a32c1feb2372e4e3f7827eb2cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5b27fec_ae915180",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-11-16T15:17:29Z",
+      "side": 1,
+      "message": "Have you discussed this with upstream?  Does this also show up in newer kernel versions (like 5.15) where this commit also is?  Just reverting something that is already upstream is going to cause long-term problems with merges and when moving to a new kernel release, how is that going to be addressed?",
+      "revId": "11f6e7c1a09a17a32c1feb2372e4e3f7827eb2cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
