@@ -16,6 +16,24 @@
       "message": "Since this patch has been accepted in Linus\u0027 tree, please change \"BACKPORT:\" into \"UPSTREAM:\" (commit ID a22bcfdbf10b4182e94ae98a641efa676170feaf).",
       "revId": "611872d91af3dcdec0d672d7534392965e8e3bc2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf54d0a_02ecc048",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1738285
+      },
+      "writtenOn": "2021-11-16T00:03:06Z",
+      "side": 1,
+      "message": "Hi, I saw a guide[1] from android/common and I put BACKPORT: prefix because there is a conflict. As I mentioned in this commit message, it was minor conflict (just reordering the quirks). Do I need to put UPSTREAM: in this case?\n\n[1]: https://android.googlesource.com/kernel/common/#requirements-for-backports-from-mainline-linux",
+      "parentUuid": "3e1ea473_57a63cf3",
+      "revId": "611872d91af3dcdec0d672d7534392965e8e3bc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
