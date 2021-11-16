@@ -3988,7 +3988,8 @@ static void rt6_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_bu
 	struct netevent_redirect netevent;
 	struct rt6_info *rt, *nrt = NULL;
 	struct fib6_result res = {};
-	struct ndisc_options ndopts;
+	struct ext_ndisc_options ext_ndopts;
+	struct ndisc_options *ndopts = &ext_ndopts.ndopts;
 	struct inet6_dev *in6_dev;
 	struct neighbour *neigh;
 	struct rd_msg *msg;
@@ -4030,14 +4031,14 @@ static void rt6_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_bu
 	 *	first-hop router for the specified ICMP Destination Address.
 	 */
 
-	if (!ndisc_parse_options(skb->dev, msg->opt, optlen, &ndopts)) {
+	if (!ndisc_parse_options(skb->dev, msg->opt, optlen, ndopts)) {
 		net_dbg_ratelimited("rt6_redirect: invalid ND options\n");
 		return;
 	}
 
 	lladdr = NULL;
-	if (ndopts.nd_opts_tgt_lladdr) {
-		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr,
+	if (ndopts->nd_opts_tgt_lladdr) {
+		lladdr = ndisc_opt_addr_data(ndopts->nd_opts_tgt_lladdr,
 					     skb->dev);
 		if (!lladdr) {
 			net_dbg_ratelimited("rt6_redirect: invalid link-layer address length\n");
@@ -4070,7 +4071,7 @@ static void rt6_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_bu
 		     NEIGH_UPDATE_F_OVERRIDE|
 		     (on_link ? 0 : (NEIGH_UPDATE_F_OVERRIDE_ISROUTER|
 				     NEIGH_UPDATE_F_ISROUTER)),
-		     NDISC_REDIRECT, &ndopts);
+		     NDISC_REDIRECT, ndopts);
 
 	rcu_read_lock();
 	res.f6i = rcu_dereference(rt->from);

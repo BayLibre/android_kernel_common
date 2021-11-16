@@ -22,14 +22,17 @@ static int lowpan_ndisc_parse_802154_options(const struct net_device *dev,
 					     struct nd_opt_hdr *nd_opt,
 					     struct ndisc_options *ndopts)
 {
+	struct ext_ndisc_options *ext_ndopts =
+		container_of(ndopts, struct ext_ndisc_options, ndopts);
+
 	switch (nd_opt->nd_opt_len) {
 	case NDISC_802154_SHORT_ADDR_LENGTH:
-		if (ndopts->nd_802154_opt_array[nd_opt->nd_opt_type])
+		if (ext_ndopts->nd_802154_opt_array[nd_opt->nd_opt_type])
 			ND_PRINTK(2, warn,
 				  "%s: duplicated short addr ND6 option found: type=%d\n",
 				  __func__, nd_opt->nd_opt_type);
 		else
-			ndopts->nd_802154_opt_array[nd_opt->nd_opt_type] = nd_opt;
+			ext_ndopts->nd_802154_opt_array[nd_opt->nd_opt_type] = nd_opt;
 		return 1;
 	default:
 		/* all others will be handled by ndisc IPv6 option parsing */
@@ -58,14 +61,16 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
 				       const struct ndisc_options *ndopts)
 {
 	struct lowpan_802154_neigh *neigh = lowpan_802154_neigh(neighbour_priv(n));
+	struct ext_ndisc_options *ext_ndopts =
+		container_of(ndopts, struct ext_ndisc_options, ndopts);
 	u8 *lladdr_short = NULL;
 
 	switch (icmp6_type) {
 	case NDISC_ROUTER_SOLICITATION:
 	case NDISC_ROUTER_ADVERTISEMENT:
 	case NDISC_NEIGHBOUR_SOLICITATION:
-		if (ndopts->nd_802154_opts_src_lladdr) {
-			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_src_lladdr,
+		if (ext_ndopts->nd_802154_opts_src_lladdr) {
+			lladdr_short = __ndisc_opt_addr_data(ext_ndopts->nd_802154_opts_src_lladdr,
 							     IEEE802154_SHORT_ADDR_LEN, 0);
 			if (!lladdr_short) {
 				ND_PRINTK(2, warn,
@@ -76,8 +81,8 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
 		break;
 	case NDISC_REDIRECT:
 	case NDISC_NEIGHBOUR_ADVERTISEMENT:
-		if (ndopts->nd_802154_opts_tgt_lladdr) {
-			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_tgt_lladdr,
+		if (ext_ndopts->nd_802154_opts_tgt_lladdr) {
+			lladdr_short = __ndisc_opt_addr_data(ext_ndopts->nd_802154_opts_tgt_lladdr,
 							     IEEE802154_SHORT_ADDR_LEN, 0);
 			if (!lladdr_short) {
 				ND_PRINTK(2, warn,

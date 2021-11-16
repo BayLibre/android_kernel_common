@@ -116,6 +116,11 @@ struct ndisc_options {
 #endif
 	struct nd_opt_hdr *nd_useropts;
 	struct nd_opt_hdr *nd_useropts_end;
+};
+
+/* new struct to enable the added field in a KMI-compatible way */
+struct ext_ndisc_options {
+	struct ndisc_options ndopts;
 #if IS_ENABLED(CONFIG_IEEE802154_6LOWPAN)
 	struct nd_opt_hdr *nd_802154_opt_array[ND_OPT_TARGET_LL_ADDR + 1];
 #endif

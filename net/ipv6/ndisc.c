@@ -773,7 +773,8 @@ static void ndisc_recv_ns(struct sk_buff *skb)
 	u8 *lladdr = NULL;
 	u32 ndoptlen = skb_tail_pointer(skb) - (skb_transport_header(skb) +
 				    offsetof(struct nd_msg, opt));
-	struct ndisc_options ndopts;
+	struct ext_ndisc_options ext_ndopts;
+	struct ndisc_options *ndopts = &ext_ndopts.ndopts;
 	struct net_device *dev = skb->dev;
 	struct inet6_ifaddr *ifp;
 	struct inet6_dev *idev = NULL;
@@ -802,13 +803,13 @@ static void ndisc_recv_ns(struct sk_buff *skb)
 		return;
 	}
 
-	if (!ndisc_parse_options(dev, msg->opt, ndoptlen, &ndopts)) {
+	if (!ndisc_parse_options(dev, msg->opt, ndoptlen, ndopts)) {
 		ND_PRINTK(2, warn, "NS: invalid ND options\n");
 		return;
 	}
 
-	if (ndopts.nd_opts_src_lladdr) {
-		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr, dev);
+	if (ndopts->nd_opts_src_lladdr) {
+		lladdr = ndisc_opt_addr_data(ndopts->nd_opts_src_lladdr, dev);
 		if (!lladdr) {
 			ND_PRINTK(2, warn,
 				  "NS: invalid link-layer address length\n");
@@ -826,8 +827,8 @@ static void ndisc_recv_ns(struct sk_buff *skb)
 			return;
 		}
 	}
-	if (ndopts.nd_opts_nonce && ndopts.nd_opts_nonce->nd_opt_len == 1)
-		memcpy(&nonce, (u8 *)(ndopts.nd_opts_nonce + 1), 6);
+	if (ndopts->nd_opts_nonce && ndopts->nd_opts_nonce->nd_opt_len == 1)
+		memcpy(&nonce, (u8 *)(ndopts->nd_opts_nonce + 1), 6);
 
 	inc = ipv6_addr_is_multicast(daddr);
 
@@ -934,7 +935,7 @@ have_ifp:
 		ndisc_update(dev, neigh, lladdr, NUD_STALE,
 			     NEIGH_UPDATE_F_WEAK_OVERRIDE|
 			     NEIGH_UPDATE_F_OVERRIDE,
-			     NDISC_NEIGHBOUR_SOLICITATION, &ndopts);
+			     NDISC_NEIGHBOUR_SOLICITATION, ndopts);
 	if (neigh || !dev->header_ops) {
 		ndisc_send_na(dev, saddr, &msg->target, !!is_router,
 			      true, (ifp != NULL && inc), inc);
@@ -957,7 +958,8 @@ static void ndisc_recv_na(struct sk_buff *skb)
 	u8 *lladdr = NULL;
 	u32 ndoptlen = skb_tail_pointer(skb) - (skb_transport_header(skb) +
 				    offsetof(struct nd_msg, opt));
-	struct ndisc_options ndopts;
+	struct ext_ndisc_options ext_ndopts;
+	struct ndisc_options *ndopts = &ext_ndopts.ndopts;
 	struct net_device *dev = skb->dev;
 	struct inet6_dev *idev = __in6_dev_get(dev);
 	struct inet6_ifaddr *ifp;
@@ -987,12 +989,12 @@ static void ndisc_recv_na(struct sk_buff *skb)
 	    idev->cnf.drop_unsolicited_na)
 		return;
 
-	if (!ndisc_parse_options(dev, msg->opt, ndoptlen, &ndopts)) {
+	if (!ndisc_parse_options(dev, msg->opt, ndoptlen, ndopts)) {
 		ND_PRINTK(2, warn, "NS: invalid ND option\n");
 		return;
 	}
-	if (ndopts.nd_opts_tgt_lladdr) {
-		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr, dev);
+	if (ndopts->nd_opts_tgt_lladdr) {
+		lladdr = ndisc_opt_addr_data(ndopts->nd_opts_tgt_lladdr, dev);
 		if (!lladdr) {
 			ND_PRINTK(2, warn,
 				  "NA: invalid link-layer address length\n");
@@ -1049,7 +1051,7 @@ static void ndisc_recv_na(struct sk_buff *skb)
 			     (msg->icmph.icmp6_override ? NEIGH_UPDATE_F_OVERRIDE : 0)|
 			     NEIGH_UPDATE_F_OVERRIDE_ISROUTER|
 			     (msg->icmph.icmp6_router ? NEIGH_UPDATE_F_ISROUTER : 0),
-			     NDISC_NEIGHBOUR_ADVERTISEMENT, &ndopts);
+			     NDISC_NEIGHBOUR_ADVERTISEMENT, ndopts);
 
 		if ((old_flags & ~neigh->flags) & NTF_ROUTER) {
 			/*
@@ -1070,7 +1072,8 @@ static void ndisc_recv_rs(struct sk_buff *skb)
 	struct neighbour *neigh;
 	struct inet6_dev *idev;
 	const struct in6_addr *saddr = &ipv6_hdr(skb)->saddr;
-	struct ndisc_options ndopts;
+	struct ext_ndisc_options ext_ndopts;
+	struct ndisc_options *ndopts = &ext_ndopts.ndopts;
 	u8 *lladdr = NULL;
 
 	if (skb->len < sizeof(*rs_msg))
@@ -1094,13 +1097,13 @@ static void ndisc_recv_rs(struct sk_buff *skb)
 		goto out;
 
 	/* Parse ND options */
-	if (!ndisc_parse_options(skb->dev, rs_msg->opt, ndoptlen, &ndopts)) {
+	if (!ndisc_parse_options(skb->dev, rs_msg->opt, ndoptlen, ndopts)) {
 		ND_PRINTK(2, notice, "NS: invalid ND option, ignored\n");
 		goto out;
 	}
 
-	if (ndopts.nd_opts_src_lladdr) {
-		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr,
+	if (ndopts->nd_opts_src_lladdr) {
+		lladdr = ndisc_opt_addr_data(ndopts->nd_opts_src_lladdr,
 					     skb->dev);
 		if (!lladdr)
 			goto out;
@@ -1112,7 +1115,7 @@ static void ndisc_recv_rs(struct sk_buff *skb)
 			     NEIGH_UPDATE_F_WEAK_OVERRIDE|
 			     NEIGH_UPDATE_F_OVERRIDE|
 			     NEIGH_UPDATE_F_OVERRIDE_ISROUTER,
-			     NDISC_ROUTER_SOLICITATION, &ndopts);
+			     NDISC_ROUTER_SOLICITATION, ndopts);
 		neigh_release(neigh);
 	}
 out:
@@ -1173,7 +1176,8 @@ static void ndisc_router_discovery(struct sk_buff *skb)
 	struct fib6_info *rt = NULL;
 	struct net *net;
 	int lifetime;
-	struct ndisc_options ndopts;
+	struct ext_ndisc_options ext_ndopts;
+	struct ndisc_options *ndopts = &ext_ndopts.ndopts;
 	int optlen;
 	unsigned int pref = 0;
 	__u32 old_if_flags;
@@ -1214,7 +1218,7 @@ static void ndisc_router_discovery(struct sk_buff *skb)
 		return;
 	}
 
-	if (!ndisc_parse_options(skb->dev, opt, optlen, &ndopts)) {
+	if (!ndisc_parse_options(skb->dev, opt, optlen, ndopts)) {
 		ND_PRINTK(2, warn, "RA: invalid ND options\n");
 		return;
 	}
@@ -1402,8 +1406,8 @@ skip_linkparms:
 				       skb->dev, 1);
 	if (neigh) {
 		u8 *lladdr = NULL;
-		if (ndopts.nd_opts_src_lladdr) {
-			lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr,
+		if (ndopts->nd_opts_src_lladdr) {
+			lladdr = ndisc_opt_addr_data(ndopts->nd_opts_src_lladdr,
 						     skb->dev);
 			if (!lladdr) {
 				ND_PRINTK(2, warn,
@@ -1416,7 +1420,7 @@ skip_linkparms:
 			     NEIGH_UPDATE_F_OVERRIDE|
 			     NEIGH_UPDATE_F_OVERRIDE_ISROUTER|
 			     NEIGH_UPDATE_F_ISROUTER,
-			     NDISC_ROUTER_ADVERTISEMENT, &ndopts);
+			     NDISC_ROUTER_ADVERTISEMENT, ndopts);
 	}
 
 	if (!ipv6_accept_ra(in6_dev)) {
@@ -1436,11 +1440,11 @@ skip_linkparms:
 		goto skip_routeinfo;
 	}
 
-	if (in6_dev->cnf.accept_ra_rtr_pref && ndopts.nd_opts_ri) {
+	if (in6_dev->cnf.accept_ra_rtr_pref && ndopts->nd_opts_ri) {
 		struct nd_opt_hdr *p;
-		for (p = ndopts.nd_opts_ri;
+		for (p = ndopts->nd_opts_ri;
 		     p;
-		     p = ndisc_next_option(p, ndopts.nd_opts_ri_end)) {
+		     p = ndisc_next_option(p, ndopts->nd_opts_ri_end)) {
 			struct route_info *ri = (struct route_info *)p;
 #ifdef CONFIG_IPV6_NDISC_NODETYPE
 			if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT &&
@@ -1472,22 +1476,22 @@ skip_routeinfo:
 	}
 #endif
 
-	if (in6_dev->cnf.accept_ra_pinfo && ndopts.nd_opts_pi) {
+	if (in6_dev->cnf.accept_ra_pinfo && ndopts->nd_opts_pi) {
 		struct nd_opt_hdr *p;
-		for (p = ndopts.nd_opts_pi;
+		for (p = ndopts->nd_opts_pi;
 		     p;
-		     p = ndisc_next_option(p, ndopts.nd_opts_pi_end)) {
+		     p = ndisc_next_option(p, ndopts->nd_opts_pi_end)) {
 			addrconf_prefix_rcv(skb->dev, (u8 *)p,
 					    (p->nd_opt_len) << 3,
-					    ndopts.nd_opts_src_lladdr != NULL);
+					    ndopts->nd_opts_src_lladdr != NULL);
 		}
 	}
 
-	if (ndopts.nd_opts_mtu && in6_dev->cnf.accept_ra_mtu) {
+	if (ndopts->nd_opts_mtu && in6_dev->cnf.accept_ra_mtu) {
 		__be32 n;
 		u32 mtu;
 
-		memcpy(&n, ((u8 *)(ndopts.nd_opts_mtu+1))+2, sizeof(mtu));
+		memcpy(&n, ((u8 *)(ndopts->nd_opts_mtu+1))+2, sizeof(mtu));
 		mtu = ntohl(n);
 
 		if (mtu < IPV6_MIN_MTU || mtu > skb->dev->mtu) {
@@ -1499,17 +1503,17 @@ skip_routeinfo:
 		}
 	}
 
-	if (ndopts.nd_useropts) {
+	if (ndopts->nd_useropts) {
 		struct nd_opt_hdr *p;
-		for (p = ndopts.nd_useropts;
+		for (p = ndopts->nd_useropts;
 		     p;
 		     p = ndisc_next_useropt(skb->dev, p,
-					    ndopts.nd_useropts_end)) {
+					    ndopts->nd_useropts_end)) {
 			ndisc_ra_useropt(skb, p);
 		}
 	}
 
-	if (ndopts.nd_opts_tgt_lladdr || ndopts.nd_opts_rh) {
+	if (ndopts->nd_opts_tgt_lladdr || ndopts->nd_opts_rh) {
 		ND_PRINTK(2, warn, "RA: invalid RA options\n");
 	}
 out:
@@ -1521,7 +1525,8 @@ out:
 static void ndisc_redirect_rcv(struct sk_buff *skb)
 {
 	u8 *hdr;
-	struct ndisc_options ndopts;
+	struct ext_ndisc_options ext_ndopts;
+	struct ndisc_options *ndopts = &ext_ndopts.ndopts;
 	struct rd_msg *msg = (struct rd_msg *)skb_transport_header(skb);
 	u32 ndoptlen = skb_tail_pointer(skb) - (skb_transport_header(skb) +
 				    offsetof(struct rd_msg, opt));
@@ -1542,16 +1547,16 @@ static void ndisc_redirect_rcv(struct sk_buff *skb)
 		return;
 	}
 
-	if (!ndisc_parse_options(skb->dev, msg->opt, ndoptlen, &ndopts))
+	if (!ndisc_parse_options(skb->dev, msg->opt, ndoptlen, ndopts))
 		return;
 
-	if (!ndopts.nd_opts_rh) {
+	if (!ndopts->nd_opts_rh) {
 		ip6_redirect_no_header(skb, dev_net(skb->dev),
 					skb->dev->ifindex);
 		return;
 	}
 
-	hdr = (u8 *)ndopts.nd_opts_rh;
+	hdr = (u8 *)ndopts->nd_opts_rh;
 	hdr += 8;
 	if (!pskb_pull(skb, hdr - skb_transport_header(skb)))
 		return;
