@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0fe68516_983b2121",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1901352
+      },
+      "writtenOn": "2021-11-16T07:35:43Z",
+      "side": 1,
+      "message": "update change description as below:\nWhen a task yields, it relinquishes the cpu and scheduler is tasked to find another task.\nHowever our vendor scheduler logic implementation could return the same task leading to a loop where the yielded task gets to run back, so add hook point in do_sched_yield() for vendor can do some work before task is scheduled.",
+      "parentUuid": "2204315e_168ffdf7",
+      "revId": "d14c31a90478268f09cb8abf4f11c7a221f02812",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1c29bf27_57454596",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
