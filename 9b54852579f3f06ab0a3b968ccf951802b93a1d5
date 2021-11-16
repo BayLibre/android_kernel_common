@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a0ef22e_cbf794d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-16T09:52:46Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 20,
+        "startChar": 20,
+        "endLine": 20,
+        "endChar": 28
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d8177392_e37e205c",
@@ -53,6 +76,52 @@
         "startLine": 2363,
         "startChar": 59,
         "endLine": 2363,
+        "endChar": 64
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89c9e5f2_500dfdcc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2427,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-16T09:52:46Z",
+      "side": 1,
+      "message": "For cleaning up the list, instead of calling this function with -EINVAL, would it be cleaner to just have a separate function that iterates over the lists and frees them? I didn\u0027t see an immediate need to follow the same logic here if we just need to empty and free the lists, and it makes the code here a bit harder to follow.",
+      "range": {
+        "startLine": 2427,
+        "startChar": 6,
+        "endLine": 2427,
+        "endChar": 13
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20dcf985_692bf168",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2447,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-16T09:52:46Z",
+      "side": 1,
+      "message": "should we BUG_ON if (pf-\u003eoffset - offset) \u003e bytes_left? Seems like that should never happen?",
+      "range": {
+        "startLine": 2447,
+        "startChar": 20,
+        "endLine": 2447,
         "endChar": 64
       },
       "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
