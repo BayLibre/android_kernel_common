@@ -172,6 +172,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9dafb50_fa2e0283",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2427,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-17T16:43:23Z",
+      "side": 1,
+      "message": "just to make sure I understand - do you need to follow the same structure for deleting? Isn\u0027t it a matter of iterating over the lists and freeing each individual element (in which I case I think a separate function to do that would be ok).",
+      "parentUuid": "e6750b78_daf26b4f",
+      "range": {
+        "startLine": 2427,
+        "startChar": 6,
+        "endLine": 2427,
+        "endChar": 13
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20dcf985_692bf168",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
