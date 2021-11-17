@@ -123,9 +123,6 @@ struct net {
 #if IS_ENABLED(CONFIG_IPV6)
 	struct netns_ipv6	ipv6;
 #endif
-#if IS_ENABLED(CONFIG_IEEE802154_6LOWPAN)
-	struct netns_ieee802154_lowpan	ieee802154_lowpan;
-#endif
 #if defined(CONFIG_IP_SCTP) || defined(CONFIG_IP_SCTP_MODULE)
 	struct netns_sctp	sctp;
 #endif
@@ -182,6 +179,13 @@ struct net {
 #endif
 	struct sock		*diag_nlsk;
 } __randomize_layout;
+
+struct ext_net {
+	struct net net;
+#if IS_ENABLED(CONFIG_IEEE802154_6LOWPAN)
+	struct netns_ieee802154_lowpan	ieee802154_lowpan;
+#endif
+};
 
 #include <linux/seq_file_net.h>
 
@@ -458,7 +462,9 @@ static inline void rt_genid_bump_ipv6(struct net *net)
 static inline struct netns_ieee802154_lowpan *
 net_ieee802154_lowpan(struct net *net)
 {
-	return &net->ieee802154_lowpan;
+	struct ext_net *ext_net = container_of(net, struct ext_net, net);
+
+	return &ext_net->ieee802154_lowpan;
 }
 #endif
 

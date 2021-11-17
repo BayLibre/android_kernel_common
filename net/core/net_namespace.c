@@ -1093,7 +1093,7 @@ static int __init net_ns_init(void)
 	struct net_generic *ng;
 
 #ifdef CONFIG_NET_NS
-	net_cachep = kmem_cache_create("net_namespace", sizeof(struct net),
+	net_cachep = kmem_cache_create("net_namespace", sizeof(struct ext_net),
 					SMP_CACHE_BYTES,
 					SLAB_PANIC|SLAB_ACCOUNT, NULL);
 
