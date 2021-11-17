@@ -59,6 +59,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6220f3dc_ac41d24d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-17T01:46:15Z",
+      "side": 1,
+      "message": "Thanks for the review! I\u0027ll address all the issues/suggestions in the series in the next day or two.",
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e95d316_0bf9b650",
@@ -107,6 +124,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33d4ec06_a61084f3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2427,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-17T01:46:15Z",
+      "side": 1,
+      "message": "I thought about that, but the loop was complex enough that I was figuring it was cleaner to avoid duplicating it and risking bugs later if someone doesn\u0027t apply the same change to both loops.\n\nHow about instead of passing in an error, we pass-in a \"bool no_copy\" that inhibits the copy but doesn\u0027t imply an error return?",
+      "parentUuid": "89c9e5f2_500dfdcc",
+      "range": {
+        "startLine": 2427,
+        "startChar": 6,
+        "endLine": 2427,
+        "endChar": 13
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20dcf985_692bf168",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -118,6 +159,30 @@
       "writtenOn": "2021-11-16T09:52:46Z",
       "side": 1,
       "message": "should we BUG_ON if (pf-\u003eoffset - offset) \u003e bytes_left? Seems like that should never happen?",
+      "range": {
+        "startLine": 2447,
+        "startChar": 20,
+        "endLine": 2447,
+        "endChar": 64
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86ccbdfa_21d1c054",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2447,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-17T01:46:15Z",
+      "side": 1,
+      "message": "No, this is a normal case. pf-\u003eoffset is the next offset to be fixed up. It is possible that some of the scatter-gather copy buffers have no fixups in them, so this is saying \"copy up to the end of this sg buffer OR the next fixup offset, whichever is next\". \"bytes_left\" is referring only to the current sgc -- not the aggregate of all sgc elements.",
+      "parentUuid": "20dcf985_692bf168",
       "range": {
         "startLine": 2447,
         "startChar": 20,
