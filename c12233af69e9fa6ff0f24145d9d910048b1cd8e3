@@ -46,6 +46,30 @@
       },
       "revId": "c12233af69e9fa6ff0f24145d9d910048b1cd8e3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07599d78_b1508b43",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2396,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-17T20:15:44Z",
+      "side": 1,
+      "message": "Actually, these won\u0027t match since in the target the offset into the extra_buffers space so the offset is created as part of processing the BINDER_TYPE_PTR object. The uparent buffer points to some location allocated by the sender (scatter-gather means copying from disjoint locations in the source into contiguous extra_buffer space in the target). Left this as is.",
+      "parentUuid": "9887920b_637d7d8d",
+      "range": {
+        "startLine": 2396,
+        "startChar": 1,
+        "endLine": 2396,
+        "endChar": 12
+      },
+      "revId": "c12233af69e9fa6ff0f24145d9d910048b1cd8e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
