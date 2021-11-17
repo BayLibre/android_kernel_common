@@ -148,6 +148,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6750b78_daf26b4f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2427,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-17T14:04:00Z",
+      "side": 1,
+      "message": "Yes that would make me feel better about it :) Also not sure what upstream prefers, but I guess we\u0027ll find that out later.",
+      "parentUuid": "33d4ec06_a61084f3",
+      "range": {
+        "startLine": 2427,
+        "startChar": 6,
+        "endLine": 2427,
+        "endChar": 13
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20dcf985_692bf168",
         "filename": "drivers/android/binder.c",
         "patchSetId": 4
@@ -183,6 +207,30 @@
       "side": 1,
       "message": "No, this is a normal case. pf-\u003eoffset is the next offset to be fixed up. It is possible that some of the scatter-gather copy buffers have no fixups in them, so this is saying \"copy up to the end of this sg buffer OR the next fixup offset, whichever is next\". \"bytes_left\" is referring only to the current sgc -- not the aggregate of all sgc elements.",
       "parentUuid": "20dcf985_692bf168",
+      "range": {
+        "startLine": 2447,
+        "startChar": 20,
+        "endLine": 2447,
+        "endChar": 64
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e4ed111_f36c7471",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2447,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-17T14:04:00Z",
+      "side": 1,
+      "message": "Oh right - pf-\u003eoffset is the offset across the entire buffer, which doesn\u0027t necessarily need to be in the current sg buffer. LGTM then.",
+      "parentUuid": "86ccbdfa_21d1c054",
       "range": {
         "startLine": 2447,
         "startChar": 20,
