@@ -16,6 +16,24 @@
       "message": "Currently on common apk we do see some call with sched_yield syscall is being used.\nThat\u0027s why the change is still needed to let vendors do some optimise here.",
       "revId": "93b1d8ff0667a8e5706fe63722f56eb164eb5382",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12b26951_5fa9a8ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-17T01:18:59Z",
+      "side": 1,
+      "message": "So we are making a kernel change to fix a power bug in an APK? Can\u0027t the APK be fixed instead? Presumably your hook implementation is throttling the app and letting the CPU idle.",
+      "parentUuid": "55ee2342_4cd6053a",
+      "revId": "93b1d8ff0667a8e5706fe63722f56eb164eb5382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
