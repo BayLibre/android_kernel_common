@@ -34,6 +34,24 @@
       "parentUuid": "55ee2342_4cd6053a",
       "revId": "93b1d8ff0667a8e5706fe63722f56eb164eb5382",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c326eca5_469ed7ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1897817
+      },
+      "writtenOn": "2021-11-17T05:41:24Z",
+      "side": 1,
+      "message": "Hi Todd, it is not a specific APK. We\u0027ve seen many APKs() which do call sched_yield. And we are trying to make sched_yield working as expected to yield cpu to other tasks in the runqueue. Currently it is not a power issue and a perforamnce  issue that we are dealing with. The current cpu have other tasks on the runqueue, but when the current task called yield, it is not yield the cpu to the other tasks, that caused the cpu loop in vain and other task on this cpu in runnable state.",
+      "parentUuid": "12b26951_5fa9a8ff",
+      "revId": "93b1d8ff0667a8e5706fe63722f56eb164eb5382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
