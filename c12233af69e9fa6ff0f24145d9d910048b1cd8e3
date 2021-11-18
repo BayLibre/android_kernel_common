@@ -70,6 +70,30 @@
       },
       "revId": "c12233af69e9fa6ff0f24145d9d910048b1cd8e3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "351ed664_31efce06",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2396,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-18T13:41:25Z",
+      "side": 1,
+      "message": "Ah sorry, you are right. But in that case, to compute the address, can\u0027t we simply copy from user starting at uparent-\u003ebuffer + parent_offset? There\u0027s no need to compute this relative to the userspace transaction buffer, which might be in a totally different place and is really not related to this buffer.\n\nIn that case we might still want to check alignment, though.",
+      "parentUuid": "07599d78_b1508b43",
+      "range": {
+        "startLine": 2396,
+        "startChar": 1,
+        "endLine": 2396,
+        "endChar": 12
+      },
+      "revId": "c12233af69e9fa6ff0f24145d9d910048b1cd8e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
