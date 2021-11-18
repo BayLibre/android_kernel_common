@@ -290,6 +290,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "083f13c9_9ec2f91a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2427,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2021-11-18T13:46:46Z",
+      "side": 1,
+      "message": "Sorry, I just realized - isn\u0027t a postcondition of this function that the lists are always empty? In that case might not even need the cleanup, unless you decide to return early in case of failure.",
+      "parentUuid": "9f301498_63444ed3",
+      "range": {
+        "startLine": 2427,
+        "startChar": 6,
+        "endLine": 2427,
+        "endChar": 13
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20dcf985_692bf168",
