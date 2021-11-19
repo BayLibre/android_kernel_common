@@ -50,6 +50,24 @@
       "message": "Also, changing the frequency is probably not a good idea. Why not just do that in your cpufreq driver directly?",
       "revId": "421ace3f6d6f089853e9fbfcda35d0611d7d56de",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fde0456_cebfe7e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1905323
+      },
+      "writtenOn": "2021-11-19T09:31:28Z",
+      "side": 1,
+      "message": "In kernel5.10, target frequency clamp is only based on PM_QoS. But for some high priority scene, the frequency needs to break through the clamp. So, we want to add a vender hook here to implement multilevel clamp.\n\nSince multilevel clamp is used for control policy, I think it\u0027s reasonable to implement in cpureq core.",
+      "parentUuid": "d35435f0_f0939c30",
+      "revId": "421ace3f6d6f089853e9fbfcda35d0611d7d56de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
