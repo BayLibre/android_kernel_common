@@ -877,12 +877,14 @@ static ssize_t dbgfs_monitor_on_write(struct file *file,
 		return -EINVAL;
 	}
 
+	mutex_lock(&damon_dbgfs_lock);
 	if (!strncmp(kbuf, "on", count)) {
 		int i;
 
 		for (i = 0; i < dbgfs_nr_ctxs; i++) {
 			if (damon_targets_empty(dbgfs_ctxs[i])) {
 				kfree(kbuf);
+				mutex_unlock(&damon_dbgfs_lock);
 				return -EINVAL;
 			}
 		}
@@ -892,6 +894,7 @@ static ssize_t dbgfs_monitor_on_write(struct file *file,
 	} else {
 		ret = -EINVAL;
 	}
+	mutex_unlock(&damon_dbgfs_lock);
 
 	if (!ret)
 		ret = count;
