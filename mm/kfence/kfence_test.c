@@ -32,11 +32,6 @@
 #define arch_kfence_test_address(addr) (addr)
 #endif
 
-#define KFENCE_TEST_REQUIRES(test, cond) do {			\
-	if (!(cond))						\
-		kunit_skip((test), "Test requires: " #cond);	\
-} while (0)
-
 /* Report as observed from console. */
 static struct {
 	spinlock_t lock;
@@ -560,7 +555,8 @@ static void test_init_on_free(struct kunit *test)
 	};
 	int i;
 
-	KFENCE_TEST_REQUIRES(test, IS_ENABLED(CONFIG_INIT_ON_FREE_DEFAULT_ON));
+	if (!IS_ENABLED(CONFIG_INIT_ON_FREE_DEFAULT_ON))
+		return;
 	/* Assume it hasn't been disabled on command line. */
 
 	setup_test_cache(test, size, 0, NULL);
@@ -607,8 +603,10 @@ static void test_gfpzero(struct kunit *test)
 	char *buf1, *buf2;
 	int i;
 
-	/* Skip if we think it'd take too long. */
-	KFENCE_TEST_REQUIRES(test, CONFIG_KFENCE_SAMPLE_INTERVAL <= 100);
+	if (CONFIG_KFENCE_SAMPLE_INTERVAL > 100) {
+		kunit_warn(test, "skipping ... would take too long\n");
+		return;
+	}
 
 	setup_test_cache(test, size, 0, NULL);
 	buf1 = test_alloc(test, size, GFP_KERNEL, ALLOCATE_ANY);

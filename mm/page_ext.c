@@ -201,7 +201,7 @@ fail:
 	panic("Out of memory");
 }
 
-#else /* CONFIG_SPARSEMEM */
+#else /* CONFIG_FLATMEM */
 
 struct page_ext *lookup_page_ext(const struct page *page)
 {

@@ -229,22 +229,17 @@ static int __init pseries_alloc_bootmem_huge_page(struct hstate *hstate)
 	m->hstate = hstate;
 	return 1;
 }
-
-bool __init hugetlb_node_alloc_supported(void)
-{
-	return false;
-}
 #endif
 
 
-int __init alloc_bootmem_huge_page(struct hstate *h, int nid)
+int __init alloc_bootmem_huge_page(struct hstate *h)
 {
 
 #ifdef CONFIG_PPC_BOOK3S_64
 	if (firmware_has_feature(FW_FEATURE_LPAR) && !radix_enabled())
 		return pseries_alloc_bootmem_huge_page(h);
 #endif
-	return __alloc_bootmem_huge_page(h, nid);
+	return __alloc_bootmem_huge_page(h);
 }
 
 #ifndef CONFIG_PPC_BOOK3S_64
