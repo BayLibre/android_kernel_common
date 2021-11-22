@@ -314,6 +314,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38f83413_3d392161",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2427,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-22T16:30:37Z",
+      "side": 1,
+      "message": "We need the cleanup for the transaction error case where the lists have been created, but then we bail out of the transaction before it is sent. So we could go back to this version -- in which case we want to tell it that we are handling a failure case, or keep the new version where we just clear out the lists.",
+      "parentUuid": "083f13c9_9ec2f91a",
+      "range": {
+        "startLine": 2427,
+        "startChar": 6,
+        "endLine": 2427,
+        "endChar": 13
+      },
+      "revId": "9b54852579f3f06ab0a3b968ccf951802b93a1d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20dcf985_692bf168",
