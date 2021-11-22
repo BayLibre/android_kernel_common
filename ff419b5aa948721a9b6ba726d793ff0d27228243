@@ -22,6 +22,30 @@
       },
       "revId": "ff419b5aa948721a9b6ba726d793ff0d27228243",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07b19335_afc10794",
+        "filename": "include/linux/dma-direct.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2021-11-22T22:10:17Z",
+      "side": 1,
+      "message": "My initial thought was to avoid doing a loop over all nodes using for_each_node (https://cs.android.com/android/kernel/superproject/+/common-android12-5.10:common/include/linux/nodemask.h;l\u003d514), which would be required for kernel/dma/pool.c, but I doubt the overhead will be significant.  I will create a separate helper for kernel/dma/pool.c and will also measure the performance.",
+      "parentUuid": "ce729d87_7db133bd",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "ff419b5aa948721a9b6ba726d793ff0d27228243",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
