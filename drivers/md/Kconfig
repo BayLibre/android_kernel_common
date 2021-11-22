@@ -631,6 +631,7 @@ config DM_INTEGRITY
 	select CRYPTO
 	select CRYPTO_SKCIPHER
 	select ASYNC_XOR
+	select DM_AUDIT if AUDIT
 	help
 	  This device-mapper target emulates a block device that has
 	  additional per-sector tags that can be used for storing
@@ -663,6 +664,7 @@ config DM_ZONED
 
 	  If unsure, say N.
 
+<<<<<<< HEAD   (3bb45b Merge 1bdd629e5aa0 ("Merge tag 'ovl-update-5.16' of git://gi)
 config DM_BOW
 	tristate "Backup block device"
 	depends on BLK_DEV_DM
@@ -688,5 +690,15 @@ config DM_USER
 	  called dm-user.
 
 	  If unsure, say N.
+=======
+config DM_AUDIT
+	bool "DM audit events"
+	depends on AUDIT
+	help
+	  Generate audit events for device-mapper.
+
+	  Enables audit logging of several security relevant events in the
+	  particular device-mapper targets, especially the integrity target.
+>>>>>>> BRANCH (c183e1 Merge tag 'for-5.16/dm-changes' of git://git.kernel.org/pub/)
 
 endif # MD
