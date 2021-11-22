@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce729d87_7db133bd",
+        "filename": "include/linux/dma-direct.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-11-22T21:57:30Z",
+      "side": 1,
+      "message": "TBH I like the zone_is_empty(\u0026pgdat-\u003enode_zones[ZONE_DMA32]) check (like I did in https://android-review.googlesource.com/c/kernel/common/+/1862353) better than exposing disable_dma32 flag directly. Seems more generic to me. Did you see performance issues with that approach?",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "ff419b5aa948721a9b6ba726d793ff0d27228243",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
