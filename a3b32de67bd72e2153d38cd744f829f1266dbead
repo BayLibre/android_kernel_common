@@ -16,6 +16,24 @@
       "message": "What about x86 config file also?",
       "revId": "a3b32de67bd72e2153d38cd744f829f1266dbead",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "781d17f2_9d7bfef1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2021-11-23T16:58:08Z",
+      "side": 1,
+      "message": "The config is to add thread ids to ETM data. ETM is a hardware only available on ARM, as described in https://www.kernel.org/doc/Documentation/trace/coresight.txt. So we only need to change arm gki config.",
+      "parentUuid": "39a885ba_82d62373",
+      "revId": "a3b32de67bd72e2153d38cd744f829f1266dbead",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
