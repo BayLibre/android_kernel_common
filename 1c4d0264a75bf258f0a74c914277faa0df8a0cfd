@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d8af436_2ebb996b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-11-23T22:59:26Z",
+      "side": 1,
+      "message": "Overall looks good",
+      "revId": "1c4d0264a75bf258f0a74c914277faa0df8a0cfd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f25d39c_3863884e",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1683,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-11-23T22:59:26Z",
+      "side": 1,
+      "message": "Would it suffice to just call x-\u003etype-\u003einit_state()?\n\nAs in, reuse the path to set the struct sizes, same as when first created?\n\nOr does that have other side effects?",
+      "range": {
+        "startLine": 1682,
+        "startChar": 24,
+        "endLine": 1683,
+        "endChar": 41
+      },
+      "revId": "1c4d0264a75bf258f0a74c914277faa0df8a0cfd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
