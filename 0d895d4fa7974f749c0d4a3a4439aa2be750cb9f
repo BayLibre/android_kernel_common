@@ -69,6 +69,30 @@
       },
       "revId": "0d895d4fa7974f749c0d4a3a4439aa2be750cb9f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a3e66f_ab8e58e7",
+        "filename": "kernel/dma/pool.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1868565
+      },
+      "writtenOn": "2021-11-24T12:41:22Z",
+      "side": 1,
+      "message": "static inline bool zone_dma32_is_empty()\n{\n\tpg_data_t *pgdat;\n\tint node;\n\tstatic bool is_empty;\n\t\n\tif (is_empty)\n\t\treturn true;\n\n\tfor_each_node(node) {\n\t\tpgdat \u003d NODE_DATA(node);\n\t\tif (zone_is_empty(\u0026pgdat-\u003enode_zones[ZONE_DMA32])) {\n\t\t\tis_empty \u003d true;\n\t\t\treturn true;\n\t\t}\n\t\t\n\t}\n\n\treturn false;\n}\n\nI thought we don\u0027t need always check this, this code may looks ugly...  even we can put zone_dma32_is_empty variable at mem init.",
+      "parentUuid": "5bdb1d12_14b9806b",
+      "range": {
+        "startLine": 66,
+        "startChar": 6,
+        "endLine": 66,
+        "endChar": 51
+      },
+      "revId": "0d895d4fa7974f749c0d4a3a4439aa2be750cb9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
