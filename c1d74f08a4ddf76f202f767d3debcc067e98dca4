@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8837d220_d4f2e2b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-24T21:39:00Z",
+      "side": 1,
+      "message": "Multiple build-breaks:\n\nallmodconfig build-break:\n```\nIn file included from /buildbot/src/android/common-android12-5.10/common/arch/arm/mm/dma-mapping.c:17:\n/buildbot/src/android/common-android12-5.10/common/include/linux/dma-direct.h:31:42: error: use of undeclared identifier \u0027ZONE_DMA32\u0027; did you mean \u0027ZONE_DMA\u0027?\n        return zone_is_empty(\u0026pgdat-\u003enode_zones[ZONE_DMA32]);\n                                                ^~~~~~~~~~\n                                                ZONE_DMA\n/buildbot/src/android/common-android12-5.10/common/include/linux/mmzone.h:362:2: note: \u0027ZONE_DMA\u0027 declared here\n        ZONE_DMA,\n        ^\n1 error generated.\n```\n\nkernel_virt_arm build:\n\n```\nIn file included from /buildbot/src/android/common-android12-5.10/common/arch/arm/mm/dma-mapping.c:17:\n/buildbot/src/android/common-android12-5.10/common/include/linux/dma-direct.h:31:42: error: use of undeclared identifier \u0027ZONE_DMA32\u0027\n        return zone_is_empty(\u0026pgdat-\u003enode_zones[ZONE_DMA32]);\n                                                ^\n1 error generated.\n```",
+      "revId": "c1d74f08a4ddf76f202f767d3debcc067e98dca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f19855_d20fe125",
+        "filename": "include/linux/dma-direct.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-24T21:39:00Z",
+      "side": 1,
+      "message": "checkpatch error:\n```\nERROR:FUNCTION_WITHOUT_ARGS: Bad function definition - bool zone_dma32_are_empty() should probably be bool zone_dma32_are_empty(void)\n#133: FILE: include/linux/dma-direct.h:34:\n```",
+      "revId": "c1d74f08a4ddf76f202f767d3debcc067e98dca4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
