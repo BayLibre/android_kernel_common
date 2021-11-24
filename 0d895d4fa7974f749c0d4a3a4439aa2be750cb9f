@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "461a877a_a233935a",
+        "filename": "kernel/dma/pool.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-11-24T00:43:28Z",
+      "side": 1,
+      "message": "zones_dma32_are_empty ?\nAnd it could call zone_dma32_is_empty(node) from inside the loop.\n\nI liked your idea of merging the two patches together to ensure they are not cherry-picked partially. I suggest doing that and that way you can reuse zone_dma32_is_empty() from the other patch.",
+      "range": {
+        "startLine": 59,
+        "startChar": 19,
+        "endLine": 59,
+        "endChar": 38
+      },
+      "revId": "0d895d4fa7974f749c0d4a3a4439aa2be750cb9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbf26ded_e8206437",
+        "filename": "kernel/dma/pool.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-11-24T00:43:28Z",
+      "side": 1,
+      "message": "Hmm. So you will exit as soon as you find a node with empty ZONE_DMA32?\nI would think you want to check all nodes to see if any has non-empty ZONE_DMA32. IOW the check would be:\n\nfor_each_node(node) {\n\t\tif (!zone_dma32_is_empty(node))\n\t\t\t\treturn false;\n}\nreturn true;\n\nno?",
+      "range": {
+        "startLine": 66,
+        "startChar": 6,
+        "endLine": 66,
+        "endChar": 51
+      },
+      "revId": "0d895d4fa7974f749c0d4a3a4439aa2be750cb9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
