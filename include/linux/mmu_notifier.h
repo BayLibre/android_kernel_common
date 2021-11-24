@@ -12,10 +12,17 @@
 #include <linux/interval_tree.h>
 #include <linux/android_kabi.h>
 
-struct mmu_notifier_subscriptions;
 struct mmu_notifier;
 struct mmu_notifier_range;
 struct mmu_interval_notifier;
+struct mmu_notifier_subscriptions;
+
+struct mmu_notifier_subscriptions_hdr {
+	bool valid;
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	struct percpu_rw_semaphore_atomic mmu_notifier_lock;
+#endif
+};
 
 /**
  * enum mmu_notifier_event - reason for the mmu notifier callback
@@ -285,7 +292,13 @@ struct mmu_notifier_range {
 
 static inline int mm_has_notifiers(struct mm_struct *mm)
 {
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	struct mmu_notifier_subscriptions_hdr* hdr =
+		(struct mmu_notifier_subscriptions_hdr*)mm->notifier_subscriptions;
+	return unlikely(hdr->valid);
+#else
 	return unlikely(mm->notifier_subscriptions);
+#endif
 }
 
 struct mmu_notifier *mmu_notifier_get_locked(const struct mmu_notifier_ops *ops,
@@ -506,37 +519,29 @@ static inline void mmu_notifier_invalidate_range(struct mm_struct *mm,
 
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 
-static inline void mmu_notifier_subscriptions_init(struct mm_struct *mm)
-{
-	mm->mmu_notifier_lock = kzalloc(
-		sizeof(struct percpu_rw_semaphore_atomic), GFP_KERNEL);
-	percpu_init_rwsem(&mm->mmu_notifier_lock->rw_sem);
-	mm->notifier_subscriptions = NULL;
-}
-
-static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
-{
-	if (mm_has_notifiers(mm))
-		__mmu_notifier_subscriptions_destroy(mm);
-	percpu_rwsem_destroy(mm->mmu_notifier_lock, NULL);
-	mm->mmu_notifier_lock = NULL;
-}
+extern bool mmu_notifier_subscriptions_init(struct mm_struct *mm);
+extern void mmu_notifier_subscriptions_destroy(struct mm_struct *mm);
 
 static inline bool mmu_notifier_trylock(struct mm_struct *mm)
 {
-	return percpu_down_read_trylock(&mm->mmu_notifier_lock->rw_sem);
+	struct mmu_notifier_subscriptions_hdr* hdr =
+		(struct mmu_notifier_subscriptions_hdr*)mm->notifier_subscriptions;
+	return percpu_down_read_trylock(&hdr->mmu_notifier_lock.rw_sem);
 }
 
 static inline void mmu_notifier_unlock(struct mm_struct *mm)
 {
-	percpu_up_read(&mm->mmu_notifier_lock->rw_sem);
+	struct mmu_notifier_subscriptions_hdr* hdr =
+		(struct mmu_notifier_subscriptions_hdr*)mm->notifier_subscriptions;
+	percpu_up_read(&hdr->mmu_notifier_lock.rw_sem);
 }
 
 #else /* CONFIG_SPECULATIVE_PAGE_FAULT */
 
-static inline void mmu_notifier_subscriptions_init(struct mm_struct *mm)
+static inline bool mmu_notifier_subscriptions_init(struct mm_struct *mm)
 {
 	mm->notifier_subscriptions = NULL;
+	return true;
 }
 
 static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
@@ -769,8 +774,9 @@ static inline void mmu_notifier_invalidate_range(struct mm_struct *mm,
 {
 }
 
-static inline void mmu_notifier_subscriptions_init(struct mm_struct *mm)
+static inline bool mmu_notifier_subscriptions_init(struct mm_struct *mm)
 {
+	return true;
 }
 
 static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
