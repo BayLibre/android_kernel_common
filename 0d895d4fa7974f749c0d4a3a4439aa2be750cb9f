@@ -93,6 +93,30 @@
       },
       "revId": "0d895d4fa7974f749c0d4a3a4439aa2be750cb9f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08730f88_6b82795a",
+        "filename": "kernel/dma/pool.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-11-24T19:13:56Z",
+      "side": 1,
+      "message": "That would be usually true, you can reuse the result once you checked it. However there is an exception when memory is hot-plugged (see hotadd_new_pgdat()).\nI don\u0027t think this loop is heavy enough to try to optimize it and detect hotplug events.",
+      "parentUuid": "53a3e66f_ab8e58e7",
+      "range": {
+        "startLine": 66,
+        "startChar": 6,
+        "endLine": 66,
+        "endChar": 51
+      },
+      "revId": "0d895d4fa7974f749c0d4a3a4439aa2be750cb9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
