@@ -16,6 +16,24 @@
       "message": "This code was added earlier in this patchset? Can the patches be combined instead of adding/removing?",
       "revId": "1068e91ab1aa8ef57e2ad2455e8e94bd8f2799e2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "101f82cb_3d875249",
+        "filename": "include/linux/percpu-rwsem.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-11-24T17:41:37Z",
+      "side": 0,
+      "message": "The first two patches are needed both in android12-5.10 and android13-5.x. The last two are not needed in the android13-5.x because these branches did not freeze their ABI, so ABI breakage is not an issue there.",
+      "parentUuid": "2169dbbe_9d5bd197",
+      "revId": "1068e91ab1aa8ef57e2ad2455e8e94bd8f2799e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
