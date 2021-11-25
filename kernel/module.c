@@ -271,7 +271,7 @@ static void module_assert_mutex_or_preempt(void)
 #endif
 }
 
-#ifdef CONFIG_MODULE_SIG
+#if defined(CONFIG_MODULE_SIG) && !defined(CONFIG_MODULE_SIG_PROTECT)
 static bool sig_enforce = IS_ENABLED(CONFIG_MODULE_SIG_FORCE);
 module_param(sig_enforce, bool_enable_only, 0644);
 
@@ -2263,11 +2263,23 @@ static int verify_exported_symbols(struct module *mod)
 
 	for (i = 0; i < ARRAY_SIZE(arr); i++) {
 		for (s = arr[i].sym; s < arr[i].sym + arr[i].num; s++) {
+<<<<<<< HEAD   (3ff3c3 FROMLIST: drivers/clocksource/timer-of: Remove __init markin)
 			struct find_symbol_arg fsa = {
 				.name	= kernel_symbol_name(s),
 				.gplok	= true,
 			};
 			if (find_symbol(&fsa)) {
+=======
+			if (!mod->sig_ok && gki_is_module_exported_symbol(
+						    kernel_symbol_name(s))) {
+				pr_err("%s: exporting protected symbol(%s)\n",
+				       mod->name, kernel_symbol_name(s));
+				return -EACCES;
+			}
+
+			if (find_symbol(kernel_symbol_name(s), &owner, NULL,
+					NULL, true, false)) {
+>>>>>>> CHANGE (9ab6a2 ANDROID: GKI: Add module load time protected symbol lookup)
 				pr_err("%s: exports duplicate symbol %s"
 				       " (owned by %s)\n",
 				       mod->name, kernel_symbol_name(s),
@@ -2334,6 +2346,13 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
 			break;
 
 		case SHN_UNDEF:
+			if (!mod->sig_ok &&
+			    gki_is_module_protected_symbol(name)) {
+				pr_err("%s: is not an Android GKI signed module. It can not access protected symbol: %s\n",
+				       mod->name, name);
+				return -EACCES;
+			}
+
 			ksym = resolve_symbol_wait(mod, info, name);
 			/* Ok if resolved.  */
 			if (ksym && !IS_ERR(ksym)) {
@@ -4023,6 +4042,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
 			       "kernel\n", mod->name);
 		add_taint_module(mod, TAINT_UNSIGNED_MODULE, LOCKDEP_STILL_OK);
 	}
+#else
+	mod->sig_ok = 0;
 #endif
 
 	/* To avoid stressing percpu allocator, do this once we're unique. */
