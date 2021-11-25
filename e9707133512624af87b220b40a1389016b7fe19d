@@ -22,6 +22,30 @@
       },
       "revId": "e9707133512624af87b220b40a1389016b7fe19d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb9950f1_c5d56f0a",
+        "filename": "include/net/net_namespace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1927177
+      },
+      "writtenOn": "2021-11-25T09:59:34Z",
+      "side": 1,
+      "message": "Would you rather have that explanation done as a comment in the header or as part of the commit log (or something else)?\n\nWould the following work:\nAs enabling the IEEE802154_6LOWPAN config changes the structure size/signature, the ieee802154_lowpan member needs to be moved out of struct net.\nSo a new struct ext_net is created to contain a struct net that matches the current kernel ABI definition + the required ieee802154_lowpan at its end.\nThat way, when allocating an ext_net struct, the resulting address can be used for struct net (as net is the first member) and ieee802154_lowpan address can be found using container_of().\nThis allows the kernel internal functions to keep using struct net as parameter for all functions (no ABI breakage) while enabling WPAN drivers.",
+      "parentUuid": "76e1b6f7_77cb373f",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 16
+      },
+      "revId": "e9707133512624af87b220b40a1389016b7fe19d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
