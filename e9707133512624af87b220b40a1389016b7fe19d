@@ -46,6 +46,30 @@
       },
       "revId": "e9707133512624af87b220b40a1389016b7fe19d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c66d6f_4aa446b0",
+        "filename": "include/net/net_namespace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-11-25T10:13:33Z",
+      "side": 1,
+      "message": "The above is great for the changelog, but make a comment saying that the field placement here is very important otherwise things will break if they are changed.\n\nAlso note, as you are moving this into a \"hidden\" field, you might loose some abi checking functionality, so be careful about just how hidden it is.",
+      "parentUuid": "bb9950f1_c5d56f0a",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 16
+      },
+      "revId": "e9707133512624af87b220b40a1389016b7fe19d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
