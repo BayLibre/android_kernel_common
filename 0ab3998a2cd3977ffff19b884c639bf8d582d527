@@ -16,6 +16,24 @@
       "message": "Have you tested that you can properly build and run the usbmon module with this change?",
       "revId": "0ab3998a2cd3977ffff19b884c639bf8d582d527",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bfa9b8a_3833bfc2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2021-11-25T16:56:51Z",
+      "side": 1,
+      "message": "yes, I have tested by compiling usbmon as vendor module. I have to add the following symbols to the whitelist. The qcom whitelist is not available in 5.15 kernel yet. I will submit that whitelist patch later.\n\n+  usb_bus_idr\n+  usb_bus_idr_lock\n+  usb_mon_deregister\n+  usb_mon_register",
+      "parentUuid": "20726931_f6946894",
+      "revId": "0ab3998a2cd3977ffff19b884c639bf8d582d527",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
