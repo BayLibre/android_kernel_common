@@ -509,6 +509,9 @@ static void *ion_handle_kmap_get(struct ion_handle *handle)
 	void *vaddr;
 
 	if (handle->kmap_cnt) {
+		if (handle->kmap_cnt + 1 < handle->kmap_cnt)
+			return -EOVERFLOW
+
 		handle->kmap_cnt++;
 		return buffer->vaddr;
 	}
