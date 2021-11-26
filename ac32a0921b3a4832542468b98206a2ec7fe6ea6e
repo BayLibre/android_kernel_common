@@ -16,6 +16,23 @@
       "message": "Can you split this up?  You can submit the iio symbol additions now, before this spi-mem patchset, and then it will be easier for us to review the new symbols needed for the spi-mem stuff.",
       "revId": "ac32a0921b3a4832542468b98206a2ec7fe6ea6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056aeb66_8830bd2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-11-26T09:34:56Z",
+      "side": 1,
+      "message": "in looking at this closer, you are adding a lot of things not related to spi-mem or iio at all.  Please submit a \"add missing symbols\" change that updates the file based on symbols already being tracked for your new drivers that you have listed here (like the uart changes).\n\nThen submit 2 changes _just_ for the new things you are needing here for iio and spi-mem please.",
+      "revId": "ac32a0921b3a4832542468b98206a2ec7fe6ea6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
