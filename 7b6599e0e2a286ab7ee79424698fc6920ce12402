@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f739af5f_53a72a46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-11-26T08:39:37Z",
+      "side": 1,
+      "message": "why would the kernel care if a lock was held or not?  That will just slow things down a lot as it is an additional indirect jump for every lock call.",
+      "revId": "7b6599e0e2a286ab7ee79424698fc6920ce12402",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
