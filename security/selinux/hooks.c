@@ -2204,8 +2204,12 @@ static inline u32 open_file_to_av(struct file *file)
 
 static int selinux_binder_set_context_mgr(const struct cred *mgr)
 {
+<<<<<<< HEAD   (c0a1a6 ANDROID: usb: gadget: f_accessory: Mitgate handling of non-e)
 	return avc_has_perm(&selinux_state,
 			    current_sid(), cred_sid(mgr), SECCLASS_BINDER,
+=======
+	return avc_has_perm(current_sid(), cred_sid(mgr), SECCLASS_BINDER,
+>>>>>>> BRANCH (66722c Linux 4.14.256)
 			    BINDER__SET_CONTEXT_MGR, NULL);
 }
 
@@ -2232,8 +2236,12 @@ static int selinux_binder_transaction(const struct cred *from,
 static int selinux_binder_transfer_binder(const struct cred *from,
 					  const struct cred *to)
 {
+<<<<<<< HEAD   (c0a1a6 ANDROID: usb: gadget: f_accessory: Mitgate handling of non-e)
 	return avc_has_perm(&selinux_state,
 			    cred_sid(from), cred_sid(to),
+=======
+	return avc_has_perm(cred_sid(from), cred_sid(to),
+>>>>>>> BRANCH (66722c Linux 4.14.256)
 			    SECCLASS_BINDER, BINDER__TRANSFER,
 			    NULL);
 }
