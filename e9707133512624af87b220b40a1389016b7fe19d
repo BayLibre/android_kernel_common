@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab56e923_c2bdb21f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1927177
+      },
+      "writtenOn": "2021-11-26T11:08:53Z",
+      "side": 1,
+      "message": "Do you mean that we should have that struct defined to the abi xml so that any change will be caught? If so, is there a documentation on how to do that?\nI\u0027m able to update the symbols list using \u0027build_abi.sh --update\u0027, however it seems to only updates functions/variables, my new struct isn\u0027t added.\n\nAlso, to give some background, we need WPAN for our product and we\u0027re stuck with the 5.4 kernel. So far the way we\u0027ve used GKI kernel was to rebuild it ourselves with WPAN enabled to match our modules/ABI. We\u0027d like to be able to use the GKI prebuilt binary direclty but it then requires all those changes. Considering the changes of this series, do you think it\u0027s worth it? Because I don\u0027t want people/you to curse when integrating stable releases because of those changes as they can be intrusive (especially the ndisc one).",
+      "parentUuid": "396cab75_25a8ee4a",
+      "revId": "e9707133512624af87b220b40a1389016b7fe19d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e1b6f7_77cb373f",
         "filename": "include/net/net_namespace.h",
         "patchSetId": 1
