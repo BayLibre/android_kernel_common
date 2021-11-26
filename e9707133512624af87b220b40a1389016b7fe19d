@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55b92f06_103df118",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-11-26T14:46:37Z",
+      "side": 1,
+      "message": "This is tricky, as you are trying to evade the abi checker while at the same time you also need to know that the abi of the structure you are using here does not change over time.\n\nWe can\u0027t have it both ways 😊\n\nI agree that you all should be using this kernel (well, android12-5.4 ideally, but I\u0027ll ignore that), but you have to be aware that doing this type of tricks means that you will have to keep track of any future changes on your own here.  To make it easier, just always rebuild all of your drivers for every kernel update.\n\nLet me talk it over with the other developers next week when they return from vacation to see if there\u0027s anything else that can be done here...",
+      "parentUuid": "ab56e923_c2bdb21f",
+      "revId": "e9707133512624af87b220b40a1389016b7fe19d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e1b6f7_77cb373f",
         "filename": "include/net/net_namespace.h",
         "patchSetId": 1
