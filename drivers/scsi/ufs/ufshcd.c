@@ -6455,12 +6455,17 @@ static irqreturn_t ufshcd_check_errors(struct ufs_hba *hba, u32 intr_status)
  */
 static irqreturn_t ufshcd_tmc_handler(struct ufs_hba *hba)
 {
+<<<<<<< HEAD   (5228cb ANDROID: usb: gadget: f_accessory: Mitgate handling of non-e)
 	unsigned long flags, pending, issued;
+=======
+	unsigned long pending, issued;
+>>>>>>> BRANCH (d5259a Linux 5.10.82)
 	irqreturn_t ret = IRQ_NONE;
 	int tag;
 
 	pending = ufshcd_readl(hba, REG_UTP_TASK_REQ_DOOR_BELL);
 
+<<<<<<< HEAD   (5228cb ANDROID: usb: gadget: f_accessory: Mitgate handling of non-e)
 	spin_lock_irqsave(hba->host->host_lock, flags);
 	issued = hba->outstanding_tasks & ~pending;
 	for_each_set_bit(tag, &issued, hba->nutmrs) {
@@ -6471,6 +6476,16 @@ static irqreturn_t ufshcd_tmc_handler(struct ufs_hba *hba)
 		ret = IRQ_HANDLED;
 	}
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+=======
+	issued = hba->outstanding_tasks & ~pending;
+	for_each_set_bit(tag, &issued, hba->nutmrs) {
+		struct request *req = hba->tmf_rqs[tag];
+		struct completion *c = req->end_io_data;
+
+		complete(c);
+		ret = IRQ_HANDLED;
+	}
+>>>>>>> BRANCH (d5259a Linux 5.10.82)
 
 	return ret;
 }
@@ -6598,7 +6613,11 @@ static int __ufshcd_issue_tm_cmd(struct ufs_hba *hba,
 
 	task_tag = req->tag;
 	hba->tmf_rqs[req->tag] = req;
+<<<<<<< HEAD   (5228cb ANDROID: usb: gadget: f_accessory: Mitgate handling of non-e)
 	treq->upiu_req.req_header.dword_0 |= cpu_to_be32(task_tag);
+=======
+	treq->req_header.dword_0 |= cpu_to_be32(task_tag);
+>>>>>>> BRANCH (d5259a Linux 5.10.82)
 
 	memcpy(hba->utmrdl_base_addr + task_tag, treq, sizeof(*treq));
 	ufshcd_vops_setup_task_mgmt(hba, task_tag, tm_function);
@@ -6618,12 +6637,16 @@ static int __ufshcd_issue_tm_cmd(struct ufs_hba *hba,
 	err = wait_for_completion_io_timeout(&wait,
 			msecs_to_jiffies(TM_CMD_TIMEOUT));
 	if (!err) {
+<<<<<<< HEAD   (5228cb ANDROID: usb: gadget: f_accessory: Mitgate handling of non-e)
 		/*
 		 * Make sure that ufshcd_compl_tm() does not trigger a
 		 * use-after-free.
 		 */
 		req->end_io_data = NULL;
 		ufshcd_add_tm_upiu_trace(hba, task_tag, UFS_TM_ERR);
+=======
+		ufshcd_add_tm_upiu_trace(hba, task_tag, "tm_complete_err");
+>>>>>>> BRANCH (d5259a Linux 5.10.82)
 		dev_err(hba->dev, "%s: task management cmd 0x%.2x timed-out\n",
 				__func__, tm_function);
 		if (ufshcd_clear_tm_cmd(hba, task_tag))
