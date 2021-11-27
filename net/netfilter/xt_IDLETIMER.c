@@ -187,14 +187,23 @@ static ssize_t idletimer_tg_show(struct device *dev,
 
 	mutex_unlock(&list_mutex);
 
+<<<<<<< HEAD   (49224f Merge a4849f6000e2 ("Merge tag 'drm-fixes-2021-11-26' of git)
 	if (time_after(expires, now) || ktimespec.tv_sec > 0)
 		return scnprintf(buf, PAGE_SIZE, "%ld\n", time_diff);
+=======
+	if (time_after(expires, jiffies) || ktimespec.tv_sec > 0)
+		return sysfs_emit(buf, "%ld\n", time_diff);
+>>>>>>> BRANCH (c5c175 Merge tag 'net-5.16-rc3' of git://git.kernel.org/pub/scm/lin)
 
+<<<<<<< HEAD   (49224f Merge a4849f6000e2 ("Merge tag 'drm-fixes-2021-11-26' of git)
 	if (timer->send_nl_msg)
 		return scnprintf(buf, PAGE_SIZE, "0 %d\n",
 				 jiffies_to_msecs(now - expires) / 1000);
 
 	return scnprintf(buf, PAGE_SIZE, "0\n");
+=======
+	return sysfs_emit(buf, "0\n");
+>>>>>>> BRANCH (c5c175 Merge tag 'net-5.16-rc3' of git://git.kernel.org/pub/scm/lin)
 }
 
 static void idletimer_tg_work(struct work_struct *work)
