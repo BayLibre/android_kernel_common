@@ -16,6 +16,24 @@
       "message": "This breaks GKI on Pixel 5. Since this changes the ABI, what\u0027s your plan for android12-5.4 and android12-5.10?",
       "revId": "a0518f52346f6c31520aabae0ff023ff9835df37",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7bbdf19_56ee44bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-11-29T18:09:11Z",
+      "side": 1,
+      "message": "the abi should not be changing here, how is it showing up?\n\nThis feature is broken with clang, so it\u0027s not actually being used so it needs to be disabled.",
+      "parentUuid": "4ea2f05e_edcaa663",
+      "revId": "a0518f52346f6c31520aabae0ff023ff9835df37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
