@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744bf995_eabe946c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-11-30T18:24:43Z",
+      "side": 1,
+      "message": "From this patch, I don\u0027t see how the new introduced functions in percpu-rwsem is supposed to be used so there is limitation to review. Let me keep reading next patches.",
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7b7c74_81ad048c",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-11-30T18:24:43Z",
+      "side": 1,
+      "message": "I am not the fan of this freeing condition for general infrastructure. It should be usually deal with on the caller side rather than the core-infra.",
+      "range": {
+        "startLine": 302,
+        "startChar": 5,
+        "endLine": 302,
+        "endChar": 16
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66a6f0c8_ea9d205e",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-11-30T18:24:43Z",
+      "side": 1,
+      "message": "Do we need the list?\n\nCan\u0027t we do like this with embedding struct work_struct in percpu_rw_semaphore?\n\nINIT_WORK(\u0026sem-\u003ework, destroy_rw_sem);\nschedule_work(\u0026sem-\u003ework);",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 36
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
