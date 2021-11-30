@@ -69,7 +69,11 @@
 
 #endif /* __GENKSYMS__ */
 
+#ifdef CONFIG_BUILD_FOR_ANDROID
 #define _ANDROID_KABI_RESERVE(n)		u64 android_kabi_reserved##n
+#else
+#define _ANDROID_KABI_RESERVE(n)
+#endif
 
 
 /*
@@ -96,8 +100,12 @@
  *   number: the previous "number" of the padding variable
  *   _new: the variable to use now instead of the padding variable
  */
+#ifdef CONFIG_BUILD_FOR_ANDROID
 #define ANDROID_KABI_USE(number, _new)		\
 	_ANDROID_KABI_REPLACE(_ANDROID_KABI_RESERVE(number), _new)
+#else
+#define ANDROID_KABI_USE(number, _new)
+#endif
 
 /*
  * ANDROID_KABI_USE2(number, _new1, _new2)
@@ -106,8 +114,12 @@
  *   want to "burn" a 64bit padding variable for a smaller variable size if not
  *   needed.
  */
+#ifdef CONFIG_BUILD_FOR_ANDROID
 #define ANDROID_KABI_USE2(number, _new1, _new2)			\
 	_ANDROID_KABI_REPLACE(_ANDROID_KABI_RESERVE(number), struct{ _new1; _new2; })
+#else
+#define ANDROID_KABI_USE2(number, _new1, _new2)
+#endif
 
 
 #endif /* _ANDROID_KABI_H */
