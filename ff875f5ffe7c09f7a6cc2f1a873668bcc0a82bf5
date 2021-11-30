@@ -16,6 +16,23 @@
       "message": "the kernel should not care about these things, what is this going to provide?\n\nAlso using ftrace will show the same thing, right?",
       "revId": "ff875f5ffe7c09f7a6cc2f1a873668bcc0a82bf5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb01485_9406819e",
+        "filename": "kernel/locking/rwsem.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1642,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-11-30T21:24:33Z",
+      "side": 1,
+      "message": "Just use the existing trace_android_vh_rwsem_write_finished()",
+      "revId": "ff875f5ffe7c09f7a6cc2f1a873668bcc0a82bf5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
