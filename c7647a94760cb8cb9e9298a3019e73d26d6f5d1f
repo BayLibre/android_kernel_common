@@ -50,6 +50,24 @@
       "message": "There is no reason for these. The fields can be initialized during trace_android_vh_dup_task_struct().",
       "revId": "c7647a94760cb8cb9e9298a3019e73d26d6f5d1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a04cddea_27b57ac8",
+        "filename": "kernel/fork.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1897817
+      },
+      "writtenOn": "2021-12-01T02:49:49Z",
+      "side": 1,
+      "message": "the trace hook cannot be used for inialization because we are dealing with the hook not registered yet tasks.\n\nThe race condition is because of the tasks before we register any hooks. And the tasks can be in any stage.\nhere is one example:\n\ncpu0                     |   cpu1\nregister hooks.          |   taskB alreay done task initialization and not visible \ndone hooks               |   \n                         |   goes to registered vendor_hook and reference the data.",
+      "parentUuid": "afed99de_b253bc56",
+      "revId": "c7647a94760cb8cb9e9298a3019e73d26d6f5d1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
