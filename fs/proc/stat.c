@@ -32,6 +32,7 @@ u64 get_idle_time(struct kernel_cpustat *kcs, int cpu)
 		idle += arch_idle_time(cpu);
 	return idle;
 }
+EXPORT_SYMBOL_GPL(get_idle_time);
 
 static u64 get_iowait_time(struct kernel_cpustat *kcs, int cpu)
 {
@@ -60,6 +61,7 @@ u64 get_idle_time(struct kernel_cpustat *kcs, int cpu)
 
 	return idle;
 }
+EXPORT_SYMBOL_GPL(get_idle_time);
 
 static u64 get_iowait_time(struct kernel_cpustat *kcs, int cpu)
 {
