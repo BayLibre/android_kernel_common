@@ -10,6 +10,7 @@
 #include <linux/kfence.h>
 #include <linux/kobject.h>
 #include <linux/reciprocal_div.h>
+#include <linux/android_vendor.h>
 
 enum stat_item {
 	ALLOC_FASTPATH,		/* Allocation from cpu slab */
@@ -131,6 +132,8 @@ struct kmem_cache {
 
 	unsigned int useroffset;	/* Usercopy region offset */
 	unsigned int usersize;		/* Usercopy region size */
+
+	ANDROID_OEM_DATA_ARRAY(1, 2);
 
 	struct kmem_cache_node *node[MAX_NUMNODES];
 };
