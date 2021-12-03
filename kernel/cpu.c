@@ -560,8 +560,13 @@ static int bringup_cpu(unsigned int cpu)
 	int ret;
 
 	/*
+<<<<<<< HEAD   (bc8ae0 Merge branch 'android12-5.10' into `android12-5.10-lts`)
 	* Reset stale stack state from the last time this CPU was online.
 	*/
+=======
+	 * Reset stale stack state from the last time this CPU was online.
+	 */
+>>>>>>> BRANCH (a324ad Linux 5.10.83)
 	scs_task_reset(idle);
 	kasan_unpoison_task_stack(idle);
 
