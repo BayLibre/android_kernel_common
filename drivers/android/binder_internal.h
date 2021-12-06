@@ -526,6 +526,7 @@ struct binder_thread {
 	bool process_todo;
 	struct binder_error return_error;
 	struct binder_error reply_error;
+	struct binder_error_info error_info;
 	wait_queue_head_t wait;
 	struct binder_stats stats;
 	atomic_t tmp_ref;

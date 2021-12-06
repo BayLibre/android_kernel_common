@@ -284,6 +284,19 @@ struct binder_frozen_status_info {
 	__u32            async_recv;
 };
 
+#define BINDER_STRERR_MAXSZ 256
+
+/* struct binder_error_info - binder error information
+ * @errno:	error number reported
+ * @strerr:	string error generated
+ *
+ * A binder_error_info does abc and userpace can pull the info.
+ */
+struct binder_error_info {
+	__s32		errno;
+	char		strerr[BINDER_STRERR_MAXSZ];
+};
+
 #define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
 #define BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
 #define BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
@@ -297,6 +310,7 @@ struct binder_frozen_status_info {
 #define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
 #define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
 #define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
+#define BINDER_GET_ERROR_INFO		_IOWR('b', 17, struct binder_error_info)
 
 /*
  * NOTE: Two special error codes you should check for when calling
