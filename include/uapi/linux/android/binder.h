@@ -284,6 +284,31 @@ struct binder_frozen_status_info {
 	__u32            async_recv;
 };
 
+#define BINDER_STRERR_MAXLEN 256
+
+/* struct binder_extened_error - extended error information
+ * @ee_code:	error code as defined by enum binder_ee_code
+ * @ee_type:	error type as defined by enum binder_ee_type
+ * @ee_string:	NULL-terminated string describing the error
+ *
+ * Used with BINDER_GET_EXTENDED_ERROR. This extends the error information
+ * returned by the driver upon a failed operation. Userspace can pull this
+ * data to properly handle specific error scenarios.
+ */
+struct binder_extended_error {
+	__u32	ee_code;
+	__u32	ee_type;
+	char	ee_string[BINDER_STRERR_MAXLEN];
+};
+
+enum binder_ee_code {
+	BINDER_EE_CODE_OK = 0,
+};
+
+enum binder_ee_type {
+	BINDER_EE_TYPE_NONE = 0,
+};
+
 #define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
 #define BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
 #define BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
@@ -297,6 +322,7 @@ struct binder_frozen_status_info {
 #define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
 #define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
 #define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
+#define BINDER_GET_EXTENDED_ERROR	_IOWR('b', 17, struct binder_extended_error)
 
 /*
  * NOTE: Two special error codes you should check for when calling

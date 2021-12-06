@@ -150,6 +150,15 @@ module_param_call(stop_on_user_error, binder_set_stop_on_user_error,
 			binder_stop_on_user_error = 2; \
 	} while (0)
 
+#define binder_set_extended_error(thread, code, type, format...)	\
+	do {								\
+		thread->extended_error.ee_code = code;			\
+		thread->extended_error.ee_type = type;			\
+		snprintf(thread->extended_error.ee_string,		\
+			 sizeof(thread->extended_error.ee_string),	\
+			 #code ": " format);				\
+	} while (0)
+
 #define to_flat_binder_object(hdr) \
 	container_of(hdr, struct flat_binder_object, hdr)
 
@@ -4898,6 +4907,17 @@ static int binder_ioctl_get_freezer_info(
 	return 0;
 }
 
+static int binder_ioctl_get_extended_error(struct binder_thread *thread,
+				void __user *ubuf)
+{
+	struct binder_extended_error *ee = &thread->extended_error;
+
+	if (copy_to_user(ubuf, ee, sizeof(*ee)))
+		return -EFAULT;
+
+	return 0;
+}
+
 static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	int ret;
@@ -4922,6 +4942,9 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		ret = -ENOMEM;
 		goto err;
 	}
+
+	binder_set_extended_error(thread, BINDER_EE_CODE_OK,
+			BINDER_EE_TYPE_NONE, "Success");
 
 	switch (cmd) {
 	case BINDER_WRITE_READ:
@@ -5106,6 +5129,11 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		binder_inner_proc_unlock(proc);
 		break;
 	}
+	case BINDER_GET_EXTENDED_ERROR:
+		ret = binder_ioctl_get_extended_error(thread, ubuf);
+		if (ret < 0)
+			goto err;
+		break;
 	default:
 		ret = -EINVAL;
 		goto err;
