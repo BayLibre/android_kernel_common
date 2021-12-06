@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1bd3fa7_3a17d1f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-12-06T23:57:50Z",
+      "side": 1,
+      "message": "That\u0027s why I tried to document the patch extensively and added comments when needed. If you feel it needs more explanation please let me know.",
+      "parentUuid": "744bf995_eabe946c",
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb7b7c74_81ad048c",
         "filename": "kernel/locking/percpu-rwsem.c",
         "patchSetId": 7
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bdf8c543_0788d99f",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-12-06T23:57:50Z",
+      "side": 1,
+      "message": "I can do that but it seems to me leaving this way is less error-prone. Otherwise the user needs to remember that in non-atomic context they should call dtor() directly. But if you feel strongly about it I can change. There is only one place it\u0027s being used, so should be easy.",
+      "parentUuid": "cb7b7c74_81ad048c",
+      "range": {
+        "startLine": 302,
+        "startChar": 5,
+        "endLine": 302,
+        "endChar": 16
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66a6f0c8_ea9d205e",
         "filename": "kernel/locking/percpu-rwsem.c",
         "patchSetId": 7
@@ -54,6 +96,30 @@
       "writtenOn": "2021-11-30T18:24:43Z",
       "side": 1,
       "message": "Do we need the list?\n\nCan\u0027t we do like this with embedding struct work_struct in percpu_rw_semaphore?\n\nINIT_WORK(\u0026sem-\u003ework, destroy_rw_sem);\nschedule_work(\u0026sem-\u003ework);",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 36
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49e9d3df_6db9da52",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-12-06T23:57:50Z",
+      "side": 1,
+      "message": "Is that better than having one work with a list of things to do?",
+      "parentUuid": "66a6f0c8_ea9d205e",
       "range": {
         "startLine": 303,
         "startChar": 0,
