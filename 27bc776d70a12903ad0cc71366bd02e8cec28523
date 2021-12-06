@@ -16,6 +16,24 @@
       "message": "Let\u0027s fold this patch into \"ANDROID: percpu-rwsem: enable percpu_sem destruction in atomic context\" to reduce the code churning. You could append the reason why we need another data structure for atomic \"ABI broken\" in the description of the first path.",
       "revId": "27bc776d70a12903ad0cc71366bd02e8cec28523",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd26c863_4b7bc178",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-12-06T18:50:55Z",
+      "side": 1,
+      "message": "I didn\u0027t want to merge these tow changes because going forward (in android13-5.10 and later) we don\u0027t need the last 2 patches dealing with ABI breakage in this patchset because the ABI in these new branches is not frozen.\nIOW, the first two patches in the patchset will be applied in all later branches. The last two are only for android12-5.10. So I think splitting them this way is cleaner.",
+      "parentUuid": "0242ec71_1b0e4e91",
+      "revId": "27bc776d70a12903ad0cc71366bd02e8cec28523",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
