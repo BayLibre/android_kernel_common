@@ -194,3 +194,9 @@
 
 #extend_reclaim.ko
   try_to_free_mem_cgroup_pages
+
+#required by bio_saver.ko module
+  __traceiter_android_vh_biosaver_scsi
+  __traceiter_android_vh_biosaver_blk
+  __tracepoint_android_vh_biosaver_scsi
+  __tracepoint_android_vh_biosaver_blk
