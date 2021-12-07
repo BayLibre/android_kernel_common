@@ -128,6 +128,30 @@
       },
       "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dad3a41_d074c80e",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-12-07T00:25:19Z",
+      "side": 1,
+      "message": "It depends on usecases.\n\nI suggested it\u0027s simpler since we don\u0027t need to manage list and guarantee the destroying should happen in the end.",
+      "parentUuid": "49e9d3df_6db9da52",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 36
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
