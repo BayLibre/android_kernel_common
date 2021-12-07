@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eea15e2f_8daad425",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-12-07T00:34:25Z",
+      "side": 1,
+      "message": "NP",
+      "parentUuid": "c1bd3fa7_3a17d1f6",
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb7b7c74_81ad048c",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I can do that but it seems to me leaving this way is less error-prone. Otherwise the user needs to remember that in non-atomic context they should call dtor() directly. But if you feel strongly about it I can change. There is only one place it\u0027s being used, so should be easy.",
       "parentUuid": "cb7b7c74_81ad048c",
+      "range": {
+        "startLine": 302,
+        "startChar": 5,
+        "endLine": 302,
+        "endChar": 16
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e147a326_ee05ca06",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2021-12-07T00:34:25Z",
+      "side": 1,
+      "message": "There are few example in the kernel even though it\u0027s not preferred. I am not strong against. I just wanted to point out that kinds divergent based on in_atomic was nacked on the MM list.",
+      "parentUuid": "bdf8c543_0788d99f",
       "range": {
         "startLine": 302,
         "startChar": 5,
