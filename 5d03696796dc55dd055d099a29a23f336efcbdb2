@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc063fb6_30531fff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2021-12-08T01:06:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0b6e68b_6bbdd063",
+      "range": {
+        "startLine": 36,
+        "startChar": 30,
+        "endLine": 36,
+        "endChar": 57
+      },
+      "revId": "5d03696796dc55dd055d099a29a23f336efcbdb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48a28458_a8d42eb7",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-23T22:50:09Z",
       "side": 1,
       "message": "Does this need to be before migrate_selector_match? Or perhaps for performance reasons?\n\nOtherwise, generally the most general check (migrate_selector_match) should come first",
+      "range": {
+        "startLine": 4247,
+        "startChar": 6,
+        "endLine": 4247,
+        "endChar": 44
+      },
+      "revId": "5d03696796dc55dd055d099a29a23f336efcbdb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f0ff871_6c23be88",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4247,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2021-12-08T01:06:17Z",
+      "side": 1,
+      "message": "Yes it is for performance reason to put it in the front, as suggested by Nathan https://android-review.googlesource.com/c/kernel/common/+/1883356/2..4/net/xfrm/xfrm_policy.c#b4248",
+      "parentUuid": "48a28458_a8d42eb7",
       "range": {
         "startLine": 4247,
         "startChar": 6,
