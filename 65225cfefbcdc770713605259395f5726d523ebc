@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "837d7eb8_1e914859",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1665,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-12-08T01:39:33Z",
+      "side": 1,
+      "message": "Unused?",
+      "range": {
+        "startLine": 1658,
+        "startChar": 0,
+        "endLine": 1665,
+        "endChar": 0
+      },
+      "revId": "65225cfefbcdc770713605259395f5726d523ebc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e90026dc_28bccf2a",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1687,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-12-08T01:39:33Z",
+      "side": 1,
+      "message": "Looks like this assigns to a common struct? Should we be updating xc-\u003eouter_mode instead?\n\nSimilar to how it would work for l.2693?",
+      "range": {
+        "startLine": 1687,
+        "startChar": 15,
+        "endLine": 1687,
+        "endChar": 24
+      },
+      "revId": "65225cfefbcdc770713605259395f5726d523ebc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "effda3cc_b149a70e",
+        "filename": "net/xfrm/xfrm_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2687,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2021-12-08T01:39:33Z",
+      "side": 1,
+      "message": "Does this need to be done too during migrations?",
+      "range": {
+        "startLine": 2687,
+        "startChar": 0,
+        "endLine": 2687,
+        "endChar": 71
+      },
+      "revId": "65225cfefbcdc770713605259395f5726d523ebc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
