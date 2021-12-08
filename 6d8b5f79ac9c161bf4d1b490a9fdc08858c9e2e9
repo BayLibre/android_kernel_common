@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76823da1_1c8c04c3",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb149863_5b065618",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c289183c_10307aca",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "This style of variable use is inconsistent throughout this script.\n\n1. \"possible $protects_against_word_splitting context\"\n\n2. ${protects_against_a_following_underscore_or_word_character}\n\n3. \"this ${does_both}\"\n\nYou will very rarely need to protect against following characters.\n\nYou should almost always protect against splitting (it saves readers checking to see if the variable could have whitespace). You can use array variables for cases where you have lists.\n\nAdditionally, word splitting cannot happen to the RHS of an assignment (FOO\u003dbar), but other kinds of expansion can. You can use single quotes to emphasise the static nature of RHS constants.\n\nPlease adjust. Thanks.",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 12
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23efe669_51d644db",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c289183c_10307aca",
       "range": {
         "startLine": 16,
         "startChar": 2,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaaa71c0_1288b00e",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7046eb5_30718ed4",
+      "range": {
+        "startLine": 20,
+        "startChar": 44,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e4a95f5_8de9c754",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "I don\u0027t think this comment needs capitalisation. Similar for Exported below.",
+      "range": {
+        "startLine": 28,
+        "startChar": 9,
+        "endLine": 28,
+        "endChar": 34
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce5a051d_21fbfce8",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e4a95f5_8de9c754",
       "range": {
         "startLine": 28,
         "startChar": 9,
@@ -116,6 +212,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cce1bd5_e9928d27",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22e38604_453b53df",
+      "range": {
+        "startLine": 35,
+        "startChar": 16,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de450d6c_4df1bf19",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "Protected/Exported",
+      "range": {
+        "startLine": 40,
+        "startChar": 17,
+        "endLine": 40,
+        "endChar": 26
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad40166e_2b963abc",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de450d6c_4df1bf19",
       "range": {
         "startLine": 40,
         "startChar": 17,
@@ -162,6 +306,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb1fdc8c_ffdb009b",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9023240_613e9957",
+      "range": {
+        "startLine": 46,
+        "startChar": 3,
+        "endLine": 46,
+        "endChar": 35
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59c58190_c34de805",
@@ -175,6 +343,24 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "typo",
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7cf8545_fa3b3e7e",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59c58190_c34de805",
       "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -202,6 +388,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70b6e6e5_f17199db",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1f28be0_dcb5ede7",
+      "range": {
+        "startLine": 58,
+        "startChar": 7,
+        "endLine": 58,
+        "endChar": 9
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dae5c2cd_2cb70b2c",
@@ -215,6 +425,30 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "This is a bit fragile. At least use the same command (sed 1d) in both places?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 19
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cc2137b_58f66362",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae5c2cd_2cb70b2c",
       "range": {
         "startLine": 61,
         "startChar": 0,
@@ -250,6 +484,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cef53847_ea090d61",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "I added based on Greg K-H\u0027s earlier review comment. Asked the question to opensource-licensing@google.com and will do based on what they suggest. As of now keeping it as over protection is better than no protection.",
+      "parentUuid": "35b7e14c_1c4c2ca5",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 43
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "869f78c6_11d6f18c",
         "filename": "scripts/gen_gki_modules_headers.sh",
         "patchSetId": 7
@@ -261,6 +519,30 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "It would be nice if you get rid of this completely, or define it like:\n\ntype foo[][other dimensions] \u003d {\n};\n\n#define NUMBER (sizeof(something)/sizeof(something[0]))",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 30
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f485298_26a96500",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "869f78c6_11d6f18c",
       "range": {
         "startLine": 80,
         "startChar": 8,
@@ -294,6 +576,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9aecefa_9b05ba34",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16971e6d_bafd6da5",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 0
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f46d2fa_8aadeed7",
@@ -311,6 +617,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb471270_dfc8e12e",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f46d2fa_8aadeed7",
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d114ff37_cfe29f9a",
@@ -324,6 +648,30 @@
       "writtenOn": "2021-12-07T12:24:33Z",
       "side": 1,
       "message": "-- for paranoia",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 102,
+        "endChar": 8
+      },
+      "revId": "6d8b5f79ac9c161bf4d1b490a9fdc08858c9e2e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e62c88b_f330b24c",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-08T06:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d114ff37_cfe29f9a",
       "range": {
         "startLine": 102,
         "startChar": 7,
