@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8562fe8e_6a215b71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1928471
+      },
+      "writtenOn": "2021-12-09T03:15:50Z",
+      "side": 1,
+      "message": "Signed-off-by is my corp-partner email address, I can use this email address to submit the code to the remote warehouse. However, I can’t use my company’s own email address \"humengyao@xiaomi.com\" to upload the code, indicating that this email address is not in my account. I tried to add this email address to the account, and the message was displayed: \"A verification email was sent to humengyao@xiaomi.com. Please check your inbox. \"But I checked my mailbox and did not receive this confirmation email.",
+      "parentUuid": "6c3632c4_467880f5",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 67
+      },
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "611300b7_6167576b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ceef5cc4_2cd7a0f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928471
+      },
+      "writtenOn": "2021-12-09T03:15:50Z",
+      "side": 1,
+      "message": "Excuse me, the build-in trace you mentioned is the \"#include \u003ctrace/events/block.h\u003e\" file, such as \"trace_block_bio_queue(q, bio);\"? In addition, because of project requirements, and since there is no build-in trace in the submit_bio function,We need to insert a hook into this function to obtain some information, and perform some algorithmic calculations to evaluate the current io pressure situation in multiple dimensions to optimize the performance of the mobile phone.\nSo a new hook is needed.",
+      "parentUuid": "611300b7_6167576b",
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "501233ad_bfae898f",
         "filename": "block/blk-core.c",
         "patchSetId": 2
@@ -54,6 +96,30 @@
       "writtenOn": "2021-12-03T10:18:54Z",
       "side": 1,
       "message": "blank line needed, please always run checkpatch on your patches before submitting them.",
+      "range": {
+        "startLine": 939,
+        "startChar": 0,
+        "endLine": 939,
+        "endChar": 36
+      },
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e134e63_9d66219f",
+        "filename": "block/blk-core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1928471
+      },
+      "writtenOn": "2021-12-09T03:15:50Z",
+      "side": 1,
+      "message": "So sorry~~~~(\u003e_\u003c)~~~~, it was added to the wrong position, it has been modified and a blank line has been added.",
+      "parentUuid": "501233ad_bfae898f",
       "range": {
         "startLine": 939,
         "startChar": 0,
