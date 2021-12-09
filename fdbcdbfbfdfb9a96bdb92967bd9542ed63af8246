@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09474e32_b4c8bda3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-12-09T07:53:19Z",
+      "side": 1,
+      "message": "But you are duplicating the exact same code path as the existing BIO tracepoint has.  What is wrong with using the trace_block_bio_queue() tracepoint?  It is called in the same place (actually when the bio is submitted, your tracepoint is a bit \u0027early\u0027 in the code path).  You should have all of the needed information at that point in time so this patch should not be needed at all.",
+      "parentUuid": "ceef5cc4_2cd7a0f1",
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "501233ad_bfae898f",
         "filename": "block/blk-core.c",
         "patchSetId": 2
