@@ -1201,6 +1201,8 @@ struct kvm_ppc_resize_hpt {
 
 #define KVM_CAP_ARM_PROTECTED_VM 0xffbadab1
 
+#define KVM_CAP_ARM_PROTECTED_VM 0xffbadab1
+
 #ifdef KVM_CAP_IRQ_ROUTING
 
 struct kvm_irq_routing_irqchip {
