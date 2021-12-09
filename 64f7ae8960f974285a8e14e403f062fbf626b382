@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "791fed0c_2780b029",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-09T21:06:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec12ba7c_cfd81c7a",
+      "range": {
+        "startLine": 58,
+        "startChar": 21,
+        "endLine": 58,
+        "endChar": 24
+      },
+      "revId": "64f7ae8960f974285a8e14e403f062fbf626b382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e204ccba_68dfd15b",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89eca961_c12874a9",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-09T21:06:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e204ccba_68dfd15b",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 84,
+        "endChar": 27
+      },
+      "revId": "64f7ae8960f974285a8e14e403f062fbf626b382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c4c3778_9e5f09c0",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-12-09T09:32:19Z",
       "side": 1,
       "message": "\u003c\"${symbol_file}\" sed -nr -e 1d -e \u0027s;^\\s*(\\S+)\\s*$;\\1;p\u0027 \u003e\u003e\"${header_file}\"\n\n(or some rearrangement of this)",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 3
+      },
+      "revId": "64f7ae8960f974285a8e14e403f062fbf626b382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c02826a4_41ddab6f",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2021-12-09T21:06:37Z",
+      "side": 1,
+      "message": "Not really understanding the intension here. Assuming suggestion is to replace sed and while with single sed processing. Doing the change based on this assumption.",
+      "parentUuid": "3c4c3778_9e5f09c0",
       "range": {
         "startLine": 88,
         "startChar": 0,
