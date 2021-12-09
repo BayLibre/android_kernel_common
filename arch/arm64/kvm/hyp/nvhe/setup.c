@@ -105,10 +105,15 @@ static int recreate_hyp_mappings(phys_addr_t phys, unsigned long size,
 			return ret;
 
 		end = (void *)per_cpu_ptr(&kvm_init_params, i)->stack_hyp_va;
-		start = end - PAGE_SIZE;
+		start = end - KVM_HYP_STACK_SIZE;
 		ret = pkvm_create_mappings(start, end, PAGE_HYP);
 		if (ret)
 			return ret;
+
+		/* Allocate unbacked stack guard pages */
+		end = start;
+		start = end - KVM_HYP_STACK_SIZE;
+		ret = pkvm_create_mappings(start, end, 0);
 	}
 
 	/*

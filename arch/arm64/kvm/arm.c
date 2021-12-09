@@ -49,7 +49,7 @@ DEFINE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
 
 DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
 
-static DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_page);
+static DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_pages);
 unsigned long kvm_arm_hyp_percpu_base[NR_CPUS];
 DECLARE_KVM_NVHE_PER_CPU(struct kvm_nvhe_init_params, kvm_init_params);
 
@@ -1499,7 +1499,12 @@ static void cpu_prepare_hyp_mode(int cpu)
 	tcr |= (idmap_t0sz & GENMASK(TCR_TxSZ_WIDTH - 1, 0)) << TCR_T0SZ_OFFSET;
 	params->tcr_el2 = tcr;
 
-	params->stack_hyp_va = kern_hyp_va(per_cpu(kvm_arm_hyp_stack_page, cpu) + PAGE_SIZE);
+	params->stack_hyp_va = kern_hyp_va(per_cpu(kvm_arm_hyp_stack_pages, cpu)
+			+ KVM_HYP_STACK_SIZE);
+	if ((params->stack_hyp_va - KVM_HYP_STACK_SIZE)
+			& (1ULL << KVM_HYP_STACK_SHIFT))
+		panic("Hyp stack not aligned to twice the stack size");
+
 	params->pgd_pa = kvm_mmu_get_httbr();
 	if (is_protected_kvm_enabled())
 		params->hcr_el2 = HCR_HOST_NVHE_PROTECTED_FLAGS;
@@ -1788,10 +1793,16 @@ out:
 static void teardown_hyp_mode(void)
 {
 	int cpu;
+	struct page *page;
+	unsigned int i, nr_pages = 1 << get_order(KVM_HYP_STACK_SIZE);
 
 	free_hyp_pgds();
 	for_each_possible_cpu(cpu) {
-		free_page(per_cpu(kvm_arm_hyp_stack_page, cpu));
+		/* Free the hypervisor stack pages */
+		page = virt_to_page((void *) per_cpu(kvm_arm_hyp_stack_pages, cpu));
+		for (i = 0; i < nr_pages; i++, page++)
+			__free_page(page);
+
 		free_pages(kvm_arm_hyp_percpu_base[cpu], nvhe_percpu_order());
 	}
 }
@@ -1871,15 +1882,32 @@ static int init_hyp_mode(void)
 	 * Allocate stack pages for Hypervisor-mode
 	 */
 	for_each_possible_cpu(cpu) {
-		unsigned long stack_page;
+		unsigned long stack_pages;
+		struct page *page;
+		unsigned int order, i, nr_pages;
 
-		stack_page = __get_free_page(GFP_KERNEL);
-		if (!stack_page) {
+		/*
+		 * Using an order of KVM_HYP_STACK_ALIGN ensures that the
+		 * first page is aligned to twice KVM_HYP_STACK_SIZE.
+		 */
+		order = get_order(KVM_HYP_STACK_ALIGN);
+		stack_pages = __get_free_pages(GFP_KERNEL, order);
+		if (!stack_pages) {
 			err = -ENOMEM;
 			goto out_err;
 		}
 
-		per_cpu(kvm_arm_hyp_stack_page, cpu) = stack_page;
+		/*
+		 * The second half of the allocated stack pages are unused.
+		 * Split the pages and free the unused set.
+		 */
+		page = virt_to_page((void *) stack_pages);
+		split_page(page, order);
+		nr_pages = 1 << order;
+		for (i = 0, page += nr_pages >> 1; i < nr_pages >> 1; i++, page++)
+			__free_page(page);
+
+		per_cpu(kvm_arm_hyp_stack_pages, cpu) = stack_pages;
 	}
 
 	/*
@@ -1947,8 +1975,9 @@ static int init_hyp_mode(void)
 	 * Map the Hyp stack pages
 	 */
 	for_each_possible_cpu(cpu) {
-		char *stack_page = (char *)per_cpu(kvm_arm_hyp_stack_page, cpu);
-		err = create_hyp_mappings(stack_page, stack_page + PAGE_SIZE,
+		char *stack_pages = (char *)per_cpu(kvm_arm_hyp_stack_pages, cpu);
+
+		err = create_hyp_mappings(stack_pages, stack_pages + KVM_HYP_STACK_SIZE,
 					  PAGE_HYP);
 
 		if (err) {

@@ -117,6 +117,17 @@
 #define OVERFLOW_STACK_SIZE	SZ_4K
 
 /*
+ * The kvm hypervisor stack is aligned to twice it's size.
+ * This allows for detection of overflows up to KVM_HYP_STACK_SIZE
+ * by testing the KVM_HYP_STACK_SHIFT bit of SP.
+ */
+#if defined(CONFIG_KVM)
+#define KVM_HYP_STACK_SHIFT	PAGE_SHIFT
+#define KVM_HYP_STACK_SIZE	(1ULL << KVM_HYP_STACK_SHIFT)
+#define KVM_HYP_STACK_ALIGN	(2 * KVM_HYP_STACK_SIZE)
+#endif
+
+/*
  * Alignment of kernel segments (e.g. .text, .data).
  *
  *  4 KB granule:  16 level 3 entries, with contiguous bit
