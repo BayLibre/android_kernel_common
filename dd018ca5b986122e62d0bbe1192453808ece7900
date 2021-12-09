@@ -24,6 +24,26 @@
       "robotId": "ayeaye",
       "robotRunId": "AR00000000000018232539",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/1917096?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "1937a7ce_5a87a8a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-12-09T22:49:33Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 414990510 android-build.ayeaye-python-dispatcher_20211208.04_p0",
+      "revId": "dd018ca5b986122e62d0bbe1192453808ece7900",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000018232539",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1917096?revision\u003d1",
       "fixSuggestions": [
         {
           "fixId": "b012f97d_655b715c",
@@ -52,6 +72,49 @@
         "id": 1757831
       },
       "writtenOn": "2021-12-09T22:49:29Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Ram Muthiah \u003crammuthiah@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 414990510 android-build.ayeaye-python-dispatcher_20211208.04_p0",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 0
+      },
+      "revId": "dd018ca5b986122e62d0bbe1192453808ece7900",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000018232539",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1917096?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "fe645cb5_b07ff2b4",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 10,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Ram Muthiah \u003crammuthiah@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "eed71238_64c20832",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2021-12-09T22:49:33Z",
       "side": 1,
       "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Ram Muthiah \u003crammuthiah@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 414990510 android-build.ayeaye-python-dispatcher_20211208.04_p0",
       "range": {
