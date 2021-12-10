@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f32aa0eb_1aaf4cd2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1191469
+      },
+      "writtenOn": "2021-12-10T12:16:17Z",
+      "side": 1,
+      "message": "The fundamental reasoning here is that if a task is not preempted, i.e. doesn\u0027t use up its entire sched_slice(), it gets its throughput demand met. It should therefore be safe to _not_ lift the effective max-clamp.",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",
@@ -66,6 +89,30 @@
       "writtenOn": "2021-12-10T07:16:56Z",
       "side": 1,
       "message": "when set_next_entity:\nse-\u003eprev_sum_exec_runtime \u003d se-\u003esum_exec_runtime;\nthat means when there are two or more tasks, if when the task first running the runtime \u003e slice, it will return false, the uclamp_max can not be ignored. And then when it is preempted by others,when it\u0027s turn the task running, it\u0027s runtime maybe smaller than slice, and this time it would return true, the uclamp_max would be ignored. As a result, the rq would ignore the uclamp_max intermittently.\n\nIs this designed on purpose?\n\nOr here, we should determine whether the task\u0027s  ignore_uclamp_max be set or not.\nWe know when the task is enqueued, the runtime is 0, we can set the  ignore_uclamp_max to be 1, then when tick, we can judge the ignore_uclamp_max, if it is set to be 1, we would judge the runtime, when the runtime \u003e sclice, we set the ignore_uclamp_max to be 0. And then, because the ignore_uclamp_max has set to be 0, we don\u0027t need to judge the runtime, just return false.",
+      "range": {
+        "startLine": 4017,
+        "startChar": 38,
+        "endLine": 4017,
+        "endChar": 59
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af0a481b_dc80fcd1",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1191469
+      },
+      "writtenOn": "2021-12-10T12:16:17Z",
+      "side": 1,
+      "message": "The intention is that we check the previous execution time exceeds the sched_slice() at enqueue but because the execution time may vary between task activations we have to check on the tick if the task has exceeded the sched_slice(). Otherwise, a sudden long burst of activity won\u0027t cause the task to un-ignored and not have it throughput demand met. Also the sched_slice() varies if other tasks are enqueued or dequeued.\n\nI think you have a point that we need to be careful about comparing execution time to the sched_slice() because if the task is preempted, execution_time \u003d\u003d sched_slice(). So max_filter_divider must be \u003e1.\n\nIf a tasks execution time varies over time it will ignored and unignored as appropriate to ensure its throughput demand is met. If task is not ignored at enqueue it shouldn\u0027t be ignored until the next to it is enqueued and its previous execution time is less than the sched_slice(). I think we need an explicit condition here as runtime will start from zero, as you point out, at enqueue so if the tick happens before runtime has exceeded the sched_slice() (taking the divider into account) we don\u0027t mark the task as it can be ignored. It has to stay un-ignored if it is not ignored at enqueue.\n\nI\u0027m not sure if I understood your points?",
+      "parentUuid": "f303d236_1895cf2c",
       "range": {
         "startLine": 4017,
         "startChar": 38,
