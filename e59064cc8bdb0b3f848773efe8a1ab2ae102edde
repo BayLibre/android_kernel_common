@@ -51,6 +51,29 @@
       "parentUuid": "5f01ae12_a913ce0d",
       "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f303d236_1895cf2c",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1905376
+      },
+      "writtenOn": "2021-12-10T07:16:56Z",
+      "side": 1,
+      "message": "when set_next_entity:\nse-\u003eprev_sum_exec_runtime \u003d se-\u003esum_exec_runtime;\nthat means when there are two or more tasks, if when the task first running the runtime \u003e slice, it will return false, the uclamp_max can not be ignored. And then when it is preempted by others,when it\u0027s turn the task running, it\u0027s runtime maybe smaller than slice, and this time it would return true, the uclamp_max would be ignored. As a result, the rq would ignore the uclamp_max intermittently.\n\nIs this designed on purpose?\n\nOr here, we should determine whether the task\u0027s  ignore_uclamp_max be set or not.\nWe know when the task is enqueued, the runtime is 0, we can set the  ignore_uclamp_max to be 1, then when tick, we can judge the ignore_uclamp_max, if it is set to be 1, we would judge the runtime, when the runtime \u003e sclice, we set the ignore_uclamp_max to be 0. And then, because the ignore_uclamp_max has set to be 0, we don\u0027t need to judge the runtime, just return false.",
+      "range": {
+        "startLine": 4017,
+        "startChar": 38,
+        "endLine": 4017,
+        "endChar": 59
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
