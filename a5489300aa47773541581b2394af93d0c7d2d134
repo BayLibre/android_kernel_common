@@ -16,6 +16,24 @@
       "message": "Why do you need more than 1 element? Please add something in the commit message to explain the size.",
       "revId": "a5489300aa47773541581b2394af93d0c7d2d134",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b22400ce_f4a6c960",
+        "filename": "include/linux/cpufreq.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1905323
+      },
+      "writtenOn": "2021-12-10T03:22:28Z",
+      "side": 1,
+      "message": "1. at least 2 elements for mult-level clamp for target_freq.\n2. 2 elements for setting freq up/down delay time.\n3. 2 elements for a slack timer to scale down freq during idle.\n4. 1 elements used in trace_android_vh_map_util_freq()\n5. reserve more elements for later vendor hooks.",
+      "parentUuid": "42f3d91e_e0df03d0",
+      "revId": "a5489300aa47773541581b2394af93d0c7d2d134",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
