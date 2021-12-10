@@ -121,6 +121,29 @@
       },
       "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b241f5ba_7f3ae500",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11139,
+      "author": {
+        "id": 1191469
+      },
+      "writtenOn": "2021-12-10T12:21:38Z",
+      "side": 1,
+      "message": "Do we ever have scenario where a task is not ignored at enqueue and can then later be safely ignored? If the task is still on the rq at the tick and its sched_slice() hasn\u0027t been exceeded we don\u0027t know if it will complete in time, so I don\u0027t think it is safe to ignore it here.",
+      "range": {
+        "startLine": 11139,
+        "startChar": 1,
+        "endLine": 11139,
+        "endChar": 40
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
