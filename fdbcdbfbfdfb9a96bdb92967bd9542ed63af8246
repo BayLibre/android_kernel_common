@@ -103,6 +103,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "362f483b_96b922ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928471
+      },
+      "writtenOn": "2021-12-10T06:22:56Z",
+      "side": 1,
+      "message": "The tracepoint of trace_block_bio_queue() you provided cannot meet our needs, because this is a static eventpoint mechanism. To obtain these data, you must continuously read and parse them in the corresponding ftrace ring buffer, and this buffer is mixed with many other irrelevant trace information. This way of getting data from the log is inefficient and unconventional. Obtaining data through this method will bring a lot of system overhead, and then have a great impact on the performance of the mobile phone.\n    Also, you may misunderstand our intentions. We need an efficient and low-overhead method such as vendor hook to obtain system io information, and do some strategy optimization based on this information, not for debugging.\n    We will adjust the system resource requirements based on the current io situation of the system, such as the frequency, bandwidth and interruption of ufs, to improve io throughput performance.\n    In general, we put forward this requirement for 3 reasons. The first is real-time, and the second is performance overhead. Third, we are an io scheduling optimization, not a debugging method.\n    If there is already a vendor hook method to obtain bio data, would you please tell me where I am? If there is only the evevtpoint mechanism, it is totally unable to meet our needs.\n    Thank you very much for your help, please consider our needs seriously and give me an answer as soon as possible. Have a nice day!",
+      "parentUuid": "09474e32_b4c8bda3",
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "501233ad_bfae898f",
         "filename": "block/blk-core.c",
         "patchSetId": 2

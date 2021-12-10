@@ -116,6 +116,30 @@
       },
       "revId": "b00e900ae578d6a1834a211d5d1c8237af5483b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37c5eb33_18ff51ae",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 7
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1928471
+      },
+      "writtenOn": "2021-12-10T06:22:56Z",
+      "side": 1,
+      "message": "Should I manually modify the xml file, or just modify abi_gki_aarch64_xiaomi and then compile the code to automatically update the xml? Because, after I added a symbol to the abi_gki_aarch64_xiaomi file, I did not update the xml file after compiling, but reported this error:\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d \u003d\u003d\u003d\u003d\u003d\u003d\n Checking the list of modules:\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d \u003d\u003d\u003d\u003d\u003d\u003d\n Comparing the KMI and the symbol lists:\n+ /home/mi/workspace/gki/build/abi/compare_to_symbol_list /home/mi/workspace/gki/out_abi/android12-5.10/common/Module.symvers /home/mi/workspace/gki/out_abi/android12-5.10/ common/abi_symbollist.raw\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n -__traceiter_android_vh_biosaver_blk\n -__traceiter_android_vh_biosaver_scsi\n -__tracepoint_android_vh_biosaver_blk\n -__tracepoint_android_vh_biosaver_scsi\nSymbols missing from symbol list:\n\nIn addition, should this abi_gki_aarch64_xiaomi and the updated xml file be submitted together in this change or another change?",
+      "parentUuid": "6845644b_88c93c03",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 32
+      },
+      "revId": "b00e900ae578d6a1834a211d5d1c8237af5483b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
