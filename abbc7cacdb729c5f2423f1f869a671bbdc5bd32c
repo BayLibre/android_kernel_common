@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c047fc0b_b6570250",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-12-10T08:56:15Z",
+      "side": 1,
+      "message": "As your cpufreq driver can already add whatever it wants to this structure, why do you need a new pointer?  Why not handle it all in your driver properly?",
+      "revId": "abbc7cacdb729c5f2423f1f869a671bbdc5bd32c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
