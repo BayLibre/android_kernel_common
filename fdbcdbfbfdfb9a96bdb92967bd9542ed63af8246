@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48fae4b4_ea2e82fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2021-12-10T08:39:59Z",
+      "side": 1,
+      "message": "If all you care about is the UFS block io, then why not use the ufs tracepoints that are in those drivers today?  That way you know when the data is being sent to the block device and not the queue.\n\nAnd what problem are you trying to solve here that is not already being solved automatically by the block io scheduler or the UFS driver?  No one else is needing this type of hook right now, what is so different about your workloads that requires this information at this point in the stack and not the other existing places?",
+      "parentUuid": "362f483b_96b922ec",
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "501233ad_bfae898f",
         "filename": "block/blk-core.c",
         "patchSetId": 2
