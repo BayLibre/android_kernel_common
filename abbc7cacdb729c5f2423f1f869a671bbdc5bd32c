@@ -52,6 +52,29 @@
       "parentUuid": "e69bd24e_e7fe960b",
       "revId": "abbc7cacdb729c5f2423f1f869a671bbdc5bd32c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "873f7ff5_ff143260",
+        "filename": "include/linux/cpufreq.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2021-12-10T09:42:53Z",
+      "side": 1,
+      "message": "Assuming your cpufreq driver is loaded from vendor side, this should point at vendor provided data. Can you use this instead of extending the struct?",
+      "range": {
+        "startLine": 148,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 21
+      },
+      "revId": "abbc7cacdb729c5f2423f1f869a671bbdc5bd32c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
