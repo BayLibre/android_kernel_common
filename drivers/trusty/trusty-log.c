@@ -13,6 +13,7 @@
 #include <linux/module.h>
 #include <linux/log2.h>
 #include <linux/miscdevice.h>
+#include <linux/poll.h>
 #include <linux/seq_file.h>
 #include <asm/page.h>
 #include "trusty-log.h"
@@ -43,13 +44,11 @@ static struct ratelimit_state trusty_log_rate_limit =
  * struct trusty_log_sfile - trusty log misc device state
  *
  * @misc:          misc device created for the trusty log virtual file
- * @sfile:         seq_file created when opening the misc device
  * @device_name:   misc device name following the convention
  *                 "trusty-<name><id>"
  */
 struct trusty_log_sfile {
 	struct miscdevice misc;
-	struct seq_file sfile;
 	char device_name[64];
 };
 
@@ -103,6 +102,7 @@ struct trusty_log_state {
 	struct notifier_block call_notifier;
 	struct notifier_block panic_notifier;
 	char line_buffer[TRUSTY_LINE_BUFFER_SIZE];
+	wait_queue_head_t poll_waiters;
 };
 
 static inline u32 u32_add_overflow(u32 a, u32 b)
@@ -436,6 +436,7 @@ static int trusty_log_call_notify(struct notifier_block *nb,
 		return NOTIFY_DONE;
 
 	s = container_of(nb, struct trusty_log_state, call_notifier);
+	wake_up_all(&s->poll_waiters);
 	spin_lock_irqsave(&s->lock, flags);
 	trusty_dump_logs(s);
 	spin_unlock_irqrestore(&s->lock, flags);
@@ -476,6 +477,10 @@ static int trusty_log_sfile_dev_open(struct inode *inode, struct file *file)
 
 	ls = container_of(file->private_data, struct trusty_log_sfile, misc);
 
+	/*
+	 * seq_open uses file->private to store the seq_file associated with the
+	 * struct file, but it must be NULL when seq_open is called
+	 */
 	file->private_data = NULL;
 	rc = seq_open(file, &trusty_log_seq_ops);
 	if (rc < 0)
@@ -489,9 +494,35 @@ static int trusty_log_sfile_dev_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
+static unsigned int trusty_log_sfile_dev_poll(struct file *filp,
+				struct poll_table_struct *wait)
+{
+	struct seq_file *sfile;
+	struct trusty_log_sfile *lb;
+	struct trusty_log_state *s;
+	struct log_rb *log;
+
+	sfile = filp->private_data;
+	if (WARN_ON(!sfile)) {
+		printk(KERN_INFO "invalid sfile");
+		return EPOLLERR;
+	}
+	lb = sfile->private;
+	s = container_of(lb, struct trusty_log_state, log_sfile);
+	poll_wait(filp, &s->poll_waiters, wait);
+	log = s->log;
+	if (log->put > filp->f_pos) {
+		/* data ready to read */
+		return POLLIN | POLLRDNORM;
+	}
+	/* no data available, go to sleep */
+	return 0;
+}
+
 static const struct file_operations log_sfile_dev_operations = {
 	.owner = THIS_MODULE,
 	.open = trusty_log_sfile_dev_open,
+	.poll = trusty_log_sfile_dev_poll,
 	.read = seq_read,
 	.release = seq_release,
 };
@@ -626,6 +657,8 @@ static int trusty_log_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "failed to register log_sfile\n");
 		goto error_log_sfile;
 	}
+
+	init_waitqueue_head(&s->poll_waiters);
 
 	platform_set_drvdata(pdev, s);
 
