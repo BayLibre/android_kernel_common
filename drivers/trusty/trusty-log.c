@@ -13,6 +13,7 @@
 #include <linux/module.h>
 #include <linux/log2.h>
 #include <linux/miscdevice.h>
+#include <linux/poll.h>
 #include <linux/seq_file.h>
 #include <asm/page.h>
 #include "trusty-log.h"
@@ -43,14 +44,20 @@ static struct ratelimit_state trusty_log_rate_limit =
  * struct trusty_log_sfile - trusty log misc device state
  *
  * @misc:          misc device created for the trusty log virtual file
- * @sfile:         seq_file created when opening the misc device
  * @device_name:   misc device name following the convention
  *                 "trusty-<name><id>"
  */
 struct trusty_log_sfile {
 	struct miscdevice misc;
-	struct seq_file sfile;
 	char device_name[64];
+};
+
+/**
+ * struct trusty_log_seq_file_state - additional state associated with seq_file
+ */
+struct trusty_log_seq_file_state {
+	struct trusty_log_sfile *sfile;
+	uint32_t cur_pos;
 };
 
 /**
@@ -104,6 +111,11 @@ struct trusty_log_state {
 	struct notifier_block panic_notifier;
 	char line_buffer[TRUSTY_LINE_BUFFER_SIZE];
 };
+
+/*
+ * Wait queue for implementing poll
+ */
+static DECLARE_WAIT_QUEUE_HEAD(tl_wq);
 
 static inline u32 u32_add_overflow(u32 a, u32 b)
 {
@@ -274,13 +286,16 @@ static void *trusty_log_seq_start(struct seq_file *sfile, loff_t *pos)
 	struct trusty_log_state *s;
 	struct log_rb *log;
 	struct trusty_log_sink_state *log_sfile_sink;
+	struct trusty_log_seq_file_state *sfs;
 	u32 index;
 	int rc;
+
 
 	if (WARN_ON(!pos))
 		return ERR_PTR(-EINVAL);
 
-	lb = sfile->private;
+	sfs = sfile->private;
+	lb = sfs->sfile;
 	if (WARN_ON(!lb))
 		return ERR_PTR(-EINVAL);
 
@@ -326,12 +341,14 @@ static void *trusty_log_seq_next(struct seq_file *sfile, void *v, loff_t *pos)
 	struct trusty_log_sfile *lb;
 	struct trusty_log_state *s;
 	struct trusty_log_sink_state *log_sfile_sink = v;
+	struct trusty_log_seq_file_state *sfs;
 	int rc = 0;
 
 	if (WARN_ON(!log_sfile_sink))
 		return ERR_PTR(-EINVAL);
 
-	lb = sfile->private;
+	sfs = sfile->private;
+	lb = sfs->sfile;
 	if (WARN_ON(!lb)) {
 		rc = -EINVAL;
 		goto end_of_iter;
@@ -391,17 +408,20 @@ static int trusty_log_seq_show(struct seq_file *sfile, void *v)
 	struct trusty_log_sfile *lb;
 	struct trusty_log_state *s;
 	struct trusty_log_sink_state *log_sfile_sink = v;
+	struct trusty_log_seq_file_state *sfs;
 
 	if (WARN_ON(!log_sfile_sink))
 		return -EINVAL;
 
-	lb = sfile->private;
+	sfs = sfile->private;
+	lb = sfs->sfile;
 	if (WARN_ON(!lb))
 		return -EINVAL;
 
 	s = container_of(lb, struct trusty_log_state, log_sfile);
 
 	trusty_log_show(s, log_sfile_sink);
+	sfs->cur_pos = log_sfile_sink->get;
 	return 0;
 }
 
@@ -435,6 +455,7 @@ static int trusty_log_call_notify(struct notifier_block *nb,
 	if (action != TRUSTY_CALL_RETURNED)
 		return NOTIFY_DONE;
 
+	wake_up_all(&tl_wq);
 	s = container_of(nb, struct trusty_log_state, call_notifier);
 	spin_lock_irqsave(&s->lock, flags);
 	trusty_dump_logs(s);
@@ -469,31 +490,86 @@ static int trusty_log_sfile_dev_open(struct inode *inode, struct file *file)
 {
 	struct trusty_log_sfile *ls;
 	struct seq_file *sfile;
+	struct trusty_log_seq_file_state *sfs;
 	int rc;
 
 	if (WARN_ON(!file->private_data))
 		return -EINVAL;
 
+	sfs = kzalloc(sizeof(*sfs), GFP_KERNEL);
+	if (!sfs) {
+		return -ENOMEM;
+	}
+
 	ls = container_of(file->private_data, struct trusty_log_sfile, misc);
 
+	/*
+	 * seq_open uses file->private to store the seq_file associated with the
+	 * struct file, but it must be NULL when seq_open is called
+	 */
 	file->private_data = NULL;
 	rc = seq_open(file, &trusty_log_seq_ops);
-	if (rc < 0)
+	if (rc < 0) {
+		kfree(sfs);
 		return rc;
+	}
 
 	sfile = file->private_data;
-	if (WARN_ON(!sfile))
+	if (WARN_ON(!sfile)) {
+		kfree(sfs);
 		return -EINVAL;
+	}
 
-	sfile->private = ls;
+	sfs->sfile = ls;
+	sfile->private = sfs;
+	return 0;
+}
+
+static int trusty_log_sfile_dev_release(struct inode *inode, struct file *file)
+{
+	struct seq_file *sfile = file->private_data;
+	struct trusty_log_seq_file_state *sfs = sfile->private;
+	printk(KERN_INFO "dev_release\n");
+	sfile->private = NULL;
+	kfree(sfs);
+	return seq_release(inode, file);
+}
+
+static unsigned int trusty_log_sfile_dev_poll(struct file *filp,
+				struct poll_table_struct *wait)
+{
+	struct seq_file *sfile;
+	struct trusty_log_sfile *lb;
+	struct trusty_log_seq_file_state *sfs;
+	struct trusty_log_state *s;
+	struct log_rb *log;
+
+	poll_wait(filp, &tl_wq, wait);
+
+	sfile = filp->private_data;
+	if (WARN_ON(!sfile)) {
+		printk(KERN_INFO "invalid sfile");
+		return EPOLLERR;
+	}
+	sfs = sfile->private;
+	lb = sfs->sfile;
+	s = container_of(lb, struct trusty_log_state, log_sfile);
+	log = s->log;
+	if (log->put != sfs->cur_pos) {
+		/* data ready to read */
+		return POLLIN | POLLRDNORM;
+	}
+	/* no data available, go to sleep */
 	return 0;
 }
 
 static const struct file_operations log_sfile_dev_operations = {
 	.owner = THIS_MODULE,
 	.open = trusty_log_sfile_dev_open,
+	.poll = trusty_log_sfile_dev_poll,
 	.read = seq_read,
-	.release = seq_release,
+	.llseek = seq_lseek,
+	.release = trusty_log_sfile_dev_release,
 };
 
 static int trusty_log_sfile_register(struct trusty_log_state *s)
