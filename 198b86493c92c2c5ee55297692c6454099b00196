@@ -68,6 +68,24 @@
       "message": "The trouble seems to be shost_for_each_device() calls __scsi_iterate_devices() which then tries to lock the shost-\u003ehost_lock.\n\nUnfortunately, it was already taken in ufshcd_wait_for_doorbell_clr() below. So this deadlocks.",
       "revId": "198b86493c92c2c5ee55297692c6454099b00196",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2870c02d_9f18136b",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2021-12-13T23:53:59Z",
+      "side": 1,
+      "message": "Thanks John for the analysis. So this patch should fix the deadlock? Can anyone help with testing this patch? I don\u0027t have access to a test setup that supports clock scaling.\n\ndiff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c\nindex 6dd517267f1b..8d41a27e2349 100644\n--- a/drivers/scsi/ufs/ufshcd.c\n+++ b/drivers/scsi/ufs/ufshcd.c\n@@ -1082,7 +1082,9 @@ static u32 ufshcd_pending_cmds(struct ufs_hba *hba)\n \tstruct scsi_device *sdev;\n \tu32 pending \u003d 0;\n \n-\tshost_for_each_device(sdev, hba-\u003ehost)\n+\tlockdep_assert_held(hba-\u003ehost-\u003ehost_lock);\n+\n+\t__shost_for_each_device(sdev, hba-\u003ehost)\n \t\tpending +\u003d sbitmap_weight(\u0026sdev-\u003ebudget_map);\n \n \treturn pending;",
+      "parentUuid": "9a57bd83_e56a0978",
+      "revId": "198b86493c92c2c5ee55297692c6454099b00196",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
