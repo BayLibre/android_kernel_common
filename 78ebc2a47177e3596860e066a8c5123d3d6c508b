@@ -33,6 +33,24 @@
       "message": "What about functionfs use of AIO?  Who will be updating adb and other userspace code that uses it?",
       "revId": "78ebc2a47177e3596860e066a8c5123d3d6c508b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49cae119_64f321a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2021-12-13T17:56:38Z",
+      "side": 1,
+      "message": "I was expecting to see multiple CTS/VTS tests failing for this patch. It was only on a physical device where adb/fastbootd broke down. I\u0027m not sure why TH passed here.\n\nAnyhow, this patch shouldn\u0027t be merged until (as you mentioned) userspace is refactored to use something else. I\u0027ll abandon for this now.",
+      "parentUuid": "aabaeebd_5204bd88",
+      "revId": "78ebc2a47177e3596860e066a8c5123d3d6c508b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
