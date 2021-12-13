@@ -149,6 +149,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a572610e_3de9ba73",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1191469
+      },
+      "writtenOn": "2021-12-13T13:43:34Z",
+      "side": 1,
+      "message": "The tasks ignore/not ignore status can change over time as a consequence of the sched_slice() size and how long the task runs at each activation (wake-up to sleep). That is the goal.\nA task that ran a short amount of time at last activation will be ignored at the next wake-up. If it happens to run longer next time, it may be un-ignored at the tick-check. At the next activation it will start un-ignored. We just established in the other comment thread that a task shouldn\u0027t be ignored if it woke up as un-ignored. The only way for it to be ignored is to have a short activation cause the subsequent activation to give it ignore status.",
+      "parentUuid": "61cff05e_14fb04d0",
+      "range": {
+        "startLine": 4017,
+        "startChar": 38,
+        "endLine": 4017,
+        "endChar": 59
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76250a05_d4739714",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 1
@@ -207,6 +231,30 @@
       "side": 1,
       "message": "I doubt that, too",
       "parentUuid": "b241f5ba_7f3ae500",
+      "range": {
+        "startLine": 11139,
+        "startChar": 1,
+        "endLine": 11139,
+        "endChar": 40
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9095267c_4c29a998",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11139,
+      "author": {
+        "id": 1191469
+      },
+      "writtenOn": "2021-12-13T13:43:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "34f5f2a1_7e1a3be9",
       "range": {
         "startLine": 11139,
         "startChar": 1,
