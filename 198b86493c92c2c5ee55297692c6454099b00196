@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad8e1652_06f7cd31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2021-12-13T17:59:00Z",
+      "side": 1,
+      "message": "Hi. This patch broke android13-5.10 on db845c.\n\nPulled the scsi for-next tree and that failed to boot on db845c too.\n\nReverting this patch from both the trees got them booting on db845c again.",
+      "revId": "198b86493c92c2c5ee55297692c6454099b00196",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
