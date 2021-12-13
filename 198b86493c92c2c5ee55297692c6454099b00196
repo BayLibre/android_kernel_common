@@ -34,6 +34,40 @@
       "parentUuid": "ad8e1652_06f7cd31",
       "revId": "198b86493c92c2c5ee55297692c6454099b00196",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18878974_b41089b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-12-13T23:35:09Z",
+      "side": 1,
+      "message": "Looks like a straightforward deadlock on the host_lock.",
+      "revId": "198b86493c92c2c5ee55297692c6454099b00196",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a57bd83_e56a0978",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2021-12-13T23:35:09Z",
+      "side": 1,
+      "message": "The trouble seems to be shost_for_each_device() calls __scsi_iterate_devices() which then tries to lock the shost-\u003ehost_lock.\n\nUnfortunately, it was already taken in ufshcd_wait_for_doorbell_clr() below. So this deadlocks.",
+      "revId": "198b86493c92c2c5ee55297692c6454099b00196",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
