@@ -16,6 +16,24 @@
       "message": "This breaks the cuttlefish build as required symbols for this feature are not exported from the GKI kernel. The symbol list to update is:\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android13-5.10/android/abi_gki_aarch64_virtual_device\n\nnet_failover.ko is the module that requires new symbols:\n\n depmod: WARNING: drivers/net/net_failover.ko needs unknown symbol vlan_vid_add\n depmod: WARNING: drivers/net/net_failover.ko needs unknown symbol vlan_vid_del\n depmod: WARNING: drivers/net/net_failover.ko needs unknown symbol vlan_uses_dev\n depmod: WARNING: drivers/net/net_failover.ko needs unknown symbol vlan_vids_add_by_dev\n depmod: WARNING: drivers/net/net_failover.ko needs unknown symbol vlan_vids_del_by_dev",
       "revId": "96471f09fb4a2cd9a53b1012ecc8dbd8d320eecc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39e69e08_2eba111f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1907384
+      },
+      "writtenOn": "2021-12-13T12:07:21Z",
+      "side": 1,
+      "message": "Thank you for explaining. I\u0027ve added missing symbols.",
+      "parentUuid": "b8ab02c5_910f4d19",
+      "revId": "96471f09fb4a2cd9a53b1012ecc8dbd8d320eecc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
