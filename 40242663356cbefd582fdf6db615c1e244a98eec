@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db845b43_ca87e073",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-14T23:20:40Z",
+      "side": 1,
+      "message": "Where was sfile used before that you removed? Can you explain your changes in more detail in the change description as it is not obvious how all these changes are related to adding poll support.",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cbcea1f_dc3956a9",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-14T23:20:40Z",
+      "side": 1,
+      "message": "Why is this global? There should be one per trusty_log_state instance",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5624b372_ce141657",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-14T23:20:40Z",
+      "side": 1,
+      "message": "try to avoid unnecessary white-space changes",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "138e0f3e_1cc192ce",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-14T23:20:40Z",
+      "side": 1,
+      "message": "linux kernel usually use goto for error cleanup, or you can possibly use managed allocations, external/linux/Documentation/driver-api/driver-model/devres.rst, but I\u0027m not sure if this supports open hooks, or only probe.",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
