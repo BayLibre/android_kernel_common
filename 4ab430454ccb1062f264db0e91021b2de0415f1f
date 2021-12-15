@@ -51,6 +51,24 @@
       "parentUuid": "b89e439f_54058c4d",
       "revId": "4ab430454ccb1062f264db0e91021b2de0415f1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c482729_0d231459",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1115183
+      },
+      "writtenOn": "2021-12-15T18:55:04Z",
+      "side": 1,
+      "message": "Right, this patch is necessary but not sufficient on its own. Per this thread it seems like the LTO issue may have been fixed recently in pahole though: https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg2547187.html. I was able to successfully build locally with BTF using a locally-built more recent version of pahole.",
+      "parentUuid": "3a0da360_53bda457",
+      "revId": "4ab430454ccb1062f264db0e91021b2de0415f1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
