@@ -51,6 +51,29 @@
       "parentUuid": "37036b19_61a4dbac",
       "revId": "2f1e52c807db9d93e57104a5b1dc95617634d6e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1beeceeb_b50f0962",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2021-12-15T20:27:51Z",
+      "side": 1,
+      "message": "Don\u0027t we also need to delete the entry from the destroy_list once the work is done Suren?",
+      "range": {
+        "startLine": 288,
+        "startChar": 1,
+        "endLine": 288,
+        "endChar": 25
+      },
+      "revId": "2f1e52c807db9d93e57104a5b1dc95617634d6e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
