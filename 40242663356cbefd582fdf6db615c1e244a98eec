@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19a06c43_724c6358",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-15T00:59:15Z",
+      "side": 1,
+      "message": "This particular field was unused in the previous code\n\nWhile I was writing up an explanation of the changes I realized I may have overcomplicated things a bit, so let me see if I can simplify it.",
+      "parentUuid": "db845b43_ca87e073",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cbcea1f_dc3956a9",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-14T23:20:40Z",
       "side": 1,
       "message": "Why is this global? There should be one per trusty_log_state instance",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "954fa217_99359702",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-15T00:59:15Z",
+      "side": 1,
+      "message": "ACK. I didn\u0027t account for multiple trusty instances.",
+      "parentUuid": "9cbcea1f_dc3956a9",
       "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e06376_14e54758",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-15T00:59:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5624b372_ce141657",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "138e0f3e_1cc192ce",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-12-14T23:20:40Z",
       "side": 1,
       "message": "linux kernel usually use goto for error cleanup, or you can possibly use managed allocations, external/linux/Documentation/driver-api/driver-model/devres.rst, but I\u0027m not sure if this supports open hooks, or only probe.",
+      "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69de7fbe_093dcb4b",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-15T00:59:15Z",
+      "side": 1,
+      "message": "I\u0027ll change it to use a goto. Since there\u0027s only the one allocation here, the managed allocation stuff seems like it would result in more code, not less.",
+      "parentUuid": "138e0f3e_1cc192ce",
       "revId": "40242663356cbefd582fdf6db615c1e244a98eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
