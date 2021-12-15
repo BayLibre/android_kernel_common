@@ -217,6 +217,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1eccca9d_bd6fde70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2021-12-15T17:06:32Z",
+      "side": 1,
+      "message": "Mangyao, regular vendor hooks are *exactly* like tracepoints. You use it the same way as you would have used \"register_trace_android_vh_biosaver_blk(...)\" except now it will be \"register_trace_block_bio_queue(...)\"",
+      "parentUuid": "6131a733_5a6bbf2c",
+      "revId": "fdbcdbfbfdfb9a96bdb92967bd9542ed63af8246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "501233ad_bfae898f",
         "filename": "block/blk-core.c",
         "patchSetId": 2
