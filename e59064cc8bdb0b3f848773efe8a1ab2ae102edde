@@ -195,6 +195,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b2418f0_75f28e10",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-15T16:15:18Z",
+      "side": 1,
+      "message": "Hmm I was a bit overzealous here mainly to cater for changes in uclamp settings of the task since wake up.\n\nI agree this check could cause more harm than help. I\u0027ll remove it and update the patch in case this causes interference when verifying/testing the approach.\n\nXuewen, we are after a feedback whether this filter helps in increasing the effectiveness of uclamp_max since max aggregation could lead to lifting the cap when these small tasks run. If you encountered the issue, your feedback on whether this solution helps you to fix this problem would be much appreciated 😊",
+      "parentUuid": "d58c6f2b_e143002e",
+      "range": {
+        "startLine": 4017,
+        "startChar": 38,
+        "endLine": 4017,
+        "endChar": 59
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76250a05_d4739714",
@@ -208,6 +232,30 @@
       "writtenOn": "2021-12-13T05:51:19Z",
       "side": 1,
       "message": "Why redo the judgment of the io_wait? Why not judge the uclmap before the first judgement of io_wait?",
+      "range": {
+        "startLine": 5717,
+        "startChar": 1,
+        "endLine": 5728,
+        "endChar": 48
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "449ceab8_ad0b533e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5728,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-15T16:15:18Z",
+      "side": 1,
+      "message": "Generally, we want to ignore uclamp_max before we ask schedutil to update the frequency. There\u0027s room for improvement here that I hope to address in a later version of the patch. Worth noting there\u0027s a race with update_load_avg() potentially updating the frequency before we ignore uclamp_max. Should not block testing the patch though.",
+      "parentUuid": "76250a05_d4739714",
       "range": {
         "startLine": 5717,
         "startChar": 1,
@@ -279,6 +327,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "34f5f2a1_7e1a3be9",
+      "range": {
+        "startLine": 11139,
+        "startChar": 1,
+        "endLine": 11139,
+        "endChar": 40
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b7be488_0ca8084c",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11139,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-15T16:15:18Z",
+      "side": 1,
+      "message": "Agreed. I\u0027ll remove this condition and update the patch. Thanks!",
+      "parentUuid": "9095267c_4c29a998",
       "range": {
         "startLine": 11139,
         "startChar": 1,
