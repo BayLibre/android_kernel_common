@@ -194,6 +194,30 @@
       },
       "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b216c9c3_d8b46e38",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-12-15T08:08:59Z",
+      "side": 1,
+      "message": "I kept destroy_list because work_struct is quite sizable and adding it to already big percpu_rw_semaphore structure would bloat it.",
+      "parentUuid": "2dad3a41_d074c80e",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 36
+      },
+      "revId": "780a5cc587ee9ad8c2767e7ad07098c482fa565b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
