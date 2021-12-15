@@ -74,6 +74,30 @@
       },
       "revId": "2f1e52c807db9d93e57104a5b1dc95617634d6e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ae0069f_265d5ba3",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2021-12-15T20:45:28Z",
+      "side": 1,
+      "message": "No, list_splice_init moves the elements from destroy_list_lock into to_destroy, and reinitialized destroy_list_lock, see https://elixir.bootlin.com/linux/latest/source/include/linux/list.h#L476. As a result destroy_list_lock is empty after that.",
+      "parentUuid": "1beeceeb_b50f0962",
+      "range": {
+        "startLine": 288,
+        "startChar": 1,
+        "endLine": 288,
+        "endChar": 25
+      },
+      "revId": "2f1e52c807db9d93e57104a5b1dc95617634d6e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
