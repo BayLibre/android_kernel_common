@@ -16,6 +16,23 @@
       "message": "Simplified the patch a bit to get rid of the dtor function and move in_atomic() outside of the new function per Minchan\u0027s suggestion.",
       "revId": "2f1e52c807db9d93e57104a5b1dc95617634d6e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37036b19_61a4dbac",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2021-12-15T17:50:29Z",
+      "side": 1,
+      "message": "Is this for DECLARE_WORK via the transitive include to linux/workqueue.h? If so, shouldn\u0027t this just be linux/workqueue.h?",
+      "revId": "2f1e52c807db9d93e57104a5b1dc95617634d6e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
