@@ -70,6 +70,24 @@
       "parentUuid": "e12bd082_5f9bd027",
       "revId": "4efbb35b29e5cfce0333645ffc01bae923e4ef49",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce554718_c108fe4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2021-12-16T17:20:26Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s that odd when we are supporting the same device on 2 branches -- android12-5.10 and android13-5.10. When changes need to be added to both branches, we can easily cherry-pick the symbol list change to android13-5.10 and only need to update the xml on android12-5.10.",
+      "parentUuid": "2b7431df_62a8ccb6",
+      "revId": "4efbb35b29e5cfce0333645ffc01bae923e4ef49",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
