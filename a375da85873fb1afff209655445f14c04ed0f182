@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "958906e9_60b2f357",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T20:02:21Z",
+      "side": 1,
+      "message": "will do",
+      "parentUuid": "09c31080_7556a50b",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54c36522_299385ff",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 2
@@ -155,6 +173,24 @@
       "side": 1,
       "message": "Defending against bugs is fine. If the bug you are protecting against is that trusty_log_sfile_dev_open was not call, this check won\u0027t work though as the pointer does not start out as NULL.",
       "parentUuid": "a0f83917_82856e3c",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c1bf10_11cded65",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T20:02:21Z",
+      "side": 1,
+      "message": "It\u0027s defending against sfile being NULL, because sfile is dereferenced immediately below.\nOnce sfile has been determined to be non-NULL, it is assumed to be the pointer that dev_open put there.\n\nMaybe I\u0027m misunderstanding your objection, but this seems pretty much exactly the same to me as e.g. line 475, where we check that file-\u003eprivate_data is not NULL, and then assume that it points to the exact misc_device structure we used when registering the device. There are other examples above where we do the same: check that something is not NULL, and then assume that it is a pointer to the thing we expect.",
+      "parentUuid": "92135a83_ba38bf3f",
       "revId": "a375da85873fb1afff209655445f14c04ed0f182",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
