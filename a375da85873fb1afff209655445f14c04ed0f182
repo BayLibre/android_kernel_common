@@ -16,6 +16,74 @@
       "message": "patch set 2 simplifies the change by removing unnecessary code",
       "revId": "a375da85873fb1afff209655445f14c04ed0f182",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77f3da2b_1047d31c",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T16:00:58Z",
+      "side": 1,
+      "message": "This function gets called every time trusty returns on any cpu. It would be best to only wake up waiters if there are new log messages from the last time you woke anyone up.",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f43775ca_2c532fea",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T16:00:58Z",
+      "side": 1,
+      "message": "OK. That is good to know, but who put \u0026ls-\u003emisc there?",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c36522_299385ff",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T16:00:58Z",
+      "side": 1,
+      "message": "How would this trigger? Until trusty_log_sfile_dev_open has been called, seems to contain a different type, but also not NULL. Are there any close paths where it gets set to NULL? If so, does it go back to the other type temporarily?",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9846621_5375fcc7",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T16:00:58Z",
+      "side": 1,
+      "message": "log-\u003eput is a 32 bit number that can wrap so this expression does not look correct once that happens.",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
