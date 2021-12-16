@@ -215,6 +215,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "006c4097_621d481f",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T21:29:54Z",
+      "side": 1,
+      "message": "Again, this is strictly to check for null before dereferencing the pointer, same as is (unnecessarily) done throughout this file.\n\nAs for dev_open changing what private_data points to, that\u0027s not even happening yet at line 475. Line 475 checks whether private_data is NULL, even though the API says that field will not be NULL. And then when it is not NULL, it assumes that it is the type it supposed to be. That\u0027s the exact same thing that\u0027s done here in dev_poll.\n\nI agree that this check isn\u0027t actually useful here, but neither are the majority of similar checks in this file. I want to be consistent. Either we should do the same check here, or we should remove the other checks too. I\u0027d be happy to do a separate cleanup pass after this to remove all the unnecessary checks.",
+      "parentUuid": "a69d1308_184664f5",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9846621_5375fcc7",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 2
@@ -244,6 +262,23 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "a9846621_5375fcc7",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23e382a1_5772f14d",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T21:29:54Z",
+      "side": 1,
+      "message": "For example here. There\u0027s no possible way that \"ls\" can be NULL here, yet it is checked for NULL.",
       "revId": "a375da85873fb1afff209655445f14c04ed0f182",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
