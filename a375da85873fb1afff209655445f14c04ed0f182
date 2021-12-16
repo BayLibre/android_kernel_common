@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09c31080_7556a50b",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T18:46:26Z",
+      "side": 1,
+      "message": "OK, can you mention that here",
+      "parentUuid": "ad5df03a_140a02ba",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54c36522_299385ff",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 2
@@ -119,6 +137,24 @@
       "side": 1,
       "message": "It won\u0027t trigger, just like WARN_ONs elsewhere in this file won\u0027t trigger (e.g. lines 475, 490, 535, and many more in the trusty_log_seq_* functions above). I can certainly leave this check out, but the coding convention in this file appears to be to defend against the impossible, so I did.",
       "parentUuid": "54c36522_299385ff",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92135a83_ba38bf3f",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T18:46:26Z",
+      "side": 1,
+      "message": "Defending against bugs is fine. If the bug you are protecting against is that trusty_log_sfile_dev_open was not call, this check won\u0027t work though as the pointer does not start out as NULL.",
+      "parentUuid": "a0f83917_82856e3c",
       "revId": "a375da85873fb1afff209655445f14c04ed0f182",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
