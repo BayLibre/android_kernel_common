@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ad207c_2ed76a2e",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T17:49:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "77f3da2b_1047d31c",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f43775ca_2c532fea",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-12-16T16:00:58Z",
       "side": 1,
       "message": "OK. That is good to know, but who put \u0026ls-\u003emisc there?",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5df03a_140a02ba",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T17:49:26Z",
+      "side": 1,
+      "message": "Linux does: \"By default, an open syscall to the device sets file-\u003eprivate_data to point to the structure\" (https://www.kernel.org/doc/htmldocs/kernel-api/API-misc-register.html)",
+      "parentUuid": "f43775ca_2c532fea",
       "revId": "a375da85873fb1afff209655445f14c04ed0f182",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -71,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0f83917_82856e3c",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T17:49:26Z",
+      "side": 1,
+      "message": "It won\u0027t trigger, just like WARN_ONs elsewhere in this file won\u0027t trigger (e.g. lines 475, 490, 535, and many more in the trusty_log_seq_* functions above). I can certainly leave this check out, but the coding convention in this file appears to be to defend against the impossible, so I did.",
+      "parentUuid": "54c36522_299385ff",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9846621_5375fcc7",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 2
@@ -82,6 +136,24 @@
       "writtenOn": "2021-12-16T16:00:58Z",
       "side": 1,
       "message": "log-\u003eput is a 32 bit number that can wrap so this expression does not look correct once that happens.",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f321ea_c5a842e8",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2021-12-16T17:49:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a9846621_5375fcc7",
       "revId": "a375da85873fb1afff209655445f14c04ed0f182",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
