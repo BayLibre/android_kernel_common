@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b75911c1_4cc8bc71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-12-16T17:10:54Z",
+      "side": 1,
+      "message": "what if we have many of those small tasks which individually finishes but overall are too slow due to uclamp.max restriction from long bg task?\n\nshould we look at some rq signal to see if the util of the rest of tasks are greater than the current applied uclamp.max restriction?",
+      "parentUuid": "f32aa0eb_1aaf4cd2",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",
