@@ -197,6 +197,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a69d1308_184664f5",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2021-12-16T20:45:42Z",
+      "side": 1,
+      "message": "Yes, but at line 475 only one object type has been assigned to that variable. In this code you are relying on trusty_log_sfile_dev_open to have changed it from one type of object to another. I\u0027m not sure that this check does anything useful. I guess this will catch a bug where trusty_log_sfile_dev_poll gets called even if trusty_log_sfile_dev_open returned an error, as trusty_log_sfile_dev_poll leaved the pointer NULL in that case, but this seems to be the only bug that this guards against as the pointer starts out as something else. You could add a comment stating that if you want to, but I don\u0027t think this check is strictly needed as I assume that is not supposed to happen.",
+      "parentUuid": "69c1bf10_11cded65",
+      "revId": "a375da85873fb1afff209655445f14c04ed0f182",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9846621_5375fcc7",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 2
