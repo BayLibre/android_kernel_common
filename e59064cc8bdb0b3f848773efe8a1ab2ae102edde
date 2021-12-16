@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3197be22_d19a7aef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-16T17:52:27Z",
+      "side": 1,
+      "message": "sched_slice() will scale down as you have more tasks added on the rq. So if you have more tasks, they have to be really really tiny to be ignored when there are many tasks on the rq. The beauty of sched_slice() is that we\u0027ll autoscale with number of tasks. I\u0027ve set the divider as a sysctl to allow experimenting with how strict or relaxed you want it to be. I\u0027m not sure if we\u0027ll keep the sysctl when we go upstream; it\u0027ll depend on the feedback we receive.",
+      "parentUuid": "b75911c1_4cc8bc71",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",
