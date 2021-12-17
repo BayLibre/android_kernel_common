@@ -426,6 +426,7 @@ struct bpf_insn_access_aux {
 	union {
 		int ctx_field_size;
 		u32 btf_id;
+		int data_id;
 	};
 	struct bpf_verifier_log *log; /* for verbose logs */
 };
