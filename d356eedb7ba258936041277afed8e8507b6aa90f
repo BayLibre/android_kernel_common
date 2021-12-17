@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f50b1e_740fdce5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-12-17T00:13:57Z",
+      "side": 1,
+      "message": "usually more than a single task",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb91d31f_ee4231fa",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3955,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-12-17T00:13:57Z",
+      "side": 1,
+      "message": "similarly do we want to have uclamp_can_ignore_uclamp_min as well?\n\nin pixel, we have a threashold for ignoring uclamp_min for smaller tasks as well, the boost is usually for making the deadline, and transient task usually doesn\u0027t matter.",
+      "range": {
+        "startLine": 3955,
+        "startChar": 19,
+        "endLine": 3955,
+        "endChar": 47
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04e0e250_0b35e525",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3973,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-12-17T00:13:57Z",
+      "side": 1,
+      "message": "can we avoid this? there could be small top-app tasks that always have some small uclamp.min\n\ncan we do uclamp_task_util(p) below instead?",
+      "range": {
+        "startLine": 3971,
+        "startChar": 1,
+        "endLine": 3973,
+        "endChar": 15
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f80ca565_d3badfe6",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3979,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-12-17T00:13:57Z",
+      "side": 1,
+      "message": "can we do uclamp_task_util(p) ?",
+      "range": {
+        "startLine": 3979,
+        "startChar": 1,
+        "endLine": 3979,
+        "endChar": 25
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "85f9f9b7_895941ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2021-12-17T00:13:57Z",
+      "side": 1,
+      "message": "I haven\u0027t got chance to play this around, but sched_slice affected by nice/prio as well, I am not sure how we should define a small task.\nThere could be multiple tasks that are serialized together thanks to our binder infrastructure.\n\nAlso if there are many smaller uclmap.max tasks, in such case, are we skipping uclamp.max from those (which seems to be wrong also)",
+      "parentUuid": "3197be22_d19a7aef",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",
