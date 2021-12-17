@@ -96,6 +96,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "24ef8b54_90654b8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-17T17:33:05Z",
+      "side": 1,
+      "message": "\u003e I haven\u0027t got chance to play this around, but sched_slice affected by nice/prio as well, I am not sure how we should define a small task.\n\nAre you worried that background task have their nice value too low that their sched_slice() would be too small and we\u0027d ignore them? This would be useful feedback to us. And one reason I had the tweakable knob for the divider.\n\nWe can improve on this if nice value for background tasks results in a super tiny threshold that we end up never ignoring them. Would be good to try with this first and tweak the divider to see how effective the approach is in general.\n\n\u003e There could be multiple tasks that are serialized together thanks to our binder infrastructure.\n\nHmm. So in general if these tasks were really small, then there\u0027s no guarantee they\u0027ll get a good performance point without being boosted by uclamp_min, otherwise they\u0027re accidently getting a higher performance point when they run. Think one of them gets scheduled on an idle CPU, then the frequency of the CPU is likely to be low anyway.\n\nI think these tasks are using the sync flag to ensure they run on the same cpu which requested the binder transaction? I think there\u0027s something a long these lines happening. In this case, wouldn\u0027t this mean if the task generating the transaction was top-app and important, then that cpu shouldn\u0027t be in a capped state and there will be no impact? If a background started the transaction then since its capped, having its binder transactions capped too is okay?\n\nIt\u0027d be helpful if you expand on the scenarios and the sequence of events you\u0027re thinking of here.\n\n\u003e \u0016Also if there are many smaller uclmap.max tasks, in such case, are we skipping uclamp.max from those (which seems to be wrong also)\n\nWe check if util_est is \u003e\u003d uclamp_max. If it is, then we don\u0027t skip it. Shouldn\u0027t this cater for this?\n\nMaybe I should look at the rq util_est here instead of the task, if that\u0027s what you were saying. Good, point yes. I need to think about it and change it if necessary.",
+      "parentUuid": "85f9f9b7_895941ff",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",

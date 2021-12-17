@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "972c5d50_ac3f0d72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-17T17:33:05Z",
+      "side": 1,
+      "message": "I did some testing on SMP system while running firefox and chromium browsers playing YouTube while a sysbench is running in the background with uclamp_max set to 0. It was effective to keep frequencies down. I expect this to be effective against multiple tasks if they\u0027re small enough. More test coverage on different platforms and use cases is what we\u0027re after now.",
+      "parentUuid": "49f50b1e_740fdce5",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bb91d31f_ee4231fa",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-17T00:13:57Z",
       "side": 1,
       "message": "similarly do we want to have uclamp_can_ignore_uclamp_min as well?\n\nin pixel, we have a threashold for ignoring uclamp_min for smaller tasks as well, the boost is usually for making the deadline, and transient task usually doesn\u0027t matter.",
+      "range": {
+        "startLine": 3955,
+        "startChar": 19,
+        "endLine": 3955,
+        "endChar": 47
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8f8445a_57e60708",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3955,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-17T17:33:05Z",
+      "side": 1,
+      "message": "I\u0027m not sure here. This doesn\u0027t seem right. With. uclamp_max, the problem was that when we had many tasks on the rq, then max-aggregation was a bit aggressive to allow good power savings.\n\nBut the scenario you describe here is that the task was boosted errneously and it feels a bit hacky for the kernel to handle this.\n\nShouldn\u0027t we improve the task classification so that only the important ones are tagged? This will help with prefer_idle being too heavy handed at cgroup level too where only a minority of the top-app tasks actually need it.\n\nIn the long run hopefully we can move to per-task tagging. But I understand until we get there we need to make the cgroup behavior better. Isn\u0027t there a way for framework to know if the tasks are foreground or background tasks? I\u0027ve seen in the last dev summit that Android API has such distinction which hopefully can help for a better classifications of which of the top-app tasks need to be boosted?\n\nhttps://www.youtube.com/watch?v\u003dspdNAwsC1GQ",
+      "parentUuid": "bb91d31f_ee4231fa",
       "range": {
         "startLine": 3955,
         "startChar": 19,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c05104f_7be4447e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3973,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-17T17:33:05Z",
+      "side": 1,
+      "message": "I was worried that might be a bit conservative.\n\nWe can improve the check so that we only ignore if\n\n    if (uclamp_min \u003e rq-\u003euclamp[UCLAMP_MAX].value)\n        return false;\n    \nRemoving it completely could make small tasks that needs boosting suffer?\n\nSomething else we might be able to do is check if the runtime of the task is smaller than the DVFS response time. If it\u0027ll go to sleep before DVFS can actually change the frequency, then generally the whole request could be useless. That can be a separate improvement to be done though. And it still seems risky in case this task only every once in a while performs something important that needs this boosting... Userspace being more intentional on when to set these values is the right approach. Kernel can\u0027t reason easiliy about it without the risk of breaking something.",
+      "parentUuid": "04e0e250_0b35e525",
+      "range": {
+        "startLine": 3971,
+        "startChar": 1,
+        "endLine": 3973,
+        "endChar": 15
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f80ca565_d3badfe6",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -83,6 +155,30 @@
       "writtenOn": "2021-12-17T00:13:57Z",
       "side": 1,
       "message": "can we do uclamp_task_util(p) ?",
+      "range": {
+        "startLine": 3979,
+        "startChar": 1,
+        "endLine": 3979,
+        "endChar": 25
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb1e682_c3f0b66b",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3979,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-17T17:33:05Z",
+      "side": 1,
+      "message": "I don\u0027t think so. If we do, we\u0027ll get the clamped value, but we don\u0027t want to use that.\n\nAs you pointed out above, we might be better looking at the rq util_est here instead of the task. In case a number of small tasks accumulated enough to exceed the uclamp_max. I need to think more about it though.\n\nI\u0027d still be interested how much this matters in practice in your use cases.",
+      "parentUuid": "f80ca565_d3badfe6",
       "range": {
         "startLine": 3979,
         "startChar": 1,
