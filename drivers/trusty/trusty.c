@@ -456,6 +456,9 @@ int trusty_reclaim_memory(struct device *dev, u64 id,
 
 	mutex_lock(&s->share_memory_msg_lock);
 
+	dev_dbg(s->dev, "%s: SMC_FC_FFA_MEM_RECLAIM handle 0x%llx\n", __func__,
+		id);
+
 	smc_ret = trusty_smc8(SMC_FC_FFA_MEM_RECLAIM, (u32)id, id >> 32, 0, 0,
 			      0, 0, 0);
 	if (smc_ret.r0 != SMC_FC_FFA_SUCCESS) {
