@@ -187,6 +187,29 @@
       },
       "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d8bf943_f36b7b67",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1905376
+      },
+      "writtenOn": "2021-12-20T08:25:19Z",
+      "side": 1,
+      "message": "Is it necessary to determine whether the task is migrating? It may be okay to migrate tasks in the runnable state. But when doing active migration(ie: active_load_balance_cpu_stop), the runtime delta may be too small，causing the uclamp_max to be ignored in new cpu.\nNeed adding the condition(p-\u003erq \u003d\u003d TASK_ON_RQ_MIGRATING)?",
+      "range": {
+        "startLine": 4017,
+        "startChar": 1,
+        "endLine": 4017,
+        "endChar": 60
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
