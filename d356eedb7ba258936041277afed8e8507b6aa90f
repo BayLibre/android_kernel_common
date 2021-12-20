@@ -210,6 +210,30 @@
       },
       "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12d661cd_5a907fd5",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2021-12-20T13:12:59Z",
+      "side": 1,
+      "message": "Good point. Yes I think we need to be careful here because runtime will not be representative. Using task_on_rq_migrating() should suffice yes.",
+      "parentUuid": "4d8bf943_f36b7b67",
+      "range": {
+        "startLine": 4017,
+        "startChar": 1,
+        "endLine": 4017,
+        "endChar": 60
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
