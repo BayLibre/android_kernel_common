@@ -626,5 +626,6 @@ void dma_buf_vunmap(struct dma_buf *, void *vaddr);
 long dma_buf_set_name(struct dma_buf *dmabuf, const char *name);
 int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags);
 int dma_buf_get_uuid(struct dma_buf *dmabuf, uuid_t *uuid);
+unsigned long get_dma_buf_total(void);
 
 #endif /* __DMA_BUF_H__ */

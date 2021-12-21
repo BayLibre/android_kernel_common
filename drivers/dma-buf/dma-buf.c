@@ -37,6 +37,12 @@ struct dma_buf_list {
 };
 
 static struct dma_buf_list db_list;
+atomic64_t dma_buf_tota = ATOMIC64_INIT(0);
+
+unsigned long get_dma_buf_total(void)
+{
+	return atomic64_read(&dma_buf_total);
+}
 
 /*
  * This function helps in traversing the db_list and calls the
@@ -106,6 +112,7 @@ static void dma_buf_release(struct dentry *dentry)
 
 	module_put(dmabuf->owner);
 	kfree(dmabuf->name);
+	atomic64_sub(dmabuf->size, &dma_buf_total);
 	kfree(dmabuf);
 }
 
@@ -629,6 +636,7 @@ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info)
 
 	mutex_lock(&db_list.lock);
 	list_add(&dmabuf->list_node, &db_list.head);
+	atomic64_add(dmabuf->size, &dma_buf_total);
 	mutex_unlock(&db_list.lock);
 
 	return dmabuf;
