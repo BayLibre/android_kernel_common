@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18269860_db2ef566",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1460265
+      },
+      "writtenOn": "2021-12-21T07:17:55Z",
+      "side": 1,
+      "message": "I´m maintaining a kernel for Pixel 6 Pro that has kernel/common merged. The commit that gets reverted here caused several seemingly random issues, like cores getting stuck at frequencies during certain scenarios. (music playback had middle cores of pixel 6 stuck at 2,2ghz as an example).\nVideo/Music Playback glitched out after several hours of uptime. \n\nEnded up reverting this commit on my kernel too, which made those problems disappear.\nhttps://github.com/freak07/Kirisakura_Raviole/commit/aa10312408ab0092d4467f500765ba40f5821413\n\n+1 from me. ",
+      "revId": "c77b9594cd80f49100894c6f4350ff8876b3a014",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
