@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca3c1b58_27ca6fba",
+        "filename": "drivers/thermal/gov_power_allocator.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1905498
+      },
+      "writtenOn": "2021-12-22T06:22:50Z",
+      "side": 1,
+      "message": "Sure, so add a new hook, thank you.",
+      "parentUuid": "40ba6e18_9d315685",
+      "revId": "2754168ad5975a905d796fa7b019b7e35a41b612",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21e8edbd_5ec234c2",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-21T17:32:58Z",
       "side": 1,
       "message": "I think it would be cleaner to eliminate the \"user_power\" local by adding a new hook in allocate_power().\n\nSo this hook would just be about enable/disable/override (override would take the place of !user_power).",
+      "revId": "2754168ad5975a905d796fa7b019b7e35a41b612",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f4debb_1fc73a87",
+        "filename": "drivers/thermal/gov_power_allocator.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1905498
+      },
+      "writtenOn": "2021-12-22T06:22:50Z",
+      "side": 1,
+      "message": "Add override flag parameter as your comments.",
+      "parentUuid": "21e8edbd_5ec234c2",
       "revId": "2754168ad5975a905d796fa7b019b7e35a41b612",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
