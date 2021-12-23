@@ -2268,6 +2268,9 @@ static void hw_scan_work(struct work_struct *work)
 			if (req->ie_len)
 				skb_put_data(probe, req->ie, req->ie_len);
 
+			struct ieee80211_tx_info *info = IEEE80211_SKB_CB(probe);
+			info->control.vif = hwsim->hw_scan_vif;
+
 			local_bh_disable();
 			mac80211_hwsim_tx_frame(hwsim->hw, probe,
 						hwsim->tmp_chan);
