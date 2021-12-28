@@ -19,40 +19,87 @@
 #include <asm/cpufeature.h>
 
 /*
+ * TODO - io.h is included in NVHE files and these tracepoints are getting
+ * enabled for NVHE too. To avoid these tracepoints enabling in NHVE below
+ * condition is introduced.
+ * !(defined(__KVM_NVHE_HYPERVISOR__))
+ */
+#if IS_ENABLED(CONFIG_TRACE_MMIO_ACCESS) && !(defined(__DISABLE_TRACE_MMIO__)) && !(defined(__KVM_NVHE_HYPERVISOR__))
+#include <linux/tracepoint-defs.h>
+
+DECLARE_TRACEPOINT(rwmmio_write);
+DECLARE_TRACEPOINT(rwmmio_post_write);
+DECLARE_TRACEPOINT(rwmmio_read);
+DECLARE_TRACEPOINT(rwmmio_post_read);
+
+void log_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
+                    unsigned long caller_addr);
+void log_post_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
+                         unsigned long caller_addr);
+void log_read_mmio(u8 width, const volatile void __iomem *addr,
+                   unsigned long caller_addr);
+void log_post_read_mmio(u64 val, u8 width, const volatile void __iomem *addr,
+                        unsigned long caller_addr);
+
+#else
+
+static inline void log_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
+                                  unsigned long caller_addr) {}
+static inline void log_post_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
+                                       unsigned long caller_addr) {}
+static inline void log_read_mmio(u8 width, const volatile void __iomem *addr,
+                                 unsigned long caller_addr) {}
+static inline void log_post_read_mmio(u64 val, u8 width, const volatile void __iomem *addr,
+                                      unsigned long caller_addr) {}
+
+#endif /* CONFIG_TRACE_MMIO_ACCESS */
+
+/*
  * Generic IO read/write.  These perform native-endian accesses.
  */
 #define __raw_writeb __raw_writeb
 static inline void __raw_writeb(u8 val, volatile void __iomem *addr)
 {
+	log_write_mmio(val, 8,  addr, _THIS_IP_);
 	asm volatile("strb %w0, [%1]" : : "rZ" (val), "r" (addr));
+	log_post_write_mmio(val, 8, addr, _THIS_IP_);
 }
 
 #define __raw_writew __raw_writew
 static inline void __raw_writew(u16 val, volatile void __iomem *addr)
 {
+	log_write_mmio(val, 16, addr, _THIS_IP_);
 	asm volatile("strh %w0, [%1]" : : "rZ" (val), "r" (addr));
+	log_post_write_mmio(val, 16, addr, _THIS_IP_);
 }
 
 #define __raw_writel __raw_writel
 static __always_inline void __raw_writel(u32 val, volatile void __iomem *addr)
 {
+	log_write_mmio(val, 32, addr, _THIS_IP_);
 	asm volatile("str %w0, [%1]" : : "rZ" (val), "r" (addr));
+	log_post_write_mmio(val, 32, addr, _THIS_IP_);
 }
 
 #define __raw_writeq __raw_writeq
 static inline void __raw_writeq(u64 val, volatile void __iomem *addr)
 {
+	log_write_mmio(val, 64, addr, _THIS_IP_);
 	asm volatile("str %x0, [%1]" : : "rZ" (val), "r" (addr));
+	log_post_write_mmio(val, 64, addr, _THIS_IP_);
 }
 
 #define __raw_readb __raw_readb
 static inline u8 __raw_readb(const volatile void __iomem *addr)
 {
 	u8 val;
+
+	log_read_mmio(8, addr, _THIS_IP_);
 	asm volatile(ALTERNATIVE("ldrb %w0, [%1]",
 				 "ldarb %w0, [%1]",
 				 ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE)
 		     : "=r" (val) : "r" (addr));
+	log_post_read_mmio(val, 8, addr, _THIS_IP_);
 	return val;
 }
 
@@ -61,10 +108,12 @@ static inline u16 __raw_readw(const volatile void __iomem *addr)
 {
 	u16 val;
 
+	log_read_mmio(16, addr, _THIS_IP_);
 	asm volatile(ALTERNATIVE("ldrh %w0, [%1]",
 				 "ldarh %w0, [%1]",
 				 ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE)
 		     : "=r" (val) : "r" (addr));
+	log_post_read_mmio(val, 16,  addr, _THIS_IP_);
 	return val;
 }
 
@@ -72,10 +121,13 @@ static inline u16 __raw_readw(const volatile void __iomem *addr)
 static __always_inline u32 __raw_readl(const volatile void __iomem *addr)
 {
 	u32 val;
+
+	log_read_mmio(32, addr, _THIS_IP_);
 	asm volatile(ALTERNATIVE("ldr %w0, [%1]",
 				 "ldar %w0, [%1]",
 				 ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE)
 		     : "=r" (val) : "r" (addr));
+	log_post_read_mmio(val, 32, addr, _THIS_IP_);
 	return val;
 }
 
@@ -83,10 +135,13 @@ static __always_inline u32 __raw_readl(const volatile void __iomem *addr)
 static inline u64 __raw_readq(const volatile void __iomem *addr)
 {
 	u64 val;
+
+	log_read_mmio(64, addr, _THIS_IP_);
 	asm volatile(ALTERNATIVE("ldr %0, [%1]",
 				 "ldar %0, [%1]",
 				 ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE)
 		     : "=r" (val) : "r" (addr));
+	log_post_read_mmio(val, 64, addr, _THIS_IP_);
 	return val;
 }
 
