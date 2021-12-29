@@ -187,5 +187,15 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+<<<<<<< PATCH SET (56de5a ANDROID: vendor_hooks: Add hooks for binder)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_state_registered);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_thread_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_free_proc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_thread_release);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_has_work_ilocked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_read_done);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_preset);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
+>>>>>>> BASE      (7b05b7 ANDROID: 4/26/2023 KMI update)
