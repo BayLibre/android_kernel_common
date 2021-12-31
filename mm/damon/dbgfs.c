@@ -413,9 +413,6 @@ static ssize_t dbgfs_target_ids_write(struct file *file,
 		damon_destroy_target(t);
 	}
 
-	/* remove targets with previously-set primitive */
-	damon_set_targets(ctx, NULL, 0);
-
 	/* Configure the context for the address space type */
 	if (id_is_pid)
 		damon_va_set_primitives(ctx);
