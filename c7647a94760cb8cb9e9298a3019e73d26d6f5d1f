@@ -104,6 +104,24 @@
       "parentUuid": "a04cddea_27b57ac8",
       "revId": "c7647a94760cb8cb9e9298a3019e73d26d6f5d1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e04de30_33b0f44a",
+        "filename": "kernel/fork.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2022-01-05T22:02:01Z",
+      "side": 1,
+      "message": "maybe i missed, isn\u0027t the vendor struct should be all 0 by default from init\u0027s task struct ? what is writing to vendor struct before you register to the hook?",
+      "parentUuid": "aa9e6c59_8d49c7ce",
+      "revId": "c7647a94760cb8cb9e9298a3019e73d26d6f5d1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
