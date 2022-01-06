@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a37fc9e0_20f1e8f1",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3955,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2022-01-06T17:52:50Z",
+      "side": 1,
+      "message": "No, I don\u0027t think we have such API (have been pushing that), \n\nDVFS is slow on some platform as well, for super small task, the chance is the delay will likely eat up the gain.",
+      "parentUuid": "d8f8445a_57e60708",
+      "range": {
+        "startLine": 3955,
+        "startChar": 19,
+        "endLine": 3955,
+        "endChar": 47
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04e0e250_0b35e525",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "I was worried that might be a bit conservative.\n\nWe can improve the check so that we only ignore if\n\n    if (uclamp_min \u003e rq-\u003euclamp[UCLAMP_MAX].value)\n        return false;\n    \nRemoving it completely could make small tasks that needs boosting suffer?\n\nSomething else we might be able to do is check if the runtime of the task is smaller than the DVFS response time. If it\u0027ll go to sleep before DVFS can actually change the frequency, then generally the whole request could be useless. That can be a separate improvement to be done though. And it still seems risky in case this task only every once in a while performs something important that needs this boosting... Userspace being more intentional on when to set these values is the right approach. Kernel can\u0027t reason easiliy about it without the risk of breaking something.",
       "parentUuid": "04e0e250_0b35e525",
+      "range": {
+        "startLine": 3971,
+        "startChar": 1,
+        "endLine": 3973,
+        "endChar": 15
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "839ea6b5_baf1487e",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3973,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2022-01-06T17:52:50Z",
+      "side": 1,
+      "message": "sometimes the TA group has a group uclamp.min and the group contains many tasks. While we are refining the boost infrastructure, but still sometimes inevitable, and if a tiny thread runs, it relax the uclamp.max restriction which doesn\u0027t sounds right.",
+      "parentUuid": "7c05104f_7be4447e",
       "range": {
         "startLine": 3971,
         "startChar": 1,

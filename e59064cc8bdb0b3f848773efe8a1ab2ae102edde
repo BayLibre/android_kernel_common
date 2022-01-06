@@ -120,6 +120,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "69978a60_c8ca1290",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2022-01-06T17:52:50Z",
+      "side": 1,
+      "message": "\u003e Are you worried that background task have their nice value too low that their sched_slice() would be too small and we\u0027d ignore them? This would be useful feedback to us. And one reason I had the tweakable knob for the divider.\n\nyup, that is on the other side. maybe for those bg tasks, we skip the size check.\n\nAlso yes, I am thinking of rq util_est but need to split it for bg/fg.",
+      "parentUuid": "24ef8b54_90654b8c",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",
