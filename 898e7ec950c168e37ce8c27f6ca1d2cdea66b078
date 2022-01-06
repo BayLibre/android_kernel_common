@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f1d8e8_4740fd95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-01-06T10:10:15Z",
+      "side": 1,
+      "message": "You are asking about a commit that is merged.  If you have proposed changes, please submit a new patch.  As it is, there is nothing we can do here with this merged commit.",
+      "revId": "898e7ec950c168e37ce8c27f6ca1d2cdea66b078",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8797e26_7d9cbb69",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-01-05T21:55:57Z",
       "side": 1,
       "message": "why we clear this? isn\u0027t by default we should dup vendor struct?\n\nif some device need to do memset, they can do it in the following: trace_android_vh_dup_task_struct",
+      "range": {
+        "startLine": 981,
+        "startChar": 1,
+        "endLine": 982,
+        "endChar": 68
+      },
+      "revId": "898e7ec950c168e37ce8c27f6ca1d2cdea66b078",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f048b5_8150a8aa",
+        "filename": "kernel/fork.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-01-06T10:10:15Z",
+      "side": 1,
+      "message": "That is too late for tasks that are created before modules are loaded.",
+      "parentUuid": "e8797e26_7d9cbb69",
       "range": {
         "startLine": 981,
         "startChar": 1,
