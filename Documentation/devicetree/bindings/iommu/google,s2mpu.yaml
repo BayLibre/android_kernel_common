@@ -22,6 +22,8 @@ properties:
     description:
       ID of the power domain that the S2MPU belongs to as used in SMCs to EL3
 
+  off-at-boot: true
+
 required:
   - compatible
   - reg
