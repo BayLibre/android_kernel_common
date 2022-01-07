@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b12687f_d4876599",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T18:23:28Z",
+      "side": 1,
+      "message": "It seems safer to do this after taking the lock. Yes, an extra wakeup is not going to cause any real harm, but if two cpus write two different values to s-\u003elast_wake_put at the same time, the result is undefined, which could happen to match the next future value you get.",
+      "parentUuid": "86d743b0_3dd72b3e",
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50d4f01a_6f622e1f",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 6
@@ -119,6 +137,24 @@
       "side": 1,
       "message": "Ack (I thought code/comment style was enforced with a presubmit check, but apparently not)",
       "parentUuid": "2bd99bd1_86884ad3",
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "affa3ff4_ec82448c",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T18:23:28Z",
+      "side": 1,
+      "message": "Did you run checkpatch? I don\u0027t think this happens automatically in gerrit, but it will catch many style issues (if you run it manually).",
+      "parentUuid": "8fd14874_3946e055",
       "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
