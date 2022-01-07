@@ -27,7 +27,10 @@
 	for ((i) = &kvm_hyp_s2mpus[0]; (i) != &kvm_hyp_s2mpus[kvm_hyp_nr_s2mpus]; (i)++)
 
 #define for_each_powered_s2mpu(i) \
-	for_each_s2mpu((i)) if (is_powered_on((i)))
+	for_each_s2mpu((i)) if ((i)->powered)
+
+#define for_each_s2mpu_in_power_domain(i, d) \
+	for_each_s2mpu((i)) if ((i)->power_domain_id == (d))
 
 #define CTX_CFG_ENTRY(ctxid, nr_ctx, vid) \
 	(CONTEXT_CFG_VALID_VID_CTX_VID(ctxid, vid) \
@@ -42,32 +45,6 @@ static hyp_spinlock_t		s2mpu_lock;
 static bool is_version(struct s2mpu *dev, u32 version)
 {
 	return (dev->version & VERSION_CHECK_MASK) == version;
-}
-
-static bool is_powered_on(struct s2mpu *dev)
-{
-	switch (dev->power_state) {
-	case S2MPU_POWER_ALWAYS_ON:
-	case S2MPU_POWER_ON:
-		return true;
-	case S2MPU_POWER_OFF:
-		return false;
-	default:
-		BUG();
-	}
-}
-
-static bool is_in_power_domain(struct s2mpu *dev, u64 power_domain_id)
-{
-	switch (dev->power_state) {
-	case S2MPU_POWER_ALWAYS_ON:
-		return false;
-	case S2MPU_POWER_ON:
-	case S2MPU_POWER_OFF:
-		return dev->power_domain_id == power_domain_id;
-	default:
-		BUG();
-	}
 }
 
 static u32 __context_cfg_valid_vid(struct s2mpu *dev, u32 vid_bmap)
@@ -402,16 +379,13 @@ static bool s2mpu_host_smc_handler(struct kvm_cpu_context *host_ctxt)
 	ret = res.a0;
 
 	if (ret == SMCCC_RET_SUCCESS) {
-		for_each_s2mpu(dev) {
-			if (!is_in_power_domain(dev, domain_id))
-				continue;
-
+		for_each_s2mpu_in_power_domain(dev, domain_id) {
 			if (mode == SMC_MODE_POWER_UP) {
-				dev->power_state = S2MPU_POWER_ON;
+				dev->powered = true;
 				ret = initialize_with_mpt(dev, &kvm_hyp_host_mpt);
 			} else {
 				ret = initialize_with_prot(dev, MPT_PROT_NONE);
-				dev->power_state = S2MPU_POWER_OFF;
+				dev->powered = false;
 			}
 		}
 	}
@@ -471,7 +445,7 @@ static bool s2mpu_host_mmio_dabt_handler(struct kvm_cpu_context *host_ctxt,
 		return false;
 
 	dev = find_s2mpu_by_addr(fault_pa);
-	if (!dev || !is_powered_on(dev))
+	if (!dev || !dev->powered)
 		return false;
 
 	off = fault_pa - dev->pa;

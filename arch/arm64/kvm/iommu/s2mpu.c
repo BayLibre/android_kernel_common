@@ -161,12 +161,11 @@ static int s2mpu_probe(struct platform_device *pdev)
 
 	ret = of_property_read_u32(pdev->dev.of_node, "power-domain-id",
 				   &info->power_domain_id);
-	if (!ret) {
-		info->power_state = S2MPU_POWER_ON;
-	} else if (ret != -EINVAL) {
+	if (ret) {
 		dev_err(&pdev->dev, "failed to parse power-domain-id: %d", ret);
 		return ret;
 	}
+	info->powered = true;
 
 	/*
 	 * Try to parse IRQ information. This is optional as it only affects
