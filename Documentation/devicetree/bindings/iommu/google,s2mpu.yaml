@@ -20,13 +20,13 @@ properties:
   power-domain-id:
     $ref: /schemas/types.yaml#/definitions/uint32
     description:
-      ID of the power domain that the S2MPU belongs to. If not specified,
-      the device is assumed to be always powered.
+      ID of the power domain that the S2MPU belongs to as used in SMCs to EL3
 
   off-at-boot: true
 
 required:
   - compatible
   - reg
+  - power-domain-id
 
 additionalProperties: true
