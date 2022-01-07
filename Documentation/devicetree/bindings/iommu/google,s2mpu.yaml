@@ -23,6 +23,8 @@ properties:
       ID of the power domain that the S2MPU belongs to. If not specified,
       the device is assumed to be always powered.
 
+  off-at-boot: true
+
 required:
   - compatible
   - reg
