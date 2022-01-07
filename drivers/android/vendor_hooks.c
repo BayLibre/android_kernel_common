@@ -171,3 +171,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks_dn);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_ptr_locked);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_rto_next_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_is_cpu_allowed);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_get_nohz_timer_target);
