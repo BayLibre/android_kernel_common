@@ -16,6 +16,97 @@
       "message": "Sorry for the churn. You probably want to look at the diff between patch set 2 and 6: https://android-review.googlesource.com/c/kernel/common/+/1919417/2..6\nThat adds some clarifying comments, and makes it so the waiters are only woken up when there are new logs.",
       "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74d3ac09_964bea06",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T12:03:32Z",
+      "side": 1,
+      "message": "you are not holding any lock here",
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d4f01a_6f622e1f",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T12:03:32Z",
+      "side": 1,
+      "message": "Long line. Use 8 char tab stops and 80 col margin",
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bd99bd1_86884ad3",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T12:03:32Z",
+      "side": 1,
+      "message": "Use\n```\n/*\n * ....\n```\nstyle for multiline comments",
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bdba475_5fb5732d",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T12:03:32Z",
+      "side": 1,
+      "message": "EPOLLIN...? I don\u0027t see any documentation for the poll interface, but it seems more common to use the E... variants.",
+      "range": {
+        "startLine": 526,
+        "startChar": 9,
+        "endLine": 526,
+        "endChar": 15
+      },
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "570af352_eb565d7b",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-07T12:03:32Z",
+      "side": 1,
+      "message": "you are using this from the notifier so it needs to be initialized before you register the notifier (and the file which also uses this)",
+      "revId": "119dbec502081f283c51008c880c14ebb4c32f42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
