@@ -56,6 +56,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_rtmutex_prepare_setprio,
 	TP_PROTO(struct task_struct *p, struct task_struct *pi_task),
 	TP_ARGS(p, pi_task), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_is_cpu_allowed,
+	TP_PROTO(int cpu, bool *allowed),
+	TP_ARGS(cpu, allowed), 1);
+
 DECLARE_RESTRICTED_HOOK(android_rvh_set_user_nice,
 	TP_PROTO(struct task_struct *p, long *nice, bool *allowed),
 	TP_ARGS(p, nice, allowed), 1);
