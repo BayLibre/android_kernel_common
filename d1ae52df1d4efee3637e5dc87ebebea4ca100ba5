@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33bb223d_a059556a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-01-10T09:52:28Z",
+      "side": 1,
+      "message": "The CI complains with the following build errors, please fix, thanks.\n\n\nIn file included from /usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/core.c:13:\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/sched.h:522:56: error: declaration of \u0027struct rq_flags\u0027 will not be visible outside of this function [-Werror,-Wvisibility]\nextern struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,\n                                                       ^\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/core.c:2308:12: error: conflicting types for \u0027__migrate_task\u0027\nstruct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,\n           ^\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/sched.h:522:19: note: previous declaration is here\nextern struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,\n                  ^\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/core.c:2375:28: error: incompatible pointer types passing \u0027struct rq_flags *\u0027 to parameter of type \u0027struct rq_flags *\u0027 [-Werror,-Wincompatible-pointer-types]\n                        rq \u003d __migrate_task(rq, \u0026rf, p, arg-\u003edest_cpu);\n                                                ^~~\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/sched.h:522:66: note: passing argument to parameter \u0027rf\u0027 here\nextern struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,\n                                                                 ^\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/core.c:8915:27: error: incompatible pointer types passing \u0027struct rq_flags *\u0027 to parameter of type \u0027struct rq_flags *\u0027 [-Werror,-Wincompatible-pointer-types]\n                rq \u003d __migrate_task(rq, \u0026rf, p, cpu);\n                                        ^~~\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/kernel/sched/sched.h:522:66: note: passing argument to parameter \u0027rf\u0027 here\nextern struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,\n                                                                 ^\n4 errors generated.",
+      "revId": "d1ae52df1d4efee3637e5dc87ebebea4ca100ba5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
