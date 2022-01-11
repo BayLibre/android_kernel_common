@@ -1,12 +1,17 @@
 {
-  "presubmit": [
+  //"presubmit": [
+  //  {
+  //    "name": "CtsNetTestCases",
+  //    "options": [
+  //      {
+  //        "exclude-annotation": "com.android.testutils.SkipPresubmit"
+  //      }
+  //    ]
+  //  }
+  //],
+  "imports": [
     {
-      "name": "CtsNetTestCases",
-      "options": [
-        {
-          "exclude-annotation": "com.android.testutils.SkipPresubmit"
-        }
-      ]
+      "path": "tools/tradefederation/core"
     }
   ]
 }
