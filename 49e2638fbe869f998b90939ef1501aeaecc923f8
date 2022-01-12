@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1181aec_4a77f530",
+        "filename": "arch/arm64/kvm/hyp/nvhe/setup.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-01-12T11:00:43Z",
+      "side": 1,
+      "message": "This will actually create a backed mapping to the page that\u0027s physically next to the actual stack page, so this is probably not what we want.\n\nThe hyp VA space is a little weird and differs from standard linux because of hardware limitations at EL2 (we only have TTBR0 but not TTBR1 at EL2, so we can only use the bottom half of the address space from 0x0 upward, but we can\u0027t use 0xfff... downward). So, we had to split up the address space a bit -- see the comment in hyp_create_idmap().\n\nThe pkvm_create_mappings() function maps things in the \u0027fixed offset\u0027 region of the hyp VA space -- think of it as a sparsely populated linear map. So that\u0027s probably not the right thing for guard pages. The alternative would be to remap the stacks in the \u0027private\u0027 range of the hyp VA space (see __pkvm_create_private_mapping) which is more or less the hyp vmalloc area. That way you could allocate VA space for the guard pages w/o actually having mappings to back it up.",
+      "range": {
+        "startLine": 113,
+        "startChar": 2,
+        "endLine": 116,
+        "endChar": 44
+      },
+      "revId": "49e2638fbe869f998b90939ef1501aeaecc923f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
