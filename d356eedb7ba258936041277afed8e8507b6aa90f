@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69260d14_9574b5cf",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3955,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2022-01-12T20:17:12Z",
+      "side": 1,
+      "message": "Okay. That talk I linked to gave me the impression such API exists.\n\nDVFS limitations (slow response time) are a problem in general. This problem sprung up in the team several times.\n\nIs this a blocker to testing this patch? The problem needs more debating but I can potentially cook up something to filter uclamp_min if the runtime is less than sugov rate limit for the policy of the CPU we\u0027re running on.",
+      "parentUuid": "a37fc9e0_20f1e8f1",
+      "range": {
+        "startLine": 3955,
+        "startChar": 19,
+        "endLine": 3955,
+        "endChar": 47
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04e0e250_0b35e525",
         "filename": "kernel/sched/fair.c",
         "patchSetId": 2
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "sometimes the TA group has a group uclamp.min and the group contains many tasks. While we are refining the boost infrastructure, but still sometimes inevitable, and if a tiny thread runs, it relax the uclamp.max restriction which doesn\u0027t sounds right.",
       "parentUuid": "7c05104f_7be4447e",
+      "range": {
+        "startLine": 3971,
+        "startChar": 1,
+        "endLine": 3973,
+        "endChar": 15
+      },
+      "revId": "d356eedb7ba258936041277afed8e8507b6aa90f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "126947a6_9e3dd53c",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3973,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2022-01-12T20:17:12Z",
+      "side": 1,
+      "message": "I am still wary of this filter as it feels like a workaround to the root cause which is wrong classification.\n\nI am happy to experiment with some implementation like the one I suggest above; which is to ignore uclamp.min if the runtime is less than sugov_policy(p-\u003ecpu)-\u003erate_limit_us. It is a simple enough patch to write I suppose.",
+      "parentUuid": "839ea6b5_baf1487e",
       "range": {
         "startLine": 3971,
         "startChar": 1,

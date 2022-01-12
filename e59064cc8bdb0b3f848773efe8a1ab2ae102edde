@@ -144,6 +144,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6527570a_70f0baeb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2022-01-12T20:17:12Z",
+      "side": 1,
+      "message": "\u003e yup, that is on the other side. maybe for those bg tasks, we skip the size check.\n\nThinking more about this I don\u0027t see a problem here. If the sched_slice() is too small we\u0027ll end up not ignoring these tasks which is the desired impact since we want to enforce their uclamp_max request. If their runtime is really small compared to their sched_slice AND task_util_est(p) \u003c p-\u003euclamp_max, then it\u0027s harmless to ignore its uclamp max vote/contribution then.\n\n\u003e Also yes, I am thinking of rq util_est but need to split it for bg/fg.\n\nWe could do with expanding more on the problem description here.\n\nWhen I looked at this I found the only problem can happen if a large number of bg tasks wake up on an idle CPU. Then their individual util is less than uclamp_max, but their combined one (rq-\u003eutil_este) could be larger than uclamp_max. But rq-\u003euclamp_max on this case would be set to the last dequeued task, and if they\u0027re all background tasks it\u0027ll be set to the bg-\u003euclamp_max value. So they should be capped correctly.\n\nIs there another scenario you\u0027re thinking about?\n\nI don\u0027t get the split part in regards to bg/fg. Can you explain more please? I don\u0027t see why we need to split rq-\u003eutil_est between bg/fg.",
+      "parentUuid": "69978a60_c8ca1290",
+      "range": {
+        "startLine": 37,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "e59064cc8bdb0b3f848773efe8a1ab2ae102edde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d87c5582_dffcce5d",
