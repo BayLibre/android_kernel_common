@@ -153,6 +153,9 @@ SYM_FUNC_END(__host_hvc)
 
 .macro invalid_host_el2_vect
 	.align 7
+
+	test_sp_overflow KVM_HYP_STACK_SHIFT, 0f
+
 	/* If a guest is loaded, panic out of it. */
 	stp	x0, x1, [sp, #-16]!
 	get_loaded_vcpu x0, x1
@@ -164,6 +167,10 @@ SYM_FUNC_END(__host_hvc)
 	 * context has been saved by __host_exit or after the hyp context has
 	 * been partially clobbered by __host_enter.
 	 */
+	b	hyp_panic
+
+0:
+	/* We've overflowed the hyp stack. Time to die. */
 	b	hyp_panic
 .endm
 
