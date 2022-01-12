@@ -12,6 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <sys/inotify.h>
 #include <sys/mman.h>
 #include <sys/mount.h>
 #include <sys/syscall.h>
@@ -1367,6 +1368,41 @@ out:
 	return result;
 }
 
+static int inotify_test(const char *mount_dir)
+{
+	int result = TEST_FAILURE;
+	int src_fd = -1;
+	int fuse_dev = -1;
+	struct s dir;
+	int inotify_fd = -1;
+	int watch;
+	int fd = -1;
+	struct inotify_event event;
+
+	TEST(src_fd = open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     src_fd != -1);
+	TESTEQUAL(mount_fuse(mount_dir, -1, src_fd, &fuse_dev), 0);
+
+	TEST(inotify_fd = inotify_init1(IN_CLOEXEC), inotify_fd != -1);
+	dir = s_path(s(mount_dir), s("dir"));
+	TESTSYSCALL(mkdir(dir.s, 0777));
+	TEST(watch = inotify_add_watch(inotify_fd, dir.s, IN_CREATE), watch);
+	TEST(fd = s_creat(s_path(s(ft_src), s("dir/file")), 0777), fd != -1);
+	TESTEQUAL(read(inotify_fd, &event, sizeof(event)), sizeof(event));
+
+	result = TEST_SUCCESS;
+out:
+	close(fd);
+	s_unlink(s_path(s(ft_src), s("dir/file")));
+	close(inotify_fd);
+	rmdir(dir.s);
+	free(dir.s);
+	umount(mount_dir);
+	close(fuse_dev);
+	close(src_fd);
+	return result;
+}
+
 static int parse_options(int argc, char *const *argv)
 {
 	signed char c;
@@ -1468,6 +1504,7 @@ int main(int argc, char *argv[])
 		MAKE_TEST(bpf_test_alter_errcode_userspace),
 		MAKE_TEST(mmap_test),
 		MAKE_TEST(readdir_perms_test),
+		MAKE_TEST(inotify_test),
 	};
 #undef MAKE_TEST
 
