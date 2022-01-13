@@ -250,6 +250,15 @@ static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
 	}
 }
 
+#pragma clang optimize off
+volatile int __pkvm_x;
+
+static int recursive_death(int x, int y)
+{
+   return recursive_death(x, y);
+}
+#pragma clang optimize on
+
 /* Switch to the guest for legacy non-VHE systems */
 int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 {
@@ -258,6 +267,10 @@ int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 	struct kvm_s2_mmu *mmu;
 	bool pmu_switch_needed;
 	u64 exit_code;
+
+#pragma clang optimize off
+	__pkvm_x = recursive_death(3, 7);
+#pragma clang optimize on
 
 	/*
 	 * Having IRQs masked via PMR when entering the guest means the GIC
