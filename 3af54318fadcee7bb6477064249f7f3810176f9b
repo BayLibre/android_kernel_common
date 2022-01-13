@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "260e0c70_1a1d065b",
+        "filename": "include/linux/fsnotify.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2022-01-13T13:38:28Z",
+      "side": 1,
+      "message": "As far as I can see, here mask can also have the FS_OPEN_EXEC flag.\nShould we `if (mask \u0026 FS_OPEN) {`?",
+      "range": {
+        "startLine": 93,
+        "startChar": 10,
+        "endLine": 93,
+        "endChar": 12
+      },
+      "revId": "3af54318fadcee7bb6477064249f7f3810176f9b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
