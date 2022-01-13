@@ -65,6 +65,7 @@ static __u8 *holtek_mouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 static int holtek_mouse_probe(struct hid_device *hdev,
 			      const struct hid_device_id *id)
 {
+<<<<<<< HEAD   (d605f2 Merge 5.10.91 into android12-5.10-lts)
 	int ret;
 
 	if (!hid_is_usb(hdev))
@@ -82,6 +83,10 @@ static int holtek_mouse_probe(struct hid_device *hdev,
 		return ret;
 	}
 
+=======
+	if (!hid_is_usb(hdev))
+		return -EINVAL;
+>>>>>>> BRANCH (87a744 ANDROID: configfs: add proper module namespace marking)
 	return 0;
 }
 
