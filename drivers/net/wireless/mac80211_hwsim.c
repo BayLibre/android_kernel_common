@@ -2125,6 +2125,7 @@ static void hw_scan_work(struct work_struct *work)
 			if (req->ie_len)
 				skb_put_data(probe, req->ie, req->ie_len);
 
+<<<<<<< HEAD   (1866ee ANDROID: ABI: Cuttlefish Symbol update)
 			rcu_read_lock();
 			if (!ieee80211_tx_prepare_skb(hwsim->hw,
 						      hwsim->hw_scan_vif,
@@ -2132,6 +2133,13 @@ static void hw_scan_work(struct work_struct *work)
 						      hwsim->tmp_chan->band,
 						      NULL)) {
 				rcu_read_unlock();
+=======
+			if (!ieee80211_tx_prepare_skb(hwsim->hw,
+						      hwsim->hw_scan_vif,
+						      probe,
+						      hwsim->tmp_chan->band,
+						      NULL)) {
+>>>>>>> CHANGE (2d2892 UPSTREAM: mac80211_hwsim: initialize ieee80211_tx_info at hw)
 				kfree_skb(probe);
 				continue;
 			}
