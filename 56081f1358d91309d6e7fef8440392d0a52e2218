@@ -34,6 +34,24 @@
       "parentUuid": "0fc725ce_ababd637",
       "revId": "56081f1358d91309d6e7fef8440392d0a52e2218",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c714dec1_c862b42a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-01-14T01:52:06Z",
+      "side": 1,
+      "message": "When I tried building this patch (without the next one), I see these CRC changes being reported:\n\nLeaf changes summary: 22 artifacts changed\nChanged leaf types summary: 0 leaf type changed\nRemoved/Changed/Added functions summary: 0 Removed, 22 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\n22 functions with some sub-type change:\n\n  [C] \u0027function dma_buf_attachment* dma_buf_attach(dma_buf*, device*)\u0027 at dma-buf.c:833:1 has some sub-type changes:\n    CRC (modversions) changed from 0x23ce83ac to 0xca1cf88e\n\n  [C] \u0027function int dma_buf_begin_cpu_access(dma_buf*, dma_data_direction)\u0027 at dma-buf.c:1151:1 has some sub-type changes:\n    CRC (modversions) changed from 0x71f605a9 to 0x60640943\n\n  [C] \u0027function int dma_buf_begin_cpu_access_partial(dma_buf*, dma_data_direction, unsigned int, unsigned int)\u0027 at dma-buf.c:1173:1 has some sub-type changes:\n    CRC (modversions) changed from 0x96ab14ac to 0x7cfa2b65\n\n  ... 19 omitted; 22 symbols have only CRC changes\n\n\nThat\u0027s what causes ABI breakage. I didn\u0027t have time today to investigate this but you can try to figure it out using directions documented at https://source.android.com/devices/architecture/kernel/abi-monitor#fixing-crc-mismatch",
+      "parentUuid": "758f2e95_5ebebf39",
+      "revId": "56081f1358d91309d6e7fef8440392d0a52e2218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
