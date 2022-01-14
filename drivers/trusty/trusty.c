@@ -719,6 +719,11 @@ trusty_transports_setup(const struct trusty_transport_desc *transports,
 			return -EINVAL;
 
 		ret = transport->setup(dev);
+		if (ret == -EPROBE_DEFER) {
+			dev_notice(dev, "transport %s: defer probe\n",
+				   transport->name);
+			return ret;
+		}
 		transports_ret &= ret;
 	}
 
@@ -915,6 +920,7 @@ static int trusty_remove(struct platform_device *pdev)
  */
 static const struct trusty_transport_desc trusty_transports[] = {
 	&trusty_smc_transport,
+	&trusty_ffa_transport,
 	NULL,
 };
 
