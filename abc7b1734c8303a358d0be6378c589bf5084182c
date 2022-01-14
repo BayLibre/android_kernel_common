@@ -16,6 +16,24 @@
       "message": "```\nERROR: The following kernel modules are built but not copied. Add these lines to the module_outs attribute of //common-modules/virtual-device:virtual_device_aarch64:\n    \"test_meminit.ko\",\n    \"test_stackinit.ko\",\n```\n\nSomething is wrong here. Why are these modules generated for the virtual device build? They should only be generated for the GKI build.\n\nMaybe instead of gki_defconfig, these should go to the fragment config so it only affects GKI builds? So these modules aren\u0027t built for device builds?\n\nRamji, can you provide some guidance here?\n    ",
       "revId": "abc7b1734c8303a358d0be6378c589bf5084182c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5354fceb_475a9084",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-01-14T08:13:26Z",
+      "side": 1,
+      "message": "gki_defconfig (some config set \u003d m) : GKI build with modules\ngki_defconfig (some config set \u003d m) + device.frament: GKI modules built again with device modules.\n\nThis is the exact issue William was pointing out which can be solve with fragment approch (option#2). But build time was the no go for it. I agreed with William, and he thought there is a better way to handle mixed builds which doesn\u0027t add build time and doesn\u0027t present this issue.",
+      "parentUuid": "c2b7ef4d_204497eb",
+      "revId": "abc7b1734c8303a358d0be6378c589bf5084182c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
