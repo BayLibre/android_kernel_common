@@ -16,6 +16,24 @@
       "message": "again, why?",
       "revId": "ca33c0dc25f656a3d16d14cf413cc7587c043944",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85003fe5_c64ce3ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2022-01-14T20:53:47Z",
+      "side": 1,
+      "message": "To minimize the number of conflicts in child patches. Otherwise if I drop this, then child patches that are UPSTREAM (apply cleanly) will need to become BACKPORT (they will no longer apply cleanly).\n\nHence changes to insignificant files like MAINTAINERS and Documentation/.",
+      "parentUuid": "cf887211_d1b70bfe",
+      "revId": "ca33c0dc25f656a3d16d14cf413cc7587c043944",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
