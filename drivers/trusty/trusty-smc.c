@@ -141,3 +141,9 @@ void trusty_smc_transport_cleanup(struct device *dev)
 	if (s->mem_ops == &trusty_smc_mem_ops)
 		s->mem_ops = NULL;
 }
+
+const struct trusty_transport_desc trusty_smc_transport = {
+	.name = "smc",
+	.setup = trusty_smc_transport_setup,
+	.cleanup = trusty_smc_transport_cleanup,
+};
