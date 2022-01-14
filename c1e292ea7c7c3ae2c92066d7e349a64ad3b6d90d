@@ -33,6 +33,24 @@
       "message": "\u003e Patch Set 1: Autosubmit+1 Code-Review+2 Verified+1 Presubmit-Ready+1\n\u003e \n\u003e By voting Code-Review+2 the following files are now explicitly code-owner approved by \u003cGERRIT_ACCOUNT_1125653\u003e:\n\u003e * drivers/android/vendor_hooks.c\n\u003e * include/trace/hooks/net.h\n\u003e * net/core/skbuff.c\n\u003e * net/ipv4/tcp_input.c\n\u003e \n\nDear Greg,\nWhy did you remove this hook?\nThis is to trigger our debugging module, also working with android_vh_ptype_head.\nNot for just text logging or count packets.\n",
       "revId": "c1e292ea7c7c3ae2c92066d7e349a64ad3b6d90d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7409513_f9e611e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-01-14T10:37:13Z",
+      "side": 1,
+      "message": "You can use the built-in tracepoint for this, no need for an additional android-specific one, just change your code to use that one instead.\n\nAlso, this was causing merge conflicts, so it was reverted.  If you really think you still need this, please create a new commit and submit it after 5.17-rc1 is merged into the android-mainline tree, thanks!",
+      "parentUuid": "56e84a51_061cf055",
+      "revId": "c1e292ea7c7c3ae2c92066d7e349a64ad3b6d90d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
