@@ -517,6 +517,46 @@ void trusty_dequeue_nop(struct device *dev, struct trusty_nop *nop)
 }
 EXPORT_SYMBOL(trusty_dequeue_nop);
 
+static int
+trusty_transports_setup(const trusty_transports_t *transports,
+			struct device *dev)
+{
+	const struct trusty_transport_desc *transport;
+	int ret;
+	int transports_ret = -ENODEV;
+
+	if (!transports)
+		return -EINVAL;
+
+	for (; (transport = *transports); transports++) {
+		if (!transport->setup)
+			return -EINVAL;
+
+		ret = transport->setup(dev);
+		transports_ret &= ret;
+	}
+
+	/* One transport needs to complete setup without error. */
+	if (transports_ret < 0)
+		return -ENODEV;
+
+	return 0;
+}
+
+static void
+trusty_transports_cleanup(const trusty_transports_t *transports,
+			  struct device *dev)
+{
+	const struct trusty_transport_desc *transport;
+
+	for (; (transport = *transports); transports++) {
+		if (!transport->cleanup)
+			continue;
+
+		transport->cleanup(dev);
+	}
+}
+
 static int trusty_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -524,6 +564,7 @@ static int trusty_probe(struct platform_device *pdev)
 	work_func_t work_func;
 	struct trusty_state *s;
 	struct device_node *node = pdev->dev.of_node;
+	const trusty_transports_t *descs;
 
 	if (!node) {
 		dev_err(&pdev->dev, "of_node required\n");
@@ -553,8 +594,12 @@ static int trusty_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, s);
 
-	/* Initialize SMC transport */
-	ret = trusty_smc_transport_setup(s->dev);
+	/*
+	 * Initialize Trusty transport. Trusty msg and mem ops has to be
+	 * initialized as part of transport setup.
+	 */
+	descs = of_device_get_match_data(&pdev->dev);
+	ret = trusty_transports_setup(descs, s->dev);
 	if (ret != 0 || s->msg_ops == NULL || s->mem_ops == NULL)
 		goto err_transport_setup;
 
@@ -605,7 +650,7 @@ err_alloc_works:
 	destroy_workqueue(s->nop_wq);
 err_create_nop_wq:
 	kfree(s->version_str);
-        trusty_smc_transport_cleanup(s->dev);
+	trusty_transports_cleanup(descs, s->dev);
 err_transport_setup:
 	s->dev->dma_parms = NULL;
 	device_for_each_child(&pdev->dev, NULL, trusty_remove_child);
@@ -619,6 +664,7 @@ static int trusty_remove(struct platform_device *pdev)
 {
 	unsigned int cpu;
 	struct trusty_state *s = platform_get_drvdata(pdev);
+	const trusty_transports_t *descs;
 
 	device_for_each_child(&pdev->dev, NULL, trusty_remove_child);
 
@@ -630,7 +676,10 @@ static int trusty_remove(struct platform_device *pdev)
 	free_percpu(s->nop_works);
 	destroy_workqueue(s->nop_wq);
 
-	trusty_smc_transport_cleanup(s->dev);
+	/* call transport cleanup */
+	descs = of_device_get_match_data(&pdev->dev);
+	trusty_transports_cleanup(descs, s->dev);
+
 	mutex_destroy(&s->smc_lock);
 	s->dev->dma_parms = NULL;
 	kfree(s->version_str);
@@ -638,8 +687,20 @@ static int trusty_remove(struct platform_device *pdev)
 	return 0;
 }
 
+/*
+ * Trusty probe will try all compiled in transports and will use the transport
+ * supported by the Trusty kernel.
+ *
+ * For Trusty API version < TRUSTY_API_VERSION_MEM_OBJ:
+ *     trusty_smc_transport used for messaging.
+ */
+static const trusty_transports_t trusty_transports[] = {
+	&trusty_smc_transport,
+	NULL,
+};
+
 static const struct of_device_id trusty_of_match[] = {
-	{ .compatible = "android,trusty-v1", },
+	{ .compatible = "android,trusty-v1", .data = trusty_transports },
 	{},
 };
 
