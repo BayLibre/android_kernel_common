@@ -75,5 +75,6 @@ int trusty_init_api_version(struct trusty_state *s, struct device *dev,
 						   unsigned long a2));
 
 extern const struct trusty_transport_desc trusty_smc_transport;
+extern const struct trusty_transport_desc trusty_ffa_transport;
 
 #endif /* _TRUSTY_PRIVATE_H */
