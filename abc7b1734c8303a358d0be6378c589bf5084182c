@@ -52,6 +52,24 @@
       "parentUuid": "5354fceb_475a9084",
       "revId": "abc7b1734c8303a358d0be6378c589bf5084182c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "711d6d9a_0e5a3972",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-01-16T04:28:10Z",
+      "side": 1,
+      "message": "Probably, MODULES_LIST is for that purpose; where only modules listed in that file gets copied; then we don\u0027t have to keep the fragment. Vendor builds all the vendor modules and GKI builds are already using the android/gki_system_dlkm_modules file for that purpose.",
+      "parentUuid": "3070b835_80bbd4ba",
+      "revId": "abc7b1734c8303a358d0be6378c589bf5084182c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
