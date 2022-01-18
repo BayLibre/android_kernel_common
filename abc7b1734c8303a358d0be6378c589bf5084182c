@@ -70,6 +70,24 @@
       "parentUuid": "3070b835_80bbd4ba",
       "revId": "abc7b1734c8303a358d0be6378c589bf5084182c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aeb5934_409244f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1131915
+      },
+      "writtenOn": "2022-01-18T21:09:25Z",
+      "side": 1,
+      "message": "These modules were actually supposed to be turned on for the virtual device build:\n\nhttps://android.googlesource.com/kernel/common-modules/virtual-device/+/refs/heads/android-mainline/virtual_device.fragment#25\n\nBut a required kernel config option was missing on aarch64, so they were never built (they are built and installed for x86_64 CF). When I turned on CONFIG_TEST_STACKINIT and its required config in the GKI, both modules were built and we get the error for both.\n\nTo get these tests building with the GKI and unblock my work I\u0027d like to just add these to the virtual device bazel spec, they should\u0027ve been building there before anyway. Let\u0027s solve the ignoring of GKI modules in vendor builds separately.",
+      "parentUuid": "711d6d9a_0e5a3972",
+      "revId": "abc7b1734c8303a358d0be6378c589bf5084182c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
