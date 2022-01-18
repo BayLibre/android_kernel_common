@@ -16,6 +16,24 @@
       "message": "Hi Connor,\n\nCould you tell me more about why need this patch? I could\u0027t see details about this bug id.\nActually I don\u0027t know what case will cause nents is not equal with origent_nents.",
       "revId": "c473c3b1cbb37a9a77389bb8c563bf1fb1baafac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80dcfef3_3a7c031a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1115183
+      },
+      "writtenOn": "2022-01-18T17:07:08Z",
+      "side": 1,
+      "message": "The bug is just a catch-all bug for backporting upstream patches that are marked as fixes for patches previously cherry-picked into ACK.\n\nIn this case if I understand correctly, nents can be set to a different value from orig_nents in dma_map_sgtable, depending on the return value of dma_map_sg_attrs. I\u0027m not especially familiar with dma-buf, but I see that the discussion here seems to go into the cases where this would occur: https://lore.kernel.org/linux-iommu/20200513132114.6046-1-m.szyprowski@samsung.com/T/",
+      "parentUuid": "c2d9f7e1_4f8cc3ff",
+      "revId": "c473c3b1cbb37a9a77389bb8c563bf1fb1baafac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
