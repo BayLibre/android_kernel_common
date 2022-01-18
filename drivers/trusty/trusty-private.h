@@ -57,7 +57,7 @@ struct trusty_state {
 
 struct trusty_ffa_state {
 	struct device *dev; /* ffa device */
-	const struct ffa_dev_ops *ops;
+	const struct ffa_ops *ops;
 	struct mutex share_memory_msg_lock; /* protects share_memory_msg */
 };
 

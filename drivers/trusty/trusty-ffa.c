@@ -15,8 +15,109 @@
 #include "trusty-ffa.h"
 #include "trusty-private.h"
 
+static int __trusty_ffa_share_memory(struct device *dev, u64 *id,
+				     struct scatterlist *sglist,
+				     unsigned int nents, pgprot_t pgprot,
+				     u64 tag, bool share)
+{
+	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
+	int ret;
+	struct scatterlist *sg;
+	size_t count;
+	struct ffa_device *ffa_dev = to_ffa_dev(s->ffa->dev);
+	const struct ffa_ops *ffa_ops = s->ffa->ops;
+	struct ffa_mem_region_attributes ffa_mem_attr;
+	struct ffa_mem_ops_args ffa_mem_args;
+
+	if (nents < 1) {
+		dev_warn(s->dev, "no sg entries to map!\n");
+		return -EINVAL;
+	}
+
+	count = dma_map_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
+	if (count != nents) {
+		dev_err(s->dev, "failed to dma map sg_table\n");
+		return -EINVAL;
+	}
+
+	sg = sglist;
+
+	mutex_lock(&s->ffa->share_memory_msg_lock);
+
+	ffa_mem_attr.receiver = ffa_dev->vm_id;
+	ffa_mem_attr.attrs = FFA_MEM_RW;
+
+	ffa_mem_args.use_txbuf = 1;
+	ffa_mem_args.tag = tag;
+	ffa_mem_args.attrs = &ffa_mem_attr;
+	ffa_mem_args.nattrs = 1;
+	ffa_mem_args.sg = sg;
+	ffa_mem_args.flags = 0;
+
+	if (share)
+		ret = ffa_ops->mem_ops->memory_share(&ffa_mem_args);
+	else
+		ret = ffa_ops->mem_ops->memory_lend(&ffa_mem_args);
+
+	mutex_unlock(&s->ffa->share_memory_msg_lock);
+
+	if (ret) {
+		dev_err(s->dev, "memory %s failed %d", share ? "share" : "lend", ret);
+
+		dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
+		return ret;
+	}
+
+	*id = ffa_mem_args.g_handle;
+	return 0;
+}
+
+static int trusty_ffa_share_memory(struct device *dev, u64 *id,
+				   struct scatterlist *sglist,
+				   unsigned int nents, pgprot_t pgprot, u64 tag)
+{
+	return __trusty_ffa_share_memory(dev, id, sglist, nents, pgprot, tag,
+					 true);
+}
+
+static int trusty_ffa_lend_memory(struct device *dev, u64 *id,
+				  struct scatterlist *sglist,
+				  unsigned int nents, pgprot_t pgprot, u64 tag)
+{
+	return __trusty_ffa_share_memory(dev, id, sglist, nents, pgprot, tag,
+					 false);
+}
+
+static int trusty_ffa_reclaim_memory(struct device *dev, u64 id,
+				     struct scatterlist *sglist,
+				     unsigned int nents)
+{
+	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
+	int ret = 0;
+	const struct ffa_ops *ffa_ops = s->ffa->ops;
+
+	if (WARN_ON(nents < 1))
+		return -EINVAL;
+
+	mutex_lock(&s->ffa->share_memory_msg_lock);
+
+	ret = ffa_ops->mem_ops->memory_reclaim(id, 0);
+
+	mutex_unlock(&s->ffa->share_memory_msg_lock);
+
+	if (ret != 0)
+		return ret;
+
+	dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
+
+	return 0;
+}
+
 static const struct trusty_mem_ops trusty_ffa_mem_ops = {
 	.desc = &trusty_ffa_transport,
+	.trusty_share_memory = &trusty_ffa_share_memory,
+	.trusty_lend_memory = &trusty_ffa_lend_memory,
+	.trusty_reclaim_memory = &trusty_ffa_reclaim_memory,
 };
 
 static const struct ffa_device_id trusty_ffa_device_id[] = {
@@ -124,7 +225,7 @@ static int trusty_ffa_probe(struct ffa_device *ffa_dev)
 	u32 ffa_drv_version;
 
 	/* check ffa driver version compatibility */
-	ffa_drv_version = ffa_dev->ops->api_version_get();
+	ffa_drv_version = ffa_dev->ops->info_ops->api_version_get();
 	if (TO_TRUSTY_FFA_MAJOR(ffa_drv_version) != TRUSTY_FFA_VERSION_MAJOR ||
 	    TO_TRUSTY_FFA_MINOR(ffa_drv_version) < TRUSTY_FFA_VERSION_MINOR)
 		return -EINVAL;
@@ -138,7 +239,7 @@ static int trusty_ffa_probe(struct ffa_device *ffa_dev)
 	mutex_init(&s->share_memory_msg_lock);
 	ffa_dev_set_drvdata(ffa_dev, s);
 
-	ffa_dev->ops->mode_32bit_set(ffa_dev);
+	ffa_dev->ops->msg_ops->mode_32bit_set(ffa_dev);
 
 	return 0;
 }
