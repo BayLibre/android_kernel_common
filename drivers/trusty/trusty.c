@@ -917,6 +917,11 @@ static int trusty_remove(struct platform_device *pdev)
  *
  * For Trusty API version < TRUSTY_API_VERSION_MEM_OBJ:
  *     trusty_smc_transport used for messaging.
+ *
+ * For Trusty API version == TRUSTY_API_VERSION_MEM_OBJ:
+ *     trusty_smc_transport used for messaging.
+ *     trusty_ffa_transport used for memory sharing.
+ *
  */
 static const struct trusty_transport_desc trusty_transports[] = {
 	&trusty_smc_transport,
