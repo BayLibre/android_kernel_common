@@ -85,6 +85,32 @@ static inline u64 trusty_dma_buf_get_ffa_tag(struct dma_buf *dma_buf)
 }
 #endif
 
+/* Invalid handle value is defined by FF-A spec */
+#ifdef CONFIG_TRUSTY_DMA_BUF_SHARED_MEM_ID
+/**
+ * trusty_dma_buf_get_shared_mem_id() - Get memory ID corresponding to a dma_buf
+ * @dma_buf:	DMA buffer
+ * @id:	Pointer to output trusty_shared_mem_id_t
+ *
+ * Sets @id to trusty_shared_mem_id_t corresponding to the given @dma_buf.
+ * @dma_buf "owns" the ID, i.e. is responsible for allocating/releasing it.
+ *
+ * Return:
+ * * 0        - if successful
+ * * -ENODATA - if @dma_buf does not own a trusty_shared_mem_id_t
+ * * -EBUSY   - if @dma_buf does not own a trusty_shared_mem_id_t yet and is not
+ *              ready to be donated/shared/lent.
+ */
+int trusty_dma_buf_get_shared_mem_id(struct dma_buf *dma_buf,
+				     trusty_shared_mem_id_t *id);
+#else
+static inline int trusty_dma_buf_get_shared_mem_id(struct dma_buf *dma_buf,
+						   trusty_shared_mem_id_t *id)
+{
+	return -ENODATA;
+}
+#endif
+
 struct trusty_nop {
 	struct list_head node;
 	u32 args[3];
