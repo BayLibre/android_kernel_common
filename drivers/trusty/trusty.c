@@ -475,7 +475,7 @@ int trusty_reclaim_memory(struct device *dev, u64 id,
 
 	dma_unmap_sg(dev, sglist, nents, DMA_BIDIRECTIONAL);
 
-	dev_dbg(s->dev, "%s: done\n", __func__);
+	dev_dbg(s->dev, "%s: done, handle: 0x%llx\n", __func__, id);
 	return 0;
 }
 EXPORT_SYMBOL(trusty_reclaim_memory);
