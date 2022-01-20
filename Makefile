@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 5
 PATCHLEVEL = 4
-SUBLEVEL = 172
+SUBLEVEL = 173
 EXTRAVERSION =
 NAME = Kleptomaniac Octopus
 
@@ -1083,8 +1083,12 @@ HOST_LIBELF_LIBS = $(shell pkg-config libelf --libs 2>/dev/null || echo -lelf)
 
 ifdef CONFIG_STACK_VALIDATION
   has_libelf := $(call try-run,\
+<<<<<<< HEAD   (8e18f6 Merge branch 'android12-5.4' into 'android12-5.4-lts')
                   echo "int main() {}" | \
                   $(HOSTCC) $(KBUILD_HOSTCFLAGS) -xc -o /dev/null $(KBUILD_HOSTLDFLAGS) $(HOST_LIBELF_LIBS) -,1,0)
+=======
+		echo "int main() {}" | $(HOSTCC) $(KBUILD_HOSTLDFLAGS) -xc -o /dev/null $(HOST_LIBELF_LIBS) -,1,0)
+>>>>>>> BRANCH (4aa2e7 Linux 5.4.173)
   ifeq ($(has_libelf),1)
     objtool_target := tools/objtool FORCE
   else
