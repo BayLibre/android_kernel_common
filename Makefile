@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 5
 PATCHLEVEL = 10
-SUBLEVEL = 92
+SUBLEVEL = 93
 EXTRAVERSION =
 NAME = Dare mighty things
 
@@ -1134,9 +1134,14 @@ export mod_sign_cmd
 
 HOST_LIBELF_LIBS = $(shell pkg-config libelf --libs 2>/dev/null || echo -lelf)
 
+<<<<<<< HEAD   (6d54ce Merge remote-tracking branch 'aosp/upstream-f2fs-stable-linu)
 has_libelf := $(call try-run,\
                 echo "int main() {}" | \
                 $(HOSTCC) $(KBUILD_HOSTCFLAGS) -xc -o /dev/null $(KBUILD_HOSTLDFLAGS) $(HOST_LIBELF_LIBS) -,1,0)
+=======
+has_libelf = $(call try-run,\
+               echo "int main() {}" | $(HOSTCC) $(KBUILD_HOSTLDFLAGS) -xc -o /dev/null $(HOST_LIBELF_LIBS) -,1,0)
+>>>>>>> BRANCH (fd187a Linux 5.10.93)
 
 ifdef CONFIG_STACK_VALIDATION
   ifeq ($(has_libelf),1)
