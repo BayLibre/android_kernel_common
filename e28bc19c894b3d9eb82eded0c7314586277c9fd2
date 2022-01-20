@@ -16,6 +16,24 @@
       "message": "This is weird. It\u0027s really: (!(handle-\u003euser_ref_count)) \u003e 0\n\nWhich means we should enter this case only for handle-\u003euser_ref_count \u003d 0\n\nThen wouldn\u0027t it read better as just: handle-\u003euser_ref_count \u003d\u003d 0 ???\n(or even \u003c\u003d 0 in case user_ref_count ever becomes signed)\n\nAs is there\u0027s a warning:\nwarning: logical not is only applied to the left hand side of this comparison [-Wlogical-not-parentheses]\n        if (!handle-\u003euser_ref_count \u003e 0) {",
       "revId": "e28bc19c894b3d9eb82eded0c7314586277c9fd2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7d0b198_463499db",
+        "filename": "drivers/staging/android/ion/ion-ioctl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1870730
+      },
+      "writtenOn": "2022-01-20T08:17:44Z",
+      "side": 1,
+      "message": "I also found this difficult to read at first glance.\n\nIt looks like the code was changed later in history, in commit:\n\n \"ion: fix logical-not comparison warning\".\n\nI\u0027ll fold that patch into here instead.",
+      "parentUuid": "c24d2d88_25c09a6c",
+      "revId": "e28bc19c894b3d9eb82eded0c7314586277c9fd2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
