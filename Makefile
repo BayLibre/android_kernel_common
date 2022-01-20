@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 5
 PATCHLEVEL = 10
-SUBLEVEL = 92
+SUBLEVEL = 93
 EXTRAVERSION =
 NAME = Dare mighty things
 
@@ -1132,9 +1132,14 @@ export mod_sign_cmd
 
 HOST_LIBELF_LIBS = $(shell pkg-config libelf --libs 2>/dev/null || echo -lelf)
 
+<<<<<<< HEAD   (f45f89 Merge branch 'android12-5.10' into `android12-5.10-lts`)
 has_libelf := $(call try-run,\
                 echo "int main() {}" | \
                 $(HOSTCC) $(KBUILD_HOSTCFLAGS) -xc -o /dev/null $(KBUILD_HOSTLDFLAGS) $(HOST_LIBELF_LIBS) -,1,0)
+=======
+has_libelf = $(call try-run,\
+               echo "int main() {}" | $(HOSTCC) $(KBUILD_HOSTLDFLAGS) -xc -o /dev/null $(HOST_LIBELF_LIBS) -,1,0)
+>>>>>>> BRANCH (fd187a Linux 5.10.93)
 
 ifdef CONFIG_STACK_VALIDATION
   ifeq ($(has_libelf),1)
