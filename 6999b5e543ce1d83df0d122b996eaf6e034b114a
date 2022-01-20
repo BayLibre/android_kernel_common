@@ -16,6 +16,24 @@
       "message": "Is it legitimate to read to a null pointer? (Yes, I know that\u0027s what the code I wrote was doing ...)\n\nWould it not be better to put char c; here, and read to \u0026c below?",
       "revId": "6999b5e543ce1d83df0d122b996eaf6e034b114a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a90ff9e_bf511570",
+        "filename": "tools/testing/selftests/filesystems/incfs/incfs_test.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4412,
+      "author": {
+        "id": 1899961
+      },
+      "writtenOn": "2022-01-20T20:17:32Z",
+      "side": 1,
+      "message": "My intention was not to change the logic here, but just to fix the compilation error so I could run it. I figured this was some kind of invalid case test as it expected an error code (-1) to be returned.\nI think we can leave that to read a NULL ptr, and also add a legit read to have more coverage. I will add it if you are ok with that.",
+      "parentUuid": "e79ca7f7_b62f61e3",
+      "revId": "6999b5e543ce1d83df0d122b996eaf6e034b114a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
