@@ -1107,6 +1107,8 @@ sub is_maintained_obsolete {
 }
 
 sub is_SPDX_License_valid {
+	return 1; # Disable this check to avoid python module dependencies which are not in-tree
+
 	my ($license) = @_;
 
 	return 1 if (!$tree || which("python3") eq "" || !(-x "$root/scripts/spdxcheck.py") || !(-e "$gitroot"));
