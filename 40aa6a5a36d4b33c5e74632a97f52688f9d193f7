@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73733376_481c6bb8",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-21T21:24:44Z",
+      "side": 1,
+      "message": "does this wait for any users of poll_waiters to also unregister?",
+      "revId": "40aa6a5a36d4b33c5e74632a97f52688f9d193f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffa97438_fcb649d3",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-21T21:24:44Z",
+      "side": 1,
+      "message": "you are still initializing this after you register the notifier that uses it",
+      "revId": "40aa6a5a36d4b33c5e74632a97f52688f9d193f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
