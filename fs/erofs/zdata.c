@@ -737,7 +737,11 @@ hitted:
 retry:
 	err = z_erofs_attach_page(clt, page, page_type,
 				  clt->mode >= COLLECT_PRIMARY_FOLLOWED);
+<<<<<<< HEAD   (bdc732 UPSTREAM: tracefs: Set all files to the same group ownership)
 	/* should allocate an additional short-lived page for pagevec */
+=======
+	/* should allocate an additional staging page for pagevec */
+>>>>>>> BRANCH (4b6443 ANDROID: GKI: disable CONFIG_FORTIFY_SOURCE)
 	if (err == -EAGAIN) {
 		struct page *const newpage =
 				alloc_page(GFP_NOFS | __GFP_NOFAIL);
