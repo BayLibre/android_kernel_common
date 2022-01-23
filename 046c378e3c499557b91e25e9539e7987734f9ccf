@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000019619674",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1958393?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "af384eda_de7257f1",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Finn Behrens \u003cme@kloenk.dev\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "eafa9bec_4efc1e43",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-01-23T19:51:40Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Finn Behrens \u003cme@kloenk.dev\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 423058376 android-build.ayeaye-python-dispatcher_20220120.04_p0",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 0
+      },
+      "revId": "046c378e3c499557b91e25e9539e7987734f9ccf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
