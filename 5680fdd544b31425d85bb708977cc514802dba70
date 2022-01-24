@@ -33,6 +33,41 @@
       "message": "Hi Todd,\nI\u0027m doing the job \"upstream wakeup_reason patch\" to linux kernel.\nThe original patch is hard to upstream, and I am going to format a conservative and simplified one.\n\nI just push this to gerrit so that people can review this code, but do not merge it now.\nthe main code and test code are in this links:\nhttps://android-review.googlesource.com/c/kernel/common/+/1958188\nhttps://android-review.googlesource.com/c/kernel/common/+/1958189\n\nThis commit is just remove the old patch, so that 1958188 and 1958189 could be established.\n\nAnd I am going to reply to this email with 1958188:\nhttps://lkml.org/lkml/2022/1/10/1134\nGood luck to me!\n\nThe reply from you is just too fast! But I\u0027m really appreciate it, Thanks very much!\n\nOther related links for \"wakeup_reason\":\nold patch: \nhttps://android.googlesource.com/kernel/common-patches/+/610a232a28d99ab449437b466aaa859d8a8f2c2b/android-mainline/ANDROID-power-wakeup_reason-add-an-API-to-log-wakeup-reasons.patch\nlast try:\nhttps://android-review.googlesource.com/c/kernel/common/+/1884154\n",
       "revId": "5680fdd544b31425d85bb708977cc514802dba70",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d5306e_0dfa1efc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2022-01-24T17:20:53Z",
+      "side": 1,
+      "message": "-1 as these are is WIP for upstream discussion. ",
+      "revId": "5680fdd544b31425d85bb708977cc514802dba70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "901bc821_7ccb8141",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2022-01-24T17:20:53Z",
+      "side": 1,
+      "message": "So Zichar has been working on a wakeup_reason implementation for a little while and is about to respond to Kelly\u0027s RFC.\n\nHe wanted to submit the AOSP change for testing here: \n  https://android-review.googlesource.com/c/platform/system/hardware/interfaces/+/1958666 \n\nThese patches to ACK here are not for merging, and are being submitted upstream to the list for discussion. I think Zichar just wanted to submit all of his changes to Gerrit so folks could see the full set.",
+      "parentUuid": "c8e3f744_85a22f7b",
+      "revId": "5680fdd544b31425d85bb708977cc514802dba70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
