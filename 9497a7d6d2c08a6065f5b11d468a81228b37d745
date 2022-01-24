@@ -33,6 +33,24 @@
       "message": "Hi, Connor\n\nthis change does not help for the hikey build, which does not use gki, but uses gki_defconfig.\n\nit seems the kernel failed to be loaded from the uefi bootloader with the only message of \"Synchronous Exception at 0x00000000388A7298\"\n\nreverting 4ba14292703  (\"ANDROID: GKI: defconfig: enable BTF debug\ninfo\") could make the build boot again.\n\n",
       "revId": "9497a7d6d2c08a6065f5b11d468a81228b37d745",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a9a7080_bcd12822",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2022-01-24T19:12:32Z",
+      "side": 1,
+      "message": "YongQin: This looks like something going wrong with the bootloader as is probably a side-effect of the BTF change, but I doubt its responsible. Can you email me to point me to the logs in this failing case?",
+      "parentUuid": "556845c3_95fa335f",
+      "revId": "9497a7d6d2c08a6065f5b11d468a81228b37d745",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
