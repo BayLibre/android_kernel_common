@@ -16,6 +16,23 @@
       "message": "What is this about? Please file a bug that includes the bigger picture.",
       "revId": "5680fdd544b31425d85bb708977cc514802dba70",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed88faf1_fc25b115",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928236
+      },
+      "writtenOn": "2022-01-24T17:14:39Z",
+      "side": 1,
+      "message": "Hi Todd,\nI\u0027m doing the job \"upstream wakeup_reason patch\" to linux kernel.\nThe original patch is hard to upstream, and I am going to format a conservative and simplified one.\n\nI just push this to gerrit so that people can review this code, but do not merge it now.\nthe main code and test code are in this links:\nhttps://android-review.googlesource.com/c/kernel/common/+/1958188\nhttps://android-review.googlesource.com/c/kernel/common/+/1958189\n\nThis commit is just remove the old patch, so that 1958188 and 1958189 could be established.\n\nAnd I am going to reply to this email with 1958188:\nhttps://lkml.org/lkml/2022/1/10/1134\nGood luck to me!\n\nThe reply from you is just too fast! But I\u0027m really appreciate it, Thanks very much!\n\nOther related links for \"wakeup_reason\":\nold patch: \nhttps://android.googlesource.com/kernel/common-patches/+/610a232a28d99ab449437b466aaa859d8a8f2c2b/android-mainline/ANDROID-power-wakeup_reason-add-an-API-to-log-wakeup-reasons.patch\nlast try:\nhttps://android-review.googlesource.com/c/kernel/common/+/1884154\n",
+      "revId": "5680fdd544b31425d85bb708977cc514802dba70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
