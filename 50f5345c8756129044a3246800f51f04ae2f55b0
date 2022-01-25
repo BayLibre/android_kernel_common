@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fffdf8a_4881ff45",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-01-25T17:29:37Z",
+      "side": 1,
+      "message": "Steven, this line causes many kernelci errors:\n```\nkernel/sched/sched.h:1553:15: error: must use \u0027struct\u0027 tag to refer to type \u0027rq\u0027\nkernel/sched/sched.h:1554:52: error: returning ‘struct rq *’ from a function with incompatible return type ‘int *’ [-Werror\u003dincompatible-pointer-types]\nkernel/sched/sched.h:1553:15: error: unknown type name ‘rq’\n```\nSee https://linux.kernelci.org/build/android/branch/android13-5.15/kernel/ASB-2022-01-05_13-5.15-440-gb7e4947b29bb/",
+      "revId": "50f5345c8756129044a3246800f51f04ae2f55b0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
