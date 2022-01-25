@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cf33836_eec24547",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2022-01-25T11:51:26Z",
+      "side": 1,
+      "message": "This backport is wrong, as reported by Intel\u0027s kernel test bot running `sparse`: https://lore.kernel.org/all/202201251943.TPk8Y7Ob-lkp@intel.com/\n\nThe original commit is marked as:\n\n    Fixes: 32927393dc1c (\"sysctl: pass kernel pointers to -\u003eproc_handler\")\n    \n`32927393dc1c` is `v5.8-rc1~55^2~6` and wasn\u0027t backported to `ASB-2021-02-05_12-5.4`, so the commit that fixes it should not be backported to the 5.4 branch. On 5.4, `proc_dostring()` still takes a `__user` argument.",
+      "revId": "5444477e8a4d31f6e6ff720c2d018d06e405bcc1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
