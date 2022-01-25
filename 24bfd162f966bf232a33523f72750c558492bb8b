@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a4b24d_5c3f1b72",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1727546
+      },
+      "writtenOn": "2022-01-25T23:14:18Z",
+      "side": 0,
+      "message": "the issue of course is that this should have been\n\n static inline struct rq *__migrate_task(...)",
+      "range": {
+        "startLine": 1553,
+        "startChar": 16,
+        "endLine": 1553,
+        "endChar": 17
+      },
+      "revId": "24bfd162f966bf232a33523f72750c558492bb8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
