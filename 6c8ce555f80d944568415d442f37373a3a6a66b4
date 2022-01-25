@@ -33,6 +33,23 @@
       "message": "upstream first please.",
       "revId": "6c8ce555f80d944568415d442f37373a3a6a66b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7383beea_30c8a667",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010110
+      },
+      "writtenOn": "2022-01-25T19:40:40Z",
+      "side": 1,
+      "message": "If we\u0027re going upstream first with this, can we short-term disable CONFIG_DEBUG_INFO_BTF in android13-5.15/android-mainline so that we can continue to test booting the GKI kernel with separately built device modules? \n\nOr is there some other short term solution we can use to test the GKI on these kernels?",
+      "revId": "6c8ce555f80d944568415d442f37373a3a6a66b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
