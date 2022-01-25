@@ -2,7 +2,7 @@
 /*
  * IOMMU API for ARM architected SMMU implementations.
  *
- * Copyright (C) 2013 ARM Limited
+ * Copyright (C) 2013 ARM Limited.
  *
  * Author: Will Deacon <will.deacon@arm.com>
  *
