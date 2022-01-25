@@ -16,6 +16,24 @@
       "message": "what driver needs to call this?",
       "revId": "e87a0f231e046a84321ff38e591537dfac34d398",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8ff39dd_9e10eb6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934879
+      },
+      "writtenOn": "2022-01-25T03:38:34Z",
+      "side": 1,
+      "message": "In our driver case, have to call hibern8_enter() function explicitly before the AP enter suspended.\nSo our driver use below sequence.\nenter ufs_suspend() -\u003e disable auto hibernation -\u003e call hibern8_enter()\nBut hibern8_enter() defined static. so could not call this function.\n\nI do not know why only hibern8_enter is defined static.\nhibern8_exit() function can be called externally, but hibern8_enter() does not.\n\nAdditionally Qualcomm has already requested this application and has been reflected in the mainline.",
+      "parentUuid": "e6ba885e_3e647ccf",
+      "revId": "e87a0f231e046a84321ff38e591537dfac34d398",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
