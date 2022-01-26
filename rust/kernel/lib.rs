@@ -40,6 +40,7 @@ pub mod error;
 pub mod init;
 pub mod io_buffer;
 pub mod iov_iter;
+pub mod mm;
 pub mod pages;
 pub mod prelude;
 pub mod print;
