@@ -288,8 +288,10 @@ static void _free_vds(struct kref *kref)
 {
 	struct tipc_virtio_dev *vds =
 		container_of(kref, struct tipc_virtio_dev, refcount);
+	mutex_lock(&vds->shared_handles_lock);
 	/* If this WARN triggers, we're leaking remote memory references. */
 	WARN_ON(!RB_EMPTY_ROOT(&vds->shared_handles));
+	mutex_unlock(&vds->shared_handles_lock);
 	kfree(vds);
 }
 
@@ -554,11 +556,12 @@ static void tipc_shared_handle_register(struct tipc_shared_handle
 					*new_handle)
 {
 	struct tipc_virtio_dev *vds = new_handle->vds;
-	struct rb_node **new = &vds->shared_handles.rb_node;
+	struct rb_node **new;
 	struct rb_node *parent = NULL;
 
 	mutex_lock(&vds->shared_handles_lock);
 
+	new = &vds->shared_handles.rb_node;
 	while (*new) {
 		struct tipc_shared_handle *handle =
 			rb_entry(*new, struct tipc_shared_handle, node);
@@ -584,11 +587,12 @@ static struct tipc_shared_handle *tipc_shared_handle_take(struct tipc_virtio_dev
 							  trusty_shared_mem_id_t
 							  obj_id)
 {
-	struct rb_node *node = vds->shared_handles.rb_node;
+	struct rb_node *node;
 	struct tipc_shared_handle *out = NULL;
 
 	mutex_lock(&vds->shared_handles_lock);
 
+	node = vds->shared_handles.rb_node;
 	while (node) {
 		struct tipc_shared_handle *handle =
 			rb_entry(node, struct tipc_shared_handle, node);
