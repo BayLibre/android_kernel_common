@@ -163,7 +163,37 @@ static const struct sysrq_key_op sysrq_crash_op = {
 	.action_msg	= "Trigger a crash",
 	.enable_mask	= SYSRQ_ENABLE_DUMP,
 };
+static void sysrq_handle_oob(int key)
+{
+	unsigned int *access_address;
+	access_address = (unsigned int *)kmalloc(sizeof(unsigned int)*64, GFP_KERNEL);
 
+	pr_info("sysrq_trigger_oob\n");
+	access_address[66] = 128;
+	kfree(access_address);
+}
+static void sysrq_handle_uaf(int key)
+{
+	unsigned int *access_address;
+	access_address = (unsigned int *)kmalloc(sizeof(unsigned int)*64, GFP_KERNEL);
+
+	pr_info("sysrq_trigger_uaf\n");
+	kfree(access_address);
+	pr_info("access_address = %p \n", access_address);
+}
+
+static const struct sysrq_key_op sysrq_out_of_bounds_op = {
+       .handler        = sysrq_handle_oob,
+       .help_msg       = "oob(O)",
+       .action_msg     = "Simulate out of bounds",
+       .enable_mask    = SYSRQ_ENABLE_DUMP,
+};
+static const struct sysrq_key_op sysrq_use_after_free_op = {
+	.handler	= sysrq_handle_uaf,
+	.help_msg	= "uaf(U)",
+	.action_msg	= "Simulate use after free",
+	.enable_mask	= SYSRQ_ENABLE_DUMP,
+};
 static void sysrq_handle_reboot(int key)
 {
 	lockdep_off();
@@ -516,13 +546,13 @@ static const struct sysrq_key_op *sysrq_key_table[62] = {
 	NULL,				/* L */
 	NULL,				/* M */
 	NULL,				/* N */
-	NULL,				/* O */
+	&sysrq_out_of_bounds_op,	/* O */
 	NULL,				/* P */
 	NULL,				/* Q */
 	NULL,				/* R */
 	NULL,				/* S */
 	NULL,				/* T */
-	NULL,				/* U */
+	&sysrq_use_after_free_op,	/* U */
 	NULL,				/* V */
 	NULL,				/* W */
 	NULL,				/* X */
