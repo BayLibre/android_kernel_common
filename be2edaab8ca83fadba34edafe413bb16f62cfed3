@@ -20,6 +20,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "134e0f5c_5b4d0994",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2022-01-27T23:25:43Z",
+      "side": 1,
+      "message": "Calls to trusty_log_show can either come from call_notify or panic_notify.\nYou point out a problem with the logic below though: (see below)",
+      "parentUuid": "b0f740e4_01e5ff2a",
+      "revId": "be2edaab8ca83fadba34edafe413bb16f62cfed3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2207ece7_380a241c",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2022-01-27T23:25:43Z",
+      "side": 1,
+      "message": "I think this should be \"if (from_panic || sink-\u003etrusty_panicked)\" to cover the case where a Trusty panic does not cause a linux panic (you mentioned this was a config option, IIRC)\nThough I suppose if linux is not panicking we can rely on logd to continue reading the logs, in which case we don\u0027t need to call trusty_dump_logs from call_notify at all anymore. Is that what you meant above with \"remove the call\" ? (it would still need to be called from the panic notifier)",
+      "range": {
+        "startLine": 266,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 25
+      },
+      "revId": "be2edaab8ca83fadba34edafe413bb16f62cfed3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2823f78_4e281c5d",
         "filename": "drivers/trusty/trusty-log.c",
         "patchSetId": 2
@@ -31,6 +72,24 @@
       "writtenOn": "2022-01-27T22:05:34Z",
       "side": 1,
       "message": "Remove last_successful_next and update get here instead? last_successful_next was used to make sure we don\u0027t ratelimit a trusty crash if a cpu was dumping the log buffer with the crash report before we got the smc panic return value. Since you removed the normal output path that was ratelimited, this seems unlikely to occur now. You would need to have a linux panic right before a trusty panic.",
+      "revId": "be2edaab8ca83fadba34edafe413bb16f62cfed3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce5373f_d894a36e",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1001525
+      },
+      "writtenOn": "2022-01-27T23:25:43Z",
+      "side": 1,
+      "message": "I thought about this, but when I tested the code like so:\n- boot device with unmodified logd (so nothing reads /dev/trusty-log0)\n- read+poll /dev/trusty-log0 once (so it reads until the end)\n- run \"tipc-test -t echo\", which causes one line of trusty logging\n- cause a panic (this should now dump that one line of logging to the kernel log)\nWhat I saw with some added logging in the dump_logs function was that \"get\" and \"last_successful_next\" had different values, and using the \"get\" value would not have dumped that last log line to the kernel log.\nI did not investigate further but I\u0027ll check again to make sure I didn\u0027t miss anything.",
+      "parentUuid": "a2823f78_4e281c5d",
       "revId": "be2edaab8ca83fadba34edafe413bb16f62cfed3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
