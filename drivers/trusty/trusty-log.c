@@ -200,11 +200,13 @@ static int trusty_log_start(struct trusty_log_state *s,
 
 /**
  * trusty_log_show() - sink log entry at current iteration
- * @s:         Current log state.
- * @sink:      trusty_log_sink_state holding the get index on a given sink
+ * @s:          Current log state.
+ * @sink:       trusty_log_sink_state holding the get index on a given sink
+ * @from_panic: true if called from the panic handler
  */
 static void trusty_log_show(struct trusty_log_state *s,
-			    struct trusty_log_sink_state *sink)
+			    struct trusty_log_sink_state *sink,
+			    bool from_panic)
 {
 	struct log_rb *log = s->log;
 	u32 alloc, put, get;
@@ -261,7 +263,7 @@ static void trusty_log_show(struct trusty_log_state *s,
 	if (sink->sfile) {
 		seq_printf(sink->sfile, "%s", s->line_buffer);
 		sink->last_successful_next = sink->get;
-	} else {
+	} else if (from_panic) {
 		if (sink->trusty_panicked ||
 		    __ratelimit(&trusty_log_rate_limit)) {
 			dev_info(s->dev, "%s", s->line_buffer);
@@ -404,11 +406,11 @@ static int trusty_log_seq_show(struct seq_file *sfile, void *v)
 
 	s = container_of(lb, struct trusty_log_state, log_sfile);
 
-	trusty_log_show(s, log_sfile_sink);
+	trusty_log_show(s, log_sfile_sink, false);
 	return 0;
 }
 
-static void trusty_dump_logs(struct trusty_log_state *s)
+static void trusty_dump_logs(struct trusty_log_state *s, bool from_panic)
 {
 	u32 start;
 	int rc;
@@ -418,15 +420,14 @@ static void trusty_dump_logs(struct trusty_log_state *s)
 	 */
 	s->klog_sink.trusty_panicked = trusty_get_panic_status(s->trusty_dev);
 
-	start = s->klog_sink.trusty_panicked ?
+	start = s->klog_sink.trusty_panicked || from_panic ?
 			s->klog_sink.last_successful_next :
 			s->klog_sink.get;
 	rc = trusty_log_start(s, &s->klog_sink, start);
 	if (rc < 0)
 		return;
-
 	while (trusty_log_has_data(s, &s->klog_sink))
-		trusty_log_show(s, &s->klog_sink);
+		trusty_log_show(s, &s->klog_sink, from_panic);
 }
 
 static int trusty_log_call_notify(struct notifier_block *nb,
@@ -448,7 +449,7 @@ static int trusty_log_call_notify(struct notifier_block *nb,
 	}
 	spin_unlock_irqrestore(&s->wake_up_lock, flags);
 	spin_lock_irqsave(&s->lock, flags);
-	trusty_dump_logs(s);
+	trusty_dump_logs(s, false);
 	spin_unlock_irqrestore(&s->lock, flags);
 	return NOTIFY_OK;
 }
@@ -465,7 +466,8 @@ static int trusty_log_panic_notify(struct notifier_block *nb,
 	s = container_of(nb, struct trusty_log_state, panic_notifier);
 	dev_info(s->dev, "panic notifier - trusty version %s",
 		 trusty_version_str_get(s->trusty_dev));
-	trusty_dump_logs(s);
+	trusty_dump_logs(s, true);
+	dev_info(s->dev, "panic notifier done");
 	return NOTIFY_OK;
 }
 
@@ -515,6 +517,7 @@ static unsigned int trusty_log_sfile_dev_poll(struct file *filp,
 	struct trusty_log_sfile *lb;
 	struct trusty_log_state *s;
 	struct log_rb *log;
+	unsigned long flags;
 
 	/*
 	 * trusty_log_sfile_dev_open() pointed filp->private_data to a
@@ -526,6 +529,16 @@ static unsigned int trusty_log_sfile_dev_poll(struct file *filp,
 	s = container_of(lb, struct trusty_log_state, log_sfile);
 	poll_wait(filp, &s->poll_waiters, wait);
 	log = s->log;
+
+	/*
+	 * Userspace has read up to filp->f_pos so far. Update klog_sink
+	 * to indicate that, so that we don't end up dumping the entire
+	 * Trusty log in case of panic.
+	 */
+	spin_lock_irqsave(&s->lock, flags);
+	s->klog_sink.last_successful_next = filp->f_pos;
+	spin_unlock_irqrestore(&s->lock, flags);
+
 	if (log->put != (u32)filp->f_pos) {
 		/* data ready to read */
 		return EPOLLIN | EPOLLRDNORM;
