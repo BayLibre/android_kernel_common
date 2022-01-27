@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0f740e4_01e5ff2a",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-27T22:05:34Z",
+      "side": 1,
+      "message": "Why do you need this flag? If sink does not have sfile and from_panic seems to only compute a get value that we don\u0027t want to use anywhere. If seems we could remove the call this function instead.",
+      "revId": "be2edaab8ca83fadba34edafe413bb16f62cfed3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2823f78_4e281c5d",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-27T22:05:34Z",
+      "side": 1,
+      "message": "Remove last_successful_next and update get here instead? last_successful_next was used to make sure we don\u0027t ratelimit a trusty crash if a cpu was dumping the log buffer with the crash report before we got the smc panic return value. Since you removed the normal output path that was ratelimited, this seems unlikely to occur now. You would need to have a linux panic right before a trusty panic.",
+      "revId": "be2edaab8ca83fadba34edafe413bb16f62cfed3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
