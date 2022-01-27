@@ -58,6 +58,43 @@ static inline void hyp_page_ref_dec(struct hyp_page *p)
 	p->refcount--;
 }
 
+static inline int hyp_page_count_atomic(void *addr)
+{
+	struct hyp_page *p = hyp_virt_to_page(addr);
+
+	return READ_ONCE(p->refcount);
+}
+
+static inline void hyp_page_ref_inc_atomic(struct hyp_page *p)
+{
+	unsigned short refcount;
+
+	for (;;) {
+		refcount = READ_ONCE(p->refcount);
+
+		BUG_ON(refcount == USHRT_MAX);
+
+		if (likely(cmpxchg(&p->refcount, refcount, refcount + 1) ==
+			   refcount))
+			break;
+	}
+}
+
+static inline void hyp_page_ref_dec_atomic(struct hyp_page *p)
+{
+	unsigned short refcount;
+
+	for (;;) {
+		refcount = READ_ONCE(p->refcount);
+
+		BUG_ON(!refcount);
+
+		if (likely(cmpxchg(&p->refcount, refcount, refcount - 1) ==
+			   refcount))
+			break;
+	}
+}
+
 static inline int hyp_page_ref_dec_and_test(struct hyp_page *p)
 {
 	hyp_page_ref_dec(p);
