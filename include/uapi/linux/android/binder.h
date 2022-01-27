@@ -303,10 +303,12 @@ struct binder_extended_error {
 
 enum binder_ee_code {
 	BINDER_EE_CODE_OK = 0,
+	BINDER_EE_CODE_RETRY = 1,
 };
 
 enum binder_ee_type {
 	BINDER_EE_TYPE_NONE = 0,
+	BINDER_EE_TYPE_WRITE_READ = 1,
 };
 
 #define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)

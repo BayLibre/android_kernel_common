@@ -2882,6 +2882,11 @@ static void binder_transaction(struct binder_proc *proc,
 		security_cred_getsecid(proc->cred, &secid);
 		ret = security_secid_to_secctx(secid, &secctx, &secctx_sz);
 		if (ret) {
+			if (ret == -ENOMEM)
+				binder_set_extended_error(thread,
+						BINDER_EE_CODE_RETRY,
+						BINDER_EE_TYPE_WRITE_READ,
+						"security_secid_to_secctx() allocation failed");
 			return_error = BR_FAILED_REPLY;
 			return_error_param = ret;
 			return_error_line = __LINE__;
