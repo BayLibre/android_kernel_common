@@ -16,6 +16,57 @@
       "message": "-2 to block merge, sending upstream first.",
       "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5877a45_1f086634",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-01-28T22:24:19Z",
+      "side": 1,
+      "message": "Is there a link to the user-space side of this?",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a7c755_a71b71d0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-01-28T22:24:19Z",
+      "side": 1,
+      "message": "Do we want to try to catch overwrite cases? For example, should do a check like this:\n\n  if (code !\u003d BINDER_EE_CODE_OK \u0026\u0026\n      thread-\u003eextended_error.ee_code !\u003d BINDER_EE_CODE_OK) {\n      /* what should we do? Keep the first extended error?\n       * should we log the fact that we are overriding a previous\n       * error?\n       */\n  }",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c50973e_f57cf279",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-01-28T22:24:19Z",
+      "side": 1,
+      "message": "Do you think we really need 256 bytes?",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
