@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "201bcf4c_3f3b3876",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-28T18:24:04Z",
+      "side": 1,
+      "message": "this comment is for the line you removed",
+      "revId": "d7ad338058acc2e4ac2b04c288bd2832fb4935fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074b7e0c_b24acefd",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-28T18:24:04Z",
+      "side": 1,
+      "message": "leave the blank line after return in place",
+      "revId": "d7ad338058acc2e4ac2b04c288bd2832fb4935fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05528594_bd0dc2bc",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-01-28T18:24:04Z",
+      "side": 1,
+      "message": "cast to u32. I don\u0027t know if we have ubsan enabled for the kernel, but can trigger a ubsan error once get wraps.",
+      "revId": "d7ad338058acc2e4ac2b04c288bd2832fb4935fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
