@@ -90,6 +90,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b3f0b80c_900fd0cb",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4948,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-01-29T00:35:37Z",
+      "side": 1,
+      "message": "Seems like there should be at least 1 non-success in this patch -- the obvious one being the transaction failure path where the failed transactions are currently logged.",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c50973e_f57cf279",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 4
@@ -119,6 +136,24 @@
       "side": 1,
       "message": "hmm maybe we don\u0027t need the 256, I was being conservative here. However, let\u0027s do the math to take a better guess. A single-line would be considered \"long\" at about 100 chars and we probably need to use two lines for the complete longer messages. If we add a little buffer to that then 128 should fit the bill?",
       "parentUuid": "5c50973e_f57cf279",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3ddcf49_80526d4d",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-01-29T00:35:37Z",
+      "side": 1,
+      "message": "The only case that exists so far is \"Success\" (7 bytes -- 8 if we need a terminating \u0027\\0\u0027). Adding some failure cases would help inform us on the size needed. I\u0027m guessing 128 is still quite a bit larger than required.",
+      "parentUuid": "74cfd362_21918ba1",
       "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
