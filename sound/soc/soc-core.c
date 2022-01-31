@@ -2785,7 +2785,11 @@ int snd_soc_register_card(struct snd_soc_card *card)
 	card->instantiated = 0;
 	mutex_init(&card->mutex);
 	mutex_init(&card->dapm_mutex);
+<<<<<<< HEAD   (e41afe ANDROID: incremental-fs: fix mount_fs issue)
 	mutex_init(&card->dapm_power_mutex);
+=======
+	spin_lock_init(&card->dpcm_lock);
+>>>>>>> BRANCH (c8855e Linux 4.19.226)
 
 	ret = snd_soc_instantiate_card(card);
 	if (ret != 0)
