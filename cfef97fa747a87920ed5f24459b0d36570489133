@@ -16,6 +16,24 @@
       "message": "Looks okay.  As I mentioned in chat, this bug might exist on older kernels too; it might have gotten exposed by some userspace program trying to read past EOF.  So please make sure to fix incfs in older kernels as needed.\n\nIt is a bit odd to be using PageChecked as both the checked flag and the \"real\" up-to-date flag.  I think it works, but it would be more self-explanatory if PageUptodate was used for the contents of the page while PageChecked was used for whether the page has been checked.  This would require that incfs\u0027s -\u003ereadpage() method be updated to actually fill (but not necessarily check) Merkle tree pages, rather than fill them with all zeroes.  This would match what ext4 and f2fs do.",
       "revId": "cfef97fa747a87920ed5f24459b0d36570489133",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1dd7c54_e04e4f70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-02-01T19:09:48Z",
+      "side": 1,
+      "message": "I think we will go as is, at least for now. We\u0027re trying to work out if we\u0027re seeing this error in the field - it is, at least, fairly obvious (your apk fails to load).",
+      "parentUuid": "5be19cb3_ec20360a",
+      "revId": "cfef97fa747a87920ed5f24459b0d36570489133",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
