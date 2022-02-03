@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000020068962",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1842048?revision\u003d7",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8a63bab8_278e6d32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-02-03T17:33:46Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 425902799 android-build.ayeaye-python-dispatcher_20220202.05_p0",
+      "revId": "eee5e62a9e97a7b396711bce4c5dc94cc0f314c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000020068963",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1842048?revision\u003d7",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "29875fe9_ec1a1658",
+        "filename": "include/net/TEST_MAPPING",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-02-03T17:33:46Z",
+      "side": 1,
+      "message": "Invalid JSON data in TEST_MAPPING file. Failed to parse JSON data: {\n  \"imports\": [\n     { \"path\": \"packages/modules/Connectivity\" },\n     { “path”: “system/netd” }\n  ]\n}\n",
+      "revId": "eee5e62a9e97a7b396711bce4c5dc94cc0f314c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
