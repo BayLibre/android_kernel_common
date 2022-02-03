@@ -1,0 +1,64 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000020069198",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1842048?revision\u003d9",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "3e48b101_215343d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-02-03T17:43:21Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 425902799 android-build.ayeaye-python-dispatcher_20220202.05_p0",
+      "revId": "3b9895c075cbd48e0a952cc4fe4df7c81c25eee4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000020069199",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1842048?revision\u003d9",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "110885e6_ec268ee4",
+        "filename": "include/net/TEST_MAPPING",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-02-03T17:43:21Z",
+      "side": 1,
+      "message": "Invalid JSON data in TEST_MAPPING file. Failed to parse JSON data: {\n  \"imports\": [\n     {\n       \"path\": \"packages/modules/Connectivity\"\n     },\n     {\n       “path”: “system/netd”\n     }\n  ]\n}\n",
+      "revId": "3b9895c075cbd48e0a952cc4fe4df7c81c25eee4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000020069199",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/1842048?revision\u003d9",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "1eac8e8a_6bc84317",
+        "filename": "net/TEST_MAPPING",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-02-03T17:43:21Z",
+      "side": 1,
+      "message": "Invalid JSON data in TEST_MAPPING file. Failed to parse JSON data: {\n  \"imports\": [\n     {\n       \"path\": \"packages/modules/Connectivity\"\n     },\n     {\n       “path”: “system/netd”\n     }\n  ]\n}\n",
+      "revId": "3b9895c075cbd48e0a952cc4fe4df7c81c25eee4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
