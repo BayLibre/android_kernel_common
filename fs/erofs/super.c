@@ -13,6 +13,7 @@
 #include <linux/fs_parser.h>
 #include <linux/dax.h>
 #include "xattr.h"
+#include "sysfs.h"
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/erofs.h>
@@ -856,6 +857,10 @@ static int __init erofs_module_init(void)
 	if (err)
 		goto fs_err;
 
+	err = erofs_init_sysfs();
+	if (err)
+		goto fs_err;
+
 	return 0;
 
 fs_err:
@@ -882,6 +887,7 @@ static void __exit erofs_module_exit(void)
 	erofs_exit_shrinker();
 	kmem_cache_destroy(erofs_inode_cachep);
 	erofs_pcpubuf_exit();
+	erofs_exit_sysfs();
 }
 
 /* get filesystem statistics */
