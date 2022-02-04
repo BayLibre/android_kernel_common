@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7c05fd7_36b5d025",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1902352
+      },
+      "writtenOn": "2022-02-04T21:39:43Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to revert the whole change.\nI think we just need to apply this on top:\ndiff --git a/fs/incfs/data_mgmt.c b/fs/incfs/data_mgmt.c\nindex fbab68a280d5..f0dc986dd4c3 100644\n--- a/fs/incfs/data_mgmt.c\n+++ b/fs/incfs/data_mgmt.c\n@@ -174,7 +174,6 @@ void incfs_free_mount_info(struct mount_info *mi)\n         for (i \u003d 0; i \u003c ARRAY_SIZE(mi-\u003epseudo_file_xattr); ++i)\n                 kfree(mi-\u003epseudo_file_xattr[i].data);\n         kfree(mi-\u003emi_per_uid_read_timeouts);\n-       incfs_free_sysfs_node(mi-\u003emi_sysfs_node);\n         kfree(mi);\n  }\n  \n",
+      "revId": "9176dcac56045aaae95402f1c1382e514c77bcf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
