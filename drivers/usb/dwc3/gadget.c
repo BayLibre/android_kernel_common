@@ -44,6 +44,7 @@ int dwc3_gadget_set_test_mode(struct dwc3 *dwc, int mode)
 
 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
 	reg &= ~DWC3_DCTL_TSTCTRL_MASK;
+	pr_err("Dummy log\n");
 
 	switch (mode) {
 	case USB_TEST_J:
