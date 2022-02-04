@@ -26,7 +26,7 @@
 #include "core.h"
 #include "gadget.h"
 #include "io.h"
-
+/*DUMMY COMMIT */
 #define DWC3_ALIGN_FRAME(d, n)	(((d)->frame_number + ((d)->interval * (n))) \
 					& ~((d)->interval - 1))
 
