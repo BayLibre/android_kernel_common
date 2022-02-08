@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a388eb03_abe70d41",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-08T15:46:54Z",
+      "side": 1,
+      "message": "Document that the lock needs to be held while calling this function.",
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d6dfe6c_0b1fb715",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-08T15:46:54Z",
+      "side": 1,
+      "message": "This (and below) should be using SMCCC 1.2.",
+      "range": {
+        "startLine": 65,
+        "startChar": 1,
+        "endLine": 65,
+        "endChar": 18
+      },
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b9290ea_1a67e977",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-08T15:46:54Z",
+      "side": 1,
+      "message": "This implicitly assumes that the mailbox size is equal to the page size, it would be better to be explicit about that assumption by making a separate constant.",
+      "range": {
+        "startLine": 68,
+        "startChar": 5,
+        "endLine": 68,
+        "endChar": 14
+      },
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d08b268a_f8c01990",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-08T15:46:54Z",
+      "side": 1,
+      "message": "Ditto, document that the lock needs to be held, or just don\u0027t allow unmapping at all. If you unmap the buffers in the middle of a memory transaction you\u0027re going to have a bad time.",
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4cf3227_eda10e2e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-08T15:46:54Z",
+      "side": 1,
+      "message": "Check that tx !\u003d rx.",
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
