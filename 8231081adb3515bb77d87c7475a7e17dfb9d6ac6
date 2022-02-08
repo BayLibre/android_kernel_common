@@ -88,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ac45f2_7bfb1b2b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-08T21:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a885e81c_e3dd059c",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37215072_0c0a2ff9",
@@ -105,6 +123,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "440df81b_6e5cab6f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-08T21:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37215072_0c0a2ff9",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3f0b80c_900fd0cb",
@@ -118,6 +154,24 @@
       "writtenOn": "2022-01-29T00:35:37Z",
       "side": 1,
       "message": "Seems like there should be at least 1 non-success in this patch -- the obvious one being the transaction failure path where the failed transactions are currently logged.",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c803a1d0_278ba8c0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4948,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-08T21:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3f0b80c_900fd0cb",
       "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -171,6 +225,24 @@
       "side": 1,
       "message": "The only case that exists so far is \"Success\" (7 bytes -- 8 if we need a terminating \u0027\\0\u0027). Adding some failure cases would help inform us on the size needed. I\u0027m guessing 128 is still quite a bit larger than required.",
       "parentUuid": "74cfd362_21918ba1",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "120ebb5c_1fcf4f80",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-08T21:42:57Z",
+      "side": 1,
+      "message": "there currently is a `binder_user_debug()` that could leverage the new populated `ee-\u003estrings` as this:\n```\nbinder_set_extended_error(ee, ..., \"no transaction stack\");\nbinder_user_error(\"%d:%d %s\\n\", proc-\u003epid, thread-\u003epid, ee-\u003estring);\n```\nBecause as I was writing these `ee-\u003estrings` I noticed duplication with `binder_user_error()` in most cases. So do we want to go down this path?\n\nThe downside is we don\u0027t want to extend this `ee-\u003estring` buffer too large as you mention in previous comments.",
+      "parentUuid": "a3ddcf49_80526d4d",
       "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
