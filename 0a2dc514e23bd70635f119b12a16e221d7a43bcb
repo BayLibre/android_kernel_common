@@ -16,6 +16,24 @@
       "message": "If this is from a mailing list (\u0027FROMLIST\u0027), can we get a link to the appropriate upstream mailing list (in particular the discussion)?\n\nI\u0027m failing to find it at a quick search:\n\nhttps://patchwork.kernel.org/project/netdevbpf/list/?series\u003d\u0026submitter\u003d\u0026state\u003d*\u0026q\u003dfix+wrong+network\u0026archive\u003dboth\u0026delegate\u003d\n\nThis is something that should definitely be merged upstream first, and probably come into ACK via LTS instead.  I\u0027m sure they\u0027ll be willing to take a fix for this, especially since this seems a lot easier than I was expecting it to be.",
       "revId": "0a2dc514e23bd70635f119b12a16e221d7a43bcb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d01461ed_7d8d509f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1936061
+      },
+      "writtenOn": "2022-02-08T02:04:17Z",
+      "side": 1,
+      "message": "\"Fromlist\" may be uncorrect, I will submit it to kernel later. I submit it here first, because I want to know if ebpf owner has some opinion about the solution. as commit msg said, there r 2 solutions, one is ebpf, another is such common kernel code. I prefer currenct solution. what is your opinion?",
+      "parentUuid": "eb15c6e0_db11bd64",
+      "revId": "0a2dc514e23bd70635f119b12a16e221d7a43bcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
