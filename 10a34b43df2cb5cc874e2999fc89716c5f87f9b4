@@ -16,6 +16,24 @@
       "message": "The non-secure physical instance is the interface between EL2 and EL3. The interface between EL1 and EL2 is the non-secure virtual instance.",
       "revId": "10a34b43df2cb5cc874e2999fc89716c5f87f9b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3007297b_b0f40710",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-08T17:34:37Z",
+      "side": 1,
+      "message": "In the absence of a hypervisor at EL2, the interface between EL1 and EL3 would be the non-secure physical instance. Similarly, with VHE then the host would be running entirely at EL2 and would be using the non-secure physical instance.\n\nGiven that we\u0027re trapping SMCs from the host, rather than handling HVCs, then I tend to think of the EL2 code as a shim/proxy rather than an active FFA participant, and so I would still consider the host to be using the non-secure physical instance.\n\nIt\u0027s certainly not clear-cut, however, as we\u0027re using separate RXTX buffer pairs, so I\u0027m happy to change the comment (or remove it entirely), Do you have a better wording?",
+      "parentUuid": "e18a2674_f8966d3b",
+      "revId": "10a34b43df2cb5cc874e2999fc89716c5f87f9b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
