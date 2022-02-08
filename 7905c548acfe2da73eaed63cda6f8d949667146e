@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fd6ee26_3ae246d2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-08T17:40:27Z",
+      "side": 1,
+      "message": "I think it would better to have a comment at the top of the file explaining the locking, to be honest. The lock needs to be held across a whole bunch of calls, especially when the fragmentation support is added later, so I think documenting that would probably be better than doing it at the function level.",
+      "parentUuid": "a388eb03_abe70d41",
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d6dfe6c_0b1fb715",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0893be8b_d943fa09",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-08T17:40:27Z",
+      "side": 1,
+      "message": "See my reply on an earlier patch, but we\u0027re cheating here as I don\u0027t think SMCCC 1.2 is required. Is it strictly needed for the calls we\u0027re handling?",
+      "parentUuid": "7d6dfe6c_0b1fb715",
+      "range": {
+        "startLine": 65,
+        "startChar": 1,
+        "endLine": 65,
+        "endChar": 18
+      },
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b9290ea_1a67e977",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
@@ -54,6 +96,30 @@
       "writtenOn": "2022-02-08T15:46:54Z",
       "side": 1,
       "message": "This implicitly assumes that the mailbox size is equal to the page size, it would be better to be explicit about that assumption by making a separate constant.",
+      "range": {
+        "startLine": 68,
+        "startChar": 5,
+        "endLine": 68,
+        "endChar": 14
+      },
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676d026e_b7219298",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-08T17:40:27Z",
+      "side": 1,
+      "message": "Agreed, will add that.",
+      "parentUuid": "0b9290ea_1a67e977",
       "range": {
         "startLine": 68,
         "startChar": 5,
@@ -94,6 +160,24 @@
       "writtenOn": "2022-02-08T15:46:54Z",
       "side": 1,
       "message": "Check that tx !\u003d rx.",
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bc8fa0d_0dbb1d50",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-08T17:40:27Z",
+      "side": 1,
+      "message": "That will fail when we try to share the already-shared memory.",
+      "parentUuid": "b4cf3227_eda10e2e",
       "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
