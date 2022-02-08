@@ -16,6 +16,23 @@
       "message": "Hi Greg, Alistair,\nI still need to test this change, but I\u0027m looking for your opinion if this is something we can do.\nThis fixes a problem with loading the BT driver.\nThank you,\nm.\n",
       "revId": "8b711de8beccc4a2d012640bc67194596297f4b0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3af9306b_c38fbcc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-02-08T21:52:34Z",
+      "side": 1,
+      "message": "You don\u0027t need this. You can just enable the fallback via sysfs in your board init.rc. We don\u0027t want to encourage use of the deprecated userspace fallback loader.",
+      "revId": "8b711de8beccc4a2d012640bc67194596297f4b0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
