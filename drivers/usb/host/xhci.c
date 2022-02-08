@@ -5440,6 +5440,7 @@ MODULE_LICENSE("GPL");
 
 static int __init xhci_hcd_init(void)
 {
+	//This is a smaple comment. Please ignore
 	/*
 	 * Check the compiler generated sizes of structures that must be laid
 	 * out in specific ways for hardware access.
