@@ -245,6 +245,24 @@
       "parentUuid": "a3ddcf49_80526d4d",
       "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec116c31_fdd0fd79",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-09T19:35:42Z",
+      "side": 1,
+      "message": "Are there examples where the string needs to be reduced to the point that important debugging info is lost? In those cases, then I suppose the binder_user_error() should remain. I suspect it is not the common case.",
+      "parentUuid": "120ebb5c_1fcf4f80",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
