@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5048fbed_d7d84d2e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-09T15:28:15Z",
+      "side": 1,
+      "message": "If this fails, also call FFA_MEM_RECLAIM to clear up state in the SPMD.",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7818b427_0811590f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-09T15:28:15Z",
+      "side": 1,
+      "message": "That really doesn\u0027t sound like a great state to be in. Why not keep the fragments around so that we can roll back if necessary?",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "153fedd1_e257dcaa",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-09T15:28:15Z",
+      "side": 1,
+      "message": "If FFA_MEM_FRAG_RX is returned, you also need to check that the sender, handle and offset being requested is what you expect. If the SPMD returns something unexpected (but not a failure) and you need to abort, you should probably call FFA_MEM_RECLAIM to clear up the state in the SPMD.",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f42fee5_0fdb892f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1380243
+      },
+      "writtenOn": "2022-02-09T15:28:15Z",
+      "side": 1,
+      "message": "Check that fraglen is no bigger than the rx buffer, to avoid a bug in TF-A resulting in buffer overflow.",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
