@@ -263,6 +263,24 @@
       "parentUuid": "120ebb5c_1fcf4f80",
       "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b99a381_d07f1da5",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-09T19:44:07Z",
+      "side": 1,
+      "message": "Not that I\u0027ve encountered so far so I\u0027ll upload a new patchset with these `binder_user_error()` folded into extended error too. This takes me back to the original topic about the string size, we definitely don\u0027t want to have to amend the size later on, so better have some buffer in there? The shorten version of the formatted strings go around ~50 chars on the high side.",
+      "parentUuid": "ec116c31_fdd0fd79",
+      "revId": "8231081adb3515bb77d87c7475a7e17dfb9d6ac6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
