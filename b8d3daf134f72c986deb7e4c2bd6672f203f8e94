@@ -16,6 +16,24 @@
       "message": "Check that the handle is actually a secure-world-allocated handle.",
       "revId": "b8d3daf134f72c986deb7e4c2bd6672f203f8e94",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "114fbbe5_eff9549a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-09T13:49:22Z",
+      "side": 1,
+      "message": "All handles are either secure-world-allocated or unallocated, so I think the secure world should handle (no pun intended :) this.",
+      "parentUuid": "5b4e1850_3b6d6570",
+      "revId": "b8d3daf134f72c986deb7e4c2bd6672f203f8e94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
