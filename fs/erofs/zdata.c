@@ -737,7 +737,11 @@ hitted:
 retry:
 	err = z_erofs_attach_page(clt, page, page_type,
 				  clt->mode >= COLLECT_PRIMARY_FOLLOWED);
+<<<<<<< HEAD   (c3b53f Merge 5.10.99 into android12-5.10-lts)
 	/* should allocate an additional short-lived page for pagevec */
+=======
+	/* should allocate an additional staging page for pagevec */
+>>>>>>> BRANCH (2a2327 FROMLIST: power_supply: Use of-thermal cdev registration API)
 	if (err == -EAGAIN) {
 		struct page *const newpage =
 				alloc_page(GFP_NOFS | __GFP_NOFAIL);
