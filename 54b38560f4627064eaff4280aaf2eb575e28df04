@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca79bcb7_24ca63b6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-09T15:55:33Z",
+      "side": 1,
+      "message": "Why isn\u0027t this EL1\u0027s job?",
+      "parentUuid": "5048fbed_d7d84d2e",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7818b427_0811590f",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2022-02-09T15:28:15Z",
       "side": 1,
       "message": "That really doesn\u0027t sound like a great state to be in. Why not keep the fragments around so that we can roll back if necessary?",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ad0121_c7cbe16f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-09T15:55:33Z",
+      "side": 1,
+      "message": "Mostly because that\u0027s a ton of additional state that would need to be tracked at EL2. We\u0027ll need to get there eventually, but in the very short term this allowed to simplify things quite a bit.",
+      "parentUuid": "7818b427_0811590f",
       "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "974f33db_645d7aba",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-09T15:55:33Z",
+      "side": 1,
+      "message": "EL1 can do that no?",
+      "parentUuid": "153fedd1_e257dcaa",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f42fee5_0fdb892f",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
@@ -65,6 +119,24 @@
       "writtenOn": "2022-02-09T15:28:15Z",
       "side": 1,
       "message": "Check that fraglen is no bigger than the rx buffer, to avoid a bug in TF-A resulting in buffer overflow.",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c933a7_42122165",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-09T15:55:33Z",
+      "side": 1,
+      "message": "You\u0027d really think we should be able to trust secure to not feed us broken descriptors, but oh well, I can add something.",
+      "parentUuid": "9f42fee5_0fdb892f",
       "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
