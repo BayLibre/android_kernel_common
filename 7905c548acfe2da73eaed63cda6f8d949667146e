@@ -127,6 +127,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f74087c0_3578e87c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-10T13:00:35Z",
+      "side": 1,
+      "message": "Sadly, I don\u0027t think we can re-use the object directly as you wanted to, as recent kernels (including 5.15) have introduced SMCCC 1.3 support, which checks flags in the current thread structure to determine if the SVE hint can be used. I don\u0027t think we should pull this code up to EL2 so, given that 1.1 is fine for now, I elected to keep things simple.",
+      "parentUuid": "fef135b8_a0b230fc",
+      "range": {
+        "startLine": 65,
+        "startChar": 1,
+        "endLine": 65,
+        "endChar": 18
+      },
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b9290ea_1a67e977",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
@@ -210,6 +234,30 @@
       "side": 1,
       "message": "I meant to have something like\n\n```\n#define FFA_MAILBOX_SIZE PAGE_SIZE\n```\n\nAnd then use `FFA_MAILBOX_SIZE` here and elsewhere, to make it clear that you\u0027re using that value because we\u0027ve made a choice to only support a mailbox size equal to the page size, not because it is necessarily required to be.",
       "parentUuid": "000c5f13_2c33f9fb",
+      "range": {
+        "startLine": 68,
+        "startChar": 5,
+        "endLine": 68,
+        "endChar": 14
+      },
+      "revId": "7905c548acfe2da73eaed63cda6f8d949667146e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce0a5f5c_87a06694",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-10T13:00:35Z",
+      "side": 1,
+      "message": "I started out trying that, but it actually made things considerably more confusing. For example, functions such as hyp_ffa_proxy_pages() which work in terms of pages end up looking quite odd and  I ended up having to assert that FFA_MAILBOX_SIZE was the same as PAGE_SIZE when assigning the buffers.",
+      "parentUuid": "92204ceb_4d0cabf6",
       "range": {
         "startLine": 68,
         "startChar": 5,
