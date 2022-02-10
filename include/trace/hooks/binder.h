@@ -14,7 +14,20 @@ struct binder_transaction;
 struct task_struct;
 struct binder_thread;
 struct binder_proc;
+<<<<<<< HEAD   (554b60716f58325befc862dfb9db6fdeeb3c824d ANDROID: vendor_hooks: Add hooks for improving binder trans)
 
+||||||| BASE   (937bd07184e5fe5110f50803ce6a057da9b00342 ANDROID: vendor_hooks: Add hooks for improving binder trans)
+DECLARE_HOOK(android_vh_binder_transaction_init,
+	TP_PROTO(struct binder_transaction *t),
+	TP_ARGS(t));
+=======
+struct binder_work;
+struct binder_buffer;
+struct binder_transaction_data;
+DECLARE_HOOK(android_vh_binder_transaction_init,
+	TP_PROTO(struct binder_transaction *t),
+	TP_ARGS(t));
+>>>>>>> CHANGE (e80ae432563a59b7aa68df970bad5ea6d9556b27 ANDROID: vendor_hooks: Add hooks to implement the feature of)
 DECLARE_HOOK(android_vh_binder_set_priority,
 	TP_PROTO(struct binder_transaction *t, struct task_struct *task),
 	TP_ARGS(t, task));
@@ -27,6 +40,30 @@ DECLARE_HOOK(android_vh_binder_wait_for_work,
 DECLARE_HOOK(android_vh_sync_txn_recvd,
 	TP_PROTO(struct task_struct *tsk, struct task_struct *from),
 	TP_ARGS(tsk, from));
+DECLARE_HOOK(android_vh_binder_proc_transaction_finish,
+	TP_PROTO(struct binder_proc *proc, struct binder_transaction *t,
+		struct task_struct *binder_th_task, bool pending_async, bool sync),
+	TP_ARGS(proc, t, binder_th_task, pending_async, sync));
+DECLARE_HOOK(android_vh_alloc_oem_binder_struct,
+	TP_PROTO(struct binder_transaction_data *tr, struct binder_transaction *t,
+		struct binder_proc *proc),
+	TP_ARGS(tr, t, proc));
+DECLARE_HOOK(android_vh_binder_transaction_received,
+	TP_PROTO(struct binder_transaction *t, struct binder_proc *proc,
+		struct binder_thread *thread, uint32_t cmd),
+	TP_ARGS(t, proc, thread, cmd));
+DECLARE_HOOK(android_vh_free_oem_binder_struct,
+	TP_PROTO(struct binder_transaction *t),
+	TP_ARGS(t));
+DECLARE_HOOK(android_vh_binder_special_task,
+	TP_PROTO(struct binder_transaction *t, struct binder_proc *proc,
+		struct binder_thread *thread, struct binder_work *w,
+		struct list_head *head, bool sync, bool *special_task),
+	TP_ARGS(t, proc, thread, w, head, sync, special_task));
+DECLARE_HOOK(android_vh_binder_buffer_release,
+	TP_PROTO(struct binder_proc *proc, struct binder_thread *thread,
+		struct binder_buffer *buffer, bool has_transaction),
+	TP_ARGS(proc, thread, buffer, has_transaction));
 #endif /* _TRACE_HOOK_BINDER_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
