@@ -16,6 +16,23 @@
       "message": "Wei, Xuewen, would be great to know how well this addresses the problem for you. Could you give it a go please?",
       "revId": "34c542db4e4f0e0390457f37e53608236e317469",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2360acdb_c4eaa9b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1105075
+      },
+      "writtenOn": "2022-02-10T17:38:15Z",
+      "side": 1,
+      "message": "also this doesn\u0027t resolve the cases as follow\n\n2 tasks running on the same rq:\n1) clamped task A --\u003e util.avg 200 when running without uclamp.max, bigger than 200 with uclamp.max\n2) unclamped task B --\u003e util.avg 200\n\nIf there is no uclamp setting A is running shorter and its util.avg is 200 and cfs_rq is 400. But when clamped A such its util.avg grows further beyond 200 and when B enqueued, the util of rq and thus the freq could be spike up to the very inefficient frequency point.",
+      "revId": "34c542db4e4f0e0390457f37e53608236e317469",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
