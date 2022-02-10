@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e566bf5_61e4fe88",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6342,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-10T20:52:40Z",
+      "side": 1,
+      "message": "@tkjos, we are very likely to get the transaction\u0027s `ee-\u003estring` from the kernel log (unless disabled via sysfs). Would it also be appropriate to append such string to the binder transaction log here?",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
