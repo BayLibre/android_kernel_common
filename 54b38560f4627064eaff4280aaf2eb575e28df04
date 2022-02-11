@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34fe5200_795b975f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-11T14:54:26Z",
+      "side": 1,
+      "message": "Aha, yes I see what you mean now, I\u0027ll add something.",
+      "parentUuid": "97d5b489_19c23b06",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7818b427_0811590f",
@@ -138,6 +156,24 @@
       "side": 1,
       "message": "EL3 could request that a fragment be resent for some reason, and EL1 would then resend it, but your code won\u0027t handle that. So you need to either support that case, or check, abort the transaction and return and error to EL1.",
       "parentUuid": "974f33db_645d7aba",
+      "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f58859f_dfa5c1b8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-11T14:54:26Z",
+      "side": 1,
+      "message": "Right, but interestingly the trusty driver doesn\u0027t support re-sending fragments, it ignores the offset that it got back and will just proceed to send the rest. I agree we should get there eventually, but we\u0027ve tried to not add code for anything that is not currently supported/needed by the trusty driver, so this is another instance of that.",
+      "parentUuid": "7e3db02c_fe689a94",
       "revId": "54b38560f4627064eaff4280aaf2eb575e28df04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
