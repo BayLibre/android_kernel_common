@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70a721c8_47a9b1ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2022-02-11T17:20:26Z",
+      "side": 1,
+      "message": "I didn\u0027t do a revert of your revert because I had to move the spinlock to the bottom of the struct. If you want me to revert your revert and make that at change together, then I can do that. I was just trying to make it clear that this is an ANDROID: change.",
+      "parentUuid": "3528d5b1_dd90a757",
+      "revId": "3853fca1e0f84b14652708230cd9bc467cebb3d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e05ed890_7afd4f60",
         "filename": "include/sound/soc.h",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2022-02-11T07:24:46Z",
       "side": 1,
       "message": "you are still changing the size of the structure, this isn\u0027t going to work 😞",
+      "range": {
+        "startLine": 1165,
+        "startChar": 0,
+        "endLine": 1165,
+        "endChar": 20
+      },
+      "revId": "3853fca1e0f84b14652708230cd9bc467cebb3d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ffead11_659e3416",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1165,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2022-02-11T17:20:26Z",
+      "side": 1,
+      "message": "It technically works because struct snd_soc_card is always used as a pointer. So extending it is fine. Also, this variable doesn\u0027t change any existing APIs, so there\u0027s no requirement from drivers to do anything differently.\n\nI did verify this by boot testing and verifying audio on a Pixel 5. Presubmit tests this too.",
+      "parentUuid": "e05ed890_7afd4f60",
       "range": {
         "startLine": 1165,
         "startChar": 0,
