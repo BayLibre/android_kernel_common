@@ -3,6 +3,125 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9269b465_79fc97fd",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "I\u0027m not clear on why we need the \"code\" field (see the header file).\n\nThis conditional could be based on ee-\u003ecommand instead if you agree that code isn\u0027t needed.",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c64dbf_31e63bfc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2935,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "Since this is a reply, we know that target used to be there... so maybe \"reply target not found\" or \"reply target has died\"",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb8892b_989c6b76",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2992,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "...by context manager?",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b0560f7_939ebea9",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3036,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "\"todo list\" is too implementation specific. How about \"bad state for new transaction\". This one shouldn\u0027t be possible for normal android cases.",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9185a66a_ac9c58c4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3177,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "This will be one of the common cases. Maybe tune it based on why it failed:\n\nESRCH --\u003e \"cannot allocate buffer: dead or dying target\"\nENOSPC --\u003e \"cannot allocate buffer: no space\"\nENOMEM --\u003e \"cannot allocate buffer: memory allocation failed\"\n\nI think those are the only cases, but maybe an else case with \"cannot allocate buffer (%d)\", ret",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a3746b3_0e4e99ab",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3268,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "keep \"invalid data ptr\" since we are copying the buffer data",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5aa9ad_87c289f0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3474,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "Is this string the same as one above? If so, make sure each is unique.",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e566bf5_61e4fe88",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
@@ -14,6 +133,58 @@
       "writtenOn": "2022-02-10T20:52:40Z",
       "side": 1,
       "message": "@tkjos, we are very likely to get the transaction\u0027s `ee-\u003estring` from the kernel log (unless disabled via sysfs). Would it also be appropriate to append such string to the binder transaction log here?",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d94b658b_185b4f11",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6342,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "Yes, that would make this more useful too.",
+      "parentUuid": "7e566bf5_61e4fe88",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb30918_a6e6693c",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "given that the max string len is BINDER_STRERR_MAXLEN, should this be [BINDER_STRERR_MAXLEN+1] ?",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42494ca5_9baf678a",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T00:55:46Z",
+      "side": 1,
+      "message": "can you put a kerneldoc header on this. It isn\u0027t clear to me why we need this code. Won\u0027t the \"EE_DEAD_TARGET\" cases have command\u003dBR_DEAD_BINDER?. The ERRNO case will have cmd\u003dBR_FAILED_REPLY. So this is really just saying whether there is a valid error here... which is also indicated by an empty string or command \u003d\u003d 0.",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
