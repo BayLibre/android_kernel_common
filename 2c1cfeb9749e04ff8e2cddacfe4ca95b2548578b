@@ -16,6 +16,24 @@
       "message": "CONFIG_DETECT_HUNG_TASK\u003dy remains enabled by default.\n\nconfig DETECT_HUNG_TASK\n        bool \"Detect Hung Tasks\"\n        depends on DEBUG_KERNEL\n        default SOFTLOCKUP_DETECTOR\n\nIn android13-5.15, for some reason, DETECT_HUNG_TASK has been disabled:\nCONFIG_SOFTLOCKUP_DETECTOR\u003dy\n# CONFIG_DETECT_HUNG_TASK is not set\n\nShould we line up another CL to re-enable that on 5.15, so 5.10 and 5.15 match?",
       "revId": "2c1cfeb9749e04ff8e2cddacfe4ca95b2548578b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd8dad6c_a226c0c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-11T22:01:51Z",
+      "side": 1,
+      "message": "It was enabled in 12-5.10 and 13-5.10 inherited it from there. Can you go ahead and enable it in android-mainline and android13-5.15? (it\u0027s off in 13-5.15 because it inherited it from android-mainline).",
+      "parentUuid": "01ddcbc6_a7ddaf4e",
+      "revId": "2c1cfeb9749e04ff8e2cddacfe4ca95b2548578b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
