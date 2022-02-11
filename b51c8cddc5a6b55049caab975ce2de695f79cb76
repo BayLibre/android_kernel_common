@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "804c049d_0bf5764d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2935,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85c64dbf_31e63bfc",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fb8892b_989c6b76",
@@ -52,6 +70,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57266265_9c8ecad3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2992,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "oh, I forgot to add this back. done!\n\nI wanted to combine this self-transactions check with the one below. However, it seems in the case of the context manager, it would be possible from a userspace error. In contrast for regular nodes it\u0027s not possible (unless internal corruption happens). So the WARN_ON() specifically makes this two checks different, as we don\u0027t want to the kernel to warn on a user-space error.",
+      "parentUuid": "3fb8892b_989c6b76",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b0560f7_939ebea9",
@@ -65,6 +101,24 @@
       "writtenOn": "2022-02-11T00:55:46Z",
       "side": 1,
       "message": "\"todo list\" is too implementation specific. How about \"bad state for new transaction\". This one shouldn\u0027t be possible for normal android cases.",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da03b2f6_04fa1660",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3036,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3b0560f7_939ebea9",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -88,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef886c22_867f3f4f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3177,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "... and this is when `strerror()` would come handy.\n\nI see `binder_alloc_*()` isn\u0027t aware of `struct binder_thread` so it\u0027s impossible to set extended error from within these calls and it seems I don\u0027t have a better alternative than this boilerplate code?\n\nAlso, perhaps the generic `\"%d\", ret` case may be redundant as `ee-\u003eparam \u003d ret` will end up being logged alongside the `ee-\u003estring` anyway.",
+      "parentUuid": "9185a66a_ac9c58c4",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a3746b3_0e4e99ab",
         "filename": "drivers/android/binder.c",
         "patchSetId": 6
@@ -99,6 +171,24 @@
       "writtenOn": "2022-02-11T00:55:46Z",
       "side": 1,
       "message": "keep \"invalid data ptr\" since we are copying the buffer data",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba3f2d91_10264205",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3268,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "I was indeed trying to make this string different from the case bellow. To make things simple we can call this `buffer ptr` and keep the `data ptr` for the next one. what do you think?",
+      "parentUuid": "1a3746b3_0e4e99ab",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -116,6 +206,24 @@
       "writtenOn": "2022-02-11T00:55:46Z",
       "side": 1,
       "message": "Is this string the same as one above? If so, make sure each is unique.",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "033da39f_8c329dc0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3474,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe5aa9ad_87c289f0",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -155,6 +263,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6171a3df_23537516",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6342,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d94b658b_185b4f11",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cb30918_a6e6693c",
@@ -172,6 +298,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16462379_786c8f2f",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "Done. Does this mean `string[BINDER_STRERR_MAXSZ]` (len -\u003e size) would be fine?",
+      "parentUuid": "7cb30918_a6e6693c",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42494ca5_9baf678a",
@@ -185,6 +329,24 @@
       "writtenOn": "2022-02-11T00:55:46Z",
       "side": 1,
       "message": "can you put a kerneldoc header on this. It isn\u0027t clear to me why we need this code. Won\u0027t the \"EE_DEAD_TARGET\" cases have command\u003dBR_DEAD_BINDER?. The ERRNO case will have cmd\u003dBR_FAILED_REPLY. So this is really just saying whether there is a valid error here... which is also indicated by an empty string or command \u003d\u003d 0.",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed51fb1a_b25d6c0c",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-11T23:11:01Z",
+      "side": 1,
+      "message": "I suppose I thought about the error information in an abstract way first before looking at current error scenarios. So these `ee-\u003ecodes` would be a way to uniquely identify errors and service them accordingly in userspace e.g.\n```\nif (ee-\u003ecode \u003d\u003d EE_RETRY)\n        retry_transaction();\n```\nSo, libbinder could retry the transaction regardless of the command or errno returned by the driver.\n\nThis would also allow _expanding_ into new errors if there is ever a need for it. Otherwise we are tied to current set of commands and errnos, or possibly parsing the string. We don\u0027t want to add `ee-\u003ecode` later on and break the api.\n\nI\u0027m not entirely convinced we\u0027ll need the `ee-\u003ecode` as I\u0027m not very familiar with binder errors in userspace yet. So I\u0027ll defer this to you, I can remove the code if you think is redundant.",
+      "parentUuid": "42494ca5_9baf678a",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
