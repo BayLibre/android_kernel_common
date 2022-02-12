@@ -349,6 +349,24 @@
       "parentUuid": "42494ca5_9baf678a",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dcb32f2_5ef0db28",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-12T00:05:26Z",
+      "side": 1,
+      "message": "It seems like errno already gives us that abstraction and we can assign some specific actions if necessary. Why not use -EAGAIN instead of EE_RETRY to indicate a retryable issue? Given the driver has to change if any error is re-categorized, I don\u0027t see any benefit to EE_RETRY over -EAGAIN. It seems redundant. I guess you are thinking that combining these means that we can\u0027t express _why_ we had to retry which might be important -- and we wouldn\u0027t want to parse the string. We have a lot of errno space in a u32 -- so if needed we could define new \"extended errno\" values or set a high bit as a modifier.\n\nHowever, we only know of 1 retryable case right now and we don\u0027t have any other cases where we\u0027d use something other than BINDER_EE_PARAM_ERRNO, do we?",
+      "parentUuid": "ed51fb1a_b25d6c0c",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
