@@ -16,6 +16,24 @@
       "message": "Would this be a little simpler? (trying to avoid all the duplicate code in the switch statement)\n\n  char *s;\n  ret \u003d PTR_ERR(t-\u003ebuffer);\n  s \u003d (ret \u003d\u003d -ESRCH) ? \"vma cleared, target dead or dying\"\n       : (ret \u003d\u003d -ENOSPC) ? \"no space left\"\n       : (ret \u003d\u003d -ENOMEM) ? \"memory allocation failed\"\n       : \"\";\n  binder_set_extended_error(ee, BINDER_EE_PARAM_ERRNO,\n\t\t\t    ret \u003d\u003d -ESRCH ? BR_DEAD_REPLY : BR_FAILED_REPLY,\n\t\t\t    ret, \"cannot allocate buffer: %s\", s);\n\nWe could add the `\"%d\", ret` if we really want for the `s\u003d\u003d\"\"` case, but since we\u0027ll be including ret in the ee, it will already be logged. No need to log it twice.",
       "revId": "7aa48f164467155fd0a89ceec7b4c3e28401e117",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dc5ba7c_b6db8cf2",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3193,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-14T15:44:13Z",
+      "side": 1,
+      "message": "Yes, this would be better. thanks!",
+      "parentUuid": "5577b434_b5840354",
+      "revId": "7aa48f164467155fd0a89ceec7b4c3e28401e117",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

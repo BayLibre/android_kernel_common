@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fc1db4b_1e9dbafc",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-14T15:44:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9269b465_79fc97fd",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85c64dbf_31e63bfc",
@@ -154,6 +172,24 @@
       "side": 1,
       "message": "... and this is when `strerror()` would come handy.\n\nI see `binder_alloc_*()` isn\u0027t aware of `struct binder_thread` so it\u0027s impossible to set extended error from within these calls and it seems I don\u0027t have a better alternative than this boilerplate code?\n\nAlso, perhaps the generic `\"%d\", ret` case may be redundant as `ee-\u003eparam \u003d ret` will end up being logged alongside the `ee-\u003estring` anyway.",
       "parentUuid": "9185a66a_ac9c58c4",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "818b7a9e_10511e56",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3177,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-14T15:44:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef886c22_867f3f4f",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -365,6 +401,24 @@
       "side": 1,
       "message": "It seems like errno already gives us that abstraction and we can assign some specific actions if necessary. Why not use -EAGAIN instead of EE_RETRY to indicate a retryable issue? Given the driver has to change if any error is re-categorized, I don\u0027t see any benefit to EE_RETRY over -EAGAIN. It seems redundant. I guess you are thinking that combining these means that we can\u0027t express _why_ we had to retry which might be important -- and we wouldn\u0027t want to parse the string. We have a lot of errno space in a u32 -- so if needed we could define new \"extended errno\" values or set a high bit as a modifier.\n\nHowever, we only know of 1 retryable case right now and we don\u0027t have any other cases where we\u0027d use something other than BINDER_EE_PARAM_ERRNO, do we?",
       "parentUuid": "ed51fb1a_b25d6c0c",
+      "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f99835f0_09d6f47a",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-14T15:44:13Z",
+      "side": 1,
+      "message": "There are multiple ENOMEM cases here and do we always want to retry from userspace for those? Or are we switching the errno in the driver from ENOMEM -\u003e EAGAIN for those that should be retried? I think this is the line of questioning that led me to add the `ee-\u003ecode` because it would be simpler to identify the course of action in userspace. However, I can see how we can handle these and other cases with current command/param values, specially if we can expand param beyond MAX_ERRNO. So I\u0027m onboard with removing `ee-\u003ecode`. Done",
+      "parentUuid": "4dcb32f2_5ef0db28",
       "revId": "b51c8cddc5a6b55049caab975ce2de695f79cb76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
