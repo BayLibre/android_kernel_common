@@ -2,6 +2,8 @@
 #ifndef __ARM64_KVM_NVHE_IOMMU_H__
 #define __ARM64_KVM_NVHE_IOMMU_H__
 
+#include <asm/kvm_pgtable.h>
+
 #include <kvm/iommu.h>
 #include <linux/io-pgtable.h>
 
@@ -36,6 +38,8 @@ size_t kvm_iommu_map_pages(pkvm_handle_t domain_id,
 size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 			     unsigned long iova, size_t pgsize, size_t pgcount);
 phys_addr_t kvm_iommu_iova_to_phys(pkvm_handle_t domain_id, unsigned long iova);
+void kvm_iommu_host_stage2_idmap(phys_addr_t start, phys_addr_t end,
+				 enum kvm_pgtable_prot prot);
 #else /* !CONFIG_KVM_IOMMU */
 static inline int kvm_iommu_alloc_domain(pkvm_handle_t domain_id)
 {
@@ -85,6 +89,11 @@ static inline int kvm_iommu_init(struct kvm_iommu_ops *ops,
 				 unsigned long init_arg)
 {
 	return -ENODEV;
+}
+
+static inline void kvm_iommu_host_stage2_idmap(phys_addr_t start, phys_addr_t end,
+					       enum kvm_pgtable_prot prot)
+{
 }
 #endif /* CONFIG_KVM_IOMMU */
 
