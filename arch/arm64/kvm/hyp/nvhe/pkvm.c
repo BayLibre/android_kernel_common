@@ -349,6 +349,8 @@ static int copy_features(struct kvm_vcpu *shadow_vcpu, struct kvm_vcpu *host_vcp
 	bitmap_and(shadow_vcpu->arch.features, host_vcpu->arch.features,
 		allowed_features, KVM_VCPU_MAX_FEATURES);
 
+	// TODO: barrier or something here?
+
 	/*
 	 * Check for system support for address/generic pointer authentication
 	 * features if either are enabled.
@@ -404,7 +406,7 @@ static int init_shadow_structs(struct kvm *kvm, struct kvm_shadow_vm *vm,
 
 	vm->host_kvm = kvm;
 	vm->created_vcpus = nr_vcpus;
-	vm->arch.pkvm.pvmfw_load_addr = kvm->arch.pkvm.pvmfw_load_addr;
+	vm->arch.pkvm.pvmfw_load_addr = READ_ONCE(kvm->arch.pkvm.pvmfw_load_addr);
 	vm->arch.pkvm.enabled = READ_ONCE(kvm->arch.pkvm.enabled);
 
 	for (i = 0; i < nr_vcpus; i++) {
@@ -413,7 +415,7 @@ static int init_shadow_structs(struct kvm *kvm, struct kvm_shadow_vm *vm,
 		struct kvm_vcpu *host_vcpu = shadow_vcpu->arch.pkvm.host_vcpu;
 
 		shadow_vcpu->kvm = kvm;
-		shadow_vcpu->vcpu_id = host_vcpu->vcpu_id;
+		shadow_vcpu->vcpu_id = READ_ONCE(host_vcpu->vcpu_id);
 		shadow_vcpu->vcpu_idx = i;
 
 		ret = copy_features(shadow_vcpu, host_vcpu);
@@ -444,8 +446,8 @@ static int init_shadow_structs(struct kvm *kvm, struct kvm_shadow_vm *vm,
 		} else {
 			struct vcpu_reset_state *reset_state = &shadow_vcpu->arch.reset_state;
 
-			reset_state->pc = *vcpu_pc(host_vcpu);
-			reset_state->r0 = vcpu_get_reg(host_vcpu, 0);
+			reset_state->pc = READ_ONCE(host_vcpu->arch.ctxt.regs.pc);
+			reset_state->r0 = READ_ONCE(host_vcpu->arch.ctxt.regs.regs[0]);
 			reset_state->reset = true;
 			shadow_vcpu->arch.pkvm.power_state = PSCI_0_2_AFFINITY_LEVEL_ON_PENDING;
 		}
@@ -662,7 +664,7 @@ int __pkvm_init_shadow(struct kvm *kvm,
 		return ret;
 
 	/* Ensure the host has donated enough memory for the shadow structs. */
-	nr_vcpus = kvm->created_vcpus;
+	nr_vcpus = READ_ONCE(kvm->created_vcpus);
 	ret = check_shadow_size(nr_vcpus, shadow_size);
 	if (ret)
 		goto err;
@@ -842,8 +844,11 @@ void pkvm_reset_vcpu(struct kvm_vcpu *vcpu)
 		int i;
 
 		/* X0 - X14 provided by the VMM (preserved) */
-		for (i = 0; i <= 14; ++i)
-			vcpu_set_reg(vcpu, i, vcpu_get_reg(host_vcpu, i));
+		for (i = 0; i <= 14; ++i) {
+			u64 reg = READ_ONCE(host_vcpu->arch.ctxt.regs.regs[i]);
+
+			vcpu_set_reg(vcpu, i, reg);
+		}
 
 		/* X15: Boot protocol version */
 		vcpu_set_reg(vcpu, 15, 0);
