@@ -145,21 +145,6 @@ enum s2mpu_version {
 	S2MPU_VERSION_9 = 0x20000000,
 };
 
-enum s2mpu_power_state {
-	S2MPU_POWER_ALWAYS_ON = 0,
-	S2MPU_POWER_ON,
-	S2MPU_POWER_OFF,
-};
-
-struct s2mpu {
-	phys_addr_t pa;
-	void __iomem *va;
-	u32 version;
-	enum s2mpu_power_state power_state;
-	u32 power_domain_id;
-	u32 context_cfg_valid_vid;
-};
-
 enum mpt_prot {
 	MPT_PROT_NONE	= 0,
 	MPT_PROT_R	= BIT(0),
@@ -175,19 +160,20 @@ static const u64 mpt_prot_doubleword[] = {
 	[MPT_PROT_RW]   = 0xffffffffffffffff,
 };
 
+enum mpt_update_flags {
+	MPT_UPDATE_L1 = BIT(0),
+	MPT_UPDATE_L2 = BIT(1),
+};
+
 struct fmpt {
 	u32 *smpt;
 	bool gran_1g;
 	enum mpt_prot prot;
+	enum mpt_update_flags flags;
 };
 
 struct mpt {
 	struct fmpt fmpt[NR_GIGABYTES];
-};
-
-enum mpt_update_flags {
-	MPT_UPDATE_L1 = BIT(0),
-	MPT_UPDATE_L2 = BIT(1),
 };
 
 /* Set protection bits of SMPT in a given range without using memset. */
@@ -269,24 +255,28 @@ static inline bool __is_smpt_uniform(u32 *smpt, enum mpt_prot prot)
  * Returns flags specifying whether L1/L2 changes need to be made visible
  * to the device.
  */
-static inline enum mpt_update_flags
-__set_fmpt_range(struct fmpt *fmpt, size_t start_gb_byte, size_t end_gb_byte,
-		 enum mpt_prot prot)
+static inline void __set_fmpt_range(struct fmpt *fmpt, size_t start_gb_byte,
+				    size_t end_gb_byte, enum mpt_prot prot)
 {
 	if (start_gb_byte == 0 && end_gb_byte >= SZ_1G) {
 		/* Update covers the entire GB region. */
-		if (fmpt->gran_1g && fmpt->prot == prot)
-			return 0;
+		if (fmpt->gran_1g && fmpt->prot == prot) {
+			fmpt->flags = 0;
+			return;
+		}
 
 		fmpt->gran_1g = true;
 		fmpt->prot = prot;
-		return MPT_UPDATE_L1;
+		fmpt->flags = MPT_UPDATE_L1;
+		return;
 	}
 
 	if (fmpt->gran_1g) {
 		/* GB region currently uses 1G mapping. */
-		if (fmpt->prot == prot)
-			return 0;
+		if (fmpt->prot == prot) {
+			fmpt->flags = 0;
+			return;
+		}
 
 		/*
 		 * Range has different mapping than the rest of the GB.
@@ -296,19 +286,22 @@ __set_fmpt_range(struct fmpt *fmpt, size_t start_gb_byte, size_t end_gb_byte,
 		__set_smpt_range(fmpt->smpt, 0, start_gb_byte, fmpt->prot);
 		__set_smpt_range(fmpt->smpt, start_gb_byte, end_gb_byte, prot);
 		__set_smpt_range(fmpt->smpt, end_gb_byte, SZ_1G, fmpt->prot);
-		return MPT_UPDATE_L1 | MPT_UPDATE_L2;
+		fmpt->flags = MPT_UPDATE_L1 | MPT_UPDATE_L2;
+		return;
 	}
 
 	/* GB region currently uses PAGE_SIZE mapping. */
 	__set_smpt_range(fmpt->smpt, start_gb_byte, end_gb_byte, prot);
 
 	/* Check if the entire GB region has the same prot bits. */
-	if (!__is_smpt_uniform(fmpt->smpt, prot))
-		return MPT_UPDATE_L2;
+	if (!__is_smpt_uniform(fmpt->smpt, prot)) {
+		fmpt->flags = MPT_UPDATE_L2;
+		return;
+	}
 
 	fmpt->gran_1g = true;
 	fmpt->prot = prot;
-	return MPT_UPDATE_L1;
+	fmpt->flags = MPT_UPDATE_L1;
 }
 
 #endif /* __ARM64_KVM_S2MPU_H__ */
