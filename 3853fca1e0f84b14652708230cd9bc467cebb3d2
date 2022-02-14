@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88aacf86_87418fd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-02-14T08:21:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "70a721c8_47a9b1ec",
+      "revId": "3853fca1e0f84b14652708230cd9bc467cebb3d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e05ed890_7afd4f60",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "It technically works because struct snd_soc_card is always used as a pointer. So extending it is fine. Also, this variable doesn\u0027t change any existing APIs, so there\u0027s no requirement from drivers to do anything differently.\n\nI did verify this by boot testing and verifying audio on a Pixel 5. Presubmit tests this too.",
       "parentUuid": "e05ed890_7afd4f60",
+      "range": {
+        "startLine": 1165,
+        "startChar": 0,
+        "endLine": 1165,
+        "endChar": 20
+      },
+      "revId": "3853fca1e0f84b14652708230cd9bc467cebb3d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b88329_3981bbbc",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1165,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-02-14T08:21:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0ffead11_659e3416",
       "range": {
         "startLine": 1165,
         "startChar": 0,
