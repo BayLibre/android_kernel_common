@@ -33,6 +33,24 @@
       "message": "also this doesn\u0027t resolve the cases as follow\n\n2 tasks running on the same rq:\n1) clamped task A --\u003e util.avg 200 when running without uclamp.max, bigger than 200 with uclamp.max\n2) unclamped task B --\u003e util.avg 200\n\nIf there is no uclamp setting A is running shorter and its util.avg is 200 and cfs_rq is 400. But when clamped A such its util.avg grows further beyond 200 and when B enqueued, the util of rq and thus the freq could be spike up to the very inefficient frequency point.",
       "revId": "34c542db4e4f0e0390457f37e53608236e317469",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61e553f6_56566446",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2022-02-15T18:48:07Z",
+      "side": 1,
+      "message": "I am aware of this problem. It manifests when using affinities too. For example when a task whose util_avg \u003e capacity_of(little_cpu) then the utilization will grow higher as it won\u0027t see idle time. When it moves back to foreground/top-app, it\u0027ll cause a spike in frequency request.\n\nJust to confirm, you\u0027re saying this is a severe problem when using my patch or is it based on previous problems you encountered and you haven\u0027t tried the patch yet? It\u0027d be good to know how much power and perf you regain using my proposal and how much far are we from the best you achieved with your own solution.\n\nI need to think more about this. By design, uclamp should keep the actual utilization signals intact at task and rq levels. We only apply it when we want to make a decision. We need to be careful not to break behavior in other scheduler paths.\n\nSadly though, utilization signal breaks once it goes beyond the capacity of the cpu or more generically of the performance point we are running at - like the uclamp_max scenario you mentioned.",
+      "parentUuid": "2360acdb_c4eaa9b6",
+      "revId": "34c542db4e4f0e0390457f37e53608236e317469",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
