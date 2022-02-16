@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eba27f90_bb72b561",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-16T01:20:22Z",
+      "side": 1,
+      "message": "In this patchset I added the functionality to populate the \"reply errors\" in the extended error from the \"from thread\".",
+      "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89cb8658_4c8e45e8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1685,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-16T01:20:22Z",
+      "side": 1,
+      "message": "@tkjos, I\u0027m not sure how the transaction stack works here. Do I really need to traverse in order to get the \"from\" thread?",
+      "range": {
+        "startLine": 1685,
+        "startChar": 8,
+        "endLine": 1685,
+        "endChar": 9
+      },
+      "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42bae0df_4e35c4e1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 3179,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-16T01:20:22Z",
+      "side": 1,
+      "message": "slightly changed this to avoid the \": \u003cempty\u003e\" case.",
+      "range": {
+        "startLine": 3179,
+        "startChar": 25,
+        "endLine": 3179,
+        "endChar": 27
+      },
+      "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e634100f_2ef756b7",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 5212,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-16T01:20:22Z",
+      "side": 1,
+      "message": "I also added this \"clear\" after reading. It feels this would be expected from this api.",
+      "range": {
+        "startLine": 5212,
+        "startChar": 1,
+        "endLine": 5212,
+        "endChar": 28
+      },
+      "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
