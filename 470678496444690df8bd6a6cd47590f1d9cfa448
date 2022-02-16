@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d28a3a2_55c88ef1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1685,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-16T19:03:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89cb8658_4c8e45e8",
+      "range": {
+        "startLine": 1685,
+        "startChar": 8,
+        "endLine": 1685,
+        "endChar": 9
+      },
+      "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7fc4998_a96a372e",
@@ -54,6 +78,24 @@
       "writtenOn": "2022-02-16T18:43:09Z",
       "side": 1,
       "message": "The !from case is dealing with the case where the \"from\" process has died -- that\u0027s how it gets set to NULL. So you don\u0027t need to iterate -- if from\u003d\u003dNULL here then there is no one to send the extended error to. Sending it to tasks further down the stack doesn\u0027t make sense since from their PoV, it is a failure due to death of a process (which has already been processed -- hence the NULL value here).\n\nSo I think this can just be:\n```\n  static void binder_set_from_extended_error(struct binder_transaction *t,\n\t\t\t\t\t   struct binder_extended_error *ee)\n  {\n    struct binder_thread *from \u003d binder_get_txn_from_and_acq_inner(t);\n\n    if (from and from-\u003eee.command \u003d\u003d BR_OK)\n      from-\u003eee \u003d *ee;\n    binder_inner_proc_unlock(from-\u003eproc);\n    binder_thread_dec_tmpref(from);\n  }\n```",
+      "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf6db4e1_40ec0687",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1688,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-16T19:03:46Z",
+      "side": 1,
+      "message": "great, thanks!",
+      "parentUuid": "a7fc4998_a96a372e",
       "revId": "470678496444690df8bd6a6cd47590f1d9cfa448",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
