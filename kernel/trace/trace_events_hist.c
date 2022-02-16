@@ -2416,6 +2416,8 @@ static struct hist_field *parse_unary(struct hist_trigger_data *hist_data,
 		(HIST_FIELD_FL_TIMESTAMP | HIST_FIELD_FL_TIMESTAMP_USECS);
 	expr->fn = hist_field_unary_minus;
 	expr->operands[0] = operand1;
+	expr->size = operand1->size;
+	expr->is_signed = operand1->is_signed;
 	expr->operator = FIELD_OP_UNARY_MINUS;
 	expr->name = expr_str(expr, 0);
 	expr->type = kstrdup(operand1->type, GFP_KERNEL);
@@ -2590,9 +2592,15 @@ static struct hist_field *parse_expr(struct hist_trigger_data *hist_data,
 	expr->operands[0] = operand1;
 	expr->operands[1] = operand2;
 
+<<<<<<< HEAD   (7a3edd FROMLIST: kasan: improve vmalloc tests)
 	if (field_op == FIELD_OP_DIV &&
 			operand2_flags & HIST_FIELD_FL_CONST) {
 		u64 divisor = var2 ? var2->constant : operand2->constant;
+=======
+	/* The operand sizes should be the same, so just pick one */
+	expr->size = operand1->size;
+	expr->is_signed = operand1->is_signed;
+>>>>>>> BRANCH (3969ab Linux 5.10.101)
 
 		if (!divisor) {
 			hist_err(file->tr, HIST_ERR_DIVISION_BY_ZERO, errpos(str));
