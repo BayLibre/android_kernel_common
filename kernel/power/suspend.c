@@ -139,9 +139,12 @@ static void s2idle_loop(void)
 			break;
 		}
 
+<<<<<<< HEAD   (86e617 Merge 5.10.100 into android12-5.10-lts)
 		pm_wakeup_clear(false);
 		clear_wakeup_reasons();
 
+=======
+>>>>>>> BRANCH (3969ab Linux 5.10.101)
 		s2idle_enter();
 	}
 
