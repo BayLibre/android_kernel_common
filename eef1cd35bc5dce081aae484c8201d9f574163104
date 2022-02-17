@@ -16,6 +16,24 @@
       "message": "Is there a reason this needs to be done here instead of inside the hook implementation?",
       "revId": "eef1cd35bc5dce081aae484c8201d9f574163104",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "977eff03_f31c7a64",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7482,
+      "author": {
+        "id": 1781415
+      },
+      "writtenOn": "2022-02-17T18:39:56Z",
+      "side": 1,
+      "message": "This was how it was done in 5.10 ACK .\n\nBut you are right -we could move this within the hook. set_next_entity() is EXPORTED as well.\n\nWill try it and abandon this change once confirmed too be working.",
+      "parentUuid": "f0360d85_8002e4c8",
+      "revId": "eef1cd35bc5dce081aae484c8201d9f574163104",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
