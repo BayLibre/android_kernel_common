@@ -16,6 +16,23 @@
       "message": "This CL supercedes https://android-review.googlesource.com/c/kernel/common/+/1574160.",
       "revId": "5c28eaff0f0dba8ec192f429b421f8d465981300",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca652d46_a5374210",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 1902326
+      },
+      "writtenOn": "2022-02-17T19:48:26Z",
+      "side": 1,
+      "message": "Recreating @trong\u0027s [comment from the original CL](https://android-review.googlesource.com/c/kernel/common/+/1574160/comment/762c9430_d1792710/):\n\n\u003e In what situation would this be NULL? I would expect that channel is present if we are handling an event. (Same question for other trace_trusty_ipc_*)\n\n@arve This is a question for you based on the original CL. I don\u0027t have enough context to know if it would be valid to skip the null check on `dn-\u003echan`.",
+      "revId": "5c28eaff0f0dba8ec192f429b421f8d465981300",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
