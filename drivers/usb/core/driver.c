@@ -1249,6 +1249,7 @@ static int usb_suspend_device(struct usb_device *udev, pm_message_t msg)
 	if (udev->dev.driver)
 		udriver = to_usb_device_driver(udev->dev.driver);
 	else {
+		pr_err("[kyle] usb_suspend_device: clear do_remote_wakeup\n");
 		udev->do_remote_wakeup = 0;
 		udriver = &usb_generic_driver;
 	}
@@ -1553,8 +1554,10 @@ static void choose_wakeup(struct usb_device *udev, pm_message_t msg)
 	 * autosuspended then its current wakeup setting is okay.
 	 */
 	if (msg.event == PM_EVENT_FREEZE || msg.event == PM_EVENT_QUIESCE) {
-		if (udev->state != USB_STATE_SUSPENDED)
+		if (udev->state != USB_STATE_SUSPENDED) {
+			pr_err("[kyle] choose_wakeup: clear do_remote_wakeup\n");
 			udev->do_remote_wakeup = 0;
+		}
 		return;
 	}
 
@@ -1562,12 +1565,17 @@ static void choose_wakeup(struct usb_device *udev, pm_message_t msg)
 	 * actually want it.
 	 */
 	w = device_may_wakeup(&udev->dev);
+	//if (udev->descriptor.idVendor == 0x18d1 && udev->descriptor.idProduct == 0x9480) {
+	//	pr_err("[kyle] force write remote_wakeup\n");
+	//	w = 1;
+	//}
 
 	/* If the device is autosuspended with the wrong wakeup setting,
 	 * autoresume now so the setting can be changed.
 	 */
 	if (udev->state == USB_STATE_SUSPENDED && w != udev->do_remote_wakeup)
 		pm_runtime_resume(&udev->dev);
+	pr_err("[kyle] choose_wakeup: set do_remote_wakeup %d to %d\n", udev->do_remote_wakeup, w);
 	udev->do_remote_wakeup = w;
 }
 
@@ -1917,6 +1925,12 @@ static int autosuspend_check(struct usb_device *udev)
 				return -EBUSY;
 			w |= intf->needs_remote_wakeup;
 
+			//kyle
+			//if (udev->descriptor.idVendor == 0x18d1 &&
+			//    udev->descriptor.idProduct == 0x9480) {
+			//	pr_err("[kyle] autosuspend_check: force write do_remote_wakeup 1\n");
+			//	w |= 1;
+			//}
 			/* Don't allow autosuspend if the device will need
 			 * a reset-resume and any of its interface drivers
 			 * doesn't include support or needs remote wakeup.
@@ -1932,7 +1946,8 @@ static int autosuspend_check(struct usb_device *udev)
 		}
 	}
 	if (w && !device_can_wakeup(&udev->dev)) {
-		dev_dbg(&udev->dev, "remote wakeup needed for autosuspend\n");
+		dev_err(&udev->dev, "remote wakeup needed for autosuspend\n");
+		// kyle: comment out the return if force remote wakeup
 		return -EOPNOTSUPP;
 	}
 
@@ -1943,10 +1958,12 @@ static int autosuspend_check(struct usb_device *udev)
 	 */
 	if (w && udev->parent == udev->bus->root_hub &&
 			bus_to_hcd(udev->bus)->cant_recv_wakeups) {
-		dev_dbg(&udev->dev, "HCD doesn't handle wakeup requests\n");
+		dev_err(&udev->dev, "HCD doesn't handle wakeup requests\n");
+		// kyle: comment out the return if force remote wakeup
 		return -EOPNOTSUPP;
 	}
 
+	pr_err("[kyle] autosuspend_check: set do_remote_wakeup %d to %d\n", udev->do_remote_wakeup, w);
 	udev->do_remote_wakeup = w;
 	return 0;
 }

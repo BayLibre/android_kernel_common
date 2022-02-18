@@ -3188,12 +3188,13 @@ EXPORT_SYMBOL_GPL(usb_enable_ltm);
  */
 static int usb_enable_remote_wakeup(struct usb_device *udev)
 {
-	if (udev->speed < USB_SPEED_SUPER)
+	if (udev->speed < USB_SPEED_SUPER) {
+		pr_err("[kyle] sent ctrl_req\n");
 		return usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
 				USB_REQ_SET_FEATURE, USB_RECIP_DEVICE,
 				USB_DEVICE_REMOTE_WAKEUP, 0, NULL, 0,
 				USB_CTRL_SET_TIMEOUT);
-	else
+	} else
 		return usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
 				USB_REQ_SET_FEATURE, USB_RECIP_INTERFACE,
 				USB_INTRF_FUNC_SUSPEND,
@@ -3291,6 +3292,7 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
 	int		port1 = udev->portnum;
 	int		status;
 	bool		really_suspend = true;
+	bool skip = true;
 
 	usb_lock_port(port_dev);
 
@@ -3300,10 +3302,10 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
 	 * NOTE:  OTG devices may issue remote wakeup (or SRP) even when
 	 * we don't explicitly enable it here.
 	 */
-	if (udev->do_remote_wakeup) {
+	if (udev->do_remote_wakeup && !skip) {
 		status = usb_enable_remote_wakeup(udev);
 		if (status) {
-			dev_dbg(&udev->dev, "won't remote wakeup, status %d\n",
+			dev_err(&udev->dev, "won't remote wakeup, status %d\n",
 					status);
 			/* bail if autosuspend is requested */
 			if (PMSG_IS_AUTO(msg))
@@ -3360,9 +3362,9 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
 		if (!PMSG_IS_AUTO(msg))
 			status = 0;
 	} else {
-		dev_dbg(&udev->dev, "usb %ssuspend, wakeup %d\n",
+		dev_err(&udev->dev, "usb %ssuspend, wakeup %d, really_suspend %d\n",
 				(PMSG_IS_AUTO(msg) ? "auto-" : ""),
-				udev->do_remote_wakeup);
+				udev->do_remote_wakeup, really_suspend);
 		if (really_suspend) {
 			udev->port_is_suspended = 1;
 
