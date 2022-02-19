@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cecedcd_cb1646b4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-19T00:37:29Z",
+      "side": 1,
+      "message": "Are there any cases where we need both of these? Would it be better to just have thread-\u003eee and get rid of the local? If you like the conciseness of \"ee\", you could have a local pointer and then set it here as:\n\n  ee \u003d \u0026thread-\u003eee;\n  \nThere\u0027s also a third copy (e-\u003eee) that looks like it isn\u0027t initialized anywhere in the non-error case. It seems like we don\u0027t need three copies of it.",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97ddba83_879402a5",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3596,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-19T00:37:29Z",
+      "side": 1,
+      "message": "How does e-\u003eee get initialized in the non-error case? Do you need another binder_reset_extended_error() up at line 2915?",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86076160_b9dd54a8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3618,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-19T00:37:29Z",
+      "side": 1,
+      "message": "not needed if you get rid of the local (see comment above)",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4144789_40b810cd",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-02-19T00:37:29Z",
+      "side": 1,
+      "message": "Has this been verified to work with the userspace changes?",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
