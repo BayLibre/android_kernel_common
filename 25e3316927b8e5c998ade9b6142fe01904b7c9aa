@@ -16,6 +16,24 @@
       "message": "Please add node-\u003edebug_id to the parameter list so no one needs to attach to both of these and we can use this hook in future releases and drop the original one.",
       "revId": "25e3316927b8e5c998ade9b6142fe01904b7c9aa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4edd7e4b_363e8581",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2526,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2022-02-20T10:00:06Z",
+      "side": 1,
+      "message": "Done！\nAnd I add a new hook \"trace_android_vh_binder_select_worklist_ilocked\" because we can\u0027t change list point in ”trace_android_vh_binder_thread_read“, it\u0027s too late. The work may be added in our own list before, so current will goto line 4053 and loop again and again😞",
+      "parentUuid": "f9b59217_798c5054",
+      "revId": "25e3316927b8e5c998ade9b6142fe01904b7c9aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
