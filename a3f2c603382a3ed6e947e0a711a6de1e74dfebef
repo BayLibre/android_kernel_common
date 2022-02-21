@@ -33,6 +33,24 @@
       "message": "I checked the spec and this is correct. One minor nit, considering we\u0027re grouping calls of the same time in this function (i.e., PSCI together), it might be nicer to move this up with the other PSCI cases, maybe even before the CPU_ON.",
       "revId": "a3f2c603382a3ed6e947e0a711a6de1e74dfebef",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee9d950b_af470ded",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-21T16:20:11Z",
+      "side": 1,
+      "message": "Possibly, although I think it might be even clearer if we organised the functions in the order of how many arguments they take. e.g. have the \"n\u003d1\" set first, then \"n\u003d2\" etc.\n\nIn any case, I\u0027d prefer to leave this as-is for now and we can leave the nits for the upstream list (as I bet there will be many more!).",
+      "parentUuid": "776c4aca_3e1ac42d",
+      "revId": "a3f2c603382a3ed6e947e0a711a6de1e74dfebef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
