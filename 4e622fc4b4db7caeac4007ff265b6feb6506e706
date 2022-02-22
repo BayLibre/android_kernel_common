@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f1ebe7d_0c7ec1c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-22T18:29:16Z",
+      "side": 1,
+      "message": "I would say just merge those new helpers into the existing functions. The kernel\u0027s page_ref_xxx() helpers are already using atomic ops, so it would make sense to do the same at EL2 for consitency.",
+      "revId": "4e622fc4b4db7caeac4007ff265b6feb6506e706",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
