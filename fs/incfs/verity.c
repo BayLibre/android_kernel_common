@@ -59,7 +59,7 @@ static int incfs_get_root_hash(struct file *filp, u8 *root_hash)
 {
 	struct data_file *df = get_incfs_data_file(filp);
 
-	if (!df)
+	if (!df || !df->df_hash_tree)
 		return -EINVAL;
 
 	memcpy(root_hash, df->df_hash_tree->root_hash,
