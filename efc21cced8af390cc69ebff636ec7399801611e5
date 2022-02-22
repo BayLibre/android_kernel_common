@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e17a0ee_c5a12167",
+        "filename": "drivers/trusty/trusty-log.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1206463
+      },
+      "writtenOn": "2022-02-22T08:55:43Z",
+      "side": 0,
+      "message": "Hi Marco,\n\nI picked this CL locally and found after removing this \"trusty_dump_logs(s);\", no trusty-log would be dumped to either dmesg or logcat. This behavior seems not correct even though I can dump the logs from \"/dev/trusty-log0\". Is this behavior desired? Or do I miss anything?\n\nI would appreciate if you can post your thoughts here.",
+      "range": {
+        "startLine": 482,
+        "startChar": 1,
+        "endLine": 482,
+        "endChar": 21
+      },
+      "revId": "efc21cced8af390cc69ebff636ec7399801611e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
