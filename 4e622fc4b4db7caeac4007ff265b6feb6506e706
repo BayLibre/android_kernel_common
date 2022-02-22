@@ -16,6 +16,29 @@
       "message": "I would say just merge those new helpers into the existing functions. The kernel\u0027s page_ref_xxx() helpers are already using atomic ops, so it would make sense to do the same at EL2 for consitency.",
       "revId": "4e622fc4b4db7caeac4007ff265b6feb6506e706",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dfc6b06_b6fc1ca5",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/memory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-02-22T18:38:05Z",
+      "side": 1,
+      "message": "Out of curiosity, have you tried re-using asm/atomic.h directly? It\u0027s a shame we can\u0027t use it as it makes use of fancy LSE instructions etc ...",
+      "range": {
+        "startLine": 72,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 2
+      },
+      "revId": "4e622fc4b4db7caeac4007ff265b6feb6506e706",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
