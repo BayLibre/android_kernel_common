@@ -70,6 +70,30 @@
       },
       "revId": "9bba623451015b4093597ef4b025dba3a2458330",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99994f98_a313869d",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2022-02-23T10:30:58Z",
+      "side": 1,
+      "message": "I understand and I agree. It seems that it would make sense as a patch following this one, which I\u0027ll do.\n\nThat way, the hypercall itself would decide how to deal with protected vs unprotected, and ensure that no potentially unsafe addresses are accessed.\n\nDoes that sound like a good approach to you?",
+      "parentUuid": "7c77d148_40959c9a",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 42
+      },
+      "revId": "9bba623451015b4093597ef4b025dba3a2458330",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
