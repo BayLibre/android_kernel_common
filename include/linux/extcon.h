@@ -170,7 +170,7 @@ struct extcon_dev;
  * Following APIs get the connected state of each external connector.
  * The 'id' argument indicates the defined external connector.
  */
-int extcon_get_state(struct extcon_dev *edev, unsigned int id);
+int extcon_get_state(struct extcon_dev *edev, const unsigned int id);
 
 /*
  * Following APIs get the property of each external connector.
@@ -230,7 +230,7 @@ struct extcon_dev *extcon_get_edev_by_phandle(struct device *dev,
 const char *extcon_get_edev_name(struct extcon_dev *edev);
 
 #else /* CONFIG_EXTCON */
-static inline int extcon_get_state(struct extcon_dev *edev, unsigned int id)
+static inline int extcon_get_state(struct extcon_dev *edev, const unsigned int id)
 {
 	return 0;
 }
