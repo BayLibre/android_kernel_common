@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832d0760_543be9ec",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2022-02-23T09:34:44Z",
+      "side": 1,
+      "message": "I can\u0027t say I\u0027m massively in love with this.\n\nMy main issue is that there is some value in having a \u0027load\u0027 hypercall even for non-protected (for which this handle means nothing), and that it should be eventually be fused with the vgic call just below it. The vgic hypercall also passes pointers around. Why is it OK to do it then?",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 42
+      },
+      "revId": "9bba623451015b4093597ef4b025dba3a2458330",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
