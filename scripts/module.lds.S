@@ -50,6 +50,7 @@ SECTIONS {
 	}
 
 	.rodata : {
+<<<<<<< HEAD   (add227 Merge branch 'android12-5.10' into `android12-5.10-lts`)
 		*(.rodata.._start)
 		*(.rodata .rodata.[0-9a-zA-Z_]*)
 		*(.rodata..L*)
@@ -73,6 +74,13 @@ SECTIONS {
 		*(.text.._end)
 		*(.text.._fips140_unchecked)
 	}
+=======
+		*(.rodata .rodata.[0-9a-zA-Z_]*)
+		*(.rodata..L*)
+	}
+
+	.text : { *(.text .text.[0-9a-zA-Z_]*) }
+>>>>>>> BRANCH (47667e Linux 5.10.102)
 #endif
 }
 
