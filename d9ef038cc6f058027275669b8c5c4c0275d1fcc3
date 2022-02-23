@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a618176_d65ba24c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-23T02:25:04Z",
+      "side": 1,
+      "message": "Previous patches keep a single copy as suggested: `ee \u003d \u0026thread-\u003eee;`. However, this became a problem when populating the error on the target thread, as it\u0027s also accessed from a different thread/process.\n\nFor this reason I went back to the 3 copies (local, thread and transaction log) which is what the driver currently uses.\n\nI suppose there are other alternatives as locking during each `binder_set_extended_error()` or maybe reusing the `transaction_log-\u003eee` instead of the local `ee`. I doubt those are better solutions though.",
+      "parentUuid": "4cecedcd_cb1646b4",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97ddba83_879402a5",
         "filename": "drivers/android/binder.c",
         "patchSetId": 13
@@ -31,6 +49,24 @@
       "writtenOn": "2022-02-19T00:37:29Z",
       "side": 1,
       "message": "How does e-\u003eee get initialized in the non-error case? Do you need another binder_reset_extended_error() up at line 2915?",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b6f1bbf_29128cfe",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3596,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-23T02:25:04Z",
+      "side": 1,
+      "message": "I was relying on the `memset(0)` done when calling `binder_transaction_log_add()` for these. However, this doesn\u0027t populate the `BR_OK`, so technically it could be incorrect even though harmless. I\u0027ll initialize it to keep it consistent.",
+      "parentUuid": "97ddba83_879402a5",
       "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -65,6 +101,24 @@
       "writtenOn": "2022-02-19T00:37:29Z",
       "side": 1,
       "message": "Has this been verified to work with the userspace changes?",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90c711b9_aec91502",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-02-23T02:25:04Z",
+      "side": 1,
+      "message": "yes I\u0027ve tested this on qemu and pixel 6.",
+      "parentUuid": "c4144789_40b810cd",
       "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
