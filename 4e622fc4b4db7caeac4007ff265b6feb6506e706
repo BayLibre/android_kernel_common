@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bba597f7_bff948d3",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/memory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-24T13:29:27Z",
+      "side": 1,
+      "message": "How do these interact with the non-atomic versions? For example, if one CPU does hyp_page_ref_dec() and another does hyp_page_ref_dec_atomic() at the same time, then I think you can lose one of the decrements.\n\nSo I think all the refcount manipulation needs to be locked or atomic -- we can\u0027t mix the two like this.",
+      "range": {
+        "startLine": 61,
+        "startChar": 18,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "4e622fc4b4db7caeac4007ff265b6feb6506e706",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6dfc6b06_b6fc1ca5",
         "filename": "arch/arm64/kvm/hyp/include/nvhe/memory.h",
         "patchSetId": 2
