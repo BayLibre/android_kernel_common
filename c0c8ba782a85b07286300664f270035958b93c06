@@ -70,6 +70,30 @@
       },
       "revId": "c0c8ba782a85b07286300664f270035958b93c06",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27f43b1e_7d44cca5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-02-24T13:55:01Z",
+      "side": 1,
+      "message": "I think two helpers is a good idea. Linux quite often uses this pattern, and uses \"flush\" and \"sync\" terminology, so you could have:\n\n__sync_vcpu_state(struct kvm_vcpu *); // Loads host state into vCPU\n__flush_vcpu_state(struct kvm_vcpu *); // Store vCPU state back into the host",
+      "parentUuid": "eb3d07d5_e1be6391",
+      "range": {
+        "startLine": 687,
+        "startChar": 2,
+        "endLine": 687,
+        "endChar": 19
+      },
+      "revId": "c0c8ba782a85b07286300664f270035958b93c06",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
