@@ -46,6 +46,30 @@
       },
       "revId": "c0c8ba782a85b07286300664f270035958b93c06",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb3d07d5_e1be6391",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2022-02-24T06:48:04Z",
+      "side": 1,
+      "message": "Actually no, at least not that straightforward. It takes two parameters\t__sync_vcpu_state(from, to), and they could be (host, shadow) or vice versa depending on where/when it\u0027s called.\n\nI could pass it one vcpu, but then we would need another parameter for the direction. Or could write two helper functions (sync_from, sync_to), than then call this.\n\nWhat do you think?",
+      "parentUuid": "33c20a86_fece16a4",
+      "range": {
+        "startLine": 687,
+        "startChar": 2,
+        "endLine": 687,
+        "endChar": 19
+      },
+      "revId": "c0c8ba782a85b07286300664f270035958b93c06",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
