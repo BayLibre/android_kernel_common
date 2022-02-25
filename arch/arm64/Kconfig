@@ -2055,6 +2055,12 @@ choice
 	  Choose how the kernel will handle the provided default kernel
 	  command line string.
 
+config CMDLINE_EXTEND
+	bool "Extend bootloader kernel arguments"
+	help
+	  The command-line arguments provided by the boot loader will be
+	  prepended to the default kernel command string.
+
 config CMDLINE_FROM_BOOTLOADER
 	bool "Use bootloader kernel arguments if available"
 	help
