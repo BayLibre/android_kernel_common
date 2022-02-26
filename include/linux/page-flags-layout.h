@@ -6,12 +6,12 @@
 #include <generated/bounds.h>
 
 /*
- * When a memory allocation must conform to specific limitations (such
- * as being suitable for DMA) the caller will pass in hints to the
- * allocator in the gfp_mask, in the zone modifier bits.  These bits
- * are used to select a priority ordered list of memory zones which
- * match the requested limits. See gfp_zone() in include/linux/gfp.h
- */
+* When a memory allocation must conform to specific limitations (such
+* as being suitable for DMA) the caller will pass in hints to the
+* allocator in the gfp_mask, in the zone modifier bits.  These bits
+* are used to select a priority ordered list of memory zones which
+* match the requested limits. See gfp_zone() in include/linux/gfp.h
+*/
 #if MAX_NR_ZONES < 2
 #define ZONES_SHIFT 0
 #elif MAX_NR_ZONES <= 2
@@ -33,20 +33,20 @@
 #endif /* CONFIG_SPARSEMEM */
 
 /*
- * page->flags layout:
- *
- * There are five possibilities for how page->flags get laid out.  The first
- * pair is for the normal case without sparsemem. The second pair is for
- * sparsemem when there is plenty of space for node and section information.
- * The last is when there is insufficient space in page->flags and a separate
- * lookup is necessary.
- *
- * No sparsemem or sparsemem vmemmap: |       NODE     | ZONE |             ... | FLAGS |
- *      " plus space for last_cpupid: |       NODE     | ZONE | LAST_CPUPID ... | FLAGS |
- * classic sparse with space for node:| SECTION | NODE | ZONE |             ... | FLAGS |
- *      " plus space for last_cpupid: | SECTION | NODE | ZONE | LAST_CPUPID ... | FLAGS |
- * classic sparse no space for node:  | SECTION |     ZONE    | ... | FLAGS |
- */
+* page->flags layout:
+*
+* There are five possibilities for how page->flags get laid out.  The first
+* pair is for the normal case without sparsemem. The second pair is for
+* sparsemem when there is plenty of space for node and section information.
+* The last is when there is insufficient space in page->flags and a separate
+* lookup is necessary.
+*
+* No sparsemem or sparsemem vmemmap: |       NODE     | ZONE |             ... | FLAGS |
+*      " plus space for last_cpupid: |       NODE     | ZONE | LAST_CPUPID ... | FLAGS |
+* classic sparse with space for node:| SECTION | NODE | ZONE |             ... | FLAGS |
+*      " plus space for last_cpupid: | SECTION | NODE | ZONE | LAST_CPUPID ... | FLAGS |
+* classic sparse no space for node:  | SECTION |     ZONE    | ... | FLAGS |
+*/
 #if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
 #define SECTIONS_WIDTH		SECTIONS_SHIFT
 #else
@@ -55,7 +55,8 @@
 
 #define ZONES_WIDTH		ZONES_SHIFT
 
-#if SECTIONS_WIDTH+ZONES_WIDTH+NODES_SHIFT <= BITS_PER_LONG - NR_PAGEFLAGS
+#if SECTIONS_WIDTH+ZONES_WIDTH+NODES_SHIFT+LRU_GEN_WIDTH+LRU_REFS_WIDTH \
+<= BITS_PER_LONG - NR_PAGEFLAGS
 #define NODES_WIDTH		NODES_SHIFT
 #else
 #ifdef CONFIG_SPARSEMEM_VMEMMAP
@@ -76,7 +77,8 @@
 #define LAST_CPUPID_SHIFT 0
 #endif
 
-#if SECTIONS_WIDTH+ZONES_WIDTH+NODES_SHIFT+LAST_CPUPID_SHIFT <= BITS_PER_LONG - NR_PAGEFLAGS
+#if SECTIONS_WIDTH+ZONES_WIDTH+NODES_WIDTH+LRU_GEN_WIDTH+LRU_REFS_WIDTH+ \
+	LAST_CPUPID_SHIFT <= BITS_PER_LONG - NR_PAGEFLAGS
 #define LAST_CPUPID_WIDTH LAST_CPUPID_SHIFT
 #else
 #define LAST_CPUPID_WIDTH 0
@@ -84,8 +86,8 @@
 
 #ifdef CONFIG_KASAN_SW_TAGS
 #define KASAN_TAG_WIDTH 8
-#if SECTIONS_WIDTH+NODES_WIDTH+ZONES_WIDTH+LAST_CPUPID_WIDTH+KASAN_TAG_WIDTH \
-	> BITS_PER_LONG - NR_PAGEFLAGS
+#if SECTIONS_WIDTH+NODES_WIDTH+ZONES_WIDTH+LLRU_GEN_WIDTH+LRU_REFS_WIDTH+ \
+	LAST_CPUPID_WIDTH+KASAN_TAG_WIDTH > BITS_PER_LONG - NR_PAGEFLAGS
 #error "KASAN: not enough bits in page flags for tag"
 #endif
 #else
