@@ -16,6 +16,23 @@
       "message": "I was under the impression that we deliberately wanted to allow these baked-in arguments to be overridden by the bootloader.",
       "revId": "4a29e993579f7b7c5189a8797db13f61e2e13ade",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1195911d_6529fd6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-02-28T17:32:06Z",
+      "side": 1,
+      "message": "Yes, that\u0027s correct. We want the built-in command line to be overridable. Therefore, the bootloader\u0027s options should come last, and always take priority over the built-in command line.",
+      "revId": "4a29e993579f7b7c5189a8797db13f61e2e13ade",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
