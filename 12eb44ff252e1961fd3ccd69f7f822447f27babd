@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc4876c_2e8060bf",
+        "filename": "include/linux/dma-direct.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1846152
+      },
+      "writtenOn": "2022-02-28T20:29:19Z",
+      "side": 1,
+      "message": "why are we adding the #ifdef CONFIG_NUMA here? for_each_node seems to be defined even when numa is disabled.",
+      "revId": "12eb44ff252e1961fd3ccd69f7f822447f27babd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
