@@ -2389,7 +2389,6 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
 	fraction[1] = fp;
 	denominator = ap + fp;
 out:
-	trace_android_vh_tune_scan_type((char *)(&scan_balance));
 	for_each_evictable_lru(lru) {
 		int file = is_file_lru(lru);
 		unsigned long lruvec_size;
@@ -2400,6 +2399,7 @@ out:
 		mem_cgroup_protection(sc->target_mem_cgroup, memcg,
 				      &min, &low);
 
+		trace_android_vh_tune_scan_type((char *)(&scan_balance), file);
 		if (min || low) {
 			/*
 			 * Scale a cgroup's reclaim pressure by proportioning

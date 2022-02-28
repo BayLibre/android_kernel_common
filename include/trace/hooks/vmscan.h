@@ -11,8 +11,8 @@
 #include <trace/hooks/vendor_hooks.h>
 
 DECLARE_HOOK(android_vh_tune_scan_type,
-	TP_PROTO(char *scan_type),
-	TP_ARGS(scan_type));
+	TP_PROTO(char *scan_type, int file),
+	TP_ARGS(scan_type, file));
 DECLARE_HOOK(android_vh_tune_swappiness,
 	TP_PROTO(int *swappiness),
 	TP_ARGS(swappiness));
