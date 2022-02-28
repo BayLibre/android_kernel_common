@@ -16,6 +16,24 @@
       "message": "why are we adding the #ifdef CONFIG_NUMA here? for_each_node seems to be defined even when numa is disabled.",
       "revId": "12eb44ff252e1961fd3ccd69f7f822447f27babd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b00866b_3c7e4c2f",
+        "filename": "include/linux/dma-direct.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2022-02-28T22:13:37Z",
+      "side": 1,
+      "message": "for_each_node actually becomes a single iteration loop (which has overhead) when CONFIG_NUMA\u003dn - the code here removes that overhead (when CONFIG_NUMAnuma_node_id() is equal to cpu_to_node(raw_smp_processor_id() and cpu_to_node() evauluates to 0).",
+      "parentUuid": "7dc4876c_2e8060bf",
+      "revId": "12eb44ff252e1961fd3ccd69f7f822447f27babd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
