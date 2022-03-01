@@ -17,5 +17,36 @@
       "revId": "dcc1ef870e2d199430e88511d34e89b6554f617f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
+  ],
+  "submitRequirementResults": [
+    {
+      "submitRequirement": {
+        "name": "Qualcomm-Review",
+        "description": {
+          "value": "Submit requirement for the \u0027Qualcomm-Review\u0027 label"
+        },
+        "applicabilityExpression": {
+          "value": {
+            "expressionString": "is:false"
+          }
+        },
+        "submittabilityExpression": {
+          "expressionString": "is:true"
+        },
+        "overrideExpression": {},
+        "allowOverrideInChildProjects": true
+      },
+      "applicabilityExpressionResult": {
+        "value": {"expression":{"expressionString":"is:false"},"status":"FAIL","errorMessage":{"value":null},"passingAtoms":[],"failingAtoms":["is:false"]}
+      },
+      "submittabilityExpressionResult": {},
+      "overrideExpressionResult": {},
+      "patchSetCommitId": "dcc1ef870e2d199430e88511d34e89b6554f617f",
+      "legacy": {
+        "value": false
+      },
+      "forced": {},
+      "hidden": {}
+    }
   ]
 }
