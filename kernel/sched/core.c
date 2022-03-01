@@ -592,7 +592,10 @@ void wake_q_add_safe(struct wake_q_head *head, struct task_struct *task)
 		put_task_struct(task);
 }
 
-void wake_up_q(struct wake_q_head *head)
+static int
+try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags);
+
+static void __wake_up_q(struct wake_q_head *head, int wake_flags)
 {
 	struct wake_q_node *node = head->first;
 
@@ -607,13 +610,24 @@ void wake_up_q(struct wake_q_head *head)
 		task->wake_q_count = head->count;
 
 		/*
-		 * wake_up_process() executes a full barrier, which pairs with
+		 * try_to_wake_up() executes a full barrier, which pairs with
 		 * the queueing in wake_q_add() so as not to miss wakeups.
 		 */
-		wake_up_process(task);
+		try_to_wake_up(task, TASK_NORMAL, wake_flags);
 		task->wake_q_count = 0;
 		put_task_struct(task);
 	}
+}
+
+void wake_up_q(struct wake_q_head *head)
+{
+	__wake_up_q(head, 0);
+}
+
+void wake_up_q_sync(struct wake_q_head *head)
+{
+	/* Only one task can replace the waker. */
+	__wake_up_q(head, head->count == 1 ? WF_SYNC : 0);
 }
 
 /*
