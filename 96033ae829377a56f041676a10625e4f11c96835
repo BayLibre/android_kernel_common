@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19aade68_e0f92a19",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 3625,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-02T19:15:39Z",
+      "side": 1,
+      "message": "we don\u0027t need the string, do we? Should this be \"thread-\u003eeinfo \u003d ei.ee\" ?",
+      "revId": "96033ae829377a56f041676a10625e4f11c96835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6292fcdd_ce7d17b8",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-02T19:15:39Z",
+      "side": 1,
+      "message": "Isn\u0027t this redundant with the \"command\" in einfo?",
+      "revId": "96033ae829377a56f041676a10625e4f11c96835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a1c1e0_4506760b",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-02T19:15:39Z",
+      "side": 1,
+      "message": "couldn\u0027t this one be a `binder_extended_error` (no string) since we won\u0027t be returning the string to userspace?",
+      "revId": "96033ae829377a56f041676a10625e4f11c96835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
