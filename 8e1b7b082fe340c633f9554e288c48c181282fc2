@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75c5ab4c_e7b87822",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2022-03-02T01:50:00Z",
+      "side": 1,
+      "message": "An alternative could be to add wake_up_q_wake_flags(struct wake_q_head *head, int wake_flags) to make this more flexible, but I went with wake_up_q_sync() to mirror the wait queue interface.",
+      "revId": "8e1b7b082fe340c633f9554e288c48c181282fc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
