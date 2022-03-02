@@ -2238,7 +2238,18 @@ static void cpuset_attach(struct cgroup_taskset *tset)
 	cgroup_taskset_first(tset, &css);
 	cs = css_cs(css);
 
+<<<<<<< HEAD   (255b30 ANDROID: KVM: arm64: Ignore length of 0 in kvm_flush_dcache_)
 	mutex_lock(&cpuset_mutex);
+=======
+	cpus_read_lock();
+	percpu_down_write(&cpuset_rwsem);
+
+	/* prepare for attach */
+	if (cs == &top_cpuset)
+		cpumask_copy(cpus_attach, cpu_possible_mask);
+	else
+		guarantee_online_cpus(cs, cpus_attach);
+>>>>>>> BRANCH (915a74 Linux 5.10.103)
 
 	guarantee_online_mems(cs, &cpuset_attach_nodemask_to);
 
@@ -2290,7 +2301,12 @@ static void cpuset_attach(struct cgroup_taskset *tset)
 	if (!cs->attach_in_progress)
 		wake_up(&cpuset_attach_wq);
 
+<<<<<<< HEAD   (255b30 ANDROID: KVM: arm64: Ignore length of 0 in kvm_flush_dcache_)
 	mutex_unlock(&cpuset_mutex);
+=======
+	percpu_up_write(&cpuset_rwsem);
+	cpus_read_unlock();
+>>>>>>> BRANCH (915a74 Linux 5.10.103)
 }
 
 /* The various types of files and directories in a cpuset file system */
