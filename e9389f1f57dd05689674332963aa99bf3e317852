@@ -22,6 +22,30 @@
       },
       "revId": "e9389f1f57dd05689674332963aa99bf3e317852",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30672c28_d021cf92",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-03T21:35:41Z",
+      "side": 1,
+      "message": "Now that this is just used by the driver, it doesn\u0027t matter. I think we would want to change to memset if we were still passing this back to userspace, but we aren\u0027t anymore.",
+      "parentUuid": "fe06755f_dc4ab4eb",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 17
+      },
+      "revId": "e9389f1f57dd05689674332963aa99bf3e317852",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
