@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe06755f_dc4ab4eb",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-03T21:19:23Z",
+      "side": 1,
+      "message": "Todd, what about local initialization through this macro. The `einfo-\u003estrerr` will have dirty stack values beyond index `0`, is this fine? If this is a problem I can switch to memset instead.",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 17
+      },
+      "revId": "e9389f1f57dd05689674332963aa99bf3e317852",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
