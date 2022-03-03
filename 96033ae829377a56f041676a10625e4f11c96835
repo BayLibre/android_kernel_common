@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1996e869_52af6273",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 3625,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-03T21:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19aade68_e0f92a19",
+      "revId": "96033ae829377a56f041676a10625e4f11c96835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6292fcdd_ce7d17b8",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8bb95f5_11904172",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-03T21:11:13Z",
+      "side": 1,
+      "message": "this has a different usage, its used for the TRANSACTION_COMPLETE message. Also it needs to be accessed only from this thread and cleared after the error is returned. Until then new transaction are not allowed. This functionality collides with the new `ioctl()` async usage.",
+      "parentUuid": "6292fcdd_ce7d17b8",
+      "revId": "96033ae829377a56f041676a10625e4f11c96835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6a1c1e0_4506760b",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-03-02T19:15:39Z",
       "side": 1,
       "message": "couldn\u0027t this one be a `binder_extended_error` (no string) since we won\u0027t be returning the string to userspace?",
+      "revId": "96033ae829377a56f041676a10625e4f11c96835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dfa90b5_3c2c9f8e",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-03T21:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6a1c1e0_4506760b",
       "revId": "96033ae829377a56f041676a10625e4f11c96835",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
