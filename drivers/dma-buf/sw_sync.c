@@ -142,7 +142,7 @@ static void timeline_fence_release(struct dma_fence *fence)
 	spin_unlock_irqrestore(fence->lock, flags);
 
 	sync_timeline_put(parent);
-	dma_fence_free(fence);
+	kfree(pt);
 }
 
 static bool timeline_fence_signaled(struct dma_fence *fence)

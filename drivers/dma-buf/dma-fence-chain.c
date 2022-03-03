@@ -205,7 +205,7 @@ static void dma_fence_chain_release(struct dma_fence *fence)
 	dma_fence_put(prev);
 
 	dma_fence_put(chain->fence);
-	dma_fence_free(fence);
+	kfree(chain);
 }
 
 const struct dma_fence_ops dma_fence_chain_ops = {
