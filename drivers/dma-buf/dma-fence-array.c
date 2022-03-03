@@ -120,7 +120,7 @@ static void dma_fence_array_release(struct dma_fence *fence)
 		dma_fence_put(array->fences[i]);
 
 	kfree(array->fences);
-	dma_fence_free(fence);
+	kfree(array);
 }
 
 const struct dma_fence_ops dma_fence_array_ops = {
