@@ -2365,6 +2365,7 @@ static __latent_entropy struct task_struct *copy_process(
 	uprobe_copy_process(p, clone_flags);
 
 	copy_oom_score_adj(clone_flags, p);
+	trace_android_vh_copy_process(p);
 
 	return p;
 
