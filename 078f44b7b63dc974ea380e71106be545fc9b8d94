@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d9b7242_865457a6",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/memory.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-03-04T18:38:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62357163_9ab6df2d",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "078f44b7b63dc974ea380e71106be545fc9b8d94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5035253_60e4e2a1",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a793a2_1142f52a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-03-04T18:38:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5035253_60e4e2a1",
+      "range": {
+        "startLine": 295,
+        "startChar": 9,
+        "endLine": 295,
+        "endChar": 32
+      },
+      "revId": "078f44b7b63dc974ea380e71106be545fc9b8d94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c916b69_b04a898a",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-03-04T17:46:09Z",
       "side": 1,
       "message": "Is it sufficient just to check the page state like this for both the valid and invalid cases?",
+      "range": {
+        "startLine": 1877,
+        "startChar": 27,
+        "endLine": 1877,
+        "endChar": 70
+      },
+      "revId": "078f44b7b63dc974ea380e71106be545fc9b8d94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f028b47_886e5776",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1877,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-03-04T18:38:09Z",
+      "side": 1,
+      "message": "Indeed, now simplified.",
+      "parentUuid": "1c916b69_b04a898a",
       "range": {
         "startLine": 1877,
         "startChar": 27,
