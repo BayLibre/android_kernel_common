@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa21c8d_14210e31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-04T17:40:35Z",
+      "side": 1,
+      "message": "This changes the KMI so it will have to wait for the 2022-03-23 KMI update. The test failures were checkpatch:\n```\nERROR:TRAILING_WHITESPACE: trailing whitespace\n#144: FILE: kernel/locking/rwsem.c:991:\n--\nERROR:TRAILING_WHITESPACE: trailing whitespace\n#175: FILE: kernel/locking/rwsem.c:1080:\n--\nERROR:TRAILING_WHITESPACE: trailing whitespace\n#181: FILE: kernel/locking/rwsem.c:1086:\n```\n\nPlease fix those and I\u0027ll queue the patch for 3/23.",
+      "revId": "5a37d129b4b0bef6ac77a72fcac8a59cd545f68c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
