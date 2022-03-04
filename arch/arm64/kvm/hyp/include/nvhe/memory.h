@@ -7,6 +7,8 @@
 
 #include <linux/types.h>
 
+#define HOST_PAGE_NEED_POISONING	BIT(0)
+
 struct hyp_page {
 	unsigned short refcount;
 	u8 order;
