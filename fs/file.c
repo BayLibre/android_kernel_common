@@ -659,9 +659,9 @@ out_unlock:
 	return file;
 }
 
-int close_fd(unsigned fd)
+int close_task_fd(struct task_struct *task, unsigned int fd)
 {
-	struct files_struct *files = current->files;
+	struct files_struct *files = task->files;
 	struct file *file;
 
 	file = pick_file(files, fd);
@@ -669,6 +669,11 @@ int close_fd(unsigned fd)
 		return -EBADF;
 
 	return filp_close(file, files);
+}
+
+int close_fd(unsigned int fd)
+{
+	return close_task_fd(current, fd);
 }
 EXPORT_SYMBOL_NS(close_fd, ANDROID_GKI_VFS_EXPORT_ONLY); /* for ksys_close() */
 
