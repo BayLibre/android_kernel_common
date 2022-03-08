@@ -16,6 +16,24 @@
       "message": "Please submit upstream first.\n\nAnd are you _sure_ this is really needed?",
       "revId": "9e7bfb9f67b535c149552a2f02d0c4fad52c1fe8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb36d410_e63a6a08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1070304
+      },
+      "writtenOn": "2022-03-08T07:51:28Z",
+      "side": 1,
+      "message": "1.There is no such source file in linux mainline: drivers/usb/gadget/function/f_accessory.c;\n2.It\u0027s needed by the accessory test of CTS as described in following issue: https://partnerissuetracker.corp.google.com/u/0/issues/223101878",
+      "parentUuid": "a5c4564b_ba97d48a",
+      "revId": "9e7bfb9f67b535c149552a2f02d0c4fad52c1fe8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
