@@ -26,6 +26,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65622296_02eead33",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-03-09T14:51:53Z",
+      "side": 1,
+      "message": "The patch subject does not sound entirely accurate to me. Consider changing the subject into something like \"Use reserved memory for the copy buffer\".",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 65
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b7de6e_d873f035",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-03-09T14:51:53Z",
+      "side": 1,
+      "message": "It seems like this #include is superfluous?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3176774_69857093",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-03-09T14:51:53Z",
+      "side": 1,
+      "message": "The Linux kernel coding style strongly recommends not to zero-initialize static variables and arrays.",
+      "range": {
+        "startLine": 46,
+        "startChar": 27,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38d312f8_5ad640af",
         "filename": "drivers/md/dm-kcopyd.c",
         "patchSetId": 1
@@ -42,6 +111,52 @@
         "startChar": 1,
         "endLine": 67,
         "endChar": 41
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4074bb98_23e9da4a",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-03-09T14:51:53Z",
+      "side": 1,
+      "message": "This cast is superfluous.",
+      "range": {
+        "startLine": 69,
+        "startChar": 11,
+        "endLine": 69,
+        "endChar": 18
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "804669bd_76738c31",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-03-09T14:51:53Z",
+      "side": 1,
+      "message": "Consider using bitmap_zalloc() instead of kmalloc() + a zeroing loop. DECLARE_BITMAP() at file scope probably would also work since the array is small?",
+      "range": {
+        "startLine": 69,
+        "startChar": 18,
+        "endLine": 69,
+        "endChar": 25
       },
       "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
