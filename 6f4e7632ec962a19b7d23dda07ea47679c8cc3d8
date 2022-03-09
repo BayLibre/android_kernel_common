@@ -118,6 +118,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "87f01633_95899345",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2022-03-09T18:50:00Z",
+      "side": 1,
+      "message": "of_node_put(node) is required in teardown path",
+      "revId": "6f4e7632ec962a19b7d23dda07ea47679c8cc3d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43ebe77e_19fb340d",
         "filename": "drivers/md/dm-kcopyd.c",
         "patchSetId": 2
@@ -159,6 +176,23 @@
         "endLine": 63,
         "endChar": 18
       },
+      "revId": "6f4e7632ec962a19b7d23dda07ea47679c8cc3d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2865f326_f2d7acf1",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2022-03-09T18:50:00Z",
+      "side": 1,
+      "message": "How much is the rsm_size_kb here ? Note that this is being shared for merge operations for all the dynamic partitions. For each partition, you would need a max of 1MB window at any point in time.",
       "revId": "6f4e7632ec962a19b7d23dda07ea47679c8cc3d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
