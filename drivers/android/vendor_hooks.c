@@ -67,6 +67,7 @@
 #include <trace/hooks/evdev.h>
 #include <trace/hooks/ipv4.h>
 #include <trace/hooks/signal.h>
+#include <trace/hooks/gup.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -273,3 +274,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_online);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_alloc);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_grab_compound_head);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh___get_user_pages_remote);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_user_pages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_internal_get_user_pages_fast);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pin_user_pages);
