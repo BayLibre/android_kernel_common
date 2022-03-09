@@ -47,6 +47,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f727a660_544f4030",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65622296_02eead33",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 65
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2b7de6e_d873f035",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-03-09T14:51:53Z",
       "side": 1,
       "message": "It seems like this #include is superfluous?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36f3dd45_4c59935b",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2b7de6e_d873f035",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -93,6 +141,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "132e9fce_ff8247bc",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3176774_69857093",
+      "range": {
+        "startLine": 46,
+        "startChar": 27,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "650a1cad_d2cc9183",
@@ -106,6 +178,30 @@
       "writtenOn": "2022-03-09T15:21:47Z",
       "side": 1,
       "message": "Can this memcpy() call write outside the bounds of the rsm_ofname[] aray?",
+      "range": {
+        "startLine": 64,
+        "startChar": 1,
+        "endLine": 64,
+        "endChar": 55
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "954f7316_c042d36a",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "This two lines are removed in next version.",
+      "parentUuid": "650a1cad_d2cc9183",
       "range": {
         "startLine": 64,
         "startChar": 1,
@@ -185,6 +281,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f15c05_5664c4cb",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4074bb98_23e9da4a",
+      "range": {
+        "startLine": 69,
+        "startChar": 11,
+        "endLine": 69,
+        "endChar": 18
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "833793d3_75c3d127",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "This certainly reduces the footprint. However we need time to enhance this. Please allow this usage temporarily.",
+      "parentUuid": "804669bd_76738c31",
+      "range": {
+        "startLine": 69,
+        "startChar": 18,
+        "endLine": 69,
+        "endChar": 25
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "020f2a28_c76d077c",
@@ -221,6 +365,30 @@
       "writtenOn": "2022-03-09T15:21:47Z",
       "side": 1,
       "message": "Consider changing this single parameter into two parameters such that the search for the comma can be left out from kcopyd_rsm_cfg().",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 48
+      },
+      "revId": "3f7470ba810e5793b0491602c83ce2899e779eb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c638b4a_9f285101",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-09T16:40:59Z",
+      "side": 1,
+      "message": "The bootarg is simplified in next version so the comma is removed.",
+      "parentUuid": "590f6334_d17803d4",
       "range": {
         "startLine": 82,
         "startChar": 0,
