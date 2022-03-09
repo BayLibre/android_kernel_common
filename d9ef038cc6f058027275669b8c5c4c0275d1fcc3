@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77ace407_4ff1b8b6",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-09T21:50:29Z",
+      "side": 1,
+      "message": "Todd, I think the three copies are needed. Or at least `thread-\u003eee` has to be protected from race with a separate transaction targeting this thread.\n\nInstead maybe we can get rid of `char strerr[64]` space and we can log extended errors immediately and then \"tie\" all transaction error logs via `debug_id`. Something along these lines:\n```\n[...]\n    binder_set_extended_error(ee, BR_FAILD_REPLY, -EINVAL);\n    binder_log_extended_error(ee, \"bad object %x\", hdf-\u003etype);\n    goto err_bad_object_type;\n```\nTwo separate kernel logs as:\n```\nIPCThreadState: Binder transaction failure: 614440/29202/-3\nbinder  : 614440/29202/-3: dead process or thread\nbinder  : 614440: transaction form 12469:12569 to 11979:0 failed, size 456/16\n```",
+      "parentUuid": "6a618176_d65ba24c",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97ddba83_879402a5",
         "filename": "drivers/android/binder.c",
         "patchSetId": 13
@@ -102,6 +120,24 @@
       "writtenOn": "2022-02-19T00:37:29Z",
       "side": 1,
       "message": "not needed if you get rid of the local (see comment above)",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f776a600_c3d94538",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3618,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-09T21:50:29Z",
+      "side": 1,
+      "message": "ack, following on previous comment.",
+      "parentUuid": "86076160_b9dd54a8",
       "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
