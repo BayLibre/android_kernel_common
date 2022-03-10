@@ -51,6 +51,24 @@
       "message": "Breaks allmodconfig builds, please fix:\n```\n+ make O\u003d/usr/local/google/buildbot/src/android/common-android12-5.10/out/android12-5.10/common LLVM\u003d1 LLVM_IAS\u003d1 DEPMOD\u003ddepmod DTC\u003ddtc -j40 Image modules\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/md/dm-kcopyd.c:80:13: error: expected parameter declarator\nearly_param(\"mtk_kcopyd_quirk\", kcopyd_rsm_cfg);\n            ^\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/md/dm-kcopyd.c:80:13: error: expected \u0027)\u0027\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/md/dm-kcopyd.c:80:12: note: to match this \u0027(\u0027\nearly_param(\"mtk_kcopyd_quirk\", kcopyd_rsm_cfg);\n           ^\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/md/dm-kcopyd.c:80:1: warning: declaration specifier missing, defaulting to \u0027int\u0027\nearly_param(\"mtk_kcopyd_quirk\", kcopyd_rsm_cfg);\n^\nint\n/usr/local/google/buildbot/src/android/common-android12-5.10/common/drivers/md/dm-kcopyd.c:80:12: error: this function declaration is not a prototype [-Werror,-Wstrict-prototypes]\nearly_param(\"mtk_kcopyd_quirk\", kcopyd_rsm_cfg);\n           ^\n                                              void\n1 warning and 3 errors generated.\n\n```",
       "revId": "f769a66b716f01c75c75ff91a511732b4084f5a0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "282480a6_8cdce1a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2022-03-10T05:46:11Z",
+      "side": 1,
+      "message": "looks like early_parm() won\u0027t work when compiled as modules.. Probably module_param() has be used..\n\nStanley - I believe you are testing this patch. Please update this once your testing is done; else I can take a look at it tomorrow.",
+      "parentUuid": "31fb8099_f2b9c65c",
+      "revId": "f769a66b716f01c75c75ff91a511732b4084f5a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
