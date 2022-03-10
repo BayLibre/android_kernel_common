@@ -357,6 +357,24 @@
       "message": "How much is the rsm_size_kb here ? Note that this is being shared for merge operations for all the dynamic partitions. For each partition, you would need a max of 1MB window at any point in time.",
       "revId": "6f4e7632ec962a19b7d23dda07ea47679c8cc3d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46b5ec77_05923373",
+        "filename": "drivers/md/dm-kcopyd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1294339
+      },
+      "writtenOn": "2022-03-10T02:17:58Z",
+      "side": 1,
+      "message": "The size may be changeable according to different memory layout so it would come from the device tree configuration.",
+      "parentUuid": "2865f326_f2d7acf1",
+      "revId": "6f4e7632ec962a19b7d23dda07ea47679c8cc3d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
