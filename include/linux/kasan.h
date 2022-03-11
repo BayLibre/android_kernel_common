@@ -498,13 +498,23 @@ static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
  * They are only required when KASAN_VMALLOC is not supported, as otherwise
  * shadow memory is allocated by the generic vmalloc handlers.
  */
+<<<<<<< HEAD   (ed2ada Merge 5.15.26 into android13-5.15)
 int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask);
 void kasan_free_module_shadow(const struct vm_struct *vm);
+=======
+int kasan_module_alloc(void *addr, size_t size, gfp_t gfp_mask);
+void kasan_free_shadow(const struct vm_struct *vm);
+>>>>>>> BRANCH (efe316 Linux 5.15.27)
 
 #else /* (CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS) && !CONFIG_KASAN_VMALLOC */
 
+<<<<<<< HEAD   (ed2ada Merge 5.15.26 into android13-5.15)
 static inline int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask) { return 0; }
 static inline void kasan_free_module_shadow(const struct vm_struct *vm) {}
+=======
+static inline int kasan_module_alloc(void *addr, size_t size, gfp_t gfp_mask) { return 0; }
+static inline void kasan_free_shadow(const struct vm_struct *vm) {}
+>>>>>>> BRANCH (efe316 Linux 5.15.27)
 
 #endif /* (CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS) && !CONFIG_KASAN_VMALLOC */
 
