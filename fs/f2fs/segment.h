@@ -288,6 +288,8 @@ struct curseg_info {
 	unsigned short next_blkoff;		/* next block offset to write */
 	unsigned int zone;			/* current zone number */
 	unsigned int next_segno;		/* preallocated segment */
+	/* remained block size in a chunk for block fragmentation mode */
+	int fragment_remained_chunk;
 };
 
 struct sit_entry_set {
