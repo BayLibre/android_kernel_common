@@ -1031,6 +1031,8 @@ static void update_curr_rt(struct rq *rq)
 	curr->se.exec_start = now;
 	cgroup_account_cputime(curr, delta_exec);
 
+	trace_android_vh_update_curr_rt(delta_exec);
+
 	if (!rt_bandwidth_enabled())
 		return;
 

@@ -382,3 +382,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_power_throttle);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_thermal_power_cap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_thermal_zone_device);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_update_curr_rt);
