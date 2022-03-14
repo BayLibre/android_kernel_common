@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5ac4b7f_5f381bf8",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:39:26Z",
+      "side": 1,
+      "message": "put parameters in same order as die_kernel_fault() had them.",
+      "range": {
+        "startLine": 302,
+        "startChar": 1,
+        "endLine": 302,
+        "endChar": 35
+      },
+      "revId": "5d04e5372a02129f7ea38fd6f54a2456a1c88368",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2201b708_203e6df7",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:39:26Z",
+      "side": 1,
+      "message": "same as below, you already have esr, you can compute this if you need it, no need to pass it in.",
+      "range": {
+        "startLine": 726,
+        "startChar": 46,
+        "endLine": 726,
+        "endChar": 53
+      },
+      "revId": "5d04e5372a02129f7ea38fd6f54a2456a1c88368",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3743c5c_3bf719f2",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:39:26Z",
+      "side": 1,
+      "message": "you already have esr, no need to pass this in again, you can compute it if you need this.",
+      "range": {
+        "startLine": 822,
+        "startChar": 51,
+        "endLine": 822,
+        "endChar": 59
+      },
+      "revId": "5d04e5372a02129f7ea38fd6f54a2456a1c88368",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499b494d_ab42d94d",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:39:26Z",
+      "side": 1,
+      "message": "keep the parameters in the same order as the function did?",
+      "range": {
+        "startLine": 838,
+        "startChar": 1,
+        "endLine": 838,
+        "endChar": 33
+      },
+      "revId": "5d04e5372a02129f7ea38fd6f54a2456a1c88368",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53e5cb3f_54d41369",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:39:26Z",
+      "side": 1,
+      "message": "you already have regs, no need to pass it in again.",
+      "range": {
+        "startLine": 838,
+        "startChar": 51,
+        "endLine": 838,
+        "endChar": 66
+      },
+      "revId": "5d04e5372a02129f7ea38fd6f54a2456a1c88368",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
