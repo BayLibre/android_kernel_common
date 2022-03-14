@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdb5eea9_ca63d39b",
+        "filename": "arch/arm64/kernel/entry-common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:41:12Z",
+      "side": 1,
+      "message": "place parameters in same order as __panic_unhandled() had them in.",
+      "range": {
+        "startLine": 288,
+        "startChar": 1,
+        "endLine": 288,
+        "endChar": 34
+      },
+      "revId": "95f994330e249329caed1acb8e39faf262e373e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ddb15a5_3cb4a0d2",
+        "filename": "arch/arm64/kernel/traps.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:41:12Z",
+      "side": 1,
+      "message": "not needed, you have regs already.",
+      "range": {
+        "startLine": 500,
+        "startChar": 39,
+        "endLine": 500,
+        "endChar": 48
+      },
+      "revId": "95f994330e249329caed1acb8e39faf262e373e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78ba6a81_56ec3828",
+        "filename": "arch/arm64/kernel/traps.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-14T18:41:12Z",
+      "side": 1,
+      "message": "not needed.",
+      "range": {
+        "startLine": 519,
+        "startChar": 47,
+        "endLine": 519,
+        "endChar": 56
+      },
+      "revId": "95f994330e249329caed1acb8e39faf262e373e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
