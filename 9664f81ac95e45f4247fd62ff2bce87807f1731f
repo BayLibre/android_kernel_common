@@ -87,6 +87,24 @@
       "message": "ah, I was off by a year.  The fact that nothing has happened since then doesn\u0027t give me good feelings that anything will happen upstream next year.\n\nThis needs to go theough the \"new feature\" process for Android...",
       "revId": "9664f81ac95e45f4247fd62ff2bce87807f1731f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "440a1255_ab61e929",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-03-15T22:59:57Z",
+      "side": 1,
+      "message": "From our previous discussions and upstream feedback, my understanding is that the idea is very much upstreamable and the issue was in how it was implemented. I think QC agrees with that and committed to reworking it.\nAfter discussing this with Trilok, sound like it\u0027s the time limitations that this patch  was not rewritten and upstreamed, not some technical difficulty.\n\nIf that is the case, I\u0027m ok with taking this patch once more as is with understanding that it has to be reworked and upstreamed.\n\nThe patch introduces new exported functions which are not used otherwise, so it\u0027s not invasive.",
+      "parentUuid": "05512e0b_c0e4fcf1",
+      "revId": "9664f81ac95e45f4247fd62ff2bce87807f1731f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
