@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2ae09a2_320ec36d",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-03-15T06:37:36Z",
+      "side": 1,
+      "message": "I\u0027m not sure this is a good place for an end trace point. vds_queue_txbuf hands may wake up another thread and when this thread gets to this trace point might be arbitrary, and does not indicate that the connection has been established.",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b6b44c3_c827cdbc",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-03-15T06:37:36Z",
+      "side": 1,
+      "message": "This seems similar to trace_trusty_ipc_connect_end. The message has already been queued at this point.",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6efcfdae_cd8a51c3",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-03-15T06:37:36Z",
+      "side": 1,
+      "message": "see comments above.",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e93e99_26ebde39",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1616,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-03-15T06:37:36Z",
+      "side": 1,
+      "message": "this should be a very quick operation. I\u0027m not sure having two trace points here is very valuable",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
