@@ -9350,6 +9350,7 @@ int alloc_contig_range(unsigned long start, unsigned long end,
 	unsigned long outer_start, outer_end;
 	int order;
 	int ret = 0;
+	bool skip_drain_all_pages = false;
 
 	struct compact_control cc = {
 		.nr_migratepages = 0,
@@ -9388,7 +9389,10 @@ int alloc_contig_range(unsigned long start, unsigned long end,
 	if (ret)
 		goto done;
 
-	drain_all_pages(cc.zone);
+	trace_android_vh_cma_drain_all_pages_bypass(migratetype,
+						&skip_drain_all_pages);
+	if (skip_drain_all_pages)
+		drain_all_pages(cc.zone);
 
 	/*
 	 * In case of -EBUSY, we'd like to know which page causes problem.
