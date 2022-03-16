@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe63c52f_64fffba3",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-03-16T12:33:45Z",
+      "side": 1,
+      "message": "this breaks the build. perhaps you are missing a \n#include \u003ctrace/hooks/thermal.h\u003e",
+      "revId": "c589d67d58d86da343bcc95bc0d1c8c7728a3f18",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
