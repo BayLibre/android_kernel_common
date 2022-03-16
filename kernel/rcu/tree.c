@@ -4434,6 +4434,22 @@ static int rcu_pm_notify(struct notifier_block *self,
 	return NOTIFY_OK;
 }
 
+struct kthread_worker *rcu_exp_gp_kworker;
+
+static void __init rcu_start_exp_gp_kworker(int kthread_prio)
+{
+       struct sched_param param = { .sched_priority = kthread_prio };
+       const char *name = "rcu_exp_gp_kthread_worker";
+
+       rcu_exp_gp_kworker = kthread_create_worker(0, name);
+       if (IS_ERR_OR_NULL(rcu_exp_gp_kworker)) {
+               pr_err("Failed to create %s!\n", name);
+               return;
+       }
+
+       sched_setscheduler(rcu_exp_gp_kworker->task, SCHED_FIFO, &param);
+}
+
 /*
  * Spawn the kthreads that handle RCU's grace periods.
  */
@@ -4479,6 +4495,10 @@ static int __init rcu_spawn_gp_kthread(void)
 	rcu_spawn_nocb_kthreads();
 	rcu_spawn_boost_kthreads();
 	rcu_spawn_core_kthreads();
+
+	/* Create kthread worker for expedited GPs */
+	rcu_start_exp_gp_kworker(kthread_prio);
+
 	return 0;
 }
 early_initcall(rcu_spawn_gp_kthread);
