@@ -16,6 +16,24 @@
       "message": "Breaks the build:\n\nkernel/sched/deadline.c:1679:46: error: use of undeclared identifier \u0027sd_flag\u0027; did you mean \u0027sd_llc\u0027?\n        trace_android_rvh_select_task_rq_dl(p, cpu, sd_flag, flags, \u0026target_cpu);\n                                                    ^~~~~~~\n                                                    sd_llc",
       "revId": "d811c86cf49a7c26caa01d005cd1afaa2f6e0748",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "662fcf72_92dee1d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1905376
+      },
+      "writtenOn": "2022-03-16T06:15:04Z",
+      "side": 1,
+      "message": "there is no sd_flag anymore, fix it.",
+      "parentUuid": "cce26027_d2077bbf",
+      "revId": "d811c86cf49a7c26caa01d005cd1afaa2f6e0748",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
