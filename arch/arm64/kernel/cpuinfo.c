@@ -97,7 +97,10 @@ static const char *const hwcap_str[] = {
 	[KERNEL_HWCAP_ECV]		= "ecv",
 	[KERNEL_HWCAP_AFP]		= "afp",
 	[KERNEL_HWCAP_RPRES]		= "rpres",
+<<<<<<< HEAD   (df38bf UPSTREAM: arm64: entry: Make the trampoline cleanup optional)
 	[KERNEL_HWCAP_MTE3]		= "mte3",
+=======
+>>>>>>> BRANCH (5242d6 arm64: entry: Make the trampoline cleanup optional)
 };
 
 #ifdef CONFIG_COMPAT
