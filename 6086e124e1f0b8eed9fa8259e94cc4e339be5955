@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e13728d9_afd58293",
+        "filename": "kernel/futex.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3741,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-03-17T00:22:55Z",
+      "side": 1,
+      "message": "Just delete this part if you want to use the sync flag with more than 1 thread waking up. It might not be the perfect/final behavior, but it\u0027ll avoid breaking functionality.",
+      "range": {
+        "startLine": 3740,
+        "startChar": 0,
+        "endLine": 3741,
+        "endChar": 18
+      },
+      "revId": "6086e124e1f0b8eed9fa8259e94cc4e339be5955",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
