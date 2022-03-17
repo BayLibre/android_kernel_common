@@ -34,6 +34,24 @@
       "parentUuid": "16de4a40_b850a866",
       "revId": "d1995edfd5bb3c84c9bbc96afd0b8576a5d6957b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd29a1d_d02f7a1f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 5218,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-17T21:20:59Z",
+      "side": 1,
+      "message": "Is there a case where it is needed under non-regular operations? I don\u0027t see anything in this critical section that needs protection. The assignment of ee-\u003ecommand isn\u0027t really protected since if another thread is might write it, it is still a race for who gets the lock first, so this doesn\u0027t help that case.\n\nIf there is a non-regular case for which the lock is important, then I\u0027d vote to keep it -- but I don\u0027t see one.",
+      "parentUuid": "237fc39f_e5ee8d94",
+      "revId": "d1995edfd5bb3c84c9bbc96afd0b8576a5d6957b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
