@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea26d08_a6212845",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-17T21:12:44Z",
+      "side": 1,
+      "message": "I checked current libbinder use-cases and none of them have a path in which locking thread-\u003eee would be required. The only case is when populating from a reply but only to preventing the thread from dying while writing to it. So I\u0027ve removed the local copy and use the `\u0026thread-\u003eee` directly on latest patchset.",
+      "parentUuid": "77ace407_4ff1b8b6",
+      "revId": "d9ef038cc6f058027275669b8c5c4c0275d1fcc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97ddba83_879402a5",
