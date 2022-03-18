@@ -1568,6 +1568,7 @@ static void *hyp_spectre_vector_selector[BP_HARDEN_EL2_SLOTS];
 
 static void kvm_init_vector_slot(void *base, enum arm64_hyp_spectre_vector slot)
 {
+<<<<<<< HEAD   (81ba26 Merge 13a807a0a080 ("arm64: proton-pack: Report Spectre-BHB )
 	hyp_spectre_vector_selector[slot] = __kvm_vector_slot2addr(base, slot);
 }
 
@@ -1587,6 +1588,21 @@ static int kvm_init_vector_slots(void)
 					       __BP_HARDEN_HYP_VECS_SZ, &base);
 		if (err)
 			return err;
+=======
+	/*
+	 * SV2  = ARM64_SPECTRE_V2
+	 * HEL2 = ARM64_HARDEN_EL2_VECTORS
+	 *
+	 * !SV2 + !HEL2 -> use direct vectors
+	 *  SV2 + !HEL2 -> use hardened vectors in place
+	 * !SV2 +  HEL2 -> allocate one vector slot and use exec mapping
+	 *  SV2 +  HEL2 -> use hardened vectors and use exec mapping
+	 */
+	if (cpus_have_const_cap(ARM64_SPECTRE_V2) ||
+	    cpus_have_const_cap(ARM64_SPECTRE_BHB)) {
+		__kvm_bp_vect_base = kvm_ksym_ref(__bp_harden_hyp_vecs);
+		__kvm_bp_vect_base = kern_hyp_va(__kvm_bp_vect_base);
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 	}
 
 	kvm_init_vector_slot(base, HYP_VECTOR_INDIRECT);
