@@ -96,5 +96,8 @@ enum mitigation_state arm64_get_spectre_bhb_state(void);
 bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
 u8 spectre_bhb_loop_affected(int scope);
 void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+<<<<<<< HEAD   (81ba26 Merge 13a807a0a080 ("arm64: proton-pack: Report Spectre-BHB )
 #endif	/* __ASSEMBLY__ */
+=======
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 #endif	/* __ASM_SPECTRE_H */
