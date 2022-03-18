@@ -924,7 +924,10 @@ alternative_else_nop_endif
 #define BHB_MITIGATION_NONE	0
 #define BHB_MITIGATION_LOOP	1
 #define BHB_MITIGATION_FW	2
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 #define BHB_MITIGATION_INSN	3
+=======
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 
 	.macro tramp_ventry, vector_start, regsize, kpti, bhb
 	.align	7
@@ -941,11 +944,14 @@ alternative_else_nop_endif
 	__mitigate_spectre_bhb_loop	x30
 	.endif // \bhb == BHB_MITIGATION_LOOP
 
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 	.if	\bhb == BHB_MITIGATION_INSN
 	clearbhb
 	isb
 	.endif // \bhb == BHB_MITIGATION_INSN
 
+=======
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 	.if	\kpti == 1
 	/*
 	 * Defend against branch aliasing attacks by pushing a dummy
@@ -1022,7 +1028,10 @@ SYM_CODE_START_NOALIGN(tramp_vectors)
 #ifdef CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY
 	generate_tramp_vector	kpti=1, bhb=BHB_MITIGATION_LOOP
 	generate_tramp_vector	kpti=1, bhb=BHB_MITIGATION_FW
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 	generate_tramp_vector	kpti=1, bhb=BHB_MITIGATION_INSN
+=======
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 #endif /* CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY */
 	generate_tramp_vector	kpti=1, bhb=BHB_MITIGATION_NONE
 SYM_CODE_END(tramp_vectors)
@@ -1085,7 +1094,10 @@ SYM_CODE_START(__bp_harden_el1_vectors)
 #ifdef CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY
 	generate_el1_vector	bhb=BHB_MITIGATION_LOOP
 	generate_el1_vector	bhb=BHB_MITIGATION_FW
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 	generate_el1_vector	bhb=BHB_MITIGATION_INSN
+=======
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 #endif /* CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY */
 SYM_CODE_END(__bp_harden_el1_vectors)
 	.popsection

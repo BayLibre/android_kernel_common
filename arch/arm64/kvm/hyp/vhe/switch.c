@@ -27,6 +27,11 @@
 #include <asm/processor.h>
 #include <asm/thread_info.h>
 #include <asm/vectors.h>
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
+=======
+
+const char __hyp_panic_string[] = "HYP panic:\nPS:%08llx PC:%016llx ESR:%08llx\nFAR:%016llx HPFAR:%016llx PAR:%016llx\nVCPU:%p\n";
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 
 /* VHE specific context */
 DEFINE_PER_CPU(struct kvm_host_data, kvm_host_data);

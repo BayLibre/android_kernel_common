@@ -32,6 +32,7 @@ enum arm64_bp_harden_el1_vectors {
 	 * canonical vectors.
 	 */
 	EL1_VECTOR_BHB_FW,
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 
 	/*
 	 * Use the ClearBHB instruction, before branching to the canonical
@@ -51,6 +52,15 @@ enum arm64_bp_harden_el1_vectors {
 #define EL1_VECTOR_BHB_FW		-1
 #define EL1_VECTOR_BHB_CLEAR_INSN	-1
 #endif /* !CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY */
+=======
+#endif /* CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY */
+
+	/*
+	 * Remap the kernel before branching to the canonical vectors.
+	 */
+	EL1_VECTOR_KPTI,
+};
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 
 /* The vectors to use on return from EL0. e.g. to remap the kernel */
 DECLARE_PER_CPU_READ_MOSTLY(const char *, this_cpu_vector);

@@ -112,6 +112,7 @@ static const char *get_bhb_affected_string(enum mitigation_state bhb_state)
 	}
 }
 
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 static bool _unprivileged_ebpf_enabled(void)
 {
 #ifdef CONFIG_BPF_SYSCALL
@@ -121,6 +122,8 @@ static bool _unprivileged_ebpf_enabled(void)
 #endif
 }
 
+=======
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr,
 			    char *buf)
 {
@@ -140,9 +143,12 @@ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr,
 		v2_str = "CSV2";
 		fallthrough;
 	case SPECTRE_MITIGATED:
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 		if (bhb_state == SPECTRE_MITIGATED && _unprivileged_ebpf_enabled())
 			return sprintf(buf, "Vulnerable: Unprivileged eBPF enabled\n");
 
+=======
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 		return sprintf(buf, "Mitigation: %s%s\n", v2_str, bhb_str);
 	case SPECTRE_VULNERABLE:
 		fallthrough;
@@ -811,6 +817,7 @@ int arch_prctl_spec_ctrl_get(struct task_struct *task, unsigned long which)
 	}
 }
 
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 /*
  * Spectre BHB.
  *
@@ -1151,3 +1158,11 @@ void unpriv_ebpf_notify(int new_state)
 		pr_err("WARNING: %s", EBPF_WARN);
 }
 #endif
+=======
+static enum mitigation_state spectre_bhb_state;
+
+enum mitigation_state arm64_get_spectre_bhb_state(void)
+{
+	return spectre_bhb_state;
+}
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)

@@ -826,6 +826,7 @@ alternative_endif
 
 	.macro __mitigate_spectre_bhb_loop      tmp
 #ifdef CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY
+<<<<<<< HEAD   (924c41 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 alternative_cb  spectre_bhb_patch_loop_iter
 	mov	\tmp, #32		// Patched to correct the immediate
 alternative_cb_end
@@ -868,6 +869,28 @@ alternative_cb	spectre_bhb_patch_clearbhb
 	clearbhb
 	isb
 alternative_cb_end
+=======
+	mov	\tmp, #32
+.Lspectre_bhb_loop\@:
+	b	. + 4
+	subs	\tmp, \tmp, #1
+	b.ne	.Lspectre_bhb_loop\@
+	sb
+#endif /* CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY */
+	.endm
+
+	/* Save/restores x0-x3 to the stack */
+	.macro __mitigate_spectre_bhb_fw
+#ifdef CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY
+	stp	x0, x1, [sp, #-16]!
+	stp	x2, x3, [sp, #-16]!
+	mov	w0, #ARM_SMCCC_ARCH_WORKAROUND_3
+alternative_cb	smccc_patch_fw_mitigation_conduit
+	nop					// Patched to SMC/HVC #0
+alternative_cb_end
+	ldp	x2, x3, [sp], #16
+	ldp	x0, x1, [sp], #16
+>>>>>>> BRANCH (13a807 arm64: proton-pack: Report Spectre-BHB vulnerabilities as pa)
 #endif /* CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY */
 	.endm
 #endif	/* __ASM_ASSEMBLER_H */
