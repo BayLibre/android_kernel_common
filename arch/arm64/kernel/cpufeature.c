@@ -72,7 +72,10 @@
 #include <linux/types.h>
 #include <linux/mm.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD   (9fddd6 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 #include <linux/kasan.h>
+=======
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 
 #include <asm/cpu.h>
 #include <asm/cpufeature.h>
@@ -112,6 +115,7 @@ EXPORT_SYMBOL(arm64_use_ng_mappings);
 
 DEFINE_PER_CPU_READ_MOSTLY(const char *, this_cpu_vector) = vectors;
 
+<<<<<<< HEAD   (9fddd6 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 /*
  * Permit PER_LINUX32 and execve() of 32-bit binaries even if not all CPUs
  * support it?
@@ -130,6 +134,8 @@ DEFINE_STATIC_KEY_FALSE(arm64_mismatched_32bit_el0);
  */
 static cpumask_var_t cpu_32bit_el0_mask __cpumask_var_read_mostly;
 
+=======
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 /*
  * Flag to indicate if we have computed the system wide
  * capabilities based on the boot time active CPUs. This

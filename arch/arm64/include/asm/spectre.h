@@ -91,10 +91,17 @@ bool has_spectre_v4(const struct arm64_cpu_capabilities *cap, int scope);
 void spectre_v4_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
 void spectre_v4_enable_task_mitigation(struct task_struct *tsk);
 
+<<<<<<< HEAD   (9fddd6 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 enum mitigation_state arm64_get_meltdown_state(void);
 enum mitigation_state arm64_get_spectre_bhb_state(void);
 bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
 u8 spectre_bhb_loop_affected(int scope);
 void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
 #endif	/* __ASSEMBLY__ */
+=======
+enum mitigation_state arm64_get_spectre_bhb_state(void);
+bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
+u8 spectre_bhb_loop_affected(int scope);
+void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 #endif	/* __ASM_SPECTRE_H */

@@ -67,12 +67,20 @@
 #define ARM64_HAS_TLB_RANGE			56
 #define ARM64_MTE				57
 #define ARM64_WORKAROUND_1508412		58
+<<<<<<< HEAD   (9fddd6 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 #define ARM64_HAS_LDAPR				59
 #define ARM64_KVM_PROTECTED_MODE		60
 #define ARM64_WORKAROUND_TSB_FLUSH_FAILURE	61
 #define ARM64_SPECTRE_BHB			62
+=======
+#define ARM64_SPECTRE_BHB			59
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 
+<<<<<<< HEAD   (9fddd6 UPSTREAM: arm64: proton-pack: Include unprivileged eBPF stat)
 /* kabi: reserve 63 - 76 for future cpu capabilities */
 #define ARM64_NCAPS				76
+=======
+#define ARM64_NCAPS				60
+>>>>>>> BRANCH (b65b87 arm64: proton-pack: Include unprivileged eBPF status in Spec)
 
 #endif /* __ASM_CPUCAPS_H */
