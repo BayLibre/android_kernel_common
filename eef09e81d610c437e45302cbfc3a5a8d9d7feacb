@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b449e8a_5554b649",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-18T19:21:04Z",
+      "side": 1,
+      "message": "I think its really close now. 1 comment.",
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8410f7f1_c0d12314",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 2842,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-18T19:21:04Z",
+      "side": 1,
+      "message": "Do we really need the \"user\" param? Seems like we could move the binder_user_error() into this macro and skip it for binder_txn_error():\n\n  #define binder_user_txn_error(x...) { \\\n    binder_txn_error(x); \\\n    binder_user_error(...); }\n    \nThen you don\u0027t need the wrapper for the binder_txn_error() case either.",
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
