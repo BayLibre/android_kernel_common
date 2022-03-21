@@ -640,7 +640,10 @@ static int rndis_set_response(struct rndis_params *params,
 	BufLength = le32_to_cpu(buf->InformationBufferLength);
 	BufOffset = le32_to_cpu(buf->InformationBufferOffset);
 	if ((BufLength > RNDIS_MAX_TOTAL_SIZE) ||
+<<<<<<< HEAD   (0aab33 ANDROID: ABI: Update symbols to unisoc whitelist for the 26s)
 	    (BufOffset > RNDIS_MAX_TOTAL_SIZE) ||
+=======
+>>>>>>> BRANCH (f632d7 Merge 5.4.180 into android12-5.4-lts)
 	    (BufOffset + 8 >= RNDIS_MAX_TOTAL_SIZE))
 		    return -EINVAL;
 

@@ -252,6 +252,7 @@ static int sysrq_sysctl_handler(struct ctl_table *table, int write,
 #endif
 
 #ifdef CONFIG_BPF_SYSCALL
+<<<<<<< HEAD   (0aab33 ANDROID: ABI: Update symbols to unisoc whitelist for the 26s)
 
 void __weak unpriv_ebpf_notify(int new_state)
 {
@@ -277,6 +278,25 @@ static int bpf_unpriv_handler(struct ctl_table *table, int write,
 
 	unpriv_ebpf_notify(unpriv_enable);
 
+=======
+static int bpf_unpriv_handler(struct ctl_table *table, int write,
+                             void *buffer, size_t *lenp, loff_t *ppos)
+{
+	int ret, unpriv_enable = *(int *)table->data;
+	bool locked_state = unpriv_enable == 1;
+	struct ctl_table tmp = *table;
+
+	if (write && !capable(CAP_SYS_ADMIN))
+		return -EPERM;
+
+	tmp.data = &unpriv_enable;
+	ret = proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
+	if (write && !ret) {
+		if (locked_state && unpriv_enable != 1)
+			return -EPERM;
+		*(int *)table->data = unpriv_enable;
+	}
+>>>>>>> BRANCH (f632d7 Merge 5.4.180 into android12-5.4-lts)
 	return ret;
 }
 #endif
