@@ -16,6 +16,24 @@
       "message": "no changelog?\n\nWhy add new features to this old kernel?",
       "revId": "7600bf76bc6d2c80625096754937e7c4df63d16e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff6b8628_03da9200",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1939150
+      },
+      "writtenOn": "2022-03-21T19:43:16Z",
+      "side": 1,
+      "message": "@gregkh, I am trying to backport the changes related to topic android13_process_mrelease_5.10 to allow process_mrelease reclaim memory in parallel with exit_mmapkernel from 5.x to ANDROID kernel based on kernel 4.19.\nWant to check and compare the improvement in Android device based on 4.19 with the changes.\nThis is not the final commit. Pushed the commit so as to not lose the local changes in the build server.",
+      "parentUuid": "23193b4f_a07edc87",
+      "revId": "7600bf76bc6d2c80625096754937e7c4df63d16e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
