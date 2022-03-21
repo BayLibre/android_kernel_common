@@ -58,7 +58,11 @@
 #define ARM64_HAS_AMU_EXTN			48
 #define ARM64_SPECTRE_BHB			49
 
+<<<<<<< HEAD   (49b41d Merge 5.4.186 into android12-5.4-lts)
 /* kabi: reserve 50 - 62 for future cpu capabilities */
+=======
+/* kabi: reserve 48 - 62 for future cpu capabilities */
+>>>>>>> BRANCH (b6af6d Merge tag 'android12-5.4.180_r00' into android12-5.4)
 #define ARM64_NCAPS				62
 
 #endif /* __ASM_CPUCAPS_H */
