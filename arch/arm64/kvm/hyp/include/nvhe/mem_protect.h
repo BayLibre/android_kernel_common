@@ -98,4 +98,6 @@ static __always_inline void __load_host_stage2(void)
 	else
 		write_sysreg(0, vttbr_el2);
 }
+
+void __noreturn __host_inject_abort(struct kvm_cpu_context *host_ctxt, u64 ventry, u64 esr);
 #endif /* __KVM_NVHE_MEM_PROTECT__ */

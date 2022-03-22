@@ -72,6 +72,28 @@ SYM_FUNC_START(__host_enter)
 SYM_FUNC_END(__host_enter)
 
 /*
+ * void __noreturn __host_inject_abort(struct kvm_cpu_context *host_ctxt, u64 ventry, u64 esr);
+ */
+SYM_FUNC_START(__host_inject_abort)
+	mov	x29, x0
+
+	/* Forward the exception state to EL1 */
+	mrs	x0, spsr_el2
+	msr	spsr_el1, x0
+	mrs	x0, elr_el2
+	msr	elr_el1, x0
+	mrs	x0, far_el2
+	msr	far_el1, x0
+
+	mov	x0, #(PSR_F_BIT | PSR_I_BIT | PSR_A_BIT | PSR_D_BIT | PSR_MODE_EL1h)
+	msr	spsr_el2, x0
+	msr	elr_el2, x1
+	msr	esr_el1, x2
+
+	b	__host_enter_restore_full
+SYM_FUNC_END(__host_inject_abort)
+
+/*
  * void __noreturn __hyp_do_panic(struct kvm_cpu_context *host_ctxt, u64 spsr,
  * 				  u64 elr, u64 par);
  */
