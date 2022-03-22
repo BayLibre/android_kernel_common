@@ -41,6 +41,8 @@ void kvm_inject_vabt(struct kvm_vcpu *vcpu);
 void kvm_inject_dabt(struct kvm_vcpu *vcpu, unsigned long addr);
 void kvm_inject_pabt(struct kvm_vcpu *vcpu, unsigned long addr);
 
+u64 __get_vector_offset(u64 psr, u64 target_mode, enum exception_type type);
+
 static inline int kvm_vcpu_enable_ptrauth(struct kvm_vcpu *vcpu)
 {
 	/*

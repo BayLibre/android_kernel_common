@@ -60,6 +60,23 @@ static void __vcpu_write_spsr_und(struct kvm_vcpu *vcpu, u64 val)
 		vcpu->arch.ctxt.spsr_und = val;
 }
 
+u64 __get_vector_offset(u64 psr, u64 target_mode, enum exception_type type)
+{
+	u64 mode = psr & (PSR_MODE_MASK | PSR_MODE32_BIT);
+	u64 offset;
+
+	if      (mode == target_mode)
+		offset = CURRENT_EL_SP_ELx_VECTOR;
+	else if ((mode | PSR_MODE_THREAD_BIT) == target_mode)
+		offset = CURRENT_EL_SP_EL0_VECTOR;
+	else if (!(mode & PSR_MODE32_BIT))
+		offset = LOWER_EL_AArch64_VECTOR;
+	else
+		offset = LOWER_EL_AArch32_VECTOR;
+
+	return offset + type;
+}
+
 /*
  * This performs the exception entry at a given EL (@target_mode), stashing PC
  * and PSTATE into ELR and SPSR respectively, and compute the new PC/PSTATE.
@@ -80,19 +97,8 @@ static void __vcpu_write_spsr_und(struct kvm_vcpu *vcpu, u64 val)
 static void enter_exception64(struct kvm_vcpu *vcpu, unsigned long target_mode,
 			      enum exception_type type)
 {
-	unsigned long sctlr, vbar, old, new, mode;
-	u64 exc_offset;
-
-	mode = *vcpu_cpsr(vcpu) & (PSR_MODE_MASK | PSR_MODE32_BIT);
-
-	if      (mode == target_mode)
-		exc_offset = CURRENT_EL_SP_ELx_VECTOR;
-	else if ((mode | PSR_MODE_THREAD_BIT) == target_mode)
-		exc_offset = CURRENT_EL_SP_EL0_VECTOR;
-	else if (!(mode & PSR_MODE32_BIT))
-		exc_offset = LOWER_EL_AArch64_VECTOR;
-	else
-		exc_offset = LOWER_EL_AArch32_VECTOR;
+	u64 offset = __get_vector_offset(*vcpu_cpsr(vcpu), target_mode, type);
+	unsigned long sctlr, vbar, old, new;
 
 	switch (target_mode) {
 	case PSR_MODE_EL1h:
@@ -105,7 +111,7 @@ static void enter_exception64(struct kvm_vcpu *vcpu, unsigned long target_mode,
 		BUG();
 	}
 
-	*vcpu_pc(vcpu) = vbar + exc_offset + type;
+	*vcpu_pc(vcpu) = vbar + offset;
 
 	old = *vcpu_cpsr(vcpu);
 	new = 0;
