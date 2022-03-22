@@ -33,6 +33,63 @@
       "message": "This gser vendor hook is for unisoc serial diag driver.",
       "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ed79463_c947459c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-22T09:08:05Z",
+      "side": 1,
+      "message": "What is wrong with the existing driver that does not work properly for your hardware?  How about just submitting the real change as a patch upstream which we will gladly backport instead?",
+      "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e070bfda_2a5ff9d3",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-22T09:08:05Z",
+      "side": 1,
+      "message": "no extra blank line needed.",
+      "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "357579c9_e611a9f0",
+        "filename": "drivers/usb/gadget/function/f_serial.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-22T09:08:05Z",
+      "side": 1,
+      "message": "what are you overwriting?  This feels really wrong.",
+      "range": {
+        "startLine": 390,
+        "startChar": 0,
+        "endLine": 390,
+        "endChar": 57
+      },
+      "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
