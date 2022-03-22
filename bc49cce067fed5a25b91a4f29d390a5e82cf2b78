@@ -87,6 +87,24 @@
       "parentUuid": "cb31e3bf_cab90093",
       "revId": "bc49cce067fed5a25b91a4f29d390a5e82cf2b78",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87b1cb1b_ac9fda2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-03-22T20:15:33Z",
+      "side": 1,
+      "message": "I think breaking debugfs for non-production tooling is okay, per upstream rules. As a courtesy perhaps we add it to the newsletter.\n\nMinchan: any way you could just avoid removing the __page_pinner_migration_failed symbol in your refactor (just in case somebody was using it) and then this could go in right away. then you could schedule the removal of the symbol for a future kmi update ?",
+      "parentUuid": "e20ce02e_2ef6eaf1",
+      "revId": "bc49cce067fed5a25b91a4f29d390a5e82cf2b78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
