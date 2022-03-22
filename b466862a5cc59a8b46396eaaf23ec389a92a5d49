@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76a2241d_1ba2081c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-03-22T09:48:40Z",
+      "side": 1,
+      "message": "The reason for this test was to test a problem with files \u003e 2Gb - see aosp/1302013\n\nSo this change defeats the purpose of this test - I suggest either you increase the disk size on your VMs *or* we make this test conditional on the free space left on the device. But I don\u0027t want this test defanged in this way.",
+      "revId": "b466862a5cc59a8b46396eaaf23ec389a92a5d49",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
