@@ -16,6 +16,24 @@
       "message": "So, the upstream API for page_pinner is still being discussed and that\u0027s why you are not replacing this implementation with the upstream one?\n\nOverall the new API looks cleaner, but it will be replaced with the upstream one when that is finalized...I have no objections to these changes as long as they are all replaced with the upstream API eventually.",
       "revId": "a1a62eb3ddda7d817d6fce8d551bbacd71c9e27f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf9aff9f_57d1da98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-03-22T03:47:00Z",
+      "side": 1,
+      "message": "Your understanding is correct. Since upstream agree how it would be useful(even other folk already found how it was useful to find page migration failure for their workload), there are still under discussion about interface so I couldn\u0027t claim the AOSP patch would be stable even though we replace this one with ongoing upstream effort RFC one. Once the interface settle down upstream, yeah, we should replace whole thing.\n\nDuring the time, I couldn\u0027t bear with this mess whenever I read source code.",
+      "parentUuid": "0a530a2e_ea195047",
+      "revId": "a1a62eb3ddda7d817d6fce8d551bbacd71c9e27f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
