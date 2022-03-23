@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f6efaf9_681987db",
+        "filename": "tools/testing/selftests/filesystems/incfs/incfs_test.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2824,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-03-23T09:41:51Z",
+      "side": 1,
+      "message": "So far as I can tell, this is type fsblkcnt_t which in turn is type ulong_t, which might be 32 bits, risking overflow. Please correct me if I\u0027m wrong! But it is probably safer to diving 3GB by f_bsize then compare, than this way round.\n\nAlso I suspect we want a little margin for error - maybe insist that there is 6GB available?",
+      "range": {
+        "startLine": 2824,
+        "startChar": 20,
+        "endLine": 2824,
+        "endChar": 28
+      },
+      "revId": "5a430336011103854cd10deb933f3256607d68a8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
