@@ -22,6 +22,30 @@
       },
       "revId": "5a430336011103854cd10deb933f3256607d68a8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adec3255_733aeea4",
+        "filename": "tools/testing/selftests/filesystems/incfs/incfs_test.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2824,
+      "author": {
+        "id": 1899961
+      },
+      "writtenOn": "2022-03-23T15:05:22Z",
+      "side": 1,
+      "message": "Yes, fsblkcnt_t is an unsigned long and f_bsize is also an unsigned long.\nAnd you are right, it might overflow. I think to make it save we just need to add a cast to long long. That will get rig of any chance on overflowing.\n\nI will also make it 4GB. One GB of margin should be more that enough.\nThis is not the disk size, but rather available (free) disk space.",
+      "parentUuid": "2f6efaf9_681987db",
+      "range": {
+        "startLine": 2824,
+        "startChar": 20,
+        "endLine": 2824,
+        "endChar": 28
+      },
+      "revId": "5a430336011103854cd10deb933f3256607d68a8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
