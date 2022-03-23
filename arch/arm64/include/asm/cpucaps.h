@@ -54,8 +54,13 @@
 #define ARM64_WORKAROUND_1463225		33
 #define ARM64_SSBS				34
 #define ARM64_WORKAROUND_1542419		35
+#define ARM64_SPECTRE_BHB			36
 
+<<<<<<< HEAD   (b27aef Merge 4.19.235 into android-4.19-stable)
 /* kabi: reserve 36 - 62 for future cpu capabilities */
 #define ARM64_NCAPS				62
+=======
+#define ARM64_NCAPS				37
+>>>>>>> BRANCH (67aefb Linux 4.19.236)
 
 #endif /* __ASM_CPUCAPS_H */

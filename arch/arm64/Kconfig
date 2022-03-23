@@ -1035,6 +1035,7 @@ config ARM64_SSBD
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD   (b27aef Merge 4.19.235 into android-4.19-stable)
 config ARM64_TAGGED_ADDR_ABI
 	bool "Enable the tagged user addresses syscall ABI"
 	default y
@@ -1056,6 +1057,16 @@ config COMPAT_VDSO
 
 	  You must have a 32-bit build of glibc 2.22 or later for programs
 	  to seamlessly take advantage of this.
+=======
+config MITIGATE_SPECTRE_BRANCH_HISTORY
+	bool "Mitigate Spectre style attacks against branch history" if EXPERT
+	default y
+	help
+	  Speculation attacks against some high-performance processors can
+	  make use of branch history to influence future speculation.
+	  When taking an exception from user-space, a sequence of branches
+	  or a firmware call overwrites the branch history.
+>>>>>>> BRANCH (67aefb Linux 4.19.236)
 
 menuconfig ARMV8_DEPRECATED
 	bool "Emulate deprecated/obsolete ARMv8 instructions"
