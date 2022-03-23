@@ -325,8 +325,9 @@ static int kvm_check_extension(struct kvm *kvm, long ext)
 }
 
 /*
- * Checks whether the exctension specified in ext is supported for protected
- * vms. The capabilities supported by kvm in general are passed in kvm_cap.
+ * Checks whether the exctension specified in ext is supported in protected
+ * mode for the specified vm.
+ * The capabilities supported by kvm in general are passed in kvm_cap.
  */
 static int pkvm_check_extension(struct kvm *kvm, long ext, int kvm_cap)
 {
@@ -376,7 +377,7 @@ static int pkvm_check_extension(struct kvm *kvm, long ext, int kvm_cap)
 		r = 1;
 		break;
 	default:
-		r = 0;
+		r = (kvm && kvm_vm_is_protected(kvm)) ? 0 : kvm_cap;
 		break;
 	}
 
@@ -387,7 +388,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 {
 	int r = kvm_check_extension(kvm, ext);
 
-	if (unlikely(kvm && kvm_vm_is_protected(kvm)))
+	if (is_protected_kvm_enabled())
 		r = pkvm_check_extension(kvm, ext, r);
 
 	return r;
