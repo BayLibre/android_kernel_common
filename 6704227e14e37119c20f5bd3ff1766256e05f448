@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc80a2b8_8748e8ec",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-23T21:15:40Z",
+      "side": 1,
+      "message": "In the android12-5.10 version of this CL, qperret@ asked a question that didn\u0027t get answered, so I\u0027ll ask again now:\n\n\"Right, this all feels a bit fragile. Where is the flag consumed? In the vendor implementation of select_task_rq_*()? If so, could we simply replace this wake flag by a flag in the VENDOR part of task_struct?\"\n\nWith qperret@\u0027s suggestion, this could be implemented completely from a vendor module and no flag would be needed. Can that work? If not, why not?",
+      "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
