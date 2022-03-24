@@ -144,6 +144,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a10a9e6_1aa5562a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T09:29:23Z",
+      "side": 1,
+      "message": "If your driver change will affect other devices, then your hook can also cause the same issue, so this should not be something you do at all, as you do not control the hosts connecting to your device in any way.\n\nIf you really need a custom serial device emulation, please just use a whole new driver.  There\u0027s no need for any hooks for that, and you can then do whatever you want.",
+      "parentUuid": "ff3964b0_4879d038",
+      "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e070bfda_2a5ff9d3",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 2
