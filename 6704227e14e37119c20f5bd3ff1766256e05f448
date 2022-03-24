@@ -16,6 +16,24 @@
       "message": "In the android12-5.10 version of this CL, qperret@ asked a question that didn\u0027t get answered, so I\u0027ll ask again now:\n\n\"Right, this all feels a bit fragile. Where is the flag consumed? In the vendor implementation of select_task_rq_*()? If so, could we simply replace this wake flag by a flag in the VENDOR part of task_struct?\"\n\nWith qperret@\u0027s suggestion, this could be implemented completely from a vendor module and no flag would be needed. Can that work? If not, why not?",
       "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "552438c5_c3f83035",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 1759937
+      },
+      "writtenOn": "2022-03-24T00:43:27Z",
+      "side": 1,
+      "message": "Right, select_task_rq_*() will consume it.\n\nThe call path is\nsock_def_readable -\u003e\n(vendor hook will call __wake_up_sync_key with a custom mode) -\u003e\n__wake_up_sync_key -\u003e\n(vendor hook changes wake_flags per the custom mode) -\u003e\n__wake_up_common -\u003e default_wake_function\n\ntask_struct is at the end of this path and it needs a hint. Because\nthe starting point is sock, I think it requires vendor hook.",
+      "parentUuid": "cc80a2b8_8748e8ec",
+      "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
