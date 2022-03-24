@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c1a7b44_b2f520e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-24T19:02:21Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it be better to add `#ifdef CONFIG_COMPACTION` around the definition? If it is not used at all when !COMPACTION, why do we need an inline version of it?",
+      "revId": "58b2e9210737cbe15c8b140e822ea658cd7668de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
