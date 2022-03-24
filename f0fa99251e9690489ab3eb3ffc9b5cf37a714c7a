@@ -16,6 +16,29 @@
       "message": "So this still doesn\u0027t handle gracefully accesses to guest memory via the host linear map on behalf of e.g. strace (we\u0027ll get a kernel oops with a descriptive error message at least), but should cover all the use-cases we care about for T with minimal complexity in the hypervisor.\n\nSince it\u0027s likely we\u0027ll make host mm changes as we make progress on the upstreaming front, it is possible the issue will just go away, so I\u0027d be inclined to get this in for now (assuming there are no major bugs ofc), and to revisit the rest later... Thoughts?",
       "revId": "f0fa99251e9690489ab3eb3ffc9b5cf37a714c7a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82e801e3_bc6d65f3",
+        "filename": "arch/arm64/kvm/hyp/nvhe/host.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2022-03-24T08:32:23Z",
+      "side": 1,
+      "message": "Any reason this is not done in C? I don\u0027t see anything that requires it to be done in assembly code.",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 94,
+        "endChar": 33
+      },
+      "revId": "f0fa99251e9690489ab3eb3ffc9b5cf37a714c7a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
