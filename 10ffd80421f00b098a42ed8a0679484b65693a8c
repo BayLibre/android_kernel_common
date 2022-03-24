@@ -16,6 +16,207 @@
       "message": "Are the UAPI changes already upstream?",
       "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "385ca820_e33cc874",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "user/kernel api needs a bit of work.",
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9423962_5aaf36fe",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "how can you change a user-visible abi like this?",
+      "range": {
+        "startLine": 871,
+        "startChar": 0,
+        "endLine": 871,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cf1a91_0c5fd7a0",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "not a valid user/kernel api data type.",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1014,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a5bbce8_611718b3",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "never use pointers in user/kernel apis.",
+      "range": {
+        "startLine": 1015,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54b5e6b4_0bf6ab30",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "not a valid user/kernel data type.",
+      "range": {
+        "startLine": 1020,
+        "startChar": 0,
+        "endLine": 1020,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a18b563f_489979ea",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1021,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "never use pointers in user/kernel apis.",
+      "range": {
+        "startLine": 1021,
+        "startChar": 0,
+        "endLine": 1021,
+        "endChar": 13
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba651082_a79ecf38",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1024,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "why is this in a uapi file at all?",
+      "range": {
+        "startLine": 1024,
+        "startChar": 0,
+        "endLine": 1024,
+        "endChar": 18
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c01f2cc6_3123c490",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "function pointers are not part of a user/kernel api.",
+      "range": {
+        "startLine": 1042,
+        "startChar": 0,
+        "endLine": 1042,
+        "endChar": 71
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c6bff1_9e6cf5c0",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-03-24T17:13:02Z",
+      "side": 1,
+      "message": "pointers can not be in user/kernel apis.",
+      "range": {
+        "startLine": 1045,
+        "startChar": 0,
+        "endLine": 1045,
+        "endChar": 29
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
