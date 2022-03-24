@@ -124,6 +124,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff3964b0_4879d038",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943840
+      },
+      "writtenOn": "2022-03-24T02:14:28Z",
+      "side": 1,
+      "message": "I cannot submit that unisoc driver upstream, maybe it will cause other vendor\u0027s issue. Other host dirver maybe send other requests.\n\nstatic int\ngser_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)\n{\n        struct f_gser            *gser \u003d func_to_gser(f);\n\tstruct usb_composite_dev *cdev \u003d f-\u003econfig-\u003ecdev;\n\tstruct usb_request\t *req \u003d cdev-\u003ereq;\n\tint\t\t\t value \u003d -EOPNOTSUPP;\n\tu16\t\t\t w_length \u003d le16_to_cpu(ctrl-\u003ewLength);\n\n\tswitch ((ctrl-\u003ebRequestType \u003c\u003c 8) | ctrl-\u003ebRequest) {\n\tcase ((USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE) \u003c\u003c 8)\n\t\t\t| USB_CDC_REQ_SET_CONTROL_LINE_STATE:\n\t\tvalue \u003d 0;\n\t\tbreak;\n\tdefault:\n                break;\n\t}\n\t/* respond with data transfer or status phase? */\n\tif (value \u003e\u003d 0) {\n\t\treq-\u003ezero \u003d 0;\n\t\treq-\u003elength \u003d value;\n\t\treq-\u003ecomplete \u003d gser_setup_complete;\n\t\tvalue \u003d usb_ep_queue(cdev-\u003egadget-\u003eep0, req, GFP_ATOMIC);\n\t\tif (value \u003c 0)\n\t\t\tERROR(cdev, \"gser response on ttyGS%d, err %d\\n\",\n\t\t\t\t\tgser-\u003eport_num, value);\n\t}\n\t/* device either stalls (value \u003c 0) or reports success */\n\treturn value;\n}",
+      "parentUuid": "f6a7534e_d9b89014",
+      "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e070bfda_2a5ff9d3",
