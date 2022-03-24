@@ -52,6 +52,24 @@
       "parentUuid": "3c1a7b44_b2f520e1",
       "revId": "58b2e9210737cbe15c8b140e822ea658cd7668de",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63fe8486_9c547c47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-03-24T19:46:17Z",
+      "side": 1,
+      "message": "It seems this issue was also reported here: https://lkml.org/lkml/2022/3/18/58\nSo, both patches aosp/1685698 and this one are required to fix this build.\n\nHowever, judging by the `EXPORT_SYMBOL_GPL(isolate_and_split_free_page)` and no current in-tree usage of it, this is likely used by a downstream driver only. I tried to get more info but the original commit aosp/1620717 points to a broken link of an upstream discussion. Does anybody have a good link?\n\nSince we already took the original commit `061e34c52e0f (\"ANDROID: implement wrapper for reverse migration\")` and its fix aosp/1685698 into `android13-5.15`, it is only appropriate we _also_ take this one now. So +2.",
+      "parentUuid": "8c01dce2_619e968f",
+      "revId": "58b2e9210737cbe15c8b140e822ea658cd7668de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
