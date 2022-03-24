@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2bfe879_61215826",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2022-03-24T11:10:57Z",
+      "side": 1,
+      "message": "nit: consider using the {read,write}_sysreg_el{1,2} accessors that handle VHE as well (preparing to fight future battles...).\n\nThe \u0027has MTE\u0027 part is pretty horrible though, and I\u0027m not sure why we can assume false here. Is that because we don\u0027t expose MTE to a guest, hence we can\u0027t generate an exception involving MTE here? This seems fragile.",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 664,
+        "endChar": 0
+      },
+      "revId": "626310b748f2824623e40d5605ec39137e892780",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
