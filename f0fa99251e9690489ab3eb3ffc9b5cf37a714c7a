@@ -39,6 +39,30 @@
       },
       "revId": "f0fa99251e9690489ab3eb3ffc9b5cf37a714c7a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11fe1558_9369929a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/host.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-03-24T09:36:50Z",
+      "side": 1,
+      "message": "Good point, not really no. In a previous version I was using hyp_kimg_va (currently asm only) to target a software-defined kernel entry point, but that is now gone and the rest can be done in C. I\u0027ll fix it up.",
+      "parentUuid": "82e801e3_bc6d65f3",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 94,
+        "endChar": 33
+      },
+      "revId": "f0fa99251e9690489ab3eb3ffc9b5cf37a714c7a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
