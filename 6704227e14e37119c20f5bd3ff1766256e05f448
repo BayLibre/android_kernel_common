@@ -34,6 +34,24 @@
       "parentUuid": "cc80a2b8_8748e8ec",
       "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31167fde_b335d719",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-24T15:04:28Z",
+      "side": 1,
+      "message": "Agreed that the vendor hook is needed, but why couldn\u0027t this flag be in a vendor data field of task_struct instead of defining it here? It is both set and consumed in vendor hooks so it seems like it shouldn\u0027t require any patch in the core kernel to implement since there are vendor-owned task_struct fields you can use for this flag. Why wouldn\u0027t that work?",
+      "parentUuid": "552438c5_c3f83035",
+      "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
