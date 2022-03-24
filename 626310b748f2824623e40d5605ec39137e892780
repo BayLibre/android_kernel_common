@@ -22,6 +22,30 @@
       },
       "revId": "626310b748f2824623e40d5605ec39137e892780",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0cd5e5a_4b9b093e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-03-24T11:32:02Z",
+      "side": 1,
+      "message": "Yup, this was really a placeholder while I was trying to figure it out, should be fixed now.\n\nI used the explicit read/write_sysreg() versions precisely because I got confused by VHE, but yes, that looks a good idea. I\u0027ll respin.",
+      "parentUuid": "e2bfe879_61215826",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 664,
+        "endChar": 0
+      },
+      "revId": "626310b748f2824623e40d5605ec39137e892780",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
