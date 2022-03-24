@@ -16,6 +16,24 @@
       "message": "Wouldn\u0027t it be better to add `#ifdef CONFIG_COMPACTION` around the definition? If it is not used at all when !COMPACTION, why do we need an inline version of it?",
       "revId": "58b2e9210737cbe15c8b140e822ea658cd7668de",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd4c82a_b85ae147",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2022-03-24T19:10:34Z",
+      "side": 1,
+      "message": "`isolate_and_split_free_page` is called when !COMPACTION, although expected to be  the stub as is here.",
+      "parentUuid": "3c1a7b44_b2f520e1",
+      "revId": "58b2e9210737cbe15c8b140e822ea658cd7668de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
