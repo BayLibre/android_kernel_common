@@ -162,6 +162,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12425c75_9d6f603a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943840
+      },
+      "writtenOn": "2022-03-24T10:16:59Z",
+      "side": 1,
+      "message": "https://android.googlesource.com/kernel/msm/+/android-5.0.2_r0.2/drivers/usb/gadget/f_serial.c\n\nThis is QCOM\u0027s gser_setup. Different vendor implement different gser_setup in hook file. Using hook should not affect other devices.\n\nI\u0027ll check how to use a whole new driver.",
+      "parentUuid": "7a10a9e6_1aa5562a",
+      "revId": "03de18cc261efb59026dc2a27c35e9d3cc2d3f34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e070bfda_2a5ff9d3",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 2
