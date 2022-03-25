@@ -16,6 +16,24 @@
       "message": "Do we need to call directly into this? Why can\u0027t we just return and follow the normal code path to exit into the host?",
       "revId": "a7fb44d29b16e75c19b912dcab5a9e1c474fd4c3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f4e83a8_3284cfc6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-03-25T11:19:50Z",
+      "side": 1,
+      "message": "Good point, and that\u0027d be much better from a stack perspective I suppose -- I\u0027ll go fix.",
+      "parentUuid": "60941b71_29a18b37",
+      "revId": "a7fb44d29b16e75c19b912dcab5a9e1c474fd4c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
