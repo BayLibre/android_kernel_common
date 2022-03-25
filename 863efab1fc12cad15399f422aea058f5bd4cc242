@@ -34,6 +34,23 @@
       "parentUuid": "6d2c3d58_802374ed",
       "revId": "863efab1fc12cad15399f422aea058f5bd4cc242",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "038d1028_7d31b063",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2022-03-25T02:34:27Z",
+      "side": 1,
+      "message": "It\u0027s not really an issue for Pixel 6+ (which are 5.10+), as we\u0027ve switched from RNDIS to NCM.  So we only ever use RNDIS for performance comparisons/tests, so it\u0027s really only a minor nuissance.\n\nIt may or may not be an issue for other vendors/oems.  In particular I believe everything Qualcomm based still uses RNDIS - though I think they don\u0027t use this ACK/GKI version of it, and instead use their own version (with hw accel support).  I have no idea about other oems/vendors.\n\nThat said, as I mentioned on the bug, I don\u0027t understand the reasoning for the change, since AFAIK this is gadget driver and requires explicit OS enablement... so keeping it around shouldn\u0027t affect security AFAICT.\n\nAs for not being CC\u0027ed, well, it\u0027s networking (even though USB), and tethering has been one of two or three primary things I\u0027ve been working on these past couple years (along with XLAT464 and eBPF).  I imagine you knew (having reviewed all the other tethering/usb dongle related config changes), but yeah, I guess it\u0027s easy to miss/forget.",
+      "revId": "863efab1fc12cad15399f422aea058f5bd4cc242",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
