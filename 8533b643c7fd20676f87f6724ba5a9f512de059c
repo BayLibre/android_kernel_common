@@ -16,6 +16,24 @@
       "message": "actually, can\u0027t this just go to build.config.gki ?",
       "revId": "8533b643c7fd20676f87f6724ba5a9f512de059c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1d91d5e_693ebc62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1080813
+      },
+      "writtenOn": "2022-03-25T14:31:31Z",
+      "side": 1,
+      "message": "Hi,\nI can do that but I have the following findings:\n\n\"build.config.gki\" is also included by \"build.config.virtual_device\", which in turn is included in many virtual device configs (probably too widespread?):\n\nhttps://source.corp.google.com/search?q\u003dcommon-modules%2Fvirtual-device%2Fbuild.config.virtual_device\u0026sq\u003dp:%5Eandroid-common-kernel$\u0026start\u003d1\n\nGKI_CERTIFICATION_TOOLS is only required for arm64 \u0026 x86_64 GKI targets.\n\nLooks like BUILD_SYSTEM_DLKM\u003d1 is only enabled in those two configs.\nhttps://cs.android.com/search?q\u003dBUILD_SYSTEM_DLKM%20%20f:build.config*",
+      "parentUuid": "c23b438b_51bf7ce5",
+      "revId": "8533b643c7fd20676f87f6724ba5a9f512de059c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
