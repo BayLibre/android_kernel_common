@@ -52,6 +52,24 @@
       "parentUuid": "552438c5_c3f83035",
       "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25dc54c7_7b1bfc64",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 1759937
+      },
+      "writtenOn": "2022-03-25T00:05:33Z",
+      "side": 1,
+      "message": "I think you missed the change\nWARN_ON_ONCE(IS_ENABLED(CONFIG_SCHED_DEBUG) \u0026\u0026 wake_flags \u0026 ~WF_SYNC);\n-\u003e\nWARN_ON_ONCE(IS_ENABLED(CONFIG_SCHED_DEBUG) \u0026\u0026 wake_flags \u0026 ~(WF_SYNC | WF_ANDROID_VENDOR));\n\nThis vendor hook makes WARNING without this changes.\nYou can find the details from b/189858948.",
+      "parentUuid": "31167fde_b335d719",
+      "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
