@@ -30,8 +30,13 @@ KMI_ENFORCED=1
 
 BUILD_SYSTEM_DLKM=1
 MODULES_LIST=${ROOT_DIR}/${KERNEL_DIR}/android/gki_system_dlkm_modules
+<<<<<<< HEAD   (c8b550 ANDROID: Update the ABI representation)
 MODULES_ORDER=android/gki_aarch64_modules
 
 if [ -n "${GKI_DEFCONFIG_FRAGMENT}" ]; then
 source ${GKI_DEFCONFIG_FRAGMENT}
 fi
+=======
+
+BUILD_GKI_CERTIFICATION_TOOLS=1
+>>>>>>> CHANGE (8533b6 ANDROID: GKI: Enable BUILD_GKI_CERTIFICATION_TOOLS)
