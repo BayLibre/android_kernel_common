@@ -99,6 +99,24 @@
       "parentUuid": "68b3df8e_cb8ae983",
       "revId": "cfb32e5737db4a35ba8fe4dc73052062678285f3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22893789_aa20a9fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943840
+      },
+      "writtenOn": "2022-03-25T09:30:56Z",
+      "side": 1,
+      "message": "There is a problem, usb_hcd structure can ben seen in sound/usb module. It will use usb_hcd-\u003edriver-\u003eandroid_vendor_data to configure audio patch to usb.\nBut musb structure cannot be seen in sound/usb module.",
+      "parentUuid": "29f1ad4a_94133b43",
+      "revId": "cfb32e5737db4a35ba8fe4dc73052062678285f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
