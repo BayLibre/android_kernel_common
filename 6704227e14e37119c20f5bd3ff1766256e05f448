@@ -88,6 +88,24 @@
       "parentUuid": "25dc54c7_7b1bfc64",
       "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af030faa_aacfbf39",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 1759937
+      },
+      "writtenOn": "2022-03-25T02:12:43Z",
+      "side": 1,
+      "message": "Sorry, I still don\u0027t understand your proposal.\n\nIn the sequence, sock_def_readable -\u003e ... -\u003e default_wake_function,\nI want to set a hint at sock_def_readable but task_struct is appeared from default_wake_function.\n\nHow can I access a task_struct in sock_def_readable?\nIs it possible without copying __wake_up_common to vendor driver?",
+      "parentUuid": "cafed2e7_199337b3",
+      "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
