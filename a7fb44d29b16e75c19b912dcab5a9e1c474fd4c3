@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60941b71_29a18b37",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2022-03-25T11:15:40Z",
+      "side": 1,
+      "message": "Do we need to call directly into this? Why can\u0027t we just return and follow the normal code path to exit into the host?",
+      "revId": "a7fb44d29b16e75c19b912dcab5a9e1c474fd4c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
