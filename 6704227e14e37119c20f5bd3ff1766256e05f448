@@ -70,6 +70,24 @@
       "parentUuid": "31167fde_b335d719",
       "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cafed2e7_199337b3",
+        "filename": "kernel/sched/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2080,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-03-25T01:45:01Z",
+      "side": 1,
+      "message": "If you follow my suggestion, this would not fire because no vendor-specific flag would be set in wake_flags. Instead you would use one of the vendor data fields in task_struct for this flag instead of wake_flags.",
+      "parentUuid": "25dc54c7_7b1bfc64",
+      "revId": "6704227e14e37119c20f5bd3ff1766256e05f448",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
