@@ -47,6 +47,7 @@
  * the CPU.
  */
 #define ARCH_DMA_MINALIGN	(128)
+#define ARCH_KMALLOC_MINALIGN	(64)
 
 #ifdef CONFIG_KASAN_SW_TAGS
 #define ARCH_SLAB_MINALIGN	(1ULL << KASAN_SHADOW_SCALE_SHIFT)
@@ -89,6 +90,12 @@ static inline int cache_line_size_of_cpu(void)
 }
 
 int cache_line_size(void);
+
+static inline unsigned int arch_kmalloc_minalign(void)
+{
+	return cache_line_size();
+}
+#define arch_kmalloc_minalign	arch_kmalloc_minalign
 
 /*
  * Read the effective value of CTR_EL0.
