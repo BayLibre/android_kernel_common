@@ -1261,23 +1261,41 @@ kmalloc_cache_name(const char *prefix, unsigned int size)
 	return kasprintf(GFP_NOWAIT, "%s-%u%c", prefix, size, units[idx]);
 }
 
-static void __init
+#ifndef arch_kmalloc_minalign
+static inline unsigned int arch_kmalloc_minalign(void)
+{
+	return ARCH_KMALLOC_MINALIGN;
+}
+#endif
+
+void __init
 new_kmalloc_cache(int idx, int type, slab_flags_t flags)
 {
 	const char *name;
+	unsigned int minalign = arch_kmalloc_minalign();
+	unsigned int aligned_size = kmalloc_info[idx].size;
+	int aligned_idx = idx;
+
+	if (minalign > ARCH_KMALLOC_MINALIGN) {
+		aligned_size = ALIGN(aligned_size, minalign);
+		aligned_idx = kmalloc_index(aligned_size);
+	}
 
 	if (type == KMALLOC_RECLAIM) {
 		flags |= SLAB_RECLAIM_ACCOUNT;
 		name = kmalloc_cache_name("kmalloc-rcl",
-						kmalloc_info[idx].size);
+						kmalloc_info[aligned_idx].size);
 		BUG_ON(!name);
 	} else {
-		name = kmalloc_info[idx].name;
+		name = kmalloc_info[aligned_idx].name;
 	}
 
-	kmalloc_caches[type][idx] = create_kmalloc_cache(name,
-					kmalloc_info[idx].size, flags, 0,
-					kmalloc_info[idx].size);
+	if (!kmalloc_caches[type][aligned_idx])
+		kmalloc_caches[type][aligned_idx] = create_kmalloc_cache(
+					name, aligned_size, flags, 0,
+					aligned_size);
+	if (idx != aligned_idx)
+		kmalloc_caches[type][idx] = kmalloc_caches[type][aligned_idx];
 }
 
 /*
@@ -1316,12 +1334,8 @@ void __init create_kmalloc_caches(slab_flags_t flags)
 		struct kmem_cache *s = kmalloc_caches[KMALLOC_NORMAL][i];
 
 		if (s) {
-			unsigned int size = kmalloc_size(i);
-			const char *n = kmalloc_cache_name("dma-kmalloc", size);
-
-			BUG_ON(!n);
-			kmalloc_caches[KMALLOC_DMA][i] = create_kmalloc_cache(
-				n, size, SLAB_CACHE_DMA | flags, 0, 0);
+			new_kmalloc_cache(i, KMALLOC_DMA,
+					  SLAB_CACHE_DMA | flags);
 		}
 	}
 #endif
