@@ -1177,6 +1177,14 @@ static struct kvm_memslots *kvm_dup_memslots(struct kvm_memslots *old,
 	return slots;
 }
 
+int __weak kvm_arch_check_set_memslot(struct kvm *kvm,
+				      struct kvm_memory_slot *old,
+				      struct kvm_memory_slot *new,
+				      enum kvm_mr_change change)
+{
+	return 0;
+}
+
 static int kvm_set_memslot(struct kvm *kvm,
 			   const struct kvm_userspace_memory_region *mem,
 			   struct kvm_memory_slot *old,
@@ -1186,6 +1194,11 @@ static int kvm_set_memslot(struct kvm *kvm,
 	struct kvm_memory_slot *slot;
 	struct kvm_memslots *slots;
 	int r;
+
+	/* Give architecture-specific code a chance to reject the change. */
+	r = kvm_arch_check_set_memslot(kvm, old, new, change);
+	if (r)
+		return r;
 
 	slots = kvm_dup_memslots(__kvm_memslots(kvm, as_id), change);
 	if (!slots)
