@@ -30,6 +30,7 @@ static struct pkvm_iommu_driver iommu_drivers[PKVM_IOMMU_NR_DRIVERS];
 
 /* IOMMU device list. Must only be accessed with host_kvm.lock held. */
 static LIST_HEAD(iommu_list);
+static atomic_t iommu_finalized = ATOMIC_INIT(0);
 
 static void *iommu_mem_pool;
 static size_t iommu_mem_remaining;
@@ -47,6 +48,16 @@ static void host_lock_component(void)
 static void host_unlock_component(void)
 {
 	hyp_spin_unlock(&host_kvm.lock);
+}
+
+static bool is_iommu_finalized(void)
+{
+	return !!atomic_read_acquire(&iommu_finalized);
+}
+
+static void set_iommu_finalized(void)
+{
+	atomic_set(&iommu_finalized, 1);
 }
 
 /*
@@ -249,6 +260,10 @@ int __pkvm_iommu_driver_init(enum pkvm_iommu_driver_id id, void *data, size_t si
 	const struct pkvm_iommu_ops *ops;
 	int ret = 0;
 
+	/* New driver initialization not allowed after __pkvm_iommu_finalize(). */
+	if (is_iommu_finalized())
+		return -EPERM;
+
 	data = kern_hyp_va(data);
 
 	drv = get_driver(id);
@@ -298,6 +313,10 @@ int __pkvm_iommu_register(unsigned long dev_id,
 	struct pkvm_iommu_driver *drv;
 	void *mem_va = NULL;
 	int ret = 0;
+
+	/* New device registration not allowed after __pkvm_iommu_finalize(). */
+	if (is_iommu_finalized())
+		return -EPERM;
 
 	drv = get_driver(drv_id);
 	if (!drv || !is_driver_ready(drv))
@@ -395,6 +414,12 @@ out:
 		free_iommu(drv, dev);
 	host_unlock_component();
 	return ret;
+}
+
+int __pkvm_iommu_finalize(void)
+{
+	set_iommu_finalized();
+	return 0;
 }
 
 int __pkvm_iommu_pm_notify(unsigned long dev_id, enum pkvm_iommu_pm_event event)
