@@ -2494,9 +2494,11 @@
       <elf-symbol name='pipe_lock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc1cf7fcf'/>
       <elf-symbol name='pipe_unlock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbf4d722d'/>
       <elf-symbol name='pktgen_xfrm_outer_mode_output' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8d58254f'/>
+      <elf-symbol name='pkvm_iommu_finalize' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x23d83c25'/>
       <elf-symbol name='pkvm_iommu_resume' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xff696ab2'/>
       <elf-symbol name='pkvm_iommu_s2mpu_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6d486258'/>
       <elf-symbol name='pkvm_iommu_suspend' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2554db42'/>
+      <elf-symbol name='pkvm_iommu_sysmmu_sync_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x76fa4991'/>
       <elf-symbol name='platform_device_add' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd1f2d2e8'/>
       <elf-symbol name='platform_device_add_data' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb05eda59'/>
       <elf-symbol name='platform_device_add_properties' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5988706b'/>
@@ -74766,9 +74768,6 @@
         <parameter type-id='cd1b45ab'/>
         <return type-id='3f1a6b60'/>
       </function-type>
-      <array-type-def dimensions='1' type-id='e151255a' size-in-bits='131072' id='b9cedcb8'>
-        <subrange length='2048' type-id='7ff19f0f' id='e5323efb'/>
-      </array-type-def>
       <function-type size-in-bits='64' id='b9d8dce4'>
         <parameter type-id='807b7702'/>
         <parameter type-id='95e97e5e'/>
@@ -82568,9 +82567,6 @@
       <pointer-type-def type-id='c9196d18' size-in-bits='64' id='cba10b6e'/>
       <pointer-type-def type-id='4b7a84f4' size-in-bits='64' id='cba114b6'/>
       <pointer-type-def type-id='284260b8' size-in-bits='64' id='cba1f2de'/>
-      <array-type-def dimensions='1' type-id='e151255a' size-in-bits='65536' id='cba3052b'>
-        <subrange length='1024' type-id='7ff19f0f' id='c60446f8'/>
-      </array-type-def>
       <function-type size-in-bits='64' id='cba59087'>
         <parameter type-id='eaa32e2f'/>
         <parameter type-id='91ce1af9'/>
@@ -96465,20 +96461,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='84a0e7ab' size-in-bits='64' id='e812884b'/>
-      <class-decl name='can_dev_rcv_lists' size-in-bits='196928' is-struct='yes' visibility='default' filepath='include/linux/can/can-ml.h' line='55' column='1' id='e82476af'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='rx' type-id='fc3a8480' visibility='default' filepath='include/linux/can/can-ml.h' line='56' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='256'>
-          <var-decl name='rx_sff' type-id='b9cedcb8' visibility='default' filepath='include/linux/can/can-ml.h' line='57' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='131328'>
-          <var-decl name='rx_eff' type-id='cba3052b' visibility='default' filepath='include/linux/can/can-ml.h' line='58' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='196864'>
-          <var-decl name='entries' type-id='95e97e5e' visibility='default' filepath='include/linux/can/can-ml.h' line='59' column='1'/>
-        </data-member>
-      </class-decl>
+      <class-decl name='can_dev_rcv_lists' is-struct='yes' visibility='default' is-declaration-only='yes' id='e82476af'/>
       <class-decl name='ieee80211_scan_request' size-in-bits='2048' is-struct='yes' visibility='default' filepath='include/net/mac80211.h' line='2645' column='1' id='e827ee6f'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='ies' type-id='80d7b69d' visibility='default' filepath='include/net/mac80211.h' line='2646' column='1'/>
@@ -118877,8 +118860,11 @@
         <parameter type-id='0fbf3cfd' name='skb' filepath='net/xfrm/xfrm_output.c' line='405' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='pkvm_iommu_resume' mangled-name='pkvm_iommu_resume' filepath='arch/arm64/kvm/iommu.c' line='51' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_resume'>
-        <parameter type-id='fa0b179b' name='dev' filepath='arch/arm64/kvm/iommu.c' line='51' column='1'/>
+      <function-decl name='pkvm_iommu_finalize' mangled-name='pkvm_iommu_finalize' filepath='arch/arm64/kvm/iommu.c' line='59' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_finalize'>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='pkvm_iommu_resume' mangled-name='pkvm_iommu_resume' filepath='arch/arm64/kvm/iommu.c' line='52' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_resume'>
+        <parameter type-id='fa0b179b' name='dev' filepath='arch/arm64/kvm/iommu.c' line='52' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='pkvm_iommu_s2mpu_register' mangled-name='pkvm_iommu_s2mpu_register' filepath='arch/arm64/kvm/iommu/s2mpu.c' line='72' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_s2mpu_register'>
@@ -118886,8 +118872,14 @@
         <parameter type-id='2522883d' name='addr' filepath='arch/arm64/kvm/iommu/s2mpu.c' line='72' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='pkvm_iommu_suspend' mangled-name='pkvm_iommu_suspend' filepath='arch/arm64/kvm/iommu.c' line='44' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_suspend'>
-        <parameter type-id='fa0b179b' name='dev' filepath='arch/arm64/kvm/iommu.c' line='44' column='1'/>
+      <function-decl name='pkvm_iommu_suspend' mangled-name='pkvm_iommu_suspend' filepath='arch/arm64/kvm/iommu.c' line='45' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_suspend'>
+        <parameter type-id='fa0b179b' name='dev' filepath='arch/arm64/kvm/iommu.c' line='45' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='pkvm_iommu_sysmmu_sync_register' mangled-name='pkvm_iommu_sysmmu_sync_register' filepath='arch/arm64/kvm/iommu/s2mpu.c' line='104' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pkvm_iommu_sysmmu_sync_register'>
+        <parameter type-id='fa0b179b' name='dev' filepath='arch/arm64/kvm/iommu/s2mpu.c' line='104' column='1'/>
+        <parameter type-id='2522883d' name='addr' filepath='arch/arm64/kvm/iommu/s2mpu.c' line='104' column='1'/>
+        <parameter type-id='fa0b179b' name='parent' filepath='arch/arm64/kvm/iommu/s2mpu.c' line='105' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <var-decl name='platform_bus' type-id='66e487eb' mangled-name='platform_bus' visibility='default' filepath='drivers/base/platform.c' line='38' column='1' elf-symbol-id='platform_bus'/>
