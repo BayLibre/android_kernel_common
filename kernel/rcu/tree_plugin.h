@@ -541,6 +541,10 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
 		/* Unboost if we were boosted. */
 		if (IS_ENABLED(CONFIG_RCU_BOOST) && drop_boost_mutex)
 			rt_mutex_futex_unlock(&rnp->boost_mtx);
+<<<<<<< HEAD   (ab2d1d Revert "vsock: each transport cycles only on its own sockets)
+=======
+
+>>>>>>> BRANCH (d9c581 Linux 5.10.109)
 	} else {
 		local_irq_restore(flags);
 	}
