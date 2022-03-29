@@ -46,6 +46,30 @@
       },
       "revId": "aafa1d14bda8df7f4c018e4497d4d0533278e79c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05996521_f5b44551",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1324603
+      },
+      "writtenOn": "2022-03-29T02:57:36Z",
+      "side": 1,
+      "message": "Actually we don\u0027t use it directly, the symbol comes with a function that references it.\n\n#define LOAD_AVG_MAX pelt_load_avg_max\n\n#define PELT_MIN_DIVIDER\t(LOAD_AVG_MAX - 1024)\n\nstatic inline u32 get_pelt_divider(struct sched_avg *avg)\n{\n\treturn PELT_MIN_DIVIDER + avg-\u003eperiod_contrib;\n}",
+      "parentUuid": "a9b4a01f_587501f6",
+      "range": {
+        "startLine": 33,
+        "startChar": 18,
+        "endLine": 33,
+        "endChar": 35
+      },
+      "revId": "aafa1d14bda8df7f4c018e4497d4d0533278e79c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
