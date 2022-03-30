@@ -18,6 +18,7 @@
 #include <linux/compat.h>
 #include <linux/uio.h>
 #include <linux/file.h>
+#include <linux/net.h>
 
 #include <linux/virtio.h>
 #include <linux/virtio_ids.h>
@@ -915,6 +916,7 @@ EXPORT_SYMBOL(tipc_chan_destroy);
 
 struct tipc_dn_chan {
 	int state;
+	struct kref refcount;
 	struct mutex lock; /* protects rx_msg_queue list and channel state */
 	struct tipc_chan *chan;
 	wait_queue_head_t readq;
@@ -1095,6 +1097,7 @@ static int tipc_open(struct inode *inode, struct file *filp)
 		goto err_alloc_chan;
 	}
 
+	kref_get(&dn->refcount);
 	mutex_init(&dn->lock);
 	init_waitqueue_head(&dn->readq);
 	init_completion(&dn->reply_comp);
@@ -1433,6 +1436,66 @@ shm_share_failed:
 	goto common_cleanup;
 }
 
+static ssize_t tipc_check_chan_state(struct tipc_dn_chan *dn)
+{
+	if (dn->state == TIPC_CONNECTED)
+		return 0;
+	else if (dn->state == TIPC_CONNECTING)
+		return -ENOTCONN;
+	else if (dn->state == TIPC_DISCONNECTED)
+		return -ENOTCONN;
+	else if (dn->state == TIPC_STALE)
+		return -ESHUTDOWN;
+	else
+		return -EBADFD;
+}
+
+static struct proto_ops tipc_sock_ops = {
+	.family = PF_UNSPEC,
+	.owner = THIS_MODULE,
+	// TODO: all the socket operations
+};
+
+static long tipc_get_socket(struct tipc_dn_chan *dn, int flags)
+{
+	long ret;
+	struct socket *sock;
+	struct file *file;
+
+	ret = tipc_check_chan_state(dn);
+	if (ret) {
+		goto err_check_chan_state;
+	}
+
+	ret = sock_create_lite(AF_UNSPEC, SOCK_DGRAM, 0, &sock);
+	if (ret) {
+		goto err_sock_create;
+	}
+	sock->ops = &tipc_sock_ops;
+
+	ret = get_unused_fd_flags(flags);
+	if (ret < 0) {
+		sock_release(sock);
+		goto err_get_fd;
+	}
+
+	file = sock_alloc_file(sock, flags, NULL);
+	if (IS_ERR(file)) {
+		put_unused_fd(ret);
+		goto err_alloc_file;
+	}
+
+	/* TODO: point sock to dn */
+
+	fd_install(ret, file);
+
+err_alloc_file:
+err_get_fd:
+err_sock_create:
+err_check_chan_state:
+	return ret;
+}
+
 static long tipc_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	struct tipc_dn_chan *dn = filp->private_data;
@@ -1444,6 +1507,9 @@ static long tipc_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		return filp_send_ioctl(filp,
 				       (const struct tipc_send_msg_req __user *)
 				       arg);
+        case TIPC_IOC_GET_SOCKET:
+		/* TODO: get flags from filp */
+		return tipc_get_socket(dn, 0);
 	default:
 		dev_dbg(&dn->chan->vds->vdev->dev,
 			"Unhandled ioctl cmd: 0x%x\n", cmd);
@@ -1492,15 +1558,8 @@ static ssize_t tipc_read_iter(struct kiocb *iocb, struct iov_iter *iter)
 	mutex_lock(&dn->lock);
 
 	while (list_empty(&dn->rx_msg_queue)) {
-		if (dn->state != TIPC_CONNECTED) {
-			if (dn->state == TIPC_CONNECTING)
-				ret = -ENOTCONN;
-			else if (dn->state == TIPC_DISCONNECTED)
-				ret = -ENOTCONN;
-			else if (dn->state == TIPC_STALE)
-				ret = -ESHUTDOWN;
-			else
-				ret = -EBADFD;
+		ret = tipc_check_chan_state(dn);
+		if (ret) {
 			goto out;
 		}
 
@@ -1592,11 +1651,10 @@ static __poll_t tipc_poll(struct file *filp, poll_table *wait)
 	return mask;
 }
 
-
-static int tipc_release(struct inode *inode, struct file *filp)
+static void _free_dn(struct kref *kref)
 {
-	struct tipc_dn_chan *dn = filp->private_data;
-
+	struct tipc_dn_chan *dn = container_of(kref, struct tipc_dn_chan,
+					       refcount);
 	dn_shutdown(dn);
 
 	/* free all pending buffers */
@@ -1607,6 +1665,13 @@ static int tipc_release(struct inode *inode, struct file *filp)
 
 	/* and destroy it */
 	tipc_chan_destroy(dn->chan);
+}
+
+static int tipc_release(struct inode *inode, struct file *filp)
+{
+	struct tipc_dn_chan *dn = filp->private_data;
+
+	kref_put(&dn->refcount, _free_dn);
 
 	return 0;
 }
