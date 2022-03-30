@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5c5c9db_488c5e5a",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1900312
+      },
+      "writtenOn": "2022-03-30T09:48:48Z",
+      "side": 1,
+      "message": "Right, will move this and use skip here.",
+      "parentUuid": "967f6b1c_767e442c",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 34
+      },
+      "revId": "1e83bdc4965db5e8e124b8bee015637470450ed2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d3a3fd5_3857bb3a",
         "filename": "mm/vmscan.c",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-29T19:09:55Z",
       "side": 1,
       "message": "Just have smth like:\n```\nbool skip \u003d false;\n\ntrace_android_vh_kswapd_per_node(nid, true, \u0026skip);\nif (skip)\n\treturn 0;\n```",
+      "range": {
+        "startLine": 4482,
+        "startChar": 1,
+        "endLine": 4484,
+        "endChar": 11
+      },
+      "revId": "1e83bdc4965db5e8e124b8bee015637470450ed2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73e9395_c3440279",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4484,
+      "author": {
+        "id": 1900312
+      },
+      "writtenOn": "2022-03-30T09:48:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d3a3fd5_3857bb3a",
       "range": {
         "startLine": 4482,
         "startChar": 1,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-03-29T19:09:55Z",
       "side": 1,
       "message": "```\nbool skip \u003d false;\n\ntrace_android_vh_kswapd_per_node(nid, false, \u0026skip);\nif (skip)\n\treturn 0;\n```",
+      "range": {
+        "startLine": 4502,
+        "startChar": 1,
+        "endLine": 4504,
+        "endChar": 9
+      },
+      "revId": "1e83bdc4965db5e8e124b8bee015637470450ed2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65218f2a_0fac6346",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4504,
+      "author": {
+        "id": 1900312
+      },
+      "writtenOn": "2022-03-30T09:48:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d024334_fc11e61e",
       "range": {
         "startLine": 4502,
         "startChar": 1,
