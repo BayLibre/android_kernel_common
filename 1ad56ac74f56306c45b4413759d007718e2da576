@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef33b993_7af8ed19",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-03-31T23:24:47Z",
+      "side": 1,
+      "message": "Can you elaborate on exactly how this is better than the driver code that does the same thing?  My original solution to this problem was indeed pretty similar to this, and it does make sense to avoid duplicating code, so I would be fine with this.  But jaegeuk@ had recommended doing it in driver code only, so that\u0027s what we did instead.  b/227177294 mentions a deadlock, but I don\u0027t understand it exactly, and how it would be fixed by this change as the locking is the same.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "1ad56ac74f56306c45b4413759d007718e2da576",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
