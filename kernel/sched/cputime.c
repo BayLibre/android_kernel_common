@@ -2,8 +2,11 @@
 /*
  * Simple CPU accounting cgroup controller
  */
+<<<<<<< HEAD   (b83e45 Revert "ANDROID: sched/fair: Bias EAS placement for latency")
 #include <linux/cpufreq_times.h>
 #include "sched.h"
+=======
+>>>>>>> BRANCH (3fe2f7 Merge tag 'sched-core-2022-03-22' of git://git.kernel.org/pu)
 
 #ifdef CONFIG_IRQ_TIME_ACCOUNTING
 
