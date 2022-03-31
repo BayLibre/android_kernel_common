@@ -22,6 +22,30 @@
       },
       "revId": "1ad56ac74f56306c45b4413759d007718e2da576",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c081253_f70822e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-03-31T23:39:46Z",
+      "side": 1,
+      "message": "The race condition I see is as follows:\n* A SCSI command is submitted and gets past the check of whether or not SCSI command processing is blocked. The ufshcd_queuecommand() call for that command has not yet happened.\n* ufshcd_get_exclusive_access() waits until the TMF and SCSI command doorbells are zero.\n* ufshcd_queuecommand() is called and submits the SCSI command while a keyslot is being reprogrammed.\n\nThe above race could not happen as long as ufshcd_queuecommand() obtained the clk_scaling_lock. This race can happen today since the code to grab the clk_scaling_lock has been removed from ufshcd_queuecommand(). This race is addressed by calling ufshcd_wait_for_doorbell_clr() and because that function checks for SCSI commands by calling ufshcd_pending_cmds(). That last function checks SCSI state information that is updated before the \"host blocked\" check happens.",
+      "parentUuid": "ef33b993_7af8ed19",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "1ad56ac74f56306c45b4413759d007718e2da576",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
