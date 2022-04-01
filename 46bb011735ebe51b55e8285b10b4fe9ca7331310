@@ -34,6 +34,23 @@
       "parentUuid": "4f155bfa_405fea58",
       "revId": "46bb011735ebe51b55e8285b10b4fe9ca7331310",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce47fda9_94f3f3de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-04-01T17:38:39Z",
+      "side": 1,
+      "message": "There is a follow-up upstream patch fixing this one: 1d91df85f399 (\"mm/page_alloc: handle a missing case for memalloc_nocma_{save/restore} APIs\"). You probably want to backport it as well.",
+      "revId": "46bb011735ebe51b55e8285b10b4fe9ca7331310",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
