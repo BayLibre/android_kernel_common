@@ -34,6 +34,75 @@
       "parentUuid": "43076b85_f621ca01",
       "revId": "516e51d3d6d03426859b6f3ba3d6a520dcc91d92",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6ef4b23_f57b938d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-04-04T11:55:45Z",
+      "side": 1,
+      "message": "If you move the declaration of sstate to the start of the function, you could initialise it to NULL and have a common return path for the pkvm/!pkvm cases",
+      "range": {
+        "startLine": 712,
+        "startChar": 0,
+        "endLine": 717,
+        "endChar": 13
+      },
+      "revId": "516e51d3d6d03426859b6f3ba3d6a520dcc91d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0041f951_448f6f11",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-04-04T11:55:45Z",
+      "side": 1,
+      "message": "If you make these macros, then you could pass the argument number in as an argument and I think they\u0027d be a little less error-prone in future (I can definitely see myself calling \"get_current_vcpu()\" in the wrong context!).",
+      "range": {
+        "startLine": 719,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 1
+      },
+      "revId": "516e51d3d6d03426859b6f3ba3d6a520dcc91d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa052018_9d4126cd",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-04-04T11:55:45Z",
+      "side": 1,
+      "message": "Isn\u0027t vcpu \u003d\u003d shadow_state-\u003evcpu by this point? In which case, this collapses to:\n\n```\nif (shadow_state \u0026\u0026 shadow_state-\u003eis_protected)\n    return;\n```\n\nor perhaps:\n\n```\nif (!shadow_state || !shadow_state-\u003eis_protected)\n    __kvm_adjust_pc(vcpu);\n```",
+      "range": {
+        "startLine": 821,
+        "startChar": 2,
+        "endLine": 821,
+        "endChar": 28
+      },
+      "revId": "516e51d3d6d03426859b6f3ba3d6a520dcc91d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
