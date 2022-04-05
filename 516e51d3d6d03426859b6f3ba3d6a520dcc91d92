@@ -132,6 +132,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1d0ffef_1d814061",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-04-05T12:55:14Z",
+      "side": 1,
+      "message": "Yes, that looks about right. I agree that the macros aren\u0027t very pretty, but I really like that we\u0027re then coding the argument register number at the callsite.",
+      "parentUuid": "c3cf7b21_5e4151a8",
+      "range": {
+        "startLine": 719,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 1
+      },
+      "revId": "516e51d3d6d03426859b6f3ba3d6a520dcc91d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa052018_9d4126cd",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 1
@@ -167,6 +191,30 @@
       "side": 1,
       "message": "No, before this assignment, `vcpu` is the host vcpu (after hyp_va conversion and checking against the shadow state).\n\nThe state update has to happen on the *shadow* vcpu so that it can be transferred to the host view on `vcpu_put()`.",
       "parentUuid": "aa052018_9d4126cd",
+      "range": {
+        "startLine": 821,
+        "startChar": 2,
+        "endLine": 821,
+        "endChar": 28
+      },
+      "revId": "516e51d3d6d03426859b6f3ba3d6a520dcc91d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b45ea03e_b50b104a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-04-05T12:55:14Z",
+      "side": 1,
+      "message": "Right you are, I mixed up the shadow host vcpu pointer with the shadow vcpu!",
+      "parentUuid": "051f1888_48da870c",
       "range": {
         "startLine": 821,
         "startChar": 2,
