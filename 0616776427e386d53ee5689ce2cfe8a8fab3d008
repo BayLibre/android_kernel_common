@@ -16,6 +16,23 @@
       "message": "add the empty file here so that the build does not break?",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "812dc0fe_c5117b81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-04-06T14:32:36Z",
+      "side": 1,
+      "message": "Do we really need to maintain that list? If the symbol list is enforced at module load time (that is, vendor modules can only access symbols on the list), we might as well just disable trimming and let GKI modules access all symbols.",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
