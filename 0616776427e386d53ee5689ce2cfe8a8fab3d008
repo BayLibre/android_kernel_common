@@ -141,6 +141,24 @@
       "parentUuid": "900197c3_935858f9",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f96ce409_9ce1be40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-04-06T17:11:41Z",
+      "side": 1,
+      "message": "\u003e We are trying to make sure when we convert the inbuilt kernel features as modules we don\u0027t open up a hole for the partners to skip loading the GKI modules (protected) and start loading their versions of the modules unless we specifically allow this by not restricting certain symbol access. This encourages to use upstream code of GKI module and not custom codes from vendor modules.\n\nRight. But to be fair the only leverage we have to force the usage of GKI modules is by giving them access to things vendor modules can\u0027t have access to. Preventing vendor modules from exporting certain symbols doesn\u0027t really work as the vendor module might just expose a symbol with a different name -- the consumer is likely a vendor module too so they can use the ABI they want no? And if you\u0027re worried about the case where the consumer is a GKI module, we could relatively easily check that from the module loader as well.",
+      "parentUuid": "b47d25b1_ab127d5e",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
