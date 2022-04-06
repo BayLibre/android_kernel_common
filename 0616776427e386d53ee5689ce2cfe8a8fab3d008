@@ -123,6 +123,24 @@
       "parentUuid": "291aa612_75e10146",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b47d25b1_ab127d5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-04-06T16:17:46Z",
+      "side": 1,
+      "message": "We are trying to make sure when we convert the inbuilt kernel features as modules we don\u0027t open up a hole for the partners to skip loading the GKI modules (protected) and start loading their versions of the modules unless we specifically allow this by not restricting certain symbol access. This encourages to use upstream code of GKI module and not custom codes from vendor modules.\n\nWe can\u0027t rely on vendor lists for such enforcement as we need to control the list of protected symbol to check against that vendor modules doesn\u0027t contain any module which is not allowed to be supplied by vendors.\n\nCurrent plan and design is to only list the GKI module symbols as protected; so list is short and binary search is quicker as every module load and every symbol resolution such search will be performed. We can have untrimmed symbol - vendor symbol union as protected, this will increase the number of symbols drastically but shouldn\u0027t affect the performance much as I have tested in past with 30K symbol bsearch() look up with 250 modules load extra time was being absorbed in the noise. (Boottime regression test results here: go/gki-modules-design-proposal)",
+      "parentUuid": "900197c3_935858f9",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
