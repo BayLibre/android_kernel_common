@@ -5350,6 +5350,17 @@ void scheduler_tick(void)
 	trigger_load_balance(rq);
 #endif
 
+	if (per_cpu(rt_task_arrival_time, cpu)) {
+		if (rq_clock_task(rq) -	per_cpu(rt_task_arrival_time, cpu) >
+				400000000) {
+			printk_deferred("RT task %s (%d) runtime > 400000000 now=%llu task arrival time=%llu runtime=%llu\n",
+	    	curr->comm, curr->pid,
+			rq_clock_task(rq),
+	    	per_cpu(rt_task_arrival_time, cpu),
+	    	rq_clock_task(rq) - per_cpu(rt_task_arrival_time, cpu));
+	    }
+	}
+
 	trace_android_vh_scheduler_tick(rq);
 }
 
@@ -6429,6 +6440,11 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
 
 		trace_sched_switch(sched_mode & SM_MASK_PREEMPT, prev, next);
+
+		if (rt_task(next))
+			per_cpu(rt_task_arrival_time, cpu) = rq_clock_task(rq);
+		else
+			per_cpu(rt_task_arrival_time, cpu) = 0;
 
 		/* Also unlocks the rq: */
 		rq = context_switch(rq, prev, next, &rf);
