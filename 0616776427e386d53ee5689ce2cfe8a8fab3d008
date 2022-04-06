@@ -87,6 +87,24 @@
       "parentUuid": "d533ea57_aa2e90e2",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "291aa612_75e10146",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-04-06T15:20:24Z",
+      "side": 1,
+      "message": "I see. That makes sense in theory. So, basically rather than passing protected symbol file as an input to header generator; I just pass the list of untrimmed ksymtab minus union of all vendor list, right? Is such list being generated currently or how can I generate one if you know? Sounds like tooling will be a lot easy to implement with this approach.",
+      "parentUuid": "31e570ee_50818d3e",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
