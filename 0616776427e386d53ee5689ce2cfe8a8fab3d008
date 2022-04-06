@@ -33,6 +33,42 @@
       "message": "Do we really need to maintain that list? If the symbol list is enforced at module load time (that is, vendor modules can only access symbols on the list), we might as well just disable trimming and let GKI modules access all symbols.",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d533ea57_aa2e90e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-04-06T14:51:37Z",
+      "side": 1,
+      "message": "Symbol list is enforced at the runtime but this list is being used to generate an array of symbol to perform the binary search at runtime. Symbols in this file are not allowed to be accessed by the vendor module as long as these modules are protected. When these modules become unprotected (after KMI Freeze) and vendor can override them at that time this symbol will come from vendor symbol list. All modules start with protected at KMI freeze. Does this make sense now?",
+      "parentUuid": "812dc0fe_c5117b81",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e5bf4e5_6f792dd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-04-06T14:51:37Z",
+      "side": 1,
+      "message": "The file will have content coming in via http://aosp/2056555 for android13-5.15.\nSince content of this file can differ among ACK branches for example cfg80211 and mac80211 will only be modules on 5.15 and not 5.10, this was my way to test out that having the empty file doesn\u0027t break any build rather than adding the empty file to fix any existing build breakage.",
+      "parentUuid": "35b6abc1_cebddefa",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
