@@ -41,6 +41,8 @@
 #include <sound/pcm_params.h>
 #include <sound/initval.h>
 
+#include <trace/hooks/usb_audio.h>
+
 #include "usbaudio.h"
 #include "card.h"
 #include "midi.h"
@@ -753,6 +755,8 @@ static int usb_audio_probe(struct usb_interface *intf,
 	if (err < 0)
 		return err;
 
+	trace_android_vh_usb_audio_connect(intf);
+
 	/*
 	 * found a config.  now register to ALSA
 	 */
@@ -819,6 +823,8 @@ static int usb_audio_probe(struct usb_interface *intf,
 
 	if (chip->quirk_flags & QUIRK_FLAG_DISABLE_AUTOSUSPEND)
 		usb_disable_autosuspend(interface_to_usbdev(intf));
+
+	trace_android_vh_usb_audio_add_ctls(intf, chip);
 
 	/*
 	 * For devices with more than one control interface, we assume the
@@ -906,6 +912,8 @@ static void usb_audio_disconnect(struct usb_interface *intf)
 		return;
 
 	card = chip->card;
+
+	trace_android_vh_usb_audio_disconnect(intf);
 
 	mutex_lock(&register_mutex);
 	if (atomic_inc_return(&chip->shutdown) == 1) {
