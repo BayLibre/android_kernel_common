@@ -159,6 +159,24 @@
       "parentUuid": "b47d25b1_ab127d5e",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "767c5e44_593d0493",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-04-06T18:29:30Z",
+      "side": 1,
+      "message": "\u003eBut to be fair the only leverage we have to force the usage of GKI modules is by giving them access to things vendor modules can\u0027t have access to.\n\nIsn\u0027t that leverage is not giving an access to the module symbols if the module is not signed (i.e. not from Google)?\n\n\u003e Export symbol\nWe are not allowing vendor modules to export the same symbol exported by GKI modules; largely to protect if we convert a framework to a module; we don\u0027t want vendors to roll their own by overriding GKI one.\n\nYes, they can rename the symbols and get around it; but then that will be a mess they have to deal with specially when they have to do this for every symbol in every module they want to bypass. We can only discourage this; I don\u0027t know any other solution to avoid this except not allowing any modules at all which we can\u0027t do for the obvious reasons.",
+      "parentUuid": "f96ce409_9ce1be40",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
