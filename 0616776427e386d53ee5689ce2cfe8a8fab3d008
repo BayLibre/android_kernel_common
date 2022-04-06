@@ -69,6 +69,24 @@
       "parentUuid": "35b6abc1_cebddefa",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31e570ee_50818d3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-04-06T14:59:51Z",
+      "side": 1,
+      "message": "Hmm, not sure 😊\n\nAs long as the module loader enforces that vendor modules only access symbols on the vendor list, why do we need to maintain the list of \u0027protected\u0027 symbols at all? IOW, I\u0027m saying that \u0027protected\u0027 symbols could be defined as all symbols that vendor modules can\u0027t access, so that\u0027s essentially the untrimmed ksymtab minus symbols from the vendor list.",
+      "parentUuid": "d533ea57_aa2e90e2",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
