@@ -177,7 +177,8 @@ enum {
 	SWP_SYNCHRONOUS_IO = (1 << 12),	/* synchronous IO is efficient */
 	SWP_VALID	= (1 << 13),	/* swap is valid to be operated on? */
 					/* add others here before... */
-	SWP_SCANNING	= (1 << 14),	/* refcount in scan_swap_map */
+	SWP_HOT	= (1 << 14),		/* hot swap device *
+	SWP_SCANNING	= (1 << 15),	/* refcount in scan_swap_map */
 };
 
 #define SWAP_CLUSTER_MAX 32UL
@@ -279,6 +280,7 @@ struct swap_info_struct {
 					 * protect swap count continuation page
 					 * list.
 					 */
+	ANDROID_OEM_DATA_ARRAY(1,8);
 	struct work_struct discard_work; /* discard worker */
 	struct swap_cluster_list discard_clusters; /* discard clusters list */
 	struct plist_node avail_lists[]; /*
