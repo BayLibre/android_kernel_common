@@ -255,3 +255,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_modify_thermal_request_freq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_modify_thermal_target_freq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_thermal_register);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_thermal_unregister);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_thermal_zone_device);
