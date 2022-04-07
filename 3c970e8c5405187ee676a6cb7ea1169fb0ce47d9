@@ -16,6 +16,24 @@
       "message": "drivers shouldn\u0027t be calling internal functions like this.  how is locking managed?",
       "revId": "3c970e8c5405187ee676a6cb7ea1169fb0ce47d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae6380f_8e7e6a6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1030767
+      },
+      "writtenOn": "2022-04-07T19:07:20Z",
+      "side": 1,
+      "message": "The functions in endpoint.c being exported already themselves acquire/release the chip-\u003emutex. Whereas the snd_usb_autosuspend/resume routines are doing something more primitive with atomic_t counters.",
+      "parentUuid": "58ebabb9_c2e3220a",
+      "revId": "3c970e8c5405187ee676a6cb7ea1169fb0ce47d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
