@@ -13,7 +13,7 @@
 #ifndef __DMA_BUF_H__
 #define __DMA_BUF_H__
 
-#include <linux/dma-buf-map.h>
+#include <linux/iosys-map.h>
 #include <linux/file.h>
 #include <linux/err.h>
 #include <linux/scatterlist.h>
@@ -340,6 +340,7 @@ struct dma_buf_ops {
 	 */
 	int (*mmap)(struct dma_buf *, struct vm_area_struct *vma);
 
+<<<<<<< HEAD   (9968eb ANDROID: remove CONFIG_DEBUG_INFO from gki_defconfig files)
 	int (*vmap)(struct dma_buf *dmabuf, struct dma_buf_map *map);
 	void (*vunmap)(struct dma_buf *dmabuf, struct dma_buf_map *map);
 
@@ -356,6 +357,10 @@ struct dma_buf_ops {
 	 * will be populated with the buffer's flags.
 	 */
 	int (*get_flags)(struct dma_buf *dmabuf, unsigned long *flags);
+=======
+	int (*vmap)(struct dma_buf *dmabuf, struct iosys_map *map);
+	void (*vunmap)(struct dma_buf *dmabuf, struct iosys_map *map);
+>>>>>>> BRANCH (b14ffa Merge tag 'drm-next-2022-03-24' of git://anongit.freedesktop)
 };
 
 /**
@@ -418,7 +423,7 @@ struct dma_buf {
 	 * @vmap_ptr:
 	 * The current vmap ptr if @vmapping_counter > 0. Protected by @lock.
 	 */
-	struct dma_buf_map vmap_ptr;
+	struct iosys_map vmap_ptr;
 
 	/**
 	 * @exp_name:
@@ -708,7 +713,12 @@ int dma_buf_end_cpu_access_partial(struct dma_buf *dma_buf,
 
 int dma_buf_mmap(struct dma_buf *, struct vm_area_struct *,
 		 unsigned long);
+<<<<<<< HEAD   (9968eb ANDROID: remove CONFIG_DEBUG_INFO from gki_defconfig files)
 int dma_buf_vmap(struct dma_buf *dmabuf, struct dma_buf_map *map);
 void dma_buf_vunmap(struct dma_buf *dmabuf, struct dma_buf_map *map);
 int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags);
+=======
+int dma_buf_vmap(struct dma_buf *dmabuf, struct iosys_map *map);
+void dma_buf_vunmap(struct dma_buf *dmabuf, struct iosys_map *map);
+>>>>>>> BRANCH (b14ffa Merge tag 'drm-next-2022-03-24' of git://anongit.freedesktop)
 #endif /* __DMA_BUF_H__ */
