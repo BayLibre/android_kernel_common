@@ -16,6 +16,24 @@
       "message": "please submit upstream first.",
       "revId": "9eaa2a32a3189c1e6e36580fc4eb962fdeb6e276",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee3ed886_8ed47073",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1475635
+      },
+      "writtenOn": "2022-04-07T07:41:38Z",
+      "side": 1,
+      "message": "As discussed in previous abandon patch, we plan to upstream this patch with ISP driver to Linux kernel this year. Before that, we still need to use vendor hook function instead for android13-5.15.\nOn the other hand, this patch is different with that in android12-5.10.\nShould I still need to cherry-pick from android12-5.10 then do the modification? or just send a new one like this?",
+      "parentUuid": "17531a26_42eed2fd",
+      "revId": "9eaa2a32a3189c1e6e36580fc4eb962fdeb6e276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
