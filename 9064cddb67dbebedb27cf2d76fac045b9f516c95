@@ -34,6 +34,41 @@
       "parentUuid": "cf887bbf_1f391751",
       "revId": "9064cddb67dbebedb27cf2d76fac045b9f516c95",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bc7eaa9_820155fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-04-07T15:16:55Z",
+      "side": 1,
+      "message": "I meant that this \"LA\" is not a term that most people know, so please update the comments with \"Linux Android\" and don\u0027t use internal company jargon.",
+      "parentUuid": "d7f6a3e4_7d16d66f",
+      "revId": "9064cddb67dbebedb27cf2d76fac045b9f516c95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d8513dd_285b5841",
+        "filename": "drivers/soc/qcom/qcom-geni-se.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-04-07T15:16:55Z",
+      "side": 1,
+      "message": "No, no explicity qcom-specific code here. Use a vendor hook and do this property look up from the handler.",
+      "revId": "9064cddb67dbebedb27cf2d76fac045b9f516c95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
