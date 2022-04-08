@@ -50,6 +50,24 @@
       "message": "Also the upstream submission was rejected 😞",
       "revId": "1da05ac6bdfe681ce1fd63505e395b8f02f27d9f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff422408_57bd679e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1941617
+      },
+      "writtenOn": "2022-04-08T10:12:27Z",
+      "side": 1,
+      "message": "The two patches are for different requirements and are different fix.\nIn my patch system resume is handled for !con_enabled.\n\nWhile in https://lore.kernel.org/all/1649316351-9220-2-git-send-email-quic_vnivarth@quicinc.com/ system suspend is handled for !console_suspend_enabled.",
+      "parentUuid": "8a9669e7_c9587353",
+      "revId": "1da05ac6bdfe681ce1fd63505e395b8f02f27d9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
