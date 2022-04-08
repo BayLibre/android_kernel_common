@@ -34,6 +34,24 @@
       "parentUuid": "f157354a_17d503d4",
       "revId": "7caeba9040d1e9e2d4f5ea489f4eb69f0b488581",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0be31369_5fbff827",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1030767
+      },
+      "writtenOn": "2022-04-08T20:30:31Z",
+      "side": 1,
+      "message": "This patch was part of a series by Samsung sent upstream which is understandably incomplete.\n\nQC\u0027s implementation of audio offload has a different approach and only has need for these XHCI functions to be exported. The request is for just this current patch to be taken into android13-5.15 as it does work with our existing vendor module. The current implementation is not quite ready for upstream as we need more time to prepare all the pieces so we are asking if this patch can be applied as a stop-gap at this time.\n\nFor this patch I see there were build warnings reported upstream due to missing prototypes. I can fix those:\nhttps://lore.kernel.org/linux-usb/202203212326.t8A838in-lkp@intel.com/",
+      "parentUuid": "ae02c8b4_10d08ef8",
+      "revId": "7caeba9040d1e9e2d4f5ea489f4eb69f0b488581",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
