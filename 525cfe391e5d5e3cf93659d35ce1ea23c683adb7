@@ -52,6 +52,24 @@
       "parentUuid": "8ec0be74_f4d2a48c",
       "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cb43e82_5600e248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945330
+      },
+      "writtenOn": "2022-04-11T10:37:13Z",
+      "side": 1,
+      "message": "YES, it controls detection of plugging in a USB device, it knows whether it\u0027s USB host or it\u0027s USB device, but it didn\u0027t know the plug in item is USB digital AUDIO HEADSET, only USB core knows the enumeration detail. Kindly please correct me, if I am wrong. I know you are expert on USB driver, if vendor hook solution can\u0027t be accepted, we need suggestion on HOW DWC3 platform driver know the digital audio headset is plugin, and not a USB mouse is plug in.",
+      "parentUuid": "366515c7_15530ae9",
+      "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
