@@ -70,6 +70,24 @@
       "parentUuid": "366515c7_15530ae9",
       "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb2b5230_c65c08c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-11T13:01:49Z",
+      "side": 1,
+      "message": "It should not matter the type of the device plugged into the controller as they should work all the same (or not work the same.)\n\nIf you need to do a device-specific type of quirk, then handle that in the driver that controls that device.\n\nAlso, the dwc3 driver has hooks already in it for lots of events already.  Are you sure you can not just use one of them instead?  If not, why not just add a specific hook there instead?",
+      "parentUuid": "2cb43e82_5600e248",
+      "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
