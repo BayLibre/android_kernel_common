@@ -88,6 +88,24 @@
       "parentUuid": "2cb43e82_5600e248",
       "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04a82c8f_faaf58cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945330
+      },
+      "writtenOn": "2022-04-12T02:00:37Z",
+      "side": 1,
+      "message": "Our problem is that, our ASIC use DWC3 + PHY1 normally, when USB digital headset plug in, we need switch to another Controller + PHY2 to support, and if digital headset plug out, switch to DWC3 + PHY1 again. it\u0027s really hard to handle this in DWC3 platform driver.\n\nI know, you need to keep the code general and standard, but our ASIC had some drawback, we need to make our ASIC support USB digital headset. Only USB core side know that, it\u0027s USB digital headset plug-in, not other USB device.",
+      "parentUuid": "bb2b5230_c65c08c9",
+      "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
