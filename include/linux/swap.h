@@ -279,6 +279,7 @@ struct swap_info_struct {
 					 * protect swap count continuation page
 					 * list.
 					 */
+	ANDROID_OEM_DATA_ARRAY(1,8);
 	struct work_struct discard_work; /* discard worker */
 	struct swap_cluster_list discard_clusters; /* discard clusters list */
 	struct plist_node avail_lists[]; /*
