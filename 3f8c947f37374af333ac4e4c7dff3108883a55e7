@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2eee5cf_a5fa611f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-12T09:52:45Z",
+      "side": 1,
+      "message": "when you start to list different things you are doing in the same commit, that is a huge sign this needs to be split up into multiple commits.  Please do that here.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75fecab2_990afc88",
+        "filename": "include/linux/mmzone.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-12T09:52:45Z",
+      "side": 1,
+      "message": "always run checkpatch.pl on your patches before submitting them.\n\nAnd this needs to go at the end of the structure.",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 295,
+        "endChar": 33
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa886521_aeaa84a3",
+        "filename": "include/linux/page-flags.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-12T09:52:45Z",
+      "side": 1,
+      "message": "sorry, but we can not add new page flags.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 14
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "960f9ec6_db785a91",
+        "filename": "include/linux/swap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-12T09:52:45Z",
+      "side": 1,
+      "message": "we can not change this.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 58
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ad68322_2d769fcf",
+        "filename": "include/linux/swap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-12T09:52:45Z",
+      "side": 1,
+      "message": "at the end of the structure.  And why 8?  Why not just 1?",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 29
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130fd30f_c56e31fc",
+        "filename": "include/linux/swap_slots.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-12T09:52:45Z",
+      "side": 1,
+      "message": "why not 1?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 29
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
