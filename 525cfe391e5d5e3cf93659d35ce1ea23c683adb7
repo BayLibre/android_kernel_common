@@ -196,6 +196,24 @@
       "parentUuid": "04981184_d0c1575f",
       "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b53d32d_7c2c9a5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945330
+      },
+      "writtenOn": "2022-04-13T02:07:04Z",
+      "side": 1,
+      "message": "I looked at sound/usb.\n\nI think we still need put the vendor hook code in USB/core. As I described before, we need to switch USB controller + PHY and trigger another enumeration of the plug-in headset ( another controller + PHY handle that enumeration), for current enumeration( handle by DWC3 XHCI) , it need return -ENOTCONN and mark it as fail if not, it\u0027s really difficult to handle.\n\n\ttrace_android_vh_switch_usb_phy(udev, \u0026ret);\n\tif (ret) {\n\t\terr \u003d -ENOTCONN;\n\t\tgoto fail;\n\t}",
+      "parentUuid": "dc594f58_6c6dcc6e",
+      "revId": "525cfe391e5d5e3cf93659d35ce1ea23c683adb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
