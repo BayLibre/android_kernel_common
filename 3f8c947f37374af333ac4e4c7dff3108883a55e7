@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1916326_155f4246",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T07:02:59Z",
+      "side": 1,
+      "message": "This patch has been split up into two commits, including this patch and the following patches:\n1) https://android-review.googlesource.com/c/kernel/common/+/2063667\n2) https://android-review.googlesource.com/c/kernel/common/+/2063747\n3) https://android-review.googlesource.com/c/kernel/common/+/2063741\n4）https://android-review.googlesource.com/c/kernel/common/+/2063688\n\nThis patch is to distinguish hot and cold swap.\nThe other patch is to distinguish hot, cold, specified reclaim by framework.",
+      "parentUuid": "e2eee5cf_a5fa611f",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75fecab2_990afc88",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-12T09:52:45Z",
       "side": 1,
       "message": "always run checkpatch.pl on your patches before submitting them.\n\nAnd this needs to go at the end of the structure.",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 295,
+        "endChar": 33
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e14a553_6214c5cf",
+        "filename": "include/linux/mmzone.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T07:02:59Z",
+      "side": 1,
+      "message": "We have modify this, checked pass by checkpatch.pl.\nThe code has been moved to patch: https://android-review.googlesource.com/c/kernel/common/+/2063667",
+      "parentUuid": "75fecab2_990afc88",
       "range": {
         "startLine": 295,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37bd01cb_460f2c55",
+        "filename": "include/linux/page-flags.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T07:02:59Z",
+      "side": 1,
+      "message": "this is deleted, we will use page_ext and page_ext_flags to represent these states. It is updated in patch: https://android-review.googlesource.com/c/kernel/common/+/2063747",
+      "parentUuid": "fa886521_aeaa84a3",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 14
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "960f9ec6_db785a91",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-12T09:52:45Z",
       "side": 1,
       "message": "we can not change this.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 58
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01a6dc18_a58c09e9",
+        "filename": "include/linux/swap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T07:02:59Z",
+      "side": 1,
+      "message": "We have deleted this change",
+      "parentUuid": "960f9ec6_db785a91",
       "range": {
         "startLine": 181,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de3f0f40_32c66833",
+        "filename": "include/linux/swap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T07:02:59Z",
+      "side": 1,
+      "message": "This has been moved to between avail_lists, discard_clusters. If it is placed at the end end of the structure, there will be a build fail:\nerror: flexible array member \u0027avail_lists\u0027 with type \u0027struct plist_node []\u0027 is not at the end of struct\n        struct plist_node avail_lists[]; /*\nAnd this code has been checked by checkpatch.pl\n\nThe follow message should be recored to protect the flash device lifetime, banlance  and optimize the IO throughput of swap partition\\file:\n1) total swapin pages;\n2) total swapout pages;\n3) total number of cold pages swapin;\n4) total number of swapout pages, specified by userspace;\n5) total number of swapout pages, specified by kernel;\n6) the maxmium number of swapout pages;\n7) the maxmium number of swapout pages allowed by kernel;\n8) the maxmium number of swapout pages allowed by framework;",
+      "parentUuid": "0ad68322_2d769fcf",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 29
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "130fd30f_c56e31fc",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-04-12T09:52:45Z",
       "side": 1,
       "message": "why not 1?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 29
+      },
+      "revId": "3f8c947f37374af333ac4e4c7dff3108883a55e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34b3340a_c1fee002",
+        "filename": "include/linux/swap_slots.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T07:02:59Z",
+      "side": 1,
+      "message": "The number has been modified to 3.\nThe swap slot has been categorized as hot and cold, so there should be two nr, cur, and n_ret respectively.\nThe detail description imformation is in patch: https://android-review.googlesource.com/c/kernel/common/+/2063741",
+      "parentUuid": "130fd30f_c56e31fc",
       "range": {
         "startLine": 22,
         "startChar": 0,
