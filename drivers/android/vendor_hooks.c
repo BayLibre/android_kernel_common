@@ -53,9 +53,14 @@
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/futex.h>
 #include <trace/hooks/logbuf.h>
+<<<<<<< HEAD   (8484f15a8c436bc07f3ea69089b956ddd3c3f01b ANDROID: GKI: Add QCOM symbols for scheduling)
 #include <trace/hooks/traps.h>
 #include <trace/hooks/blk.h>
 #include <trace/hooks/bug.h>
+||||||| BASE   (44301f95d971eba2b0c8146cade500e47de6b6ba ANDROID: sched: add sched_setattr export)
+=======
+#include <trace/hooks/regmap.h>
+>>>>>>> CHANGE (a9e1381ec8bbdaf1b6e861fa1165fe90cee0c5f9 ANDROID: GKI: regmap: Add regmap vendor hook for of_syscon_r)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -275,6 +280,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_folio_alloced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_die_kernel_fault);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_sp_pc_abort);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
+<<<<<<< HEAD   (8484f15a8c436bc07f3ea69089b956ddd3c3f01b ANDROID: GKI: Add QCOM symbols for scheduling)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_readahead_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_readahead_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_fault_start);
@@ -282,3 +288,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_fault_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
+||||||| BASE   (44301f95d971eba2b0c8146cade500e47de6b6ba ANDROID: sched: add sched_setattr export)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calc_alloc_flags);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calc_alloc_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
+>>>>>>> CHANGE (a9e1381ec8bbdaf1b6e861fa1165fe90cee0c5f9 ANDROID: GKI: regmap: Add regmap vendor hook for of_syscon_r)
