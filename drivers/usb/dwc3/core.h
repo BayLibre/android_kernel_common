@@ -1320,6 +1320,16 @@ struct dwc3 {
 	ANDROID_KABI_RESERVE(4);
 };
 
+/**
+ * struct dwc3_vendor - contains parameters without modifying the format of DWC3 core
+ * @dwc: contains dwc3 core reference
+ * @clear_stall_protocol: endpoint number that requires a delayed status phase
+ */
+struct dwc3_vendor {
+	struct	dwc3 dwc;
+	u8	clear_stall_protocol;
+};
+
 #define INCRX_BURST_MODE 0
 #define INCRX_UNDEF_LENGTH_BURST_MODE 1
 
