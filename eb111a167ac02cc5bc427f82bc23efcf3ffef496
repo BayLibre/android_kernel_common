@@ -93,6 +93,30 @@
       },
       "revId": "eb111a167ac02cc5bc427f82bc23efcf3ffef496",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a44958be_1ada9aa9",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-04-14T10:07:07Z",
+      "side": 1,
+      "message": "Yeah, we have a check in build.sh that does something like so:\n\nmake gki_defconfig\nmake savedefconfig\n\nand then checks that what we got back from savedefconfig matches gki_defconfig exactly. I think the idea is to make sure that nothing gets ignored from gki_defconfig silently (because missing dependencies and whatnot), but that has the nasty side-effect of making changes to gki_defconfig really sensitive to silly things, leading to really annoying issues like the one you\u0027re seeing here :/",
+      "parentUuid": "968e1085_4172faf3",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 19
+      },
+      "revId": "eb111a167ac02cc5bc427f82bc23efcf3ffef496",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
