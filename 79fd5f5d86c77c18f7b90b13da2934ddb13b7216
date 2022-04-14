@@ -104,6 +104,30 @@
       },
       "revId": "79fd5f5d86c77c18f7b90b13da2934ddb13b7216",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ccee717_154b1599",
+        "filename": "include/linux/swap_slots.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1275143
+      },
+      "writtenOn": "2022-04-14T12:08:01Z",
+      "side": 1,
+      "message": "Because of this change:\nMemory increment \u003d 8 bytes * CPU numer ;\nPS: The effect of data structure alignment is ignored.\n\nBecause the array of swap_slots_cache is defined as below:\nstatic DEFINE_PER_CPU(struct swap_slots_cache, swp_slots);",
+      "parentUuid": "31a69307_a79c5493",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 24
+      },
+      "revId": "79fd5f5d86c77c18f7b90b13da2934ddb13b7216",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
