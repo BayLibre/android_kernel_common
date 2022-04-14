@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2acb49c_b97d19e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "I\u0027m picking this back up now...",
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8410f7f1_c0d12314",
@@ -35,6 +52,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7bccc3f_ae849930",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 2842,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "Yes, this was an option I initially considered. However, the expansion of these macros blows up the size of the function. Specially after adding all the new logs. Whereas using this function actually reduces the size with this patch.\n\nI could alternative switch to `int debug_mask` here instead and do the following if it makes more sense:\n```\n#define binder_txn_error(x...) \\\n        binder_transaction_error(BINDER_DEBUG_FAILED_TRANSACTION, x)\n#define binder_user_txn_error(x...) \\\n        binder_transaction_error(BINDER_DEBUG_USER_ERROR, x)\n```",
+      "parentUuid": "8410f7f1_c0d12314",
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b12573b9_6886878c",
@@ -48,6 +83,30 @@
       "writtenOn": "2022-04-05T08:12:16Z",
       "side": 1,
       "message": "is this first condition necessary, or should it actually be a precondition of this function that command !\u003d BR_OK?",
+      "range": {
+        "startLine": 2852,
+        "startChar": 5,
+        "endLine": 2852,
+        "endChar": 22
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e83c043_35c523a4",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 2852,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "There are a couple scenarios where the error would be overwritten during the exit path and I could refactor those instead of this check. However, I think it makes sense to always try and keep the original error.",
+      "parentUuid": "b12573b9_6886878c",
       "range": {
         "startLine": 2852,
         "startChar": 5,
@@ -81,6 +140,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6724d46b_e221f1af",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 2926,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "Right, this is exactly what was done in the previous patchset (#17). However, after discussing this over with Todd I couldn\u0027t come up with a _valid_ userspace scenario in which the corruption would happen. Only when misusing the api was the lock actually helpful.\n\nWith that said, I\u0027m only slightly familiar with all the use cases. So I would appreciate if you can think of a scenario and I can definitely bring back the locking here.",
+      "parentUuid": "945c10c1_3385d56f",
+      "range": {
+        "startLine": 2926,
+        "startChar": 0,
+        "endLine": 2926,
+        "endChar": 21
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab5d8b2c_0dc17d53",
@@ -94,6 +177,30 @@
       "writtenOn": "2022-04-05T08:12:16Z",
       "side": 1,
       "message": "binder",
+      "range": {
+        "startLine": 3316,
+        "startChar": 16,
+        "endLine": 3316,
+        "endChar": 18
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d0d17b6_e369d5f2",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 3316,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab5d8b2c_0dc17d53",
       "range": {
         "startLine": 3316,
         "startChar": 16,
@@ -127,6 +234,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fff35ab_4ec7b365",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 3351,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2814bfdd_0afe130f",
+      "range": {
+        "startLine": 3351,
+        "startChar": 16,
+        "endLine": 3351,
+        "endChar": 22
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42e75892_8d091f87",
@@ -140,6 +271,30 @@
       "writtenOn": "2022-04-05T08:12:16Z",
       "side": 1,
       "message": "I do think you need to hold proc-\u003einner_lock here though, because this could have been written by another thread",
+      "range": {
+        "startLine": 5213,
+        "startChar": 0,
+        "endLine": 5213,
+        "endChar": 48
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f2b014b_1fb435e1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 5213,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-14T20:20:37Z",
+      "side": 1,
+      "message": "Same, this was removed in patchset #17. I can bring it back.",
+      "parentUuid": "42e75892_8d091f87",
       "range": {
         "startLine": 5213,
         "startChar": 0,
