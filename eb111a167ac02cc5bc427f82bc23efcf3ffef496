@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "755a5f06_635ac7a1",
+        "filename": "arch/arm64/Kconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 1706,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2022-04-14T10:00:18Z",
+      "side": 1,
+      "message": "Obviously not! ;-) I\u0027ll drop this comment.",
+      "parentUuid": "9aa359da_4c535857",
+      "range": {
+        "startLine": 1706,
+        "startChar": 3,
+        "endLine": 1706,
+        "endChar": 67
+      },
+      "revId": "eb111a167ac02cc5bc427f82bc23efcf3ffef496",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "40b0745a_6ff996ad",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-14T09:54:20Z",
       "side": 1,
       "message": "TH wants this further down apparently, right after CONFIG_SETEND_EMULATION (sigh)",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 19
+      },
+      "revId": "eb111a167ac02cc5bc427f82bc23efcf3ffef496",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "968e1085_4172faf3",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2022-04-14T10:00:18Z",
+      "side": 1,
+      "message": "Do you understand *why* it wants it there?",
+      "parentUuid": "40b0745a_6ff996ad",
       "range": {
         "startLine": 58,
         "startChar": 0,
