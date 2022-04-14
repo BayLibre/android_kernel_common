@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b05c1f52_95f61ff0",
+        "filename": "drivers/soc/qcom/qcom-geni-se.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2022-04-14T06:18:39Z",
+      "side": 0,
+      "message": "This will prevent handling of EPROBE_DEFER and other valid error scenarios that should be properly errored out. You only care about ignoring ENOENT.\n\n`devm_clk_bulk_get_optional` should work better instead",
+      "range": {
+        "startLine": 894,
+        "startChar": 3,
+        "endLine": 894,
+        "endChar": 14
+      },
+      "revId": "53b9568a1c322fda4ee5b27da526165c0a08a86c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
