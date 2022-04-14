@@ -35,6 +35,7 @@
 #include <trace/events/f2fs.h>
 #include <trace/events/android_fs.h>
 #include <uapi/linux/f2fs.h>
+#include <trace/hooks/f2fshooks.h>
 
 static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
 {
@@ -2789,6 +2790,7 @@ static int f2fs_ioc_defragment(struct file *filp, unsigned long arg)
 	if (err)
 		return err;
 
+        trace_android_rvh_func_f2fs_defragment_range(f2fs_defragment_range);
 	err = f2fs_defragment_range(sbi, filp, &range);
 	mnt_drop_write_file(filp);
 
@@ -4252,6 +4254,7 @@ out:
 
 static long __f2fs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
+        trace_android_rvh_f2fs_ioctl_defrag(filp, &cmd, arg, FS_IOC_GETVERSION);
 	switch (cmd) {
 	case FS_IOC_GETFLAGS:
 		return f2fs_ioc_getflags(filp, arg);

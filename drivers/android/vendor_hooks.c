@@ -74,6 +74,7 @@
 #include <trace/hooks/sound.h>
 #include <trace/hooks/snd_compr.h>
 #include <trace/hooks/gup.h>
+#include <trace/hooks/f2fshooks.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -395,3 +396,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_f2fs_ioctl_defrag);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gc_status);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_restore_gc_status);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gc_mode);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_get_is_idle);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_get_pages_address);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_func_f2fs_defragment_range);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_inode_flag_set);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_is_file);

@@ -33,6 +33,7 @@
 
 #include "pnode.h"
 #include "internal.h"
+#include <trace/hooks/f2fshooks.h>
 
 /* Maximum number of mounts in a mount namespace */
 unsigned int sysctl_mount_max __read_mostly = 100000;
@@ -351,6 +352,7 @@ int mnt_want_write(struct vfsmount *m)
 {
 	int ret;
 
+        trace_android_rvh_func_mnt_want_write_file(mnt_want_write_file);
 	sb_start_write(m->mnt_sb);
 	ret = __mnt_want_write(m);
 	if (ret)
@@ -444,6 +446,7 @@ void mnt_drop_write(struct vfsmount *mnt)
 {
 	__mnt_drop_write(mnt);
 	sb_end_write(mnt->mnt_sb);
+        trace_android_rvh_func_mnt_drop_write_file(mnt_drop_write_file);
 }
 EXPORT_SYMBOL_GPL(mnt_drop_write);
 

@@ -28,6 +28,8 @@
 #include <linux/fscrypt.h>
 #include <linux/fsverity.h>
 
+#include <trace/hooks/f2fshooks.h>
+
 #ifdef CONFIG_F2FS_CHECK_FS
 #define f2fs_bug_on(sbi, condition)	BUG_ON(condition)
 #else
@@ -1843,6 +1845,9 @@ struct f2fs_sb_info {
 	spinlock_t iostat_lat_lock;
 	struct iostat_lat_info *iostat_io_lat;
 #endif
+
+        ANDROID_OEM_DATA(1);
+  
 };
 
 #ifdef CONFIG_F2FS_FAULT_INJECTION
@@ -2430,6 +2435,7 @@ static inline void inode_dec_dirty_pages(struct inode *inode)
 
 static inline s64 get_pages(struct f2fs_sb_info *sbi, int count_type)
 {
+        trace_android_rvh_get_pages_address(sbi, &count_type);
 	return atomic_read(&sbi->nr_pages[count_type]);
 }
 
@@ -2778,8 +2784,12 @@ static inline bool is_inflight_io(struct f2fs_sb_info *sbi, int type)
 
 static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
 {
+        trace_android_rvh_get_is_idle(sbi, &sbi->gc_mode, &type);
+
 	if (sbi->gc_mode == GC_URGENT_HIGH)
 		return true;
+
+        trace_android_rvh_get_is_idle(sbi, &sbi->gc_mode, &type);
 
 	if (is_inflight_io(sbi, type))
 		return false;
@@ -2973,6 +2983,7 @@ static inline void set_inode_flag(struct inode *inode, int flag)
 
 static inline int is_inode_flag_set(struct inode *inode, int flag)
 {
+        trace_android_rvh_inode_flag_set(&flag);
 	return test_bit(flag, F2FS_I(inode)->flags);
 }
 
@@ -3237,6 +3248,7 @@ static inline int f2fs_has_inline_dentry(struct inode *inode)
 
 static inline int is_file(struct inode *inode, int type)
 {
+        trace_android_rvh_set_is_file(&type);
 	return F2FS_I(inode)->i_advise & type;
 }
 
