@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a62048_ef4a5123",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-15T10:44:52Z",
+      "side": 1,
+      "message": "minor build problem with the abi checking, it is causing crc issues as you are including a new .h file now.  See the steps below to fix this.",
+      "revId": "c9a9f0181b9e8acffd7a5323554b93a2c9cf5433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed9ec2e9_db7a44db",
+        "filename": "include/trace/hooks/usb.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-15T10:44:52Z",
+      "side": 1,
+      "message": "this is not needed.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 29
+      },
+      "revId": "c9a9f0181b9e8acffd7a5323554b93a2c9cf5433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d1c7ed2_dd8f60e3",
+        "filename": "include/trace/hooks/usb.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-15T10:44:52Z",
+      "side": 1,
+      "message": "this is not needed and is causing a crc error in the abi.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 22
+      },
+      "revId": "c9a9f0181b9e8acffd7a5323554b93a2c9cf5433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26272477_93a6188b",
+        "filename": "include/trace/hooks/usb.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-15T10:44:52Z",
+      "side": 1,
+      "message": "add a line after this that says:\n    struct usb_device;\n\nand you should be fine.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 3
+      },
+      "revId": "c9a9f0181b9e8acffd7a5323554b93a2c9cf5433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
