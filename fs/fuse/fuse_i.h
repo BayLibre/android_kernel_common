@@ -1868,6 +1868,14 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *arg
 			};						\
 			break;						\
 		}							\
+		for (i = 0; i < FUSE_MAX_IN_ARGS; i++)			\
+			fa.in_args[i].end_offset = (void *)		\
+					((char *)fa.in_args[i].value	\
+					+ fa.in_args[i].size);		\
+		for (i = 0; i < FUSE_MAX_OUT_ARGS; i++)			\
+			fa.out_args[i].end_offset = (void *)		\
+					((char *)fa.out_args[i].value	\
+					+ fa.out_args[i].size);		\
 		initialized = true;					\
 									\
 		fa_backup = fa;						\
@@ -1875,7 +1883,8 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *arg
 		for (i = 0; i < fa.in_numargs; ++i)			\
 			fa.out_args[i] = (struct fuse_bpf_arg) {	\
 				.size = fa.in_args[i].size,		\
-				.value = (void *)fa.in_args[i].value,	\
+				.value = (void *) fa.in_args[i].value,	\
+				.end_offset = (void *) fa.in_args[i].end_offset,	\
 			};						\
 		fa.out_numargs = fa.in_numargs;				\
 									\
@@ -1911,11 +1920,13 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *arg
 			fa.in_args[i] = (struct fuse_bpf_in_arg) {	\
 				.size = fa.out_args[i].size,		\
 				.value = fa.out_args[i].value,		\
+				.end_offset = fa.out_args[i].end_offset,\
 			};						\
 		for (i = 0; i < fa_backup.out_numargs; ++i)		\
 			fa.out_args[i] = (struct fuse_bpf_arg) {	\
 				.size = fa_backup.out_args[i].size,	\
 				.value = fa_backup.out_args[i].value,	\
+				.end_offset = fa_backup.out_args[i].end_offset,\
 			};						\
 		fa.out_numargs = fa_backup.out_numargs;			\
 									\
@@ -1934,6 +1945,7 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *arg
 				(struct fuse_bpf_in_arg) {		\
 					.size = fa.out_args[i].size,	\
 					.value = fa.out_args[i].value,	\
+					.end_offset = fa.out_args[i].end_offset,\
 				};					\
 		ext_flags = BPF_PROG_RUN(fuse_inode->bpf, &fa);		\
 		if (ext_flags < 0) {					\
