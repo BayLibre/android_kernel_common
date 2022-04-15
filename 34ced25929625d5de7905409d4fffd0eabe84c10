@@ -16,6 +16,24 @@
       "message": "If this is really needed, let\u0027s just make it generic for a \"new usb device has been added\" type of a hook as this should have nothing to do with a phy at all.\n\nIsn\u0027t there already a trace hook in the USB core for that?",
       "revId": "34ced25929625d5de7905409d4fffd0eabe84c10",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83fa55d4_00da07ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945330
+      },
+      "writtenOn": "2022-04-15T05:17:46Z",
+      "side": 1,
+      "message": "Very good suggestion, I will try to make the hook general and update the patch again. \nNo such kind of hook in USB core currently.",
+      "parentUuid": "0b64af19_fdaacc6b",
+      "revId": "34ced25929625d5de7905409d4fffd0eabe84c10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
