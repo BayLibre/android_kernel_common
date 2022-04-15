@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6233663a_4cb3cfb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-15T07:08:28Z",
+      "side": 1,
+      "message": "Almost there!",
+      "revId": "69ad6e2c46a10f9638f27edf1241dd7e5d1da19e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d1468bc_bbd2a696",
+        "filename": "drivers/usb/core/hub.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2546,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-15T07:08:28Z",
+      "side": 1,
+      "message": "Just return the error given by the hook, do not set it to anything else.",
+      "range": {
+        "startLine": 2546,
+        "startChar": 0,
+        "endLine": 2546,
+        "endChar": 18
+      },
+      "revId": "69ad6e2c46a10f9638f27edf1241dd7e5d1da19e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
