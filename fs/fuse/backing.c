@@ -2445,11 +2445,14 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *bpf
 		bpf_args->in_args[i] = (struct fuse_bpf_in_arg) {
 			.size = args.in_args[i].size,
 			.value = args.in_args[i].value,
+			.end_offset = bpf_args->in_args[i].end_offset,
 		};
 	for (i = 0; i < args.out_numargs; ++i)
 		bpf_args->out_args[i] = (struct fuse_bpf_arg) {
 			.size = args.out_args[i].size,
 			.value = args.out_args[i].value,
+			.end_offset = (void *)((char *)
+					args.out_args[i].value + args.out_args[i].size),
 		};
 	return res;
 }
