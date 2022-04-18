@@ -493,4 +493,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wp_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_swap_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_anonymous_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uprobes_uprobe_write);
+<<<<<<< PATCH SET (361ee2f6ae23b713041286e94b02a69cc61d7403 ANDROID: GKI: dma-buf: add vendor hook for dma_buf_release)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dma_buf_release);
+||||||| BASE      (db15f4990be1b8865ae651c9d748d43c91bb9d13 Merge 6.18.13 into android17-6.18)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_swap_bio_charge);
+>>>>>>> BASE      (ef6386ddb0f30b65bebb7030a90f00d93f8cee6f ANDROID: GKI: update symbol list for xiaomi)
