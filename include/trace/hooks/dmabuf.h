@@ -29,6 +29,10 @@ DECLARE_HOOK(android_vh_dma_buf_attr_show_start,
 DECLARE_HOOK(android_vh_dma_buf_attr_show_end,
 		TP_PROTO(struct dma_buf *dmabuf),
 		TP_ARGS(dmabuf));
+struct dma_buf;
+DECLARE_HOOK(android_vh_dma_buf_release,
+		TP_PROTO(struct dma_buf *data),
+		TP_ARGS(data));
 #endif /* _TRACE_HOOK_DMABUF_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
