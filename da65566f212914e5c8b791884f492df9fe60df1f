@@ -16,6 +16,23 @@
       "message": "just for build testing, I think this series breaks the abi...",
       "revId": "da65566f212914e5c8b791884f492df9fe60df1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb24605d_ec959c58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-04-18T15:10:51Z",
+      "side": 1,
+      "message": "When copying patches between branches, always use \u0027git cherry-pick\u0027 which will keep the same `Change-Id` field.  This series requires this.\n\nBut most importantly, this series breaks the current kernel ABI a lot, and it is long-frozen, so I do not think these are going to be able to be accepted at all for that reason alone.",
+      "revId": "da65566f212914e5c8b791884f492df9fe60df1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
