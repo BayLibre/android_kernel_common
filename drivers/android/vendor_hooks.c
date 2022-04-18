@@ -529,3 +529,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_percpu_rwsem_up_write);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_percpu_rwsem_wait_complete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_release_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dma_buf_release);
