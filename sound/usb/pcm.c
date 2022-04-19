@@ -152,6 +152,8 @@ find_format(struct list_head *fmt_list_head, snd_pcm_format_t format,
 			found = fp;
 			cur_attr = attr;
 		}
+
+		trace_android_vh_audio_usb_offload_pcm_binterval(fp, found, &cur_attr, &attr);
 	}
 	return found;
 }
@@ -450,6 +452,10 @@ static int configure_endpoints(struct snd_usb_audio *chip,
 		err = snd_usb_endpoint_configure(chip, subs->data_endpoint);
 		if (err < 0)
 			return err;
+
+		trace_android_rvh_audio_usb_offload_pcm_intf(chip, subs->data_endpoint->iface,
+				subs->data_endpoint->altsetting, subs->direction);
+
 		snd_usb_set_format_quirk(subs, subs->cur_audiofmt);
 	}
 
@@ -624,8 +630,11 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_usb_substream *subs = runtime->private_data;
 	struct snd_usb_audio *chip = subs->stream->chip;
-	int ret;
+	int ret = 0;
 
+	trace_android_vh_audio_usb_offload_pcmbuf(subs->dev, subs->cur_audiofmt->iface, &ret);
+	if (ret < 0)
+		return ret;
 	ret = snd_usb_lock_shutdown(chip);
 	if (ret < 0)
 		return ret;
@@ -636,6 +645,11 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
 
 	ret = configure_endpoints(chip, subs);
 	if (ret < 0)
+		goto unlock;
+
+	trace_android_vh_audio_usb_offload_set_rate(ep->cur_audiofmt->iface,
+				ep->cur_rate, ep->cur_audiofmt->altsetting, &ret);
+	if (!ret)
 		goto unlock;
 
 	/* reset the pointer */
@@ -1103,7 +1117,12 @@ static int snd_usb_pcm_open(struct snd_pcm_substream *substream)
 	struct snd_usb_stream *as = snd_pcm_substream_chip(substream);
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_usb_substream *subs = &as->substream[direction];
-	int ret;
+	int ret = 0;
+
+	trace_android_rvh_audio_usb_offload_pcm_control(subs->dev, SOUND_PCM_OPEN,
+					    direction, &ret);
+	if (ret < 0)
+		return ret;
 
 	runtime->hw = snd_usb_hardware;
 	/* need an explicit sync to catch applptr update in low-latency mode */
@@ -1136,7 +1155,12 @@ static int snd_usb_pcm_close(struct snd_pcm_substream *substream)
 	int direction = substream->stream;
 	struct snd_usb_stream *as = snd_pcm_substream_chip(substream);
 	struct snd_usb_substream *subs = &as->substream[direction];
-	int ret;
+	int ret = 0;
+
+	trace_android_rvh_audio_usb_offload_pcm_control(subs->dev, SOUND_PCM_CLOSE,
+					    direction, &ret);
+	if (ret < 0)
+		return ret;
 
 	snd_media_stop_pipeline(subs);
 
