@@ -940,6 +940,8 @@ static const struct kset_uevent_ops module_uevent_ops = {
 };
 
 struct kset *module_kset;
+EXPORT_SYMBOL_GPL(module_kset);
+
 int module_sysfs_initialized;
 
 static void module_kobj_release(struct kobject *kobj)
@@ -952,6 +954,7 @@ struct kobj_type module_ktype = {
 	.release   =	module_kobj_release,
 	.sysfs_ops =	&module_sysfs_ops,
 };
+EXPORT_SYMBOL_GPL(module_ktype);
 
 /*
  * param_sysfs_init - wrapper for built-in params support
