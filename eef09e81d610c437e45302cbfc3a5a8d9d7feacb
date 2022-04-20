@@ -164,6 +164,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07acd081_b772e0bf",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 2926,
+      "author": {
+        "id": 1013030
+      },
+      "writtenOn": "2022-04-20T07:12:56Z",
+      "side": 1,
+      "message": "The main one I was thinking about was the reply case, binder_set_txn_from_error() - where another thread sets the error code for this thread. I don\u0027t think it\u0027s an actual problem because this thread will surely pick up the inner lock again before returning to userspace with an error; it\u0027s just that in my opinion depending on that fact is a bit fragile, and may make the code a bit harder to read. And the cost for at least grabbing the lock in the ioctl doesn\u0027t seem that significant. I\u0027m good either way though :-)",
+      "parentUuid": "6724d46b_e221f1af",
+      "range": {
+        "startLine": 2926,
+        "startChar": 0,
+        "endLine": 2926,
+        "endChar": 21
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab5d8b2c_0dc17d53",
