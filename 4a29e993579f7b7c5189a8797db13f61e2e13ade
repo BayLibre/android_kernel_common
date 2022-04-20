@@ -33,6 +33,24 @@
       "message": "Yes, that\u0027s correct. We want the built-in command line to be overridable. Therefore, the bootloader\u0027s options should come last, and always take priority over the built-in command line.",
       "revId": "4a29e993579f7b7c5189a8797db13f61e2e13ade",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e1937a4_6776e39a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-04-20T23:14:21Z",
+      "side": 1,
+      "message": "Okay, so how can we get these defaults into the GKI? Local code patches? e.g. in lib/stackdepot.c\n \n-static bool stack_depot_disable;\n+static bool stack_depot_disable \u003d true;",
+      "parentUuid": "1195911d_6529fd6e",
+      "revId": "4a29e993579f7b7c5189a8797db13f61e2e13ade",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
