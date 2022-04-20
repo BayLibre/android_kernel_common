@@ -401,6 +401,11 @@ static u32 host_mmio_reg_access_mask(size_t off, bool is_write)
 	if (off == REG_NS_FAULT_STATUS)
 		return read_only & ALL_VIDS_BITMAP;
 
+	/* Allow reading L1ENTRY registers for debug purporses. */
+	if (off >= REG_NS_L1ENTRY_L2TABLE_ADDR(0, 0) &&
+	    off < REG_NS_L1ENTRY_ATTR(NR_VIDS, 0))
+		return read_only;
+
 	/* IRQ handler can read fault information. */
 	masked_off = off & ~REG_NS_FAULT_VID_MASK;
 	if ((masked_off == REG_NS_FAULT_PA_LOW(0)) ||
