@@ -188,6 +188,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45e730ff_d04d29b7",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 2926,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-04-20T14:45:48Z",
+      "side": 1,
+      "message": "ok, I\u0027ll bring the lock back... better be safe than sorry. I think it\u0027s fine since the locking only happens during the error path or the ioctl, so \"low cost\" as you mention.",
+      "parentUuid": "07acd081_b772e0bf",
+      "range": {
+        "startLine": 2926,
+        "startChar": 0,
+        "endLine": 2926,
+        "endChar": 21
+      },
+      "revId": "eef09e81d610c437e45302cbfc3a5a8d9d7feacb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab5d8b2c_0dc17d53",
