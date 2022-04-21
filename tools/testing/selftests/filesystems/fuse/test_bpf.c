@@ -67,14 +67,20 @@ int readdir_test(struct fuse_bpf_args *fa)
 {
 	switch (fa->opcode) {
 	case FUSE_READDIR | FUSE_PREFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("readdir %d", fri->fh);
 		return FUSE_BPF_BACKING | FUSE_BPF_POST_FILTER;
 	}
 
 	case FUSE_READDIR | FUSE_POSTFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("readdir postfilter %x", fri->fh);
 		return FUSE_BPF_USER_FILTER;
@@ -94,19 +100,20 @@ int trace_test(struct fuse_bpf_args *fa)
 	case FUSE_LOOKUP | FUSE_PREFILTER: {
 		/* real and partial use backing file */
 		const char *name = fa->in_args[0].value;
+		const char *end = fa->in_args[0].end_offset;
 		bool backing = false;
 
-		if (strcmp(name, "real") == 0 || strcmp(name, "partial") == 0)
+		if (strcmp_check("real", name, end) == 0 || strcmp_check("partial", name, end) == 0)
 			backing = true;
 
-		if (strcmp(name, "dir") == 0)
+		if (strcmp_check("dir", name, end) == 0)
 			backing = true;
-		if (strcmp(name, "dir2") == 0)
+		if (strcmp_check("dir2", name, end) == 0)
 			backing = true;
 
-		if (strcmp(name, "file1") == 0)
+		if (strcmp_check("file1", name, end) == 0)
 			backing = true;
-		if (strcmp(name, "file2") == 0)
+		if (strcmp_check("file2", name, end) == 0)
 			backing = true;
 
 		bpf_printk("lookup %s %d", name, backing);
@@ -115,11 +122,15 @@ int trace_test(struct fuse_bpf_args *fa)
 
 	case FUSE_LOOKUP | FUSE_POSTFILTER: {
 		const char *name = fa->in_args[0].value;
-		struct fuse_entry_out *feo = fa->out_args[0].value;
+		const char *end = fa->in_args[0].end_offset;
+		struct fuse_entry_out *feo = fa_verify_out(fa, 0, sizeof(*feo));
 
-		if (strcmp(name, "real") == 0)
+		if (!feo)
+			return -1;
+
+		if (strcmp_check("real", name, end) == 0)
 			feo->nodeid = 5;
-		else if (strcmp(name, "partial") == 0)
+		else if (strcmp_check("partial", name, end) == 0)
 			feo->nodeid = 6;
 
 		bpf_printk("post-lookup %s %d", name, feo->nodeid);
@@ -136,16 +147,22 @@ int trace_test(struct fuse_bpf_args *fa)
 		return FUSE_BPF_BACKING;
 
 	case FUSE_MKNOD | FUSE_PREFILTER: {
-		const struct fuse_mknod_in *fmi = fa->in_args[0].value;
+		const struct fuse_mknod_in *fmi = fa_verify_in(fa, 0, sizeof(*fmi));
 		const char *name = fa->in_args[1].value;
+
+		if (!fmi)
+			return -1;
 
 		bpf_printk("mknod %s %x %x", name, fmi->rdev | fmi->mode, fmi->umask);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_MKDIR | FUSE_PREFILTER: {
-		const struct fuse_mkdir_in *fmi = fa->in_args[0].value;
+		const struct fuse_mkdir_in *fmi = fa_verify_in(fa, 0, sizeof(*fmi));
 		const char *name = fa->in_args[1].value;
+
+		if (!fmi)
+			return -1;
 
 		bpf_printk("mkdir %s %x %x", name, fmi->mode, fmi->umask);
 		return FUSE_BPF_BACKING;
@@ -168,10 +185,13 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_RENAME2 | FUSE_PREFILTER: {
-		const struct fuse_rename2_in *fri = fa->in_args[0].value;
+		const struct fuse_rename2_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
 		uint32_t flags = fri->flags;
 		const char *oldname = fa->in_args[1].value;
 		const char *newname = fa->in_args[2].value;
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("rename(%x) from %s", flags, oldname);
 		bpf_printk("rename to %s", newname);
@@ -186,8 +206,11 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_LINK | FUSE_PREFILTER: {
-		const struct fuse_link_in *fli = fa->in_args[0].value;
+		const struct fuse_link_in *fli = fa_verify_in(fa, 0, sizeof(*fli));
 		const char *link_name = fa->in_args[1].value;
+
+		if (!fli)
+			return -1;
 
 		bpf_printk("link %d %s", fli->oldnodeid, link_name);
 		return FUSE_BPF_BACKING;
@@ -234,7 +257,10 @@ int trace_test(struct fuse_bpf_args *fa)
 		return FUSE_BPF_USER_FILTER;
 
 	case FUSE_READ | FUSE_PREFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("read %llu %llu", fri->fh, fri->offset);
 		if (fri->fh == 1 && fri->offset == 0)
@@ -295,7 +321,10 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_OPENDIR | FUSE_POSTFILTER: {
-		struct fuse_open_out *foo = fa->out_args[0].value;
+		struct fuse_open_out *foo = fa_verify_out(fa, 0, sizeof(*foo));
+
+		if (!foo)
+			return -1;
 
 		foo->fh = 2;
 		bpf_printk("opendir postfilter");
@@ -303,8 +332,11 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_READDIR | FUSE_PREFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
 		int backing = 0;
+
+		if (!fri)
+			return -1;
 
 		if (fri->fh == 2)
 			backing = FUSE_BPF_BACKING | FUSE_BPF_POST_FILTER;
@@ -314,8 +346,11 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_READDIR | FUSE_POSTFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
 		int backing = 0;
+
+		if (!fri)
+			return -1;
 
 		if (fri->fh == 2)
 			backing = FUSE_BPF_USER_FILTER | FUSE_BPF_BACKING |
@@ -326,34 +361,45 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_FLUSH | FUSE_PREFILTER: {
-		const struct fuse_flush_in *ffi = fa->in_args[0].value;
+		const struct fuse_flush_in *ffi = fa_verify_in(fa, 0, sizeof(*ffi));
+
+		if (!ffi)
+			return -1;
 
 		bpf_printk("Flush %d", ffi->fh);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_GETXATTR | FUSE_PREFILTER: {
-		const struct fuse_flush_in *ffi = fa->in_args[0].value;
+		const struct fuse_flush_in *ffi = fa_verify_in(fa, 0, sizeof(*ffi));
 		const char *name = fa->in_args[1].value;
+
+		if (!ffi)
+			return -1;
 
 		bpf_printk("getxattr %d %s", ffi->fh, name);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_LISTXATTR | FUSE_PREFILTER: {
-		const struct fuse_flush_in *ffi = fa->in_args[0].value;
+		const struct fuse_flush_in *ffi = fa_verify_in(fa, 0, sizeof(*ffi));
 		const char *name = fa->in_args[1].value;
+
+		if (!ffi)
+			return -1;
 
 		bpf_printk("listxattr %d %s", ffi->fh, name);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_SETXATTR | FUSE_PREFILTER: {
-		const struct fuse_flush_in *ffi = fa->in_args[0].value;
+		const struct fuse_setxattr_in *fsi = fa_verify_in(fa, 0, sizeof(*fsi));
 		const char *name = fa->in_args[1].value;
 		unsigned int size = fa->in_args[2].size;
 
-		bpf_printk("setxattr %d %s %u", ffi->fh, name, size);
+		if (!fsi)
+			return -1;
+		bpf_printk("setxattr %x %s %u", fsi->flags, name, size);
 		return FUSE_BPF_BACKING;
 	}
 
@@ -375,8 +421,10 @@ int trace_test(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_LSEEK | FUSE_PREFILTER: {
-		const struct fuse_lseek_in *fli = fa->in_args[0].value;
+		const struct fuse_lseek_in *fli = fa_verify_in(fa, 0, sizeof(*fli));
 
+		if (!fli)
+			return -1;
 		bpf_printk("lseek type:%d, offset:%lld", fli->whence, fli->offset);
 		return FUSE_BPF_BACKING;
 	}
@@ -394,11 +442,12 @@ int trace_hidden(struct fuse_bpf_args *fa)
 	switch (fa->opcode) {
 	case FUSE_LOOKUP | FUSE_PREFILTER: {
 		const char *name = fa->in_args[0].value;
+		const char *end = fa->in_args[0].end_offset;
 
 		bpf_printk("Lookup: %s", name);
-		if (!strcmp(name, "show"))
+		if (!strcmp_check("show", name, end))
 			return FUSE_BPF_BACKING;
-		if (!strcmp(name, "hide"))
+		if (!strcmp_check("hide", name, end))
 			return -ENOENT;
 
 		return FUSE_BPF_BACKING;
@@ -472,8 +521,10 @@ int trace_daemon(struct fuse_bpf_args *fa)
 
 	case FUSE_LOOKUP | FUSE_POSTFILTER: {
 		const char *name = fa->in_args[0].value;
-		struct fuse_entry_bpf_out *febo = fa->out_args[1].value;
+		struct fuse_entry_bpf_out *febo = fa_verify_out(fa, 1, sizeof(*febo));
 
+		if (!febo)
+			return -1;
 		bpf_printk("Lookup postfilter: %lx %s %lu", fa->nodeid, name);
 		febo->bpf_action = FUSE_ACTION_REMOVE;
 
@@ -519,9 +570,10 @@ int error_test(struct fuse_bpf_args *fa)
 	}
 	case FUSE_LOOKUP | FUSE_POSTFILTER: {
 		const char *name = fa->in_args[0].value;
+		const char *end = fa->in_args[0].end_offset;
 
 		bpf_printk("lookup postfilter %s %d", name, fa->error_in);
-		if (strcmp(name, "doesnotexist") == 0/* && fa->error_in == -EEXIST*/) {
+		if (strcmp_check("doesnotexist", name, end) == 0/* && fa->error_in == -EEXIST*/) {
 			bpf_printk("lookup postfilter doesnotexist");
 			return FUSE_BPF_USER_FILTER;
 		}

@@ -124,14 +124,20 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_GETATTR | FUSE_PREFILTER: {
-		const struct fuse_getattr_in *fgi = fa->in_args[0].value;
+		const struct fuse_getattr_in *fgi = fa_verify_in(fa, 0, sizeof(*fgi));
+
+		if (!fgi)
+			return -1;
 
 		bpf_printk("Get Attr %d", fgi->fh);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_SETATTR | FUSE_PREFILTER: {
-		const struct fuse_setattr_in *fsi = fa->in_args[0].value;
+		const struct fuse_setattr_in *fsi = fa_verify_in(fa, 0, sizeof(*fsi));
+
+		if (!fsi)
+			return -1;
 
 		bpf_printk("Set Attr %d", fsi->fh);
 		return FUSE_BPF_BACKING;
@@ -143,7 +149,10 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_READDIR | FUSE_PREFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("Read Dir: fh: %lu", fri->fh, fri->offset);
 		return FUSE_BPF_BACKING;
@@ -160,16 +169,22 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_MKNOD | FUSE_PREFILTER: {
-		const struct fuse_mknod_in *fmi = fa->in_args[0].value;
+		const struct fuse_mknod_in *fmi = fa_verify_in(fa, 0, sizeof(*fmi));
 		const char *name = fa->in_args[1].value;
+
+		if (!fmi)
+			return -1;
 
 		bpf_printk("mknod %s %x %x", name,  fmi->rdev | fmi->mode, fmi->umask);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_MKDIR | FUSE_PREFILTER: {
-		const struct fuse_mkdir_in *fmi = fa->in_args[0].value;
+		const struct fuse_mkdir_in *fmi = fa_verify_in(fa, 0, sizeof(*fmi));
 		const char *name = fa->in_args[1].value;
+
+		if (!fmi)
+			return -1;
 
 		bpf_printk("mkdir: %s %x %x", name, fmi->mode, fmi->umask);
 		return FUSE_BPF_BACKING;
@@ -192,10 +207,13 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_RENAME2 | FUSE_PREFILTER: {
-		const struct fuse_rename2_in *fri = fa->in_args[0].value;
+		const struct fuse_rename2_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
 		uint32_t flags = fri->flags;
 		const char *oldname = fa->in_args[1].value;
 		const char *newname = fa->in_args[2].value;
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("rename(%x) from %s", flags, oldname);
 		bpf_printk("rename to %s", newname);
@@ -210,8 +228,11 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_LINK | FUSE_PREFILTER: {
-		const struct fuse_link_in *fli = fa->in_args[0].value;
+		const struct fuse_link_in *fli = fa_verify_in(fa, 0, sizeof(*fli));
 		const char *dst_name = fa->in_args[1].value;
+
+		if (!fli)
+			return -1;
 
 		bpf_printk("Link: %d %s", fli->oldnodeid, dst_name);
 		return FUSE_BPF_BACKING;
@@ -234,14 +255,20 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_RELEASE | FUSE_PREFILTER: {
-		const struct fuse_release_in *fri = fa->in_args[0].value;
+		const struct fuse_release_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("Release: %d", fri->fh);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_RELEASEDIR | FUSE_PREFILTER: {
-		const struct fuse_release_in *fri = fa->in_args[0].value;
+		const struct fuse_release_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("Release Dir: %d", fri->fh);
 		return FUSE_BPF_BACKING;
@@ -258,7 +285,10 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_READ | FUSE_PREFILTER: {
-		const struct fuse_read_in *fri = fa->in_args[0].value;
+		const struct fuse_read_in *fri = fa_verify_in(fa, 0, sizeof(*fri));
+
+		if (!fri)
+			return -1;
 
 		bpf_printk("Read: fh: %lu, offset %lu, size %lu",
 			   fri->fh, fri->offset, fri->size);
@@ -266,7 +296,10 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_WRITE | FUSE_PREFILTER: {
-		const struct fuse_write_in *fwi = fa->in_args[0].value;
+		const struct fuse_write_in *fwi = fa_verify_in(fa, 0, sizeof(*fwi));
+
+		if (!fwi)
+			return -1;
 
 		bpf_printk("Write: fh: %lu, offset %lu, size %lu",
 			   fwi->fh, fwi->offset, fwi->size);
@@ -274,14 +307,20 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_FLUSH | FUSE_PREFILTER: {
-		const struct fuse_flush_in *ffi = fa->in_args[0].value;
+		const struct fuse_flush_in *ffi = fa_verify_in(fa, 0, sizeof(*ffi));
+
+		if (!ffi)
+			return -1;
 
 		bpf_printk("Flush %d", ffi->fh);
 		return FUSE_BPF_BACKING;
 	}
 
 	case FUSE_FALLOCATE | FUSE_PREFILTER: {
-		const struct fuse_fallocate_in *ffa = fa->in_args[0].value;
+		const struct fuse_fallocate_in *ffa = fa_verify_in(fa, 0, sizeof(*ffa));
+
+		if (!ffa)
+			return -1;
 
 		bpf_printk("Fallocate %d %lu", ffa->fh, ffa->length);
 		return FUSE_BPF_BACKING;
@@ -314,7 +353,10 @@ int trace_daemon(struct fuse_bpf_args *fa)
 	}
 
 	case FUSE_LSEEK | FUSE_PREFILTER: {
-		const struct fuse_lseek_in *fli = fa->in_args[0].value;
+		const struct fuse_lseek_in *fli = fa_verify_in(fa, 0, sizeof(*fli));
+
+		if (!fli)
+			return -1;
 
 		bpf_printk("lseek type:%d, offset:%lld", fli->whence, fli->offset);
 		return FUSE_BPF_BACKING;
