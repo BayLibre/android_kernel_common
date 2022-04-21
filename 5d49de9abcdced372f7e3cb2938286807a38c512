@@ -16,6 +16,23 @@
       "message": "thanks!",
       "revId": "5d49de9abcdced372f7e3cb2938286807a38c512",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2e95596_47bf754e",
+        "filename": "mm/readahead.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-04-21T22:39:39Z",
+      "side": 1,
+      "message": "Could you clarify whether you intend to make max_pages larger or smaller than bdi-\u003eio_pages? (I think your plan is to reduce the value of max_pages here.)\n\nAlso, do you have plans to selectively change max_pages for only certain files? Or are you planning to change this globally for all readaheads?",
+      "revId": "5d49de9abcdced372f7e3cb2938286807a38c512",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
