@@ -21,6 +21,30 @@ static long (*bpf_trace_printk)(const char *fmt, __u32 fmt_size, ...)
 		                 ##__VA_ARGS__);                \
 	})
 
+inline const void *fa_verify_in(struct fuse_bpf_args *fa, int i, unsigned int size)
+{
+	const char *val = fa->in_args[i].value;
+	const char *end = fa->in_args[i].end_offset;
+
+	if (i >= fa->in_numargs)
+		return NULL;
+	if (val + size <= end)
+		return val;
+	return NULL;
+}
+
+inline void *fa_verify_out(struct fuse_bpf_args *fa, int i, unsigned int size)
+{
+	char *val = fa->out_args[i].value;
+	char *end = fa->out_args[i].end_offset;
+
+	if (i >= fa->out_numargs)
+		return NULL;
+	if (val + size <= end)
+		return val;
+	return NULL;
+}
+
 SEC("dummy")
 
 inline int strcmp(const char *a, const char *b)
@@ -30,9 +54,13 @@ inline int strcmp(const char *a, const char *b)
 	for (i = 0; i < __builtin_strlen(b) + 1; ++i)
 		if (a[i] != b[i])
 			return -1;
-
 	return 0;
 }
+
+/* This is a macro to enforce inlining. Without it, the compiler will do the wrong thing for bpf */
+#define strcmp_check(a, b, end_b) \
+		(((b) + __builtin_strlen(a) + 1 > (end_b)) ? -1 : strcmp((b), (a)))
+
 SEC("test_readdir_redact")
 /* return FUSE_BPF_BACKING to use backing fs, 0 to pass to usermode */
 int readdir_test(struct fuse_bpf_args *fa)
