@@ -51,6 +51,23 @@
       "parentUuid": "dd4cf658_68e69ee7",
       "revId": "d6348a7c182913f230b7a871cfc61661b409223b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4d3dea8_2ca14c4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-04-21T15:21:25Z",
+      "side": 1,
+      "message": "1. Author: liang zhang \u003cliang.zhang@transsion.com\u003e - the capitalisation needs to be fixed to match the Signed-off-by, please check your Git configuration and repush.\n\n2. type id 5f757f13 is mentioned, but not defined, in the XML in the commit - please revert (using git) and regenerate the XML (using build_abi.sh --update); it is not safe to manually edit XML.",
+      "revId": "d6348a7c182913f230b7a871cfc61661b409223b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
