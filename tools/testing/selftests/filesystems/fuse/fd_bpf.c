@@ -43,6 +43,30 @@ static long (*bpf_get_current_uid_gid)()
 		                 ##__VA_ARGS__);                \
 	})
 
+inline const void *fa_verify_in(struct fuse_bpf_args *fa, int i, unsigned int size)
+{
+	const char *val = fa->in_args[i].value;
+	const char *end = fa->in_args[i].end_offset;
+
+	if (i >= fa->in_numargs)
+		return NULL;
+	if (val + size <= end)
+		return val;
+	return NULL;
+}
+
+inline void *fa_verify_out(struct fuse_bpf_args *fa, int i, unsigned int size)
+{
+	char *val = fa->out_args[i].value;
+	char *end = fa->out_args[i].end_offset;
+
+	if (i >= fa->out_numargs)
+		return NULL;
+	if (val + size <= end)
+		return val;
+	return NULL;
+}
+
 #define SEC(NAME) __attribute__((section(NAME), used))
 
 SEC("dummy")
