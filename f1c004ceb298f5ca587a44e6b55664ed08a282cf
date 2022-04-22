@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77f425a_0feb123b",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1901291
+      },
+      "writtenOn": "2022-04-22T10:29:13Z",
+      "side": 1,
+      "message": "see below",
+      "parentUuid": "6abec64b_cf46e146",
+      "range": {
+        "startLine": 1004,
+        "startChar": 0,
+        "endLine": 1004,
+        "endChar": 20
+      },
+      "revId": "f1c004ceb298f5ca587a44e6b55664ed08a282cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb4c1d76_bd9d78a0",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea874dd_396db1f5",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 1901291
+      },
+      "writtenOn": "2022-04-22T10:29:13Z",
+      "side": 1,
+      "message": "Resolved, thanks for suggestion.",
+      "parentUuid": "eb4c1d76_bd9d78a0",
+      "range": {
+        "startLine": 1006,
+        "startChar": 39,
+        "endLine": 1006,
+        "endChar": 42
+      },
+      "revId": "f1c004ceb298f5ca587a44e6b55664ed08a282cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8978d19_92da29cd",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-04-21T13:52:48Z",
       "side": 1,
       "message": "place at the end of the structure please.\n\nAnd why 2?  Why not just 1?",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 30
+      },
+      "revId": "f1c004ceb298f5ca587a44e6b55664ed08a282cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5413bf3_250d8401",
+        "filename": "include/linux/mmc/host.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1901291
+      },
+      "writtenOn": "2022-04-22T10:29:13Z",
+      "side": 1,
+      "message": "place at the end of the structure please.\n------------\nresolved\n\nAnd why 2?  Why not just 1?\n-----------\nwe need two variate here, please refer to original commit comment:https://android-review.googlesource.com/c/kernel/common/+/1678905/comments/60a39e7c_5cf892d4\nThanks.",
+      "parentUuid": "b8978d19_92da29cd",
       "range": {
         "startLine": 265,
         "startChar": 0,
