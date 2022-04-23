@@ -972,20 +972,16 @@ struct fuse_removemapping_one {
  * The end_offset allows the bpf verifier to check boundaries statically. This reflects
  * the ends of the buffer. size shows the length that was actually used.
  *
+ * In order to write to the output args, you must use the pointer returned by
+ * bpf_fuse_get_writeable.
+ *
  */
 
-/** One input argument of a request */
-struct fuse_bpf_in_arg {
-	uint32_t size;
-	const void *value;
-	const void *end_offset;
-};
-
-/** One output argument of a request */
 struct fuse_bpf_arg {
-	uint32_t size;
-	void *value;
-	void *end_offset;
+	uint32_t size;		// Used size of the buffer
+	uint32_t max_size;	// Max permitted size, if buffer is resizable. Otherwise 0
+	void *value;		// Start of the buffer
+	void *end_offset;	// End of the buffer
 };
 
 #define FUSE_MAX_IN_ARGS 5
@@ -994,15 +990,15 @@ struct fuse_bpf_arg {
 #define FUSE_BPF_FORCE (1 << 0)
 #define FUSE_BPF_OUT_ARGVAR (1 << 6)
 
-struct fuse_bpf_args {
+struct bpf_fuse_context {
 	uint64_t nodeid;
 	uint32_t opcode;
 	uint32_t error_in;
 	uint32_t in_numargs;
 	uint32_t out_numargs;
 	uint32_t flags;
-	struct fuse_bpf_in_arg in_args[FUSE_MAX_IN_ARGS];
-	struct fuse_bpf_arg out_args[FUSE_MAX_OUT_ARGS];
+	struct fuse_bpf_arg in_args[3];
+	struct fuse_bpf_arg out_args[2];
 };
 
 #define FUSE_BPF_USER_FILTER	1

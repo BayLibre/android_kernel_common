@@ -857,6 +857,23 @@ out:
 	return result;
 }
 
+static int bpf_test_verifier_out_args(const char *mount_dir)
+{
+	int result = TEST_FAILURE;
+	int bpf_fd1 = -1;
+	int bpf_fd2 = -1;
+
+	TESTEQUAL(install_elf_bpf_invalid("test_bpf.bpf", "test_verify_fail3",
+				  &bpf_fd1, NULL, NULL), 0);
+	TESTEQUAL(install_elf_bpf_invalid("test_bpf.bpf", "test_verify_fail4",
+				  &bpf_fd2, NULL, NULL), 0);
+	result = TEST_SUCCESS;
+out:
+	close(bpf_fd1);
+	close(bpf_fd2);
+	return result;
+}
+
 static int bpf_test_mknod(const char *mount_dir)
 {
 	const char *file_name = "real";
@@ -1618,6 +1635,7 @@ int main(int argc, char *argv[])
 		MAKE_TEST(bpf_test_statfs),
 		MAKE_TEST(bpf_test_lseek),
 		MAKE_TEST(bpf_test_verifier),
+		MAKE_TEST(bpf_test_verifier_out_args),
 	};
 #undef MAKE_TEST
 

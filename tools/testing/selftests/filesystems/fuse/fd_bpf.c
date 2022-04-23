@@ -43,7 +43,7 @@ static long (*bpf_get_current_uid_gid)()
 		                 ##__VA_ARGS__);                \
 	})
 
-inline const void *fa_verify_in(struct fuse_bpf_args *fa, int i, unsigned int size)
+inline const void *fa_verify_in(struct bpf_fuse_context *fa, int i, unsigned int size)
 {
 	const char *val = fa->in_args[i].value;
 	const char *end = fa->in_args[i].end_offset;
@@ -55,7 +55,7 @@ inline const void *fa_verify_in(struct fuse_bpf_args *fa, int i, unsigned int si
 	return NULL;
 }
 
-inline void *fa_verify_out(struct fuse_bpf_args *fa, int i, unsigned int size)
+inline void *fa_verify_out(struct bpf_fuse_context *fa, int i, unsigned int size)
 {
 	char *val = fa->out_args[i].value;
 	char *end = fa->out_args[i].end_offset;
@@ -98,7 +98,7 @@ SEC("maps") struct fuse_bpf_map test_map2 = {
 
 SEC("test_daemon")
 
-int trace_daemon(struct fuse_bpf_args *fa)
+int trace_daemon(struct bpf_fuse_context *fa)
 {
 	uint64_t uid_gid = bpf_get_current_uid_gid();
 	uint32_t uid = uid_gid & 0xffffffff;
