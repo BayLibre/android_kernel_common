@@ -304,6 +304,15 @@ struct ucsi {
 #define EVENT_PROCESSING	3
 };
 
+struct ucsi_vendor {
+	struct ucsi ucsi;
+	struct delayed_work work;
+	int work_count;
+#define UCSI_ROLE_SWITCH_RETRY_PER_HZ	10
+#define UCSI_ROLE_SWITCH_INTERVAL	(HZ / UCSI_ROLE_SWITCH_RETRY_PER_HZ)
+#define UCSI_ROLE_SWITCH_WAIT_COUNT	(10 * UCSI_ROLE_SWITCH_RETRY_PER_HZ)
+};
+
 #define UCSI_MAX_SVID		5
 #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
 
