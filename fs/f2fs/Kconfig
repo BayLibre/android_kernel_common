@@ -135,3 +135,9 @@ config F2FS_FS_LZORLE
 	default y
 	help
 	  Support LZO-RLE compress algorithm, if unsure, say Y.
+
+config F2FS_FS_DATA_SEPARATION
+	bool "F2FS hot/cold data separation feature"
+	depends on F2FS_FS
+	help
+	  Enable data blocks separation according to block update frequency.

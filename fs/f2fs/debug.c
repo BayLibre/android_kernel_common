@@ -81,6 +81,9 @@ static void update_general_status(struct f2fs_sb_info *sbi)
 	si->ext_tree = atomic_read(&sbi->total_ext_tree);
 	si->zombie_tree = atomic_read(&sbi->total_zombie_tree);
 	si->ext_node = atomic_read(&sbi->total_ext_node);
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	si->total_data_blocks_alloc = atomic64_read(&sbi->total_data_alloc);
+#endif
 	si->ndirty_node = get_pages(sbi, F2FS_DIRTY_NODES);
 	si->ndirty_dent = get_pages(sbi, F2FS_DIRTY_DENTS);
 	si->ndirty_meta = get_pages(sbi, F2FS_DIRTY_META);
@@ -354,6 +357,10 @@ static int stat_show(struct seq_file *s, void *v)
 			seq_printf(s, "Utilization: %u%% (%u valid blocks)\n",
 				si->utilization, si->valid_count);
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+		seq_printf(s, "  - Data Block Allocated: %llu\n",
+			   si->total_data_blocks_alloc);
+#endif
 		seq_printf(s, "  - Node: %u (Inode: %u, ",
 			   si->valid_node_count, si->valid_inode_count);
 		seq_printf(s, "Other: %u)\n  - Data: %u\n",

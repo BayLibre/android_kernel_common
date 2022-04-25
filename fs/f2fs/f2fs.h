@@ -1737,6 +1737,10 @@ struct f2fs_sb_info {
 	u64 sectors_written_start;
 	u64 kbytes_written;
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	atomic64_t total_data_alloc;
+#endif
+
 	/* Reference to checksum algorithm driver via cryptoapi */
 	struct crypto_shash *s_chksum_driver;
 
@@ -3771,6 +3775,9 @@ struct f2fs_stat_info {
 	int main_area_segs, main_area_sections, main_area_zones;
 	unsigned long long hit_largest, hit_cached, hit_rbtree;
 	unsigned long long hit_total, total_ext;
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	unsigned long long total_data_blocks_alloc;
+#endif
 	int ext_tree, zombie_tree, ext_node;
 	int ndirty_node, ndirty_dent, ndirty_meta, ndirty_imeta;
 	int ndirty_data, ndirty_qdata;
@@ -4082,6 +4089,14 @@ void f2fs_update_extent_cache_range(struct dnode_of_data *dn,
 void f2fs_init_extent_cache_info(struct f2fs_sb_info *sbi);
 int __init f2fs_create_extent_cache(void);
 void f2fs_destroy_extent_cache(void);
+
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+/*
+ * block_age.c
+ */
+void f2fs_init_block_age_info(struct f2fs_sb_info *sbi);
+void f2fs_inc_block_alloc_count(struct f2fs_sb_info *sbi, int type);
+#endif
 
 /*
  * sysfs.c

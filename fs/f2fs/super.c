@@ -4233,6 +4233,10 @@ reset_checkpoint:
 
 	f2fs_join_shrinker(sbi);
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	f2fs_init_block_age_info(sbi);
+#endif
+
 	f2fs_tuning_parameters(sbi);
 
 	f2fs_notice(sbi, "Mounted with checkpoint version = %llx",
