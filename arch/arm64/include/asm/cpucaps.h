@@ -73,6 +73,7 @@
 #define ARM64_SPECTRE_BHB			62
 
 /* kabi: reserve 63 - 76 for future cpu capabilities */
-#define ARM64_NCAPS				76
+#define ARM64_WORKAROUND_NO_DMA_ALIAS		77
+#define ARM64_NCAPS				78
 
 #endif /* __ASM_CPUCAPS_H */
