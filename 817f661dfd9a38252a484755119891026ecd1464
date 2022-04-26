@@ -16,6 +16,24 @@
       "message": "akingchen@vivo.com, your cherry pick of this patch was incorrect. It should be cherry-picked from android12-5.10, but this patch differed from that patch:\n```\n\u003e       if (ffs-\u003eepfiles) {\n\u003e               ffs_epfiles_destroy(ffs-\u003eepfiles, ffs-\u003eeps_count);\n\u003e               ffs-\u003eepfiles \u003d NULL;\n\u003e       }\n```\n\nCan you explain why this was added in the cherry-pick?\n\n(I\u0027ve now updated the patch to be a correct cherry-pick of the android12-5.10 version which also matches the upstream patch)",
       "revId": "817f661dfd9a38252a484755119891026ecd1464",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "029cc4e5_6bb21f22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1905502
+      },
+      "writtenOn": "2022-04-26T15:27:17Z",
+      "side": 1,
+      "message": "I am sorry for the mistake of the worry cherry-pick. I think it\u0027s the cherry-pick operation sequence, first i cherry pick 1972419 to target branch android12-5.10-2021-11,but some mistake happened that i can\u0027t cherry-pick it,so i try to cherry pick 1972420 to target branch, this time i cherry-pick success but some conflict,so i solve the conflict. later i try to chrry-pick 1972419 to target branch and it ok. \n   Next time i will be more careful about this operation, and be more cautious when i solve the conflict. thank for the review~",
+      "parentUuid": "bf7c8006_45db1202",
+      "revId": "817f661dfd9a38252a484755119891026ecd1464",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
