@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "215a3d9b_655d2bb1",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,34 @@
         "endChar": 47
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33598fe_d0be441b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1761165
+      },
+      "writtenOn": "2022-04-27T21:07:51Z",
+      "side": 1,
+      "message": "old unresolved comment.",
+      "parentUuid": "215a3d9b_655d2bb1",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
       "key": {
         "uuid": "3a96a9b3_ce606d3e",
         "filename": "/PATCHSET_LEVEL",
@@ -37,10 +62,10 @@
       "side": 1,
       "message": "It\u0027d be good to expand the commit message with more info about how to reproduce if possible. And if you collected any numbers including that will be great as a reference for the future.\n\nThe patch looks correct to me other than the worry about the behavior when the 2 RT tasks are equal in priority. It\u0027d be worth to verify this if you haven\u0027t already.\n\nAs an alternative, have you considered using affinity to restrict RT tasks to littles? From some profiling I\u0027ve done in the past, RT tasks are happy to run on little in general. I could be wrong, but is the energy impact significant for waking up an idle or sleeping little cpu?\n\nAndroid RT planning is one area it needs to do better at. It is an area of investigation for me currently on how we can do better. But for now, I think most RT tasks are statically created at boot, no? So if you have a late init script to affine tasks to littles, I think it\u0027s worth experimenting with. You might want to give RendererThread and Composer thread an exception to run anywhere.",
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6ea17449_7f2c5a49",
         "filename": "kernel/sched/rt.c",
@@ -60,10 +85,10 @@
         "endChar": 47
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "239ec8f7_450c1dd9",
         "filename": "kernel/sched/rt.c",
@@ -84,10 +109,10 @@
         "endChar": 47
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "9549c9c5_ba2c5ac5",
         "filename": "kernel/sched/rt.c",
@@ -108,10 +133,10 @@
         "endChar": 47
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "9af8afef_81091f1a",
         "filename": "kernel/sched/rt.c",
@@ -132,10 +157,10 @@
         "endChar": 47
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "03a6c935_10966cf2",
         "filename": "kernel/sched/rt.c",
@@ -155,10 +180,10 @@
         "endChar": 37
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "7344a4d8_1f63e0ab",
         "filename": "kernel/sched/rt.c",
@@ -179,10 +204,10 @@
         "endChar": 37
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": false
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "37ff6e45_01c138df",
         "filename": "kernel/sched/rt.c",
@@ -202,10 +227,10 @@
         "endChar": 27
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "639a8436_17fffba8",
         "filename": "kernel/sched/rt.c",
@@ -226,8 +251,31 @@
         "endChar": 27
       },
       "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
-      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
-      "unresolved": true
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f86498b_cc33f3ea",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1761165
+      },
+      "writtenOn": "2022-04-27T21:07:51Z",
+      "side": 1,
+      "message": "old unresolved comment.",
+      "parentUuid": "639a8436_17fffba8",
+      "range": {
+        "startLine": 1371,
+        "startChar": 2,
+        "endLine": 1371,
+        "endChar": 27
+      },
+      "revId": "27c92e8f4e10bdc7e25b5616ca750b349e81cd68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
