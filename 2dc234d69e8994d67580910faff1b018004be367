@@ -16,6 +16,24 @@
       "message": "Why submit this just for this one branch, and not all affected ones?",
       "revId": "2dc234d69e8994d67580910faff1b018004be367",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8043a377_a2be43cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1576997
+      },
+      "writtenOn": "2022-04-28T13:49:04Z",
+      "side": 1,
+      "message": "I\u0027ve check that android12-5.10 and android13-5.10 already have this fix, so I suppose android12-5.4 was just forgotten.\nAnd it seems android12-5.4 is the only 5.4 branch have kfence backport patches.\n\nhttps://android-review.googlesource.com/c/kernel/common/+/1953549 android12-5.10\nhttps://android-review.googlesource.com/c/kernel/common/+/1948355 android13-5.10",
+      "parentUuid": "a038e632_b33953a4",
+      "revId": "2dc234d69e8994d67580910faff1b018004be367",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
