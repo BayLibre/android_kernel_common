@@ -1946,6 +1946,15 @@ static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
 #endif /* CONFIG_KVM_XFER_TO_GUEST_WORK */
 
 /*
+ * If nr > 1, we assume virt is the address of the first page of a block of
+ * pages that were allocated together (i.e accounted together).
+ */
+static inline void kvm_account_pgtable_pages(void *virt, int nr)
+{
+	mod_lruvec_page_state(virt_to_page(virt), NR_SECONDARY_PAGETABLE, nr);
+}
+
+/*
  * This defines how many reserved entries we want to keep before we
  * kick the vcpu to the userspace to avoid dirty ring full.  This
  * value can be tuned to higher if e.g. PML is enabled on the host.
