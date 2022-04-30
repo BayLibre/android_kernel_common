@@ -61,6 +61,7 @@ static bool initcalls_done;
 struct async_drv_cfg {
 	char *drv_name;
 	struct list_head list;
+	bool async;
 };
 static LIST_HEAD(async_probe_drv_list);
 
@@ -803,8 +804,9 @@ static inline bool cmdline_requested_async_probing(const char *drv_name)
 	struct async_drv_cfg *cfg;
 
 	list_for_each_entry(cfg, &async_probe_drv_list, list)
-		if (!strcmp(drv_name, cfg->drv_name))
-			return true;
+		if (cfg->drv_name[0] == '*' ||
+		    !strcmp(drv_name, cfg->drv_name))
+			return cfg->async;
 
 	return false;
 }
@@ -814,11 +816,19 @@ static int __init save_async_options(char *buf)
 {
 	struct async_drv_cfg *cfg;
 	char *next;
+	bool async;
 
 	while (*buf) {
 		cfg = kzalloc(sizeof(*cfg), GFP_KERNEL);
 		if (!cfg)
 			return 0;
+
+		if (*buf == '!') {
+			async = false;
+			buf++;
+		} else {
+			async = true;
+		}
 
 		next = strchrnul(buf, ',');
 		cfg->drv_name = kstrndup(buf, next - buf, GFP_KERNEL);
@@ -826,8 +836,13 @@ static int __init save_async_options(char *buf)
 			kfree(cfg);
 			return 0;
 		}
+		cfg->async = async;
 
-		list_add_tail(&cfg->list, &async_probe_drv_list);
+		if (async)
+			list_add_tail(&cfg->list, &async_probe_drv_list);
+		else
+			list_add(&cfg->list, &async_probe_drv_list);
+
 		buf = next;
 		if (*buf == ',')
 			buf++;
