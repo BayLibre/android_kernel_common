@@ -58,8 +58,11 @@ static atomic_t deferred_trigger_count = ATOMIC_INIT(0);
 static bool initcalls_done;
 
 /* Save the async probe drivers' name from kernel cmdline */
-#define ASYNC_DRV_NAMES_MAX_LEN	256
-static char async_probe_drv_names[ASYNC_DRV_NAMES_MAX_LEN];
+struct async_drv_cfg {
+	char *drv_name;
+	struct list_head list;
+};
+static LIST_HEAD(async_probe_drv_list);
 
 /*
  * In some cases, like suspend to RAM or hibernation, It might be reasonable
@@ -797,16 +800,38 @@ static int driver_probe_device(struct device_driver *drv, struct device *dev)
 
 static inline bool cmdline_requested_async_probing(const char *drv_name)
 {
-	return parse_option_str(async_probe_drv_names, drv_name);
+	struct async_drv_cfg *cfg;
+
+	list_for_each_entry(cfg, &async_probe_drv_list, list)
+		if (!strcmp(drv_name, cfg->drv_name))
+			return true;
+
+	return false;
 }
 
 /* The option format is "driver_async_probe=drv_name1,drv_name2,..." */
 static int __init save_async_options(char *buf)
 {
-	if (strlen(buf) >= ASYNC_DRV_NAMES_MAX_LEN)
-		pr_warn("Too long list of driver names for 'driver_async_probe'!\n");
+	struct async_drv_cfg *cfg;
+	char *next;
 
-	strlcpy(async_probe_drv_names, buf, ASYNC_DRV_NAMES_MAX_LEN);
+	while (*buf) {
+		cfg = kzalloc(sizeof(*cfg), GFP_KERNEL);
+		if (!cfg)
+			return 0;
+
+		next = strchrnul(buf, ',');
+		cfg->drv_name = kstrndup(buf, next - buf, GFP_KERNEL);
+		if (!cfg->drv_name) {
+			kfree(cfg);
+			return 0;
+		}
+
+		list_add_tail(&cfg->list, &async_probe_drv_list);
+		buf = next;
+		if (*buf == ',')
+			buf++;
+	}
 	return 1;
 }
 __setup("driver_async_probe=", save_async_options);
