@@ -569,7 +569,6 @@ enum zone_watermarks {
 
 /* Fields and list protected by pagesets local_lock in page_alloc.c */
 struct per_cpu_pages {
-	spinlock_t lock;	/* Protects lists field */
 	int count;		/* number of pages in the list */
 	int high;		/* high watermark, emptying needed */
 	int batch;		/* chunk size for buddy add/remove */
@@ -595,6 +594,11 @@ struct per_cpu_zonestat {
 	 */
 	unsigned long vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
 #endif
+};
+
+struct per_cpu_pageset_ext {
+	spinlock_t lock;	/* Protects pageset.pcp.lists field */
+	struct per_cpu_pages pageset;
 };
 
 struct per_cpu_nodestat {
