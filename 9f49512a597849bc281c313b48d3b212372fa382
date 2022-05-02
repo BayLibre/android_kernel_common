@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec839579_f58ff657",
+        "filename": "include/linux/mm_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-05-02T22:52:38Z",
+      "side": 0,
+      "message": "Try replacing this with the following and see if it works. Do a copy paste so you don\u0027t accidentally mixup the ; and , s\n\n    \n  _ANDROID_KABI_REPLACE(struct list_head lru;,\n      struct list_head buddy_list; struct list_head pcp_list;)",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 5
+      },
+      "revId": "9f49512a597849bc281c313b48d3b212372fa382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
