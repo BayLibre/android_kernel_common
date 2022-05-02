@@ -316,7 +316,7 @@ void set_pgdat_percpu_threshold(pg_data_t *pgdat,
 void __mod_zone_page_state(struct zone *zone, enum zone_stat_item item,
 			   long delta)
 {
-	struct per_cpu_pageset __percpu *pcp = zone->pageset;
+	struct per_cpu_pageset_ext __percpu *pcp = (struct per_cpu_pageset_ext *)zone->pageset;
 	s8 __percpu *p = pcp->vm_stat_diff + item;
 	long x;
 	long t;
@@ -383,7 +383,7 @@ EXPORT_SYMBOL(__mod_node_page_state);
  */
 void __inc_zone_state(struct zone *zone, enum zone_stat_item item)
 {
-	struct per_cpu_pageset __percpu *pcp = zone->pageset;
+	struct per_cpu_pageset_ext __percpu *pcp = (struct per_cpu_pageset_ext *)zone->pageset;
 	s8 __percpu *p = pcp->vm_stat_diff + item;
 	s8 v, t;
 
@@ -429,7 +429,7 @@ EXPORT_SYMBOL(__inc_node_page_state);
 
 void __dec_zone_state(struct zone *zone, enum zone_stat_item item)
 {
-	struct per_cpu_pageset __percpu *pcp = zone->pageset;
+	struct per_cpu_pageset_ext __percpu *pcp = (struct per_cpu_pageset_ext *)zone->pageset;
 	s8 __percpu *p = pcp->vm_stat_diff + item;
 	s8 v, t;
 
@@ -489,7 +489,7 @@ EXPORT_SYMBOL(__dec_node_page_state);
 static inline void mod_zone_state(struct zone *zone,
        enum zone_stat_item item, long delta, int overstep_mode)
 {
-	struct per_cpu_pageset __percpu *pcp = zone->pageset;
+	struct per_cpu_pageset_ext __percpu *pcp = (struct per_cpu_pageset_ext *)zone->pageset;
 	s8 __percpu *p = pcp->vm_stat_diff + item;
 	long o, n, t, z;
 
@@ -769,7 +769,7 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
 	int changes = 0;
 
 	for_each_populated_zone(zone) {
-		struct per_cpu_pageset __percpu *p = zone->pageset;
+		struct per_cpu_pageset_ext __percpu *p = (struct per_cpu_pageset_ext *)zone->pageset;
 
 		for (i = 0; i < NR_VM_ZONE_STAT_ITEMS; i++) {
 			int v;
@@ -870,9 +870,9 @@ void cpu_vm_stats_fold(int cpu)
 	int global_node_diff[NR_VM_NODE_STAT_ITEMS] = { 0, };
 
 	for_each_populated_zone(zone) {
-		struct per_cpu_pageset *p;
+		struct per_cpu_pageset_ext *p;
 
-		p = per_cpu_ptr(zone->pageset, cpu);
+		p = (struct per_cpu_pageset_ext *)per_cpu_ptr(zone->pageset, cpu);
 
 		for (i = 0; i < NR_VM_ZONE_STAT_ITEMS; i++)
 			if (p->vm_stat_diff[i]) {
@@ -924,7 +924,7 @@ void cpu_vm_stats_fold(int cpu)
  * this is only called if !populated_zone(zone), which implies no other users of
  * pset->vm_stat_diff[] exsist.
  */
-void drain_zonestat(struct zone *zone, struct per_cpu_pageset *pset)
+void drain_zonestat(struct zone *zone, struct per_cpu_pageset_ext *pset)
 {
 	int i;
 
@@ -953,7 +953,7 @@ void drain_zonestat(struct zone *zone, struct per_cpu_pageset *pset)
 void __inc_numa_state(struct zone *zone,
 				 enum numa_stat_item item)
 {
-	struct per_cpu_pageset __percpu *pcp = zone->pageset;
+	struct per_cpu_pageset_ext __percpu *pcp = zone->pageset;
 	u16 __percpu *p = pcp->vm_numa_stat_diff + item;
 	u16 v;
 
@@ -1676,9 +1676,9 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
 
 	seq_printf(m, "\n  pagesets");
 	for_each_online_cpu(i) {
-		struct per_cpu_pageset *pageset;
+		struct per_cpu_pageset_ext *pageset;
 
-		pageset = per_cpu_ptr(zone->pageset, i);
+		pageset = (struct per_cpu_pageset_ext *)per_cpu_ptr(zone->pageset, i);
 		seq_printf(m,
 			   "\n    cpu: %i"
 			   "\n              count: %i"
@@ -1897,7 +1897,7 @@ static bool need_update(int cpu)
 	struct zone *zone;
 
 	for_each_populated_zone(zone) {
-		struct per_cpu_pageset *p = per_cpu_ptr(zone->pageset, cpu);
+		struct per_cpu_pageset_ext *p = (struct per_cpu_pageset_ext *)per_cpu_ptr(zone->pageset, cpu);
 
 		BUILD_BUG_ON(sizeof(p->vm_stat_diff[0]) != 1);
 #ifdef CONFIG_NUMA

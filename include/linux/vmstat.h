@@ -291,7 +291,7 @@ struct ctl_table;
 int vmstat_refresh(struct ctl_table *, int write, void *buffer, size_t *lenp,
 		loff_t *ppos);
 
-void drain_zonestat(struct zone *zone, struct per_cpu_pageset *);
+void drain_zonestat(struct zone *zone, struct per_cpu_pageset_ext *);
 
 int calculate_pressure_threshold(struct zone *zone);
 int calculate_normal_threshold(struct zone *zone);
