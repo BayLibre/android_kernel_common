@@ -22,6 +22,30 @@
       },
       "revId": "9f49512a597849bc281c313b48d3b212372fa382",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f766a87_fae4438c",
+        "filename": "include/linux/mm_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-05-03T01:28:07Z",
+      "side": 0,
+      "message": "If that doesn\u0027t work, do this:\n\n\n#ifdef __GENKSYMS__\nold code\n#else\nnew code\n#endif\n\n\nAnd this is a suggestion specific to this patch. __GENKSYMS__ is tricky and should be evaluated on a case by case basis.",
+      "parentUuid": "ec839579_f58ff657",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 5
+      },
+      "revId": "9f49512a597849bc281c313b48d3b212372fa382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
