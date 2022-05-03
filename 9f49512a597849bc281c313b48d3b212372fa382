@@ -46,6 +46,30 @@
       },
       "revId": "9f49512a597849bc281c313b48d3b212372fa382",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be9e5bfe_c8233258",
+        "filename": "include/linux/mm_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-05-03T02:01:19Z",
+      "side": 0,
+      "message": "Let\u0027s do not have the tricky one. I don\u0027t think it\u0027s worthwhile to have. I will use just lru instead of using buddy_list and pcp_list.",
+      "parentUuid": "1f766a87_fae4438c",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 5
+      },
+      "revId": "9f49512a597849bc281c313b48d3b212372fa382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
