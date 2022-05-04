@@ -16,6 +16,24 @@
       "message": "Since these are all internal functions that can be changed easily, I don\u0027t think it\u0027s right to export them. And, why are you hooking the existing ioctl path?",
       "revId": "a1efba7419bb5a575d6837b2a5b7f4ce8bb05cd0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83da1ea3_0f064e7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1948370
+      },
+      "writtenOn": "2022-05-04T07:57:09Z",
+      "side": 1,
+      "message": "1. max_file_blocks means the f2fs\u0027 max supportted file size which have default value. we can use other function in ko to replace it.\n2. mnt_drop_write_file and mnt_want_write_file are not easy for us to do workaround. \nthe two functions are EXPORT_SYMBOL in kernel by default. And they have been added to kmi symbols in /kernel-5.10/android/abi_gki_aarch64_asus. so can we added in kernel-5.4 which is used by our project?\n3. the existing ioctl path is not easy for us to control because of perssion and we also do some extra things in this function.",
+      "parentUuid": "0a77abb8_f5b700e5",
+      "revId": "a1efba7419bb5a575d6837b2a5b7f4ce8bb05cd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
