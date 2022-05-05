@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b267fce_7aaeafee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-05-05T02:05:57Z",
+      "side": 1,
+      "message": "please read the kernel documentation for how to write a good changelog text and subject.  This needs to be cleaned up a lot.\n\nAlso, there already is an input boost, you shouldn\u0027t need another one, right?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 96
+      },
+      "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1e19724f_64da2f75",
@@ -31,6 +54,29 @@
       "writtenOn": "2022-05-04T15:31:11Z",
       "side": 1,
       "message": "please remove this blank line",
+      "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c3de33_79207c5e",
+        "filename": "drivers/input/evdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-05-05T02:05:57Z",
+      "side": 1,
+      "message": "as I said before, you should pass in client and event and use whatever fields you want out of it.  No need to split it out.\n\nThat is if this is even needed, again, what about the existing input hook?",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 79
+      },
       "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
