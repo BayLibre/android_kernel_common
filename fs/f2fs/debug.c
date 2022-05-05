@@ -83,6 +83,8 @@ static void update_general_status(struct f2fs_sb_info *sbi)
 	si->ext_node = atomic_read(&sbi->total_ext_node);
 #ifdef CONFIG_F2FS_FS_DATA_SEPARATION
 	si->total_data_blocks_alloc = atomic64_read(&sbi->total_data_alloc);
+	si->age_ext_tree_count = atomic_read(&sbi->total_age_ext_tree);
+	si->age_ext_node_count = atomic_read(&sbi->total_age_ext_node);
 #endif
 	si->ndirty_node = get_pages(sbi, F2FS_DIRTY_NODES);
 	si->ndirty_dent = get_pages(sbi, F2FS_DIRTY_DENTS);
@@ -306,6 +308,9 @@ get_cache:
 						sizeof(struct extent_tree);
 	si->cache_mem += atomic_read(&sbi->total_ext_node) *
 						sizeof(struct extent_node);
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	si->age_ext_mem = f2fs_total_age_cache_size(sbi);
+#endif
 
 	si->page_mem = 0;
 	if (sbi->node_inode) {
@@ -555,6 +560,14 @@ static int stat_show(struct seq_file *s, void *v)
 				si->base_mem >> 10);
 		seq_printf(s, "  - cached: %llu KB\n",
 				si->cache_mem >> 10);
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+		seq_printf(s, "  - age cached: %llu KB\n",
+				si->age_ext_mem >> 10);
+		seq_printf(s, "  - ext tree count: %u\n",
+				si->age_ext_tree_count);
+		seq_printf(s, "  - ext node count: %u\n",
+				si->age_ext_node_count);
+#endif
 		seq_printf(s, "  - paged : %llu KB\n",
 				si->page_mem >> 10);
 	}

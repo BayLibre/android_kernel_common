@@ -382,6 +382,10 @@ static int do_read_inode(struct inode *inode)
 
 	f2fs_init_extent_tree(inode, node_page);
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	f2fs_init_age_extent_tree(inode);
+#endif
+
 	get_inline_info(inode, ri);
 
 	fi->i_extra_isize = f2fs_has_extra_attr(inode) ?
@@ -750,6 +754,10 @@ void f2fs_evict_inode(struct inode *inode)
 	f2fs_remove_dirty_inode(inode);
 
 	f2fs_destroy_extent_tree(inode);
+
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	f2fs_destroy_age_extent_tree(inode);
+#endif
 
 	if (inode->i_nlink || is_bad_inode(inode))
 		goto no_delete;

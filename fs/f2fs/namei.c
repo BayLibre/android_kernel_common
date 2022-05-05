@@ -107,6 +107,10 @@ static struct inode *f2fs_new_inode(struct inode *dir, umode_t mode)
 
 	f2fs_init_extent_tree(inode, NULL);
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	f2fs_init_age_extent_tree(inode);
+#endif
+
 	F2FS_I(inode)->i_flags =
 		f2fs_mask_flags(mode, F2FS_I(dir)->i_flags & F2FS_FL_INHERITED);
 

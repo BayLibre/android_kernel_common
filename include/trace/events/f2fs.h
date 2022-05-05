@@ -168,6 +168,11 @@ struct extent_info;
 struct victim_sel_policy;
 struct f2fs_map_blocks;
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+struct age_extent_tree;
+struct age_extent_info;
+#endif
+
 DECLARE_EVENT_CLASS(f2fs__inode,
 
 	TP_PROTO(struct inode *inode),
@@ -1661,6 +1666,240 @@ TRACE_EVENT(f2fs_destroy_extent_tree,
 		show_dev_ino(__entry),
 		__entry->node_cnt)
 );
+
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+DECLARE_EVENT_CLASS(f2fs_add_age_extent_node,
+
+	TP_PROTO(struct f2fs_sb_info *sbi,
+				struct age_extent_tree *et, struct age_extent_info *ei),
+
+	TP_ARGS(sbi, et, ei),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(ino_t,	ino)
+		__field(unsigned int, cnt)
+		__field(unsigned int, fofs)
+		__field(unsigned int, len)
+		__field(unsigned long long, age)
+		__field(unsigned long long, blocks)
+	),
+
+	TP_fast_assign(
+		__entry->dev = sbi->sb->s_dev;
+		__entry->ino = et->ino;
+		__entry->cnt = atomic_read(&et->node_cnt);
+		__entry->fofs = ei->fofs;
+		__entry->len = ei->len;
+		__entry->age = ei->age;
+		__entry->blocks = ei->last_blocks;
+	),
+
+	TP_printk("dev = (%d,%d), ino = %lu, node_cnt = %u, "
+		"age_ext_info(fofs: %u, len: %u, age: %llu, blocks: %llu)",
+		show_dev_ino(__entry),
+		__entry->cnt,
+		__entry->fofs,
+		__entry->len,
+		__entry->age,
+		__entry->blocks)
+);
+
+DEFINE_EVENT(f2fs_add_age_extent_node, f2fs_attach_age_extent_node,
+
+	TP_PROTO(struct f2fs_sb_info *sbi,
+				struct age_extent_tree *et, struct age_extent_info *ei),
+
+	TP_ARGS(sbi, et, ei)
+);
+
+DEFINE_EVENT(f2fs_add_age_extent_node, f2fs_merged_age_extent_node,
+
+	TP_PROTO(struct f2fs_sb_info *sbi,
+				struct age_extent_tree *et, struct age_extent_info *ei),
+
+	TP_ARGS(sbi, et, ei)
+);
+
+DEFINE_EVENT(f2fs_add_age_extent_node, f2fs_detach_age_extent_node,
+
+	TP_PROTO(struct f2fs_sb_info *sbi,
+				struct age_extent_tree *et, struct age_extent_info *ei),
+
+	TP_ARGS(sbi, et, ei)
+);
+
+TRACE_EVENT(f2fs_lookup_age_extent_tree_start,
+
+	TP_PROTO(struct inode *inode, unsigned int pgofs),
+
+	TP_ARGS(inode, pgofs),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(ino_t,	ino)
+		__field(unsigned int, pgofs)
+	),
+
+	TP_fast_assign(
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->pgofs = pgofs;
+	),
+
+	TP_printk("dev = (%d,%d), ino = %lu, pgofs = %u",
+		show_dev_ino(__entry),
+		__entry->pgofs)
+);
+
+TRACE_EVENT_CONDITION(f2fs_lookup_age_extent_tree_end,
+
+	TP_PROTO(struct inode *inode, unsigned int pgofs,
+						struct age_extent_info *ei),
+
+	TP_ARGS(inode, pgofs, ei),
+
+	TP_CONDITION(ei),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(ino_t,	ino)
+		__field(unsigned int, pgofs)
+		__field(unsigned int, fofs)
+		__field(unsigned int, len)
+		__field(unsigned long long, age)
+		__field(unsigned long long, blocks)
+	),
+
+	TP_fast_assign(
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->pgofs = pgofs;
+		__entry->fofs = ei->fofs;
+		__entry->len = ei->len;
+		__entry->age = ei->age;
+		__entry->blocks = ei->last_blocks;
+	),
+
+	TP_printk("dev = (%d,%d), ino = %lu, pgofs = %u, "
+		"age_ext_info(fofs: %u, len: %u, age: %llu, blocks: %llu)",
+		show_dev_ino(__entry),
+		__entry->pgofs,
+		__entry->fofs,
+		__entry->len,
+		__entry->age,
+		__entry->blocks)
+);
+
+TRACE_EVENT(f2fs_update_age_extent_tree_range,
+
+	TP_PROTO(struct inode *inode, unsigned int pgofs, unsigned int len,
+					unsigned long long age,
+					unsigned long long last_blks),
+
+	TP_ARGS(inode, pgofs, len, age, last_blks),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(ino_t,	ino)
+		__field(unsigned int, pgofs)
+		__field(unsigned int, len)
+		__field(unsigned long long, age)
+		__field(unsigned long long, blocks)
+	),
+
+	TP_fast_assign(
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->pgofs = pgofs;
+		__entry->len = len;
+		__entry->age = age;
+		__entry->blocks = last_blks;
+	),
+
+	TP_printk("dev = (%d,%d), ino = %lu, pgofs = %u, "
+					"len = %u, age = %llu, blocks = %llu",
+		show_dev_ino(__entry),
+		__entry->pgofs,
+		__entry->len,
+		__entry->age,
+		__entry->blocks)
+);
+
+TRACE_EVENT(f2fs_shrink_age_extent_tree,
+
+	TP_PROTO(struct f2fs_sb_info *sbi, int nr_shrink,
+						unsigned int node_cnt, unsigned int tree_cnt),
+
+	TP_ARGS(sbi, nr_shrink, node_cnt, tree_cnt),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(int, nr_shrink)
+		__field(unsigned int, node_cnt)
+		__field(unsigned int, tree_cnt)
+	),
+
+	TP_fast_assign(
+		__entry->dev = sbi->sb->s_dev;
+		__entry->nr_shrink = nr_shrink;
+		__entry->node_cnt = node_cnt;
+		__entry->tree_cnt = tree_cnt;
+	),
+
+	TP_printk("dev = (%d,%d), nr_shrink = %d, shrunk: node_cnt = %u, tree_cnt = %u",
+		show_dev(__entry->dev),
+		__entry->nr_shrink,
+		__entry->node_cnt,
+		__entry->tree_cnt)
+);
+
+TRACE_EVENT(f2fs_init_age_extent_tree,
+
+	TP_PROTO(struct inode *inode, unsigned int node_cnt),
+
+	TP_ARGS(inode, node_cnt),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(ino_t,	ino)
+		__field(unsigned int, node_cnt)
+	),
+
+	TP_fast_assign(
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->node_cnt = node_cnt;
+	),
+
+	TP_printk("dev = (%d,%d), ino = %lu, node_cnt = %u",
+		show_dev_ino(__entry),
+		__entry->node_cnt)
+);
+
+TRACE_EVENT(f2fs_destroy_age_extent_tree,
+
+	TP_PROTO(struct inode *inode, unsigned int node_cnt),
+
+	TP_ARGS(inode, node_cnt),
+
+	TP_STRUCT__entry(
+		__field(dev_t,	dev)
+		__field(ino_t,	ino)
+		__field(unsigned int, node_cnt)
+	),
+
+	TP_fast_assign(
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->node_cnt = node_cnt;
+	),
+
+	TP_printk("dev = (%d,%d), ino = %lu, destroyed: node_cnt = %u",
+		show_dev_ino(__entry),
+		__entry->node_cnt)
+);
+#endif
 
 DECLARE_EVENT_CLASS(f2fs_sync_dirty_inodes,
 

@@ -570,6 +570,11 @@ enum {
 /* number of extent info in extent cache we try to shrink */
 #define EXTENT_CACHE_SHRINK_NUMBER	128
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+/* number of age extent info in extent cache we try to shrink */
+#define AGE_EXTENT_CACHE_SHRINK_NUMBER	128
+#endif
+
 struct rb_entry {
 	struct rb_node rb_node;		/* rb node located in rb-tree */
 	union {
@@ -604,6 +609,31 @@ struct extent_tree {
 	atomic_t node_cnt;		/* # of extent node in rb-tree*/
 	bool largest_updated;		/* largest extent updated */
 };
+
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+struct age_extent_info {
+	unsigned int fofs;		/* start offset in a file */
+	unsigned int len;		/* length of the extent */
+	unsigned long long age;		/* block age of the extent */
+	unsigned long long last_blocks;	/* last total blocks allocated */
+};
+
+struct age_extent_node {
+	struct rb_node rb_node;			/* rb node located in rb-tree */
+	struct age_extent_info ei;		/* age extent info */
+	struct list_head list;			/* node in global age extent list of sbi */
+	struct age_extent_tree *et;		/* age extent tree pointer */
+};
+
+struct age_extent_tree {
+	nid_t ino;			/* inode number */
+	struct rb_root_cached root;	/* root of age extent info rb-tree */
+	struct age_extent_node *cached_en;	/* recently accessed age extent node */
+	struct list_head list;		/* to be used by sbi->zombie_age_list */
+	rwlock_t lock;			/* protect age extent info rb-tree */
+	atomic_t node_cnt;		/* # of age extent node in rb-tree*/
+};
+#endif
 
 /*
  * This structure is taken from ext4_map_blocks.
@@ -763,6 +793,9 @@ struct f2fs_inode_info {
 	struct mutex inmem_lock;	/* lock for inmemory pages */
 	struct extent_tree *extent_tree;	/* cached extent_tree entry */
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	struct age_extent_tree *age_extent_tree;	/* cached age_extent_tree entry */
+#endif
 	/* avoid racing between foreground op and gc */
 	struct f2fs_rwsem i_gc_rwsem[2];
 	struct f2fs_rwsem i_mmap_sem;
@@ -1604,6 +1637,18 @@ struct f2fs_sb_info {
 	struct list_head zombie_list;		/* extent zombie tree list */
 	atomic_t total_zombie_tree;		/* extent zombie tree count */
 	atomic_t total_ext_node;		/* extent info count */
+
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	/* for age extent tree cache */
+	struct radix_tree_root age_extent_tree_root;	/* cache age extent cache entries */
+	struct mutex age_extent_tree_lock;		/* locking age extent radix tree */
+	struct list_head age_extent_list;		/* lru list for shrinker */
+	spinlock_t age_extent_lock;			/* locking age extent lru list */
+	atomic_t total_age_ext_tree;			/* age extent tree count */
+	struct list_head zombie_age_list;		/* age extent zombie tree list */
+	atomic_t total_zombie_age_tree;			/* age extent zombie tree count */
+	atomic_t total_age_ext_node;			/* age extent info count */
+#endif
 
 	/* basic filesystem units */
 	unsigned int log_sectors_per_block;	/* log2 sectors per block */
@@ -3777,6 +3822,9 @@ struct f2fs_stat_info {
 	unsigned long long hit_total, total_ext;
 #ifdef CONFIG_F2FS_FS_DATA_SEPARATION
 	unsigned long long total_data_blocks_alloc;
+	unsigned long long age_ext_mem;
+	unsigned int age_ext_tree_count;
+	unsigned int age_ext_node_count;
 #endif
 	int ext_tree, zombie_tree, ext_node;
 	int ndirty_node, ndirty_dent, ndirty_meta, ndirty_imeta;
@@ -4094,8 +4142,23 @@ void f2fs_destroy_extent_cache(void);
 /*
  * block_age.c
  */
-void f2fs_init_block_age_info(struct f2fs_sb_info *sbi);
+void f2fs_init_data_seperation_info(struct f2fs_sb_info *sbi);
 void f2fs_inc_block_alloc_count(struct f2fs_sb_info *sbi, int type);
+unsigned long long f2fs_total_age_cache_size(struct f2fs_sb_info *sbi);
+unsigned long f2fs_count_age_extent_cache(struct f2fs_sb_info *sbi);
+bool f2fs_init_age_extent_tree(struct inode *inode);
+unsigned int f2fs_shrink_age_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink);
+unsigned int f2fs_drop_age_extent_node(struct inode *inode);
+void f2fs_destroy_age_extent_tree(struct inode *inode);
+bool f2fs_lookup_age_extent_cache(struct inode *inode, pgoff_t pgofs,
+					struct age_extent_info *ei);
+void f2fs_update_age_extent_cache(struct inode *inode, pgoff_t fofs,
+					unsigned int len, u64 age,
+					unsigned long long cur_blk_alloced);
+void f2fs_truncate_age_extent_cache(struct inode *inode, pgoff_t fofs,
+					unsigned int len);
+int __init f2fs_create_age_extent_cache(void);
+void f2fs_destroy_age_extent_cache(void);
 #endif
 
 /*

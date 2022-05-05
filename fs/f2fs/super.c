@@ -1303,6 +1303,10 @@ static int f2fs_drop_inode(struct inode *inode)
 			/* should remain fi->extent_tree for writepage */
 			f2fs_destroy_extent_node(inode);
 
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+			f2fs_drop_age_extent_node(inode);
+#endif
+
 			sb_start_intwrite(inode->i_sb);
 			f2fs_i_size_write(inode, 0);
 
@@ -4234,7 +4238,7 @@ reset_checkpoint:
 	f2fs_join_shrinker(sbi);
 
 #ifdef CONFIG_F2FS_FS_DATA_SEPARATION
-	f2fs_init_block_age_info(sbi);
+	f2fs_init_data_seperation_info(sbi);
 #endif
 
 	f2fs_tuning_parameters(sbi);
@@ -4429,9 +4433,18 @@ static int __init init_f2fs_fs(void)
 	err = f2fs_create_extent_cache();
 	if (err)
 		goto free_recovery_cache;
-	err = f2fs_create_garbage_collection_cache();
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	err = f2fs_create_age_extent_cache();
 	if (err)
 		goto free_extent_cache;
+#endif
+	err = f2fs_create_garbage_collection_cache();
+	if (err)
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+		goto free_age_extent_cache;
+#else
+		goto free_extent_cache;
+#endif
 	err = f2fs_init_sysfs();
 	if (err)
 		goto free_garbage_collection_cache;
@@ -4480,6 +4493,10 @@ free_sysfs:
 	f2fs_exit_sysfs();
 free_garbage_collection_cache:
 	f2fs_destroy_garbage_collection_cache();
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+free_age_extent_cache:
+	f2fs_destroy_age_extent_cache();
+#endif
 free_extent_cache:
 	f2fs_destroy_extent_cache();
 free_recovery_cache:
@@ -4511,6 +4528,9 @@ static void __exit exit_f2fs_fs(void)
 	f2fs_destroy_garbage_collection_cache();
 	f2fs_destroy_extent_cache();
 	f2fs_destroy_recovery_cache();
+#ifdef CONFIG_F2FS_FS_DATA_SEPARATION
+	f2fs_destroy_age_extent_cache();
+#endif
 	f2fs_destroy_checkpoint_caches();
 	f2fs_destroy_segment_manager_caches();
 	f2fs_destroy_node_manager_caches();
