@@ -22,6 +22,30 @@
       },
       "revId": "9ad9e63e35636203e3b10964e1875e9007dcab26",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4dd88ed_b41f9521",
+        "filename": "android/abi_gki_aarch64_transsion",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1948370
+      },
+      "writtenOn": "2022-05-05T04:59:04Z",
+      "side": 1,
+      "message": "these are our hook functions added in kernel for GKI.\nbecause some of our project\u0027s kernel version is 5.4, according to GKI1.0, maybe we don\u0027t need to submit code to review except KMI. in SPRD\u0027s build log ,it also advise us to submit it, so we submit the kmi modifacttion.\nby the way, according to GKI1.0 ,do we need to submit these modifaction?\n\nthe sprd(Unisoc) build log show us like bellow, now we have removed max_file_blocks.\ndifferent whitelist report:\n++++  The following information needs to be patched to google  ++++\nmax_file_blocks\nmnt_drop_write_file\nmnt_want_write_file\n__tracepoint_android_vh_f2fs_defragment_range_func\n__tracepoint_android_vh_f2fs_get_is_idle\n__tracepoint_android_vh_f2fs_get_pages_address\n__tracepoint_android_vh_f2fs_inode_flag_set\n__tracepoint_android_vh_f2fs_ioctl_defrag\n__tracepoint_android_vh_f2fs_restore_gc_status\n__tracepoint_android_vh_f2fs_set_gc_mode\n__tracepoint_android_vh_f2fs_set_gc_status\n__tracepoint_android_vh_f2fs_set_is_file\ndifferent whitelist report end\n\u003d remove abigail tools file\n++++++++++++++++++++++++check end+++++++++++++++++++++++",
+      "parentUuid": "130d857f_a91ad3b6",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 42
+      },
+      "revId": "9ad9e63e35636203e3b10964e1875e9007dcab26",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
