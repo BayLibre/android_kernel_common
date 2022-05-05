@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997f1e6c_5f75a915",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-05-05T23:37:27Z",
+      "side": 1,
+      "message": "Original has this as `#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)`, so please include Conflicts section in your description and include all deltas.\n\nAdmittedly it\u0027s a bit hard to review since the original patch https://lore.kernel.org/all/20220420095906.27349-6-mgorman@techsingularity.net/ has an incremental diff in https://lore.kernel.org/all/20220429091321.GB3441@techsingularity.net/",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 17
+      },
+      "revId": "0badc081c36f911dd54c8f6ac45b13b6a02f3d41",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
