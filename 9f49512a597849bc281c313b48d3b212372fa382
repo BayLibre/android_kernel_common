@@ -94,6 +94,30 @@
       },
       "revId": "9f49512a597849bc281c313b48d3b212372fa382",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9129101a_0621e9e2",
+        "filename": "include/linux/mm_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-05-05T23:45:17Z",
+      "side": 0,
+      "message": "No, it makes harder to backport further patches since they rely on this change.\n\nSo, best thing is apply original patches as-is and then revert the ABI broken part.\n\nIt makes much clear what\u0027s wrong with ABI and at the same time, reviewing/backporting are also easier.",
+      "parentUuid": "4d85e4f7_6bed801f",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 5
+      },
+      "revId": "9f49512a597849bc281c313b48d3b212372fa382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
