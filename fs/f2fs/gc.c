@@ -1266,6 +1266,14 @@ static int move_data_block(struct inode *inode, block_t bidx,
 	err = f2fs_gc_pinned_control(inode, gc_type, segno);
 	if (err)
 		goto out;
+<<<<<<< HEAD   (0210fa UPSTREAM: crypto: algboss - compile out test-related code wh)
+=======
+	}
+
+	err = f2fs_gc_pinned_control(inode, gc_type, segno);
+	if (err)
+		goto out;
+>>>>>>> CHANGE (5b002c BACKPORT: f2fs: give priority to select unpinned section for)
 
 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 	err = f2fs_get_dnode_of_data(&dn, bidx, LOOKUP_NODE);
@@ -1409,6 +1417,13 @@ static int move_data_page(struct inode *inode, block_t bidx, int gc_type,
 	err = f2fs_gc_pinned_control(inode, gc_type, segno);
 	if (err)
 		goto out;
+<<<<<<< HEAD   (0210fa UPSTREAM: crypto: algboss - compile out test-related code wh)
+=======
+	}
+	err = f2fs_gc_pinned_control(inode, gc_type, segno);
+	if (err)
+		goto out;
+>>>>>>> CHANGE (5b002c BACKPORT: f2fs: give priority to select unpinned section for)
 
 	if (gc_type == BG_GC) {
 		if (PageWriteback(page)) {
@@ -1873,6 +1888,9 @@ go_gc_more:
 stop:
 	SIT_I(sbi)->last_victim[ALLOC_NEXT] = 0;
 	SIT_I(sbi)->last_victim[FLUSH_DEVICE] = gc_control->victim_segno;
+
+	if (gc_type == FG_GC)
+		f2fs_unpin_all_sections(sbi, true);
 
 	if (gc_type == FG_GC)
 		f2fs_unpin_all_sections(sbi, true);
