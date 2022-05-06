@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adc7d2bb_2ef43e43",
+        "filename": "fs/fuse/backing.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1841,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2022-05-06T13:55:32Z",
+      "side": 1,
+      "message": "Let\u0027s split this into multiple lines.\nI think in my original change this has been put in the same line by clang-format.",
+      "parentUuid": "94099af3_d12a5c5a",
+      "range": {
+        "startLine": 1841,
+        "startChar": 2,
+        "endLine": 1841,
+        "endChar": 36
+      },
+      "revId": "d024a10618a778287a4e81059ad1426ffffa8904",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "69681038_8f08f051",
         "filename": "include/linux/fdtable.h",
         "patchSetId": 13
@@ -60,6 +84,30 @@
       "writtenOn": "2022-05-02T20:32:05Z",
       "side": 1,
       "message": "Do we need this?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 68
+      },
+      "revId": "d024a10618a778287a4e81059ad1426ffffa8904",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e21ebb4e_91658549",
+        "filename": "include/linux/fdtable.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2022-05-06T13:55:32Z",
+      "side": 1,
+      "message": "Not really, this was just to reduce the changes.",
+      "parentUuid": "69681038_8f08f051",
       "range": {
         "startLine": 126,
         "startChar": 0,
