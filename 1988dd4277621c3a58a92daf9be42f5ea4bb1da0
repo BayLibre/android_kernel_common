@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e087155_fa67e804",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6756,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-05-06T00:20:47Z",
+      "side": 1,
+      "message": "Ugrh. This is not good. If anyone uses zone-\u003epageset as `struct per_cpu_pageset` - which is what it\u0027s defined as instread of `struct per_cpu_pageset_ext` they will discover a nasty surprise because member offsets are different in these structures. Maybe instead we can separate the lock from per_cpu_pages like this:\n\n\n```\nstruct per_cpu_pages {\n\tint count;\t\t/* number of pages in the list */\n\tint high;\t\t/* high watermark, emptying needed */\n\tint batch;\t\t/* chunk size for buddy add/remove */\n\n\t/* Lists of pages, one per migrate type stored on the pcp-lists */\n\tstruct list_head lists[MIGRATE_PCPTYPES];\n};\n\nstruct per_cpu_pageset {\n\tstruct per_cpu_pages pcp;\n#ifdef CONFIG_NUMA\n\ts8 expire;\n\tu16 vm_numa_stat_diff[NR_VM_NUMA_STAT_ITEMS];\n#endif\n#ifdef CONFIG_SMP\n\ts8 stat_threshold;\n\ts8 vm_stat_diff[NR_VM_ZONE_STAT_ITEMS];\n#endif\n};\n\nstruct per_cpu_pageset_ext {\n\tspinlock_t lock;\t/* Protects pageset.pcp.lists field */\n\tstruct per_cpu_pageset pageset;\n};\n\n...\n\nzone-\u003epageset \u003d \u0026alloc_percpu(struct per_cpu_pageset_ext)-\u003epageset;\n```\n\nAnd whenever we need to use `spin_loc(\u0026pcp-\u003elock)` we do:\n```\nstruct per_cpu_pageset* ps \u003d container_of(pcp, struct per_cpu_pageset, pcp);\nstruct per_cpu_pageset_ext *ps_ext \u003d container_of(ps, struct per_cpu_pageset_ext, pageset);\nspin_lock(\u0026ps_ext-\u003elock);\n```",
+      "range": {
+        "startLine": 6756,
+        "startChar": 1,
+        "endLine": 6756,
+        "endChar": 84
+      },
+      "revId": "1988dd4277621c3a58a92daf9be42f5ea4bb1da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
