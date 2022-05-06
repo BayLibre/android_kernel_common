@@ -106,6 +106,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f56fcdab_340ded84",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2022-05-06T20:49:50Z",
+      "side": 1,
+      "message": "Looks like other bpfs just use a u32 in place of a pointer, and then have some is_valid_access/convert_ctx_access magic to turn it back into a pointer. We can do something similar.",
+      "parentUuid": "6a5bbce8_611718b3",
+      "range": {
+        "startLine": 1015,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54b5e6b4_0bf6ab30",
         "filename": "include/uapi/linux/fuse.h",
         "patchSetId": 11
