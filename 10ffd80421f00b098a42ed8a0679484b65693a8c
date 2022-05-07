@@ -130,6 +130,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d0d22301_c050f3d6",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-05-07T15:36:15Z",
+      "side": 1,
+      "message": "pointers that cross the user/kernel boundary have to be __u64 types.",
+      "parentUuid": "f56fcdab_340ded84",
+      "range": {
+        "startLine": 1015,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54b5e6b4_0bf6ab30",
         "filename": "include/uapi/linux/fuse.h",
         "patchSetId": 11
