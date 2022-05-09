@@ -1356,6 +1356,11 @@ static long filp_send_ioctl(struct file *filp,
 		goto iov_import_failed;
 	}
 
+	if (iov_iter_count(&iter) > dn->chan->max_msg_size) {
+		ret = -EMSGSIZE;
+		goto iov_too_big;
+	}
+
 	for (shm_idx = 0; shm_idx < req.shm_cnt; shm_idx++) {
 		switch (shm[shm_idx].transfer) {
 		case TRUSTY_SHARE:
@@ -1416,6 +1421,7 @@ static long filp_send_ioctl(struct file *filp,
 
 common_cleanup:
 	kfree(iov);
+iov_too_big:
 iov_import_failed:
 load_shm_args_failed:
 	kfree(shm_handles);
@@ -1548,6 +1554,9 @@ static ssize_t tipc_write_iter(struct kiocb *iocb, struct iov_iter *iter)
 	struct tipc_msg_buf *txbuf = NULL;
 	ssize_t ret = 0;
 	ssize_t len = 0;
+
+	if (iov_iter_count(iter) > dn->chan->max_msg_size)
+		return -EMSGSIZE;
 
 	if (filp->f_flags & O_NONBLOCK)
 		timeout = 0;
