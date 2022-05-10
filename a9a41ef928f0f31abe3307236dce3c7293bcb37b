@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dfc5452_89f11f8f",
+        "filename": "kernel/signal.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1423,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-05-10T20:22:17Z",
+      "side": 1,
+      "message": "I would suggest adding he `current` as a parameter like this: `trace_android_vh_killed_process(current, p, \u0026reap)` so that it can be used instead of `trace_android_vh_process_killed` and we can deprecate the `trace_android_vh_process_killed` in the later versions.",
+      "range": {
+        "startLine": 1423,
+        "startChar": 35,
+        "endLine": 1423,
+        "endChar": 43
+      },
+      "revId": "a9a41ef928f0f31abe3307236dce3c7293bcb37b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
