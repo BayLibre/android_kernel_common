@@ -177,6 +177,24 @@
       "parentUuid": "f96ce409_9ce1be40",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02b87b69_c51c2796",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-05-10T12:52:57Z",
+      "side": 1,
+      "message": "I\u0027ve been thinking about this some more. I have a question about the approach. Let\u0027s say we have a GKI module foo.ko that exports two symbols: symA and symB. Let\u0027s say that symA is listed on a vendor symbol list, but symB isn\u0027t listed anywhere. With the current proposal, what prevents a vendor module form accessing symB? Modules are not trimmed, and since symB is not marked as a \u0027protected\u0027 symbol, I think it is just there available for vendors to use despite not being stable?",
+      "parentUuid": "767c5e44_593d0493",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
