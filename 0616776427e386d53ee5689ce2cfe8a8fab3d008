@@ -195,6 +195,24 @@
       "parentUuid": "767c5e44_593d0493",
       "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5d7416f_0a1391a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-05-10T17:44:27Z",
+      "side": 1,
+      "message": "symB should be part of the protected symbol list as it\u0027s not listed by the vendor list. It\u0027s upto vendors to make sure they list and get approval of the symbol they are using - if they are going to override foo.ko then they have to list both symA and symB in their list (and we need to remove both of them from protected list when module is allowed to be overridden).",
+      "parentUuid": "02b87b69_c51c2796",
+      "revId": "0616776427e386d53ee5689ce2cfe8a8fab3d008",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
