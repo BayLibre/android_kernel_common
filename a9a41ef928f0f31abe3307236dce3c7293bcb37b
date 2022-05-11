@@ -46,6 +46,30 @@
       },
       "revId": "a9a41ef928f0f31abe3307236dce3c7293bcb37b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62aefa68_694a73e5",
+        "filename": "kernel/signal.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1423,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-05-11T18:14:25Z",
+      "side": 1,
+      "message": "The patch loos fine but you need to post another patch updating ABI definition to include the new vendor hook.Without it the presubmit tests will fail.",
+      "parentUuid": "254e6b9e_1274b23e",
+      "range": {
+        "startLine": 1423,
+        "startChar": 35,
+        "endLine": 1423,
+        "endChar": 43
+      },
+      "revId": "a9a41ef928f0f31abe3307236dce3c7293bcb37b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
