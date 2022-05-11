@@ -725,6 +725,8 @@
       <elf-symbol name='cpufreq_table_index_unsorted' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2ca30d11'/>
       <elf-symbol name='cpufreq_this_cpu_can_update' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5628274a'/>
       <elf-symbol name='cpufreq_unregister_driver' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xeeb9579a'/>
+      <elf-symbol name='cpuidle_driver_state_disabled' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6f54fe75'/>
+      <elf-symbol name='cpuidle_get_driver' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7597a963'/>
       <elf-symbol name='cpuidle_governor_latency_req' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc319717f'/>
       <elf-symbol name='cpuidle_pause_and_lock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf553318d'/>
       <elf-symbol name='cpuidle_resume_and_unlock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcabe04de'/>
@@ -109583,6 +109585,15 @@
         <return type-id='95e97e5e'/>
       </function-decl>
       <var-decl name='cpuhp_tasks_frozen' type-id='b50a4934' mangled-name='cpuhp_tasks_frozen' visibility='default' filepath='kernel/cpu.c' line='271' column='1' elf-symbol-id='cpuhp_tasks_frozen'/>
+      <function-decl name='cpuidle_driver_state_disabled' mangled-name='cpuidle_driver_state_disabled' filepath='drivers/cpuidle/driver.c' line='353' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='cpuidle_driver_state_disabled'>
+        <parameter type-id='809cdefc' name='drv' filepath='drivers/cpuidle/driver.c' line='353' column='1'/>
+        <parameter type-id='95e97e5e' name='idx' filepath='drivers/cpuidle/driver.c' line='353' column='1'/>
+        <parameter type-id='b50a4934' name='disable' filepath='drivers/cpuidle/driver.c' line='354' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='cpuidle_get_driver' mangled-name='cpuidle_get_driver' filepath='drivers/cpuidle/driver.c' line='318' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='cpuidle_get_driver'>
+        <return type-id='809cdefc'/>
+      </function-decl>
       <function-decl name='cpuidle_governor_latency_req' mangled-name='cpuidle_governor_latency_req' filepath='drivers/cpuidle/governor.c' line='111' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='cpuidle_governor_latency_req'>
         <parameter type-id='f0981eeb' name='cpu' filepath='drivers/cpuidle/governor.c' line='111' column='1'/>
         <return type-id='9b7c55ef'/>
