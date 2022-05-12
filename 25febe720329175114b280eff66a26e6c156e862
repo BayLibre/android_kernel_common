@@ -16,6 +16,24 @@
       "message": "For the record, this affects the stable ABI:\n\n```\n\u0027struct regmap_config at regmap.h:354:1\u0027 changed:\n  type size changed from 2240 to 2304 (in bits)\n  1 data member insertion:\n    \u0027void ()* reg_update_bits\u0027, at offset 960 (in bits) at regmap.h:381:1\n  there are data member changes:\n    30 (\u0027bool fast_io\u0027 .. \u0027u64 android_kabi_reserved1\u0027) offsets changed (by +64 bits)\n  9 impacted interfaces\n```",
       "revId": "25febe720329175114b280eff66a26e6c156e862",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75afad8e_e5278e7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1786831
+      },
+      "writtenOn": "2022-05-12T06:53:52Z",
+      "side": 1,
+      "message": "Yes, this affects struct regmap_config. what do I need to do?",
+      "parentUuid": "6fec580f_c2465db4",
+      "revId": "25febe720329175114b280eff66a26e6c156e862",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
