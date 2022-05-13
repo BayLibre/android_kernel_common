@@ -374,6 +374,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_meminfo_proc_show);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mglru_should_abort_scan);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mglru_should_abort_scan_ex);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migration_target_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_longterm_pinnable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_do_madvise_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_free_page);
@@ -572,4 +574,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wp_page_reuse);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_lockup_pool);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_zs_shrinker_adjust);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_zs_shrinker_bypass);
-/* keep-sorted end */
+/* keep-sorted end */==
