@@ -22,6 +22,30 @@
       },
       "revId": "56937e65b1ed505910a02bbf71e5869481d36ab9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7104ffa8_0eb8e2e4",
+        "filename": "tools/testing/selftests/filesystems/fuse/fd_bpf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2022-05-13T21:23:06Z",
+      "side": 1,
+      "message": "If it can, that\u0027s on the verifier. If we try to access an offset that came from an overflow, it should fail it. I think that happens in `__check_mem_access`",
+      "parentUuid": "0f454f1f_29f88275",
+      "range": {
+        "startLine": 65,
+        "startChar": 5,
+        "endLine": 65,
+        "endChar": 15
+      },
+      "revId": "56937e65b1ed505910a02bbf71e5869481d36ab9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
