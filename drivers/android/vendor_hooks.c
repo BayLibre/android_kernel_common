@@ -335,3 +335,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_transaction_received);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_oem_binder_struct);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_special_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_free_buf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_end);
