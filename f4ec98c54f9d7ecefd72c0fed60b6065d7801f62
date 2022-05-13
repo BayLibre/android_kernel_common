@@ -52,6 +52,24 @@
       "parentUuid": "4aff1a70_bfdd6658",
       "revId": "f4ec98c54f9d7ecefd72c0fed60b6065d7801f62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b97f0a25_687c2047",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1948370
+      },
+      "writtenOn": "2022-05-13T07:59:39Z",
+      "side": 1,
+      "message": "We just export the symbol in abi, no change in the f2fs or kernel common code.\n\u0027mnt_drop_write_file\u0027 and \u0027mnt_want_write_file\u0027 are EXPORT_SYMBOL in kernel by default. And they have been added to kmi symbols in /kernel-5.10/android/abi_gki_aarch64_asus, but not in kernel-5.4 which is used in our project. \nThanks!",
+      "parentUuid": "d191ec59_005baf2c",
+      "revId": "f4ec98c54f9d7ecefd72c0fed60b6065d7801f62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
