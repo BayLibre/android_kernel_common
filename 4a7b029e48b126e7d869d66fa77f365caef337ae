@@ -16,6 +16,24 @@
       "message": "It seems unfortunate to make a deep copy of this file",
       "revId": "4a7b029e48b126e7d869d66fa77f365caef337ae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec337da_ec10af78",
+        "filename": "tools/include/uapi/linux/fuse.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2022-05-13T00:00:02Z",
+      "side": 1,
+      "message": "I believe that\u0027s what was done for all the other .h files included under tools/uapi. It was the final thing I needed to get everything compiling nicely. I think some of the other includes are modified so they don\u0027t make userspace code upset, but that means we can\u0027t just use the regular .h files directly, or the offending includes would get pulled in.\n\nFor instance, in types.h we have\n\n#ifndef __EXPORTED_HEADERS__\n#warning \"Attempt to use kernel headers from user space, see https://kernelnewbies.org/KernelHeaders\"\n#endif /* __EXPORTED_HEADERS__ */",
+      "parentUuid": "ed492c37_4e60ef7e",
+      "revId": "4a7b029e48b126e7d869d66fa77f365caef337ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
