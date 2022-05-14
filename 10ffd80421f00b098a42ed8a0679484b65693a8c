@@ -154,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cfd23fa5_907ad315",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2022-05-14T00:22:24Z",
+      "side": 1,
+      "message": "I can make ours use a __u64 type. I did notice bpf code does it both ways, so I\u0027m guessing newer ones use __u64, and the u32 one was just grandfathered in or something. The actual load set up by the respective convert_ctx_access does the expected width.\n\nSpecifically, struct __sk_buff uses a __u32 as a data pointer for the packet, which is then converted into a proper pointer sized load by a convert_ctx_access. Bpf programs then use some strange looking casts to make the compiler happy. It also feels really weird to call a number as a function, but that\u0027s just bpf I guess ;)",
+      "parentUuid": "d0d22301_c050f3d6",
+      "range": {
+        "startLine": 1015,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54b5e6b4_0bf6ab30",
         "filename": "include/uapi/linux/fuse.h",
         "patchSetId": 11
