@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a4bc604_0de5063b",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2022-05-14T01:02:33Z",
+      "side": 1,
+      "message": "This value was previously unused padding for alignment. Userspace code never sets it since it\u0027s in the in header, and it never uses it. The only reasonable thing it could do is check that it\u0027s 0 and complain if it isn\u0027t, but libfuse doesn\u0027t do that.\n\nShould I just make it an alias on the off chance some code somewhere is using it directly? Otherwise it looks like a field that\u0027s safe to repurpose.",
+      "parentUuid": "c9423962_5aaf36fe",
+      "range": {
+        "startLine": 871,
+        "startChar": 0,
+        "endLine": 871,
+        "endChar": 19
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64cf1a91_0c5fd7a0",
         "filename": "include/uapi/linux/fuse.h",
         "patchSetId": 11
@@ -235,6 +259,30 @@
       "writtenOn": "2022-03-24T17:13:02Z",
       "side": 1,
       "message": "why is this in a uapi file at all?",
+      "range": {
+        "startLine": 1024,
+        "startChar": 0,
+        "endLine": 1024,
+        "endChar": 18
+      },
+      "revId": "10ffd80421f00b098a42ed8a0679484b65693a8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a917b7e_4cd97118",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1024,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2022-05-14T01:02:33Z",
+      "side": 1,
+      "message": "New version doesn\u0027t move fuse_args or fuse_arg into uapi, so this whole block will go away. It was being used by the bpf, but that\u0027s being replaced by a separate struct that\u0027ll go in bpf.h",
+      "parentUuid": "ba651082_a79ecf38",
       "range": {
         "startLine": 1024,
         "startChar": 0,
