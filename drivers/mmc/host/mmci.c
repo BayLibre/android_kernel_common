@@ -2280,8 +2280,6 @@ static int mmci_runtime_suspend(struct device *dev)
 		mmci_save(host);
 		clk_disable_unprepare(host->clk);
 	}
-
-	return 0;
 }
 
 static int mmci_runtime_resume(struct device *dev)
