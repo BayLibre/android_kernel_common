@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cbd3ea3_757b4f3a",
+        "filename": "mm/compaction.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2305,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-05-16T03:47:44Z",
+      "side": 1,
+      "message": "How about making vendhor hook more general to minimize change later?\n\ntrace_android_vh_mm_compaction_begin(\u0026cc, \u0026vendor_ret);\n\ntrace_android_vh_mm_compaction_end(\u0026cc, vendor_ret);\n\nThe compact_control has many useful data if you want to categorize more.",
+      "range": {
+        "startLine": 2305,
+        "startChar": 1,
+        "endLine": 2305,
+        "endChar": 42
+      },
+      "revId": "f2f2d589e305c05ad05b2dc1e927b4ba35f8aa3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
