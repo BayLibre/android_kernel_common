@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000024369390",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2095584?revision\u003d6",
+      "fixSuggestions": [
+        {
+          "fixId": "a1e71560_7bffcc46",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: wuzhe \u003cwuzhe@oppo.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "576853c5_f04f6b33",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-05-17T09:45:50Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: wuzhe \u003cwuzhe@oppo.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 448963898 android-build.ayeaye-python-dispatcher_20220516.05_p0",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 0
+      },
+      "revId": "f98fd24922c99cb225c9009baf428880f372afc6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
