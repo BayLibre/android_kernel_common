@@ -37,6 +37,9 @@ static inline bool f2fs_may_age_extent_tree(struct inode *inode)
 	if (list_empty(&sbi->s_list))
 		return false;
 
+	if (!test_opt(sbi, AGE_EXTENT_CACHE))
+		return false;
+
 	/* don't cache block age info for cold file */
 	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) ||
 			file_is_cold(inode))
