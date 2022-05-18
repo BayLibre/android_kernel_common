@@ -793,8 +793,25 @@ static ssize_t gfs2_file_direct_read(struct kiocb *iocb, struct iov_iter *to,
 	if (ret)
 		goto out_uninit;
 
+<<<<<<< HEAD   (d6d4ce UPSTREAM: floppy: disable FDRAWCMD by default)
 	ret = iomap_dio_rw(iocb, to, &gfs2_iomap_ops, NULL, 0, 0);
 	gfs2_glock_dq(gh);
+=======
+	if (should_fault_in_pages(ret, to, &prev_count, &window_size)) {
+		size_t leftover;
+
+		gfs2_holder_allow_demote(gh);
+		leftover = fault_in_iov_iter_writeable(to, window_size);
+		gfs2_holder_disallow_demote(gh);
+		if (leftover != window_size) {
+			if (gfs2_holder_queued(gh))
+				goto retry_under_glock;
+			goto retry;
+		}
+	}
+	if (gfs2_holder_queued(gh))
+		gfs2_glock_dq(gh);
+>>>>>>> BRANCH (3fbf24 Linux 5.15.38)
 out_uninit:
 	gfs2_holder_uninit(gh);
 	return ret;
@@ -830,6 +847,24 @@ static ssize_t gfs2_file_direct_write(struct kiocb *iocb, struct iov_iter *from,
 	ret = iomap_dio_rw(iocb, from, &gfs2_iomap_ops, NULL, 0, 0);
 	if (ret == -ENOTBLK)
 		ret = 0;
+<<<<<<< HEAD   (d6d4ce UPSTREAM: floppy: disable FDRAWCMD by default)
+=======
+	if (ret > 0)
+		read = ret;
+
+	if (should_fault_in_pages(ret, from, &prev_count, &window_size)) {
+		size_t leftover;
+
+		gfs2_holder_allow_demote(gh);
+		leftover = fault_in_iov_iter_readable(from, window_size);
+		gfs2_holder_disallow_demote(gh);
+		if (leftover != window_size) {
+			if (gfs2_holder_queued(gh))
+				goto retry_under_glock;
+			goto retry;
+		}
+	}
+>>>>>>> BRANCH (3fbf24 Linux 5.15.38)
 out:
 	gfs2_glock_dq(gh);
 out_uninit:
@@ -871,12 +906,112 @@ static ssize_t gfs2_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 	ret = generic_file_read_iter(iocb, to);
 	if (ret > 0)
 		written += ret;
+<<<<<<< HEAD   (d6d4ce UPSTREAM: floppy: disable FDRAWCMD by default)
 	gfs2_glock_dq(&gh);
+=======
+
+	if (should_fault_in_pages(ret, to, &prev_count, &window_size)) {
+		size_t leftover;
+
+		gfs2_holder_allow_demote(&gh);
+		leftover = fault_in_iov_iter_writeable(to, window_size);
+		gfs2_holder_disallow_demote(&gh);
+		if (leftover != window_size) {
+			if (gfs2_holder_queued(&gh))
+				goto retry_under_glock;
+			goto retry;
+		}
+	}
+	if (gfs2_holder_queued(&gh))
+		gfs2_glock_dq(&gh);
+>>>>>>> BRANCH (3fbf24 Linux 5.15.38)
 out_uninit:
 	gfs2_holder_uninit(&gh);
 	return written ? written : ret;
 }
 
+<<<<<<< HEAD   (d6d4ce UPSTREAM: floppy: disable FDRAWCMD by default)
+=======
+static ssize_t gfs2_file_buffered_write(struct kiocb *iocb,
+					struct iov_iter *from,
+					struct gfs2_holder *gh)
+{
+	struct file *file = iocb->ki_filp;
+	struct inode *inode = file_inode(file);
+	struct gfs2_inode *ip = GFS2_I(inode);
+	struct gfs2_sbd *sdp = GFS2_SB(inode);
+	struct gfs2_holder *statfs_gh = NULL;
+	size_t prev_count = 0, window_size = 0;
+	size_t orig_count = iov_iter_count(from);
+	size_t read = 0;
+	ssize_t ret;
+
+	/*
+	 * In this function, we disable page faults when we're holding the
+	 * inode glock while doing I/O.  If a page fault occurs, we indicate
+	 * that the inode glock may be dropped, fault in the pages manually,
+	 * and retry.
+	 */
+
+	if (inode == sdp->sd_rindex) {
+		statfs_gh = kmalloc(sizeof(*statfs_gh), GFP_NOFS);
+		if (!statfs_gh)
+			return -ENOMEM;
+	}
+
+	gfs2_holder_init(ip->i_gl, LM_ST_EXCLUSIVE, 0, gh);
+retry:
+	ret = gfs2_glock_nq(gh);
+	if (ret)
+		goto out_uninit;
+retry_under_glock:
+	if (inode == sdp->sd_rindex) {
+		struct gfs2_inode *m_ip = GFS2_I(sdp->sd_statfs_inode);
+
+		ret = gfs2_glock_nq_init(m_ip->i_gl, LM_ST_EXCLUSIVE,
+					 GL_NOCACHE, statfs_gh);
+		if (ret)
+			goto out_unlock;
+	}
+
+	current->backing_dev_info = inode_to_bdi(inode);
+	pagefault_disable();
+	ret = iomap_file_buffered_write(iocb, from, &gfs2_iomap_ops);
+	pagefault_enable();
+	current->backing_dev_info = NULL;
+	if (ret > 0) {
+		iocb->ki_pos += ret;
+		read += ret;
+	}
+
+	if (inode == sdp->sd_rindex)
+		gfs2_glock_dq_uninit(statfs_gh);
+
+	from->count = orig_count - read;
+	if (should_fault_in_pages(ret, from, &prev_count, &window_size)) {
+		size_t leftover;
+
+		gfs2_holder_allow_demote(gh);
+		leftover = fault_in_iov_iter_readable(from, window_size);
+		gfs2_holder_disallow_demote(gh);
+		if (leftover != window_size) {
+			from->count = min(from->count, window_size - leftover);
+			if (gfs2_holder_queued(gh))
+				goto retry_under_glock;
+			goto retry;
+		}
+	}
+out_unlock:
+	if (gfs2_holder_queued(gh))
+		gfs2_glock_dq(gh);
+out_uninit:
+	gfs2_holder_uninit(gh);
+	if (statfs_gh)
+		kfree(statfs_gh);
+	return read ? read : ret;
+}
+
+>>>>>>> BRANCH (3fbf24 Linux 5.15.38)
 /**
  * gfs2_file_write_iter - Perform a write to a file
  * @iocb: The io context
