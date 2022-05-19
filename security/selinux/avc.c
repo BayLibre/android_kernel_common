@@ -1247,3 +1247,6 @@ void avc_disable(void)
 		/* kmem_cache_destroy(avc_node_cachep); */
 	}
 }
+
+void I_care_about_struct_avc_node(struct avc_node ignored) { (void) ignored; }
+EXPORT_SYMBOL(I_care_about_struct_avc_node);
