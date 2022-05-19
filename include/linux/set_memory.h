@@ -23,6 +23,14 @@ static inline int set_direct_map_default_noflush(struct page *page)
 {
 	return 0;
 }
+static inline int set_direct_remap_normal_noflush(struct page *page)
+{
+	return 0;
+}
+static inline int set_direct_remap_devmem_noflush(struct page *page)
+{
+	return 0;
+}
 #endif
 
 #ifndef set_mce_nospec

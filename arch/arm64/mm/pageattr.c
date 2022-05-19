@@ -31,6 +31,18 @@ static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
 	return 0;
 }
 
+static int __change_page_range(pte_t *ptep, unsigned long addr, void *data)
+{
+	struct page_change_data *cdata = data;
+	pte_t pte = READ_ONCE(*ptep);
+
+	pte = clear_pte_bit(pte, cdata->clear_mask);
+	pte = set_pte_bit(pte, cdata->set_mask);
+
+	set_pte(ptep, pte);
+	return 0;
+}
+
 /*
  * This function assumes that the range is mapped with PAGE_SIZE pages.
  */
@@ -177,6 +189,39 @@ int set_direct_map_default_noflush(struct page *page)
 				   (unsigned long)page_address(page),
 				   PAGE_SIZE, change_page_range, &data);
 }
+EXPORT_SYMBOL(set_direct_map_default_noflush);
+
+int set_direct_remap_normal_noflush(struct page *page)
+{
+	struct page_change_data data = {
+		.set_mask = __pgprot(PROT_NORMAL_TAGGED),
+		.clear_mask = __pgprot(PROT_DEVICE_nGnRE),
+	};
+
+	if (!rodata_full)
+		return 0;
+
+	return apply_to_page_range(&init_mm,
+				   (unsigned long)page_address(page),
+				   PAGE_SIZE, __change_page_range, &data);
+}
+EXPORT_SYMBOL(set_direct_remap_normal_noflush);
+
+int set_direct_remap_devmem_noflush(struct page *page)
+{
+	struct page_change_data data = {
+		.set_mask = __pgprot(PROT_DEVICE_nGnRE),
+		.clear_mask = __pgprot(PROT_NORMAL),
+	};
+
+	if (!rodata_full)
+		return 0;
+
+	return apply_to_page_range(&init_mm,
+				   (unsigned long)page_address(page),
+				   PAGE_SIZE, __change_page_range, &data);
+}
+EXPORT_SYMBOL(set_direct_remap_devmem_noflush);
 
 void __kernel_map_pages(struct page *page, int numpages, int enable)
 {

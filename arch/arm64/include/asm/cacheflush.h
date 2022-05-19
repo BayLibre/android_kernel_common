@@ -140,6 +140,8 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
 
 int set_direct_map_invalid_noflush(struct page *page);
 int set_direct_map_default_noflush(struct page *page);
+int set_direct_remap_normal_noflush(struct page *page);
+int set_direct_remap_devmem_noflush(struct page *page);
 
 #include <asm-generic/cacheflush.h>
 
