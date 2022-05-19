@@ -8,6 +8,7 @@
 
 #include "fuse_i.h"
 
+#include <linux/filter.h>
 #include <linux/pagemap.h>
 #include <linux/slab.h>
 #include <linux/kernel.h>
@@ -137,7 +138,12 @@ int fuse_do_open(struct fuse_mount *fm, u64 nodeid, struct file *file,
 	struct fuse_file *ff;
 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
 
-	ff = fuse_file_alloc(fm);
+	if (file && file->private_data) {
+		ff = file->private_data;
+		file->private_data = NULL;
+	} else {
+		ff = fuse_file_alloc(fm);
+	}
 	if (!ff)
 		return -ENOMEM;
 
@@ -172,6 +178,7 @@ int fuse_do_open(struct fuse_mount *fm, u64 nodeid, struct file *file,
 
 	return 0;
 }
+
 EXPORT_SYMBOL_GPL(fuse_do_open);
 
 static void fuse_link_write_file(struct file *file)
@@ -1866,6 +1873,19 @@ int fuse_write_inode(struct inode *inode, struct writeback_control *wbc)
 	 * involve any number of unrelated userspace processes.
 	 */
 	WARN_ON(wbc->for_reclaim);
+
+	/**
+	 * TODO - fully understand why this is necessary
+	 *
+	 * With fuse-bpf, fsstress fails if rename is enabled without this
+	 *
+	 * We are getting writes here on directory inodes, which do not have an
+	 * initialized file list so crash.
+	 *
+	 * The question is why we are getting those writes
+	 */
+	if (!S_ISREG(inode->i_mode))
+		return 0;
 
 	ff = __fuse_write_file_get(fc, fi);
 	err = fuse_flush_times(inode, ff);
