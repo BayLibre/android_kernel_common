@@ -24,13 +24,15 @@
 #include <linux/sched.h>
 #include <linux/smp.h>
 #include <linux/delay.h>
-
+#include <linux/of_fdt.h>
 /*
  * In case the boot CPU is hotpluggable, we record its initial state and
  * current state separately. Certain system registers may contain different
  * values depending on configuration at or after reset.
  */
 DEFINE_PER_CPU(struct cpuinfo_arm64, cpu_data);
+char* (*arch_read_hardware_id)(void);
+EXPORT_SYMBOL(arch_read_hardware_id);
 static struct cpuinfo_arm64 boot_cpu_data;
 
 static const char *icache_policy_str[] = {
@@ -199,6 +201,9 @@ static int c_show(struct seq_file *m, void *v)
 		seq_printf(m, "CPU part\t: 0x%03x\n", MIDR_PARTNUM(midr));
 		seq_printf(m, "CPU revision\t: %d\n\n", MIDR_REVISION(midr));
 	}
+
+	if (arch_read_hardware_id)
+		seq_printf(m, "Hardware\t: %s\n", arch_read_hardware_id());
 
 	return 0;
 }

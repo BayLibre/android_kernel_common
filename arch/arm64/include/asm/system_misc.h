@@ -31,7 +31,7 @@ void hook_debug_fault_code(int nr, int (*fn)(unsigned long, unsigned int,
 
 struct mm_struct;
 extern void __show_regs(struct pt_regs *);
-
+extern char* (*arch_read_hardware_id)(void);
 #endif	/* __ASSEMBLY__ */
 
 #endif	/* __ASM_SYSTEM_MISC_H */
