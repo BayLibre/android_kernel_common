@@ -8,6 +8,7 @@
 
 #include "fuse_i.h"
 
+#include <linux/filter.h>
 #include <linux/pagemap.h>
 #include <linux/slab.h>
 #include <linux/kernel.h>
@@ -125,13 +126,18 @@ static void fuse_file_put(struct fuse_file *ff, bool sync, bool isdir)
 }
 
 struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
-				 unsigned int open_flags, bool isdir)
+				 unsigned int open_flags, bool isdir, struct file *file)
 {
 	struct fuse_conn *fc = fm->fc;
 	struct fuse_file *ff;
 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
 
-	ff = fuse_file_alloc(fm);
+	if (file && file->private_data) {
+		ff = file->private_data;
+		file->private_data = NULL;
+	} else {
+		ff = fuse_file_alloc(fm);
+	}
 	if (!ff)
 		return ERR_PTR(-ENOMEM);
 
@@ -169,7 +175,7 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
 int fuse_do_open(struct fuse_mount *fm, u64 nodeid, struct file *file,
 		 bool isdir)
 {
-	struct fuse_file *ff = fuse_file_open(fm, nodeid, file->f_flags, isdir);
+	struct fuse_file *ff = fuse_file_open(fm, nodeid, file->f_flags, isdir, file);
 
 	if (!IS_ERR(ff))
 		file->private_data = ff;
@@ -239,6 +245,20 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 	err = generic_file_open(inode, file);
 	if (err)
 		return err;
+
+#ifdef CONFIG_FUSE_BPF
+	{
+		struct fuse_err_ret fer;
+
+		fer = fuse_bpf_backing(inode, struct fuse_open_io,
+				       fuse_open_initialize_in, fuse_open_initialize_out,
+				       fuse_open_backing,
+				       fuse_open_finalize,
+				       inode, file, isdir);
+		if (fer.ret)
+			return PTR_ERR(fer.result);
+	}
+#endif
 
 	if (is_wb_truncate || dax_truncate) {
 		inode_lock(inode);
@@ -342,6 +362,17 @@ static int fuse_open(struct inode *inode, struct file *file)
 static int fuse_release(struct inode *inode, struct file *file)
 {
 	struct fuse_conn *fc = get_fuse_conn(inode);
+
+#ifdef CONFIG_FUSE_BPF
+	struct fuse_err_ret fer;
+
+	fer = fuse_bpf_backing(inode, struct fuse_release_in,
+		       fuse_release_initialize_in, fuse_release_initialize_out,
+		       fuse_release_backing, fuse_release_finalize,
+		       inode, file);
+	if (fer.ret)
+		return PTR_ERR(fer.result);
+#endif
 
 	/* see fuse_vma_close() for !writeback_cache case */
 	if (fc->writeback_cache)
@@ -1866,6 +1897,19 @@ int fuse_write_inode(struct inode *inode, struct writeback_control *wbc)
 	 */
 	WARN_ON(wbc->for_reclaim);
 
+	/**
+	 * TODO - fully understand why this is necessary
+	 *
+	 * With fuse-bpf, fsstress fails if rename is enabled without this
+	 *
+	 * We are getting writes here on directory inodes, which do not have an
+	 * initialized file list so crash.
+	 *
+	 * The question is why we are getting those writes
+	 */
+	if (!S_ISREG(inode->i_mode))
+		return 0;
+
 	ff = __fuse_write_file_get(fi);
 	err = fuse_flush_times(inode, ff);
 	if (ff)
@@ -2413,6 +2457,12 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
 	if (FUSE_IS_DAX(file_inode(file)))
 		return fuse_dax_mmap(file, vma);
 
+#ifdef CONFIG_FUSE_BPF
+	/* TODO - this is simply passthrough, not a proper BPF filter */
+	if (ff->backing_file)
+		return fuse_backing_mmap(file, vma);
+#endif
+
 	if (ff->passthrough.filp)
 		return fuse_passthrough_mmap(file, vma);
 
@@ -2661,6 +2711,17 @@ static loff_t fuse_file_llseek(struct file *file, loff_t offset, int whence)
 {
 	loff_t retval;
 	struct inode *inode = file_inode(file);
+#ifdef CONFIG_FUSE_BPF
+	struct fuse_err_ret fer;
+
+	fer = fuse_bpf_backing(inode, struct fuse_lseek_io,
+			       fuse_lseek_initialize_in, fuse_lseek_initialize_out,
+			       fuse_lseek_backing,
+			       fuse_lseek_finalize,
+			       file, offset, whence);
+	if (fer.ret)
+		return PTR_ERR(fer.result);
+#endif
 
 	switch (whence) {
 	case SEEK_SET:
@@ -2952,6 +3013,19 @@ static long fuse_file_fallocate(struct file *file, int mode, loff_t offset,
 				    FALLOC_FL_ZERO_RANGE));
 
 	bool block_faults = FUSE_IS_DAX(inode) && lock_inode;
+
+#ifdef CONFIG_FUSE_BPF
+	struct fuse_err_ret fer;
+
+	fer = fuse_bpf_backing(inode, struct fuse_fallocate_in,
+			       fuse_file_fallocate_initialize_in,
+			       fuse_file_fallocate_initialize_out,
+			       fuse_file_fallocate_backing,
+			       fuse_file_fallocate_finalize,
+			       file, mode, offset, length);
+	if (fer.ret)
+		return PTR_ERR(fer.result);
+#endif
 
 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
 		     FALLOC_FL_ZERO_RANGE))
