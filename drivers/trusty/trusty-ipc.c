@@ -1157,18 +1157,18 @@ static int dn_share_fd(struct tipc_dn_chan *dn, int fd,
 	bool lend;
 
 	if (dn->state != TIPC_CONNECTED) {
-		dev_dbg(dev, "Tried to share fd while not connected\n");
+		dev_err(dev, "Tried to share fd while not connected\n");
 		return -ENOTCONN;
 	}
 
 	file = fget(fd);
 	if (!file) {
-		dev_dbg(dev, "Invalid fd (%d)\n", fd);
+		dev_err(dev, "Invalid fd (%d)\n", fd);
 		return -EBADF;
 	}
 
 	if (!(file->f_mode & FMODE_READ)) {
-		dev_dbg(dev, "Cannot create write-only mapping\n");
+		dev_err(dev, "Cannot create write-only mapping\n");
 		fput(file);
 		return -EACCES;
 	}
@@ -1186,7 +1186,7 @@ static int dn_share_fd(struct tipc_dn_chan *dn, int fd,
 	if (IS_ERR(shared_handle->dma_buf)) {
 		ret = PTR_ERR(shared_handle->dma_buf);
 		shared_handle->dma_buf = NULL;
-		dev_dbg(dev, "Unable to get dma buf from fd (%d)\n", ret);
+		dev_err(dev, "Unable to get dma buf from fd (%d)\n", ret);
 		goto cleanup_handle;
 	}
 
@@ -1223,7 +1223,7 @@ static int dn_share_fd(struct tipc_dn_chan *dn, int fd,
 	if (IS_ERR(shared_handle->attach)) {
 		ret = PTR_ERR(shared_handle->attach);
 		shared_handle->attach = NULL;
-		dev_dbg(dev, "Unable to attach to dma_buf (%d)\n", ret);
+		dev_err(dev, "Unable to attach to dma_buf (%d)\n", ret);
 		goto cleanup_handle;
 	}
 
@@ -1232,7 +1232,7 @@ static int dn_share_fd(struct tipc_dn_chan *dn, int fd,
 	if (IS_ERR(shared_handle->sgt)) {
 		ret = PTR_ERR(shared_handle->sgt);
 		shared_handle->sgt = NULL;
-		dev_dbg(dev, "Failed to match attachment (%d)\n", ret);
+		dev_err(dev, "Failed to match attachment (%d)\n", ret);
 		goto cleanup_handle;
 	}
 
@@ -1242,7 +1242,7 @@ static int dn_share_fd(struct tipc_dn_chan *dn, int fd,
 				     lend);
 
 	if (ret < 0) {
-		dev_dbg(dev, "Transferring memory failed: %d\n", ret);
+		dev_err(dev, "Transferring memory failed: %d\n", ret);
 		/*
 		 * The handle now has a sgt containing the pages, so we no
 		 * longer need to clean up the pages directly.
@@ -1352,7 +1352,7 @@ static long filp_send_ioctl(struct file *filp,
 	ret = import_iovec(READ, u64_to_user_ptr(req.iov), req.iov_cnt,
 			   ARRAY_SIZE(fast_iovs), &iov, &iter);
 	if (ret < 0) {
-		dev_dbg(dev, "Failed to import iovec\n");
+		dev_err(dev, "Failed to import iovec\n");
 		goto iov_import_failed;
 	}
 
@@ -1370,8 +1370,7 @@ static long filp_send_ioctl(struct file *filp,
 		ret = dn_share_fd(dn, shm[shm_idx].fd, shm[shm_idx].transfer,
 				  &shm_handles[shm_idx]);
 		if (ret) {
-			dev_dbg(dev, "Forwarding memory failed\n"
-				);
+			dev_err(dev, "Forwarding memory failed\n");
 			goto shm_share_failed;
 		}
 	}
@@ -1381,7 +1380,7 @@ static long filp_send_ioctl(struct file *filp,
 
 	txbuf = tipc_chan_get_txbuf_timeout(dn->chan, timeout);
 	if (IS_ERR(txbuf)) {
-		dev_dbg(dev, "Failed to get txbuffer\n");
+		dev_err(dev, "Failed to get txbuffer\n");
 		ret = PTR_ERR(txbuf);
 		goto get_txbuf_failed;
 	}
@@ -1448,7 +1447,7 @@ static long tipc_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				       (const struct tipc_send_msg_req __user *)
 				       arg);
 	default:
-		dev_dbg(&dn->chan->vds->vdev->dev,
+		dev_err(&dn->chan->vds->vdev->dev,
 			"Unhandled ioctl cmd: 0x%x\n", cmd);
 		return -ENOTTY;
 	}
@@ -1465,7 +1464,7 @@ static long tipc_compat_ioctl(struct file *filp,
 		cmd = TIPC_IOC_CONNECT;
 		break;
 	default:
-		dev_dbg(&dn->chan->vds->vdev->dev,
+		dev_err(&dn->chan->vds->vdev->dev,
 			"Unhandled compat ioctl command: 0x%x\n", cmd);
 		return -ENOTTY;
 	}
@@ -1653,7 +1652,7 @@ static int _create_cdev_node(struct device *parent,
 	dev_t devt;
 
 	if (!name) {
-		dev_dbg(parent, "%s: cdev name has to be provided\n",
+		dev_err(parent, "%s: cdev name has to be provided\n",
 			__func__);
 		return -EINVAL;
 	}
@@ -1661,7 +1660,7 @@ static int _create_cdev_node(struct device *parent,
 	/* allocate minor */
 	ret = idr_alloc(&tipc_devices, cdn, 0, MAX_DEVICES, GFP_KERNEL);
 	if (ret < 0) {
-		dev_dbg(parent, "%s: failed (%d) to get id\n",
+		dev_err(parent, "%s: failed (%d) to get id\n",
 			__func__, ret);
 		return ret;
 	}
@@ -1674,7 +1673,7 @@ static int _create_cdev_node(struct device *parent,
 	devt = MKDEV(tipc_major, cdn->minor);
 	ret = cdev_add(&cdn->cdev, devt, 1);
 	if (ret) {
-		dev_dbg(parent, "%s: cdev_add failed (%d)\n",
+		dev_err(parent, "%s: cdev_add failed (%d)\n",
 			__func__, ret);
 		goto err_add_cdev;
 	}
@@ -1684,7 +1683,7 @@ static int _create_cdev_node(struct device *parent,
 				 devt, NULL, "trusty-ipc-%s", name);
 	if (IS_ERR(cdn->dev)) {
 		ret = PTR_ERR(cdn->dev);
-		dev_dbg(parent, "%s: device_create failed: %d\n",
+		dev_err(parent, "%s: device_create failed: %d\n",
 			__func__, ret);
 		goto err_device_create;
 	}
