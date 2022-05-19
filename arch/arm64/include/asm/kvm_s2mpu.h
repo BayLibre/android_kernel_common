@@ -187,8 +187,9 @@ static_assert(SMPT_GRAN <= PAGE_SIZE);
 	     (i) = (((i) + 1 == RO_GIGABYTES_FIRST) ? RO_GIGABYTES_LAST : (i)) + 1)
 
 #define for_each_gb(i)			for_each_gb_in_range(i, 0, NR_GIGABYTES - 1)
-#define for_each_vid(i)			for ((i) = 0; (i) < NR_VIDS; (i)++)
-#define for_each_gb_and_vid(gb, vid)	for_each_vid((vid)) for_each_gb((gb))
+#define for_all_vids(i)			for ((i) = 0; (i) < NR_VIDS; (i)++)
+#define for_each_vid(i, m)		for_all_vids(i) if ((m) & BIT((i)))
+#define for_each_gb_and_vid(g, v, m)	for_each_vid((v), (m)) for_each_gb((g))
 
 enum s2mpu_version {
 	S2MPU_VERSION_8 = 0x11000000,

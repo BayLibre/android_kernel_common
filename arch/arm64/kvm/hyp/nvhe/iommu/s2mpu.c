@@ -34,6 +34,7 @@
 struct s2mpu_drv_data {
 	u32 version;
 	u32 context_cfg_valid_vid;
+	unsigned int vid_mask;
 };
 
 static struct mpt host_mpt;
@@ -44,16 +45,19 @@ static inline enum mpt_prot prot_to_mpt(enum kvm_pgtable_prot prot)
 	       ((prot & KVM_PGTABLE_PROT_W) ? MPT_PROT_W : 0);
 }
 
+static struct s2mpu_drv_data *get_data(struct pkvm_iommu *dev)
+{
+	return (struct s2mpu_drv_data *)dev->data;
+}
+
 static bool is_version(struct pkvm_iommu *dev, u32 version)
 {
-	struct s2mpu_drv_data *data = (struct s2mpu_drv_data *)dev->data;
-
-	return (data->version & VERSION_CHECK_MASK) == version;
+	return (get_data(dev)->version & VERSION_CHECK_MASK) == version;
 }
 
 static u32 __context_cfg_valid_vid(struct pkvm_iommu *dev, u32 vid_bmap)
 {
-	struct s2mpu_drv_data *data = (struct s2mpu_drv_data *)dev->data;
+	struct s2mpu_drv_data *data = get_data(dev);
 	u8 ctx_vid[NR_CTX_IDS] = { 0 };
 	unsigned int vid, ctx = 0;
 	unsigned int num_ctx;
@@ -114,6 +118,9 @@ static int __initialize(struct pkvm_iommu *dev)
 
 	if (!data->version)
 		data->version = readl_relaxed(dev->va + REG_NS_VERSION);
+
+	if (!data->vid_mask)
+		data->vid_mask = ALL_VIDS_BITMAP;
 
 	switch (data->version & VERSION_CHECK_MASK) {
 	case S2MPU_VERSION_8:
@@ -243,14 +250,14 @@ static void __set_l1entry_l2table_addr(struct pkvm_iommu *dev, unsigned int gb,
  */
 static int initialize_with_prot(struct pkvm_iommu *dev, enum mpt_prot prot)
 {
-	unsigned int gb, vid;
+	unsigned int gb, vid, vid_mask = get_data(dev)->vid_mask;
 	int ret;
 
 	ret = __initialize(dev);
 	if (ret)
 		return ret;
 
-	for_each_gb_and_vid(gb, vid)
+	for_each_gb_and_vid(gb, vid, vid_mask)
 		__set_l1entry_attr_with_prot(dev, gb, vid, prot);
 	__all_invalidation(dev);
 
@@ -265,7 +272,7 @@ static int initialize_with_prot(struct pkvm_iommu *dev, enum mpt_prot prot)
  */
 static int initialize_with_mpt(struct pkvm_iommu *dev, struct mpt *mpt)
 {
-	unsigned int gb, vid;
+	unsigned int gb, vid, vid_mask = get_data(dev)->vid_mask;
 	struct fmpt *fmpt;
 	int ret;
 
@@ -273,7 +280,7 @@ static int initialize_with_mpt(struct pkvm_iommu *dev, struct mpt *mpt)
 	if (ret)
 		return ret;
 
-	for_each_gb_and_vid(gb, vid) {
+	for_each_gb_and_vid(gb, vid, vid_mask) {
 		fmpt = &mpt->fmpt[gb];
 		__set_l1entry_l2table_addr(dev, gb, vid, __hyp_pa(fmpt->smpt));
 		__set_l1entry_attr_with_fmpt(dev, gb, vid, fmpt);
