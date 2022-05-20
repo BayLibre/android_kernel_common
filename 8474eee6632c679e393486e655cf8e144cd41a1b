@@ -16,6 +16,52 @@
       "message": "Hi, All,\n    The comment is fixed as suggested.  Please kindly review it.  Thanks.",
       "revId": "8474eee6632c679e393486e655cf8e144cd41a1b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79b363b6_df4c571c",
+        "filename": "mm/compaction.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2233,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-05-20T03:33:07Z",
+      "side": 1,
+      "message": "How about just long instead of s64? So any vendor could use it in vendor hook below using typecasting.\n\nlong vendor_ret;",
+      "range": {
+        "startLine": 2233,
+        "startChar": 1,
+        "endLine": 2233,
+        "endChar": 4
+      },
+      "revId": "8474eee6632c679e393486e655cf8e144cd41a1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dc74a08_e383a241",
+        "filename": "mm/compaction.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2433,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-05-20T03:33:07Z",
+      "side": 1,
+      "message": "Just vendor_ret instead of pointer type because there is no point out param here.",
+      "range": {
+        "startLine": 2433,
+        "startChar": 40,
+        "endLine": 2433,
+        "endChar": 62
+      },
+      "revId": "8474eee6632c679e393486e655cf8e144cd41a1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
