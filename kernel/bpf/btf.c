@@ -23,6 +23,7 @@
 #include <linux/perf_event.h>
 #include <linux/bsearch.h>
 #include <linux/btf_ids.h>
+#include <linux/bpf_fuse.h>
 #include <net/sock.h>
 
 /* BTF (BPF Type Format) is the meta data format which describes
