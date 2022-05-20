@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000024503168",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2086845?revision\u003d3",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "004d4195_ead4b76e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-05-20T09:48:13Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 449753895 android-build.ayeaye-python-dispatcher_20220519.04_p0",
+      "revId": "8c0d98d1c53ef456db6bc8a4033a64ad3af67f75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000024503168",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2086845?revision\u003d3",
+      "fixSuggestions": [
+        {
+          "fixId": "f3d4f043_41734739",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: HongCheol Shim \u003chongc.shim@samsung.corp-partner.google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "b8589209_b9b0861d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-05-20T09:48:13Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: HongCheol Shim \u003chongc.shim@samsung.corp-partner.google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 449753895 android-build.ayeaye-python-dispatcher_20220519.04_p0",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "8c0d98d1c53ef456db6bc8a4033a64ad3af67f75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
