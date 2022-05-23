@@ -1948,6 +1948,46 @@ struct fuse_err_ret {
 int __init fuse_bpf_init(void);
 void __exit fuse_bpf_cleanup(void);
 
+static inline void fuse_bpf_set_in_ends(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
+		fa->in_args[i].end_offset = (void *)
+			((char *)fa->in_args[i].value
+			+ fa->in_args[i].size);
+}
+
+static inline void fuse_bpf_set_in_immutable(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
+		fa->in_args[i].flags |= BPF_FUSE_IMMUTABLE;
+}
+
+static inline void fuse_bpf_set_out_ends(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_OUT; i++)
+		fa->out_args[i].end_offset = (void *)
+			((char *)fa->out_args[i].value
+			+ fa->out_args[i].size);
+}
+
+static inline void fuse_bpf_free_alloced(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
+		if (fa->in_args[i].flags & BPF_FUSE_ALLOCATED)
+			kfree(fa->in_args[i].value);
+	for (i = 0; i < FUSE_MAX_ARGS_OUT; i++)
+		if (fa->out_args[i].flags & BPF_FUSE_ALLOCATED)
+			kfree(fa->out_args[i].value);
+}
+
 /*
  * expression statement to wrap the backing filter logic
  * struct inode *inode: inode with bpf and backing inode
@@ -1966,6 +2006,7 @@ void __exit fuse_bpf_cleanup(void);
 			 backing, finalize, args...)			\
 ({									\
 	struct fuse_err_ret fer = { 0 };				\
+	int bpf_next;							\
 	struct fuse_inode *fuse_inode = get_fuse_inode(inode);		\
 	io feo = { 0 };							\
 	struct bpf_fuse_args fa = { 0 };				\
@@ -1984,6 +2025,21 @@ void __exit fuse_bpf_cleanup(void);
 			};						\
 			break;						\
 		}							\
+		fuse_bpf_set_in_ends(&fa);				\
+									\
+		fa.opcode |= FUSE_PREFILTER;				\
+		bpf_next = fuse_inode->bpf ?				\
+			bpf_prog_run(fuse_inode->bpf, &fa) :		\
+			BPF_FUSE_CONTINUE;				\
+		if (bpf_next < 0) {					\
+			fer = (struct fuse_err_ret) {			\
+				ERR_PTR(bpf_next),			\
+				true,					\
+			};						\
+			break;						\
+		}							\
+									\
+		fuse_bpf_set_in_immutable(&fa);				\
 									\
 		err = ERR_PTR(initialize_out(&fa, &feo, args));		\
 		if (err) {						\
@@ -1993,8 +2049,13 @@ void __exit fuse_bpf_cleanup(void);
 			};						\
 			break;						\
 		}							\
+		fuse_bpf_set_out_ends(&fa);				\
 									\
 		initialized = true;					\
+		if (bpf_next == BPF_FUSE_USER)				\
+			break;						\
+									\
+		fa.opcode &= ~FUSE_PREFILTER;				\
 									\
 		fer = (struct fuse_err_ret) {				\
 			ERR_PTR(backing(&fa, args)),			\
@@ -2002,6 +2063,19 @@ void __exit fuse_bpf_cleanup(void);
 		};							\
 		if (IS_ERR(fer.result))					\
 			fa.error_in = PTR_ERR(fer.result);		\
+		if (bpf_next == BPF_FUSE_CONTINUE)			\
+			break;						\
+									\
+		fa.opcode |= FUSE_POSTFILTER;				\
+		if (bpf_next == BPF_FUSE_POSTFILTER)			\
+			bpf_next = bpf_prog_run(fuse_inode->bpf, &fa);	\
+		if (bpf_next < 0) {					\
+			fer = (struct fuse_err_ret) {			\
+				ERR_PTR(bpf_next),			\
+				true,					\
+			};						\
+			break;						\
+		}							\
 									\
 	} while (false);						\
 									\
@@ -2010,6 +2084,7 @@ void __exit fuse_bpf_cleanup(void);
 		if (err)						\
 			fer.result = err;				\
 	}								\
+	fuse_bpf_free_alloced(&fa);					\
 									\
 	fer;								\
 })
