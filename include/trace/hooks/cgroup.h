@@ -14,6 +14,7 @@ DECLARE_HOOK(android_vh_cgroup_set_task,
 
 struct cgroup_subsys;
 struct cgroup_taskset;
+struct cgroup;
 DECLARE_HOOK(android_vh_cgroup_attach,
 	TP_PROTO(struct cgroup_subsys *ss, struct cgroup_taskset *tset),
 	TP_ARGS(ss, tset))
