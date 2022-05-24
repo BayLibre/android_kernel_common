@@ -564,7 +564,7 @@ static int ufs_hisi_probe(struct platform_device *pdev)
 
 	of_id = of_match_node(ufs_hisi_of_match, pdev->dev.of_node);
 
-	return ufshcd_pltfrm_init(pdev, of_id->data);
+	return ufshcd_pltfrm_init(pdev, of_id->data, NULL);
 }
 
 static int ufs_hisi_remove(struct platform_device *pdev)

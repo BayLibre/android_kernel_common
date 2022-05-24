@@ -296,7 +296,7 @@ static int cdns_ufs_pltfrm_probe(struct platform_device *pdev)
 	vops = (struct ufs_hba_variant_ops *)of_id->data;
 
 	/* Perform generic probe */
-	err = ufshcd_pltfrm_init(pdev, vops);
+	err = ufshcd_pltfrm_init(pdev, vops, NULL);
 	if (err)
 		dev_err(dev, "ufshcd_pltfrm_init() failed %d\n", err);
 

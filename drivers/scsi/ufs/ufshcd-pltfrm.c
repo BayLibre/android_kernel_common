@@ -320,7 +320,8 @@ EXPORT_SYMBOL_GPL(ufshcd_init_pwr_dev_param);
  * Returns 0 on success, non-zero value on failure
  */
 int ufshcd_pltfrm_init(struct platform_device *pdev,
-		       const struct ufs_hba_variant_ops *vops)
+		       const struct ufs_hba_variant_ops *vops,
+		       const struct ufs_hba_mcq_ops *mops)
 {
 	struct ufs_hba *hba;
 	void __iomem *mmio_base;
@@ -346,6 +347,16 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
 	}
 
 	hba->vops = vops;
+	hba->mops = mops;
+
+	if(hba->mops) {
+		err = hba->mops->alloc_priv(hba);
+		if(err) {
+			dev_err(&pdev->dev, "%s: alloc hba private failed %d\n",
+					__func__, err);
+			goto dealloc_host;
+		}
+	}
 
 	err = ufshcd_parse_clock_info(hba);
 	if (err) {
