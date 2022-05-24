@@ -171,6 +171,8 @@ struct ufs_pm_lvl_states {
 	enum uic_link_state link_state;
 };
 
+#define UFSHCD_MAX_TAG	256
+
 /**
  * struct ufshcd_lrb - local reference block
  * @utr_descriptor_ptr: UTRD address of the command
@@ -214,6 +216,7 @@ struct ufshcd_lrb {
 	int command_type;
 	int task_tag;
 	u8 lun; /* UPIU LUN id field is only 8-bit wide */
+	u8 sq_id;
 	bool intr_cmd;
 	ktime_t issue_time_stamp;
 	ktime_t compl_time_stamp;
@@ -365,6 +368,25 @@ struct ufs_hba_variant_ops {
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
+};
+
+struct ufs_hba_mcq_ops {
+	int	(*abort)(struct scsi_cmnd *cmd);
+	int	(*alloc_priv)(struct ufs_hba *hba);
+	int	(*clear_cmd)(struct ufs_hba *hba, int tag);
+	int	(*clear_pending)(struct ufs_hba *hba);
+	unsigned long* (*get_outstanding_reqs)(struct ufs_hba *hba);
+	bool	(*has_oustanding_reqs)(struct ufs_hba *hba);
+	int	(*hba_capabilities)(struct ufs_hba *hba);
+	void	(*init_irq)(struct ufs_hba *hba);
+	int	(*init_queue)(struct ufs_hba *hba);
+	irqreturn_t (*irq_handler)(struct ufs_hba *hba, u32 intr_status);
+	bool	(*is_mcq_enabled)(struct ufs_hba *hba);
+	int	(*make_hba_operational)(struct ufs_hba *hba);
+	int	(*memory_alloc)(struct ufs_hba *hba);
+	int	(*map_tag)(struct ufs_hba *hba, int index, int tag);
+	void	(*print_trs)(struct ufs_hba *hba, bool pr_prdt);
+	void	(*send_command)(struct ufs_hba *hba, unsigned int task_tag);
 };
 
 /* clock gating state  */
@@ -970,6 +992,9 @@ struct ufs_hba {
 	u32 luns_avail;
 	bool complete_put;
 
+	const struct ufs_hba_mcq_ops *mops;
+	void *hba_priv;
+
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
@@ -1242,6 +1267,10 @@ int ufshcd_wb_toggle(struct ufs_hba *hba, bool enable);
 int ufshcd_suspend_prepare(struct device *dev);
 void ufshcd_resume_complete(struct device *dev);
 
+void ufshcd_clk_scaling_update_busy(struct ufs_hba *hba);
+void ufshcd_enable_intr(struct ufs_hba *hba, u32 intrs);
+int ufshcd_transfer_rsp_status(struct ufs_hba *hba, struct ufshcd_lrb *lrbp);
+
 /* Wrapper functions for safely calling variant operations */
 static inline const char *ufshcd_get_var_name(struct ufs_hba *hba)
 {
@@ -1398,6 +1427,11 @@ static inline void ufshcd_vops_config_scaling_param(struct ufs_hba *hba,
 {
 	if (hba->vops && hba->vops->config_scaling_param)
 		hba->vops->config_scaling_param(hba, profile, data);
+}
+
+static inline int ufshcd_mcq_enabled(struct ufs_hba *hba)
+{
+	return (hba->mops && hba->mops->is_mcq_enabled(hba));
 }
 
 extern struct ufs_pm_lvl_states ufs_pm_lvl_states[];
