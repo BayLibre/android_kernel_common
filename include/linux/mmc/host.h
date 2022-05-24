@@ -18,6 +18,8 @@
 #include <linux/keyslot-manager.h>
 #include <linux/android_kabi.h>
 
+#include <linux/android_vendor.h>
+
 struct mmc_ios {
 	unsigned int	clock;			/* clock rate */
 	unsigned short	vdd;
@@ -290,6 +292,7 @@ struct mmc_slot {
 	int cd_irq;
 	bool cd_wake_enabled;
 	void *handler_priv;
+	ANDROID_OEM_DATA(1);
 };
 
 /**
@@ -529,7 +532,8 @@ struct mmc_host {
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
-	u32			err_stats[MMC_ERR_MAX];
+	ANDROID_OEM_DATA(1);
+
 	unsigned long		private[] ____cacheline_aligned;
 };
 
