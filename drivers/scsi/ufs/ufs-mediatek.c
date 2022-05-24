@@ -1197,7 +1197,7 @@ static int ufs_mtk_probe(struct platform_device *pdev)
 
 skip_reset:
 	/* perform generic probe */
-	err = ufshcd_pltfrm_init(pdev, &ufs_hba_mtk_vops);
+	err = ufshcd_pltfrm_init(pdev, &ufs_hba_mtk_vops, NULL);
 
 out:
 	if (err)

@@ -1220,7 +1220,7 @@ static int exynos_ufs_probe(struct platform_device *pdev)
 	int err;
 	struct device *dev = &pdev->dev;
 
-	err = ufshcd_pltfrm_init(pdev, &ufs_hba_exynos_ops);
+	err = ufshcd_pltfrm_init(pdev, &ufs_hba_exynos_ops, NULL);
 	if (err)
 		dev_err(dev, "ufshcd_pltfrm_init() failed %d\n", err);
 
