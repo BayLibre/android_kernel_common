@@ -16,6 +16,24 @@
       "message": "I hit a BUG in our CI when CONFIG_NUMA and CONFIG_DEBUG_PREEMPT are enabled. I reported it upstream as I think it\u0027s a problem in the original patch\n\nhttps://lore.kernel.org/lkml/20220523160921.k34jjbpd62bmc7fj@wubuntu/",
       "revId": "c249c40b7973f00343abcc66422ef691b108caf8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6bad1aa_78d0220a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1456182
+      },
+      "writtenOn": "2022-05-25T11:28:12Z",
+      "side": 1,
+      "message": "Hmm it seems the backport is missing this pre-requisite changes: f19298b9516c1a031b34b4147773457e3efe743b.\n\nI did try to pick that up, but it has other deps that needs picking up first. I am aware you additionally will require this: 28f836b6777b6f42dce068a40d83a891deaaca37 but then I hit issues with ANDROID adding struct per_cpu_pageset which is not in mainline and I gave up.\n\nYou can opt in to my simple patch I posted upstream. But I haven\u0027t thought much about it. Or maybe you don\u0027t care about CONFIG_NUMA, which must be turned on to reproduce this.",
+      "parentUuid": "666ffc5b_12f9a332",
+      "revId": "c249c40b7973f00343abcc66422ef691b108caf8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
