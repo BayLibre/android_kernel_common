@@ -1619,6 +1619,46 @@ int fuse_revalidate_backing(struct bpf_fuse_args *fa, struct inode *dir,
 void *fuse_revalidate_finalize(struct bpf_fuse_args *fa, struct inode *dir,
 			       struct dentry *entry, unsigned int flags);
 
+struct fuse_getattr_io {
+	struct fuse_getattr_in fgi;
+	struct fuse_attr_out fao;
+};
+int fuse_getattr_initialize_in(struct bpf_fuse_args *fa, struct fuse_getattr_io *fgio,
+			       const struct dentry *entry, struct kstat *stat,
+			       u32 request_mask, unsigned int flags);
+int fuse_getattr_initialize_out(struct bpf_fuse_args *fa, struct fuse_getattr_io *fgio,
+				const struct dentry *entry, struct kstat *stat,
+				u32 request_mask, unsigned int flags);
+int fuse_getattr_backing(struct bpf_fuse_args *fa,
+			 const struct dentry *entry, struct kstat *stat,
+			 u32 request_mask, unsigned int flags);
+void *fuse_getattr_finalize(struct bpf_fuse_args *fa,
+			    const struct dentry *entry, struct kstat *stat,
+			    u32 request_mask, unsigned int flags);
+
+struct fuse_setattr_io {
+	struct fuse_setattr_in fsi;
+	struct fuse_attr_out fao;
+};
+
+int fuse_setattr_initialize_in(struct bpf_fuse_args *fa, struct fuse_setattr_io *fsi,
+			       struct dentry *dentry, struct iattr *attr, struct file *file);
+int fuse_setattr_initialize_out(struct bpf_fuse_args *fa, struct fuse_setattr_io *fsi,
+				struct dentry *dentry, struct iattr *attr, struct file *file);
+int fuse_setattr_backing(struct bpf_fuse_args *fa,
+			 struct dentry *dentry, struct iattr *attr, struct file *file);
+void *fuse_setattr_finalize(struct bpf_fuse_args *fa,
+			    struct dentry *dentry, struct iattr *attr, struct file *file);
+
+int fuse_statfs_initialize_in(struct bpf_fuse_args *fa, struct fuse_statfs_out *fso,
+			      struct dentry *dentry, struct kstatfs *buf);
+int fuse_statfs_initialize_out(struct bpf_fuse_args *fa, struct fuse_statfs_out *fso,
+			       struct dentry *dentry, struct kstatfs *buf);
+int fuse_statfs_backing(struct bpf_fuse_args *fa,
+			struct dentry *dentry, struct kstatfs *buf);
+void *fuse_statfs_finalize(struct bpf_fuse_args *fa,
+			   struct dentry *dentry, struct kstatfs *buf);
+
 struct fuse_read_io {
 	struct fuse_read_in fri;
 	struct fuse_read_out fro;

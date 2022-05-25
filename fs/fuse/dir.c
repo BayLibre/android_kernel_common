@@ -1260,6 +1260,17 @@ static int fuse_update_get_attr(struct inode *inode, struct file *file,
 	int err = 0;
 	bool sync;
 
+#ifdef CONFIG_FUSE_BPF
+	struct fuse_err_ret fer;
+
+	fer = fuse_bpf_backing(inode, struct fuse_getattr_io,
+			       fuse_getattr_initialize_in, fuse_getattr_initialize_out,
+			       fuse_getattr_backing, fuse_getattr_finalize,
+			       path->dentry, stat, request_mask, flags);
+	if (fer.ret)
+		return PTR_ERR(fer.result);
+#endif
+
 	if (flags & AT_STATX_FORCE_SYNC)
 		sync = true;
 	else if (flags & AT_STATX_DONT_SYNC)
@@ -1787,6 +1798,16 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
 	bool trust_local_cmtime = is_wb && S_ISREG(inode->i_mode);
 	bool fault_blocked = false;
 
+#ifdef CONFIG_FUSE_BPF
+	struct fuse_err_ret fer;
+
+	fer = fuse_bpf_backing(inode, struct fuse_setattr_io,
+			       fuse_setattr_initialize_in, fuse_setattr_initialize_out,
+			       fuse_setattr_backing, fuse_setattr_finalize, dentry, attr, file);
+	if (fer.ret)
+		return PTR_ERR(fer.result);
+#endif
+
 	if (!fc->default_permissions)
 		attr->ia_valid |= ATTR_FORCE;
 
@@ -1961,11 +1982,24 @@ static int fuse_setattr(struct user_namespace *mnt_userns, struct dentry *entry,
 		 * This should be done on write(), truncate() and chown().
 		 */
 		if (!fc->handle_killpriv && !fc->handle_killpriv_v2) {
+#ifdef CONFIG_FUSE_BPF
+			struct fuse_err_ret fer;
+
 			/*
 			 * ia_mode calculation may have used stale i_mode.
 			 * Refresh and recalculate.
 			 */
-			ret = fuse_do_getattr(inode, NULL, file);
+			fer = fuse_bpf_backing(inode, struct fuse_getattr_io,
+					       fuse_getattr_initialize_in,
+					       fuse_getattr_initialize_out,
+					       fuse_getattr_backing,
+					       fuse_getattr_finalize,
+					       entry, NULL, 0, 0);
+			if (fer.ret)
+				ret = PTR_ERR(fer.result);
+			else
+#endif
+				ret = fuse_do_getattr(inode, NULL, file);
 			if (ret)
 				return ret;
 

@@ -556,11 +556,23 @@ static int fuse_statfs(struct dentry *dentry, struct kstatfs *buf)
 	FUSE_ARGS(args);
 	struct fuse_statfs_out outarg;
 	int err;
+#ifdef CONFIG_FUSE_BPF
+	struct fuse_err_ret fer;
+#endif
 
 	if (!fuse_allow_current_process(fm->fc)) {
 		buf->f_type = FUSE_SUPER_MAGIC;
 		return 0;
 	}
+
+#ifdef CONFIG_FUSE_BPF
+	fer = fuse_bpf_backing(dentry->d_inode, struct fuse_statfs_out,
+			       fuse_statfs_initialize_in, fuse_statfs_initialize_out,
+			       fuse_statfs_backing, fuse_statfs_finalize,
+			       dentry, buf);
+	if (fer.ret)
+		return PTR_ERR(fer.result);
+#endif
 
 	memset(&outarg, 0, sizeof(outarg));
 	args.in_numargs = 0;
