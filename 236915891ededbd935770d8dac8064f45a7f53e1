@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000024655681",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2086845?revision\u003d5",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "4724ac51_a49b5f38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-05-25T14:16:18Z",
+      "side": 1,
+      "message": "Commit needs to contain a properly formatted Bug: or Fixes: line\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 450671033 android-build.ayeaye-python-dispatcher_20220524.04_p0",
+      "revId": "236915891ededbd935770d8dac8064f45a7f53e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000024655681",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2086845?revision\u003d5",
+      "fixSuggestions": [
+        {
+          "fixId": "75fa4d44_b67a6b5d",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 35,
+                "startChar": 0,
+                "endLine": 35,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: HongCheol Shim \u003chongc.shim@samsung.corp-partner.google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "09b77e47_66ac3ebf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-05-25T14:16:18Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: HongCheol Shim \u003chongc.shim@samsung.corp-partner.google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 450671033 android-build.ayeaye-python-dispatcher_20220524.04_p0",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 0
+      },
+      "revId": "236915891ededbd935770d8dac8064f45a7f53e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
