@@ -16,6 +16,24 @@
       "message": "Looks like unnecessary change.",
       "revId": "5d08df939912da2625e60bde1dce463355760e2b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95987ef0_7b8811d1",
+        "filename": "mm/compaction.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1553903
+      },
+      "writtenOn": "2022-05-26T20:24:32Z",
+      "side": 0,
+      "message": "For this comment and the following one:  The purpose is to put the include line at top part of a program:\n\nPreviously we have something like\n\n#if defined CONFIG_COMPACTION || defined CONFIG_CMA\n#define CREATE_TRACE_POINTS\n#include \u003ctrace/events/compaction.h\u003e\n#endif\n...  [ a bit trunk of code (omitted) ] ...\n#endif  // CONFIG_COMPACTION || defined CONFIG_CMA\n\n#ifdef CONFIG_COMPACTION\n#undef CREATE_TRACE_POINTS\n#include \u003ctrace/hooks/mm.h\u003e\n#endif\n... [ another bit trunk of code (omited) ] ...\n#endif // CONFIG_COMPACTION\n\nTo reflect one your previous comment, I move the line \"#include \u003ctrace/hooks/mm.h\u003e\"  up to the place right after the line \"#include \u003ctrace/events/compaction.h\u003e\".\nNote that \u003ctrace/hook/mm.h\u003e includsion could not go before \u003ctrace/events/compation.h\u003e, otherwise the build breaks.\n\nDue to the fact that they have different conditional compile directives, i.e.\ninclusion of \u003ctrace/events/compaction.h\u003e needs\n\"#if defined CONFIG_COMPACTION || defined CONFIG_CMA\",\nwhile inclusion of \u003ctrace/hook/mm.h\u003e needs only \"#ifdef CONFIG_COMPACTION\",\nI have the split the original \u003ctrace/events/compaction.h\u003e with its big trunk code, and to add an additional \"#if defined CONFIG_COMPACTION || defined CONFIG_CMA\"",
+      "parentUuid": "42fa9d07_5ec8ae7b",
+      "revId": "5d08df939912da2625e60bde1dce463355760e2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
