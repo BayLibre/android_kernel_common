@@ -16,6 +16,24 @@
       "message": "One observation - I don\u0027t know why this patch doesn\u0027t have XML file update. 1st patchset had that. ",
       "revId": "72ce723ccf9572ba7d6e015ea317aaaefcb3bc53",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78da40d7_0c994181",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-05-26T23:38:30Z",
+      "side": 1,
+      "message": "__reset_control_get was added to the db845c symbol list in aosp/1896054 back in November, so it was included in the initial XML for android13-5.15. Therefore adding the symbol to the qcom symbol-list did not require recreating the XML.",
+      "parentUuid": "c5bba36c_ac8e42e6",
+      "revId": "72ce723ccf9572ba7d6e015ea317aaaefcb3bc53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
