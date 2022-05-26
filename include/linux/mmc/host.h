@@ -192,6 +192,12 @@ struct mmc_host_ops {
 	/* Initialize an SD express card, mandatory for MMC_CAP2_SD_EXP. */
 	int	(*init_sd_express)(struct mmc_host *host, struct mmc_ios *ios);
 
+	/*
+	 * Optional for vendor to initialize card as wakeup source and
+	 * enable wakeup capability specially for SDIO cards which supports
+	 * waking host from suspend through external dedicated pins.
+	 */
+	void    (*card_init_wakeup)(struct mmc_card *card);
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 };

@@ -374,6 +374,9 @@ int mmc_add_card(struct mmc_card *card)
 #endif
 	card->dev.of_node = mmc_of_find_child_device(card->host, 0);
 
+	if (card->host->ops->card_init_wakeup)
+		card->host->ops->card_init_wakeup(card);
+
 	device_enable_async_suspend(&card->dev);
 
 	ret = device_add(&card->dev);
