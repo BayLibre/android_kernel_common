@@ -10,11 +10,17 @@
 #include <trace/hooks/vendor_hooks.h>
 
 struct irq_data;
-struct gic_chip_data;
 
-DECLARE_HOOK(android_vh_gic_resume,
-       TP_PROTO(struct gic_chip_data *gd),
-       TP_ARGS(gd));
+/* struct cpumask */
+#include <linux/cpumask.h>
+/* struct irq_data */
+#include <linux/irq.h>
+/* struct irq_domain */
+#include <linux/irqdomain.h>
+
+DECLARE_HOOK(android_vh_gic_v2_resume,
+	TP_PROTO(struct irq_domain *domain, void __iomem *dist_base),
+	TP_ARGS(domain, dist_base));
 
 DECLARE_HOOK(android_vh_gic_set_affinity,
 	TP_PROTO(struct irq_data *d, const struct cpumask *mask_val,
