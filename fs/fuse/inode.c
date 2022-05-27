@@ -1996,6 +1996,26 @@ static void fuse_fs_cleanup(void)
 
 static struct kobject *fuse_kobj;
 
+/* TODO Remove this once BPF_PROG_TYPE_FUSE is upstreamed */
+static ssize_t bpf_prog_type_fuse_show(struct kobject *kobj,
+				       struct kobj_attribute *attr, char *buff)
+{
+	return sysfs_emit(buff, "%d\n", BPF_PROG_TYPE_FUSE);
+}
+
+static struct kobj_attribute bpf_prog_type_fuse_attr =
+		__ATTR_RO(bpf_prog_type_fuse);
+
+static struct attribute *bpf_attributes[] = {
+	&bpf_prog_type_fuse_attr.attr,
+	NULL,
+};
+
+static const struct attribute_group bpf_attr_group = {
+	.attrs = bpf_attributes,
+};
+/* TODO remove to here */
+
 static int fuse_sysfs_init(void)
 {
 	int err;
@@ -2010,8 +2030,15 @@ static int fuse_sysfs_init(void)
 	if (err)
 		goto out_fuse_unregister;
 
+	/* TODO Remove when BPF_PROG_TYPE_FUSE is upstreamed */
+	err = sysfs_create_group(fuse_kobj, &bpf_attr_group);
+	if (err)
+		goto out_fuse_remove_mount_point;
+
 	return 0;
 
+ out_fuse_remove_mount_point:
+	sysfs_remove_mount_point(fuse_kobj, "connections");
  out_fuse_unregister:
 	kobject_put(fuse_kobj);
  out_err:
