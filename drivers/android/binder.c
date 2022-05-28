@@ -723,12 +723,26 @@ static void binder_restore_priority(struct task_struct *task,
 	binder_do_set_priority(task, desired, /* verify = */ false);
 }
 
-static void binder_transaction_priority(struct task_struct *task,
+static void binder_transaction_priority(struct binder_thread *thread,
 					struct binder_transaction *t,
 					struct binder_priority node_prio,
 					bool inherit_rt)
 {
 	struct binder_priority desired_prio = t->priority;
+	struct task_struct *task = thread->task;
+
+	if (thread->restore_priority_pending) {
+		/*
+		 * The thread is in the process of changing
+		 * priorities. Setting a new priority here
+		 * can race. Skip for now and wait until the
+		 * transaction is picked up by the thread.
+		 */
+		binder_debug(BINDER_DEBUG_PRIORITY_CAP,
+			"%d: priority preset of %d skipped\n",
+			current->pid, thread->pid);
+		return;
+	}
 
 	if (t->set_priority_called)
 		return;
@@ -2785,7 +2799,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
 		thread = binder_select_thread_ilocked(proc);
 
 	if (thread) {
-		binder_transaction_priority(thread->task, t, node_prio,
+		binder_transaction_priority(thread, t, node_prio,
 					    node->inherit_rt);
 		binder_enqueue_thread_work_ilocked(thread, &t->work);
 	} else if (!pending_async) {
@@ -3524,9 +3538,11 @@ static void binder_transaction(struct binder_proc *proc,
 		binder_enqueue_thread_work_ilocked(target_thread, &t->work);
 		target_proc->outstanding_txns++;
 		binder_inner_proc_unlock(target_proc);
+		thread->restore_priority_pending = true;
 		wake_up_interruptible_sync(&target_thread->wait);
 		trace_android_vh_binder_restore_priority(in_reply_to, current);
 		binder_restore_priority(current, in_reply_to->saved_priority);
+		thread->restore_priority_pending = false;
 		binder_free_transaction(in_reply_to);
 	} else if (!(t->flags & TF_ONE_WAY)) {
 		BUG_ON(t->buffer->async_transaction != 0);
@@ -4556,7 +4572,7 @@ retry:
 			trd->cookie =  target_node->cookie;
 			node_prio.sched_policy = target_node->sched_policy;
 			node_prio.prio = target_node->min_priority;
-			binder_transaction_priority(current, t, node_prio,
+			binder_transaction_priority(thread, t, node_prio,
 						    target_node->inherit_rt);
 			cmd = BR_TRANSACTION;
 		} else {
@@ -4788,6 +4804,7 @@ static struct binder_thread *binder_get_thread_ilocked(
 	thread->return_error.cmd = BR_OK;
 	thread->reply_error.work.type = BINDER_WORK_RETURN_ERROR;
 	thread->reply_error.cmd = BR_OK;
+	thread->restore_priority_pending = false;
 	INIT_LIST_HEAD(&new_thread->waiting_thread_node);
 	return thread;
 }

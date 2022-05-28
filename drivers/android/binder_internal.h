@@ -531,6 +531,7 @@ struct binder_thread {
 	atomic_t tmp_ref;
 	bool is_dead;
 	struct task_struct *task;
+	bool restore_priority_pending;
 };
 
 /**
