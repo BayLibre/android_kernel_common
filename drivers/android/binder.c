@@ -711,24 +711,40 @@ static void binder_do_set_priority(struct task_struct *task,
 		set_user_nice(task, priority);
 }
 
-static void binder_set_priority(struct task_struct *task,
+static void binder_set_priority(struct binder_thread *thread,
 				struct binder_priority desired)
 {
+	struct task_struct *task = thread->task;
+
 	binder_do_set_priority(task, desired, /* verify = */ true);
 }
 
-static void binder_restore_priority(struct task_struct *task,
+static void binder_restore_priority(struct binder_thread *thread,
 				    struct binder_priority desired)
 {
+	struct task_struct *task = thread->task;
+
+	if (atomic_read(&thread->restore_priority_state) == 2) {
+		/*
+		 * A new priority has been set by an incoming nested
+		 * transaction. Skip this priority restore to allow
+		 * the transaction to run at the desired priority.
+		 */
+		binder_debug(BINDER_DEBUG_PRIORITY_CAP,
+			"%d: %s skip\n", thread->pid, __func__);
+		return;
+	}
+
 	binder_do_set_priority(task, desired, /* verify = */ false);
 }
 
-static void binder_transaction_priority(struct task_struct *task,
+static void binder_transaction_priority(struct binder_thread *thread,
 					struct binder_transaction *t,
 					struct binder_priority node_prio,
 					bool inherit_rt)
 {
 	struct binder_priority desired_prio = t->priority;
+	struct task_struct *task = thread->task;
 
 	if (t->set_priority_called)
 		return;
@@ -736,6 +752,19 @@ static void binder_transaction_priority(struct task_struct *task,
 	t->set_priority_called = true;
 	t->saved_priority.sched_policy = task->policy;
 	t->saved_priority.prio = task->normal_prio;
+
+	if (atomic_read(&thread->restore_priority_state)) {
+		/*
+		 * Task is in the process of changing priorities so
+		 * using its current values would be wrong. Instead,
+		 * let's get the next priority to be restored.
+		 */
+		atomic_set(&thread->restore_priority_state, 2);
+		t->saved_priority = thread->next_priority;
+		binder_debug(BINDER_DEBUG_PRIORITY_CAP,
+			"%d: found pending priority %d\n", task->pid,
+			thread->next_priority.prio);
+	}
 
 	if (!inherit_rt && is_rt_policy(desired_prio.sched_policy)) {
 		desired_prio.prio = NICE_TO_PRIO(0);
@@ -755,7 +784,7 @@ static void binder_transaction_priority(struct task_struct *task,
 		desired_prio = node_prio;
 	}
 
-	binder_set_priority(task, desired_prio);
+	binder_set_priority(thread, desired_prio);
 	trace_android_vh_binder_set_priority(t, task);
 }
 
@@ -2785,7 +2814,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
 		thread = binder_select_thread_ilocked(proc);
 
 	if (thread) {
-		binder_transaction_priority(thread->task, t, node_prio,
+		binder_transaction_priority(thread, t, node_prio,
 					    node->inherit_rt);
 		binder_enqueue_thread_work_ilocked(thread, &t->work);
 	} else if (!pending_async) {
@@ -2878,6 +2907,7 @@ static void binder_transaction(struct binder_proc *proc,
 	struct list_head pf_head;
 	const void __user *user_buffer = (const void __user *)
 				(uintptr_t)tr->data.ptr.buffer;
+	bool is_nested = false;
 	INIT_LIST_HEAD(&sgc_head);
 	INIT_LIST_HEAD(&pf_head);
 
@@ -3062,6 +3092,7 @@ static void binder_transaction(struct binder_proc *proc,
 					atomic_inc(&from->tmp_ref);
 					target_thread = from;
 					spin_unlock(&tmp->lock);
+					is_nested = true;
 					break;
 				}
 				spin_unlock(&tmp->lock);
@@ -3126,6 +3157,7 @@ static void binder_transaction(struct binder_proc *proc,
 	t->to_thread = target_thread;
 	t->code = tr->code;
 	t->flags = tr->flags;
+	t->is_nested = is_nested;
 	if (!(t->flags & TF_ONE_WAY) &&
 	    binder_supported_policy(current->policy)) {
 		/* Inherit supported policies for synchronous transactions */
@@ -3524,9 +3556,14 @@ static void binder_transaction(struct binder_proc *proc,
 		binder_enqueue_thread_work_ilocked(target_thread, &t->work);
 		target_proc->outstanding_txns++;
 		binder_inner_proc_unlock(target_proc);
+		if (in_reply_to->is_nested) {
+			thread->next_priority = in_reply_to->saved_priority;
+			atomic_set(&thread->restore_priority_state, 1);
+		}
 		wake_up_interruptible_sync(&target_thread->wait);
 		trace_android_vh_binder_restore_priority(in_reply_to, current);
-		binder_restore_priority(current, in_reply_to->saved_priority);
+		binder_restore_priority(thread, in_reply_to->saved_priority);
+		atomic_set(&thread->restore_priority_state, 0);
 		binder_free_transaction(in_reply_to);
 	} else if (!(t->flags & TF_ONE_WAY)) {
 		BUG_ON(t->buffer->async_transaction != 0);
@@ -3643,7 +3680,7 @@ err_invalid_target_handle:
 	BUG_ON(thread->return_error.cmd != BR_OK);
 	if (in_reply_to) {
 		trace_android_vh_binder_restore_priority(in_reply_to, current);
-		binder_restore_priority(current, in_reply_to->saved_priority);
+		binder_restore_priority(thread, in_reply_to->saved_priority);
 		thread->return_error.cmd = BR_TRANSACTION_COMPLETE;
 		binder_enqueue_thread_work(thread, &thread->return_error.work);
 		binder_send_failed_reply(in_reply_to, return_error);
@@ -4323,7 +4360,7 @@ retry:
 						 binder_stop_on_user_error < 2);
 		}
 		trace_android_vh_binder_restore_priority(NULL, current);
-		binder_restore_priority(current, proc->default_priority);
+		binder_restore_priority(thread, proc->default_priority);
 	}
 
 	if (non_block) {
@@ -4556,7 +4593,7 @@ retry:
 			trd->cookie =  target_node->cookie;
 			node_prio.sched_policy = target_node->sched_policy;
 			node_prio.prio = target_node->min_priority;
-			binder_transaction_priority(current, t, node_prio,
+			binder_transaction_priority(thread, t, node_prio,
 						    target_node->inherit_rt);
 			cmd = BR_TRANSACTION;
 		} else {
@@ -4788,6 +4825,7 @@ static struct binder_thread *binder_get_thread_ilocked(
 	thread->return_error.cmd = BR_OK;
 	thread->reply_error.work.type = BINDER_WORK_RETURN_ERROR;
 	thread->reply_error.cmd = BR_OK;
+	atomic_set(&thread->restore_priority_state, 0);
 	INIT_LIST_HEAD(&new_thread->waiting_thread_node);
 	return thread;
 }

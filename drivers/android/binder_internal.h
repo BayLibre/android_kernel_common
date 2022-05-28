@@ -531,6 +531,8 @@ struct binder_thread {
 	atomic_t tmp_ref;
 	bool is_dead;
 	struct task_struct *task;
+	atomic_t restore_priority_state;
+	struct binder_priority next_priority;
 };
 
 /**
@@ -567,6 +569,7 @@ struct binder_transaction {
 	struct binder_priority priority;
 	struct binder_priority saved_priority;
 	bool set_priority_called;
+	bool is_nested;
 	kuid_t  sender_euid;
 	struct list_head fd_fixups;
 	binder_uintptr_t security_ctx;
