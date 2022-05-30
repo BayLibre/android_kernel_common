@@ -145,6 +145,9 @@ DECLARE_HOOK(android_vh_cow_user_page,
 DECLARE_HOOK(android_vh_add_anon_rmap,
 	TP_PROTO(struct vm_fault *vmf, struct page *page),
 	TP_ARGS(vmf, page));
+DECLARE_HOOK(android_vh_waiting_for_page_migration,
+	TP_PROTO(struct page *page),
+	TP_ARGS(page));
 DECLARE_HOOK(android_vh_set_page_reclaim_type,
 	TP_PROTO(struct mm_struct *mm, struct page *page),
 	TP_ARGS(mm, page));
