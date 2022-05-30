@@ -90,6 +90,7 @@ static struct plist_head *swap_avail_heads;
 static DEFINE_SPINLOCK(swap_avail_lock);
 
 struct swap_info_struct *swap_info[MAX_SWAPFILES];
+EXPORT_SYMBOL_GPL(swap_info);
 
 static DEFINE_MUTEX(swapon_mutex);
 
@@ -1441,6 +1442,7 @@ void put_swap_page(struct page *page, swp_entry_t entry)
 	}
 	unlock_cluster_or_swap_info(si, ci);
 }
+EXPORT_SYMBOL_GPL(put_swap_page);
 
 #ifdef CONFIG_THP_SWAP
 int split_swap_cluster(swp_entry_t entry)
@@ -1493,6 +1495,7 @@ void swapcache_free_entries(swp_entry_t *entries, int n)
 	if (p)
 		spin_unlock(&p->lock);
 }
+EXPORT_SYMBOL_GPL(swapcache_free_entries);
 
 /*
  * How many references to page are currently swapped out?
