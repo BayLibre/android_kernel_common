@@ -151,6 +151,12 @@ DECLARE_HOOK(android_vh_waiting_for_page_migration,
 DECLARE_HOOK(android_vh_migrate_page_states,
 	TP_PROTO(struct page *page, struct page *newpage),
 	TP_ARGS(page, newpage));
+DECLARE_HOOK(android_vh_count_pswpout,
+	TP_PROTO(struct swap_info_struct *sis, enum vm_event_item vm_event),
+	TP_ARGS(sis, vm_event));
+DECLARE_HOOK(android_vh_count_swpout_vm_event,
+	TP_PROTO(struct swap_info_struct *sis, struct page *page, bool *skip),
+	TP_ARGS(sis, page, skip));
 DECLARE_HOOK(android_vh_set_page_reclaim_type,
 	TP_PROTO(struct mm_struct *mm, struct page *page),
 	TP_ARGS(mm, page));
