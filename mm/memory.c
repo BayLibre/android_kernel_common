@@ -161,6 +161,7 @@ unsigned long zero_pfn __read_mostly;
 EXPORT_SYMBOL(zero_pfn);
 
 unsigned long highest_memmap_pfn __read_mostly;
+EXPORT_SYMBOL_GPL(highest_memmap_pfn);
 
 /*
  * CONFIG_MMU architectures set up ZERO_PAGE in their paging_init()
