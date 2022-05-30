@@ -33,6 +33,7 @@
 #include <linux/vmalloc.h>
 #include <linux/mutex.h>
 #include <linux/mm.h>
+#include <trace/hooks/mm.h>
 
 static DEFINE_PER_CPU(struct swap_slots_cache, swp_slots);
 static bool	swap_slot_cache_active;
@@ -54,6 +55,7 @@ static void deactivate_swap_slots_cache(void)
 {
 	mutex_lock(&swap_slots_cache_mutex);
 	swap_slot_cache_active = false;
+	trace_android_rvh_swap_slot_cache_active(false);
 	__drain_swap_slots_cache(SLOTS_CACHE|SLOTS_CACHE_RET);
 	mutex_unlock(&swap_slots_cache_mutex);
 }
@@ -61,6 +63,7 @@ static void deactivate_swap_slots_cache(void)
 static void reactivate_swap_slots_cache(void)
 {
 	mutex_lock(&swap_slots_cache_mutex);
+	trace_android_rvh_swap_slot_cache_active(true);
 	swap_slot_cache_active = true;
 	mutex_unlock(&swap_slots_cache_mutex);
 }
@@ -115,12 +118,17 @@ static int alloc_swap_slot_cache(unsigned int cpu)
 {
 	struct swap_slots_cache *cache;
 	swp_entry_t *slots, *slots_ret;
+	bool skip_alloc_slot_cache = false;
 
 	/*
 	 * Do allocation outside swap_slots_cache_mutex
 	 * as kvzalloc could trigger reclaim and get_swap_page,
 	 * which can lock swap_slots_cache_mutex.
 	 */
+	trace_android_rvh_alloc_swap_slot_cache(&per_cpu(swp_slots, cpu),
+		&skip_alloc_slot_cache, &slots, &slots_ret);
+	if (skip_alloc_slot_cache)
+		return 0;
 	slots = kvcalloc(SWAP_SLOTS_CACHE_SIZE, sizeof(swp_entry_t),
 			 GFP_KERNEL);
 	if (!slots)
@@ -171,8 +179,13 @@ static void drain_slots_cache_cpu(unsigned int cpu, unsigned int type,
 {
 	struct swap_slots_cache *cache;
 	swp_entry_t *slots = NULL;
+	bool skip_drain_slots_cache_cpu = false;
 
 	cache = &per_cpu(swp_slots, cpu);
+	trace_android_rvh_drain_slots_cache_cpu(cache, type, free_slots,
+		&skip_drain_slots_cache_cpu);
+	if (skip_drain_slots_cache_cpu)
+		return;
 	if ((type & SLOTS_CACHE) && cache->slots) {
 		mutex_lock(&cache->alloc_lock);
 		swapcache_free_entries(cache->slots + cache->cur, cache->nr);
@@ -307,8 +320,13 @@ swp_entry_t get_swap_page(struct page *page)
 {
 	swp_entry_t entry;
 	struct swap_slots_cache *cache;
-
+	bool skip = false;
 	entry.val = 0;
+
+	trace_android_rvh_get_swap_slot_info(page, raw_cpu_ptr(&swp_slots),
+		check_cache_active, &entry, &skip);
+	if (skip)
+		return entry;
 
 	if (PageTransHuge(page)) {
 		if (IS_ENABLED(CONFIG_THP_SWAP))
