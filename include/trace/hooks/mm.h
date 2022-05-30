@@ -147,6 +147,9 @@ DECLARE_RESTRICTED_HOOK(android_rvh_vma_flag_process,
 DECLARE_RESTRICTED_HOOK(android_rvh_process_page_states,
 	TP_PROTO(struct page *page1, struct page *page2, int method),
 	TP_ARGS(page1, page2, method), 1);
+DECLARE_HOOK(android_vh_page_referenced_one,
+	TP_PROTO(struct vm_area_struct *vma, struct page *page),
+	TP_ARGS(vma, page), 1);
 DECLARE_RESTRICTED_HOOK(android_rvh_update_swap_ref_cnt,
 	TP_PROTO(struct swap_info_struct *sis, int access),
 	TP_ARGS(sis, access), 1);
