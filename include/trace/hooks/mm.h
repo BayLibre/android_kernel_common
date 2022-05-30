@@ -156,6 +156,16 @@ DECLARE_RESTRICTED_HOOK(android_rvh_update_swap_ref_cnt,
 DECLARE_RESTRICTED_HOOK(android_rvh_count_swpout_vm_event,
 	TP_PROTO(struct swap_info_struct *sis, struct page *page, int *ret, int val),
 	TP_ARGS(sis, page, ret, val), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_shmem_unuse_swap_entries,
+	TP_PROTO(struct inode *inode, void *pvec_point, pgoff_t *indices, unsigned int type,
+		int (*shmem_swapin_page)(struct inode *inode, pgoff_t index,
+			struct page **pagep, enum sgp_type sgp, gfp_t gfp,
+			struct vm_area_struct *vma, vm_fault_t *fault_type),
+		int *ret, bool *skip),
+	TP_ARGS(inode, pvec_point, indices, type, shmem_swapin_page, ret, skip), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_get_swap_page,
+	TP_PROTO(struct page *page, u64 hotness, swp_entry_t *entry, bool *skip),
+	TP_ARGS(page, hotness, entry, skip), 1);
 DECLARE_RESTRICTED_HOOK(android_rvh_madvise_case_memfusion,
 	TP_PROTO(int *ret, int behavior),
 	TP_ARGS(ret, behavior), 1);
