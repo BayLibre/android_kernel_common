@@ -34,6 +34,16 @@ DECLARE_HOOK(android_vh_shrink_node_memcgs,
 DECLARE_HOOK(android_vh_tune_memcg_scan_type,
 	TP_PROTO(struct mem_cgroup *memcg, char *scan_type),
 	TP_ARGS(memcg, scan_type));
+DECLARE_RESTRICTED_HOOK(android_rvh_inactive_is_low,
+	TP_PROTO(int *ret, unsigned long gb, unsigned long *inactive_ratio,
+		enum lru_list inactive_lru),
+	TP_ARGS(ret, gb, inactive_ratio, inactive_lru), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_snapshot_refaults,
+	TP_PROTO(struct lruvec *target_lruvec),
+	TP_ARGS(target_lruvec), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_shrink_page_list,
+	TP_PROTO(struct page *page, int *ret),
+	TP_ARGS(page, ret), 1);
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
