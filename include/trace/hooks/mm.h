@@ -138,6 +138,12 @@ struct readahead_control;
 DECLARE_HOOK(android_vh_ra_tuning_max_page,
 	TP_PROTO(struct readahead_control *ractl, unsigned long *max_page),
 	TP_ARGS(ractl, max_page));
+DECLARE_HOOK(android_vh_do_access_page,
+	TP_PROTO(struct vm_fault *vmf),
+	TP_ARGS(vmf));
+DECLARE_HOOK(android_vh_vma_flag_process,
+	TP_PROTO(struct vm_fault *vmf, struct page *page, int method),
+	TP_ARGS(vmf, page, method));
 DECLARE_RESTRICTED_HOOK(android_rvh_madvise_case_memfusion,
 	TP_PROTO(int *ret, int behavior),
 	TP_ARGS(ret, behavior), 1);
