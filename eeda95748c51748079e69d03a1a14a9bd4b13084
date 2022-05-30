@@ -57,6 +57,24 @@
       "parentUuid": "cbcd3b9b_74df47ba",
       "revId": "eeda95748c51748079e69d03a1a14a9bd4b13084",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a0aead3_eb8818f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1901291
+      },
+      "writtenOn": "2022-05-30T10:15:27Z",
+      "side": 1,
+      "message": "Hi Greg, if I remove the email address \"\u003cakingchen@vivo.corp-partner.google.com\u003e\", git push will fail and report error \"not Signed-off-by author/committer/uploader in message footer\", and the latest commit is pushed successfully after command \"git commit --amend -s\" which will sign off the change, and I checked the email address of this account is \"akingchen@vivo.corp-partner.google.com\", and I added my vivo email address anyway, so does this commit massage satisfy the requirement? thanks.",
+      "parentUuid": "ef961936_13d43378",
+      "revId": "eeda95748c51748079e69d03a1a14a9bd4b13084",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
