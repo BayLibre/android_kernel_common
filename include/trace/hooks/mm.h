@@ -136,6 +136,18 @@ struct readahead_control;
 DECLARE_HOOK(android_vh_ra_tuning_max_page,
 	TP_PROTO(struct readahead_control *ractl, unsigned long *max_page),
 	TP_ARGS(ractl, max_page));
+DECLARE_HOOK(android_vh_handle_pte_fault_end,
+	TP_PROTO(struct vm_fault *vmf),
+	TP_ARGS(vmf));
+DECLARE_HOOK(android_vh_cow_user_page,
+	TP_PROTO(struct vm_fault *vmf, struct page *page),
+	TP_ARGS(vmf, page));
+DECLARE_HOOK(android_vh_swap_page_present,
+	TP_PROTO(struct vm_fault *vmf, bool present),
+	TP_ARGS(vmf, present));
+DECLARE_HOOK(android_vh_add_anon_rmap,
+	TP_PROTO(struct vm_fault *vmf, struct page *page),
+	TP_ARGS(vmf, page));
 DECLARE_HOOK(android_vh_madvise_need_mmap_write,
 	TP_PROTO(int behavior, int *ret, bool *skip),
 	TP_ARGS(behavior, ret, skip));
