@@ -160,6 +160,9 @@ DECLARE_HOOK(android_vh_count_pswpin_pswpout,
 DECLARE_HOOK(android_vh_count_swpout_vm_event,
 	TP_PROTO(struct swap_info_struct *sis, struct page *page, bool *skip),
 	TP_ARGS(sis, page, skip));
+DECLARE_HOOK(android_vh_get_swap_page,
+	TP_PROTO(struct page *page, swp_entry_t *entry, bool *found),
+	TP_ARGS(page, entry, found));
 DECLARE_HOOK(android_vh_set_page_reclaim_type,
 	TP_PROTO(struct mm_struct *mm, struct page *page),
 	TP_ARGS(mm, page));
