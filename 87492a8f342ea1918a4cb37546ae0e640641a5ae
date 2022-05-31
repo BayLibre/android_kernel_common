@@ -16,6 +16,23 @@
       "message": "Is there a reason to take this into android-mainline now instead of waiting for it to land via merge? We normally don\u0027t take FROM* patches into android-mainline",
       "revId": "87492a8f342ea1918a4cb37546ae0e640641a5ae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "899504cd_d0f917a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2022-05-31T18:16:21Z",
+      "side": 1,
+      "message": "It\u0027s causing net-test failures on android-mainline branch effectively making it impossible to run the pfkey test suite, but yeah, we\u0027ll get it soon enough - I guess when 5.19 is merged in a quarter?\n",
+      "revId": "87492a8f342ea1918a4cb37546ae0e640641a5ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
