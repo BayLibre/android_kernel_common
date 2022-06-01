@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1e63aa7_19b60b6c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-01T21:13:16Z",
+      "side": 1,
+      "message": "yes, although I can drop this if it doesn\u0027t make sense.",
+      "parentUuid": "30555583_aa751a6e",
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "224e32f3_af33c56a",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-01T20:57:06Z",
       "side": 1,
       "message": "what is the benefit of atomics for this case? atomic_read() is pretty much the same as if you just read an int and atomic_set() is pretty much the same as doing a write. I don\u0027t see any inc/dec operations so it\u0027s not clear why atomic.\n\nWhat is the significance of \"2\"? What does \"1\" mean?",
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4d852ba_966662fe",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-01T21:13:16Z",
+      "side": 1,
+      "message": "Oops, I believe I meant to use {READ,WRITE}_ONCE here, to avoid compiler optimizations, I\u0027ll update these.\n\nAlso, I can add some enums to the magic numbers \"state\". In this case it would be something along these lines:\n```\nenum {\n    BINDER_PRIO_STATE_DONE \u003d 0,\n    BINDER_PRIO_STATE_PENDING \u003d 1,\n    BINDER_PRIO_STATE_RACED \u003d 2,\n}\n```",
+      "parentUuid": "224e32f3_af33c56a",
       "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
