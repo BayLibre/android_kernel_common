@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30555583_aa751a6e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-01T20:57:06Z",
+      "side": 1,
+      "message": "why do we need thread? Is this just to make the parameter list consistent with binder_restore_priority()?",
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "224e32f3_af33c56a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-01T20:57:06Z",
+      "side": 1,
+      "message": "what is the benefit of atomics for this case? atomic_read() is pretty much the same as if you just read an int and atomic_set() is pretty much the same as doing a write. I don\u0027t see any inc/dec operations so it\u0027s not clear why atomic.\n\nWhat is the significance of \"2\"? What does \"1\" mean?",
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
