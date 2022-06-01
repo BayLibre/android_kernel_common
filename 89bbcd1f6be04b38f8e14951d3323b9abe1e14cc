@@ -16,6 +16,29 @@
       "message": "Hi Alistair, \nPlease comment about, how you want me to handle the early services request. ",
       "revId": "89bbcd1f6be04b38f8e14951d3323b9abe1e14cc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "853ba1e5_addcb502",
+        "filename": "kernel/umh.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-06-01T17:55:25Z",
+      "side": 1,
+      "message": "Does the source to \"/system_ext/bin/coredumpzip\" exist anywhere that this can refer to? It\u0027s not a deal breaker but it would be better for GKI if we could use a common naming convention for vendor extensions, as I\u0027m sure not everybody has called their binary \"coredumpzip\".",
+      "range": {
+        "startLine": 342,
+        "startChar": 19,
+        "endLine": 342,
+        "endChar": 30
+      },
+      "revId": "89bbcd1f6be04b38f8e14951d3323b9abe1e14cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
