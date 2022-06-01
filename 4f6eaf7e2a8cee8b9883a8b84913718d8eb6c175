@@ -33,6 +33,29 @@
       "message": "Hi Alistair, \n\n1) Can I add coredumpzip to usermode_executable_path? \n2) Automotive have another executable early_service, how you want me to add support for this in ACK tree? Can extend getting commandline option for adding customer commands from OEMs. \n\n?\n",
       "revId": "4f6eaf7e2a8cee8b9883a8b84913718d8eb6c175",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "618c6447_1e63fa51",
+        "filename": "kernel/umh.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-06-01T00:18:33Z",
+      "side": 1,
+      "message": "Need fully qualified paths here, we don\u0027t want to support PATH searching.",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 342,
+        "endChar": 12
+      },
+      "revId": "4f6eaf7e2a8cee8b9883a8b84913718d8eb6c175",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
