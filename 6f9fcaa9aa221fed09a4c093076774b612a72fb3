@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1625fd1d_41fa9bb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-01T18:17:35Z",
+      "side": 1,
+      "message": "Some of the symbols being added are not in the kernel... did you forget to cherry-pick some patches?\n```\n Comparing the KMI and the symbol lists:\n+ /mnt/ssd2/krepo/android12-5.10-2022-11/build/abi/compare_to_symbol_list /mnt/ssd2/krepo/android12-5.10-2022-11/out_abi/android12-5.10/common/Module.symvers /mnt/ssd2/krepo/android12-5.10-2022-11/out_abi/android12-5.10/common/abi_symbollist.raw\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n - __traceiter_android_vh_cma_drain_all_pages_bypass\n - __traceiter_android_vh_drain_all_pages_bypass\n - __traceiter_android_vh_pcplist_add_cma_pages_bypass\n - __tracepoint_android_vh_cma_drain_all_pages_bypass\n - __tracepoint_android_vh_drain_all_pages_bypass\n - __tracepoint_android_vh_pcplist_add_cma_pages_bypass\n - shrink_slab\n```",
+      "revId": "6f9fcaa9aa221fed09a4c093076774b612a72fb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
