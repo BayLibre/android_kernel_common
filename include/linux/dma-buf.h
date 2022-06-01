@@ -518,6 +518,7 @@ struct dma_buf {
 	 * `DMA-BUF statistics`_ for the uapi this enables.
 	 */
 	struct dma_buf_sysfs_entry {
+#ifndef __GENKSYMS__
 		union {
 			struct kobject kobj;
 
@@ -526,7 +527,15 @@ struct dma_buf {
 			 * For deferred sysfs kobject creation using a workqueue.
 			 */
 			struct work_struct sysfs_add_work;
+
+			_Static_assert(sizeof(struct kobject) >= sizeof(struct work_struct),
+				"sysfs_add_work is larger than kobject");
+			_Static_assert(__alignof__(struct kobject) <= __alignof__(struct work_struct),
+				"sysfs_add_work alignment is larger than kobject");
 		};
+#else
+		struct kobject kobj;
+#endif
 		struct dma_buf *dmabuf;
 	} *sysfs_entry;
 #endif
