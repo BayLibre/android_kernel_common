@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3f32053_75d116de",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-02T21:11:18Z",
+      "side": 1,
+      "message": "I\u0027ve uploaded a more conservative patchset, with a safer approach: skip the priority preset if there is still a pending priority restore. WTYT?",
+      "parentUuid": "0d554e58_7bee6afe",
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cc51c10_41a1291c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
@@ -138,6 +156,30 @@
       "writtenOn": "2022-06-01T23:29:34Z",
       "side": 1,
       "message": "seems like this should only be done if we are not going to overwrite these values at line 763. if...else?",
+      "range": {
+        "startLine": 753,
+        "startChar": 1,
+        "endLine": 754,
+        "endChar": 44
+      },
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b9deaf1_feb25260",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-02T21:11:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9cc51c10_41a1291c",
       "range": {
         "startLine": 753,
         "startChar": 1,
