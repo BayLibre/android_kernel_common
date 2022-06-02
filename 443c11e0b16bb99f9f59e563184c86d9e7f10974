@@ -42,6 +42,49 @@
       },
       "revId": "443c11e0b16bb99f9f59e563184c86d9e7f10974",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000024949973",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2115218?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "ccb0b264_c92228b8",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 14,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Todd Kjos \u003ctkjos@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "716955c8_c8a56416",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-06-02T21:54:45Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Todd Kjos \u003ctkjos@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 452527125 android-build.ayeaye-python-dispatcher_20220602.04_p0",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "revId": "443c11e0b16bb99f9f59e563184c86d9e7f10974",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
