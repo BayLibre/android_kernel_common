@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14fa4e02_b2dfa835",
+        "filename": "drivers/mmc/core/debugfs.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-06-02T17:03:08Z",
+      "side": 1,
+      "message": "How can it happen that the \u0027host\u0027 pointer is NULL? The function that creates this attribute will crash if host \u003d\u003d NULL.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 17
+      },
+      "revId": "6d90e61f7ecf7b37793870e54a16b52fb6decbe3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "106c4df7_f474a0ec",
+        "filename": "drivers/mmc/core/debugfs.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2022-06-02T17:03:08Z",
+      "side": 1,
+      "message": "Please use ARRAY_SIZE(host-\u003eerr_stats).",
+      "range": {
+        "startLine": 235,
+        "startChar": 17,
+        "endLine": 235,
+        "endChar": 28
+      },
+      "revId": "6d90e61f7ecf7b37793870e54a16b52fb6decbe3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
