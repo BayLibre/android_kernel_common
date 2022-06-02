@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d554e58_7bee6afe",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-02T05:32:03Z",
+      "side": 1,
+      "message": "Oh, I meant using `READ_ONCE()` as a \"volatile\" hint for the compiler. I agree the actual access would still be atomic.\n\nUsing a lock will definitely fix this whole issue. However, this is also part of the proposed solutions which could add delay to the transaction, as the thread could take the lock, restore it\u0027s priority only to be scheduled out for a while.\n\nI could shrink the race window even more, which is only what I\u0027m doing here. However the eventual call to `sched_setscheduler_nocheck()` is obviously not atomic and it could still race between the two threads.\n\nPerhaps a better alternative would be for the caller to skip the \"preset\" of the target\u0027s priority, but only if the target has a priority restore pending. Although, the target could still get scheduled out and would only set the correct priority after picking up the transaction later.\n\nNow that I think about it we could follow the same pattern for the lock? Maybe this is what you had in mind. I\u0027ll have a second look at this tomorrow.",
+      "parentUuid": "dbb5ab18_6d5f9aec",
+      "revId": "5f89a09bcc7f27d97e4f704343ef10f085b23b1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cc51c10_41a1291c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 1
