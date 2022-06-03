@@ -146,6 +146,9 @@ DECLARE_HOOK(android_vh_madvise_vma,
 DECLARE_HOOK(android_vh_madvise_behavior_valid,
 	TP_PROTO(int behavior, bool *ret, bool *skip),
 	TP_ARGS(behavior, ret, skip));
+DECLARE_HOOK(android_vh_wp_page_copy_set_state,
+	TP_PROTO(struct vm_fault *vmf, struct page *page),
+	TP_ARGS(vmf, page));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_MM_H */
