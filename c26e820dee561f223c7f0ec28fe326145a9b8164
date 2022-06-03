@@ -286,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0c916a1_7c3ae69d",
+        "filename": "drivers/input/evdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-06-03T09:54:28Z",
+      "side": 1,
+      "message": "There should not be a need for any hook as Android already does this for you automatically.  It boots the priority of the needed task based on the input focus.",
+      "parentUuid": "e9d146c8_b0a7d6a7",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 79
+      },
+      "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31bb50f8_0736fc57",
         "filename": "include/trace/hooks/evdev.h",
         "patchSetId": 2
