@@ -35,8 +35,10 @@
 #include <linux/mm.h>
 
 static DEFINE_PER_CPU(struct swap_slots_cache, swp_slots);
-static bool	swap_slot_cache_active;
+bool	swap_slot_cache_active;
+EXPORT_SYMBOL_GPL(swap_slot_cache_active);
 bool	swap_slot_cache_enabled;
+EXPORT_SYMBOL_GPL(swap_slot_cache_enabled);
 static bool	swap_slot_cache_initialized;
 static DEFINE_MUTEX(swap_slots_cache_mutex);
 /* Serialize swap slots cache enable/disable operations */
@@ -89,7 +91,7 @@ void reenable_swap_slots_cache_unlock(void)
 	mutex_unlock(&swap_slots_cache_enable_mutex);
 }
 
-static bool check_cache_active(void)
+bool check_cache_active(void)
 {
 	long pages;
 
@@ -110,6 +112,7 @@ static bool check_cache_active(void)
 out:
 	return swap_slot_cache_active;
 }
+EXPORT_SYMBOL_GPL(check_cache_active);
 
 static int alloc_swap_slot_cache(unsigned int cpu)
 {
@@ -352,3 +355,5 @@ out:
 	}
 	return entry;
 }
+EXPORT_SYMBOL_GPL(get_swap_page);
+
