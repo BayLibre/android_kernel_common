@@ -50,7 +50,8 @@ static void free_swap_count_continuations(struct swap_info_struct *);
 static sector_t map_swap_entry(swp_entry_t, struct block_device**);
 
 DEFINE_SPINLOCK(swap_lock);
-static unsigned int nr_swapfiles;
+unsigned int nr_swapfiles;
+EXPORT_SYMBOL_GPL(nr_swapfiles);
 atomic_long_t nr_swap_pages;
 /*
  * Some modules use swappable objects and may try to swap them out under
@@ -60,6 +61,7 @@ atomic_long_t nr_swap_pages;
 EXPORT_SYMBOL_GPL(nr_swap_pages);
 /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
 long total_swap_pages;
+EXPORT_SYMBOL_GPL(total_swap_pages);
 static int least_priority = -1;
 
 static const char Bad_file[] = "Bad swap file entry ";
@@ -89,6 +91,7 @@ static struct plist_head *swap_avail_heads;
 static DEFINE_SPINLOCK(swap_avail_lock);
 
 struct swap_info_struct *swap_info[MAX_SWAPFILES];
+EXPORT_SYMBOL_GPL(swap_info);
 
 static DEFINE_MUTEX(swapon_mutex);
 
@@ -767,7 +770,7 @@ static void set_cluster_next(struct swap_info_struct *si, unsigned long next)
 	this_cpu_write(*si->cluster_next_cpu, next);
 }
 
-static int scan_swap_map_slots(struct swap_info_struct *si,
+int scan_swap_map_slots(struct swap_info_struct *si,
 			       unsigned char usage, int nr,
 			       swp_entry_t slots[])
 {
@@ -983,8 +986,9 @@ no_page:
 	si->flags -= SWP_SCANNING;
 	return n_ret;
 }
+EXPORT_SYMBOL_GPL(scan_swap_map_slots);
 
-static int swap_alloc_cluster(struct swap_info_struct *si, swp_entry_t *slot)
+int swap_alloc_cluster(struct swap_info_struct *si, swp_entry_t *slot)
 {
 	unsigned long idx;
 	struct swap_cluster_info *ci;
@@ -1018,6 +1022,7 @@ static int swap_alloc_cluster(struct swap_info_struct *si, swp_entry_t *slot)
 
 	return 1;
 }
+EXPORT_SYMBOL_GPL(swap_alloc_cluster);
 
 static void swap_free_cluster(struct swap_info_struct *si, unsigned long idx)
 {
@@ -1426,6 +1431,7 @@ void put_swap_page(struct page *page, swp_entry_t entry)
 	}
 	unlock_cluster_or_swap_info(si, ci);
 }
+EXPORT_SYMBOL_GPL(put_swap_page);
 
 #ifdef CONFIG_THP_SWAP
 int split_swap_cluster(swp_entry_t entry)
@@ -1478,6 +1484,7 @@ void swapcache_free_entries(swp_entry_t *entries, int n)
 	if (p)
 		spin_unlock(&p->lock);
 }
+EXPORT_SYMBOL_GPL(swapcache_free_entries);
 
 /*
  * How many references to page are currently swapped out?
