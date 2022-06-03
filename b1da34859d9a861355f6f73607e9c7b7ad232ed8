@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a00570_85b3cf73",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-03T19:45:57Z",
+      "side": 1,
+      "message": "This is again the same as exporting an internal function. Do explicit exports instead.",
+      "range": {
+        "startLine": 205,
+        "startChar": 2,
+        "endLine": 205,
+        "endChar": 67
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ccc406c_8481301a",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-03T19:45:57Z",
+      "side": 1,
+      "message": "Why not place the trace_android_vh_free_swap_slot() inside free_swap_slot() itself and have only one place to call it?",
+      "range": {
+        "startLine": 1436,
+        "startChar": 4,
+        "endLine": 1436,
+        "endChar": 18
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ae50dd6_de925dda",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2025,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-03T19:45:57Z",
+      "side": 1,
+      "message": "The name should reflect what is happening at that code location, not how you interpret it. I think a better name would be trace_android_vh_unuse_swap_page() or trace_android_vh_try_to_free_swap().",
+      "range": {
+        "startLine": 2025,
+        "startChar": 2,
+        "endLine": 2025,
+        "endChar": 31
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "073c94d6_9374af9c",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2654,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-03T19:45:57Z",
+      "side": 1,
+      "message": "trace_android_vh_sub_nr_total_swap_pages ?",
+      "range": {
+        "startLine": 2654,
+        "startChar": 1,
+        "endLine": 2654,
+        "endChar": 41
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "050fa386_264cca74",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2919,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-03T19:45:57Z",
+      "side": 1,
+      "message": "Are you trying to create a custom swap_info_struct outside of swap_info[]? This seems very strange. Please explain why you need this.",
+      "range": {
+        "startLine": 2917,
+        "startChar": 1,
+        "endLine": 2919,
+        "endChar": 11
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
