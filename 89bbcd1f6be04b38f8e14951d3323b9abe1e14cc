@@ -55,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "158fcdb4_ba4e5f79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-06-03T10:02:36Z",
+      "side": 1,
+      "message": "usermode helper should be disabled for android systems due to the obvious security problems involved with it, AND the specific security changes that were added to it to prevent abuse.\n\nPlease do not bring it back, it is not needed at all.",
+      "revId": "89bbcd1f6be04b38f8e14951d3323b9abe1e14cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "853ba1e5_addcb502",
         "filename": "kernel/umh.c",
         "patchSetId": 3
