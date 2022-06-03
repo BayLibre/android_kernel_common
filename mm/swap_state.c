@@ -176,6 +176,7 @@ unlock:
 	page_ref_sub(page, nr);
 	return xas_error(&xas);
 }
+EXPORT_SYMBOL_GPL(add_to_swap_cache);
 
 /*
  * This must be called only on pages that have
