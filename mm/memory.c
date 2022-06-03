@@ -3757,6 +3757,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	 * must be called after the swap_free(), or it will never succeed.
 	 */
 
+	trace_android_vh_swap_page_present(vmf, false);
 	inc_mm_counter_fast(vma->vm_mm, MM_ANONPAGES);
 	dec_mm_counter_fast(vma->vm_mm, MM_SWAPENTS);
 	pte = mk_pte(page, vmf->vma_page_prot);
