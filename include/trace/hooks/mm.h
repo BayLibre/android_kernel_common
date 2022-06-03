@@ -143,6 +143,9 @@ DECLARE_HOOK(android_vh_madvise_vma,
 	TP_PROTO(struct vm_area_struct *vma, struct vm_area_struct **prev,
 		unsigned long start, unsigned long end, int behavior, long *ret, bool *skip),
 	TP_ARGS(vma, prev, start, end,  behavior, ret, skip));
+DECLARE_HOOK(android_vh_madvise_behavior_valid,
+	TP_PROTO(int behavior, bool *ret, bool *skip),
+	TP_ARGS(behavior, ret, skip));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_MM_H */

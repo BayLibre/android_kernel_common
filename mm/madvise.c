@@ -970,6 +970,13 @@ madvise_vma(struct vm_area_struct *vma, struct vm_area_struct **prev,
 static bool
 madvise_behavior_valid(int behavior)
 {
+	bool ret = false;
+	bool skip = false;
+
+	trace_android_vh_madvise_behavior_valid(behavior, &ret, &skip);
+	if (skip)
+		return ret;
+
 	switch (behavior) {
 	case MADV_DOFORK:
 	case MADV_DONTFORK:
@@ -1008,6 +1015,13 @@ madvise_behavior_valid(int behavior)
 static bool
 process_madvise_behavior_valid(int behavior)
 {
+	bool ret = false;
+	bool skip = false;
+
+	trace_android_vh_madvise_behavior_valid(behavior, &ret, &skip);
+	if (skip)
+		return ret;
+
 	switch (behavior) {
 	case MADV_COLD:
 	case MADV_PAGEOUT:
