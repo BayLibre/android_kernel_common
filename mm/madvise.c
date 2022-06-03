@@ -943,6 +943,13 @@ static long
 madvise_vma(struct vm_area_struct *vma, struct vm_area_struct **prev,
 		unsigned long start, unsigned long end, int behavior)
 {
+	long ret = 0;
+	bool skip = false;
+
+	trace_android_vh_madvise_vma(vma, prev, start, end, behavior, &ret, &skip);
+	if (skip)
+		return ret;
+
 	switch (behavior) {
 	case MADV_REMOVE:
 		return madvise_remove(vma, prev, start, end);
