@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30b38334_48bc05e4",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-04T01:34:14Z",
+      "side": 1,
+      "message": "OK, we will change this in the new patch. As you suggested, only one hook is added each patch.",
+      "parentUuid": "a8a00570_85b3cf73",
+      "range": {
+        "startLine": 205,
+        "startChar": 2,
+        "endLine": 205,
+        "endChar": 67
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ccc406c_8481301a",
         "filename": "mm/swapfile.c",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-03T19:45:57Z",
       "side": 1,
       "message": "Why not place the trace_android_vh_free_swap_slot() inside free_swap_slot() itself and have only one place to call it?",
+      "range": {
+        "startLine": 1436,
+        "startChar": 4,
+        "endLine": 1436,
+        "endChar": 18
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc148d94_217430ce",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-04T01:34:14Z",
+      "side": 1,
+      "message": "In our free_swap_slot substitution function, we need to pass in “si”。\nIf we place the trace_android_vh_free_swap_slot() inside free_swap_slot() itself, we will need to modify the parameter definition of the free_swap_slot(), this will change the ABI.",
+      "parentUuid": "2ccc406c_8481301a",
       "range": {
         "startLine": 1436,
         "startChar": 4,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52c37402_a9213b4f",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2025,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-04T01:34:14Z",
+      "side": 1,
+      "message": "OK, we will change this in the new patch. As you suggested, only one hook is added each patch.",
+      "parentUuid": "7ae50dd6_de925dda",
+      "range": {
+        "startLine": 2025,
+        "startChar": 2,
+        "endLine": 2025,
+        "endChar": 31
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "073c94d6_9374af9c",
         "filename": "mm/swapfile.c",
         "patchSetId": 7
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37d859ec_a5df4902",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2654,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-04T01:34:14Z",
+      "side": 1,
+      "message": "It is used to add nr_swap_pages and total_swap_pages.",
+      "parentUuid": "073c94d6_9374af9c",
+      "range": {
+        "startLine": 2654,
+        "startChar": 1,
+        "endLine": 2654,
+        "endChar": 41
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "050fa386_264cca74",
         "filename": "mm/swapfile.c",
         "patchSetId": 7
@@ -106,6 +202,30 @@
       "writtenOn": "2022-06-03T19:45:57Z",
       "side": 1,
       "message": "Are you trying to create a custom swap_info_struct outside of swap_info[]? This seems very strange. Please explain why you need this.",
+      "range": {
+        "startLine": 2917,
+        "startChar": 1,
+        "endLine": 2919,
+        "endChar": 11
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db664bb_b6b138c3",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2919,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-04T01:34:14Z",
+      "side": 1,
+      "message": "Yes, we are trying to create a custom swap_info_struct outside of swap_info. We need to extend swap_info_struct to record some statistical information, just like another patch 2064529.\nBut the KMI of android12-5.10 is frozen, so we adopt this way to extend swap_info_struct.",
+      "parentUuid": "050fa386_264cca74",
       "range": {
         "startLine": 2917,
         "startChar": 1,
