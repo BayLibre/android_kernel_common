@@ -434,6 +434,11 @@ struct ieee80211_sband_iftype_data {
 		const u8 *data;
 		unsigned int len;
 	} vendor_elems;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
 };
 
 /**
@@ -543,6 +548,11 @@ struct ieee80211_supported_band {
 	struct ieee80211_edmg edmg_cap;
 	u16 n_iftype_data;
 	const struct ieee80211_sband_iftype_data *iftype_data;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
 };
 
 /**
@@ -751,6 +761,9 @@ struct cfg80211_chan_def {
 	u32 center_freq2;
 	struct ieee80211_edmg edmg;
 	u16 freq1_offset;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
 };
 
 /*
@@ -1339,6 +1352,11 @@ struct cfg80211_ap_settings {
 	struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
 	struct cfg80211_mbssid_config mbssid_config;
 
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+
 	ANDROID_KABI_RESERVE(1);
 };
 
@@ -1898,6 +1916,11 @@ struct station_info {
 
 	u8 connected_to_as;
 
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+
 	ANDROID_KABI_RESERVE(1);
 };
 
@@ -2415,6 +2438,11 @@ struct cfg80211_scan_request {
 	u32 n_6ghz_params;
 	struct cfg80211_scan_6ghz_params *scan_6ghz_params;
 
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+
 	ANDROID_KABI_RESERVE(1);
 
 	/* keep last */
@@ -2611,6 +2639,11 @@ struct cfg80211_inform_bss {
 	u8 parent_bssid[ETH_ALEN] __aligned(2);
 	u8 chains;
 	s8 chain_signal[IEEE80211_MAX_CHAINS];
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
 };
 
 /**
@@ -2687,6 +2720,11 @@ struct cfg80211_bss {
 
 	u8 bssid_index;
 	u8 max_bssid_indicator;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
 
 	ANDROID_KABI_RESERVE(1);
 
@@ -3036,6 +3074,12 @@ struct cfg80211_connect_params {
 	size_t fils_erp_rrk_len;
 	bool want_1x;
 	struct ieee80211_edmg edmg;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+	ANDROID_VENDOR_DATA(5);
 
 	ANDROID_KABI_RESERVE(1);
 };
@@ -4528,6 +4572,11 @@ struct cfg80211_ops {
 	int	(*set_radar_background)(struct wiphy *wiphy,
 					struct cfg80211_chan_def *chandef);
 
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
@@ -5321,6 +5370,12 @@ struct wiphy {
 	u8 mbssid_max_interfaces;
 	u8 ema_max_profile_periodicity;
 
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+	ANDROID_VENDOR_DATA(5);
+
 	ANDROID_KABI_RESERVE(1);
 
 	char priv[] __aligned(NETDEV_ALIGN);
@@ -5681,6 +5736,12 @@ struct wireless_dev {
 	struct work_struct pmsr_free_wk;
 
 	unsigned long unprot_beacon_reported;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
+	ANDROID_VENDOR_DATA(5);
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
@@ -7237,6 +7298,11 @@ struct cfg80211_connect_resp_params {
 	size_t resp_ie_len;
 	struct cfg80211_fils_resp_params fils;
 	enum nl80211_timeout_reason timeout_reason;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
 };
 
 /**
@@ -7396,6 +7462,11 @@ struct cfg80211_roam_info {
 	const u8 *resp_ie;
 	size_t resp_ie_len;
 	struct cfg80211_fils_resp_params fils;
+
+	ANDROID_VENDOR_DATA(1);
+	ANDROID_VENDOR_DATA(2);
+	ANDROID_VENDOR_DATA(3);
+	ANDROID_VENDOR_DATA(4);
 };
 
 /**
