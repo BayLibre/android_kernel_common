@@ -4193,6 +4193,10 @@ struct mgmt_frame_regs {
  *	radar channel.
  *	The caller is expected to set chandef pointer to NULL in order to
  *	disable background CAC/radar detection.
+ *
+ * @set_vendor_context: Configure additional info for exitsing cfg80211_op.
+ *	Driver can determine coniguration belong to which exitsing cfg80211_op
+ *	using @id.
  */
 struct cfg80211_ops {
 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
@@ -4527,6 +4531,11 @@ struct cfg80211_ops {
 				struct cfg80211_fils_aad *fils_aad);
 	int	(*set_radar_background)(struct wiphy *wiphy,
 					struct cfg80211_chan_def *chandef);
+	int	(*set_vendor_context)(struct wiphy *wiphy,
+				      struct wireless_dev *wdev,
+				      int id, const void *data,
+				      size_t data_len);
+
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
