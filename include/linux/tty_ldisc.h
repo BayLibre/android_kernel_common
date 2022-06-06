@@ -212,6 +212,8 @@ struct tty_ldisc_ops {
 	void	(*dcd_change)(struct tty_struct *, unsigned int);
 	int	(*receive_buf2)(struct tty_struct *, const unsigned char *cp,
 				const char *fp, int count);
+	void	(*lookahead_buf)(struct tty_struct *tty, const unsigned char *cp,
+				 const unsigned char *fp, unsigned int count);
 
 	struct  module *owner;
 
