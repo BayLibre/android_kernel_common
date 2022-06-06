@@ -42,6 +42,49 @@
       },
       "revId": "473b98d91a089ff8a1f43dcecf6fe28116de7468",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000025025646",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2117323?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "9ce75ea7_f6d251cd",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 40,
+                "startChar": 0,
+                "endLine": 40,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Borislav Petkov \u003cbp@alien8.de\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "e88b2281_ee76882a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-06-06T12:50:59Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Borislav Petkov \u003cbp@alien8.de\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 452527125 android-build.ayeaye-python-dispatcher_20220602.04_p0",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "473b98d91a089ff8a1f43dcecf6fe28116de7468",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
