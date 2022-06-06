@@ -66,6 +66,7 @@
 #include <trace/hooks/mmc.h>
 #include <trace/hooks/evdev.h>
 #include <trace/hooks/ipv4.h>
+#include <trace/hooks/cfg80211.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -333,3 +334,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_udp_recvmsg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_tcp_recvmsg_stat);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cfg80211_set_context);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cfg80211_get_context);
