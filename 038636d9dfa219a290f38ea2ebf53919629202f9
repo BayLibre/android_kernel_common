@@ -16,6 +16,24 @@
       "message": "This patch is not in android12-5.10. Release branch patches MUST be cherry-picks from android12-5.10.",
       "revId": "038636d9dfa219a290f38ea2ebf53919629202f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d342e6fa_66a52b9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1893482
+      },
+      "writtenOn": "2022-06-07T07:43:37Z",
+      "side": 1,
+      "message": "Dear Todd,\n\nYou can check commit id: 22423c966e02175a45bc010134d734e920b76cdf\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android12-5.10/fs/f2fs/node.c#1428\nSeems this patch was cherry-picked from upstream, and already merged in android12-5.10.",
+      "parentUuid": "bbc54e8d_39dd1193",
+      "revId": "038636d9dfa219a290f38ea2ebf53919629202f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
