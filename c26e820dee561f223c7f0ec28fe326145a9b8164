@@ -334,6 +334,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c74bd08e_49920c43",
+        "filename": "drivers/input/evdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-06-07T15:36:36Z",
+      "side": 1,
+      "message": "What exactly do you mean by \"handle system resources\"?  This is an input event, why can\u0027t you do all of this from userspace when you get the input event there?",
+      "parentUuid": "646f3f1d_5cd05101",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 79
+      },
+      "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31bb50f8_0736fc57",
         "filename": "include/trace/hooks/evdev.h",
         "patchSetId": 2
