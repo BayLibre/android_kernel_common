@@ -24,6 +24,8 @@
 #include <uapi/linux/fuse.h>
 #include <uapi/linux/bpf.h>
 
+#include <bpf/libbpf.h>
+
 static const char *ft_src = "ft-src";
 static const char *ft_dst = "ft-dst";
 
@@ -116,6 +118,23 @@ static int bpf_test_trace_maybe(const char *substr, bool present)
 			break;
 		}
 	}
+out:
+	close(tp);
+	return result;
+}
+
+__attribute__((unused)) static int dump_trace(void)
+{
+	int result = TEST_FAILURE;
+	int tp = -1;
+	char trace_buffer[4096] = {};
+
+	TEST(tp = s_open(s_path(tracing_folder(), s("trace")),
+			 O_RDONLY | O_CLOEXEC),
+	     tp != -1);
+
+	while(read(tp, trace_buffer, sizeof(trace_buffer)) > 0)
+		ksft_print_msg("%s\n", trace_buffer);
 out:
 	close(tp);
 	return result;
@@ -1560,6 +1579,135 @@ out:
 	return result;
 }
 
+static int bpf_test_per_inode_map(const char *mount_dir)
+{
+	const char *file1 = "file1";
+	const char *file2 = "file2";
+	int result = TEST_FAILURE;
+	char path[PATH_MAX] = {};
+	char *last_slash;
+	struct bpf_object *bpf_object = NULL;
+	struct bpf_program *prog_pos;
+	struct bpf_map *map_pos;
+	int prog_fd = -1;
+	int map1_fd = -1;
+	int map2_fd = -1;
+	int fuse_dev = -1;
+	int src_fd = -1;
+	int fd1 = -1, fd2 = -1, fd3 = -1;
+	int backing_fd1 = -1, backing_fd2 = -1;
+	uint32_t value;
+	struct {
+		uint32_t delete;
+		uint32_t store;
+	} compound_value;
+	int pid = -1;
+	int status;
+
+	TESTEQUAL(bpf_clear_trace(), 0);
+
+	TESTNE(readlink("/proc/self/exe", path, PATH_MAX), -1);
+	TEST(last_slash = strrchr(path, '/'), last_slash);
+	strcpy(last_slash + 1, "inode_map_bpf.bpf");
+	TEST(bpf_object = bpf_object__open(path), bpf_object);
+	TESTEQUAL(bpf_object__load(bpf_object), 0);
+
+	bpf_object__for_each_program(prog_pos, bpf_object) {
+		TESTEQUAL(prog_fd, -1);
+		TEST(prog_fd = bpf_program__fd(prog_pos), prog_fd != -1);
+	}
+	TESTNE(prog_fd, -1);
+
+	bpf_object__for_each_map(map_pos, bpf_object) {
+		TESTEQUAL(bpf_map__key_size(map_pos), sizeof(fd1));
+		if (!strcmp(bpf_map__name(map_pos), "inode_storage_map1")) {
+			TESTEQUAL(bpf_map__value_size(map_pos), sizeof(value));
+			TESTEQUAL(map1_fd, -1);
+			TEST(map1_fd = bpf_map__fd(map_pos), map1_fd != -1);
+		} else if (!strcmp(bpf_map__name(map_pos), "inode_storage_map2")) {
+			TESTEQUAL(bpf_map__value_size(map_pos), sizeof(compound_value));
+			TESTEQUAL(map2_fd, -1);
+			TEST(map2_fd = bpf_map__fd(map_pos), map2_fd != -1);
+		} else
+			TESTCOND(false);
+	}
+	TESTNE(map1_fd, -1);
+	TESTNE(map2_fd, -1);
+
+	TEST(src_fd = open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),
+	     src_fd != -1);
+	TESTEQUAL(mount_fuse(mount_dir, prog_fd, src_fd, &fuse_dev), 0);
+
+	FUSE_ACTION
+		union bpf_attr attr = {
+				.map_fd = map1_fd,
+				.value  = ptr_to_u64(&value),
+				.flags  = BPF_ANY,
+		};
+
+		TEST(fd1 = s_creat(s_path(s(mount_dir), s(file1)), 0777), fd1 != -1);
+		TEST(fd2 = s_creat(s_path(s(mount_dir), s(file2)), 0777), fd2 != -1);
+
+		TEST(backing_fd1 = s_open(s_path(s(ft_src), s(file1)), O_RDONLY | O_CLOEXEC),
+		     backing_fd1 != -1);
+		TEST(backing_fd2 = s_open(s_path(s(ft_src), s(file2)), O_RDONLY | O_CLOEXEC),
+		     backing_fd2 != -1);
+
+		value = 200;
+		attr.key = ptr_to_u64(&backing_fd2);
+		TESTSYSCALL(syscall(__NR_bpf, BPF_MAP_UPDATE_ELEM, &attr, sizeof(attr)));
+
+		attr.key = ptr_to_u64(&backing_fd1);
+		TESTSYSCALL(syscall(__NR_bpf, BPF_MAP_LOOKUP_ELEM, &attr, sizeof(attr)));
+		TESTEQUAL(value, 100);
+
+		attr.key = ptr_to_u64(&backing_fd2);
+		TESTSYSCALL(syscall(__NR_bpf, BPF_MAP_LOOKUP_ELEM, &attr, sizeof(attr)));
+		TESTEQUAL(value, 200);
+
+		TEST(fd3 = s_open(s_path(s(mount_dir), s(file1)), O_RDONLY), fd3 != -1);
+		attr.key = ptr_to_u64(&backing_fd1);
+		TESTSYSCALL(syscall(__NR_bpf, BPF_MAP_LOOKUP_ELEM, &attr, sizeof(attr)));
+		TESTEQUAL(value, 101);
+
+		TESTSYSCALL(close(backing_fd1));
+		backing_fd1 = -1;
+		TESTSYSCALL(close(backing_fd2));
+		backing_fd2 = -1;
+
+		TESTSYSCALL(close(fd3));
+		fd3 = -1;
+		TESTSYSCALL(close(fd2));
+		fd2 = -1;
+		TESTSYSCALL(close(fd1));
+		fd1 = -1;
+		TESTSYSCALL(close(map1_fd));
+		map1_fd = -1;
+		TESTSYSCALL(close(map2_fd));
+		map2_fd = -1;
+		TESTEQUAL(bpf_object__unload(bpf_object), 0);
+		bpf_object__close(bpf_object);
+		bpf_object = NULL;
+		result = TEST_SUCCESS;
+	FUSE_DAEMON
+	FUSE_DONE
+	dump_trace();
+out:
+	close(fd3);
+	close(fd2);
+	close(fd1);
+	umount(mount_dir);
+	close(prog_fd);
+	close(fuse_dev);
+	close(src_fd);
+	close(map1_fd);
+	close(map2_fd);
+	if (bpf_object) {
+		bpf_object__unload(bpf_object);
+		bpf_object__close(bpf_object);
+	}
+	return result;
+}
 
 static int parse_options(int argc, char *const *argv)
 {
@@ -1669,6 +1817,7 @@ int main(int argc, char *argv[])
 		MAKE_TEST(bpf_test_verifier_out_args),
 		MAKE_TEST(bpf_test_verifier_packet_invalidation),
 		MAKE_TEST(bpf_test_verifier_nonsense_read),
+		MAKE_TEST(bpf_test_per_inode_map),
 	};
 #undef MAKE_TEST
 

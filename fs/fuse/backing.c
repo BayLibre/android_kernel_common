@@ -327,6 +327,7 @@ int fuse_create_open_backing(struct bpf_fuse_args *fa, int *out,
 
 	entry = newent ? newent : entry;
 	*out = finish_open(file, entry, fuse_open_file_backing);
+	fa->backing_inode = get_fuse_dentry(entry)->backing_path.dentry->d_inode;
 
 out:
 	dput(backing_dentry);
@@ -1321,6 +1322,8 @@ int fuse_lookup_backing(struct bpf_fuse_args *fa, struct dentry **out, struct in
 		.mnt = dir_fuse_entry->backing_path.mnt,
 	};
 
+	fa->backing_inode = backing_entry->d_inode;
+
 	mntget(fuse_entry->backing_path.mnt);
 	return 0;
 }
@@ -1435,6 +1438,7 @@ int fuse_revalidate_backing(struct bpf_fuse_args *fa, int *out, struct inode *di
 	struct fuse_dentry *fuse_dentry = get_fuse_dentry(entry);
 	struct dentry *backing_entry = fuse_dentry->backing_path.dentry;
 
+	fa->backing_inode = backing_entry->d_inode;
 	spin_lock(&backing_entry->d_lock);
 	if (d_unhashed(backing_entry)) {
 		spin_unlock(&backing_entry->d_lock);

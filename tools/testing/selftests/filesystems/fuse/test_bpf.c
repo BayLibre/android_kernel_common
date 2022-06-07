@@ -1,37 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 // Copyright (c) 2021 Google LLC
 
-#include <linux/fuse.h>
-#include <linux/errno.h>
-#include <uapi/linux/bpf.h>
-#include <linux/types.h>
-
-#include <stdbool.h>
-
-#define SEC(NAME) __attribute__((section(NAME), used))
-
-static long (*bpf_trace_printk)(const char *fmt, __u32 fmt_size, ...)
-	= (void *) 6;
-
-#define bpf_printk(fmt, ...)					\
-	({			                                \
-		char ____fmt[] = fmt;                           \
-		bpf_trace_printk(____fmt, sizeof(____fmt),      \
-		                 ##__VA_ARGS__);                \
-	})
-
-//static long (*bpf_fuse_get_writeable_in)(struct fuse_bpf_args *fa, u32 index, void *value,
-//					 u64 size, bool copy)
-//	= (void *) 176;
-static long (*bpf_fuse_get_writeable_out)(struct __bpf_fuse_args *fa, u32 index, void *value,
-					  u64 size, bool copy)
-	= (void *) 177;
-
-
-//#define bpf_make_writable_in(fa, index, size, copy)\
-//	(void *)bpf_fuse_get_writeable_in(fa, index, size, copy)
-#define bpf_make_writable_out(fa, index, value, size, copy) \
-	(void *)bpf_fuse_get_writeable_out(fa, index, (void *)(long)value, size, copy)
+#include "test_bpf.h"
 
 inline const void *fa_verify_in(struct __bpf_fuse_args *fa, int i, unsigned int size)
 {
@@ -56,22 +26,6 @@ inline void *fa_verify_out(struct __bpf_fuse_args *fa, int i, unsigned int size)
 		return val;
 	return NULL;
 }
-
-SEC("dummy")
-
-inline int strcmp(const char *a, const char *b)
-{
-	int i;
-
-	for (i = 0; i < __builtin_strlen(b) + 1; ++i)
-		if (a[i] != b[i])
-			return -1;
-	return 0;
-}
-
-/* This is a macro to enforce inlining. Without it, the compiler will do the wrong thing for bpf */
-#define strcmp_check(a, b, end_b) \
-		(((b) + __builtin_strlen(a) + 1 > (end_b)) ? -1 : strcmp((b), (a)))
 
 SEC("test_readdir_redact")
 /* return BPF_FUSE_CONTINUE to use backing fs, 0 to pass to usermode */

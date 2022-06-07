@@ -3,6 +3,7 @@
 
 #include <linux/filter.h>
 #include <linux/bpf_fuse.h>
+#include <linux/bpf_lsm.h>
 
 static const struct bpf_func_proto *
 fuse_prog_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
@@ -29,7 +30,13 @@ fuse_prog_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_fuse_get_writeable_out:
 		return &bpf_fuse_get_writeable_out_proto;
 
-	default:
+	case BPF_FUNC_inode_storage_get:
+		return &bpf_inode_storage_get_proto;
+
+	case BPF_FUNC_inode_storage_delete:
+		return &bpf_inode_storage_delete_proto;
+
+default:
 		pr_debug("Invalid fuse bpf func %d\n", func_id);
 		return NULL;
 	}
@@ -90,6 +97,11 @@ static bool fuse_prog_is_valid_access(int off, int size,
 		return false;
 
 	switch (off) {
+	case bpf_ctx_range(struct __bpf_fuse_args, backing_inode):
+		info->reg_type = PTR_TO_BTF_ID;
+		if (size == sizeof(__u64))
+			return true;
+		break;
 	case bpf_ctx_range(struct __bpf_fuse_args, nodeid):
 		info->reg_type = SCALAR_VALUE;
 		if (size == sizeof(__u64))
@@ -163,6 +175,11 @@ static u32 fuse_prog_convert_ctx_access(enum bpf_access_type type,
 	struct bpf_insn *insn = insn_buf;
 
 	switch (si->off) {
+	case offsetof(struct __bpf_fuse_args, backing_inode):
+		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(struct bpf_fuse_args, backing_inode),
+						      si->dst_reg, si->src_reg,
+						      offsetof(struct bpf_fuse_args, backing_inode));
+		break;
 	case offsetof(struct __bpf_fuse_args, nodeid):
 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(struct bpf_fuse_args, nodeid),
 				      si->dst_reg, si->src_reg,

@@ -33,6 +33,7 @@ struct bpf_fuse_arg {
 #define FUSE_BPF_OUT_ARGVAR (1 << 6)
 
 struct bpf_fuse_args {
+	struct inode *backing_inode;
 	uint64_t nodeid;
 	uint32_t opcode;
 	uint32_t error_in;

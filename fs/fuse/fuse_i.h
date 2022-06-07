@@ -2040,6 +2040,7 @@ static inline void fuse_bpf_free_alloced(struct bpf_fuse_args *fa)
 		fuse_bpf_set_in_ends(&fa);				\
 									\
 		fa.opcode |= FUSE_PREFILTER;				\
+		fa.backing_inode = fuse_inode->backing_inode;		\
 		bpf_next = fuse_inode->bpf ?				\
 			bpf_prog_run(fuse_inode->bpf, &fa) :		\
 			BPF_FUSE_CONTINUE;				\

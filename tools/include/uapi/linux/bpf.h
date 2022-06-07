@@ -6271,6 +6271,7 @@ struct __bpf_fuse_arg {
 };
 
 struct __bpf_fuse_args {
+	struct inode *backing_inode;
 	__u64 nodeid;
 	__u32 opcode;
 	__u32 error_in;
