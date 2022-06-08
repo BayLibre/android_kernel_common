@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acbb86b5_5c80742a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-08T21:29:50Z",
+      "side": 1,
+      "message": "Oops thanks! Done",
+      "parentUuid": "d01fa167_bf27381d",
+      "revId": "2e8dc6e9ecbfdc17b3f43afed822bc945fedc260",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cff1f856_9e0ac229",
@@ -96,6 +114,30 @@
       "side": 1,
       "message": "even if it is true that this is safe (at least right now), it seems better to go ahead and lock so future maintainers aren\u0027t scratching their head trying to convince themselves that no lock is needed. This lock is not going to be heavily contended and only needs to be acquired here in the \"is_nested\" case so I don\u0027t think there is any performance argument to skip locking.",
       "parentUuid": "3003fe9e_ae3838cf",
+      "range": {
+        "startLine": 3567,
+        "startChar": 11,
+        "endLine": 3567,
+        "endChar": 21
+      },
+      "revId": "2e8dc6e9ecbfdc17b3f43afed822bc945fedc260",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "422d9b99_6c58147c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3567,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-08T21:29:50Z",
+      "side": 1,
+      "message": "Yeah that\u0027s true. I\u0027ve added the lock to prevent confusion and possible issues with future changes.",
+      "parentUuid": "fb95cc32_9480436d",
       "range": {
         "startLine": 3567,
         "startChar": 11,
