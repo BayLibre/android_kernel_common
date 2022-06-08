@@ -63,6 +63,30 @@
       },
       "revId": "2e8dc6e9ecbfdc17b3f43afed822bc945fedc260",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb95cc32_9480436d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3567,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-08T20:37:42Z",
+      "side": 1,
+      "message": "even if it is true that this is safe (at least right now), it seems better to go ahead and lock so future maintainers aren\u0027t scratching their head trying to convince themselves that no lock is needed. This lock is not going to be heavily contended and only needs to be acquired here in the \"is_nested\" case so I don\u0027t think there is any performance argument to skip locking.",
+      "parentUuid": "3003fe9e_ae3838cf",
+      "range": {
+        "startLine": 3567,
+        "startChar": 11,
+        "endLine": 3567,
+        "endChar": 21
+      },
+      "revId": "2e8dc6e9ecbfdc17b3f43afed822bc945fedc260",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
