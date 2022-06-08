@@ -382,6 +382,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcb69fee_d26b0c54",
+        "filename": "drivers/input/evdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-08T16:19:55Z",
+      "side": 1,
+      "message": "Going back to Greg\u0027s original comment in this thread: \"you should pass in client and event and use whatever fields you want out of it.  No need to split it out.\" Please change this to:\n\n  trace_android_vh_pass_input_event(client, event);",
+      "parentUuid": "d8fa2e36_b651229f",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 79
+      },
+      "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31bb50f8_0736fc57",
         "filename": "include/trace/hooks/evdev.h",
         "patchSetId": 2
