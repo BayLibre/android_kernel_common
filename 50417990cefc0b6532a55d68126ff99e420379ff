@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59f0fecd_4439a045",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-08T20:23:24Z",
+      "side": 1,
+      "message": "The patch also fails to build (BUILD_CONFIG\u003dcommon/build.config.gki.x86_64 build/build.sh -j40) with these errors:\n\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/mm/filemap.c:3102:2: error: implicit declaration of function \u0027trace_android_vh_filemap_fault_get_page\u0027 [-Werror,-Wimplicit-function-declaration]\n        trace_android_vh_filemap_fault_get_page(vmf, \u0026page, \u0026retry);\n        ^\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/mm/filemap.c:3232:3: error: implicit declaration of function \u0027trace_android_vh_filemap_fault_cache_page\u0027 [-Werror,-Wimplicit-function-declaration]\n                trace_android_vh_filemap_fault_cache_page(vmf, page);\n                ^\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/mm/filemap.c:3232:3: note: did you mean \u0027trace_android_vh_filemap_fault_get_page\u0027?\n/usr/local/google/buildbot/src/android/common-android13-5.15/common/mm/filemap.c:3102:2: note: \u0027trace_android_vh_filemap_fault_get_page\u0027 declared here\n        trace_android_vh_filemap_fault_get_page(vmf, \u0026page, \u0026retry);\n        ^",
+      "revId": "50417990cefc0b6532a55d68126ff99e420379ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
