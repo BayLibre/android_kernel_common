@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aed03a6a_fcd1b132",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-06-08T01:17:20Z",
+      "side": 1,
+      "message": "Add \"Bug: 160885805\" for dm-default-key",
+      "revId": "40aea5f43bfa8141cbb81b430a5c5762cac7ebae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0312b190_e8a42110",
+        "filename": "drivers/md/dm-default-key.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-06-08T01:17:20Z",
+      "side": 1,
+      "message": "```\n#else\n#define default_key_report_zones NULL\n#endif\n```\n\nThen the `#ifdef` below would be unnecessary, since `DM_TARGET_ZONED_HM` is defined to 0 when `!CONFIG_BLK_DEV_ZONED`.",
+      "revId": "40aea5f43bfa8141cbb81b430a5c5762cac7ebae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
