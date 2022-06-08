@@ -178,6 +178,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0e8e67d4_f8851301",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1903606
+      },
+      "writtenOn": "2022-06-08T19:43:18Z",
+      "side": 1,
+      "message": "Few points I want add here (already mentioned in bug earlier):\n\n1. All thermal sensor drivers those monitor these critical trip violation are present in kernel. So we have to monitor this violation interrupt from kernel,  propagate this violation event to userspace by some other thermal interface. The userspace has to lisen to this event, do some sanity check and process shutdown in userspace context. These all call flow has major concern over latency. More over this thermal shutdown is the last mitigation which SW does. By the time this situation arrives, system will be already running with minimum cpu core with lowest operating level (mostly single core with lowest cpu frequency) due to prior passive thermal mitigation. It adds extra latencies to above mentioned callflow. \n\n2.We had issues in previous target where user space sequence was taking longer and  thermal runaway would occur which is  major concern over device thermal reliability.\n\n3. So We are looking for shortest path to trigger thermal graceful shutdown. Kernel orderly_poweroff is used for thermal critical shutdown in other Linux OS like LE, chrome etc. till now.",
+      "parentUuid": "e3d6012d_908608e0",
+      "revId": "89bbcd1f6be04b38f8e14951d3323b9abe1e14cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "853ba1e5_addcb502",
         "filename": "kernel/umh.c",
         "patchSetId": 3
