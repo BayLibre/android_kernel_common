@@ -358,6 +358,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8fa2e36_b651229f",
+        "filename": "drivers/input/evdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1765456
+      },
+      "writtenOn": "2022-06-08T04:58:39Z",
+      "side": 1,
+      "message": "What exactly do you mean by \"handle system resources\"?\n -\u003e The system resources that I mentioned are \"CPU Frequency, GPU Frequency, DDR \n Clock, Bus Clock, CPU Low Power Mode, Schedule Parameters, Governor Policy\" etc.\n Literally, I handle system resources based on input scenarios.\n We already know which scenarios generates how much heavy load to the system through our experiences.\n So we have to handle system resources properly.\n\nThis is an input event, why can\u0027t you do all of this from userspace when you get the input event there?\n -\u003e The reason is \"It\u0027s very slow\" in userspace.\n If I do this in userspace, it would be spec out of verification test which means device input responsiveness delayed.\n When I test it between UserSpace and Kernel Side, Difference of react time is more than 100ms.",
+      "parentUuid": "c74bd08e_49920c43",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 79
+      },
+      "revId": "c26e820dee561f223c7f0ec28fe326145a9b8164",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31bb50f8_0736fc57",
         "filename": "include/trace/hooks/evdev.h",
         "patchSetId": 2
