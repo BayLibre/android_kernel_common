@@ -39,6 +39,30 @@
       },
       "revId": "2e8dc6e9ecbfdc17b3f43afed822bc945fedc260",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3003fe9e_ae3838cf",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3567,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-06-08T12:49:33Z",
+      "side": 1,
+      "message": "I left this out of the lock intentionally. I believe this section is already protected as the only possible incoming caller (nested transaction) is on the wait_queue waiting for this reply. Any other callers would be either redirected to a different waiting thread or will use the proc queue.",
+      "parentUuid": "cff1f856_9e0ac229",
+      "range": {
+        "startLine": 3567,
+        "startChar": 11,
+        "endLine": 3567,
+        "endChar": 21
+      },
+      "revId": "2e8dc6e9ecbfdc17b3f43afed822bc945fedc260",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
