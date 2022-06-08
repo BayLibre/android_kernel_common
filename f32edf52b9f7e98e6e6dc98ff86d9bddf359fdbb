@@ -99,6 +99,24 @@
       "parentUuid": "9e628e34_6881afec",
       "revId": "f32edf52b9f7e98e6e6dc98ff86d9bddf359fdbb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "767c656c_8db2c8dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-06-08T17:53:01Z",
+      "side": 1,
+      "message": "Upstreaming metadata encryption support is not currently staffed.  It is owned by Android Platform Security but we\u0027re busy with other projects.  The path forward is either to continue Satya\u0027s work on filesystem-native metadata encryption which you linked to, or find a way to make block-level support for this acceptable.  For the latter, see Christoph\u0027s comments in the thread https://lore.kernel.org/dm-devel/1642097341-6521-1-git-send-email-israelr@nvidia.com/T/#u.\n\nThere also may be a path forward for upstreaming a dm target that\u0027s like dm-default-key but without the support for the filesystem overriding the encryption.  A.k.a., basically dm-crypt with inline encryption support.  That would eliminate some of the diff with upstream but not all of it.",
+      "parentUuid": "e89920ba_965b479f",
+      "revId": "f32edf52b9f7e98e6e6dc98ff86d9bddf359fdbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
