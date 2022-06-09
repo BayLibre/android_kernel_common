@@ -77,6 +77,7 @@
   blk_rq_map_user
   blk_rq_map_user_iov
   blk_rq_unmap_user
+  block_class
   blocking_notifier_call_chain
   blocking_notifier_chain_register
   blocking_notifier_chain_unregister
@@ -290,6 +291,7 @@
   del_timer_sync
   destroy_workqueue
   dev_change_flags
+  dev_change_name
   dev_coredumpm
   dev_driver_string
   _dev_err
@@ -1136,6 +1138,7 @@
   mutex_lock_interruptible
   mutex_trylock
   mutex_unlock
+  name_to_dev_t
   neigh_destroy
   neigh_resolve_output
   netdev_alert
@@ -1249,6 +1252,7 @@
   of_thermal_get_trip_points
   of_thermal_is_trip_valid
   of_translate_address
+  of_update_property
   oops_in_progress
   page_endio
   page_mapping
