@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66fe3a1c_863fd131",
+        "filename": "kernel/umh.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-09T00:50:04Z",
+      "side": 1,
+      "message": "If !CONFIG_STATUS_USERMODEHELPER this doesn\u0027t do anything (since the path was already set at line 401). Would it be better to move this inside the CONFIG_STATIC_USERMODEHELPER_PATH\u003dy block? Then it could be:\n\n  #ifdef CONFIG_STATIC_USERMODEHELPER\n        sub_info-\u003epath \u003d check_usermodehelper_supported_commands(path) ?\n                                             path :\n\t                                     CONFIG_STATIC_USERMODEHELPER_PATH;\n  #else\n\tsub_info-\u003epath \u003d path;\n  #endif",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 0
+      },
+      "revId": "c555553a40d6795e0c5d18b8ee94ac516a0aef09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
