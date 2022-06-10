@@ -185,6 +185,9 @@ DECLARE_HOOK(android_vh_add_nr_swap_pages,
 DECLARE_HOOK(android_vh_dec_nr_swap_pages,
 	TP_PROTO(struct swap_info_struct *si, bool *skip),
 	TP_ARGS(si, skip));
+DECLARE_HOOK(android_vh_unuse_swap_page,
+	TP_PROTO(struct swap_info_struct *si, struct page *page),
+	TP_ARGS(si, page));
 DECLARE_HOOK(android_vh_enable_swap_info,
 	TP_PROTO(struct swap_info_struct *p, bool enable, bool *skip),
 	TP_ARGS(p, enable, skip));
