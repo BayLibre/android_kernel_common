@@ -148,6 +148,9 @@ DECLARE_HOOK(android_vh_add_anon_rmap,
 DECLARE_HOOK(android_vh_waiting_for_page_migration,
 	TP_PROTO(struct page *page),
 	TP_ARGS(page));
+DECLARE_HOOK(android_vh_migrate_page_states,
+	TP_PROTO(struct page *page, struct page *newpage),
+	TP_ARGS(page, newpage));
 DECLARE_HOOK(android_vh_set_page_reclaim_type,
 	TP_PROTO(struct mm_struct *mm, struct page *page),
 	TP_ARGS(mm, page));
