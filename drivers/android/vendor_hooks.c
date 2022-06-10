@@ -425,4 +425,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_inactive_is_low);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_snapshot_refaults);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_add_nr_swap_pages);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dec_nr_swap_pages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_unuse_swap_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_swap_info);
