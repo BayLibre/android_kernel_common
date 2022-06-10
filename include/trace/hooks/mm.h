@@ -163,6 +163,9 @@ DECLARE_HOOK(android_vh_update_swap_ref_cnt,
 DECLARE_HOOK(android_vh_count_swpout_vm_event,
 	TP_PROTO(struct swap_info_struct *sis, struct page *page, bool *skip),
 	TP_ARGS(sis, page, skip));
+DECLARE_HOOK(android_vh_free_swap_slot,
+	TP_PROTO(swp_entry_t entry, struct swap_info_struct *sis, bool *skip),
+	TP_ARGS(entry, sis, skip));
 DECLARE_HOOK(android_vh_get_swap_page,
 	TP_PROTO(struct page *page, bool hotness, swp_entry_t *entry, bool *skip),
 	TP_ARGS(page, hotness, entry, skip));

@@ -1345,12 +1345,16 @@ static unsigned char __swap_entry_free(struct swap_info_struct *p,
 	struct swap_cluster_info *ci;
 	unsigned long offset = swp_offset(entry);
 	unsigned char usage;
+	bool skip = false;
 
 	ci = lock_cluster_or_swap_info(p, offset);
 	usage = __swap_entry_free_locked(p, offset, 1);
 	unlock_cluster_or_swap_info(p, ci);
-	if (!usage)
-		free_swap_slot(entry);
+	if (!usage) {
+		trace_android_vh_free_swap_slot(entry, p, &skip);
+		if (!skip)
+			free_swap_slot(entry);
+	}
 
 	return usage;
 }
@@ -1398,6 +1402,7 @@ void put_swap_page(struct page *page, swp_entry_t entry)
 	unsigned int i, free_entries = 0;
 	unsigned char val;
 	int size = swap_entry_size(thp_nr_pages(page));
+	bool skip = false;
 
 	si = _swap_info_get(entry);
 	if (!si)
@@ -1426,7 +1431,10 @@ void put_swap_page(struct page *page, swp_entry_t entry)
 	for (i = 0; i < size; i++, entry.val++) {
 		if (!__swap_entry_free_locked(si, offset + i, SWAP_HAS_CACHE)) {
 			unlock_cluster_or_swap_info(si, ci);
-			free_swap_slot(entry);
+			skip = false;
+			trace_android_vh_free_swap_slot(entry, si, &skip);
+			if (!skip)
+				free_swap_slot(entry);
 			if (i == size - 1)
 				return;
 			lock_cluster_or_swap_info(si, offset);
