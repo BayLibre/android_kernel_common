@@ -68,8 +68,12 @@
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_send_sig_info);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_finish);
+<<<<<<< HEAD   (c3cf00 UPSTREAM: ALSA: virtio: Fix "Coverity: virtsnd_kctl_tlv_op())
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_blocks_on_rtmutex);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rtmutex_waiter_prio);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_init);
+>>>>>>> CHANGE (bcf27b ANDROID: mutex: Add vendor hook to init mutex oem data.)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rtmutex_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rtmutex_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_opt_spin_start);
