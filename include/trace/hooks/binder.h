@@ -10,8 +10,9 @@
  * Following tracepoints are not exported in tracefs and provide a
  * mechanism for vendor modules to hook and extend functionality
  */
+#include <linux/sched.h> /* struct task_struct */
+#include <uapi/linux/android/binder.h> /* struct binder_transaction_data */
 struct binder_transaction;
-struct task_struct;
 DECLARE_HOOK(android_vh_binder_transaction_init,
 	TP_PROTO(struct binder_transaction *t),
 	TP_ARGS(t));
@@ -23,7 +24,6 @@ DECLARE_HOOK(android_vh_binder_restore_priority,
 	TP_ARGS(t, task));
 struct binder_proc;
 struct binder_thread;
-struct binder_transaction_data;
 DECLARE_HOOK(android_vh_binder_wakeup_ilocked,
 	TP_PROTO(struct task_struct *task, bool sync, struct binder_proc *proc),
 	TP_ARGS(task, sync, proc));
