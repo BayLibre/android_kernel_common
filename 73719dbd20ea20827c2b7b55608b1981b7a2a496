@@ -16,6 +16,24 @@
       "message": "Since they are not restricted hooks, \"rvh\" --\u003e \"vh\"",
       "revId": "73719dbd20ea20827c2b7b55608b1981b7a2a496",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df685b7a_38253650",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 2040,
+      "author": {
+        "id": 1948715
+      },
+      "writtenOn": "2022-06-10T09:15:54Z",
+      "side": 1,
+      "message": "This hook needs to be restricted as the additional vendor handling need to perform operations (such as wait_for_completion) in non-atomic context.",
+      "parentUuid": "4a3a96e6_388cd3ed",
+      "revId": "73719dbd20ea20827c2b7b55608b1981b7a2a496",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
