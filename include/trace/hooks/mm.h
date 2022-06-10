@@ -179,6 +179,9 @@ DECLARE_HOOK(android_vh_unuse_swap_page,
 DECLARE_HOOK(android_vh_init_swap_info_struct,
 	TP_PROTO(struct swap_info_struct *p, struct plist_head *swap_avail_heads),
 	TP_ARGS(p, swap_avail_heads));
+DECLARE_HOOK(android_vh_si_swapinfo,
+	TP_PROTO(struct swap_info_struct *si, unsigned long *nr_to_be_unused, bool *skip),
+	TP_ARGS(si, nr_to_be_unused, skip));
 DECLARE_HOOK(android_vh_alloc_si,
 	TP_PROTO(struct swap_info_struct **p, bool *skip),
 	TP_ARGS(p, skip));
