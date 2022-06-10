@@ -3459,12 +3459,15 @@ void si_swapinfo(struct sysinfo *val)
 {
 	unsigned int type;
 	unsigned long nr_to_be_unused = 0;
+	bool skip = false;
 
 	spin_lock(&swap_lock);
 	for (type = 0; type < nr_swapfiles; type++) {
 		struct swap_info_struct *si = swap_info[type];
 
-		if ((si->flags & SWP_USED) && !(si->flags & SWP_WRITEOK))
+		skip = false;
+		trace_android_vh_si_swapinfo(si, &nr_to_be_unused, &skip);
+		if (!skip && (si->flags & SWP_USED) && !(si->flags & SWP_WRITEOK))
 			nr_to_be_unused += si->inuse_pages;
 	}
 	val->freeswap = atomic_long_read(&nr_swap_pages) + nr_to_be_unused;
