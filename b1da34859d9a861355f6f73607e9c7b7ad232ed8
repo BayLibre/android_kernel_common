@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc6c3ea_46876cf7",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-11T11:35:55Z",
+      "side": 1,
+      "message": "We have removed this change, instead export the function.",
+      "parentUuid": "30b38334_48bc05e4",
+      "range": {
+        "startLine": 205,
+        "startChar": 2,
+        "endLine": 205,
+        "endChar": 67
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ccc406c_8481301a",
@@ -142,6 +166,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd2d787d_8a749b57",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2025,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-11T11:35:55Z",
+      "side": 1,
+      "message": "We have rename this hook as you suggest.",
+      "parentUuid": "52c37402_a9213b4f",
+      "range": {
+        "startLine": 2025,
+        "startChar": 2,
+        "endLine": 2025,
+        "endChar": 31
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "073c94d6_9374af9c",
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "It is used to add nr_swap_pages and total_swap_pages.",
       "parentUuid": "073c94d6_9374af9c",
+      "range": {
+        "startLine": 2654,
+        "startChar": 1,
+        "endLine": 2654,
+        "endChar": 41
+      },
+      "revId": "b1da34859d9a861355f6f73607e9c7b7ad232ed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50b8107c_ba87c202",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2654,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-11T11:35:55Z",
+      "side": 1,
+      "message": "This is a pretty vague name. We have rename this hook to trace_android_vh_enable_swap_info",
+      "parentUuid": "37d859ec_a5df4902",
       "range": {
         "startLine": 2654,
         "startChar": 1,
