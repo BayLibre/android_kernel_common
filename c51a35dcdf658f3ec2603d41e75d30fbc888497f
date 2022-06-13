@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef815881_6a20abfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-06-13T11:00:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ed5f0737_0614aa15",
+      "revId": "c51a35dcdf658f3ec2603d41e75d30fbc888497f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51ec4674_2447c671",
@@ -115,6 +133,30 @@
       "side": 1,
       "message": "That would be nice. However, once I try to add internal headers I run into trouble with things like kernel/sched.h being seen multiple times but lacking header protection \u003d\u003e redefinition errors.",
       "parentUuid": "960fd650_95d13494",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "c51a35dcdf658f3ec2603d41e75d30fbc888497f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5569c54_cb2aa7fb",
+        "filename": "include/trace/hooks/ufshcd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-06-13T11:00:40Z",
+      "side": 1,
+      "message": "that should be a fix we can send upstream and apply locally as well, right?",
+      "parentUuid": "79b35e68_318eaf11",
       "range": {
         "startLine": 12,
         "startChar": 7,
