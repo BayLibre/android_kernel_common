@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed5f0737_0614aa15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-06-13T10:04:51Z",
+      "side": 1,
+      "message": "\u003e 1) some fwd declares are not resolved, is it because this is WIP?\n\nYes and no. It\u0027s also because I don\u0027t know if/how some them can be done.\n\n\u003e 2) can we move the #includes to the top following usual convention?\n\nI\u0027ll move them up but not past any preprocessor directive or the big vendor hook comment.\n\nMy current script works but doesn\u0027t handle multi line preprocessor directives.",
+      "parentUuid": "ac038965_1d5be8c0",
+      "revId": "c51a35dcdf658f3ec2603d41e75d30fbc888497f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51ec4674_2447c671",
         "filename": "include/trace/hooks/ufshcd.h",
         "patchSetId": 2
