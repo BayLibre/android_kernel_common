@@ -235,6 +235,8 @@ struct signal_struct {
 						 * and may have inconsistent
 						 * permissions.
 						 */
+
+	ANDROID_OEM_DATA_ARRAY(1, 4);
 } __randomize_layout;
 
 /*
