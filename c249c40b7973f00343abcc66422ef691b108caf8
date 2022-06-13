@@ -34,6 +34,24 @@
       "parentUuid": "666ffc5b_12f9a332",
       "revId": "c249c40b7973f00343abcc66422ef691b108caf8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4682430e_f8c8f251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-06-13T18:10:30Z",
+      "side": 1,
+      "message": "Thanks for reporting it, Qais!\n\nAs you found, it needs additional patches(e.g., mm/vmstat: convert NUMA statistics to basic NUMA counters) to be fixed and additional patches introduced several bugs when I checked upstream history so we need to backport more and more.\n\nConsidering android-13-5.10 doesn\u0027t support CONFIG_NUMA, it would be more maintenance overhead rather than benefit so I\u0027d like to just leave it.\n(If it would be problem later somehow on CONFIG_NUMA, we may apply you patch later)\n\nThanks.",
+      "parentUuid": "e6bad1aa_78d0220a",
+      "revId": "c249c40b7973f00343abcc66422ef691b108caf8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
