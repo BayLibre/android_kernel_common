@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b8c62c9_7f2eabdf",
+        "filename": "kernel/umh.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1878631
+      },
+      "writtenOn": "2022-06-13T21:46:35Z",
+      "side": 1,
+      "message": "Currently, none of these binaries exist on a Android build. In fact, \"/sbin\" itself is not present. So to get \"run_cmd(poweroff_cmd)\" work on Android build so that we can invoke orderly_poweroff(), I\u0027ve made the following change.\n\ndiff --git a/kernel/reboot.c b/kernel/reboot.c\nindex 957ef52..7ff9639d 100644\n--- a/kernel/reboot.c\n+++ b/kernel/reboot.c\n@@ -419,7 +419,7 @@ void ctrl_alt_del(void)\nkill_cad_pid(SIGINT, 1);\n}\n-char poweroff_cmd[POWEROFF_CMD_PATH_LEN] \u003d \"/sbin/poweroff\";\n+char poweroff_cmd[POWEROFF_CMD_PATH_LEN] \u003d \"/system/bin/reboot -p\";",
+      "revId": "c555553a40d6795e0c5d18b8ee94ac516a0aef09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "66fe3a1c_863fd131",
