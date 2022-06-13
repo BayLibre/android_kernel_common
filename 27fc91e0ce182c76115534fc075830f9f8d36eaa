@@ -16,6 +16,29 @@
       "message": "KABI fields are exclusively for LTS updates. Use ANDROID_OEM_DATA() instead",
       "revId": "27fc91e0ce182c76115534fc075830f9f8d36eaa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b9d3d65_b68c5cd8",
+        "filename": "include/linux/blk_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-06-13T17:28:31Z",
+      "side": 1,
+      "message": "this is never to be used by any vendor, please just reserve a pointer for you to use, use the correct macro.",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 40
+      },
+      "revId": "27fc91e0ce182c76115534fc075830f9f8d36eaa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
