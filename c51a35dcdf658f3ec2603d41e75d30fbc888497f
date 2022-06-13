@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79b35e68_318eaf11",
+        "filename": "include/trace/hooks/ufshcd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-06-13T10:02:47Z",
+      "side": 1,
+      "message": "That would be nice. However, once I try to add internal headers I run into trouble with things like kernel/sched.h being seen multiple times but lacking header protection \u003d\u003e redefinition errors.",
+      "parentUuid": "960fd650_95d13494",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "c51a35dcdf658f3ec2603d41e75d30fbc888497f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7192a93_0f84097c",
         "filename": "include/trace/hooks/ufshcd.h",
         "patchSetId": 2
@@ -114,6 +138,24 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "e7192a93_0f84097c",
+      "revId": "c51a35dcdf658f3ec2603d41e75d30fbc888497f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72f56264_f3773f41",
+        "filename": "include/trace/hooks/ufshcd.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-06-13T10:02:47Z",
+      "side": 1,
+      "message": "Done. It wasn\u0027t too much effort to adapt the script to look for safe insertion points and group / order the changes at those places.",
+      "parentUuid": "18bf0ec7_32e74bd2",
       "revId": "c51a35dcdf658f3ec2603d41e75d30fbc888497f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
