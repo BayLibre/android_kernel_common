@@ -9,10 +9,16 @@
  * Following tracepoints are not exported in tracefs and provide a
  * mechanism for vendor modules to hook and extend functionality
  */
-#include <linux/cgroup-defs.h> /* struct cgroup_subsys_state */
-#include <linux/energy_model.h> /* struct em_perf_domain */
-#include <linux/sched.h> /* enum uclamp_id, struct sched_entity, struct task_struct, struct uclamp_se */
-#include <uapi/linux/sched/types.h> /* struct sched_attr */
+/* struct cgroup_taskset */
+#include <../kernel/cgroup/cgroup-internal.h>
+/* struct cgroup_subsys_state */
+#include <linux/cgroup-defs.h>
+/* struct em_perf_domain */
+#include <linux/energy_model.h>
+/* enum uclamp_id, struct sched_entity, struct task_struct, struct uclamp_se */
+#include <linux/sched.h>
+/* struct sched_attr */
+#include <uapi/linux/sched/types.h>
 DECLARE_RESTRICTED_HOOK(android_rvh_select_task_rq_fair,
 	TP_PROTO(struct task_struct *p, int prev_cpu, int sd_flag, int wake_flags, int *new_cpu),
 	TP_ARGS(p, prev_cpu, sd_flag, wake_flags, new_cpu), 1);
@@ -229,7 +235,6 @@ DECLARE_RESTRICTED_HOOK(android_rvh_update_misfit_status,
 	TP_PROTO(struct task_struct *p, struct rq *rq, bool *need_update),
 	TP_ARGS(p, rq, need_update), 1);
 
-struct cgroup_taskset;
 DECLARE_RESTRICTED_HOOK(android_rvh_cpu_cgroup_attach,
 	TP_PROTO(struct cgroup_taskset *tset),
 	TP_ARGS(tset), 1);

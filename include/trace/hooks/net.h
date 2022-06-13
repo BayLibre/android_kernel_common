@@ -8,9 +8,12 @@
 #define _TRACE_HOOK_NET_VH_H
 #include <trace/hooks/vendor_hooks.h>
 
-#include <linux/netdevice.h> /* struct packet_type */
-#include <linux/skbuff.h> /* struct sk_buff */
-#include <linux/types.h> /* struct list_head */
+/* struct packet_type */
+#include <linux/netdevice.h>
+/* struct sk_buff */
+#include <linux/skbuff.h>
+/* struct list_head */
+#include <linux/types.h>
 DECLARE_HOOK(android_vh_ptype_head,
 	TP_PROTO(const struct packet_type *pt, struct list_head *vendor_pt),
 	TP_ARGS(pt, vendor_pt));

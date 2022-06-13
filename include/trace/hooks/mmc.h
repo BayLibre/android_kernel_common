@@ -6,8 +6,10 @@
 #if !defined(_TRACE_HOOK_MMC_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _TRACE_HOOK_MMC_H
 #include <trace/hooks/vendor_hooks.h>
-#include <linux/blk-mq.h> /* struct blk_mq_queue_data */
-#include <linux/mmc/host.h> /* struct mmc_host */
+/* struct blk_mq_queue_data */
+#include <linux/blk-mq.h>
+/* struct mmc_host */
+#include <linux/mmc/host.h>
 
 /*
  * Following tracepoints are not exported in tracefs and provide a

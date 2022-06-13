@@ -11,7 +11,8 @@
 
 #include <trace/hooks/vendor_hooks.h>
 
-#include <linux/iova.h> /* struct iova_domain */
+/* struct iova_domain */
+#include <linux/iova.h>
 DECLARE_RESTRICTED_HOOK(android_rvh_iommu_setup_dma_ops,
 	TP_PROTO(struct device *dev, u64 dma_base, u64 dma_limit),
 	TP_ARGS(dev, dma_base, dma_limit), 1);

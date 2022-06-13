@@ -9,10 +9,12 @@
  * Following tracepoints are not exported in tracefs and provide a
  * mechanism for vendor modules to hook and extend functionality
  */
-#include <linux/blkdev.h> /* struct request */
-#include <scsi/scsi_device.h> /* struct scsi_device */
-struct ufs_hba;
-struct ufshcd_lrb;
+/* struct ufs_hba, struct ufshcd_lrb, struct uic_command */
+#include <../drivers/scsi/ufs/ufshcd.h>
+/* struct request */
+#include <linux/blkdev.h>
+/* struct scsi_device */
+#include <scsi/scsi_device.h>
 
 DECLARE_HOOK(android_vh_ufs_fill_prdt,
 	TP_PROTO(struct ufs_hba *hba, struct ufshcd_lrb *lrbp,
@@ -36,7 +38,6 @@ DECLARE_HOOK(android_vh_ufs_compl_command,
 	TP_PROTO(struct ufs_hba *hba, struct ufshcd_lrb *lrbp),
 	TP_ARGS(hba, lrbp));
 
-struct uic_command;
 DECLARE_HOOK(android_vh_ufs_send_uic_command,
 	TP_PROTO(struct ufs_hba *hba, struct uic_command *ucmd, int str_t),
 	TP_ARGS(hba, ucmd, str_t));
