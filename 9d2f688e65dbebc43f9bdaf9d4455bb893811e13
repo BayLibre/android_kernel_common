@@ -1,5 +1,69 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3457b5c_93bd6db4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082649
+      },
+      "writtenOn": "2022-06-13T20:41:51Z",
+      "side": 1,
+      "message": "This is the only place I could find to comment on this out-of-tree series. :)",
+      "revId": "9d2f688e65dbebc43f9bdaf9d4455bb893811e13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23072fd8_57137ba0",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1082649
+      },
+      "writtenOn": "2022-06-13T20:41:51Z",
+      "side": 1,
+      "message": "This should be using ERR_CAST() instead of an open-coded cast.\n\nhttps://github.com/ClangBuiltLinux/linux/issues/1652",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 47
+      },
+      "revId": "9d2f688e65dbebc43f9bdaf9d4455bb893811e13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eabea00_75084891",
+        "filename": "fs/incfs/data_mgmt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1082649
+      },
+      "writtenOn": "2022-06-13T20:41:51Z",
+      "side": 1,
+      "message": "This should also be using ERR_CAST() instead of an open-coded cast.\n\nhttps://github.com/ClangBuiltLinux/linux/issues/1652",
+      "range": {
+        "startLine": 257,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 34
+      },
+      "revId": "9d2f688e65dbebc43f9bdaf9d4455bb893811e13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
