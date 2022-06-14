@@ -232,7 +232,11 @@
 #define FSG_DRIVER_DESC		"Mass Storage Function"
 #define FSG_DRIVER_VERSION	"2009/09/11"
 
+#ifdef CONFIG_USB_CONFIGFS_F_ACC
+static const char fsg_string_interface[] = "Mass Storage android";
+#else
 static const char fsg_string_interface[] = "Mass Storage";
+#endif
 
 #include "storage_common.h"
 #include "f_mass_storage.h"
