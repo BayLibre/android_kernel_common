@@ -19,6 +19,7 @@
 #include <linux/workqueue.h>
 #include <linux/export.h>
 #include <linux/debugfs.h>
+#include <linux/dma-mapping.h>
 #include <sound/core.h>
 #include <sound/pcm.h>
 #include <sound/pcm_params.h>
@@ -28,6 +29,27 @@
 #include <sound/initval.h>
 
 #define DPCM_MAX_BE_USERS	8
+
+/* ASoC no host IO hardware */
+static const struct snd_pcm_hardware no_host_hardware = {
+	.info			= SNDRV_PCM_INFO_MMAP |
+				  SNDRV_PCM_INFO_MMAP_VALID |
+				  SNDRV_PCM_INFO_INTERLEAVED |
+				  SNDRV_PCM_INFO_PAUSE |
+				  SNDRV_PCM_INFO_RESUME,
+	.formats		= SNDRV_PCM_FMTBIT_S16_LE |
+				  SNDRV_PCM_FMTBIT_S32_LE,
+	.period_bytes_min	= PAGE_SIZE >> 2,
+	.period_bytes_max	= PAGE_SIZE >> 1,
+	.periods_min		= 2,
+	.periods_max		= 4,
+	/*
+	 * Increase the max buffer bytes as PAGE_SIZE bytes is
+	 * not enough to encompass all the scenarios sent by
+	 * userspapce.
+	 */
+	.buffer_bytes_max	= PAGE_SIZE * 4,
+};
 
 static inline const char *soc_cpu_dai_name(struct snd_soc_pcm_runtime *rtd)
 {
@@ -297,7 +319,17 @@ bool snd_soc_runtime_ignore_pmdown_time(struct snd_soc_pcm_runtime *rtd)
 int snd_soc_set_runtime_hwparams(struct snd_pcm_substream *substream,
 	const struct snd_pcm_hardware *hw)
 {
-	substream->runtime->hw = *hw;
+	struct snd_pcm_runtime *runtime = substream->runtime;
+	if (!runtime)
+		return 0;
+	runtime->hw.info = hw->info;
+	runtime->hw.formats = hw->formats;
+	runtime->hw.period_bytes_min = hw->period_bytes_min;
+	runtime->hw.period_bytes_max = hw->period_bytes_max;
+	runtime->hw.periods_min = hw->periods_min;
+	runtime->hw.periods_max = hw->periods_max;
+	runtime->hw.buffer_bytes_max = hw->buffer_bytes_max;
+	runtime->hw.fifo_size = hw->fifo_size;
 
 	return 0;
 }
@@ -746,6 +778,9 @@ static int soc_pcm_open(struct snd_pcm_substream *substream)
 
 	mutex_lock_nested(&rtd->card->pcm_mutex, rtd->card->pcm_subclass);
 
+	if (rtd->dai_link->no_host_mode == SND_SOC_DAI_LINK_NO_HOST)
+		snd_soc_set_runtime_hwparams(substream, &no_host_hardware);
+
 	ret = soc_pcm_components_open(substream);
 	if (ret < 0)
 		goto err;
@@ -932,6 +967,16 @@ static int soc_pcm_hw_params(struct snd_pcm_substream *substream,
 
 	mutex_lock_nested(&rtd->card->pcm_mutex, rtd->card->pcm_subclass);
 
+	/* perform any hw_params fixups */
+	if ((rtd->dai_link->no_host_mode == SND_SOC_DAI_LINK_NO_HOST) &&
+				rtd->dai_link->be_hw_params_fixup) {
+		ret = rtd->dai_link->be_hw_params_fixup(rtd,
+				params);
+		if (ret < 0)
+			dev_err(rtd->card->dev, "ASoC: fixup failed for %s\n",
+				rtd->dai_link->name);
+	}
+
 	ret = soc_pcm_params_symmetry(substream, params);
 	if (ret)
 		goto out;
@@ -979,6 +1024,19 @@ static int soc_pcm_hw_params(struct snd_pcm_substream *substream,
 		if(ret < 0)
 			goto out;
 
+	/* malloc a page for hostless IO */
+	if (rtd->dai_link->no_host_mode == SND_SOC_DAI_LINK_NO_HOST) {
+		substream->dma_buffer.dev.type = SNDRV_DMA_TYPE_DEV;
+		substream->dma_buffer.dev.dev = rtd->dev;
+		substream->dma_buffer.dev.dev->coherent_dma_mask =
+					DMA_BIT_MASK(sizeof(dma_addr_t) * 8);
+		substream->dma_buffer.private_data = NULL;
+
+		ret = snd_pcm_lib_malloc_pages(substream, PAGE_SIZE);
+		if (ret < 0)
+			goto out;
+	}
+
 		soc_pcm_set_dai_params(codec_dai, &codec_params);
 		snd_soc_dapm_update_dai(substream, &codec_params, codec_dai);
 	}
@@ -1005,6 +1063,8 @@ out:
 	mutex_unlock(&rtd->card->pcm_mutex);
 
 	if (ret < 0) {
+		if (rtd->dai_link->no_host_mode == SND_SOC_DAI_LINK_NO_HOST)
+			snd_pcm_lib_free_pages(substream);
 		soc_pcm_hw_clean(substream, 1);
 		dev_err(rtd->dev, "ASoC: %s() failed (%d)\n", __func__, ret);
 	}
@@ -2723,6 +2783,7 @@ int soc_new_pcm(struct snd_soc_pcm_runtime *rtd, int num)
 {
 	struct snd_soc_component *component;
 	struct snd_pcm *pcm;
+	struct snd_pcm_str *stream;
 	int ret = 0, playback = 0, capture = 0;
 	int i;
 
@@ -2750,6 +2811,22 @@ int soc_new_pcm(struct snd_soc_pcm_runtime *rtd, int num)
 		if (capture)
 			pcm->streams[SNDRV_PCM_STREAM_CAPTURE].substream->private_data = rtd;
 		goto out;
+	}
+
+	/* setup any hostless PCMs - i.e. no host IO is performed */
+	if (rtd->dai_link->no_host_mode) {
+		if (pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream) {
+			stream = &pcm->streams[SNDRV_PCM_STREAM_PLAYBACK];
+			stream->substream->hw_no_buffer = 1;
+			snd_soc_set_runtime_hwparams(stream->substream,
+						     &no_host_hardware);
+		}
+		if (pcm->streams[SNDRV_PCM_STREAM_CAPTURE].substream) {
+			stream = &pcm->streams[SNDRV_PCM_STREAM_CAPTURE];
+			stream->substream->hw_no_buffer = 1;
+			snd_soc_set_runtime_hwparams(stream->substream,
+						     &no_host_hardware);
+		}
 	}
 
 	/* ASoC PCM operations */
