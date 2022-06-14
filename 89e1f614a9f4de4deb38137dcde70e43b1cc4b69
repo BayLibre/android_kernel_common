@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f06bccd5_02489fdb",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-06-14T05:47:06Z",
+      "side": 1,
+      "message": "I took a quick look and didn\u0027t see any runtime CPU cost. The extra sysfs files will have some tiny memory impact.\n\nMy guess at it being dropped is that the config names sound like debug configs. But I\u0027m not sure why they were dropped. I guess that no one complained about it till now shows it was the right decision at that point.",
+      "parentUuid": "73a407d7_94cbdedc",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 15
+      },
+      "revId": "89e1f614a9f4de4deb38137dcde70e43b1cc4b69",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4360ccd7_cb82e15f",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-14T04:04:11Z",
       "side": 1,
       "message": "this is just for exposing the async sysfs right?",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 24
+      },
+      "revId": "89e1f614a9f4de4deb38137dcde70e43b1cc4b69",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f78e3ab_7930b317",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-06-14T05:47:06Z",
+      "side": 1,
+      "message": "yeah.",
+      "parentUuid": "4360ccd7_cb82e15f",
       "range": {
         "startLine": 72,
         "startChar": 0,
