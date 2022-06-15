@@ -22,6 +22,30 @@
       },
       "revId": "0260313d77b76cec51015872020b08758c3f1ecc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1921e1c9_08f03aaa",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1154,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-15T11:14:30Z",
+      "side": 1,
+      "message": "We have merge these three hooks into one hook trace_android_vh_account_nr_swap_pages() to update nr_swap_pages, as you suggested.\nWe also add a parameter(bool update_total_swap_pages) to represent that whether total_swap_pages needs to be updated too.",
+      "parentUuid": "1b90645f_6f0cf5df",
+      "range": {
+        "startLine": 1154,
+        "startChar": 3,
+        "endLine": 1154,
+        "endChar": 37
+      },
+      "revId": "0260313d77b76cec51015872020b08758c3f1ecc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
