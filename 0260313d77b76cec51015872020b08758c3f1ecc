@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b90645f_6f0cf5df",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1154,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-15T01:22:17Z",
+      "side": 1,
+      "message": "If you make the decisions about skipping to account the change only based on swap_info_struct, I would suggest to have only one vendor hook:\n```\ntrace_android_vh_account_nr_swap_pages(struct swap_info_struct *si, unsigned int nr_entries, bool *skip);\n```\n\nThen `trace_android_vh_add_nr_swap_pages(si, nr_entries, \u0026skip)` becomes `trace_android_vh_account_nr_swap_pages(si, nr_entries, \u0026skip)`, `trace_android_vh_dec_nr_swap_pages(si, \u0026skip)` becomes `trace_android_vh_account_nr_swap_pages(si, -1, \u0026skip)`, `trace_android_vh_enable_swap_info(p, true, \u0026skip)` becomes  `trace_android_vh_account_nr_swap_pages(p, p-\u003epages, \u0026skip)`, `trace_android_vh_enable_swap_info(p, false, \u0026skip)` becomes `trace_android_vh_account_nr_swap_pages(p, -p-\u003epages, \u0026skip)`.",
+      "range": {
+        "startLine": 1154,
+        "startChar": 3,
+        "endLine": 1154,
+        "endChar": 37
+      },
+      "revId": "0260313d77b76cec51015872020b08758c3f1ecc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
