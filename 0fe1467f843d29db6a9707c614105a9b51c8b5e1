@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f72828ef_de9e3f8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2022-06-15T02:38:58Z",
+      "side": 1,
+      "message": "This requirement is used for devices which support the Android AOA and mass storage. This is why I use \u0027ANDROID\u0027 tag. I will confirm whether the requirement can be modified.",
+      "parentUuid": "196f7b5d_e35b19e5",
+      "revId": "0fe1467f843d29db6a9707c614105a9b51c8b5e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8a406fa_2b99e429",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-14T16:26:22Z",
       "side": 1,
       "message": "Why do you use this config? This doesn\u0027t look related to mass_storage.",
+      "range": {
+        "startLine": 235,
+        "startChar": 7,
+        "endLine": 235,
+        "endChar": 32
+      },
+      "revId": "0fe1467f843d29db6a9707c614105a9b51c8b5e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2740294_7cbdb208",
+        "filename": "drivers/usb/gadget/function/f_mass_storage.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2022-06-15T02:38:58Z",
+      "side": 1,
+      "message": "It is a requirement from Android CDD 7.7.1.\n\nIf device implementations include a USB port and implement the AOA specification,\n[C-2-2] The USB mass storage class MUST include the string \"android\" at the end of the interface description iInterface string of the USB mass storage.\n\nThis is why I use this config.",
+      "parentUuid": "b8a406fa_2b99e429",
       "range": {
         "startLine": 235,
         "startChar": 7,
