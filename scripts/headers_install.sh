@@ -56,8 +56,9 @@ configs=$(sed -e '
 	P
 	D
 :check
-	s:^\(CONFIG_[[:alnum:]_]*\):\1\n:
-	t print
+# Comment out these check as a many LKL header files contain CONFIG_ macros.
+#	s:^\(CONFIG_[[:alnum:]_]*\):\1\n:
+#	t print
 	s:^[[:alnum:]_][[:alnum:]_]*::
 	s:^[^[:alnum:]_][^[:alnum:]_]*::
 	t check

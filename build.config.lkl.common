@@ -1,0 +1,25 @@
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.common
+
+# Overriding default configuration
+unset DTC=
+unset KCFLAGS=
+unset EXTRA_CMDS=
+unset IN_KERNEL_MODULES
+SKIP_CP_KERNEL_HDR=1
+
+# LKL needs ld for HERMETIC_TOOLCHAIN mode
+ADDITIONAL_HOST_TOOLS="ld zip"
+
+# Fuzzers needs C++ as well
+CXX=clang++
+
+OUT_DIR=$(readlink -m ${OUT_DIR:-${ROOT_DIR}/out})
+DIST_DIR=$(readlink -m ${DIST_DIR:-${OUT_DIR}/dist})
+
+INSTALL_PATH=${OUT_DIR}/${KERNEL_DIR}/tools/lkl
+MAKE_GOALS="vmlinux install"
+
+ARCH=lkl
+SUBARCH=x86
+LINUX_GCC_CROSS_COMPILE_PREBUILTS_HOST=${ROOT_DIR}/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8
+

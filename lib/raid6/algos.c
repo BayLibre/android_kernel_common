@@ -25,11 +25,13 @@ EXPORT_SYMBOL(raid6_empty_zero_page);
 #endif
 #endif
 
+void cpu_yield_to_irqs(void);
+
 struct raid6_calls raid6_call;
 EXPORT_SYMBOL_GPL(raid6_call);
 
 const struct raid6_calls * const raid6_algos[] = {
-#if defined(__i386__) && !defined(__arch_um__)
+#if defined(__i386__) && !defined(__arch_um__) && !defined(CONFIG_LKL)
 #ifdef CONFIG_AS_AVX512
 	&raid6_avx512x2,
 	&raid6_avx512x1,
@@ -43,7 +45,7 @@ const struct raid6_calls * const raid6_algos[] = {
 	&raid6_mmxx2,
 	&raid6_mmxx1,
 #endif
-#if defined(__x86_64__) && !defined(__arch_um__)
+#if defined(__x86_64__) && !defined(__arch_um__) && !defined(CONFIG_LKL)
 #ifdef CONFIG_AS_AVX512
 	&raid6_avx512x4,
 	&raid6_avx512x2,
@@ -169,6 +171,7 @@ static inline const struct raid6_calls *raid6_choose_gen(
 			while (time_before(jiffies,
 					    j1 + (1<<RAID6_TIME_JIFFIES_LG2))) {
 				(*algo)->gen_syndrome(disks, PAGE_SIZE, *dptrs);
+                                cpu_yield_to_irqs();
 				perf++;
 			}
 			preempt_enable();
