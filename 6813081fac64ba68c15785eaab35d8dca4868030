@@ -52,6 +52,23 @@
       "parentUuid": "c378baa5_0ecd6ad9",
       "revId": "6813081fac64ba68c15785eaab35d8dca4868030",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b35d26b4_b8197921",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2022-06-16T02:16:23Z",
+      "side": 1,
+      "message": "1.What do you mean exactly by \"block reason\" \nBlock reason is why the thread blocked in Uninterrupted Sleep.Through function(get_wchan) can get last function name.\n2.what will be done with this value in a driver?\nMoudle\u0027s function similar to tracepoint. We use it like tracepoint named trace_sched_blocked_reason.\n3.Why not submit your changes for this upstream already?\nBecause kernel has similar module(tracepoint).We do this function just want to reduce performance overhead when get similar information.",
+      "revId": "6813081fac64ba68c15785eaab35d8dca4868030",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
