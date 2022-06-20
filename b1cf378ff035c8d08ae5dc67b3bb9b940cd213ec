@@ -16,6 +16,24 @@
       "message": "This doesn\u0027t look correct. I\u0027m guessing this check is here for a reason?",
       "revId": "b1cf378ff035c8d08ae5dc67b3bb9b940cd213ec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff031892_a82271e9",
+        "filename": "drivers/i2c/i2c-core-base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1786831
+      },
+      "writtenOn": "2022-06-20T10:49:30Z",
+      "side": 1,
+      "message": "Yes. As I described in IssueTracker. \nhttps://issuetracker.google.com/issues/236300341\n\nFor example:\n\nIf we only assign value to bri-\u003escl_gpiod without assigning value to bri-\u003erecover_bus in I2C Adapter, this will cause i2c_recover_bus to not work.\nSo I think this check is useful. \n\nAs I said in IssueTracker the value of bri-\u003erecover_bus comes from I2C Adapter. If CONFIG_CFI_CLANG is enabled and this check is retained causes bri-\u003eset_scl to be empty. Because bri-\u003eset_scl is empty, dump happens here:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android13-5.15/drivers/i2c/i2c-core-base.c#217 \n\nAccording to my understanding, this check cannot take effect after enabling CONFIG_CFI_CLANG.\n\nSorry for replying late.",
+      "parentUuid": "c2789809_b09079fd",
+      "revId": "b1cf378ff035c8d08ae5dc67b3bb9b940cd213ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
