@@ -16,6 +16,24 @@
       "message": "This specific change breaks our build because we used to have a forward declaration for \u0027struct uclamp_se\u0027 which would be used by the vendor trace hook, and after this change we just include sched.h.\n\nThe definition of \u0027struct uclamp_se\u0027 in sched.h is guarded with an CONFIG_UCLAMP_TASK, a partial revert of Giuliano\u0027s change as such would get us going again:\n\ndiff --git a/include/trace/hooks/sched.h b/include/trace/hooks/sched.h\nindex 490859df19b5..91b1ed1c7c76 100644\n--- a/include/trace/hooks/sched.h\n+++ b/include/trace/hooks/sched.h\n@@ -327,6 +327,7 @@ DECLARE_HOOK(android_vh_irqtime_account_process_tick,\n        TP_PROTO(struct task_struct *p, struct rq *rq, int user_tick, int ticks),\n        TP_ARGS(p, rq, user_tick, ticks));\n\n+struct uclamp_se;\n DECLARE_RESTRICTED_HOOK(android_rvh_uclamp_eff_get,\n        TP_PROTO(struct task_struct *p, enum uclamp_id clamp_id,\n                 struct uclamp_se *uclamp_max, struct uclamp_se *uclamp_eff, int *ret),\n",
       "revId": "d5f809c84dc6c322e2650228fa60387f9fc38432",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8739167d_e02c3baf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-20T23:19:58Z",
+      "side": 1,
+      "message": "Should the whole hook declaration be conditional on CONFIG_UCLAMP_TASK then? Please submit a patch that solves your issue.",
+      "parentUuid": "d07b4054_1d767e11",
+      "revId": "d5f809c84dc6c322e2650228fa60387f9fc38432",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
