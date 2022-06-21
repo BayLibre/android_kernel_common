@@ -559,6 +559,110 @@ static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
 	return 0;
 }
 
+<<<<<<< HEAD   (517dc2 Merge 5.4.197 into android12-5.4-lts)
+=======
+static void armada_xp_mpic_smp_cpu_init(void)
+{
+	u32 control;
+	int nr_irqs, i;
+
+	control = readl(main_int_base + ARMADA_370_XP_INT_CONTROL);
+	nr_irqs = (control >> 2) & 0x3ff;
+
+	for (i = 0; i < nr_irqs; i++)
+		writel(i, per_cpu_int_base + ARMADA_370_XP_INT_SET_MASK_OFFS);
+
+	/* Clear pending IPIs */
+	writel(0, per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS);
+
+	/* Enable first 8 IPIs */
+	writel(IPI_DOORBELL_MASK, per_cpu_int_base +
+		ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
+
+	/* Unmask IPI interrupt */
+	writel(0, per_cpu_int_base + ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
+}
+
+static void armada_xp_mpic_perf_init(void)
+{
+	unsigned long cpuid;
+
+	/*
+	 * This Performance Counter Overflow interrupt is specific for
+	 * Armada 370 and XP. It is not available on Armada 375, 38x and 39x.
+	 */
+	if (!of_machine_is_compatible("marvell,armada-370-xp"))
+		return;
+
+	cpuid = cpu_logical_map(smp_processor_id());
+
+	/* Enable Performance Counter Overflow interrupts */
+	writel(ARMADA_370_XP_INT_CAUSE_PERF(cpuid),
+	       per_cpu_int_base + ARMADA_370_XP_INT_FABRIC_MASK_OFFS);
+}
+
+#ifdef CONFIG_SMP
+static void armada_mpic_send_doorbell(const struct cpumask *mask,
+				      unsigned int irq)
+{
+	int cpu;
+	unsigned long map = 0;
+
+	/* Convert our logical CPU mask into a physical one. */
+	for_each_cpu(cpu, mask)
+		map |= 1 << cpu_logical_map(cpu);
+
+	/*
+	 * Ensure that stores to Normal memory are visible to the
+	 * other CPUs before issuing the IPI.
+	 */
+	dsb();
+
+	/* submit softirq */
+	writel((map << 8) | irq, main_int_base +
+		ARMADA_370_XP_SW_TRIG_INT_OFFS);
+}
+
+static void armada_xp_mpic_reenable_percpu(void)
+{
+	unsigned int irq;
+
+	/* Re-enable per-CPU interrupts that were enabled before suspend */
+	for (irq = 0; irq < ARMADA_370_XP_MAX_PER_CPU_IRQS; irq++) {
+		struct irq_data *data;
+		int virq;
+
+		virq = irq_linear_revmap(armada_370_xp_mpic_domain, irq);
+		if (virq == 0)
+			continue;
+
+		data = irq_get_irq_data(virq);
+
+		if (!irq_percpu_is_enabled(virq))
+			continue;
+
+		armada_370_xp_irq_unmask(data);
+	}
+}
+
+static int armada_xp_mpic_starting_cpu(unsigned int cpu)
+{
+	armada_xp_mpic_perf_init();
+	armada_xp_mpic_smp_cpu_init();
+	armada_xp_mpic_reenable_percpu();
+	return 0;
+}
+
+static int mpic_cascaded_starting_cpu(unsigned int cpu)
+{
+	armada_xp_mpic_perf_init();
+	armada_xp_mpic_reenable_percpu();
+	enable_percpu_irq(parent_irq, IRQ_TYPE_NONE);
+	return 0;
+}
+#endif
+
+>>>>>>> BRANCH (9d6e67 Linux 5.4.198)
 static const struct irq_domain_ops armada_370_xp_mpic_irq_ops = {
 	.map = armada_370_xp_mpic_irq_map,
 	.xlate = irq_domain_xlate_onecell,
