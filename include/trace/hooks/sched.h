@@ -327,10 +327,12 @@ DECLARE_HOOK(android_vh_irqtime_account_process_tick,
 	TP_PROTO(struct task_struct *p, struct rq *rq, int user_tick, int ticks),
 	TP_ARGS(p, rq, user_tick, ticks));
 
+#ifdef CONFIG_UCLAMP_TASK
 DECLARE_RESTRICTED_HOOK(android_rvh_uclamp_eff_get,
 	TP_PROTO(struct task_struct *p, enum uclamp_id clamp_id,
 		 struct uclamp_se *uclamp_max, struct uclamp_se *uclamp_eff, int *ret),
 	TP_ARGS(p, clamp_id, uclamp_max, uclamp_eff, ret), 1);
+#endif
 
 DECLARE_RESTRICTED_HOOK(android_rvh_after_enqueue_task,
 	TP_PROTO(struct rq *rq, struct task_struct *p, int flags),
