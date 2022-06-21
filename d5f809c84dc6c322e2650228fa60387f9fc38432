@@ -52,6 +52,24 @@
       "parentUuid": "8739167d_e02c3baf",
       "revId": "d5f809c84dc6c322e2650228fa60387f9fc38432",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f89f62_73a84127",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-06-21T16:13:56Z",
+      "side": 1,
+      "message": "This doesn\u0027t break GKI buids, but for non-GKI builds with CONFIG_UCLAMP_TASK disabled there is no definition of uclamp_se which results in this error. This also shows up as many build failures in kernelci since the KMI update landed: https://linux.kernelci.org/build/android/branch/android13-5.15/kernel/ASB-2022-06-05_13-5.15-204-g3456f4eeee0b4/",
+      "parentUuid": "1cb0c110_2193dfdb",
+      "revId": "d5f809c84dc6c322e2650228fa60387f9fc38432",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
