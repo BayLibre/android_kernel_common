@@ -87,6 +87,24 @@
       "parentUuid": "549d118c_122f31db",
       "revId": "6813081fac64ba68c15785eaab35d8dca4868030",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f91d67_5280c8f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-06-21T07:28:10Z",
+      "side": 1,
+      "message": "As the kernel already provides a way to get this information, please use that instead and do not require us to support and maintain this other api.  Doing symbol resolution should never be a performance issue as that should never be happening in any time-critical codepath.",
+      "parentUuid": "8afbccba_0d87ad10",
+      "revId": "6813081fac64ba68c15785eaab35d8dca4868030",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
