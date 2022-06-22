@@ -1,5 +1,12 @@
 . ${ROOT_DIR}/${KERNEL_DIR}/build.config.common
 
+# TODO: the latest clang toolchain doesn't work for some reason. As a workaround
+# we switch back to clang version 12, and use a checked copy of ld.gold for
+# linking. Bug b/236303992 tracks the root cause of this issue.
+CLANG_VERSION=r416183b
+CLANG_PREBUILT_BIN=prebuilts/clang/host/linux-x86/clang-${CLANG_VERSION}/bin
+BINUTILS_BIN=${ROOT_DIR}/${KERNEL_DIR}/tools/lkl/bin/x86_64-linux/bin
+
 # Overriding default configuration
 unset DTC=
 unset KCFLAGS=
@@ -8,7 +15,8 @@ unset IN_KERNEL_MODULES
 SKIP_CP_KERNEL_HDR=1
 
 # LKL needs ld for HERMETIC_TOOLCHAIN mode
-ADDITIONAL_HOST_TOOLS="ld zip"
+HERMETIC_TOOLCHAIN=1
+ADDITIONAL_HOST_TOOLS="ld zip ${BINUTILS_BIN}/ld.gold"
 
 # Fuzzers needs C++ as well
 CXX=clang++

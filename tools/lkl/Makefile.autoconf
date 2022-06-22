@@ -60,7 +60,7 @@ define posix_host
     $(call set_autoconf_var,LKL_PCI,y),\
     $(if $(strip $(call find_include,linux/vfio.h)),$(call set_autoconf_var,VFIO_PCI,y)))
   # TODO(b/184602323): change temporarily lld to ld due to the linker crash.
-  LDFLAGS += -fuse-ld=lld -Wl,-z,notext
+  LDFLAGS += -fuse-ld=gold -Wl,-z,notext
   LDFLAGS += --sysroot=$(LINUX_GCC_CROSS_COMPILE_PREBUILTS_HOST)/sysroot \
 	     -B$(LINUX_GCC_CROSS_COMPILE_PREBUILTS_HOST)/lib/gcc/x86_64-linux/4.8.3 \
 	     -L$(LINUX_GCC_CROSS_COMPILE_PREBUILTS_HOST)/lib/gcc/x86_64-linux/4.8.3 \
