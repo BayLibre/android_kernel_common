@@ -312,8 +312,8 @@ DECLARE_RESTRICTED_HOOK(android_rvh_check_preempt_wakeup,
 
 DECLARE_RESTRICTED_HOOK(android_rvh_set_cpus_allowed_ptr_locked,
 	TP_PROTO(const struct cpumask *cpu_valid_mask, const struct cpumask *new_mask,
-		 unsigned int *dest_cpu),
-	TP_ARGS(cpu_valid_mask, new_mask, dest_cpu), 1);
+		 struct task_struct *p, unsigned int *dest_cpu),
+	TP_ARGS(cpu_valid_mask, new_mask, p, dest_cpu), 1);
 
 DECLARE_RESTRICTED_HOOK(android_rvh_do_sched_yield,
 	TP_PROTO(struct rq *rq),
