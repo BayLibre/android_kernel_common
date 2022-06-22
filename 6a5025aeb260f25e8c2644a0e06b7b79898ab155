@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c166325_dbecdef0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "The patch introduced a bunch of vendor hooks, additional exports and lots of new code and this this the only description for the patch. I won\u0027t be able to review it and make any sense of why these  hooks and exports are needed. Please split this patch is smaller logical units with each one having a clear description why that is needed.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53472c98_5b05e881",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "The vendor hook name should reflect the logical location it\u0027s called from (add_page_to_lru_list), not how you use it (different partners can use the same hook for different purposes, so the name should not reflect the usage purpose). I would suggest renaming to something like:\n\n```\ntrace_android_vh_add_page_to_lru_list()\n```\n\nSame comment applies to all other vendor hooks.",
+      "range": {
+        "startLine": 68,
+        "startChar": 1,
+        "endLine": 68,
+        "endChar": 43
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80701a77_cc11c347",
+        "filename": "mm/huge_memory.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2169,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "Is this parameter ever used?",
+      "range": {
+        "startLine": 2169,
+        "startChar": 55,
+        "endLine": 2169,
+        "endChar": 58
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "844b09a6_a08cb754",
+        "filename": "mm/huge_memory.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2169,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "the name does not convey any useful information about the logic this is supposed to implement.",
+      "range": {
+        "startLine": 2169,
+        "startChar": 3,
+        "endLine": 2169,
+        "endChar": 37
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c17764cc_fd557087",
+        "filename": "mm/huge_memory.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2186,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "Why are you changing atomic_inc to atomic_dec? Has this been tested?",
+      "range": {
+        "startLine": 2186,
+        "startChar": 5,
+        "endLine": 2186,
+        "endChar": 15
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2318c555_ada25169",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "Move exports into a separate patch and describe why they are needed. The symbols exported here seem too low level to be exported.",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 17
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11704a16_14900c70",
+        "filename": "mm/rmap.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1212,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "Here you are using \"ret\" parameter but the names of these parameters do not provide much helpful information. Seems to be that \"success\" tells use whether you handled the update yourself or not and \"ret\" means... you want to skip the rest of the function?",
+      "range": {
+        "startLine": 1212,
+        "startChar": 55,
+        "endLine": 1212,
+        "endChar": 58
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdd2e494_f6d5dbf7",
+        "filename": "mm/swap.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "Seems unrelated to all other hooks/exports. Definitely should be moved into a separate patch.",
+      "range": {
+        "startLine": 440,
+        "startChar": 1,
+        "endLine": 440,
+        "endChar": 42
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d12108c_24dd99d0",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-22T22:48:58Z",
+      "side": 1,
+      "message": "Either trace_android_vh_page_should_be_protected or trace_android_vh_protect_page",
+      "range": {
+        "startLine": 1025,
+        "startChar": 1,
+        "endLine": 1025,
+        "endChar": 40
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
