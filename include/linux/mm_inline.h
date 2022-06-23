@@ -6,6 +6,9 @@
 #include <linux/swap.h>
 #include <linux/string.h>
 
+void _trace_android_vh_add_page_to_lrulist(struct page *page, bool compound, enum lru_list lru);
+void _trace_android_vh_del_page_from_lrulist(struct page *page, bool compound, enum lru_list lru);
+
 /**
  * page_is_file_lru - should the page be on a file LRU or anon LRU?
  * @page: the page to test
@@ -325,6 +328,7 @@ static __always_inline void add_page_to_lru_list(struct page *page,
 	if (lru_gen_add_page(lruvec, page, false))
 		return;
 
+	_trace_android_vh_add_page_to_lrulist(page, false, lru);
 	update_lru_size(lruvec, lru, page_zonenum(page), thp_nr_pages(page));
 	list_add(&page->lru, &lruvec->lists[lru]);
 }
@@ -337,6 +341,7 @@ static __always_inline void add_page_to_lru_list_tail(struct page *page,
 	if (lru_gen_add_page(lruvec, page, true))
 		return;
 
+	_trace_android_vh_add_page_to_lrulist(page, false, page_lru(page));
 	update_lru_size(lruvec, lru, page_zonenum(page), thp_nr_pages(page));
 	list_add_tail(&page->lru, &lruvec->lists[lru]);
 }
@@ -347,6 +352,7 @@ static __always_inline void del_page_from_lru_list(struct page *page,
 	if (lru_gen_del_page(lruvec, page, false))
 		return;
 
+	_trace_android_vh_del_page_from_lrulist(page, false, page_lru(page));
 	list_del(&page->lru);
 	update_lru_size(lruvec, page_lru(page), page_zonenum(page),
 			-thp_nr_pages(page));
