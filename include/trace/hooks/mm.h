@@ -631,6 +631,9 @@ DECLARE_HOOK(android_vh_check_heap_object_bypass,
 DECLARE_HOOK(android_vh_oom_reaper_delay_bypass,
 	TP_PROTO(struct task_struct *tsk, bool *bypass),
 	TP_ARGS(tsk, bypass));
+DECLARE_HOOK(android_vh_mark_folio_accessed,
+	TP_PROTO(struct folio *folio),
+	TP_ARGS(folio));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
