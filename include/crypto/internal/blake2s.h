@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
+<<<<<<< HEAD   (4c5060 Merge 5.4.199 into android11-5.4-lts)
 /*
  * Helper functions for BLAKE2s implementations.
  * Keep this in sync with the corresponding BLAKE2b header.
@@ -114,6 +115,23 @@ static inline int crypto_blake2s_final(struct shash_desc *desc, u8 *out,
 
 	__blake2s_final(state, out, compress);
 	return 0;
+=======
+
+#ifndef _CRYPTO_INTERNAL_BLAKE2S_H
+#define _CRYPTO_INTERNAL_BLAKE2S_H
+
+#include <crypto/blake2s.h>
+
+void blake2s_compress_generic(struct blake2s_state *state,const u8 *block,
+			      size_t nblocks, const u32 inc);
+
+void blake2s_compress_arch(struct blake2s_state *state,const u8 *block,
+			   size_t nblocks, const u32 inc);
+
+static inline void blake2s_set_lastblock(struct blake2s_state *state)
+{
+	state->f[0] = -1;
+>>>>>>> BRANCH (f0c280 Linux 5.4.200)
 }
 
 #endif /* _CRYPTO_INTERNAL_BLAKE2S_H */
