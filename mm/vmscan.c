@@ -2013,6 +2013,7 @@ static unsigned long isolate_lru_pages(unsigned long nr_to_scan,
 		nr_taken += nr_pages;
 		nr_zone_taken[page_zonenum(page)] += nr_pages;
 		move_to = dst;
+		trace_android_vh_del_page_from_lrulist(page, false, lru);
 move:
 		list_move(&page->lru, move_to);
 	}
