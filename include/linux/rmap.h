@@ -13,6 +13,10 @@
 #include <linux/highmem.h>
 #include <linux/pagemap.h>
 #include <linux/memremap.h>
+#ifndef __GENKSYMS__
+#define PROTECT_TRACE_INCLUDE_PATH
+#include <trace/hooks/mm.h>
+#endif
 
 /*
  * The anon_vma heads a list of private "related" vmas, to scan if
@@ -325,7 +329,10 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
 	switch (level) {
 	case RMAP_LEVEL_PTE:
 		do {
-			atomic_inc(&page->_mapcount);
+			trace_android_vh_update_page_mapcount(&page[i], true, false,
+				&NULL, &success);
+			if (!success)
+				atomic_inc(&page->_mapcount);
 		} while (page++, --nr_pages > 0);
 		break;
 	case RMAP_LEVEL_PMD:
@@ -406,7 +413,9 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
 		do {
 			if (PageAnonExclusive(page))
 				ClearPageAnonExclusive(page);
-			atomic_inc(&page->_mapcount);
+			trace_android_vh_update_page_mapcount(&page[i], true, false, NULL, &success);
+			if (!success)
+				atomic_inc(&page->_mapcount);
 		} while (page++, --nr_pages > 0);
 		break;
 	case RMAP_LEVEL_PMD:
