@@ -329,3 +329,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_amu_fie);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scan_abort_check_wmarks);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_should_be_protected);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mark_page_accessed);
