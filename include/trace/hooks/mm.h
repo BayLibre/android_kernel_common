@@ -179,6 +179,19 @@ DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
 	TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
 	int migratetype, struct page **page),
 	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
+DECLARE_HOOK(android_vh_update_page_mapcount,
+	TP_PROTO(struct page *page, bool inc_size, bool compound,
+			int *first_mapping, bool *success),
+	TP_ARGS(page, inc_size, compound, first_mapping, success));
+DECLARE_HOOK(android_vh_add_page_to_lrulist,
+	TP_PROTO(struct folio *folio, bool compound, enum lru_list lru),
+	TP_ARGS(folio, compound, lru));
+DECLARE_HOOK(android_vh_del_page_from_lrulist,
+	TP_PROTO(struct folio *folio, bool compound, enum lru_list lru),
+	TP_ARGS(folio, compound, lru));
+DECLARE_HOOK(android_vh_show_mapcount_pages,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
 
 #endif /* _TRACE_HOOK_MM_H */
 
