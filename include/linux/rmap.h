@@ -13,6 +13,12 @@
 #include <linux/highmem.h>
 #include <linux/pagemap.h>
 #include <linux/memremap.h>
+#include <linux/android_hook_defs.h>
+
+DECLARE_INDIRECT_HOOK(android_vh_update_page_mapcount,
+	TP_PROTO(struct page *page, bool inc_size, bool compound,
+		 int *first_mapping, bool *success),
+	TP_ARGS(page, inc_size, compound, first_mapping, success));
 
 /*
  * The anon_vma heads a list of private "related" vmas, to scan if
@@ -320,12 +326,15 @@ static inline void hugetlb_remove_rmap(struct folio *folio)
 static __always_inline void __folio_dup_file_rmap(struct folio *folio,
 		struct page *page, int nr_pages, enum rmap_level level)
 {
+	bool success = false;
 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
 
 	switch (level) {
 	case RMAP_LEVEL_PTE:
 		do {
-			atomic_inc(&page->_mapcount);
+			_trace_android_vh_update_page_mapcount(page, true, false, NULL, &success);
+			if (!success)
+				atomic_inc(&page->_mapcount);
 		} while (page++, --nr_pages > 0);
 		break;
 	case RMAP_LEVEL_PMD:
@@ -377,6 +386,7 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
 {
 	bool maybe_pinned;
 	int i;
+	bool success = false;
 
 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
@@ -406,7 +416,9 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
 		do {
 			if (PageAnonExclusive(page))
 				ClearPageAnonExclusive(page);
-			atomic_inc(&page->_mapcount);
+			_trace_android_vh_update_page_mapcount(page, true, false, NULL, &success);
+			if (!success)
+				atomic_inc(&page->_mapcount);
 		} while (page++, --nr_pages > 0);
 		break;
 	case RMAP_LEVEL_PMD:
