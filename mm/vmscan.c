@@ -906,6 +906,11 @@ static enum folio_references folio_check_references(struct folio *folio,
 	int referenced_ptes, referenced_folio;
 	unsigned long vm_flags;
 	int ret = 0;
+	bool should_protect = false;
+
+	trace_android_vh_page_should_be_protected(folio, &should_protect);
+	if (unlikely(should_protect))
+		return FOLIOREF_ACTIVATE;
 
 #ifdef CONFIG_ANDROID_VENDOR_OEM_DATA
 	trace_android_vh_page_should_be_protected(folio, sc->nr_scanned,
@@ -2160,8 +2165,13 @@ static void shrink_active_list(unsigned long nr_to_scan,
 	unsigned nr_rotated = 0;
 	bool file = is_file_lru(lru);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+<<<<<<< HEAD   (e34340c0d86068ec8bcfad1af3015dd2a4346060 ANDROID: ABI: update symbol list for desktop)
 	int should_protect = 0;
 	bool bypass = false;
+||||||| BASE   (dcf354d0f3bde2039aea5b9d622e6a708eb31b9b ANDROID: add do_traversal_all_lruvec() in mm/memcontrol.c)
+=======
+	bool should_protect = false;
+>>>>>>> CHANGE (bb8f7d6ffac81ad033191c318a64e076303b33f2 ANDROID: vendor_hooks: protect multi-mapcount pages in kerne)
 
 	lru_add_drain();
 
@@ -2198,6 +2208,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
 			}
 		}
 
+<<<<<<< HEAD   (e34340c0d86068ec8bcfad1af3015dd2a4346060 ANDROID: ABI: update symbol list for desktop)
 #ifdef CONFIG_ANDROID_VENDOR_OEM_DATA
 		trace_android_vh_page_should_be_protected(folio, sc->nr_scanned,
 			sc->priority, &sc->android_vendor_data1, &should_protect);
@@ -2211,6 +2222,15 @@ static void shrink_active_list(unsigned long nr_to_scan,
 		trace_android_vh_page_referenced_check_bypass(folio, nr_to_scan, lru, &bypass);
 		if (bypass)
 			goto skip_folio_referenced;
+||||||| BASE   (dcf354d0f3bde2039aea5b9d622e6a708eb31b9b ANDROID: add do_traversal_all_lruvec() in mm/memcontrol.c)
+=======
+		trace_android_vh_page_should_be_protected(folio, &should_protect);
+		if (unlikely(should_protect)) {
+			nr_rotated += folio_nr_pages(folio);
+			list_add(&folio->lru, &l_active);
+			continue;
+		}
+>>>>>>> CHANGE (bb8f7d6ffac81ad033191c318a64e076303b33f2 ANDROID: vendor_hooks: protect multi-mapcount pages in kerne)
 
 		/* Referenced or rmap lock contention: rotate */
 		if (folio_referenced(folio, 0, sc->target_mem_cgroup,
