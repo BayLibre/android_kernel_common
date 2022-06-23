@@ -2848,6 +2848,7 @@ static void binder_transaction(struct binder_proc *proc,
 	INIT_LIST_HEAD(&t->fd_fixups);
 	binder_stats_created(BINDER_STAT_TRANSACTION);
 	spin_lock_init(&t->lock);
+	t->debug_id = t_debug_id;
 	trace_android_vh_binder_transaction_init(t);
 
 	tcomplete = kzalloc(sizeof(*tcomplete), GFP_KERNEL);
@@ -2858,8 +2859,6 @@ static void binder_transaction(struct binder_proc *proc,
 		goto err_alloc_tcomplete_failed;
 	}
 	binder_stats_created(BINDER_STAT_TRANSACTION_COMPLETE);
-
-	t->debug_id = t_debug_id;
 
 	if (reply)
 		binder_debug(BINDER_DEBUG_TRANSACTION,
