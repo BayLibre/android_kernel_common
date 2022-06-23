@@ -10,6 +10,7 @@ libaes-y					:= aes.o
 obj-$(CONFIG_CRYPTO_LIB_ARC4)			+= libarc4.o
 libarc4-y					:= arc4.o
 
+<<<<<<< HEAD   (4ab7f4 Merge 5.4.199 into android12-5.4-lts)
 obj-$(CONFIG_CRYPTO_LIB_BLAKE2S_GENERIC)	+= libblake2s-generic.o
 libblake2s-generic-y				+= blake2s-generic.o
 
@@ -42,4 +43,13 @@ ifneq ($(CONFIG_CRYPTO_MANAGER_DISABLE_TESTS),y)
 libblake2s-y					+= blake2s-selftest.o
 libchacha20poly1305-y				+= chacha20poly1305-selftest.o
 libcurve25519-y					+= curve25519-selftest.o
+=======
+obj-$(CONFIG_CRYPTO_LIB_SHA256) += libsha256.o
+libsha256-y := sha256.o
+
+obj-y += libblake2s.o
+libblake2s-y += blake2s.o blake2s-generic.o
+ifneq ($(CONFIG_CRYPTO_MANAGER_DISABLE_TESTS),y)
+libblake2s-y += blake2s-selftest.o
+>>>>>>> BRANCH (f0c280 Linux 5.4.200)
 endif
