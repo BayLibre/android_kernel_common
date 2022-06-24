@@ -34,6 +34,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_audio_usb_offload_disconnect,
 	TP_PROTO(struct usb_interface *intf),
 	TP_ARGS(intf), 1);
 
+DECLARE_HOOK(android_vh_audio_usb_offload_suspend,
+	TP_PROTO(void *arg, int cmd, bool *suspend),
+	TP_ARGS(arg, cmd, suspend));
+
 #endif /* _TRACE_HOOK_AUDIO_USBOFFLOAD_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
