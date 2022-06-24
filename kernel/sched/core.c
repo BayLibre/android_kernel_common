@@ -2171,6 +2171,7 @@ static void migrate_disable_switch(struct rq *rq, struct task_struct *p)
 
 void migrate_disable(void)
 {
+#ifdef CONFIG_PREEMPT_RT
 	struct task_struct *p = current;
 
 	if (p->migration_disabled) {
@@ -2182,11 +2183,15 @@ void migrate_disable(void)
 	this_rq()->nr_pinned++;
 	p->migration_disabled = 1;
 	preempt_enable();
+#else
+	preempt_disable();
+#endif
 }
 EXPORT_SYMBOL_GPL(migrate_disable);
 
 void migrate_enable(void)
 {
+#ifdef CONFIG_PREEMPT_RT
 	struct task_struct *p = current;
 
 	if (p->migration_disabled > 1) {
@@ -2210,6 +2215,9 @@ void migrate_enable(void)
 	p->migration_disabled = 0;
 	this_rq()->nr_pinned--;
 	preempt_enable();
+#else
+	preempt_enable();
+#endif
 }
 EXPORT_SYMBOL_GPL(migrate_enable);
 
