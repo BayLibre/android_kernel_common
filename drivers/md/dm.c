@@ -609,7 +609,11 @@ static void start_io_acct(struct dm_io *io)
 }
 
 static void end_io_acct(struct mapped_device *md, struct bio *bio,
+<<<<<<< HEAD   (fe917b Merge 5.10.112 into android13-5.10-lts)
 		unsigned long start_time, struct dm_stats_aux *stats_aux)
+=======
+			unsigned long start_time, struct dm_stats_aux *stats_aux)
+>>>>>>> BRANCH (54af9d Linux 5.10.113)
 {
 	unsigned long duration = jiffies - start_time;
 
