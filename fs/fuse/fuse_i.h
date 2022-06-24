@@ -978,8 +978,7 @@ extern const struct dentry_operations fuse_root_dentry_operations;
 /**
  * Get a filled in inode
  */
-struct inode *fuse_iget_backing(struct super_block *sb,
-				struct inode *backing_inode);
+struct inode *fuse_iget_backing(struct super_block *sb, u64 nodeid, struct inode *backing_inode);
 struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
 			int generation, struct fuse_attr *attr,
 			u64 attr_valid, u64 attr_version);
@@ -1856,6 +1855,11 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *arg
 	int i;								\
 	bool initialized = false;					\
 									\
+	if (fuse_inode->backing_inode) { \
+		printk("fuse_bpf_backing called in %s for inode (%d) fuse_inode (%llu) backing (%d) with bpf (%d) for sb %d\n", __func__, inode->i_ino, (unsigned long long) fuse_inode->nodeid, fuse_inode->backing_inode->i_ino, fuse_inode->bpf, inode->i_sb->s_magic); \
+	} else { \
+		printk("fuse_bpf_backing called in %s for inode (%d) fuse_inode (%llu) backing (%d) with bpf (%d) for sb %d\n", __func__, inode->i_ino, (unsigned long long) fuse_inode->nodeid, 0, fuse_inode->bpf, inode->i_sb->s_magic); \
+	} \
 	do {								\
 		if (!fuse_inode || !fuse_inode->backing_inode)		\
 			break;						\
