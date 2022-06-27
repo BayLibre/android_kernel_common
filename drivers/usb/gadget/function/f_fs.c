@@ -1075,7 +1075,16 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
 
 		spin_unlock_irq(&epfile->ffs->eps_lock);
 
+<<<<<<< HEAD   (807d95 ANDROID: abi_gki_aarch64_qcom: Add hibernation APIs)
 		if (wait_for_completion_interruptible(&done)) {
+=======
+		if (unlikely(wait_for_completion_interruptible(&io_data->done))) {
+			spin_lock_irq(&epfile->ffs->eps_lock);
+			if (epfile->ep != ep) {
+				ret = -ESHUTDOWN;
+				goto error_lock;
+			}
+>>>>>>> CHANGE (bb9c8f FROMGIT: usb: gadget: f_fs: change ep->ep safe in ffs_epfile)
 			/*
 			 * To avoid race condition with ffs_epfile_io_complete,
 			 * dequeue the request first then check
@@ -1083,8 +1092,14 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
 			 * condition with req->complete callback.
 			 */
 			usb_ep_dequeue(ep->ep, req);
+<<<<<<< HEAD   (807d95 ANDROID: abi_gki_aarch64_qcom: Add hibernation APIs)
 			wait_for_completion(&done);
 			interrupted = ep->status < 0;
+=======
+			spin_unlock_irq(&epfile->ffs->eps_lock);
+			wait_for_completion(&io_data->done);
+			interrupted = io_data->status < 0;
+>>>>>>> CHANGE (bb9c8f FROMGIT: usb: gadget: f_fs: change ep->ep safe in ffs_epfile)
 		}
 
 		if (interrupted)
