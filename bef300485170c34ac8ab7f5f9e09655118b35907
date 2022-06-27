@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000025739275",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2133069?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "a51b5b96_fec3ada8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-06-27T07:14:22Z",
+      "side": 1,
+      "message": "Commit needs to contain a properly formatted Bug: or Fixes: line\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 455389638 android-build.ayeaye-python-dispatcher_20220616.05_p0",
+      "revId": "bef300485170c34ac8ab7f5f9e09655118b35907",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000025739275",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2133069?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "489f623b_2d67f6fe",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 33,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: ten.gao \u003cten.gao@unisoc.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "473d0665_c07f7316",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-06-27T07:14:22Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: ten.gao \u003cten.gao@unisoc.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 455389638 android-build.ayeaye-python-dispatcher_20220616.05_p0",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 0
+      },
+      "revId": "bef300485170c34ac8ab7f5f9e09655118b35907",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
