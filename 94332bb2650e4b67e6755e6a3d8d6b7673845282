@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6718a11c_98a7206c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-06-28T21:43:24Z",
+      "side": 1,
+      "message": "Some of these functions IIUC should be called under swap_avail_lock protection. How are you going to provide this protection in the driver?\n\nCould get_swap_pages() instead be modified to use vendor hooks to get the functionality you want?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 39
+      },
+      "revId": "94332bb2650e4b67e6755e6a3d8d6b7673845282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "982130c5_80316de9",
