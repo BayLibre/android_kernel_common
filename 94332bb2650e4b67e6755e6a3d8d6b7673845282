@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "982130c5_80316de9",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-06-28T08:46:44Z",
+      "side": 1,
+      "message": "Asked for both scan_swap_map_slots() and swap_alloc_cluster().\n1) By adding vendor hook android_vh_get_swap_page (), we re-implement the new function transsion_get_swap_pages() to take the place of the original get_swap_pages();\n2) Both scan_swap_map_slots() and swap_alloc_cluster() are used in the implemented functions transsion_get_swap_pages() just like they are used in get_swap_pages();\n3) The reason we can not directly  export get_swap_pages() for use is that we embedded some additional processing logic in the original get_swap_pages(), and even the parameter list has been changed with the addition of new function parameters.",
+      "range": {
+        "startLine": 992,
+        "startChar": 0,
+        "endLine": 994,
+        "endChar": 70
+      },
+      "revId": "94332bb2650e4b67e6755e6a3d8d6b7673845282",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
