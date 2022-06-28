@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f0a1e50_fca3b9de",
+        "filename": "tools/testing/selftests/filesystems/fuse/bpf_loader.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-06-28T23:14:15Z",
+      "side": 1,
+      "message": "If you have TESTSYSCALL, you need to test for the result.\n\nHave the function return an int. Create int result \u003d TEST_FAILURE, set result \u003d TEST_SUCCESS just before out, and return result. See tracing_on(void) below for an example",
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f6b752a_17b7faa7",
         "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
         "patchSetId": 4
@@ -20,6 +37,40 @@
         "endLine": 1541,
         "endChar": 11
       },
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b3ea42d_758f9bc3",
+        "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1586,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-06-28T23:14:15Z",
+      "side": 1,
+      "message": "Is there a reason you don\u0027t use the TESTFUSEIN macros? This way, you are not checking for the fuse opcode, and you won\u0027t see problems straight away.",
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10810cd2_5924987a",
+        "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1599,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-06-28T23:14:15Z",
+      "side": 1,
+      "message": "All variables have to be declared at the start of the control block in kernel code.",
       "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
