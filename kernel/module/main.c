@@ -118,6 +118,31 @@ static void mod_update_bounds(struct module *mod)
 #endif
 }
 
+//<<<<<<< HEAD:kernel/module/main.c
+//=======
+//#if defined(CONFIG_MODULE_SIG) && !defined(CONFIG_MODULE_SIG_PROTECT)
+//static bool sig_enforce = IS_ENABLED(CONFIG_MODULE_SIG_FORCE);
+//module_param(sig_enforce, bool_enable_only, 0644);
+//
+//void set_module_sig_enforced(void)
+//{
+//	sig_enforce = true;
+//}
+//#else
+//#define sig_enforce false
+//#endif
+//
+///*
+// * Export sig_enforce kernel cmdline parameter to allow other subsystems rely
+// * on that instead of directly to CONFIG_MODULE_SIG_FORCE config.
+// */
+//bool is_module_sig_enforced(void)
+//{
+//	return sig_enforce;
+//}
+//EXPORT_SYMBOL(is_module_sig_enforced);
+//
+//>>>>>>> parent of 090a1da69705 (Revert "Revert "Revert "ANDROID: GKI: Add module load time protected symbol lookup"""):kernel/module.c
 /* Block module loading/unloading? */
 int modules_disabled = 0;
 core_param(nomodule, modules_disabled, bint, 0);
@@ -1246,6 +1271,14 @@ static int verify_exported_symbols(struct module *mod)
 				.name	= kernel_symbol_name(s),
 				.gplok	= true,
 			};
+
+			if (!mod->sig_ok && gki_is_module_exported_symbol(
+						    kernel_symbol_name(s))) {
+				pr_err("%s: exporting protected symbol(%s)\n",
+				       mod->name, kernel_symbol_name(s));
+				return -EACCES;
+			}
+
 			if (find_symbol(&fsa)) {
 				pr_err("%s: exports duplicate symbol %s"
 				       " (owned by %s)\n",
@@ -1313,6 +1346,13 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
 			break;
 
 		case SHN_UNDEF:
+			if (!mod->sig_ok &&
+			    gki_is_module_protected_symbol(name)) {
+				pr_err("%s: is not an Android GKI signed module. It can not access protected symbol: %s\n",
+				       mod->name, name);
+				return -EACCES;
+			}
+
 			ksym = resolve_symbol_wait(mod, info, name);
 			/* Ok if resolved.  */
 			if (ksym && !IS_ERR(ksym)) {
@@ -2728,6 +2768,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
 			       "kernel\n", mod->name);
 		add_taint_module(mod, TAINT_UNSIGNED_MODULE, LOCKDEP_STILL_OK);
 	}
+#else
+	mod->sig_ok = 0;
 #endif
 
 	/* To avoid stressing percpu allocator, do this once we're unique. */
