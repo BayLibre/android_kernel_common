@@ -120,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b449cec_c88d6688",
+        "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1586,
+      "author": {
+        "id": 1893074
+      },
+      "writtenOn": "2022-06-29T15:47:11Z",
+      "side": 1,
+      "message": "Got it, now only have it on readdirplus handle (which need read_size that macro doesn\u0027t expose) and on the latest read which doesn\u0027t care about opcode and just used to unblock client in the negative scenario.",
+      "parentUuid": "d1d74742_893a6fb3",
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "10810cd2_5924987a",
         "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
         "patchSetId": 4
