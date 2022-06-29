@@ -17,6 +17,7 @@
 #include <linux/list.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
+#include <linux/delay.h>
 #include <net/dst.h>
 #include <net/xfrm.h>
 #include <net/mac80211.h>
@@ -1313,7 +1314,16 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
 	if (skb_queue_len(&data->pending) >= MAX_QUEUE) {
 		/* Droping until WARN_QUEUE level */
 		while (skb_queue_len(&data->pending) >= WARN_QUEUE) {
-			ieee80211_free_txskb(hw, skb_dequeue(&data->pending));
+			struct sk_buff *skb = skb_dequeue(&data->pending);
+			struct ieee80211_tx_info *txi;
+			u64 skb_cookie;
+
+			txi = IEEE80211_SKB_CB(skb);
+			skb_cookie = (u64)(uintptr_t)txi->rate_driver_data[0];
+			printk(KERN_DEBUG
+				"mac80211_hwsim: drop: dequeue cookie (%ld)\n", skb_cookie);
+
+			ieee80211_free_txskb(hw, skb);
 			data->tx_dropped++;
 		}
 	}
@@ -1374,8 +1384,9 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
 		goto nla_put_failure;
 
 	/* We create a cookie to identify this skb */
+	cookie = data->pending_cookie + 1;
+	mdelay(100);
 	data->pending_cookie++;
-	cookie = data->pending_cookie;
 	info->rate_driver_data[0] = (void *)cookie;
 	if (nla_put_u64_64bit(skb, HWSIM_ATTR_COOKIE, cookie, HWSIM_ATTR_PAD))
 		goto nla_put_failure;
@@ -1391,6 +1402,9 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
 	}
 
 	/* Enqueue the packet */
+
+	printk(KERN_DEBUG
+		"mac80211_hwsim: enqueue cookie (%ld)\n", info->rate_driver_data[0]);
 	skb_queue_tail(&data->pending, my_skb);
 	data->tx_pkts++;
 	data->tx_bytes += my_skb->len;
@@ -1757,9 +1771,17 @@ static void mac80211_hwsim_stop(struct ieee80211_hw *hw)
 	data->started = false;
 	hrtimer_cancel(&data->beacon_timer);
 
-	while (!skb_queue_empty(&data->pending))
-		ieee80211_free_txskb(hw, skb_dequeue(&data->pending));
+	while (!skb_queue_empty(&data->pending)) {
+		struct sk_buff *skb = skb_dequeue(&data->pending);
+		struct ieee80211_tx_info *txi;
+		u64 skb_cookie;
 
+		txi = IEEE80211_SKB_CB(skb);
+		skb_cookie = (u64)(uintptr_t)txi->rate_driver_data[0];
+		printk(KERN_DEBUG
+			"mac80211_hwsim: stop:dequeue cookie (%ld)\n", skb_cookie);
+		ieee80211_free_txskb(hw, skb);
+	}
 	wiphy_dbg(hw->wiphy, "%s\n", __func__);
 }
 
@@ -3704,7 +3726,8 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
 		if (info->snd_portid != data2->wmediumd)
 			goto out;
 	}
-
+	printk(KERN_DEBUG
+		       "mac80211_hwsim: looking for cookie (%ld)\n", ret_skb_cookie);
 	/* look for the skb matching the cookie passed back from user */
 	skb_queue_walk_safe(&data2->pending, skb, tmp) {
 		u64 skb_cookie;
@@ -3715,8 +3738,11 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
 		if (skb_cookie == ret_skb_cookie) {
 			skb_unlink(skb, &data2->pending);
 			found = true;
+			printk(KERN_DEBUG
+		       "mac80211_hwsim: found cookie (%ld)\n", ret_skb_cookie);
 			break;
 		}
+		mdelay(30);
 	}
 
 	/* not found */
@@ -3731,6 +3757,10 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
 
 	/* now send back TX status */
 	txi = IEEE80211_SKB_CB(skb);
+
+	printk(KERN_DEBUG
+		"mac80211_hwsim: clear cookie (%ld)\n", ret_skb_cookie);
+	mdelay(100);
 
 	ieee80211_tx_info_clear_status(txi);
 
