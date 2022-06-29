@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd2f5be5_a96271f1",
+        "filename": "tools/testing/selftests/filesystems/fuse/bpf_loader.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1893074
+      },
+      "writtenOn": "2022-06-29T00:43:32Z",
+      "side": 1,
+      "message": "Thanks! Added that `result` logic but still use TESTSYSCALL.",
+      "parentUuid": "7f0a1e50_fca3b9de",
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f6b752a_17b7faa7",
@@ -41,6 +59,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68871aa4_eb5ed203",
+        "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1541,
+      "author": {
+        "id": 1893074
+      },
+      "writtenOn": "2022-06-29T00:43:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f6b752a_17b7faa7",
+      "range": {
+        "startLine": 1541,
+        "startChar": 5,
+        "endLine": 1541,
+        "endChar": 11
+      },
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b3ea42d_758f9bc3",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-06-28T23:14:15Z",
       "side": 1,
       "message": "Is there a reason you don\u0027t use the TESTFUSEIN macros? This way, you are not checking for the fuse opcode, and you won\u0027t see problems straight away.",
+      "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1d74742_893a6fb3",
+        "filename": "tools/testing/selftests/filesystems/fuse/fuse_test.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1586,
+      "author": {
+        "id": 1893074
+      },
+      "writtenOn": "2022-06-29T00:43:32Z",
+      "side": 1,
+      "message": "There is no. Will get it done tomorrow",
+      "parentUuid": "9b3ea42d_758f9bc3",
       "revId": "56bf1302d2d5714cf0d27526e742d5209f57cf74",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
