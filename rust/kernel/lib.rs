@@ -50,8 +50,9 @@ pub mod mm;
 pub mod pages;
 pub mod prelude;
 pub mod print;
-mod static_assert;
 #[doc(hidden)]
+pub mod security;
+mod static_assert;
 pub mod std_vendor;
 pub mod str;
 pub mod sync;
