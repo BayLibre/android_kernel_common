@@ -28,6 +28,7 @@
 #include <linux/miscdevice.h>
 #include <linux/fs.h>
 #include <linux/spinlock.h>
+#include <linux/security.h>
 #include <linux/sched/signal.h>
 #include <linux/wait.h>
 #include <linux/uio.h>
@@ -187,6 +188,34 @@ void rust_helper_put_task_struct(struct task_struct *t)
 	put_task_struct(t);
 }
 EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
+
+int rust_helper_security_binder_set_context_mgr(const struct cred *mgr)
+{
+	return security_binder_set_context_mgr(mgr);
+}
+EXPORT_SYMBOL_GPL(rust_helper_security_binder_set_context_mgr);
+
+int rust_helper_security_binder_transaction(const struct cred *from,
+					    const struct cred *to)
+{
+	return security_binder_transaction(from, to);
+}
+EXPORT_SYMBOL_GPL(rust_helper_security_binder_transaction);
+
+int rust_helper_security_binder_transfer_binder(const struct cred *from,
+						const struct cred *to)
+{
+	return security_binder_transfer_binder(from, to);
+}
+EXPORT_SYMBOL_GPL(rust_helper_security_binder_transfer_binder);
+
+int rust_helper_security_binder_transfer_file(const struct cred *from,
+					      const struct cred *to,
+					      struct file *file)
+{
+	return security_binder_transfer_file(from, to, file);
+}
+EXPORT_SYMBOL_GPL(rust_helper_security_binder_transfer_file);
 
 const struct cred *rust_helper_get_cred(const struct cred *cred)
 {
