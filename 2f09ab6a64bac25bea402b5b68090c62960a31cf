@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a722f4_ea610a94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-01T15:45:57Z",
+      "side": 1,
+      "message": "Build break. Please build and test your patches before submitting 😞\n\n```+ make O\u003d/buildbot/src/android/common-android13-5.15/out/android13-5.15/common LLVM\u003d1 DEPMOD\u003ddepmod DTC\u003d/buildbot/src/android/common-android13-5.15/build/kernel/build-tools/path/linux-x86/dtc -j40 Image modules Image.lz4 Image.gz\nIn file included from /buildbot/src/android/common-android13-5.15/common/kernel/signal.c:61:\n/buildbot/src/android/common-android13-5.15/common/include/trace/hooks/signal.h:20:15: error: too few arguments provided to function-like macro invocation\n        TP_ARGS(task));\n                     ^\n/buildbot/src/android/common-android13-5.15/common/include/linux/tracepoint.h:418:9: note: macro \u0027DECLARE_TRACE\u0027 defined here\n#define DECLARE_TRACE(name, proto, args)                                \\\n        ^\nIn file included from /buildbot/src/android/common-android13-5.15/common/kernel/signal.c:61:\n/buildbot/src/android/common-android13-5.15/common/include/trace/hooks/signal.h:18:1: error: declaration specifier missing, defaulting to \u0027int\u0027 [-Werror]\nDECLARE_HOOK(android_vh_exit_signal,\n^\nint\n/buildbot/src/android/common-android13-5.15/common/include/trace/hooks/vendor_hooks.h:16:22: note: expanded from macro \u0027DECLARE_HOOK\u0027\n#define DECLARE_HOOK DECLARE_TRACE\n                     ^\n/buildbot/src/android/common-android13-5.15/common/kernel/signal.c:1053:5: error: implicit declaration of function \u0027trace_android_vh_exit_signal\u0027 [-Werror,-Wimplicit-function-declaration]\n                                trace_android_vh_exit_signal(t);\n                                ^\n3 errors generated.\n\n```",
+      "revId": "2f09ab6a64bac25bea402b5b68090c62960a31cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
