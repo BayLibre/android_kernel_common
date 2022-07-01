@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright (c) 2022, The Linux Foundation. All rights reserved.
+ */
+
+#include <linux/init.h>
+#include <linux/printk.h>
+#include <linux/string.h>
+#include <linux/bootconfig.h>
+
+#define ANDROID_BOOT_DEV_MAX_V3    30
+
+static char android_boot_dev_v3[ANDROID_BOOT_DEV_MAX_V3];
+static const char *android_boot_dev_v4;
+
+static int __init get_android_boot_dev_v3(char *str)
+{
+	strscpy(android_boot_dev_v3, str, ANDROID_BOOT_DEV_MAX_V3);
+	return 1;
+}
+__setup("androidboot.bootdevice=", get_android_boot_dev_v3);
+
+static int __init get_android_boot_dev_v4(void)
+{
+	struct xbc_node *vnode = NULL;
+
+	android_boot_dev_v4 = xbc_find_value("androidboot.bootdevice", &vnode);
+	if (vnode && xbc_node_is_array(vnode))
+		xbc_array_for_each_value(vnode, android_boot_dev_v4)
+
+	return 0;
+}
+fs_initcall(get_android_boot_dev_v4);
