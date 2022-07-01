@@ -426,7 +426,10 @@ struct snd_pcm_runtime {
 #endif
 #ifndef __GENKSYMS__
 	struct mutex buffer_mutex;	/* protect for buffer changes */
+<<<<<<< HEAD   (8e9326 Merge 5.4.202 into android11-5.4-lts)
 	atomic_t buffer_accessing;	/* >0: in r/w operation, <0: blocked */
+=======
+>>>>>>> BRANCH (2ddac3 BACKPORT: ALSA: pcm: Fix races among concurrent prealloc pro)
 #endif
 };
 

@@ -970,7 +970,10 @@ int snd_pcm_attach_substream(struct snd_pcm *pcm, int stream,
 
 	runtime->status->state = SNDRV_PCM_STATE_OPEN;
 	mutex_init(&runtime->buffer_mutex);
+<<<<<<< HEAD   (8e9326 Merge 5.4.202 into android11-5.4-lts)
 	atomic_set(&runtime->buffer_accessing, 0);
+=======
+>>>>>>> BRANCH (2ddac3 BACKPORT: ALSA: pcm: Fix races among concurrent prealloc pro)
 
 	substream->runtime = runtime;
 	substream->private_data = pcm->private_data;
