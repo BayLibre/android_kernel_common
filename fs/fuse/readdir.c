@@ -573,7 +573,12 @@ int fuse_readdir(struct file *file, struct dir_context *ctx)
 
 #ifdef CONFIG_FUSE_BPF
 	struct fuse_err_ret fer;
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	bool force_again, allow_force;
+=======
+	bool allow_force;
+	bool force_again = false;
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	bool is_continued = false;
 
 again:

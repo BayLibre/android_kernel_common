@@ -609,18 +609,30 @@ static void start_io_acct(struct dm_io *io)
 }
 
 static void end_io_acct(struct mapped_device *md, struct bio *bio,
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 			unsigned long start_time, struct dm_stats_aux *stats_aux)
+=======
+		unsigned long start_time, struct dm_stats_aux *stats_aux)
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 {
 	unsigned long duration = jiffies - start_time;
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
+=======
+
+	bio_end_io_acct(bio, start_time);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 
 	if (unlikely(dm_stats_used(&md->stats)))
 		dm_stats_account_io(&md->stats, bio_data_dir(bio),
 				    bio->bi_iter.bi_sector, bio_sectors(bio),
 				    true, duration, stats_aux);
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 
 	smp_wmb();
 
 	bio_end_io_acct(bio, start_time);
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 
 	/* nudge anyone waiting on suspend queue */
 	if (unlikely(wq_has_sleeper(&md->wait)))

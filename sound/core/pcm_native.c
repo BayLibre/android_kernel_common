@@ -667,6 +667,7 @@ static int snd_pcm_hw_params_choose(struct snd_pcm_substream *pcm,
 	return 0;
 }
 
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 /* acquire buffer_mutex; if it's in r/w operation, return -EBUSY, otherwise
  * block the further r/w operations
  */
@@ -685,6 +686,8 @@ static void snd_pcm_buffer_access_unlock(struct snd_pcm_runtime *runtime)
 	atomic_inc(&runtime->buffer_accessing);
 }
 
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 #if IS_ENABLED(CONFIG_SND_PCM_OSS)
 #define is_oss_stream(substream)	((substream)->oss.oss)
 #else
@@ -695,16 +698,20 @@ static int snd_pcm_hw_params(struct snd_pcm_substream *substream,
 			     struct snd_pcm_hw_params *params)
 {
 	struct snd_pcm_runtime *runtime;
-	int err, usecs;
+	int err = 0, usecs;
 	unsigned int bits;
 	snd_pcm_uframes_t frames;
 
 	if (PCM_RUNTIME_CHECK(substream))
 		return -ENXIO;
 	runtime = substream->runtime;
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	err = snd_pcm_buffer_access_lock(runtime);
 	if (err < 0)
 		return err;
+=======
+	mutex_lock(&runtime->buffer_mutex);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	snd_pcm_stream_lock_irq(substream);
 	switch (runtime->status->state) {
 	case SNDRV_PCM_STATE_OPEN:
@@ -821,7 +828,11 @@ static int snd_pcm_hw_params(struct snd_pcm_substream *substream,
 			snd_pcm_lib_free_pages(substream);
 	}
  unlock:
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	snd_pcm_buffer_access_unlock(runtime);
+=======
+	mutex_unlock(&runtime->buffer_mutex);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	return err;
 }
 
@@ -866,9 +877,13 @@ static int snd_pcm_hw_free(struct snd_pcm_substream *substream)
 	if (PCM_RUNTIME_CHECK(substream))
 		return -ENXIO;
 	runtime = substream->runtime;
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	result = snd_pcm_buffer_access_lock(runtime);
 	if (result < 0)
 		return result;
+=======
+	mutex_lock(&runtime->buffer_mutex);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	snd_pcm_stream_lock_irq(substream);
 	switch (runtime->status->state) {
 	case SNDRV_PCM_STATE_SETUP:
@@ -887,7 +902,11 @@ static int snd_pcm_hw_free(struct snd_pcm_substream *substream)
 	snd_pcm_set_state(substream, SNDRV_PCM_STATE_OPEN);
 	cpu_latency_qos_remove_request(&substream->latency_pm_qos_req);
  unlock:
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	snd_pcm_buffer_access_unlock(runtime);
+=======
+	mutex_unlock(&runtime->buffer_mutex);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	return result;
 }
 
@@ -1372,15 +1391,23 @@ static int snd_pcm_action_nonatomic(const struct action_ops *ops,
 
 	/* Guarantee the group members won't change during non-atomic action */
 	down_read(&snd_pcm_link_rwsem);
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	res = snd_pcm_buffer_access_lock(substream->runtime);
 	if (res < 0)
 		goto unlock;
+=======
+	mutex_lock(&substream->runtime->buffer_mutex);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	if (snd_pcm_stream_linked(substream))
 		res = snd_pcm_action_group(ops, substream, state, false);
 	else
 		res = snd_pcm_action_single(ops, substream, state);
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	snd_pcm_buffer_access_unlock(substream->runtime);
  unlock:
+=======
+	mutex_unlock(&substream->runtime->buffer_mutex);
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	up_read(&snd_pcm_link_rwsem);
 	return res;
 }

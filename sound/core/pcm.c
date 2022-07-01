@@ -970,7 +970,10 @@ int snd_pcm_attach_substream(struct snd_pcm *pcm, int stream,
 
 	runtime->status->state = SNDRV_PCM_STATE_OPEN;
 	mutex_init(&runtime->buffer_mutex);
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	atomic_set(&runtime->buffer_accessing, 0);
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 
 	substream->runtime = runtime;
 	substream->private_data = pcm->private_data;

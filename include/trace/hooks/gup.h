@@ -7,7 +7,16 @@
 #define _TRACE_HOOK_GUP_H
 #include <trace/hooks/vendor_hooks.h>
 
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 struct page;
+=======
+#ifdef __GENKSYMS__
+struct page;
+#else
+/* struct page */
+#include <linux/mm_types.h>
+#endif /* __GENKSYMS__ */
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 
 DECLARE_HOOK(android_vh_try_grab_compound_head,
        TP_PROTO(struct page *page, int refs, unsigned int flags, bool *ret),

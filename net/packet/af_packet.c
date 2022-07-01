@@ -3470,10 +3470,13 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
 			copy_len = max_len;
 			msg->msg_namelen = copy_len;
 		}
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 		if (WARN_ON_ONCE(copy_len > max_len)) {
 			copy_len = max_len;
 			msg->msg_namelen = copy_len;
 		}
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 		memcpy(msg->msg_name, &PACKET_SKB_CB(skb)->sa, copy_len);
 	}
 

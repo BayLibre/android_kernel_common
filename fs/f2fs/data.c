@@ -3408,9 +3408,12 @@ static int f2fs_write_begin(struct file *file, struct address_space *mapping,
 		*fsdata = NULL;
 
 		if (len == PAGE_SIZE && !(f2fs_is_atomic_file(inode)))
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 			goto repeat;
 
 		if (len == PAGE_SIZE && !(f2fs_is_atomic_file(inode)))
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 			goto repeat;
 
 		ret = f2fs_prepare_compress_overwrite(inode, pagep,

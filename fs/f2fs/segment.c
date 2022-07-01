@@ -4803,6 +4803,7 @@ static int sanity_check_curseg(struct f2fs_sb_info *sbi)
 			return -EFSCORRUPTED;
 		}
 
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 		if (curseg->alloc_type != LFS && curseg->alloc_type != SSR) {
 			f2fs_err(sbi,
 				 "Current segment has invalid alloc_type:%d",
@@ -4810,6 +4811,8 @@ static int sanity_check_curseg(struct f2fs_sb_info *sbi)
 			return -EFSCORRUPTED;
 		}
 
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 		if (f2fs_test_bit(blkofs, se->cur_valid_map))
 			goto out;
 

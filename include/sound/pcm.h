@@ -430,7 +430,10 @@ struct snd_pcm_runtime {
 #endif
 #ifndef __GENKSYMS__
 	struct mutex buffer_mutex;	/* protect for buffer changes */
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	atomic_t buffer_accessing;	/* >0: in r/w operation, <0: blocked */
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 #endif
 };
 

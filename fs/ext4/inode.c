@@ -2045,6 +2045,7 @@ static int ext4_writepage(struct page *page,
 		return 0;
 	}
 
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 	/* Should never happen but for bugs in other kernel subsystems */
 	if (!page_has_buffers(page)) {
 		ext4_warning_inode(inode,
@@ -2054,6 +2055,8 @@ static int ext4_writepage(struct page *page,
 		return 0;
 	}
 
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 	page_bufs = page_buffers(page);
 	/*
 	 * We cannot do block allocation or other extent handling in this
@@ -2673,6 +2676,7 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
 				continue;
 			}
 
+<<<<<<< HEAD   (3cbab1 Revert "xfrm: Add possibility to set the default to block if)
 			/*
 			 * Should never happen but for buggy code in
 			 * other subsystems that call
@@ -2689,6 +2693,8 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
 				continue;
 			}
 
+=======
+>>>>>>> BRANCH (f677cb ANDROID: GKI: include more type definitions in vendor hooks)
 			if (mpd->map.m_len == 0)
 				mpd->first_page = page->index;
 			mpd->next_page = page->index + 1;
