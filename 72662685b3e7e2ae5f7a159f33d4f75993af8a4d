@@ -16,6 +16,29 @@
       "message": "Seems ok to me.",
       "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cf842af_234cbe19",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-02T14:26:20Z",
+      "side": 1,
+      "message": "this is not a public symbol, please do not export it to a tracepoint.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 44
+      },
+      "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
