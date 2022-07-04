@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d9897a_171df075",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "All right, I had splitted three patches as follows:\n\nremote:   https://android-review.googlesource.com/c/kernel/common/+/2133125 ANDROID: vendor_hooks: support mapped-protect [NEW]\nremote:   https://android-review.googlesource.com/c/kernel/common/+/2133126  ANDROID: vendor_hooks: support mapped-protect [NEW]\nremote:   https://android-review.googlesource.com/c/kernel/common/+/2133127 ANDROID: vendor_hooks: support mapped-protect [NEW]",
+      "parentUuid": "7c166325_dbecdef0",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53472c98_5b05e881",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-22T22:48:58Z",
       "side": 1,
       "message": "The vendor hook name should reflect the logical location it\u0027s called from (add_page_to_lru_list), not how you use it (different partners can use the same hook for different purposes, so the name should not reflect the usage purpose). I would suggest renaming to something like:\n\n```\ntrace_android_vh_add_page_to_lru_list()\n```\n\nSame comment applies to all other vendor hooks.",
+      "range": {
+        "startLine": 68,
+        "startChar": 1,
+        "endLine": 68,
+        "endChar": 43
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "311b9bc5_5a0a4683",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53472c98_5b05e881",
       "range": {
         "startLine": 68,
         "startChar": 1,
@@ -93,6 +141,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8f2831a_7f876ccf",
+        "filename": "mm/huge_memory.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2169,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "We used the only hooks:trace_android_vh_update_mapped_mul in mm/rmap.c, it will use return-value in some case, like:\n\nline:1235\n...\n\t\ttrace_android_vh_update_mapped_mul(page, true, \u0026ret, \u0026success);\n\t\tif (likely(success)) {\n\t\t\tif (!ret)\n\t\t\t\tgoto out;\n\t\t} else {\n\t\t\tif (!atomic_inc_and_test(\u0026page-\u003e_mapcount))\n\t\t\t\tgoto out;\n\t\t}\n\t}",
+      "parentUuid": "80701a77_cc11c347",
+      "range": {
+        "startLine": 2169,
+        "startChar": 55,
+        "endLine": 2169,
+        "endChar": 58
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f951f4_4927351e",
+        "filename": "mm/huge_memory.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2169,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "update_mapped_mul：update mapped-multi pages status in kernel.",
+      "parentUuid": "844b09a6_a08cb754",
+      "range": {
+        "startLine": 2169,
+        "startChar": 3,
+        "endLine": 2169,
+        "endChar": 37
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c17764cc_fd557087",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-06-22T22:48:58Z",
       "side": 1,
       "message": "Why are you changing atomic_inc to atomic_dec? Has this been tested?",
+      "range": {
+        "startLine": 2186,
+        "startChar": 5,
+        "endLine": 2186,
+        "endChar": 15
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "041bf412_fa54137e",
+        "filename": "mm/huge_memory.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2186,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "It is the wrong-code, i have fixed the problems in the new patch:\nremote:   https://android-review.googlesource.com/c/kernel/common/+/2133125 ANDROID: vendor_hooks: support mapped-protect [NEW]\nremote:   https://android-review.googlesource.com/c/kernel/common/+/2133126  ANDROID: vendor_hooks: support mapped-protect [NEW]\nremote:   https://android-review.googlesource.com/c/kernel/common/+/2133127 ANDROID: vendor_hooks: support mapped-protect [NEW]",
+      "parentUuid": "c17764cc_fd557087",
       "range": {
         "startLine": 2186,
         "startChar": 5,
@@ -139,6 +259,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f312fb4_62bef138",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "Done：\n\nhttps://android-review.googlesource.com/c/kernel/common/+/2133126",
+      "parentUuid": "2318c555_ada25169",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 17
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11704a16_14900c70",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-06-22T22:48:58Z",
       "side": 1,
       "message": "Here you are using \"ret\" parameter but the names of these parameters do not provide much helpful information. Seems to be that \"success\" tells use whether you handled the update yourself or not and \"ret\" means... you want to skip the rest of the function?",
+      "range": {
+        "startLine": 1212,
+        "startChar": 55,
+        "endLine": 1212,
+        "endChar": 58
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44142b53_1cf4e234",
+        "filename": "mm/rmap.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1212,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "\"ret\" means the return value of \"atomic_inc_and_test(\u0026page[i]._mapcount)\" here.\ntrace_android_vh_update_mapped_mul will do atomic_inc_and_test or atomic_dec_and_test.",
+      "parentUuid": "11704a16_14900c70",
       "range": {
         "startLine": 1212,
         "startChar": 55,
@@ -185,6 +353,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad882077_8ec3f78c",
+        "filename": "mm/swap.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "It had been splitted in a single patch:\nhttps://android-review.googlesource.com/c/kernel/common/+/2133127",
+      "parentUuid": "fdd2e494_f6d5dbf7",
+      "range": {
+        "startLine": 440,
+        "startChar": 1,
+        "endLine": 440,
+        "endChar": 42
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d12108c_24dd99d0",
@@ -198,6 +390,30 @@
       "writtenOn": "2022-06-22T22:48:58Z",
       "side": 1,
       "message": "Either trace_android_vh_page_should_be_protected or trace_android_vh_protect_page",
+      "range": {
+        "startLine": 1025,
+        "startChar": 1,
+        "endLine": 1025,
+        "endChar": 40
+      },
+      "revId": "6a5025aeb260f25e8c2644a0e06b7b79898ab155",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb8e03cd_eceb519b",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T07:01:18Z",
+      "side": 1,
+      "message": "trace_android_vh_page_should_be_protected is better, i have update the patch.",
+      "parentUuid": "9d12108c_24dd99d0",
       "range": {
         "startLine": 1025,
         "startChar": 1,
