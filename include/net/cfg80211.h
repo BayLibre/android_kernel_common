@@ -5267,6 +5267,19 @@ struct wiphy_iftype_ext_capab {
 };
 
 /**
+ * struct wiphy_iftype_ext_capab2 - backported extended capabilities per
+ *	interface type
+ * @iftype: interface type
+ * @eml_capabilities: EML capabilities (for MLO)
+ * @mld_capa_and_ops: MLD capabilities and operations (for MLO)
+ */
+struct wiphy_iftype_ext_capab2 {
+	enum nl80211_iftype iftype;
+	u16 eml_capabilities;
+	u16 mld_capa_and_ops;
+};
+
+/**
  * struct cfg80211_pmsr_capabilities - cfg80211 peer measurement capabilities
  * @max_peers: maximum number of peers in a single measurement
  * @report_ap_tsf: can report assoc AP's TSF for radio resource measurement
@@ -5320,6 +5333,19 @@ struct wiphy_iftype_akm_suites {
 	u16 iftypes_mask;
 	const u32 *akm_suites;
 	int n_akm_suites;
+};
+
+/**
+ * struct wiphy_backport - backported wireless hardware description
+ * @iftype_ext_capab2: extension to @wiphy.iftype_ext_capab. Backported array of
+ *	extended capabilities per interface type. Driver should allocate array
+ *	of size @wiphy.num_iftype_ext_capab same as @wiphy.iftype_ext_capab.
+ * @num_iftype_ext_capab2: number of interface types for which extended. must be
+ *	be same as @wiphy.num_iftype_ext_capab.
+ */
+struct wiphy_backport {
+	const struct wiphy_iftype_ext_capab2 *iftype_ext_capab2;
+	unsigned int num_iftype_ext_capab2;
 };
 
 /**
@@ -5531,6 +5557,7 @@ struct wiphy_iftype_akm_suites {
  *	NL80211_MAX_NR_AKM_SUITES in order to avoid compatibility issues with
  *	legacy userspace and maximum allowed value is
  *	CFG80211_MAX_NUM_AKM_SUITES.
+ * @backport: backported wiphy information.
  */
 struct wiphy {
 	struct mutex mtx;
@@ -5679,7 +5706,8 @@ struct wiphy {
 	u8 ema_max_profile_periodicity;
 	u16 max_num_akm_suites;
 
-	ANDROID_BACKPORT_RESERVED(1);
+	/* Enabled with bug 253289327 */
+	ANDROID_BACKPORT_RESERVED_USE(1, const struct wiphy_backport *backport);
 	ANDROID_BACKPORT_RESERVED(2);
 	ANDROID_BACKPORT_RESERVED(3);
 	ANDROID_BACKPORT_RESERVED(4);
