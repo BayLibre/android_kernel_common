@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2d20449_c348aed0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T06:59:12Z",
+      "side": 1,
+      "message": "Per patch of this patchset would be described in follow part:\n\nThis patch(3/3):\n\nSupport two hooks as follows to protect multi-mapped pages in kernel:",
+      "parentUuid": "5a39d281_0ee0a3b4",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 45
+      },
+      "revId": "6bd4567c6416441207d75c123904f6a2f4f235d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c24adf5_70da0af2",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ea2316_19fd97bf",
+        "filename": "mm/swap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T06:59:12Z",
+      "side": 1,
+      "message": "The hook to sort pages in the lru-list.\nWe know if the page in active-lru,it will not be place to the head of active-lru.\nBut in my feature,we will protect mapped-multi pages in some case so that we should\nlet mapped-multi not be selected in shrink-lru in some case by placing the page to the\nhead of active-lru.",
+      "parentUuid": "8c24adf5_70da0af2",
+      "range": {
+        "startLine": 440,
+        "startChar": 1,
+        "endLine": 440,
+        "endChar": 42
+      },
+      "revId": "6bd4567c6416441207d75c123904f6a2f4f235d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b443ab9_52e2ca4c",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-23T23:05:14Z",
       "side": 1,
       "message": "Please refer to the comments in my review of https://android-review.googlesource.com/c/kernel/common/+/2128035.",
+      "range": {
+        "startLine": 1025,
+        "startChar": 1,
+        "endLine": 1025,
+        "endChar": 40
+      },
+      "revId": "6bd4567c6416441207d75c123904f6a2f4f235d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eae1c972_ba502b5c",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1940250
+      },
+      "writtenOn": "2022-07-04T06:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b443ab9_52e2ca4c",
       "range": {
         "startLine": 1025,
         "startChar": 1,
