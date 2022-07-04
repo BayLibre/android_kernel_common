@@ -140,6 +140,7 @@
 #endif
 		.endm
 
+<<<<<<< HEAD   (963d51 Merge branch 'android12-5.4' into branch 'android12-5.4-lts')
 		.macro	be32tocpu, val, tmp
 #ifndef __ARMEB__
 		/* convert to little endian */
@@ -147,6 +148,8 @@
 #endif
 		.endm
 
+=======
+>>>>>>> BRANCH (871cbc Linux 5.4.203)
 		.section ".start", "ax"
 /*
  * sort out different calling conventions
