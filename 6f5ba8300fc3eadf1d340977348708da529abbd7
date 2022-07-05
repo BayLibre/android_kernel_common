@@ -146,6 +146,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "366111ec_a3a456e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T11:01:28Z",
+      "side": 1,
+      "message": "That is in-kernel code and if any structure changes, when it is rebuilt it will be properly handled.  You are asking that we now preserve an internal structure somehow and never change it.  That is not a guarantee we can make.",
+      "parentUuid": "a179f29b_29cbf09d",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96bf890f_8af2e562",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
@@ -264,6 +288,30 @@
       "side": 1,
       "message": "I think bootloader can do any features itself whether dependent on aosp or pixel kernels or not. aosp or pixel kernel can keep doing its changes and don\u0027t care other subsystems.",
       "parentUuid": "46884914_1c25e15a",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 61
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a6818b8_28cbe363",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T11:01:28Z",
+      "side": 1,
+      "message": "How are you going to:\n  - know when this structure changes during a kernel update?\n  - be able to update the bootloader when the structure changes during a kernel update.\n  - be able to handle the structure changing when downgrading a kernel?\n  \nAgain, you can not export internal structures and assume they will remain the same.",
+      "parentUuid": "aa597fd0_ccbd2e04",
       "range": {
         "startLine": 164,
         "startChar": 0,
