@@ -16,6 +16,23 @@
       "message": "These should never be exported or needed by any module.\n\nIf you really need internal functions like this, use the android debug symbols module, but even then, please strongly reconsider this as you should not be doing this type of internal hacks.",
       "revId": "7297e95d7dd526e525e4c43b606194238904daf0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ebe4e5_e40ace86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T04:33:37Z",
+      "side": 1,
+      "message": "ah, this is the debug module.  But even then, please don\u0027t do this as you are exporting internal structures in ways we do not want to support.",
+      "revId": "7297e95d7dd526e525e4c43b606194238904daf0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
