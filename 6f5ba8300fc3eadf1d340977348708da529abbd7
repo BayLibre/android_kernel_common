@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96bf890f_8af2e562",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T05:30:23Z",
+      "side": 1,
+      "message": "Please take a step back and describe the problem you are attempting to solve here by exporting internal kernel structures that have the ability to change over the lifetime of this kernel branch being supported.",
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42f2a7d5_d08d77bb",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T05:30:23Z",
+      "side": 1,
+      "message": "you can not just export a random pointer to an unknown structure and expect that structure to remain in the same format for the next 5+ years.  This is not going to work at all.",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 61
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f360281d_df943305",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T05:30:23Z",
+      "side": 1,
+      "message": "you are exporting a random static pointer with no structure information at all, how do you know it will not change over time?\n\nAlso why is it exported here, and not right next to it\u0027s definition?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 60
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
