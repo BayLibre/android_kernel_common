@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef22fa45_0e741408",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T10:12:39Z",
+      "side": 1,
+      "message": "No, sorry, you will have no visibility into any abi changes here, we can not export this.",
+      "parentUuid": "549dbfb4_73f2884c",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96bf890f_8af2e562",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
@@ -168,6 +192,30 @@
       "side": 1,
       "message": "Like kallsyms.c and module.c, we have the same structures defined in bootloader.\nBootloader only need module root address and will be cast_of to related structure in bootloader.",
       "parentUuid": "42f2a7d5_d08d77bb",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 61
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46884914_1c25e15a",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T10:12:39Z",
+      "side": 1,
+      "message": "Again, these are not valid structures that userspace or anything else can rely on.",
+      "parentUuid": "07b1e5a1_255c0851",
       "range": {
         "startLine": 164,
         "startChar": 0,
