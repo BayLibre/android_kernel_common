@@ -168,6 +168,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d4412d_dce05cf0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2022-07-05T11:11:49Z",
+      "side": 1,
+      "message": "We don\u0027t care any kernel upgrade or downgrade which caused kernel structure changes.\n\nWe have an auto test cases to verify bootloader feature for build roms.\n\nThe worse case is that the bootloader feature is broken as ramdump boot only(instead of normal boot) and harmless on system.",
+      "parentUuid": "366111ec_a3a456e2",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96bf890f_8af2e562",
@@ -312,6 +336,30 @@
       "side": 1,
       "message": "How are you going to:\n  - know when this structure changes during a kernel update?\n  - be able to update the bootloader when the structure changes during a kernel update.\n  - be able to handle the structure changing when downgrading a kernel?\n  \nAgain, you can not export internal structures and assume they will remain the same.",
       "parentUuid": "aa597fd0_ccbd2e04",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 61
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6b0479c_8fe0a372",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2022-07-05T11:11:49Z",
+      "side": 1,
+      "message": "We don\u0027t care any kernel upgrade or downgrade which caused kernel structure changes.\n\nWe have an auto test cases to verify bootloader feature for build roms.\n\nThe worse case is that the bootloader feature is broken as ramdump boot only(instead of normal boot) and harmless on system.",
+      "parentUuid": "2a6818b8_28cbe363",
       "range": {
         "startLine": 164,
         "startChar": 0,
