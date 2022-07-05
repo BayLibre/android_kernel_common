@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "549dbfb4_73f2884c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2022-07-05T06:47:23Z",
+      "side": 1,
+      "message": "Kernel can change over the lifetime of the kernel support cycle.\nIt is ok and we will maintain and follow the changes for the feature in bootloader. But I think kallsyms or module kallsyms are not changed frequently because from WHI to PRO, it keeps workable until now.",
+      "parentUuid": "342a7104_a2987fc6",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96bf890f_8af2e562",
@@ -85,6 +109,24 @@
       "writtenOn": "2022-07-05T05:30:23Z",
       "side": 1,
       "message": "Please take a step back and describe the problem you are attempting to solve here by exporting internal kernel structures that have the ability to change over the lifetime of this kernel branch being supported.",
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2016fade_08a6031b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2022-07-05T06:47:23Z",
+      "side": 1,
+      "message": "Target to have a backtrace in bootloader for debugging as watchdog reset, like\n\nBacktrace Core 0\nPC: do_irq_disabled_deadloop+0x28 [debug_reboot] \u003cFFFFFFC009CFB2D8\u003e\nLR: do_irq_disabled_deadloop+0x28 [debug_reboot] \u003cFFFFFFC009CFB2D8\u003e\n\n[\u003cFFFFFFC009CFB2D8\u003e] do_irq_disabled_deadloop+0x28 [debug_reboot]\n[\u003cFFFFFFC01023592C\u003e] multi_cpu_stop+0x11c\n[\u003cFFFFFFC010236224\u003e] cpu_stopper_thread+0xf8\n[\u003cFFFFFFC010165234\u003e] smpboot_thread_fn+0x2b4\n[\u003cFFFFFFC01015C4E0\u003e] kthread+0x158\n[\u003cFFFFFFC010015118\u003e] ret_from_fork+0x10\n\nIf we want to achieve this, for embeded module kallsym.cwe need to know module\nkallsym for embedded modules\nmodule kallsyms for loaded modules\n \nCurrent rom, module kallsyms parser in bootloader is not workable(UNKNOWN+0x0) like b/237554648 because both module list_find and kallsyms_lookup_name are no longer supported.\nex.\n  Backtrace Core 0\n  PC: UNKNOWN+0x0 \u003cFFFFFFC00964E25C\u003e\n  LR: UNKNOWN+0x0 \u003cFFFFFFC00964E25C\u003e\n\n  [\u003cFFFFFFC00964E25C\u003e] UNKNOWN+0x0\n  [\u003cFFFFFFC00964E278\u003e] UNKNOWN+0x0\n  [\u003cFFFFFFC010160BB0\u003e] multi_cpu_stop+0xf8\n  [\u003cFFFFFFC010161254\u003e] cpu_stopper_thread+0xc4\n  [\u003cFFFFFFC0100B22A0\u003e] smpboot_thread_fn+0x1fc\n  [\u003cFFFFFFC0100AC758\u003e] kthread+0x13c\n  [\u003cFFFFFFC010005DE0\u003e] ret_from_fork+0x10\n\nSo bootloader needs a module list head or latch tree root address to lookup it.\n- static LIST_HEAD(modules);\n- static struct mod_tree_root {\n\u003e---struct latch_tree_root root;\n\u003e---unsigned long addr_min;\n\u003e---unsigned long addr_max;\n} mod_tree",
+      "parentUuid": "96bf890f_8af2e562",
       "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -112,6 +154,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b1e5a1_255c0851",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2022-07-05T06:47:23Z",
+      "side": 1,
+      "message": "Like kallsyms.c and module.c, we have the same structures defined in bootloader.\nBootloader only need module root address and will be cast_of to related structure in bootloader.",
+      "parentUuid": "42f2a7d5_d08d77bb",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 61
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f360281d_df943305",
@@ -125,6 +191,30 @@
       "writtenOn": "2022-07-05T05:30:23Z",
       "side": 1,
       "message": "you are exporting a random static pointer with no structure information at all, how do you know it will not change over time?\n\nAlso why is it exported here, and not right next to it\u0027s definition?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 60
+      },
+      "revId": "6f5ba8300fc3eadf1d340977348708da529abbd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f920ef12_c0455e49",
+        "filename": "kernel/module.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2022-07-05T06:47:23Z",
+      "side": 1,
+      "message": "Is it determined by build time, right ?\nIf CONFIG_MODULES_TREE_LOOKUP\n    module_root_pa \u003d mod_tree;\nElse // mod_list_find\n    module_root_pa \u003d modules;",
+      "parentUuid": "f360281d_df943305",
       "range": {
         "startLine": 226,
         "startChar": 0,
