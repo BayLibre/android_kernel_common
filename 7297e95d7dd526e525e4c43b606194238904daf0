@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eed32e50_d281c9ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-05T04:32:42Z",
+      "side": 1,
+      "message": "These should never be exported or needed by any module.\n\nIf you really need internal functions like this, use the android debug symbols module, but even then, please strongly reconsider this as you should not be doing this type of internal hacks.",
+      "revId": "7297e95d7dd526e525e4c43b606194238904daf0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
