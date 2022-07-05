@@ -24,6 +24,8 @@ extern const unsigned long kallsyms_addresses[] __weak;
 extern const int kallsyms_offsets[] __weak;
 extern const u8 kallsyms_names[] __weak;
 
+extern unsigned long *dbki_module_root;
+
 /*
  * Tell the compiler that the count isn't in the small data section if the arch
  * has one (eg: FRV).
@@ -174,6 +176,8 @@ static int debug_kinfo_probe(struct platform_device *pdev)
 	info->module_start_va = VMALLOC_START;
 	info->module_end_va = VMALLOC_END;
 #endif
+	info->module_root_pa = (u64)__pa_symbol(dbki_module_root);
+
 	update_kernel_all_info(all_info);
 
 	return 0;
