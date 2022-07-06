@@ -291,6 +291,7 @@
       <elf-symbol name='_raw_write_unlock_irq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4ccd378a'/>
       <elf-symbol name='_raw_write_unlock_irqrestore' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1c1b9f8e'/>
       <elf-symbol name='_snd_ctl_add_slave' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5d98b481'/>
+      <elf-symbol name='_snd_pcm_lib_alloc_vmalloc_buffer' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5585a378'/>
       <elf-symbol name='ack_all_badblocks' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x49717f83'/>
       <elf-symbol name='add_device_randomness' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2fb6de5d'/>
       <elf-symbol name='add_timer' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x65744673'/>
@@ -3406,6 +3407,7 @@
       <elf-symbol name='snd_pcm_add_chmap_ctls' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd17cb482'/>
       <elf-symbol name='snd_pcm_create_iec958_consumer_hw_params' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x11eba48e'/>
       <elf-symbol name='snd_pcm_format_physical_width' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x68a24153'/>
+      <elf-symbol name='snd_pcm_format_set_silence' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5e7f4920'/>
       <elf-symbol name='snd_pcm_format_width' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe56a9336'/>
       <elf-symbol name='snd_pcm_hw_constraint_eld' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6396b5d4'/>
       <elf-symbol name='snd_pcm_hw_constraint_integer' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbf5f6b3b'/>
@@ -3417,6 +3419,8 @@
       <elf-symbol name='snd_pcm_hw_rule_add' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4d9c75b3'/>
       <elf-symbol name='snd_pcm_lib_default_mmap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfe668d59'/>
       <elf-symbol name='snd_pcm_lib_free_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa3bf33d4'/>
+      <elf-symbol name='snd_pcm_lib_free_vmalloc_buffer' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe293525a'/>
+      <elf-symbol name='snd_pcm_lib_get_vmalloc_page' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x15ede57e'/>
       <elf-symbol name='snd_pcm_lib_ioctl' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xeb4fefae'/>
       <elf-symbol name='snd_pcm_lib_malloc_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x63493581'/>
       <elf-symbol name='snd_pcm_lib_preallocate_free_for_all' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf35b4301'/>
@@ -179101,6 +179105,12 @@
       </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='sound/core/pcm_memory.c' language='LANG_C89'>
+      <function-decl name='_snd_pcm_lib_alloc_vmalloc_buffer' mangled-name='_snd_pcm_lib_alloc_vmalloc_buffer' filepath='sound/core/pcm_memory.c' line='360' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_snd_pcm_lib_alloc_vmalloc_buffer'>
+        <parameter type-id='06b2cd14' name='substream' filepath='sound/core/pcm_memory.c' line='360' column='1'/>
+        <parameter type-id='b59d7dce' name='size' filepath='sound/core/pcm_memory.c' line='361' column='1'/>
+        <parameter type-id='3eb7c31c' name='gfp_flags' filepath='sound/core/pcm_memory.c' line='361' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='snd_pcm_lib_preallocate_pages_for_all' mangled-name='snd_pcm_lib_preallocate_pages_for_all' filepath='sound/core/pcm_memory.c' line='244' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snd_pcm_lib_preallocate_pages_for_all'>
         <parameter type-id='4c9f335b' name='pcm' filepath='sound/core/pcm_memory.c' line='244' column='1'/>
         <parameter type-id='95e97e5e' name='type' filepath='sound/core/pcm_memory.c' line='245' column='1'/>
@@ -179126,12 +179136,27 @@
         <parameter type-id='b59d7dce' name='size' filepath='sound/core/pcm_memory.c' line='290' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='snd_pcm_lib_get_vmalloc_page' mangled-name='snd_pcm_lib_get_vmalloc_page' filepath='sound/core/pcm_memory.c' line='411' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snd_pcm_lib_get_vmalloc_page'>
+        <parameter type-id='06b2cd14' name='substream' filepath='sound/core/pcm_memory.c' line='411' column='1'/>
+        <parameter type-id='7359adad' name='offset' filepath='sound/core/pcm_memory.c' line='412' column='1'/>
+        <return type-id='02f11ed4'/>
+      </function-decl>
+      <function-decl name='snd_pcm_lib_free_vmalloc_buffer' mangled-name='snd_pcm_lib_free_vmalloc_buffer' filepath='sound/core/pcm_memory.c' line='388' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snd_pcm_lib_free_vmalloc_buffer'>
+        <parameter type-id='06b2cd14' name='substream' filepath='sound/core/pcm_memory.c' line='388' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='snd_pcm_lib_free_pages' mangled-name='snd_pcm_lib_free_pages' filepath='sound/core/pcm_memory.c' line='341' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snd_pcm_lib_free_pages'>
         <parameter type-id='06b2cd14' name='substream' filepath='sound/core/pcm_memory.c' line='341' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='sound/core/pcm_misc.c' language='LANG_C89'>
+      <function-decl name='snd_pcm_format_set_silence' mangled-name='snd_pcm_format_set_silence' filepath='sound/core/pcm_misc.c' line='415' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snd_pcm_format_set_silence'>
+        <parameter type-id='67fa9bd5' name='format' filepath='sound/core/pcm_misc.c' line='415' column='1'/>
+        <parameter type-id='eaa32e2f' name='data' filepath='sound/core/pcm_misc.c' line='415' column='1'/>
+        <parameter type-id='f0981eeb' name='samples' filepath='sound/core/pcm_misc.c' line='415' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='snd_pcm_rate_to_rate_bit' mangled-name='snd_pcm_rate_to_rate_bit' filepath='sound/core/pcm_misc.c' line='510' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='snd_pcm_rate_to_rate_bit'>
         <parameter type-id='f0981eeb' name='rate' filepath='sound/core/pcm_misc.c' line='510' column='1'/>
         <return type-id='f0981eeb'/>
