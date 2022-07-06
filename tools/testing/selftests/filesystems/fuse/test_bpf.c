@@ -514,3 +514,16 @@ int error_test(struct fuse_bpf_args *fa)
 	}
 }
 
+SEC("test_readdirplus")
+int readdirplus_test(struct fuse_bpf_args *fa)
+{
+	switch (fa->opcode) {
+	case FUSE_READDIR | FUSE_PREFILTER: {
+		const char *name = fa->in_args[0].value;
+
+		bpf_printk("Lookup prefilter: %lx %s", fa->nodeid, name);
+		return 0;
+	}
+	}
+	return FUSE_BPF_BACKING;
+}
