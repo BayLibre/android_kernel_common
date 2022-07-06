@@ -1232,10 +1232,18 @@ static int guest_ack_share(u64 addr, const struct pkvm_mem_transition *tx,
 
 static int guest_ack_unshare(u64 addr, const struct pkvm_mem_transition *tx)
 {
+	enum pkvm_page_state state = PKVM_PAGE_SHARED_BORROWED;
 	u64 size = tx->nr_pages * PAGE_SIZE;
+	int ret;
 
-	return __guest_check_page_state_range(tx->completer.guest.hyp_vm, addr,
-					      size, PKVM_PAGE_SHARED_BORROWED);
+	ret = __guest_check_page_state_range(tx->completer.guest.hyp_vm, addr, size, state);
+	if (ret == -EPERM && !pkvm_hyp_vm_is_protected(tx->completer.guest.hyp_vm)) {
+		/* NP guest pages have their permission relaxed lazily */
+		state |= PKVM_PAGE_RESTRICTED_PROT;
+		ret = __guest_check_page_state_range(tx->completer.guest.hyp_vm, addr, size, state);
+	}
+
+	return ret;
 }
 
 static int guest_ack_donation(u64 addr, const struct pkvm_mem_transition *tx)
@@ -2369,13 +2377,14 @@ int __pkvm_host_reclaim_page(struct pkvm_hyp_vm *vm, u64 pfn, u64 ipa)
 	/* We could avoid TLB inval, it is done per VMID on the finalize path */
 	WARN_ON(kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE));
 
-	switch(guest_get_page_state(pte, ipa)) {
+	switch((int)guest_get_page_state(pte, ipa)) {
 	case PKVM_PAGE_OWNED:
 		WARN_ON(__host_check_page_state_range(phys, PAGE_SIZE, PKVM_NOPAGE));
 		hyp_poison_page(phys);
 		psci_mem_protect_dec(1);
 		break;
 	case PKVM_PAGE_SHARED_BORROWED:
+	case PKVM_PAGE_SHARED_BORROWED | PKVM_PAGE_RESTRICTED_PROT:
 		WARN_ON(__host_check_page_state_range(phys, PAGE_SIZE, PKVM_PAGE_SHARED_OWNED));
 		break;
 	case PKVM_PAGE_SHARED_OWNED:
