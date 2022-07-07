@@ -16,6 +16,24 @@
       "message": "why is this different from the trace hooks we already have right here?",
       "revId": "5001d7d9acc462203e1ffdda7508388b5fbad076",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec700b13_e51f39af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1347762
+      },
+      "writtenOn": "2022-07-07T20:17:55Z",
+      "side": 1,
+      "message": "The purpose of this vendor hook is to calculating the total resume latency for device, CPU and console, etc, please let me know if the current trace already has it which we cannot find. Current vendor hook only supports individual resume latency for device, each individual CPU, etc.",
+      "parentUuid": "0de8209e_5052fe33",
+      "revId": "5001d7d9acc462203e1ffdda7508388b5fbad076",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
