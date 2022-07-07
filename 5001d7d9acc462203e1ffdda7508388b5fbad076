@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "821ff5c0_04535343",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1347762
+      },
+      "writtenOn": "2022-07-07T20:32:14Z",
+      "side": 1,
+      "message": "I am afraid the summing up is not accurate for overall resume latency, we checked  perfetto trace, the overall resume latency is not by adding all individual latencies, different individual resume start / end has gap in between, we cannot simply add them all. \n\nUpdate the description in the CL, thanks for the feedback.",
+      "parentUuid": "700ac827_e4fc8334",
+      "revId": "5001d7d9acc462203e1ffdda7508388b5fbad076",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "119a4f90_fbe481b2",
         "filename": "kernel/power/suspend.c",
         "patchSetId": 1
