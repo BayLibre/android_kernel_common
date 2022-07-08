@@ -161,6 +161,8 @@
   __tracepoint_android_vh_binder_transaction_init
   __traceiter_android_vh_binder_print_transaction_info
   __tracepoint_android_vh_binder_print_transaction_info
+  __traceiter_binder_txn_latency_free
+  __tracepoint_binder_txn_latency_free
 
 #required by reclaim module
 
@@ -180,3 +182,12 @@
 
 #required by swinfo.ko module
   proc_set_size
+
+#required by ufs_qcom.ko module
+  kobject_get
+
+#required by mtdoops.ko module
+  blk_mq_alloc_sq_tag_set
+
+#required by pm8941-pwrkey.ko module
+  console_verbose
