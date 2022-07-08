@@ -1,4 +1,3 @@
-<<<<<<< HEAD   (1c9622 Merge 298143637417 ("Merge tag 'hte/for-5.19-rc1' of git://g)
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Universal Flash Storage Host controller driver
@@ -19,10 +18,10 @@
 #include <linux/devfreq.h>
 #include <linux/pm_runtime.h>
 #include <scsi/scsi_device.h>
-#include "unipro.h"
-#include "ufs.h"
-#include "ufs_quirks.h"
-#include "ufshci.h"
+#include <ufs/unipro.h>
+#include <ufs/ufs.h>
+#include <ufs/ufs_quirks.h>
+#include <ufs/ufshci.h>
 
 #define UFSHCD "ufshcd"
 
@@ -578,28 +577,6 @@ enum ufshcd_quirks {
 	 * support physical host configuration.
 	 */
 	UFSHCD_QUIRK_SKIP_PH_CONFIGURATION		= 1 << 16,
-	/*
-	 * This quirk needs to be enabled if the host controller supports inline
-	 * encryption, but it needs to initialize the crypto capabilities in a
-	 * nonstandard way and/or it needs to override blk_crypto_ll_ops.  If
-	 * enabled, the standard code won't initialize the blk_crypto_profile;
-	 * ufs_hba_variant_ops::init() must do it instead.
-	 */
-	UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE		= 1 << 20,
-
-	/*
-	 * This quirk needs to be enabled if the host controller supports inline
-	 * encryption, but the CRYPTO_GENERAL_ENABLE bit is not implemented and
-	 * breaks the HCE sequence if used.
-	 */
-	UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE		= 1 << 21,
-
-	/*
-	 * This quirk needs to be enabled if the host controller requires that
-	 * the PRDT be cleared after each encrypted request because encryption
-	 * keys were stored in it.
-	 */
-	UFSHCD_QUIRK_KEYS_IN_PRDT			= 1 << 22,
 };
 
 enum ufshcd_caps {
@@ -755,7 +732,6 @@ struct ufs_hba_monitor {
  * @vops: pointer to variant specific operations
  * @vps: pointer to variant specific parameters
  * @priv: pointer to variant specific private data
- * @sg_entry_size: size of struct ufshcd_sg_entry (may include variant fields)
  * @irq: Irq number of the controller
  * @is_irq_enabled: whether or not the UFS controller interrupt is enabled.
  * @dev_ref_clk_freq: reference clock frequency
@@ -877,7 +853,6 @@ struct ufs_hba {
 	const struct ufs_hba_variant_ops *vops;
 	struct ufs_hba_variant_params *vps;
 	void *priv;
-	size_t sg_entry_size;
 	unsigned int irq;
 	bool is_irq_enabled;
 	enum ufs_ref_clk_freq dev_ref_clk_freq;
@@ -1189,14 +1164,8 @@ int ufshcd_query_attr_retry(struct ufs_hba *hba, enum query_opcode opcode,
 			    u32 *attr_val);
 int ufshcd_query_attr(struct ufs_hba *hba, enum query_opcode opcode,
 		      enum attr_idn idn, u8 index, u8 selector, u32 *attr_val);
-int ufshcd_query_attr_retry(struct ufs_hba *hba,
-	enum query_opcode opcode, enum attr_idn idn, u8 index, u8 selector,
-	u32 *attr_val);
 int ufshcd_query_flag(struct ufs_hba *hba, enum query_opcode opcode,
 	enum flag_idn idn, u8 index, bool *flag_res);
-int ufshcd_query_flag_retry(struct ufs_hba *hba,
-	enum query_opcode opcode, enum flag_idn idn, u8 index, bool *flag_res);
-int ufshcd_bkops_ctrl(struct ufs_hba *hba, enum bkops_status status);
 
 void ufshcd_auto_hibern8_enable(struct ufs_hba *hba);
 void ufshcd_auto_hibern8_update(struct ufs_hba *hba, u32 ahit);
@@ -1259,5 +1228,3 @@ int ufshcd_update_ee_control(struct ufs_hba *hba, u16 *mask, u16 *other_mask,
 			     u16 set, u16 clr);
 
 #endif /* End of Header */
-=======
->>>>>>> BRANCH (b2c9a8 Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)

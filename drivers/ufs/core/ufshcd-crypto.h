@@ -1,4 +1,3 @@
-<<<<<<< HEAD   (1c9622 Merge 298143637417 ("Merge tag 'hte/for-5.19-rc1' of git://g)
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright 2019 Google LLC
@@ -8,9 +7,9 @@
 #define _UFSHCD_CRYPTO_H
 
 #include <scsi/scsi_cmnd.h>
-#include "ufshcd.h"
+#include <ufs/ufshcd.h>
 #include "ufshcd-priv.h"
-#include "ufshci.h"
+#include <ufs/ufshci.h>
 
 #ifdef CONFIG_SCSI_UFS_CRYPTO
 
@@ -38,19 +37,6 @@ ufshcd_prepare_req_desc_hdr_crypto(struct ufshcd_lrb *lrbp, u32 *dword_0,
 	}
 }
 
-static inline void ufshcd_crypto_clear_prdt(struct ufs_hba *hba,
-					    struct ufshcd_lrb *lrbp)
-{
-	if (!(hba->quirks & UFSHCD_QUIRK_KEYS_IN_PRDT))
-		return;
-
-	if (!(scsi_cmd_to_rq(lrbp->cmd)->crypt_ctx))
-		return;
-
-	memzero_explicit(lrbp->ucd_prdt_ptr,
-			 hba->sg_entry_size * scsi_sg_count(lrbp->cmd));
-}
-
 bool ufshcd_crypto_enable(struct ufs_hba *hba);
 
 int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba);
@@ -67,9 +53,6 @@ static inline void ufshcd_prepare_lrbp_crypto(struct request *rq,
 static inline void
 ufshcd_prepare_req_desc_hdr_crypto(struct ufshcd_lrb *lrbp, u32 *dword_0,
 				   u32 *dword_1, u32 *dword_3) { }
-
-static inline void ufshcd_crypto_clear_prdt(struct ufs_hba *hba,
-					    struct ufshcd_lrb *lrbp) { }
 
 static inline bool ufshcd_crypto_enable(struct ufs_hba *hba)
 {
@@ -89,5 +72,3 @@ static inline void ufshcd_crypto_register(struct ufs_hba *hba,
 #endif /* CONFIG_SCSI_UFS_CRYPTO */
 
 #endif /* _UFSHCD_CRYPTO_H */
-=======
->>>>>>> BRANCH (b2c9a8 Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)

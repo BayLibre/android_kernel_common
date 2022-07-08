@@ -1,4 +1,3 @@
-<<<<<<< HEAD   (1c9622 Merge 298143637417 ("Merge tag 'hte/for-5.19-rc1' of git://g)
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (C) 2018 Western Digital Corporation
 
@@ -7,11 +6,9 @@
 #include <linux/bitfield.h>
 #include <asm/unaligned.h>
 
-#include "ufs.h"
+#include <ufs/ufs.h>
 #include "ufs-sysfs.h"
 #include "ufshcd-priv.h"
-
-#include <trace/hooks/ufshcd.h>
 
 static const char *ufshcd_uic_link_state_to_string(
 			enum uic_link_state state)
@@ -1259,17 +1256,13 @@ void ufs_sysfs_add_nodes(struct device *dev)
 	int ret;
 
 	ret = sysfs_create_groups(&dev->kobj, ufs_sysfs_groups);
-	if (ret) {
+	if (ret)
 		dev_err(dev,
 			"%s: sysfs groups creation failed (err = %d)\n",
 			__func__, ret);
-		return;
-	}
 }
 
 void ufs_sysfs_remove_nodes(struct device *dev)
 {
 	sysfs_remove_groups(&dev->kobj, ufs_sysfs_groups);
 }
-=======
->>>>>>> BRANCH (b2c9a8 Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)

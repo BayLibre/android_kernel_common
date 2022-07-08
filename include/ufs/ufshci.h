@@ -1,4 +1,3 @@
-<<<<<<< HEAD   (1c9622 Merge 298143637417 ("Merge tag 'hte/for-5.19-rc1' of git://g)
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Universal Flash Storage Host controller driver
@@ -427,27 +426,19 @@ struct ufshcd_sg_entry {
 	__le64    addr;
 	__le32    reserved;
 	__le32    size;
-	/*
-	 * followed by variant-specific fields if
-	 * hba->sg_entry_size != sizeof(struct ufshcd_sg_entry)
-	 */
 };
 
 /**
  * struct utp_transfer_cmd_desc - UTP Command Descriptor (UCD)
  * @command_upiu: Command UPIU Frame address
  * @response_upiu: Response UPIU Frame address
- * @prd_table: Physical Region Descriptor: an array of SG_ALL struct
- *	ufshcd_sg_entry's.  Variant-specific fields may be present after each.
+ * @prd_table: Physical Region Descriptor
  */
 struct utp_transfer_cmd_desc {
 	u8 command_upiu[ALIGNED_UPIU_SIZE];
 	u8 response_upiu[ALIGNED_UPIU_SIZE];
-	u8 prd_table[];
+	struct ufshcd_sg_entry    prd_table[SG_ALL];
 };
-
-#define sizeof_utp_transfer_cmd_desc(hba)	\
-	(sizeof(struct utp_transfer_cmd_desc) + SG_ALL * (hba)->sg_entry_size)
 
 /**
  * struct request_desc_header - Descriptor Header common to both UTRD and UTMRD
@@ -517,5 +508,3 @@ struct utp_task_req_desc {
 };
 
 #endif /* End of Header */
-=======
->>>>>>> BRANCH (b2c9a8 Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)

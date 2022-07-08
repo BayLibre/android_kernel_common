@@ -1,10 +1,9 @@
-<<<<<<< HEAD   (1c9622 Merge 298143637417 ("Merge tag 'hte/for-5.19-rc1' of git://g)
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright 2019 Google LLC
  */
 
-#include "ufshcd.h"
+#include <ufs/ufshcd.h>
 #include "ufshcd-crypto.h"
 
 /* Blk-crypto modes supported by UFS crypto */
@@ -124,10 +123,6 @@ bool ufshcd_crypto_enable(struct ufs_hba *hba)
 
 	/* Reset might clear all keys, so reprogram all the keys. */
 	blk_crypto_reprogram_all_keys(&hba->crypto_profile);
-
-	if (hba->quirks & UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE)
-		return false;
-
 	return true;
 }
 
@@ -164,9 +159,6 @@ int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba)
 	int err = 0;
 	enum blk_crypto_mode_num blk_mode_num;
 
-	if (hba->quirks & UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE)
-		return 0;
-
 	/*
 	 * Don't use crypto if either the hardware doesn't advertise the
 	 * standard crypto capability bit *or* if the vendor specific driver
@@ -198,7 +190,6 @@ int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba)
 	hba->crypto_profile.ll_ops = ufshcd_crypto_ops;
 	/* UFS only supports 8 bytes for any DUN */
 	hba->crypto_profile.max_dun_bytes_supported = 8;
-	hba->crypto_profile.key_types_supported = BLK_CRYPTO_KEY_TYPE_STANDARD;
 	hba->crypto_profile.dev = hba->dev;
 
 	/*
@@ -237,10 +228,9 @@ void ufshcd_init_crypto(struct ufs_hba *hba)
 	if (!(hba->caps & UFSHCD_CAP_CRYPTO))
 		return;
 
-	/* Clear all keyslots */
-	for (slot = 0; slot < hba->crypto_profile.num_slots; slot++)
-		hba->crypto_profile.ll_ops.keyslot_evict(&hba->crypto_profile,
-							 NULL, slot);
+	/* Clear all keyslots - the number of keyslots is (CFGC + 1) */
+	for (slot = 0; slot < hba->crypto_capabilities.config_count + 1; slot++)
+		ufshcd_clear_keyslot(hba, slot);
 }
 
 void ufshcd_crypto_register(struct ufs_hba *hba, struct request_queue *q)
@@ -248,5 +238,3 @@ void ufshcd_crypto_register(struct ufs_hba *hba, struct request_queue *q)
 	if (hba->caps & UFSHCD_CAP_CRYPTO)
 		blk_crypto_register(&hba->crypto_profile, q);
 }
-=======
->>>>>>> BRANCH (b2c9a8 Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/)
