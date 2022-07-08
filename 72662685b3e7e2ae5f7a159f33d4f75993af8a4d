@@ -39,6 +39,30 @@
       },
       "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf43ada9_63334fc3",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1876972
+      },
+      "writtenOn": "2022-07-08T06:08:12Z",
+      "side": 1,
+      "message": "yes, we will move this line, because binder_alloc.h has been included in \"../drivers/android/binder_internal.h\" in line 16",
+      "parentUuid": "5cf842af_234cbe19",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 44
+      },
+      "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
