@@ -16,6 +16,24 @@
       "message": "May I know if I can backup the address like\nhttps://android-review.googlesource.com/c/kernel/common/+/2145661/8/kernel/module.c#267",
       "revId": "5e93440c0082f73603dd042c7148035c0b330d82",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc4adaf_8ca2f390",
+        "filename": "kernel/module.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-08T06:37:00Z",
+      "side": 1,
+      "message": "No, that is an internal structure that is not exposed to the bootloader.",
+      "parentUuid": "b9a2b102_82205d1b",
+      "revId": "5e93440c0082f73603dd042c7148035c0b330d82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
