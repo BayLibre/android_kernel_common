@@ -2119,7 +2119,6 @@
   scsi_unblock_requests
   sdev_prefix_printk
   __sdhci_add_host
-  __sdhci_set_timeout
   sdhci_add_host
   sdhci_cleanup_host
   sdhci_cqe_disable
@@ -2133,6 +2132,7 @@
   sdhci_remove_host
   sdhci_reset
   sdhci_set_bus_width
+  __sdhci_set_timeout
   sdhci_setup_host
   search_binary_handler
   security_sock_graft
@@ -2868,6 +2868,7 @@
   vmalloc_to_page
   vmalloc_user
   vmap
+  vmemdup_user
   vmemmap
   vmf_insert_mixed
   vmf_insert_pfn
