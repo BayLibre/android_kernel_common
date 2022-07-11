@@ -68,6 +68,24 @@
       "parentUuid": "8cd24794_2a4eeaac",
       "revId": "ae54c4ec70b2b7ce56f89e6f882dc6ba3d80149d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb9d8483_e46c344b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-11T14:58:51Z",
+      "side": 1,
+      "message": "Because way too much space was being reserved. 32 elements \u003d 256 bytes per task_struct (and there can be thousands of tasks). As Greg said, for these high-memory-impact cases, a pointer should be used instead of allocating directly in the struct. This didn\u0027t matter as much in android12-5.10, but now there are more low-memory devices onboarding to GKI so steps are being taken to reduce the memory footprint (you can expect more of that in android14).\n\nNotice that Greg made this comment on May 26 -- plenty of time to discuss and possibly increase the number of elements before June 17. I specifically requested responses on June 8 and there were none. Now it is too late for android13 kernels.",
+      "parentUuid": "4e181080_f62c5786",
+      "revId": "ae54c4ec70b2b7ce56f89e6f882dc6ba3d80149d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
