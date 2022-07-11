@@ -87,6 +87,30 @@
       },
       "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d58912b9_983a103a",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-07-11T13:50:52Z",
+      "side": 1,
+      "message": "Context from b/235925535:\n```\nThe header file is not the issue pointed out by Greg. I agree that binder_alloc.h is not needed, however it is where struct binder_alloc is defined so it is a good practice to use that header explicitly. The problem is that you are using a private kernel symbol, which is evident because of the line #include \u003c../drivers/android/binder_alloc.h\u003e and that\u0027s what Greg refers to. See, it\u0027s much complex to maintain and track a private definition for a stable KMI.\n```",
+      "parentUuid": "c18bde63_3a6aec0e",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 44
+      },
+      "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
