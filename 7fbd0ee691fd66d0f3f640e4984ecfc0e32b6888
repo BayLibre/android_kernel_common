@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae2bc8b6_022b23c7",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-07-12T18:44:54Z",
+      "side": 1,
+      "message": "add_to_swap_cache() might fail after this vendor hook is called. Are you sure this is the right place for it? I would expect it to be before or after swap_writepage().\nIf you decide to do that please call the hook `trace_android_vh_shmem_swap_writepage()` which would be more accurate.",
+      "range": {
+        "startLine": 1434,
+        "startChar": 1,
+        "endLine": 1434,
+        "endChar": 33
+      },
+      "revId": "7fbd0ee691fd66d0f3f640e4984ecfc0e32b6888",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
