@@ -11,6 +11,7 @@
 #include <linux/backing-dev.h>
 #include <linux/uio.h>
 #include <linux/task_io_accounting_ops.h>
+#include <trace/hooks/fs.h>
 #include "trace.h"
 
 #include "../internal.h"
@@ -277,6 +278,8 @@ static loff_t iomap_dio_bio_iter(const struct iomap_iter *iter,
 		    (dio->flags & IOMAP_DIO_WRITE_FUA) &&
 		    blk_queue_fua(bdev_get_queue(iomap->bdev)))
 			use_fua = true;
+			trace_android_vh_fs_control_use_fua(iter,
+					(unsigned int *)&use_fua);
 	}
 
 	/*
