@@ -111,6 +111,30 @@
       },
       "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad867150_c06f3cba",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-07-12T21:27:38Z",
+      "side": 1,
+      "message": "Done... `struct binder_alloc` isn\u0027t referenced anymore, only the single member actually used by the vendor hook instead. This was switched here: https://android-review.googlesource.com/c/kernel/common/+/2128876/6..7",
+      "parentUuid": "d58912b9_983a103a",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 44
+      },
+      "revId": "72662685b3e7e2ae5f7a159f33d4f75993af8a4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
