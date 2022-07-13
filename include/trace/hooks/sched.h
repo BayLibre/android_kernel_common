@@ -337,6 +337,9 @@ DECLARE_HOOK(android_vh_map_util_freq,
 		unsigned long cap, unsigned long *next_freq),
 	TP_ARGS(util, freq, cap, next_freq));
 
+DECLARE_HOOK(android_vh_mmput,
+	TP_PROTO(struct mm_struct *mm),
+	TP_ARGS(mm));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
