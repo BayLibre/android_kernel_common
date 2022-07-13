@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f2f43ad_a02137e3",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1642,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-07-13T23:51:25Z",
+      "side": 1,
+      "message": "Compared to the earlier: __IRQ_STAT(cpu, __softirq_pending), I feel per_cpu(irq_stat, cpu).__softirq_pending  might be better here? As local_softirq_pending will give you the pending value for the local processor not the cpu value.",
+      "revId": "e27941aeaeac2c56aed8d758b836ef2a71481ebd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82195a2f_fceb9ecf",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1772,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-07-13T23:51:25Z",
+      "side": 1,
+      "message": "So, with the lowest_mask being NULL here, will cpupri_find_fitness() ever call task_may_preempt()? I feel it will hit the:\n    if (!lowest_mask || !fitness_fn)\n        return 1;\ncase before that.",
+      "revId": "e27941aeaeac2c56aed8d758b836ef2a71481ebd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "295df546_aeea065e",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-07-13T23:51:25Z",
+      "side": 1,
+      "message": "same issue here?",
+      "revId": "e27941aeaeac2c56aed8d758b836ef2a71481ebd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
