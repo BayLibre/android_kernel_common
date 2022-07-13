@@ -2965,6 +2965,17 @@ static int f2fs_ioc_setproject(struct inode *inode, __u32 projid)
 	if (!F2FS_FITS_IN_INODE(ri, fi->i_extra_isize, i_projid))
 		return -EOVERFLOW;
 
+<<<<<<< HEAD   (cd5e2f ANDROID: Add CONFIG_VIRTIO_BALLOON to Microdroid)
+=======
+	if (!F2FS_FITS_IN_INODE(F2FS_INODE(ipage), fi->i_extra_isize,
+								i_projid)) {
+		err = -EOVERFLOW;
+		f2fs_put_page(ipage, 1);
+		return err;
+	}
+	f2fs_put_page(ipage, 1);
+
+>>>>>>> BRANCH (aed236 Linux 5.15.46)
 	err = f2fs_dquot_initialize(inode);
 	if (err)
 		return err;

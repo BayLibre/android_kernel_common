@@ -59,7 +59,10 @@ const char *f2fs_fault_name[FAULT_MAX] = {
 	[FAULT_WRITE_IO]	= "write IO error",
 	[FAULT_SLAB_ALLOC]	= "slab alloc",
 	[FAULT_DQUOT_INIT]	= "dquot initialize",
+<<<<<<< HEAD   (cd5e2f ANDROID: Add CONFIG_VIRTIO_BALLOON to Microdroid)
 	[FAULT_LOCK_OP]		= "lock_op",
+=======
+>>>>>>> BRANCH (aed236 Linux 5.15.46)
 };
 
 void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,

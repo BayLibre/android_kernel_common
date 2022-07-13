@@ -56,7 +56,10 @@ enum {
 	FAULT_WRITE_IO,
 	FAULT_SLAB_ALLOC,
 	FAULT_DQUOT_INIT,
+<<<<<<< HEAD   (cd5e2f ANDROID: Add CONFIG_VIRTIO_BALLOON to Microdroid)
 	FAULT_LOCK_OP,
+=======
+>>>>>>> BRANCH (aed236 Linux 5.15.46)
 	FAULT_MAX,
 };
 
