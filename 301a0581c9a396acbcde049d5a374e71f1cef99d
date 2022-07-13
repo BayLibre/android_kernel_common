@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3b4d029_a1136e49",
+        "filename": "kernel/fork.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1154,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-07-13T19:36:24Z",
+      "side": 1,
+      "message": "This hook will not be triggered if __mmput() is called from mmput_async_fn(). Is that your intention? If not, it would be better to place it directly inside __mmput().",
+      "range": {
+        "startLine": 1154,
+        "startChar": 2,
+        "endLine": 1154,
+        "endChar": 24
+      },
+      "revId": "301a0581c9a396acbcde049d5a374e71f1cef99d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
