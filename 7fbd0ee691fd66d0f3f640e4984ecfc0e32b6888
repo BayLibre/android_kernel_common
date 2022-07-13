@@ -46,6 +46,30 @@
       },
       "revId": "7fbd0ee691fd66d0f3f640e4984ecfc0e32b6888",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f4a8b9_b8084c5d",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-07-13T18:55:55Z",
+      "side": 1,
+      "message": "Then I suggest to come up with some other name because the hook at this location does not represent the fact that the shmem page was actually swapped out. Note that after this hook get_swap_page() might not find a swp_entry_t and the page will be simply dirtied. Also as I mentioned, the page might end up either being added into swap cache or written into swap.",
+      "parentUuid": "ae4130fd_50ac3dfb",
+      "range": {
+        "startLine": 1434,
+        "startChar": 1,
+        "endLine": 1434,
+        "endChar": 33
+      },
+      "revId": "7fbd0ee691fd66d0f3f640e4984ecfc0e32b6888",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
