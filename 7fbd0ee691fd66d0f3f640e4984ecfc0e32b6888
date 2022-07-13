@@ -22,6 +22,30 @@
       },
       "revId": "7fbd0ee691fd66d0f3f640e4984ecfc0e32b6888",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae4130fd_50ac3dfb",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1948065
+      },
+      "writtenOn": "2022-07-13T05:55:53Z",
+      "side": 1,
+      "message": "In the vendor hook trace_android_vh_shmem_swap_page, we just set a flag in page_ext, which will be used in get_swap_page(). This is an appropriate place for us.",
+      "parentUuid": "ae2bc8b6_022b23c7",
+      "range": {
+        "startLine": 1434,
+        "startChar": 1,
+        "endLine": 1434,
+        "endChar": 33
+      },
+      "revId": "7fbd0ee691fd66d0f3f640e4984ecfc0e32b6888",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
