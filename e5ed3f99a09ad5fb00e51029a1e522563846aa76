@@ -16,6 +16,23 @@
       "message": "I am not sure if I need to cherry-pick this CL into another repository as well.",
       "revId": "e5ed3f99a09ad5fb00e51029a1e522563846aa76",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c59733_dd6b73e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-07-13T17:13:35Z",
+      "side": 1,
+      "message": "Is this BACKPORT, FROMLIST or FROMGIT?\n\nIt might be simpler if you send the patch to stable@vger.kernel.org so Greg can apply it to all the LTS kernels, then it will be merged into ACK on many branches with less effort from you. This looks like a bugfix to me so I can\u0027t believe Johannes would be against it.",
+      "revId": "e5ed3f99a09ad5fb00e51029a1e522563846aa76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
