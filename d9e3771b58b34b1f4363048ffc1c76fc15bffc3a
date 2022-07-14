@@ -34,6 +34,24 @@
       "parentUuid": "8700f9c0_a00fd755",
       "revId": "d9e3771b58b34b1f4363048ffc1c76fc15bffc3a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82ae6029_bbee1867",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1886292
+      },
+      "writtenOn": "2022-07-14T17:13:40Z",
+      "side": 1,
+      "message": "BUG:KASAN:slab-out-of-bounds_in_tcp_v4_send_reset\n -\u003e This occurs with below code part at patch set v3\n    https://patchwork.kernel.org/project/netdevbpf/patch/20220706063243.2782818-1-ssewook@gmail.com/\n    \u003e +       if (sk \u0026\u0026 sk-\u003esk_policy[XFRM_POLICY_OUT] \u0026\u0026 sk_fullsock(sk))\n\n\nAt the KASAN stack trace we can know the socket state was TCP_NEW_SYN_RECV \u0026 the socket was actually inet_request_sock.\n[ 132.868283][ C0] tcp_v4_send_reset (net/ipv4/tcp_ipv4.c:823)\n[ 132.868286][ C0] ? tcp_req_err (net/ipv4/tcp_ipv4.c:669)\n[ 132.868288][ C0] ? tcp_check_req (net/ipv4/tcp_minisocks.c:87)\nBut the code tried to point sk_policy even though inet_request_sock doesn\u0027t have the field. So, KASAN failed. (sk_fullsock check should be prior than sk-\u003esk_policy.)\n\nIt\u0027s fixed at v4 with the code below.\nhttps://patchwork.kernel.org/project/netdevbpf/patch/20220707054008.3471371-1-ssewook@gmail.com/\n static inline int xfrm_sk_clone_policy(struct sock *sk, const struct sock *osk)\n {\n+\tif (!sk_fullsock(osk))\n+\t\treturn 0;",
+      "parentUuid": "79e39bf6_ef8b58ab",
+      "revId": "d9e3771b58b34b1f4363048ffc1c76fc15bffc3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
