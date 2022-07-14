@@ -16,6 +16,24 @@
       "message": "I\u0027m guessing we should wait for the upstream auto reported\n  \u0027BUG:KASAN:slab-out-of-bounds_in_tcp_v4_send_reset\u0027\nto be fixed first.\n\nAdditionally, I imagine mainline will get this simply by virtue of pulling in 5.20 (or perhaps even 5.19)\n\nWhich gki trees do you need to target? 5.10 for Pixel 6 family? others?\n[though do note that this is a globally visible thread, so no mentions of unreleased devices]",
       "revId": "d9e3771b58b34b1f4363048ffc1c76fc15bffc3a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79e39bf6_ef8b58ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-14T14:19:02Z",
+      "side": 1,
+      "message": "We generally don\u0027t take any FROM* patches into android-mainline since, as you point out, we\u0027ll get them via merges. I presume this will go into the stable kernels upstream, so we don\u0027t need to explicitly cherry-pick them into ACK kernels unless they are needed urgently.",
+      "parentUuid": "8700f9c0_a00fd755",
+      "revId": "d9e3771b58b34b1f4363048ffc1c76fc15bffc3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
