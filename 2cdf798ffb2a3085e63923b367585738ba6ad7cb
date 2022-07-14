@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d364e9e0_5b850c06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-14T00:21:24Z",
+      "side": 1,
+      "message": "This is not a valid sha in linux mainline.",
+      "range": {
+        "startLine": 24,
+        "startChar": 27,
+        "endLine": 24,
+        "endChar": 67
+      },
+      "revId": "2cdf798ffb2a3085e63923b367585738ba6ad7cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e175a009_6e68e309",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-14T00:21:24Z",
+      "side": 1,
+      "message": "needs a statement of what was changed as part of the BACKPORT\n```\n[description of the change]\n```",
+      "revId": "2cdf798ffb2a3085e63923b367585738ba6ad7cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc999f06_07596824",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-14T00:21:24Z",
+      "side": 1,
+      "message": "I don\u0027t see this patch in Linux mainline. BACKPORT must not be used without citing an upstream patch. No UAPI changes can be accepted without first landing upstream.",
+      "revId": "2cdf798ffb2a3085e63923b367585738ba6ad7cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd752b4e_b56fa6c4",
+        "filename": "include/uapi/linux/nl80211.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 4985,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-07-14T00:21:24Z",
+      "side": 1,
+      "message": "This is not in linux mainline. No uapi definitions can be used that have not landed upstream.",
+      "range": {
+        "startLine": 4985,
+        "startChar": 1,
+        "endLine": 4985,
+        "endChar": 25
+      },
+      "revId": "2cdf798ffb2a3085e63923b367585738ba6ad7cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
