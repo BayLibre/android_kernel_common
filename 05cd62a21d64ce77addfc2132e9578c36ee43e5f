@@ -56,6 +56,23 @@
       "message": "I thought we already had filesystem encryption enabled, why is ecryptfs being used instead?  Are you sure that is supported in Android systems and allowed?",
       "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ed3bb85_e3deed4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-07-15T19:58:51Z",
+      "side": 1,
+      "message": "eCryptfs is not supported by Android. eCryptfs has many known problems and has been mostly abandoned upstream.\n\nAndroid already supports SD card encryption through adoptable storage (https://source.android.com/devices/storage/adoptable), so please use that instead.\n\nPlease also refer to https://source.android.com/devices/architecture/android-kernel-file-system-support.",
+      "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
