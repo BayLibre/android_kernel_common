@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "520ed9ca_ecf6ae6e",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3261,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2022-07-15T01:56:46Z",
+      "side": 1,
+      "message": "nit",
+      "range": {
+        "startLine": 3261,
+        "startChar": 0,
+        "endLine": 3261,
+        "endChar": 6
+      },
+      "revId": "c8efafe5b3d3ebe6706521a22ac1c19299de6d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "585d3cee_7061c0ff",
         "filename": "net/xfrm/xfrm_policy.c",
         "patchSetId": 8
@@ -14,6 +37,30 @@
       "writtenOn": "2022-07-15T00:27:18Z",
       "side": 1,
       "message": "Why we cannot do the skip before the `if (xfrm_state_ok(tmpl, sp-\u003exvec[idx], family))` statement? Does it mean there is a case that a matched entry will be matched again?",
+      "range": {
+        "startLine": 3274,
+        "startChar": 0,
+        "endLine": 3278,
+        "endChar": 0
+      },
+      "revId": "c8efafe5b3d3ebe6706521a22ac1c19299de6d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66edec92_db175ae8",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3278,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2022-07-15T01:56:46Z",
+      "side": 1,
+      "message": "Chatted offline.\n\nThere are cases that the SA and tmp match will be done twice. Thus we have to make sure on the second time, the lookup will not skip the verified tmp.",
+      "parentUuid": "585d3cee_7061c0ff",
       "range": {
         "startLine": 3274,
         "startChar": 0,
@@ -37,6 +84,30 @@
       "writtenOn": "2022-07-15T00:27:18Z",
       "side": 1,
       "message": "Should we move this to xfrm_policy_ok and only mark the index when xfrm_state_ok returns true?",
+      "range": {
+        "startLine": 3675,
+        "startChar": 2,
+        "endLine": 3675,
+        "endChar": 37
+      },
+      "revId": "c8efafe5b3d3ebe6706521a22ac1c19299de6d92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce0725d_a8015579",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3675,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2022-07-15T01:56:46Z",
+      "side": 1,
+      "message": "Chatted offline. We cannot change the sec_path in xfrm_policy_ok because there might be errors after returning from xfrm_policy_ok. If we want add the mark in xfrm_policy_ok, we need to cache them and update the sec_path later.",
+      "parentUuid": "74cacb8e_f8273f44",
       "range": {
         "startLine": 3675,
         "startChar": 2,
