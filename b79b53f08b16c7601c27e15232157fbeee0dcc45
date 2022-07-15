@@ -16,6 +16,24 @@
       "message": "Does this (and probably the microdroid config..) have to live in the core kernel tree? We usually don\u0027t have project-specific configs in this location. Can\u0027t it just be moved to common-modules/virtual-device/ instead?\n\nI also don\u0027t understand why we need to have a separate \"minimal config\" for kdump. If this is just for debugging, I think it can use any other kernel as a base and only have a .fragment for enabling kdump and whatever else you need. Size shouldn\u0027t matter. Such a setup would be less likely to bitrot over time.",
       "revId": "b79b53f08b16c7601c27e15232157fbeee0dcc45",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e64e64_81f9f6af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1132673
+      },
+      "writtenOn": "2022-07-15T16:37:44Z",
+      "side": 1,
+      "message": "Moved both microdroid kernel and the crashdump kernel configs. aosp/2154495 and aosp/2154496\n\nWhen they land and the acktomator is updated, I will remove the ones left in this core kernel tree.\n\nAbout size: size matters because the kernel should be loaded before the crash occurs (i.e. soon after boot), which means we have to reserve the space for the lifetime of the VM with `crashkernel\u003d\u003csize\u003eM` option.",
+      "parentUuid": "9b43b091_5bef2caa",
+      "revId": "b79b53f08b16c7601c27e15232157fbeee0dcc45",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
