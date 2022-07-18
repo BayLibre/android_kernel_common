@@ -87,6 +87,9 @@ DECLARE_HOOK(android_vh_include_reserved_zone,
 DECLARE_HOOK(android_vh_show_mem,
 	TP_PROTO(unsigned int filter, nodemask_t *nodemask),
 	TP_ARGS(filter, nodemask));
+DECLARE_HOOK(android_vh_alloc_pages_slowpath,
+	     TP_PROTO(gfp_t gfp_mask, unsigned int order, unsigned long start),
+	     TP_ARGS(gfp_mask, order, start));
 struct dirty_throttle_control;
 DECLARE_HOOK(android_vh_mm_dirty_limits,
 	TP_PROTO(struct dirty_throttle_control *const gdtc, bool strictlimit,

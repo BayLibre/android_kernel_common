@@ -4790,6 +4790,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
 	int no_progress_loops;
 	unsigned int cpuset_mems_cookie;
 	int reserve_flags;
+	unsigned long start = jiffies;
 
 	/*
 	 * We also sanity check to catch abuse of atomic reserves being used by
@@ -5032,6 +5033,7 @@ fail:
 	warn_alloc(gfp_mask, ac->nodemask,
 			"page allocation failure: order:%u", order);
 got_pg:
+	trace_android_vh_alloc_pages_slowpath(gfp_mask, order, start);
 	return page;
 }
 
