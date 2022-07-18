@@ -127,6 +127,24 @@
       "parentUuid": "7ed3bb85_e3deed4c",
       "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22153cb6_5560ca13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-07-18T17:28:04Z",
+      "side": 1,
+      "message": "eCryptfs has many known problems and has been mostly abandoned upstream, and it greatly adds to the KMI that has to be maintained in GKI, so yes it may affect the stability of the system.  It also might not actually solve the problem that you intend it to solve; storage encryption has some very subtle considerations and it is *extremely* easy to come up with something that seems secure but is actually insecure.  We want to make sure that you don\u0027t ship something insecure.  Can you elaborate on what \"special features\" you are trying to accomplish?  Please file a feature bug that describes what you are trying to accomplish and describes in detail the solution you are proposing.",
+      "parentUuid": "624f44e8_91f2e2ee",
+      "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
