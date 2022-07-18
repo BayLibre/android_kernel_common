@@ -73,6 +73,60 @@
       "message": "eCryptfs is not supported by Android. eCryptfs has many known problems and has been mostly abandoned upstream.\n\nAndroid already supports SD card encryption through adoptable storage (https://source.android.com/devices/storage/adoptable), so please use that instead.\n\nPlease also refer to https://source.android.com/devices/architecture/android-kernel-file-system-support.",
       "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2d2d64d_7d06f739",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956079
+      },
+      "writtenOn": "2022-07-18T01:59:16Z",
+      "side": 1,
+      "message": "We need to use ecryptfs to implement the SD card encryption function, but ecryptfs cannot be enabled directly in Android systems by set CONFIG_ECRYPT_FS\u003dy，so we want to use ecryptfs by making ecryptfs to ecryptfs.ko. In oeder to make ecryptfs.ko, we must update symbol list.",
+      "parentUuid": "70433265_4ced7418",
+      "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2b1145e_151a89ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956079
+      },
+      "writtenOn": "2022-07-18T01:59:16Z",
+      "side": 1,
+      "message": "How should I change it? Is there a submission example?",
+      "parentUuid": "6c3822d1_c1ad30fe",
+      "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "624f44e8_91f2e2ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956079
+      },
+      "writtenOn": "2022-07-18T01:59:16Z",
+      "side": 1,
+      "message": "Thank you for your answer. We know that, but our sd encryption includes some special features, that mean we must use ecryptfs to support it. And we know Android systems do not directly support ecryptfs, so we want to use it by ecryptfs.ko. That mean we should update some symbol to symbol list. Does this behavior affect the stability of the Android system?",
+      "parentUuid": "7ed3bb85_e3deed4c",
+      "revId": "05cd62a21d64ce77addfc2132e9578c36ee43e5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
