@@ -3444,6 +3444,7 @@
       <elf-symbol name='mipi_dsi_host_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x12f2e6f'/>
       <elf-symbol name='mipi_dsi_host_unregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xedda5ce7'/>
       <elf-symbol name='mipi_dsi_packet_format_is_long' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xadbeed61'/>
+      <elf-symbol name='mipi_dsi_packet_format_is_short' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x238b099f'/>
       <elf-symbol name='mipi_dsi_picture_parameter_set' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x65668ae'/>
       <elf-symbol name='misc_deregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdcef2da4'/>
       <elf-symbol name='misc_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6331d19e'/>
@@ -134015,6 +134016,10 @@
       </function-decl>
       <function-decl name='mipi_dsi_packet_format_is_long' mangled-name='mipi_dsi_packet_format_is_long' filepath='drivers/gpu/drm/drm_mipi_dsi.c' line='408' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mipi_dsi_packet_format_is_long'>
         <parameter type-id='f9b06939' name='type' filepath='drivers/gpu/drm/drm_mipi_dsi.c' line='408' column='1'/>
+        <return type-id='b50a4934'/>
+      </function-decl>
+      <function-decl name='mipi_dsi_packet_format_is_short' mangled-name='mipi_dsi_packet_format_is_short' filepath='drivers/gpu/drm/drm_mipi_dsi.c' line='370' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mipi_dsi_packet_format_is_short'>
+        <parameter type-id='f9b06939' name='type' filepath='drivers/gpu/drm/drm_mipi_dsi.c' line='370' column='1'/>
         <return type-id='b50a4934'/>
       </function-decl>
       <function-decl name='mipi_dsi_picture_parameter_set' mangled-name='mipi_dsi_picture_parameter_set' filepath='drivers/gpu/drm/drm_mipi_dsi.c' line='587' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mipi_dsi_picture_parameter_set'>
