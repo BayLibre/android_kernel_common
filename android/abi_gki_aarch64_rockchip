@@ -649,6 +649,7 @@
   regmap_field_update_bits_base
   regmap_irq_get_domain
   regmap_irq_get_virq
+  regmap_raw_read
   regmap_raw_write
   regmap_read
   regmap_update_bits_base
@@ -762,6 +763,7 @@
   tasklet_init
   tasklet_kill
   __tasklet_schedule
+  tcpm_tcpc_reset
   thermal_zone_get_zone_by_name
   __traceiter_rwmmio_post_read
   __traceiter_rwmmio_read
@@ -1000,7 +1002,6 @@
   power_supply_am_i_supplied
   power_supply_get_battery_info
   power_supply_put_battery_info
-  regmap_raw_read
 
 # required by dw-hdmi-cec.ko
   cec_allocate_adapter
@@ -1996,6 +1997,7 @@
 
 # required by tcpci_husb311.ko
   i2c_smbus_read_word_data
+  tcpci_get_tcpm_port
   tcpci_irq
   tcpci_register_port
   tcpci_unregister_port
