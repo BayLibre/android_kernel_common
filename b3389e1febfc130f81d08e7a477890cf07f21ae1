@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddc8d560_d8dbffc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-07-19T07:01:13Z",
+      "side": 1,
+      "message": "This patch change the dw_pcie structure, is it possible to be merged?\n\nLeaf changes summary: 8 artifacts changed\nChanged leaf types summary: 1 leaf type changed\nRemoved/Changed/Added functions summary: 0 Removed, 7 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\n7 functions with some sub-type change:\n\n  [C] \u0027function void dw_pcie_ep_reset_bar(dw_pcie*, pci_barno)\u0027 at pcie-designware-ep.c:76:1 has some sub-type changes:\n    CRC (modversions) changed from 0x82c17e6e to 0x7e9731e2\n\n  [C] \u0027function u8 dw_pcie_find_capability(dw_pcie*, u8)\u0027 at pcie-designware.c:46:1 has some sub-type changes:\n    CRC (modversions) changed from 0x9ea32997 to 0x84d85fdb\n\n  [C] \u0027function u16 dw_pcie_find_ext_capability(dw_pcie*, u8)\u0027 at pcie-designware.c:93:1 has some sub-type changes:\n    CRC (modversions) changed from 0xc88dee1b to 0xd88ebf14\n\n  ... 4 omitted; 7 symbols have only CRC changes\n\n\u0027struct dw_pcie at pcie-designware.h:263:1\u0027 changed:\n  type size hasn\u0027t changed\n  1 data member insertion:\n    \u0027bool io_cfg_atu_shared\u0027, at offset 1 (in bits) at pcie-designware.h:275:1\n  there are data member changes:\n    type \u0027typedef u8\u0027 of \u0027dw_pcie::iatu_unroll_enabled\u0027 changed:\n      typedef name changed from u8 to bool at types.h:30:1\n      underlying type \u0027typedef __u8\u0027 at int-ll64.h:21:1 changed:\n        entity changed from \u0027typedef __u8\u0027 to compatible type \u0027bool\u0027\n        type size hasn\u0027t changed\n    and offset changed from 288 to 0 (in bits) (by -288 bits)\n  7 impacted interfaces",
+      "revId": "b3389e1febfc130f81d08e7a477890cf07f21ae1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
