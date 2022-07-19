@@ -2095,6 +2095,7 @@
       <elf-symbol name='drm_flip_work_init' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x737100b1'/>
       <elf-symbol name='drm_flip_work_queue' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdcb59b84'/>
       <elf-symbol name='drm_format_info' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf826786c'/>
+      <elf-symbol name='drm_format_info_min_pitch' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc7f0f027'/>
       <elf-symbol name='drm_framebuffer_cleanup' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf4767609'/>
       <elf-symbol name='drm_framebuffer_init' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x16f8b1a4'/>
       <elf-symbol name='drm_framebuffer_lookup' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x952fea4d'/>
@@ -127067,6 +127068,12 @@
       <function-decl name='drm_format_info' mangled-name='drm_format_info' filepath='drivers/gpu/drm/drm_fourcc.c' line='312' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_format_info'>
         <parameter type-id='19c2251e' name='format' filepath='drivers/gpu/drm/drm_fourcc.c' line='312' column='1'/>
         <return type-id='f10b2208'/>
+      </function-decl>
+      <function-decl name='drm_format_info_min_pitch' mangled-name='drm_format_info_min_pitch' filepath='include/drm/drm_fourcc.h' line='319' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_format_info_min_pitch'>
+        <parameter type-id='f10b2208'/>
+        <parameter type-id='95e97e5e'/>
+        <parameter type-id='f0981eeb'/>
+        <return type-id='3a47d82b'/>
       </function-decl>
       <function-decl name='drm_framebuffer_cleanup' mangled-name='drm_framebuffer_cleanup' filepath='include/drm/drm_framebuffer.h' line='225' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_framebuffer_cleanup'>
         <parameter type-id='7b332e1c'/>
