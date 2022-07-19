@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca53d97f_7f79fcf2",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 3274,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2022-07-19T20:43:04Z",
+      "side": 1,
+      "message": "What\u0027s the reason for only exempting the xfrm_state_ok() failure if it fails and matches the bitmap? AFAICT we are exempting any \"verified\" sp entry if it fails, so why check to see if it succeeds? Can we actually fast-forward \"idx\" by the number of verified bitmap entries? The current way the bitmap is being constructed, it\u0027s always \"contiguous\", so I\u0027m trying to figure out the case where an entry that is already verified will still match the tmpl.\n\nBtw, I think this ends up going back to the question of why we are using a bitmap rather than a \"verified_count\" or \"verified_index\" integer.",
+      "range": {
+        "startLine": 3274,
+        "startChar": 11,
+        "endLine": 3274,
+        "endChar": 26
+      },
+      "revId": "e3d18703a138cf4e7df3c64d0a4debe2d4104e65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
