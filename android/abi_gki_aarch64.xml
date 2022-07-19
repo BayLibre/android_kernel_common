@@ -2744,6 +2744,7 @@
       <elf-symbol name='hdmi_avi_infoframe_check' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x21be37e1'/>
       <elf-symbol name='hdmi_avi_infoframe_init' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x25e58a09'/>
       <elf-symbol name='hdmi_avi_infoframe_pack' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x809712ff'/>
+      <elf-symbol name='hdmi_avi_infoframe_pack_only' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2ee4c2b1'/>
       <elf-symbol name='hdmi_drm_infoframe_pack' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6e286604'/>
       <elf-symbol name='hdmi_drm_infoframe_pack_only' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd0bd487b'/>
       <elf-symbol name='hdmi_infoframe_pack' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x609b2853'/>
@@ -11584,6 +11585,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='25bc1b8d' size-in-bits='64' id='0e1f87e5'/>
+      <qualified-type-def type-id='4536ce10' const='yes' id='0e22a979'/>
       <array-type-def dimensions='1' type-id='9d532fc5' size-in-bits='128' id='0e22cb9f'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
       </array-type-def>
@@ -66167,6 +66169,7 @@
       <pointer-type-def type-id='30a49526' size-in-bits='64' id='938abf68'/>
       <pointer-type-def type-id='fa296b96' size-in-bits='64' id='93901aac'/>
       <pointer-type-def type-id='d9bbe8ab' size-in-bits='64' id='939046d7'/>
+      <pointer-type-def type-id='0e22a979' size-in-bits='64' id='93908da9'/>
       <pointer-type-def type-id='4827f223' size-in-bits='64' id='939280af'/>
       <union-decl name='__anonymous_union__' size-in-bits='384' is-anonymous='yes' visibility='default' filepath='include/linux/backing-dev-defs.h' line='159' column='1' id='93944b10'>
         <data-member access='public'>
@@ -130396,6 +130399,12 @@
         <parameter type-id='19ddc3a6' name='frame' filepath='drivers/video/hdmi.c' line='200' column='1'/>
         <parameter type-id='eaa32e2f' name='buffer' filepath='drivers/video/hdmi.c' line='201' column='1'/>
         <parameter type-id='b59d7dce' name='size' filepath='drivers/video/hdmi.c' line='201' column='1'/>
+        <return type-id='79a0948f'/>
+      </function-decl>
+      <function-decl name='hdmi_avi_infoframe_pack_only' mangled-name='hdmi_avi_infoframe_pack_only' filepath='drivers/video/hdmi.c' line='109' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hdmi_avi_infoframe_pack_only'>
+        <parameter type-id='93908da9' name='frame' filepath='drivers/video/hdmi.c' line='109' column='1'/>
+        <parameter type-id='eaa32e2f' name='buffer' filepath='drivers/video/hdmi.c' line='110' column='1'/>
+        <parameter type-id='b59d7dce' name='size' filepath='drivers/video/hdmi.c' line='110' column='1'/>
         <return type-id='79a0948f'/>
       </function-decl>
       <function-decl name='hdmi_drm_infoframe_pack' mangled-name='hdmi_drm_infoframe_pack' filepath='drivers/video/hdmi.c' line='780' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='hdmi_drm_infoframe_pack'>
