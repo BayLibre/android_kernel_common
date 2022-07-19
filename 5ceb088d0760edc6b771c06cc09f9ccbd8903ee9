@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000026474789",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2155954?revision\u003d5",
+      "fixSuggestions": [
+        {
+          "fixId": "d7bb19a0_292c803e",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Colin Ian King \u003ccolin.i.king@googlemail.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "bbace386_41a5ff4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-07-19T04:37:07Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Colin Ian King \u003ccolin.i.king@googlemail.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 461617454 android-build.ayeaye-python-dispatcher_20220718.05_p0",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "5ceb088d0760edc6b771c06cc09f9ccbd8903ee9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
