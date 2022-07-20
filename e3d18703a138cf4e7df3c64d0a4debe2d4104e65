@@ -22,6 +22,30 @@
       },
       "revId": "e3d18703a138cf4e7df3c64d0a4debe2d4104e65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a256a6_6545971a",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 3274,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-07-20T23:57:54Z",
+      "side": 1,
+      "message": "So the challenge is verifying both directions - that all templates match a secpath entry, but also all secpath entries match a template. Skipping only if it fails and matches the bitmap allows us to ensure that if the template never matched any secpath entry, it\u0027ll still fail.\n\nIf we skip all the verified entries, and we ever get multiple calls to xfrm_policy_check(), it\u0027ll fail this validation check because the templates no longer match anything in the remainder of the secpath.\n\nThe alternative is to do some complex logic where we start searching from the first unverified index, or the `length - tmpl_count`. But that sounds even harder to qualify.\n\nThoughts?",
+      "parentUuid": "ca53d97f_7f79fcf2",
+      "range": {
+        "startLine": 3274,
+        "startChar": 11,
+        "endLine": 3274,
+        "endChar": 26
+      },
+      "revId": "e3d18703a138cf4e7df3c64d0a4debe2d4104e65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
