@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2368c2e4_08104f32",
+        "filename": "kernel/softirq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-07-20T20:42:06Z",
+      "side": 1,
+      "message": "Bah. I introduced a bug here converting this from a macro.\n\npending should be passed as a pointer so it is modified by this function.",
+      "revId": "67468caaee1c41b9f2101214b1c754cda8873203",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
