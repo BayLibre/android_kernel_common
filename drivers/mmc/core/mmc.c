@@ -1794,6 +1794,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	else
 		card->erase_arg = MMC_ERASE_ARG;
 
+	trace_android_vh_mmc_protect(card);
+
 	/*
 	 * Select timing interface
 	 */
