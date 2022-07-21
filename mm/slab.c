@@ -1220,6 +1220,14 @@ void __init kmem_cache_init(void)
 	if (!slab_max_order_set && totalram_pages() > (32 << 20) >> PAGE_SHIFT)
 		slab_max_order = SLAB_MAX_ORDER_HI;
 
+	/*
+	 * Initialize the kmalloc cache parameters before creating any kmem cache. This
+	 * is needed when the runtime minimum alignment for kmalloc is not the same as the
+	 * ARCH_KMALLOC_MINALIGN constant, which means that the other kmalloc
+	 * parameters (i.e. kmalloc_min_size and kmalloc_shift_low) should be recomputed.
+	 */
+	init_kmalloc_cache_parameters();
+
 	/* Bootstrap is tricky, because several objects are allocated
 	 * from caches that do not exist yet:
 	 * 1) initialize the kmem_cache cache: it contains the struct
