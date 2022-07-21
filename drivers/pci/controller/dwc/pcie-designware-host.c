@@ -378,9 +378,8 @@ int dw_pcie_host_init(struct pcie_port *pp)
 			if (ret)
 				dev_warn(pci->dev, "Failed to set DMA mask to 32-bit. Devices with only 32-bit MSI support may not work properly\n");
 
-			pp->msi_page = alloc_page(GFP_DMA32);
-			pp->msi_data = dma_map_page(pci->dev, pp->msi_page, 0, PAGE_SIZE,
-						    DMA_FROM_DEVICE);
+			pp->msi_page = dma_alloc_pages(pci->dev, PAGE_SIZE, &pp->msi_data,
+						       DMA_FROM_DEVICE, GFP_KERNEL);
 			if (dma_mapping_error(pci->dev, pp->msi_data)) {
 				dev_err(pci->dev, "Failed to map MSI data\n");
 				__free_page(pp->msi_page);
