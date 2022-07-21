@@ -647,13 +647,15 @@ EXPORT_SYMBOL_GPL(kmem_dump_obj);
 #endif
 
 #ifndef CONFIG_SLOB
+static unsigned int kmalloc_minalign = ARCH_KMALLOC_MINALIGN;
+
 /* Create a cache during boot when no slab services are available yet */
 void __init create_boot_cache(struct kmem_cache *s, const char *name,
 		unsigned int size, slab_flags_t flags,
 		unsigned int useroffset, unsigned int usersize)
 {
 	int err;
-	unsigned int align = ARCH_KMALLOC_MINALIGN;
+	unsigned int align = kmalloc_minalign;
 
 	s->name = name;
 	s->size = s->object_size = size;
@@ -697,6 +699,12 @@ struct kmem_cache *
 kmalloc_caches[NR_KMALLOC_TYPES][KMALLOC_SHIFT_HIGH + 1] __ro_after_init =
 { /* initialization for https://bugs.llvm.org/show_bug.cgi?id=42570 */ };
 EXPORT_SYMBOL(kmalloc_caches);
+
+int kmalloc_min_size = KMALLOC_MIN_SIZE;
+EXPORT_SYMBOL_GPL(kmalloc_min_size);
+
+int kmalloc_shift_low = KMALLOC_SHIFT_LOW;
+EXPORT_SYMBOL_GPL(kmalloc_shift_low);
 
 /*
  * Conversion table for small slabs sizes / 8 to the index in the
@@ -831,15 +839,15 @@ void __init setup_kmalloc_cache_index_table(void)
 	BUILD_BUG_ON(KMALLOC_MIN_SIZE > 256 ||
 		(KMALLOC_MIN_SIZE & (KMALLOC_MIN_SIZE - 1)));
 
-	for (i = 8; i < KMALLOC_MIN_SIZE; i += 8) {
+	for (i = 8; i < kmalloc_min_size; i += 8) {
 		unsigned int elem = size_index_elem(i);
 
 		if (elem >= ARRAY_SIZE(size_index))
 			break;
-		size_index[elem] = KMALLOC_SHIFT_LOW;
+		size_index[elem] = kmalloc_shift_low;
 	}
 
-	if (KMALLOC_MIN_SIZE >= 64) {
+	if (kmalloc_min_size >= 64) {
 		/*
 		 * The 96 byte size cache is not used if the alignment
 		 * is 64 byte.
@@ -849,7 +857,7 @@ void __init setup_kmalloc_cache_index_table(void)
 
 	}
 
-	if (KMALLOC_MIN_SIZE >= 128) {
+	if (kmalloc_min_size >= 128) {
 		/*
 		 * The 192 byte sized cache is not used if the alignment
 		 * is 128 byte. Redirect kmalloc to use the 256 byte cache
@@ -865,10 +873,20 @@ unsigned int __weak arch_kmalloc_minalign(void)
 	return ARCH_KMALLOC_MINALIGN;
 }
 
+static int __init setup_kmalloc_dynamic_minalign(char *str)
+{
+	kmalloc_minalign = arch_kmalloc_minalign();
+	kmalloc_min_size = kmalloc_minalign;
+	kmalloc_shift_low = ilog2(kmalloc_min_size);
+	return 1;
+}
+
+__setup("kmalloc_dynamic_minalign", setup_kmalloc_dynamic_minalign);
+
 void __init
 new_kmalloc_cache(int idx, enum kmalloc_cache_type type, slab_flags_t flags)
 {
-	unsigned int minalign = arch_kmalloc_minalign();
+	unsigned int minalign = kmalloc_minalign;
 	unsigned int aligned_size = kmalloc_info[idx].size;
 	int aligned_idx = idx;
 
@@ -916,7 +934,7 @@ void __init create_kmalloc_caches(slab_flags_t flags)
 	 * Including KMALLOC_CGROUP if CONFIG_MEMCG_KMEM defined
 	 */
 	for (type = KMALLOC_NORMAL; type <= KMALLOC_RECLAIM; type++) {
-		for (i = KMALLOC_SHIFT_LOW; i <= KMALLOC_SHIFT_HIGH; i++) {
+		for (i = kmalloc_shift_low; i <= KMALLOC_SHIFT_HIGH; i++) {
 			if (!kmalloc_caches[type][i])
 				new_kmalloc_cache(i, type, flags);
 
@@ -925,10 +943,10 @@ void __init create_kmalloc_caches(slab_flags_t flags)
 			 * These have to be created immediately after the
 			 * earlier power of two caches
 			 */
-			if (KMALLOC_MIN_SIZE <= 32 && i == 6 &&
+			if (kmalloc_min_size <= 32 && i == 6 &&
 					!kmalloc_caches[type][1])
 				new_kmalloc_cache(1, type, flags);
-			if (KMALLOC_MIN_SIZE <= 64 && i == 7 &&
+			if (kmalloc_min_size <= 64 && i == 7 &&
 					!kmalloc_caches[type][2])
 				new_kmalloc_cache(2, type, flags);
 		}
