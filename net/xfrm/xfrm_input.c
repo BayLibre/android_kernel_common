@@ -685,6 +685,11 @@ resume:
 			}
 		}
 
+		if ((nexthdr == IPPROTO_ESP || nexthdr == IPPROTO_AH || nexthdr == IPPROTO_COMP) &&
+				!xfrm_policy_check(NULL, XFRM_POLICY_IN, skb, inner_mode->family)) {
+			goto drop;
+		}
+
 		if (xfrm_inner_mode_input(x, inner_mode, skb)) {
 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
 			goto drop;
