@@ -843,6 +843,11 @@ const struct kmalloc_info_struct kmalloc_info[] __initconst = {
 	INIT_KMALLOC_INFO(33554432, 32M)
 };
 
+static bool dma_aligned(unsigned int size)
+{
+	return IS_ALIGNED(size, ARCH_DMA_MINALIGN);
+}
+
 /*
  * Patch up the size_index table if we have strange large alignment
  * requirements for the kmalloc array. This is only the case for
@@ -869,21 +874,21 @@ void __init setup_kmalloc_cache_index_table(void)
 		size_index[elem] = kmalloc_shift_low;
 	}
 
-	if (kmalloc_min_size >= 64) {
+	if (kmalloc_min_size >= 64 || !dma_aligned(96)) {
 		/*
 		 * The 96 byte size cache is not used if the alignment
-		 * is 64 byte.
+		 * is 64 byte or not suitable for DMA.
 		 */
 		for (i = 64 + 8; i <= 96; i += 8)
 			size_index[size_index_elem(i)] = 7;
 
 	}
 
-	if (kmalloc_min_size >= 128) {
+	if (kmalloc_min_size >= 128 || !dma_aligned(192)) {
 		/*
 		 * The 192 byte sized cache is not used if the alignment
-		 * is 128 byte. Redirect kmalloc to use the 256 byte cache
-		 * instead.
+		 * is 128 byte or not suitable for DMA. Redirect kmalloc
+		 * to use the 256 byte cache instead.
 		 */
 		for (i = 128 + 8; i <= 192; i += 8)
 			size_index[size_index_elem(i)] = 8;
@@ -914,6 +919,24 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type, slab_flags_t flags)
 
 	if (minalign > ARCH_KMALLOC_MINALIGN) {
 		aligned_size = ALIGN(aligned_size, minalign);
+		aligned_idx = __kmalloc_index(aligned_size, false);
+	} else if ((aligned_size > ARCH_DMA_MINALIGN) &&
+		   !dma_aligned(aligned_size)) {
+		/*
+		 * This scenario handles the case where a kmalloc cache
+		 * whose allocations are not aligned to ARCH_DMA_MINALIGN
+		 * can be created, and used to satisfy allocations that
+		 * have a static alignment requirement of ARCH_DMA_MINALIGN.
+		 *
+		 * Consider the case where a structure has a trailing array,
+		 * and the trailing array is statically aligned to
+		 * ARCH_DMA_MINALIGN. If the total allocation size
+		 * of the structure and trailing array can be satisfied by
+		 * a kmalloc cache that is not aligned to ARCH_DMA_MINALIGN
+		 * bytes, then the trailing array will not be aligned to
+		 * ARCH_DMA_MINALIGN.
+		 */
+		aligned_size = ALIGN(aligned_size, ARCH_DMA_MINALIGN);
 		aligned_idx = __kmalloc_index(aligned_size, false);
 	}
 
