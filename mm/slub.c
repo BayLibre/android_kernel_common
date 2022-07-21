@@ -4830,6 +4830,14 @@ void __init kmem_cache_init(void)
 	for_each_node_state(node, N_NORMAL_MEMORY)
 		node_set(node, slab_nodes);
 
+	/*
+	 * Initialize the kmalloc cache parameters before creating any kmem cache. This
+	 * is needed when the runtime minimum alignment for kmalloc is not the same as the
+	 * ARCH_KMALLOC_MINALIGN constant, which means that the other kmalloc
+	 * parameters (i.e. kmalloc_min_size and kmalloc_shift_low) should be recomputed.
+	 */
+	init_kmalloc_cache_parameters();
+
 	create_boot_cache(kmem_cache_node, "kmem_cache_node",
 		sizeof(struct kmem_cache_node), SLAB_HWCACHE_ALIGN, 0, 0);
 
