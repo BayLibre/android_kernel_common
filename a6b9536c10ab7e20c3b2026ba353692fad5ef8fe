@@ -22,6 +22,30 @@
       },
       "revId": "a6b9536c10ab7e20c3b2026ba353692fad5ef8fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47c0e0dc_2fab722d",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-07-21T08:07:47Z",
+      "side": 1,
+      "message": "Given that this memory is effectively unusable for anything else, I think we should size the buffer as small as we can get away with and try to have the callers use smaller buffers where possible.",
+      "parentUuid": "ee3b0c98_e7a2c270",
+      "range": {
+        "startLine": 334,
+        "startChar": 36,
+        "endLine": 334,
+        "endChar": 40
+      },
+      "revId": "a6b9536c10ab7e20c3b2026ba353692fad5ef8fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
