@@ -358,6 +358,10 @@ kmalloc_caches[NR_KMALLOC_TYPES][KMALLOC_SHIFT_HIGH + 1];
 
 unsigned int arch_kmalloc_minalign(void);
 
+extern int kmalloc_min_size;
+
+extern int kmalloc_shift_low;
+
 /*
  * Define gfp bits that should not be set for KMALLOC_NORMAL.
  */
@@ -409,12 +413,12 @@ static __always_inline unsigned int __kmalloc_index(size_t size,
 	if (!size)
 		return 0;
 
-	if (size <= KMALLOC_MIN_SIZE)
-		return KMALLOC_SHIFT_LOW;
+	if (size <= kmalloc_min_size)
+		return kmalloc_shift_low;
 
-	if (KMALLOC_MIN_SIZE <= 32 && size > 64 && size <= 96)
+	if (kmalloc_min_size <= 32 && size > 64 && size <= 96)
 		return 1;
-	if (KMALLOC_MIN_SIZE <= 64 && size > 128 && size <= 192)
+	if (kmalloc_min_size <= 64 && size > 128 && size <= 192)
 		return 2;
 	if (size <=          8) return 3;
 	if (size <=         16) return 4;
