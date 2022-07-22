@@ -612,6 +612,7 @@
   irq_get_irq_data
   irq_modify_status
   irq_of_parse_and_map
+  irq_set_affinity_hint
   irq_set_chained_handler_and_data
   irq_set_chip
   irq_set_chip_and_handler_name
@@ -787,7 +788,6 @@
   of_property_read_u64
   of_property_read_variable_u32_array
   of_property_read_variable_u8_array
-  of_prop_next_string
   of_regulator_match
   of_reserved_mem_device_init_by_idx
   __of_reset_control_get
@@ -1971,6 +1971,9 @@
   videomode_from_timing
 
 # required by pcie-dw-rockchip.ko
+  cpu_bit_bitmap
+  cpumask_next_and
+  dw_pcie_find_ext_capability
   dw_pcie_host_init
   dw_pcie_link_up
   dw_pcie_read
@@ -1978,6 +1981,11 @@
   dw_pcie_setup_rc
   dw_pcie_write
   dw_pcie_write_dbi
+  pci_disable_link_state
+  pcie_capability_clear_and_set_word
+  pci_read_config_dword
+  pci_set_power_state
+  pci_write_config_dword
 
 # required by pcierockchiphost.ko
   devm_pci_alloc_host_bridge
@@ -2223,7 +2231,6 @@
   regulator_get_linear_step
 
 # required by rockchip_pwm_remotectl.ko
-  irq_set_affinity_hint
   irq_to_desc
   __tasklet_hi_schedule
 
@@ -2534,6 +2541,9 @@
 # required by snd-soc-rockchip-i2s-tdm.ko
   clk_is_match
   snd_soc_add_dai_controls
+
+# required by snd-soc-rockchip-i2s.ko
+  of_prop_next_string
 
 # required by snd-soc-rockchip-multicodecs.ko
   of_parse_phandle_with_fixed_args

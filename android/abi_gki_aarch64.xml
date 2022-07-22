@@ -3850,6 +3850,7 @@
       <elf-symbol name='pci_device_group' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2998069f'/>
       <elf-symbol name='pci_device_is_present' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbba71ba0'/>
       <elf-symbol name='pci_disable_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6469305c'/>
+      <elf-symbol name='pci_disable_link_state' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x56e7eb83'/>
       <elf-symbol name='pci_disable_msi' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x28d3798b'/>
       <elf-symbol name='pci_disable_msix' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa0d0262c'/>
       <elf-symbol name='pci_disable_pcie_error_reporting' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x238f464a'/>
@@ -6712,6 +6713,9 @@
       </class-decl>
       <pointer-type-def type-id='fc8b497c' size-in-bits='64' id='0023218e'/>
       <typedef-decl name='genpool_algo_t' type-id='f54ae583' filepath='include/linux/genalloc.h' line='48' column='1' id='00278b91'/>
+      <array-type-def dimensions='1' type-id='86d70780' size-in-bits='256' id='00286dfe'>
+        <subrange length='4' type-id='7ff19f0f' id='16fe7105'/>
+      </array-type-def>
       <function-type size-in-bits='64' id='002a7109'>
         <parameter type-id='404b1300'/>
         <parameter type-id='7292109c'/>
@@ -6729,6 +6733,20 @@
         <enumerator name='I3C_BUS_MODE_MIXED_LIMITED' value='2'/>
         <enumerator name='I3C_BUS_MODE_MIXED_SLOW' value='3'/>
       </enum-decl>
+      <class-decl name='ieee80211_sta_he_cap' size-in-bits='440' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='367' column='1' id='0056bfcb'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='has_he' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='368' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='8'>
+          <var-decl name='he_cap_elem' type-id='4dffc3f2' visibility='default' filepath='include/net/cfg80211.h' line='369' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='144'>
+          <var-decl name='he_mcs_nss_supp' type-id='b1f4f4c7' visibility='default' filepath='include/net/cfg80211.h' line='370' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='240'>
+          <var-decl name='ppe_thres' type-id='5030b3c3' visibility='default' filepath='include/net/cfg80211.h' line='371' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='55059246' size-in-bits='64' id='0067e34c'/>
       <function-type size-in-bits='64' id='006d72ff'>
         <parameter type-id='f22e4524'/>
@@ -7072,6 +7090,7 @@
           <var-decl name='last_rowner' type-id='7359adad' visibility='default' filepath='include/linux/rwsem.h' line='69' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='6d8d26fb' size-in-bits='64' id='01b378ab'/>
       <pointer-type-def type-id='5547c428' size-in-bits='64' id='01b4845e'/>
       <pointer-type-def type-id='fdbf7a0f' size-in-bits='64' id='01b75fec'/>
       <function-type size-in-bits='64' id='01bd77f3'>
@@ -8756,6 +8775,7 @@
       <pointer-type-def type-id='d24e4794' size-in-bits='64' id='06f3ff9e'/>
       <pointer-type-def type-id='1d663e95' size-in-bits='64' id='06f4c6ad'/>
       <pointer-type-def type-id='78e3e1d2' size-in-bits='64' id='06f723f0'/>
+      <qualified-type-def type-id='e47a5a92' const='yes' id='06f84b1d'/>
       <function-type size-in-bits='64' id='0706d6e8'>
         <parameter type-id='ccf3b302'/>
         <parameter type-id='b11825ce'/>
@@ -11091,6 +11111,14 @@
       </class-decl>
       <pointer-type-def type-id='51dff603' size-in-bits='64' id='0c90828b'/>
       <pointer-type-def type-id='36051b76' size-in-bits='64' id='0c90c619'/>
+      <class-decl name='cfg80211_ssid' size-in-bits='264' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2122' column='1' id='0c960fcf'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='ssid' type-id='e3dc4fdb' visibility='default' filepath='include/net/cfg80211.h' line='2123' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='ssid_len' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='2124' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='0c98f83d'>
         <parameter type-id='28271da3'/>
         <parameter type-id='b50a4934'/>
@@ -11136,6 +11164,7 @@
       </function-type>
       <pointer-type-def type-id='31fdacad' size-in-bits='64' id='0cce9961'/>
       <pointer-type-def type-id='6d544aa1' size-in-bits='64' id='0cd76695'/>
+      <pointer-type-def type-id='64b77daa' size-in-bits='64' id='0cda9080'/>
       <function-type size-in-bits='64' id='0cdc58b8'>
         <parameter type-id='a2bff676'/>
         <parameter type-id='19c2251e'/>
@@ -11507,6 +11536,17 @@
         </data-member>
         <data-member access='public' layout-offset-in-bits='3584'>
           <var-decl name='android_kabi_reserved4' type-id='91ce1af9' visibility='default' filepath='include/linux/dmaengine.h' line='949' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='nl80211_wowlan_tcp_data_token_feature' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5273' column='1' id='0dd56ffa'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='min_len' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5274' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='max_len' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5274' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='bufsize' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5274' column='1'/>
         </data-member>
       </class-decl>
       <array-type-def dimensions='1' type-id='8f048e17' size-in-bits='368' id='0ddb15d8'>
@@ -12444,6 +12484,11 @@
           <var-decl name='rlock' type-id='f106d0e5' visibility='default' filepath='include/linux/spinlock_types.h' line='73' column='1'/>
         </data-member>
       </union-decl>
+      <function-type size-in-bits='64' id='10781bfd'>
+        <parameter type-id='666fb412'/>
+        <parameter type-id='1a09a595'/>
+        <return type-id='48b5725f'/>
+      </function-type>
       <function-type size-in-bits='64' id='10865770'>
         <parameter type-id='95316552'/>
         <return type-id='95e97e5e'/>
@@ -12717,6 +12762,32 @@
       </function-type>
       <pointer-type-def type-id='14617e76' size-in-bits='64' id='117460b0'/>
       <pointer-type-def type-id='cf396435' size-in-bits='64' id='11777d05'/>
+      <class-decl name='ieee80211_iface_combination' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4453' column='1' id='1179f27e'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='limits' type-id='2fde6795' visibility='default' filepath='include/net/cfg80211.h' line='4458' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='num_different_channels' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4464' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='max_interfaces' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4470' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='112'>
+          <var-decl name='n_limits' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4476' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='120'>
+          <var-decl name='beacon_int_infra_match' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='4483' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='radar_detect_widths' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4489' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='136'>
+          <var-decl name='radar_detect_regions' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4495' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='beacon_int_min_gcd' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4508' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='ad974870' size-in-bits='64' id='117abbea'/>
       <function-type size-in-bits='64' id='117b6b23'>
         <parameter type-id='572fbdca'/>
@@ -13398,6 +13469,95 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='4d855bce' size-in-bits='64' id='12a060a4'/>
+      <class-decl name='cfg80211_sched_scan_request' size-in-bits='1600' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2340' column='1' id='12a2e88f'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='reqid' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='2341' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='ssids' type-id='a1fa7fb7' visibility='default' filepath='include/net/cfg80211.h' line='2342' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='n_ssids' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='2343' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='n_channels' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2344' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='scan_width' type-id='95d46034' visibility='default' filepath='include/net/cfg80211.h' line='2345' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='ie' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='2346' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='ie_len' type-id='b59d7dce' visibility='default' filepath='include/net/cfg80211.h' line='2347' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2348' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='448'>
+          <var-decl name='match_sets' type-id='ea00c914' visibility='default' filepath='include/net/cfg80211.h' line='2349' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='512'>
+          <var-decl name='n_match_sets' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='2350' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='544'>
+          <var-decl name='min_rssi_thold' type-id='a7832498' visibility='default' filepath='include/net/cfg80211.h' line='2351' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='576'>
+          <var-decl name='delay' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2352' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='640'>
+          <var-decl name='scan_plans' type-id='302e9391' visibility='default' filepath='include/net/cfg80211.h' line='2353' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='704'>
+          <var-decl name='n_scan_plans' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='2354' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='736'>
+          <var-decl name='mac_addr' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='2356' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='784'>
+          <var-decl name='mac_addr_mask' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='2357' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='832'>
+          <var-decl name='relative_rssi_set' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='2359' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='840'>
+          <var-decl name='relative_rssi' type-id='fdbf7a0f' visibility='default' filepath='include/net/cfg80211.h' line='2360' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='864'>
+          <var-decl name='rssi_adjust' type-id='5da08e25' visibility='default' filepath='include/net/cfg80211.h' line='2361' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='960'>
+          <var-decl name='wiphy' type-id='666fb412' visibility='default' filepath='include/net/cfg80211.h' line='2364' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1024'>
+          <var-decl name='dev' type-id='68a2d05b' visibility='default' filepath='include/net/cfg80211.h' line='2365' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1088'>
+          <var-decl name='scan_start' type-id='7359adad' visibility='default' filepath='include/net/cfg80211.h' line='2366' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1152'>
+          <var-decl name='report_results' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='2367' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1216'>
+          <var-decl name='callback_head' type-id='e3d8ce29' visibility='default' filepath='include/net/cfg80211.h' line='2368' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1344'>
+          <var-decl name='owner_nlportid' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2369' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1376'>
+          <var-decl name='nl_owner_dead' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='2370' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1408'>
+          <var-decl name='list' type-id='72f469ec' visibility='default' filepath='include/net/cfg80211.h' line='2371' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1536'>
+          <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='2373' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1600'>
+          <var-decl name='channels' type-id='14cad687' visibility='default' filepath='include/net/cfg80211.h' line='2376' column='1'/>
+        </data-member>
+      </class-decl>
       <typedef-decl name='pgd_t' type-id='59473550' filepath='arch/arm64/include/asm/pgtable-types.h' line='39' column='1' id='12aa8ce4'/>
       <pointer-type-def type-id='db396bce' size-in-bits='64' id='12ad7b84'/>
       <function-type size-in-bits='64' id='12afeb30'>
@@ -14204,6 +14364,9 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='fe1697ae' size-in-bits='64' id='14ca5c08'/>
+      <array-type-def dimensions='1' type-id='ec00acfb' size-in-bits='infinite' id='14cad687'>
+        <subrange length='infinite' type-id='7ff19f0f' id='031f2035'/>
+      </array-type-def>
       <pointer-type-def type-id='b1376802' size-in-bits='64' id='14cefd25'/>
       <qualified-type-def type-id='ea65fb21' const='yes' id='14d2a428'/>
       <pointer-type-def type-id='3e1ff33b' size-in-bits='64' id='14d3a147'/>
@@ -14417,6 +14580,7 @@
           <var-decl name='inta' type-id='248c6527' visibility='default' filepath='include/linux/msi.h' line='129' column='1'/>
         </data-member>
       </union-decl>
+      <class-decl name='cfg80211_cached_keys' is-struct='yes' visibility='default' is-declaration-only='yes' id='1540019b'/>
       <class-decl name='tcf_chain' size-in-bits='1024' is-struct='yes' visibility='default' filepath='include/net/sch_generic.h' line='447' column='1' id='1546c604'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='filter_chain_lock' type-id='925167dc' visibility='default' filepath='include/net/sch_generic.h' line='449' column='1'/>
@@ -15051,6 +15215,26 @@
       <array-type-def dimensions='1' type-id='a84c031d' size-in-bits='288' id='16e6f2c6'>
         <subrange length='36' type-id='7ff19f0f' id='ae666bde'/>
       </array-type-def>
+      <class-decl name='ieee80211_ht_cap' size-in-bits='208' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='1515' column='1' id='16e7829f'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='cap_info' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1516' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='ampdu_params_info' type-id='f9b06939' visibility='default' filepath='include/linux/ieee80211.h' line='1517' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='24'>
+          <var-decl name='mcs' type-id='835fe4c6' visibility='default' filepath='include/linux/ieee80211.h' line='1520' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='152'>
+          <var-decl name='extended_ht_cap_info' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1522' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='168'>
+          <var-decl name='tx_BF_cap_info' type-id='2f162548' visibility='default' filepath='include/linux/ieee80211.h' line='1523' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='200'>
+          <var-decl name='antenna_selection_info' type-id='f9b06939' visibility='default' filepath='include/linux/ieee80211.h' line='1524' column='1'/>
+        </data-member>
+      </class-decl>
       <union-decl name='__anonymous_union__' size-in-bits='32' is-anonymous='yes' visibility='default' filepath='include/asm-generic/qspinlock_types.h' line='15' column='1' id='16e927d3'>
         <data-member access='public'>
           <var-decl name='val' type-id='49178f86' visibility='default' filepath='include/asm-generic/qspinlock_types.h' line='16' column='1'/>
@@ -15324,6 +15508,53 @@
         <enumerator name='HK_FLAG_KTHREAD' value='256'/>
       </enum-decl>
       <pointer-type-def type-id='5f0ccb86' size-in-bits='64' id='174bf37c'/>
+      <class-decl name='cfg80211_wowlan_tcp' size-in-bits='768' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2974' column='1' id='1752769a'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='sock' type-id='13103032' visibility='default' filepath='include/net/cfg80211.h' line='2975' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='src' type-id='78a133c2' visibility='default' filepath='include/net/cfg80211.h' line='2976' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='dst' type-id='78a133c2' visibility='default' filepath='include/net/cfg80211.h' line='2976' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='src_port' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='2977' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='144'>
+          <var-decl name='dst_port' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='2977' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='dst_mac' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='2978' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='224'>
+          <var-decl name='payload_len' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='2979' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='payload' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='2980' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='payload_seq' type-id='d5a1b375' visibility='default' filepath='include/net/cfg80211.h' line='2981' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='416'>
+          <var-decl name='data_interval' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2982' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='448'>
+          <var-decl name='wake_len' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2983' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='512'>
+          <var-decl name='wake_data' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='2984' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='576'>
+          <var-decl name='wake_mask' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='2984' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='640'>
+          <var-decl name='tokens_size' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2985' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='672'>
+          <var-decl name='payload_tok' type-id='2868c21b' visibility='default' filepath='include/net/cfg80211.h' line='2987' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='__anonymous_struct__' size-in-bits='128' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/perf_event.h' line='153' column='1' id='17578164'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='tp_list' type-id='72f469ec' visibility='default' filepath='include/linux/perf_event.h' line='155' column='1'/>
@@ -15602,6 +15833,7 @@
         <parameter type-id='26a90f95'/>
         <return type-id='79a0948f'/>
       </function-type>
+      <pointer-type-def type-id='2baffd9a' size-in-bits='64' id='1819dec8'/>
       <pointer-type-def type-id='a24ec55b' size-in-bits='64' id='181cff2f'/>
       <pointer-type-def type-id='9f77c6d4' size-in-bits='64' id='182096ce'/>
       <function-type size-in-bits='64' id='182265d5'>
@@ -15937,6 +16169,11 @@
         </data-member>
       </class-decl>
       <qualified-type-def type-id='f9b06939' const='yes' id='19272f09'/>
+      <class-decl name='ieee80211_he_6ghz_capa' size-in-bits='16' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='3473' column='1' id='192864a5'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='capa' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='3475' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='192c003a'>
         <parameter type-id='63a08bf7'/>
         <parameter type-id='1a494567'/>
@@ -16392,6 +16629,7 @@
           <var-decl name='android_kabi_reserved4' type-id='91ce1af9' visibility='default' filepath='include/linux/kobject.h' line='156' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='8c70c365' size-in-bits='64' id='1a09a595'/>
       <class-decl name='export_operations' size-in-bits='576' is-struct='yes' visibility='default' filepath='include/linux/exportfs.h' line='198' column='1' id='1a0c5572'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='encode_fh' type-id='2cdfbf0a' visibility='default' filepath='include/linux/exportfs.h' line='199' column='1'/>
@@ -18006,6 +18244,7 @@
       <qualified-type-def type-id='76a6d6f8' const='yes' id='1ec04219'/>
       <qualified-type-def type-id='d334c4a2' const='yes' id='1ec1e54d'/>
       <pointer-type-def type-id='2922fb19' size-in-bits='64' id='1ed1e4cd'/>
+      <pointer-type-def type-id='76959226' size-in-bits='64' id='1ed3660c'/>
       <class-decl name='iphdr' size-in-bits='160' is-struct='yes' visibility='default' filepath='include/uapi/linux/ip.h' line='86' column='1' id='1edbefa6'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='ihl' type-id='8f048e17' visibility='default' filepath='include/uapi/linux/ip.h' line='88' column='1'/>
@@ -18495,6 +18734,17 @@
       <pointer-type-def type-id='984b30c5' size-in-bits='64' id='1ff48951'/>
       <pointer-type-def type-id='18fcefa9' size-in-bits='64' id='1ff54a45'/>
       <pointer-type-def type-id='d7e67a0f' size-in-bits='64' id='1ff74483'/>
+      <class-decl name='ieee80211_sband_iftype_data' size-in-bits='480' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='386' column='1' id='1ffb3281'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='types_mask' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='387' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='he_cap' type-id='0056bfcb' visibility='default' filepath='include/net/cfg80211.h' line='388' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='456'>
+          <var-decl name='he_6ghz_capa' type-id='192864a5' visibility='default' filepath='include/net/cfg80211.h' line='389' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='20047fcf'>
         <parameter type-id='b26c7631'/>
         <parameter type-id='95e97e5e'/>
@@ -18913,6 +19163,14 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='26527266' size-in-bits='64' id='211c185c'/>
+      <class-decl name='ieee80211_txrx_stypes' size-in-bits='32' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4511' column='1' id='21301fc9'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='tx' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4512' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='rx' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4512' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='2962e9d2' size-in-bits='64' id='213608e4'/>
       <pointer-type-def type-id='9d9592f7' size-in-bits='64' id='2136470b'/>
       <pointer-type-def type-id='b5b9216e' size-in-bits='64' id='21370cb4'/>
@@ -21201,6 +21459,7 @@
       <qualified-type-def type-id='61227238' const='yes' id='268fa5d8'/>
       <qualified-type-def type-id='61227239' const='yes' id='268fa5d9'/>
       <pointer-type-def type-id='066f541d' size-in-bits='64' id='26989ff9'/>
+      <qualified-type-def type-id='16e7829f' const='yes' id='269d8092'/>
       <function-type size-in-bits='64' id='26a5fedd'>
         <parameter type-id='7efbcaaf'/>
         <parameter type-id='b1e844c1'/>
@@ -21800,6 +22059,9 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='a24a51b3' size-in-bits='64' id='280dcd9f'/>
+      <array-type-def dimensions='1' type-id='3cad9e1a' size-in-bits='320' id='281a45dd'>
+        <subrange length='5' type-id='7ff19f0f' id='53010e10'/>
+      </array-type-def>
       <class-decl name='v4l2_prio_state' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/media/v4l2-dev.h' line='112' column='1' id='281d3096'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='prios' type-id='6ed968f3' visibility='default' filepath='include/media/v4l2-dev.h' line='113' column='1'/>
@@ -21899,6 +22161,17 @@
         <parameter type-id='95e97e5e'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <class-decl name='nl80211_wowlan_tcp_data_token' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5262' column='1' id='2868c21b'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='offset' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5263' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='len' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5263' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='token_stream' type-id='167619f6' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5264' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='a87c488a' size-in-bits='64' id='2869bb38'/>
       <pointer-type-def type-id='3bd0350e' size-in-bits='64' id='28714cc4'/>
       <pointer-type-def type-id='605b61bb' size-in-bits='64' id='2871909b'/>
@@ -22653,6 +22926,7 @@
         <parameter type-id='9f763fd8'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <qualified-type-def type-id='1179f27e' const='yes' id='29c8dc19'/>
       <array-type-def dimensions='1' type-id='3158a266' size-in-bits='8160' id='29cc01cd'>
         <subrange length='255' type-id='7ff19f0f' id='36e7f891'/>
       </array-type-def>
@@ -23457,6 +23731,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='e6c6ca12' size-in-bits='64' id='2ba74d04'/>
+      <class-decl name='cfg80211_internal_bss' is-struct='yes' visibility='default' is-declaration-only='yes' id='2baffd9a'/>
       <function-type size-in-bits='64' id='2bb0168c'>
         <parameter type-id='7efbcaaf'/>
         <parameter type-id='33e1dfe4'/>
@@ -23656,6 +23931,9 @@
       <pointer-type-def type-id='cfb839d2' size-in-bits='64' id='2cbd236c'/>
       <pointer-type-def type-id='83c3a083' size-in-bits='64' id='2cbe71ce'/>
       <pointer-type-def type-id='455e2261' size-in-bits='64' id='2cc5a575'/>
+      <array-type-def dimensions='1' type-id='a7832498' size-in-bits='160' id='2ccab0ee'>
+        <subrange length='5' type-id='7ff19f0f' id='53010e10'/>
+      </array-type-def>
       <qualified-type-def type-id='08942f16' const='yes' id='2cd7c576'/>
       <qualified-type-def type-id='90bc6bed' const='yes' id='2cd82b3d'/>
       <pointer-type-def type-id='9b3d9f4d' size-in-bits='64' id='2cd87b91'/>
@@ -24500,6 +24778,7 @@
           <var-decl name='memcg' type-id='223696fb' visibility='default' filepath='include/linux/memcontrol.h' line='127' column='1'/>
         </data-member>
       </class-decl>
+      <class-decl name='cfg80211_cqm_config' is-struct='yes' visibility='default' is-declaration-only='yes' id='2e77eb82'/>
       <array-type-def dimensions='1' type-id='fbc017ef' size-in-bits='128' id='2e8fe924'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
       </array-type-def>
@@ -24547,6 +24826,14 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='ee780377' size-in-bits='64' id='2edb3e4b'/>
+      <class-decl name='ieee80211_vht_cap' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='1731' column='1' id='2eec6999'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='vht_cap_info' type-id='2f162548' visibility='default' filepath='include/linux/ieee80211.h' line='1732' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='supp_mcs' type-id='830056b5' visibility='default' filepath='include/linux/ieee80211.h' line='1733' column='1'/>
+        </data-member>
+      </class-decl>
       <qualified-type-def type-id='8f68aa3b' const='yes' id='2ef05706'/>
       <pointer-type-def type-id='d6de54c5' size-in-bits='64' id='2effb43d'/>
       <pointer-type-def type-id='c67e920d' size-in-bits='64' id='2f00283d'/>
@@ -24820,6 +25107,7 @@
         <parameter type-id='176d60a1'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <pointer-type-def type-id='06f84b1d' size-in-bits='64' id='2fde6795'/>
       <class-decl name='workqueue_attrs' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/linux/workqueue.h' line='143' column='1' id='2fe6f208'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='nice' type-id='95e97e5e' visibility='default' filepath='include/linux/workqueue.h' line='147' column='1'/>
@@ -24847,6 +25135,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='4d6ef9da' size-in-bits='64' id='2ff23ad4'/>
+      <qualified-type-def type-id='fc206ed1' const='yes' id='2ffd639c'/>
       <pointer-type-def type-id='ef65541d' size-in-bits='64' id='2fff15e1'/>
       <pointer-type-def type-id='9d4a3248' size-in-bits='64' id='3007e20a'/>
       <pointer-type-def type-id='820ec76f' size-in-bits='64' id='300d6413'/>
@@ -24870,6 +25159,7 @@
         <parameter type-id='a4ca87c1'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <pointer-type-def type-id='391881a9' size-in-bits='64' id='302e9391'/>
       <pointer-type-def type-id='845f3205' size-in-bits='64' id='30341fa1'/>
       <pointer-type-def type-id='4f5f116f' size-in-bits='64' id='30351b23'/>
       <pointer-type-def type-id='4657336c' size-in-bits='64' id='303e01fa'/>
@@ -26965,6 +27255,7 @@
       <array-type-def dimensions='1' type-id='a84c031d' size-in-bits='320' id='36c46961'>
         <subrange length='40' type-id='7ff19f0f' id='8f80b239'/>
       </array-type-def>
+      <qualified-type-def type-id='1ffb3281' const='yes' id='36c71786'/>
       <pointer-type-def type-id='0b1ef2a8' size-in-bits='64' id='36caa4da'/>
       <function-type size-in-bits='64' id='36ccbfa3'>
         <parameter type-id='5771c601'/>
@@ -27134,6 +27425,20 @@
         </data-member>
         <data-member access='public' layout-offset-in-bits='448'>
           <var-decl name='cache_order' type-id='f0981eeb' visibility='default' filepath='mm/slab.h' line='210' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='wiphy_iftype_ext_capab' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4683' column='1' id='378a6c5a'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='iftype' type-id='86505f90' visibility='default' filepath='include/net/cfg80211.h' line='4684' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='extended_capabilities' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='4685' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='extended_capabilities_mask' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='4686' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='extended_capabilities_len' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4687' column='1'/>
         </data-member>
       </class-decl>
       <function-type size-in-bits='64' id='3793087b'>
@@ -27570,6 +27875,14 @@
       <pointer-type-def type-id='c8c25625' size-in-bits='64' id='390f38a5'/>
       <pointer-type-def type-id='754a5cbf' size-in-bits='64' id='390fbe8f'/>
       <pointer-type-def type-id='d35840cd' size-in-bits='64' id='391871d1'/>
+      <class-decl name='cfg80211_sched_scan_plan' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2274' column='1' id='391881a9'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='interval' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2275' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='iterations' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='2276' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='usb_device_id' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/linux/mod_devicetable.h' line='121' column='1' id='391a9024'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='match_flags' type-id='d315442e' visibility='default' filepath='include/linux/mod_devicetable.h' line='123' column='1'/>
@@ -28132,6 +28445,7 @@
         <parameter type-id='f0acc909'/>
         <return type-id='8f254b08'/>
       </function-type>
+      <pointer-type-def type-id='10781bfd' size-in-bits='64' id='39ee8359'/>
       <array-type-def dimensions='1' type-id='c1c63dde' size-in-bits='10752' id='39f07796'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
       </array-type-def>
@@ -29249,6 +29563,7 @@
       </class-decl>
       <pointer-type-def type-id='90bc6bed' size-in-bits='64' id='3ca207ec'/>
       <pointer-type-def type-id='49dd9ce3' size-in-bits='64' id='3ca21ae3'/>
+      <pointer-type-def type-id='703a35bb' size-in-bits='64' id='3ca25343'/>
       <class-decl name='__anonymous_struct__' size-in-bits='128' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/media/media-entity.h' line='90' column='1' id='3ca3bd83'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='entity' type-id='19e05b5f' visibility='default' filepath='include/media/media-entity.h' line='91' column='1'/>
@@ -29272,6 +29587,7 @@
         <enumerator name='USB_INTERFACE_BOUND' value='2'/>
         <enumerator name='USB_INTERFACE_UNBINDING' value='3'/>
       </enum-decl>
+      <pointer-type-def type-id='f7e1259c' size-in-bits='64' id='3cad9e1a'/>
       <class-decl name='user_fpsimd_state' size-in-bits='4224' is-struct='yes' visibility='default' filepath='arch/arm64/include/uapi/asm/ptrace.h' line='95' column='1' id='3cb82f3a'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='vregs' type-id='98f84070' visibility='default' filepath='arch/arm64/include/uapi/asm/ptrace.h' line='96' column='1'/>
@@ -29353,7 +29669,143 @@
       </class-decl>
       <pointer-type-def type-id='46eaf6b3' size-in-bits='64' id='3ce232db'/>
       <pointer-type-def type-id='c21690c0' size-in-bits='64' id='3ce3447a'/>
-      <class-decl name='wireless_dev' is-struct='yes' visibility='default' is-declaration-only='yes' id='3ce3a3e9'/>
+      <class-decl name='wireless_dev' size-in-bits='3904' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='5297' column='1' id='3ce3a3e9'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='wiphy' type-id='666fb412' visibility='default' filepath='include/net/cfg80211.h' line='5298' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='iftype' type-id='86505f90' visibility='default' filepath='include/net/cfg80211.h' line='5299' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='list' type-id='72f469ec' visibility='default' filepath='include/net/cfg80211.h' line='5302' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='netdev' type-id='68a2d05b' visibility='default' filepath='include/net/cfg80211.h' line='5303' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='identifier' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5305' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='mgmt_registrations' type-id='72f469ec' visibility='default' filepath='include/net/cfg80211.h' line='5307' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='512'>
+          <var-decl name='mgmt_registrations_lock' type-id='fb4018a0' visibility='default' filepath='include/net/cfg80211.h' line='5314' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='mgmt_registrations_need_update' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5315' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='576'>
+          <var-decl name='mtx' type-id='925167dc' visibility='default' filepath='include/net/cfg80211.h' line='5317' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='960'>
+          <var-decl name='use_4addr' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5319' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='968'>
+          <var-decl name='is_running' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5319' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='976'>
+          <var-decl name='address' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='5321' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1024'>
+          <var-decl name='ssid' type-id='e3dc4fdb' visibility='default' filepath='include/net/cfg80211.h' line='5324' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1280'>
+          <var-decl name='ssid_len' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5325' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1288'>
+          <var-decl name='mesh_id_len' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5325' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1296'>
+          <var-decl name='mesh_id_up_len' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5325' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1344'>
+          <var-decl name='conn' type-id='6dbc8e18' visibility='default' filepath='include/net/cfg80211.h' line='5326' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1408'>
+          <var-decl name='connect_keys' type-id='561a36db' visibility='default' filepath='include/net/cfg80211.h' line='5327' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1472'>
+          <var-decl name='conn_bss_type' type-id='cb952348' visibility='default' filepath='include/net/cfg80211.h' line='5328' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1504'>
+          <var-decl name='conn_owner_nlportid' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5329' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1536'>
+          <var-decl name='disconnect_wk' type-id='ef9025d0' visibility='default' filepath='include/net/cfg80211.h' line='5331' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1920'>
+          <var-decl name='disconnect_bssid' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='5332' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1984'>
+          <var-decl name='event_list' type-id='72f469ec' visibility='default' filepath='include/net/cfg80211.h' line='5334' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2112'>
+          <var-decl name='event_lock' type-id='fb4018a0' visibility='default' filepath='include/net/cfg80211.h' line='5335' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2176'>
+          <var-decl name='current_bss' type-id='1819dec8' visibility='default' filepath='include/net/cfg80211.h' line='5337' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2240'>
+          <var-decl name='preset_chandef' type-id='e07d69c8' visibility='default' filepath='include/net/cfg80211.h' line='5338' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2496'>
+          <var-decl name='chandef' type-id='e07d69c8' visibility='default' filepath='include/net/cfg80211.h' line='5339' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2752'>
+          <var-decl name='ibss_fixed' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5341' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2760'>
+          <var-decl name='ibss_dfs_possible' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5342' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2768'>
+          <var-decl name='ps' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5344' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2784'>
+          <var-decl name='ps_timeout' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='5345' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2816'>
+          <var-decl name='beacon_interval' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='5347' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2848'>
+          <var-decl name='ap_unexpected_nlportid' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5349' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2880'>
+          <var-decl name='owner_nlportid' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5351' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2912'>
+          <var-decl name='nl_owner_dead' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5352' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2920'>
+          <var-decl name='cac_started' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5354' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2944'>
+          <var-decl name='cac_start_time' type-id='7359adad' visibility='default' filepath='include/net/cfg80211.h' line='5355' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3008'>
+          <var-decl name='cac_time_ms' type-id='f0981eeb' visibility='default' filepath='include/net/cfg80211.h' line='5356' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3072'>
+          <var-decl name='cqm_config' type-id='ee527710' visibility='default' filepath='include/net/cfg80211.h' line='5374' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3136'>
+          <var-decl name='pmsr_list' type-id='72f469ec' visibility='default' filepath='include/net/cfg80211.h' line='5376' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3264'>
+          <var-decl name='pmsr_lock' type-id='fb4018a0' visibility='default' filepath='include/net/cfg80211.h' line='5377' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3328'>
+          <var-decl name='pmsr_free_wk' type-id='ef9025d0' visibility='default' filepath='include/net/cfg80211.h' line='5378' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3712'>
+          <var-decl name='unprot_beacon_reported' type-id='7359adad' visibility='default' filepath='include/net/cfg80211.h' line='5380' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3776'>
+          <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='5382' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3840'>
+          <var-decl name='android_kabi_reserved2' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='5383' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='coupling_desc' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/linux/regulator/driver.h' line='425' column='1' id='3ce445fe'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='coupled_rdevs' type-id='f4c93d58' visibility='default' filepath='include/linux/regulator/driver.h' line='426' column='1'/>
@@ -29932,6 +30384,15 @@
           <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/linux/pm.h' line='304' column='1'/>
         </data-member>
       </class-decl>
+      <enum-decl name='nl80211_band' filepath='include/uapi/linux/nl80211.h' line='4859' column='1' id='3eaa0294'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_BAND_2GHZ' value='0'/>
+        <enumerator name='NL80211_BAND_5GHZ' value='1'/>
+        <enumerator name='NL80211_BAND_60GHZ' value='2'/>
+        <enumerator name='NL80211_BAND_6GHZ' value='3'/>
+        <enumerator name='NL80211_BAND_S1GHZ' value='4'/>
+        <enumerator name='NUM_NL80211_BANDS' value='5'/>
+      </enum-decl>
       <class-decl name='__anonymous_struct__' size-in-bits='128' is-struct='yes' is-anonymous='yes' visibility='default' filepath='drivers/base/regmap/internal.h' line='52' column='1' id='3eaed1cb'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='spinlock' type-id='fb4018a0' visibility='default' filepath='drivers/base/regmap/internal.h' line='53' column='1'/>
@@ -30146,6 +30607,17 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <typedef-decl name='__u32' type-id='f0981eeb' filepath='include/uapi/asm-generic/int-ll64.h' line='27' column='1' id='3f1a6b60'/>
+      <class-decl name='ieee80211_sta_s1g_cap' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='456' column='1' id='3f1c81a3'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='s1g' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='457' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='8'>
+          <var-decl name='cap' type-id='097504df' visibility='default' filepath='include/net/cfg80211.h' line='458' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='88'>
+          <var-decl name='nss_mcs' type-id='8f1320db' visibility='default' filepath='include/net/cfg80211.h' line='459' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='3f1e8582'>
         <parameter type-id='5264cf1d'/>
         <return type-id='48b5725f'/>
@@ -31477,6 +31949,7 @@
         <parameter type-id='95e97e5e'/>
         <return type-id='f0981eeb'/>
       </function-type>
+      <pointer-type-def type-id='2ffd639c' size-in-bits='64' id='41e3f782'/>
       <pointer-type-def type-id='aac7cb3b' size-in-bits='64' id='41ebc58b'/>
       <qualified-type-def type-id='0cb588a9' const='yes' id='41eec236'/>
       <function-type size-in-bits='64' id='41f25325'>
@@ -31819,6 +32292,8 @@
         <parameter type-id='08496218'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <class-decl name='cfg80211_conn' is-struct='yes' visibility='default' is-declaration-only='yes' id='43420c6a'/>
+      <pointer-type-def type-id='ce30b5d2' size-in-bits='64' id='4343d470'/>
       <pointer-type-def type-id='ea4e578a' size-in-bits='64' id='4346d2a4'/>
       <class-decl name='fsverity_info' size-in-bits='2048' is-struct='yes' visibility='default' filepath='fs/verity/fsverity_private.h' line='73' column='1' id='43489bca'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -33111,6 +33586,7 @@
       </class-decl>
       <pointer-type-def type-id='faa28adf' size-in-bits='64' id='46d78c8b'/>
       <pointer-type-def type-id='5ee42ab3' size-in-bits='64' id='46eaf6b3'/>
+      <qualified-type-def type-id='2eec6999' const='yes' id='46f53066'/>
       <array-type-def dimensions='1' type-id='19c2251e' size-in-bits='544' id='46fc18d9'>
         <subrange length='17' type-id='7ff19f0f' id='888ad0ed'/>
       </array-type-def>
@@ -35328,6 +35804,9 @@
         <parameter type-id='8efea9e5'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <array-type-def dimensions='1' type-id='f9b06939' size-in-bits='88' id='4d77ae82'>
+        <subrange length='11' type-id='7ff19f0f' id='847bc017'/>
+      </array-type-def>
       <array-type-def dimensions='1' type-id='f9b06939' size-in-bits='96' id='4d79ed19'>
         <subrange length='12' type-id='7ff19f0f' id='84827bdc'/>
       </array-type-def>
@@ -35531,7 +36010,18 @@
         <enumerator name='MQ_RQ_IN_FLIGHT' value='1'/>
         <enumerator name='MQ_RQ_COMPLETE' value='2'/>
       </enum-decl>
+      <array-type-def dimensions='1' type-id='a84c031d' size-in-bits='24' id='4df9d64a'>
+        <subrange length='3' type-id='7ff19f0f' id='56f209d2'/>
+      </array-type-def>
       <pointer-type-def type-id='90d08a78' size-in-bits='64' id='4dfe71de'/>
+      <class-decl name='ieee80211_he_cap_elem' size-in-bits='136' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='1774' column='1' id='4dffc3f2'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='mac_cap_info' type-id='cf1a4160' visibility='default' filepath='include/linux/ieee80211.h' line='1775' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='phy_cap_info' type-id='4d77ae82' visibility='default' filepath='include/linux/ieee80211.h' line='1776' column='1'/>
+        </data-member>
+      </class-decl>
       <array-type-def dimensions='2' type-id='19c2251e' size-in-bits='384' id='4e00dfcd'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
         <subrange length='6' type-id='7ff19f0f' id='52fa524b'/>
@@ -35823,6 +36313,7 @@
         <return type-id='48b5725f'/>
       </function-type>
       <pointer-type-def type-id='9819baf4' size-in-bits='64' id='4e812b7a'/>
+      <pointer-type-def type-id='5960e0b1' size-in-bits='64' id='4e819401'/>
       <function-type size-in-bits='64' id='4e83077d'>
         <parameter type-id='3dad1a48'/>
         <parameter type-id='8b175043'/>
@@ -36398,6 +36889,9 @@
       <pointer-type-def type-id='68dd2616' size-in-bits='64' id='50233074'/>
       <pointer-type-def type-id='dc678892' size-in-bits='64' id='50293ce4'/>
       <pointer-type-def type-id='c21a2b60' size-in-bits='64' id='502bd26a'/>
+      <array-type-def dimensions='1' type-id='f9b06939' size-in-bits='200' id='5030b3c3'>
+        <subrange length='25' type-id='7ff19f0f' id='41d5ddce'/>
+      </array-type-def>
       <array-type-def dimensions='1' type-id='f9b06939' size-in-bits='208' id='50390288'>
         <subrange length='26' type-id='7ff19f0f' id='41d81c65'/>
       </array-type-def>
@@ -37088,6 +37582,21 @@
       </class-decl>
       <qualified-type-def type-id='d45f2b4f' const='yes' id='512ac7cc'/>
       <pointer-type-def type-id='8087fc9a' size-in-bits='64' id='5139dd84'/>
+      <enum-decl name='ieee80211_edmg_bw_config' filepath='include/net/cfg80211.h' line='413' column='1' id='51403231'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_4' value='4'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_5' value='5'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_6' value='6'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_7' value='7'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_8' value='8'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_9' value='9'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_10' value='10'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_11' value='11'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_12' value='12'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_13' value='13'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_14' value='14'/>
+        <enumerator name='IEEE80211_EDMG_BW_CONFIG_15' value='15'/>
+      </enum-decl>
       <typedef-decl name='sk_read_actor_t' type-id='0c197ddf' filepath='include/linux/net.h' line='137' column='1' id='514d4e0e'/>
       <class-decl name='of_phandle_iterator' size-in-bits='512' is-struct='yes' visibility='default' filepath='include/linux/of.h' line='80' column='1' id='514d8c48'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -38936,6 +39445,23 @@
       <array-type-def dimensions='1' type-id='cf29c9b3' size-in-bits='infinite' id='55685a92'>
         <subrange length='infinite' type-id='7ff19f0f' id='031f2035'/>
       </array-type-def>
+      <class-decl name='wiphy_wowlan_tcp_support' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4544' column='1' id='557bca33'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='tok' type-id='6a8cbf59' visibility='default' filepath='include/net/cfg80211.h' line='4545' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='data_payload_max' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4546' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='data_interval_max' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4547' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='wake_payload_max' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4548' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='seq' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='4549' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='557c51cd'>
         <parameter type-id='94f8595c'/>
         <return type-id='48b5725f'/>
@@ -39392,6 +39918,7 @@
       <array-type-def dimensions='1' type-id='ea86de29' size-in-bits='64' id='561570b5'>
         <subrange length='8' type-id='7ff19f0f' id='56e0c0b1'/>
       </array-type-def>
+      <pointer-type-def type-id='1540019b' size-in-bits='64' id='561a36db'/>
       <pointer-type-def type-id='c443a9fc' size-in-bits='64' id='5626e636'/>
       <pointer-type-def type-id='0a26da71' size-in-bits='64' id='5629bd41'/>
       <enum-decl name='v4l2_subdev_ir_mode' filepath='include/media/v4l2-subdev.h' line='501' column='1' id='562dbe04'>
@@ -40258,6 +40785,7 @@
         <enumerator name='DRM_BRIDGE_OP_MODES' value='8'/>
       </enum-decl>
       <pointer-type-def type-id='e5a6600d' size-in-bits='64' id='595e6a79'/>
+      <qualified-type-def type-id='5c28f25e' const='yes' id='5960e0b1'/>
       <class-decl name='nl_info' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/netlink.h' line='453' column='1' id='596b36ac'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='nlh' type-id='c2074578' visibility='default' filepath='include/net/netlink.h' line='454' column='1'/>
@@ -41043,6 +41571,13 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='c15e0ad2' size-in-bits='64' id='5a8326dc'/>
+      <enum-decl name='nl80211_dfs_regions' filepath='include/uapi/linux/nl80211.h' line='4050' column='1' id='5a85c988'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_DFS_UNSET' value='0'/>
+        <enumerator name='NL80211_DFS_FCC' value='1'/>
+        <enumerator name='NL80211_DFS_ETSI' value='2'/>
+        <enumerator name='NL80211_DFS_JP' value='3'/>
+      </enum-decl>
       <pointer-type-def type-id='90220a52' size-in-bits='64' id='5a92c1cc'/>
       <pointer-type-def type-id='89e92d83' size-in-bits='64' id='5a92dd37'/>
       <class-decl name='net_device' size-in-bits='19968' is-struct='yes' visibility='default' filepath='include/linux/netdevice.h' line='1898' column='1' id='5a9929eb'>
@@ -41494,6 +42029,7 @@
         <parameter type-id='eaa32e2f'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <pointer-type-def type-id='a0ef5328' size-in-bits='64' id='5abfac26'/>
       <pointer-type-def type-id='80824a72' size-in-bits='64' id='5ac4ba20'/>
       <pointer-type-def type-id='cd9acaaa' size-in-bits='64' id='5ac7baf4'/>
       <pointer-type-def type-id='90177497' size-in-bits='64' id='5acb442f'/>
@@ -41764,6 +42300,29 @@
       </class-decl>
       <pointer-type-def type-id='70c545cd' size-in-bits='64' id='5bb9c75d'/>
       <typedef-decl name='uLong' type-id='7359adad' filepath='include/linux/zconf.h' line='54' column='1' id='5bbcce85'/>
+      <class-decl name='wiphy_wowlan_support' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4567' column='1' id='5bbd300b'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4568' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='n_patterns' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4569' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='pattern_max_len' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4570' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='pattern_min_len' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4571' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='max_pkt_offset' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4572' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='max_nd_match_sets' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4573' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='tcp' type-id='b3ebc0a8' visibility='default' filepath='include/net/cfg80211.h' line='4574' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='5bbf1052'>
         <parameter type-id='7359adad'/>
         <return type-id='48b5725f'/>
@@ -41926,6 +42485,23 @@
       <typedef-decl name='async_func_t' type-id='56ccc407' filepath='include/linux/async.h' line='17' column='1' id='5c19cb0c'/>
       <typedef-decl name='sk_buff_data_t' type-id='f0981eeb' filepath='include/linux/skbuff.h' line='610' column='1' id='5c1abc34'/>
       <pointer-type-def type-id='979d5bbb' size-in-bits='64' id='5c218f2b'/>
+      <class-decl name='ieee80211_regdomain' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='226' column='1' id='5c28f25e'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='callback_head' type-id='e3d8ce29' visibility='default' filepath='include/net/regulatory.h' line='227' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='n_reg_rules' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='228' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='alpha2' type-id='4df9d64a' visibility='default' filepath='include/net/regulatory.h' line='229' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='dfs_region' type-id='5a85c988' visibility='default' filepath='include/net/regulatory.h' line='230' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='224'>
+          <var-decl name='reg_rules' type-id='9195bab1' visibility='default' filepath='include/net/regulatory.h' line='231' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='input_dev_poller' size-in-bits='1344' is-struct='yes' visibility='default' filepath='drivers/input/input-poller.c' line='15' column='1' id='5c32afaa'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='poll' type-id='b44880ea' visibility='default' filepath='drivers/input/input-poller.c' line='16' column='1'/>
@@ -42638,6 +43214,14 @@
         </data-member>
       </union-decl>
       <pointer-type-def type-id='09ffba8a' size-in-bits='64' id='5d92c9e0'/>
+      <class-decl name='cfg80211_bss_select_adjust' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2285' column='1' id='5da08e25'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='band' type-id='3eaa0294' visibility='default' filepath='include/net/cfg80211.h' line='2286' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='delta' type-id='fdbf7a0f' visibility='default' filepath='include/net/cfg80211.h' line='2287' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='watchdog_info' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/uapi/linux/watchdog.h' line='18' column='1' id='5da1665b'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='options' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/watchdog.h' line='19' column='1'/>
@@ -44645,6 +45229,7 @@
           <var-decl name='polarity' type-id='7359adad' visibility='default' filepath='include/linux/irq.h' line='1000' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='c81d9871' size-in-bits='64' id='6196d741'/>
       <function-type size-in-bits='64' id='61a50456'>
         <parameter type-id='9ad862e7'/>
         <parameter type-id='c3e18af8'/>
@@ -45701,6 +46286,7 @@
       <array-type-def dimensions='1' type-id='91ce1af9' size-in-bits='320' id='64af1365'>
         <subrange length='5' type-id='7ff19f0f' id='53010e10'/>
       </array-type-def>
+      <qualified-type-def type-id='21301fc9' const='yes' id='64b77daa'/>
       <pointer-type-def type-id='1ee07c27' size-in-bits='64' id='64c19e8b'/>
       <class-decl name='cpu_stop_done' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/linux/stop_machine.h' line='35' column='1' id='64c36f53'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -46252,6 +46838,7 @@
           <var-decl name='priv' type-id='eaa32e2f' visibility='default' filepath='include/linux/dma-heap.h' line='43' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='68523a94' size-in-bits='64' id='666fb412'/>
       <pointer-type-def type-id='2dd1eb6f' size-in-bits='64' id='66755d9f'/>
       <function-type size-in-bits='64' id='66781033'>
         <parameter type-id='8f92235e'/>
@@ -47233,6 +47820,254 @@
       <pointer-type-def type-id='b855e40d' size-in-bits='64' id='684d860d'/>
       <pointer-type-def type-id='2b18e57b' size-in-bits='64' id='6850d327'/>
       <pointer-type-def type-id='3b03705e' size-in-bits='64' id='6850e780'/>
+      <class-decl name='wiphy' size-in-bits='11264' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4938' column='1' id='68523a94'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='perm_addr' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='4941' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='addr_mask' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='4942' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='addresses' type-id='01b378ab' visibility='default' filepath='include/net/cfg80211.h' line='4944' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='mgmt_stypes' type-id='0cda9080' visibility='default' filepath='include/net/cfg80211.h' line='4946' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='iface_combinations' type-id='fa32a449' visibility='default' filepath='include/net/cfg80211.h' line='4948' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='n_iface_combinations' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4949' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='352'>
+          <var-decl name='software_iftypes' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4950' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='368'>
+          <var-decl name='n_addresses' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4952' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='interface_modes' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4955' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='400'>
+          <var-decl name='max_acl_mac_addrs' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4957' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='416'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4959' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='448'>
+          <var-decl name='regulatory_flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4959' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='480'>
+          <var-decl name='features' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4959' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='512'>
+          <var-decl name='ext_features' type-id='d3180915' visibility='default' filepath='include/net/cfg80211.h' line='4960' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='576'>
+          <var-decl name='ap_sme_capa' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4962' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='608'>
+          <var-decl name='signal_type' type-id='b8524648' visibility='default' filepath='include/net/cfg80211.h' line='4964' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='640'>
+          <var-decl name='bss_priv_size' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4966' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='672'>
+          <var-decl name='max_scan_ssids' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4967' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='680'>
+          <var-decl name='max_sched_scan_reqs' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4968' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='688'>
+          <var-decl name='max_sched_scan_ssids' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4969' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='696'>
+          <var-decl name='max_match_sets' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4970' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='704'>
+          <var-decl name='max_scan_ie_len' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4971' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='720'>
+          <var-decl name='max_sched_scan_ie_len' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4972' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='736'>
+          <var-decl name='max_sched_scan_plans' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4973' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='768'>
+          <var-decl name='max_sched_scan_plan_interval' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4974' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='800'>
+          <var-decl name='max_sched_scan_plan_iterations' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4975' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='832'>
+          <var-decl name='n_cipher_suites' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4977' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='896'>
+          <var-decl name='cipher_suites' type-id='aded214c' visibility='default' filepath='include/net/cfg80211.h' line='4978' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='960'>
+          <var-decl name='n_akm_suites' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4980' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1024'>
+          <var-decl name='akm_suites' type-id='aded214c' visibility='default' filepath='include/net/cfg80211.h' line='4981' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1088'>
+          <var-decl name='iftype_akm_suites' type-id='6196d741' visibility='default' filepath='include/net/cfg80211.h' line='4983' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1152'>
+          <var-decl name='num_iftype_akm_suites' type-id='f0981eeb' visibility='default' filepath='include/net/cfg80211.h' line='4984' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1184'>
+          <var-decl name='retry_short' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4986' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1192'>
+          <var-decl name='retry_long' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4987' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1216'>
+          <var-decl name='frag_threshold' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4988' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1248'>
+          <var-decl name='rts_threshold' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4989' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1280'>
+          <var-decl name='coverage_class' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4990' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1288'>
+          <var-decl name='fw_version' type-id='16dc656a' visibility='default' filepath='include/net/cfg80211.h' line='4992' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1568'>
+          <var-decl name='hw_version' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4993' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1600'>
+          <var-decl name='wowlan' type-id='78a34b70' visibility='default' filepath='include/net/cfg80211.h' line='4996' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1664'>
+          <var-decl name='wowlan_config' type-id='9d025b00' visibility='default' filepath='include/net/cfg80211.h' line='4997' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1728'>
+          <var-decl name='max_remain_on_channel_duration' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='5000' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1744'>
+          <var-decl name='max_num_pmkids' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5002' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1760'>
+          <var-decl name='available_antennas_tx' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5004' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1792'>
+          <var-decl name='available_antennas_rx' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5005' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1824'>
+          <var-decl name='probe_resp_offload' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5007' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1856'>
+          <var-decl name='extended_capabilities' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='5009' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1920'>
+          <var-decl name='extended_capabilities_mask' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='5009' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1984'>
+          <var-decl name='extended_capabilities_len' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5010' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2048'>
+          <var-decl name='iftype_ext_capab' type-id='3ca25343' visibility='default' filepath='include/net/cfg80211.h' line='5012' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2112'>
+          <var-decl name='num_iftype_ext_capab' type-id='f0981eeb' visibility='default' filepath='include/net/cfg80211.h' line='5013' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2176'>
+          <var-decl name='privid' type-id='eaa32e2f' visibility='default' filepath='include/net/cfg80211.h' line='5015' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2240'>
+          <var-decl name='bands' type-id='281a45dd' visibility='default' filepath='include/net/cfg80211.h' line='5017' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2560'>
+          <var-decl name='reg_notifier' type-id='39ee8359' visibility='default' filepath='include/net/cfg80211.h' line='5019' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2624'>
+          <var-decl name='regd' type-id='4e819401' visibility='default' filepath='include/net/cfg80211.h' line='5024' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2688'>
+          <var-decl name='dev' type-id='66e487eb' visibility='default' filepath='include/net/cfg80211.h' line='5026' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='9856'>
+          <var-decl name='registered' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='5028' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='9920'>
+          <var-decl name='debugfsdir' type-id='27675065' visibility='default' filepath='include/net/cfg80211.h' line='5030' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='9984'>
+          <var-decl name='ht_capa_mod_mask' type-id='81f1a1a8' visibility='default' filepath='include/net/cfg80211.h' line='5032' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10048'>
+          <var-decl name='vht_capa_mod_mask' type-id='fffb07a4' visibility='default' filepath='include/net/cfg80211.h' line='5033' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10112'>
+          <var-decl name='wdev_list' type-id='72f469ec' visibility='default' filepath='include/net/cfg80211.h' line='5035' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10240'>
+          <var-decl name='_net' type-id='c9df1e6c' visibility='default' filepath='include/net/cfg80211.h' line='5037' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10304'>
+          <var-decl name='coalesce' type-id='9ef499bf' visibility='default' filepath='include/net/cfg80211.h' line='5043' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10368'>
+          <var-decl name='vendor_commands' type-id='41e3f782' visibility='default' filepath='include/net/cfg80211.h' line='5045' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10432'>
+          <var-decl name='vendor_events' type-id='b188cc4f' visibility='default' filepath='include/net/cfg80211.h' line='5046' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10496'>
+          <var-decl name='n_vendor_commands' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='5047' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10528'>
+          <var-decl name='n_vendor_events' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='5047' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10560'>
+          <var-decl name='max_ap_assoc_sta' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='5049' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10576'>
+          <var-decl name='max_num_csa_counters' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5051' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10592'>
+          <var-decl name='bss_select_support' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5053' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10624'>
+          <var-decl name='nan_supported_bands' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5055' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10656'>
+          <var-decl name='txq_limit' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5057' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10688'>
+          <var-decl name='txq_memory_limit' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5058' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10720'>
+          <var-decl name='txq_quantum' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='5059' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10752'>
+          <var-decl name='tx_queue_len' type-id='7359adad' visibility='default' filepath='include/net/cfg80211.h' line='5061' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='support_mbssid' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5063' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1'>
+          <var-decl name='support_only_he_mbssid' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5064' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10880'>
+          <var-decl name='pmsr_capa' type-id='5abfac26' visibility='default' filepath='include/net/cfg80211.h' line='5066' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='10944'>
+          <var-decl name='tid_config_support' type-id='f58927cb' visibility='default' filepath='include/net/cfg80211.h' line='5071' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='11136'>
+          <var-decl name='max_data_retry_count' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5073' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='11200'>
+          <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='5075' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='11264'>
+          <var-decl name='priv' type-id='e84913bd' visibility='default' filepath='include/net/cfg80211.h' line='5077' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='6858ea97'>
         <parameter type-id='f772df6d'/>
         <parameter type-id='02f11ed4'/>
@@ -48028,6 +48863,7 @@
         </data-member>
       </class-decl>
       <typedef-decl name='nodemask_t' type-id='24d23dab' filepath='include/linux/nodemask.h' line='98' column='1' id='6a7d16bb'/>
+      <pointer-type-def type-id='ed477ec9' size-in-bits='64' id='6a8cbf59'/>
       <pointer-type-def type-id='1601b1ab' size-in-bits='64' id='6a8dfaef'/>
       <typedef-decl name='speed_t' type-id='f0981eeb' filepath='include/uapi/asm-generic/termbits.h' line='8' column='1' id='6a8e8a14'/>
       <class-decl name='pin_config_item' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/linux/pinctrl/pinconf-generic.h' line='171' column='1' id='6a8fbda3'>
@@ -49166,6 +50002,11 @@
         <parameter type-id='5b4bef1f'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <class-decl name='mac_address' size-in-bits='48' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='1098' column='1' id='6d8d26fb'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='addr' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='1099' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='6d905adc'>
         <parameter type-id='4db02c58'/>
         <parameter type-id='c9ecdb13'/>
@@ -49236,6 +50077,7 @@
       <pointer-type-def type-id='cc52ca8d' size-in-bits='64' id='6daf6abd'/>
       <pointer-type-def type-id='d1d61218' size-in-bits='64' id='6db6a1be'/>
       <pointer-type-def type-id='4666032d' size-in-bits='64' id='6dbc77f1'/>
+      <pointer-type-def type-id='43420c6a' size-in-bits='64' id='6dbc8e18'/>
       <function-type size-in-bits='64' id='6dbd849e'>
         <parameter type-id='2ae08426'/>
         <return type-id='80f4b756'/>
@@ -49937,6 +50779,7 @@
           <var-decl name='hsv_enc' type-id='d315442e' visibility='default' filepath='include/uapi/linux/v4l2-mediabus.h' line='45' column='1'/>
         </data-member>
       </union-decl>
+      <qualified-type-def type-id='378a6c5a' const='yes' id='703a35bb'/>
       <pointer-type-def type-id='bdcf5751' size-in-bits='64' id='7041aa49'/>
       <pointer-type-def type-id='5113b296' size-in-bits='64' id='70487b28'/>
       <pointer-type-def type-id='f5c90b3f' size-in-bits='64' id='704982b4'/>
@@ -50361,6 +51204,26 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='291d9c02' size-in-bits='64' id='7114e104'/>
+      <class-decl name='wiphy_coalesce_support' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4587' column='1' id='7124a2a6'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='n_rules' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4588' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='max_delay' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4589' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='n_patterns' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4590' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='pattern_max_len' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4591' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='pattern_min_len' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4592' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='max_pkt_offset' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4593' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='4292193b' size-in-bits='64' id='7126cf8f'/>
       <pointer-type-def type-id='caf9c470' size-in-bits='64' id='71278586'/>
       <class-decl name='regulator_voltage' size-in-bits='64' is-struct='yes' visibility='default' filepath='drivers/regulator/internal.h' line='18' column='1' id='712d28ed'>
@@ -50891,6 +51754,7 @@
           <var-decl name='dev' type-id='fa0b179b' visibility='default' filepath='include/sound/memalloc.h' line='21' column='1'/>
         </data-member>
       </class-decl>
+      <qualified-type-def type-id='7124a2a6' const='yes' id='7253d28f'/>
       <qualified-type-def type-id='a3119fea' const='yes' id='72546357'/>
       <class-decl name='__anonymous_struct__' size-in-bits='192' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/linux/msi.h' line='102' column='1' id='72589d89'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -51717,6 +52581,14 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='d8e81cd4' size-in-bits='64' id='7365a3da'/>
+      <class-decl name='ieee80211_power_rule' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='187' column='1' id='736b3d64'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='max_antenna_gain' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='188' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='max_eirp' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='189' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='7370d1f4'>
         <parameter type-id='77e79a4b'/>
         <parameter type-id='eaa32e2f'/>
@@ -51946,6 +52818,20 @@
       </class-decl>
       <pointer-type-def type-id='c2d135ef' size-in-bits='64' id='741cc96e'/>
       <pointer-type-def type-id='395aad7e' size-in-bits='64' id='74287ea0'/>
+      <class-decl name='cfg80211_match_set' size-in-bits='512' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2258' column='1' id='7430554e'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='ssid' type-id='0c960fcf' visibility='default' filepath='include/net/cfg80211.h' line='2259' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='264'>
+          <var-decl name='bssid' type-id='cf1a4160' visibility='default' filepath='include/net/cfg80211.h' line='2260' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='rssi_thold' type-id='a7832498' visibility='default' filepath='include/net/cfg80211.h' line='2261' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='352'>
+          <var-decl name='per_band_rssi_thold' type-id='2ccab0ee' visibility='default' filepath='include/net/cfg80211.h' line='2262' column='1'/>
+        </data-member>
+      </class-decl>
       <union-decl name='__anonymous_union__' size-in-bits='192' is-anonymous='yes' visibility='default' filepath='include/linux/io-pgtable.h' line='96' column='1' id='7432b366'>
         <data-member access='public'>
           <var-decl name='arm_lpae_s1_cfg' type-id='1514d2f1' visibility='default' filepath='include/linux/io-pgtable.h' line='108' column='1'/>
@@ -52623,6 +53509,20 @@
         <parameter type-id='37175e4d'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <class-decl name='cfg80211_pkt_pattern' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='2949' column='1' id='76959226'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='mask' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='2950' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='pattern' type-id='bbaf3419' visibility='default' filepath='include/net/cfg80211.h' line='2950' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='pattern_len' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='2951' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='pkt_offset' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='2952' column='1'/>
+        </data-member>
+      </class-decl>
       <array-type-def dimensions='1' type-id='f22a8abb' size-in-bits='512' id='7698c98a'>
         <subrange length='8' type-id='7ff19f0f' id='56e0c0b1'/>
       </array-type-def>
@@ -53477,6 +54377,7 @@
       <qualified-type-def type-id='2888d74a' const='yes' id='7893b96a'/>
       <pointer-type-def type-id='23de1228' size-in-bits='64' id='78965926'/>
       <typedef-decl name='__be32' type-id='3f1a6b60' filepath='include/uapi/linux/types.h' line='32' column='1' id='78a133c2'/>
+      <pointer-type-def type-id='93286cfa' size-in-bits='64' id='78a34b70'/>
       <function-type size-in-bits='64' id='78b081ff'>
         <parameter type-id='a05f1ecd'/>
         <parameter type-id='807869d3'/>
@@ -53603,6 +54504,13 @@
         <return type-id='48b5725f'/>
       </function-type>
       <pointer-type-def type-id='d17d9181' size-in-bits='64' id='790a00b9'/>
+      <enum-decl name='nl80211_reg_initiator' filepath='include/uapi/linux/nl80211.h' line='3863' column='1' id='790cc131'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_REGDOM_SET_BY_CORE' value='0'/>
+        <enumerator name='NL80211_REGDOM_SET_BY_USER' value='1'/>
+        <enumerator name='NL80211_REGDOM_SET_BY_DRIVER' value='2'/>
+        <enumerator name='NL80211_REGDOM_SET_BY_COUNTRY_IE' value='3'/>
+      </enum-decl>
       <pointer-type-def type-id='adbacf87' size-in-bits='64' id='791b4a6b'/>
       <class-decl name='config_item' size-in-bits='640' is-struct='yes' visibility='default' filepath='include/linux/configfs.h' line='40' column='1' id='79236ccf'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -56626,6 +57534,41 @@
         <parameter type-id='f0981eeb'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <class-decl name='cfg80211_wowlan' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='3008' column='1' id='80126e32'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='any' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3009' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='8'>
+          <var-decl name='disconnect' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3009' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='magic_pkt' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3009' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='24'>
+          <var-decl name='gtk_rekey_failure' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3009' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='eap_identity_req' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3010' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='40'>
+          <var-decl name='four_way_handshake' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3010' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='rfkill_release' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='3011' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='patterns' type-id='1ed3660c' visibility='default' filepath='include/net/cfg80211.h' line='3012' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='tcp' type-id='e0c1c1b8' visibility='default' filepath='include/net/cfg80211.h' line='3013' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='n_patterns' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='3014' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='nd_config' type-id='9e4995c7' visibility='default' filepath='include/net/cfg80211.h' line='3015' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='802097e5'>
         <parameter type-id='15b1f129'/>
         <parameter type-id='c2132904'/>
@@ -57482,6 +58425,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='494c865e' size-in-bits='64' id='81ec80b0'/>
+      <pointer-type-def type-id='269d8092' size-in-bits='64' id='81f1a1a8'/>
       <typedef-decl name='seqcount_raw_spinlock_t' type-id='35126ca4' filepath='include/linux/seqlock.h' line='276' column='1' id='81ffe2ac'/>
       <function-type size-in-bits='64' id='82014c8f'>
         <parameter type-id='22be78e8'/>
@@ -57852,6 +58796,20 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <typedef-decl name='smp_cond_func_t' type-id='5c080b64' filepath='include/linux/smp.h' line='18' column='1' id='82fddac3'/>
+      <class-decl name='ieee80211_vht_mcs_info' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='1688' column='1' id='830056b5'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='rx_mcs_map' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1689' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='rx_highest' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1690' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='tx_mcs_map' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1691' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='tx_highest' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1692' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='45f3f04e' size-in-bits='64' id='83036d6c'/>
       <pointer-type-def type-id='7fb3af70' size-in-bits='64' id='83078c32'/>
       <class-decl name='clk' size-in-bits='576' is-struct='yes' visibility='default' filepath='drivers/clk/clk.c' line='99' column='1' id='830e3b1b'>
@@ -57976,6 +58934,20 @@
         <parameter type-id='19c2251e'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <class-decl name='ieee80211_mcs_info' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='1481' column='1' id='835fe4c6'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='rx_mask' type-id='097504df' visibility='default' filepath='include/linux/ieee80211.h' line='1482' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='80'>
+          <var-decl name='rx_highest' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1483' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='tx_params' type-id='f9b06939' visibility='default' filepath='include/linux/ieee80211.h' line='1484' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='104'>
+          <var-decl name='reserved' type-id='930ea9f9' visibility='default' filepath='include/linux/ieee80211.h' line='1485' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='836381ca'>
         <parameter type-id='c3a28778'/>
         <parameter type-id='3dad1a48'/>
@@ -57988,6 +58960,53 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <qualified-type-def type-id='e4c11782' const='yes' id='83967635'/>
+      <class-decl name='ieee80211_channel' size-in-bits='512' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='166' column='1' id='839b249b'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='band' type-id='3eaa0294' visibility='default' filepath='include/net/cfg80211.h' line='167' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='center_freq' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='168' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='freq_offset' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='169' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='80'>
+          <var-decl name='hw_value' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='170' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='171' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='max_antenna_gain' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='172' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='max_power' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='173' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='max_reg_power' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='174' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='224'>
+          <var-decl name='beacon_found' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='175' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='orig_flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='176' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='288'>
+          <var-decl name='orig_mag' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='177' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='orig_mpwr' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='177' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='352'>
+          <var-decl name='dfs_state' type-id='996e1634' visibility='default' filepath='include/net/cfg80211.h' line='178' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='dfs_state_entered' type-id='7359adad' visibility='default' filepath='include/net/cfg80211.h' line='179' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='448'>
+          <var-decl name='dfs_cac_ms' type-id='f0981eeb' visibility='default' filepath='include/net/cfg80211.h' line='180' column='1'/>
+        </data-member>
+      </class-decl>
       <array-type-def dimensions='1' type-id='3f1a6b60' size-in-bits='64' id='839e8989'>
         <subrange length='2' type-id='7ff19f0f' id='52efc4ef'/>
       </array-type-def>
@@ -59304,6 +60323,24 @@
       </array-type-def>
       <pointer-type-def type-id='ceff8680' size-in-bits='64' id='8640fd9e'/>
       <pointer-type-def type-id='b2d59d2a' size-in-bits='64' id='86462700'/>
+      <enum-decl name='nl80211_iftype' filepath='include/uapi/linux/nl80211.h' line='3118' column='1' id='86505f90'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_IFTYPE_UNSPECIFIED' value='0'/>
+        <enumerator name='NL80211_IFTYPE_ADHOC' value='1'/>
+        <enumerator name='NL80211_IFTYPE_STATION' value='2'/>
+        <enumerator name='NL80211_IFTYPE_AP' value='3'/>
+        <enumerator name='NL80211_IFTYPE_AP_VLAN' value='4'/>
+        <enumerator name='NL80211_IFTYPE_WDS' value='5'/>
+        <enumerator name='NL80211_IFTYPE_MONITOR' value='6'/>
+        <enumerator name='NL80211_IFTYPE_MESH_POINT' value='7'/>
+        <enumerator name='NL80211_IFTYPE_P2P_CLIENT' value='8'/>
+        <enumerator name='NL80211_IFTYPE_P2P_GO' value='9'/>
+        <enumerator name='NL80211_IFTYPE_P2P_DEVICE' value='10'/>
+        <enumerator name='NL80211_IFTYPE_OCB' value='11'/>
+        <enumerator name='NL80211_IFTYPE_NAN' value='12'/>
+        <enumerator name='NUM_NL80211_IFTYPES' value='13'/>
+        <enumerator name='NL80211_IFTYPE_MAX' value='12'/>
+      </enum-decl>
       <pointer-type-def type-id='a8ee3f87' size-in-bits='64' id='865e6323'/>
       <function-type size-in-bits='64' id='86607661'>
         <parameter type-id='3591079f'/>
@@ -59455,6 +60492,20 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='98aa4684' size-in-bits='64' id='86d04516'/>
+      <class-decl name='ieee80211_wmm_ac' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='205' column='1' id='86d70780'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='cw_min' type-id='1dc6a898' visibility='default' filepath='include/net/regulatory.h' line='206' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='cw_max' type-id='1dc6a898' visibility='default' filepath='include/net/regulatory.h' line='207' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='cot' type-id='1dc6a898' visibility='default' filepath='include/net/regulatory.h' line='208' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='aifsn' type-id='f9b06939' visibility='default' filepath='include/net/regulatory.h' line='209' column='1'/>
+        </data-member>
+      </class-decl>
       <typedef-decl name='vb2_thread_fnc' type-id='c4cd4be2' filepath='include/media/videobuf2-core.h' line='1064' column='1' id='86e6f91d'/>
       <pointer-type-def type-id='5f4720b2' size-in-bits='64' id='86ec8614'/>
       <function-type size-in-bits='64' id='86ee0347'>
@@ -62083,6 +63134,38 @@
         <parameter type-id='0f1b379b'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <class-decl name='regulatory_request' size-in-bits='512' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='77' column='1' id='8c70c365'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='callback_head' type-id='e3d8ce29' visibility='default' filepath='include/net/regulatory.h' line='78' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='wiphy_idx' type-id='95e97e5e' visibility='default' filepath='include/net/regulatory.h' line='79' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='initiator' type-id='790cc131' visibility='default' filepath='include/net/regulatory.h' line='80' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='user_reg_hint_type' type-id='b833d4ac' visibility='default' filepath='include/net/regulatory.h' line='81' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='224'>
+          <var-decl name='alpha2' type-id='4df9d64a' visibility='default' filepath='include/net/regulatory.h' line='82' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='dfs_region' type-id='5a85c988' visibility='default' filepath='include/net/regulatory.h' line='83' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='288'>
+          <var-decl name='intersect' type-id='b50a4934' visibility='default' filepath='include/net/regulatory.h' line='84' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='296'>
+          <var-decl name='processed' type-id='b50a4934' visibility='default' filepath='include/net/regulatory.h' line='85' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='country_ie_env' type-id='e0964c8a' visibility='default' filepath='include/net/regulatory.h' line='86' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='list' type-id='72f469ec' visibility='default' filepath='include/net/regulatory.h' line='87' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='189336ea' size-in-bits='64' id='8c779dcc'/>
       <class-decl name='cec_drm_connector_info' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/uapi/linux/cec.h' line='386' column='1' id='8c7b18b1'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -63088,6 +64171,14 @@
         <parameter type-id='7c6e0e0c'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <class-decl name='ieee80211_wmm_rule' size-in-bits='512' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='212' column='1' id='8eec5cae'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='client' type-id='00286dfe' visibility='default' filepath='include/net/regulatory.h' line='213' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='ap' type-id='00286dfe' visibility='default' filepath='include/net/regulatory.h' line='214' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='tc_cookie' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/net/pkt_cls.h' line='765' column='1' id='8eedee6f'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='data' type-id='8bff8096' visibility='default' filepath='include/net/pkt_cls.h' line='766' column='1'/>
@@ -63946,6 +65037,41 @@
           <var-decl name='pps_short_126_reserved' type-id='84a5c3d4' visibility='default' filepath='include/drm/drm_dsc.h' line='581' column='1'/>
         </data-member>
       </class-decl>
+      <class-decl name='__anonymous_struct__' size-in-bits='96' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/net/cfg80211.h' line='4715' column='1' id='904b4fe4'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='preambles' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4716' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='bandwidths' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4717' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='max_bursts_exponent' type-id='fdbf7a0f' visibility='default' filepath='include/net/cfg80211.h' line='4718' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='72'>
+          <var-decl name='max_ftms_per_burst' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4719' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='supported' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4720' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1'>
+          <var-decl name='asap' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4721' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2'>
+          <var-decl name='non_asap' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4722' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='3'>
+          <var-decl name='request_lci' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4723' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='4'>
+          <var-decl name='request_civicloc' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4724' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='5'>
+          <var-decl name='trigger_based' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4725' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='6'>
+          <var-decl name='non_trigger_based' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4726' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='904e13de'>
         <parameter type-id='27675065'/>
         <parameter type-id='26a90f95'/>
@@ -64561,6 +65687,9 @@
       </class-decl>
       <typedef-decl name='rx_handler_func_t' type-id='77c9a241' filepath='include/linux/netdevice.h' line='439' column='1' id='9193647b'/>
       <pointer-type-def type-id='db4c9bf7' size-in-bits='64' id='9194e9f3'/>
+      <array-type-def dimensions='1' type-id='a9d5f761' size-in-bits='infinite' id='9195bab1'>
+        <subrange length='infinite' type-id='7ff19f0f' id='031f2035'/>
+      </array-type-def>
       <function-type size-in-bits='64' id='9196037e'>
         <parameter type-id='c062d7a5'/>
         <parameter type-id='fd8f0b71'/>
@@ -65040,6 +66169,7 @@
         <enumerator name='MMU_NOTIFY_RELEASE' value='5'/>
         <enumerator name='MMU_NOTIFY_MIGRATE' value='6'/>
       </enum-decl>
+      <qualified-type-def type-id='5bbd300b' const='yes' id='93286cfa'/>
       <union-decl name='__anonymous_union__' size-in-bits='1024' is-anonymous='yes' visibility='default' filepath='include/uapi/sound/asoc.h' line='254' column='1' id='9329c56a'>
         <data-member access='public'>
           <var-decl name='data' type-id='28645bde' visibility='default' filepath='include/uapi/sound/asoc.h' line='255' column='1'/>
@@ -66021,6 +67151,14 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <qualified-type-def type-id='1740bab9' const='yes' id='95d0d4e8'/>
+      <enum-decl name='nl80211_bss_scan_width' filepath='include/uapi/linux/nl80211.h' line='4555' column='1' id='95d46034'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_BSS_CHAN_WIDTH_20' value='0'/>
+        <enumerator name='NL80211_BSS_CHAN_WIDTH_10' value='1'/>
+        <enumerator name='NL80211_BSS_CHAN_WIDTH_5' value='2'/>
+        <enumerator name='NL80211_BSS_CHAN_WIDTH_1' value='3'/>
+        <enumerator name='NL80211_BSS_CHAN_WIDTH_2' value='4'/>
+      </enum-decl>
       <enum-decl name='pinctrl_map_type' filepath='include/linux/pinctrl/machine.h' line='18' column='1' id='95da6d1c'>
         <underlying-type type-id='9cac1fee'/>
         <enumerator name='PIN_MAP_TYPE_INVALID' value='0'/>
@@ -67368,6 +68506,12 @@
         <parameter type-id='b50a4934'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <enum-decl name='nl80211_dfs_state' filepath='include/uapi/linux/nl80211.h' line='6179' column='1' id='996e1634'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_DFS_USABLE' value='0'/>
+        <enumerator name='NL80211_DFS_UNAVAILABLE' value='1'/>
+        <enumerator name='NL80211_DFS_AVAILABLE' value='2'/>
+      </enum-decl>
       <qualified-type-def type-id='21dfe538' const='yes' id='996ed1e5'/>
       <function-type size-in-bits='64' id='9977c731'>
         <parameter type-id='5e4f599b'/>
@@ -68813,6 +69957,7 @@
           <var-decl name='event_handler' type-id='af92413d' visibility='default' filepath='include/sound/soc-topology.h' line='103' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='80126e32' size-in-bits='64' id='9d025b00'/>
       <function-type size-in-bits='64' id='9d05a3e9'>
         <parameter type-id='cc26d15f'/>
         <parameter type-id='3dad1a48'/>
@@ -69547,6 +70692,7 @@
         <parameter type-id='f8dc9def'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <pointer-type-def type-id='12a2e88f' size-in-bits='64' id='9e4995c7'/>
       <class-decl name='bpf_map' size-in-bits='2048' is-struct='yes' visibility='default' filepath='include/linux/bpf.h' line='146' column='1' id='9e4acc7a'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='ops' type-id='3a109e70' visibility='default' filepath='include/linux/bpf.h' line='150' column='1'/>
@@ -69872,6 +71018,7 @@
         <return type-id='48b5725f'/>
       </function-type>
       <pointer-type-def type-id='29843697' size-in-bits='64' id='9eead88f'/>
+      <pointer-type-def type-id='7253d28f' size-in-bits='64' id='9ef499bf'/>
       <function-type size-in-bits='64' id='9efbfb11'>
         <parameter type-id='eaa32e2f'/>
         <return type-id='95e97e5e'/>
@@ -70293,6 +71440,23 @@
       <array-type-def dimensions='1' type-id='8f048e17' size-in-bits='416' id='a0412eab'>
         <subrange length='52' type-id='7ff19f0f' id='f81e05f0'/>
       </array-type-def>
+      <class-decl name='ieee80211_sta_ht_cap' size-in-bits='176' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='330' column='1' id='a041735c'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='cap' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='331' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='ht_supported' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='332' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='24'>
+          <var-decl name='ampdu_factor' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='333' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='ampdu_density' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='334' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='40'>
+          <var-decl name='mcs' type-id='835fe4c6' visibility='default' filepath='include/net/cfg80211.h' line='335' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='iio_subirq' size-in-bits='8' is-struct='yes' visibility='default' filepath='include/linux/iio/trigger.h' line='14' column='1' id='a04304a1'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='enabled' type-id='b50a4934' visibility='default' filepath='include/linux/iio/trigger.h' line='15' column='1'/>
@@ -70446,6 +71610,7 @@
           <var-decl name='obj' type-id='a459476c' visibility='default' filepath='include/drm/drm_framebuffer.h' line='213' column='1'/>
         </data-member>
       </class-decl>
+      <qualified-type-def type-id='e9bb2749' const='yes' id='a0ef5328'/>
       <pointer-type-def type-id='0be333ab' size-in-bits='64' id='a0f5247f'/>
       <pointer-type-def type-id='0fbf3cfd' size-in-bits='64' id='a10cc675'/>
       <typedef-decl name='rx_handler_result_t' type-id='aee6711b' filepath='include/linux/netdevice.h' line='438' column='1' id='a110acfc'/>
@@ -70815,6 +71980,7 @@
           <var-decl name='padding' type-id='0618bc0e' visibility='default' filepath='include/media/hevc-ctrls.h' line='134' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='0c960fcf' size-in-bits='64' id='a1fa7fb7'/>
       <pointer-type-def type-id='c564a30c' size-in-bits='64' id='a2080366'/>
       <pointer-type-def type-id='328910d8' size-in-bits='64' id='a20ce8b2'/>
       <function-type size-in-bits='64' id='a211528c'>
@@ -74096,6 +75262,17 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='32536656' size-in-bits='64' id='a80fd1bc'/>
+      <class-decl name='ieee80211_freq_range' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='181' column='1' id='a81053d4'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='start_freq_khz' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='182' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='end_freq_khz' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='183' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='max_bandwidth_khz' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='184' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='bf7aaec7' size-in-bits='64' id='a81671bb'/>
       <class-decl name='winsize' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/uapi/asm-generic/termios.h' line='15' column='1' id='a818b7a0'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -74463,6 +75640,7 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='3636c828' size-in-bits='64' id='a902ee5a'/>
+      <pointer-type-def type-id='c756879f' size-in-bits='64' id='a9032da3'/>
       <pointer-type-def type-id='10b63b7d' size-in-bits='64' id='a9035179'/>
       <pointer-type-def type-id='06c81b64' size-in-bits='64' id='a905791e'/>
       <pointer-type-def type-id='5e2fd874' size-in-bits='64' id='a90d9002'/>
@@ -74761,6 +75939,26 @@
         </data-member>
         <data-member access='public' layout-offset-in-bits='128'>
           <var-decl name='elements' type-id='9bf95e81' visibility='default' filepath='kernel/sched/cpudeadline.h' line='15' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='ieee80211_reg_rule' size-in-bits='768' is-struct='yes' visibility='default' filepath='include/net/regulatory.h' line='217' column='1' id='a9d5f761'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='freq_range' type-id='a81053d4' visibility='default' filepath='include/net/regulatory.h' line='218' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='power_rule' type-id='736b3d64' visibility='default' filepath='include/net/regulatory.h' line='219' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='wmm_rule' type-id='8eec5cae' visibility='default' filepath='include/net/regulatory.h' line='220' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='672'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='221' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='704'>
+          <var-decl name='dfs_cac_ms' type-id='19c2251e' visibility='default' filepath='include/net/regulatory.h' line='222' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='736'>
+          <var-decl name='has_wmm' type-id='b50a4934' visibility='default' filepath='include/net/regulatory.h' line='223' column='1'/>
         </data-member>
       </class-decl>
       <class-decl name='uid_gid_extent' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/linux/user_namespace.h' line='18' column='1' id='a9d71093'>
@@ -77082,6 +78280,7 @@
           <var-decl name='rumble' type-id='6e5c8c15' visibility='default' filepath='include/uapi/linux/input.h' line='462' column='1'/>
         </data-member>
       </union-decl>
+      <qualified-type-def type-id='e223f110' const='yes' id='af3cafff'/>
       <pointer-type-def type-id='1126278f' size-in-bits='64' id='af3f6c83'/>
       <class-decl name='v4l2_event_src_change' size-in-bits='32' is-struct='yes' visibility='default' filepath='include/uapi/linux/videodev2.h' line='2370' column='1' id='af41d400'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -77964,6 +79163,7 @@
       <array-type-def dimensions='1' type-id='002ac4a6' size-in-bits='512' id='b1888bf8'>
         <subrange length='64' type-id='7ff19f0f' id='b10be967'/>
       </array-type-def>
+      <pointer-type-def type-id='af3cafff' size-in-bits='64' id='b188cc4f'/>
       <class-decl name='tcp_sack_block' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/linux/tcp.h' line='73' column='1' id='b197d821'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='start_seq' type-id='19c2251e' visibility='default' filepath='include/linux/tcp.h' line='74' column='1'/>
@@ -78076,6 +79276,26 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='5e7de2a9' size-in-bits='64' id='b1e844c1'/>
+      <class-decl name='ieee80211_he_mcs_nss_supp' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/linux/ieee80211.h' line='1821' column='1' id='b1f4f4c7'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='rx_mcs_80' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1822' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='tx_mcs_80' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1823' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='rx_mcs_160' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1824' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='tx_mcs_160' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1825' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='rx_mcs_80p80' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1826' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='80'>
+          <var-decl name='tx_mcs_80p80' type-id='23119536' visibility='default' filepath='include/linux/ieee80211.h' line='1827' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='snd_soc_dai_ops' size-in-bits='1408' is-struct='yes' visibility='default' filepath='include/sound/soc-dai.h' line='212' column='1' id='b1fadf8a'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='set_sysclk' type-id='fd437b0d' visibility='default' filepath='include/sound/soc-dai.h' line='217' column='1'/>
@@ -78980,6 +80200,7 @@
         <enumerator name='TC_SETUP_QDISC_FIFO' value='17'/>
       </enum-decl>
       <typedef-decl name='nvmem_reg_read_t' type-id='3ba5153c' filepath='include/linux/nvmem-provider.h' line='18' column='1' id='b3e77ef6'/>
+      <pointer-type-def type-id='bd4a4592' size-in-bits='64' id='b3ebc0a8'/>
       <pointer-type-def type-id='c408da30' size-in-bits='64' id='b3ef56ee'/>
       <pointer-type-def type-id='9d9db488' size-in-bits='64' id='b3f54aba'/>
       <function-type size-in-bits='64' id='b3f5a3c1'>
@@ -80788,6 +82009,12 @@
           <var-decl name='cgroup_ns' type-id='f774a955' visibility='default' filepath='include/linux/nsproxy.h' line='40' column='1'/>
         </data-member>
       </class-decl>
+      <enum-decl name='nl80211_user_reg_hint_type' filepath='include/uapi/linux/nl80211.h' line='4074' column='1' id='b833d4ac'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_USER_REG_HINT_USER' value='0'/>
+        <enumerator name='NL80211_USER_REG_HINT_CELL_BASE' value='1'/>
+        <enumerator name='NL80211_USER_REG_HINT_INDOOR' value='2'/>
+      </enum-decl>
       <class-decl name='ip6_sf_list' size-in-bits='384' is-struct='yes' visibility='default' filepath='include/net/if_inet6.h' line='99' column='1' id='b83c8287'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='sf_next' type-id='60f4096f' visibility='default' filepath='include/net/if_inet6.h' line='100' column='1'/>
@@ -80835,6 +82062,12 @@
           <var-decl name='rcu' type-id='e3d8ce29' visibility='default' filepath='include/net/psample.h' line='14' column='1'/>
         </data-member>
       </class-decl>
+      <enum-decl name='cfg80211_signal_type' filepath='include/net/cfg80211.h' line='2386' column='1' id='b8524648'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='CFG80211_SIGNAL_TYPE_NONE' value='0'/>
+        <enumerator name='CFG80211_SIGNAL_TYPE_MBM' value='1'/>
+        <enumerator name='CFG80211_SIGNAL_TYPE_UNSPEC' value='2'/>
+      </enum-decl>
       <pointer-type-def type-id='71e3f969' size-in-bits='64' id='b8529195'/>
       <class-decl name='tty_operations' size-in-bits='2304' is-struct='yes' visibility='default' filepath='include/linux/tty_driver.h' line='247' column='1' id='b8553c6b'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -84375,6 +85608,7 @@
         <parameter type-id='b50a4934'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <qualified-type-def type-id='557bca33' const='yes' id='bd4a4592'/>
       <class-decl name='icmp_mib' size-in-bits='1792' is-struct='yes' visibility='default' filepath='include/net/snmp.h' line='59' column='1' id='bd4dc4cb'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='mibs' type-id='8bbc0f7f' visibility='default' filepath='include/net/snmp.h' line='60' column='1'/>
@@ -89089,6 +90323,13 @@
         </data-member>
       </union-decl>
       <qualified-type-def type-id='a1700eb5' const='yes' id='c7516f02'/>
+      <function-type size-in-bits='64' id='c756879f'>
+        <parameter type-id='666fb412'/>
+        <parameter type-id='63c7e8e1'/>
+        <parameter type-id='eaa32e2f'/>
+        <parameter type-id='95e97e5e'/>
+        <return type-id='95e97e5e'/>
+      </function-type>
       <class-decl name='bpf_prog_array' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/linux/bpf.h' line='1075' column='1' id='c75c7b06'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='rcu' type-id='e3d8ce29' visibility='default' filepath='include/linux/bpf.h' line='1076' column='1'/>
@@ -89316,6 +90557,7 @@
       <pointer-type-def type-id='e9630e15' size-in-bits='64' id='c7ee6915'/>
       <pointer-type-def type-id='9eea6bb5' size-in-bits='64' id='c7f8de51'/>
       <pointer-type-def type-id='aa99b0ae' size-in-bits='64' id='c805a6f8'/>
+      <qualified-type-def type-id='c86a8a16' const='yes' id='c81d9871'/>
       <pointer-type-def type-id='0c98f83d' size-in-bits='64' id='c82424f9'/>
       <pointer-type-def type-id='18d76f87' size-in-bits='64' id='c824cd57'/>
       <class-decl name='v4l2_mpeg2_picture' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/media/mpeg2-ctrls.h' line='38' column='1' id='c82910ee'>
@@ -89462,6 +90704,17 @@
       <class-decl name='kernfs_elem_symlink' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/linux/kernfs.h' line='104' column='1' id='c8685ef0'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='target_kn' type-id='150efd3f' visibility='default' filepath='include/linux/kernfs.h' line='105' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='wiphy_iftype_akm_suites' size-in-bits='192' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4739' column='1' id='c86a8a16'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='iftypes_mask' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4740' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='akm_suites' type-id='aded214c' visibility='default' filepath='include/net/cfg80211.h' line='4741' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='n_akm_suites' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='4742' column='1'/>
         </data-member>
       </class-decl>
       <union-decl name='__anonymous_union__' size-in-bits='64' is-anonymous='yes' visibility='default' filepath='include/linux/property.h' line='271' column='1' id='c86de178'>
@@ -89746,6 +90999,17 @@
         </data-member>
         <data-member access='public' layout-offset-in-bits='320'>
           <var-decl name='duplicate' type-id='b50a4934' visibility='default' filepath='drivers/base/component.c' line='52' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='ieee80211_sta_vht_cap' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='348' column='1' id='c994e9c8'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='vht_supported' type-id='b50a4934' visibility='default' filepath='include/net/cfg80211.h' line='349' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='cap' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='350' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='vht_mcs' type-id='830056b5' visibility='default' filepath='include/net/cfg80211.h' line='351' column='1'/>
         </data-member>
       </class-decl>
       <pointer-type-def type-id='3d684a5a' size-in-bits='64' id='c99780b4'/>
@@ -90440,6 +91704,14 @@
       </array-type-def>
       <pointer-type-def type-id='d509ab32' size-in-bits='64' id='cb6e5180'/>
       <qualified-type-def type-id='cfe4f8a2' const='yes' id='cb71e1ad'/>
+      <enum-decl name='ieee80211_bss_type' filepath='include/net/cfg80211.h' line='225' column='1' id='cb952348'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='IEEE80211_BSS_TYPE_ESS' value='0'/>
+        <enumerator name='IEEE80211_BSS_TYPE_PBSS' value='1'/>
+        <enumerator name='IEEE80211_BSS_TYPE_IBSS' value='2'/>
+        <enumerator name='IEEE80211_BSS_TYPE_MBSS' value='3'/>
+        <enumerator name='IEEE80211_BSS_TYPE_ANY' value='4'/>
+      </enum-decl>
       <class-decl name='xfrm_state' size-in-bits='5952' is-struct='yes' visibility='default' filepath='include/net/xfrm.h' line='149' column='1' id='cb961c68'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='xs_net' type-id='c9df1e6c' visibility='default' filepath='include/net/xfrm.h' line='150' column='1'/>
@@ -91557,6 +92829,20 @@
         <enumerator name='VERIFYING_UNSPECIFIED_SIGNATURE' value='5'/>
         <enumerator name='NR__KEY_BEING_USED_FOR' value='6'/>
       </enum-decl>
+      <class-decl name='ieee80211_rate' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='263' column='1' id='ce30b5d2'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='264' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='bitrate' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='265' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='48'>
+          <var-decl name='hw_value' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='266' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='hw_value_short' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='266' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='a65e4d6b' size-in-bits='64' id='ce54d147'/>
       <function-type size-in-bits='64' id='ce67f06c'>
         <parameter type-id='f772df6d'/>
@@ -93479,6 +94765,9 @@
           <var-decl name='prog_fd' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/bpf.h' line='631' column='1'/>
         </data-member>
       </class-decl>
+      <array-type-def dimensions='1' type-id='f9b06939' size-in-bits='56' id='d3180915'>
+        <subrange length='7' type-id='7ff19f0f' id='16fc326e'/>
+      </array-type-def>
       <pointer-type-def type-id='80310425' size-in-bits='64' id='d3210449'/>
       <function-type size-in-bits='64' id='d328415c'>
         <parameter type-id='78e7cf52'/>
@@ -94544,6 +95833,17 @@
         <return type-id='48b5725f'/>
       </function-type>
       <pointer-type-def type-id='ae79630f' size-in-bits='64' id='d59ce2e7'/>
+      <class-decl name='nl80211_wowlan_tcp_data_seq' size-in-bits='96' is-struct='yes' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5251' column='1' id='d5a1b375'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='start' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5252' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='offset' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5252' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='len' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='5252' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='dma_buf_poll_cb_t' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/linux/dma-buf.h' line='415' column='1' id='d5acde18'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='cb' type-id='54c5dd35' visibility='default' filepath='include/linux/dma-buf.h' line='416' column='1'/>
@@ -95930,6 +97230,14 @@
         <parameter type-id='807869d3'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <class-decl name='ieee80211_edmg' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='441' column='1' id='d87e6929'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='channels' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='442' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='bw_config' type-id='51403231' visibility='default' filepath='include/net/cfg80211.h' line='443' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='a41d4f0c' size-in-bits='64' id='d87ec006'/>
       <qualified-type-def type-id='3b156a69' const='yes' id='d8801604'/>
       <pointer-type-def type-id='30d151d5' size-in-bits='64' id='d884146d'/>
@@ -96064,6 +97372,15 @@
       <array-type-def dimensions='1' type-id='97aa083d' size-in-bits='8320' id='d91bb67a'>
         <subrange length='10' type-id='7ff19f0f' id='487da03a'/>
       </array-type-def>
+      <function-type size-in-bits='64' id='d91d4c07'>
+        <parameter type-id='666fb412'/>
+        <parameter type-id='63c7e8e1'/>
+        <parameter type-id='0fbf3cfd'/>
+        <parameter type-id='eaa32e2f'/>
+        <parameter type-id='95e97e5e'/>
+        <parameter type-id='1d2c2b85'/>
+        <return type-id='95e97e5e'/>
+      </function-type>
       <pointer-type-def type-id='69ba9ebc' size-in-bits='64' id='d91dfd7a'/>
       <pointer-type-def type-id='c6751b87' size-in-bits='64' id='d91e8ea3'/>
       <pointer-type-def type-id='428b7011' size-in-bits='64' id='d91eb3a5'/>
@@ -98356,6 +99673,7 @@
           <var-decl name='tai' type-id='95e97e5e' visibility='default' filepath='include/uapi/linux/timex.h' line='129' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='d91d4c07' size-in-bits='64' id='dcf81beb'/>
       <qualified-type-def type-id='a24978a1' const='yes' id='dcf92fe6'/>
       <function-type size-in-bits='64' id='dd082beb'>
         <parameter type-id='fa0b179b'/>
@@ -99746,6 +101064,22 @@
         <parameter type-id='5799dc94'/>
         <return type-id='95e97e5e'/>
       </function-type>
+      <enum-decl name='nl80211_chan_width' filepath='include/uapi/linux/nl80211.h' line='4528' column='1' id='e043cccc'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='NL80211_CHAN_WIDTH_20_NOHT' value='0'/>
+        <enumerator name='NL80211_CHAN_WIDTH_20' value='1'/>
+        <enumerator name='NL80211_CHAN_WIDTH_40' value='2'/>
+        <enumerator name='NL80211_CHAN_WIDTH_80' value='3'/>
+        <enumerator name='NL80211_CHAN_WIDTH_80P80' value='4'/>
+        <enumerator name='NL80211_CHAN_WIDTH_160' value='5'/>
+        <enumerator name='NL80211_CHAN_WIDTH_5' value='6'/>
+        <enumerator name='NL80211_CHAN_WIDTH_10' value='7'/>
+        <enumerator name='NL80211_CHAN_WIDTH_1' value='8'/>
+        <enumerator name='NL80211_CHAN_WIDTH_2' value='9'/>
+        <enumerator name='NL80211_CHAN_WIDTH_4' value='10'/>
+        <enumerator name='NL80211_CHAN_WIDTH_8' value='11'/>
+        <enumerator name='NL80211_CHAN_WIDTH_16' value='12'/>
+      </enum-decl>
       <typedef-decl name='pteval_t' type-id='91ce1af9' filepath='arch/arm64/include/asm/pgtable-types.h' line='14' column='1' id='e044eb0d'/>
       <pointer-type-def type-id='9e73640b' size-in-bits='64' id='e045254b'/>
       <class-decl name='rtc_wkalrm' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/uapi/linux/rtc.h' line='40' column='1' id='e05187bf'>
@@ -100321,6 +101655,26 @@
           <var-decl name='sdev_data' type-id='c99b5ecd' visibility='default' filepath='include/scsi/scsi_device.h' line='247' column='1'/>
         </data-member>
       </class-decl>
+      <class-decl name='cfg80211_chan_def' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='692' column='1' id='e07d69c8'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='chan' type-id='ec00acfb' visibility='default' filepath='include/net/cfg80211.h' line='693' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='width' type-id='e043cccc' visibility='default' filepath='include/net/cfg80211.h' line='694' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='96'>
+          <var-decl name='center_freq1' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='695' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='center_freq2' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='696' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='edmg' type-id='d87e6929' visibility='default' filepath='include/net/cfg80211.h' line='697' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='224'>
+          <var-decl name='freq1_offset' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='698' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='bpf_link' size-in-bits='640' is-struct='yes' visibility='default' filepath='include/linux/bpf.h' line='893' column='1' id='e07e9784'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='refcnt' type-id='28ee064c' visibility='default' filepath='include/linux/bpf.h' line='894' column='1'/>
@@ -100385,6 +101739,12 @@
           <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/linux/usb/gadget.h' line='159' column='1'/>
         </data-member>
       </class-decl>
+      <enum-decl name='environment_cap' filepath='include/net/regulatory.h' line='31' column='1' id='e0964c8a'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='ENVIRON_ANY' value='0'/>
+        <enumerator name='ENVIRON_INDOOR' value='1'/>
+        <enumerator name='ENVIRON_OUTDOOR' value='2'/>
+      </enum-decl>
       <class-decl name='cpu_rmap' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/linux/cpu_rmap.h' line='24' column='1' id='e09a048e'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='refcount' type-id='400fb07b' visibility='default' filepath='include/linux/cpu_rmap.h' line='25' column='1'/>
@@ -100450,6 +101810,7 @@
         <return type-id='48b5725f'/>
       </function-type>
       <pointer-type-def type-id='ecb90832' size-in-bits='64' id='e0c03654'/>
+      <pointer-type-def type-id='1752769a' size-in-bits='64' id='e0c1c1b8'/>
       <typedef-decl name='swp_entry_t' type-id='6a1f49ab' filepath='include/linux/mm_types.h' line='832' column='1' id='e0c6ffc2'/>
       <function-type size-in-bits='64' id='e0c79ce2'>
         <parameter type-id='d30bdc51'/>
@@ -100985,6 +102346,14 @@
       <class-decl name='linux_mib' size-in-bits='7936' is-struct='yes' visibility='default' filepath='include/net/snmp.h' line='104' column='1' id='e222a326'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='mibs' type-id='1871b656' visibility='default' filepath='include/net/snmp.h' line='105' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='nl80211_vendor_cmd_info' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/uapi/linux/nl80211.h' line='6249' column='1' id='e223f110'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='vendor_id' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='6250' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='32'>
+          <var-decl name='subcmd' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/nl80211.h' line='6251' column='1'/>
         </data-member>
       </class-decl>
       <function-type size-in-bits='64' id='e2245803'>
@@ -102188,6 +103557,14 @@
       <qualified-type-def type-id='ebd46aa4' const='yes' id='e4664ea7'/>
       <pointer-type-def type-id='07c93537' size-in-bits='64' id='e46f66f3'/>
       <typedef-decl name='uintptr_t' type-id='7359adad' filepath='include/linux/types.h' line='37' column='1' id='e475ab95'/>
+      <class-decl name='ieee80211_iface_limit' size-in-bits='32' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4389' column='1' id='e47a5a92'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='max' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4390' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='16'>
+          <var-decl name='types' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='4391' column='1'/>
+        </data-member>
+      </class-decl>
       <array-type-def dimensions='1' type-id='f22a8abb' size-in-bits='2624' id='e486d27d'>
         <subrange length='41' type-id='7ff19f0f' id='cb834f44'/>
       </array-type-def>
@@ -103455,6 +104832,7 @@
           <var-decl name='event' type-id='561040ad' visibility='default' filepath='include/../drivers/scsi/ufs/ufshcd.h' line='485' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='36c71786' size-in-bits='64' id='e76a43c4'/>
       <function-type size-in-bits='64' id='e76f1d29'>
         <parameter type-id='fa0b179b'/>
         <parameter type-id='eaa32e2f'/>
@@ -104398,6 +105776,20 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='df81074e' size-in-bits='64' id='e9b5d134'/>
+      <class-decl name='cfg80211_pmsr_capabilities' size-in-bits='160' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4710' column='1' id='e9bb2749'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='max_peers' type-id='f0981eeb' visibility='default' filepath='include/net/cfg80211.h' line='4711' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='report_ap_tsf' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4712' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1'>
+          <var-decl name='randomize_mac_addr' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='4713' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='ftm' type-id='904b4fe4' visibility='default' filepath='include/net/cfg80211.h' line='4727' column='1'/>
+        </data-member>
+      </class-decl>
       <union-decl name='__anonymous_union__' size-in-bits='704' is-anonymous='yes' visibility='default' filepath='include/net/flow.h' line='175' column='1' id='e9bb6246'>
         <data-member access='public'>
           <var-decl name='__fl_common' type-id='184ee240' visibility='default' filepath='include/net/flow.h' line='176' column='1'/>
@@ -104467,6 +105859,7 @@
           <var-decl name='raw' type-id='9d2cf33e' visibility='default' filepath='include/uapi/linux/cec.h' line='468' column='1'/>
         </data-member>
       </union-decl>
+      <pointer-type-def type-id='7430554e' size-in-bits='64' id='ea00c914'/>
       <function-type size-in-bits='64' id='ea038279'>
         <parameter type-id='fa0b179b'/>
         <parameter type-id='2522883d'/>
@@ -105665,6 +107058,7 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='feaf774f' size-in-bits='64' id='ec000d8e'/>
+      <pointer-type-def type-id='839b249b' size-in-bits='64' id='ec00acfb'/>
       <pointer-type-def type-id='c8eb0f4f' size-in-bits='64' id='ec037527'/>
       <qualified-type-def type-id='a7db2a27' const='yes' id='ec05f10e'/>
       <pointer-type-def type-id='f709b458' size-in-bits='64' id='ec0e067e'/>
@@ -106096,6 +107490,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='89397116' size-in-bits='64' id='ed415bf0'/>
+      <qualified-type-def type-id='0dd56ffa' const='yes' id='ed477ec9'/>
       <class-decl name='pinctrl_ops' size-in-bits='384' is-struct='yes' visibility='default' filepath='include/linux/pinctrl/pinctrl.h' line='88' column='1' id='ed4a990e'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='get_groups_count' type-id='9b3cc28d' visibility='default' filepath='include/linux/pinctrl/pinctrl.h' line='89' column='1'/>
@@ -106689,6 +108084,7 @@
           <var-decl name='' type-id='4467d7e7' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='520' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='2e77eb82' size-in-bits='64' id='ee527710'/>
       <class-decl name='fb_monspecs' size-in-bits='1152' is-struct='yes' visibility='default' filepath='include/linux/fb.h' line='63' column='1' id='ee529a90'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='chroma' type-id='1c76a224' visibility='default' filepath='include/linux/fb.h' line='64' column='1'/>
@@ -109523,6 +110919,17 @@
           <var-decl name='k' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/filter.h' line='28' column='1'/>
         </data-member>
       </class-decl>
+      <class-decl name='__anonymous_struct__' size-in-bits='192' is-struct='yes' is-anonymous='yes' visibility='default' filepath='include/net/cfg80211.h' line='5068' column='1' id='f58927cb'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='peer' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='5069' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='vif' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='5069' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='max_retry' type-id='f9b06939' visibility='default' filepath='include/net/cfg80211.h' line='5070' column='1'/>
+        </data-member>
+      </class-decl>
       <function-type size-in-bits='64' id='f58c1a1b'>
         <parameter type-id='ecb0ce18'/>
         <parameter type-id='b6a6ca60'/>
@@ -110319,6 +111726,41 @@
         </data-member>
         <data-member access='public' layout-offset-in-bits='2816'>
           <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/linux/usb/phy.h' line='160' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='ieee80211_supported_band' size-in-bits='832' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='487' column='1' id='f7e1259c'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='channels' type-id='ec00acfb' visibility='default' filepath='include/net/cfg80211.h' line='488' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='bitrates' type-id='4343d470' visibility='default' filepath='include/net/cfg80211.h' line='489' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='band' type-id='3eaa0294' visibility='default' filepath='include/net/cfg80211.h' line='490' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='160'>
+          <var-decl name='n_channels' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='491' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='n_bitrates' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='492' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='224'>
+          <var-decl name='ht_cap' type-id='a041735c' visibility='default' filepath='include/net/cfg80211.h' line='493' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='416'>
+          <var-decl name='vht_cap' type-id='c994e9c8' visibility='default' filepath='include/net/cfg80211.h' line='494' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='544'>
+          <var-decl name='s1g_cap' type-id='3f1c81a3' visibility='default' filepath='include/net/cfg80211.h' line='495' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='672'>
+          <var-decl name='edmg_cap' type-id='d87e6929' visibility='default' filepath='include/net/cfg80211.h' line='496' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='736'>
+          <var-decl name='n_iftype_data' type-id='1dc6a898' visibility='default' filepath='include/net/cfg80211.h' line='497' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='768'>
+          <var-decl name='iftype_data' type-id='e76a43c4' visibility='default' filepath='include/net/cfg80211.h' line='498' column='1'/>
         </data-member>
       </class-decl>
       <pointer-type-def type-id='3a58d3ba' size-in-bits='64' id='f7e7b3e8'/>
@@ -111124,6 +112566,7 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <class-decl name='cec_pin' is-struct='yes' visibility='default' is-declaration-only='yes' id='fa296b96'/>
+      <pointer-type-def type-id='29c8dc19' size-in-bits='64' id='fa32a449'/>
       <pointer-type-def type-id='c2603804' size-in-bits='64' id='fa35bf16'/>
       <class-decl name='ip_options' size-in-bits='128' is-struct='yes' visibility='default' filepath='include/net/inet_sock.h' line='39' column='1' id='fa35cea9'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -112027,6 +113470,29 @@
         </data-member>
         <data-member access='public' layout-offset-in-bits='320'>
           <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/linux/pci.h' line='755' column='1'/>
+        </data-member>
+      </class-decl>
+      <class-decl name='wiphy_vendor_command' size-in-bits='448' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='4658' column='1' id='fc206ed1'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='info' type-id='e223f110' visibility='default' filepath='include/net/cfg80211.h' line='4659' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='flags' type-id='19c2251e' visibility='default' filepath='include/net/cfg80211.h' line='4660' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='doit' type-id='a9032da3' visibility='default' filepath='include/net/cfg80211.h' line='4661' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='dumpit' type-id='dcf81beb' visibility='default' filepath='include/net/cfg80211.h' line='4663' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='policy' type-id='109cdb66' visibility='default' filepath='include/net/cfg80211.h' line='4666' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='maxattr' type-id='f0981eeb' visibility='default' filepath='include/net/cfg80211.h' line='4667' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='android_kabi_reserved1' type-id='91ce1af9' visibility='default' filepath='include/net/cfg80211.h' line='4669' column='1'/>
         </data-member>
       </class-decl>
       <function-type size-in-bits='64' id='fc224242'>
@@ -113746,6 +115212,7 @@
         <parameter type-id='11e02f83'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <pointer-type-def type-id='46f53066' size-in-bits='64' id='fffb07a4'/>
       <qualified-type-def type-id='55efd1a3' const='yes' id='fffdaf52'/>
       <function-decl name='PDE_DATA' mangled-name='PDE_DATA' filepath='include/linux/proc_fs.h' line='112' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='PDE_DATA'>
         <parameter type-id='c5a4eb7f'/>
@@ -134832,6 +136299,11 @@
       <function-decl name='pci_disable_device' mangled-name='pci_disable_device' filepath='drivers/pci/pci.c' line='2145' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_disable_device'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='2145' column='1'/>
         <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='pci_disable_link_state' mangled-name='pci_disable_link_state' filepath='drivers/pci/pcie/aspm.c' line='1137' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_disable_link_state'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pcie/aspm.c' line='1137' column='1'/>
+        <parameter type-id='95e97e5e' name='state' filepath='drivers/pci/pcie/aspm.c' line='1137' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='pci_disable_msi' mangled-name='pci_disable_msi' filepath='include/linux/pci.h' line='1486' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_disable_msi'>
         <parameter type-id='85196e3f'/>
