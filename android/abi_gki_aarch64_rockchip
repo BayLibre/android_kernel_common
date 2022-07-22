@@ -1599,6 +1599,8 @@
   cpufreq_unregister_notifier
   dev_pm_opp_put_prop_name
   dev_pm_opp_set_supported_hw
+  freq_qos_remove_request
+  freq_qos_update_request
 
 # required by rockchip-iommu.ko
   bus_set_iommu
@@ -1650,6 +1652,7 @@
   devfreq_update_interval
   _dev_notice
   dev_pm_opp_add
+  dev_pm_opp_unregister_set_opp_helper
   input_close_device
   input_open_device
   input_register_handle
@@ -1667,6 +1670,7 @@
   dev_pm_opp_put_opp_table
   dev_pm_opp_set_prop_name
   of_find_node_opts_by_path
+  regulator_get_linear_step
   regulator_get_optional
   regulator_put
 
