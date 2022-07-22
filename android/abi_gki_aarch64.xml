@@ -4403,6 +4403,7 @@
       <elf-symbol name='regulator_set_voltage_sel_regmap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x50ba0d14'/>
       <elf-symbol name='regulator_set_voltage_time' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd508d68a'/>
       <elf-symbol name='regulator_set_voltage_time_sel' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x55f01453'/>
+      <elf-symbol name='regulator_suspend_enable' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xff5c4873'/>
       <elf-symbol name='regulator_sync_voltage' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1a300b2e'/>
       <elf-symbol name='regulator_unregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xccc2b873'/>
       <elf-symbol name='regulator_unregister_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8c4fb059'/>
@@ -138890,6 +138891,11 @@
         <parameter type-id='43c38462' name='rdev' filepath='drivers/regulator/core.c' line='4091' column='1'/>
         <parameter type-id='f0981eeb' name='old_selector' filepath='drivers/regulator/core.c' line='4092' column='1'/>
         <parameter type-id='f0981eeb' name='new_selector' filepath='drivers/regulator/core.c' line='4093' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='regulator_suspend_enable' mangled-name='regulator_suspend_enable' filepath='drivers/regulator/core.c' line='3963' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='regulator_suspend_enable'>
+        <parameter type-id='43c38462' name='rdev' filepath='drivers/regulator/core.c' line='3963' column='1'/>
+        <parameter type-id='e884daa5' name='state' filepath='drivers/regulator/core.c' line='3964' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='regulator_sync_voltage' mangled-name='regulator_sync_voltage' filepath='drivers/regulator/core.c' line='4120' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='regulator_sync_voltage'>
