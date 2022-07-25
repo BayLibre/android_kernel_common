@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3deea6a6_72971afe",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-25T08:04:53Z",
+      "side": 1,
+      "message": "OK. Will add the param chan-\u003estate as shown below\ntrace_trusty_ipc_connect(chan, chan-\u003estate, name)\ntrace_trusty_ipc_connect_end(chan, chan-\u003estate, err)\n\nFor CASE: TIPC_DISCONNECTED, when the execution gets to the function trace_trusty_ipc_connect_end() the trace always prints the state of connection, in this case it will be TIPC_CONNECTING which matches with actual case, irrespective of new threads from vds_queue_txbuf.",
+      "parentUuid": "f2ae09a2_320ec36d",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b6b44c3_c827cdbc",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
@@ -65,6 +83,24 @@
       "writtenOn": "2022-03-15T06:37:36Z",
       "side": 1,
       "message": "this should be a very quick operation. I\u0027m not sure having two trace points here is very valuable",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d7a63e_0e811099",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1616,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-25T08:04:53Z",
+      "side": 1,
+      "message": "The end trace point gives us the value of \u0027mask\u0027 which might be useful.",
+      "parentUuid": "62e93e99_26ebde39",
       "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

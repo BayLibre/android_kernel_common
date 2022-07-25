@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "546e8e7c_6d6cbc71",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-25T08:04:53Z",
+      "side": 1,
+      "message": "Ok. Will include the argument \u0027lend\u0027 as below\ntrace_trusty_share_memory(len, nents, lend);\ntrace_trusty_share_memory_done(len, nents, lend, ffa_handle);",
+      "parentUuid": "2af6278b_d6392169",
+      "revId": "a8503af4033a0d78e968f67693bb818d5852eed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5519dd7_ca7e47fe",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-14T20:58:04Z",
       "side": 1,
       "message": "It might be useful to have a trace point here as well.",
+      "revId": "a8503af4033a0d78e968f67693bb818d5852eed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be23d5ef_53d4d04e",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-25T08:04:53Z",
+      "side": 1,
+      "message": "Ok. Will add the below trace function \ntrace_trusty_enqueue_nop(s-\u003eapi_version, s-\u003etrusty_panicked)",
+      "parentUuid": "f5519dd7_ca7e47fe",
       "revId": "a8503af4033a0d78e968f67693bb818d5852eed9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
