@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20c20f6d_95968576",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2022-07-25T18:04:58Z",
+      "side": 1,
+      "message": "I like this approach; it\u0027s very small and localized, easy to maintain, and clear in purpose.\n\nOne issue is that there would be no way for OEMs to _disable_ it if they don\u0027t want it on.  I think this would benefit most OEMs who care about battery life diagnosability, but we probably shouldn\u0027t add compulsory logging enabling no matter how useful we think it is.\n\nAnother issue is that this doesn\u0027t get us any closer to capturing (one of) the un-freezing task\u0027s name(s) in the wakeup reason.\n\nBut this CL gives me an idea, just building upon what you have already done here, that will:\n1) leave this logging defaulted off, and allow OEMs to enable it as desired\n2) provide a solution for capturing the name of a/the unfreezing task in the wakeup reason\n3) use a new vendor hook rather than making a non-vendor hook change\n\nSo let me know what you think of this idea:\n\n1) Introduce a new vendor hook - let\u0027s call the trace for it `trace_android_vh_try_to_free_todo_logging()` - that simply returns true or false, defaulting to false.  \n\n2) Rather than introducing a new `pm_freeze_debug_messages_on()` function, change the existing line to look like this:\n`\t\tif (pm_debug_messages_on || trace_android_vh_try_to_freeze_todo_logging()) {`\n\n3) For Pixel devices, we would implement that vendor hook to always return true, and other OEMs would still get the existing default behavior unless they elect to implement that hook.\n\n4) The existing `trace_android_vh_try_to_freeze_todo_unfrozen(p);` trace point looks like our opportunity for capturing at least one un-freezing task name in our wakeup reason, although this would only solve it for Pixel, not other OEMs (who may not want it anyway).  If we implement this hook for Pixels such that it calls log_suspend_abort_reason() with a string including the task name (e.g. \"At least one task failed to freeze: \u003ctaskname\u003e\"), then by virtue of this being the first logged abort reason, this string would be captured _instead_ of the generic \"One or more tasks failed to freeze\" message that is generated a bit later in `suspend_prepare()`.",
+      "revId": "200ee4a7b9ea4c8bfb47f28701db740a2413c0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
