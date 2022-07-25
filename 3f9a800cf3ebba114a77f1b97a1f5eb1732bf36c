@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64110320_deb9d3ab",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-25T15:56:28Z",
+      "side": 1,
+      "message": "Ok. Need not pass chan-\u003estate explicitly. Will derive from \u0027chan\u0027 in the macro.\nAnother place for tracepoint for connection established can be in the function\nstatic int dn_wait_for_reply(...)\n{\n       .....\n      if(dn-\u003estate \u003d\u003d TIPC_CONNECTED) {\n             trace_trusty_ipc_connect_end(...)\n             ret\u003d0;\n      }\n}",
+      "parentUuid": "ad54b3c8_62cfd4f2",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b6b44c3_c827cdbc",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
