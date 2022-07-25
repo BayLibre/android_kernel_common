@@ -97,6 +97,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfc12a57_474278ac",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-25T16:52:23Z",
+      "side": 1,
+      "message": "I meant that we should probably keep only one of the two tracepoints.\nrename this one to `trace_trusty_share_memory` and remove the former one.",
+      "parentUuid": "05acdc79_91236a7a",
+      "range": {
+        "startLine": 410,
+        "startChar": 0,
+        "endLine": 410,
+        "endChar": 57
+      },
+      "revId": "a8503af4033a0d78e968f67693bb818d5852eed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5af09b_31792a2d",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-25T16:52:23Z",
+      "side": 1,
+      "message": "also add `trace_trusty_share_memory(len, nents, len, -1)` to report the error here.",
+      "revId": "a8503af4033a0d78e968f67693bb818d5852eed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5519dd7_ca7e47fe",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 4
