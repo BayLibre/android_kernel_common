@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6db7762_c99c1ae7",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-25T08:26:19Z",
+      "side": 1,
+      "message": "I don\u0027t think we need two tracepoint here, I like having the ffa_handle though, so maybe just one tracepoint where we have either the error code or the ffa_handle.",
+      "parentUuid": "546e8e7c_6d6cbc71",
+      "revId": "a8503af4033a0d78e968f67693bb818d5852eed9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5519dd7_ca7e47fe",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 4

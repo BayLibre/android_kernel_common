@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad54b3c8_62cfd4f2",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-25T08:26:19Z",
+      "side": 1,
+      "message": "since we pass chan to the macro, no need to also pass chan-\u003estate.\nalso I think Arve wanted to find another place for the tracepoint where we know that the connection has been established.",
+      "parentUuid": "3deea6a6_72971afe",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b6b44c3_c827cdbc",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "The end trace point gives us the value of \u0027mask\u0027 which might be useful.",
       "parentUuid": "62e93e99_26ebde39",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e24c761b_babc9f44",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1616,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-25T08:26:19Z",
+      "side": 1,
+      "message": "I feel given that this is a very fast operation, Arve meant to convey that we might just keep one of the two endpoints (which will also impact the way we handle the endpoint in perfetto).",
+      "parentUuid": "60d7a63e_0e811099",
       "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
