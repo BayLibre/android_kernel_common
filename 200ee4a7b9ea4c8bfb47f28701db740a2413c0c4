@@ -34,6 +34,24 @@
       "parentUuid": "20c20f6d_95968576",
       "revId": "200ee4a7b9ea4c8bfb47f28701db740a2413c0c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f491638_41781a0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2022-07-25T21:01:17Z",
+      "side": 1,
+      "message": "And another small correction.  It looks like perhaps vendor hooks always return null (I haven\u0027t found any documentation clarifying if that\u0027s mandatory or just common), so you might have to declare a local boolean initialized to false, then pass its address into the VH implementation where it can be set to true if desired.",
+      "parentUuid": "e8efaab3_c71b37e4",
+      "revId": "200ee4a7b9ea4c8bfb47f28701db740a2413c0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
