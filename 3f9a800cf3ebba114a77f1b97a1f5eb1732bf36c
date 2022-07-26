@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b03e731_d0f88e14",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-26T10:05:42Z",
+      "side": 1,
+      "message": "Ok. Will remove both the tracepoints present inside if..else statement.\nWill add tracepoint at line:1451 trace_trusty_ipc_write_end(dn-\u003echan,-1,NULL,NULL) to capture the error condition.\n\nTracepoint to capture \u0027buffer tx complete\u0027 is allready available at function \nstatic void _txvq_cb(struct virtqueue *txvq)\n{\n       ....\n\twhile ((mb \u003d virtqueue_get_buf(txvq, \u0026len)) !\u003d NULL) {\n\t\tif ((int)len \u003c 0)\n\t\t\thandle_dropped_mb(vds, mb);\n\t\tneed_wakeup |\u003d _put_txbuf_locked(vds, mb);\n\t\t/* buffer sent to trusty */\n\t\ttrace_trusty_ipc_tx(mb, vds-\u003efree_msg_buf_cnt);\n\t}\n\t....\n}\n\nPlease provide your comments / suggestions.",
+      "parentUuid": "6b6b44c3_c827cdbc",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6efcfdae_cd8a51c3",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
@@ -120,6 +138,24 @@
       "writtenOn": "2022-03-15T06:37:36Z",
       "side": 1,
       "message": "see comments above.",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f85bedf_11c5743f",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-26T10:05:42Z",
+      "side": 1,
+      "message": "Ok. Will remove this tracepoint.\nTracepoint to capture \u0027buffer tx complete\u0027 is allready available at function \nstatic void _txvq_cb(struct virtqueue *txvq)",
+      "parentUuid": "6efcfdae_cd8a51c3",
       "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -173,6 +209,24 @@
       "side": 1,
       "message": "I feel given that this is a very fast operation, Arve meant to convey that we might just keep one of the two endpoints (which will also impact the way we handle the endpoint in perfetto).",
       "parentUuid": "60d7a63e_0e811099",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa8d141_f32ed8f5",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1616,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-07-26T10:05:42Z",
+      "side": 1,
+      "message": "Ok. Will retain the tracepoint at end of the function \u0026 remove the one present at start of the function.",
+      "parentUuid": "e24c761b_babc9f44",
       "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
