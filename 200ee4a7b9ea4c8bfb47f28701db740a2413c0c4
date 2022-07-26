@@ -52,6 +52,24 @@
       "parentUuid": "e8efaab3_c71b37e4",
       "revId": "200ee4a7b9ea4c8bfb47f28701db740a2413c0c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4838a1e3_5d47934d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1859295
+      },
+      "writtenOn": "2022-07-26T05:22:17Z",
+      "side": 1,
+      "message": "Thank you for very clear instructions.\n\nI will declare a new vendor hook for logging with one input parameter of boolean address in \"include/trace/hooks/power.h\". And I\u0027ll create a local boolean and change the existing line to look like this:\n```\nbool todo_logging_on \u003d false;\n...\ntrace_android_vh_try_to_freeze_todo_logging(\u0026todo_logging_on);\nif (pm_debug_messages_on || todo_logging_on) {\n```\n\nBut I have no idea how to implement the vendor hook in Pixel devices. I didn\u0027t find any implementation lines from kernel and \"cs/\" by searching `try_to_freeze_todo_unfrozen`.",
+      "parentUuid": "3f491638_41781a0b",
+      "revId": "200ee4a7b9ea4c8bfb47f28701db740a2413c0c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
