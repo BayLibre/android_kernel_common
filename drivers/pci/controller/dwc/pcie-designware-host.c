@@ -8,6 +8,9 @@
  * Author: Jingoo Han <jg1.han@samsung.com>
  */
 
+#include <linux/cma.h>
+#include <linux/dma-direct.h>
+#include <linux/dma-map-ops.h>
 #include <linux/irqchip/chained_irq.h>
 #include <linux/irqdomain.h>
 #include <linux/msi.h>
@@ -15,6 +18,7 @@
 #include <linux/of_pci.h>
 #include <linux/pci_regs.h>
 #include <linux/platform_device.h>
+#include <linux/swiotlb.h>
 
 #include "../../pci.h"
 #include "pcie-designware.h"
@@ -270,7 +274,7 @@ static void dw_pcie_free_msi(struct pcie_port *pp)
 
 		dma_unmap_page(dev, pp->msi_data, PAGE_SIZE, DMA_FROM_DEVICE);
 		if (pp->msi_page)
-			__free_page(pp->msi_page);
+			cma_release(dev_get_cma_area(dev), pp->msi_page, 1);
 	}
 }
 
@@ -297,6 +301,7 @@ int dw_pcie_host_init(struct pcie_port *pp)
 	struct pci_host_bridge *bridge;
 	struct resource *cfg_res;
 	int ret;
+	phys_addr_t msi_page_phys;
 
 	raw_spin_lock_init(&pci->pp.lock);
 
@@ -378,16 +383,22 @@ int dw_pcie_host_init(struct pcie_port *pp)
 			if (ret)
 				dev_warn(pci->dev, "Failed to set DMA mask to 32-bit. Devices with only 32-bit MSI support may not work properly\n");
 
-			pp->msi_page = alloc_page(GFP_DMA32);
+			pp->msi_page = cma_alloc(dev_get_cma_area(pci->dev), 1, 0, false);
 			pp->msi_data = dma_map_page(pci->dev, pp->msi_page, 0, PAGE_SIZE,
 						    DMA_FROM_DEVICE);
 			if (dma_mapping_error(pci->dev, pp->msi_data)) {
 				dev_err(pci->dev, "Failed to map MSI data\n");
-				__free_page(pp->msi_page);
+				cma_release(dev_get_cma_area(pci->dev), pp->msi_page, 1);
 				pp->msi_page = NULL;
 				pp->msi_data = 0;
 				goto err_free_msi;
 			}
+
+			msi_page_phys = page_to_phys(pp->msi_page);
+			dev_info(dev, "IJM: MSI page physical address: %pa MSI page DMA addr: %pad swiotlb buffer (bounced)? %s\n",
+				 &msi_page_phys, &pp->msi_data,
+				 is_swiotlb_buffer(pci->dev, dma_to_phys(pci->dev, pp->msi_data)) ?
+				 "yes" : "no");
 		}
 	}
 
