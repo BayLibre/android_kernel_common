@@ -2160,6 +2160,7 @@
       <elf-symbol name='input_scancode_to_scalar' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2c256e1f'/>
       <elf-symbol name='input_set_abs_params' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6e3c49fc'/>
       <elf-symbol name='input_set_capability' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4c9b4f5e'/>
+      <elf-symbol name='input_set_timestamp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd1ee3aa9'/>
       <elf-symbol name='input_unregister_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x111434e5'/>
       <elf-symbol name='input_unregister_handle' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x83aeb203'/>
       <elf-symbol name='input_unregister_handler' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x64bf8e28'/>
@@ -55506,7 +55507,19 @@
       </function-decl>
     </abi-instr>
     <abi-instr address-size='64' path='drivers/char/random.c' language='LANG_C89'>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='get_random_u32' mangled-name='get_random_u32' filepath='drivers/char/random.c' line='550' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='get_random_u32'>
+=======
+      <function-decl name='get_random_bytes' mangled-name='get_random_bytes' filepath='drivers/char/random.c' line='1564' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='get_random_bytes'>
+        <parameter type-id='eaa32e2f' name='buf' filepath='drivers/char/random.c' line='1564' column='1'/>
+        <parameter type-id='95e97e5e' name='nbytes' filepath='drivers/char/random.c' line='1564' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='get_random_u64' mangled-name='get_random_u64' filepath='drivers/char/random.c' line='2184' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='get_random_u64'>
+        <return type-id='91ce1af9'/>
+      </function-decl>
+      <function-decl name='get_random_u32' mangled-name='get_random_u32' filepath='drivers/char/random.c' line='2208' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='get_random_u32'>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='19c2251e'/>
       </function-decl>
       <function-decl name='get_random_u64' mangled-name='get_random_u64' filepath='drivers/char/random.c' line='549' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='get_random_u64'>
@@ -81067,12 +81080,36 @@
         <parameter type-id='74b427eb' name='dev' filepath='drivers/input/input.c' line='2281' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='input_set_capability' mangled-name='input_set_capability' filepath='drivers/input/input.c' line='1990' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_set_capability'>
         <parameter type-id='74b427eb' name='dev' filepath='drivers/input/input.c' line='1990' column='1'/>
         <parameter type-id='f0981eeb' name='type' filepath='drivers/input/input.c' line='1990' column='1'/>
         <parameter type-id='f0981eeb' name='code' filepath='drivers/input/input.c' line='1990' column='1'/>
+=======
+      <function-decl name='input_set_timestamp' mangled-name='input_set_timestamp' filepath='drivers/input/input.c' line='1955' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_set_timestamp'>
+        <parameter type-id='74b427eb' name='dev' filepath='drivers/input/input.c' line='1955' column='1'/>
+        <parameter type-id='fbc017ef' name='timestamp' filepath='drivers/input/input.c' line='1955' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
+      <function-decl name='input_set_abs_params' mangled-name='input_set_abs_params' filepath='drivers/input/input.c' line='515' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_set_abs_params'>
+        <parameter type-id='74b427eb' name='dev' filepath='drivers/input/input.c' line='515' column='1'/>
+        <parameter type-id='f0981eeb' name='axis' filepath='drivers/input/input.c' line='515' column='1'/>
+        <parameter type-id='95e97e5e' name='min' filepath='drivers/input/input.c' line='516' column='1'/>
+        <parameter type-id='95e97e5e' name='max' filepath='drivers/input/input.c' line='516' column='1'/>
+        <parameter type-id='95e97e5e' name='fuzz' filepath='drivers/input/input.c' line='516' column='1'/>
+        <parameter type-id='95e97e5e' name='flat' filepath='drivers/input/input.c' line='516' column='1'/>
+=======
+      <function-decl name='input_set_capability' mangled-name='input_set_capability' filepath='drivers/input/input.c' line='1990' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_set_capability'>
+        <parameter type-id='74b427eb' name='dev' filepath='drivers/input/input.c' line='1990' column='1'/>
+        <parameter type-id='f0981eeb' name='type' filepath='drivers/input/input.c' line='1990' column='1'/>
+        <parameter type-id='f0981eeb' name='code' filepath='drivers/input/input.c' line='1990' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
+        <return type-id='48b5725f'/>
+      </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
+=======
       <function-decl name='input_set_abs_params' mangled-name='input_set_abs_params' filepath='drivers/input/input.c' line='515' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_set_abs_params'>
         <parameter type-id='74b427eb' name='dev' filepath='drivers/input/input.c' line='515' column='1'/>
         <parameter type-id='f0981eeb' name='axis' filepath='drivers/input/input.c' line='515' column='1'/>
@@ -81082,6 +81119,7 @@
         <parameter type-id='95e97e5e' name='flat' filepath='drivers/input/input.c' line='516' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
       <function-decl name='input_scancode_to_scalar' mangled-name='input_scancode_to_scalar' filepath='drivers/input/input.c' line='774' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='input_scancode_to_scalar'>
         <parameter type-id='d1a6cf39' name='ke' filepath='drivers/input/input.c' line='774' column='1'/>
         <parameter type-id='807869d3' name='scancode' filepath='drivers/input/input.c' line='775' column='1'/>
@@ -104278,14 +104316,26 @@
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='1931' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_release_region' mangled-name='pci_release_region' filepath='drivers/pci/pci.c' line='3695' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_release_region'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3695' column='1'/>
         <parameter type-id='95e97e5e' name='bar' filepath='drivers/pci/pci.c' line='3695' column='1'/>
+=======
+      <function-decl name='pci_release_region' mangled-name='pci_release_region' filepath='drivers/pci/pci.c' line='3693' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_release_region'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3693' column='1'/>
+        <parameter type-id='95e97e5e' name='bar' filepath='drivers/pci/pci.c' line='3693' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_release_selected_regions' mangled-name='pci_release_selected_regions' filepath='drivers/pci/pci.c' line='3792' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_release_selected_regions'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3792' column='1'/>
         <parameter type-id='95e97e5e' name='bars' filepath='drivers/pci/pci.c' line='3792' column='1'/>
+=======
+      <function-decl name='pci_release_selected_regions' mangled-name='pci_release_selected_regions' filepath='drivers/pci/pci.c' line='3790' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_release_selected_regions'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3790' column='1'/>
+        <parameter type-id='95e97e5e' name='bars' filepath='drivers/pci/pci.c' line='3790' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='pci_find_ext_capability' mangled-name='pci_find_ext_capability' filepath='drivers/pci/pci.c' line='546' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_find_ext_capability'>
@@ -104302,13 +104352,24 @@
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='1811' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pcie_set_mps' mangled-name='pcie_set_mps' filepath='drivers/pci/pci.c' line='5729' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pcie_set_mps'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5729' column='1'/>
         <parameter type-id='95e97e5e' name='mps' filepath='drivers/pci/pci.c' line='5729' column='1'/>
+=======
+      <function-decl name='pcie_set_mps' mangled-name='pcie_set_mps' filepath='drivers/pci/pci.c' line='5727' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pcie_set_mps'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5727' column='1'/>
+        <parameter type-id='95e97e5e' name='mps' filepath='drivers/pci/pci.c' line='5727' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pcie_get_mps' mangled-name='pcie_get_mps' filepath='drivers/pci/pci.c' line='5711' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pcie_get_mps'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5711' column='1'/>
+=======
+      <function-decl name='pcie_get_mps' mangled-name='pcie_get_mps' filepath='drivers/pci/pci.c' line='5709' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pcie_get_mps'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5709' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='pci_store_saved_state' mangled-name='pci_store_saved_state' filepath='drivers/pci/pci.c' line='1502' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_store_saved_state'>
@@ -104320,17 +104381,33 @@
         <parameter type-id='49c32219' name='state' filepath='drivers/pci/pci.c' line='1098' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_set_mwi' mangled-name='pci_set_mwi' filepath='drivers/pci/pci.c' line='4259' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_set_mwi'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4259' column='1'/>
+=======
+      <function-decl name='pci_set_mwi' mangled-name='pci_set_mwi' filepath='drivers/pci/pci.c' line='4257' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_set_mwi'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4257' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_set_master' mangled-name='pci_set_master' filepath='drivers/pci/pci.c' line='4196' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_set_master'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4196' column='1'/>
+=======
+      <function-decl name='pci_set_master' mangled-name='pci_set_master' filepath='drivers/pci/pci.c' line='4194' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_set_master'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4194' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_select_bars' mangled-name='pci_select_bars' filepath='drivers/pci/pci.c' line='5942' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_select_bars'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5942' column='1'/>
         <parameter type-id='7359adad' name='flags' filepath='drivers/pci/pci.c' line='5942' column='1'/>
+=======
+      <function-decl name='pci_select_bars' mangled-name='pci_select_bars' filepath='drivers/pci/pci.c' line='5940' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_select_bars'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5940' column='1'/>
+        <parameter type-id='7359adad' name='flags' filepath='drivers/pci/pci.c' line='5940' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='pci_save_state' mangled-name='pci_save_state' filepath='drivers/pci/pci.c' line='1345' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_save_state'>
@@ -104341,29 +104418,59 @@
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='1456' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_reset_function' mangled-name='pci_reset_function' filepath='drivers/pci/pci.c' line='5097' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_reset_function'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5097' column='1'/>
+=======
+      <function-decl name='pci_reset_function' mangled-name='pci_reset_function' filepath='drivers/pci/pci.c' line='5095' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_reset_function'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='5095' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_request_selected_regions' mangled-name='pci_request_selected_regions' filepath='drivers/pci/pci.c' line='3828' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_request_selected_regions'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3828' column='1'/>
         <parameter type-id='95e97e5e' name='bars' filepath='drivers/pci/pci.c' line='3828' column='1'/>
         <parameter type-id='80f4b756' name='res_name' filepath='drivers/pci/pci.c' line='3829' column='1'/>
+=======
+      <function-decl name='pci_request_selected_regions' mangled-name='pci_request_selected_regions' filepath='drivers/pci/pci.c' line='3826' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_request_selected_regions'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3826' column='1'/>
+        <parameter type-id='95e97e5e' name='bars' filepath='drivers/pci/pci.c' line='3826' column='1'/>
+        <parameter type-id='80f4b756' name='res_name' filepath='drivers/pci/pci.c' line='3827' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_request_regions' mangled-name='pci_request_regions' filepath='drivers/pci/pci.c' line='3872' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_request_regions'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3872' column='1'/>
         <parameter type-id='80f4b756' name='res_name' filepath='drivers/pci/pci.c' line='3872' column='1'/>
+=======
+      <function-decl name='pci_request_regions' mangled-name='pci_request_regions' filepath='drivers/pci/pci.c' line='3870' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_request_regions'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3870' column='1'/>
+        <parameter type-id='80f4b756' name='res_name' filepath='drivers/pci/pci.c' line='3870' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_request_region' mangled-name='pci_request_region' filepath='drivers/pci/pci.c' line='3778' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_request_region'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3778' column='1'/>
         <parameter type-id='95e97e5e' name='bar' filepath='drivers/pci/pci.c' line='3778' column='1'/>
         <parameter type-id='80f4b756' name='res_name' filepath='drivers/pci/pci.c' line='3778' column='1'/>
+=======
+      <function-decl name='pci_request_region' mangled-name='pci_request_region' filepath='drivers/pci/pci.c' line='3776' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_request_region'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3776' column='1'/>
+        <parameter type-id='95e97e5e' name='bar' filepath='drivers/pci/pci.c' line='3776' column='1'/>
+        <parameter type-id='80f4b756' name='res_name' filepath='drivers/pci/pci.c' line='3776' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_release_regions' mangled-name='pci_release_regions' filepath='drivers/pci/pci.c' line='3853' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_release_regions'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3853' column='1'/>
+=======
+      <function-decl name='pci_release_regions' mangled-name='pci_release_regions' filepath='drivers/pci/pci.c' line='3851' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_release_regions'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='3851' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='pci_load_saved_state' mangled-name='pci_load_saved_state' filepath='drivers/pci/pci.c' line='1541' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_load_saved_state'>
@@ -104386,9 +104493,15 @@
         <parameter type-id='95e97e5e' name='bar' filepath='drivers/pci/pci.c' line='169' column='1'/>
         <return type-id='eaa32e2f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_intx' mangled-name='pci_intx' filepath='drivers/pci/pci.c' line='4349' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_intx'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='4349' column='1'/>
         <parameter type-id='95e97e5e' name='enable' filepath='drivers/pci/pci.c' line='4349' column='1'/>
+=======
+      <function-decl name='pci_intx' mangled-name='pci_intx' filepath='drivers/pci/pci.c' line='4347' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_intx'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='4347' column='1'/>
+        <parameter type-id='95e97e5e' name='enable' filepath='drivers/pci/pci.c' line='4347' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='pci_find_pcie_root_port' mangled-name='pci_find_pcie_root_port' filepath='drivers/pci/pci.c' line='696' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_find_pcie_root_port'>
@@ -104415,25 +104528,51 @@
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='1738' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_device_is_present' mangled-name='pci_device_is_present' filepath='drivers/pci/pci.c' line='6093' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_device_is_present'>
         <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='6093' column='1'/>
+=======
+      <function-decl name='pci_device_is_present' mangled-name='pci_device_is_present' filepath='drivers/pci/pci.c' line='6091' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_device_is_present'>
+        <parameter type-id='85196e3f' name='pdev' filepath='drivers/pci/pci.c' line='6091' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='b50a4934'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_d3cold_disable' mangled-name='pci_d3cold_disable' filepath='drivers/pci/pci.c' line='2791' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_d3cold_disable'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='2791' column='1'/>
+=======
+      <function-decl name='pci_d3cold_disable' mangled-name='pci_d3cold_disable' filepath='drivers/pci/pci.c' line='2789' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_d3cold_disable'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='2789' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_common_swizzle' mangled-name='pci_common_swizzle' filepath='drivers/pci/pci.c' line='3672' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_common_swizzle'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='3672' column='1'/>
         <parameter type-id='8bff8096' name='pinp' filepath='drivers/pci/pci.c' line='3672' column='1'/>
+=======
+      <function-decl name='pci_common_swizzle' mangled-name='pci_common_swizzle' filepath='drivers/pci/pci.c' line='3670' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_common_swizzle'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='3670' column='1'/>
+        <parameter type-id='8bff8096' name='pinp' filepath='drivers/pci/pci.c' line='3670' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='f9b06939'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_clear_mwi' mangled-name='pci_clear_mwi' filepath='drivers/pci/pci.c' line='4328' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_clear_mwi'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4328' column='1'/>
+=======
+      <function-decl name='pci_clear_mwi' mangled-name='pci_clear_mwi' filepath='drivers/pci/pci.c' line='4326' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_clear_mwi'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4326' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_clear_master' mangled-name='pci_clear_master' filepath='drivers/pci/pci.c' line='4207' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_clear_master'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4207' column='1'/>
+=======
+      <function-decl name='pci_clear_master' mangled-name='pci_clear_master' filepath='drivers/pci/pci.c' line='4205' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_clear_master'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4205' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='pci_choose_state' mangled-name='pci_choose_state' filepath='drivers/pci/pci.c' line='1164' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_choose_state'>
@@ -104441,12 +104580,22 @@
         <parameter type-id='08496218' name='state' filepath='drivers/pci/pci.c' line='1164' column='1'/>
         <return type-id='49c32219'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_check_and_unmask_intx' mangled-name='pci_check_and_unmask_intx' filepath='drivers/pci/pci.c' line='4440' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_check_and_unmask_intx'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4440' column='1'/>
+=======
+      <function-decl name='pci_check_and_unmask_intx' mangled-name='pci_check_and_unmask_intx' filepath='drivers/pci/pci.c' line='4438' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_check_and_unmask_intx'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4438' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='b50a4934'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='pci_check_and_mask_intx' mangled-name='pci_check_and_mask_intx' filepath='drivers/pci/pci.c' line='4426' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_check_and_mask_intx'>
         <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4426' column='1'/>
+=======
+      <function-decl name='pci_check_and_mask_intx' mangled-name='pci_check_and_mask_intx' filepath='drivers/pci/pci.c' line='4424' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pci_check_and_mask_intx'>
+        <parameter type-id='85196e3f' name='dev' filepath='drivers/pci/pci.c' line='4424' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='b50a4934'/>
       </function-decl>
       <array-type-def dimensions='1' type-id='19c2251e' size-in-bits='infinite' id='c165e8b9'>
@@ -112243,7 +112392,7 @@
       <pointer-type-def type-id='b1c57c88' size-in-bits='64' id='a06238fa'/>
       <pointer-type-def type-id='d59c0ecf' size-in-bits='64' id='ed89b003'/>
       <pointer-type-def type-id='b81c6e45' size-in-bits='64' id='2d76c969'/>
-      <union-decl name='__anonymous_union__5' size-in-bits='320' is-anonymous='yes' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='506' column='1' id='0b42cb04'>
+      <union-decl name='__anonymous_union__1' size-in-bits='320' is-anonymous='yes' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='506' column='1' id='0b42cb04'>
         <data-member access='public'>
           <var-decl name='sr' type-id='18119fa5' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='507' column='1'/>
         </data-member>
@@ -112251,7 +112400,7 @@
           <var-decl name='qr' type-id='5fc79e81' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='508' column='1'/>
         </data-member>
       </union-decl>
-      <union-decl name='__anonymous_union__4' size-in-bits='160' is-anonymous='yes' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='74' column='1' id='d67af9b5'>
+      <union-decl name='__anonymous_union__' size-in-bits='160' is-anonymous='yes' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='74' column='1' id='d67af9b5'>
         <data-member access='public'>
           <var-decl name='sc' type-id='498490b9' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='75' column='1'/>
         </data-member>
@@ -112894,7 +113043,7 @@
           <var-decl name='' type-id='d67af9b5' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='74' column='1'/>
         </data-member>
       </class-decl>
-      <union-decl name='__anonymous_union__4' size-in-bits='160' is-anonymous='yes' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='74' column='1' id='d67af9b5'>
+      <union-decl name='__anonymous_union__' size-in-bits='160' is-anonymous='yes' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='74' column='1' id='d67af9b5'>
         <data-member access='public'>
           <var-decl name='sc' type-id='498490b9' visibility='default' filepath='include/uapi/scsi/scsi_bsg_ufs.h' line='75' column='1'/>
         </data-member>
@@ -112950,7 +113099,7 @@
           <var-decl name='' type-id='0b42cb04' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='506' column='1'/>
         </data-member>
       </class-decl>
-      <union-decl name='__anonymous_union__5' size-in-bits='320' is-anonymous='yes' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='506' column='1' id='0b42cb04'>
+      <union-decl name='__anonymous_union__1' size-in-bits='320' is-anonymous='yes' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='506' column='1' id='0b42cb04'>
         <data-member access='public'>
           <var-decl name='sr' type-id='18119fa5' visibility='default' filepath='drivers/scsi/ufs/ufs.h' line='507' column='1'/>
         </data-member>
@@ -153637,12 +153786,22 @@
         <parameter type-id='fc932690' name='s' filepath='kernel/trace/trace.c' line='2347' column='1'/>
         <return type-id='b1a0a119'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='trace_array_destroy' mangled-name='trace_array_destroy' filepath='kernel/trace/trace.c' line='8527' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='trace_array_destroy'>
         <parameter type-id='898c1076' name='this_tr' filepath='kernel/trace/trace.c' line='8527' column='1'/>
+=======
+      <function-decl name='trace_array_destroy' mangled-name='trace_array_destroy' filepath='kernel/trace/trace.c' line='8520' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='trace_array_destroy'>
+        <parameter type-id='898c1076' name='this_tr' filepath='kernel/trace/trace.c' line='8520' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (d38918 Revert "cgroup: Use separate src/dst nodes when preloading c)
       <function-decl name='trace_array_create' mangled-name='trace_array_create' filepath='kernel/trace/trace.c' line='8405' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='trace_array_create'>
         <parameter type-id='80f4b756' name='name' filepath='kernel/trace/trace.c' line='8405' column='1'/>
+=======
+      <function-decl name='trace_array_create' mangled-name='trace_array_create' filepath='kernel/trace/trace.c' line='8398' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='trace_array_create'>
+        <parameter type-id='80f4b756' name='name' filepath='kernel/trace/trace.c' line='8398' column='1'/>
+>>>>>>> BRANCH (3970bc UPSTREAM: Revert "net: af_key: add check for pfkey_broadcast)
         <return type-id='898c1076'/>
       </function-decl>
       <function-decl name='__trace_puts' mangled-name='__trace_puts' filepath='kernel/trace/trace.c' line='838' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__trace_puts'>
@@ -159185,11 +159344,11 @@
         <parameter type-id='02f11ed4' name='page' filepath='mm/memory.c' line='1540' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='unmap_mapping_range' mangled-name='unmap_mapping_range' filepath='mm/memory.c' line='2891' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unmap_mapping_range'>
-        <parameter type-id='f57039f0' name='mapping' filepath='mm/memory.c' line='2891' column='1'/>
-        <parameter type-id='bf352dfe' name='holebegin' filepath='mm/memory.c' line='2892' column='1'/>
-        <parameter type-id='bf352dfe' name='holelen' filepath='mm/memory.c' line='2892' column='1'/>
-        <parameter type-id='95e97e5e' name='even_cows' filepath='mm/memory.c' line='2892' column='1'/>
+      <function-decl name='unmap_mapping_range' mangled-name='unmap_mapping_range' filepath='mm/memory.c' line='2867' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='unmap_mapping_range'>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/memory.c' line='2867' column='1'/>
+        <parameter type-id='bf352dfe' name='holebegin' filepath='mm/memory.c' line='2868' column='1'/>
+        <parameter type-id='bf352dfe' name='holelen' filepath='mm/memory.c' line='2868' column='1'/>
+        <parameter type-id='95e97e5e' name='even_cows' filepath='mm/memory.c' line='2868' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
     </abi-instr>
