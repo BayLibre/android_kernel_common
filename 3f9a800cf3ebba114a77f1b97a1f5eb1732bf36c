@@ -162,6 +162,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ccf1ff5_1e33e397",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-27T12:50:23Z",
+      "side": 1,
+      "message": "I think we should keep the end tracepoint for error cases on line 1593 and rename `trace_trusty_ipc_tx` to `trace_trusty_ipc_write_end`.",
+      "parentUuid": "4f85bedf_11c5743f",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62e93e99_26ebde39",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
@@ -227,6 +245,24 @@
       "side": 1,
       "message": "Ok. Will retain the tracepoint at end of the function \u0026 remove the one present at start of the function.",
       "parentUuid": "e24c761b_babc9f44",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a766ca0_6fa443ab",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1616,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2022-07-27T12:50:23Z",
+      "side": 1,
+      "message": "SG!",
+      "parentUuid": "2aa8d141_f32ed8f5",
       "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
