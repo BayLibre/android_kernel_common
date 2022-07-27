@@ -1,4 +1,24 @@
 /* SPDX-License-Identifier: GPL-2.0 */
+#ifdef PROTECT_TRACE_INCLUDE_PATH
+#undef PROTECT_TRACE_INCLUDE_PATH
+
+#ifdef TRACE_INCLUDE_PATH
+#define STORED_TRACE_INCLUDE_PATH TRACE_INCLUDE_PATH
+#undef TRACE_INCLUDE_PATH
+#endif
+
+#include <trace/hooks/mm.h>
+
+#ifdef STORED_TRACE_INCLUDE_PATH
+# undef TRACE_INCLUDE_PATH
+# define TRACE_INCLUDE_PATH STORED_TRACE_INCLUDE_PATH
+# undef STORED_TRACE_INCLUDE_PATH
+#else
+# undef TRACE_INCLUDE_PATH
+#endif
+
+#else /* PROTECT_TRACE_INCLUDE_PATH */
+
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM mm
 
@@ -230,3 +250,5 @@ DECLARE_HOOK(android_vh_set_shmem_page_flag,
 
 /* This part must be outside protection */
 #include <trace/define_trace.h>
+
+#endif /* PROTECT_TRACE_INCLUDE_PATH */
