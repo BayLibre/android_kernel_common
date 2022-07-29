@@ -50,6 +50,24 @@
       "message": "Also, as a minor nit, should this have the Change-Id: as Ief3d4196ea7220d4897c00a37ab96f456dbf2259 so it\u0027s clear it\u0027s a cherry-pick?",
       "revId": "d5bc54642cc1f9b99c18e73e4402fc45b25d3e3d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a555421_2f336936",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2022-07-29T04:22:09Z",
+      "side": 1,
+      "message": "pm_debug_messages is much too coarse; it enables a large amount of log output during every suspend/resume cycle of which at most 1 line is helpful for investigating this recurring class of battery life issues.  Deploying builds with pm_debug_messages is therefore not viable, as it substantially shortens the temporal span of the log.  The new vendor hook will only emit logs specific to this class of problem, and only when the problem actually manifests.\n\ntl;dr - the new hook is a scalpel alternative to the pm_debug_messages chainsaw.",
+      "parentUuid": "91af0e5a_454fcaf6",
+      "revId": "d5bc54642cc1f9b99c18e73e4402fc45b25d3e3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
