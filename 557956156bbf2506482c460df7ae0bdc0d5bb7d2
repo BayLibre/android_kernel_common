@@ -45,6 +45,30 @@
       },
       "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe4d72d_150846d5",
+        "filename": "drivers/base/firmware_loader/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2022-07-29T21:26:38Z",
+      "side": 1,
+      "message": "Hi Greg, we are just trying to add getter function w/ this change here to be able to read the path.\n\nUpstream supports write and read https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/firmware_loader/main.c#n484\n\nWe extended the path to accept more paths based on some feedback (I don\u0027t have full history) in below changes, but dropped read perms accidentally. \n\nhttps://android-review.googlesource.com/c/kernel/common/+/2094963\nhttps://android-review.googlesource.com/c/kernel/common/+/2096764",
+      "parentUuid": "73bf1546_a8a36f8e",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 55
+      },
+      "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
