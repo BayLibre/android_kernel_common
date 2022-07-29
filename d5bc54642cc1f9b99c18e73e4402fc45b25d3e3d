@@ -104,6 +104,24 @@
       "parentUuid": "c7037f58_3fbea684",
       "revId": "d5bc54642cc1f9b99c18e73e4402fc45b25d3e3d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26132e0_5f1f20fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-07-29T06:12:48Z",
+      "side": 1,
+      "message": "\u003e As for the mechanism, here\u0027s my thought process behind using a vendor hook:\n\u003e 1) There are already two other vendor hooks in the same vicinity that target the same class of problems (but in different ways), and I believe the new hook complements those.\n\nApologies if I\u0027m missing something, but it seems like one could also view it as redundant to trace_android_vh_try_to_freeze_todo() below this, as it looks like the logic in the if (pm_debug_messages_on) conditional, including the trace_android_vh_try_to_freeze_todo_unfrozen() could also be re-implemented within the trace_android_vh_try_to_freeze_todo_unfrozen hook?\n\n\n\u003e 2) One of those existing vendor hooks - `trace_android_vh_try_to_freeze_todo_unfrozen()` - isn\u0027t even called unless `pm_debug_messages` is enabled; you can\u0027t use it unless you enable the \"chainsaw\" log output that I referenced.  A side effect of this new hook is improving the utility of that _existing_ hook by allowing you to use it _without_ turning on `pm_debug_messages`.\n\u003e \n\nYeah, the _freeze_todo_unfrozen() hook seems a bit odd being inaccessible. \n\n\n\u003e I\u0027m not sure `pm_debug_messages` verbosity levels would work, as the log output it generates consists of a few roughly orthogonal categories rather than levels of detail.\n\nI\u0027m not the biggest fan of the approach, but some boot options use bitflags (like drm_debug) to provide similar fine grained control.\n\n\n\u003e As for a boot option, that would leave one of the existing hooks in its current ineffective state.\n\nFor this, my thought is the new boot option would be similar/equivalent to the vendor hook, enabling the single conditional.\n\nRegardless of my concerns here, I really appreciate the time for sharing the extra background context. I might ask that you provide some of the additional rationale in the commit message of the patch, as 5 years down the line this discussion will be hard to find.\n\nThanks again",
+      "parentUuid": "8f499d5b_21878e62",
+      "revId": "d5bc54642cc1f9b99c18e73e4402fc45b25d3e3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
