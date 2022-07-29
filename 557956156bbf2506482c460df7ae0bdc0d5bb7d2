@@ -22,6 +22,29 @@
       },
       "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73bf1546_a8a36f8e",
+        "filename": "drivers/base/firmware_loader/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-07-29T17:23:07Z",
+      "side": 1,
+      "message": "this creates a new user/kernel api that upstream does not have and is not audited by anyone and is not covered by selinux rules.\n\nPlease please please no.  We have gone through extra effort to REMOVE holes like this, don\u0027t add them back into the kernel, especially ones that are NOT upstream.\n\nWho is going to maintain this new api for the next 20+ years in all android devices?  Where is the new userspace code that interacts with it?",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 55
+      },
+      "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
