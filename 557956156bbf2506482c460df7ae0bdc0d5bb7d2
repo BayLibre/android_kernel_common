@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f88d54f4_e23c1604",
+        "filename": "drivers/base/firmware_loader/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2022-07-29T17:03:12Z",
+      "side": 1,
+      "message": "The moduleparam.h header is a bit ambiguous, but it looks like this should not include the \\0, as many other implementations I could find that used snprintf() directly returned its value, which doesn\u0027t include the \\0. So maybe this should be count - 1 since you just deleted the trailing comma?",
+      "range": {
+        "startLine": 532,
+        "startChar": 1,
+        "endLine": 532,
+        "endChar": 14
+      },
+      "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
