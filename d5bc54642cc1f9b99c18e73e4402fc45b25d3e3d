@@ -86,6 +86,24 @@
       "parentUuid": "3a555421_2f336936",
       "revId": "d5bc54642cc1f9b99c18e73e4402fc45b25d3e3d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f499d5b_21878e62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1241955
+      },
+      "writtenOn": "2022-07-29T05:32:17Z",
+      "side": 1,
+      "message": "Over a handful of years working on battery life, one of the lessons I\u0027ve learned is: no matter how useful I may think a particular log message is, somebody else will have a good reason for disabling it.  :-)  So hard-enabling the logging of un-freezing tasks is something I\u0027m hesitant to do, no matter how beneficial and targeted it seems to me.\n\nAs for the mechanism, here\u0027s my thought process behind using a vendor hook:\n1) There are already two other vendor hooks in the same vicinity that target the same class of problems (but in different ways), and I believe the new hook complements those.\n2) One of those existing vendor hooks - `trace_android_vh_try_to_freeze_todo_unfrozen()` - isn\u0027t even called unless `pm_debug_messages` is enabled; you can\u0027t use it unless you enable the \"chainsaw\" log output that I referenced.  A side effect of this new hook is improving the utility of that _existing_ hook by allowing you to use it _without_ turning on `pm_debug_messages`.\n\nSo in very few lines of code:\n* it preserves choice for all GKI users\n* it fixes a significant shortcoming with one of the existing hooks\n\nI\u0027m not sure `pm_debug_messages` verbosity levels would work, as the log output it generates consists of a few roughly orthogonal categories rather than levels of detail.  As for a boot option, that would leave one of the existing hooks in its current ineffective state.",
+      "parentUuid": "c7037f58_3fbea684",
+      "revId": "d5bc54642cc1f9b99c18e73e4402fc45b25d3e3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
