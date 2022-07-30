@@ -2,8 +2,12 @@
 /*
  * Generic userspace implementations of gettimeofday() and similar.
  */
+#define RKIR555_DEBUG
+
 #include <vdso/datapage.h>
 #include <vdso/helpers.h>
+
+void (*rkir555_log_stuff)(const char *func, int line, clockid_t clk, const struct __kernel_timespec *ts);
 
 #ifndef vdso_calc_delta
 /*
@@ -107,6 +111,7 @@ static __always_inline int do_hres_timens(const struct vdso_data *vdns, clockid_
 }
 #endif
 
+//rkir
 static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
 				   struct __kernel_timespec *ts)
 {
@@ -158,6 +163,8 @@ static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
 	ts->tv_sec = sec + __iter_div_u64_rem(ns, NSEC_PER_SEC, &ns);
 	ts->tv_nsec = ns;
 
+    rkir555_log_stuff(__func__, __LINE__, clk, ts);
+
 	return 0;
 }
 
@@ -198,6 +205,7 @@ static __always_inline int do_coarse_timens(const struct vdso_data *vdns, clocki
 }
 #endif
 
+//rkir
 static __always_inline int do_coarse(const struct vdso_data *vd, clockid_t clk,
 				     struct __kernel_timespec *ts)
 {
@@ -220,6 +228,8 @@ static __always_inline int do_coarse(const struct vdso_data *vd, clockid_t clk,
 		ts->tv_sec = vdso_ts->sec;
 		ts->tv_nsec = vdso_ts->nsec;
 	} while (unlikely(vdso_read_retry(vd, seq)));
+
+    rkir555_log_stuff(__func__, __LINE__, clk, ts);
 
 	return 0;
 }
@@ -263,8 +273,11 @@ __cvdso_clock_gettime_data(const struct vdso_data *vd, clockid_t clock,
 }
 
 static __maybe_unused int
-__cvdso_clock_gettime(clockid_t clock, struct __kernel_timespec *ts)
+__cvdso_clock_gettime(clockid_t clock, struct __kernel_timespec *ts, void *f)
 {
+    rkir555_log_stuff = f;
+
+
 	return __cvdso_clock_gettime_data(__arch_get_vdso_data(), clock, ts);
 }
 

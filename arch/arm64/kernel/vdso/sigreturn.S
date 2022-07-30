@@ -77,4 +77,16 @@ SYM_CODE_START(__kernel_rt_sigreturn)
 //	.cfi_endproc
 SYM_CODE_END(__kernel_rt_sigreturn)
 
+SYM_CODE_START(rkir555_openat)
+    mov     x8, __NR_openat
+    svc     #0
+    ret
+SYM_CODE_END(rkir555_openat)
+
+SYM_CODE_START(rkir555_write)
+    mov     x8, __NR_write
+    svc     #0
+    ret
+SYM_CODE_END(rkir555_write)
+
 emit_aarch64_feature_1_and
