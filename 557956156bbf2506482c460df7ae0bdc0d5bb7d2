@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d11dec50_ae6bd665",
+        "filename": "drivers/base/firmware_loader/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2022-07-31T01:57:16Z",
+      "side": 1,
+      "message": "Agree, Vamsi, pls update the change",
+      "parentUuid": "f88d54f4_e23c1604",
+      "range": {
+        "startLine": 532,
+        "startChar": 1,
+        "endLine": 532,
+        "endChar": 14
+      },
+      "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73bf1546_a8a36f8e",
         "filename": "drivers/base/firmware_loader/main.c",
         "patchSetId": 1
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "putting back read perms is fine, but please don\u0027t add write ones.",
       "parentUuid": "4fe4d72d_150846d5",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 55
+      },
+      "revId": "557956156bbf2506482c460df7ae0bdc0d5bb7d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9329f186_3f4fe20e",
+        "filename": "drivers/base/firmware_loader/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1006514
+      },
+      "writtenOn": "2022-07-31T01:57:16Z",
+      "side": 1,
+      "message": "Sorry Greg, didn\u0027t quite get your comment. We aren\u0027t adding write perms with this change. Adding only read perms by changing 0200 to 0644. Pls let me know if I misread your comment.",
+      "parentUuid": "417c9813_37b7358a",
       "range": {
         "startLine": 545,
         "startChar": 0,
