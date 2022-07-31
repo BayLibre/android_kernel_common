@@ -9,6 +9,8 @@
 #define DISCARD_EH_FRAME	*(.eh_frame)
 #endif
 
+#include <asm-generic/codetag.lds.h>
+
 SECTIONS {
 	/DISCARD/ : {
 		*(.discard)
@@ -77,6 +79,7 @@ SECTIONS {
 	.data : {
 		*(.data .data.[0-9a-zA-Z_]*)
 		*(.data..L*)
+		CODETAG_SECTIONS()
 	}
 
 	.rodata : {
@@ -91,6 +94,10 @@ SECTIONS {
 		*(.text .text.[0-9a-zA-Z_]*)
 		*(.text.._end)
 		*(.text.._fips140_unchecked)
+	}
+#else
+	.data : {
+		CODETAG_SECTIONS()
 	}
 #endif
 }
