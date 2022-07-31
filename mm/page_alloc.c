@@ -54,6 +54,7 @@
 #include <linux/psi.h>
 #include <linux/khugepaged.h>
 #include <linux/delayacct.h>
+#include <linux/pgalloc_tag.h>
 #include <trace/hooks/vmscan.h>
 #include <trace/hooks/mm.h>
 
@@ -1244,6 +1245,7 @@ static __always_inline bool free_pages_prepare(struct page *page,
 		reset_page_owner(page, order);
 		free_page_pinner(page, order);
 		page_table_check_free(page, order);
+		pgalloc_tag_sub(page, order);
 		return false;
 	}
 
@@ -1287,6 +1289,7 @@ static __always_inline bool free_pages_prepare(struct page *page,
 	reset_page_owner(page, order);
 	free_page_pinner(page, order);
 	page_table_check_free(page, order);
+	pgalloc_tag_sub(page, order);
 
 	if (!PageHighMem(page)) {
 		debug_check_no_locks_freed(page_address(page),
@@ -1719,6 +1722,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
 
 	set_page_owner(page, order, gfp_flags);
 	page_table_check_alloc(page, order);
+	pgalloc_tag_add(page, current, order);
 }
 
 static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
