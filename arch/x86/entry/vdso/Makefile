@@ -90,7 +90,12 @@ ifneq ($(RETPOLINE_VDSO_CFLAGS),)
 endif
 endif
 
+<<<<<<< HEAD   (3f05c6 ANDROID: fix up 5.10.132 merge with the virtio_mmio.c driver)
 $(vobjs): KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO) $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS)) $(CFL)
+=======
+$(vobjs): KBUILD_CFLAGS := $(filter-out $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS)) $(CFL)
+$(vobjs): KBUILD_AFLAGS += -DBUILD_VDSO
+>>>>>>> BRANCH (503493 Linux 5.10.133)
 
 #
 # vDSO code runs in userspace and -pg doesn't help with profiling anyway.

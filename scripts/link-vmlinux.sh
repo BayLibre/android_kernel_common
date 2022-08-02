@@ -121,6 +121,7 @@ objtool_link()
 	fi
 
 	if [ -n "${CONFIG_VMLINUX_VALIDATION}" ]; then
+<<<<<<< HEAD   (3f05c6 ANDROID: fix up 5.10.132 merge with the virtio_mmio.c driver)
 		objtoolopt="${objtoolopt} --noinstr"
 	fi
 
@@ -129,6 +130,12 @@ objtool_link()
 			objtoolcmd="check"
 		fi
 		objtoolopt="${objtoolopt} --vmlinux"
+=======
+		objtoolopt="check"
+		if [ -n "${CONFIG_CPU_UNRET_ENTRY}" ]; then
+			objtoolopt="${objtoolopt} --unret"
+		fi
+>>>>>>> BRANCH (503493 Linux 5.10.133)
 		if [ -z "${CONFIG_FRAME_POINTER}" ]; then
 			objtoolopt="${objtoolopt} --no-fp"
 		fi
@@ -140,6 +147,9 @@ objtool_link()
 		fi
 		if [ -n "${CONFIG_X86_SMAP}" ]; then
 			objtoolopt="${objtoolopt} --uaccess"
+		fi
+		if [ -n "${CONFIG_SLS}" ]; then
+			objtoolopt="${objtoolopt} --sls"
 		fi
 		info OBJTOOL ${1}
 		tools/objtool/objtool ${objtoolcmd} ${objtoolopt} ${1}
