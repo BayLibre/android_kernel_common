@@ -104,6 +104,10 @@
 #include <asm/cacheflush.h>
 #include <asm/tlbflush.h>
 
+#ifndef __GENKSYMS__
+#define PROTECT_TRACE_INCLUDE_PATH
+#include <trace/hooks/dtask.h>
+#endif
 #include <trace/events/sched.h>
 
 #define CREATE_TRACE_POINTS
@@ -111,6 +115,7 @@
 
 #undef CREATE_TRACE_POINTS
 #include <trace/hooks/sched.h>
+
 /*
  * Minimum number of threads to boot the kernel
  */
