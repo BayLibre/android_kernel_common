@@ -22,6 +22,7 @@
  */
 #include "sched.h"
 
+#include <trace/hooks/dtask.h>
 #include <trace/hooks/sched.h>
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_runtime);
@@ -7077,6 +7078,9 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
 	bool preempt = false, nopreempt = false;
 
 	if (unlikely(se == pse))
+		return;
+	trace_android_vh_locktask_protect(curr, p, &nopreempt);
+	if (nopreempt)
 		return;
 
 	/*
