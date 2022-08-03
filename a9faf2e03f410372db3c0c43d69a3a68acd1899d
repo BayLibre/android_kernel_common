@@ -16,6 +16,24 @@
       "message": "this is probably going to break the abi, did you test it?",
       "revId": "a9faf2e03f410372db3c0c43d69a3a68acd1899d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e56609_8918d088",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1839988
+      },
+      "writtenOn": "2022-08-03T15:40:40Z",
+      "side": 1,
+      "message": "cfg80211/mac80211 modules are removed from gki_defconfig in android13-5.15 with below change. Based on this I believe there shouldn\u0027t be any ABI breakage, isn\u0027t it? \n\nhttps://android-review.googlesource.com/c/kernel/common/+/2105353",
+      "parentUuid": "3a1c2945_deb1442b",
+      "revId": "a9faf2e03f410372db3c0c43d69a3a68acd1899d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
