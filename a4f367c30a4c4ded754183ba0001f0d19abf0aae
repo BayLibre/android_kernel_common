@@ -105,6 +105,24 @@
       "parentUuid": "afbfe2ef_017430a4",
       "revId": "a4f367c30a4c4ded754183ba0001f0d19abf0aae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dea90399_0cf8fce5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-03T11:12:55Z",
+      "side": 1,
+      "message": "You never tested this, it\u0027s not being set properly at all.  How did you test this?\n\nHere\u0027s the error messages:\n```--- common/arch/arm64/configs/gki_defconfig\t2022-08-03 08:41:53.339789395 +0000\n+++ /buildbot/src/android/common-android13-5.15/out/android13-5.15/common/defconfig\t2022-08-03 08:42:03.964810914 +0000\n@@ -453,7 +453,6 @@\n CONFIG_SND\u003dy\n CONFIG_SND_HRTIMER\u003dy\n # CONFIG_SND_SUPPORT_OLD_API is not set\n-CONFIG_SND_VERBOSE_PROCFS\u003dy\n # CONFIG_SND_DRIVERS is not set\n CONFIG_SND_USB_AUDIO\u003dy\n CONFIG_SND_SOC\u003dy\n++ RES\u003d1\n++ \u0027[\u0027 1 -ne 0 \u0027]\u0027\n++ echo ERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig\nERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig```",
+      "parentUuid": "ff27b446_386b5b61",
+      "revId": "a4f367c30a4c4ded754183ba0001f0d19abf0aae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
