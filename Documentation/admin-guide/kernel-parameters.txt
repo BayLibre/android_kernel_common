@@ -338,6 +338,15 @@
 			connected to one of 16 gameports
 			Format: <type1>,<type2>,..<type16>
 
+	android_dyn_kmalloc_minalign	[MM]
+			Enabling android_dyn_kmalloc_minalign causes the
+			minimum kmalloc alignment, and thus minimum kmalloc
+			allocation size, to be recomputed at runtime. This
+			can be helpful for systems that have a smaller
+			minimum kmalloc allocation size requirement that is
+			smaller than the hardcoded ARCH_KMALLOC_MINALIGN value
+			that the kernel uses.
+
 	apc=		[HW,SPARC]
 			Power management functions (SPARCstation-4/5 + deriv.)
 			Format: noidle
