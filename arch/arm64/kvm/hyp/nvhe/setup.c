@@ -308,6 +308,7 @@ void __noreturn __pkvm_init_finalise(void)
 	struct kvm_cpu_context *host_ctxt = &host_data->host_ctxt;
 	unsigned long nr_pages, reserved_pages, pfn;
 	int ret;
+	struct kvm_s2_mmu *mmu = &host_mmu.arch.mmu;
 
 	/* Now that the vmemmap is backed, install the full-fledged allocator */
 	pfn = hyp_virt_to_pfn(hyp_pgt_base);
@@ -348,6 +349,7 @@ void __noreturn __pkvm_init_finalise(void)
 		goto out;
 
 	pkvm_hyp_vm_table_init(vm_table_base);
+	host_stage2_pgt_map_readonly(hyp_virt_to_phys(host_s2_pgt_base));
 out:
 	/*
 	 * We tail-called to here from handle___pkvm_init() and will not return,
@@ -355,6 +357,7 @@ out:
 	 */
 	cpu_reg(host_ctxt, 1) = ret;
 
+	cpu_reg(host_ctxt, 2) = (__u64)mmu->pgd_phys;
 	__host_enter(host_ctxt);
 }
 

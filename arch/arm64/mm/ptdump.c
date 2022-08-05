@@ -25,6 +25,7 @@
 #include <asm/pgtable-hwdef.h>
 #include <asm/ptdump.h>
 
+#include <asm/kvm_pgtable.h>
 
 enum address_markers_idx {
 	PAGE_OFFSET_NR = 0,
@@ -32,6 +33,88 @@ enum address_markers_idx {
 #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
 	KASAN_START_NR,
 #endif
+};
+
+#define PKVM_PAGE_STATE_PROT_MASK	(KVM_PGTABLE_PROT_SW0 | KVM_PGTABLE_PROT_SW1)
+
+struct prot_bits {
+	u64		mask;
+	u64		val;
+	const char	*set;
+	const char	*clear;
+};
+
+static const struct prot_bits stage2_pte_bits[] = {
+	{
+		.mask	= PTE_VALID,
+		.val	= PTE_VALID,
+		.set	= " ",
+		.clear	= "F",
+	}, {
+		.mask	= KVM_PTE_LEAF_ATTR_HI_S1_XN,
+		.val	= KVM_PTE_LEAF_ATTR_HI_S1_XN,
+		.set	= "XN",
+		.clear	= "  ",
+	}, {
+		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R,
+		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R,
+		.set	= "R",
+		.clear	= " ",
+	}, {
+		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
+		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
+		.set	= "W",
+		.clear	= " ",
+	}, {
+		.mask	= PTE_AF,
+		.val	= PTE_AF,
+		.set	= "AF",
+		.clear	= "  ",
+	}, {
+		.mask	= PTE_NG,
+		.val	= PTE_NG,
+		.set	= "FnXS",
+		.clear	= "  ",
+	}, {
+		.mask	= PTE_CONT,
+		.val	= PTE_CONT,
+		.set	= "CON",
+		.clear	= "   ",
+	}, {
+		.mask	= PTE_TABLE_BIT,
+		.val	= PTE_TABLE_BIT,
+		.set	= "   ",
+		.clear	= "BLK",
+	}, {
+		.mask	= PTE_ATTRINDX_MASK,
+		.val	= PTE_ATTRINDX(MT_DEVICE_nGnRnE),
+		.set	= "DEVICE/nGnRnE",
+	}, {
+		.mask	= PTE_ATTRINDX_MASK,
+		.val	= PTE_ATTRINDX(MT_DEVICE_nGnRE),
+		.set	= "DEVICE/nGnRE",
+	}, {
+		.mask	= PTE_ATTRINDX_MASK,
+		.val	= PTE_ATTRINDX(MT_NORMAL_NC),
+		.set	= "MEM/NORMAL-NC",
+	}, {
+		.mask	= PTE_ATTRINDX_MASK,
+		.val	= PTE_ATTRINDX(MT_NORMAL),
+		.set	= "MEM/NORMAL",
+	}, {
+		.mask	= PTE_ATTRINDX_MASK,
+		.val	= PTE_ATTRINDX(MT_NORMAL_TAGGED),
+		.set	= "MEM/NORMAL-TAGGED",
+	}, {
+		.mask	= PKVM_PAGE_STATE_PROT_MASK,
+		.val	= BIT(55),
+		.set	= "SW0", /* PKVM_PAGE_SHARED_OWNED */
+	}, {
+		.mask   = PKVM_PAGE_STATE_PROT_MASK,
+		.val	= BIT(56),
+		.set	= "SW1", /* PKVM_PAGE_SHARED_BORROWED */
+	},
+
 };
 
 static struct addr_marker address_markers[] = {
@@ -82,13 +165,6 @@ struct pg_state {
 	bool check_wx;
 	unsigned long wx_pages;
 	unsigned long uxn_pages;
-};
-
-struct prot_bits {
-	u64		mask;
-	u64		val;
-	const char	*set;
-	const char	*clear;
 };
 
 static const struct prot_bits pte_bits[] = {
@@ -177,6 +253,42 @@ struct pg_level {
 	u64 mask;
 };
 
+static struct pg_level stage2_pg_level[] = {
+	{ /* pgd */
+		.name	= "PGD",
+		.bits	= stage2_pte_bits,
+		.num	= ARRAY_SIZE(stage2_pte_bits),
+	}, { /* p4d */
+		.name	= "P4D",
+		.bits	= stage2_pte_bits,
+		.num	= ARRAY_SIZE(stage2_pte_bits),
+	}, { /* pud */
+		.name	= (CONFIG_PGTABLE_LEVELS > 3) ? "PUD" : "PGD",
+		.bits	= stage2_pte_bits,
+		.num	= ARRAY_SIZE(stage2_pte_bits),
+	}, { /* pmd */
+		.name	= (CONFIG_PGTABLE_LEVELS > 2) ? "PMD" : "PGD",
+		.bits	= stage2_pte_bits,
+		.num	= ARRAY_SIZE(stage2_pte_bits),
+	}, { /* pte */
+		.name	= "PTE",
+		.bits	= stage2_pte_bits,
+		.num	= ARRAY_SIZE(stage2_pte_bits),
+	},
+};
+
+static struct ptdump_info stage2_kernel_ptdump_info;
+
+/* Setter called after the PGT address is obtained from host stage2 */
+void ptdump_stage2_setinfo(unsigned long base_addr,
+			   const struct addr_marker *marker,
+			   struct mm_struct *mm)
+{
+	stage2_kernel_ptdump_info.base_addr = base_addr;
+	stage2_kernel_ptdump_info.markers   = marker;
+	stage2_kernel_ptdump_info.mm        = mm;
+}
+
 static struct pg_level pg_level[] = {
 	{ /* pgd */
 		.name	= "PGD",
@@ -254,9 +366,15 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 	struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
 	static const char units[] = "KMGTPE";
 	u64 prot = 0;
+	struct pg_level *my_pg;
+
+	if (st->marker == stage2_kernel_ptdump_info.markers)
+		my_pg = &stage2_pg_level[0];
+	else
+		my_pg = &pg_level[0];
 
 	if (level >= 0)
-		prot = val & pg_level[level].mask;
+		prot = val & my_pg[level].mask;
 
 	if (st->level == -1) {
 		st->level = level;
@@ -282,10 +400,10 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 			unit++;
 		}
 		pt_dump_seq_printf(st->seq, "%9lu%c %s", delta, *unit,
-				   pg_level[st->level].name);
-		if (st->current_prot && pg_level[st->level].bits)
-			dump_prot(st, pg_level[st->level].bits,
-				  pg_level[st->level].num);
+				   my_pg[st->level].name);
+		if (st->current_prot && my_pg[st->level].bits)
+			dump_prot(st, my_pg[st->level].bits,
+				  my_pg[st->level].num);
 		pt_dump_seq_puts(st->seq, "\n");
 
 		if (addr >= st->marker[1].start_address) {
@@ -335,8 +453,10 @@ static void __init ptdump_initialize(void)
 
 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
 		if (pg_level[i].bits)
-			for (j = 0; j < pg_level[i].num; j++)
+			for (j = 0; j < pg_level[i].num; j++) {
 				pg_level[i].mask |= pg_level[i].bits[j].mask;
+				stage2_pg_level[i].mask |= stage2_pg_level[i].bits[j].mask;
+			}
 }
 
 static struct ptdump_info kernel_ptdump_info = {
@@ -381,6 +501,8 @@ static int __init ptdump_init(void)
 #endif
 	ptdump_initialize();
 	ptdump_debugfs_register(&kernel_ptdump_info, "kernel_page_tables");
+	ptdump_debugfs_register(&stage2_kernel_ptdump_info,
+				"stage2_kernel_page_tables");
 	return 0;
 }
 device_initcall(ptdump_init);
