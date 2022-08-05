@@ -268,9 +268,9 @@ static void dw_pcie_free_msi(struct pcie_port *pp)
 		struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
 		struct device *dev = pci->dev;
 
-		dma_unmap_page(dev, pp->msi_data, PAGE_SIZE, DMA_FROM_DEVICE);
-		if (pp->msi_page)
-			__free_page(pp->msi_page);
+		dma_free_coherent(dev, PAGE_SIZE, pp->msi_page, pp->msi_data);
+		pp->msi_data = 0;
+		pp->msi_page = NULL;
 	}
 }
 
@@ -297,6 +297,8 @@ int dw_pcie_host_init(struct pcie_port *pp)
 	struct pci_host_bridge *bridge;
 	struct resource *cfg_res;
 	int ret;
+	bool msi_64b = false;
+	u16 msi_capabilities;
 
 	raw_spin_lock_init(&pci->pp.lock);
 
@@ -337,7 +339,10 @@ int dw_pcie_host_init(struct pcie_port *pp)
 	if (pci->link_gen < 1)
 		pci->link_gen = of_pci_get_max_link_speed(np);
 
-	if (pci_msi_enabled()) {
+	msi_capabilities = dw_pcie_msi_capabilities(pci);
+	msi_64b = msi_capabilities & PCI_MSI_FLAGS_64BIT ? true : false;
+
+	if (pci_msi_enabled() && (msi_capabilities & PCI_MSI_FLAGS_ENABLE)) {
 		pp->has_msi_ctrl = !(pp->ops->msi_host_init ||
 				     of_property_read_bool(np, "msi-parent") ||
 				     of_property_read_bool(np, "msi-map"));
@@ -374,18 +379,25 @@ int dw_pcie_host_init(struct pcie_port *pp)
 							    dw_chained_msi_isr,
 							    pp);
 
-			ret = dma_set_mask(pci->dev, DMA_BIT_MASK(32));
+			ret = dma_set_mask_and_coherent(pci->dev, msi_64b
+							? DMA_BIT_MASK(64)
+							: DMA_BIT_MASK(32));
 			if (ret)
-				dev_warn(pci->dev, "Failed to set DMA mask to 32-bit. Devices with only 32-bit MSI support may not work properly\n");
+				dev_warn(pci->dev, "Failed to set DMA mask to %s-bit.\n",
+					 msi_64b ? "64" : "32");
 
-			pp->msi_page = alloc_page(GFP_DMA32);
-			pp->msi_data = dma_map_page(pci->dev, pp->msi_page, 0, PAGE_SIZE,
-						    DMA_FROM_DEVICE);
-			if (dma_mapping_error(pci->dev, pp->msi_data)) {
-				dev_err(pci->dev, "Failed to map MSI data\n");
-				__free_page(pp->msi_page);
-				pp->msi_page = NULL;
+			pp->msi_page = dma_alloc_coherent(pci->dev, PAGE_SIZE,
+							  &pp->msi_data,
+							  GFP_KERNEL);
+			if (!pp->msi_page || dma_mapping_error(pci->dev, pp->msi_data)) {
+				dev_err(pci->dev, "Failed to alloc and map MSI data\n");
+				if (pp->msi_page) {
+					dma_free_coherent(pci->dev, PAGE_SIZE,
+							  pp->msi_page, pp->msi_data);
+					pp->msi_page = NULL;
+				}
 				pp->msi_data = 0;
+				ret = -ENOMEM;
 				goto err_free_msi;
 			}
 		}
