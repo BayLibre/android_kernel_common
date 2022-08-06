@@ -294,49 +294,37 @@ int fuse_create_open_backing(struct bpf_fuse_args *fa, int *out,
 			     struct file *file, unsigned int flags, umode_t mode)
 {
 	struct fuse_inode *dir_fuse_inode = get_fuse_inode(dir);
-	struct fuse_dentry *dir_fuse_dentry = get_fuse_dentry(entry->d_parent);
-	struct dentry *backing_dentry = NULL;
+	struct path backing_path;
 	struct inode *inode = NULL;
+	struct dentry *backing_parent;
 	struct dentry *newent;
 	const struct fuse_create_in *fci = fa->in_args[0].value;
-	struct inode *d_inode = entry->d_inode;
-	u64 target_nodeid = 0;
 
-	if (!dir_fuse_inode || !dir_fuse_dentry)
+	if (!dir_fuse_inode)
 		return -EIO;
 
-	inode_lock_nested(dir_fuse_inode->backing_inode, I_MUTEX_PARENT);
-	backing_dentry = lookup_one_len(fa->in_args[1].value,
-					dir_fuse_dentry->backing_path.dentry,
-					strlen(fa->in_args[1].value));
-	inode_unlock(dir_fuse_inode->backing_inode);
+	get_fuse_backing_path(entry, &backing_path);
+	if (!backing_path.dentry)
+		return -EBADF;
 
-	if (IS_ERR(backing_dentry))
-		return PTR_ERR(backing_dentry);
+	if (IS_ERR(backing_path.dentry))
+		return PTR_ERR(backing_path.dentry);
 
-	if (d_really_is_positive(backing_dentry)) {
+	if (d_really_is_positive(backing_path.dentry)) {
 		*out = -EIO;
 		goto out;
 	}
 
-	*out = vfs_create(dir_fuse_inode->backing_inode,
-			 backing_dentry, fci->mode, true);
+	backing_parent = dget_parent(backing_path.dentry);
+	inode_lock_nested(dir_fuse_inode->backing_inode, I_MUTEX_PARENT);
+	*out = vfs_create(d_inode(backing_parent),
+			backing_path.dentry, fci->mode, true);
+	inode_unlock(d_inode(backing_parent));
+	dput(backing_parent);
 	if (*out)
 		goto out;
 
-	if (get_fuse_dentry(entry)->backing_path.dentry)
-		path_put(&get_fuse_dentry(entry)->backing_path);
-	get_fuse_dentry(entry)->backing_path = (struct path) {
-		.mnt = dir_fuse_dentry->backing_path.mnt,
-		.dentry = backing_dentry,
-	};
-	path_get(&get_fuse_dentry(entry)->backing_path);
-
-	if (d_inode)
-		target_nodeid = get_fuse_inode(d_inode)->nodeid;
-
-	inode = fuse_iget_backing(dir->i_sb, target_nodeid,
-				  get_fuse_dentry(entry)->backing_path.dentry->d_inode);
+	inode = fuse_iget_backing(dir->i_sb, 0, backing_path.dentry->d_inode);
 	if (IS_ERR(inode)) {
 		*out = PTR_ERR(inode);
 		goto out;
@@ -358,7 +346,7 @@ int fuse_create_open_backing(struct bpf_fuse_args *fa, int *out,
 	*out = finish_open(file, entry, fuse_open_file_backing);
 
 out:
-	dput(backing_dentry);
+	path_put(&backing_path);
 	return *out;
 }
 
