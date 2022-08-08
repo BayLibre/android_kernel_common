@@ -72,6 +72,10 @@ CONFIG_ROCKCHIP_SARADC=m
 # Audio
 CONFIG_SND_SOC_ROCKCHIP_I2S=m
 
+# 16K page size to support 16K page size KVM guests
+CONFIG_ARM64_16K_PAGES=y
+# CONFIG_INCREMENTAL_FS is not set
+
 # To boot Linux distributions like Debian
 CONFIG_DEVTMPFS=y
 
