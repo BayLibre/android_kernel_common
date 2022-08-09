@@ -248,8 +248,10 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
 	}
 	__set_current_state(TASK_RUNNING);
 
-	if (pid_ns->reboot)
+	if (pid_ns->reboot) {
 		current->signal->group_exit_code = pid_ns->reboot;
+		current->signal->group_exit_sicode = 0;
+	}
 
 	acct_exit_ns(pid_ns);
 	return;

@@ -349,7 +349,7 @@ out:
 	return ispipe;
 }
 
-static int zap_process(struct task_struct *start, int exit_code)
+static int zap_process(struct task_struct *start, int exit_code, int sicode)
 {
 	struct task_struct *t;
 	int nr = 0;
@@ -357,6 +357,7 @@ static int zap_process(struct task_struct *start, int exit_code)
 	/* ignore all signals except SIGKILL, see prepare_signal() */
 	start->signal->flags = SIGNAL_GROUP_EXIT;
 	start->signal->group_exit_code = exit_code;
+	start->signal->group_exit_sicode = sicode;
 	start->signal->group_stop_count = 0;
 
 	for_each_thread(start, t) {
@@ -371,8 +372,8 @@ static int zap_process(struct task_struct *start, int exit_code)
 	return nr;
 }
 
-static int zap_threads(struct task_struct *tsk,
-			struct core_state *core_state, int exit_code)
+static int zap_threads(struct task_struct *tsk, struct core_state *core_state,
+		       int exit_code, int sicode)
 {
 	struct signal_struct *signal = tsk->signal;
 	int nr = -EAGAIN;
@@ -380,7 +381,7 @@ static int zap_threads(struct task_struct *tsk,
 	spin_lock_irq(&tsk->sighand->siglock);
 	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task) {
 		signal->core_state = core_state;
-		nr = zap_process(tsk, exit_code);
+		nr = zap_process(tsk, exit_code, sicode);
 		clear_tsk_thread_flag(tsk, TIF_SIGPENDING);
 		tsk->flags |= PF_DUMPCORE;
 		atomic_set(&core_state->nr_threads, nr);
@@ -389,7 +390,8 @@ static int zap_threads(struct task_struct *tsk,
 	return nr;
 }
 
-static int coredump_wait(int exit_code, struct core_state *core_state)
+static int coredump_wait(int exit_code, int sicode,
+			 struct core_state *core_state)
 {
 	struct task_struct *tsk = current;
 	int core_waiters = -EBUSY;
@@ -398,7 +400,7 @@ static int coredump_wait(int exit_code, struct core_state *core_state)
 	core_state->dumper.task = tsk;
 	core_state->dumper.next = NULL;
 
-	core_waiters = zap_threads(tsk, core_state, exit_code);
+	core_waiters = zap_threads(tsk, core_state, exit_code, sicode);
 	if (core_waiters > 0) {
 		struct core_thread *ptr;
 
@@ -560,7 +562,8 @@ void do_coredump(const kernel_siginfo_t *siginfo)
 		need_suid_safe = true;
 	}
 
-	retval = coredump_wait(siginfo->si_signo, &core_state);
+	retval =
+		coredump_wait(siginfo->si_signo, siginfo->si_code, &core_state);
 	if (retval < 0)
 		goto fail_creds;
 

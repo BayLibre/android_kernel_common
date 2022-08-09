@@ -963,6 +963,7 @@ static bool prepare_signal(int sig, struct task_struct *p, bool force)
 			signal_set_stop_flags(signal, why | SIGNAL_STOP_CONTINUED);
 			signal->group_stop_count = 0;
 			signal->group_exit_code = 0;
+			signal->group_exit_sicode = 0;
 		}
 	}
 
@@ -994,7 +995,8 @@ static inline bool wants_signal(int sig, struct task_struct *p)
 	return task_curr(p) || !task_sigpending(p);
 }
 
-static void complete_signal(int sig, struct task_struct *p, enum pid_type type)
+static void complete_signal(int sig, int code, struct task_struct *p,
+			    enum pid_type type)
 {
 	struct signal_struct *signal = p->signal;
 	struct task_struct *t;
@@ -1051,6 +1053,7 @@ static void complete_signal(int sig, struct task_struct *p, enum pid_type type)
 			 */
 			signal->flags = SIGNAL_GROUP_EXIT;
 			signal->group_exit_code = sig;
+			signal->group_exit_sicode = code;
 			signal->group_stop_count = 0;
 			t = p;
 			do {
@@ -1082,6 +1085,7 @@ static int __send_signal_locked(int sig, struct kernel_siginfo *info,
 	struct sigqueue *q;
 	int override_rlimit;
 	int ret = 0, result;
+	int code = 0;
 
 	lockdep_assert_held(&t->sighand->siglock);
 
@@ -1129,7 +1133,7 @@ static int __send_signal_locked(int sig, struct kernel_siginfo *info,
 			clear_siginfo(&q->info);
 			q->info.si_signo = sig;
 			q->info.si_errno = 0;
-			q->info.si_code = SI_USER;
+			code = q->info.si_code = SI_USER;
 			q->info.si_pid = task_tgid_nr_ns(current,
 							task_active_pid_ns(t));
 			rcu_read_lock();
@@ -1142,12 +1146,13 @@ static int __send_signal_locked(int sig, struct kernel_siginfo *info,
 			clear_siginfo(&q->info);
 			q->info.si_signo = sig;
 			q->info.si_errno = 0;
-			q->info.si_code = SI_KERNEL;
+			code = q->info.si_code = SI_KERNEL;
 			q->info.si_pid = 0;
 			q->info.si_uid = 0;
 			break;
 		default:
 			copy_siginfo(&q->info, info);
+			code = info->si_code;
 			break;
 		}
 	} else if (!is_si_special(info) &&
@@ -1186,7 +1191,7 @@ out_set:
 		}
 	}
 
-	complete_signal(sig, t, type);
+	complete_signal(sig, code, t, type);
 ret:
 	trace_signal_generate(sig, info, t, type != PIDTYPE_PID, result);
 	return ret;
@@ -1960,6 +1965,7 @@ void sigqueue_free(struct sigqueue *q)
 int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type)
 {
 	int sig = q->info.si_signo;
+	int code = q->info.si_code;
 	struct sigpending *pending;
 	struct task_struct *t;
 	unsigned long flags;
@@ -1995,7 +2001,7 @@ int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type)
 	pending = (type != PIDTYPE_PID) ? &t->signal->shared_pending : &t->pending;
 	list_add_tail(&q->list, &pending->list);
 	sigaddset(&pending->signal, sig);
-	complete_signal(sig, t, type);
+	complete_signal(sig, code, t, type);
 	result = TRACE_SIGNAL_DELIVERED;
 out:
 	trace_signal_generate(sig, &q->info, t, type != PIDTYPE_PID, result);
@@ -2380,7 +2386,7 @@ int ptrace_notify(int exit_code, unsigned long message)
  * %false if group stop is already cancelled or ptrace trap is scheduled.
  * %true if participated in group stop.
  */
-static bool do_signal_stop(int signr)
+static bool do_signal_stop(int signr, int sicode)
 	__releases(&current->sighand->siglock)
 {
 	struct signal_struct *sig = current->signal;
@@ -2415,8 +2421,10 @@ static bool do_signal_stop(int signr)
 		 * an intervening stop signal is required to cause two
 		 * continued events regardless of ptrace.
 		 */
-		if (!(sig->flags & SIGNAL_STOP_STOPPED))
+		if (!(sig->flags & SIGNAL_STOP_STOPPED)) {
 			sig->group_exit_code = signr;
+			sig->group_exit_sicode = sicode;
+		}
 
 		sig->group_stop_count = 0;
 
@@ -2701,7 +2709,7 @@ relock:
 		}
 
 		if (unlikely(current->jobctl & JOBCTL_STOP_PENDING) &&
-		    do_signal_stop(0))
+		    do_signal_stop(0, 0))
 			goto relock;
 
 		if (unlikely(current->jobctl &
@@ -2806,7 +2814,8 @@ relock:
 				spin_lock_irq(&sighand->siglock);
 			}
 
-			if (likely(do_signal_stop(ksig->info.si_signo))) {
+			if (likely(do_signal_stop(ksig->info.si_signo,
+						  ksig->info.si_code))) {
 				/* It released the siglock.  */
 				goto relock;
 			}
@@ -2854,7 +2863,7 @@ relock:
 		/*
 		 * Death signals, no core dump.
 		 */
-		do_group_exit(ksig->info.si_signo);
+		do_group_exit(ksig->info.si_signo, ksig->info.si_code);
 		/* NOTREACHED */
 	}
 	spin_unlock_irq(&sighand->siglock);
