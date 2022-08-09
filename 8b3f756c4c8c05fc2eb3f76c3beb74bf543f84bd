@@ -189,6 +189,30 @@
       },
       "revId": "8b3f756c4c8c05fc2eb3f76c3beb74bf543f84bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5121a28b_20a75948",
+        "filename": "android/abi_gki_aarch64_oplus",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-08-09T19:44:23Z",
+      "side": 1,
+      "message": "Thanks for catching Greg!\nGreg is correct. We want to move away from ashmem in new devices, so if the driver can be changed to use memfd instead that should be done. If not, please explain the reasons why it\u0027s infeasible in the associated bug.",
+      "parentUuid": "af891530_f4634c6c",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 16
+      },
+      "revId": "8b3f756c4c8c05fc2eb3f76c3beb74bf543f84bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
