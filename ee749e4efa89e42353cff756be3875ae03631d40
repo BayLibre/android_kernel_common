@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf86d8d7_fb4eeeaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T06:08:22Z",
+      "side": 1,
+      "message": "Reworked Connors patch a bit, fixing a few minor issues so that it matches the behavior of the previous series. Will continue polishing and testing with it tomorrow.",
+      "revId": "ee749e4efa89e42353cff756be3875ae03631d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448a4d8f_50943b88",
+        "filename": "include/linux/interrupt.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T06:08:22Z",
+      "side": 1,
+      "message": "Still need to double check why this isn\u0027t just u32",
+      "revId": "ee749e4efa89e42353cff756be3875ae03631d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2332fb9a_17c426f9",
+        "filename": "init/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 1282,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T06:08:22Z",
+      "side": 1,
+      "message": "Probably should switch to softirq for consistency with upstream",
+      "range": {
+        "startLine": 1282,
+        "startChar": 47,
+        "endLine": 1282,
+        "endChar": 54
+      },
+      "revId": "ee749e4efa89e42353cff756be3875ae03631d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7861afaa_2de4392c",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1637,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T06:08:22Z",
+      "side": 1,
+      "message": "softirq",
+      "range": {
+        "startLine": 1637,
+        "startChar": 37,
+        "endLine": 1637,
+        "endChar": 44
+      },
+      "revId": "ee749e4efa89e42353cff756be3875ae03631d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d82d5505_8f0f5f8d",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1643,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T06:08:22Z",
+      "side": 1,
+      "message": "Just u32 here?",
+      "revId": "ee749e4efa89e42353cff756be3875ae03631d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e303b5e_100008d8",
+        "filename": "kernel/softirq.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T06:08:22Z",
+      "side": 1,
+      "message": "just u32 here?",
+      "range": {
+        "startLine": 71,
+        "startChar": 15,
+        "endLine": 71,
+        "endChar": 20
+      },
+      "revId": "ee749e4efa89e42353cff756be3875ae03631d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
