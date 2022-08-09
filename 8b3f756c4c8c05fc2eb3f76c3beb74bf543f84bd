@@ -93,6 +93,30 @@
       },
       "revId": "8b3f756c4c8c05fc2eb3f76c3beb74bf543f84bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1a6508a_e8790ae6",
+        "filename": "android/abi_gki_aarch64_oplus",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1868565
+      },
+      "writtenOn": "2022-08-09T17:39:30Z",
+      "side": 1,
+      "message": "\u003e You should not be using it in kernel drivers now, it\u0027s there only for very old backward compatibility with old old applications.\n\nwe use it to detect memory leak on low memory. like minidump. so for now we should depend on this as same as is_dmabuf_file. \n\nCONFIG_ASHMEM is also enabled on this kernel-branch.",
+      "parentUuid": "18f45ad3_928bcfaf",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 16
+      },
+      "revId": "8b3f756c4c8c05fc2eb3f76c3beb74bf543f84bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
