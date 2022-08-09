@@ -106,6 +106,24 @@
       "parentUuid": "ce566f9a_53c73326",
       "revId": "a9faf2e03f410372db3c0c43d69a3a68acd1899d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d537ee8e_9827c8e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1946045
+      },
+      "writtenOn": "2022-08-09T20:52:04Z",
+      "side": 1,
+      "message": "Out of curiosity how did you manage to make the P21 driver work where it could build with both the kernel before this change and the kernel after this change?\nIn the qcacld driver we\u0027re trying to figure out how to do this since the mechanism we had agreed to in the past, using defined(__ANDROID_COMMON_KERNEL__) \u0026\u0026(LINUX_VERSION_CODE \u003e\u003d KERNEL_VERSION(5, 15, 0)), doesn\u0027t work when both of these have the same value before and after the patch, even if we update the logic to use KERNEL_VERSION(5, 15, 41).",
+      "parentUuid": "aef965c4_aea74bf4",
+      "revId": "a9faf2e03f410372db3c0c43d69a3a68acd1899d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
