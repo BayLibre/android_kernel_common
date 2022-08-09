@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4c1af44_834afbb1",
+        "filename": "kernel/sched/rt.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1647,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-09T05:10:09Z",
+      "side": 1,
+      "message": "One issue I\u0027ve caught in testing with this patch: task_may_preempt(task,cpu) somewhat assumes task is the current task on cpu.\n\nBut when its used as a fitness function, the task being passed is the task we\u0027re trying to fit on cpu. So this doesn\u0027t quite work properly.\n\nI\u0027ve reworked it to pull the current task from the cpu\u0027s rq. But that makes the task argument unused, which is a little strange looking.",
+      "revId": "e27941aeaeac2c56aed8d758b836ef2a71481ebd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82195a2f_fceb9ecf",
         "filename": "kernel/sched/rt.c",
         "patchSetId": 2
