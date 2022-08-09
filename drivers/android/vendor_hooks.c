@@ -428,3 +428,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_del_ref);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_randomization);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_disable_randomization);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_init_arch_hibernate_hdr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_suspend);

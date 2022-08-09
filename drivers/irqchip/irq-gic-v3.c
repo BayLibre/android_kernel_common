@@ -1337,8 +1337,15 @@ void gic_resume(void)
 }
 EXPORT_SYMBOL_GPL(gic_resume);
 
+int gic_suspend(void)
+{
+	trace_android_vh_gic_suspend(&gic_data);
+	return 0;
+}
+
 static struct syscore_ops gic_syscore_ops = {
 	.resume = gic_resume,
+	.suspend = gic_suspend,
 };
 
 static void gic_syscore_init(void)
@@ -1349,6 +1356,7 @@ static void gic_syscore_init(void)
 #else
 static inline void gic_syscore_init(void) { }
 void gic_resume(void) { }
+int gic_suspend(void) { }
 #endif
 
 
