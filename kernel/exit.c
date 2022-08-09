@@ -897,7 +897,7 @@ SYSCALL_DEFINE1(exit, int, error_code)
  * as well as by sys_exit_group (below).
  */
 void __noreturn
-do_group_exit(int exit_code)
+do_group_exit(int exit_code, int sicode)
 {
 	struct signal_struct *sig = current->signal;
 
@@ -916,6 +916,7 @@ do_group_exit(int exit_code)
 			exit_code = 0;
 		else {
 			sig->group_exit_code = exit_code;
+			sig->group_exit_sicode = sicode;
 			sig->flags = SIGNAL_GROUP_EXIT;
 			zap_other_threads(current);
 		}
@@ -933,7 +934,7 @@ do_group_exit(int exit_code)
  */
 SYSCALL_DEFINE1(exit_group, int, error_code)
 {
-	do_group_exit((error_code & 0xff) << 8);
+	do_group_exit((error_code & 0xff) << 8, 0);
 	/* NOTREACHED */
 	return 0;
 }

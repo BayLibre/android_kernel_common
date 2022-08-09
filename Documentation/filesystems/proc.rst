@@ -381,6 +381,8 @@ It's slow but very precise.
   env_end       address below which program environment is placed
   exit_code     the thread's exit_code in the form reported by the waitpid
 		system call
+  exit_sicode   if the process was stopped or terminated by a signal, the
+		signal's si_code. 0 otherwise
   ============= ===============================================================
 
 The /proc/PID/maps file contains the currently mapped memory regions and
