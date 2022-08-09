@@ -471,6 +471,7 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
 	unsigned long rsslim = 0;
 	unsigned long flags;
 	int exit_code = task->exit_code;
+	int exit_sicode = 0;
 
 	state = *get_task_state(task);
 	vsize = eip = esp = 0;
@@ -535,8 +536,10 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
 			thread_group_cputime_adjusted(task, &utime, &stime);
 			gtime += sig->gtime;
 
-			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED))
+			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED)) {
 				exit_code = sig->group_exit_code;
+				exit_sicode = sig->group_exit_sicode;
+			}
 		}
 
 		sid = task_session_nr_ns(task, ns);
@@ -635,10 +638,11 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
 	} else
 		seq_puts(m, " 0 0 0 0 0 0 0");
 
-	if (permitted)
+	if (permitted) {
 		seq_put_decimal_ll(m, " ", exit_code);
-	else
-		seq_puts(m, " 0");
+		seq_put_decimal_ll(m, " ", exit_sicode);
+	} else
+		seq_puts(m, " 0 0");
 
 	seq_putc(m, '\n');
 	if (mm)
