@@ -31,6 +31,7 @@ static bool noinstr intel_cc_platform_has(enum cc_attr attr)
 	case CC_ATTR_GUEST_UNROLL_STRING_IO:
 	case CC_ATTR_GUEST_MEM_ENCRYPT:
 	case CC_ATTR_MEM_ENCRYPT:
+	case CC_ATTR_GUEST_HARDENED:
 		return true;
 	default:
 		return false;
