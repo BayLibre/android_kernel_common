@@ -16,6 +16,23 @@
       "message": "This resolves the deadlock I\u0027ve been seeing with android-mainline running perfetto. \n\nCompared to before Kees\u0027 patch, which removed from get_wchan:\n-       if (!p || p \u003d\u003d current || task_is_running(p))\n-               return 0;\n\nThe only bit I\u0027m not 100% on is if the check before calling the tracepoint:\n    if (READ_ONCE(p-\u003e__state) \u0026 TASK_UNINTERRUPTIBLE)\n \ncovers the earlier task_is_running(p) check.\n\n",
       "revId": "1fb712f5c5c54d6bd86e969b7010c6cfdbf65911",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f45cc6db_3ddb2494",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2022-08-09T06:56:46Z",
+      "side": 1,
+      "message": "Seems reasonable to me. Rick, what do you think?",
+      "revId": "1fb712f5c5c54d6bd86e969b7010c6cfdbf65911",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
