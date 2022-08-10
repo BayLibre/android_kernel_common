@@ -49,6 +49,11 @@
 #define KVM_INVALID_PTE_OWNER_MASK	GENMASK(9, 2)
 #define KVM_MAX_OWNER_ID		FIELD_MAX(KVM_INVALID_PTE_OWNER_MASK)
 
+#define KVM_PTE_DEFAULT_ATTR_S2_PERMS   (KVM_PTE_LEAF_ATTR_LO_S2_MEMATTR | \
+                     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
+                     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | \
+                     KVM_PTE_LEAF_ATTR_LO_S2_SH)
+
 struct kvm_pgtable_walk_data {
 	struct kvm_pgtable		*pgt;
 	struct kvm_pgtable_walker	*walker;
@@ -667,7 +672,17 @@ static bool stage2_pte_is_counted(struct kvm_pgtable *pgt, kvm_pte_t pte)
 	 * encode ownership of a page to another entity than the page-table
 	 * owner, whose id is 0.
 	 */
-	return !!pte;
+	if (!kvm_pte_valid(pte))
+		return !!pte;
+
+	if (!(pgt->flags & KVM_PGTABLE_S2_IDMAP))
+		return true;
+
+	if ((pte & KVM_PTE_LEAF_ATTR_HI_SW) != 0)
+		return true;
+
+	pte &= KVM_PTE_DEFAULT_ATTR_S2_PERMS;
+	return pte != KVM_PTE_DEFAULT_ATTR_S2_PERMS;
 }
 
 static void stage2_clear_pte(kvm_pte_t *ptep, struct kvm_s2_mmu *mmu, u64 addr,
@@ -824,11 +839,45 @@ static int stage2_map_walk_leaf(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
 	 */
 	if (stage2_pte_is_counted(pgt, pte))
 		stage2_put_pte(ptep, data->mmu, addr, level, mm_ops);
+	else {
+		/* On non-refcounted PTEs we just clear them out without
+		 * dropping the refcount.
+		 */
+		stage2_clear_pte(ptep, data->mmu, addr, level);
+	}
 
 	kvm_set_table_pte(ptep, childp, mm_ops);
 	mm_ops->get_page(ptep);
 
 	return 0;
+}
+
+static void stage2_coalesce_walk_table_post(u64 addr, u64 end, u32 level,
+			kvm_pte_t *ptep,
+                        struct stage2_map_data *data)
+{
+    struct kvm_pgtable *pgt = data->mmu->pgt;
+    struct kvm_pgtable_mm_ops *mm_ops = data->mm_ops;
+    kvm_pte_t *childp = kvm_pte_follow(*ptep, mm_ops);
+
+    /* If we are not running on the host stage2 pagetables, return */
+    if (!(pgt->flags & KVM_PGTABLE_S2_IDMAP))
+        return;
+
+    /* If we are not running on the set ownership path (when the host
+     * reclaims ownership of its memory, return.
+     */
+    if (kvm_phys_is_valid(data->phys) ||
+        !kvm_level_supports_block_mapping(level))
+        return;
+
+    /* Free a page that is not referenced anymore and drop the reference
+     * of the page table page.
+     */
+    if (data->owner_id == 0 && mm_ops->page_count(childp) == 1) {
+        stage2_put_pte(ptep, data->mmu, addr, level, mm_ops);
+        mm_ops->put_page(childp);
+    }
 }
 
 static int stage2_map_walk_table_post(u64 addr, u64 end, u32 level,
@@ -839,8 +888,11 @@ static int stage2_map_walk_table_post(u64 addr, u64 end, u32 level,
 	kvm_pte_t *childp;
 	int ret = 0;
 
-	if (!data->anchor)
+	if (!data->anchor) {
+		stage2_coalesce_walk_table_post(addr, end, level, ptep,
+						data);
 		return 0;
+	}
 
 	if (data->anchor == ptep) {
 		childp = data->childp;
