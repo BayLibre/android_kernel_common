@@ -660,7 +660,7 @@ static bool stage2_pte_needs_update(kvm_pte_t old, kvm_pte_t new)
 	return ((old ^ new) & (~KVM_PTE_LEAF_ATTR_S2_PERMS));
 }
 
-static bool stage2_pte_is_counted(kvm_pte_t pte)
+static bool stage2_pte_is_counted(struct kvm_pgtable *pgt, kvm_pte_t pte)
 {
 	/*
 	 * The refcount tracks valid entries as well as invalid entries if they
@@ -722,7 +722,7 @@ static int stage2_map_walker_try_leaf(u64 addr, u64 end, u32 level,
 	else
 		new = kvm_init_invalid_leaf_owner(data->owner_id);
 
-	if (stage2_pte_is_counted(old)) {
+	if (stage2_pte_is_counted(pgt, old)) {
 		/*
 		 * Skip updating the PTE if we are trying to recreate the exact
 		 * same mapping or only change the access permissions. Instead,
@@ -749,7 +749,7 @@ static int stage2_map_walker_try_leaf(u64 addr, u64 end, u32 level,
 	if (mm_ops->icache_inval_pou && stage2_pte_executable(new))
 		mm_ops->icache_inval_pou(kvm_pte_follow(new, mm_ops), granule);
 
-	if (stage2_pte_is_counted(new))
+	if (stage2_pte_is_counted(pgt, new))
 		mm_ops->get_page(ptep);
 
 out_set_pte:
@@ -786,11 +786,12 @@ static int stage2_map_walk_leaf(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
 				struct stage2_map_data *data)
 {
 	struct kvm_pgtable_mm_ops *mm_ops = data->mm_ops;
+	struct kvm_pgtable *pgt = data->mmu->pgt;
 	kvm_pte_t *childp, pte = *ptep;
 	int ret;
 
 	if (data->anchor) {
-		if (stage2_pte_is_counted(pte))
+		if (stage2_pte_is_counted(pgt, pte))
 			mm_ops->put_page(ptep);
 
 		return 0;
@@ -815,7 +816,7 @@ static int stage2_map_walk_leaf(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
 	 * a table. Accesses beyond 'end' that fall within the new table
 	 * will be mapped lazily.
 	 */
-	if (stage2_pte_is_counted(pte))
+	if (stage2_pte_is_counted(pgt, pte))
 		stage2_put_pte(ptep, data->mmu, addr, level, mm_ops);
 
 	kvm_set_table_pte(ptep, childp, mm_ops);
@@ -956,7 +957,7 @@ static int stage2_unmap_walker(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
 	bool need_flush = false;
 
 	if (!kvm_pte_valid(pte)) {
-		if (stage2_pte_is_counted(pte)) {
+		if (stage2_pte_is_counted(pgt, pte)) {
 			kvm_clear_pte(ptep);
 			mm_ops->put_page(ptep);
 		}
@@ -1213,7 +1214,7 @@ static int stage2_free_walker(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
 	struct kvm_pgtable_mm_ops *mm_ops = pgt->mm_ops;
 	kvm_pte_t pte = *ptep;
 
-	if (!stage2_pte_is_counted(pte))
+	if (!stage2_pte_is_counted(pgt, pte))
 		return 0;
 
 	mm_ops->put_page(ptep);
