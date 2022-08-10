@@ -213,6 +213,30 @@
       },
       "revId": "8b3f756c4c8c05fc2eb3f76c3beb74bf543f84bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d9d21ef_aa3c5c0d",
+        "filename": "android/abi_gki_aarch64_oplus",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1868565
+      },
+      "writtenOn": "2022-08-10T01:13:26Z",
+      "side": 1,
+      "message": "hi suren\nwe don\u0027t use it ashmem memory in driver. instead use the is_ashmem_file to dump process ashmem usage, ashmem is also used in Android S although it have been removed in upstream. \n\n\nOP528BL1:/ # showmap `pidof system_server` | grep ashmem\n    6144       56       56        0        0        0       56        0        0         0         0         0        0        0    6 /dev/ashmem/MemoryHeapBase (deleted)",
+      "parentUuid": "5121a28b_20a75948",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 16
+      },
+      "revId": "8b3f756c4c8c05fc2eb3f76c3beb74bf543f84bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
