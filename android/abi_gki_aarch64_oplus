@@ -94,6 +94,7 @@
   io_schedule
   ip6_local_out
   ip6_route_me_harder
+  ip_local_deliver
   ip_local_out
   ip_route_me_harder
   iput
@@ -121,6 +122,7 @@
   kthread_create_on_node
   kthread_should_stop
   kthread_stop
+  ktime_get_boot_fast_ns
   ktime_get_raw_ts64
   ktime_get_real_ts64
   __list_add_valid
@@ -192,6 +194,7 @@
   __rcu_read_lock
   __rcu_read_unlock
   __register_blkdev
+  register_kprobes
   register_reboot_notifier
   register_shrinker
   register_sysctl_table
@@ -303,6 +306,7 @@
   __ubsan_handle_cfi_check_fail_abort
   unlock_page
   unregister_blkdev
+  unregister_kprobes
   unregister_reboot_notifier
   unregister_shrinker
   unregister_sysctl_table
