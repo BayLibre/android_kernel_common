@@ -68,6 +68,24 @@
       "message": "symbol is already in use, you can not remove it.",
       "revId": "b19f2fdfdfcd6f292eda07f89226b298a539663f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "458e34e8_f3f5de41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1427064
+      },
+      "writtenOn": "2022-08-11T12:31:02Z",
+      "side": 1,
+      "message": "Yes, some private drivers also need to modify at same time if we want to change the hook type. This will be hard to maintain for current different branchs. I will drop this and fix in next kernel. Thanks",
+      "parentUuid": "ec41926e_993f8897",
+      "revId": "b19f2fdfdfcd6f292eda07f89226b298a539663f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
