@@ -1410,7 +1410,7 @@ static int usb_suspend_both(struct usb_device *udev, pm_message_t msg)
 			udev->state == USB_STATE_SUSPENDED)
 		goto done;
 
-	trace_android_vh_usb_dev_suspend(udev, msg, &bypass);
+	trace_android_rvh_usb_dev_suspend(udev, msg, &bypass);
 	if (bypass)
 		goto done;
 
