@@ -659,6 +659,7 @@
   dump_stack
   dw_handle_msi_irq
   dw_pcie_host_init
+  dw_pcie_msi_capabilities
   dw_pcie_read
   dw_pcie_setup_rc
   dw_pcie_write
@@ -2016,6 +2017,8 @@
   usb_ep_autoconfig
   usb_function_register
   usb_function_unregister
+  usb_gadget_activate
+  usb_gadget_deactivate
   usb_gadget_set_state
   usb_hcd_is_primary_hcd
   usb_hcd_platform_shutdown
