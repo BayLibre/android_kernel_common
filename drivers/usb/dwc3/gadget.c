@@ -2471,6 +2471,10 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 	int			ret;
 
 	is_on = !!is_on;
+<<<<<<< HEAD   (18dcad FROMLIST: binder: fix UAF of alloc->vma in race with munmap()
+=======
+
+>>>>>>> CHANGE (fe55e1 UPSTREAM: usb: dwc3: gadget: Avoid duplicate requests to ena)
 	vdwc->softconnect = is_on;
 
 	/*
@@ -2504,6 +2508,11 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 	 */
 	ret = pm_runtime_get_sync(dwc->dev);
 	if (!ret || ret < 0) {
+		pm_runtime_put(dwc->dev);
+		return 0;
+	}
+
+	if (dwc->pullups_connected == is_on) {
 		pm_runtime_put(dwc->dev);
 		return 0;
 	}
