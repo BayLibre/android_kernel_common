@@ -50,6 +50,24 @@
       "message": "The build is failing because this causes a change to the signature for `freezing_slow_path` (probably a change of visibility for task_struct). I suspect the build will work if this line is moved down to line 31 (after `freezing_slow_path`)",
       "revId": "41eaf5ea5d89064739bf2a532361315bcb1e62f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "704b3a5e_226f2af4",
+        "filename": "kernel/freezer.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2022-08-13T08:27:18Z",
+      "side": 1,
+      "message": "Thank you so much Mr.Todd, I moved this line after the `freezing_slow_path` function, and rebuild the kernel with abi check, the error was disappeared.\nThe patch is updated.",
+      "parentUuid": "d6eead5b_cc0772b1",
+      "revId": "41eaf5ea5d89064739bf2a532361315bcb1e62f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
