@@ -1519,10 +1519,17 @@ retry:
 		 */
 		mmc_set_clock(host, mmc_sd_get_max_clock(card));
 
+		/*
+		 * Use the vh hook if your function does not sleep,
+		 * use the rvh hook if your function does sleep.
+		 */
 		trace_android_vh_mmc_sd_update_cmdline_timing(card, &err);
 		if (err)
 			goto free_card;
 
+		trace_android_rvh_mmc_sd_cmdline_tuning(card, &err);
+		if (err)
+			goto free_card;
 		/*
 		 * Switch to wider bus (if supported).
 		 */
@@ -1535,7 +1542,15 @@ retry:
 			mmc_set_bus_width(host, MMC_BUS_WIDTH_4);
 		}
 
+		/*
+		 * Use the vh hook if your function does not sleep,
+		 * use the rvh hook if your function does sleep.
+		 */
 		trace_android_vh_mmc_sd_update_dataline_timing(card, &err);
+		if (err)
+			goto free_card;
+
+		trace_android_rvh_mmc_sd_dataline_tuning(card, &err);
 		if (err)
 			goto free_card;
 	}
