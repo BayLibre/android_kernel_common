@@ -293,4 +293,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_lruvec_blk_plug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reclaim_pages_plug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
 
