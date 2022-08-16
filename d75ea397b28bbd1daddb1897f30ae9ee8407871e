@@ -22,6 +22,30 @@
       },
       "revId": "d75ea397b28bbd1daddb1897f30ae9ee8407871e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d2fcf5_7b7a7053",
+        "filename": "Documentation/admin-guide/kernel-parameters.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 2536,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-08-16T12:44:35Z",
+      "side": 1,
+      "message": "Ack, this isn\u0027t nice, but see the commit message, the link to the upstream posting, and the bug for context -- this has been going on for a while.\n\ntl;dr the suggestion from upstream is to not report these regions as memory if Linux can\u0027t use it, and I think that\u0027s right. But I also understand it\u0027s a bit late in the cycle for big bootloader changes. Wdyt? Got an idea for an alternative?",
+      "parentUuid": "1631f4d6_f4771dca",
+      "range": {
+        "startLine": 2536,
+        "startChar": 0,
+        "endLine": 2536,
+        "endChar": 29
+      },
+      "revId": "d75ea397b28bbd1daddb1897f30ae9ee8407871e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
