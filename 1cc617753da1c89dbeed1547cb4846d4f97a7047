@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab91a759_7714e1db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-17T02:44:26Z",
+      "side": 1,
+      "message": "Would be good to get Todd/Quentin\u0027s thoughts here:\n\nOn older kernels where the abi is fixed, we obviously need to preserve the existing hooks. But since this is against android-mainline, rather then adding _start/end hooks in addition to the existing android_rvh_account_irq hook, should we instead have the _start/_end hooks replace the single android_rvh_account_irq hook?\n\n\n",
+      "revId": "1cc617753da1c89dbeed1547cb4846d4f97a7047",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
