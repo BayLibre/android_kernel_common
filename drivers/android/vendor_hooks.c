@@ -69,6 +69,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/cfg80211.h>
 #include <trace/hooks/user.h>
+#include <trace/hooks/v4l2.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -441,3 +442,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mark_page_accessed);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_ffu_update_cid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2_meta_ptr_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2_fill_fmtdesc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2_strparm_save);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_v4l2_strparm_restore);
