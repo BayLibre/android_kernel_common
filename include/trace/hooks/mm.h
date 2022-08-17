@@ -210,15 +210,6 @@ DECLARE_HOOK(android_vh_migrate_page_states,
 DECLARE_HOOK(android_vh_page_referenced_one_end,
 	TP_PROTO(struct vm_area_struct *vma, struct page *page, int referenced),
 	TP_ARGS(vma, page, referenced));
-DECLARE_HOOK(android_vh_count_pswpin,
-	TP_PROTO(struct swap_info_struct *sis),
-	TP_ARGS(sis));
-DECLARE_HOOK(android_vh_count_pswpout,
-	TP_PROTO(struct swap_info_struct *sis),
-	TP_ARGS(sis));
-DECLARE_HOOK(android_vh_count_swpout_vm_event,
-	TP_PROTO(struct swap_info_struct *sis, struct page *page, bool *skip),
-	TP_ARGS(sis, page, skip));
 DECLARE_HOOK(android_vh_swap_slot_cache_active,
 	TP_PROTO(bool swap_slot_cache_active),
 	TP_ARGS(swap_slot_cache_active));
