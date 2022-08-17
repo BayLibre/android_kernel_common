@@ -103,6 +103,7 @@
   dma_alloc_attrs
   dma_buf_export
   dma_fence_context_alloc
+  dma_fence_free
   dma_fence_init
   dma_fence_release
   dma_fence_signal_locked
@@ -479,6 +480,7 @@
   __sw_hweight32
   __sw_hweight8
   sync_file_create
+  sync_file_get_fence
   synchronize_irq
   synchronize_net
   synchronize_rcu
@@ -559,6 +561,7 @@
   virtqueue_kick
   virtqueue_kick_prepare
   virtqueue_notify
+  vmalloc
   vmalloc_to_page
   vring_create_virtqueue
   vring_del_virtqueue
@@ -580,7 +583,6 @@
 
 # required by goldfish_sync.ko
   dma_fence_default_wait
-  dma_fence_free
 
 # required by virtio-gpu.ko
   __devm_request_region
@@ -664,13 +666,19 @@
   iomem_resource
   is_virtio_device
   memdup_user
-  sync_file_get_fence
   __traceiter_dma_fence_emit
   __tracepoint_dma_fence_emit
   vmemdup_user
   vm_get_page_prot
   ww_mutex_lock_interruptible
   ww_mutex_unlock
+
+# required by virtio_wl.ko
+  anon_inode_getfile
+  dma_buf_get
+  dma_buf_put
+  dma_fence_signal
+  __fdget
 
 # required by virtio_blk.ko
   blk_execute_rq
@@ -835,7 +843,6 @@
   dma_sync_sg_for_cpu
   __sg_page_iter_next
   __sg_page_iter_start
-  vmalloc
   vmap
   vunmap
 
