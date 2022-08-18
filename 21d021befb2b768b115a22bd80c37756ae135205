@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae399cc3_d7f062b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1962984
+      },
+      "writtenOn": "2022-08-18T01:40:16Z",
+      "side": 1,
+      "message": "Hi Todd, \n\nOur custom heap pass some information through the heap flags, but from the upstream code, the heap flags mask all bits from include/uapi/linux/dma-heap.h.\n\n/* Currently no heap flags */\n#define DMA_HEAP_VALID_HEAP_FLAGS (0)\n\nWithout this check of vendor_hook, we need to modify the DMA_HEAP_VALID_HEAP_FLAGS define, but we can not modify native code under GKI. \n\nSo here we propose a vendor_hook. \n\nThanks,\nDavidwang",
+      "parentUuid": "d6b36290_f58ac114",
+      "revId": "21d021befb2b768b115a22bd80c37756ae135205",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "69b7b957_be52275d",
         "filename": "drivers/dma-buf/dma-heap.c",
         "patchSetId": 1
