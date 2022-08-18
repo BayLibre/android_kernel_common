@@ -16,6 +16,46 @@
       "message": "Please submit this upstream first.",
       "revId": "7941bf68248254d081e70d889697ca7c43d15467",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71906f42_718c3a4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-18T12:56:17Z",
+      "side": 1,
+      "message": "This isn\u0027t even needed, see the comment below.\n\nAnd all of these do not have bug ids, please always do that first, it saves the lint checker complaining all the time.",
+      "revId": "7941bf68248254d081e70d889697ca7c43d15467",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d512228_2c421ece",
+        "filename": "drivers/base/arch_topology.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-18T12:56:17Z",
+      "side": 1,
+      "message": "you have a tracepoint, use that instead!",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 262,
+        "endChar": 53
+      },
+      "revId": "7941bf68248254d081e70d889697ca7c43d15467",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
