@@ -112,6 +112,8 @@ SYM_FUNC_START_PI(dcache_clean_inval_poc)
 	ret
 SYM_FUNC_END_PI(dcache_clean_inval_poc)
 
+EXPORT_SYMBOL_GPL(dcache_clean_inval_poc)
+
 /*
  *	dcache_clean_pou(start, end)
  *
