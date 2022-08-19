@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03efb1b8_05764cf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-19T09:23:48Z",
+      "side": 1,
+      "message": "Why not submit your needed futex changes upstream first?\n\nTouching this code is very very tricky, have you tested your changes to verify nothing broke?",
+      "revId": "dbbdd0836609648e7ad8535beeda02d2d70a4367",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7715621_ded277b7",
+        "filename": "kernel/futex.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1597,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-19T09:23:48Z",
+      "side": 1,
+      "message": "no need to initialize this.",
+      "range": {
+        "startLine": 1597,
+        "startChar": 14,
+        "endLine": 1597,
+        "endChar": 18
+      },
+      "revId": "dbbdd0836609648e7ad8535beeda02d2d70a4367",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
