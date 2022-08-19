@@ -5973,6 +5973,11 @@
 			decrease the size and leave more room for directly
 			mapped kernel RAM.
 
+	vmap_lazy_max=	Format: <int>
+			A threshold of max pages for lazy TLB flushing
+			(vunmap) to override default log scale. To disable
+			lazy freeing of vmap areas set to '0'.
+
 	vmcp_cma=nn[MG]	[KNL,S390]
 			Sets the memory size reserved for contiguous memory
 			allocations for the vmcp device driver.
