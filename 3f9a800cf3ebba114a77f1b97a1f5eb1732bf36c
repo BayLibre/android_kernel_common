@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d2f952b_58a7893b",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "I think _txvq_cb is even worse, as it seems guaranteed to be long after the write buffer was queued. The old code was wrong if the writing thread did not get a chance to run.",
+      "parentUuid": "8b03e731_d0f88e14",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6efcfdae_cd8a51c3",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5

@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea83c4a_c65be11a",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "This function is called by dn_connect_ioctl for this case. If we want to know when the client thread sees that the connection has been established, that is probably a better spot for this tracepoint as that would also see the timeout case. Either way though we may need a tracepoint elsewhere see connections that complete after the timeout.",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc8ac68c_ebaf1ac7",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "I think most of the connect failures we see show up as a timeout to the dn_wait_for_reply call below, so I think we need to add a common error exit path to this function and put the tracepoint there",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bd9b128_eada401a",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1619,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "Do we need _end in the name when we have only one tracepoint here?",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76b25645_ab6bd14e",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2105,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "Are you sure this is accurate? This looks like the callback that is called when trusty has returned the buffer and it can be reused for something else. This can happen long after the buffer was sent to trusty (although it will always be after, never before)",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5332fbe9_5b7c215b",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2106,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "This seems like a misleading name (see comment above)",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8acdee6_7beada20",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "We had a tracepoint here as this can be a time consuming call sequence into  el3/hypervisors",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d33af6e5_86d7617e",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-19T17:44:06Z",
+      "side": 1,
+      "message": "why are we passing unrelated information here and not information about the nop itself (which has a type and optional arguments)",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
