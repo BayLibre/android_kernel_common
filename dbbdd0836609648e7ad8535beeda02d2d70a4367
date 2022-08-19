@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b15acc1_19f486f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-19T10:32:10Z",
+      "side": 1,
+      "message": "If this is a duplicate of an older patch, please set the change-id to show that.\n\nAnd we need some plan to get your changes uptream, we can not keep taking hooks for the next 20+ years 😊",
+      "parentUuid": "5bceea77_5cb7447e",
+      "revId": "dbbdd0836609648e7ad8535beeda02d2d70a4367",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7715621_ded277b7",
         "filename": "kernel/futex.c",
         "patchSetId": 1
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "hi, this is need, we may not change target_nr in trace_android_vh_futex_wake_traverse_plist(), and it will be used in trace_android_vh_futex_wake_this(). do initialization make this safe 😊",
       "parentUuid": "e7715621_ded277b7",
+      "range": {
+        "startLine": 1597,
+        "startChar": 14,
+        "endLine": 1597,
+        "endChar": 18
+      },
+      "revId": "dbbdd0836609648e7ad8535beeda02d2d70a4367",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c387352_001951d7",
+        "filename": "kernel/futex.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1597,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-19T10:32:10Z",
+      "side": 1,
+      "message": "If you need this, then always set the value in the first hook, do not force all non-users of your hook to take the extra assignment when it is not needed at all.",
+      "parentUuid": "4751faeb_d0a059e2",
       "range": {
         "startLine": 1597,
         "startChar": 14,
