@@ -23,6 +23,18 @@ struct cgroup_taskset;
 #include <linux/sched.h>
 /* struct sched_attr */
 #include <uapi/linux/sched/types.h>
+
+#if 0
+struct cgroup_taskset;
+struct cgroup_subsys_state;
+struct em_perf_domain;
+enum uclamp_id;
+struct sched_entity;
+struct task_struct;
+struct uclamp_se;
+struct sched_attr;
+#endif
+
 DECLARE_RESTRICTED_HOOK(android_rvh_select_task_rq_fair,
 	TP_PROTO(struct task_struct *p, int prev_cpu, int sd_flag, int wake_flags, int *new_cpu),
 	TP_ARGS(p, prev_cpu, sd_flag, wake_flags, new_cpu), 1);
