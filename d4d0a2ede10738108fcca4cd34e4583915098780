@@ -33,6 +33,24 @@
       "message": "I think enabling this will break the abi, did you test-build this to verify it?\n",
       "revId": "d4d0a2ede10738108fcca4cd34e4583915098780",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d95719a5_005fc844",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-08-19T14:17:08Z",
+      "side": 1,
+      "message": "FTR:\n\n```\nABI DIFFERENCES HAVE BEEN DETECTED!\n\nsymbol \u0027struct block_device * I_BDEV(struct inode *)\u0027 changed\n  CRC changed from 0xb8163ad5 to 0x127c93f4\n\nsymbol \u0027void * PDE_DATA(const struct inode *)\u0027 changed\n  CRC changed from 0x5927f85f to 0x6a2e18fc\n\nsymbol \u0027void __ClearPageMovable(struct page *)\u0027 changed\n  CRC changed from 0xf30e6b61 to 0xf5cf4d84\n\n... 4613 omitted; 4616 symbols have only CRC changes\n\ntype \u0027struct task_struct\u0027 changed\n  member \u0027struct task_delay_info * delays\u0027 was added\n  35 members (\u0027int nr_dirtied\u0027 .. \u0027u64 android_kabi_reserved8\u0027) changed\n    offset changed by 64\n```",
+      "parentUuid": "22897a0e_c31e9f29",
+      "revId": "d4d0a2ede10738108fcca4cd34e4583915098780",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
