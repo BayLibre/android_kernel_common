@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c287ec0_e2bbf790",
+        "filename": "include/trace/hooks/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-19T23:30:58Z",
+      "side": 0,
+      "message": "I didn\u0027t bother to move this include to kernel/sched/vendor_hooks.c since this inclusion and the hooks that rely on cgroup_taskset would be moved to kernel/cgroup/vendor_hooks.c (these shouldn\u0027t have been defined in this file).",
+      "revId": "a54b0cc492cbe5958350e9423550200ae35cb277",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
