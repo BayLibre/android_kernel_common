@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d064a1_df5cf1e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1952665
+      },
+      "writtenOn": "2022-08-20T01:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ae0c44d_e23e5e94",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 68
+      },
+      "revId": "e5f209645d32f0fa9cbc17572ce486eaa91fdbb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc4c82ee_47a44bd8",
@@ -41,6 +65,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e4ac8ce_d3091b1e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1952665
+      },
+      "writtenOn": "2022-08-20T01:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc4c82ee_47a44bd8",
+      "revId": "e5f209645d32f0fa9cbc17572ce486eaa91fdbb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09b0369e_c970a3f8",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-08-19T07:34:55Z",
       "side": 1,
       "message": "minor objections.  Big one is, why not also include the patch before this for the other fuse changes so you can cherry-pick this one directly instead of having to hand-tweak it?",
+      "revId": "e5f209645d32f0fa9cbc17572ce486eaa91fdbb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "959b8cfb_2b4fc860",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1952665
+      },
+      "writtenOn": "2022-08-20T01:11:11Z",
+      "side": 1,
+      "message": "I didn\u0027t need the other fuse change and was not aware of the convention of pulling in everything from a given header version at once. I\u0027ve updated the patchset to do so. Will keep this in mind fort the future. Thanks! fwiw, due to the other FROMLIST patch, hand-tweaking is still needed here and in the other patch.",
+      "parentUuid": "09b0369e_c970a3f8",
       "revId": "e5f209645d32f0fa9cbc17572ce486eaa91fdbb7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -81,6 +141,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f67c4b56_d7022640",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1952665
+      },
+      "writtenOn": "2022-08-20T01:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "354eb3f0_b9f62a77",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e5f209645d32f0fa9cbc17572ce486eaa91fdbb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3993e92b_0fa50e26",
@@ -94,6 +178,30 @@
       "writtenOn": "2022-08-19T07:34:55Z",
       "side": 1,
       "message": "was not part of this commit, came from another commit 😞",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 376,
+        "endChar": 64
+      },
+      "revId": "e5f209645d32f0fa9cbc17572ce486eaa91fdbb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a31c39f_2d3117c1",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1952665
+      },
+      "writtenOn": "2022-08-20T01:11:11Z",
+      "side": 1,
+      "message": "Yes... but the comment seemed necessary for maintenance of this file?",
+      "parentUuid": "3993e92b_0fa50e26",
       "range": {
         "startLine": 376,
         "startChar": 0,
