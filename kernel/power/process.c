@@ -46,6 +46,11 @@ static int try_to_freeze_tasks(bool user_only)
 
 	end_time = jiffies + msecs_to_jiffies(freeze_timeout_msecs);
 
+        pr_err("darren: test");
+        trace_android_vh_try_to_freeze_todo_logging(&todo_logging_on);
+        if (todo_logging_on) {
+            pr_err("darren: todo_logging_on flag is enabled");
+        }
 	if (!user_only)
 		freeze_workqueues_begin();
 
