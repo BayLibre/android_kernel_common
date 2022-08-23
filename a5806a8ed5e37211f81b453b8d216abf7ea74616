@@ -16,6 +16,24 @@
       "message": "Please no, can\u0027t we just delete ashmem now?  😞\n",
       "revId": "a5806a8ed5e37211f81b453b8d216abf7ea74616",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1886770e_6c588a74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2022-08-23T07:39:50Z",
+      "side": 1,
+      "message": "I\u0027m all in for that and already have a device specific patch ready to go aosp/2114881 but that alone is not sufficient because vendors can\u0027t flip the switch to memfd on their own due to system core selinux constraints. We are working on alternate solutions. But since Ashmem is still alive in android-mainline, I submitted this build fix.",
+      "parentUuid": "efaafecc_a774dfe1",
+      "revId": "a5806a8ed5e37211f81b453b8d216abf7ea74616",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
