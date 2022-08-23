@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34068aea_04508ca6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2022-08-23T09:58:20Z",
+      "side": 1,
+      "message": "Hi, this patch broke android14-5.15 on DB845c.\n\nWe are running into following CFI crash:\n\n[   34.351954][    T0] Kernel panic - not syncing: CFI failure (target: __static_call_return0.cfi_jt+0x0/0x8)\n[   34.361701][    T0] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W   E    \n5.15.59-android14-5-04104-g6590d00bbd51 #1\n[   34.361710][    T0] Hardware name: Thundercomm Dragonboard 845c (DT)\n[   34.361714][    T0] Call trace:\n[   34.391898][    T0]  dump_backtrace.cfi_jt+0x0/0x8\n[   34.391909][    T0]  dump_stack_lvl+0x80/0xb8\n[   34.401482][    T0]  panic+0x180/0x444\n[   34.401491][    T0]  __cfi_check_fail+0x58/0x5c\n[   34.401500][    T0]  __cfi_slowpath_diag+0x44/0x6c\n[   34.425560][    T0]  perf_prepare_sample+0xa8/0x5e4\n[   34.425566][    T0]  perf_event_output_forward+0x64/0x130\n[   34.425571][    T0]  __perf_event_overflow+0xc8/0x184\n[   34.481605][    T0]  perf_swevent_event+0x80/0x10c\n[   34.510817][    T0]  perf_tp_event+0x1fc/0x370\n[   34.515303][    T0]  perf_trace_sched_switch+0x214/0x264\n[   34.520658][    T0]  __schedule+0xa1c/0xafc\n[   34.524882][    T0]  do_idle+0x4cc/0x5a0\n[   34.528839][    T0]  cpu_startup_entry+0x84/0x90\n[   34.533498][    T0]  kernel_init+0x0/0x36c\n[   34.537632][    T0]  start_kernel+0x0/0x60c\n[   34.541858][    T0]  start_kernel+0x4f0/0x60c\n[   34.546260][    T0]  __primary_switched+0xc4/0x7ac4\n[   34.551186][    T0] SMP: stopping secondary CPUs\n[   34.755906][    T0] Kernel Offset: 0x270f200000 from 0xffffffc008000000\n[   34.762575][    T0] PHYS_OFFSET: 0x80000000\n[   34.766794][    T0] CPU features: 0x0,00000821,23300e46\n[   34.772063][    T0] Memory Limit: none\n",
+      "revId": "6590d00bbd519b2f27cbd88f8b399fc373a06bd1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
