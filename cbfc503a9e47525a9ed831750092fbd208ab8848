@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a296706d_dca20564",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2105,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-23T17:14:44Z",
+      "side": 1,
+      "message": "As per the link https://git.ti.com/cgit/rpmsg/rpmsg/tree/drivers/rpmsg/virtio_rpmsg_bus.c?id\u003de4d9d4655969ff21196d124b4900d4c8ab84f975#n878 \n-\u003e I understand that \"_txvq_cb is called when the remote processor completed processing a TX msg we just sent it, and the buffer is put back to the used ring\"\n-\u003e Also after the txbuf messages are queued (using tipc_chan_queue_msg()), there is no acknowledge from the receiver side after reading the txbuf.\n-\u003e Looks like this place might be good for this tracepoint.\n-\u003e Please suggest.",
+      "parentUuid": "76b25645_ab6bd14e",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5332fbe9_5b7c215b",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 7
