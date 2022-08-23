@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df892522_9e07b838",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1964034
+      },
+      "writtenOn": "2022-08-23T10:51:34Z",
+      "side": 1,
+      "message": "At present, the kernel tree only declares the support of VP9 without AV1. If hook is not added, AV1 will not play. May I ask how other manufacturers declared AV1 before? Upstream may not be able to merge into the kernel tree in time, which may affect support for AV1 format.",
+      "parentUuid": "70b6ffcb_3029a4c8",
+      "range": {
+        "startLine": 10,
+        "startChar": 1,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "20863420bcca96083d7452b3846faac3fd1dbbea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e046827_5b92d590",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-17T11:06:35Z",
       "side": 1,
       "message": "Can\u0027t you do this in the v4l driver itself?  Why is this hook needed here instead?",
+      "range": {
+        "startLine": 16,
+        "startChar": 33,
+        "endLine": 16,
+        "endChar": 69
+      },
+      "revId": "20863420bcca96083d7452b3846faac3fd1dbbea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b54f560_bd8fd5a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1964034
+      },
+      "writtenOn": "2022-08-23T10:51:34Z",
+      "side": 1,
+      "message": "There are some private parameters that need the application to configure some parameters to the decoder through different scenarios. We just borrowed VIDIOC_S_PARM to pass the private parameters, but the raw_data is cleared due to extendedmode CL was submitted. Therefore, the user defined \u0027raw_data\u0027 data is damaged and cannot be used normally. This is the reason for adding this hook.\n__u8 raw_data [200]. /* user-defined */",
+      "parentUuid": "3e046827_5b92d590",
       "range": {
         "startLine": 16,
         "startChar": 33,
