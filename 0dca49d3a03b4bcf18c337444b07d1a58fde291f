@@ -33,6 +33,24 @@
       "message": "Please fix the following:\n\nWARNING: modpost: vmlinux.o(.text+0x986bab): Section mismatch in reference from the function memblock_is_nomap_remove() to the variable .meminit.data:system_has_some_mirror\nThe function memblock_is_nomap_remove() references\nthe variable __meminitdata system_has_some_mirror.\nThis is often because memblock_is_nomap_remove lacks a __meminitdata \nannotation or the annotation of system_has_some_mirror is wrong.\n\nERROR: modpost: Section mismatches detected.\nSet CONFIG_SECTION_MISMATCH_WARN_ONLY\u003dy to allow them.\nmake[2]: *** [/buildbot/src/android/common-android12-5.10/common/scripts/Makefile.modpost:64: vmlinux.symvers] Error 1\nmake[2]: *** Deleting file \u0027vmlinux.symvers\u0027\nmake[1]: *** [/buildbot/src/android/common-android12-5.10/common/Makefile:1278: vmlinux] Error 2\nmake: *** [/buildbot/src/android/common-android12-5.10/common/Makefile:185: __sub-make] Error 2",
       "revId": "0dca49d3a03b4bcf18c337444b07d1a58fde291f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb13d106_0f8d675c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-08-23T07:35:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fb4e862_cbbb68a3",
+      "revId": "0dca49d3a03b4bcf18c337444b07d1a58fde291f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
