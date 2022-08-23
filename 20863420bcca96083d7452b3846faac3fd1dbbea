@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acc2b6d2_5247f896",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-23T12:11:07Z",
+      "side": 1,
+      "message": "Please work with upstream first to accomplish this and then we can easily backport the needed changes here.",
+      "parentUuid": "df892522_9e07b838",
+      "range": {
+        "startLine": 10,
+        "startChar": 1,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "20863420bcca96083d7452b3846faac3fd1dbbea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e046827_5b92d590",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "There are some private parameters that need the application to configure some parameters to the decoder through different scenarios. We just borrowed VIDIOC_S_PARM to pass the private parameters, but the raw_data is cleared due to extendedmode CL was submitted. Therefore, the user defined \u0027raw_data\u0027 data is damaged and cannot be used normally. This is the reason for adding this hook.\n__u8 raw_data [200]. /* user-defined */",
       "parentUuid": "3e046827_5b92d590",
+      "range": {
+        "startLine": 16,
+        "startChar": 33,
+        "endLine": 16,
+        "endChar": 69
+      },
+      "revId": "20863420bcca96083d7452b3846faac3fd1dbbea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "197e6474_08eb58ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-08-23T12:11:07Z",
+      "side": 1,
+      "message": "Again, please do this in your driver itself, you can not add a new user/kernel api to the system like this.",
+      "parentUuid": "4b54f560_bd8fd5a0",
       "range": {
         "startLine": 16,
         "startChar": 33,
