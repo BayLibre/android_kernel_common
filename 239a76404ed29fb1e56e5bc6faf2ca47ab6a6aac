@@ -52,6 +52,24 @@
       "parentUuid": "191cb842_61657297",
       "revId": "239a76404ed29fb1e56e5bc6faf2ca47ab6a6aac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27b74f1e_a343f6e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-08-23T23:55:29Z",
+      "side": 1,
+      "message": "Every patch needs a title and a description. Something like this:\n\n```\nANDROID: clear trylock bit for huge pages\n\nFix the current implementation which does not clear the trylock\nbit for huge pages.\n\nFixes: 309a6bf81a20 (\"ANDROID: vendor_hook: Add hook to not be stuck ro rmap lock in kswapd or direct_reclaim\")\nBug: 240003372\nSigned-off-by: Peifeng Li \u003clipeifeng@oppo.com\u003e\nChange-Id: Iac4d60ec3497d9bb7ba1f001a5c08a604daf4f5a\n```",
+      "parentUuid": "8fc114f0_4e73ec03",
+      "revId": "239a76404ed29fb1e56e5bc6faf2ca47ab6a6aac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
