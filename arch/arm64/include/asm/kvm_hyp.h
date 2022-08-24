@@ -133,4 +133,12 @@ extern bool kvm_nvhe_sym(smccc_trng_available);
 
 extern bool kvm_nvhe_sym(__pkvm_modules_enabled);
 
+struct hyp_clock_data {
+	u32 mult;
+	u32 shift;
+	u64 epoch_ns;
+	u64 epoch_cyc;
+};
+extern struct hyp_clock_data kvm_nvhe_sym(hyp_clock_data);
+
 #endif /* __ARM64_KVM_HYP_H__ */
