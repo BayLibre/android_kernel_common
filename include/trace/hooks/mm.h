@@ -317,6 +317,14 @@ DECLARE_HOOK(android_vh_drain_all_pages_bypass,
 		int migratetype, unsigned long did_some_progress,
 		bool *bypass),
 	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, did_some_progress, bypass));
+DECLARE_HOOK(android_vh_alloc_pages_reclaim_bypass,
+    TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
+	int migratetype, struct page **page),
+	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
+DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
+	TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
+	int migratetype, struct page **page),
+	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
 
 DECLARE_HOOK(android_vh_adjust_kvmalloc_flags,
 	TP_PROTO(unsigned int order, gfp_t *alloc_flags),
