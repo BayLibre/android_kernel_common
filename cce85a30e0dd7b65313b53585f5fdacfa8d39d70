@@ -16,6 +16,24 @@
       "message": "coding style: please fix comments\n\nI noticed this was called out upstream too. Can you answer Steffen\u0027s comments, he seems to think some of the changes may not be needed (or at least that the existing code is working as intended). Maybe update this patch with the next upstream rev.",
       "revId": "cce85a30e0dd7b65313b53585f5fdacfa8d39d70",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5152351b_2c2084e3",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3272,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-08-24T00:19:29Z",
+      "side": 1,
+      "message": "Done. Ack, made sure to address the style comments. Apologies, forgot to update this one.\n\nWith regards to the other comments, that\u0027s where the discussion went offline, but we haven\u0027t been able to get time to actually discuss them in detail before Steffen\u0027s schedule got busy.\n\n(For my own confidence, I also had Nathan and Yan review this as the other Android platform IPsec/IKE owners. Perhaps we can discuss more offline.)",
+      "parentUuid": "15d57c5d_8c3a770c",
+      "revId": "cce85a30e0dd7b65313b53585f5fdacfa8d39d70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
