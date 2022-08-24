@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26e88fff_c57801b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-24T00:37:45Z",
+      "side": 1,
+      "message": "This cannot be used in production, please upload a patch with the upstream values in the UAPI header.",
+      "revId": "708ce59b2d858468029242ba78d04267335d55f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33555853_af2cfebc",
+        "filename": "include/uapi/linux/nl80211.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3281,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-24T00:37:45Z",
+      "side": 1,
+      "message": "Does the fact that this is requested for 2022-07 mean you intend to use this in production? Have these values landed upstream now? If so, please submit a patch with the upstream assignments.",
+      "revId": "708ce59b2d858468029242ba78d04267335d55f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
