@@ -146,8 +146,51 @@ DECLARE_HOOK(android_vh_mem_cgroup_css_online,
 DECLARE_HOOK(android_vh_mem_cgroup_css_offline,
 	TP_PROTO(struct cgroup_subsys_state *css, struct mem_cgroup *memcg),
 	TP_ARGS(css, memcg));
+<<<<<<< HEAD   (039f38 Revert "ANDROID: mm: add vendor hook for vmpressure")
 /* macro versions of hooks are no longer required */
 
+=======
+DECLARE_HOOK(android_vh_vmpressure,
+	TP_PROTO(struct mem_cgroup *memcg, bool *bypass),
+	TP_ARGS(memcg, bypass));
+DECLARE_HOOK(android_vh_do_page_trylock,
+	TP_PROTO(struct page *page, struct rw_semaphore *sem,
+		bool *got_lock, bool *success),
+	TP_ARGS(page, sem, got_lock, success));
+DECLARE_HOOK(android_vh_update_page_mapcount,
+	TP_PROTO(struct page *page, bool inc_size, bool compound,
+			bool *first_mapping, bool *success),
+	TP_ARGS(page, inc_size, compound, first_mapping, success));
+DECLARE_HOOK(android_vh_add_page_to_lrulist,
+	TP_PROTO(struct page *page, bool compound, enum lru_list lru),
+	TP_ARGS(page, compound, lru));
+DECLARE_HOOK(android_vh_del_page_from_lrulist,
+	TP_PROTO(struct page *page, bool compound, enum lru_list lru),
+	TP_ARGS(page, compound, lru));
+DECLARE_HOOK(android_vh_show_mapcount_pages,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
+DECLARE_HOOK(android_vh_do_traversal_lruvec,
+	TP_PROTO(struct lruvec *lruvec),
+	TP_ARGS(lruvec));
+DECLARE_HOOK(android_vh_page_should_be_protected,
+	TP_PROTO(struct page *page, bool *should_protect),
+	TP_ARGS(page, should_protect));
+DECLARE_HOOK(android_vh_mark_page_accessed,
+	TP_PROTO(struct page *page),
+	TP_ARGS(page));
+DECLARE_HOOK(android_vh_page_cache_forced_ra,
+	TP_PROTO(struct readahead_control *ractl, unsigned long req_count, bool *do_forced_ra),
+	TP_ARGS(ractl, req_count, do_forced_ra));
+DECLARE_HOOK(android_vh_alloc_pages_reclaim_bypass,
+	TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
+	int migratetype, struct page **page),
+	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
+DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
+	TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
+	int migratetype, struct page **page),
+	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
+>>>>>>> CHANGE (0312e9 ANDROID: vendor_hooks:vendor hook for __alloc_pages_slowpath)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
