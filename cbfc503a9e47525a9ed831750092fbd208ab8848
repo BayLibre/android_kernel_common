@@ -89,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c170c26c_fe99e449",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2105,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-24T02:26:26Z",
+      "side": 1,
+      "message": "-\u003e Instead of capturing the trace for every TX buffer(inside while loop), may be a single trace can be captured by placing trace_trusty_ipc_write_end() outside while loop.",
+      "parentUuid": "a296706d_dca20564",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5332fbe9_5b7c215b",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 7
