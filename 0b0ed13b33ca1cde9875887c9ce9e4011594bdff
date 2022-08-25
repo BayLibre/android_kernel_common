@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "908acf28_79dcbaba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1060151
+      },
+      "writtenOn": "2022-08-25T20:05:54Z",
+      "side": 1,
+      "message": "The xfrm_input() code is effectively incomprehensible; however, I have spent a solid hour staring at it trying to figure out if there are any issues that can arise. My current belief is that unless there is an off-by-one error in the verified_cnt, this is at least safe, and I can\u0027t see any way that an off-by-one error occurs.",
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
