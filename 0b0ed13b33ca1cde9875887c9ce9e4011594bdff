@@ -63,6 +63,76 @@
       },
       "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47620bf0_b5759e37",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3258,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-08-25T23:52:53Z",
+      "side": 1,
+      "message": "what existing codebase? I don\u0027t think you meant to change this right? Yet it seems to be on the patches sent upstream.",
+      "parentUuid": "0f9c1d9c_c2da5da8",
+      "range": {
+        "startLine": 3258,
+        "startChar": 0,
+        "endLine": 3258,
+        "endChar": 7
+      },
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81ab1d42_b27f4dc9",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3271,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-08-25T23:52:53Z",
+      "side": 1,
+      "message": "hmm, perhaps I\u0027m missing something but why do we have to call `xfrm_state_ok()` if we are going to skip any errors? Couldn\u0027t we just start at `idx \u003d sp-\u003everified_cnt`?",
+      "range": {
+        "startLine": 3271,
+        "startChar": 3,
+        "endLine": 3271,
+        "endChar": 5
+      },
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa175a1c_90218111",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3682,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-08-25T23:52:53Z",
+      "side": 1,
+      "message": "nit: please align with the new line with the comments above",
+      "range": {
+        "startLine": 3682,
+        "startChar": 56,
+        "endLine": 3682,
+        "endChar": 73
+      },
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
