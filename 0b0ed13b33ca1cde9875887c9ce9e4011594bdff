@@ -89,6 +89,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c043ddcf_576dcbc9",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3258,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-08-26T00:24:30Z",
+      "side": 1,
+      "message": "Oh yikes my editor config changed this, and my gerrit config was hiding whitespace deltas. Thanks.",
+      "parentUuid": "47620bf0_b5759e37",
+      "range": {
+        "startLine": 3258,
+        "startChar": 0,
+        "endLine": 3258,
+        "endChar": 7
+      },
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81ab1d42_b27f4dc9",
@@ -114,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b27047e_2230075e",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3271,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-08-26T00:24:30Z",
+      "side": 1,
+      "message": "No; there\u0027s a two-way match going on here - All templates MUST find a matching secpath entry, and all tunnel-mode secpath entries MUST be verified against a template.\n\nSo if we start idx at sp-\u003everified_cnt, and the policy_check method was called multiple times we\u0027d end up with templates that don\u0027t match secpath entries, and that would be a bug, since there clearly is one that should be matching in the secpath. The only other approach would be to start at `sp-\u003everified_cnt - tmpl_cnt`, but there\u0027s potential for optional transport-mode transforms that may break that, so it\u0027s much more prone to off-by-one bugs.\n\nSo the more reliable and idempotent approach is to treat these as \"optional\" and continue searching.",
+      "parentUuid": "81ab1d42_b27f4dc9",
+      "range": {
+        "startLine": 3271,
+        "startChar": 3,
+        "endLine": 3271,
+        "endChar": 5
+      },
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa175a1c_90218111",
         "filename": "net/xfrm/xfrm_policy.c",
         "patchSetId": 4
@@ -125,6 +173,30 @@
       "writtenOn": "2022-08-25T23:52:53Z",
       "side": 1,
       "message": "nit: please align with the new line with the comments above",
+      "range": {
+        "startLine": 3682,
+        "startChar": 56,
+        "endLine": 3682,
+        "endChar": 73
+      },
+      "revId": "0b0ed13b33ca1cde9875887c9ce9e4011594bdff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "344713a4_c6a7c85c",
+        "filename": "net/xfrm/xfrm_policy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3682,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-08-26T00:24:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa175a1c_90218111",
       "range": {
         "startLine": 3682,
         "startChar": 56,
