@@ -163,6 +163,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48cc5554_2d5d4821",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-08-26T22:51:13Z",
+      "side": 1,
+      "message": "What is the purpose of the trace_trusty_ipc_write_end trace point? If we don\u0027t wait for anything in this function, it seems to only capture random scheduling delays. It might be better to just remove it to avoid confusion.",
+      "parentUuid": "91e2a59e_fbc3f0b2",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6efcfdae_cd8a51c3",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
