@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c76b77_4425b3e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-26T20:50:48Z",
+      "side": 1,
+      "message": "Here is the output of Giuliano\u0027s missing_information.pl tool comparing the old.xml to the new.xml:\n```\n$ mi old.xml new.xml\nsymbols: . (absent), ? (untyped), T (typed)\nTT: 6761\n??: 27\nT?: 5\n?T: 1 (console_drivers)\n.: 0\n?: 32\nT: 6762\ntypes: . (absent), ? (undefined), D (defined)\nDD: 3061\n.D: 188\n?D: 55\n??: 52\nD?: 7\n.?: 6\nD.: 1 (struct kfifo)\n.: 1\n?: 65\nD: 3304\n```",
+      "revId": "574e2b8fa54beaf15107d37bd0213db4b1a6c7f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
