@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6bc8e1a_e466d677",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-26T21:20:04Z",
+      "side": 1,
+      "message": "Here are the remaining undefined types (68) (`is-declaration-only` in xml):\n```\naction_gate_entry\nassoc_array_ptr\naudit_chunk\navc_node\nblk_queue_stats\nbpf_cgroup_storage_map\nbpf_run_ctx\nbsg_device\ncfg80211_cached_keys\ncfg80211_conn\ncfg80211_cqm_config\ncfg80211_internal_bss\ncpufreq_stats\ncpuidle_device_kobj\ncpuidle_driver_kobj\ncpuidle_state_kobj\ncpu_stop_done\ndax_device\ndevlink_port\ndma_coherent_mem\ndriver_data\ndrm_vram_mm\ndst_cache_pcpu\nep_device\neventfd_ctx\nfscrypt_blk_crypto_key\nfsg_operations\ngro_cell\ngs_port\niopf_device_param\niova_cpu_rcache\niova_magazine\nio_wq\nip_mc_socklist\n__key_reference_with_attributes\nlibipw_device\nmctrl_gpios\nmon_bus\nmtd_info\nmutex_waiter\nnet_rate_estimator\nnf_flowtable\nnfs4_lock_state\nnlm_lockowner\npcpu_dstats\nqdisc_walker\nring_buffer_iter\nscsi_host_cmd_pool\nseccomp_filter\nserial_icounter_struct\nsfp_bus\nsidtab_str_cache\nsmc_hashinfo\nsnd_shutdown_f_ops\ntimer_rand_state\ntrace_buffer\ntty_audit_buf\ntuner_setup\nudp_tunnel_nic\nulpi\nusb_phy_roothub\nvringh_config_ops\nwatchdog_governor\nwusb_dev\nmode_set_atomic (enum)\nunnamed-enum-underlying-type-0 (?)\nfscrypt_policy (enum)\ntcp_cc_info (union)\n```\n\nThese became defined in this patch (54):\n```\naudit_context\naudit_names\nblk_mq_alloc_data\nbpf_func_state\nbpf_kfunc_desc_tab\nbpf_offload_dev\nbpf_verifier_env\nbtf\ncan_dev_rcv_lists\ncan_pkg_stats\ncan_rcv_lists_stats\ncec_pin\ncore_vma_metadata\ndisk_events\nfib6_config\nfib6_result\nfiemap_extent_info\nfileattr\nfscrypt_info\nfsverity_info\nfsverity_operations\nfutex_pi_state\nhd_geometry\ninput_dev_poller\ninternal_state\nioam6_pernet_data\niomap\nio_uring_task\nipc_namespace\nip_tunnel_info\nip_tunnel_parm\nkioctx_table\nkstatfs\nmacsec_ops\nmedia_ctl\nmmc_blk_data\nmmu_notifier_subscriptions\nnf_conntrack_helper\nprog_entry\npr_ops\nrcu_node\nreadahead_control\nselinux_state\nsk_psock\nsnd_usb_power_domain\nswap_info_struct\ntime_namespace\ntipc_bearer\nuevent_sock\nuprobe\nuserfaultfd_ctx\nv4l2_ctrl_helper\nxdp_dev_bulk_queue\nxol_area\n```\n\nThese were defined before, but not after this patch (14):\n```\naudit_chunk\nblk_queue_stats\ncpu_stop_done\ndax_device\ndst_cache_pcpu\neventfd_ctx\nfscrypt_blk_crypto_key\ngro_cell\ngs_port\niova_cpu_rcache\niova_magazine\nio_wq\nmctrl_gpios\nsidtab_str_cache\n```",
+      "revId": "50230bc51c8776031136e3ea9fcac17e3cf7c250",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
