@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04e5cac6_c22df79b",
+        "filename": "include/trace/hooks/sched.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-26T20:55:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56b84450_46b291d0",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 6
+      },
+      "revId": "04d19ce0203d84dde0e98706e73a1ffa8bad71b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0aa09dd_0943340d",
@@ -61,6 +85,24 @@
       "writtenOn": "2022-08-26T11:54:26Z",
       "side": 1,
       "message": "by entirely removing GENKSYMS visibility we _only_ rely on what is left in the binary for the tooling to discover while with CRCs being computed from type information we have another line of defense. I suppose this is to keep the CRCs stable now for android13, but this should definitely be removed for future versions.",
+      "revId": "04d19ce0203d84dde0e98706e73a1ffa8bad71b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61004578_e948d1ac",
+        "filename": "kernel/sched/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-08-26T20:55:47Z",
+      "side": 1,
+      "message": "That\u0027s right. I\u0027m planning to do a few rounds to lower the undefined types in android13-5.15, then I\u0027ll apply the same changes to android14-5.15 which will be much cleaner with no __GENKSYMS__ tricks.",
+      "parentUuid": "f0aa09dd_0943340d",
       "revId": "04d19ce0203d84dde0e98706e73a1ffa8bad71b2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
