@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "019e281d_7c8e2d4a",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "Ok. Will remove the tracepoint here. And move this tracepoint to the location after dn_wait_for_reply() so that the timeout case also is covered.",
+      "parentUuid": "eea83c4a_c65be11a",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc8ac68c_ebaf1ac7",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 7
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "804e942f_65c98dc7",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "Ok. Will add a common error exit path \u0026 put the tracepoint there.",
+      "parentUuid": "bc8ac68c_ebaf1ac7",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2bd9b128_eada401a",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 7
@@ -48,6 +84,24 @@
       "writtenOn": "2022-08-19T17:44:06Z",
       "side": 1,
       "message": "Do we need _end in the name when we have only one tracepoint here?",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eee7465_1ce33385",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1619,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "Ok. Will remove _end in the name.",
+      "parentUuid": "2bd9b128_eada401a",
       "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -107,6 +161,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b45a201_452f06aa",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2105,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "I agree with you. It is not good idea to have trace_trusty_ipc_write_end() inside _txvq_cb. Hence the other best location is inside the function tipc_write_iter(), after queuing the message. \nThe sequence of function calls is as below \ntipc_chan_queue_msg() -\u003e vds_queue_txbuf() -\u003e virtqueue_kick_prepare(). Only after this the tracepoint is captured.",
+      "parentUuid": "c170c26c_fe99e449",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5332fbe9_5b7c215b",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 7
@@ -141,6 +213,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24625310_ad2ea980",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "Ok. Will retain the tracepoint (trace_trusty_share_memory) here. And add the corresponding trace_trusty_share_memory_done tracepoints.",
+      "parentUuid": "d8acdee6_7beada20",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d33af6e5_86d7617e",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 7
@@ -152,6 +242,24 @@
       "writtenOn": "2022-08-19T17:44:06Z",
       "side": 1,
       "message": "why are we passing unrelated information here and not information about the nop itself (which has a type and optional arguments)",
+      "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d912911b_c1440cc0",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "Ok. Will pass the nop-\u003eargs as argument. And remove api_version, trusty_panicked.",
+      "parentUuid": "d33af6e5_86d7617e",
       "revId": "cbfc503a9e47525a9ed831750092fbd208ab8848",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

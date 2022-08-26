@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91e2a59e_fbc3f0b2",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1434,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-08-26T17:58:01Z",
+      "side": 1,
+      "message": "I agree with you. It is not good idea to have trace_trusty_ipc_write_end() inside _txvq_cb. Hence the other best location is inside the function tipc_write_iter()/filp_send_ioctl(), after queuing the message.",
+      "parentUuid": "3d2f952b_58a7893b",
+      "revId": "3f9a800cf3ebba114a77f1b97a1f5eb1732bf36c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6efcfdae_cd8a51c3",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 5
