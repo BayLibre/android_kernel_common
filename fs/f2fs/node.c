@@ -1454,9 +1454,7 @@ page_hit:
 out_err:
 	ClearPageUptodate(page);
 out_put_err:
-	/* ENOENT comes from read_node_page which is not an error. */
-	if (err != -ENOENT)
-		f2fs_handle_page_eio(sbi, page->index, NODE);
+	f2fs_handle_page_eio(sbi, page->index, NODE);
 	f2fs_put_page(page, 1);
 	return ERR_PTR(err);
 }
