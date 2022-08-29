@@ -35,6 +35,16 @@
 #include <trace/events/irq.h>
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(irq_handler_entry);
+<<<<<<< HEAD   (b68cddb455684dd92a6f86a1dc93f9395fc1adc0 ANDROID: sched: Export cpu_busy_with_softirqs)
+||||||| BASE   (bf1d8c3f9c916968d5bba0758ce104055fed43cd ANDROID: ABI: Update symbol list for mtk)
+EXPORT_TRACEPOINT_SYMBOL_GPL(irq_handler_exit);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(irq_handler_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(softirq_entry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(softirq_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(tasklet_entry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(tasklet_exit);
+>>>>>>> CHANGE (c6f44352abedb12b4102449dd492734aaa7d5c4a ANDROID: softirq: Add EXPORT_SYMBOL_GPL for softirq and task)
 
 /*
    - No shared variables, all the data are CPU local.
