@@ -22,6 +22,30 @@
       },
       "revId": "37f7202170bb437ed1f7654624e7485b8aa8f5fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9281818_27a0fb70",
+        "filename": "kernel/fork.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1184,
+      "author": {
+        "id": 1874054
+      },
+      "writtenOn": "2022-08-30T02:57:39Z",
+      "side": 1,
+      "message": "There is a situation where the exit of low-priority threads is preempted which causes the process exits slowly. The situation of 30S has been observed, so we only need to obtain the current  at present, mm is not need for the time being. For universality, do we need to add mm here?",
+      "parentUuid": "994491ea_b1661d17",
+      "range": {
+        "startLine": 1184,
+        "startChar": 25,
+        "endLine": 1184,
+        "endChar": 29
+      },
+      "revId": "37f7202170bb437ed1f7654624e7485b8aa8f5fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
