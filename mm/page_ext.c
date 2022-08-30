@@ -92,6 +92,8 @@ static struct page_ext_operations *page_ext_ops[] __initdata = {
 
 unsigned long page_ext_size = sizeof(struct page_ext);
 
+/* FIXME: This should actually be part of another patch */
+struct page_ext *lookup_page_ext(const struct page *page);
 static unsigned long total_usage;
 
 bool early_page_ext;
