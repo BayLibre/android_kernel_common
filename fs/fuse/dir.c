@@ -185,10 +185,9 @@ static bool backing_data_changed(struct fuse_inode *fi, struct dentry *entry,
 		return false;
 
 	get_fuse_backing_path(entry, &new_backing_path);
-	new_backing_inode = fi->backing_inode;
-	ihold(new_backing_inode);
 
-	err = fuse_handle_backing(bpf_arg, &new_backing_inode, &new_backing_path);
+	err = fuse_handle_backing(bpf_arg, &new_backing_path);
+	new_backing_inode = d_inode(new_backing_path.dentry);
 
 	if (err)
 		goto put_inode;
@@ -203,7 +202,6 @@ put_bpf:
 	if (bpf)
 		bpf_prog_put(bpf);
 put_inode:
-	iput(new_backing_inode);
 	path_put(&new_backing_path);
 	return ret;
 }
@@ -559,16 +557,15 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid,
 		if (!backing_path->dentry)
 			goto out_queue_forget;
 
-		backing_inode = backing_path->dentry->d_inode;
+		err = fuse_handle_backing(&bpf_arg,
+				&get_fuse_dentry(entry)->backing_path);
+		if (err)
+			goto out_queue_forget;
+
+		backing_inode = d_inode(get_fuse_dentry(entry)->backing_path.dentry);
 		*inode = fuse_iget_backing(sb, outarg->nodeid, backing_inode);
 		if (!*inode)
 			goto out_queue_forget;
-
-		err = fuse_handle_backing(&bpf_arg,
-				&get_fuse_inode(*inode)->backing_inode,
-				&get_fuse_dentry(entry)->backing_path);
-		if (err)
-			goto out;
 
 		err = fuse_handle_bpf_prog(&bpf_arg, NULL, &get_fuse_inode(*inode)->bpf);
 		if (err)

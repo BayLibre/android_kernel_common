@@ -367,6 +367,7 @@ static int fuse_inode_backing_set(struct inode *inode, void *_nodeidp)
 
 	fi->nodeid = fii->nodeid;
 #ifdef CONFIG_FUSE_BPF
+	BUG_ON(fi->backing_inode != NULL);
 	fi->backing_inode = fii->backing_inode;
 	if (fi->backing_inode)
 		ihold(fi->backing_inode);

@@ -151,16 +151,14 @@ int fuse_lookup_backing(struct bpf_fuse_args *fa, struct dentry **out, struct in
 	return 0;
 }
 
-int fuse_handle_backing(struct fuse_entry_bpf *feb, struct inode **backing_inode,
-			struct path *backing_path) {
+int fuse_handle_backing(struct fuse_entry_bpf *feb, struct path *backing_path)
+{
 	switch (feb->out.backing_action) {
 	case FUSE_ACTION_KEEP:
 		/* backing inode/path are added in fuse_lookup_backing */
 		break;
 
 	case FUSE_ACTION_REMOVE:
-		iput(*backing_inode);
-		*backing_inode = NULL;
 		path_put_init(backing_path);
 		break;
 
@@ -168,13 +166,10 @@ int fuse_handle_backing(struct fuse_entry_bpf *feb, struct inode **backing_inode
 		if (!feb->backing_path.dentry)
 			return -EINVAL;
 
-		if (backing_inode)
-			iput(*backing_inode);
-		*backing_inode = feb->backing_path.dentry->d_inode;
-		ihold(*backing_inode);
-
 		path_put(backing_path);
 		*backing_path = feb->backing_path;
+		feb->backing_path.dentry = NULL;
+		feb->backing_path.mnt = NULL;
 
 		break;
 	}
@@ -235,7 +230,7 @@ int fuse_lookup_finalize(struct bpf_fuse_args *fa, struct dentry **out,
 			 struct inode *dir, struct dentry *entry, unsigned int flags)
 {
 	struct fuse_dentry *fd;
-	struct dentry *bd;
+	struct dentry *backing_dentry;
 	struct inode *inode, *backing_inode;
 	struct inode *d_inode = entry->d_inode;
 	struct fuse_entry_out *feo = fa->out_args[0].value;
@@ -247,10 +242,13 @@ int fuse_lookup_finalize(struct bpf_fuse_args *fa, struct dentry **out,
 	fd = get_fuse_dentry(entry);
 	if (!fd)
 		return -EIO;
-	bd = fd->backing_path.dentry;
-	if (!bd)
+	error = fuse_handle_backing(feb, &fd->backing_path);
+	if (error)
+		return error;
+	backing_dentry = fd->backing_path.dentry;
+	if (!backing_dentry)
 		return -ENOENT;
-	backing_inode = bd->d_inode;
+	backing_inode = backing_dentry->d_inode;
 	if (!backing_inode) {
 		*out = 0;
 		return 0;
@@ -265,10 +263,6 @@ int fuse_lookup_finalize(struct bpf_fuse_args *fa, struct dentry **out,
 		return PTR_ERR(inode);
 
 	error = fuse_handle_bpf_prog(feb, dir, &get_fuse_inode(inode)->bpf);
-	if (error)
-		return error;
-
-	error = fuse_handle_backing(feb, &get_fuse_inode(inode)->backing_inode, &fd->backing_path);
 	if (error)
 		return error;
 
