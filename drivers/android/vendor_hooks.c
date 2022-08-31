@@ -6,6 +6,11 @@
  * Copyright 2020 Google LLC
  */
 
+#ifndef __GENKSYMS__
+#include <../kernel/printk/printk_ringbuffer.h>
+#include <uapi/linux/android/binder.h>
+#endif
+
 #define CREATE_TRACE_POINTS
 #include <trace/hooks/vendor_hooks.h>
 #include <linux/tracepoint.h>
