@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2da72990_946b19a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-08-31T17:36:46Z",
+      "side": 1,
+      "message": "It\u0027s interesting (and counter intuitive) that a patch to loosen permissions psi files prevents previously working access by system_server.\n\nMy only worry with this change is that it is a partial revert, and so the previous default permissions on the files are now more accessible w/o the CAP_SYS_RESOURCE guard.\n\nI suspect sepolicy might save the day in this case, but would a full revert of the problematic patch be a safer approach?",
+      "revId": "0725eb70e958751963843003481df9e47bb9a4cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
