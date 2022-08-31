@@ -103,7 +103,7 @@ int fuse_lookup_initialize_out(struct bpf_fuse_args *fa, struct fuse_lookup_io *
 			       struct inode *dir, struct dentry *entry, unsigned int flags)
 {
 	fa->out_numargs = 2;
-	fa->flags = FUSE_BPF_OUT_ARGVAR;
+	fa->flags = FUSE_BPF_OUT_ARGVAR | FUSE_BPF_IS_LOOKUP;
 	fa->out_args[0] = (struct bpf_fuse_arg) {
 		.size = sizeof(fli->feo),
 		.value = &fli->feo,

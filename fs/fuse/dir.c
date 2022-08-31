@@ -168,6 +168,7 @@ static void fuse_lookup_init(struct fuse_conn *fc, struct fuse_args *args,
 	args->out_args[0].value = outarg;
 	args->out_args[1].size = sizeof(struct fuse_entry_bpf_out);
 	args->out_args[1].value = bpf_outarg;
+	args->is_lookup = 1;
 }
 
 #ifdef CONFIG_FUSE_BPF
