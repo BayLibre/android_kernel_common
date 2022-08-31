@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cf50af7_51b70e80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1182834
+      },
+      "writtenOn": "2022-08-31T09:56:32Z",
+      "side": 1,
+      "message": "Hi Jaegeuk, Todd,\n\nCould you please help to review below three patches:\n\nhttps://android-review.googlesource.com/c/kernel/common/+/2202155\nhttps://android-review.googlesource.com/c/kernel/common/+/2202156\nhttps://android-review.googlesource.com/c/kernel/common/+/2202157\n\nw/o these patches, it may cause database corruption in some race conditions, android devices w/ 12-5.10 were affected since they were missed to be backported to 5.10 stable kernel.",
+      "revId": "22b447e9bdb357e62fa1bfd85a2e8072e489b68a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
