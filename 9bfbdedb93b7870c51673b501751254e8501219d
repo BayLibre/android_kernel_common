@@ -141,6 +141,24 @@
       "parentUuid": "9aedaeb2_af5b6f91",
       "revId": "9bfbdedb93b7870c51673b501751254e8501219d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "422e4f2a_8a82f0be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-09-01T15:09:04Z",
+      "side": 1,
+      "message": "This will break if the kernel (vmlinux) is built without that change, but a module requiring `android_debug_symbol` built with the change. In that case you get a mismatch. Perhaps you do not see that locally if building kernel and module from the same source tree.",
+      "parentUuid": "ca382394_3f097525",
+      "revId": "9bfbdedb93b7870c51673b501751254e8501219d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
