@@ -30,7 +30,8 @@
 	tipc_state(DISCONNECTED)	\
 	tipc_state(CONNECTING)		\
 	tipc_state(CONNECTED)		\
-	tipc_state_end(STALE)		\
+	tipc_state(STALE)		    \
+	tipc_state_end(CONNECTED_TX_FULL)	\
 	)
 
 #undef tipc_state
@@ -234,6 +235,49 @@ TRACE_EVENT(trusty_ipc_rx,
 	),
 	TP_printk("chan=%u srv_name=%s buf_id=0x%llx", __entry->chan,
 		__entry->srv_name, __entry->buf_id)
+);
+
+/*
+ * tracepoint when a control message is received from trusty
+ * (possibly indicating flow control activity)
+ */
+#define TIPC_FC_CHAN_EVENT_LIST (	\
+	tipc_fc_event(MARKED_EMPTY_UPON_RX_PUT)		\
+	tipc_fc_event(TX_PAUSED_UPON_PENDING_MSG_CNT)	\
+	tipc_fc_event_end(TX_RESUME_UPON_TRUSTY_MSG)	\
+	)
+
+#undef tipc_fc_event
+#undef tipc_fc_event_end
+
+#define tipc_fc_event_define_enum(x)	(TRACE_DEFINE_ENUM(TIPC_FC_CHAN_##x);)
+#define tipc_fc_event(x)			DELETE_PAREN(tipc_fc_event_define_enum(x))
+#define tipc_fc_event_end(x)		DELETE_PAREN(tipc_fc_event_define_enum(x))
+
+DELETE_PAREN(TIPC_FC_CHAN_EVENT_LIST)
+
+#undef tipc_fc_event
+#undef tipc_fc_event_end
+
+#define tipc_fc_event(x)		{ TIPC_FC_CHAN_##x, #x },
+#define tipc_fc_event_end(x)	{ TIPC_FC_CHAN_##x, #x }
+
+#define tipc_fc_channel_event_name(x)	\
+	__print_symbolic(x, DELETE_PAREN(TIPC_FC_CHAN_EVENT_LIST))
+
+TRACE_EVENT(trusty_ipc_fc,
+	TP_PROTO(struct tipc_chan *chan, u32 event_id),
+	TP_ARGS(chan, event_id),
+	TP_STRUCT__entry(
+		__field(u32, chan)
+		__field(u32, event_id)
+	),
+	TP_fast_assign(
+		__entry->chan = chan ? chan->local : ~0U;
+		__entry->event_id = event_id;
+	),
+	TP_printk("chan=%u event='%s'", __entry->chan,
+		tipc_fc_channel_event_name(__entry->event_id))
 );
 #endif /* _TRUSTY_IPC_TRACE_H */
 
