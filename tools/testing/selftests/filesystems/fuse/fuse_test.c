@@ -2195,6 +2195,7 @@ static void run_one_test(const char *mount_dir,
 			 const struct test_case *test_case)
 {
 	ksft_print_msg("Running %s\n", test_case->name);
+	bpf_clear_trace();
 	if (test_case->pfunc(mount_dir) == TEST_SUCCESS)
 		ksft_test_result_pass("%s\n", test_case->name);
 	else
