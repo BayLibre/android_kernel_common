@@ -1261,7 +1261,7 @@ static int bpf_test_set_backing_folder(const char *mount_dir)
 		TEST(dirent = readdir(dir), dirent == NULL);
 		TESTSYSCALL(closedir(dir));
 		dir = NULL;
-		TESTEQUAL(bpf_test_trace("readdir"), 0);
+		TESTEQUAL(bpf_test_trace("prefilter opcode: 28"), 0);
 		TESTSYSCALL(umount(mount_dir));
 	FUSE_DAEMON
 		int bpf_fd  = -1;
