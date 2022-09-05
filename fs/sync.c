@@ -119,6 +119,7 @@ void ksys_sync(void)
 	if (unlikely(laptop_mode))
 		laptop_sync_completion();
 }
+EXPORT_SYMBOL_GPL(ksys_sync);
 
 SYSCALL_DEFINE0(sync)
 {
