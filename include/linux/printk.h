@@ -162,6 +162,7 @@ __printf(1, 2) __cold int _printk_deferred(const char *fmt, ...);
 
 extern void __printk_safe_enter(void);
 extern void __printk_safe_exit(void);
+extern struct printk_ringbuffer *prb;
 /*
  * The printk_deferred_enter/exit macros are available only as a hack for
  * some code paths that need to defer all printk console printing. Interrupts
