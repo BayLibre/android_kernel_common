@@ -1140,9 +1140,6 @@ PMUV3_INIT_SIMPLE(armv8_neoverse_n1)
 PMUV3_INIT_SIMPLE(armv9_neoverse_n2)
 PMUV3_INIT_SIMPLE(armv8_neoverse_v1)
 
-PMUV3_INIT_SIMPLE(armv8_nvidia_carmel)
-PMUV3_INIT_SIMPLE(armv8_nvidia_denver)
-
 static int armv8_a35_pmu_init(struct arm_pmu *cpu_pmu)
 {
 	return armv8_pmu_init_nogroups(cpu_pmu, "armv8_cortex_a35",
@@ -1209,8 +1206,6 @@ static const struct of_device_id armv8_pmu_of_device_ids[] = {
 	{.compatible = "arm,neoverse-v1-pmu",	.data = armv8_neoverse_v1_pmu_init},
 	{.compatible = "cavium,thunder-pmu",	.data = armv8_thunder_pmu_init},
 	{.compatible = "brcm,vulcan-pmu",	.data = armv8_vulcan_pmu_init},
-	{.compatible = "nvidia,carmel-pmu",	.data = armv8_nvidia_carmel_pmu_init},
-	{.compatible = "nvidia,denver-pmu",	.data = armv8_nvidia_denver_pmu_init},
 	{},
 };
 
