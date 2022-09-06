@@ -33,6 +33,24 @@
       "message": "this .xml update removed a lot of symbols which is not allowed.  Please rebase and regenerate the .xml update and resubmit.",
       "revId": "c2e6d317c983187a55bfd0f9091466a8c06bf302",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0dca420_b8c04f7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2022-09-06T13:57:55Z",
+      "side": 1,
+      "message": "1.we usb this build command\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh --update LTO\u003dfull\n2.update to new base\n3.apply all our change, but the build abi_gki_aarch64.xml is same as before.\n\ndo you have some suggest,what we should we to do now",
+      "parentUuid": "2d93c53d_649bee4f",
+      "revId": "c2e6d317c983187a55bfd0f9091466a8c06bf302",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
