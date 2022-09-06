@@ -428,6 +428,8 @@ static struct printk_ringbuffer printk_rb_dynamic;
 
 static struct printk_ringbuffer *prb = &printk_rb_static;
 
+struct printk_ringbuffer **current_printk_ringbuffer = &prb;
+
 /*
  * We cannot access per-CPU data (e.g. per-CPU flush irq_work) before
  * per_cpu_areas are initialised. This variable is set to true when
