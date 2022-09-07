@@ -16,6 +16,24 @@
       "message": "```\ncommon/mm/vmscan.c:1482:3: error: implicit declaration of function \u0027trace_android_vh_page_trylock_clear\u0027 [-Werror,-Wimplicit-function-declaration]\n                trace_android_vh_page_trylock_clear(page);\n                ^\n1 error generated.\n```",
       "revId": "acc9f3f1aa14e6ef1f994845a6855ab3807edac3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72570848_4c5f2855",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1954368
+      },
+      "writtenOn": "2022-09-07T05:30:48Z",
+      "side": 1,
+      "message": "we local build again \nthe step is like this:\ngit checkout remotes/aosp/android12-5.10-2022-04 -b aosp/android12-5.10-2022-04\n\ngit pull\ngit fetch https://android.googlesource.com/kernel/common refs/changes/52/2203152/8 \u0026\u0026 git cherry-pick FETCH_HEAD\ngit fetch https://android.googlesource.com/kernel/common refs/changes/53/2203153/7 \u0026\u0026 git cherry-pick FETCH_HEAD\ngit fetch https://android.googlesource.com/kernel/common refs/changes/76/2206176/6 \u0026\u0026 git cherry-pick FETCH_HEAD\ngit fetch https://android.googlesource.com/kernel/common refs/changes/37/2206137/6 \u0026\u0026 git cherry-pick FETCH_HEAD\ngit fetch https://android.googlesource.com/kernel/common refs/changes/21/2206021/5 \u0026\u0026 git cherry-pick FETCH_HEAD\n\nLTO\u003dfull BUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh --update\n\nstill build pass, and the abi_gki_aarch64.xml is the same as before\n\nis there any suggest?or can you build together again?",
+      "parentUuid": "0816d17d_0e829773",
+      "revId": "acc9f3f1aa14e6ef1f994845a6855ab3807edac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
