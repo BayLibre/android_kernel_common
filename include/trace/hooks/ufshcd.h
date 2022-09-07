@@ -51,7 +51,7 @@ DECLARE_HOOK(android_vh_ufs_send_tm_command,
 	TP_ARGS(hba, tag, str_t));
 
 DECLARE_HOOK(android_vh_ufs_check_int_errors,
-	TP_PROTO(struct ufs_hba *hba, bool queue_eh_work),
+	TP_PROTO(struct ufs_hba *hba, bool *queue_eh_work),
 	TP_ARGS(hba, queue_eh_work));
 
 DECLARE_HOOK(android_vh_ufs_update_sdev,
