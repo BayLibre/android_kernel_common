@@ -69,6 +69,24 @@
       "parentUuid": "f0dca420_b8c04f7a",
       "revId": "c2e6d317c983187a55bfd0f9091466a8c06bf302",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daadd3b3_5431d8c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2022-09-07T02:52:33Z",
+      "side": 1,
+      "message": "git checkout remotes/aosp/android12-5.10-2022-06 -b aosp/android12-5.10-2022-06\ngit pull\ngit fetch https://android.googlesource.com/kernel/common refs/changes/07/2203207/9 \u0026\u0026 git cherry-pick FETCH_HEAD\ngit fetch https://android.googlesource.com/kernel/common refs/changes/08/2203208/9 \u0026\u0026 git cherry-pick FETCH_HEAD\ngit fetch https://android.googlesource.com/kernel/common refs/changes/09/2203209/9 \u0026\u0026 git cherry-pick FETCH_HEAD\nLTO\u003dfull BUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh --update \n\nour step is like this\nbut build result is the same as before",
+      "parentUuid": "de6a5e16_2360858e",
+      "revId": "c2e6d317c983187a55bfd0f9091466a8c06bf302",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
