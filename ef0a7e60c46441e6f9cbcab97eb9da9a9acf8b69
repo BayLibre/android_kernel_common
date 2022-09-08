@@ -87,6 +87,23 @@
       "parentUuid": "8ec2d89a_1939532b",
       "revId": "ef0a7e60c46441e6f9cbcab97eb9da9a9acf8b69",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdfda13b_a3ea14c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-09-08T12:18:53Z",
+      "side": 1,
+      "message": "hmm, this is android13 and should use master-kernel-build-2022 for the build tools, but the target was dropped on the master branch. Whatever build broke because of that should check that the correct build tools branch is used.",
+      "revId": "ef0a7e60c46441e6f9cbcab97eb9da9a9acf8b69",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
