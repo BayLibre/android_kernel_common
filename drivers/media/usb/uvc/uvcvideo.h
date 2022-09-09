@@ -42,6 +42,7 @@
 #define UVC_EXT_GPIO_UNIT_ID		0x100
 
 /* ------------------------------------------------------------------------
+<<<<<<< HEAD   (2d60c7 BACKPORT: media: v4l: move helper functions for fractions fr)
  * GUIDs
  */
 #define UVC_GUID_UVC_CAMERA \
@@ -180,6 +181,8 @@
 
 
 /* ------------------------------------------------------------------------
+=======
+>>>>>>> CHANGE (738799 BACKPORT: media: uvcvideo: move uvc_format_desc to common he)
  * Driver specific constants.
  */
 
@@ -283,13 +286,8 @@ struct uvc_control {
 	struct uvc_fh *handle;	/* File handle that last changed the control. */
 };
 
-struct uvc_format_desc {
-	char *name;
-	u8 guid[16];
-	u32 fcc;
-};
-
-/* The term 'entity' refers to both UVC units and UVC terminals.
+/*
+ * The term 'entity' refers to both UVC units and UVC terminals.
  *
  * The type field is either the terminal type (wTerminalType in the terminal
  * descriptor), or the unit type (bDescriptorSubtype in the unit descriptor).

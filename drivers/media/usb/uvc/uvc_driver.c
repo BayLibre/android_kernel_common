@@ -21,6 +21,7 @@
 
 #include <media/v4l2-common.h>
 #include <media/v4l2-ioctl.h>
+#include <media/v4l2-uvc.h>
 
 #include "uvcvideo.h"
 
@@ -36,6 +37,7 @@ unsigned int uvc_dbg_param;
 unsigned int uvc_timeout_param = UVC_CTRL_STREAMING_TIMEOUT;
 
 /* ------------------------------------------------------------------------
+<<<<<<< HEAD   (2d60c7 BACKPORT: media: v4l: move helper functions for fractions fr)
  * Video formats
  */
 
@@ -228,6 +230,8 @@ static struct uvc_format_desc uvc_fmts[] = {
 };
 
 /* ------------------------------------------------------------------------
+=======
+>>>>>>> CHANGE (738799 BACKPORT: media: uvcvideo: move uvc_format_desc to common he)
  * Utility functions
  */
 
@@ -241,19 +245,6 @@ struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
 		ep = &alts->endpoint[i];
 		if (ep->desc.bEndpointAddress == epaddr)
 			return ep;
-	}
-
-	return NULL;
-}
-
-static struct uvc_format_desc *uvc_format_by_guid(const u8 guid[16])
-{
-	unsigned int len = ARRAY_SIZE(uvc_fmts);
-	unsigned int i;
-
-	for (i = 0; i < len; ++i) {
-		if (memcmp(guid, uvc_fmts[i].guid, 16) == 0)
-			return &uvc_fmts[i];
 	}
 
 	return NULL;
