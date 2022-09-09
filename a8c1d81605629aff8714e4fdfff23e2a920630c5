@@ -16,6 +16,24 @@
       "message": "Hi Wenchao and all,\n\nThis is Mediatek.\n\nWe found this patch:\n\n\t\ttrace_android_vh_mmc_sd_update_cmdline_timing(card, \u0026err);\n\t\tif (err)\n\t\t\tgoto free_card;\n\t\t\t\nif vendor doesn\u0027t implement above hook such as us, then will goto \"free_card\" due to err \u003e 0, this will result in SD cannot be recognized...\n\nShall we change it as below? （let hook return negative when it fail）\nif (err \u003c 0)\n   goto free_card;\n",
       "revId": "a8c1d81605629aff8714e4fdfff23e2a920630c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ecd1826_15bd55eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1947925
+      },
+      "writtenOn": "2022-09-09T01:23:30Z",
+      "side": 1,
+      "message": "No problem, you can modify it like this.",
+      "parentUuid": "bd311452_346a1df8",
+      "revId": "a8c1d81605629aff8714e4fdfff23e2a920630c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
