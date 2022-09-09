@@ -149,6 +149,7 @@ struct ahash_alg {
 
 struct shash_desc {
 	struct crypto_shash *tfm;
+	void * padding;
 	void *__ctx[] __aligned(ARCH_SLAB_MINALIGN);
 };
 
