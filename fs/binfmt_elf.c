@@ -357,13 +357,20 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
 	return 0;
 }
 
+/* Needed for the misaligned hack, but only defined later. */
+static int elf_read(struct file *file, void *buf, size_t len, loff_t pos);
+
 static unsigned long elf_map(struct file *filep, unsigned long addr,
 		const struct elf_phdr *eppnt, int prot, int type,
-		unsigned long total_size)
+		unsigned long total_size, bool misaligned)
 {
-	unsigned long map_addr;
+	void *data;
+	unsigned long map_addr, retval;
 	unsigned long size = eppnt->p_filesz + ELF_PAGEOFFSET(eppnt->p_vaddr);
+	unsigned long size_orig = eppnt->p_filesz;
 	unsigned long off = eppnt->p_offset - ELF_PAGEOFFSET(eppnt->p_vaddr);
+	unsigned long off_orig = eppnt->p_offset;
+	unsigned long addr_orig = addr;
 	addr = ELF_PAGESTART(addr);
 	size = ELF_PAGEALIGN(size);
 
@@ -371,6 +378,10 @@ static unsigned long elf_map(struct file *filep, unsigned long addr,
 	 * segment with zero filesize is perfectly valid */
 	if (!size)
 		return addr;
+
+	if (misaligned && total_size) {
+		pr_info("%d (%s): misaligned!\n", task_pid_nr(current), current->comm);
+	}
 
 	/*
 	* total_size is the size of the ELF (interpreter) image.
@@ -380,13 +391,45 @@ static unsigned long elf_map(struct file *filep, unsigned long addr,
 	* So we first map the 'big' image - and unmap the remainder at
 	* the end. (which unmap is needed for ELF images with holes.)
 	*/
-	if (total_size) {
-		total_size = ELF_PAGEALIGN(total_size);
-		map_addr = vm_mmap(filep, addr, total_size, prot, type, off);
-		if (!BAD_ADDR(map_addr))
-			vm_munmap(map_addr+size, total_size-size);
-	} else
-		map_addr = vm_mmap(filep, addr, size, prot, type, off);
+	if (!misaligned) {
+		if (total_size) {
+			total_size = ELF_PAGEALIGN(total_size);
+
+			map_addr = vm_mmap(filep, addr, total_size,
+					prot, type, off);
+			if (!BAD_ADDR(map_addr))
+				vm_munmap(map_addr+size, total_size-size);
+		} else
+			map_addr = vm_mmap(filep, addr, size, prot, type, off);
+	} else {
+		if (total_size) {
+			total_size = ELF_PAGEALIGN(total_size);
+
+			map_addr = vm_mmap(NULL, addr, total_size,
+					prot, type | MAP_ANONYMOUS, 0);
+		}
+
+		if (!total_size || !BAD_ADDR(map_addr)) {
+			data = kmalloc(size_orig, GFP_KERNEL);
+			if (!data)
+				return -ENOMEM;
+
+			retval = elf_read(filep, data, size_orig, off_orig);
+
+			if (retval < 0) {
+				kfree(data);
+				return retval;
+			}
+
+			retval = copy_to_user((void __user *)addr_orig, data, size_orig);
+			kfree(data);
+
+			if (retval)
+				map_addr = -EFAULT;
+			else if (!total_size)
+				map_addr = addr;
+		}
+	}
 
 	if ((type & MAP_FIXED_NOREPLACE) &&
 	    PTR_ERR((void *)map_addr) == -EEXIST)
@@ -632,7 +675,7 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
 				load_addr = -vaddr;
 
 			map_addr = elf_map(interpreter, load_addr + vaddr,
-					eppnt, elf_prot, elf_type, total_size);
+					eppnt, elf_prot, elf_type, total_size, false);
 			total_size = 0;
 			error = map_addr;
 			if (BAD_ADDR(map_addr))
@@ -839,6 +882,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
 	struct arch_elf_state arch_state = INIT_ARCH_ELF_STATE;
 	struct mm_struct *mm;
 	struct pt_regs *regs;
+        bool misaligned = false;
 
 	retval = -ENOEXEC;
 	/* First of all, some simple consistency checks */
@@ -921,6 +965,17 @@ static int load_elf_binary(struct linux_binprm *bprm)
 out_free_interp:
 		kfree(elf_interpreter);
 		goto out_free_ph;
+	}
+
+	elf_ppnt = elf_phdata;
+	for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++) {
+		/* Not power of 2 is invalid, we are looking for
+		 * segments that are correctly aligned but are aligned
+		 * to value smaller than the page size. */
+                if (elf_ppnt->p_type == PT_LOAD && is_power_of_2(elf_ppnt->p_align)
+		    && elf_ppnt->p_align < PAGE_SIZE) {
+			misaligned = true;
+		}
 	}
 
 	elf_ppnt = elf_phdata;
@@ -1064,8 +1119,8 @@ out_free_interp:
 			}
 		}
 
-		elf_prot = make_prot(elf_ppnt->p_flags, &arch_state,
-				     !!interpreter, false);
+		elf_prot = make_prot(!misaligned ? elf_ppnt->p_flags : PF_R | PF_W | PF_X,
+				     &arch_state, !!interpreter, false);
 
 		elf_flags = MAP_PRIVATE | MAP_DENYWRITE | MAP_EXECUTABLE;
 
@@ -1135,8 +1190,22 @@ out_free_interp:
 			}
 		}
 
+		/* Needed for static binaries. */
+		if (misaligned && elf_ex->e_type != ET_DYN && !load_addr_set) {
+			total_size = total_mapping_size(elf_phdata,
+							elf_ex->e_phnum);
+			if (!total_size) {
+				retval = -EINVAL;
+				goto out_free_dentry;
+			}
+		}
+
+		/*
+		 * This is used below to calculate the actual load
+		 * bias.
+		 */
 		error = elf_map(bprm->file, load_bias + vaddr, elf_ppnt,
-				elf_prot, elf_flags, total_size);
+				elf_prot, elf_flags, total_size, misaligned);
 		if (BAD_ADDR(error)) {
 			retval = IS_ERR((void *)error) ?
 				PTR_ERR((void*)error) : -EINVAL;
