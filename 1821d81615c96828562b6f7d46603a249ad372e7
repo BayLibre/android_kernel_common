@@ -22,6 +22,30 @@
       },
       "revId": "1821d81615c96828562b6f7d46603a249ad372e7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff24a1b_6cf1033a",
+        "filename": "build.config.gki.aarch64.fips140",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-09-09T22:53:40Z",
+      "side": 1,
+      "message": "Nope. The original value is `check_defconfig` which won\u0027t pass because the order in .config doesn\u0027t match savedefconfig. This is required.",
+      "parentUuid": "1e5e46b6_192b24e4",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "1821d81615c96828562b6f7d46603a249ad372e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
