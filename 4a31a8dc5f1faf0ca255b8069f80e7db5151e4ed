@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e15c7e_b30fcd87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-12T15:36:29Z",
+      "side": 1,
+      "message": "Might break other users of this hook. Can be fixed in hook handler.",
+      "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "139a785d_1460686e",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-12T15:36:29Z",
+      "side": 1,
+      "message": "This is not needed. Your vendor hook has complete control of this. Fix this in your vendor hook handler.\n\nThis could break other users of this hook that rely on \"if (err)\" behavior.",
+      "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
