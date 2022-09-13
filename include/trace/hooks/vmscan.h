@@ -36,6 +36,9 @@ DECLARE_HOOK(android_vh_should_continue_reclaim,
 DECLARE_HOOK(android_vh_file_is_tiny_bypass,
 	TP_PROTO(bool file_is_tiny, bool *bypass),
 	TP_ARGS(file_is_tiny, bypass));
+DECLARE_HOOK(android_vh_check_page_look_around_ref,
+	TP_PROTO(struct page *page, int *skip),
+	TP_ARGS(page, skip));
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
