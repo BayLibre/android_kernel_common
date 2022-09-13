@@ -1468,7 +1468,12 @@ static enum folio_references folio_check_references(struct folio *folio,
 {
 	int referenced_ptes, referenced_folio;
 	unsigned long vm_flags;
+	int ret = 0;
 
+	trace_android_vh_check_page_look_around_ref(folio, &ret);
+	if (ret)
+		return ret;
+	
 	referenced_ptes = folio_referenced(folio, 1, sc->target_mem_cgroup,
 					   &vm_flags);
 	referenced_folio = folio_test_clear_referenced(folio);
