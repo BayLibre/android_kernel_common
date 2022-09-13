@@ -24,12 +24,27 @@
 #include <linux/oom.h>
 #include <linux/rwsem.h>
 #include <../mm/slab.h>
+<<<<<<< HEAD   (bbd71c ANDROID: GKI: Update symbol list for Amlogic)
 #endif
 
 struct oom_control;
 struct slabinfo;
 struct track;
 struct address_space;
+=======
+/* struct cgroup_subsys_state */
+#include <linux/cgroup-defs.h>
+/* struct device */
+#include <linux/device.h>
+/* struct mem_cgroup */
+#include <linux/memcontrol.h>
+/* struct readahead_control */
+#include <linux/pagemap.h>
+#endif /* __GENKSYMS__ */
+struct cma;
+struct swap_slots_cache;
+struct page_vma_mapped_walk;
+>>>>>>> CHANGE (f50f24 ANDROID: vendor_hooks: Add hooks for lookaround)
 
 DECLARE_RESTRICTED_HOOK(android_rvh_set_skip_swapcache_flags,
 			TP_PROTO(gfp_t *flags),
@@ -177,6 +192,7 @@ DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
 	TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
 	int migratetype, struct page **page),
 	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
+<<<<<<< HEAD   (bbd71c ANDROID: GKI: Update symbol list for Amlogic)
 DECLARE_HOOK(android_vh_save_track_hash,
 	TP_PROTO(bool alloc, struct track *p),
 	TP_ARGS(alloc, p));
@@ -229,6 +245,20 @@ DECLARE_HOOK(android_vh_alloc_flags_cma_adjust,
 DECLARE_HOOK(android_vh_rmqueue_cma_fallback,
 	TP_PROTO(struct zone *zone, unsigned int order, struct page **page),
 	TP_ARGS(zone, order, page));
+=======
+DECLARE_HOOK(android_vh_test_clear_look_around_ref,
+	TP_PROTO(struct page *page),
+	TP_ARGS(page));
+DECLARE_HOOK(android_vh_look_around_migrate_page,
+	TP_PROTO(struct page *old_page, struct page *new_page),
+	TP_ARGS(old_page, new_page));
+DECLARE_HOOK(android_vh_look_around,
+	TP_PROTO(struct page_vma_mapped_walk *pvmw, struct page *page,
+		struct vm_area_struct *vma, int *referenced),
+	TP_ARGS(pvmw, page, vma, referenced));
+/* macro versions of hooks are no longer required */
+
+>>>>>>> CHANGE (f50f24 ANDROID: vendor_hooks: Add hooks for lookaround)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

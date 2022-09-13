@@ -33,6 +33,7 @@ DECLARE_HOOK(android_vh_page_trylock_clear,
 DECLARE_HOOK(android_vh_shrink_node_memcgs,
 	TP_PROTO(struct mem_cgroup *memcg, bool *skip),
 	TP_ARGS(memcg, skip));
+<<<<<<< HEAD   (bbd71c ANDROID: GKI: Update symbol list for Amlogic)
 DECLARE_HOOK(android_vh_tune_scan_type,
 	TP_PROTO(char *scan_type),
 	TP_ARGS(scan_type));
@@ -51,6 +52,18 @@ DECLARE_HOOK(android_vh_tune_memcg_scan_type,
 DECLARE_HOOK(android_vh_tune_inactive_ratio,
 	TP_PROTO(unsigned long *inactive_ratio, int file),
 	TP_ARGS(inactive_ratio, file))
+=======
+DECLARE_HOOK(android_vh_inactive_is_low,
+	TP_PROTO(unsigned long gb, unsigned long *inactive_ratio,
+		enum lru_list inactive_lru, bool *skip),
+	TP_ARGS(gb, inactive_ratio, inactive_lru, skip));
+DECLARE_HOOK(android_vh_snapshot_refaults,
+	TP_PROTO(struct lruvec *target_lruvec),
+	TP_ARGS(target_lruvec));
+DECLARE_HOOK(android_vh_check_page_look_around_ref,
+	TP_PROTO(struct page *page, int *skip),
+	TP_ARGS(page, skip));
+>>>>>>> CHANGE (f50f24 ANDROID: vendor_hooks: Add hooks for lookaround)
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
