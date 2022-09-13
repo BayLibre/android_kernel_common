@@ -33,6 +33,24 @@
       "message": "This is not needed. Your vendor hook has complete control of this. Fix this in your vendor hook handler.\n\nThis could break other users of this hook that rely on \"if (err)\" behavior.",
       "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8da7fc74_f0805c4a",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1947925
+      },
+      "writtenOn": "2022-09-13T01:33:22Z",
+      "side": 1,
+      "message": "Hi todd,\nCurrently, this vendor hook is only used by our vendor. \nAnalysis from the current code: When err\u003d1 （line 1511）, if (err \u003c 0)（line 1524） will execute free card.\nIf not modified, it will affect the use of HS SD cards by other manufacturers.",
+      "parentUuid": "139a785d_1460686e",
+      "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
