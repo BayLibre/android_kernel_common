@@ -81,6 +81,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/migrate.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/mm.h>
+
 #include "internal.h"
 
 static struct kmem_cache *anon_vma_cachep;
@@ -895,6 +898,7 @@ static bool folio_referenced_one(struct folio *folio,
 		}
 
 		if (lru_gen_enabled() && pvmw.pte) {
+                        trace_android_vh_look_around(&pvmw, folio, vma, &referenced);
 			if (lru_gen_look_around(&pvmw))
 				referenced++;
 		} else if (pvmw.pte) {
