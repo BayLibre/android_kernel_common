@@ -51,6 +51,24 @@
       "parentUuid": "139a785d_1460686e",
       "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e42e4495_2304ff3c",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-13T20:20:17Z",
+      "side": 1,
+      "message": "There is no way you can know that you are the only user. \"err\" is totally controlled by the vendor hook at this point, so if err\u003d1 is an issue, the hook handler should not set err\u003d1.",
+      "parentUuid": "8da7fc74_f0805c4a",
+      "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
