@@ -16,6 +16,24 @@
       "message": "This fails with\n\n```\ncommon/drivers/android/android_debug_symbols.c:79:32: error: use of undeclared identifier \u0027put_task_stack\u0027\n        ADS_ENTRY(ADS_PUT_TASK_STACK, put_task_stack),\n```\n\non the allmodconfig targets.\n",
       "revId": "944c542fad41c225d7aa2da98d5d763a89bf43f3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f88ca86d_28ee84dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-09-14T15:23:28Z",
+      "side": 1,
+      "message": "correction, on the 32bit targets: kernel_arm_*",
+      "parentUuid": "f9f1f0d3_b08ab73f",
+      "revId": "944c542fad41c225d7aa2da98d5d763a89bf43f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
