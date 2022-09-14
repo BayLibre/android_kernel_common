@@ -87,6 +87,24 @@
       "parentUuid": "e42e4495_2304ff3c",
       "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de06510f_a0a8444d",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-14T17:39:47Z",
+      "side": 1,
+      "message": "Ah, ok, you\u0027re right.\n\nI\u0027d rather not make this line dependent on assumptions from line 1511... how about instead of changing these conditionals, you set `err \u003d 0` before line 1522 and leave the `if (err)` tests as they are?",
+      "parentUuid": "6bc929f5_8f27691d",
+      "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
