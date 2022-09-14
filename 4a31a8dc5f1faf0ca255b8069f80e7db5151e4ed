@@ -69,6 +69,24 @@
       "parentUuid": "8da7fc74_f0805c4a",
       "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bc929f5_8f27691d",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1947925
+      },
+      "writtenOn": "2022-09-14T01:32:19Z",
+      "side": 1,
+      "message": "Because err \u003d mmc_sd_switch_hs(card); success will return \"1\", when we do not register the callback function of vendor hook, if (err) goto free_card. This is in conflict with the original function. The reason we fix this bug is to hope that manufacturers who do not use this vendor hook can initialize the SD card normally.",
+      "parentUuid": "e42e4495_2304ff3c",
+      "revId": "4a31a8dc5f1faf0ca255b8069f80e7db5151e4ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
