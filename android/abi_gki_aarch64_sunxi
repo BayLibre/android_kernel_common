@@ -134,6 +134,7 @@
   cpu_number
   __cpu_online_mask
   __cpu_possible_mask
+  __cpu_present_mask
   crc32_be
   crc32_le
   crc_ccitt_table
@@ -163,6 +164,8 @@
   debugfs_create_dir
   debugfs_create_file
   debugfs_create_u32
+  debugfs_create_x8
+  debugfs_initialized
   debugfs_remove
   debugfs_rename
   dec_zone_page_state
@@ -178,6 +181,13 @@
   dev_driver_string
   _dev_err
   dev_fetch_sw_netstats
+  devfreq_event_disable_edev
+  devfreq_event_enable_edev
+  devfreq_event_get_edev_by_phandle
+  devfreq_event_get_event
+  devfreq_recommended_opp
+  devfreq_resume_device
+  devfreq_suspend_device
   __dev_get_by_index
   dev_get_by_index
   device_add
@@ -187,9 +197,11 @@
   device_create_with_groups
   device_del
   device_destroy
+  device_find_child
   device_for_each_child
   device_initialize
   device_init_wakeup
+  device_move
   device_register
   device_remove_file
   device_remove_groups
@@ -204,6 +216,9 @@
   devm_clk_get
   devm_clk_put
   devm_clk_register
+  devm_devfreq_add_device
+  devm_devfreq_event_add_edev
+  devm_devfreq_register_opp_notifier
   devm_free_irq
   devm_gpio_free
   devm_gpio_request
@@ -243,17 +258,20 @@
   dev_pm_clear_wake_irq
   dev_pm_opp_find_freq_floor
   dev_pm_opp_free_cpufreq_table
+  dev_pm_opp_get_freq
   dev_pm_opp_get_max_transition_latency
   dev_pm_opp_get_opp_count
   dev_pm_opp_get_sharing_cpus
   dev_pm_opp_get_suspend_opp_freq
   dev_pm_opp_get_voltage
   dev_pm_opp_init_cpufreq_table
+  dev_pm_opp_of_add_table
   dev_pm_opp_of_cpumask_add_table
   dev_pm_opp_of_cpumask_remove_table
   dev_pm_opp_of_get_opp_desc_node
   dev_pm_opp_of_get_sharing_cpus
   dev_pm_opp_of_register_em
+  dev_pm_opp_of_remove_table
   dev_pm_opp_put_prop_name
   dev_pm_opp_put_regulators
   dev_pm_opp_put_supported_hw
@@ -341,6 +359,7 @@
   down_interruptible
   down_read
   down_timeout
+  down_trylock
   down_write
   driver_attach
   driver_register
@@ -360,6 +379,9 @@
   drm_read
   drm_release
   dump_stack
+  ehci_init_driver
+  ehci_resume
+  ehci_suspend
   enable_irq
   ether_setup
   eth_mac_addr
@@ -433,6 +455,7 @@
   hrtimer_forward
   hrtimer_init
   hrtimer_start_range_ns
+  hrtimer_try_to_cancel
   __hw_addr_init
   __hw_addr_sync
   __hw_addr_unsync
@@ -468,6 +491,7 @@
   inc_zone_page_state
   inet_csk_get_port
   init_net
+  init_on_alloc
   init_pseudo
   __init_rwsem
   __init_swait_queue_head
@@ -476,12 +500,17 @@
   init_wait_entry
   __init_waitqueue_head
   input_allocate_device
+  input_close_device
   input_event
   input_free_device
+  input_open_device
   input_register_device
+  input_register_handle
+  input_register_handler
   input_set_abs_params
   input_set_capability
   input_unregister_device
+  input_unregister_handle
   iomem_resource
   iommu_device_register
   iommu_device_sysfs_add
@@ -590,6 +619,7 @@
   kvmalloc_node
   __list_add_valid
   __list_del_entry_valid
+  list_sort
   __local_bh_enable_ip
   __lock_page
   media_create_pad_link
@@ -668,6 +698,8 @@
   netif_tx_stop_all_queues
   netif_tx_wake_queue
   netlink_broadcast
+  __netlink_kernel_create
+  netlink_kernel_release
   netlink_register_notifier
   netlink_unicast
   netlink_unregister_notifier
@@ -680,6 +712,7 @@
   nla_put
   nla_reserve
   __nla_validate
+  __nlmsg_put
   no_llseek
   nonseekable_open
   nr_cpu_ids
@@ -707,6 +740,7 @@
   of_find_compatible_node
   of_find_device_by_node
   of_find_i2c_device_by_node
+  of_find_matching_node_and_match
   of_find_node_by_name
   of_find_node_by_phandle
   of_find_node_by_type
@@ -782,6 +816,7 @@
   pinctrl_get
   pinctrl_gpio_direction_input
   pinctrl_gpio_direction_output
+  pinctrl_gpio_set_config
   pinctrl_lookup_state
   pinctrl_select_state
   platform_bus_type
@@ -828,6 +863,7 @@
   ppp_unit_number
   ppp_unregister_channel
   prandom_bytes
+  prandom_u32
   preempt_schedule
   preempt_schedule_notrace
   prepare_to_wait
@@ -950,6 +986,7 @@
   rfkill_register
   rfkill_resume_polling
   rfkill_set_hw_state_reason
+  rfkill_set_states
   rfkill_unregister
   rhashtable_free_and_destroy
   rhashtable_insert_slow
@@ -974,6 +1011,7 @@
   schedule_timeout_interruptible
   schedule_timeout_uninterruptible
   scnprintf
+  sdio_align_size
   sdio_claim_host
   sdio_claim_irq
   sdio_disable_func
@@ -1157,10 +1195,12 @@
   synchronize_net
   synchronize_rcu
   syscon_node_to_regmap
+  sysfs_create_file_ns
   sysfs_create_group
   sysfs_create_link
   sysfs_emit
   __sysfs_match_string
+  sysfs_remove_file_ns
   sysfs_remove_group
   sysfs_remove_link
   sysfs_streq
@@ -1274,6 +1314,7 @@
   unregister_shrinker
   unregister_syscore_ops
   up
+  update_devfreq
   up_read
   up_write
   usb_add_gadget_udc
