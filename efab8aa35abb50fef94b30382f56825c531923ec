@@ -24,6 +24,26 @@
       "robotId": "ayeaye",
       "robotRunId": "AR00000000000029121969",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/2217078?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "e67f7fdc_92941edf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-09-15T09:20:18Z",
+      "side": 1,
+      "message": "Commit does not link to an upstream reference at lore\nPlease add a line like \u0027Link: https://lore.kernel.org/...\u0027\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 474297938 android-build.ayeaye-python-dispatcher_20220914.05_p0",
+      "revId": "efab8aa35abb50fef94b30382f56825c531923ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000029121969",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2217078?revision\u003d1",
       "fixSuggestions": [
         {
           "fixId": "d93bb3e5_9c1db8e6",
@@ -44,6 +64,49 @@
       ],
       "key": {
         "uuid": "4b8e6505_11ee7c55",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-09-15T09:20:18Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Weichao Guo \u003cguoweichao@oppo.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 474297938 android-build.ayeaye-python-dispatcher_20220914.05_p0",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 0
+      },
+      "revId": "efab8aa35abb50fef94b30382f56825c531923ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000029121969",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2217078?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "0bd74d2d_3f9dd50f",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 20,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Weichao Guo \u003cguoweichao@oppo.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "39a11275_6bfa8ec7",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
       },
