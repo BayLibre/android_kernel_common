@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49bdb3f5_db01b2f6",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-09-15T23:50:59Z",
+      "side": 1,
+      "message": "these calls are not ubsan safe. You are passing integer values to a function expecting an enum.\n\nAlso, how do other kernel tracepoint print enums? Is there a better way to automate this enum to string translation then adding functions that we manually have to keep in sync? (See __print_symbolic for how at least some other trace points print enums)",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04061320_5651d16f",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-09-15T23:50:59Z",
+      "side": 1,
+      "message": "ret is likely a negative value here which should trigger a ubsan error, if enabled, when passed to a function expecting an unsigned value. You could cast it, but it is probably best to not multiplex ret and ffa_handle into the same value like this.",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7552e3e7_98ca5cc6",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-09-15T23:50:59Z",
+      "side": 1,
+      "message": "Should we move this up above `if (ret !\u003d 0)` and also capture failed cases (if you pass ret as well)",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc71e09a_94347b9c",
+        "filename": "include/linux/trusty/smcall.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-09-15T23:50:59Z",
+      "side": 1,
+      "message": "This is a file we have to keep in sync with trusty so I don\u0027t really want to add functions here. This is also just a subset of the smc numbers defines here so why are these numbers special enough to convert to a string?",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f2db81_ed465a04",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-09-15T23:50:59Z",
+      "side": 1,
+      "message": "why does adding a trace points change the user-space api?",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
