@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7a3b79a_a5270220",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1525,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-15T15:32:12Z",
+      "side": 0,
+      "message": "With this change, there is no point to passing \u0026err to the hook since we ignore its value. Before, the hook handler could prevent the conditionals at line 1528 and 1541, now they can\u0027t, so this could break the behavior expected by other users of the hook.\n\nHow about going back to `if (err)` and initializing err\u003d0 before the hooks?",
+      "revId": "cff4cc7a64e951e04001aedf642c3bfe3fd84a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
