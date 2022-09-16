@@ -14,6 +14,7 @@ COMMON_GKI_MODULES_LIST = [
     "drivers/bluetooth/btsdio.ko",
     "drivers/bluetooth/hci_uart.ko",
     "drivers/net/can/dev/can-dev.ko",
+    "drivers/misc/pkvm-pl011/pkvm_pl011.ko",
     "drivers/net/can/slcan/slcan.ko",
     "drivers/net/can/vcan.ko",
     "drivers/net/ppp/bsd_comp.ko",
