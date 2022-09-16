@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4745b217_3a0014e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1318918
+      },
+      "writtenOn": "2022-09-16T19:27:09Z",
+      "side": 1,
+      "message": "Sai,\n\nAs Todd suggested lets use \u0027WALT module\u0027 as the reason.\n\nANDROID: topology: Add a flag to indicate topology has been updated\n\nCreate a flag that stores information about the completion of topology initialization. This information is needed by Qualcomm\u0027s WALT scheduler vendor module.\n\nUsually the WALT module waits on the tracehook callback to initialize its topology internal state. However in situations when the insmod happens after update_topology_flags_workfn(), the module needs to be told that it was late in insmoding i.e. the tracehook was run long before it insmoded.\n\nThe module psuedo code would be\n\nwalt_init()\n{\n  if already initialited exit\n   else\n    proceed with initialization\n}\n\nhook callback ()\n{\n   walt_init()\n}\n\nprobe() \n{\n    register for update_topology_flag_workfn tracehook\n    if (topology_update_done)\n        walt_init()\n}\n\n\nThis reverts commit b9bca6992d86 (\"Revert \"ANDROID: topology: Add flag\nto indicate topology has been updated\" \").\nChange was originally reverted, bringing it back in.\n\nBug: 187234873\nSigned-off-by: Sai Harshini Nimmala \u003cquic_snimmala@quicinc.com\u003e\nChange-Id: I8e5366a660a2bf5b1d10f9cb0b0cf4f18286a043",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 65
+      },
+      "revId": "d625d25053a5f61436dfb709828ab78f25e366a8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c942472_9a60f324",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
