@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d936cf75_518fbdd1",
+        "filename": "drivers/net/tun.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2815,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2022-09-16T21:20:57Z",
+      "side": 1,
+      "message": "does this store the IFF_NO_CARRIER?\n\nshould this function do something like\n\nbool no_carrier \u003d ifr-\u003eifr_flags \u0026 IFF_NO_CARRIER;\nifr-\u003eifr_flags \u0026\u003d ~IFF_NO_CARRIER;\n\nat the beginning?",
+      "range": {
+        "startLine": 2815,
+        "startChar": 0,
+        "endLine": 2815,
+        "endChar": 17
+      },
+      "revId": "cb2756428b3c08166991578ba6a2d1ab6ba3a8cd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
