@@ -16,6 +16,24 @@
       "message": "I checked out abi_gki_aarch64. i built it with xml, but there was no change compared to the previous commit.\nlet me share had commands.\n$ git pull aosp android13-5.15 --rebase\n$ git rm android/abi_gki_aarch64.xml\n$ git restore --staged android/abi_gki_aarch64.xml\n$ git checkout -- .\n$ git rebase --continue\nand then re-build with command \u0027BUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh\u0027\nI don\u0027t know why added other symbols that i didn\u0027t add were added.\nIf nothing another way, i will remake new commit.",
       "revId": "2303234bc054e872a7e6361beda473de7b7d7010",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0c5e8f3_2401c07e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-20T12:19:47Z",
+      "side": 1,
+      "message": "16 function symbol(s) added\n  \u0027struct net_device * __vlan_find_dev_deep_rcu(struct net_device *, __be16, u16)\u0027\n  \u0027int cdc_ncm_bind_common(struct usbnet *, struct usb_interface *, u8, int)\u0027\n  \u0027int cdc_ncm_change_mtu(struct net_device *, int)\u0027\n  \u0027struct sk_buff * cdc_ncm_fill_tx_frame(struct usbnet *, struct sk_buff *, __le32)\u0027\n  \u0027int cdc_ncm_rx_verify_ndp16(struct sk_buff *, int)\u0027\n  \u0027int cdc_ncm_rx_verify_nth16(struct cdc_ncm_ctx *, struct sk_buff *)\u0027\n  \u0027u8 cdc_ncm_select_altsetting(struct usb_interface *)\u0027\n  \u0027void cdc_ncm_unbind(struct usbnet *, struct usb_interface *)\u0027\n  \u0027void hid_hw_close(struct hid_device *)\u0027\n  \u0027int hid_hw_open(struct hid_device *)\u0027\n  \u0027int kstrtos16(const char *, unsigned int, s16 *)\u0027\n  \u0027bool rfkill_set_sw_state(struct rfkill *, bool)\u0027\n  \u0027void usb_deregister_dev(struct usb_interface *, struct usb_class_driver *)\u0027\n  \u0027struct usb_interface * usb_find_interface(struct usb_driver *, int)\u0027\n  \u0027void usb_poison_anchored_urbs(struct usb_anchor *)\u0027\n  \u0027int usb_register_dev(struct usb_interface *, struct usb_class_driver *)\u0027\n\n1 variable symbol(s) added\n  \u0027struct hid_ll_driver usb_hid_driver\u0027\n  \nis the output from the tools on the build system.",
+      "parentUuid": "b516efd9_158d41a9",
+      "revId": "2303234bc054e872a7e6361beda473de7b7d7010",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
