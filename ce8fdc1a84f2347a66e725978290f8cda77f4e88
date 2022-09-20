@@ -34,6 +34,24 @@
       "parentUuid": "b97062bc_3a52cb65",
       "revId": "ce8fdc1a84f2347a66e725978290f8cda77f4e88",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4979851_4d74064f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-20T12:51:49Z",
+      "side": 1,
+      "message": "Your android13-5.10 symbol list should be different from your android12-5.10 symbol list as these are different kernel trees and have different things exported in places.\n\nBreak things up into logical chunks to make them reviewable please.  There\u0027s a balance between \"too many\" and \"all in one\".  Use your judgement 😊",
+      "parentUuid": "f999e166_db0a6bb3",
+      "revId": "ce8fdc1a84f2347a66e725978290f8cda77f4e88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
