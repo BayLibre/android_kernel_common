@@ -16,6 +16,24 @@
       "message": "This is too many symbols to add all at once, and very difficult to review.  Please divide up into reviewable chunks.  Would you want to review this as-is?",
       "revId": "ce8fdc1a84f2347a66e725978290f8cda77f4e88",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f999e166_db0a6bb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-09-20T12:47:21Z",
+      "side": 1,
+      "message": "Because this patch is base on symbols and configs on kernel android12-5.10, and recompile with the same defconfig on android13-5.10 without any new config added.\n556 symbols added at once is too much, but do you have a recommand how many should I add in a patch will be better?\nRecently when I push symbol update patches split base on module, Todd often ask me to squash patches into one patch.",
+      "parentUuid": "b97062bc_3a52cb65",
+      "revId": "ce8fdc1a84f2347a66e725978290f8cda77f4e88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
