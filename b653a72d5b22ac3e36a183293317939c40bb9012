@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0660f830_913842cb",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-09-20T18:03:45Z",
+      "side": 1,
+      "message": "The caller provides integer value, to avoid ubsan we should change the type of shm.transfer to enum. But, this patch may not be the right place to do it.\n\nYes, we could have used __print_symbolic if we were to only print the enum. However, we are required to pass the enum value converted to string to the Perfetto UI, since that doesn\u0027t have access to the enum field names.\nAlso, __print_symbolic requires update whenever there is modification to the enum, which is the same limitation that the current code poses. So, I leave it unchanged",
+      "parentUuid": "49bdb3f5_db01b2f6",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04061320_5651d16f",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 10
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-15T23:50:59Z",
       "side": 1,
       "message": "ret is likely a negative value here which should trigger a ubsan error, if enabled, when passed to a function expecting an unsigned value. You could cast it, but it is probably best to not multiplex ret and ffa_handle into the same value like this.",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb93ec6_b0b7374c",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-09-20T18:03:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04061320_5651d16f",
       "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6f11516_e669ff70",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-09-20T18:03:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7552e3e7_98ca5cc6",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc71e09a_94347b9c",
@@ -69,6 +123,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0eb57b_153a8c83",
+        "filename": "include/linux/trusty/smcall.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-09-20T18:03:45Z",
+      "side": 1,
+      "message": "1) Ok, I have moved out the function to a separate file smcall_util.h\n\n\n2) Agree some are missed out. \ntrusty_std_call32 and trusty_smc trace events use this function smc_name.\ntrusty_fast_call32, trusty_fast_call64, trusty_std_call_inner functions use these trace events. Therefore, the function should cover all possible values for smcnr.\nThe ones chosen are for the entity SMC_ENTITY_SECURE_MONITOR:\n#define SMC_SC_RESTART_LAST\tSMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 0)\n#define SMC_SC_LOCKED_NOP\tSMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 1)\n#define SMC_SC_RESTART_FIQ\tSMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 2)\n#define SMC_SC_NOP\t\tSMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 3)\n#define SMC_FC_RESERVED\t\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 0)\n#define SMC_FC_FIQ_EXIT\t\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 1)\n#define SMC_FC_REQUEST_FIQ\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 2)\n#define SMC_FC_GET_NEXT_IRQ\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 3)\n#define SMC_FC_CPU_SUSPEND\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 7)\n#define SMC_FC_CPU_RESUME\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 8)\n#define SMC_FC_AARCH_SWITCH\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 9)\n#define SMC_FC_GET_VERSION_STR\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 10)\n\nNow, I have included the leftouts\n#define SMC_FC_API_VERSION\tSMC_FASTCALL_NR(SMC_ENTITY_SECURE_MONITOR, 11)\nand ones for TRUSTED_OS entity\n#define SMC_SC_VIRTIO_GET_DESCR\tSMC_STDCALL_NR(SMC_ENTITY_TRUSTED_OS, 20)\n#define SMC_SC_VIRTIO_START\tSMC_STDCALL_NR(SMC_ENTITY_TRUSTED_OS, 21)\n#define SMC_SC_VIRTIO_STOP\tSMC_STDCALL_NR(SMC_ENTITY_TRUSTED_OS, 22)\n#define SMC_SC_VDEV_RESET\tSMC_STDCALL_NR(SMC_ENTITY_TRUSTED_OS, 23)\n#define SMC_SC_VDEV_KICK_VQ\tSMC_STDCALL_NR(SMC_ENTITY_TRUSTED_OS, 24)\n#define SMC_NC_VDEV_KICK_VQ\tSMC_STDCALL_NR(SMC_ENTITY_TRUSTED_OS, 25)\n\n#define SMC_SC_NS_RETURN\tSMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 0)\ncouldn\u0027t be added since it\u0027s value is same as that of SMC_SC_RESTART_LAST leaving no way to distinguish it.",
+      "parentUuid": "dc71e09a_94347b9c",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45f2db81_ed465a04",
@@ -82,6 +154,24 @@
       "writtenOn": "2022-09-15T23:50:59Z",
       "side": 1,
       "message": "why does adding a trace points change the user-space api?",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56226705_350fe674",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-09-20T18:03:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45f2db81_ed465a04",
       "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
