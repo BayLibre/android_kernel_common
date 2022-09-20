@@ -55,7 +55,11 @@ CONFIG_CP15_BARRIER_EMULATION=y
 CONFIG_SETEND_EMULATION=y
 CONFIG_RANDOMIZE_BASE=y
 # CONFIG_RANDOMIZE_MODULE_REGION_FULL is not set
+<<<<<<< PATCH SET (cfe69b ANDROID: [GKI] Include ioremap_guard in cmdline arg)
+CONFIG_CMDLINE="console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off bootconfig ioremap_guard"
+=======
 CONFIG_CMDLINE="console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconfig"
+>>>>>>> BASE      (a5a331 ANDROID: [GKI] Include bootconfig in CONFIG_CMDLINE)
 # CONFIG_DMI is not set
 CONFIG_PM_WAKELOCKS=y
 CONFIG_PM_WAKELOCKS_LIMIT=0
