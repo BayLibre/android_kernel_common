@@ -16,6 +16,29 @@
       "message": "Please do not just add debugging hooks.  You can do this in your debug kernel version, but not in the normal kernel as they are not needed here.",
       "revId": "b54b52ffeeffde17c6da6fc321f7dc3689f5eaec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e2a1a2_68e825cf",
+        "filename": "mm/slub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-21T09:29:32Z",
+      "side": 1,
+      "message": "also, this is not ABI safe and will break in the future, so it can not be done.",
+      "range": {
+        "startLine": 739,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 23
+      },
+      "revId": "b54b52ffeeffde17c6da6fc321f7dc3689f5eaec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
