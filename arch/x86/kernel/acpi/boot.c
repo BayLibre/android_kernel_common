@@ -1530,6 +1530,14 @@ static const struct dmi_system_id acpi_dmi_table[] __initconst = {
 		     DMI_MATCH(DMI_BOARD_NAME, "2646"),
 		     },
 	 },
+	{
+	 .callback = disable_acpi_irq,
+	 .ident = "ChromiumOS crosvm",
+	 .matches = {
+		     DMI_MATCH(DMI_SYS_VENDOR, "ChromiumOS"),
+		     DMI_MATCH(DMI_PRODUCT_NAME, "crosvm"),
+		     },
+	 },
 	/*
 	 * Boxes that need ACPI PCI IRQ routing and PCI scan disabled
 	 */
