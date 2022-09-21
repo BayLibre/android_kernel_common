@@ -17,6 +17,7 @@ u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
 }
 #endif
 
+<<<<<<< HEAD   (64522c Revert "fs: check FMODE_LSEEK to control internal pipe splic)
 #ifndef __arch_vdso_hres_capable
 static inline bool __arch_vdso_hres_capable(void)
 {
@@ -24,6 +25,8 @@ static inline bool __arch_vdso_hres_capable(void)
 }
 #endif
 
+=======
+>>>>>>> BRANCH (d6deb3 Linux 5.4.212)
 static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
 		   struct __kernel_timespec *ts)
 {
