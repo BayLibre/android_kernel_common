@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6f8c201_37491186",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2022-09-21T12:08:04Z",
+      "side": 1,
+      "message": "We will use this to enable recording kmalloc call stack dynamically if we find kmalloc leak from /proc/slabinfo in released version. I think we have met aproval in android12-5.10. You can refer to previous discussion here.\nhttps://partnerissuetracker.corp.google.com/u/1/issues/197614797\nThanks.",
+      "parentUuid": "48c34ed0_3ca5b261",
+      "revId": "b54b52ffeeffde17c6da6fc321f7dc3689f5eaec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3e2a1a2_68e825cf",
         "filename": "mm/slub.c",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-21T09:29:32Z",
       "side": 1,
       "message": "also, this is not ABI safe and will break in the future, so it can not be done.",
+      "range": {
+        "startLine": 739,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 23
+      },
+      "revId": "b54b52ffeeffde17c6da6fc321f7dc3689f5eaec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e072c1b7_c0f0c1f7",
+        "filename": "mm/slub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2022-09-21T12:08:04Z",
+      "side": 1,
+      "message": "Sorry, I dont get it. What is the meaning of ABI unsafe? Can you kindly give us some suggestions?",
+      "parentUuid": "b3e2a1a2_68e825cf",
       "range": {
         "startLine": 739,
         "startChar": 8,
