@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "617fb5b4_34c2ea6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-21T12:28:43Z",
+      "side": 1,
+      "message": "As before, please get your needed changes upstream first, this should not be needed here again in this kernel.  And if this was a forward port of previous hooks, then you must keep the same Change-Id: so that we can track it properly.",
+      "parentUuid": "c6f8c201_37491186",
+      "revId": "b54b52ffeeffde17c6da6fc321f7dc3689f5eaec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3e2a1a2_68e825cf",
         "filename": "mm/slub.c",
         "patchSetId": 1
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "Sorry, I dont get it. What is the meaning of ABI unsafe? Can you kindly give us some suggestions?",
       "parentUuid": "b3e2a1a2_68e825cf",
+      "range": {
+        "startLine": 739,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 23
+      },
+      "revId": "b54b52ffeeffde17c6da6fc321f7dc3689f5eaec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e92e406e_e314e244",
+        "filename": "mm/slub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-21T12:28:43Z",
+      "side": 1,
+      "message": "You are casting away a structure so that you never track it again and you loose all type safety.  This will break.",
+      "parentUuid": "e072c1b7_c0f0c1f7",
       "range": {
         "startLine": 739,
         "startChar": 8,
