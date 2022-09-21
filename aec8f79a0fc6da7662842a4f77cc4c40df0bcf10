@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b802beb_12ae32d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2022-09-21T17:26:33Z",
+      "side": 1,
+      "message": "This UPSTREAM change aosp/2216948.",
+      "parentUuid": "d16acbba_5e53d008",
+      "revId": "aec8f79a0fc6da7662842a4f77cc4c40df0bcf10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "547eff58_fca2849a",
         "filename": "android/abi_gki_aarch64_db845c",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-21T16:04:03Z",
       "side": 1,
       "message": "should not be needed, right?\n\nIf you aren\u0027t using the symbols, you can drop them here, but we just can not drop them entirely from the whole list everywhere.\n\nWhy not just manually add the needed snd_* functions instead?",
+      "range": {
+        "startLine": 1668,
+        "startChar": 0,
+        "endLine": 1668,
+        "endChar": 31
+      },
+      "revId": "aec8f79a0fc6da7662842a4f77cc4c40df0bcf10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53e3866f_ecde2594",
+        "filename": "android/abi_gki_aarch64_db845c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2022-09-21T17:26:33Z",
+      "side": 1,
+      "message": "Yes we should be OK to remove these symbols from here. This is the first time I have used this \"--additions-only\" flag, so I wanted someone to review the output first and check if I have used it correctly, before I hand-edit this file.",
+      "parentUuid": "547eff58_fca2849a",
       "range": {
         "startLine": 1668,
         "startChar": 0,
