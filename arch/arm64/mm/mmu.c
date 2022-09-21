@@ -972,11 +972,14 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phys, int *size, pgprot_t prot)
 	return dt_virt;
 }
 
+<<<<<<< HEAD   (aa92fd Revert "fs: check FMODE_LSEEK to control internal pipe splic)
 int __init arch_ioremap_p4d_supported(void)
 {
 	return 0;
 }
 
+=======
+>>>>>>> BRANCH (41b464 Linux 4.19.257)
 int __init arch_ioremap_pud_supported(void)
 {
 	/*
