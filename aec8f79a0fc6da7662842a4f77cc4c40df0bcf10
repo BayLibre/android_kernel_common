@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d16acbba_5e53d008",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-21T16:04:03Z",
+      "side": 1,
+      "message": "What caused the 3 new symbols to be added?  Was this a change on our side or yours?",
+      "revId": "aec8f79a0fc6da7662842a4f77cc4c40df0bcf10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "547eff58_fca2849a",
+        "filename": "android/abi_gki_aarch64_db845c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-21T16:04:03Z",
+      "side": 1,
+      "message": "should not be needed, right?\n\nIf you aren\u0027t using the symbols, you can drop them here, but we just can not drop them entirely from the whole list everywhere.\n\nWhy not just manually add the needed snd_* functions instead?",
+      "range": {
+        "startLine": 1668,
+        "startChar": 0,
+        "endLine": 1668,
+        "endChar": 31
+      },
+      "revId": "aec8f79a0fc6da7662842a4f77cc4c40df0bcf10",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
