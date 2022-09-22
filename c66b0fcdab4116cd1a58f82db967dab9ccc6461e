@@ -22,6 +22,30 @@
       },
       "revId": "c66b0fcdab4116cd1a58f82db967dab9ccc6461e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c377cf8f_9623efe3",
+        "filename": "kernel/cgroup/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-22T15:21:20Z",
+      "side": 1,
+      "message": "it\u0027s not explicitly needed, but without it we get CRC changes to the cgroup-related hook functions. if the KMI weren\u0027t frozen, this would not be needed. The dependency came from the inclusion of include/trace/hooks/gpiolib.h in drivers/android/vendor_hooks.c. When moved to the new kernel/cgroup/vendor_hooks.c, this was needed to preserve CRC",
+      "parentUuid": "04943f76_7eb28a60",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "c66b0fcdab4116cd1a58f82db967dab9ccc6461e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
