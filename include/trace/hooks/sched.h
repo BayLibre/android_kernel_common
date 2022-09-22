@@ -408,6 +408,11 @@ DECLARE_HOOK(android_vh_force_compatible_post,
 	TP_PROTO(void *unused),
 	TP_ARGS(unused));
 
+<<<<<<< PATCH SET (fc644e ANDROID: cgroup: Add vendor hook for rebuild_root_domains_by)
+DECLARE_HOOK(android_vh_rebuild_root_domains_bypass,
+	TP_PROTO(bool cpuhp_tasks_frozen, bool *bypass),
+	TP_ARGS(cpuhp_tasks_frozen, bypass));
+=======
 DECLARE_HOOK(android_vh_dup_task_struct,
 	TP_PROTO(struct task_struct *tsk, struct task_struct *orig),
 	TP_ARGS(tsk, orig));
@@ -431,6 +436,7 @@ DECLARE_RESTRICTED_HOOK(android_rvh_update_rt_rq_load_avg,
 DECLARE_HOOK(android_vh_mmput,
 	TP_PROTO(struct mm_struct *mm),
 	TP_ARGS(mm));
+>>>>>>> BASE      (8022d8 ANDROID: arm64: mm: perform clean & invalidation in __dma_ma)
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
