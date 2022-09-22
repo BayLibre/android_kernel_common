@@ -46,6 +46,30 @@
       },
       "revId": "c66b0fcdab4116cd1a58f82db967dab9ccc6461e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a68191_845f7182",
+        "filename": "kernel/cgroup/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-22T16:10:12Z",
+      "side": 1,
+      "message": "as an internal-to-the-kernel-and-not-for-export .h file is being included here, I am very worried.\n\nNo one should be depending on .h stuff in gpiolib.h, and if so, that\u0027s going to cause problems because it is impossible to build any external code against that .h file.",
+      "parentUuid": "c377cf8f_9623efe3",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "c66b0fcdab4116cd1a58f82db967dab9ccc6461e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
