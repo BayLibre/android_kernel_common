@@ -529,7 +529,7 @@
       <elf-symbol name='__traceiter_android_vh_printk_caller_id' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x409ea043'/>
       <elf-symbol name='__traceiter_android_vh_printk_ext_header' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x35d0ca61'/>
       <elf-symbol name='__traceiter_android_vh_record_mutex_lock_starttime' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x602544f5'/>
-      <elf-symbol name='__traceiter_android_vh_record_percpu_rwsem_lock_starttime' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1088e9bf'/>
+      <elf-symbol name='__traceiter_android_vh_record_pcpu_rwsem_starttime' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6f509622'/>
       <elf-symbol name='__traceiter_android_vh_record_rtmutex_lock_starttime' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5b9948c1'/>
       <elf-symbol name='__traceiter_android_vh_record_rwsem_lock_starttime' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa002b185'/>
       <elf-symbol name='__traceiter_android_vh_regmap_update' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x21221030'/>
@@ -6553,7 +6553,7 @@
       <elf-symbol name='__tracepoint_android_vh_printk_hotplug' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7f6382dd'/>
       <elf-symbol name='__tracepoint_android_vh_ptype_head' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x40b365e3'/>
       <elf-symbol name='__tracepoint_android_vh_record_mutex_lock_starttime' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1deb1eec'/>
-      <elf-symbol name='__tracepoint_android_vh_record_percpu_rwsem_lock_starttime' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8e9c80c9'/>
+      <elf-symbol name='__tracepoint_android_vh_record_pcpu_rwsem_starttime' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x18111c92'/>
       <elf-symbol name='__tracepoint_android_vh_record_rtmutex_lock_starttime' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x61c36376'/>
       <elf-symbol name='__tracepoint_android_vh_record_rwsem_lock_starttime' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x34f9d483'/>
       <elf-symbol name='__tracepoint_android_vh_regmap_update' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcf37e88a'/>
@@ -125789,7 +125789,7 @@
         <parameter type-id='7359adad' name='settime_jiffies' filepath='include/trace/hooks/dtask.h' line='70' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='__traceiter_android_vh_record_percpu_rwsem_lock_starttime' mangled-name='__traceiter_android_vh_record_percpu_rwsem_lock_starttime' filepath='include/trace/hooks/dtask.h' line='79' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_android_vh_record_percpu_rwsem_lock_starttime'>
+      <function-decl name='__traceiter_android_vh_record_pcpu_rwsem_starttime' mangled-name='__traceiter_android_vh_record_pcpu_rwsem_starttime' filepath='include/trace/hooks/dtask.h' line='79' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_android_vh_record_pcpu_rwsem_starttime'>
         <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/hooks/dtask.h' line='79' column='1'/>
         <parameter type-id='f23e2572' name='tsk' filepath='include/trace/hooks/dtask.h' line='79' column='1'/>
         <parameter type-id='7359adad' name='settime_jiffies' filepath='include/trace/hooks/dtask.h' line='79' column='1'/>
@@ -126819,7 +126819,7 @@
       <var-decl name='__tracepoint_android_vh_printk_hotplug' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_printk_hotplug' visibility='default' filepath='include/trace/hooks/printk.h' line='12' column='1' elf-symbol-id='__tracepoint_android_vh_printk_hotplug'/>
       <var-decl name='__tracepoint_android_vh_ptype_head' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_ptype_head' visibility='default' filepath='include/trace/hooks/net.h' line='21' column='1' elf-symbol-id='__tracepoint_android_vh_ptype_head'/>
       <var-decl name='__tracepoint_android_vh_record_mutex_lock_starttime' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_record_mutex_lock_starttime' visibility='default' filepath='include/trace/hooks/dtask.h' line='70' column='1' elf-symbol-id='__tracepoint_android_vh_record_mutex_lock_starttime'/>
-      <var-decl name='__tracepoint_android_vh_record_percpu_rwsem_lock_starttime' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_record_percpu_rwsem_lock_starttime' visibility='default' filepath='include/trace/hooks/dtask.h' line='79' column='1' elf-symbol-id='__tracepoint_android_vh_record_percpu_rwsem_lock_starttime'/>
+      <var-decl name='__tracepoint_android_vh_record_pcpu_rwsem_starttime' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_record_pcpu_rwsem_starttime' visibility='default' filepath='include/trace/hooks/dtask.h' line='79' column='1' elf-symbol-id='__tracepoint_android_vh_record_pcpu_rwsem_starttime'/>
       <var-decl name='__tracepoint_android_vh_record_rtmutex_lock_starttime' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_record_rtmutex_lock_starttime' visibility='default' filepath='include/trace/hooks/dtask.h' line='73' column='1' elf-symbol-id='__tracepoint_android_vh_record_rtmutex_lock_starttime'/>
       <var-decl name='__tracepoint_android_vh_record_rwsem_lock_starttime' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_record_rwsem_lock_starttime' visibility='default' filepath='include/trace/hooks/dtask.h' line='76' column='1' elf-symbol-id='__tracepoint_android_vh_record_rwsem_lock_starttime'/>
       <var-decl name='__tracepoint_android_vh_regmap_update' type-id='4ca0c298' mangled-name='__tracepoint_android_vh_regmap_update' visibility='default' filepath='include/trace/hooks/regmap.h' line='23' column='1' elf-symbol-id='__tracepoint_android_vh_regmap_update'/>
