@@ -404,7 +404,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_cpu_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dma_buf_stats_teardown);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_or_pageout);
+<<<<<<< PATCH SET (5f8054 ANDROID: cgroup: Add vendor hook for rebuild_root_domains_by)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebuild_root_domains_bypass);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_retry);
+>>>>>>> BASE      (474a54 ANDROID: irq: put irq_resolve_mapping under protection of __)
 
 /*
  * For type visibility
