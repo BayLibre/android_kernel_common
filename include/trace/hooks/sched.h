@@ -425,6 +425,24 @@ DECLARE_RESTRICTED_HOOK(android_rvh_update_rt_rq_load_avg,
 	TP_PROTO(u64 now, struct rq *rq, struct task_struct *tsk, int running),
 	TP_ARGS(now, rq, tsk, running), 1);
 
+<<<<<<< HEAD   (0c9fc5 UPSTREAM: wifi: nl80211: Add POWERED_ADDR_CHANGE feature)
+=======
+DECLARE_RESTRICTED_HOOK(android_rvh_update_rq_clock_pelt,
+	TP_PROTO(struct rq *rq, s64 delta, bool *ret),
+	TP_ARGS(rq, delta, ret), 1);
+
+DECLARE_HOOK(android_vh_pidfd_open,
+	TP_PROTO(struct pid *p),
+	TP_ARGS(p));
+
+DECLARE_HOOK(android_vh_mmput,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
+
+DECLARE_HOOK(android_vh_rebuild_root_domains_bypass,
+	TP_PROTO(bool cpuhp_tasks_frozen, bool *bypass),
+	TP_ARGS(cpuhp_tasks_frozen, bypass));
+>>>>>>> CHANGE (ab9c52 ANDROID: cgroup: Add vendor hook for rebuild_root_domains_by)
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
