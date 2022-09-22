@@ -2238,8 +2238,19 @@ static void cpuset_attach(struct cgroup_taskset *tset)
 	cgroup_taskset_first(tset, &css);
 	cs = css_cs(css);
 
+<<<<<<< HEAD   (67b862 Revert "USB: core: Prevent nested device-reset calls")
 	cpus_read_lock();
 	mutex_lock(&cpuset_mutex);
+=======
+	lockdep_assert_cpus_held();	/* see cgroup_attach_lock() */
+	percpu_down_write(&cpuset_rwsem);
+
+	/* prepare for attach */
+	if (cs == &top_cpuset)
+		cpumask_copy(cpus_attach, cpu_possible_mask);
+	else
+		guarantee_online_cpus(cs, cpus_attach);
+>>>>>>> BRANCH (f11012 Linux 5.10.143)
 
 	guarantee_online_mems(cs, &cpuset_attach_nodemask_to);
 
@@ -2291,8 +2302,12 @@ static void cpuset_attach(struct cgroup_taskset *tset)
 	if (!cs->attach_in_progress)
 		wake_up(&cpuset_attach_wq);
 
+<<<<<<< HEAD   (67b862 Revert "USB: core: Prevent nested device-reset calls")
 	mutex_unlock(&cpuset_mutex);
 	cpus_read_unlock();
+=======
+	percpu_up_write(&cpuset_rwsem);
+>>>>>>> BRANCH (f11012 Linux 5.10.143)
 }
 
 /* The various types of files and directories in a cpuset file system */
