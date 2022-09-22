@@ -43,6 +43,7 @@
 #include <trace/hooks/vendor_hooks.h>
 #include <linux/tracepoint.h>
 
+#include <trace/hooks/sched.h>
 #include <trace/hooks/user.h>
 #include <trace/hooks/fpsimd.h>
 #include <trace/hooks/binder.h>
@@ -405,6 +406,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dma_buf_stats_teardown);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_or_pageout);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_retry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebuild_root_domains_bypass);
 
 /*
  * For type visibility
