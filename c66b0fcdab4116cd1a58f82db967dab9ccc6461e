@@ -70,6 +70,30 @@
       },
       "revId": "c66b0fcdab4116cd1a58f82db967dab9ccc6461e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "180e0b4d_e5b5ece7",
+        "filename": "kernel/cgroup/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-09-22T16:42:14Z",
+      "side": 1,
+      "message": "That is included by the gpiolib hook header `include/trace/hooks/gpiolib.h` since a type used by a hook requires it to implement some behavior - this is not a new use case, just added here for CRC preservation. Since the beginning there have been cases where internal features that partners used to implement directly in the code are now done via hooks - but need some internal struct definitions. These are good areas to focus on for debt reduction in future releases, but for android13-5.10, this header is already part of the KMI (and has been for a while).\n\nWe are planning to scrutinize type visibility more closely going forward as soon as some new AyeAye tools are availble. Then it will be easier to tell if a hook introduces a dependency on a \u003c../*\u003e header. This should be available for the android14 kernels.",
+      "parentUuid": "f7a68191_845f7182",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "c66b0fcdab4116cd1a58f82db967dab9ccc6461e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
