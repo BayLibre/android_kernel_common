@@ -314,8 +314,21 @@ err_no_vma:
 static inline void binder_alloc_set_vma(struct binder_alloc *alloc,
 		struct vm_area_struct *vma)
 {
+<<<<<<< HEAD   (1fdd69 ANDROID: kleaf: Do not include GKI modules in default output)
 	if (vma)
+=======
+	unsigned long vm_start = 0;
+
+	/*
+	 * Allow clearing the vma with holding just the read lock to allow
+	 * munmapping downgrade of the write lock before freeing and closing the
+	 * file using binder_alloc_vma_close().
+	 */
+	if (vma) {
+		vm_start = vma->vm_start;
+>>>>>>> BRANCH (633c3b Linux 5.15.65)
 		alloc->vma_vm_mm = vma->vm_mm;
+<<<<<<< HEAD   (1fdd69 ANDROID: kleaf: Do not include GKI modules in default output)
 	/*
 	 * If we see alloc->vma is not NULL, buffer data structures set up
 	 * completely. Look at smp_rmb side binder_alloc_get_vma.
@@ -324,6 +337,14 @@ static inline void binder_alloc_set_vma(struct binder_alloc *alloc,
 	 */
 	smp_wmb();
 	alloc->vma = vma;
+=======
+		mmap_assert_write_locked(alloc->vma_vm_mm);
+	} else {
+		mmap_assert_locked(alloc->vma_vm_mm);
+	}
+
+	alloc->vma_addr = vm_start;
+>>>>>>> BRANCH (633c3b Linux 5.15.65)
 }
 
 static inline struct vm_area_struct *binder_alloc_get_vma(
