@@ -16,6 +16,23 @@
       "message": "That creates loss of type information (full-\u003efwd decl). Giuliano, Sid, please have a look.",
       "revId": "f9c9a1aecf4ed6a0e6f843fd432ece1e6339bbc2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53862190_fa44af27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2022-09-23T12:34:33Z",
+      "side": 1,
+      "message": "ABI fidelity report:\n\n```\n10 symbol(s) changed from ABSENT to TYPED:\n  mmc_set_bus_mode\n  mmc_set_timing\n  __mmc_poll_for_busy\n  mmc_retune_release\n  mmc_set_bus_width\n  mmc_retune_hold\n  mmc_execute_tuning\n  mmc_select_card\n  mmc_prepare_busy_cmd\n  mmc_set_clock\n\n68 type(s) changed from FULLY_DEFINED to ABSENT:\n  struct ieee80211_sta_vht_cap\n  struct ieee80211_wmm_rule\n  enum nl80211_band\n  struct cfg80211_wowlan\n  struct ieee80211_supported_band\n  enum nl80211_iftype\n  struct regulatory_request\n  struct ieee80211_sband_iftype_data\n  struct wiphy_coalesce_support\n  enum nl80211_dfs_regions\n  struct ieee80211_iface_combination\n  enum environment_cap\n  struct ieee80211_freq_range\n  struct ieee80211_sta_eht_cap\n  struct cfg80211_sched_scan_plan\n  struct ieee80211_sta_he_cap\n  struct ieee80211_wmm_ac\n  struct ieee80211_eht_cap_elem_fixed\n  struct wiphy_vendor_command\n  struct nl80211_vendor_cmd_info\n  struct ieee80211_regdomain\n  struct ieee80211_he_cap_elem\n  struct ieee80211_eht_mcs_nss_supp\n  struct wiphy\n  struct ieee80211_txrx_stypes\n  struct ieee80211_mcs_info\n  struct ieee80211_iface_limit\n  struct cfg80211_chan_def\n  struct cfg80211_wowlan_tcp\n  struct cfg80211_bss_select_adjust\n  struct mac_address\n  enum cfg80211_signal_type\n  struct ieee80211_he_mcs_nss_supp\n  struct wiphy_iftype_ext_capab\n  struct cfg80211_pmsr_capabilities\n  struct wiphy_wowlan_support\n  struct nl80211_wowlan_tcp_data_token\n  struct ieee80211_eht_mcs_nss_supp_bw\n  struct cfg80211_sar_capa\n  struct ieee80211_rate\n  struct cfg80211_pkt_pattern\n  struct ieee80211_vht_mcs_info\n  struct ieee80211_eht_mcs_nss_supp_20mhz_only\n  enum nl80211_dfs_state\n  struct ieee80211_ht_cap\n  struct cfg80211_sched_scan_request\n  struct cfg80211_ssid\n  enum nl80211_reg_initiator\n  struct cfg80211_sar_freq_ranges\n  struct ieee80211_edmg\n  struct ieee80211_power_rule\n  enum ieee80211_edmg_bw_config\n  enum ieee80211_bss_type\n  struct wiphy_iftype_akm_suites\n  struct nl80211_wowlan_tcp_data_seq\n  struct nl80211_wowlan_tcp_data_token_feature\n  struct wiphy_wowlan_tcp_support\n  enum nl80211_user_reg_hint_type\n  struct cfg80211_match_set\n  struct ieee80211_reg_rule\n  struct ieee80211_sta_ht_cap\n  struct ieee80211_vht_cap\n  struct ieee80211_channel\n  enum nl80211_chan_width\n  enum nl80211_bss_scan_width\n  enum nl80211_sar_type\n  struct ieee80211_he_6ghz_capa\n  struct ieee80211_sta_s1g_cap\n\n4 type(s) changed from DECLARATION_ONLY to ABSENT:\n  struct cfg80211_cqm_config\n  struct cfg80211_cached_keys\n  struct cfg80211_conn\n  struct cfg80211_internal_bss\n\n1 type(s) changed from FULLY_DEFINED to DECLARATION_ONLY:\n  struct wireless_dev\n\n1 type(s) changed from ABSENT to FULLY_DEFINED:\n  struct ewma_psr_time\n\n1 type(s) changed from DECLARATION_ONLY to FULLY_DEFINED:\n  struct drm_self_refresh_data\n```",
+      "revId": "f9c9a1aecf4ed6a0e6f843fd432ece1e6339bbc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
