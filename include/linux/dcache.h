@@ -17,6 +17,7 @@
 #include <linux/android_kabi.h>
 
 struct path;
+struct file;
 struct vfsmount;
 
 /*
@@ -267,7 +268,7 @@ extern struct dentry * d_make_root(struct inode *);
 /* <clickety>-<click> the ramfs-type tree */
 extern void d_genocide(struct dentry *);
 
-extern void d_tmpfile(struct dentry *, struct inode *);
+extern void d_tmpfile(struct file *, struct inode *);
 
 extern struct dentry *d_find_alias(struct inode *);
 extern void d_prune_aliases(struct inode *);
