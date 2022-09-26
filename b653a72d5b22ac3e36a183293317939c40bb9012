@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9edba252_d105d497",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-09-26T21:41:12Z",
+      "side": 1,
+      "message": "__print_symbolic seems to be the standard way to handle this, so please use it. It also handles unknown values in a safer way than your tipc_transfer_kind_name function",
+      "parentUuid": "0660f830_913842cb",
+      "revId": "b653a72d5b22ac3e36a183293317939c40bb9012",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04061320_5651d16f",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 10
