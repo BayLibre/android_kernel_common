@@ -39,6 +39,24 @@
       "message": "Please do not add hooks to `android-mainline` unless you are using this tree for a device at the moment.  Just add them to the release-specific branch you need them for instead.",
       "revId": "c7373f8e426e8d4556c1731b07403a375cd5d93e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bea252be_8366879c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-09-26T07:55:38Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nThese vendor hooks were reverted in the below link.\nhttps://android-review.googlesource.com/c/kernel/common/+/2133652\n\n| Revert \"ANDROID: module: Add vendor hook\"\n|\n| This reverts commit 5ebe1623067b7f948ce63bd82bc09de14d358c01.\n|\n| It causes lots of conflicts in the 5.19-rc1 merge due to the rewrite and\n| movement of the module core code.  If this is still needed, it can be\n| added back later.\n\n\n\nBut we still need this vendor hook, so I port it back to android-mainline.",
+      "parentUuid": "a6aae69f_44198da2",
+      "revId": "c7373f8e426e8d4556c1731b07403a375cd5d93e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
