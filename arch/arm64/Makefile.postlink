@@ -19,10 +19,8 @@ include scripts/Kbuild.include
 CMD_FIPS140_GEN_HMAC = crypto/fips140_gen_hmac
 quiet_cmd_gen_hmac = HMAC    $@
       cmd_gen_hmac = $(OBJCOPY) $@ \
-	--dump-section=$(shell $(READELF) -SW $@|grep -Eo '\.rela\.text\S*')=$@.rela.text \
-	--dump-section=$(shell $(READELF) -SW $@|grep -Eo '\.rela\.rodata\S*')=$@.rela.rodata \
-	--add-section=.init.rela.text=$@.rela.text \
-	--add-section=.init.rela.rodata=$@.rela.rodata \
+	--rename-section=$(shell $(READELF) -SW $@|grep -Eo '\.rela\.text\S*')=.init.rela.text \
+	--rename-section=$(shell $(READELF) -SW $@|grep -Eo '\.rela\.rodata\S*')=.init.rela.rodata \
 	--set-section-flags=.init.rela.text=alloc,readonly \
 	--set-section-flags=.init.rela.rodata=alloc,readonly && \
 	$(CMD_FIPS140_GEN_HMAC) $@
