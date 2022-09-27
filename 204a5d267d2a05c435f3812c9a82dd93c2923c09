@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b95b41c_1a312d64",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-27T09:05:55Z",
+      "side": 1,
+      "message": "what subsystem/driver needs this?  It should not be used by any individual driver at all.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 23
+      },
+      "revId": "204a5d267d2a05c435f3812c9a82dd93c2923c09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "318f92d3_d1bf8713",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-27T09:05:55Z",
+      "side": 1,
+      "message": "why is this needed?  No Android userspace code uses this user api.",
+      "range": {
+        "startLine": 557,
+        "startChar": 0,
+        "endLine": 557,
+        "endChar": 24
+      },
+      "revId": "204a5d267d2a05c435f3812c9a82dd93c2923c09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
