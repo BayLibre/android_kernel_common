@@ -16,6 +16,29 @@
       "message": "Hi Greg, could you help to check if I need to split this patch into smaller pieces?",
       "revId": "18f77bdc4fa985654bf3ff0f7dfff7d643aa495e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcc50bbb_3d3ed6d9",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-27T09:01:55Z",
+      "side": 1,
+      "message": "should not be needed as this is a new sysfs entry, not an old one where you have to preserve a frozen userspace API.  This is not needed for out-of-tree drivers for obvious reasons that they do not need to keep a frozen api.",
+      "range": {
+        "startLine": 386,
+        "startChar": 2,
+        "endLine": 386,
+        "endChar": 38
+      },
+      "revId": "18f77bdc4fa985654bf3ff0f7dfff7d643aa495e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
