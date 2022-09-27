@@ -1181,6 +1181,7 @@ static int qcom_geni_serial_port_setup(struct uart_port *uport)
 			       false, true, true);
 	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
 	geni_se_select_mode(&port->se, port->dev_data->mode);
+	qcom_geni_serial_start_rx(uport);
 	port->setup = true;
 
 	return 0;
@@ -1821,8 +1822,42 @@ static const struct qcom_geni_device_data qcom_geni_uart_data = {
 	.mode = GENI_SE_DMA,
 };
 
+static int qcom_geni_serial_sys_hib_resume(struct device *dev)
+{
+	int ret = 0;
+	struct uart_port *uport;
+	struct qcom_geni_private_data *private_data;
+	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
+
+	uport = &port->uport;
+	private_data = uport->private_data;
+
+	if (uart_console(uport)) {
+		geni_icc_set_tag(&port->se, 0x7);
+		geni_icc_set_bw(&port->se);
+		ret = uart_resume_port(private_data->drv, uport);
+		/*
+		 * For hibernation usecase clients for
+		 * console UART won't call port setup during restore,
+		 * hence call port setup for console uart.
+		 */
+		qcom_geni_serial_port_setup(uport);
+	} else {
+		/*
+		 * Peripheral register settings are lost during hibernation.
+		 * Update setup flag such that port setup happens again
+		 * during next session. Clients of HS-UART will close and
+		 * open the port during hibernation.
+		 */
+		port->setup = false;
+	}
+	return ret;
+}
+
 static const struct dev_pm_ops qcom_geni_serial_pm_ops = {
 	SYSTEM_SLEEP_PM_OPS(qcom_geni_serial_suspend, qcom_geni_serial_resume)
+	.restore = qcom_geni_serial_sys_hib_resume,
+	.thaw = qcom_geni_serial_sys_hib_resume,
 };
 
 static const struct of_device_id qcom_geni_serial_match_table[] = {
