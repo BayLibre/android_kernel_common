@@ -1514,6 +1514,15 @@ end:
 	return error;
 }
 
+bool is_hibernation_swap(struct block_device *bdev)
+{
+        if (bdev == hib_resume_bdev)
+		return true;
+	else
+		return false;
+}
+EXPORT_SYMBOL_GPL(is_hibernation_swap);
+
 /**
  *      swsusp_check - Check for swsusp signature in the resume device
  */
