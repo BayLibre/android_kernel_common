@@ -819,6 +819,9 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
 	if (bio->bi_vcnt >= queue_max_segments(q))
 		return 0;
 
+	if (WARN_ON_ONCE(len > queue_max_segment_size(q)))
+		return 0;
+
 	bvec = &bio->bi_io_vec[bio->bi_vcnt];
 	bvec->bv_page = page;
 	bvec->bv_len = len;

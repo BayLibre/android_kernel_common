@@ -208,19 +208,19 @@ static bool bvec_split_segs(const struct request_queue *q,
 		seg_size = get_max_segment_size(q, bv->bv_page,
 						bv->bv_offset + total_len);
 		seg_size = min(seg_size, len);
-
 		(*nsegs)++;
 		total_len += seg_size;
 		len -= seg_size;
 
-		if ((bv->bv_offset + total_len) & queue_virt_boundary(q))
+		if (((bv->bv_offset + total_len) & queue_virt_boundary(q)) ||
+				total_len >= q->limits.max_segment_size)
 			break;
 	}
 
 	*sectors += total_len >> 9;
 
 	/* tell the caller to split the bvec if it is too big to fit */
-	return len > 0 || bv->bv_len > max_len;
+	return len > 0 || bv->bv_len > max_len || bv->bv_len > q->limits.max_segment_size;
 }
 
 /**
@@ -263,7 +263,9 @@ static struct bio *blk_bio_segment_split(struct request_queue *q,
 
 		if (nsegs < max_segs &&
 		    sectors + (bv.bv_len >> 9) <= max_sectors &&
-		    bv.bv_offset + bv.bv_len <= PAGE_SIZE) {
+		    bv.bv_offset + bv.bv_len <= PAGE_SIZE &&
+		    bv.bv_len <= q->limits.max_segment_size) {
+			/* single-page bvec optimization */
 			nsegs++;
 			sectors += bv.bv_len >> 9;
 		} else if (bvec_split_segs(q, &bv, &nsegs, &sectors, max_segs,
@@ -325,7 +327,8 @@ void __blk_queue_split(struct bio **bio, unsigned int *nr_segs)
 		if (!q->limits.chunk_sectors &&
 		    (*bio)->bi_vcnt == 1 &&
 		    ((*bio)->bi_io_vec[0].bv_len +
-		     (*bio)->bi_io_vec[0].bv_offset) <= PAGE_SIZE) {
+		     (*bio)->bi_io_vec[0].bv_offset) <= PAGE_SIZE &&
+		     (*bio)->bi_io_vec[0].bv_len <= q->limits.max_segment_size) {
 			*nr_segs = 1;
 			break;
 		}

@@ -409,8 +409,8 @@ enum {
 	MASK_OCS			= 0x0F,
 };
 
-/* The maximum length of the data byte count field in the PRDT is 256KB */
-#define PRDT_DATA_BYTE_COUNT_MAX	(256 * 1024)
+/* The maximum length of the data byte count field in the PRDT is 4KB */
+#define PRDT_DATA_BYTE_COUNT_MAX	(4 * 1024)
 /* The granularity of the data byte count field in the PRDT is 32-bit */
 #define PRDT_DATA_BYTE_COUNT_PAD	4
 

@@ -296,12 +296,6 @@ EXPORT_SYMBOL_GPL(blk_queue_max_discard_segments);
  **/
 void blk_queue_max_segment_size(struct request_queue *q, unsigned int max_size)
 {
-	if (max_size < PAGE_SIZE) {
-		max_size = PAGE_SIZE;
-		printk(KERN_INFO "%s: set to minimum %d\n",
-		       __func__, max_size);
-	}
-
 	/* see blk_queue_virt_boundary() for the explanation */
 	WARN_ON_ONCE(q->limits.virt_boundary_mask);
 
