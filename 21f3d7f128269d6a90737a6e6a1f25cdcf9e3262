@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04a5e330_92e561b9",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-09-28T15:35:40Z",
+      "side": 1,
+      "message": "I don\u0027t mind adding the hook for a short term fix, but could you try to implement this in an upstream friendly way and post on the list?\n\nThis needs to be double checked, but I believe that if def_root_domain.dl_bw.total_bw \u003d\u003d 0, then we could _maybe_ skip this whole thing under the assumption that there are no deadline tasks in the system. Is that correct? Or is there a possibility of a race?",
+      "range": {
+        "startLine": 946,
+        "startChar": 1,
+        "endLine": 946,
+        "endChar": 75
+      },
+      "revId": "21f3d7f128269d6a90737a6e6a1f25cdcf9e3262",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
