@@ -22,6 +22,30 @@
       },
       "revId": "9496da74709c1e007efcd35b14e4c445116d723e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03ffdf66_b4306083",
+        "filename": "mm/slub.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2022-09-28T03:44:20Z",
+      "side": 1,
+      "message": "mm/slab.h in 5.10:\nstruct track {\n        unsigned long addr;     /* Called from address */\n#ifdef CONFIG_STACKTRACE\n        unsigned long addrs[TRACK_ADDRS_COUNT]; /* Called from address */\n#endif\n        int cpu;                /* Was running on cpu */\n        int pid;                /* Pid context */\n        unsigned long when;     /* When did the operation occur */\n#ifdef CONFIG_STACKTRACE\n        ANDROID_OEM_DATA(1);\n#endif\n};\nIn 5.10, we added ANDROID_OEM_DATA in struct track to record hash value. And it is not included in 5.15. As it is not available to modify struct anymore, we will reuse the \u0027track-\u003ewhen\u0027 to save hash, because the timestamp is not important for us. So we must move the hook down to overwrite the original \u0027track-\u003ewhen\u0027 assignment.",
+      "parentUuid": "b751ed5e_fec4d33e",
+      "range": {
+        "startLine": 738,
+        "startChar": 2,
+        "endLine": 738,
+        "endChar": 60
+      },
+      "revId": "9496da74709c1e007efcd35b14e4c445116d723e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
