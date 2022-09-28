@@ -57,6 +57,30 @@
       },
       "revId": "18f77bdc4fa985654bf3ff0f7dfff7d643aa495e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa43e70c_bbc80005",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-09-28T04:11:05Z",
+      "side": 1,
+      "message": "\u003e should not be needed as this is a new sysfs entry, not an old one where you have to preserve a frozen userspace API.  This is not needed for out-of-tree drivers for obvious reasons that they do not need to keep a frozen api.\n\nThis is an API available in kernel 5.10, so we think it should be OK to use. We can workaround and not to use it, but is there any more clear rules for which kind of APIs we can use or can\u0027t use. Our engineers may use any of the symbols with EXPORT_SYMBOL_GPL in kernel by default.",
+      "parentUuid": "bcc50bbb_3d3ed6d9",
+      "range": {
+        "startLine": 386,
+        "startChar": 2,
+        "endLine": 386,
+        "endChar": 38
+      },
+      "revId": "18f77bdc4fa985654bf3ff0f7dfff7d643aa495e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
