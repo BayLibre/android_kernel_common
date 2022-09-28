@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efea36af_65f1d24b",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-09-28T09:47:11Z",
+      "side": 1,
+      "message": "This is used in drvier/power/supply base on a global \"power_supply_class\", so it need this class_for_each_device to get info need by driver.",
+      "parentUuid": "ead1605d_25dd6972",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 23
+      },
+      "revId": "204a5d267d2a05c435f3812c9a82dd93c2923c09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "318f92d3_d1bf8713",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "This enable i2c chardev is enabled in our defconfig, let me check if it\u0027s debug only.",
       "parentUuid": "318f92d3_d1bf8713",
+      "range": {
+        "startLine": 557,
+        "startChar": 0,
+        "endLine": 557,
+        "endChar": 24
+      },
+      "revId": "204a5d267d2a05c435f3812c9a82dd93c2923c09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a81a4bcd_9cb13f39",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-09-28T09:47:11Z",
+      "side": 1,
+      "message": "I will split this out first, but we do have some device using the userspace driver.",
+      "parentUuid": "cff3305f_e9d9fc9c",
       "range": {
         "startLine": 557,
         "startChar": 0,
