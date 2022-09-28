@@ -81,6 +81,30 @@
       },
       "revId": "18f77bdc4fa985654bf3ff0f7dfff7d643aa495e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a41ad38_fd5b3f46",
+        "filename": "android/abi_gki_aarch64_rockchip",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-09-28T07:06:24Z",
+      "side": 1,
+      "message": "Please don\u0027t use this, it just encourages you to not fix up your userspace code properly 😊\n\nAnd yes, it is in the kernel, but that does not mean we want all exported functions to be used by everyone.  Not all should be used by drivers for obvious reasons, and also each new symbol you use increases our, and yours, maintenance burden.",
+      "parentUuid": "aa43e70c_bbc80005",
+      "range": {
+        "startLine": 386,
+        "startChar": 2,
+        "endLine": 386,
+        "endChar": 38
+      },
+      "revId": "18f77bdc4fa985654bf3ff0f7dfff7d643aa495e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
