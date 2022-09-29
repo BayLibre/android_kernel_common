@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a30b87f2_1bbc8e47",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-09-29T18:38:55Z",
+      "side": 1,
+      "message": "Ok. Will replace \u0027goto exit_out\u0027 with \u0027goto done\u0027",
+      "parentUuid": "5b1fa7ec_3f485991",
+      "range": {
+        "startLine": 414,
+        "startChar": 7,
+        "endLine": 414,
+        "endChar": 15
+      },
+      "revId": "bdd02dc12ce9d238fbca45d20af8d65b8bc6179e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e74ecb9f_10ba475a",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-26T21:41:12Z",
       "side": 1,
       "message": "err_ffa_mem_reclaim? The convention in this file is to have the label start with err_ then the step that failed.",
+      "range": {
+        "startLine": 492,
+        "startChar": 7,
+        "endLine": 492,
+        "endChar": 11
+      },
+      "revId": "bdd02dc12ce9d238fbca45d20af8d65b8bc6179e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06bd2e16_7f7d9fcf",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-09-29T18:38:55Z",
+      "side": 1,
+      "message": "Ok. will remove \u0027goto exit\u0027 and use \u0027goto err_ffa_mem_reclaim\u0027",
+      "parentUuid": "e74ecb9f_10ba475a",
       "range": {
         "startLine": 492,
         "startChar": 7,
