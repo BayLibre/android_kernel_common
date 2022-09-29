@@ -365,6 +365,7 @@ static void uvcg_video_pump(struct work_struct *work)
 
 		video->encode(req, video, buf);
 
+#if 0 /* TODO: disable no_interrupt=1 support until stability issues are solved */
 		/* With usb3 we have more requests. This will decrease the
 		 * interrupt load to a quarter but also catches the corner
 		 * cases, which needs to be handled */
@@ -377,6 +378,7 @@ static void uvcg_video_pump(struct work_struct *work)
 		} else {
 			req->no_interrupt = 1;
 		}
+#endif
 
 		/* Queue the USB request */
 		ret = uvcg_video_ep_queue(video, req);
@@ -389,7 +391,9 @@ static void uvcg_video_pump(struct work_struct *work)
 
 		/* Endpoint now owns the request */
 		req = NULL;
+#if 0 /* TODO: disable no_interrupt=1 support until stability issues are solved */
 		video->req_int_count++;
+#endif
 	}
 
 	if (!req)
