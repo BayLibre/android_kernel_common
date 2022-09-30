@@ -22,6 +22,30 @@
       },
       "revId": "21f3d7f128269d6a90737a6e6a1f25cdcf9e3262",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd4f9fd1_0f6b13c3",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1324603
+      },
+      "writtenOn": "2022-09-30T02:59:33Z",
+      "side": 1,
+      "message": "Checking def_root_domain.dl_bw.total_bw \u003d\u003d 0 makes sense to me, if there is racing, I guess the original bt update may also not be able to reflect it, even it use rcu_read_lock. If you thinks this short term fix is fine, I will go to the review process of it, and try to post it on upstream in a formal way. Thanks!",
+      "parentUuid": "04a5e330_92e561b9",
+      "range": {
+        "startLine": 946,
+        "startChar": 1,
+        "endLine": 946,
+        "endChar": 75
+      },
+      "revId": "21f3d7f128269d6a90737a6e6a1f25cdcf9e3262",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
