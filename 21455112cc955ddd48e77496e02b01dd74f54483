@@ -22,6 +22,30 @@
       },
       "revId": "21455112cc955ddd48e77496e02b01dd74f54483",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77155159_3b2eee1b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-09-30T15:57:54Z",
+      "side": 1,
+      "message": "I understood this to mean the patch has modifications from what was on the list, in this case because of the uncached heap.\n\nThe Android docs don\u0027t mention this case explicitly, but the prodkernel ones do: \"This indicates that non-trivial modifications were made to backport an upstream, staged, or proposed commit. This prefix is used for one of UPSTREAM, FROMGIT, or FROMLIST depending on the original commit.\"\n\nI guess ANDROID would have worked too since we can always link to the list.\n\nIs there anything to do here? Update the Android docs to allow/prohibit this in the future?",
+      "parentUuid": "21dbee73_03dcc5c7",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "21455112cc955ddd48e77496e02b01dd74f54483",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
