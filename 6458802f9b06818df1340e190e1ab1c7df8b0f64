@@ -24,6 +24,29 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9781d7b1_f18e932a",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1203,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-09-30T11:34:48Z",
+      "side": 1,
+      "message": "If we pass mod pointer only, we cannot know we should use core_layout or init_layout (kernel/module/main.c:1202, 2529).",
+      "range": {
+        "startLine": 1202,
+        "startChar": 1,
+        "endLine": 1203,
+        "endChar": 39
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43ffc011_7542c83a",
