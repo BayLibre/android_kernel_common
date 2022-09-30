@@ -1032,6 +1032,7 @@ static int fuse_copy_one(struct fuse_copy_state *cs, void *val, unsigned size)
 }
 
 /* Copy the fuse-bpf lookup args and verify them */
+#ifdef CONFIG_FUSE_BPF
 static int fuse_copy_lookup(struct fuse_copy_state *cs, void *val, unsigned size)
 {
 	struct fuse_entry_bpf_out *febo = (struct fuse_entry_bpf_out *)val;
@@ -1047,6 +1048,12 @@ static int fuse_copy_lookup(struct fuse_copy_state *cs, void *val, unsigned size
 		err = parse_fuse_entry_bpf(feb);
 	return err;
 }
+#else
+static int fuse_copy_lookup(struct fuse_copy_state *cs, void *val, unsigned size)
+{
+	return fuse_copy_one(cs, val, size);
+}
+#endif
 
 /* Copy request arguments to/from userspace buffer */
 static int fuse_copy_args(struct fuse_copy_state *cs, unsigned numargs,
