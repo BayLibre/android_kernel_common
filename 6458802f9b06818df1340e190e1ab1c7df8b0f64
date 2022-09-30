@@ -47,6 +47,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4f774f2_5750daf0",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1212,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-09-30T11:33:30Z",
+      "side": 1,
+      "message": "If we pass mod pointer only, we cannot know we should use core_layout or init_layout (kernel/module/main.c:1202, 2529).",
+      "parentUuid": "43ffc011_7542c83a",
+      "range": {
+        "startLine": 1212,
+        "startChar": 0,
+        "endLine": 1212,
+        "endChar": 73
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71b56de6_549b335e",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-09-30T09:27:51Z",
       "side": 1,
       "message": "should not be needed if you pass in the module pointer above.",
+      "range": {
+        "startLine": 2373,
+        "startChar": 0,
+        "endLine": 2373,
+        "endChar": 73
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a21b1b90_c13463b9",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2373,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-09-30T11:33:30Z",
+      "side": 1,
+      "message": "If we pass mod pointer only, we cannot know we should use core_layout or init_layout (kernel/module/main.c:1202, 2529).",
+      "parentUuid": "71b56de6_549b335e",
       "range": {
         "startLine": 2373,
         "startChar": 0,
