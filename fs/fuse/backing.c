@@ -12,6 +12,233 @@
 #include <linux/namei.h>
 #include <linux/bpf_fuse.h>
 
+static ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *fa,
+				       unsigned short in_numargs, unsigned short out_numargs,
+				       struct bpf_fuse_arg *out_arg_array, bool add_out_to_in)
+{
+	int i;
+	uint32_t max_size;
+	ssize_t res;
+
+	struct fuse_args args = {
+		.nodeid = fa->nodeid,
+		.opcode = fa->opcode,
+		.error_in = fa->error_in,
+		.in_numargs = in_numargs,
+		.out_numargs = out_numargs,
+		.force = !!(fa->flags & FUSE_BPF_FORCE),
+		.out_argvar = !!(fa->flags & FUSE_BPF_OUT_ARGVAR),
+		.is_lookup = !!(fa->flags & FUSE_BPF_IS_LOOKUP),
+	};
+
+	/* Set in args */
+	for (i = 0; i < fa->in_numargs; ++i)
+		args.in_args[i] = (struct fuse_in_arg) {
+			.size = fa->in_args[i].size,
+			.value = fa->in_args[i].value,
+		};
+	if (add_out_to_in) {
+		for (i = 0; i < fa->out_numargs; ++i)
+			args.in_args[fa->in_numargs + i] = (struct fuse_in_arg) {
+				.size = fa->out_args[i].size,
+				.value = fa->out_args[i].value,
+			};
+	}
+
+	/* All out args must be writeable */
+	for (i = 0; i < out_numargs; ++i) {
+		max_size = out_arg_array[i].max_size ?: out_arg_array[i].size;
+		if (!bpf_fuse_get_writeable(&out_arg_array[i], max_size, true))
+			return -ENOMEM;
+	}
+
+	/* Set out args */
+	for (i = 0; i < out_numargs; ++i)
+		args.out_args[i] = (struct fuse_arg) {
+			.size = out_arg_array[i].size,
+			.value = out_arg_array[i].value,
+		};
+
+	res = fuse_simple_request(fm, &args);
+
+	/* update used areas of buffers */
+	for (i = 0; i < out_numargs; ++i)
+		if (out_arg_array[i].flags & BPF_FUSE_VARIABLE_SIZE)
+			out_arg_array[i].size = args.out_args[i].size;
+	fa->ret = args.ret;
+
+	return res;
+}
+
+static ssize_t fuse_prefilter_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *fa)
+{
+	return fuse_bpf_simple_request(fm, fa, fa->in_numargs, fa->in_numargs,
+				       fa->in_args, false);
+}
+
+static ssize_t fuse_postfilter_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *fa)
+{
+	return fuse_bpf_simple_request(fm, fa, fa->in_numargs + fa->out_numargs, fa->out_numargs,
+				       fa->out_args, true);
+}
+
+static inline void fuse_bpf_set_in_ends(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
+		fa->in_args[i].end_offset = (void *)
+			((char *)fa->in_args[i].value
+			+ fa->in_args[i].size);
+}
+
+static inline void fuse_bpf_set_in_immutable(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
+		fa->in_args[i].flags |= BPF_FUSE_IMMUTABLE;
+}
+
+static inline void fuse_bpf_set_out_ends(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_OUT; i++)
+		fa->out_args[i].end_offset = (void *)
+			((char *)fa->out_args[i].value
+			+ fa->out_args[i].size);
+}
+
+static inline void fuse_bpf_free_alloced(struct bpf_fuse_args *fa)
+{
+	int i;
+
+	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
+		if (fa->in_args[i].flags & BPF_FUSE_ALLOCATED)
+			kfree(fa->in_args[i].value);
+	for (i = 0; i < FUSE_MAX_ARGS_OUT; i++)
+		if (fa->out_args[i].flags & BPF_FUSE_ALLOCATED)
+			kfree(fa->out_args[i].value);
+}
+
+/*
+ * expression statement to wrap the backing filter logic
+ * struct inode *inode: inode with bpf and backing inode
+ * typedef io: (typically complex) type whose components fuse_args can point to.
+ *	An instance of this type is created locally and passed to initialize
+ * void initialize_in(struct bpf_fuse_args *fa, io *in_out, args...): function that sets
+ *	up fa and io based on args
+ * void initialize_out(struct bpf_fuse_args *fa, io *in_out, args...): function that sets
+ *	up fa and io based on args
+ * int backing(struct fuse_bpf_args_internal *fa, args...): function that actually performs
+ *	the backing io operation
+ * void *finalize(struct fuse_bpf_args *, args...): function that performs any final
+ *	work needed to commit the backing io
+ */
+#define fuse_bpf_backing(inode, io, out, initialize_in, initialize_out,	\
+			 backing, finalize, args...)			\
+({									\
+	struct fuse_inode *fuse_inode = get_fuse_inode(inode);		\
+	struct fuse_mount *fm = get_fuse_mount(inode);			\
+	struct bpf_fuse_args fa = { 0 };				\
+	bool initialized = false;					\
+	bool handled = false;						\
+	bool locked;							\
+	ssize_t res;							\
+	int bpf_next;							\
+	io feo = { 0 };							\
+	int error = 0;							\
+									\
+	do {								\
+		if (!fuse_inode || !fuse_inode->backing_inode)		\
+			break;						\
+									\
+		handled = true;						\
+		error = initialize_in(&fa, &feo, args);			\
+		if (error)						\
+			break;						\
+		fuse_bpf_set_in_ends(&fa);				\
+									\
+		fa.opcode |= FUSE_PREFILTER;				\
+		bpf_next = fuse_inode->bpf ?				\
+			BPF_PROG_RUN(fuse_inode->bpf, &fa) :		\
+			BPF_FUSE_CONTINUE;				\
+		if (bpf_next < 0) {					\
+			error = bpf_next;				\
+			break;						\
+		}							\
+									\
+		if (bpf_next == BPF_FUSE_USER_PREFILTER) {		\
+			locked = fuse_lock_inode(inode);		\
+			res = fuse_prefilter_simple_request(fm, &fa);	\
+			fuse_unlock_inode(inode, locked);		\
+			if (res < 0) {					\
+				error = res;				\
+				break;					\
+			}						\
+			bpf_next = fa.ret;				\
+		}							\
+		fuse_bpf_set_in_immutable(&fa);				\
+									\
+		error = initialize_out(&fa, &feo, args);		\
+		if (error)						\
+			break;						\
+		fuse_bpf_set_out_ends(&fa);				\
+									\
+		initialized = true;					\
+		if (bpf_next == BPF_FUSE_USER) {			\
+			handled = false;				\
+			break;						\
+		}							\
+									\
+		fa.opcode &= ~FUSE_PREFILTER;				\
+									\
+		error = backing(&fa, out, args);			\
+		if (error < 0)						\
+			fa.error_in = error;				\
+									\
+		if (bpf_next == BPF_FUSE_CONTINUE)			\
+			break;						\
+									\
+		fa.opcode |= FUSE_POSTFILTER;				\
+		if (bpf_next == BPF_FUSE_POSTFILTER)			\
+			bpf_next = BPF_PROG_RUN(fuse_inode->bpf, &fa);	\
+		if (bpf_next < 0) {					\
+			error = bpf_next;				\
+			break;						\
+		}							\
+									\
+		if (!(bpf_next == BPF_FUSE_USER_POSTFILTER))		\
+			break;						\
+									\
+		locked = fuse_lock_inode(inode);			\
+		res = fuse_postfilter_simple_request(fm, &fa);		\
+		fuse_unlock_inode(inode, locked);			\
+		if (res < 0) {						\
+			error = res;					\
+			break;						\
+		}							\
+	} while (false);						\
+									\
+	if (initialized && handled) {					\
+		res = finalize(&fa, out, args);				\
+		if (res)						\
+			error = res;					\
+	}								\
+	fuse_bpf_free_alloced(&fa);					\
+									\
+	*out = error ? _Generic((*out),					\
+			default :					\
+				error,					\
+			struct dentry * :				\
+				ERR_PTR(error),				\
+			const char * :					\
+				ERR_PTR(error)				\
+			) : (*out);					\
+	handled;							\
+})
+
 #define FUSE_BPF_IOCB_MASK (IOCB_APPEND | IOCB_DSYNC | IOCB_HIPRI | IOCB_NOWAIT | IOCB_SYNC)
 
 struct fuse_bpf_aio_req {
@@ -56,7 +283,7 @@ static void fuse_copyattr(struct file *dst_file, struct file *src_file)
 	i_size_write(dst, i_size_read(src));
 }
 
-struct bpf_prog *fuse_get_bpf_prog(struct file *file)
+static struct bpf_prog *fuse_get_bpf_prog(struct file *file)
 {
 	struct bpf_prog *bpf_prog = ERR_PTR(-EINVAL);
 
@@ -75,7 +302,7 @@ struct bpf_prog *fuse_get_bpf_prog(struct file *file)
 	return bpf_prog;
 }
 
-void fuse_get_backing_path(struct file *file, struct path *path)
+static void fuse_get_backing_path(struct file *file, struct path *path)
 {
 	path_get(&file->f_path);
 	*path = file->f_path;
@@ -2461,6 +2688,25 @@ static int fuse_getattr_backing(struct bpf_fuse_args *fa, int *out,
 	return 0;
 }
 
+static int finalize_attr(struct inode *inode, struct fuse_attr_out *outarg,
+				u64 attr_version, struct kstat *stat)
+{
+	int err = 0;
+
+	if (fuse_invalid_attr(&outarg->attr) ||
+	    ((inode->i_mode ^ outarg->attr.mode) & S_IFMT)) {
+		fuse_make_bad(inode);
+		err = -EIO;
+	} else {
+		fuse_change_attributes(inode, &outarg->attr,
+				       attr_timeout(outarg),
+				       attr_version);
+		if (stat)
+			fuse_fillattr(inode, &outarg->attr, stat);
+	}
+	return err;
+}
+
 static int fuse_getattr_finalize(struct bpf_fuse_args *fa, int *out,
 				 const struct dentry *entry, struct kstat *stat,
 				 u32 request_mask, unsigned int flags)
@@ -3084,74 +3330,4 @@ int __init fuse_bpf_init(void)
 void __exit fuse_bpf_cleanup(void)
 {
 	kmem_cache_destroy(fuse_bpf_aio_request_cachep);
-}
-
-static ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *fa,
-				       unsigned short in_numargs, unsigned short out_numargs,
-				       struct bpf_fuse_arg *out_arg_array, bool add_out_to_in)
-{
-	int i;
-	uint32_t max_size;
-	ssize_t res;
-
-	struct fuse_args args = {
-		.nodeid = fa->nodeid,
-		.opcode = fa->opcode,
-		.error_in = fa->error_in,
-		.in_numargs = in_numargs,
-		.out_numargs = out_numargs,
-		.force = !!(fa->flags & FUSE_BPF_FORCE),
-		.out_argvar = !!(fa->flags & FUSE_BPF_OUT_ARGVAR),
-		.is_lookup = !!(fa->flags & FUSE_BPF_IS_LOOKUP),
-	};
-
-	/* Set in args */
-	for (i = 0; i < fa->in_numargs; ++i)
-		args.in_args[i] = (struct fuse_in_arg) {
-			.size = fa->in_args[i].size,
-			.value = fa->in_args[i].value,
-		};
-	if (add_out_to_in) {
-		for (i = 0; i < fa->out_numargs; ++i)
-			args.in_args[fa->in_numargs + i] = (struct fuse_in_arg) {
-				.size = fa->out_args[i].size,
-				.value = fa->out_args[i].value,
-			};
-	}
-
-	/* All out args must be writeable */
-	for (i = 0; i < out_numargs; ++i) {
-		max_size = out_arg_array[i].max_size ?: out_arg_array[i].size;
-		if (!bpf_fuse_get_writeable(&out_arg_array[i], max_size, true))
-			return -ENOMEM;
-	}
-
-	/* Set out args */
-	for (i = 0; i < out_numargs; ++i)
-		args.out_args[i] = (struct fuse_arg) {
-			.size = out_arg_array[i].size,
-			.value = out_arg_array[i].value,
-		};
-
-	res = fuse_simple_request(fm, &args);
-
-	/* update used areas of buffers */
-	for (i = 0; i < out_numargs; ++i)
-		if (out_arg_array[i].flags & BPF_FUSE_VARIABLE_SIZE)
-			out_arg_array[i].size = args.out_args[i].size;
-	fa->ret = args.ret;
-
-	return res;
-}
-
-ssize_t fuse_prefilter_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *fa)
-{
-	return fuse_bpf_simple_request(fm, fa, fa->in_numargs, fa->in_numargs,
-				       fa->in_args, false);
-}
-
-ssize_t fuse_postfilter_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *fa)
-{
-	return fuse_bpf_simple_request(fm, fa, fa->in_numargs + fa->out_numargs, fa->out_numargs,
-				       fa->out_args, true);
 }

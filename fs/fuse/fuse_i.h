@@ -1353,9 +1353,6 @@ ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
 
 /* backing.c */
 
-struct bpf_prog *fuse_get_bpf_prog(struct file *file);
-void fuse_get_backing_path(struct file *file, struct path *path);
-
 struct fuse_entry_bpf {
 	struct fuse_entry_bpf_out out;
 
@@ -1678,25 +1675,6 @@ static inline void iattr_to_fattr(struct fuse_conn *fc, struct iattr *iattr,
 	}
 }
 
-static inline int finalize_attr(struct inode *inode, struct fuse_attr_out *outarg,
-				u64 attr_version, struct kstat *stat)
-{
-	int err = 0;
-
-	if (fuse_invalid_attr(&outarg->attr) ||
-	    ((inode->i_mode ^ outarg->attr.mode) & S_IFMT)) {
-		fuse_make_bad(inode);
-		err = -EIO;
-	} else {
-		fuse_change_attributes(inode, &outarg->attr,
-				       attr_timeout(outarg),
-				       attr_version);
-		if (stat)
-			fuse_fillattr(inode, &outarg->attr, stat);
-	}
-	return err;
-}
-
 static inline void convert_statfs_to_fuse(struct fuse_kstatfs *attr, struct kstatfs *stbuf)
 {
 	attr->bsize   = stbuf->f_bsize;
@@ -1728,165 +1706,6 @@ static inline void convert_fuse_statfs(struct kstatfs *stbuf, struct fuse_kstatf
 int __init fuse_bpf_init(void);
 void __exit fuse_bpf_cleanup(void);
 
-ssize_t fuse_prefilter_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *args);
-ssize_t fuse_postfilter_simple_request(struct fuse_mount *fm, struct bpf_fuse_args *args);
-
-static inline void fuse_bpf_set_in_ends(struct bpf_fuse_args *fa)
-{
-	int i;
-
-	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
-		fa->in_args[i].end_offset = (void *)
-			((char *)fa->in_args[i].value
-			+ fa->in_args[i].size);
-}
-
-static inline void fuse_bpf_set_in_immutable(struct bpf_fuse_args *fa)
-{
-	int i;
-
-	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
-		fa->in_args[i].flags |= BPF_FUSE_IMMUTABLE;
-}
-
-static inline void fuse_bpf_set_out_ends(struct bpf_fuse_args *fa)
-{
-	int i;
-
-	for (i = 0; i < FUSE_MAX_ARGS_OUT; i++)
-		fa->out_args[i].end_offset = (void *)
-			((char *)fa->out_args[i].value
-			+ fa->out_args[i].size);
-}
-
-static inline void fuse_bpf_free_alloced(struct bpf_fuse_args *fa)
-{
-	int i;
-
-	for (i = 0; i < FUSE_MAX_ARGS_IN; i++)
-		if (fa->in_args[i].flags & BPF_FUSE_ALLOCATED)
-			kfree(fa->in_args[i].value);
-	for (i = 0; i < FUSE_MAX_ARGS_OUT; i++)
-		if (fa->out_args[i].flags & BPF_FUSE_ALLOCATED)
-			kfree(fa->out_args[i].value);
-}
-
-/*
- * expression statement to wrap the backing filter logic
- * struct inode *inode: inode with bpf and backing inode
- * typedef io: (typically complex) type whose components fuse_args can point to.
- *	An instance of this type is created locally and passed to initialize
- * void initialize_in(struct bpf_fuse_args *fa, io *in_out, args...): function that sets
- *	up fa and io based on args
- * void initialize_out(struct bpf_fuse_args *fa, io *in_out, args...): function that sets
- *	up fa and io based on args
- * int backing(struct fuse_bpf_args_internal *fa, args...): function that actually performs
- *	the backing io operation
- * void *finalize(struct fuse_bpf_args *, args...): function that performs any final
- *	work needed to commit the backing io
- */
-#define fuse_bpf_backing(inode, io, out, initialize_in, initialize_out,	\
-			 backing, finalize, args...)			\
-({									\
-	struct fuse_inode *fuse_inode = get_fuse_inode(inode);		\
-	struct fuse_mount *fm = get_fuse_mount(inode);			\
-	struct bpf_fuse_args fa = { 0 };				\
-	bool initialized = false;					\
-	bool handled = false;						\
-	bool locked;							\
-	ssize_t res;							\
-	int bpf_next;							\
-	io feo = { 0 };							\
-	int error = 0;							\
-									\
-	do {								\
-		if (!fuse_inode || !fuse_inode->backing_inode)		\
-			break;						\
-									\
-		handled = true;						\
-		error = initialize_in(&fa, &feo, args);			\
-		if (error)						\
-			break;						\
-		fuse_bpf_set_in_ends(&fa);				\
-									\
-		fa.opcode |= FUSE_PREFILTER;				\
-		bpf_next = fuse_inode->bpf ?				\
-			BPF_PROG_RUN(fuse_inode->bpf, &fa) :		\
-			BPF_FUSE_CONTINUE;				\
-		if (bpf_next < 0) {					\
-			error = bpf_next;				\
-			break;						\
-		}							\
-									\
-		if (bpf_next == BPF_FUSE_USER_PREFILTER) {		\
-			locked = fuse_lock_inode(inode);		\
-			res = fuse_prefilter_simple_request(fm, &fa);	\
-			fuse_unlock_inode(inode, locked);		\
-			if (res < 0) {					\
-				error = res;				\
-				break;					\
-			}						\
-			bpf_next = fa.ret;				\
-		}							\
-		fuse_bpf_set_in_immutable(&fa);				\
-									\
-		error = initialize_out(&fa, &feo, args);		\
-		if (error)						\
-			break;						\
-		fuse_bpf_set_out_ends(&fa);				\
-									\
-		initialized = true;					\
-		if (bpf_next == BPF_FUSE_USER) {			\
-			handled = false;				\
-			break;						\
-		}							\
-									\
-		fa.opcode &= ~FUSE_PREFILTER;				\
-									\
-		error = backing(&fa, out, args);			\
-		if (error < 0)						\
-			fa.error_in = error;				\
-									\
-		if (bpf_next == BPF_FUSE_CONTINUE)			\
-			break;						\
-									\
-		fa.opcode |= FUSE_POSTFILTER;				\
-		if (bpf_next == BPF_FUSE_POSTFILTER)			\
-			bpf_next = BPF_PROG_RUN(fuse_inode->bpf, &fa);	\
-		if (bpf_next < 0) {					\
-			error = bpf_next;				\
-			break;						\
-		}							\
-									\
-		if (!(bpf_next == BPF_FUSE_USER_POSTFILTER))		\
-			break;						\
-									\
-		locked = fuse_lock_inode(inode);			\
-		res = fuse_postfilter_simple_request(fm, &fa);		\
-		fuse_unlock_inode(inode, locked);			\
-		if (res < 0) {						\
-			error = res;					\
-			break;						\
-		}							\
-	} while (false);						\
-									\
-	if (initialized && handled) {					\
-		res = finalize(&fa, out, args);				\
-		if (res)						\
-			error = res;					\
-	}								\
-	fuse_bpf_free_alloced(&fa);					\
-									\
-	*out = error ? _Generic((*out),					\
-			default :					\
-				error,					\
-			struct dentry * :				\
-				ERR_PTR(error),				\
-			const char * :					\
-				ERR_PTR(error)				\
-			) : (*out);					\
-	handled;							\
-})
 #endif /* CONFIG_FUSE_BPF */
 
 #endif /* _FS_FUSE_I_H */
