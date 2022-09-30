@@ -462,15 +462,8 @@ static void fuse_dentry_canonical_path(const struct path *path,
 	char *path_name;
 	int err;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_dummy_io, err,
-			       fuse_canonical_path_initialize_in,
-			       fuse_canonical_path_initialize_out,
-			       fuse_canonical_path_backing,
-			       fuse_canonical_path_finalize,
-			       path, canonical_path))
+	if (fuse_bpf_canonical_path(&err, inode, path, canonical_path))
 		return;
-#endif
 
 	path_name = (char *)get_zeroed_page(GFP_KERNEL);
 	if (!path_name)
@@ -624,16 +617,11 @@ static struct dentry *fuse_lookup(struct inode *dir, struct dentry *entry,
 	bool outarg_valid = true;
 	bool locked;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(dir, struct fuse_lookup_io, newent,
-			       fuse_lookup_initialize_in, fuse_lookup_initialize_out,
-			       fuse_lookup_backing, fuse_lookup_finalize,
-			       dir, entry, flags))
-		return newent;
-#endif
-
 	if (fuse_is_bad(dir))
 		return ERR_PTR(-EIO);
+
+	if (fuse_bpf_lookup(&newent, dir, entry, flags))
+		return newent;
 
 	locked = fuse_lock_inode(dir);
 	err = fuse_lookup_name(dir->i_sb, get_node_id(dir), &entry->d_name,
@@ -696,17 +684,8 @@ static int fuse_create_open(struct inode *dir, struct dentry *entry,
 	/* Userspace expects S_IFREG in create mode */
 	BUG_ON((mode & S_IFMT) != S_IFREG);
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		if (fuse_bpf_backing(dir, struct fuse_create_open_io, err,
-				       fuse_create_open_initialize_in,
-				       fuse_create_open_initialize_out,
-				       fuse_create_open_backing,
-				       fuse_create_open_finalize,
-				       dir, entry, file, flags, mode))
-			return err;
-	}
-#endif
+	if (fuse_bpf_create_open(&err, dir, entry, file, flags, mode))
+		return err;
 
 	forget = fuse_alloc_forget();
 	err = -ENOMEM;
@@ -899,16 +878,10 @@ static int fuse_mknod(struct inode *dir, struct dentry *entry, umode_t mode,
 	struct fuse_mknod_in inarg;
 	struct fuse_mount *fm = get_fuse_mount(dir);
 	FUSE_ARGS(args);
-
-#ifdef CONFIG_FUSE_BPF
 	int err;
 
-	if (fuse_bpf_backing(dir, struct fuse_mknod_in, err,
-			fuse_mknod_initialize_in, fuse_mknod_initialize_out,
-			fuse_mknod_backing, fuse_mknod_finalize,
-			dir, entry, mode, rdev))
+	if (fuse_bpf_mknod(&err, dir, entry, mode, rdev))
 		return err;
-#endif
 
 	if (!fm->fc->dont_mask)
 		mode &= ~current_umask();
@@ -937,16 +910,10 @@ static int fuse_mkdir(struct inode *dir, struct dentry *entry, umode_t mode)
 	struct fuse_mkdir_in inarg;
 	struct fuse_mount *fm = get_fuse_mount(dir);
 	FUSE_ARGS(args);
-
-#ifdef CONFIG_FUSE_BPF
 	int err;
 
-	if (fuse_bpf_backing(dir, struct fuse_mkdir_in, err,
-			fuse_mkdir_initialize_in, fuse_mkdir_initialize_out,
-			fuse_mkdir_backing, fuse_mkdir_finalize,
-			dir, entry, mode))
+	if (fuse_bpf_mkdir(&err, dir, entry, mode))
 		return err;
-#endif
 
 	if (!fm->fc->dont_mask)
 		mode &= ~current_umask();
@@ -969,16 +936,10 @@ static int fuse_symlink(struct inode *dir, struct dentry *entry,
 	struct fuse_mount *fm = get_fuse_mount(dir);
 	unsigned len = strlen(link) + 1;
 	FUSE_ARGS(args);
-
-#ifdef CONFIG_FUSE_BPF
 	int err;
 
-	if (fuse_bpf_backing(dir, struct fuse_dummy_io, err,
-			fuse_symlink_initialize_in, fuse_symlink_initialize_out,
-			fuse_symlink_backing, fuse_symlink_finalize,
-			dir, entry, link, len))
+	if (fuse_bpf_symlink(&err, dir, entry, link, len))
 		return err;
-#endif
 
 	args.opcode = FUSE_SYMLINK;
 	args.in_numargs = 2;
@@ -1014,15 +975,8 @@ static int fuse_unlink(struct inode *dir, struct dentry *entry)
 	if (fuse_is_bad(dir))
 		return -EIO;
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		if (fuse_bpf_backing(dir, struct fuse_dummy_io, err,
-					fuse_unlink_initialize_in, fuse_unlink_initialize_out,
-					fuse_unlink_backing, fuse_unlink_finalize,
-					dir, entry))
-			return err;
-	}
-#endif
+	if (fuse_bpf_unlink(&err, dir, entry))
+		return err;
 
 	args.opcode = FUSE_UNLINK;
 	args.nodeid = get_node_id(dir);
@@ -1063,15 +1017,8 @@ static int fuse_rmdir(struct inode *dir, struct dentry *entry)
 	if (fuse_is_bad(dir))
 		return -EIO;
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		if (fuse_bpf_backing(dir, struct fuse_dummy_io, err,
-					fuse_rmdir_initialize_in, fuse_rmdir_initialize_out,
-					fuse_rmdir_backing, fuse_rmdir_finalize,
-					dir, entry))
-			return err;
-	}
-#endif
+	if (fuse_bpf_rmdir(&err, dir, entry))
+		return err;
 
 	args.opcode = FUSE_RMDIR;
 	args.nodeid = get_node_id(dir);
@@ -1158,14 +1105,8 @@ static int fuse_rename2(struct inode *olddir, struct dentry *oldent,
 		return -EINVAL;
 
 	if (flags) {
-#ifdef CONFIG_FUSE_BPF
-		if (fuse_bpf_backing(olddir, struct fuse_rename2_in, err,
-						fuse_rename2_initialize_in,
-						fuse_rename2_initialize_out, fuse_rename2_backing,
-						fuse_rename2_finalize,
-						olddir, oldent, newdir, newent, flags))
+		if (fuse_bpf_rename2(&err, olddir, oldent, newdir, newent, flags))
 			return err;
-#endif
 
 		/* TODO: how should this go with bpfs involved? */
 		if (fc->no_rename2 || fc->minor < 23)
@@ -1179,14 +1120,8 @@ static int fuse_rename2(struct inode *olddir, struct dentry *oldent,
 			err = -EINVAL;
 		}
 	} else {
-#ifdef CONFIG_FUSE_BPF
-		if (fuse_bpf_backing(olddir, struct fuse_rename_in, err,
-						fuse_rename_initialize_in,
-						fuse_rename_initialize_out, fuse_rename_backing,
-						fuse_rename_finalize,
-						olddir, oldent, newdir, newent))
+		if (fuse_bpf_rename(&err, olddir, oldent, newdir, newent))
 			return err;
-#endif
 
 		err = fuse_rename_common(olddir, oldent, newdir, newent, 0,
 					 FUSE_RENAME,
@@ -1205,13 +1140,8 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
 	struct fuse_mount *fm = get_fuse_mount(inode);
 	FUSE_ARGS(args);
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_link_in, err,
-				fuse_link_initialize_in, fuse_link_initialize_out,
-				fuse_link_backing, fuse_link_finalize, entry,
-				newdir, newent))
+	if (fuse_bpf_link(&err, inode, entry, newdir, newent))
 		return err;
-#endif
 
 	memset(&inarg, 0, sizeof(inarg));
 	inarg.oldnodeid = get_node_id(inode);
@@ -1338,13 +1268,8 @@ static int fuse_update_get_attr(struct inode *inode, struct file *file,
 	int err = 0;
 	bool sync;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_getattr_io, err,
-			       fuse_getattr_initialize_in, fuse_getattr_initialize_out,
-			       fuse_getattr_backing, fuse_getattr_finalize,
-			       path->dentry, stat, request_mask, flags))
+	if (fuse_bpf_getattr(&err, inode, path->dentry, stat, request_mask, flags))
 		return err;
-#endif
 
 	if (flags & AT_STATX_FORCE_SYNC)
 		sync = true;
@@ -1479,12 +1404,8 @@ static int fuse_access(struct inode *inode, int mask)
 	struct fuse_access_in inarg;
 	int err;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_access_in, err,
-			       fuse_access_initialize_in, fuse_access_initialize_out,
-			       fuse_access_backing, fuse_access_finalize, inode, mask))
+	if (fuse_bpf_access(&err, inode, mask))
 		return err;
-#endif
 
 	BUG_ON(mask & MAY_NOT_BLOCK);
 
@@ -1541,12 +1462,8 @@ static int fuse_permission(struct inode *inode, int mask)
 	if (!fuse_allow_current_process(fc))
 		return -EACCES;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_access_in, err,
-			       fuse_access_initialize_in, fuse_access_initialize_out,
-			       fuse_access_backing, fuse_access_finalize, inode, mask))
+	if (fuse_bpf_access(&err, inode, mask))
 		return err;
-#endif
 
 	/*
 	 * If attributes are needed, refresh them before proceeding
@@ -1636,24 +1553,15 @@ static const char *fuse_get_link(struct dentry *dentry, struct inode *inode,
 {
 	struct fuse_conn *fc = get_fuse_conn(inode);
 	struct page *page;
+	const char *out = NULL;
 	int err;
 
 	err = -EIO;
 	if (fuse_is_bad(inode))
 		goto out_err;
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		const char *out = NULL;
-
-		if (fuse_bpf_backing(inode, struct fuse_dummy_io, out,
-				       fuse_get_link_initialize_in, fuse_get_link_initialize_out,
-				       fuse_get_link_backing,
-				       fuse_get_link_finalize,
-				       inode, dentry, callback))
-			return out;
-	}
-#endif
+	if (fuse_bpf_get_link(&out, inode, dentry, callback))
+		return out;
 
 	if (fc->cache_symlinks)
 		return page_get_link(dentry, inode, callback);
@@ -1688,14 +1596,10 @@ static int fuse_dir_open(struct inode *inode, struct file *file)
 
 static int fuse_dir_release(struct inode *inode, struct file *file)
 {
-#ifdef CONFIG_FUSE_BPF
 	int err = 0;
 
-	if (fuse_bpf_backing(inode, struct fuse_release_in, err,
-		       fuse_releasedir_initialize_in, fuse_releasedir_initialize_out,
-		       fuse_release_backing, fuse_release_finalize, inode, file))
+	if (fuse_bpf_releasedir(&err, inode, file))
 		return err;
-#endif
 
 	fuse_release_common(file, true);
 
@@ -1712,13 +1616,8 @@ static int fuse_dir_fsync(struct file *file, loff_t start, loff_t end,
 	if (fuse_is_bad(inode))
 		return -EIO;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_fsync_in, err,
-			fuse_dir_fsync_initialize_in, fuse_dir_fsync_initialize_out,
-			fuse_fsync_backing, fuse_fsync_finalize,
-			file, start, end, datasync))
+	if (fuse_bpf_dir_fsync(&err, inode, file, start, end, datasync))
 		return err;
-#endif
 
 	if (fc->no_fsyncdir)
 		return 0;
@@ -1871,12 +1770,8 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
 	bool trust_local_cmtime = is_wb && S_ISREG(inode->i_mode);
 	bool fault_blocked = false;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_setattr_io, err,
-			       fuse_setattr_initialize_in, fuse_setattr_initialize_out,
-			       fuse_setattr_backing, fuse_setattr_finalize, dentry, attr, file))
+	if (fuse_bpf_setattr(&err, inode, dentry, attr, file))
 		return err;
-#endif
 
 	if (!fc->default_permissions)
 		attr->ia_valid |= ATTR_FORCE;
@@ -2041,18 +1936,11 @@ static int fuse_setattr(struct dentry *entry, struct iattr *attr)
 		 * This should be done on write(), truncate() and chown().
 		 */
 		if (!fc->handle_killpriv) {
-#ifdef CONFIG_FUSE_BPF
 			/*
 			 * ia_mode calculation may have used stale i_mode.
 			 * Refresh and recalculate.
 			 */
-			if (!fuse_bpf_backing(inode, struct fuse_getattr_io, ret,
-					       fuse_getattr_initialize_in,
-					       fuse_getattr_initialize_out,
-					       fuse_getattr_backing,
-					       fuse_getattr_finalize,
-					       entry, NULL, 0, 0))
-#endif
+			if (!fuse_bpf_getattr(&ret, inode, entry, NULL, 0, 0))
 				ret = fuse_do_getattr(inode, NULL, file);
 			if (ret)
 				return ret;

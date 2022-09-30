@@ -243,16 +243,8 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
 	if (err)
 		return err;
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		if (fuse_bpf_backing(inode, struct fuse_open_io, err,
-				       fuse_open_initialize_in, fuse_open_initialize_out,
-				       fuse_open_backing,
-				       fuse_open_finalize,
-				       inode, file, isdir))
-			return err;
-	}
-#endif
+	if (fuse_bpf_open(&err, inode, file, isdir))
+		return err;
 
 	if (is_wb_truncate || dax_truncate) {
 		inode_lock(inode);
@@ -351,16 +343,10 @@ static int fuse_open(struct inode *inode, struct file *file)
 static int fuse_release(struct inode *inode, struct file *file)
 {
 	struct fuse_conn *fc = get_fuse_conn(inode);
-
-#ifdef CONFIG_FUSE_BPF
 	int err;
 
-	if (fuse_bpf_backing(inode, struct fuse_release_in, err,
-		       fuse_release_initialize_in, fuse_release_initialize_out,
-		       fuse_release_backing, fuse_release_finalize,
-		       inode, file))
+	if (fuse_bpf_release(&err, inode, file))
 		return err;
-#endif
 
 	/* see fuse_vma_close() for !writeback_cache case */
 	if (fc->writeback_cache)
@@ -499,17 +485,11 @@ static int fuse_flush(struct file *file, fl_owner_t id)
 	FUSE_ARGS(args);
 	int err;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(file->f_inode, struct fuse_flush_in, err,
-			       fuse_flush_initialize_in, fuse_flush_initialize_out,
-			       fuse_flush_backing,
-			       fuse_flush_finalize,
-			       file, id))
-	return err;
-#endif
-
 	if (fuse_is_bad(inode))
 		return -EIO;
+
+	if (fuse_bpf_flush(&err, file_inode(file), file, id))
+		return err;
 
 	err = write_inode_now(inode, 1);
 	if (err)
@@ -580,16 +560,11 @@ static int fuse_fsync(struct file *file, loff_t start, loff_t end,
 	struct fuse_conn *fc = get_fuse_conn(inode);
 	int err;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_fsync_in, err,
-			       fuse_fsync_initialize_in, fuse_fsync_initialize_out,
-			       fuse_fsync_backing, fuse_fsync_finalize,
-			       file, start, end, datasync))
-		return err;
-#endif
-
 	if (fuse_is_bad(inode))
 		return -EIO;
+
+	if (fuse_bpf_fsync(&err, inode, file, start, end, datasync))
+		return err;
 
 	inode_lock(inode);
 
@@ -1625,6 +1600,7 @@ static ssize_t fuse_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 	struct file *file = iocb->ki_filp;
 	struct fuse_file *ff = file->private_data;
 	struct inode *inode = file_inode(file);
+	ssize_t ret;
 
 	if (fuse_is_bad(inode))
 		return -EIO;
@@ -1632,19 +1608,8 @@ static ssize_t fuse_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 	if (FUSE_IS_DAX(inode))
 		return fuse_dax_read_iter(iocb, to);
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		ssize_t ret;
-
-		if (fuse_bpf_backing(inode, struct fuse_file_read_iter_io, ret,
-				       fuse_file_read_iter_initialize_in,
-				       fuse_file_read_iter_initialize_out,
-				       fuse_file_read_iter_backing,
-				       fuse_file_read_iter_finalize,
-				       iocb, to))
-			return ret;
-	}
-#endif
+	if (fuse_bpf_file_read_iter(&ret, inode, iocb, to))
+		return ret;
 
 	if (ff->passthrough.filp)
 		return fuse_passthrough_read_iter(iocb, to);
@@ -1659,6 +1624,7 @@ static ssize_t fuse_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
 	struct file *file = iocb->ki_filp;
 	struct fuse_file *ff = file->private_data;
 	struct inode *inode = file_inode(file);
+	ssize_t ret = 0;
 
 	if (fuse_is_bad(inode))
 		return -EIO;
@@ -1666,19 +1632,8 @@ static ssize_t fuse_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
 	if (FUSE_IS_DAX(inode))
 		return fuse_dax_write_iter(iocb, from);
 
-#ifdef CONFIG_FUSE_BPF
-	{
-		ssize_t ret = 0;
-
-		if (fuse_bpf_backing(inode, struct fuse_file_write_iter_io, ret,
-				       fuse_file_write_iter_initialize_in,
-				       fuse_file_write_iter_initialize_out,
-				       fuse_file_write_iter_backing,
-				       fuse_file_write_iter_finalize,
-				       iocb, from))
-			return ret;
-	}
-#endif
+	if (fuse_bpf_file_write_iter(&ret, inode, iocb, from))
+		return ret;
 
 	if (ff->passthrough.filp)
 		return fuse_passthrough_write_iter(iocb, from);
@@ -2733,14 +2688,9 @@ static loff_t fuse_file_llseek(struct file *file, loff_t offset, int whence)
 {
 	loff_t retval;
 	struct inode *inode = file_inode(file);
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_lseek_io, retval,
-			       fuse_lseek_initialize_in, fuse_lseek_initialize_out,
-			       fuse_lseek_backing,
-			       fuse_lseek_finalize,
-			       file, offset, whence))
+
+	if (fuse_bpf_lseek(&retval, inode, file, offset, whence))
 		return retval;
-#endif
 
 	switch (whence) {
 	case SEEK_SET:
@@ -3389,15 +3339,8 @@ static long fuse_file_fallocate(struct file *file, int mode, loff_t offset,
 
 	bool block_faults = FUSE_IS_DAX(inode) && lock_inode;
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(inode, struct fuse_fallocate_in, err,
-			       fuse_file_fallocate_initialize_in,
-			       fuse_file_fallocate_initialize_out,
-			       fuse_file_fallocate_backing,
-			       fuse_file_fallocate_finalize,
-			       file, mode, offset, length))
+	if (fuse_bpf_file_fallocate(&err, inode, file, mode, offset, length))
 		return err;
-#endif
 
 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
 		return -EOPNOTSUPP;
@@ -3502,15 +3445,9 @@ static ssize_t __fuse_copy_file_range(struct file *file_in, loff_t pos_in,
 	bool is_unstable = (!fc->writeback_cache) &&
 			   ((pos_out + len) > inode_out->i_size);
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(file_in->f_inode, struct fuse_copy_file_range_io, err,
-			       fuse_copy_file_range_initialize_in,
-			       fuse_copy_file_range_initialize_out,
-			       fuse_copy_file_range_backing,
-			       fuse_copy_file_range_finalize,
-			       file_in, pos_in, file_out, pos_out, len, flags))
+	if (fuse_bpf_copy_file_range(&err, file_inode(file_in), file_in, pos_in,
+				     file_out, pos_out, len, flags))
 		return err;
-#endif
 
 	if (fc->no_copy_file_range)
 		return -EOPNOTSUPP;

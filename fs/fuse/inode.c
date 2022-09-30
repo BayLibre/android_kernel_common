@@ -587,13 +587,8 @@ static int fuse_statfs(struct dentry *dentry, struct kstatfs *buf)
 		return 0;
 	}
 
-#ifdef CONFIG_FUSE_BPF
-	if (fuse_bpf_backing(dentry->d_inode, struct fuse_statfs_out, err,
-			       fuse_statfs_initialize_in, fuse_statfs_initialize_out,
-			       fuse_statfs_backing, fuse_statfs_finalize,
-			       dentry, buf))
+	if (fuse_bpf_statfs(&err, dentry->d_inode, dentry, buf))
 		return err;
-#endif
 
 	memset(&outarg, 0, sizeof(outarg));
 	args.in_numargs = 0;
