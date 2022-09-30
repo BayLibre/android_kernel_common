@@ -16,6 +16,24 @@
       "message": "you removed symbols from the .xml file, something went wrong with how you generated it 😞",
       "revId": "b21819ca645afa8a296de48dcaa61eb33c03955b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48832f90_33b3bc07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-09-30T01:10:20Z",
+      "side": 1,
+      "message": "This patch does not remove any symbols, and I use below command to generate the .xml file.\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 LTO\u003dthin SKIP_MRPROPER\u003d1 build/build_abi.sh -u",
+      "parentUuid": "fbde3f37_e11f16ab",
+      "revId": "b21819ca645afa8a296de48dcaa61eb33c03955b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
