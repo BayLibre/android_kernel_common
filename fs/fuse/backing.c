@@ -320,9 +320,6 @@ static int fuse_create_open_backing(struct bpf_fuse_args *fa, int *out,
 	struct dentry *newent;
 	const struct fuse_create_in *fci = fa->in_args[0].value;
 
-	if (!dir_fuse_inode)
-		return -EIO;
-
 	get_fuse_backing_path(entry, &backing_path);
 	if (!backing_path.dentry)
 		return -EBADF;
