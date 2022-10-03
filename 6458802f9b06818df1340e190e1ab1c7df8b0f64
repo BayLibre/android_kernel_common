@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5b637774_182cb428",
+        "filename": "include/trace/hooks/memory.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-10-03T09:22:10Z",
+      "side": 1,
+      "message": "kernel/module/main.c:2529 only set init_layout.\n\nSo we cannot do both at the same time.",
+      "parentUuid": "57f67bcf_9b795678",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 44
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9781d7b1_f18e932a",
         "filename": "kernel/module/main.c",
         "patchSetId": 3
@@ -202,6 +226,30 @@
       "writtenOn": "2022-10-03T02:07:37Z",
       "side": 1,
       "message": "Only set init layout.",
+      "range": {
+        "startLine": 2529,
+        "startChar": 1,
+        "endLine": 2530,
+        "endChar": 39
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56101d60_3a44a172",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2530,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-10-03T09:22:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1f75a5a_95186035",
       "range": {
         "startLine": 2529,
         "startChar": 1,
