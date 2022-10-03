@@ -1359,8 +1359,10 @@ int fuse_lookup_backing(struct bpf_fuse_args *fa, struct dentry **out, struct in
 		.mnt = mntget(dir_fuse_entry->backing_path.mnt),
 	};
 
-	if (d_is_negative(backing_entry))
+	if (d_is_negative(backing_entry)) {
+		fa->error_in = -ENOENT;
 		return 0;
+	}
 
 	err = vfs_getattr(&fuse_entry->backing_path, &stat,
 				  STATX_BASIC_STATS, 0);
