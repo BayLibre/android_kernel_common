@@ -280,8 +280,8 @@ static int bio_map_user_iov(struct request *rq, struct iov_iter *iter,
 				if (n > bytes)
 					n = bytes;
 
-				if (!bio_add_hw_page(rq->q, bio, page, n, offs,
-						     max_sectors, &same_page)) {
+				if (bio_add_hw_page(rq->q, bio, page, n, offs,
+						max_sectors, &same_page) < n) {
 					if (same_page)
 						put_page(page);
 					break;
