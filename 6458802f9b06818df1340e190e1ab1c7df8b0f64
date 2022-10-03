@@ -118,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7787f1b0_e5f14aae",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1212,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-10-03T02:07:37Z",
+      "side": 1,
+      "message": "kernel/module/main.c:2529 only set init_layout.\n\nSo we cannot do both at the same time.",
+      "parentUuid": "4e74d53a_0d6e47c8",
+      "range": {
+        "startLine": 1212,
+        "startChar": 0,
+        "endLine": 1212,
+        "endChar": 73
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71b56de6_549b335e",
@@ -160,6 +184,29 @@
         "startChar": 0,
         "endLine": 2373,
         "endChar": 73
+      },
+      "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f75a5a_95186035",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2530,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-10-03T02:07:37Z",
+      "side": 1,
+      "message": "Only set init layout.",
+      "range": {
+        "startLine": 2529,
+        "startChar": 1,
+        "endLine": 2530,
+        "endChar": 39
       },
       "revId": "6458802f9b06818df1340e190e1ab1c7df8b0f64",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
