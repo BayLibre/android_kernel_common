@@ -11890,6 +11890,22 @@ static void switched_from_fair(struct rq *rq, struct task_struct *p)
 	detach_task_cfs_rq(p);
 }
 
+static void task_util_update_fair(struct task_struct *p)
+{
+	struct sched_entity *se = &p->se;
+	struct cfs_rq *cfs_rq = cfs_rq_of(se);
+	u32 divider = get_pelt_divider(&cfs_rq->avg);
+
+	sub_positive(&cfs_rq->avg.util_avg, se->avg.util_avg);
+	add_positive(&cfs_rq->avg.util_avg, se->avg.util_guest);
+	cfs_rq->avg.util_sum = cfs_rq->avg.util_avg * divider;
+
+	cfs_rq_util_change(cfs_rq, 0);
+	update_load_avg(cfs_rq, se, 0);
+	update_tg_load_avg(cfs_rq);
+	propagate_entity_cfs_rq(se);
+}
+
 static void switched_to_fair(struct rq *rq, struct task_struct *p)
 {
 	attach_task_cfs_rq(p);
@@ -12283,6 +12299,7 @@ DEFINE_SCHED_CLASS(fair) = {
 
 	.task_tick		= task_tick_fair,
 	.task_fork		= task_fork_fair,
+	.task_util_update	= task_util_update_fair,
 
 	.prio_changed		= prio_changed_fair,
 	.switched_from		= switched_from_fair,

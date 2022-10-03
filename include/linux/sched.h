@@ -502,6 +502,8 @@ struct sched_avg {
 	unsigned long			load_avg;
 	unsigned long			runnable_avg;
 	unsigned long			util_avg;
+	unsigned long			util_guest;
+	unsigned long			use_util_guest;
 	struct util_est			util_est;
 } ____cacheline_aligned;
 

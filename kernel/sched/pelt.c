@@ -263,7 +263,10 @@ ___update_load_avg(struct sched_avg *sa, unsigned long load)
 	 */
 	sa->load_avg = div_u64(load * sa->load_sum, divider);
 	sa->runnable_avg = div_u64(sa->runnable_sum, divider);
-	WRITE_ONCE(sa->util_avg, sa->util_sum / divider);
+	if (sa->use_util_guest)
+		WRITE_ONCE(sa->util_avg, sa->util_guest);
+	else
+		WRITE_ONCE(sa->util_avg, sa->util_sum / divider);
 }
 
 /*
