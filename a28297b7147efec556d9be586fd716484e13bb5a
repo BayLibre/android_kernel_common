@@ -39,6 +39,30 @@
       },
       "revId": "a28297b7147efec556d9be586fd716484e13bb5a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d75a2443_f826f990",
+        "filename": "android/abi_gki_aarch64_rtktv",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1964658
+      },
+      "writtenOn": "2022-10-04T10:56:49Z",
+      "side": 1,
+      "message": "@gregkh@google.com\n\nWe use the dump_page() API to get page information and memory content.\nFor example, when memory content is corrupted, we can dump memory content to make sure these date corrupted by software or HW DMA.\n\nWould you please help to provide the reason or concern that you suppose it shall not be exported on GKI?",
+      "parentUuid": "26b8101c_5ce3f7a9",
+      "range": {
+        "startLine": 289,
+        "startChar": 2,
+        "endLine": 289,
+        "endChar": 11
+      },
+      "revId": "a28297b7147efec556d9be586fd716484e13bb5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
