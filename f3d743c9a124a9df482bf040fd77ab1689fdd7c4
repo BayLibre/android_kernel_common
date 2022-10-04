@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fd08458_63e7e908",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-04T22:40:48Z",
+      "side": 1,
+      "message": "Delete. INVALID entries can be in the middle of the table.",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 40
+      },
+      "revId": "f3d743c9a124a9df482bf040fd77ab1689fdd7c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce65225b_8a55627b",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-04T22:40:48Z",
+      "side": 1,
+      "message": "ret is a bit confusing. Call it num_entries? Or at least \"data\"?",
+      "range": {
+        "startLine": 41,
+        "startChar": 5,
+        "endLine": 41,
+        "endChar": 8
+      },
+      "revId": "f3d743c9a124a9df482bf040fd77ab1689fdd7c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7c447fb_0b39e877",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-04T22:40:48Z",
+      "side": 1,
+      "message": "\"true\" might be easier to read.",
+      "range": {
+        "startLine": 43,
+        "startChar": 69,
+        "endLine": 43,
+        "endChar": 70
+      },
+      "revId": "f3d743c9a124a9df482bf040fd77ab1689fdd7c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdd67df3_a60da56d",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-04T22:40:48Z",
+      "side": 1,
+      "message": "This feels a bit dirty. It\u0027s meant to be used for looping over a table that\u0027s already filled up. But you are used it to fill up the table. I guess it works.\n\nYou also need to switch to `cpufreq_for_each_entry_idx` to account for allowing INVALID entries in the middle. Otherwise you\u0027ll skip the freq that comes after that.",
+      "range": {
+        "startLine": 55,
+        "startChar": 1,
+        "endLine": 55,
+        "endChar": 33
+      },
+      "revId": "f3d743c9a124a9df482bf040fd77ab1689fdd7c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba4f0c0_fd3d6605",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-04T22:40:48Z",
+      "side": 1,
+      "message": "Is this valid? Looks like this a host side is only processing 1 argument now.",
+      "range": {
+        "startLine": 81,
+        "startChar": 14,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "f3d743c9a124a9df482bf040fd77ab1689fdd7c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dad4edf_32c1b314",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-04T22:40:48Z",
+      "side": 1,
+      "message": "Add a todo? Wouldn\u0027t you leak memory if you didn\u0027t free the table here?",
+      "range": {
+        "startLine": 141,
+        "startChar": 1,
+        "endLine": 141,
+        "endChar": 10
+      },
+      "revId": "f3d743c9a124a9df482bf040fd77ab1689fdd7c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
