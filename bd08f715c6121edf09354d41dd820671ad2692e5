@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c69be33a_732cf54b",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "these two lines are wrong. shm is not a fixed size array and could contain more than two entries. Look at drivers/net/fjes/fjes_trace.h and external/linux/samples/trace_events/trace-events-sample.h for examples of how to store and print data from a dynamic array using __print_array and __dynamic_array",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "983d37f3_e0575cb2",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1159,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "why are you passing -1 here instead of ret?",
+      "range": {
+        "startLine": 1159,
+        "startChar": 40,
+        "endLine": 1159,
+        "endChar": 42
+      },
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1f12716_37997331",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1600,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "Why do you copy len to ret? If you want the length in the tracepoint it seems clearer to pass the len variable to trace_trusty_ipc_write right below.",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20f2ec47_d47f762c",
+        "filename": "include/linux/trusty/smcall_util.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "delete this. Look at external/linux/include/trace/events/rdma.h and external/linux/include/trace/events/irq.h fro examples of how to handle large lists of enums in the trace header without having to repeat them several times.",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80afbe03_4860f624",
+        "filename": "include/linux/trusty/trusty_ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d527a83_477ad140",
+        "filename": "include/linux/trusty/trusty_ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f3ab3c8_13bf58c5",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "Something seems wrong if you are modifying apis when adding a tracepoint.",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82c07cff_dae757c9",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-04T19:44:17Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
