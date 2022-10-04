@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e7fc9a2_499759fb",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-04T08:59:15Z",
+      "side": 1,
+      "message": "use \"module\" in the name as that is what you are using this hook for.  Same with the next one.",
+      "range": {
+        "startLine": 104,
+        "startChar": 41,
+        "endLine": 104,
+        "endChar": 51
+      },
+      "revId": "752e0b7bd4d30467eccb4c4cb588ba21fffec50c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5570cec0_f9f46c00",
+        "filename": "include/trace/hooks/memory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-04T08:59:15Z",
+      "side": 1,
+      "message": "this should all be in the module.h hook, no need for 2 files.",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "752e0b7bd4d30467eccb4c4cb588ba21fffec50c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
