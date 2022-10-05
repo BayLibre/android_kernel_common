@@ -439,8 +439,16 @@ regular_page:
 			continue;
 		}
 
+<<<<<<< HEAD   (0e8dfc Merge branch 'android12-5.10' into branch 'android12-5.10-lt)
 		/* Do not interfere with other mappings of this page */
 		if (!allow_shared && page_mapcount(page) != 1)
+=======
+		/*
+		 * Do not interfere with other mappings of this page and
+		 * non-LRU page.
+		 */
+		if (!PageLRU(page) || page_mapcount(page) != 1)
+>>>>>>> BRANCH (014862 Linux 5.10.147)
 			continue;
 
 		VM_BUG_ON_PAGE(PageTransCompound(page), page);
