@@ -227,7 +227,11 @@ void __post_watch_notification(struct watch_list *wlist,
 
 		if (lock_wqueue(wqueue)) {
 			post_one_notification(wqueue, n);
+<<<<<<< HEAD   (a5e690 BACKPORT: FROMGIT: usb: dwc3: gadget: Avoid starting DWC3 ga)
 			unlock_wqueue(wqueue);
+=======
+			unlock_wqueue(wqueue);;
+>>>>>>> BRANCH (800870 ANDROID: Update the ABI representation)
 		}
 	}
 
@@ -511,8 +515,30 @@ int add_watch_to_object(struct watch *watch, struct watch_list *wlist)
 		unlock_wqueue(wqueue);
 	}
 
+<<<<<<< HEAD   (a5e690 BACKPORT: FROMGIT: usb: dwc3: gadget: Avoid starting DWC3 ga)
 	rcu_read_unlock();
 	return ret;
+=======
+	watch->cred = get_current_cred();
+	rcu_assign_pointer(watch->watch_list, wlist);
+
+	if (atomic_inc_return(&watch->cred->user->nr_watches) >
+	    task_rlimit(current, RLIMIT_NOFILE)) {
+		atomic_dec(&watch->cred->user->nr_watches);
+		put_cred(watch->cred);
+		return -EAGAIN;
+	}
+
+	if (lock_wqueue(wqueue)) {
+		kref_get(&wqueue->usage);
+		kref_get(&watch->usage);
+		hlist_add_head(&watch->queue_node, &wqueue->watches);
+		unlock_wqueue(wqueue);
+	}
+
+	hlist_add_head(&watch->list_node, &wlist->watchers);
+	return 0;
+>>>>>>> BRANCH (800870 ANDROID: Update the ABI representation)
 }
 EXPORT_SYMBOL(add_watch_to_object);
 

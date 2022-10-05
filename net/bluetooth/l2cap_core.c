@@ -1988,7 +1988,12 @@ static struct l2cap_chan *l2cap_global_chan_by_psm(int state, __le16 psm,
 			src_match = !bacmp(&c->src, src);
 			dst_match = !bacmp(&c->dst, dst);
 			if (src_match && dst_match) {
+<<<<<<< HEAD   (a5e690 BACKPORT: FROMGIT: usb: dwc3: gadget: Avoid starting DWC3 ga)
 				if (!l2cap_chan_hold_unless_zero(c))
+=======
+				c = l2cap_chan_hold_unless_zero(c);
+				if (!c)
+>>>>>>> BRANCH (800870 ANDROID: Update the ABI representation)
 					continue;
 
 				read_unlock(&chan_list_lock);
