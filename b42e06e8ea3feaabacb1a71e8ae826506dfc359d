@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62b03d10_51dd4977",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2022-10-05T17:08:58Z",
+      "side": 1,
+      "message": "I need to look more into the talk and the idea. But over here, is it possible\nthat the vCPU task will get migrated to a different cluster, once the hypercall is made, such that the cluster that the vCPU thinks it is on is no longer the one that the frequency was returned for? Basically similar to a TOCTOU issue.",
+      "revId": "b42e06e8ea3feaabacb1a71e8ae826506dfc359d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14a02984_dc842c92",
         "filename": "arch/arm64/kvm/hypercalls.c",
         "patchSetId": 3
