@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bea4acd5_8c141453",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1969731
+      },
+      "writtenOn": "2022-10-05T05:01:26Z",
+      "side": 1,
+      "message": "Before upstreaming the series, this CL should be split into 3 patches so that adding each hypercall.",
+      "revId": "b42e06e8ea3feaabacb1a71e8ae826506dfc359d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a5c09e_b0791778",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1969731
+      },
+      "writtenOn": "2022-10-05T05:01:26Z",
+      "side": 1,
+      "message": "You need\n#ifdef CONFIG_CPU_FREQ\nhere.",
+      "revId": "b42e06e8ea3feaabacb1a71e8ae826506dfc359d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a02984_dc842c92",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1969731
+      },
+      "writtenOn": "2022-10-05T05:01:26Z",
+      "side": 1,
+      "message": "policy can be NULL.",
+      "revId": "b42e06e8ea3feaabacb1a71e8ae826506dfc359d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71398668_c5ee41ce",
+        "filename": "include/linux/arm-smccc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1969731
+      },
+      "writtenOn": "2022-10-05T05:01:26Z",
+      "side": 1,
+      "message": "Why these are defined before PTP?",
+      "revId": "b42e06e8ea3feaabacb1a71e8ae826506dfc359d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
