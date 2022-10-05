@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c86b92f_1ec1bf9f",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1969731
+      },
+      "writtenOn": "2022-10-05T05:10:48Z",
+      "side": 1,
+      "message": "According to the document, you want to do something like this?\n\nattr.sched_util_min \u003d smccc_get_arg1(vcpu);\nattr.sched_util_max \u003d smccc_get_arg2(vcpu);",
+      "revId": "b42e06e8ea3feaabacb1a71e8ae826506dfc359d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71398668_c5ee41ce",
         "filename": "include/linux/arm-smccc.h",
         "patchSetId": 3
