@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd86df3c_1d2ea29a",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1064128
+      },
+      "writtenOn": "2022-10-07T20:46:24Z",
+      "side": 1,
+      "message": "Should we have a counter and limited the number of times this loop is called? I assume that it should only be called a few times. We may want to trigger a BUG if it loops for many more than the expected number of iterations.",
+      "revId": "d626cea254770f16e20dade468600967a161f6c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
