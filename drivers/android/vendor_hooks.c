@@ -72,10 +72,8 @@
 #include <trace/hooks/evdev.h>
 #include <trace/hooks/ipv4.h>
 #include <trace/hooks/signal.h>
-#include <trace/hooks/suspend.h>
-#include <trace/hooks/typec.h>
-#include <trace/hooks/sound.h>
-#include <trace/hooks/user.h>
+#include <trace/hooks/cfg80211.h>
+#include <trace/hooks/bl_hib.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -364,3 +362,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_urb_suitable_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_hibernation_swap);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_cpu_resume);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
