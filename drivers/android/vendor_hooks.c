@@ -65,6 +65,7 @@
 #include <trace/hooks/madvise.h>
 #include <trace/hooks/dmabuf.h>
 #include <trace/hooks/softlockup.h>
+#include <trace/hooks/bl_hib.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -470,3 +471,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_wq_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_mem);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_hibernation_swap);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_cpu_resume);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
