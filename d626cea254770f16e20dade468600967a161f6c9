@@ -16,6 +16,24 @@
       "message": "Should we have a counter and limited the number of times this loop is called? I assume that it should only be called a few times. We may want to trigger a BUG if it loops for many more than the expected number of iterations.",
       "revId": "d626cea254770f16e20dade468600967a161f6c9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1e26ab5_760116ad",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1020578
+      },
+      "writtenOn": "2022-10-07T20:56:26Z",
+      "side": 1,
+      "message": "I think as long as it is making progress, we should be good. If it doesn\u0027t make any progress in `update_balloon_size_internal()`, the kernel will panic on line 1023.",
+      "parentUuid": "fd86df3c_1d2ea29a",
+      "revId": "d626cea254770f16e20dade468600967a161f6c9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
