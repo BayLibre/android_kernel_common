@@ -74,6 +74,7 @@
 #include "internal.h"
 
 #include <trace/events/sched.h>
+#include <trace/hooks/fs.h>
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(task_rename);
 
@@ -956,6 +957,9 @@ struct file *open_exec(const char *name)
 		f = do_open_execat(AT_FDCWD, filename, 0);
 		putname(filename);
 	}
+
+	trace_android_vh_do_open_exec(f);
+
 	return f;
 }
 EXPORT_SYMBOL(open_exec);
