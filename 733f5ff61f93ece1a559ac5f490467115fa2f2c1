@@ -16,6 +16,24 @@
       "message": "You can not add a new parameter to a symbol that is already exported 😞",
       "revId": "733f5ff61f93ece1a559ac5f490467115fa2f2c1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a17669_e9c6e187",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2022-10-08T08:15:05Z",
+      "side": 1,
+      "message": "I added the vendor hook android_vh_blk_alloc_rqs() in June,\nhttps://android-review.googlesource.com/c/kernel/common/+/2113226.\nI guess no other VENDOR/OEM use this hook, so add a new parameter to this hook may not affect other VENDOR/OEM.",
+      "parentUuid": "f874ad21_eecf41a0",
+      "revId": "733f5ff61f93ece1a559ac5f490467115fa2f2c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
