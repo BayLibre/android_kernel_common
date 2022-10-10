@@ -22,6 +22,30 @@
       },
       "revId": "365efd0ea14e6d0b1ba0a8071ce20b4faf3e9f01",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fed6d4d1_04562ccc",
+        "filename": "Documentation/admin-guide/kernel-parameters.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 2329,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2022-10-10T22:03:31Z",
+      "side": 1,
+      "message": "I\u0027ve noted in the documentation that this is only for Android 13. There were concerns about using Android 13 in general as part of the command line parameter\u0027s name for cases where a kernel upgrade happens to a newer version of android, and that kernel would then need to support this feature with android13 in the name, since the bootloader may not be updated.",
+      "parentUuid": "eea6e868_db074a2c",
+      "range": {
+        "startLine": 2329,
+        "startChar": 0,
+        "endLine": 2329,
+        "endChar": 23
+      },
+      "revId": "365efd0ea14e6d0b1ba0a8071ce20b4faf3e9f01",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

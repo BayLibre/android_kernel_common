@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bd555ed_c7a33333",
+        "filename": "Documentation/admin-guide/kernel-parameters.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 6100,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2022-10-10T22:03:31Z",
+      "side": 1,
+      "message": "We don\u0027t plan on supporting this beyond android13, as future versions of Android should use the final version of https://lore.kernel.org/linux-mm/20220405135758.774016-1-catalin.marinas@arm.com/ or we will rework this feature to drop the commandline entirely.\n\nWe added this command line parameter to preserve the kmalloc ABI (memory aligned to ARCH_DMA_MINALIGN) for devices that are already using ARM64 GKI on the android13-5.15 branch, since the KMI is frozen.\n\nI\u0027ve also updated the commit message and documentation to reflect what I mentioned above.",
+      "parentUuid": "d4257657_81842d45",
+      "range": {
+        "startLine": 6100,
+        "startChar": 0,
+        "endLine": 6100,
+        "endChar": 20
+      },
+      "revId": "b8339e0c8a6a077c2dc174443443032c5a7beb36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9774556b_86d956b3",
         "filename": "include/linux/slab.h",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-08T06:43:21Z",
       "side": 1,
       "message": "global symbols are \"subsystem_verb\" not \"verb_subsystem\" please.",
+      "range": {
+        "startLine": 346,
+        "startChar": 12,
+        "endLine": 346,
+        "endChar": 26
+      },
+      "revId": "b8339e0c8a6a077c2dc174443443032c5a7beb36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b43ab00_e27ea4f9",
+        "filename": "include/linux/slab.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2022-10-10T22:03:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9774556b_86d956b3",
       "range": {
         "startLine": 346,
         "startChar": 12,
