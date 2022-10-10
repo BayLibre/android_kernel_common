@@ -34,6 +34,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_ufs_reprogram_all_keys,
 			TP_PROTO(struct ufs_hba *hba, int *err),
 			TP_ARGS(hba, err), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_ufs_delay_after_lpm,
+			TP_PROTO(struct ufs_hba *hba),
+			TP_ARGS(hba), 1);
+
 DECLARE_HOOK(android_vh_ufs_prepare_command,
 	TP_PROTO(struct ufs_hba *hba, struct request *rq,
 		 struct ufshcd_lrb *lrbp, int *err),

@@ -8824,8 +8824,10 @@ static void ufshcd_vreg_set_lpm(struct ufs_hba *hba)
 	 * Some UFS devices require delay after VCC power rail is turned-off.
 	 */
 	if (vcc_off && hba->vreg_info.vcc &&
-		hba->dev_quirks & UFS_DEVICE_QUIRK_DELAY_AFTER_LPM)
+		hba->dev_quirks & UFS_DEVICE_QUIRK_DELAY_AFTER_LPM) {
 		usleep_range(5000, 5100);
+		trace_android_rvh_ufs_delay_after_lpm(hba);
+	}
 }
 
 #ifdef CONFIG_PM
