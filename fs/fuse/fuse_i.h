@@ -1995,7 +1995,7 @@ static inline void fuse_bpf_free_alloced(struct bpf_fuse_args *fa)
 									\
 		fa.opcode |= FUSE_PREFILTER;				\
 		bpf_next = fuse_inode->bpf ?				\
-			bpf_prog_run(fuse_inode->bpf, &fa) :		\
+			BPF_PROG_RUN(fuse_inode->bpf, &fa) :		\
 			BPF_FUSE_CONTINUE;				\
 		if (bpf_next < 0) {					\
 			error = bpf_next;				\
@@ -2036,7 +2036,7 @@ static inline void fuse_bpf_free_alloced(struct bpf_fuse_args *fa)
 									\
 		fa.opcode |= FUSE_POSTFILTER;				\
 		if (bpf_next == BPF_FUSE_POSTFILTER)			\
-			bpf_next = bpf_prog_run(fuse_inode->bpf, &fa);	\
+			bpf_next = BPF_PROG_RUN(fuse_inode->bpf, &fa);	\
 		if (bpf_next < 0) {					\
 			error = bpf_next;				\
 			break;						\
