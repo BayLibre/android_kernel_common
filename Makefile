@@ -1959,9 +1959,12 @@ quiet_cmd_depmod = DEPMOD  $(MODLIB)
       cmd_depmod = $(CONFIG_SHELL) $(srctree)/scripts/depmod.sh $(DEPMOD) \
                    $(KERNELRELEASE) $(mixed-build-prefix)
 
-modules_install:
+modules_install: $(if $(filter y, $(CONFIG_MODULE_SIG_ALL)), $(if $(KBUILD_MIXED_TREE),modules_sign_prepare))
 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
 	$(call cmd,depmod)
+PHONY += modules_sign_prepare
+modules_sign_prepare:
+	$(Q)$(MAKE) $(build)=certs need-builtin=1
 
 else # CONFIG_MODULES
 
