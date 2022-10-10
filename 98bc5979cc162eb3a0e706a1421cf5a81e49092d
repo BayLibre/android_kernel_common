@@ -33,6 +33,24 @@
       "message": "why would you need module signing for modules other then GKI modules? The only modules that can be signed are the GKI modules and they should be part of the GKI prebuilt distribution?!\n\nrelated: build.sh is deprecated and we should think how we can support this functionality with the Kleaf build if still relevant after addressing the above comment.",
       "revId": "98bc5979cc162eb3a0e706a1421cf5a81e49092d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d4a00e5_d5c283a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-10-10T16:10:33Z",
+      "side": 1,
+      "message": "For the signing:\n\n\u003e Module-signing is not supported for GKI vendor modules. [...]\nhttps://source.android.com/docs/core/architecture/kernel/loadable-kernel-modules#module-signing",
+      "parentUuid": "f5c52625_f52667dd",
+      "revId": "98bc5979cc162eb3a0e706a1421cf5a81e49092d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
