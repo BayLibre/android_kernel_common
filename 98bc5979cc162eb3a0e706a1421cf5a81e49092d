@@ -16,6 +16,23 @@
       "message": "removing most reviewers, not the entire team should be added.",
       "revId": "98bc5979cc162eb3a0e706a1421cf5a81e49092d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c52625_f52667dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-10-10T13:55:53Z",
+      "side": 1,
+      "message": "why would you need module signing for modules other then GKI modules? The only modules that can be signed are the GKI modules and they should be part of the GKI prebuilt distribution?!\n\nrelated: build.sh is deprecated and we should think how we can support this functionality with the Kleaf build if still relevant after addressing the above comment.",
+      "revId": "98bc5979cc162eb3a0e706a1421cf5a81e49092d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
