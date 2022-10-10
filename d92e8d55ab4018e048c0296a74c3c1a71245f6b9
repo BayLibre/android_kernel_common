@@ -16,6 +16,24 @@
       "message": "The commit message implies that this hook is just going to wait...how long does it need to wait? Can\u0027t you just enable the quirk at lin 8827?",
       "revId": "d92e8d55ab4018e048c0296a74c3c1a71245f6b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc96d5f_acd5a53a",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8830,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-10-10T16:27:50Z",
+      "side": 1,
+      "message": "If this is really just because usleep_range(5000,5100) is too short, let\u0027s move this new hook inside the conditional to make it clearer that this is really just to add more delay.",
+      "parentUuid": "813520e9_065f557f",
+      "revId": "d92e8d55ab4018e048c0296a74c3c1a71245f6b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
