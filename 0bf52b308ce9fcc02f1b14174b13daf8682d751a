@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d064e54a_3be90cd9",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2022-10-11T23:27:12Z",
+      "side": 1,
+      "message": "We should later optimize the freq table and this line to happen only once. Not for every init/exit. I don\u0027t think there\u0027s any point in freeing and setting/clear the freq source for every hotplug (which happens during suspend/resume of the VM too if the VM doesn\u0027t use suspend to idle).",
+      "range": {
+        "startLine": 159,
+        "startChar": 1,
+        "endLine": 159,
+        "endChar": 56
+      },
+      "revId": "0bf52b308ce9fcc02f1b14174b13daf8682d751a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
