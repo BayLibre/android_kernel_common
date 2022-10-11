@@ -22,10 +22,10 @@ static long (*bpf_trace_printk)(const char *fmt, __u32 fmt_size, ...)
 
 //static long (*bpf_fuse_get_writeable_in)(struct fuse_bpf_args *fa, u32 index, void *value,
 //					 u64 size, bool copy)
-//	= (void *) 204;
+//	= (void *) 156;
 static long (*bpf_fuse_get_writeable_out)(struct __bpf_fuse_args *fa, u32 index, void *value,
 					  u64 size, bool copy)
-	= (void *) 205;
+	= (void *) 157;
 
 
 //#define bpf_make_writable_in(fa, index, size, copy)\

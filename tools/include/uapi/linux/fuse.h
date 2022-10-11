@@ -229,7 +229,7 @@
 #define FUSE_KERNEL_VERSION 7
 
 /** Minor version number of this interface */
-#define FUSE_KERNEL_MINOR_VERSION 36
+#define FUSE_KERNEL_MINOR_VERSION 32
 
 /** The node ID of the root inode */
 #define FUSE_ROOT_ID 1
@@ -754,8 +754,6 @@ struct fuse_fsync_in {
 struct fuse_setxattr_in {
 	uint32_t	size;
 	uint32_t	flags;
-	uint32_t	setxattr_flags;
-	uint32_t	padding;
 };
 
 struct fuse_getxattr_in {
@@ -790,8 +788,6 @@ struct fuse_init_in {
 	uint32_t	minor;
 	uint32_t	max_readahead;
 	uint32_t	flags;
-	uint32_t	flags2;
-	uint32_t	unused[11];
 };
 
 #define FUSE_COMPAT_INIT_OUT_SIZE 8

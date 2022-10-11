@@ -38,6 +38,10 @@ static int test_case_fail;
 #error Big endian not supported!
 #endif
 
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(array) (sizeof(array)/sizeof(*array))
+#endif
+
 struct _test_options {
 	int file;
 	int test;
