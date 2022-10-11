@@ -51,6 +51,24 @@
       "parentUuid": "f5c52625_f52667dd",
       "revId": "98bc5979cc162eb3a0e706a1421cf5a81e49092d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f18578b_d5d02182",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1961338
+      },
+      "writtenOn": "2022-10-11T01:50:52Z",
+      "side": 1,
+      "message": "Matthias， We use the branch 5.15 for out products, and still using the build.sh not Kleaf(plan to the next version)\nand our strategy about the config is only add vendor moudle, not modify the config s which setted in gki_defconfig. \nwhat you suggestion,c cherry-pick to 5.15 branch or disable the CONFIG_MODULE_SIG_ALL?",
+      "parentUuid": "3d4a00e5_d5c283a9",
+      "revId": "98bc5979cc162eb3a0e706a1421cf5a81e49092d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
