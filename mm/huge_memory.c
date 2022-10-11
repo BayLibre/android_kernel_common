@@ -2754,6 +2754,7 @@ out:
 	count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
 	return ret;
 }
+EXPORT_SYMBOL_GPL(split_huge_page_to_list);
 
 void free_transhuge_page(struct page *page)
 {
