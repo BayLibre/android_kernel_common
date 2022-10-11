@@ -105,6 +105,24 @@
       "parentUuid": "86a75bec_5af98d36",
       "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c518c3e_a691fe9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-11T18:18:40Z",
+      "side": 1,
+      "message": "sysfs_remove_dir should NEVER be on a fast path, so this can take as long as it wants to, this should not be a problem for any sort of optimization at all.\n\nSo I do not think this is a real issue at all.",
+      "parentUuid": "091d0743_d4a5dded",
+      "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
