@@ -69,6 +69,24 @@
       "parentUuid": "8deb512d_c8f9057c",
       "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86a75bec_5af98d36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-11T15:55:53Z",
+      "side": 1,
+      "message": "What \"customer\" needs this and how will it affect everyone else?  What is the workload here that causes this problem, and what codepath causes it?  Is it an in-kernel driver, or an external driver that can be redone to change the long spintime to be something else?\n\nAnd why use a rwsem at all?  They are notoriously bad and should almost never be used.  Why not use rcu or just a normal spinlock?",
+      "parentUuid": "9ca44cf9_100f104b",
+      "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
