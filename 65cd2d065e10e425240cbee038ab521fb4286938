@@ -87,6 +87,24 @@
       "parentUuid": "9ca44cf9_100f104b",
       "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091d0743_d4a5dded",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1864156
+      },
+      "writtenOn": "2022-10-11T16:05:16Z",
+      "side": 1,
+      "message": "Below path from core kernel,\n\n[38355.680063][    C7] CPU: 7 PID: 2088 Comm: RenderEngine Tainted: G S      WC OE     5.15.41 #1\n...\n[38355.688912][ \n[38355.806993][    C7]  long_running_rt_task_notifier+0xdc/0xe4 [sched_walt]\n[38355.814095][    C7]  __traceiter_android_vh_scheduler_tick+0x38/0x60\n[38355.820644][    C7]  trace_android_vh_scheduler_tick+0xe8/0x12c\n[38355.826743][    C7]  scheduler_tick+0x1d8/0x384\n[38355.831412][    C7]  update_process_times+0xcc/0xf4\n[38355.836443][    C7]  tick_sched_timer+0x9c/0x114\n[38355.841205][    C7]  __hrtimer_run_queues+0x1a4/0x2dc\n[38355.846414][    C7]  hrtimer_interrupt+0xf8/0x3c0\n[38355.851264][    C7]  arch_timer_handler_virt+0x5c/0xa0\n[38355.856562][    C7]  handle_percpu_devid_irq+0xdc/0x228\n[38355.861941][    C7]  handle_domain_irq+0xb0/0x150\n[38355.866781][    C7]  gic_handle_irq+0x54/0x12c\n[38355.871360][    C7]  call_on_irq_stack+0x40/0x70\n[38355.876124][    C7]  do_interrupt_handler+0x44/0xa0\n[38355.881154][    C7]  el1_interrupt+0x34/0x64\n[38355.885556][    C7]  el1h_64_irq_handler+0x1c/0x2c\n[38355.890488][    C7]  el1h_64_irq+0x7c/0x80\n[38355.894708][    C7]  _raw_spin_unlock_irq+0x60/0x94\n[38355.899731][    C7]  rwsem_down_write_slowpath+0x2e0/0x570\n[38355.905382][    C7]  down_write+0xf8/0x114\n[38355.909600][    C7]  __kernfs_remove.llvm.1464150985612188710+0x38c/0x498\n[38355.916589][    C7]  sysfs_remove_dir+0x68/0x90\n[38355.921263][    C7]  __kobject_del+0x54/0xf0\n[38355.925669][    C7]  kobject_del+0x24/0x40\n[38355.929899][    C7]  dma_buf_stats_teardown+0x24/0x40\n[38355.935106][    C7]  dma_buf_release+0x3c/0xfc\n[38355.939694][    C7]  __dentry_kill+0x1b0/0x28c\n[38355.944282][    C7]  dentry_kill+0xc0/0x108\n[38355.948595][    C7]  dput+0x8c/0xe8\n[38355.952196][    C7]  __fput+0x19c/0x314\n[38355.956153][    C7]  ____fput+0x14/0x24\n[38355.960116][    C7]  task_work_run+0xc0/0x158\n[38355.964613][    C7]  do_notify_resume+0x100/0x170\n[38355.969458][    C7]  el0_svc+0x68/0x90\n[38355.973332][    C7]  el0t_64_sync_handler+0x88/0xec\n[38355.978363][    C7]  el0t_64_sync+0x1b4/0x1b8\n[38355.982861][    C7] Code: f85f8e5e d50323bf d65f03c0 d42aa240 (d4210000) \n[38355.989843][    C7] ---[ end trace 57693add690dc68a ]---\n[38355.995592][    C7] Kernel panic - not syncing:\n\nThis is rwsem core kernel regression which is accepted here \nhttps://lore.kernel.org/lkml/998fd708-df53-7141-182e-6cbc02cd7819@redhat.com/\nwhich can be seen 5.15 onwards.\n\n\nMore about this issue discussed here in what workload it get observed.\nhttps://lore.kernel.org/lkml/e1cb435a-4471-ac3a-344f-04448f167c9f@quicinc.com/",
+      "parentUuid": "86a75bec_5af98d36",
+      "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
