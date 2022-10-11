@@ -94,6 +94,30 @@
       },
       "revId": "365efd0ea14e6d0b1ba0a8071ce20b4faf3e9f01",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afe223b6_3762ecc4",
+        "filename": "Documentation/admin-guide/kernel-parameters.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 2329,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-10-11T15:33:19Z",
+      "side": 1,
+      "message": "Isn\u0027t the important thing that we don\u0027t collide with an upstream cmdline option? There is a reasonable chance that devices will get a kernel update in the field in the next few years for longer support lifetimes - but they would likely not update the bootloader for fear of bricking the device. So this could force us to support an \"android13_\" cmdline option in an android14 kernel. Wouldn\u0027t be the end of the world but it seems uglier than a more generic android-specific name.",
+      "parentUuid": "02a2357a_bc294cc8",
+      "range": {
+        "startLine": 2329,
+        "startChar": 0,
+        "endLine": 2329,
+        "endChar": 23
+      },
+      "revId": "365efd0ea14e6d0b1ba0a8071ce20b4faf3e9f01",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
