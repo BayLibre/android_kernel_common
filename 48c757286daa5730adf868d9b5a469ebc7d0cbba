@@ -88,6 +88,24 @@
       "parentUuid": "9bea9f53_0f5da1a9",
       "revId": "48c757286daa5730adf868d9b5a469ebc7d0cbba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd1ef8c_af8806fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-11T18:19:58Z",
+      "side": 1,
+      "message": "If this is not upstream and not real and not a valid virtio spec, it should not be used in any devices, so this symbol is not needed.\n\nAnd again, I do not think this is the symbol you would ever use anyway, it is not used by anyone in the kernel in any driver, so I think it is being used incorrectly.",
+      "parentUuid": "8860008d_7f85d140",
+      "revId": "48c757286daa5730adf868d9b5a469ebc7d0cbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
