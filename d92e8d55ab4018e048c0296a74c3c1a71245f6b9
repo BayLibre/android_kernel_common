@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "246b1d2c_e78f9b37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951387
+      },
+      "writtenOn": "2022-10-11T07:30:14Z",
+      "side": 1,
+      "message": "Hi greg. \nBecause on different SOC platform, the VCC poweroff rate is different. On unisoc\u0027s platform, the VCC poweroff time takes about 30ms.\nAnd increasing the latency to 30ms via upstream is not likely to be accepted by other platform, so we want to add this vendor hook.",
+      "parentUuid": "dba1636e_70d8b696",
+      "revId": "d92e8d55ab4018e048c0296a74c3c1a71245f6b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "813520e9_065f557f",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "If this is really just because usleep_range(5000,5100) is too short, let\u0027s move this new hook inside the conditional to make it clearer that this is really just to add more delay.",
       "parentUuid": "813520e9_065f557f",
+      "revId": "d92e8d55ab4018e048c0296a74c3c1a71245f6b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee4519f_3e7a1512",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8830,
+      "author": {
+        "id": 1951387
+      },
+      "writtenOn": "2022-10-11T07:30:14Z",
+      "side": 1,
+      "message": "done.\nthe wait time is about 30ms.",
+      "parentUuid": "5dc96d5f_acd5a53a",
       "revId": "d92e8d55ab4018e048c0296a74c3c1a71245f6b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
