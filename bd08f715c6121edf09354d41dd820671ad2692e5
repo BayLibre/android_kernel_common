@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "870cb976_fd389c0d",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Addressed in patchset 13",
+      "parentUuid": "c69be33a_732cf54b",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "983d37f3_e0575cb2",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 12
@@ -65,6 +83,30 @@
       "writtenOn": "2022-10-04T19:44:17Z",
       "side": 1,
       "message": "why are you passing -1 here instead of ret?",
+      "range": {
+        "startLine": 1159,
+        "startChar": 40,
+        "endLine": 1159,
+        "endChar": 42
+      },
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de26a580_8c39fe15",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1159,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "983d37f3_e0575cb2",
       "range": {
         "startLine": 1159,
         "startChar": 40,
@@ -92,6 +134,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6ee213_afc1083b",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1600,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1f12716_37997331",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20f2ec47_d47f762c",
@@ -105,6 +165,24 @@
       "writtenOn": "2022-10-04T19:44:17Z",
       "side": 1,
       "message": "delete this. Look at external/linux/include/trace/events/rdma.h and external/linux/include/trace/events/irq.h fro examples of how to handle large lists of enums in the trace header without having to repeat them several times.",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c75b34e8_9f5d2590",
+        "filename": "include/linux/trusty/smcall_util.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20f2ec47_d47f762c",
       "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -126,6 +204,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd06fa46_e18f55ae",
+        "filename": "include/linux/trusty/trusty_ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80afbe03_4860f624",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d527a83_477ad140",
@@ -139,6 +235,24 @@
       "writtenOn": "2022-10-04T19:44:17Z",
       "side": 1,
       "message": "delete this",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec1aa5db_06b91452",
+        "filename": "include/linux/trusty/trusty_ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d527a83_477ad140",
       "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -160,6 +274,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c45bf974_05160c10",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f3ab3c8_13bf58c5",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82c07cff_dae757c9",
@@ -173,6 +305,24 @@
       "writtenOn": "2022-10-04T19:44:17Z",
       "side": 1,
       "message": "delete this",
+      "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41ea8080_2e99dc55",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-11T13:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82c07cff_dae757c9",
       "revId": "bd08f715c6121edf09354d41dd820671ad2692e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
