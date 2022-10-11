@@ -151,15 +151,24 @@ libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
 
 # Default target when executing plain make
 boot		:= arch/arm64/boot
-KBUILD_IMAGE	:= $(boot)/Image.gz
 
+ifeq ($(CONFIG_EFI_ZBOOT),)
+KBUILD_IMAGE	:= $(boot)/Image.gz
+else
+KBUILD_IMAGE	:= $(boot)/vmlinuz.efi
+endif
+
+<<<<<<< HEAD   (067cbf Merge a6afa4199d3d ("Merge tag 'mailbox-v6.1' of git://git.l)
 # Don't compile Image in mixed build with "all" target
 ifndef KBUILD_MIXED_TREE
 all:	Image.gz
 endif
+=======
+all:	$(notdir $(KBUILD_IMAGE))
+>>>>>>> BRANCH (0e4707 Merge tag 'efi-next-for-v6.1' of git://git.kernel.org/pub/sc)
 
 
-Image: vmlinux
+Image vmlinuz.efi: vmlinux
 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
 
 Image.%: Image
