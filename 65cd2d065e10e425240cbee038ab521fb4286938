@@ -51,6 +51,24 @@
       "parentUuid": "3d3a7a20_f6797933",
       "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca44cf9_100f104b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1864156
+      },
+      "writtenOn": "2022-10-11T15:01:31Z",
+      "side": 1,
+      "message": "sorry, for my imcomplete last reply.\n\nHi Greg/Todd,\n\nThe recent upstream discussion is here\nhttps://lore.kernel.org/lkml/20220929180413.107374-1-longman@redhat.com/\nBut the patch does not work and feedback given.\n\nThis is indeed tested patch and suggested by maintainer only and it does not have side-effect apart from doing actively spin in slowpath for 10 times if sem-\u003eowner\u003dNULL and then schedule out.\n\nCan we merge this patch as this is needed by customer and later once the upstream fix comes, we can revert and take the upstream fix.\n\n-Mukesh",
+      "parentUuid": "8deb512d_c8f9057c",
+      "revId": "65cd2d065e10e425240cbee038ab521fb4286938",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
