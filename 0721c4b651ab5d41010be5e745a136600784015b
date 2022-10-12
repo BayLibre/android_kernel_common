@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f47ffc0_739dfa7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-10-12T16:28:20Z",
+      "side": 1,
+      "message": "hmm, I need to work through this, but it looks like it is overshooting a bit. Perhaps we need to find smaller increments to bootstrap that list.",
+      "revId": "0721c4b651ab5d41010be5e745a136600784015b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb5ff611_011b96d6",
+        "filename": "BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-10-12T16:28:20Z",
+      "side": 1,
+      "message": "it is odd that those get listed, but perhaps those are caused by chains of includes ....",
+      "range": {
+        "startLine": 425,
+        "startChar": 0,
+        "endLine": 439,
+        "endChar": 57
+      },
+      "revId": "0721c4b651ab5d41010be5e745a136600784015b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18b9d72c_d0a35f1b",
+        "filename": "BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 1942,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-10-12T16:28:20Z",
+      "side": 1,
+      "message": "For DDK purposes we should be able to filter out anything that is not arm64 or x86",
+      "range": {
+        "startLine": 1934,
+        "startChar": 7,
+        "endLine": 1942,
+        "endChar": 49
+      },
+      "revId": "0721c4b651ab5d41010be5e745a136600784015b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
