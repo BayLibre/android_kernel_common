@@ -183,6 +183,7 @@
   contig_page_data
   _copy_from_iter
   copy_from_kernel_nofault
+  copy_from_user_toio
   _copy_to_iter
   copy_to_user_fromio
   __cpu_active_mask
@@ -933,6 +934,7 @@
   inc_zone_page_state
   in_egroup_p
   init_net
+  init_on_alloc
   init_pseudo
   __init_rwsem
   __init_swait_queue_head
