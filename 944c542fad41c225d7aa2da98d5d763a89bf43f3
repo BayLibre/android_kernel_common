@@ -178,6 +178,24 @@
       "parentUuid": "90c0d62e_2ab9ac35",
       "revId": "944c542fad41c225d7aa2da98d5d763a89bf43f3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "350af6dc_83682f30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2022-10-12T15:18:44Z",
+      "side": 1,
+      "message": "The arm (not arm64) compilation error still remains:\n\n```\ncommon/drivers/android/android_debug_symbols.c:79:32: error: use of undeclared identifier \u0027put_task_stack\u0027\n        ADS_ENTRY(ADS_PUT_TASK_STACK, put_task_stack),\n                                      ^\n1 error generated.\n```\n\n`put_task_stack` is not available on arm32 and the patch needs to work around that.",
+      "parentUuid": "bd2aa303_1123a272",
+      "revId": "944c542fad41c225d7aa2da98d5d763a89bf43f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
