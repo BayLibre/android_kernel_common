@@ -728,6 +728,8 @@ struct kmem_cache *kmalloc_slab(size_t size, gfp_t flags)
 			return ZERO_SIZE_PTR;
 
 		index = size_index[size_index_elem(size)];
+		if (index == 2)
+			index = 8;
 	} else {
 		if (WARN_ON_ONCE(size > KMALLOC_MAX_CACHE_SIZE))
 			return NULL;
@@ -828,7 +830,7 @@ void __init setup_kmalloc_cache_index_table(void)
 
 	}
 
-	if (KMALLOC_MIN_SIZE >= 128) {
+	if (true || KMALLOC_MIN_SIZE >= 128) {
 		/*
 		 * The 192 byte sized cache is not used if the alignment
 		 * is 128 byte. Redirect kmalloc to use the 256 byte cache
