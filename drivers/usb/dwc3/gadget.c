@@ -1964,6 +1964,9 @@ static void dwc3_gadget_ep_cleanup_cancelled_requests(struct dwc3_ep *dep)
 		case DWC3_REQUEST_STATUS_STALLED:
 			dwc3_gadget_giveback(dep, req, -EPIPE);
 			break;
+		case DWC3_REQUEST_STATUS_MISSED_ISOC:
+			dwc3_gadget_giveback(dep, req, -EXDEV);
+			break;
 		default:
 			dev_err(dwc->dev, "request cancelled with wrong reason:%d\n", req->status);
 			dwc3_gadget_giveback(dep, req, -ECONNRESET);
@@ -3341,21 +3344,32 @@ static bool dwc3_gadget_endpoint_trbs_complete(struct dwc3_ep *dep,
 	struct dwc3		*dwc = dep->dwc;
 	bool			no_started_trb = true;
 
-	dwc3_gadget_ep_cleanup_completed_requests(dep, event, status);
+	if (status == -EXDEV) {
+		struct dwc3_request *tmp;
+		struct dwc3_request *req;
 
-	if (dep->flags & DWC3_EP_END_TRANSFER_PENDING)
-		goto out;
+		if (!(dep->flags & DWC3_EP_END_TRANSFER_PENDING))
+			dwc3_stop_active_transfer(dep, true, true);
 
-	if (!dep->endpoint.desc)
-		return no_started_trb;
+		list_for_each_entry_safe(req, tmp, &dep->started_list, list)
+			dwc3_gadget_move_cancelled_request(req,
+					DWC3_REQUEST_STATUS_MISSED_ISOC);
+	} else {
+		dwc3_gadget_ep_cleanup_completed_requests(dep, event, status);
 
-	if (usb_endpoint_xfer_isoc(dep->endpoint.desc) &&
-		list_empty(&dep->started_list) &&
-		(list_empty(&dep->pending_list) || status == -EXDEV))
-		dwc3_stop_active_transfer(dep, true, true);
-	else if (dwc3_gadget_ep_should_continue(dep))
-		if (__dwc3_gadget_kick_transfer(dep) == 0)
-			no_started_trb = false;
+		if (dep->flags & DWC3_EP_END_TRANSFER_PENDING)
+			goto out;
+
+		if (!dep->endpoint.desc)
+			return no_started_trb;
+
+		if (usb_endpoint_xfer_isoc(dep->endpoint.desc) &&
+			list_empty(&dep->started_list) && list_empty(&dep->pending_list))
+			dwc3_stop_active_transfer(dep, true, true);
+		else if (dwc3_gadget_ep_should_continue(dep))
+			if (__dwc3_gadget_kick_transfer(dep) == 0)
+				no_started_trb = false;
+	}
 
 out:
 	/*
