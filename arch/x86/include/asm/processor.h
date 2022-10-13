@@ -210,9 +210,61 @@ static inline int have_cpuid_p(void)
 	return 1;
 }
 #endif
+
+#ifdef CONFIG_ANDROID
+#define ANDROID_VCPU_FEAT_1_EDX (\
+	(1 << (X86_FEATURE_FPU % 32)) | \
+	(1 << (X86_FEATURE_DE %32)) | \
+	(1 << (X86_FEATURE_PSE %32)) | \
+	(1 << (X86_FEATURE_TSC %32)) | \
+	(1 << (X86_FEATURE_MSR %32)) | \
+	(1 << (X86_FEATURE_MCE %32)) | \
+	(1 << (X86_FEATURE_CX8 %32)) | \
+	(1 << (X86_FEATURE_PGE %32)) | \
+	(1 << (X86_FEATURE_CMOV %32)) | \
+	(1 << (X86_FEATURE_PAT %32)) | \
+	(1 << (X86_FEATURE_FXSR %32)) | \
+	(1 << (X86_FEATURE_MMX %32)) | \
+	(1 << (X86_FEATURE_XMM %32)) | \
+	(1 << (X86_FEATURE_XMM2 %32)) | \
+	(1 << (X86_FEATURE_PAE %32)) | \
+	(1 << (X86_FEATURE_SEP %32)) | \
+	(1 << (X86_FEATURE_APIC %32)) | \
+	(1 << (X86_FEATURE_MTRR %32)) | \
+	(1 << (X86_FEATURE_CLFLUSH %32)) | \
+	(1 << (X86_FEATURE_MCA %32)) | \
+	(1 << (X86_FEATURE_PSE36 %32)) \
+	)
+
+#define ANDROID_VCPU_FEAT_1_ECX (\
+	(1 << (X86_FEATURE_POPCNT % 32)) | \
+	(1 << (X86_FEATURE_XMM4_2 %32)) | \
+	(1 << (X86_FEATURE_XMM4_1 %32)) | \
+	(1 << (X86_FEATURE_CX16 %32)) | \
+	(1 << (X86_FEATURE_SSSE3 %32)) | \
+	(1 << (X86_FEATURE_XMM3 %32)) \
+	)
+
+#define ANDROID_VCPU_FEAT_80000001_EDX (\
+	(1 << (X86_FEATURE_LM % 32)) | \
+	(1 << (X86_FEATURE_SYSCALL %32)) | \
+	(1 << (X86_FEATURE_NX %32)) \
+	)
+
+#define ANDROID_VCPU_FEAT_80000001_ECX (\
+	(1 << (X86_FEATURE_LAHF_LM % 32)) | \
+	(1 << (X86_FEATURE_ABM %32)) \
+	)
+
+static int android_mask_vcpu_features = 1;
+#endif
+
 static inline void native_cpuid(unsigned int *eax, unsigned int *ebx,
 				unsigned int *ecx, unsigned int *edx)
 {
+#ifdef CONFIG_ANDROID
+	unsigned int cpuid_leaf = *eax;
+#endif
 	/* ecx is often an input as well as an output. */
 	asm volatile("cpuid"
 	    : "=a" (*eax),
@@ -221,6 +273,36 @@ static inline void native_cpuid(unsigned int *eax, unsigned int *ebx,
 	      "=d" (*edx)
 	    : "0" (*eax), "2" (*ecx)
 	    : "memory");
+#ifdef CONFIG_ANDROID
+	if (!android_mask_vcpu_features)
+		return;
+
+	switch (cpuid_leaf) {
+	case 0x1:
+		*ecx &= ANDROID_VCPU_FEAT_1_ECX;
+		*edx &= ANDROID_VCPU_FEAT_1_EDX;
+		break;
+	case 0x80000001:
+		*ecx &= ANDROID_VCPU_FEAT_80000001_ECX;
+		*edx &= ANDROID_VCPU_FEAT_80000001_EDX;
+		break;
+	case 0x6:
+	case 0x7:
+	case 0xA:
+	case 0xD:
+	case 0x80000007:
+	case 0x8000000A:
+	case 0x8000001F:
+		*eax = 0;
+	case 0x80000008:
+		*ebx = 0;
+		*ecx = 0;
+		*edx = 0;
+		break;
+	default:
+		break;
+	}
+#endif
 }
 
 #define native_cpuid_reg(reg)					\
