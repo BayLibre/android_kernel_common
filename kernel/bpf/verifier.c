@@ -5451,7 +5451,7 @@ static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn
 	}
 
 	changes_specific_data = bpf_helper_changes_one_pkt_data(fn->func);
-	if (changes_data && !arg_type_is_packet(fn->arg1_type) &&
+	if (changes_specific_data && !arg_type_is_packet(fn->arg1_type) &&
 			    !arg_type_is_packet(fn->arg2_type) &&
 			    !arg_type_is_packet(fn->arg3_type) &&
 			    !arg_type_is_packet(fn->arg4_type) &&
