@@ -5450,6 +5450,7 @@ static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn
 		return -EINVAL;
 	}
 
+/* Paul - breaks Android
 	changes_specific_data = bpf_helper_changes_one_pkt_data(fn->func);
 	if (changes_data && !arg_type_is_packet(fn->arg1_type) &&
 			    !arg_type_is_packet(fn->arg2_type) &&
@@ -5460,6 +5461,7 @@ static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn
 			func_id_name(func_id), func_id);
 		return -EINVAL;
 	}
+*/
 
 	memset(&meta, 0, sizeof(meta));
 	meta.pkt_access = fn->pkt_access;
