@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef3233b2_6b1fb33b",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2022-10-14T23:30:30Z",
+      "side": 1,
+      "message": "Are we using rcu to safely read skb? I\u0027m wondering why method like xfrm_input() also reads from skb but does not need the lock",
+      "range": {
+        "startLine": 212,
+        "startChar": 1,
+        "endLine": 212,
+        "endChar": 14
+      },
+      "revId": "bc28395b9277958164a2b45ed51220e7ccb72624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0066bc29_48f0ed71",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2022-10-14T23:30:30Z",
+      "side": 1,
+      "message": "Do we want to return an error?",
+      "range": {
+        "startLine": 227,
+        "startChar": 1,
+        "endLine": 227,
+        "endChar": 10
+      },
+      "revId": "bc28395b9277958164a2b45ed51220e7ccb72624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39cae8d8_fb3191dd",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1297255
+      },
+      "writtenOn": "2022-10-14T23:30:30Z",
+      "side": 1,
+      "message": "In the existing code, `__xfrm_policy_check` also checks  if xi exists but does not return error when it does not exists. Will it be a compatibility problem?\n\nCode snippet from `__xfrm_policy_check`\n```\n\trcu_read_lock();\n\tifcb \u003d xfrm_if_get_cb();\n\n\tif (ifcb) {\n\t\txi \u003d ifcb-\u003edecode_session(skb, family);\n\t\tif (xi) {\n\t\t\tif_id \u003d xi-\u003ep.if_id;\n\t\t\tnet \u003d xi-\u003enet;\n\t\t}\n\t}\n\trcu_read_unlock();\n```",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 15
+      },
+      "revId": "bc28395b9277958164a2b45ed51220e7ccb72624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
