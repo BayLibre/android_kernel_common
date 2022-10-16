@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f64cda6_0e2ed5ce",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-10-16T07:18:47Z",
+      "side": 1,
+      "message": "Removed codepath",
+      "parentUuid": "ef3233b2_6b1fb33b",
+      "range": {
+        "startLine": 212,
+        "startChar": 1,
+        "endLine": 212,
+        "endChar": 14
+      },
+      "revId": "bc28395b9277958164a2b45ed51220e7ccb72624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0066bc29_48f0ed71",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65267573_faeaa9a7",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-10-16T07:18:47Z",
+      "side": 1,
+      "message": "No; if this failed, it\u0027s because the policy check failed, in which case the packet is \"handled\" and the relevant counters have already been incremented, and the packet is meant to be dropped (see vti6; it handles this in the same way for the policy check)",
+      "parentUuid": "0066bc29_48f0ed71",
+      "range": {
+        "startLine": 227,
+        "startChar": 1,
+        "endLine": 227,
+        "endChar": 10
+      },
+      "revId": "bc28395b9277958164a2b45ed51220e7ccb72624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39cae8d8_fb3191dd",
         "filename": "net/xfrm/xfrm_interface.c",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-14T23:30:30Z",
       "side": 1,
       "message": "In the existing code, `__xfrm_policy_check` also checks  if xi exists but does not return error when it does not exists. Will it be a compatibility problem?\n\nCode snippet from `__xfrm_policy_check`\n```\n\trcu_read_lock();\n\tifcb \u003d xfrm_if_get_cb();\n\n\tif (ifcb) {\n\t\txi \u003d ifcb-\u003edecode_session(skb, family);\n\t\tif (xi) {\n\t\t\tif_id \u003d xi-\u003ep.if_id;\n\t\t\tnet \u003d xi-\u003enet;\n\t\t}\n\t}\n\trcu_read_unlock();\n```",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 15
+      },
+      "revId": "bc28395b9277958164a2b45ed51220e7ccb72624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00e42edd_7a89d595",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-10-16T07:18:47Z",
+      "side": 1,
+      "message": "Removed, plumbed to xfrmi_input parallel to xfrm4/xfrm6_input paths, so we don\u0027t have to add policy checks in two separate places",
+      "parentUuid": "39cae8d8_fb3191dd",
       "range": {
         "startLine": 258,
         "startChar": 1,
