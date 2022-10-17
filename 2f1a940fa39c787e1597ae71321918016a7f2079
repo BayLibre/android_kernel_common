@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07ad59b_853d2d82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-10-17T21:30:30Z",
+      "side": 1,
+      "message": "Looks like this series breaks the KMI so it will need to be refactored:\n```\ntype \u0027struct wiphy_iftype_ext_capab\u0027 changed\n  member \u0027u16 eml_capabilities\u0027 was added\n  member \u0027u16 mld_capa_and_ops\u0027 was added\n```",
+      "revId": "2f1a940fa39c787e1597ae71321918016a7f2079",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
