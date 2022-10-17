@@ -16,6 +16,7 @@
 #include <linux/kmemleak.h>
 #include <linux/seq_file.h>
 #include <linux/memblock.h>
+#include <linux/dmb.h>
 
 #include <asm/sections.h>
 #include <linux/io.h>
@@ -2072,13 +2073,16 @@ static void __init memmap_init_reserved_pages(void)
 	for_each_reserved_mem_range(i, &start, &end)
 		reserve_bootmem_region(start, end);
 
-	/* and also treat struct pages for the NOMAP regions as PageReserved */
 	for_each_mem_region(region) {
+		/* treat struct pages for the NOMAP regions as PageReserved */
 		if (memblock_is_nomap(region)) {
 			start = region->base;
 			end = start + region->size;
 			reserve_bootmem_region(start, end);
 		}
+		/* move Designated Movable Block pages to ZONE_MOVABLE */
+		if (memblock_is_movable(region))
+			dmb_init_region(region);
 	}
 }
 

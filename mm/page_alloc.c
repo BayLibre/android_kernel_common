@@ -73,6 +73,7 @@
 #include <linux/padata.h>
 #include <linux/khugepaged.h>
 #include <linux/buffer_head.h>
+#include <linux/dmb.h>
 #include <trace/hooks/mm.h>
 #include <asm/sections.h>
 #include <asm/tlbflush.h>
@@ -353,6 +354,8 @@ static unsigned long required_kernelcore __initdata;
 static unsigned long required_kernelcore_percent __initdata;
 static unsigned long required_movablecore __initdata;
 static unsigned long required_movablecore_percent __initdata;
+static unsigned long min_dmb_pfn[MAX_NUMNODES] __initdata;
+static unsigned long max_dmb_pfn[MAX_NUMNODES] __initdata;
 static unsigned long zone_movable_pfn[MAX_NUMNODES] __initdata;
 static bool mirrored_kernelcore __meminitdata;
 
@@ -2132,7 +2135,7 @@ static int __init deferred_init_memmap(void *data)
 	}
 zone_empty:
 	/* Sanity check that the next zone really is unpopulated */
-	WARN_ON(++zid < MAX_NR_ZONES && populated_zone(++zone));
+	WARN_ON(++zid < ZONE_MOVABLE && populated_zone(++zone));
 
 	pr_info("node %d deferred pages initialised in %ums\n",
 		pgdat->node_id, jiffies_to_msecs(jiffies - start));
@@ -6895,6 +6898,10 @@ static void __init memmap_init_zone_range(struct zone *zone,
 	unsigned long zone_end_pfn = zone_start_pfn + zone->spanned_pages;
 	int nid = zone_to_nid(zone), zone_id = zone_idx(zone);
 
+	/* Skip overlap of ZONE_MOVABLE */
+	if (zone_id == ZONE_MOVABLE && zone_start_pfn < *hole_pfn)
+		zone_start_pfn = *hole_pfn;
+
 	start_pfn = clamp(start_pfn, zone_start_pfn, zone_end_pfn);
 	end_pfn = clamp(end_pfn, zone_start_pfn, zone_end_pfn);
 
@@ -7343,6 +7350,12 @@ static unsigned long __init zone_spanned_pages_in_node(int nid,
 				node_start_pfn, node_end_pfn,
 				zone_start_pfn, zone_end_pfn);
 
+	if (zone_type == ZONE_MOVABLE && max_dmb_pfn[nid]) {
+		if (*zone_start_pfn == *zone_end_pfn)
+			*zone_end_pfn = max_dmb_pfn[nid];
+		*zone_start_pfn = min(*zone_start_pfn, min_dmb_pfn[nid]);
+	}
+
 	/* Check that this node has pages within the zone's required range */
 	if (*zone_end_pfn < node_start_pfn || *zone_start_pfn > node_end_pfn)
 		return 0;
@@ -7411,12 +7424,21 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
 			&zone_start_pfn, &zone_end_pfn);
 	nr_absent = __absent_pages_in_range(nid, zone_start_pfn, zone_end_pfn);
 
+	if (zone_type == ZONE_MOVABLE && max_dmb_pfn[nid]) {
+		if (zone_start_pfn == zone_end_pfn)
+			zone_end_pfn = max_dmb_pfn[nid];
+		else
+			zone_end_pfn = zone_movable_pfn[nid];
+		zone_start_pfn = min(zone_start_pfn, min_dmb_pfn[nid]);
+		nr_absent += zone_end_pfn - zone_start_pfn;
+	}
+
 	/*
 	 * ZONE_MOVABLE handling.
-	 * Treat pages to be ZONE_MOVABLE in ZONE_NORMAL as absent pages
+	 * Treat pages to be ZONE_MOVABLE in other zones as absent pages
 	 * and vice versa.
 	 */
-	if (mirrored_kernelcore && zone_movable_pfn[nid]) {
+	if (zone_movable_pfn[nid]) {
 		unsigned long start_pfn, end_pfn;
 		struct memblock_region *r;
 
@@ -7425,6 +7447,19 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
 					  zone_start_pfn, zone_end_pfn);
 			end_pfn = clamp(memblock_region_memory_end_pfn(r),
 					zone_start_pfn, zone_end_pfn);
+
+			if (memblock_is_movable(r)) {
+				if (zone_type != ZONE_MOVABLE) {
+					nr_absent += end_pfn - start_pfn;
+					continue;
+				}
+
+				nr_absent -=  end_pfn - start_pfn;
+				continue;
+			}
+
+			if (!mirrored_kernelcore)
+				continue;
 
 			if (zone_type == ZONE_MOVABLE &&
 			    memblock_is_mirror(r))
@@ -7445,18 +7480,27 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
 {
 	unsigned long totalpages = 0;
 	enum zone_type i;
+	int nid = pgdat->node_id;
+
+	/*
+	 * If Designated Movable Blocks are defined on this node, ensure that
+	 * zone_movable_pfn is also defined for this node.
+	 */
+	if (max_dmb_pfn[nid] && !zone_movable_pfn[nid])
+		zone_movable_pfn[nid] = min(node_end_pfn,
+				arch_zone_highest_possible_pfn[movable_zone]);
 
 	for (i = 0; i < MAX_NR_ZONES; i++) {
 		struct zone *zone = pgdat->node_zones + i;
 		unsigned long zone_start_pfn, zone_end_pfn;
 		unsigned long spanned, absent, size;
 
-		spanned = zone_spanned_pages_in_node(pgdat->node_id, i,
+		spanned = zone_spanned_pages_in_node(nid, i,
 						     node_start_pfn,
 						     node_end_pfn,
 						     &zone_start_pfn,
 						     &zone_end_pfn);
-		absent = zone_absent_pages_in_node(pgdat->node_id, i,
+		absent = zone_absent_pages_in_node(nid, i,
 						   node_start_pfn,
 						   node_end_pfn);
 
@@ -7887,15 +7931,27 @@ unsigned long __init find_min_pfn_with_active_regions(void)
 static unsigned long __init early_calculate_totalpages(void)
 {
 	unsigned long totalpages = 0;
-	unsigned long start_pfn, end_pfn;
-	int i, nid;
+	struct memblock_region *r;
 
-	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
-		unsigned long pages = end_pfn - start_pfn;
+	for_each_mem_region(r) {
+		unsigned long start_pfn, end_pfn, pages;
+		int nid;
 
-		totalpages += pages;
-		if (pages)
+		nid = memblock_get_region_node(r);
+		start_pfn = memblock_region_memory_base_pfn(r);
+		end_pfn = memblock_region_memory_end_pfn(r);
+
+		pages = end_pfn - start_pfn;
+		if (pages) {
+			totalpages += pages;
 			node_set_state(nid, N_MEMORY);
+			if (memblock_is_movable(r)) {
+				if (start_pfn < min_dmb_pfn[nid])
+					min_dmb_pfn[nid] = start_pfn;
+				if (end_pfn > max_dmb_pfn[nid])
+					max_dmb_pfn[nid] = end_pfn;
+			}
+		}
 	}
 	return totalpages;
 }
@@ -7908,7 +7964,7 @@ static unsigned long __init early_calculate_totalpages(void)
  */
 static void __init find_zone_movable_pfns_for_nodes(void)
 {
-	int i, nid;
+	int nid;
 	unsigned long usable_startpfn;
 	unsigned long kernelcore_node, kernelcore_remaining;
 	/* save the state before borrow the nodemask */
@@ -8036,12 +8092,23 @@ restart:
 		kernelcore_remaining = kernelcore_node;
 
 		/* Go through each range of PFNs within this node */
-		for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
+		for_each_mem_region(r) {
 			unsigned long size_pages;
 
+			if (memblock_get_region_node(r) != nid)
+				continue;
+
+			start_pfn = memblock_region_memory_base_pfn(r);
+			end_pfn = memblock_region_memory_end_pfn(r);
 			start_pfn = max(start_pfn, zone_movable_pfn[nid]);
 			if (start_pfn >= end_pfn)
 				continue;
+
+			/* Skip over Designated Movable Blocks */
+			if (memblock_is_movable(r)) {
+				zone_movable_pfn[nid] = end_pfn;
+				continue;
+			}
 
 			/* Account for what is only usable for kernelcore */
 			if (start_pfn < usable_startpfn) {
@@ -8191,6 +8258,8 @@ void __init free_area_init(unsigned long *max_zone_pfn)
 	}
 
 	/* Find the PFNs that ZONE_MOVABLE begins at in each node */
+	memset(min_dmb_pfn, 0xff, sizeof(min_dmb_pfn));
+	memset(max_dmb_pfn, 0, sizeof(max_dmb_pfn));
 	memset(zone_movable_pfn, 0, sizeof(zone_movable_pfn));
 	find_zone_movable_pfns_for_nodes();
 
