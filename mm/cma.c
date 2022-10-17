@@ -36,6 +36,7 @@
 #include <linux/jiffies.h>
 #include <trace/events/cma.h>
 
+#include "internal.h"
 #include "cma.h"
 
 #undef CREATE_TRACE_POINTS
@@ -141,8 +142,9 @@ not_in_zone:
 	bitmap_free(cma->bitmap);
 out_error:
 	/* Expose all pages to the buddy, they are useless for CMA. */
-	for (pfn = base_pfn; pfn < base_pfn + cma->count; pfn++)
-		free_reserved_page(pfn_to_page(pfn));
+	for (pfn = base_pfn; pfn < base_pfn + cma->count;
+	     pfn += pageblock_nr_pages)
+		init_reserved_pageblock(pfn_to_page(pfn));
 	totalcma_pages -= cma->count;
 	cma->count = 0;
 	pr_err("CMA area %s could not be activated\n", cma->name);

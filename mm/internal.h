@@ -216,6 +216,7 @@ extern void *memmap_alloc(phys_addr_t size, phys_addr_t align,
 			  phys_addr_t min_addr,
 			  int nid, bool exact_nid);
 
+void init_reserved_pageblock(struct page *page);
 #if defined CONFIG_COMPACTION || defined CONFIG_CMA
 
 /*
