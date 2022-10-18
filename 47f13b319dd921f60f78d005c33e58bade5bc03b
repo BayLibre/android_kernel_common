@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86591dad_48edf904",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-18T11:19:32Z",
+      "side": 1,
+      "message": "Please fix the changelog text if this is not a wwan driver 😊\n\n\nAlso, no, that is not a proper way to find a struct device, from a port.  Please use the correct apis the kernel provides for this type of thing, you are trying to reach into a different subsystem this way, which is not allowed.",
+      "parentUuid": "aba796c5_271b8cd2",
+      "revId": "47f13b319dd921f60f78d005c33e58bade5bc03b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e50a9e7_68a82279",
         "filename": "android/abi_gki_aarch64_mtk",
         "patchSetId": 2
