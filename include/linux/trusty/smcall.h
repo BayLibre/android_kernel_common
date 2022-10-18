@@ -69,6 +69,12 @@
 #define SMC_SC_NOP		SMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 3)
 
 /*
+ * SMC API for supporting shared-memory based trusty-linux info exchange
+ */
+#define SMC_SC_SHARE_REGISTER   SMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 4)
+#define SMC_SC_SHARE_UNREGISTER SMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 5)
+
+/*
  * Return from secure os to non-secure os with return value in r1
  */
 #define SMC_SC_NS_RETURN	SMC_STDCALL_NR(SMC_ENTITY_SECURE_MONITOR, 0)
