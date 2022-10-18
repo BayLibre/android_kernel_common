@@ -3194,13 +3194,13 @@ static const char *gdth_info(struct Scsi_Host *shp)
     return ((const char *)ha->binfo.type_string);
 }
 
-static enum blk_eh_timer_return gdth_timed_out(struct scsi_cmnd *scp)
+static enum scsi_timeout_action gdth_timed_out(struct scsi_cmnd *scp)
 {
 	gdth_ha_str *ha = shost_priv(scp->device->host);
 	struct gdth_cmndinfo *cmndinfo = gdth_cmnd_priv(scp);
 	u8 b, t;
 	unsigned long flags;
-	enum blk_eh_timer_return retval = BLK_EH_DONE;
+	enum blk_eh_timer_return retval = SCSI_EH_NOT_HANDLED;
 
 	TRACE(("%s() cmd 0x%x\n", scp->cmnd[0], __func__));
 	b = scp->device->channel;
@@ -3212,14 +3212,14 @@ static enum blk_eh_timer_return gdth_timed_out(struct scsi_cmnd *scp)
 	 * timer if this is less than 6th timeout on this command!
 	 */
 	if (++cmndinfo->timeout_count < 6)
-		retval = BLK_EH_RESET_TIMER;
+		retval = SCSI_EH_RESET_TIMER;
 
 	/* Reset the timeout if it is locked IO */
 	spin_lock_irqsave(&ha->smp_lock, flags);
 	if ((b != ha->virt_bus && ha->raw[BUS_L2P(ha, b)].lock) ||
 	    (b == ha->virt_bus && t < MAX_HDRIVES && ha->hdr[t].lock)) {
 		TRACE2(("%s(): locked IO, reset timeout\n", __func__));
-		retval = BLK_EH_RESET_TIMER;
+		retval = SCSI_EH_RESET_TIMER;
 	}
 	spin_unlock_irqrestore(&ha->smp_lock, flags);
 
