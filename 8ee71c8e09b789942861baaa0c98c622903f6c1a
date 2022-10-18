@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0ad8ce8_e1ea1536",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "how does the 2 macro solution fail? I got that \n```\n#define DELETE_PAREN(args...) args\nDELETE_PAREN SMC_NAME_LIST\n```\ndoes not work since DELETE_PAREN will be evaluated here before SMC_NAME_LIST is expanded, but why does\n```\n#define _DELETE_PAREN(args...) args\n#define DELETE_PAREN(arg) _DELETE_PAREN arg\nDELETE_PAREN(SMC_NAME_LIST)\n```\nnot work?",
+      "parentUuid": "0e1da277_0b27ec1b",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46999cad_9812d6bc",
         "filename": "drivers/trusty/trusty-trace.h",
         "patchSetId": 15

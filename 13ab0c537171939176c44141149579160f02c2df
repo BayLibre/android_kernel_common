@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2ad75dd_05546e27",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "can you put _LIST in the name here to be consistent with the other code that does this",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40033725_ab9f5d4e",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "what is the point of this comment? It does not seem to provide any additional information about the following line. Either explain what you are defining here, or remove the comment.",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d458a8e_00ebd52f",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "don\u0027t include this here. The core trusty driver should not depend on the trusty-ipc driver",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1845d81_e0997967",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "see comment in other file.",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32cafd2e_0629058b",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "this is not why you are using this though. You are using it to avoid checkpatch warnings",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bef8947_587c7240",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "This comment refers to a different DELETE_PAREN implementation:\n```\n#define DELETE_PAREN(args...) args\n```\nwhich matches your internal _Args macro. It is not how you use the DELETE_PAREN macro you have defined which seems to behave the same behavior as MY_MACRO in this example in most cases.\n```\nMY_MACRO((1, 2, 3))\n```\nexpands to\n```\n1, 2, 3\n```",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d77a37f6_5b40f021",
+        "filename": "include/uapi/linux/trusty/ipc.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-18T20:17:42Z",
+      "side": 1,
+      "message": "This is the wrong header file for these macros. This file defines the user-space api, and you don\u0027t use these macros there. One of the files where you do use these macros doesn\u0027t depend on this user-space api, and should have no knowledge of it.\n\nYou can add a separate header file with these helper macros or duplicate them in the two headers where you use them.",
+      "revId": "13ab0c537171939176c44141149579160f02c2df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
