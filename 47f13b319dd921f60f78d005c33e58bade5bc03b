@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aba796c5_271b8cd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1970801
+      },
+      "writtenOn": "2022-10-18T09:46:37Z",
+      "side": 1,
+      "message": "Hi Greg,\nThanks for review. It was inaccurate in the submission title for the term “WWAN Driver”.\nThis driver is not pure WWAN driver like the one on mainline (drivers/net/wwan/t7xx). \n\nThis driver provides:\n* Pure character device ports,\n* TTY ports registered to Linux TTY subsystem.\n\n**device_match_devt** function is indirectly called from pure character device port operations. We want to find the correct **mtk_port** structure when the CDEV read/write is called, so we have to relate it when the port is opened. The codes are listed inline with comments, please kindly check and give your suggestion.\n\n```\n//The CDEV file OPs definition\n\t\tstatic const struct file_operations char_dev_fops \u003d {          \n\t\t\t.owner \u003d THIS_MODULE,\n\t\t\t.open \u003d mtk_port_cdev_open,                       \n\t\t\t.read \u003d mtk_port_cdev_read,\n//..........\n\t\t};\n\n\t\tstatic int mtk_port_cdev_open(struct inode *inode, struct file *file)\n\t\t{\n\t\t\tstruct mtk_port *port;\n\t\t\tint ret;\n// Get the private structure related to the CDEV\n\t\t\tport \u003d mtk_port_get_by_devid(inode-\u003ei_cdev-\u003edev); \n\t\t\tif (!port) {\n\t\t\t\tret \u003d -ENODEV;\n\t\t\t\tgoto err;\n\t\t\t}\n//Proprietary port open\n\t\t\tret \u003d mtk_port_common_open(port);              \n\t\t\tif (ret) {\n\t\t\t\tgoto err;\n\t\t\t}\n\t\t\t\n//Relate the private_data **mtk_port** to the file, so we can use in read/write callback functions of CDEV.\n\t\t\tfile-\u003eprivate_data \u003d port;\t\t                  \n\t\t\tstream_open(inode, file);            \n\t\terr:\n\t\t\treturn ret;\n\t\t}\n\t\t\n\t\tstatic struct mtk_port *mtk_port_get_by_devid(dev_t devt)\n\t\t{\n\t\t\tstruct mtk_port *port;\n\t\t\tstruct device *dev;\n\t\t\t\n//Find the **struct device** related to the cdev port, the Kernel symbol **class_find_device_by_devt** will call symbol **device_match_devt**, that\u0027s why we have to add **device_match_devt** to ABI list. \n\t\t\tdev \u003d class_find_device_by_devt(mtk_dev_class, devt);\n\t\t\tif (!dev) {\n\t\t\t\tport \u003d NULL;\n\t\t\t\tgoto err;\n\t\t\t}\n//Get the driver data: **mtk_port**\n\t\t\tport \u003d dev_get_drvdata(dev);                     \n\t\t\tif (!port) {\n\t\t\t\tgoto err;\n\t\t\t}\n\n\t\terr:\n\t\t\treturn port;\n\t\t}\n\n\t\tstatic ssize_t mtk_port_cdev_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)\n\t\t{\n\t\t\tstruct mtk_port *port \u003d file-\u003eprivate_data;     \n//Proprietary port read, we have to input the **mtk_port** as a parameter.\n\t\t\treturn mtk_port_common_read(port, buf, (unsigned int)count, true); \n\t\t}\n```",
+      "parentUuid": "ea4df262_91a83b29",
+      "revId": "47f13b319dd921f60f78d005c33e58bade5bc03b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e50a9e7_68a82279",
         "filename": "android/abi_gki_aarch64_mtk",
         "patchSetId": 2
