@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "195f307d_fe42df10",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-18T18:46:58Z",
+      "side": 1,
+      "message": "No -- these probably get slipped in. Let me double check.\n\nNevertheless they\u0027ll be used by virtual device x86_64, so if I remove it in this CL it will show up in the next CL.",
+      "parentUuid": "057f2dbd_acdd2d88",
+      "range": {
+        "startLine": 1783,
+        "startChar": 0,
+        "endLine": 1785,
+        "endChar": 0
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11490a77_234e46cb",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fbc9eae_bd485c5e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1816,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-18T18:46:58Z",
+      "side": 1,
+      "message": "This is the preferred way to include headers for new DDK modules.\n\nThe below are the old ways to include headers for existing legacy kernel_module\u0027s. When we migrate from existing kernel_module\u0027s to ddk_module\u0027s, we\u0027ll need include directories below.",
+      "parentUuid": "11490a77_234e46cb",
+      "range": {
+        "startLine": 1816,
+        "startChar": 8,
+        "endLine": 1816,
+        "endChar": 11
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1db0dd7_1035dcd4",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-18T18:13:09Z",
       "side": 1,
       "message": "Does Pixel use these x86 headers?",
+      "range": {
+        "startLine": 1882,
+        "startChar": 0,
+        "endLine": 1882,
+        "endChar": 41
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b613c17_48575114",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1882,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-18T18:46:58Z",
+      "side": 1,
+      "message": "No.\n\nThis is the graylist. See explanation of graylist above (L1867) and in commit message.\n\nThese are the transitive includes of the things in all_headers, but they aren\u0027t used by Pixel (in this case, likely because it is not this architecture). But these are candidates to the allowlist `all_headers`. These are here to provide quick resolution for build failures for other devices.",
+      "parentUuid": "d1db0dd7_1035dcd4",
       "range": {
         "startLine": 1882,
         "startChar": 0,
