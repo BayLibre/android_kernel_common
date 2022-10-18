@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931cc62c_e503013e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-18T12:08:34Z",
+      "side": 1,
+      "message": "Done. Shall update trusty/vendor/google/aosp/scripts/test-map \u0026 build once to ensure tracepoints don\u0027t cause a crash. And push a new patch.",
+      "parentUuid": "0cb768c3_c3c86ff9",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "317cf4c8_8b6c1f7a",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-13T18:38:40Z",
       "side": 1,
       "message": "I think we can use a helper macro to create these strings to avoid typos (similar to what you have for the smc calls). We have pending changes that add more states that need to be included here.",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "649ab236_a8212327",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-18T12:08:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "317cf4c8_8b6c1f7a",
       "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0e1da277_0b27ec1b",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-18T12:08:34Z",
+      "side": 1,
+      "message": "2 macro solution is causing compilation error. Hence sticking on to 3 macro solution.",
+      "parentUuid": "7a1fabe6_c75da885",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46999cad_9812d6bc",
         "filename": "drivers/trusty/trusty-trace.h",
         "patchSetId": 15
@@ -65,6 +119,24 @@
       "writtenOn": "2022-10-13T18:38:40Z",
       "side": 1,
       "message": "I would put the \u0027(\u0027 right after SMC_NAME_LIST here to match the style of other macros, and \u0027)\u0027 on its own line at the end. The second part will allow us to add new entries at the end of the list with a single line change instead of having to move the closing paren around.",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da724ba4_c807ef01",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-18T12:08:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46999cad_9812d6bc",
       "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -86,6 +158,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cbb9700_a6da520f",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-18T12:08:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc3df6bd_e82bc531",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61b0fd2f_9d7c0a8d",
@@ -99,6 +189,24 @@
       "writtenOn": "2022-10-13T18:38:40Z",
       "side": 1,
       "message": "In general checkpatch will complain if you use spaces instead of tabs, but if it does not complain in this case, you should at least be consistent and not use tabs on one line and spaces on the next.",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b755eacf_c222a28c",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-18T12:08:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61b0fd2f_9d7c0a8d",
       "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
