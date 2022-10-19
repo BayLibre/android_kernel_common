@@ -50,6 +50,24 @@
       "message": "Do we also need this on android13-5.10?",
       "revId": "e85d018f85256707bc2afbed90a7137868b25ed7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc1f04f5_0241596a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1015397
+      },
+      "writtenOn": "2022-10-19T21:36:10Z",
+      "side": 1,
+      "message": "5.10 doesn\u0027t have scatter gather in the gadget uvc driver, so this issue isn\u0027t exposed via that mechanism. There\u0027s no urgency from our side for the android13-5.10 line and in theory this change should eventually get in with the stable cc. So I don\u0027t see a need.",
+      "parentUuid": "0bb5109b_a58cff77",
+      "revId": "e85d018f85256707bc2afbed90a7137868b25ed7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
