@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "998eb313_3f437aab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1970801
+      },
+      "writtenOn": "2022-10-19T02:11:43Z",
+      "side": 1,
+      "message": "Hi Greg, Thanks.\n1. Do you mean the **class_find_device_by_devt** API(which calls **device_match_devt**) is not allowed to be used in device driver? And it is because we may have risk using it to access the **device** owned by another driver?\n\n2. **tty_register_device** and **tty_buffer_space_avail** are functions accessing the device owned by the driver itself, are they allowed to be used?",
+      "parentUuid": "a77b0fd6_8477b4c7",
+      "revId": "47f13b319dd921f60f78d005c33e58bade5bc03b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e50a9e7_68a82279",
         "filename": "android/abi_gki_aarch64_mtk",
         "patchSetId": 2
