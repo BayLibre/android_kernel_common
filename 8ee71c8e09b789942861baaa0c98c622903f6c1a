@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d04777d_62a33f6b",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-19T18:28:13Z",
+      "side": 1,
+      "message": "Ok shall use this 2 macro version to avoid checkpatch warning\n#define _DELETE_PAREN(args...) args\n#define DELETE_PAREN(arg) _DELETE_PAREN(_DELETE_PAREN arg)\nDELETE_PAREN(SMC_NAME_LIST)",
+      "parentUuid": "a0ad8ce8_e1ea1536",
+      "revId": "8ee71c8e09b789942861baaa0c98c622903f6c1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46999cad_9812d6bc",
         "filename": "drivers/trusty/trusty-trace.h",
         "patchSetId": 15
