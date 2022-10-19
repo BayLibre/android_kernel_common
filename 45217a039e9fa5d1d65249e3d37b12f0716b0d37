@@ -3,6 +3,121 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e51adc8c_75bdc199",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "how are these being built against?  Nothing outside of include/ should be in this list.",
+      "range": {
+        "startLine": 1722,
+        "startChar": 10,
+        "endLine": 1727,
+        "endChar": 37
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be01efe5_ef405161",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1728,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "it\u0027s `internal` for a reason, please drop.",
+      "range": {
+        "startLine": 1728,
+        "startChar": 0,
+        "endLine": 1728,
+        "endChar": 24
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57a4390f_b82bb965",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "all net/ .h files should not be built against.",
+      "range": {
+        "startLine": 1762,
+        "startChar": 0,
+        "endLine": 1762,
+        "endChar": 37
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d59938_93a31ee2",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1763,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "building code against stuff in scripts/ is not ok.  please drop.",
+      "range": {
+        "startLine": 1763,
+        "startChar": 0,
+        "endLine": 1763,
+        "endChar": 28
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7292bd9_c8396ba8",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1779,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "nothing in security/ should be used for building code.",
+      "range": {
+        "startLine": 1779,
+        "startChar": 0,
+        "endLine": 1779,
+        "endChar": 46
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "057f2dbd_acdd2d88",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -50,6 +165,76 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "845d8435_69442f65",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "That should be fixed, these should not be built against as part of any kernel module as they are not kept up to date and often get very stale as part of stable updates.",
+      "parentUuid": "195f307d_fe42df10",
+      "range": {
+        "startLine": 1783,
+        "startChar": 0,
+        "endLine": 1785,
+        "endChar": 0
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb099fbe_c18f351e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1813,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "I do not think any tools/ directories should be used to build any external module.",
+      "range": {
+        "startLine": 1813,
+        "startChar": 0,
+        "endLine": 1813,
+        "endChar": 43
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "234826dc_96f47bb6",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "I do not understand what this is listing.  The places where .h files are at?\n\nSomething else?  A comment would be nice so we know how to keep it up to date.",
+      "range": {
+        "startLine": 1815,
+        "startChar": 0,
+        "endLine": 1815,
+        "endChar": 16
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11490a77_234e46cb",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -90,6 +275,52 @@
         "startChar": 8,
         "endLine": 1816,
         "endChar": 11
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "617e4e7f_031bd99e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1867,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "\"unstable\"?  Better name might be picked if possible.",
+      "range": {
+        "startLine": 1867,
+        "startChar": 14,
+        "endLine": 1867,
+        "endChar": 22
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80082da4_faeb82af",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T11:44:06Z",
+      "side": 1,
+      "message": "what is going to change this?  How do we move things on or off this list?",
+      "range": {
+        "startLine": 1868,
+        "startChar": 23,
+        "endLine": 1868,
+        "endChar": 43
       },
       "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
