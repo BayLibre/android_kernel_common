@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f7915c_8aef9a83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:22:53Z",
+      "side": 1,
+      "message": "Thanks all! Please see my latest comment",
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e51adc8c_75bdc199",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "If this were just for classic drivers, I\u0027d agree. However partners need to build their vendor modules using the DDK and need to access internal stuff so we can\u0027t limit them to just standard headers. Yifan, would it be possible to make the \"internal\" headers available only if a build flag is set (something like \"--allow-non-standard-headers\")?",
       "parentUuid": "e51adc8c_75bdc199",
+      "range": {
+        "startLine": 1722,
+        "startChar": 10,
+        "endLine": 1727,
+        "endChar": 37
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e693ed4_03dd797e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:22:53Z",
+      "side": 1,
+      "message": "I can definitely add a build flag, yes.\n\nOr should I just move these things to the graylist? Or another separate list?",
+      "parentUuid": "059af2bf_40238249",
       "range": {
         "startLine": 1722,
         "startChar": 10,
@@ -283,6 +324,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c66af5d0_6e25a679",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:22:53Z",
+      "side": 1,
+      "message": "This is the list of `clang -I` options, basically.\n\nSo if you have a\n\n```\nddk_headers(\n  hdrs \u003d [\"include/foo/foo.h\"],\n  includes \u003d [\"include\"]\n```\n\nthen in your source file you can \n\n```\n#include \u003cfoo/foo.h\u003e\n```\n\nThey are the \"parents\" of where the .h files are at.\n\nI\u0027ll add a comment",
+      "parentUuid": "234826dc_96f47bb6",
+      "range": {
+        "startLine": 1815,
+        "startChar": 0,
+        "endLine": 1815,
+        "endChar": 16
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11490a77_234e46cb",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -353,6 +418,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2dd3dfbd_ddcf1ae0",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1867,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:22:53Z",
+      "side": 1,
+      "message": "okay!",
+      "parentUuid": "617e4e7f_031bd99e",
+      "range": {
+        "startLine": 1867,
+        "startChar": 14,
+        "endLine": 1867,
+        "endChar": 22
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80082da4_faeb82af",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -388,6 +477,30 @@
       "side": 1,
       "message": "Presumably partner request. I think the approach of including what is needed for pixel initially is the right approach. Then we have until kmi freeze to wean pixel (and other partners) from the internal headers.",
       "parentUuid": "80082da4_faeb82af",
+      "range": {
+        "startLine": 1868,
+        "startChar": 23,
+        "endLine": 1868,
+        "endChar": 43
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0930c4e7_2433e83c",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:22:53Z",
+      "side": 1,
+      "message": "Correct.\n\n- Adding things are usually partner request.\n- Removing things -- I don\u0027t expect us to do this very often (or even at all), but before KMI freeze date, we can manually remove things from the list if we want to **prevent modules from using a certain header**.",
+      "parentUuid": "c742fed7_db343f11",
       "range": {
         "startLine": 1868,
         "startChar": 23,
