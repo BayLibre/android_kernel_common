@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e54ff26a_4e95cfd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T09:24:58Z",
+      "side": 1,
+      "message": "Correct, a driver should never be calling `class_find_device_*` as it already knows the device it controls (it was passed that device already).  To walk any list is to say you do not actually control that device, which is wrong.\n\nThe `tty_register_device` and `tty_buffer_space_avail` functions are fine to call, any tty driver needs that.\n\nWait, why is a wwan driver a tty driver?  Shouldn\u0027t it just be a network driver?  And why not just use the wwan layer in the kernel already?  Why create a new one?",
+      "parentUuid": "998eb313_3f437aab",
+      "revId": "47f13b319dd921f60f78d005c33e58bade5bc03b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e50a9e7_68a82279",
         "filename": "android/abi_gki_aarch64_mtk",
         "patchSetId": 2
