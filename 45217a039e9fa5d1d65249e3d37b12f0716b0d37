@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e5a053a_1685c646",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:25:49Z",
+      "side": 1,
+      "message": "Also besides \"lib\", what else are considered \"internal\"?\n\nMatthias gave me this list before he is OoO:\n\nhttps://android-review.googlesource.com/c/kernel/build/+/2243139/27/kleaf/impl/ddk/gen_ddk_headers.py#509\n\n```\n    # \"include/asm-generic\",\n    # \"include/linux\",\n    # \"include/uapi/linux\",\n    # \"arch/arm64/include\",\n```\n\nShould I move everything outside of that list into the separate list?",
+      "parentUuid": "8e693ed4_03dd797e",
+      "range": {
+        "startLine": 1722,
+        "startChar": 10,
+        "endLine": 1727,
+        "endChar": 37
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be01efe5_ef405161",
         "filename": "BUILD.bazel",
         "patchSetId": 15
