@@ -537,6 +537,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78ea8d41_824ed86c",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-19T18:29:07Z",
+      "side": 1,
+      "message": "Oh sorry, what I said was for the allowlist.\n\nFor the graylist:\n\n* Adding things are usually partner request; there is an internal header that we don\u0027t expect partner to use, but they have an urgent request to use it, so we put them in the graylist and tell them \"hey, at some point in the future you are not going to be able to use it\".\n\n* There are two cases for removing things from the graylist:\n  * Moving into the allowlist. This means we think it is okay to allow using this header for drivers in general.\n  * Dropping it completely. This means we\u0027ve cleaned up all use cases of the header and it should not be allowed any more.",
+      "parentUuid": "0930c4e7_2433e83c",
+      "range": {
+        "startLine": 1868,
+        "startChar": 23,
+        "endLine": 1868,
+        "endChar": 43
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1db0dd7_1035dcd4",
         "filename": "BUILD.bazel",
         "patchSetId": 15
