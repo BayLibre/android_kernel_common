@@ -1589,6 +1589,9 @@
  * @uring_cmd:
  *      Check whether the file_operations uring_cmd is allowed to run.
  *
+ * @uring_setup:
+ *		Check whether the current task is allowed to call io_uring_setup.
+ *
  */
 union security_list_options {
 	#define LSM_HOOK(RET, DEFAULT, NAME, ...) RET (*NAME)(__VA_ARGS__);

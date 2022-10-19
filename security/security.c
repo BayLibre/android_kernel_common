@@ -2671,4 +2671,8 @@ int security_uring_cmd(struct io_uring_cmd *ioucmd)
 {
 	return call_int_hook(uring_cmd, 0, ioucmd);
 }
+int security_uring_setup(void)
+{
+	return call_int_hook(uring_setup, 0);
+}
 #endif /* CONFIG_IO_URING */

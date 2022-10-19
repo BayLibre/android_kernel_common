@@ -3578,6 +3578,11 @@ static long io_uring_setup(u32 entries, struct io_uring_params __user *params)
 {
 	struct io_uring_params p;
 	int i;
+	int ret;
+
+	ret = security_uring_setup();
+	if (ret)
+		return ret;
 
 	if (copy_from_user(&p, params, sizeof(p)))
 		return -EFAULT;
