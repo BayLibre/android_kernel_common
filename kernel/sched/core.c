@@ -6283,40 +6283,23 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 
 #endif /* CONFIG_SCHED_CORE */
 
-static bool __task_can_run(struct task_struct *prev)
-{
-	if (__fatal_signal_pending(prev))
-		return true;
-
-	if (!frozen_or_skipped(prev))
-		return true;
-
-	/*
-	 * We can't safely go back on the runqueue if we're an asymmetric
-	 * task skipping the freezer. Doing so can lead to migration failures
-	 * later on if there aren't any suitable CPUs left around for us to
-	 * move to.
-	 */
-	return task_cpu_possible_mask(prev) == cpu_possible_mask;
-}
-
 /*
  * Constants for the sched_mode argument of __schedule().
  *
  * The mode argument allows RT enabled kernels to differentiate a
- * preemption from blocking on an 'sleeping' spin/rwlock. Note that
- * SM_MASK_PREEMPT for !RT has all bits set, which allows the compiler to
- * optimize the AND operation out and just check for zero.
+ * preemption from blocking on an 'sleeping' spin/rwlock.
  */
 #define SM_NONE			0x0
 #define SM_PREEMPT		0x1
 #define SM_RTLOCK_WAIT		0x2
 
-#ifndef CONFIG_PREEMPT_RT
-# define SM_MASK_PREEMPT	(~0U)
+#ifdef CONFIG_FREEZER
+#define SM_FREEZABLE		0x4
 #else
-# define SM_MASK_PREEMPT	SM_PREEMPT
+#define SM_FREEZABLE		0
 #endif
+
+#define SM_MASK_PREEMPT		SM_PREEMPT
 
 /*
  * __schedule() is the main scheduler function.
@@ -6365,18 +6348,19 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 	struct rq_flags rf;
 	struct rq *rq;
 	int cpu;
+	bool freezable = sched_mode & SM_FREEZABLE;
 
 	cpu = smp_processor_id();
 	rq = cpu_rq(cpu);
 	prev = rq->curr;
 
-	schedule_debug(prev, !!sched_mode);
+	schedule_debug(prev, sched_mode & (SM_PREEMPT | SM_RTLOCK_WAIT));
 
 	if (sched_feat(HRTICK) || sched_feat(HRTICK_DL))
 		hrtick_clear(rq);
 
 	local_irq_disable();
-	rcu_note_context_switch(!!sched_mode);
+	rcu_note_context_switch(sched_mode & (SM_PREEMPT | SM_RTLOCK_WAIT));
 
 	/*
 	 * Make sure that signal_pending_state()->signal_pending() below
@@ -6411,8 +6395,9 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 	 */
 	prev_state = READ_ONCE(prev->__state);
 	if (!(sched_mode & SM_MASK_PREEMPT) && prev_state) {
-		if (signal_pending_state(prev_state, prev) && __task_can_run(prev)) {
+		if (signal_pending_state(prev_state, prev)) {
 			WRITE_ONCE(prev->__state, TASK_RUNNING);
+			freezable = false;
 		} else {
 			prev->sched_contributes_to_load =
 				(prev_state & TASK_UNINTERRUPTIBLE) &&
@@ -6442,6 +6427,9 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 		}
 		switch_count = &prev->nvcsw;
 	}
+
+	if (freezable)
+		freezer_do_not_count();
 
 	next = pick_next_task(rq, prev, &rf);
 	clear_tsk_need_resched(prev);
@@ -6488,6 +6476,9 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 		__balance_callbacks(rq);
 		raw_spin_rq_unlock_irq(rq);
 	}
+
+	if (freezable)
+		freezer_count();
 }
 
 void __noreturn do_task_dead(void)
@@ -6552,19 +6543,32 @@ static void sched_update_worker(struct task_struct *tsk)
 	}
 }
 
-asmlinkage __visible void __sched schedule(void)
+static void __sched _schedule(int sched_mode)
 {
 	struct task_struct *tsk = current;
 
 	sched_submit_work(tsk);
 	do {
 		preempt_disable();
-		__schedule(SM_NONE);
+		__schedule(sched_mode);
 		sched_preempt_enable_no_resched();
 	} while (need_resched());
 	sched_update_worker(tsk);
 }
+
+asmlinkage __visible void __sched schedule(void)
+{
+	_schedule(SM_NONE);
+}
 EXPORT_SYMBOL(schedule);
+
+#ifdef CONFIG_FREEZER
+asmlinkage __visible void __sched freezable_schedule(void)
+{
+	_schedule(SM_FREEZABLE);
+}
+EXPORT_SYMBOL(freezable_schedule);
+#endif
 
 /*
  * synchronize_rcu_tasks() makes sure that no task is stuck in preempted

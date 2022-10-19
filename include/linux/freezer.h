@@ -171,12 +171,7 @@ static inline bool freezer_should_skip(struct task_struct *p)
  */
 
 /* Like schedule(), but should not block the freezer. */
-static inline void freezable_schedule(void)
-{
-	freezer_do_not_count();
-	schedule();
-	freezer_count();
-}
+asmlinkage void freezable_schedule(void);
 
 /* DO NOT ADD ANY NEW CALLERS OF THIS FUNCTION */
 static inline void freezable_schedule_unsafe(void)
