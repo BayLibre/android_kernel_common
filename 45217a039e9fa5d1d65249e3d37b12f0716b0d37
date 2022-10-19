@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "059af2bf_40238249",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-10-19T15:43:07Z",
+      "side": 1,
+      "message": "If this were just for classic drivers, I\u0027d agree. However partners need to build their vendor modules using the DDK and need to access internal stuff so we can\u0027t limit them to just standard headers. Yifan, would it be possible to make the \"internal\" headers available only if a build flag is set (something like \"--allow-non-standard-headers\")?",
+      "parentUuid": "e51adc8c_75bdc199",
+      "range": {
+        "startLine": 1722,
+        "startChar": 10,
+        "endLine": 1727,
+        "endChar": 37
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be01efe5_ef405161",
         "filename": "BUILD.bazel",
         "patchSetId": 15
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-19T11:44:06Z",
       "side": 1,
       "message": "it\u0027s `internal` for a reason, please drop.",
+      "range": {
+        "startLine": 1728,
+        "startChar": 0,
+        "endLine": 1728,
+        "endChar": 24
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fdc97cb_561ccdb2",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1728,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-10-19T15:43:07Z",
+      "side": 1,
+      "message": "needed for some mm related hooks.",
+      "parentUuid": "be01efe5_ef405161",
       "range": {
         "startLine": 1728,
         "startChar": 0,
