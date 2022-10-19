@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b26223f_92c74601",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-10-19T10:31:01Z",
+      "side": 1,
+      "message": "A single driver should not be having a class device, AND a tty device, as those are different things with different classes.  Please do not mix.\n\nIf this is not a wwan driver, what is it?  Why do you need a new char device node?  What type of user/kernel api is being used here and where is it documented?  How long are you going to have to support your new custom user/kernel api?",
+      "parentUuid": "f9f8404f_d3009a99",
+      "revId": "47f13b319dd921f60f78d005c33e58bade5bc03b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e50a9e7_68a82279",
         "filename": "android/abi_gki_aarch64_mtk",
         "patchSetId": 2
