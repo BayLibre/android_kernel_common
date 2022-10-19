@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9f8404f_d3009a99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1970801
+      },
+      "writtenOn": "2022-10-19T09:55:18Z",
+      "side": 1,
+      "message": "Hi Greg, Thanks for your information. We will try to find a correct way to avoid using **class_find_device_*** .\n\nSorry for misunderstanding. As our previous discussion, \n\u003e\u003e\nIt was inaccurate in the submission title for the term “WWAN Driver”.\nThis driver is not pure WWAN driver like the one on mainline (drivers/net/wwan/t7xx).\nThis driver provides:\n* Pure character device ports,\n*TTY ports registered to Linux TTY subsystem.\n\nI still haven\u0027t changed the submission title according to your previous comment.\n\nI guess I have to change the patchSet with an accurate title and submit the 2 TTY functions only after we fix the usage of **class_find_device_*** .",
+      "parentUuid": "e54ff26a_4e95cfd2",
+      "revId": "47f13b319dd921f60f78d005c33e58bade5bc03b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e50a9e7_68a82279",
         "filename": "android/abi_gki_aarch64_mtk",
         "patchSetId": 2
