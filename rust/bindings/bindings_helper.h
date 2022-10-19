@@ -15,7 +15,9 @@
 #include <linux/miscdevice.h>
 #include <linux/mm.h>
 #include <linux/uio.h>
+#include <linux/uidgid.h>
 #include <linux/security.h>
+#include <linux/pid_namespace.h>
 #include <linux/poll.h>
 #include <uapi/linux/android/binder.h>
 
