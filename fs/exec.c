@@ -1010,6 +1010,7 @@ static int exec_mmap(struct mm_struct *mm)
 	active_mm = tsk->active_mm;
 	tsk->active_mm = mm;
 	tsk->mm = mm;
+	lru_gen_add_mm(mm);
 	/*
 	 * This prevents preemption while active_mm is being loaded and
 	 * it and mm are being updated, which could cause problems for
@@ -1025,6 +1026,14 @@ static int exec_mmap(struct mm_struct *mm)
 	tsk->mm->vmacache_seqnum = 0;
 	vmacache_flush(tsk);
 	task_unlock(tsk);
+<<<<<<< HEAD   (6a8e52 Merge aa1b67903a19 ("Revert "include/linux/mm_inline.h: fold)
+=======
+	lru_gen_use_mm(mm);
+
+	if (vfork)
+		timens_on_fork(tsk->nsproxy, tsk);
+
+>>>>>>> BRANCH (8be976 mm: multi-gen LRU: design doc)
 	if (old_mm) {
 		mmap_read_unlock(old_mm);
 		BUG_ON(active_mm != old_mm);
