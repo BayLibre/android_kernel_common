@@ -87,6 +87,24 @@
       "parentUuid": "23838bbe_b8539af8",
       "revId": "2b426cf0f46305058d3171c5b276d042dd959c2a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c73c13ae_d9c26a41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1031448
+      },
+      "writtenOn": "2022-10-20T13:51:12Z",
+      "side": 1,
+      "message": "Sorry about that. The symbol list for db845c last got updated shortly after 5.10.117 merge, so its been a while and this update end up adding a lot more symbols and not just the missing symbol \"strscpy_pad\" which caused the regression on db845c. I\u0027ll update the commit message with details.",
+      "parentUuid": "a258367d_f7dd664e",
+      "revId": "2b426cf0f46305058d3171c5b276d042dd959c2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
