@@ -2728,16 +2728,13 @@ EXPORT_SYMBOL_GPL(apply_to_existing_page_range);
  * This is similar to what fast GUP does, but fast GUP also needs to
  * protect against races with THP page splitting, so it always needs
  * to disable interrupts.
- * Speculative page faults only need to protect against page table reclamation,
- * so rcu_read_lock() is sufficient in the MMU_GATHER_RCU_TABLE_FREE case.
+ * Speculative page faults need to protect not only against page table
+ * reclamation (in which case rcu_read_lock() would be sufficient in the
+ * MMU_GATHER_RCU_TABLE_FREE case) but also agains PMD clearing that would
+ * render the PTL that we obtain invalid.
  */
-#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
-#define speculative_page_walk_begin() rcu_read_lock()
-#define speculative_page_walk_end()   rcu_read_unlock()
-#else
 #define speculative_page_walk_begin() local_irq_disable()
 #define speculative_page_walk_end()   local_irq_enable()
-#endif
 
 bool __pte_map_lock(struct vm_fault *vmf)
 {
@@ -2778,6 +2775,16 @@ bool __pte_map_lock(struct vm_fault *vmf)
 	ptl = pte_lockptr(vmf->vma->vm_mm, vmf->pmd);
 	if (!pte)
 		pte = pte_offset_map(vmf->pmd, vmf->address);
+
+	/*
+	 * Verify that the ptl we retrieved is still valid.
+	 */
+	pmdval = READ_ONCE(*vmf->pmd);
+	if (!pmd_same(pmdval, vmf->orig_pmd)) {
+		count_vm_spf_event(SPF_ABORT_PTE_MAP_LOCK_PMD);
+		goto fail;
+	}
+
 	/*
 	 * Try locking the page table.
 	 *
