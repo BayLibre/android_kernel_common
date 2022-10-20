@@ -505,11 +505,26 @@ static inline int num_node_state(enum node_states state)
 static inline int node_random(const nodemask_t *maskp)
 {
 #if defined(CONFIG_NUMA) && (MAX_NUMNODES > 1)
-	int w, bit = NUMA_NO_NODE;
+	int w, bit;
 
 	w = nodes_weight(*maskp);
+<<<<<<< HEAD   (15f46f Merge 8be976a0937a ("mm: multi-gen LRU: design doc") into an)
 	if (w)
 		bit = find_nth_bit(maskp->bits, MAX_NUMNODES, get_random_int() % w);
+=======
+	switch (w) {
+	case 0:
+		bit = NUMA_NO_NODE;
+		break;
+	case 1:
+		bit = first_node(*maskp);
+		break;
+	default:
+		bit = bitmap_ord_to_pos(maskp->bits,
+					get_random_int() % w, MAX_NUMNODES);
+		break;
+	}
+>>>>>>> BRANCH (9832fb mm/demotion: expose memory tier details via sysfs)
 	return bit;
 #else
 	return 0;
