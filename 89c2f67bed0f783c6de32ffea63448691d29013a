@@ -34,6 +34,52 @@
       "parentUuid": "13880087_fdd9acda",
       "revId": "89c2f67bed0f783c6de32ffea63448691d29013a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7140bb_1e514160",
+        "filename": "BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2022-10-20T23:45:23Z",
+      "side": 1,
+      "message": "Is there value to add all of these `include/*` headers individually or can you just add `include/**/*.h` to `all_headers_globs`? Are we only able to handle module dependencies when we explicitly list the files?",
+      "range": {
+        "startLine": 262,
+        "startChar": 9,
+        "endLine": 262,
+        "endChar": 16
+      },
+      "revId": "89c2f67bed0f783c6de32ffea63448691d29013a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbb2ec1b_2bd2ca3e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2022-10-20T23:45:23Z",
+      "side": 1,
+      "message": "You can drop this file. It\u0027s not suppose to be used anymore as of https://lore.kernel.org/all/20220605160508.134075-9-krzysztof.kozlowski@linaro.org/",
+      "range": {
+        "startLine": 349,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 48
+      },
+      "revId": "89c2f67bed0f783c6de32ffea63448691d29013a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
