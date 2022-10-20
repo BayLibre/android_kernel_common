@@ -68,6 +68,24 @@
       "parentUuid": "c69361ab_be08b0e1",
       "revId": "442b98cb270d5aaaa8b58da21f994d40bab8af84",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55a31dd6_e8a720fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-10-20T08:19:56Z",
+      "side": 1,
+      "message": "I\u0027m using build_abi.sh script like android12-5.10, this script should call the new build way bazel, isn\u0027t it? But seem something wrong with the bazel cmd.\nHow can I run bazel cmd directly instead of below command?\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 LTO\u003dthin build/build_abi.sh -u",
+      "parentUuid": "1ba2881e_b93f56b4",
+      "revId": "442b98cb270d5aaaa8b58da21f994d40bab8af84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
