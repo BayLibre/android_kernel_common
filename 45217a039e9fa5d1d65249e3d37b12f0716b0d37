@@ -374,6 +374,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdaf98cd_4efe56f7",
+        "filename": "BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-10-20T00:43:02Z",
+      "side": 1,
+      "message": "Turns out that these two x86 files comes from objects under `tools/bpf/resolve_btfids`. After building the Pixel build, the program discovers objects under that directory using these headers. The complete list:\n\n```\n    \"common/tools/include/uapi/asm/../../../arch/x86/include/uapi/asm/bitsperlong.h\": [\n        \"tools/bpf/resolve_btfids/.ctype.o\",\n        \"tools/bpf/resolve_btfids/.main.o\",\n        \"tools/bpf/resolve_btfids/.rbtree.o\",\n        \"tools/bpf/resolve_btfids/.str_error_r.o\",\n        \"tools/bpf/resolve_btfids/.string.o\"\n    ],\n    \"common/tools/include/uapi/asm/../../../arch/x86/include/uapi/asm/errno.h\": [\n        \"tools/bpf/resolve_btfids/.main.o\",\n        \"tools/bpf/resolve_btfids/.string.o\"\n    ],\n```\n\nI can add logic in my script to drop these headers, but I just want to confirm that we definitely don\u0027t want these to sneak in.",
+      "parentUuid": "09afca46_54c67309",
+      "range": {
+        "startLine": 1783,
+        "startChar": 0,
+        "endLine": 1785,
+        "endChar": 0
+      },
+      "revId": "45217a039e9fa5d1d65249e3d37b12f0716b0d37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb099fbe_c18f351e",
         "filename": "BUILD.bazel",
         "patchSetId": 15
