@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f03a138_adde7cae",
+        "filename": "kernel/module/internal.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-21T02:22:31Z",
+      "side": 1,
+      "message": "Done. I tried to be consistent with what\u0027s in the existing code in that file but this makes it more readable.",
+      "parentUuid": "fc5192a8_1e52e8e4",
+      "revId": "5702f48641fba094c4c5bfd8d57f83b05a85f44f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e1689e3_46699afb",
@@ -41,6 +59,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c2c87d4_a0987187",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-21T02:22:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e1689e3_46699afb",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 19
+      },
+      "revId": "5702f48641fba094c4c5bfd8d57f83b05a85f44f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5aeef7c9_08963d13",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-10-20T23:33:54Z",
       "side": 1,
       "message": "according to line 39 (usage), \"unprotected\" isn\u0027t one of the options here.",
+      "range": {
+        "startLine": 93,
+        "startChar": 52,
+        "endLine": 93,
+        "endChar": 65
+      },
+      "revId": "5702f48641fba094c4c5bfd8d57f83b05a85f44f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb8d6de_a16db63d",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-21T02:22:31Z",
+      "side": 1,
+      "message": "Done. Technically we only need to support unprotected at this point with this new design. So, updated the comment on line#39 accordingly.",
+      "parentUuid": "5aeef7c9_08963d13",
       "range": {
         "startLine": 93,
         "startChar": 52,
