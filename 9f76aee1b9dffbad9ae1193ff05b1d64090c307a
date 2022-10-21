@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbee6cd0_1b7a49e0",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1786238
+      },
+      "writtenOn": "2022-10-21T20:02:01Z",
+      "side": 1,
+      "message": "We could disable init_on_alloc outside the for loop, to reduce the amount of toggling. But from your tests it sounds like it\u0027s not much overhead?",
+      "range": {
+        "startLine": 232,
+        "startChar": 1,
+        "endLine": 232,
+        "endChar": 5
+      },
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
