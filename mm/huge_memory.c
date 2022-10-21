@@ -1039,6 +1039,7 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
 	unsigned long pfn = pmd_pfn(*pmd);
 	struct mm_struct *mm = vma->vm_mm;
 	struct page *page;
+	int ret;
 
 	assert_spin_locked(pmd_lockptr(mm, pmd));
 
@@ -1070,8 +1071,9 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
 	if (!*pgmap)
 		return ERR_PTR(-EFAULT);
 	page = pfn_to_page(pfn);
-	if (!try_grab_page(page, flags))
-		page = ERR_PTR(-ENOMEM);
+	ret = try_grab_page(page, flags);
+	if (ret)
+		page = ERR_PTR(ret);
 
 	return page;
 }
@@ -1197,6 +1199,7 @@ struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
 	unsigned long pfn = pud_pfn(*pud);
 	struct mm_struct *mm = vma->vm_mm;
 	struct page *page;
+	int ret;
 
 	assert_spin_locked(pud_lockptr(mm, pud));
 
@@ -1230,8 +1233,10 @@ struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
 	if (!*pgmap)
 		return ERR_PTR(-EFAULT);
 	page = pfn_to_page(pfn);
-	if (!try_grab_page(page, flags))
-		page = ERR_PTR(-ENOMEM);
+
+	ret = try_grab_page(page, flags);
+	if (ret)
+		page = ERR_PTR(ret);
 
 	return page;
 }
@@ -1439,6 +1444,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
 {
 	struct mm_struct *mm = vma->vm_mm;
 	struct page *page;
+	int ret;
 
 	assert_spin_locked(pmd_lockptr(mm, pmd));
 
@@ -1463,8 +1469,9 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
 	VM_BUG_ON_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
 			!PageAnonExclusive(page), page);
 
-	if (!try_grab_page(page, flags))
-		return ERR_PTR(-ENOMEM);
+	ret = try_grab_page(page, flags);
+	if (ret)
+		return ERR_PTR(ret);
 
 	if (flags & FOLL_TOUCH)
 		touch_pmd(vma, addr, pmd, flags & FOLL_WRITE);
