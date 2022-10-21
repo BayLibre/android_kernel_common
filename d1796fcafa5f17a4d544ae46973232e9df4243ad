@@ -51,6 +51,24 @@
       "parentUuid": "31572027_b966d56f",
       "revId": "d1796fcafa5f17a4d544ae46973232e9df4243ad",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07a1988a_9d3a13cb",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2584,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-10-21T20:13:07Z",
+      "side": 1,
+      "message": "Note there was a build-break in the original version since `clear_user_cpus_ptr()` was not defined when used by `dup_user_cpus_ptr()`. Fixed by moving `clear_user_cpus_ptr()` up in this version.",
+      "parentUuid": "bee85e4f_413156ac",
+      "revId": "d1796fcafa5f17a4d544ae46973232e9df4243ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
