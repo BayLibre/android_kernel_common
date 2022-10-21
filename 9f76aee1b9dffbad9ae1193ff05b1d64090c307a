@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "955e86e9_224fcc06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1064128
+      },
+      "writtenOn": "2022-10-21T20:27:00Z",
+      "side": 1,
+      "message": "balloon",
+      "range": {
+        "startLine": 32,
+        "startChar": 26,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4f21a2d0_45b342fb",
@@ -37,6 +60,23 @@
         "endLine": 232,
         "endChar": 5
       },
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a650edde_1752f0e7",
+        "filename": "mm/balloon_compaction.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1064128
+      },
+      "writtenOn": "2022-10-21T20:27:00Z",
+      "side": 1,
+      "message": "I haven\u0027t touched kernel code in \u003e5 years, so I\u0027ll have some rather basic questions on kernel CLs.\n\nI want to check here: do `static_branch_disable()` and `static_branch_enable()` only impact the current thread or current stack? We\u0027ll want to make sure we don\u0027t disable `init_on_alloc` globally.",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
