@@ -163,6 +163,24 @@
       "parentUuid": "a650edde_1752f0e7",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce3ee63_bd616f7e",
+        "filename": "mm/balloon_compaction.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1064128
+      },
+      "writtenOn": "2022-10-21T21:16:30Z",
+      "side": 1,
+      "message": "We should get security reviewers to take a look at this if it\u0027s decreasing our hardening.\n\nOtherwise a `__GFP_NO_ZERO` flag makes sense to do this in a more targeted way.",
+      "parentUuid": "8cab0d32_de4d8439",
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
