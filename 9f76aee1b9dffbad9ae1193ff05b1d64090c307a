@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a076b36d_ca45ba5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1020578
+      },
+      "writtenOn": "2022-10-21T21:05:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "955e86e9_224fcc06",
+      "range": {
+        "startLine": 32,
+        "startChar": 26,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "4f21a2d0_45b342fb",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2022-10-21T20:07:41Z",
       "side": 1,
       "message": "do you plan to upstream this? It doesn\u0027t seem like an Android-specific problem.",
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9473804_82b1e6c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1020578
+      },
+      "writtenOn": "2022-10-21T21:05:51Z",
+      "side": 1,
+      "message": "This patch is a bit of a hack. But we need to address the underlying problem. It\u0027s definitely worth bringing this patch as an RFC and see what upstream thinks of tackling this issue.",
+      "parentUuid": "4f21a2d0_45b342fb",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -64,6 +106,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f0324e7_a0a2abe2",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1020578
+      },
+      "writtenOn": "2022-10-21T21:05:51Z",
+      "side": 1,
+      "message": "Yeah, surprisingly doesn\u0027t add a lot of overhead, so didn\u0027t try to optimize it.",
+      "parentUuid": "fbee6cd0_1b7a49e0",
+      "range": {
+        "startLine": 232,
+        "startChar": 1,
+        "endLine": 232,
+        "endChar": 5
+      },
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a650edde_1752f0e7",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-10-21T20:27:00Z",
       "side": 1,
       "message": "I haven\u0027t touched kernel code in \u003e5 years, so I\u0027ll have some rather basic questions on kernel CLs.\n\nI want to check here: do `static_branch_disable()` and `static_branch_enable()` only impact the current thread or current stack? We\u0027ll want to make sure we don\u0027t disable `init_on_alloc` globally.",
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cab0d32_de4d8439",
+        "filename": "mm/balloon_compaction.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1020578
+      },
+      "writtenOn": "2022-10-21T21:05:51Z",
+      "side": 1,
+      "message": "Unfortunately it\u0027s a global setting. The balloon code does re-enable this once the allocation call completes, however, any allocations happening while this flag is turned off, will not be considered \"security-hardened\".\n\nWe should also considered the impact on those allocations and whether the hardening impact from `init_on_alloc` is absolutely necessary in all cases.\n\nThe other approach is to introduce a new GFP flag for allocation that reverts the effect of `init_on_alloc`. This would scope the impact to the specific allocation. This will introduce more changes in the core mm/ code to maintain until we get an upstream resolution.\n\nI feel like this idea might make more sense upstream. Rather than code opt-in using `__GFP_ZERO`, an opt-out with `__GFP_NO_ZERO` would help audit the code easier. As I said in another comment, we should raise the underlying root cause in upstream mailing list and ask for a better resolution.",
+      "parentUuid": "a650edde_1752f0e7",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
