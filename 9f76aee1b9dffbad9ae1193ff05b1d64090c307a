@@ -181,6 +181,24 @@
       "parentUuid": "8cab0d32_de4d8439",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26854d91_5947f03b",
+        "filename": "mm/balloon_compaction.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1020578
+      },
+      "writtenOn": "2022-10-21T21:30:45Z",
+      "side": 1,
+      "message": "Added oysteine@ to take a look at the security impact.\n\nSo far, the changes related to flex memory in the kernel have been limited to the virtio-balloon code. I tried to keep this patch similarly constrained in that respect. There\u0027s not a lot of code to be added for a new GFP flag. The question is if we are ok with the additional maintenance cost that spreads to core kernel code. Do you have thoughts on what the ongoing burden cost and how that might be impacted?",
+      "parentUuid": "dce3ee63_bd616f7e",
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
