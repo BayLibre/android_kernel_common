@@ -199,6 +199,24 @@
       "parentUuid": "dce3ee63_bd616f7e",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1d67442_acc4a8f0",
+        "filename": "mm/balloon_compaction.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1064128
+      },
+      "writtenOn": "2022-10-21T23:02:23Z",
+      "side": 1,
+      "message": "I\u0027m not too concerned with the maintenance cost since we only upgrade kernels ~once per year and you say that the changes would be small. I\u0027d lean towards making the more secure change, but I don\u0027t have a strong opinion there and will defer to oysteine@ on how important this is.\n\nIdeally the change is upstreamed since it seems to impact other devices too. That would alleviate some amount of the maintenance burden, at least in the long term.",
+      "parentUuid": "26854d91_5947f03b",
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
