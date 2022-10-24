@@ -9709,6 +9709,7 @@ void __init sched_init(void)
 
 		rq->core_cookie = 0UL;
 #endif
+		rq->scratch_mask = kzalloc(cpumask_size(), GFP_KERNEL);
 	}
 
 	set_load_weight(&init_task, false);
