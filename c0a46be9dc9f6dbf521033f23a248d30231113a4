@@ -46,6 +46,30 @@
       },
       "revId": "c0a46be9dc9f6dbf521033f23a248d30231113a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69cbe271_c8afd192",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6300,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-10-24T08:49:27Z",
+      "side": 0,
+      "message": "Thanks, I see what you mean now.\n\nHowever, I\u0027m still not completely understanding the failure mode, so perhaps you can help me. If a signal is pending for a task which is skipping the freezer, then the signal should still be taken when it wakes up. Most of the time, the signal is racing with the blocking wait so this should be ok, but I\u0027m aware of cases involving ptrace and SIGSTOP where you can force the race and get unexpected behaviour.\n\nSo in your failing scenario, is the task failing to wake up, is the signal being lost or is something like ptrace being used to deliver the signal with particular ordering wrt the wait? Thanks.",
+      "parentUuid": "8f764178_f9e0c2b1",
+      "range": {
+        "startLine": 6294,
+        "startChar": 1,
+        "endLine": 6300,
+        "endChar": 58
+      },
+      "revId": "c0a46be9dc9f6dbf521033f23a248d30231113a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
