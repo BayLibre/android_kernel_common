@@ -9709,6 +9709,10 @@ void __init sched_init(void)
 
 		rq->core_cookie = 0UL;
 #endif
+<<<<<<< HEAD   (7f7e07 ANDROID: sched: Keep sched_class::set_cpus_allowed stable)
+=======
+		rq->scratch_mask = kzalloc(cpumask_size(), GFP_KERNEL);
+>>>>>>> CHANGE (b6b95b ANDROID: sched: Use a KABI slot for struct rq::scratch_mask)
 	}
 
 	set_load_weight(&init_task, false);
