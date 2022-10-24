@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000031209424",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2267326?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "c10d826e_b6dff57a",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 40,
+                "startChar": 0,
+                "endLine": 42,
+                "endChar": 0
+              },
+              "replacement": "            \"net/wireless/cfg80211.ko\",\n            \"net/mac80211/mac80211.ko\",\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "b15af7f4_40c7d057",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-10-24T23:54:37Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "revId": "0ce731d13fc9f29c7ea66c6f118140d57088b805",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
