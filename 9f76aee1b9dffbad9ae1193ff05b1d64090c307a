@@ -235,6 +235,24 @@
       "parentUuid": "f1d67442_acc4a8f0",
       "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc774b8_c8d995dc",
+        "filename": "mm/balloon_compaction.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1064128
+      },
+      "writtenOn": "2022-10-25T15:51:32Z",
+      "side": 1,
+      "message": "This looks good to me, especially as a starting point for conversation upstream.\n\nIt\u0027s likely better to split into two CLs: one for adding the new GFP flag and one for using it in virtio-balloon.",
+      "parentUuid": "3354be7e_d4206921",
+      "revId": "9f76aee1b9dffbad9ae1193ff05b1d64090c307a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
