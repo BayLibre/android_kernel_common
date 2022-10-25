@@ -70,6 +70,30 @@
       },
       "revId": "c0a46be9dc9f6dbf521033f23a248d30231113a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feba9bf5_8799e405",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6300,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-10-25T05:29:48Z",
+      "side": 0,
+      "message": "The issue is that the task is failing to wake up and the signal is left as pending. If I look at the stuck task in /proc/pid/task/tid/status I see that SigQ is set to 1/NNNNN and the appropriate bit in SigPnd is set. I can also manually send additional RT signals to the task while in this state and see 1 get added to SigQ and another bit get set in SigPnd.\n\nHere is what I think is going on:\n\nWhen a task transitions from not having pending signals to having pending signals, TIF_SIGPENDING is set and the task is either woken up by wake_up_state() if it is in TASK_INTERRUPTIBLE state, or sent an IPI by kick_process() if it is in TASK_RUNNING state. This is implemented by signal_wake_up_state() in kernel/signal.c. In either case, when we finally end up ready to go back to user mode with this task, we test TIF_SIGPENDING and dequeue any pending signals if set.\n\nThe problem occurs when the target task is running, issues a futex() syscall that will block, and the IPI is received at any point between when kernel mode is entered and when futex_wait_queue_me() is called, which sets the task state to TASK_INTERRUPTIBLE and calls freezable_schedule(). In this case, because the task is in TASK_RUNNING state (so an IPI is sent) and the IPI is received in kernel mode, we never end up testing TIF_SIGPENDING as a result of the IPI.\n\nThis case is normally handled by the signal_pending_state() check that is modified by this CL. If that check passes, we remain on the runqueue and end up testing TIF_SIGPENDING when the task returns to user mode. But because of the additional conditions added in aosp/1979327, the task gets taken off the runqueue with TIF_SIGPENDING set. This is a bad place to be, because if TIF_SIGPENDING is already set on a task, it is expected to be scheduled and \"autonomously\" handling any pending signals. See the check for task_sigpending() in wants_signal() in kernel/signal.c -- with TIF_SIGPENDING set this causes wants_signal() to return false and complete_signal() to return early and never reach the call to signal_wake_up() -\u003e signal_wake_up_state(). As a result, the task never wakes up.",
+      "parentUuid": "69cbe271_c8afd192",
+      "range": {
+        "startLine": 6294,
+        "startChar": 1,
+        "endLine": 6300,
+        "endChar": 58
+      },
+      "revId": "c0a46be9dc9f6dbf521033f23a248d30231113a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
