@@ -16,6 +16,24 @@
       "message": "Removing memcpy and printk and kfree and others here does not seem to be correct.  Why are the commonly used symbols being removed here and not just the zram ones.?",
       "revId": "dce1c0c0c9cd07955401943dc5a9c0cf56102773",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f89faff_4674d4ac",
+        "filename": "android/abi_gki_aarch64",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-25T20:03:50Z",
+      "side": 1,
+      "message": "Thanks Greg.\n\nThey were added because of the zram \u0026 zsmalloc in a *before* Android U symbol list update tooling as this file is for all the GKI modules symbols.\n\nFor Android U, We don\u0027t consider the GKI modules for symbol list update purposes. That\u0027s the reason update script is removing it.\n\nIf vendor modules use this symbols (which they will for these particular symbols) than those lists will have these symbols.\n\nEven though these symbols have been dropped here, CONFIG_TRIM_UNUSED_KSYMS will not un-export them as GKI modules are being built as in-tree modules during GKI kernel build, TRIM_UNUSED_KSYMS sees them as being used without having to be listed in the symbol list. However, they are only accessible by signed modules at runtime; unless they also appears in the vendor symbol lists.\n\n`module_layout` and `__put_task_struct` are hard coded in tooling to be always present; so they are staying.\n\nContext: go/gki-modules-build-integration (For a quick read, refer to Option 2A in the doc).",
+      "parentUuid": "d3fceefc_f1aacbd7",
+      "revId": "dce1c0c0c9cd07955401943dc5a9c0cf56102773",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
