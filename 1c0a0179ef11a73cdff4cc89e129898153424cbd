@@ -3,6 +3,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a652722_39f95abb",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-26T19:10:11Z",
+      "side": 1,
+      "message": "should the state be printed as a string?",
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c933386d_c8b5d275",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-26T19:10:11Z",
+      "side": 1,
+      "message": "This is a confusing name for tipc_chan_event. We also have a channel state which is what I would expect this name to refer to.",
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebba3692_a9a40874",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-26T19:10:11Z",
+      "side": 1,
+      "message": "Should this not be indented to make it clearer that it is an argument to TP_printk?",
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa37c62c_48fee9d3",
         "filename": "drivers/trusty/trusty-ipc-trace.h",
         "patchSetId": 18
@@ -32,6 +83,29 @@
       "side": 1,
       "message": "Ok. Will replace with below code \n__dynamic_array(int, kind_shm, txbuf ? txbuf-\u003eshm_cnt : 0)",
       "parentUuid": "fa37c62c_48fee9d3",
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a0aa3f9_f1eb6a59",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-26T19:10:11Z",
+      "side": 1,
+      "message": "Can this ever be NULL?",
+      "range": {
+        "startLine": 205,
+        "startChar": 20,
+        "endLine": 205,
+        "endChar": 25
+      },
       "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
