@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23bfd719_956cf22d",
+        "filename": "include/linux/freezer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-10-26T16:03:52Z",
+      "side": 1,
+      "message": "We don\u0027t hold any task locks here, so I think this is racy. We could add a READ_ONCE() but I still don\u0027t see what protects us against concurrent scheduling operations.\n\nI also think we should limit this skipping behaviour to tasks with a restricted affinity mask.\n\nFinally, I think this change means that the freezer can end up running concurrently with a task trying to freeze itself via freezer_count(), no?",
+      "range": {
+        "startLine": 164,
+        "startChar": 41,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
