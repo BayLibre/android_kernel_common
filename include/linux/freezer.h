@@ -8,6 +8,7 @@
 #include <linux/sched.h>
 #include <linux/wait.h>
 #include <linux/atomic.h>
+#include <linux/mmu_context.h>
 
 #ifdef CONFIG_FREEZER
 extern atomic_t system_freezing_cnt;	/* nr of freezing conds in effect */
@@ -108,10 +109,15 @@ static inline bool cgroup_freezing(struct task_struct *task)
  * The caller shouldn't do anything which isn't allowed for a frozen task
  * until freezer_cont() is called.  Usually, freezer[_do_not]_count() pair
  * wrap a scheduling operation and nothing much else.
+ *
+ * The write to current->flags uses release semantics to prevent a concurrent
+ * freezer_should_skip() from observing this write before a write to on_rq
+ * during a prior call to activate_task(), which may cause it to return true
+ * before deactivate_task() is called.
  */
 static inline void freezer_do_not_count(void)
 {
-	current->flags |= PF_FREEZER_SKIP;
+	smp_store_release(&current->flags, current->flags | PF_FREEZER_SKIP);
 }
 
 /**
@@ -161,7 +167,8 @@ static inline bool freezer_should_skip(struct task_struct *p)
 	 * clearing %PF_FREEZER_SKIP.
 	 */
 	smp_mb();
-	return p->flags & PF_FREEZER_SKIP;
+	return (p->flags & PF_FREEZER_SKIP) &&
+	       (!p->on_rq || task_cpu_possible_mask(p) == cpu_possible_mask);
 }
 
 /*
