@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29bf6797_92ce49aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1870730
+      },
+      "writtenOn": "2022-10-26T08:06:21Z",
+      "side": 1,
+      "message": "Is this really a BACKPORT?\n\nIf so, you should probably mention the conflict and how you repaired it.\n\nIf not, it should be UPSTREAM.\n\nAlso, you are missing a (cherry picked from commit ... ) line.\n\nI recently found out `git cherry-pick -x` does this for you.",
+      "revId": "cace3cfb8d265337af26df317f13e9c0b7e2fb9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
