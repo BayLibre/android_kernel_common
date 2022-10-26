@@ -118,6 +118,30 @@
       },
       "revId": "c0a46be9dc9f6dbf521033f23a248d30231113a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d6b277b_1ec85b76",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6300,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-10-26T04:49:17Z",
+      "side": 0,
+      "message": "Understood. I thought about this some more today and had the idea of adding a check for whether the task is on the runqueue in freezer_should_skip(), which is what this new patch implements.",
+      "parentUuid": "ce2c2635_363fa998",
+      "range": {
+        "startLine": 6294,
+        "startChar": 1,
+        "endLine": 6300,
+        "endChar": 58
+      },
+      "revId": "c0a46be9dc9f6dbf521033f23a248d30231113a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
