@@ -16,6 +16,24 @@
       "message": "Since txbuf arg can be NULL (as used in error cases), the kind_shm dynamic array cannot use \u0027txbuf-\u003eshm_cnt\u0027. Why I\u0027m seeing this: I have CLs that add flow control from NS-\u003eTA, which return EAGAIN or ETIMEDOUT from tipc_chan_get_txbuf_timeout() when the caller of write() cannot submit message due to flow control operation.",
       "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f9898a_ea244cc2",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-10-26T17:31:24Z",
+      "side": 1,
+      "message": "Ok. Will replace with below code \n__dynamic_array(int, kind_shm, txbuf ? txbuf-\u003eshm_cnt : 0)",
+      "parentUuid": "fa37c62c_48fee9d3",
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
