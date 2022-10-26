@@ -22,6 +22,30 @@
       },
       "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "566b70a8_1bdfacc1",
+        "filename": "include/linux/freezer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-10-26T21:35:45Z",
+      "side": 1,
+      "message": "\u003e We don\u0027t hold any task locks here, so I think this is racy. We could add a READ_ONCE() but I still don\u0027t see what protects us against concurrent scheduling operations.\n\nIsn\u0027t it a benign race? Recall that the goal is to avoid `freezer_should_skip()` evaluating to true if the task ends up remaining on the runqueue, and I don\u0027t see how that can happen as a result of a race. In other words, the line `deactivate_task():p-\u003eon_rq \u003d [...] 0;`, which is executed after the CPU running the task decides to take it off the runqueue, can give the CPU running the freezer permission to skip the freezer for this task at any point.\n\n\u003e I also think we should limit this skipping behaviour to tasks with a restricted affinity mask.\n\nIs it necessary to special case these tasks? It seems like the new logic should work in general.\n\n\u003e Finally, I think this change means that the freezer can end up running concurrently with a task trying to freeze itself via freezer_count(), no?\n\nSo by \"freezer\" you mean the task executing the function `try_to_freeze_tasks()`, right? I looked at the logic carefully and it appears to be safe for `freezer_should_skip()` to return true for a shorter period of time. The reason is that the \"freezer\" task does not actually freeze tasks, but instead asks them to freeze themselves by sending a wakeup that causes them to call `__refrigerator()`, if `freezer_should_skip()` returns false and they are not already frozen. `__refrigerator()` puts the task into the actual frozen state.\n\nThere has always been a window where `freezer_should_skip()` will return false, but `__refrigerator()` has not been called yet, even with the existing code, simply because `freezer_count():current-\u003eflags \u0026\u003d ~PF_FREEZER_SKIP;` is not atomic with the rest of the logic in `freezer_count()`. As in the case of the race between `freezer_do_not_count()` and `freezer_should_skip()` in the existing code, hitting that window will cause a benign wakeup to be sent. The task will eventually call `__refrigerator()` as a result of following the rest of `freezer_count()`. This patch simply makes that window larger.",
+      "parentUuid": "23bfd719_956cf22d",
+      "range": {
+        "startLine": 164,
+        "startChar": 41,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
