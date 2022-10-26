@@ -16,6 +16,24 @@
       "message": "CONFIG_DRM is not hidden and is already set to \"\u003dy\" in gki_defconfig. This is causing the build errors. If it must be set using this mechanism, then it needs to be removed from gki_defconfig.",
       "revId": "7c228fe025e3f039b060504a57cde46c107f07f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c5c40fc_eb8c017e",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1970742
+      },
+      "writtenOn": "2022-10-26T15:19:57Z",
+      "side": 1,
+      "message": "Gotcha - in the previous patchset - some tests were failing due to DRM being modulated to \u0027m\u0027, which is why I moved the select here.\n\nOn another note - I dont seem to see the same failures as are reported by the CI - I am running `BUILD_CONFIG\u003dcommon/build.config.gki.aarch64 ./build/build.sh` locally - and didn\u0027t see any build errors for patchset 4.",
+      "parentUuid": "640d645e_8a00b533",
+      "revId": "7c228fe025e3f039b060504a57cde46c107f07f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
