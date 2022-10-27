@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2d9c4d7_5b9f1031",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-10-27T08:32:30Z",
+      "side": 1,
+      "message": "Putting CR-1 on this to prevent accidental commit.\n\nThere are some things to check.\n\n1. Why does changing DWARF level apparently affect (1 bit of) all symbol CRCs?\n2. Has the generated ABI fidelity (from LTO\u003dthin builds) changed?\n2. Does this change impact libabigail in other ways (performance, reliability)?",
+      "revId": "d8187bf5ff8c1bb7ca77498820fe49c76598cb8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
