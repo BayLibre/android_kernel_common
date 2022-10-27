@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29d4357c_41247c5a",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-27T17:33:41Z",
+      "side": 1,
+      "message": "This can be sorted. I\u0027ll update this with removing build sync comments in followup.",
+      "parentUuid": "6a66e785_744b4a77",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 39
+      },
+      "revId": "549a9d3e180e5a1768f5eaf2d09729e10e67cfde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1ac8476_167450e5",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-27T08:09:37Z",
       "side": 1,
       "message": "same here and below",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 39
+      },
+      "revId": "549a9d3e180e5a1768f5eaf2d09729e10e67cfde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffdd3a5a_eba91b41",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-27T17:33:41Z",
+      "side": 1,
+      "message": "his can be sorted. I\u0027ll update this with removing build sync comments in followup.",
+      "parentUuid": "a1ac8476_167450e5",
       "range": {
         "startLine": 49,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c12dc94a_e1ca6506",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-27T17:33:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2c49ac06_ef3ce132",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 46
+      },
+      "revId": "549a9d3e180e5a1768f5eaf2d09729e10e67cfde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4af4724a_03647885",
@@ -93,6 +165,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b12d35e0_0c681b97",
+        "filename": "android/gki_aarch64_modules",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-27T17:33:41Z",
+      "side": 1,
+      "message": "It is important as this is one of the input to the depmod.",
+      "parentUuid": "4af4724a_03647885",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 24
+      },
+      "revId": "549a9d3e180e5a1768f5eaf2d09729e10e67cfde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca109656_2ff5d802",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-10-27T08:09:37Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "549a9d3e180e5a1768f5eaf2d09729e10e67cfde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa07f7b_526708dc",
+        "filename": "android/gki_system_dlkm_modules",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2022-10-27T17:33:41Z",
+      "side": 1,
+      "message": "Order is not important but this file should be the same as android/gki_aarch64_modules in a checked in version. It mostly differ for kernel dev purposes locally; so keeping it same for easy copy and diff, if build breaks.",
+      "parentUuid": "ca109656_2ff5d802",
       "range": {
         "startLine": 1,
         "startChar": 0,
