@@ -34,6 +34,24 @@
       "parentUuid": "f2d9c4d7_5b9f1031",
       "revId": "d8187bf5ff8c1bb7ca77498820fe49c76598cb8c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46399df7_445b704b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-10-27T09:18:29Z",
+      "side": 1,
+      "message": "2a. Almost of the shrinkage is due to loss of about 30k source location annotations on functions, variables and members.\n\n2b. In terms of the reachable parts of the ABIs:\n\n```\ntype \u0027union bpf_attr\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct rcu_node\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct bpf_run_ctx\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct uevent_sock\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027union fscrypt_policy\u0027 changed\n  was fully defined, is now only declared\n\ntype \u0027struct tcf_walker\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct ZSTD_CCtx_s\u0027 changed\n  was fully defined, is now only declared\n\ntype \u0027struct ZSTD_DCtx_s\u0027 changed\n  was fully defined, is now only declared\n\ntype \u0027struct xol_area\u0027 changed\n  was fully defined, is now only declared\n\ntype \u0027struct seccomp_filter\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct devlink_port\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct qdisc_walker\u0027 changed\n  was only declared, is now fully defined\n\ntype \u0027struct userfaultfd_ctx\u0027 changed\n  was fully defined, is now only declared\n\n```\n\nAnd in terms of types overall:\n\n```\ntypes: . (absent), ? (undefined), D (defined)\nDD: 4398\n??: 63\n.D: 12 (enum devlink_port_flavour, enum devlink_port_type, enum devlink_rate_type, struct action_cache, struct devlink_port_attrs, struct devlink_port_pci_pf_attrs, struct devlink_port_pci_sf_attrs, struct devlink_port_pci_vf_attrs, struct devlink_port_phys_attrs, struct devlink_rate, struct notification, struct rcu_exp_work)\n?D: 8 (enum drm_mode_status, struct bpf_run_ctx, struct devlink_port, struct qdisc_walker, struct rcu_node, struct seccomp_filter, struct tcf_walker, struct uevent_sock)\nD.: 7 (struct HUF_CElt_s, struct ZSTD_CCtx_params_s, struct ZSTD_CDict_s, struct ZSTD_matchState_t, struct ZSTD_prefixDict_s, struct seqDef_s, struct vm_special_mapping)\nD?: 4 (struct ZSTD_CCtx_s, struct ZSTD_DCtx_s, struct userfaultfd_ctx, struct xol_area)\n?.: 2 (struct POOL_ctx_s, struct ZSTD_DDict_s)\n.?: 2 (struct devlink, struct devlink_linecard)\n```\n\nA slight numerical gain in definitions. However, lots of these types look quite important in terms of ABI stability.\n\nSo processing order has made libabigail favour slightly different parts of the ABI.\n\n4. XML churn\n\nSimilarly, many anonymous types (having first member \u0027lock\u0027) were renumbered.\n\nThis could be one-off churn but could be worse if Clang is emitting things in some input-sensitive order as well.",
+      "parentUuid": "107211d1_074f6487",
+      "revId": "d8187bf5ff8c1bb7ca77498820fe49c76598cb8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
