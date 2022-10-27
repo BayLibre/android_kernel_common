@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c603b6da_dbb73faa",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-10-27T23:48:06Z",
+      "side": 1,
+      "message": "Since LHS is of type int, having U specified is a mismatch. Same comment for trusty_ipc_connect_end",
+      "range": {
+        "startLine": 40,
+        "startChar": 41,
+        "endLine": 40,
+        "endChar": 42
+      },
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a652722_39f95abb",
         "filename": "drivers/trusty/trusty-ipc-trace.h",
         "patchSetId": 18
@@ -89,6 +112,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d53e8a20_949d9e61",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-10-27T23:48:06Z",
+      "side": 1,
+      "message": "__entry-\u003eshm_cnt is of type size_t. x being an int may be insufficient to hold the 64 bit value.",
+      "range": {
+        "startLine": 125,
+        "startChar": 15,
+        "endLine": 125,
+        "endChar": 35
+      },
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4a0aa3f9_f1eb6a59",
         "filename": "drivers/trusty/trusty-ipc-trace.h",
         "patchSetId": 18
@@ -105,6 +151,29 @@
         "startChar": 20,
         "endLine": 205,
         "endChar": 25
+      },
+      "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e685618_911b2c3e",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-10-27T23:48:06Z",
+      "side": 1,
+      "message": "I think we should retain ret, which is r0 after the smc operation, as unsigned long.",
+      "range": {
+        "startLine": 106,
+        "startChar": 11,
+        "endLine": 106,
+        "endChar": 14
       },
       "revId": "1c0a0179ef11a73cdff4cc89e129898153424cbd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
