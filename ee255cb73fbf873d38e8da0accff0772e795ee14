@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fe4afc6_00f48761",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-10-27T23:22:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab984c7c_2ef6c517",
+      "revId": "ee255cb73fbf873d38e8da0accff0772e795ee14",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f758a45c_c94ad74f",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-19T22:42:37Z",
       "side": 1,
       "message": "Ditto. Do we need to do `XFRM_TUNNEL_SKB_CB(skb)-\u003etunnel.ip6 \u003d t` before calling into `xfrm_input`. Just like `xfrm6_rcv_spi`",
+      "revId": "ee255cb73fbf873d38e8da0accff0772e795ee14",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95bdfa16_dad2dc64",
+        "filename": "net/xfrm/xfrm_interface.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1221725
+      },
+      "writtenOn": "2022-10-27T23:22:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f758a45c_c94ad74f",
       "revId": "ee255cb73fbf873d38e8da0accff0772e795ee14",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
