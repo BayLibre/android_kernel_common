@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04c94be1_39676663",
+        "filename": "mm/rmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-10-27T20:56:48Z",
+      "side": 0,
+      "message": "The right steps IMO would be to leave the vendor hook as is and add the new code after that:\n```\ntrace_android_vh_do_page_trylock(page, NULL, NULL, \u0026success);\nif (success) {\n    anon_vma \u003d NULL;\n    goto out;\n}\nif (rwc \u0026\u0026 rwc-\u003etry_lock) {\n    anon_vma \u003d NULL;\n    rwc-\u003econtended \u003d true;\n    goto out;\n}\n```\nso, if vendor hook handled the situation then we just skip the rest. Otherwise the regular way would be used. So, if you do not register the hooks you should have it working correctly. Would that work for you?",
+      "parentUuid": "14cadbf1_2e63c538",
+      "range": {
+        "startLine": 560,
+        "startChar": 1,
+        "endLine": 564,
+        "endChar": 2
+      },
+      "revId": "68d8dea7fe270c7d26e6fcc9f63d9e1c0ce0008a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c8956de_ca14d55b",
         "filename": "mm/rmap.c",
         "patchSetId": 2
