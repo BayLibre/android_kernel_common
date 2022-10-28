@@ -46,6 +46,30 @@
       },
       "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee3d11e8_ec8d4aa3",
+        "filename": "include/linux/freezer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-10-28T12:53:44Z",
+      "side": 1,
+      "message": "\u003e Isn\u0027t it a benign race?\n\nThe race I was thinking of is with `activate_task()`. If a task is scheduled in, then `activate_task()` will set `p-\u003eon_rq`. If the task is then descheduled but left on the runqueue due to a pending signal, then I don\u0027t see what guarantees that a concurrent `freezer_should_skip()` will see the `p-\u003eon_rq` written by the initial `activate_task()`, other than it probably executed a reasonable amount of time before.\n\n\u003e \u003e I also think we should limit this skipping behaviour to tasks with a restricted affinity mask.\n\u003e Is it necessary to special case these tasks? It seems like the new logic should work in general.\n\nI think we should try very hard to preserve the upstream behaviour for systems which don\u0027t have the asymmetric misfeature. Although your change may work correctly, it could have an impact on the ability to suspend and therefore an impact on power, so I think it\u0027s best to check the possible cpumask for the task (and it should just be a pointer comparison).\n\nYou\u0027ve convinced me on the freezer vs `freezer_count()` race, so thanks, and sorry for asking all these awkward questions!",
+      "parentUuid": "566b70a8_1bdfacc1",
+      "range": {
+        "startLine": 164,
+        "startChar": 41,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
