@@ -52,6 +52,24 @@
       "parentUuid": "71f6ebc3_66dadf4b",
       "revId": "23131d6e65cf3ed7ff6afa777d8fa5135bc6dbbc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada70653_cade0805",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-10-28T06:13:53Z",
+      "side": 1,
+      "message": "Its short-term vs long-term. The memfd transition needs more effort. I think its mostly the ashmem ioctl compat on memfds (which I\u0027d love to see), and then flipping sys.use_memfd on and sorting out any missed sepolicy rules.\n\nBut in the meantime this solution isn\u0027t particularly terrible and should be fairly easy to transition to memfd.",
+      "parentUuid": "a8b205da_18957261",
+      "revId": "23131d6e65cf3ed7ff6afa777d8fa5135bc6dbbc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
