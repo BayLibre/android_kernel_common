@@ -16,6 +16,24 @@
       "message": "Please no new ashmem work 😞",
       "revId": "23131d6e65cf3ed7ff6afa777d8fa5135bc6dbbc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f6ebc3_66dadf4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2022-10-28T05:12:33Z",
+      "side": 1,
+      "message": "I\u0027d agree, but unfortunately there\u0027s not a simple way to get a unique inode out of ashmem and the transition to memfd isn\u0027t here yet.\n\nSo this seemed like the least impact approach, allowing memfd inode (which is unique) to be used later on.",
+      "parentUuid": "cfed51c5_8f71ca91",
+      "revId": "23131d6e65cf3ed7ff6afa777d8fa5135bc6dbbc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
