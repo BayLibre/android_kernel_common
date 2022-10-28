@@ -70,6 +70,30 @@
       },
       "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91a9fabe_615b398f",
+        "filename": "include/linux/freezer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-10-28T23:51:01Z",
+      "side": 1,
+      "message": "\u003e The race I was thinking of is with `activate_task()`.\n\nI see. I think we can address that by changing `freezer_do_not_count()` to use release semantics to write to `current-\u003eflags`. This should ensure that the write to `on_rq` in `activate_task()` will not be reordered after the write to `flags`. Precompiled modules will continue to use relaxed semantics, but given the unlikelihood of observing the wrong ordering, perhaps we can live with that.\n\n\u003e I think we should try very hard to preserve the upstream behaviour for systems which don\u0027t have the asymmetric misfeature.\n\nDone.",
+      "parentUuid": "ee3d11e8_ec8d4aa3",
+      "range": {
+        "startLine": 164,
+        "startChar": 41,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "b1064b5aff5fd8fa2a334f449b073f559b3f58e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
