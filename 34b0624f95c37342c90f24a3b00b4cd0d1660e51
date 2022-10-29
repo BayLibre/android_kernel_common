@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87278689_31c3c532",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-10-29T02:38:42Z",
+      "side": 1,
+      "message": "The build failures on x86 ended up being caused by bugs in the tracepoint headers  exposed by including one header containing tracepoint definitions from another. So for now I just disabled including the additional header on non-aarch64.",
+      "revId": "34b0624f95c37342c90f24a3b00b4cd0d1660e51",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
