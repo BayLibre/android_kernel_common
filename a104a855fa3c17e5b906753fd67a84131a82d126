@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9d783b8_464fad70",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-10-31T10:23:08Z",
+      "side": 1,
+      "message": "Should we rename as tipc_channel_state_name since the input is of type tipc_chan_state ? Same comment for trusty_ipc_connect_end",
+      "range": {
+        "startLine": 68,
+        "startChar": 15,
+        "endLine": 68,
+        "endChar": 21
+      },
+      "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2adfe9dc_689feea6",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1958229
+      },
+      "writtenOn": "2022-10-31T10:23:08Z",
+      "side": 1,
+      "message": "Does event_id hold a status ? We need a different helper function for event_id",
+      "range": {
+        "startLine": 102,
+        "startChar": 2,
+        "endLine": 102,
+        "endChar": 26
+      },
+      "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
