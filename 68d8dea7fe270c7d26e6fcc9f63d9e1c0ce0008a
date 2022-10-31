@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12b49209_97a199e4",
+        "filename": "mm/rmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 1904204
+      },
+      "writtenOn": "2022-10-31T05:06:16Z",
+      "side": 0,
+      "message": "Actually this VH is bit confusing. Assuming the non zero value of success is the failure.\n\nBut if it is \u0027zero\u0027 it will be success, which can still make the code to fall back to if (rwc \u0026\u0026 rwc-\u003etry_lock) {} and returns with NULL. So, IMO it can still break the code, unless I am missing something.",
+      "parentUuid": "04c94be1_39676663",
+      "range": {
+        "startLine": 560,
+        "startChar": 1,
+        "endLine": 564,
+        "endChar": 2
+      },
+      "revId": "68d8dea7fe270c7d26e6fcc9f63d9e1c0ce0008a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c8956de_ca14d55b",
         "filename": "mm/rmap.c",
         "patchSetId": 2
