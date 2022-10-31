@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1fbdcbd1_e1d6ecd1",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-31T16:40:37Z",
+      "side": 1,
+      "message": "The driver has tipc_chan_state and tipc_chan_event. chan-\u003estate uses tipc_chan_state, but tipc_channel_status_name prints it as a tipc_chan_event which is wrong. Having both a tipc_channel_state_name and tipc_channel_event_name helper function would make it simpler to print the correct type.",
+      "parentUuid": "f9d783b8_464fad70",
+      "range": {
+        "startLine": 68,
+        "startChar": 15,
+        "endLine": 68,
+        "endChar": 21
+      },
+      "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2adfe9dc_689feea6",
         "filename": "drivers/trusty/trusty-ipc-trace.h",
         "patchSetId": 19
@@ -43,6 +67,23 @@
         "endLine": 102,
         "endChar": 26
       },
+      "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b08ca2aa_6da3aed4",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2022-10-31T16:40:37Z",
+      "side": 1,
+      "message": "Can we also print ret as a signed 32 bit value here? That is what most of the calls cast this to and use.",
       "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
