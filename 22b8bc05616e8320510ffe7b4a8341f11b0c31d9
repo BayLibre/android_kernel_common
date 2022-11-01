@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a417f66c_eecf2cd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-01T21:18:39Z",
+      "side": 1,
+      "message": "I\u0027m happy with the approach here now, thanks, and we can try to tidy up the header mess. However, I think we need to avoid the modversions symbol CRC changes, otherwise won\u0027t we fail to load existing modules which refer to these symbols?\n\nWe will also need this change on android13-5.10 and android14-5.15.",
+      "revId": "22b8bc05616e8320510ffe7b4a8341f11b0c31d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09baa8fa_57bfeddf",
+        "filename": "include/linux/freezer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-01T21:18:39Z",
+      "side": 1,
+      "message": "It\u0027s more idiomatic to check for `CONFIG_ARM64` here.\n\nI suppose we could also out-of-line the possible CPU mask check if it helps with your header issue. Up to you.",
+      "range": {
+        "startLine": 172,
+        "startChar": 7,
+        "endLine": 172,
+        "endChar": 18
+      },
+      "revId": "22b8bc05616e8320510ffe7b4a8341f11b0c31d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
