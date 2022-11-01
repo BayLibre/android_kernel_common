@@ -120,6 +120,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b874a4b0_df9b089d",
+        "filename": "mm/rmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-11-01T02:11:53Z",
+      "side": 0,
+      "message": "Yeah, the naming is not great here. I think `success` here means just bail out early and not try to acquire the lock (similar to the code you are trying to add).\nRegardless, we can\u0027t remove the VH or change its logic without affecting the partners who use is. I think my suggestion would still work both for you and other partners. You can just not register that VH and get the functionality you want.",
+      "parentUuid": "5591b3d5_663f5775",
+      "range": {
+        "startLine": 560,
+        "startChar": 1,
+        "endLine": 564,
+        "endChar": 2
+      },
+      "revId": "68d8dea7fe270c7d26e6fcc9f63d9e1c0ce0008a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c8956de_ca14d55b",
