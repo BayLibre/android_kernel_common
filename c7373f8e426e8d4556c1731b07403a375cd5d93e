@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "335cb939_e7b2f754",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1858441
+      },
+      "writtenOn": "2022-11-01T02:10:01Z",
+      "side": 1,
+      "message": "1. We check if memory type is rw_nx or not when tracepoint is called.\n\n2. Because the users of these vendor hooks heavily rely on the platform-specific(currently for arm64 on android) operations which are not common. And its design only depends on our EL2 specific implementation.\nSo there are no suitable reasons for upstream to official kernel.",
+      "parentUuid": "78c0c928_3e42e56a",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 29
+      },
+      "revId": "c7373f8e426e8d4556c1731b07403a375cd5d93e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6aae69f_44198da2",
