@@ -3712,8 +3712,12 @@ static inline bool f2fs_need_rand_seg(struct f2fs_sb_info *sbi)
 /*
  * checkpoint.c
  */
+<<<<<<< HEAD   (5723e2 ANDROID: sched: check on_rq in freezer_should_skip())
 void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io,
 							unsigned char reason);
+=======
+void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io);
+>>>>>>> BRANCH (bd8a59 Linux 5.15.75)
 void f2fs_flush_ckpt_thread(struct f2fs_sb_info *sbi);
 struct page *f2fs_grab_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);
 struct page *f2fs_get_meta_page(struct f2fs_sb_info *sbi, pgoff_t index);

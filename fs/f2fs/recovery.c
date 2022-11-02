@@ -506,7 +506,10 @@ got_it:
 	if (ofs_in_node >= max_addrs) {
 		f2fs_err(sbi, "Inconsistent ofs_in_node:%u in summary, ino:%lu, nid:%u, max:%u",
 			ofs_in_node, dn->inode->i_ino, nid, max_addrs);
+<<<<<<< HEAD   (5723e2 ANDROID: sched: check on_rq in freezer_should_skip())
 		f2fs_handle_error(sbi, ERROR_INCONSISTENT_SUMMARY);
+=======
+>>>>>>> BRANCH (bd8a59 Linux 5.15.75)
 		return -EFSCORRUPTED;
 	}
 
@@ -716,8 +719,11 @@ retry_prev:
 				f2fs_err(sbi, "Inconsistent dest blkaddr:%u, ino:%lu, ofs:%u",
 					dest, inode->i_ino, dn.ofs_in_node);
 				err = -EFSCORRUPTED;
+<<<<<<< HEAD   (5723e2 ANDROID: sched: check on_rq in freezer_should_skip())
 				f2fs_handle_error(sbi,
 						ERROR_INVALID_BLKADDR);
+=======
+>>>>>>> BRANCH (bd8a59 Linux 5.15.75)
 				goto err;
 			}
 
