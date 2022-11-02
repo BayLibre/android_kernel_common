@@ -22,6 +22,30 @@
       },
       "revId": "7e41eee766e6ddf42a4e9b774d817cb3d41efc58",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e5b5e23_c2b3860f",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-02T09:39:32Z",
+      "side": 1,
+      "message": "In kvm_s2_zalloc_pages_exact() bellow. Actually this patch applied without any manual modification... I should probably mark it as \"UPSTREAM\" instead then?",
+      "parentUuid": "76686792_557f1e04",
+      "range": {
+        "startLine": 111,
+        "startChar": 13,
+        "endLine": 111,
+        "endChar": 40
+      },
+      "revId": "7e41eee766e6ddf42a4e9b774d817cb3d41efc58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
