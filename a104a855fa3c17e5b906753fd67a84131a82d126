@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbf8775c_e71cf11b",
+        "filename": "drivers/trusty/trusty-ipc-trace.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-11-02T18:16:27Z",
+      "side": 1,
+      "message": "Done. Introduced 2 separate helper functions as suggested.\ntipc_channel_state_name \u0026 tipc_channel_event_name",
+      "parentUuid": "1fbdcbd1_e1d6ecd1",
+      "range": {
+        "startLine": 68,
+        "startChar": 15,
+        "endLine": 68,
+        "endChar": 21
+      },
+      "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2adfe9dc_689feea6",
@@ -84,6 +108,24 @@
       "writtenOn": "2022-10-31T16:40:37Z",
       "side": 1,
       "message": "Can we also print ret as a signed 32 bit value here? That is what most of the calls cast this to and use.",
+      "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1edd44f5_34073e9f",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-11-02T18:16:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b08ca2aa_6da3aed4",
       "revId": "a104a855fa3c17e5b906753fd67a84131a82d126",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
