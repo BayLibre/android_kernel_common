@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a9d9dc5_697017a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-11-02T02:39:38Z",
+      "side": 1,
+      "message": "\u003e I\u0027m happy with the approach here now, thanks, and we can try to tidy up the header mess. However, I think we need to avoid the modversions symbol CRC changes, otherwise won\u0027t we fail to load existing modules which refer to these symbols?\n\nRight. Greg suggested to wrap the inclusion in an `#ifndef __GENKSYMS__`, which at least seems to silence the ABI checker locally.\n\n\u003e We will also need this change on android13-5.10 and android14-5.15.\n\nandroid13-5.10: https://android-review.googlesource.com/c/kernel/common/+/2281598\n\nandroid14-5.15: https://android-review.googlesource.com/c/kernel/common/+/2282174",
+      "parentUuid": "a417f66c_eecf2cd8",
+      "revId": "22b8bc05616e8320510ffe7b4a8341f11b0c31d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09baa8fa_57bfeddf",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-01T21:18:39Z",
       "side": 1,
       "message": "It\u0027s more idiomatic to check for `CONFIG_ARM64` here.\n\nI suppose we could also out-of-line the possible CPU mask check if it helps with your header issue. Up to you.",
+      "range": {
+        "startLine": 172,
+        "startChar": 7,
+        "endLine": 172,
+        "endChar": 18
+      },
+      "revId": "22b8bc05616e8320510ffe7b4a8341f11b0c31d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c14b94_e59d6cd6",
+        "filename": "include/linux/freezer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1067098
+      },
+      "writtenOn": "2022-11-02T02:39:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09baa8fa_57bfeddf",
       "range": {
         "startLine": 172,
         "startChar": 7,
