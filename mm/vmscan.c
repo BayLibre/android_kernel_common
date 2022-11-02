@@ -2260,8 +2260,6 @@ shrink_inactive_list(unsigned long nr_to_scan, struct lruvec *lruvec,
 
 	spin_lock_irq(&lruvec->lru_lock);
 	move_pages_to_lru(lruvec, &page_list);
-	if (do_plug)
-		blk_finish_plug(&plug);
 
 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
 	item = current_is_kswapd() ? PGSTEAL_KSWAPD : PGSTEAL_DIRECT;
@@ -2270,6 +2268,9 @@ shrink_inactive_list(unsigned long nr_to_scan, struct lruvec *lruvec,
 	__count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
 	__count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
 	spin_unlock_irq(&lruvec->lru_lock);
+
+	if (do_plug)
+		blk_finish_plug(&plug);
 
 	lru_note_cost(lruvec, file, stat.nr_pageout);
 	mem_cgroup_uncharge_list(&page_list);
@@ -4925,6 +4926,7 @@ static bool should_abort_scan(struct lruvec *lruvec, unsigned long seq,
 static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 {
 	struct blk_plug plug;
+	bool do_plug = true;
 	bool need_aging = false;
 	bool need_swapping = false;
 	unsigned long scanned = 0;
@@ -4933,7 +4935,9 @@ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc
 
 	lru_add_drain();
 
-	blk_start_plug(&plug);
+	trace_android_vh_shrink_lruvec_blk_plug(&do_plug);
+	if (do_plug)
+		blk_start_plug(&plug);
 
 	set_mm_walk(lruvec_pgdat(lruvec));
 
@@ -4973,7 +4977,8 @@ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc
 done:
 	clear_mm_walk();
 
-	blk_finish_plug(&plug);
+	if (do_plug)
+		blk_finish_plug(&plug);
 }
 
 /******************************************************************************
