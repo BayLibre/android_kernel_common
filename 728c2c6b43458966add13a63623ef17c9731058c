@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "231baff7_7a6a8644",
+        "filename": "include/linux/arm-smccc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-03T01:05:24Z",
+      "side": 1,
+      "message": "Please don\u0027t use those numbers, this will conflict badly with other things coming from upstream (pKVM, ...).",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 44
+      },
+      "revId": "728c2c6b43458966add13a63623ef17c9731058c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2072a4d5_fbd869d8",
+        "filename": "include/uapi/linux/sched.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-03T01:05:24Z",
+      "side": 1,
+      "message": "Argh, same here, please don\u0027t do this.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 36
+      },
+      "revId": "728c2c6b43458966add13a63623ef17c9731058c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1fa43b6_336ba823",
+        "filename": "include/uapi/linux/sched/types.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-03T01:05:24Z",
+      "side": 1,
+      "message": "Wait, why are we changing UAPIs?",
+      "range": {
+        "startLine": 122,
+        "startChar": 1,
+        "endLine": 122,
+        "endChar": 18
+      },
+      "revId": "728c2c6b43458966add13a63623ef17c9731058c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
