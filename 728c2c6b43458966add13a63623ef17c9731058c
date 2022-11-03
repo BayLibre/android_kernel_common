@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36ad78a8_ba71d4fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2022-11-03T01:32:31Z",
+      "side": 1,
+      "message": "I should ask, would it not be better to do an upstream list discussion on this before even a common-kernel or pixel kernel merge? I know it was presented at LPC and that\u0027s great, but there should be some RFC posted involving:\n  - Rafael Wysocki (cpufreq, schedutil)\n  - Patrick Belasi (uclamp)\n  - Viresh (for his opinion on these things)\n  - Paulo Bonzini (KVM) and Marc Zyngier (arm64 KVM)\n  \n(I am sorry if I missed something, if so - please provide links).\n  \nMy fear is whole thing makes its way into downstream kernels through AOSP, and then it becomes forever-debt after few years, like WALT or any number of examples. I don\u0027t mind downstream / common kernel push, but that should be after exhaustive upstream discussion. Very least a discussion prevents a bad design because one did not consider something (apologies for cliche).\n\nAlso, I am still of the opinion of finding some way to use the vcpu\u0027s guest util on the host side, and let the host do the right thing.\n\nJust my suggestion/opinion! I will refrain from providing an AOSP gerrit vote (positive or negative). Thanks.",
+      "revId": "728c2c6b43458966add13a63623ef17c9731058c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "231baff7_7a6a8644",
