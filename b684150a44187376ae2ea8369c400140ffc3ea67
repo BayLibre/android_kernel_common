@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t this have the same Change-Id as aosp/2287192?",
       "revId": "b684150a44187376ae2ea8369c400140ffc3ea67",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a836047_b7490ad5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-11-04T21:56:58Z",
+      "side": 1,
+      "message": "These patches are \"stable-branch specific\" as the mmap locking api was refactored between releases. Note that I also sent these patches separately upstream. You can follow the two Links and see [PATCH 5.4] and [PATH 5.10]. This is why I also opted for having different Change-Ids here. However, I don\u0027t mind if you think otherwise, I can update this patch.",
+      "parentUuid": "c56f9bbb_989a523c",
+      "revId": "b684150a44187376ae2ea8369c400140ffc3ea67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
