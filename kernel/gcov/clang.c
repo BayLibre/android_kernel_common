@@ -271,15 +271,20 @@ int gcov_info_is_compatible(struct gcov_info *info1, struct gcov_info *info2)
  */
 void gcov_info_add(struct gcov_info *dst, struct gcov_info *src)
 {
-	struct gcov_fn_info *dfn_ptr;
-	struct gcov_fn_info *sfn_ptr = list_first_entry_or_null(&src->functions,
-			struct gcov_fn_info, head);
+	struct gcov_fn_info *sfn_ptr;
+	struct gcov_fn_info *dfn_ptr = list_first_entry_or_null(
+			&dst->functions, struct gcov_fn_info, head);
 
-	list_for_each_entry(dfn_ptr, &dst->functions, head) {
+	list_for_each_entry(sfn_ptr, &src->functions, head) {
 		u32 i;
+
+		if (!dfn_ptr)
+			return;
 
 		for (i = 0; i < sfn_ptr->num_counters; i++)
 			dfn_ptr->counters[i] += sfn_ptr->counters[i];
+
+		dfn_ptr = list_next_entry(dfn_ptr, head);
 	}
 }
 
