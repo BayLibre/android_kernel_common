@@ -2301,6 +2301,7 @@
       <elf-symbol name='drm_plane_create_zpos_immutable_property' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x164a45c6'/>
       <elf-symbol name='drm_plane_create_zpos_property' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb3d6df75'/>
       <elf-symbol name='drm_plane_enable_fb_damage_clips' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4c7a837b'/>
+      <elf-symbol name='drm_plane_from_index' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfd84c309'/>
       <elf-symbol name='drm_poll' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc7870f9f'/>
       <elf-symbol name='drm_prime_gem_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa2f3d9db'/>
       <elf-symbol name='drm_prime_pages_to_sg' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa5e889b4'/>
@@ -50573,7 +50574,7 @@
       </class-decl>
       <pointer-type-def type-id='3e1d184a' size-in-bits='64' id='6aee814c'/>
       <pointer-type-def type-id='74e7a035' size-in-bits='64' id='6af64a09'/>
-      <class-decl name='uncached_list' size-in-bits='192' is-struct='yes' visibility='default' filepath='net/ipv6/route.c' line='130' column='1' id='6b1203e5'>
+      <class-decl name='uncached_list' size-in-bits='192' is-struct='yes' visibility='default' filepath='net/ipv4/route.c' line='1505' column='1' id='6b1203e5'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='net/ipv4/route.c' line='1506' column='1'/>
         </data-member>
@@ -136761,6 +136762,11 @@
       <function-decl name='drm_plane_enable_fb_damage_clips' mangled-name='drm_plane_enable_fb_damage_clips' filepath='drivers/gpu/drm/drm_plane.c' line='1444' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_plane_enable_fb_damage_clips'>
         <parameter type-id='a6711537' name='plane' filepath='drivers/gpu/drm/drm_plane.c' line='1444' column='1'/>
         <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='drm_plane_from_index' mangled-name='drm_plane_from_index' filepath='drivers/gpu/drm/drm_plane.c' line='566' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_plane_from_index'>
+        <parameter type-id='8898134d' name='dev' filepath='drivers/gpu/drm/drm_plane.c' line='566' column='1'/>
+        <parameter type-id='95e97e5e' name='idx' filepath='drivers/gpu/drm/drm_plane.c' line='566' column='1'/>
+        <return type-id='a6711537'/>
       </function-decl>
       <function-decl name='drm_poll' mangled-name='drm_poll' filepath='drivers/gpu/drm/drm_file.c' line='654' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_poll'>
         <parameter type-id='77e79a4b' name='filp' filepath='drivers/gpu/drm/drm_file.c' line='654' column='1'/>
