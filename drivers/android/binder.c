@@ -131,6 +131,7 @@ static int binder_set_stop_on_user_error(const char *val,
 	ret = param_set_int(val, kp);
 	if (binder_stop_on_user_error < 2)
 		wake_up(&binder_user_error_wait);
+
 	return ret;
 }
 module_param_call(stop_on_user_error, binder_set_stop_on_user_error,
