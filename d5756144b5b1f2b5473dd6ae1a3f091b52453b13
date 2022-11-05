@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da45d9b7_7ed01088",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2022-11-05T21:57:17Z",
+      "side": 1,
+      "message": "This has an issue with cuttlefish when starting up the service manager:\n```\n[   12.145668] servicemanager: Starting sm instance on /dev/binder\n[   12.146101] binder_alloc: binder_alloc_mmap_handler: 278 7edad94ac000-7edad95aa000 invalid vma-\u003evm_mm failed -22\n[   12.147096] ProcessState: Binder driver \u0027/dev/binder\u0027 could not be opened. Terminating: Using /dev/binder failed: unable to mmap transaction memory.\n```\nI don\u0027t see this issue locally on my pixel devices, so I\u0027ll try to launch a cuttlefish instance.",
+      "revId": "d5756144b5b1f2b5473dd6ae1a3f091b52453b13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
