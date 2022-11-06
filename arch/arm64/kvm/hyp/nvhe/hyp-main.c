@@ -14,7 +14,7 @@
 #include <asm/kvm_host.h>
 #include <asm/kvm_hyp.h>
 #include <asm/kvm_mmu.h>
-
+#include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
 #include <nvhe/pkvm.h>
@@ -1046,6 +1046,45 @@ static void handle___pkvm_teardown_vm(struct kvm_cpu_context *host_ctxt)
 	cpu_reg(host_ctxt, 1) = __pkvm_teardown_vm(handle);
 }
 
+
+static void handle___pkvm_iommu_driver_init(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(int, id, host_ctxt, 1);
+	DECLARE_REG(void *, data, host_ctxt, 2);
+	DECLARE_REG(size_t, size, host_ctxt, 3);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_iommu_driver_init(id, data, size);
+}
+
+static void handle___pkvm_iommu_register(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(unsigned long, dev_id, host_ctxt, 1);
+	DECLARE_REG(int, drv_id, host_ctxt, 2);
+	DECLARE_REG(phys_addr_t, dev_pa, host_ctxt, 3);
+	DECLARE_REG(size_t, dev_size, host_ctxt, 4);
+	DECLARE_REG(unsigned long, parent_id, host_ctxt, 5);
+	DECLARE_REG(void *, mem, host_ctxt, 6);
+	DECLARE_REG(size_t, mem_size, host_ctxt, 7);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_iommu_register(dev_id, drv_id, dev_pa,
+						      dev_size, parent_id,
+						      mem, mem_size);
+}
+
+static void handle___pkvm_iommu_pm_notify(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(unsigned long, dev_id, host_ctxt, 1);
+	DECLARE_REG(enum pkvm_iommu_pm_event, event, host_ctxt, 2);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_iommu_pm_notify(dev_id, event);
+}
+
+static void handle___pkvm_iommu_finalize(struct kvm_cpu_context *host_ctxt)
+{
+	cpu_reg(host_ctxt, 1) = __pkvm_iommu_finalize();
+}
+
+
 typedef void (*hcall_t)(struct kvm_cpu_context *);
 
 #define HANDLE_FUNC(x)	[__KVM_HOST_SMCCC_FUNC_##x] = (hcall_t)handle_##x
@@ -1080,6 +1119,10 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_vcpu_load),
 	HANDLE_FUNC(__pkvm_vcpu_put),
 	HANDLE_FUNC(__pkvm_vcpu_sync_state),
+	HANDLE_FUNC(__pkvm_iommu_driver_init),
+	HANDLE_FUNC(__pkvm_iommu_register),
+	HANDLE_FUNC(__pkvm_iommu_pm_notify),
+	HANDLE_FUNC(__pkvm_iommu_finalize),
 };
 
 static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)
