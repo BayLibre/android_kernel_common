@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47634979_e4192b53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-11-07T23:57:09Z",
+      "side": 1,
+      "message": "Done.\nUploaded the patch https://android-review.git.corp.google.com/c/trusty/vendor/google/aosp/+/2259106 to enable tracing \u0026 to capture tracepoints.",
+      "parentUuid": "f8534782_519fb0e9",
+      "revId": "ec703f1bfd34ce401f0eb3e914c4c8e1b17fa39b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "552ce3e3_27435728",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-03T23:39:15Z",
       "side": 1,
       "message": "u32?",
+      "range": {
+        "startLine": 109,
+        "startChar": 17,
+        "endLine": 109,
+        "endChar": 20
+      },
+      "revId": "ec703f1bfd34ce401f0eb3e914c4c8e1b17fa39b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "145d0992_05e6cb9c",
+        "filename": "drivers/trusty/trusty-trace.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1956416
+      },
+      "writtenOn": "2022-11-07T23:57:09Z",
+      "side": 1,
+      "message": "Done.\nReplaced int with s32",
+      "parentUuid": "552ce3e3_27435728",
       "range": {
         "startLine": 109,
         "startChar": 17,
