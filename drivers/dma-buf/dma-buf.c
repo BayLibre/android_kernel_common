@@ -1507,6 +1507,53 @@ int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags)
 }
 EXPORT_SYMBOL_GPL(dma_buf_get_flags);
 
+/**
+ * dma_buf_transfer_charge - Change the cgroup to which the provided dma_buf is charged.
+ * @dmabuf:	[in]	buffer whose charge will be migrated to a different cgroup
+ * @target:	[in]	the task_struct of the destination process for the cgroup charge
+ *
+ * Only tasks that belong to the same cgroup the buffer is currently charged to
+ * may call this function, otherwise it will return -EPERM.
+ *
+ * Returns 0 on success, or a negative errno code otherwise.
+ */
+int dma_buf_transfer_charge(struct dma_buf *dmabuf, struct task_struct *target)
+{
+	struct mem_cgroup *current_cg, *target_cg;
+	int ret = 0;
+
+	if (!IS_ENABLED(CONFIG_MEMCG))
+		return 0;
+
+	if (WARN_ON(!dmabuf) || WARN_ON(!target))
+		return -EINVAL;
+
+	current_cg = mem_cgroup_from_task(current);
+	target_cg = get_mem_cgroup_from_mm(target->mm);
+
+	if (current_cg == target_cg)
+		goto skip_transfer;
+
+	mutex_lock(&dmabuf->lock);
+	if (dmabuf->memcg != current_cg) {
+		mutex_unlock(&dmabuf->lock);
+		ret = -EPERM;
+		goto skip_transfer;
+	}
+	dmabuf->memcg = target_cg;
+	mutex_unlock(&dmabuf->lock);
+
+	mod_memcg_state(current_cg, MEMCG_DMABUF, -dmabuf->size);
+	mod_memcg_state(target_cg, MEMCG_DMABUF, dmabuf->size);
+
+	mem_cgroup_put(current_cg); /* unref from buffer - buffer keeps new ref to target_cg */
+	return 0;
+
+skip_transfer:
+	mem_cgroup_put(target_cg);
+	return ret;
+}
+
 #ifdef CONFIG_DEBUG_FS
 static int dma_buf_debug_show(struct seq_file *s, void *unused)
 {
