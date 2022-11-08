@@ -321,7 +321,15 @@ static void __mpt_idmap_apply(struct pkvm_iommu *dev, struct mpt *mpt,
 	unsigned int last_gb = last_byte / SZ_1G;
 
 	pgtable_ops->apply_range(dev->va, mpt, first_gb, last_gb);
+
+	#ifdef CONFIG_KVM_S2MPU_MERGE_PTE
+	//we may have modified a range that is wider than the requested one because of page merging
+	//as prepare and apply are not related we can't know the alignment updates for this exact range
+	//so we assume worse case and invalidate with 2MB alignment
+	__range_invalidation(dev, ALIGN_DOWN(first_byte, SZ_2M), ALIGN(last_byte, SZ_2M));
+	#else
 	__range_invalidation(dev, first_byte, last_byte);
+	#endif
 }
 
 static void s2mpu_host_stage2_idmap_prepare(phys_addr_t start, phys_addr_t end,

@@ -64,6 +64,16 @@ config KVM_S2MPU
 		hypervisor to restrict DMA access to its memory and the memory of
 		protected guests.
 
+config KVM_S2MPU_MERGE_PTE
+	bool "contiguous page table entries merging for S2MPU"
+	depends on KVM_S2MPU
+	default n
+	help
+		If S2MPU support contiguous page table entries  merging, it will
+		merge them when possible, this can reduce TLB pressure with a
+		little overhead in runtime when sharing and unsharing pages
+		If unsure, say N.
+
 config PROTECTED_NVHE_STACKTRACE
 	bool "Protected KVM hypervisor stacktraces"
 	depends on NVHE_EL2_DEBUG
