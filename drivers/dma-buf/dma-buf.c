@@ -74,6 +74,8 @@ static void dma_buf_release(struct dentry *dentry)
 	 */
 	BUG_ON(dmabuf->cb_in.active || dmabuf->cb_out.active);
 
+	mod_memcg_state(dmabuf->memcg, MEMCG_DMABUF, -dmabuf->size);
+	mem_cgroup_put(dmabuf->memcg);
 	dma_buf_stats_teardown(dmabuf);
 	dmabuf->ops->release(dmabuf);
 
@@ -667,6 +669,9 @@ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info)
 	ret = dma_buf_stats_setup(dmabuf);
 	if (ret)
 		goto err_sysfs;
+
+	dmabuf->memcg = get_mem_cgroup_from_mm(current->mm);
+	mod_memcg_state(dmabuf->memcg, MEMCG_DMABUF, dmabuf->size);
 
 	return dmabuf;
 
