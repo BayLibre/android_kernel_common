@@ -28,6 +28,8 @@ hyp-obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
 hyp-obj-$(CONFIG_DEBUG_LIST) += list_debug.o
 hyp-obj-y += $(lib-objs)
 
+hyp-obj-$(CONFIG_KVM_S2MPU) += iommu/s2mpu.o
+hyp-obj-$(CONFIG_KVM_S2MPU) += iommu/io-pgtable-s2mpu.o
 
 
 ##

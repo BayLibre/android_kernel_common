@@ -266,6 +266,10 @@ static struct pkvm_iommu *find_iommu_by_id(unsigned long id)
 	return NULL;
 }
 
+#if IS_ENABLED(CONFIG_KVM_S2MPU)
+extern struct pkvm_iommu_driver pkvm_s2mpu_driver;
+extern struct pkvm_iommu_driver pkvm_sysmmu_sync_driver;
+#endif
 /*
  * Initialize EL2 IOMMU driver.
  *
@@ -278,6 +282,10 @@ int __pkvm_iommu_driver_init(int id, void *data, size_t size)
 	struct pkvm_iommu_driver *drv;
 	const struct pkvm_iommu_ops *ops;
 	int ret = 0;
+#if IS_ENABLED(CONFIG_KVM_S2MPU)
+	__pkvm_register_iommu_driver(&pkvm_s2mpu_driver);
+	__pkvm_register_iommu_driver(&pkvm_sysmmu_sync_driver);
+#endif
 
 	data = kern_hyp_va(data);
 
