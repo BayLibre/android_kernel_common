@@ -34,6 +34,24 @@
       "parentUuid": "9dd1b689_ec4e629a",
       "revId": "50271b2fc96c856cced50d68dcdb03e75cdf63a5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "993beae9_026fe0d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2022-11-08T08:47:27Z",
+      "side": 1,
+      "message": "just checked one android13-5.15 .config file:\n```\nCONFIG_CAN_RAW\u003dy\nCONFIG_CAN_BCM\u003dy\nCONFIG_CAN_GW\u003dy\n# CONFIG_CAN_J1939 is not set\n# CONFIG_CAN_ISOTP is not set\n# CONFIG_CAN_VCAN is not set\n# CONFIG_CAN_VXCAN is not set\n# CONFIG_CAN_SLCAN is not set\nCONFIG_CAN_DEV\u003dy\n```\nso the modules are built into the gki kernel by default before.",
+      "parentUuid": "ab11a0f7_67957af5",
+      "revId": "50271b2fc96c856cced50d68dcdb03e75cdf63a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
