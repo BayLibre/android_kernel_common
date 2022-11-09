@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61da54b1_78a41b4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-11-09T18:55:32Z",
+      "side": 1,
+      "message": "This backport is needed to fix a build error on big endian kernels introduced by https://android-review.git.corp.google.com/c/kernel/common/+/1866983.  It\u0027s already in android12-5.4, but it was missed in the backports of the blake2b support to android11-5.4 and android-4.19-stable.",
+      "revId": "d4d1f95c4bd31797375a12b8018376c9a1a0eb3b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
