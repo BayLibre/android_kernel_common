@@ -16,6 +16,24 @@
       "message": "No driver should be using this, so there needs to be a very big explanation as to why this is needed here.",
       "revId": "5b9b6bc5dd63826401fcb13804e030801b0b9295",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d510a4f_df71a60c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1324603
+      },
+      "writtenOn": "2022-11-09T15:30:41Z",
+      "side": 1,
+      "message": "We are trying to manipulate the task prio in vendor kernel, after the prio changed, it will need to update its load weight to take effect, so we need this function to be called from our vendor kernel module.",
+      "parentUuid": "d968ac8b_ad036b4f",
+      "revId": "5b9b6bc5dd63826401fcb13804e030801b0b9295",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
