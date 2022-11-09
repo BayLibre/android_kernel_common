@@ -119,6 +119,7 @@
 #define ARM_SMCCC_KVM_FUNC_MMIO_GUARD_ENROLL	6
 #define ARM_SMCCC_KVM_FUNC_MMIO_GUARD_MAP	7
 #define ARM_SMCCC_KVM_FUNC_MMIO_GUARD_UNMAP	8
+#define ARM_SMCCC_KVM_FUNC_UCLAMP		64
 #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
 #define ARM_SMCCC_KVM_NUM_FUNCS			128
 
@@ -130,6 +131,7 @@
 
 #define SMCCC_ARCH_WORKAROUND_RET_UNAFFECTED	1
 
+<<<<<<< HEAD
 /*
  * ptp_kvm is a feature used for time sync between vm and host.
  * ptp_kvm module in guest kernel will get service from host using
@@ -186,6 +188,13 @@
 			   ARM_SMCCC_SMC_64,				\
 			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
 			   ARM_SMCCC_KVM_FUNC_MMIO_GUARD_UNMAP)
+=======
+#define ARM_SMCCC_VENDOR_HYP_KVM_UCLAMP_FUNC_ID				\
+	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
+			   ARM_SMCCC_SMC_32,				\
+			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
+			   ARM_SMCCC_KVM_FUNC_UCLAMP)
+>>>>>>> 9bb3d3cbd963 (CHROMIUM: KVM: arm64: Add support for the KVM uclamp service)
 
 /* Paravirtualised time calls (defined by ARM DEN0057A) */
 #define ARM_SMCCC_HV_PV_TIME_FEATURES				\
