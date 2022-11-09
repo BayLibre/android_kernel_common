@@ -125,6 +125,8 @@ void ioremap_phys_range_hook(phys_addr_t phys_addr, size_t size, pgprot_t prot)
 	if (!static_branch_unlikely(&ioremap_guard_key))
 		return;
 
+	phys_addr = ALIGN_DOWN(phys_addr, PAGE_SIZE);
+	size = PAGE_ALIGN(size);
 	mutex_lock(&ioremap_guard_lock);
 
 	while (size) {
