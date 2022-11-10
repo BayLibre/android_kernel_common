@@ -18,15 +18,15 @@
 #include <nvhe/mm.h>
 #include <nvhe/spinlock.h>
 #include <nvhe/trap_handler.h>
-
-#define SMC_CMD_PREPARE_PD_ONOFF	0x82000410
-#define SMC_MODE_POWER_UP		1
+#include <asm/io-pgtable-s2mpu.h>
+#include <linux/io-64-nonatomic-hi-lo.h>
 
 #define PA_MAX				((phys_addr_t)SZ_1G * NR_GIGABYTES)
 
 #define SYNC_MAX_RETRIES		5
 #define SYNC_TIMEOUT			5
 #define SYNC_TIMEOUT_MULTIPLIER		3
+
 
 #define CTX_CFG_ENTRY(ctxid, nr_ctx, vid) \
 	(CONTEXT_CFG_VALID_VID_CTX_VID(ctxid, vid) \
@@ -35,13 +35,35 @@
 #define for_each_child(child, dev) \
 	list_for_each_entry((child), &(dev)->children, siblings)
 
+/*HW version specific operations*/
+struct s2mpu_version_ops {
+	int (*init)(struct pkvm_iommu *dev);
+	void (*set_control_regs)(struct pkvm_iommu *dev);
+	u32 (*host_mmio_reg_access_mask)(size_t off, bool is_write);
+};
+
 struct s2mpu_drv_data {
 	u32 version;
 	u32 context_cfg_valid_vid;
 };
 
+
+/* driver variables for version depndent ops, page table ops, version of hw currently in use */
+static const struct  s2mpu_pgtable_ops *pgtable_ops;
+static const struct  s2mpu_version_ops *version_ops;
+static enum s2mpu_version this_version;
 static struct mpt host_mpt;
 
+/* check if s2mpu version compatible with the configured driver version */
+static inline bool is_version_compatible(enum s2mpu_version other_version)
+{
+	if (this_version == other_version)
+		return true;
+	if (((this_version == S2MPU_VERSION_1) && (other_version == S2MPU_VERSION_2))   ||
+	  ((other_version == S2MPU_VERSION_2) && (this_version == S2MPU_VERSION_1)))
+		return true;
+	return false;
+}
 static inline enum mpt_prot prot_to_mpt(enum kvm_pgtable_prot prot)
 {
 	return ((prot & KVM_PGTABLE_PROT_R) ? MPT_PROT_R : 0) |
@@ -120,9 +142,9 @@ static int __initialize(struct pkvm_iommu *dev)
 		data->version = readl_relaxed(dev->va + REG_NS_VERSION);
 
 	switch (data->version & VERSION_CHECK_MASK) {
-	case S2MPU_VERSION_8:
+	case S2MPU_VERSION_1:
 		return 0;
-	case S2MPU_VERSION_9:
+	case S2MPU_VERSION_2:
 		return __initialize_v9(dev);
 	default:
 		return -EINVAL;
@@ -153,7 +175,7 @@ static void __set_control_regs(struct pkvm_iommu *dev)
 	irq_vids = ALL_VIDS_BITMAP;
 
 	/* Return SLVERR/DECERR to device on permission fault. */
-	ctrl0 |= is_version(dev, S2MPU_VERSION_9) ? CTRL0_FAULT_RESP_TYPE_DECERR
+	ctrl0 |= is_version(dev, S2MPU_VERSION_2) ? CTRL0_FAULT_RESP_TYPE_DECERR
 						  : CTRL0_FAULT_RESP_TYPE_SLVERR;
 
 	writel_relaxed(irq_vids, dev->va + REG_NS_INTERRUPT_ENABLE_PER_VID_SET);
@@ -161,6 +183,26 @@ static void __set_control_regs(struct pkvm_iommu *dev)
 	writel_relaxed(0, dev->va + REG_NS_CTRL1);
 	writel_relaxed(ctrl0, dev->va + REG_NS_CTRL0);
 }
+static void __set_control_regs_v9(struct pkvm_iommu *dev)
+{
+	u32 ctrl0 = 0;
+
+	/* Return SLVERR/DECERR to device on permission fault. */
+	writel_relaxed(ALL_VIDS_BITMAP,
+		       dev->va + REG_NS_V9_CTRL_ERROR_RESP_TYPE_PER_VID_SET);
+	/*
+	 * Enable interrupts on fault for all VIDs. The IRQ must also be
+	 * specified in DT to get unmasked in the GIC.
+	 */
+	writel_relaxed(ALL_VIDS_BITMAP,
+		       dev->va + REG_NS_INTERRUPT_ENABLE_PER_VID_SET);
+	 writel_relaxed(ctrl0, dev->va + REG_NS_CTRL0);
+	/* Enable the S2MPU, otherwise all traffic would be allowed through. */
+	 writel_relaxed(ALL_VIDS_BITMAP,
+		       dev->va + REG_NS_V9_CTRL_PROTECTION_ENABLE_PER_VID_SET);
+	 writel_relaxed(0, dev->va + REG_NS_V9_CFG_MPTW_ATTRIBUTE);
+}
+
 
 /*
  * Poll the given SFR until its value has all bits of a given mask set.
@@ -211,8 +253,8 @@ static void __wait_for_invalidation_complete(struct pkvm_iommu *dev)
 		}
 	}
 
-	/* Must not access SFRs while S2MPU is busy invalidating (v9 only). */
-	if (is_version(dev, S2MPU_VERSION_9)) {
+	/* Must not access SFRs while S2MPU is busy invalidating */
+	if (is_version(dev, S2MPU_VERSION_2) || is_version(dev, S2MPU_VERSION_9)) {
 		__wait_while(dev->va + REG_NS_STATUS,
 			     STATUS_BUSY | STATUS_ON_INVALIDATING);
 	}
@@ -236,52 +278,23 @@ static void __range_invalidation(struct pkvm_iommu *dev, phys_addr_t first_byte,
 	__wait_for_invalidation_complete(dev);
 }
 
-static void __set_l1entry_attr_with_prot(struct pkvm_iommu *dev, unsigned int gb,
-					 unsigned int vid, enum mpt_prot prot)
-{
-	writel_relaxed(L1ENTRY_ATTR_1G(prot),
-		       dev->va + REG_NS_L1ENTRY_ATTR(vid, gb));
-}
-
-static void __set_l1entry_attr_with_fmpt(struct pkvm_iommu *dev, unsigned int gb,
-					 unsigned int vid, struct fmpt *fmpt)
-{
-	if (fmpt->gran_1g) {
-		__set_l1entry_attr_with_prot(dev, gb, vid, fmpt->prot);
-	} else {
-		/* Order against writes to the SMPT. */
-		writel(L1ENTRY_ATTR_L2(SMPT_GRAN_ATTR),
-		       dev->va + REG_NS_L1ENTRY_ATTR(vid, gb));
-	}
-}
-
-static void __set_l1entry_l2table_addr(struct pkvm_iommu *dev, unsigned int gb,
-				       unsigned int vid, phys_addr_t addr)
-{
-	/* Order against writes to the SMPT. */
-	writel(L1ENTRY_L2TABLE_ADDR(addr),
-	       dev->va + REG_NS_L1ENTRY_L2TABLE_ADDR(vid, gb));
-}
-
 /*
  * Initialize S2MPU device and set all GB regions to 1G granularity with
  * given protection bits.
  */
 static int initialize_with_prot(struct pkvm_iommu *dev, enum mpt_prot prot)
 {
-	unsigned int gb, vid;
 	int ret;
 
-	ret = __initialize(dev);
+	ret = version_ops->init(dev);
 	if (ret)
 		return ret;
 
-	for_each_gb_and_vid(gb, vid)
-		__set_l1entry_attr_with_prot(dev, gb, vid, prot);
+	pgtable_ops->init_with_prot(dev->va, prot);
 	__all_invalidation(dev);
 
 	/* Set control registers, enable the S2MPU. */
-	__set_control_regs(dev);
+	version_ops->set_control_regs(dev);
 	return 0;
 }
 
@@ -291,23 +304,17 @@ static int initialize_with_prot(struct pkvm_iommu *dev, enum mpt_prot prot)
  */
 static int initialize_with_mpt(struct pkvm_iommu *dev, struct mpt *mpt)
 {
-	unsigned int gb, vid;
-	struct fmpt *fmpt;
 	int ret;
 
-	ret = __initialize(dev);
+	ret = version_ops->init(dev);
 	if (ret)
 		return ret;
 
-	for_each_gb_and_vid(gb, vid) {
-		fmpt = &mpt->fmpt[gb];
-		__set_l1entry_l2table_addr(dev, gb, vid, __hyp_pa(fmpt->smpt));
-		__set_l1entry_attr_with_fmpt(dev, gb, vid, fmpt);
-	}
+	pgtable_ops->init_with_mpt(dev->va, mpt);
 	__all_invalidation(dev);
 
 	/* Set control registers, enable the S2MPU. */
-	__set_control_regs(dev);
+	version_ops->set_control_regs(dev);
 	return 0;
 }
 
@@ -333,22 +340,7 @@ static bool to_valid_range(phys_addr_t *start, phys_addr_t *end)
 static void __mpt_idmap_prepare(struct mpt *mpt, phys_addr_t first_byte,
 				phys_addr_t last_byte, enum mpt_prot prot)
 {
-	unsigned int first_gb = first_byte / SZ_1G;
-	unsigned int last_gb = last_byte / SZ_1G;
-	size_t start_gb_byte, end_gb_byte;
-	unsigned int gb;
-	struct fmpt *fmpt;
-
-	for_each_gb_in_range(gb, first_gb, last_gb) {
-		fmpt = &mpt->fmpt[gb];
-		start_gb_byte = (gb == first_gb) ? first_byte % SZ_1G : 0;
-		end_gb_byte = (gb == last_gb) ? (last_byte % SZ_1G) + 1 : SZ_1G;
-
-		__set_fmpt_range(fmpt, start_gb_byte, end_gb_byte, prot);
-
-		if (fmpt->flags & MPT_UPDATE_L2)
-			kvm_flush_dcache_to_poc(fmpt->smpt, SMPT_SIZE);
-	}
+	pgtable_ops->prepare_range(first_byte, last_byte, mpt, prot);
 }
 
 static void __mpt_idmap_apply(struct pkvm_iommu *dev, struct mpt *mpt,
@@ -356,17 +348,8 @@ static void __mpt_idmap_apply(struct pkvm_iommu *dev, struct mpt *mpt,
 {
 	unsigned int first_gb = first_byte / SZ_1G;
 	unsigned int last_gb = last_byte / SZ_1G;
-	unsigned int gb, vid;
-	struct fmpt *fmpt;
 
-	for_each_gb_in_range(gb, first_gb, last_gb) {
-		fmpt = &mpt->fmpt[gb];
-
-		if (fmpt->flags & MPT_UPDATE_L1) {
-			for_each_vid(vid)
-				__set_l1entry_attr_with_fmpt(dev, gb, vid, fmpt);
-		}
-	}
+	pgtable_ops->apply_range(dev->va, mpt, first_gb, last_gb);
 	__range_invalidation(dev, first_byte, last_byte);
 }
 
@@ -411,33 +394,71 @@ static int s2mpu_suspend(struct pkvm_iommu *dev)
 	return initialize_with_prot(dev, MPT_PROT_NONE);
 }
 
-static u32 host_mmio_reg_access_mask(size_t off, bool is_write)
+static u32 host_mmio_reg_access_mask_v9(size_t off, bool is_write)
 {
-	const u32 no_access  = 0;
+	const u32 no_access = 0;
 	const u32 read_write = (u32)(-1);
-	const u32 read_only  = is_write ? no_access  : read_write;
+	const u32 read_only = is_write ? no_access : read_write;
 	const u32 write_only = is_write ? read_write : no_access;
-	u32 masked_off;
 
 	switch (off) {
-	/* Allow reading control registers for debugging. */
-	case REG_NS_CTRL0:
-		return read_only & CTRL0_MASK;
+	case REG_NS_V9_CTRL_ERROR_RESP_TYPE_PER_VID_SET:
+		return read_only & ALL_VIDS_BITMAP;
+	case REG_NS_V9_CTRL_PROTECTION_ENABLE_PER_VID_SET:
+		return read_only & ALL_VIDS_BITMAP;
+	case REG_NS_V9_READ_STLB:
+		return write_only & (V9_READ_STLB_MASK_TYPEA|V9_READ_STLB_MASK_TYPEB);
+	case REG_NS_V9_READ_STLB_TPN:
+		return read_only & V9_READ_STLB_TPN_MASK;
+	case REG_NS_V9_READ_STLB_TAG_PPN:
+		return read_only & V9_READ_STLB_TAG_PPN_MASK;
+	case REG_NS_V9_READ_STLB_TAG_OTHERS:
+		return read_only & V9_READ_STLB_TAG_OTHERS_MASK;
+	case REG_NS_V9_READ_STLB_DATA:
+		return read_only;
+	case REG_NS_V9_MPTC_INFO:
+		return read_only & V9_READ_MPTC_INFO_MASK;
+	case REG_NS_V9_READ_MPTC:
+		return write_only & V9_READ_MPTC_MASK;
+	case REG_NS_V9_READ_MPTC_TAG_PPN:
+		return read_only & V9_READ_MPTC_TAG_PPN_MASK;
+	case REG_NS_V9_READ_MPTC_TAG_OTHERS:
+		return read_only & V9_READ_MPTC_TAG_OTHERS_MASK;
+	case REG_NS_V9_READ_MPTC_DATA:
+		return read_only;
+	case REG_NS_V9_PMMU_INFO:
+		return read_only & V9_READ_PMMU_INFO_MASK;
+	case REG_NS_V9_READ_PTLB:
+		return write_only & V9_READ_PTLB_MASK;
+	case REG_NS_V9_READ_PTLB_TAG:
+		return read_only & V9_READ_PTLB_TAG_MASK;
+	case REG_NS_V9_READ_PTLB_DATA_S1_ENABLE_PPN_AP:
+		return read_only & V9_READ_PTLB_DATA_S1_ENABLE_PPN_AP_MASK;
+	case REG_NS_V9_READ_PTLB_DATA_S1_DISABLE_AP_LIST:
+		return read_only;
+	case REG_NS_V9_PMMU_INDICATOR:
+		return read_only & V9_READ_PMMU_INDICATOR_MASK;
+	case REG_NS_V9_SWALKER_INFO:
+		return read_only&V9_SWALKER_INFO_MASK;
+	};
+	if (off >= REG_NS_V9_PMMU_PTLB_INFO(0) && off < REG_NS_V9_PMMU_PTLB_INFO(V9_MAX_PTLB_NUM))
+		return read_only&V9_READ_PMMU_PTLB_INFO_MASK;
+	if (off >= REG_NS_V9_STLB_INFO(0) && off < REG_NS_V9_STLB_INFO(V9_MAX_STLB_NUM))
+		return read_only&V9_READ_SLTB_INFO_MASK;
+
+	return no_access;
+}
+static u32 host_mmio_reg_access_mask_v1_v2(size_t off, bool is_write)
+{
+	const u32 no_access = 0;
+	const u32 read_write = (u32)(-1);
+	const u32 read_only = is_write ? no_access : read_write;
+	const u32 write_only = is_write ? read_write : no_access;
+
+	switch (off) {
 	case REG_NS_CTRL1:
 		return read_only & CTRL1_MASK;
-	case REG_NS_CFG:
-		return read_only & CFG_MASK;
-	/* Allow EL1 IRQ handler to clear interrupts. */
-	case REG_NS_INTERRUPT_CLEAR:
-		return write_only & ALL_VIDS_BITMAP;
-	/* Allow reading number of sets used by MPTC. */
-	case REG_NS_INFO:
-		return read_only & INFO_NUM_SET_MASK;
-	/* Allow EL1 IRQ handler to read bitmap of pending interrupts. */
-	case REG_NS_FAULT_STATUS:
-		return read_only & ALL_VIDS_BITMAP;
-	/*
-	 * Allow reading MPTC entries for debugging. That involves:
+	/* Allow reading MPTC entries for debugging. That involves:
 	 *   - writing (set,way) to READ_MPTC
 	 *   - reading READ_MPTC_*
 	 */
@@ -449,6 +470,36 @@ static u32 host_mmio_reg_access_mask(size_t off, bool is_write)
 		return read_only & READ_MPTC_TAG_OTHERS_MASK;
 	case REG_NS_READ_MPTC_DATA:
 		return read_only;
+	};
+	return no_access;
+}
+static u32 host_mmio_reg_access_mask(size_t off, bool is_write)
+{
+	const u32 no_access  = 0;
+	const u32 read_write = (u32)(-1);
+	const u32 read_only  = is_write ? no_access  : read_write;
+	const u32 write_only = is_write ? read_write : no_access;
+	u32 masked_off;
+
+	//make sure access is within device range
+	if (off >= S2MPU_MMIO_SIZE)
+		return no_access;
+
+	switch (off) {
+	/* Allow reading control registers for debugging. */
+	case REG_NS_CTRL0:
+		return read_only & CTRL0_MASK;
+	case REG_NS_CFG:
+		return read_only & CFG_MASK;
+	/* Allow EL1 IRQ handler to clear interrupts. */
+	case REG_NS_INTERRUPT_CLEAR:
+		return write_only & ALL_VIDS_BITMAP;
+	/* Allow reading number of sets used by MPTC. */
+	case REG_NS_INFO:
+		return read_only & INFO_NUM_SET_MASK;
+	/* Allow EL1 IRQ handler to read bitmap of pending interrupts. */
+	case REG_NS_FAULT_STATUS:
+		return read_only & ALL_VIDS_BITMAP;
 	}
 
 	/* Allow reading L1ENTRY registers for debugging. */
@@ -463,8 +514,9 @@ static u32 host_mmio_reg_access_mask(size_t off, bool is_write)
 	    (masked_off == REG_NS_FAULT_INFO(0)))
 		return read_only;
 
-	return no_access;
-}
+	/* check version-specific registers */
+	return version_ops->host_mmio_reg_access_mask(off, is_write);
+	}
 
 static bool s2mpu_host_dabt_handler(struct pkvm_iommu *dev,
 				    struct kvm_cpu_context *host_ctxt,
@@ -474,7 +526,6 @@ static bool s2mpu_host_dabt_handler(struct pkvm_iommu *dev,
 	unsigned int len = BIT((esr & ESR_ELx_SAS) >> ESR_ELx_SAS_SHIFT);
 	int rd = (esr & ESR_ELx_SRT_MASK) >> ESR_ELx_SRT_SHIFT;
 	u32 mask;
-
 	/* Only handle MMIO access with u32 size and alignment. */
 	if ((len != sizeof(u32)) || (off & (sizeof(u32) - 1)))
 		return false;
@@ -489,6 +540,18 @@ static bool s2mpu_host_dabt_handler(struct pkvm_iommu *dev,
 		cpu_reg(host_ctxt, rd) = readl_relaxed(dev->va + off) & mask;
 	return true;
 }
+/* operations that differ between versions  */
+//we need to maintian old behaviour were v1 and v2 can be used together although v1 has no contexts
+const struct  s2mpu_version_ops ops_v1_v2 = {
+	.init = __initialize,
+	.host_mmio_reg_access_mask = host_mmio_reg_access_mask_v1_v2,
+	.set_control_regs = __set_control_regs,
+};
+const struct s2mpu_version_ops ops_v9 = {
+	.init = __initialize_v9,
+	.host_mmio_reg_access_mask = host_mmio_reg_access_mask_v9,
+	.set_control_regs = __set_control_regs_v9,
+};
 
 static int s2mpu_init(void *data, size_t size)
 {
@@ -497,24 +560,48 @@ static int s2mpu_init(void *data, size_t size)
 	phys_addr_t pa;
 	unsigned int gb;
 	int ret = 0;
+	int smpt_num_pages, smpt_size;
+	struct s2mpu_pgtable_cfg cfg;
 
 	if (size != sizeof(in_mpt))
 		return -EINVAL;
 
 	/* The host can concurrently modify 'data'. Copy it to avoid TOCTOU. */
 	memcpy(&in_mpt, data, sizeof(in_mpt));
+	this_version = in_mpt.version;
+	//make sure the version sent is supported by the driver
+
+	if ((this_version == S2MPU_VERSION_1) || (this_version == S2MPU_VERSION_2))
+		version_ops = &ops_v1_v2;
+	else if (this_version == S2MPU_VERSION_9)
+		version_ops = &ops_v9;
+	else
+		return -ENODEV;
+
+
+	cfg.version = this_version;
+	//allocate page table operations for this version
+	pgtable_ops = s2mpu_alloc_pgtable_ops(cfg);
+
+	//if version is wrong return
+	if (!pgtable_ops)
+		return -EINVAL;
+
+
+	smpt_size = pgtable_ops->smpt_size();
+	smpt_num_pages = smpt_size/PAGE_SIZE;
 
 	/* Take ownership of all SMPT buffers. This will also map them in. */
 	for_each_gb(gb) {
 		smpt = kern_hyp_va(in_mpt.fmpt[gb].smpt);
 		pa = __hyp_pa(smpt);
 
-		if (!IS_ALIGNED(pa, SMPT_SIZE)) {
+		if (!IS_ALIGNED(pa, smpt_size)) {
 			ret = -EINVAL;
 			break;
 		}
 
-		ret = __pkvm_host_donate_hyp(pa >> PAGE_SHIFT, SMPT_NUM_PAGES);
+		ret = __pkvm_host_donate_hyp(pa >> PAGE_SHIFT, smpt_num_pages);
 		if (ret)
 			break;
 
@@ -533,7 +620,7 @@ static int s2mpu_init(void *data, size_t size)
 				break;
 
 			WARN_ON(__pkvm_hyp_donate_host(__hyp_pa(smpt) >> PAGE_SHIFT,
-						       SMPT_NUM_PAGES));
+						       smpt_num_pages));
 		}
 		memset(&host_mpt, 0, sizeof(host_mpt));
 	}
