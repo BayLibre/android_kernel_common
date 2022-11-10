@@ -1465,6 +1465,7 @@ void iommu_dma_compose_msi_msg(struct msi_desc *desc,
 	msg->address_lo &= cookie_msi_granule(domain->iova_cookie) - 1;
 	msg->address_lo += lower_32_bits(msi_page->iova);
 }
+EXPORT_SYMBOL_GPL(iommu_dma_compose_msi_msg);
 
 static int iommu_dma_init(void)
 {

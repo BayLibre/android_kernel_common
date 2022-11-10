@@ -3216,6 +3216,7 @@
       <elf-symbol name='iommu_device_sysfs_remove' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8da6a2c1'/>
       <elf-symbol name='iommu_device_unlink' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x90236d86'/>
       <elf-symbol name='iommu_device_unregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc6617388'/>
+      <elf-symbol name='iommu_dma_compose_msi_msg' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x95013009'/>
       <elf-symbol name='iommu_dma_enable_best_fit_algo' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3b5c9384'/>
       <elf-symbol name='iommu_dma_get_resv_regions' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdb7faf5b'/>
       <elf-symbol name='iommu_domain_alloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc12d92ce'/>
@@ -143281,6 +143282,11 @@
       </function-decl>
       <function-decl name='iommu_device_unregister' mangled-name='iommu_device_unregister' filepath='drivers/iommu/iommu.c' line='183' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_device_unregister'>
         <parameter type-id='2f00283d' name='iommu' filepath='drivers/iommu/iommu.c' line='183' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='iommu_dma_compose_msi_msg' mangled-name='iommu_dma_compose_msi_msg' filepath='drivers/iommu/dma-iommu.c' line='1452' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_dma_compose_msi_msg'>
+        <parameter type-id='b11825ce' name='desc' filepath='drivers/iommu/dma-iommu.c' line='1452' column='1'/>
+        <parameter type-id='7f6ae768' name='msg' filepath='drivers/iommu/dma-iommu.c' line='1453' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='iommu_dma_enable_best_fit_algo' mangled-name='iommu_dma_enable_best_fit_algo' filepath='drivers/iommu/dma-iommu.c' line='429' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_dma_enable_best_fit_algo'>
