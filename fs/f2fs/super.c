@@ -37,6 +37,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/f2fs.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/f2fs.h>
+
 static struct kmem_cache *f2fs_inode_cachep;
 
 #ifdef CONFIG_F2FS_FAULT_INJECTION
@@ -1467,6 +1470,8 @@ static void f2fs_put_super(struct super_block *sb)
 	f2fs_release_ino_entry(sbi, true);
 
 	f2fs_leave_shrinker(sbi);
+	trace_android_vh_f2fs_destory_sbi_oem_data(sbi);
+
 	mutex_unlock(&sbi->umount_mutex);
 
 	/* our cp_error case, we can wait for any writeback page */
@@ -4232,6 +4237,8 @@ reset_checkpoint:
 	}
 
 	f2fs_join_shrinker(sbi);
+
+	trace_android_vh_f2fs_init_sbi_oem_data(sbi);
 
 	f2fs_tuning_parameters(sbi);
 
