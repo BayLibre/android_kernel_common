@@ -33,6 +33,23 @@
       "message": "What is the 1 failed frome Treehugger Robot?",
       "revId": "cee811c1d3f62255a5a7745534820529698ecaa1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c9126b1_335e503f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-11-11T07:59:01Z",
+      "side": 1,
+      "message": "Hi Greg, Todd,\nWhat is the hardware requirement for the HOST to run below command to build the kernel?\ntools/bazel run //common:kernel_aarch64_abi_update\nThis always failed on my build machine with 32GB memory, so I can only use \"--config\u003dfast\" option. The 32GB memory is not enough for kernel LTO？",
+      "revId": "cee811c1d3f62255a5a7745534820529698ecaa1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
