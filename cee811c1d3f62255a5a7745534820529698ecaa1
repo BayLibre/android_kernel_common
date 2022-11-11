@@ -50,6 +50,23 @@
       "message": "Hi Greg, Todd,\nWhat is the hardware requirement for the HOST to run below command to build the kernel?\ntools/bazel run //common:kernel_aarch64_abi_update\nThis always failed on my build machine with 32GB memory, so I can only use \"--config\u003dfast\" option. The 32GB memory is not enough for kernel LTO？",
       "revId": "cee811c1d3f62255a5a7745534820529698ecaa1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd40ac28_ff076f9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2022-11-11T08:01:06Z",
+      "side": 1,
+      "message": "The fail report is timeout error at link-vmlinux:\n\n1668149777.705437645: src/main/tools/linux-sandbox-pid1.cc:482: child started with PID 2\nKilled\nmake[1]: *** [/home/yk/android13/out/bazel/output_user_root/a3cd1df0b38fc0ff99b0d57919367641/sandbox/linux-sandbox/14/execroot/__main__/common/Makefile:1267: vmlinux] Error 137\nmake: *** [Makefile:185: __sub-make] Error 2\n1668150229.841164096: src/main/tools/linux-sandbox-pid1.cc:499: wait returned pid\u003d2, status\u003d0x200\n1668150229.841202709: src/main/tools/linux-sandbox-pid1.cc:517: child exited normally with code 2\n1668150229.841622024: src/main/tools/linux-sandbox.cc:233: child exited normally with code 2\n  GEN     kernel/gki_module_protected.h\n  GEN     kernel/gki_module_exported.h\nTarget //common:kernel_aarch64_abi_update failed to build\nERROR: /home/yk/android13/common/BUILD.bazel:35:22 Extracting symbols //common:kernel_aarch64_abi_extracted_symbols failed: (Exit 2): linux-sandbox failed: error executing command",
+      "revId": "cee811c1d3f62255a5a7745534820529698ecaa1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
