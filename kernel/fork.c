@@ -398,6 +398,8 @@ static void __vm_area_free(struct rcu_head *head)
 void vm_area_free(struct vm_area_struct *vma)
 {
 	free_anon_vma_name(vma);
+	if (vma->vm_file)
+		fput(vma->vm_file);
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 	if (atomic_read(&vma->vm_mm->mm_users) > 1) {
 		if (vma->vm_file)
