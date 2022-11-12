@@ -419,6 +419,12 @@ struct vm_area_struct {
 #endif
 	struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	/*
+	 * The name does not reflect the usage and is not renamed to keep
+	 * the ABI intact.
+	 * This refcount is used to count the numbed of page fault handlers
+	 * using the VMA.
+	 */
 	atomic_t file_ref_count;
 #endif
 

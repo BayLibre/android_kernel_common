@@ -543,6 +543,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned int esr,
 	unsigned long addr = untagged_addr(far);
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 	struct file *orig_file = NULL;
+	struct vm_area_struct *orig_vma;
 	struct vm_area_struct *vma;
 	struct vm_area_struct pvma;
 	unsigned long seq;
@@ -632,6 +633,8 @@ static int __kprobes do_page_fault(unsigned long far, unsigned int esr,
 	}
 	if (vma->vm_file)
 		orig_file = get_file(vma->vm_file);
+
+	orig_vma = vma;
 	pvma = *vma;
 	rcu_read_unlock();
 	if (!mmap_seq_read_check(mm, seq, SPF_ABORT_VMA_COPY)) {
@@ -646,8 +649,13 @@ static int __kprobes do_page_fault(unsigned long far, unsigned int esr,
 		count_vm_spf_event(SPF_ABORT_ACCESS_ERROR);
 		goto spf_abort;
 	}
-	fault = do_handle_mm_fault(vma, addr & PAGE_MASK,
-			mm_flags | FAULT_FLAG_SPECULATIVE, seq, regs);
+	if (get_vma(orig_vma)) {
+		fault = do_handle_mm_fault(vma, addr & PAGE_MASK,
+				mm_flags | FAULT_FLAG_SPECULATIVE, seq, regs);
+		put_vma(orig_vma);
+	} else {
+		fault = VM_FAULT_RETRY;
+	}
 	if (orig_file)
 		fput(orig_file);
 

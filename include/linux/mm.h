@@ -685,6 +685,9 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
 	memset(vma, 0, sizeof(*vma));
 	vma->vm_mm = mm;
 	vma->vm_ops = &dummy_vm_ops;
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+	atomic_set(&vma->file_ref_count, 1);
+#endif
 	INIT_LIST_HEAD(&vma->anon_vma_chain);
 }
 
@@ -3379,6 +3382,8 @@ static inline bool pte_spinlock(struct vm_fault *vmf)
 	return __pte_map_lock(vmf);
 }
 
+extern void init_vma_users_waitqueue(void);
+
 #else	/* !CONFIG_SPECULATIVE_PAGE_FAULT */
 
 #define pte_map_lock(___vmf)						\
@@ -3395,8 +3400,13 @@ static inline bool pte_spinlock(struct vm_fault *vmf)
 	true;								\
 })
 
+static inline void init_vma_users_waitqueue(void) {}
+
 #endif	/* CONFIG_SPECULATIVE_PAGE_FAULT */
 #endif	/* CONFIG_MMU */
+
+bool get_vma(struct vm_area_struct *vma);
+void put_vma(struct vm_area_struct *vma);
 
 #endif /* __KERNEL__ */
 #endif /* _LINUX_MM_H */
