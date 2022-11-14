@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b8f2a6b_720ab030",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-14T18:38:33Z",
+      "side": 1,
+      "message": "These configs are not hidden. Why do they need to be selected this way instead of using gki_defconfig.\n\nDRM_DISPLAY_HELPER can be tristate. Why shouldn\u0027t it be enabled as a .ko?",
+      "revId": "b3b52888a159d8b5d74a34d4c0a80baac08af5cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c42bf5_4c034e7c",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-14T18:38:33Z",
+      "side": 1,
+      "message": "should be a space between \"if\" and \"(DRM)\"",
+      "revId": "b3b52888a159d8b5d74a34d4c0a80baac08af5cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
