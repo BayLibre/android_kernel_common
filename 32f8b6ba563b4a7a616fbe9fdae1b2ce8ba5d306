@@ -46,6 +46,30 @@
       },
       "revId": "32f8b6ba563b4a7a616fbe9fdae1b2ce8ba5d306",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "424d3d3e_b43e3170",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-14T13:24:37Z",
+      "side": 1,
+      "message": "I _think_ the code below should work just fine with a misaligned address, so not sure it\u0027s worth the hassle.",
+      "parentUuid": "731638f3_1918a6f0",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 128,
+        "endChar": 56
+      },
+      "revId": "32f8b6ba563b4a7a616fbe9fdae1b2ce8ba5d306",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
