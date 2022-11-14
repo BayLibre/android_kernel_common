@@ -46,6 +46,30 @@
       },
       "revId": "916db397d1c38a2104dcacb819485fecf29fd2e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb9d12d7_e5077b5a",
+        "filename": "arch/arm64/mm/mem_relinquish.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2022-11-14T15:32:16Z",
+      "side": 1,
+      "message": "pow2 check could be worthwhile. For granule greater than guest page size, that\u0027s a pain with balloon driver... I will probably need to add a way to make allocations in balloon driver greater than order 0.\n\nMeanwhile however, I intend to gate balloon-in-microdroid on whether this memrelinquish service is initialised. If not, we run on an unaware host kernel (eg 13-5.10) and ballooning is unsafe. Conveniently, I can make too-large granule fail initialisation, and thus \"fail safe\" for time being in that case too.",
+      "parentUuid": "f91ad721_14e3df21",
+      "range": {
+        "startLine": 32,
+        "startChar": 5,
+        "endLine": 32,
+        "endChar": 24
+      },
+      "revId": "916db397d1c38a2104dcacb819485fecf29fd2e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
