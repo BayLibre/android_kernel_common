@@ -70,6 +70,30 @@
       },
       "revId": "32f8b6ba563b4a7a616fbe9fdae1b2ce8ba5d306",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a4930f2_ce712205",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2022-11-14T16:07:33Z",
+      "side": 1,
+      "message": "I think that for the case that you mentioned where the stage-1 page size is smaller than the stage-2 then there would be a problem. If that\u0027s the case, then we need to make sure that it does match the granule size, right?\n\nAlso, it\u0027s not that obvious for ioremap_page_range(), but it does get the address from the same source as iounmap_phys_range_hook(), which is area-\u003eaddress, which should be aligned.",
+      "parentUuid": "424d3d3e_b43e3170",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 128,
+        "endChar": 56
+      },
+      "revId": "32f8b6ba563b4a7a616fbe9fdae1b2ce8ba5d306",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
