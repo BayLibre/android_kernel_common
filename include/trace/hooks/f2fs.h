@@ -14,6 +14,10 @@ DECLARE_HOOK(android_vh_f2fs_init_sbi_oem_data,
 	TP_PROTO(struct f2fs_sb_info *sbi),
 	TP_ARGS(sbi));
 
+DECLARE_HOOK(android_vh_f2fs_record_data_alloc_type,
+	TP_PROTO(struct f2fs_sb_info *sbi, int type),
+	TP_ARGS(sbi, type));
+
 DECLARE_HOOK(android_vh_f2fs_destory_sbi_oem_data,
 	TP_PROTO(struct f2fs_sb_info *sbi),
 	TP_ARGS(sbi));

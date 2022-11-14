@@ -21,6 +21,7 @@
 #include "node.h"
 #include "gc.h"
 #include <trace/events/f2fs.h>
+#include <trace/hooks/f2fs.h>
 
 #define __reverse_ffz(x) __reverse_ffs(~(x))
 
@@ -3420,6 +3421,8 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
 	 */
 	locate_dirty_segment(sbi, GET_SEGNO(sbi, old_blkaddr));
 	locate_dirty_segment(sbi, GET_SEGNO(sbi, *new_blkaddr));
+
+	trace_android_vh_f2fs_record_data_alloc_type(sbi, type);
 
 	up_write(&sit_i->sentry_lock);
 

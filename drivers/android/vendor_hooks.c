@@ -471,6 +471,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around_migrate_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_test_clear_look_around_ref);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dma_buf_stats_teardown);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_f2fs_init_sbi_oem_data);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_f2fs_record_data_alloc_type);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_f2fs_destory_sbi_oem_data);
 
 /*
