@@ -2047,12 +2047,12 @@ shrink_inactive_list(unsigned long nr_to_scan, struct lruvec *lruvec,
 	if (do_plug)
 		blk_start_plug(&plug);
 	nr_reclaimed = shrink_page_list(&page_list, pgdat, sc, &stat, false);
+	if (do_plug)
+		blk_finish_plug(&plug);
 
 	spin_lock_irq(&pgdat->lru_lock);
 
 	move_pages_to_lru(lruvec, &page_list);
-	if (do_plug)
-		blk_finish_plug(&plug);
 
 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
 	lru_note_cost(lruvec, file, stat.nr_pageout);
