@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b15ebba3_22624b83",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-14T12:42:49Z",
+      "side": 1,
+      "message": "This makes me rather nervous. __vunmap() which is the only caller of iounmap_phys_range_hook() checks for page alignment, so I think the VM_BUG_ON() makes sense there. But it\u0027s not that obvious for ioremap_page_range(), so adding one here is risky.",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 128,
+        "endChar": 56
+      },
+      "revId": "32f8b6ba563b4a7a616fbe9fdae1b2ce8ba5d306",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
