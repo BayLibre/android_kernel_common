@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9554c0e_fed2e0b3",
+        "filename": "arch/arm64/mm/mem_relinquish.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-14T11:45:02Z",
+      "side": 1,
+      "message": "Note that this may very well happen with a 16K (or 64K) host and a 4K guest used for backward compatibility of apps that only support 4K.",
+      "range": {
+        "startLine": 32,
+        "startChar": 5,
+        "endLine": 32,
+        "endChar": 24
+      },
+      "revId": "916db397d1c38a2104dcacb819485fecf29fd2e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
