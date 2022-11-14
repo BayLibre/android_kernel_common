@@ -39,6 +39,30 @@
       },
       "revId": "4108780b1b84b435fc3d37c5c85688b516d7d06a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed6b4630_9d65d008",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-14T10:33:12Z",
+      "side": 1,
+      "message": "I added this line from the version 2 of this patch and I can\u0027t find any reason why I did that... 😕 Especially here it\u0027s pretty obvious nothing is accounted before any potential failure\n\nThanks!",
+      "parentUuid": "45594db7_992675eb",
+      "range": {
+        "startLine": 210,
+        "startChar": 1,
+        "endLine": 210,
+        "endChar": 57
+      },
+      "revId": "4108780b1b84b435fc3d37c5c85688b516d7d06a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
