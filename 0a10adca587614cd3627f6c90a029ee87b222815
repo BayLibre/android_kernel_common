@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d959094_414e19e9",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-14T10:18:18Z",
+      "side": 1,
+      "message": "Why not add proper HVC handlers in hypercalls.c? We should really have them regardless of this patch I think, the way the share/unshare stuff works rn is rather fragile, so that one stone two birds.",
+      "range": {
+        "startLine": 1162,
+        "startChar": 2,
+        "endLine": 1162,
+        "endChar": 30
+      },
+      "revId": "0a10adca587614cd3627f6c90a029ee87b222815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
