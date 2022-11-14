@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbf87e22_0c577cdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2022-11-14T18:27:29Z",
+      "side": 1,
+      "message": "Sorry a late chip in; just saw this change.",
+      "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7b8c70b_205128ff",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2022-11-14T18:27:29Z",
+      "side": 1,
+      "message": "Is it safe to read cpuhp_tasks_frozen without holding cpus_read_lock()? I tried to audit the code and it seems all other users have either cpus_write_lock() or cpus_read_lock() held somewhere up the call chain.",
+      "range": {
+        "startLine": 946,
+        "startChar": 46,
+        "endLine": 946,
+        "endChar": 64
+      },
+      "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
