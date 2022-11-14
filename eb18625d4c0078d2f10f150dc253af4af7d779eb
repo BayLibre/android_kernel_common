@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57a0bb7a_ca6f7dbb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/trace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-14T14:45:40Z",
+      "side": 1,
+      "message": "You can move this after the __pkvm_host_donate_hyp() call below I think.",
+      "range": {
+        "startLine": 540,
+        "startChar": 1,
+        "endLine": 540,
+        "endChar": 31
+      },
+      "revId": "eb18625d4c0078d2f10f150dc253af4af7d779eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f58abc51_6846dd69",
+        "filename": "arch/arm64/kvm/hyp/nvhe/trace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-14T14:45:40Z",
+      "side": 1,
+      "message": "This guy should be checked no? IIUC, you\u0027ll need to make sure that pack_size is larger than struct hyp_trace_pack, then do that donation so you can safely dereference pack-\u003etrace_buffer_pack, and check again that pack_size is large enough to cover the {trace,ring}_buffer_pack structs, or something along those lines.",
+      "range": {
+        "startLine": 543,
+        "startChar": 9,
+        "endLine": 543,
+        "endChar": 18
+      },
+      "revId": "eb18625d4c0078d2f10f150dc253af4af7d779eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
