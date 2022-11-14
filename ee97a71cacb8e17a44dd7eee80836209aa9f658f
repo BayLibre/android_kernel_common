@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c1b552_40afce73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-14T09:41:43Z",
+      "side": 1,
+      "message": "Hmm, I was just looking at this change again and I noticed that we\u0027re moving the `scm_io_uring` field beyond `headers_end` so, afaict, it will no longer get copied by `__skb_clone()` or reset by `wg_reset_packet()`.",
+      "revId": "ee97a71cacb8e17a44dd7eee80836209aa9f658f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
