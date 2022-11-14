@@ -16,6 +16,24 @@
       "message": "Should we also have this in android13-5.10?",
       "revId": "a9a33857141fe6097f022e64d0b9661dccc01151",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6efb7fb7_1bbf02c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2022-11-14T18:02:02Z",
+      "side": 1,
+      "message": "I\u0027d prefer to keep this specific implementation of this feature on `android13-5.15,` since it was implemented as such to avoid breaking the ABI.\n\nFor future versions of Android, we can get the memory savings from this feature by lowering ARCH_DMA_MINALIGN to 64 or when Catalin\u0027s patches land upstream.",
+      "parentUuid": "eaa0ecef_27f9ec44",
+      "revId": "a9a33857141fe6097f022e64d0b9661dccc01151",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
