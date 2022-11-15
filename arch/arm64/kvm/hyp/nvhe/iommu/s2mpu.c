@@ -43,6 +43,7 @@ struct s2mpu_drv_data {
 };
 
 static const struct  s2mpu_pgtable_ops *pgtable_ops;
+static enum s2mpu_version this_version;
 static struct mpt host_mpt;
 
 
@@ -449,8 +450,9 @@ static int s2mpu_init(void *data, size_t size)
 
 	/* The host can concurrently modify 'data'. Copy it to avoid TOCTOU. */
 	memcpy(&in_mpt, data, sizeof(in_mpt));
-
-	cfg.version = S2MPU_VERSION_8;
+	//keep a copy of init version as it will be used later
+	this_version = in_mpt.version;
+	cfg.version = this_version;
 	//allocate page table operations for this version
 	pgtable_ops = s2mpu_alloc_pgtable_ops(cfg);
 
