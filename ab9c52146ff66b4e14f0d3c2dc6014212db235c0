@@ -87,6 +87,30 @@
       },
       "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cb7d87b_84dafc25",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2022-11-15T08:56:13Z",
+      "side": 1,
+      "message": "True. Looks like I didn\u0027t walk up the call chain correctly. I couldn\u0027t (still can\u0027t) see the call; but you\u0027re right we do have the assert. Nothing to be done then, Rick. Sorry for the noise!",
+      "parentUuid": "73629d4d_4d40a21e",
+      "range": {
+        "startLine": 946,
+        "startChar": 46,
+        "endLine": 946,
+        "endChar": 64
+      },
+      "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
