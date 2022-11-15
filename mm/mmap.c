@@ -179,9 +179,55 @@ static void __free_vma(struct vm_area_struct *vma)
 }
 
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+
+static wait_queue_head_t vma_users_wait;
+static atomic_t vma_user_waiters;
+
+void init_vma_users_waitqueue(void)
+{
+	atomic_set(&vma_user_waiters, 0);
+	init_waitqueue_head(&vma_users_wait);
+}
+
+bool wait_for_vma_users(struct vm_area_struct *vma)
+{
+	bool result;
+
+	/*
+	 * A well-behaving process should not be unmapping an area
+	 * while it's faulting a page, therefore normally this succeeds.
+	 * Unused VMA's refcount jumps to -1 to prevent get_vma from
+	 * getting it and the next put_vma will free it.
+	 */
+	if (likely(atomic_cmpxchg(&vma->vm_ref_count, 1, -1) == 1))
+		return true;
+
+	atomic_inc(&vma_user_waiters);
+	/*
+	 * When atomic_cmpxchg fails it does not provide memory barrier, so
+	 * use explicit one.
+	 */
+	smp_mb();
+	result = !wait_event_interruptible(vma_users_wait,
+			atomic_cmpxchg(&vma->vm_ref_count, 1, -1) == 1);
+	atomic_dec(&vma_user_waiters);
+
+	return result;
+}
+
 void put_vma(struct vm_area_struct *vma)
 {
-	if (atomic_dec_and_test(&vma->vm_ref_count))
+	int new_ref_count;
+
+	/*
+	 * wait_for_vma_users sets vma_user_waiters then checks vm_ref_count.
+	 * put_vma sets vm_ref_count then checks vma_user_waiters.
+	 */
+	new_ref_count = atomic_dec_return(&vma->vm_ref_count);
+	/* Implicit smp_mb due to atomic_dec_return */
+	if (new_ref_count == 1 && unlikely(atomic_read(&vma_user_waiters) > 0))
+		wake_up_interruptible(&vma_users_wait);
+	else if (new_ref_count <= 0)
 		__free_vma(vma);
 }
 #else
@@ -2421,8 +2467,10 @@ struct vm_area_struct *get_vma(struct mm_struct *mm, unsigned long addr)
 
 	read_lock(&mm->mm_rb_lock);
 	vma = __find_vma(mm, addr);
-	if (vma)
-		atomic_inc(&vma->vm_ref_count);
+	if (vma) {
+		if (!atomic_inc_unless_negative(&vma->vm_ref_count))
+			vma = NULL;
+	}
 	read_unlock(&mm->mm_rb_lock);
 
 	return vma;
