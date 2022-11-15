@@ -639,7 +639,7 @@ int its_init(struct fwnode_handle *handle, struct rdists *rdists,
 	     struct irq_domain *domain);
 int mbi_init(struct fwnode_handle *fwnode, struct irq_domain *parent);
 
-struct gic_chip_data {
+struct gic_v3_chip_data {
 	struct fwnode_handle	*fwnode;
 	void __iomem		*dist_base;
 	struct redist_region	*redist_regions;
@@ -667,6 +667,9 @@ static inline bool gic_enable_sre(void)
 
 	return !!(val & ICC_SRE_EL1_SRE);
 }
+void gic_v3_dist_init(void);
+void gic_v3_cpu_init(void);
+void gic_v3_dist_wait_for_rwp(void);
 
 void gic_resume(void);
 
