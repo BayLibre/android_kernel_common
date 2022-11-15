@@ -293,6 +293,10 @@ static void __put_super(struct super_block *s)
 		WARN_ON(s->s_inode_lru.node);
 		WARN_ON(!list_empty(&s->s_mounts));
 		security_sb_free(s);
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
+=======
+		fscrypt_destroy_keyring(s);
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 		put_user_ns(s->s_user_ns);
 		kfree(s->s_subtype);
 		call_rcu(&s->rcu, destroy_super_rcu);
@@ -453,7 +457,11 @@ void generic_shutdown_super(struct super_block *sb)
 		evict_inodes(sb);
 		/* only nonzero refcount inodes can have marks */
 		fsnotify_sb_delete(sb);
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
 		fscrypt_sb_delete(sb);
+=======
+		fscrypt_destroy_keyring(sb);
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 		security_sb_delete(sb);
 
 		if (sb->s_dio_done_wq) {

@@ -173,7 +173,11 @@ void fscrypt_destroy_prepared_key(struct super_block *sb,
 				  struct fscrypt_prepared_key *prep_key)
 {
 	crypto_free_skcipher(prep_key->tfm);
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
 	fscrypt_destroy_inline_crypt_key(sb, prep_key);
+=======
+	fscrypt_destroy_inline_crypt_key(prep_key);
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 	memzero_explicit(prep_key, sizeof(*prep_key));
 }
 
@@ -482,9 +486,16 @@ static int setup_file_encryption_key(struct fscrypt_info *ci,
 		if (ci->ci_policy.version != FSCRYPT_POLICY_V1)
 			return -ENOKEY;
 
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
 		err = fscrypt_select_encryption_impl(ci, false);
 		if (err)
 			return err;
+=======
+	mk = fscrypt_find_master_key(ci->ci_inode->i_sb, &mk_spec);
+	if (!mk) {
+		if (ci->ci_policy.version != FSCRYPT_POLICY_V1)
+			return -ENOKEY;
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 
 		/*
 		 * As a legacy fallback for v1 policies, search for the key in

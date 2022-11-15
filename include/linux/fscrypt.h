@@ -315,7 +315,11 @@ fscrypt_free_dummy_policy(struct fscrypt_dummy_policy *dummy_policy)
 }
 
 /* keyring.c */
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
 void fscrypt_sb_delete(struct super_block *sb);
+=======
+void fscrypt_destroy_keyring(struct super_block *sb);
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 int fscrypt_ioctl_add_key(struct file *filp, void __user *arg);
 int fscrypt_add_test_dummy_key(struct super_block *sb,
 			       const struct fscrypt_dummy_policy *dummy_policy);
@@ -525,7 +529,11 @@ fscrypt_free_dummy_policy(struct fscrypt_dummy_policy *dummy_policy)
 }
 
 /* keyring.c */
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
 static inline void fscrypt_sb_delete(struct super_block *sb)
+=======
+static inline void fscrypt_destroy_keyring(struct super_block *sb)
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 {
 }
 

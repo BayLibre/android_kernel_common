@@ -101,7 +101,11 @@ unsigned long get_except64_cpsr(unsigned long old, bool has_mte,
 	new |= (old & PSR_C_BIT);
 	new |= (old & PSR_V_BIT);
 
+<<<<<<< HEAD   (cd3481 Merge "Merge 5.15.77 into android14-5.15" into android14-5.1)
 	if (has_mte)
+=======
+	if (kvm_has_mte(kern_hyp_va(vcpu->kvm)))
+>>>>>>> BRANCH (509a32 Linux 5.15.78)
 		new |= PSR_TCO_BIT;
 
 	new |= (old & PSR_DIT_BIT);
