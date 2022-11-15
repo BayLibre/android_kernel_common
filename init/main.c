@@ -825,6 +825,7 @@ static void __init mm_init(void)
 	mem_init();
 	kmem_cache_init();
 	kmemleak_init();
+	init_vma_users_waitqueue();
 	pgtable_init();
 	debug_objects_mem_init();
 	vmalloc_init();

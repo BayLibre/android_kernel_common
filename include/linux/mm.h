@@ -1817,6 +1817,8 @@ static inline vm_fault_t handle_speculative_fault(struct mm_struct *mm,
 }
 extern bool can_reuse_spf_vma(struct vm_area_struct *vma,
 			      unsigned long address);
+extern void init_vma_users_waitqueue(void);
+extern bool wait_for_vma_users(struct vm_area_struct *vma);
 #else
 static inline vm_fault_t handle_speculative_fault(struct mm_struct *mm,
 						  unsigned long address,
@@ -1830,6 +1832,11 @@ static inline bool can_reuse_spf_vma(struct vm_area_struct *vma,
 				     unsigned long address)
 {
 	return false;
+}
+static inline void init_vma_users_waitqueue(void) {}
+static inline bool wait_for_vma_users(struct vm_area_struct *vma)
+{
+        return true;
 }
 #endif /* CONFIG_SPECULATIVE_PAGE_FAULT */
 

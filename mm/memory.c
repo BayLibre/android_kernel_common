@@ -399,13 +399,13 @@ void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *vma,
 		struct vm_area_struct *next = vma->vm_next;
 		unsigned long addr = vma->vm_start;
 
+		/* Ensure no concurrent speculative page faults */
+		wait_for_vma_users(vma);
 		/*
 		 * Hide vma from rmap and truncate_pagecache before freeing
 		 * pgtables
 		 */
-		vm_write_begin(vma);
 		unlink_anon_vmas(vma);
-		vm_write_end(vma);
 		unlink_file_vma(vma);
 
 		if (is_vm_hugetlb_page(vma)) {
@@ -419,9 +419,8 @@ void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *vma,
 			       && !is_vm_hugetlb_page(next)) {
 				vma = next;
 				next = vma->vm_next;
-				vm_write_begin(vma);
+				wait_for_vma_users(vma);
 				unlink_anon_vmas(vma);
-				vm_write_end(vma);
 				unlink_file_vma(vma);
 			}
 			free_pgd_range(tlb, addr, vma->vm_end,
