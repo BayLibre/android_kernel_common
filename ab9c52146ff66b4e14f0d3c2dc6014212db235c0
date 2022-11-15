@@ -39,6 +39,30 @@
       },
       "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4427cb0_b09d4a7c",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1324603
+      },
+      "writtenOn": "2022-11-15T06:58:00Z",
+      "side": 1,
+      "message": "I was expected cpuhp_tasks_frozen will not be changed when doing rebuild_root_domains, because we don\u0027t do cpu on/off in our device, but it may not be the case for other devices, so it should be safer to add cpus_read_lock here. Will update it. Thanks for the suggestion!",
+      "parentUuid": "a7b8c70b_205128ff",
+      "range": {
+        "startLine": 946,
+        "startChar": 46,
+        "endLine": 946,
+        "endChar": 64
+      },
+      "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
