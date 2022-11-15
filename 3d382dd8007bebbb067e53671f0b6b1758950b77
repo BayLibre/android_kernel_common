@@ -52,6 +52,24 @@
       "parentUuid": "06f8eb47_b600a724",
       "revId": "3d382dd8007bebbb067e53671f0b6b1758950b77",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f09e6c_3e01d6c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2022-11-15T08:38:23Z",
+      "side": 1,
+      "message": "It\u0027s a tough call because it\u0027s not a fix. The bug it *works around* in the UFS driver polling implementation is not even in upstream 5.15: We see it because we backported the 5.19 UFS driver.",
+      "parentUuid": "fd586bca_5f15febb",
+      "revId": "3d382dd8007bebbb067e53671f0b6b1758950b77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
