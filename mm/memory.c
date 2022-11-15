@@ -403,6 +403,7 @@ void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *vma,
 		 * Hide vma from rmap and truncate_pagecache before freeing
 		 * pgtables
 		 */
+		wait_for_vma_users(vma);
 		vm_write_begin(vma);
 		unlink_anon_vmas(vma);
 		vm_write_end(vma);
@@ -419,6 +420,7 @@ void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *vma,
 			       && !is_vm_hugetlb_page(next)) {
 				vma = next;
 				next = vma->vm_next;
+				wait_for_vma_users(vma);
 				vm_write_begin(vma);
 				unlink_anon_vmas(vma);
 				vm_write_end(vma);
