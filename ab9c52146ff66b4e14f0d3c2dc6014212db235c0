@@ -63,6 +63,30 @@
       },
       "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73629d4d_4d40a21e",
+        "filename": "kernel/cgroup/cpuset.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-15T08:29:57Z",
+      "side": 1,
+      "message": "I remember wondering the same thing, but we should be guaranteed to have that lock held as per lockdep_assert_cpus_held() below no?",
+      "parentUuid": "b4427cb0_b09d4a7c",
+      "range": {
+        "startLine": 946,
+        "startChar": 46,
+        "endLine": 946,
+        "endChar": 64
+      },
+      "revId": "ab9c52146ff66b4e14f0d3c2dc6014212db235c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
