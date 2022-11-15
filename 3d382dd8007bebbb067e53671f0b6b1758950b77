@@ -88,6 +88,24 @@
       "parentUuid": "15f09e6c_3e01d6c5",
       "revId": "3d382dd8007bebbb067e53671f0b6b1758950b77",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd71203_467692f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2022-11-15T08:48:27Z",
+      "side": 1,
+      "message": "The actual fix is being worked on upstream right now. I don\u0027t think it\u0027s quite right yet but it\u0027s WIP, see https://lore.kernel.org/linux-scsi/20221114233042.3199381-1-bvanassche@acm.org/T/#u\n\nThis workaround-and-warn patch is relevant to 6.0.x, agreed. But wouldn\u0027t the final tested actual fix(es) be the ones taken to stable?\n\nHere would be my reasoning to take this patch to 5.15+ stable: The code it adds warning to makes a fragile assumption about polling completion occurring in process context. Drivers can easily break this (seen in UFS driver). This patch avoids a crash and gives a useful backtrace, making debugging so much easier.\n\nIf that ^ seems reasonable, I\u0027ll give it a shot.",
+      "parentUuid": "935ee561_c63d3997",
+      "revId": "3d382dd8007bebbb067e53671f0b6b1758950b77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
