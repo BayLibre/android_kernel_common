@@ -179,8 +179,43 @@ static void __free_vma(struct vm_area_struct *vma)
 }
 
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+
+static wait_queue_head_t vma_users_wait;
+static atomic_t vma_user_waiters;
+
+void init_vma_users_waitqueue(void)
+{
+	atomic_set(&vma_user_waiters, 0);
+	init_waitqueue_head(&vma_users_wait);
+}
+
+bool wait_for_vma_users(struct vm_area_struct *vma)
+{
+	bool result;
+
+	RB_CLEAR_NODE(&vma->vm_rb);
+	/* Ensure RB_CLEAR_NODE is visible to a possible get_vma */
+	smp_mb();
+	/*
+	 * A well-behaving process should not be unmapping an area
+	 * while it's faulting a page.
+	 */
+	if (likely(atomic_read(&vma->vm_ref_count) == 1))
+		return true;
+
+	atomic_inc(&vma_user_waiters);
+	result = !wait_event_interruptible(vma_users_wait,
+				atomic_read(&vma->vm_ref_count) <= 1);
+	atomic_dec(&vma_user_waiters);
+
+	return result;
+}
+
 void put_vma(struct vm_area_struct *vma)
 {
+	if (unlikely(atomic_read(&vma_user_waiters) > 0))
+		wake_up_interruptible(&vma_users_wait);
+
 	if (atomic_dec_and_test(&vma->vm_ref_count))
 		__free_vma(vma);
 }
@@ -2424,7 +2459,12 @@ struct vm_area_struct *get_vma(struct mm_struct *mm, unsigned long addr)
 	if (vma)
 		atomic_inc(&vma->vm_ref_count);
 	read_unlock(&mm->mm_rb_lock);
-
+	/* Ensure the VMA is still in the tree after refcounting */
+	smp_mb();
+	if (RB_EMPTY_NODE(&vma->vm_rb)) {
+		put_vma(vma);
+		return NULL;
+	}
 	return vma;
 }
 #endif
