@@ -657,11 +657,9 @@ unsigned long change_prot_numa(struct vm_area_struct *vma,
 {
 	int nr_updated;
 
-	vm_write_begin(vma);
 	nr_updated = change_protection(vma, addr, end, PAGE_NONE, MM_CP_PROT_NUMA);
 	if (nr_updated)
 		count_vm_numa_events(NUMA_PTE_UPDATES, nr_updated);
-	vm_write_end(vma);
 
 	return nr_updated;
 }
@@ -787,7 +785,6 @@ static int vma_replace_policy(struct vm_area_struct *vma,
 	if (IS_ERR(new))
 		return PTR_ERR(new);
 
-	vm_write_begin(vma);
 	if (vma->vm_ops && vma->vm_ops->set_policy) {
 		err = vma->vm_ops->set_policy(vma, new);
 		if (err)
@@ -800,7 +797,6 @@ static int vma_replace_policy(struct vm_area_struct *vma,
 	 * hodling the mmap_sem.
 	 */
 	WRITE_ONCE(vma->vm_policy,  new);
-	vm_write_end(vma);
 	mpol_put(old);
 
 	return 0;
