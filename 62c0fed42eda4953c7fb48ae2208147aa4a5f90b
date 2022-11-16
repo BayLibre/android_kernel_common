@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1957a811_f6993a79",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-11-16T21:12:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9c1c60d_647ec39b",
+      "revId": "62c0fed42eda4953c7fb48ae2208147aa4a5f90b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ee28e65_c6095e71",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-16T21:08:07Z",
       "side": 1,
       "message": "According to the commit message: \"It is possible that begin_cpu_access [and/or end_cpu_access] is also not provided by an exporter\"\nIn that case, this dereferences a NULL pointer.\n\nHow about calling into dma_buf_end_cpu_access() for consistency with the approach in dma_buf_begin_cpu_access_partial() ?",
+      "revId": "62c0fed42eda4953c7fb48ae2208147aa4a5f90b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cc68463_d8111f31",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1340,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-11-16T21:12:35Z",
+      "side": 1,
+      "message": "Oops, that\u0027s what I meant to do. Thanks!",
+      "parentUuid": "0ee28e65_c6095e71",
       "revId": "62c0fed42eda4953c7fb48ae2208147aa4a5f90b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
