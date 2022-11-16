@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "825aa5fc_6c21a281",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2022-11-16T11:19:37Z",
+      "side": 1,
+      "message": "This is fine, but I\u0027m not sure that if in the future we might let a protected vm have a shared page using this particular state.",
+      "revId": "783842f536be6424316470f2f0f8455ea9d3c946",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08dd641d_b9ca7ccb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2022-11-16T11:19:37Z",
+      "side": 1,
+      "message": "nit: the ? operator on the following line is a bit confusing. Could you bring it up here?",
+      "revId": "783842f536be6424316470f2f0f8455ea9d3c946",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
