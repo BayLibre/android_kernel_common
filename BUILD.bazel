@@ -19,7 +19,6 @@ package(
 
 load("//build/bazel_common_rules/dist:dist.bzl", "copy_to_dist_dir")
 load("//build/kernel/kleaf:common_kernels.bzl", "define_common_kernels", "define_db845c")
-load("//build/kernel/kleaf:constants.bzl", "AARCH64_OUTS")
 load("//build/kernel/kleaf:kernel.bzl", "ddk_headers", "kernel_build", "kernel_images", "kernel_modules_install")
 
 _common_gki_modules_list = [
@@ -256,15 +255,15 @@ define_db845c(
     ],
 )
 
-# TODO(b/258259749): Convert rockpi4 to mixed build
 kernel_build(
     name = "rockpi4",
-    outs = AARCH64_OUTS + [
+    outs = [
         "rk3399-rock-pi-4b.dtb",
     ],
+    base_kernel = "//common:kernel_aarch64",
     build_config = "build.config.rockpi4",
     dtstree = "//common-modules/virtual-device:rockpi4_dts",
-    module_outs = _common_gki_modules_list,
+    module_outs = [],
 )
 
 kernel_modules_install(
@@ -283,7 +282,6 @@ copy_to_dist_dir(
     name = "rockpi4_dist",
     data = [
         ":rockpi4",
-        ":rockpi4_modules_install",
         ":rockpi4_images",
     ],
     dist_dir = "out/rockpi4/dist",
