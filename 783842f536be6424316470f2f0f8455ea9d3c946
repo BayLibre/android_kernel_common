@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcc66d45_a183411a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-16T11:50:40Z",
+      "side": 1,
+      "message": "Separate CL works for me, thanks!\n\nAbout the zeroing, not sure which one\u0027s faster -- pkvm uses a fixmap in hyp_zero_page(), so we need to go through a whole map/unmap cycle with tlb inval etc. Not sure in which context is the guest when it issues the hypercall? Is it a preemptible section from the guest PoV? Even if that is the case, it\u0027s still preemptible by the host, which is a plus, so I\u0027d be inclined to leave that to the guest if possible.\n\nAnother idea (I promise I stop after this one :-)):\n - for protected guests, we make __pkvm_guest_relinquish_to_host() call a proper pkvm_guest_donate_host() function which implements all the usual machinery for memory transition in pKVM;\n - for non-protected guests, we make the relinquish hcall just return to the host which can then issue an __pkvm_host_unshare_guest() hypercall, which again goes through the normal machinery.\n \nIt\u0027s a bit cleaner conceptually, but also a bit slower. Wdyt?",
+      "parentUuid": "a9b1a8d5_38f02bf1",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 35
+      },
+      "revId": "783842f536be6424316470f2f0f8455ea9d3c946",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "08dd641d_b9ca7ccb",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
