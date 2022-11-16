@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f09508d_24e275a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1952665
+      },
+      "writtenOn": "2022-11-16T22:39:53Z",
+      "side": 1,
+      "message": "This patch is effectively a noop because this implementation moved from file.c (5.10) to ioctl.c (5.15) https://elixir.bootlin.com/linux/v5.15/source/fs/fuse/ioctl.c#L432\nI have the updated implementation (not tested) here https://android-review.git.corp.google.com/c/kernel/common/+/2239978",
+      "revId": "73d578092f74dbb5ec5a6c78b6ab37288b01ec60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
