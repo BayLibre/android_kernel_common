@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42070bc8_c09ccd58",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-16T11:30:19Z",
+      "side": 1,
+      "message": "Now that I think about it, I suspect all this could be simplified a bit by not using the page-\u003eflags and the reclaim hypercall. The only reason we use them on the teardown path is because we have _loads_ of pages to poison and we can\u0027t do it all in one go off the back of the guest teardown hypercall. But in your case, you\u0027re only ever touching one page, so you could probably just do everything here.\n\nSomething like so:\n\n    ret \u003d kvm_pgtable_get_leaf(\u0026vm-\u003epgt, ipa, \u0026pte, NULL);\n    if (ret)\n        goto unlock;\n    \n    state \u003d pkvm_getstate(kvm_pgtable_stage2_pte_prot(pte));\n    if (state !\u003d expected_state) {\n        ret \u003d -EPERM;\n        goto unlock;\n    }\n    \n    kvm_pgtable_stage2_unmap(\u0026vm-\u003epgt, ipa, PAGE_SIZE);\n    phys \u003d kvm_pte_to_phys(pte);\n    if (state \u003d\u003d PKVM_PAGE_OWNED)\n        hyp_zero_page(phys); /* XXX: remove and have the guest do it? */\n    WARN_ON(host_stage2_set_owner_locked(phys, PAGE_SIZE, pkvm_host_id));\n\nThoughts?\n\nThe reason I bring this up is because I\u0027m due to rework the teardown path quite a bit, which will most likely result in removing those page flags and make the reclaim hcall work differently, so having less dependencies on it would be nice. But happy to deal with it when I get to it if you\u0027d prefer getting this in beforehand, no objection from me.",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 35
+      },
+      "revId": "783842f536be6424316470f2f0f8455ea9d3c946",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "08dd641d_b9ca7ccb",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
