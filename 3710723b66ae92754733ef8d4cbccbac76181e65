@@ -16,6 +16,24 @@
       "message": "do you think we should have a license check? They should all be preexisting and there shouldn\u0027t be any harm in keeping them in right?",
       "revId": "3710723b66ae92754733ef8d4cbccbac76181e65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9218f486_bf6bc15b",
+        "filename": "PRESUBMIT.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1370197
+      },
+      "writtenOn": "2022-11-16T21:45:34Z",
+      "side": 1,
+      "message": "I\u0027m not too sure but I think the main problem with deviating from what\u0027s already here is that any subsequent patches were uploaded with these same flags enabled/disabled, so it might cause issues when we try to upload those as well.\n\nAt the very least, if we want to enable them I think we should do it after all the cherry picked patches are in.\n\nOf course, these are only client side checks so it\u0027s not a big deal as we can just run with --no-verify.",
+      "parentUuid": "53999c14_b72096cd",
+      "revId": "3710723b66ae92754733ef8d4cbccbac76181e65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
