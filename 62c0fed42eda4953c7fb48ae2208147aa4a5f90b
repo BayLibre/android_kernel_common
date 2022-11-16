@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c1c60d_647ec39b",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2022-11-16T21:08:07Z",
+      "side": 1,
+      "message": "Checkpatch prints a warning for this:\n\nWARNING:BLOCK_COMMENT_STYLE: Block comments should align the * on each line",
+      "revId": "62c0fed42eda4953c7fb48ae2208147aa4a5f90b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ee28e65_c6095e71",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1340,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2022-11-16T21:08:07Z",
+      "side": 1,
+      "message": "According to the commit message: \"It is possible that begin_cpu_access [and/or end_cpu_access] is also not provided by an exporter\"\nIn that case, this dereferences a NULL pointer.\n\nHow about calling into dma_buf_end_cpu_access() for consistency with the approach in dma_buf_begin_cpu_access_partial() ?",
+      "revId": "62c0fed42eda4953c7fb48ae2208147aa4a5f90b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
