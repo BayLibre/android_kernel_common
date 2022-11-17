@@ -124,6 +124,24 @@
       "parentUuid": "472897bc_38423033",
       "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58c6615b_d0338d0a",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1293,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-11-17T22:37:07Z",
+      "side": 1,
+      "message": "Ok, I\u0027m hearing that there is a preference for making loud noises over functionally correct (but potentially slower) behavior with a larger set of exporters. So I\u0027ll change this to return EOPNOTSUPP and update the docs as Isaac suggests.",
+      "parentUuid": "55d8853b_97a58e18",
+      "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
