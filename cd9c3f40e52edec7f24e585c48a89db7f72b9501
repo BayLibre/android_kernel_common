@@ -70,6 +70,24 @@
       "parentUuid": "82c2784d_c40b3141",
       "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4869f71_7de815b9",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1293,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2022-11-17T21:42:04Z",
+      "side": 1,
+      "message": "I am not concerned about missing this internally.  However, if I were a client, I would rather see an outright failure so I would know that the ops should get implemented. This risk-averse approach reduces the odds of someone dropping the ball before you commercialize something.",
+      "parentUuid": "ba58e162_a40d8fee",
+      "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
