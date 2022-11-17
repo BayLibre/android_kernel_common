@@ -106,6 +106,24 @@
       "parentUuid": "f4869f71_7de815b9",
       "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55d8853b_97a58e18",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1293,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2022-11-17T22:06:51Z",
+      "side": 1,
+      "message": "Hey TJ,\n\n\u003e Hey Chris, how would you know? By not implementing fallback in your calling code and refusing to continue the operation?\n\nYes.\n\n\u003e Then you\u0027d have to replace that at some point with fallback code before actually shipping right??\n\nI would first work to get the partial cache maintenance operation implemented or I would otherwise need to make a fallback if the owner of the dma-buf ops refused to let it be implemented it before commercialization.",
+      "parentUuid": "472897bc_38423033",
+      "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
