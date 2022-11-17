@@ -88,6 +88,24 @@
       "parentUuid": "ba58e162_a40d8fee",
       "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "472897bc_38423033",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1293,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-11-17T22:01:29Z",
+      "side": 1,
+      "message": "Hey Chris, how would you know? By not implementing fallback in your calling code and refusing to continue the operation? Then you\u0027d have to replace that at some point with fallback code before actually shipping right??",
+      "parentUuid": "f4869f71_7de815b9",
+      "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
