@@ -16,6 +16,24 @@
       "message": "My understanding is that `dma_buf_[begin/end]_cpu_access_partial()` was added with the intent to avoid having to do all of the work required in a `dma_buf_[begin/end]_cpu_access()` call as that was negatively affecting performance.\n\nWhile this patch doesn\u0027t change that, it does change the potential behavior of `dma_buf_[begin/end]_cpu_access_partial()`, such that it can easily \"do the wrong thing\" because of something as simple as the exporter not implementing `[begin/end]_cpu_access_partial()` callbacks.\n\nI\u0027m concerned that this patch will make these missing ops harder to catch, and might lead to false negatives where `dma_buf_[begin/end]_cpu_access_partial()` are reported to yield poor performance, when in reality they\u0027re just falling back to the `dma_buf_[begin/end]_cpu_access()` calls.\n\nOne of the proposals was to add `-EOPNOTSUPP` as a return code for both of the partial cache maintenance ops if it\u0027s not implemented, and then the caller can fallback to the complete cache maintenance ops. What was the concern with this?\n\nI\u0027ve also added Chris G. from Qualcomm\u0027s memory team, since he\u0027s more familiar with this and can chime in with more details.",
       "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c1015d4_bb00f000",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1293,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-11-17T21:14:25Z",
+      "side": 1,
+      "message": "Everybody wants performance, but the caller can\u0027t do anything but retry with a full sync if partial is not implemented. Why should we force all callers to write that code to detect the case where they want what they can\u0027t have (a configuration or code issue)? Would a warning be better?\n\nAs for EOPNOTSUPP, these callbacks could be deliberately empty for cases where there is no work to be performed on a sync call, and EOPNOTSUPP would not be correct in those cases since that\u0027s part of the design for the original API the partial extensions are built upon.",
+      "parentUuid": "7cc5d2cd_47fcf999",
+      "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
