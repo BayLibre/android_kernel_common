@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd1668ab_577295b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-11-17T21:35:12Z",
+      "side": 1,
+      "message": "Thanks for the review!",
+      "revId": "2ca8362e88faa2b7b6394e820f68df38cdeff8f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "744fcc46_3b70b859",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-11-17T20:40:18Z",
       "side": 1,
       "message": "khugepaged can also remove L1 page tables (but not L2 and higher page tables). That might not be a problem here, I\u0027m not sure...\n\nAnd mremap() can move L1 and L2 page tables to a new virtual address in a new VMA, which might mean that an attacker could use mremap() to move page tables into a new VMA while they\u0027re being traversed speculatively through the old VMA, then munmap() the *new* VMA to free the page tables while they\u0027re still being traversed?\n\nAlso, what if an SPF starts on VMA 1, then VMA 1 gets concurrently merged into VMA 2 via vma_merge(), and then the entire VMA 2 is munmap\u0027ed? Or if VMA 1 gets split into VMA 1 and VMA 2, and then VMA 2 is munmap\u0027ed? I think for this to work, you might have to add something like wait_for_vma_users() to the VMA merging/splitting paths.",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 26
+      },
+      "revId": "2ca8362e88faa2b7b6394e820f68df38cdeff8f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92563440_c2f3591d",
+        "filename": "mm/memory.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-11-17T21:35:12Z",
+      "side": 1,
+      "message": "In merging/splitting paths we have vm_write_begin/vm_write_end which would indicate that VMA was changed while SPF handling was going on, so it will fall back and retry with mmap_lock in read mode.\n\nI\u0027ll need to check about khugepaged(). Maybe we just bail out on huge pages. They are rarely used in Android anyway.\n\nmremap() does call move_page_tables() which can clear PMD and that\u0027s a similar problem to the one in free_pgtables, so I do need to add protection there as well.",
+      "parentUuid": "744fcc46_3b70b859",
       "range": {
         "startLine": 402,
         "startChar": 0,
@@ -47,6 +88,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f3089b_0944d4ab",
+        "filename": "mm/mmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-11-17T21:35:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d6455d9d_459c3c53",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 33
+      },
+      "revId": "2ca8362e88faa2b7b6394e820f68df38cdeff8f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40a4f8cd_81969742",
@@ -60,6 +125,30 @@
       "writtenOn": "2022-11-17T20:40:18Z",
       "side": 1,
       "message": "This is an interruptible wait but the callers can\u0027t handle failure, I think this has to sleep uninterruptably until the condition is fulfilled, and the function has to return void.",
+      "range": {
+        "startLine": 211,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 51
+      },
+      "revId": "2ca8362e88faa2b7b6394e820f68df38cdeff8f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d3d2a0a_287de54b",
+        "filename": "mm/mmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-11-17T21:35:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "40a4f8cd_81969742",
       "range": {
         "startLine": 211,
         "startChar": 0,
