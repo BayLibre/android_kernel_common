@@ -2606,25 +2606,6 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
 	kfree(ac.user_mask);
 }
 
-int dup_user_cpus_ptr(struct task_struct *dst, struct task_struct *src,
-		      int node)
-{
-	unsigned long flags;
-
-	if (!src->user_cpus_ptr)
-		return 0;
-
-	dst->user_cpus_ptr = kmalloc_node(cpumask_size(), GFP_KERNEL, node);
-	if (!dst->user_cpus_ptr)
-		return -ENOMEM;
-
-	/* Use pi_lock to protect content of user_cpus_ptr */
-	raw_spin_lock_irqsave(&src->pi_lock, flags);
-	cpumask_copy(dst->user_cpus_ptr, src->user_cpus_ptr);
-	raw_spin_unlock_irqrestore(&src->pi_lock, flags);
-	return 0;
-}
-
 static inline struct cpumask *clear_user_cpus_ptr(struct task_struct *p)
 {
 	struct cpumask *user_mask = NULL;
@@ -2632,6 +2613,29 @@ static inline struct cpumask *clear_user_cpus_ptr(struct task_struct *p)
 	swap(p->user_cpus_ptr, user_mask);
 
 	return user_mask;
+}
+
+int dup_user_cpus_ptr(struct task_struct *dst, struct task_struct *src,
+		      int node)
+{
+	unsigned long flags;
+	struct cpumask *user_mask = NULL;
+
+	dst->user_cpus_ptr = kmalloc_node(cpumask_size(), GFP_KERNEL, node);
+	if (!dst->user_cpus_ptr)
+		return -ENOMEM;
+
+	/* Use pi_lock to protect content of user_cpus_ptr */
+	raw_spin_lock_irqsave(&src->pi_lock, flags);
+	if (!src->user_cpus_ptr) {
+	    user_mask = clear_user_cpus_ptr(dst);
+	    raw_spin_unlock_irqrestore(&src->pi_lock, flags);
+	    kfree(user_mask);
+	    return 0;
+	}
+	cpumask_copy(dst->user_cpus_ptr, src->user_cpus_ptr);
+	raw_spin_unlock_irqrestore(&src->pi_lock, flags);
+	return 0;
 }
 
 void release_user_cpus_ptr(struct task_struct *p)
