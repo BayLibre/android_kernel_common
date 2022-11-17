@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1fd38ce9_09288beb",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2022-11-17T15:43:10Z",
+      "side": 1,
+      "message": "Yes this will be set in the microdroid bootconfig.arm64 file as `kernel.virtio_balloon.pkvm`",
+      "parentUuid": "2d2eed4f_dabb0a99",
+      "revId": "93388005f08a9321f527c31726e2f3a9bb506470",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "275649c2_105a76e3",
         "filename": "drivers/virtio/virtio_balloon.c",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2022-11-17T15:39:33Z",
       "side": 1,
       "message": "nit: is this really arm related, or only pkvm? In case, why specify ARM?",
+      "revId": "93388005f08a9321f527c31726e2f3a9bb506470",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32460595_e366dbca",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2022-11-17T15:43:10Z",
+      "side": 1,
+      "message": "Mmmmm. Well, only we will set it. I suppose mem_relinquish is presented as a common api. I will drop the reference to ARM64 here.",
+      "parentUuid": "275649c2_105a76e3",
       "revId": "93388005f08a9321f527c31726e2f3a9bb506470",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
