@@ -3384,6 +3384,7 @@ static inline bool pte_spinlock(struct vm_fault *vmf)
 	return __pte_map_lock(vmf);
 }
 
+void init_vma_users_waitqueue(void);
 struct vm_area_struct *get_vma(struct mm_struct *mm, unsigned long addr);
 void put_vma(struct vm_area_struct *vma);
 
@@ -3402,6 +3403,8 @@ void put_vma(struct vm_area_struct *vma);
 	spin_lock(___vmf->ptl);						\
 	true;								\
 })
+
+static inline void init_vma_users_waitqueue(void) {}
 
 #endif	/* CONFIG_SPECULATIVE_PAGE_FAULT */
 #endif	/* CONFIG_MMU */
