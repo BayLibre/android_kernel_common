@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6134ab3b_b6510dac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976740
+      },
+      "writtenOn": "2022-11-17T19:27:30Z",
+      "side": 1,
+      "message": "I did attempt to enable the two symbols through the gki_defconfig on our mirrored kernel source tree - we have a script which merges the defconfigs - but I run into merge conflicts during kernel compilation.\n\nDiscussed your proposals with the kernel team here at Qualcomm - their preferred method is to fix this upstream.\n\nWould you have another suggestion for an upstream fix rather than enabling via the hidden mechanism?",
+      "parentUuid": "2b8f2a6b_720ab030",
+      "revId": "b3b52888a159d8b5d74a34d4c0a80baac08af5cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46c42bf5_4c034e7c",
         "filename": "init/Kconfig.gki",
         "patchSetId": 7
