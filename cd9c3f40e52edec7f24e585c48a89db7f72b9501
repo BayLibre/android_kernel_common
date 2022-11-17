@@ -52,6 +52,24 @@
       "parentUuid": "7c1015d4_bb00f000",
       "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba58e162_a40d8fee",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1293,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2022-11-17T21:34:10Z",
+      "side": 1,
+      "message": "That\u0027s a good point against punting the detection of whether this is absent or not to the callers. I agree it\u0027s ugly and warrants the need for a wrapper, which is what you\u0027ve done here.\n\nI think a warning would be best so that it\u0027s at least clear that this function will not behave as expected, and it\u0027s easy to pinpoint why. This function can be called multiple times, and printing a warning excessively may not be a good idea, so we should stick with something like `pr_warn_once()`? It might also be a good idea to update the documentation in `include/linux/dma-buf.h` as well.",
+      "parentUuid": "82c2784d_c40b3141",
+      "revId": "cd9c3f40e52edec7f24e585c48a89db7f72b9501",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
