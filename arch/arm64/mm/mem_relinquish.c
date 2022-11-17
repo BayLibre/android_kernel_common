@@ -77,6 +77,12 @@ void kvm_init_memrelinquish_services(void)
 		hyp_ops.page_relinquish = kvm_page_relinquish;
 }
 
+bool kvm_has_memrelinquish_services(void)
+{
+	return !!memshare_granule_sz;
+}
+EXPORT_SYMBOL_GPL(kvm_has_memrelinquish_services);
+
 void page_relinquish(struct page *page)
 {
 	if (hyp_ops.page_relinquish)
