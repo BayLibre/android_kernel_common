@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8318ae92_fee8b4d8",
+        "filename": "include/uapi/linux/bpf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-18T15:35:54Z",
+      "side": 1,
+      "message": "this is a UAPI change that hasn\u0027t landed upstream. How is it used? What if this enum value is used for something else by upstream?",
+      "revId": "46705abe86317df402411831b0d29b817cb197e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c223e635_cbf8e60d",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-18T15:35:54Z",
+      "side": 1,
+      "message": "since these are not uapi from upstream, can we move them out of the uapi header into a separate header (maybe \"include/uapi/linux/fuse.h\")? That makes it clear that this is an android-specific extension to the uapi.",
+      "revId": "46705abe86317df402411831b0d29b817cb197e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aea1622c_765fd25b",
+        "filename": "tools/include/uapi/linux/bpf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-18T15:35:54Z",
+      "side": 1,
+      "message": "How is this used? what if upstream uses this enum value for something else?",
+      "revId": "46705abe86317df402411831b0d29b817cb197e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
