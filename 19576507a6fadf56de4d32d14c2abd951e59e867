@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af778b61_5e13fb25",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-11-18T19:22:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ff61155_e570af43",
+      "revId": "19576507a6fadf56de4d32d14c2abd951e59e867",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3c1659e_763a610a",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-18T18:32:20Z",
       "side": 1,
       "message": "what happens if the padding field is used by upstream?",
+      "revId": "19576507a6fadf56de4d32d14c2abd951e59e867",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc487ad_dbdf7645",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2022-11-18T19:22:37Z",
+      "side": 1,
+      "message": "I suspect what we would have to do in that case is to add a different header for post_filter. We\u0027d either find the new use for padding wasn\u0027t relevant when the error_in is, so make it a union, or add the field at the end only for post_filter opcodes. I don\u0027t think we achieve anything by doing that preemptively.\n\nIf it helps, fuse_in_header was added in 2.6 and is unchanged in 6.1, so this is a low probability event",
+      "parentUuid": "d3c1659e_763a610a",
       "revId": "19576507a6fadf56de4d32d14c2abd951e59e867",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
