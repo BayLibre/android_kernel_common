@@ -105,6 +105,24 @@
       "parentUuid": "b885eb61_4ad04023",
       "revId": "89a985a72aeb10984330256fbebd77b92beb33cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c2c9302_c87ef42e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2022-11-18T16:53:40Z",
+      "side": 1,
+      "message": "For example, noop_backing_dev_info appears as added new here but not in the original commit. The symbol was originally added to the main branch in a new `abi_gki_aarch64_amlogic` symbol file. That has not been cherry-picked into this respin, so this commit is the one that updates the ABI XML.\n\nThe same thing is true of `dentry_path_raw` and `pagecache_write_end`.\n\nI\u0027m not going to check any others.\n\nThere is another minor difference in the commit messages:\n\n```\n-  \u0027int security_inode_init_security(struct inode *, struct inode *, const struct qstr *, const initxattrs, void *)\u0027\n+  \u0027int security_inode_init_security(struct inode *, struct inode *, const struct qstr *, initxattrs, void *)\u0027\n```\n\nThis is thanks to an `abitidy` change that removes useless qualifiers from parameters.",
+      "parentUuid": "466fc6d2_1d519705",
+      "revId": "89a985a72aeb10984330256fbebd77b92beb33cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
