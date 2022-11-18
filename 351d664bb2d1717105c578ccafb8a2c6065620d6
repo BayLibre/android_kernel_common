@@ -16,6 +16,24 @@
       "message": "Sorry, but something still isn\u0027t right here. This patch is adding considerably more symbols than the original change in android13-5.15.",
       "revId": "351d664bb2d1717105c578ccafb8a2c6065620d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eecebcde_5a1da11b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1941790
+      },
+      "writtenOn": "2022-11-18T11:40:54Z",
+      "side": 1,
+      "message": "I noticed that the total number of symbols in the commit message equals the number of symbols added to the symbol list file android/abi_gki_aarch64_xiaomi in this change. But it is less than in original android13-5.15 branch change. I guess the original android13-5.15 branch contains some symbols I added. Some symbols I added is in the symbol list before I added them.",
+      "parentUuid": "5f72d8a9_6d28edea",
+      "revId": "351d664bb2d1717105c578ccafb8a2c6065620d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
