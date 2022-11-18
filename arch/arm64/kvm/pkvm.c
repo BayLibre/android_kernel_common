@@ -16,6 +16,7 @@
 #include <asm/kvm_mmu.h>
 #include <asm/kvm_pkvm.h>
 #include <asm/kvm_pkvm_module.h>
+#include <asm/setup.h>
 
 #include "hyp_constants.h"
 
@@ -400,6 +401,51 @@ int pkvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
 		return pkvm_vm_ioctl_info(kvm, (void __force __user *)cap->args[0]);
 	default:
 		return -EINVAL;
+	}
+
+	return 0;
+}
+
+static char early_pkvm_modules[COMMAND_LINE_SIZE];
+
+static int __init early_pkvm_modules_cfg(char *arg)
+{
+	if (!arg)
+		return -EINVAL;
+
+	strscpy(early_pkvm_modules, arg, COMMAND_LINE_SIZE);
+
+	return 0;
+}
+early_param("kvm-arm.protected_modules", early_pkvm_modules_cfg);
+
+int pkvm_load_early_modules(void)
+{
+	char *token, *buf = early_pkvm_modules;
+	int err;
+
+	while (true) {
+		token = strsep(&buf, ",");
+
+		if (!token)
+			break;
+
+		if (*token) {
+			/*
+			 * TODO: It is not clear now if we'll be able to use
+			 * this or if we'll have to create our own custom
+			 * request_pkvm_module().
+			 */
+			err = request_module(token);
+			if (err) {
+				pr_err("Failed to load pkvm module %s\n",
+				       token);
+				return err;
+			}
+		}
+
+		if (buf)
+			*(buf - 1) = ',';
 	}
 
 	return 0;
