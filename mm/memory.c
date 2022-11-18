@@ -431,8 +431,10 @@ void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	}
 }
 
-int __pte_alloc(struct mm_struct *mm, pmd_t *pmd)
+static spinlock_t *pmd_spinlock(struct vm_fault *vmf);
+int __pte_alloc(struct mm_struct *mm, pmd_t *pmd, struct vm_fault *vmf)
 {
+	int ret = 0;
 	spinlock_t *ptl;
 	pgtable_t new = pte_alloc_one(mm);
 	if (!new)
@@ -453,16 +455,22 @@ int __pte_alloc(struct mm_struct *mm, pmd_t *pmd)
 	 */
 	smp_wmb(); /* Could be smp_wmb__xxx(before|after)_spin_lock */
 
-	ptl = pmd_lock(mm, pmd);
+	ptl = vmf ? pmd_spinlock(vmf) : pmd_lock(mm, pmd);
+	if (!ptl) {
+		/* Retry with mmap_lock held */
+		ret = -EAGAIN;
+		goto out;
+	}
 	if (likely(pmd_none(*pmd))) {	/* Has another populated it ? */
 		mm_inc_nr_ptes(mm);
 		pmd_populate(mm, pmd, new);
 		new = NULL;
 	}
 	spin_unlock(ptl);
+out:
 	if (new)
 		pte_free(mm, new);
-	return 0;
+	return ret;
 }
 
 int __pte_alloc_kernel(pmd_t *pmd)
@@ -2632,6 +2640,57 @@ out:
 	return ret;
 }
 
+static spinlock_t *pmd_spinlock(struct vm_fault *vmf)
+{
+	spinlock_t *ret = NULL;
+	spinlock_t *ptl;
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+	pmd_t pmdval;
+#endif
+
+	/* Check if vma is still valid */
+	if (!(vmf->flags & FAULT_FLAG_SPECULATIVE)) {
+		spinlock_t *ptl = pmd_lockptr(vmf->vma->vm_mm, vmf->pmd);
+		spin_lock(ptl);
+		return ptl;
+	}
+
+	local_irq_disable();
+	if (vma_has_changed(vmf)) {
+		trace_spf_vma_changed(_RET_IP_, vmf->vma, vmf->address);
+		goto out;
+	}
+
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+	/*
+	 * We check if the pmd value is still the same to ensure that there
+	 * is not a huge collapse operation in progress in our back.
+	 */
+	pmdval = READ_ONCE(*vmf->pmd);
+	if (!pmd_same(pmdval, vmf->orig_pmd)) {
+		trace_spf_pmd_changed(_RET_IP_, vmf->vma, vmf->address);
+		goto out;
+	}
+#endif
+
+	ptl = pmd_lockptr(vmf->vma->vm_mm, vmf->pmd);
+	if (unlikely(!spin_trylock(ptl))) {
+		trace_spf_pte_lock(_RET_IP_, vmf->vma, vmf->address);
+		goto out;
+	}
+
+	if (vma_has_changed(vmf)) {
+		spin_unlock(ptl);
+		trace_spf_vma_changed(_RET_IP_, vmf->vma, vmf->address);
+		goto out;
+	}
+
+	ret = ptl;
+out:
+	local_irq_enable();
+	return ret;
+}
+
 static bool __pte_map_lock_speculative(struct vm_fault *vmf, unsigned long addr)
 {
 	bool ret = false;
@@ -2776,6 +2835,13 @@ static inline bool pte_spinlock(struct vm_fault *vmf)
 	vmf->ptl = pte_lockptr(vmf->vma->vm_mm, vmf->pmd);
 	spin_lock(vmf->ptl);
 	return true;
+}
+
+static spinlock_t *pmd_spinlock(struct vm_fault *vmf)
+{
+	spinlock_t *ptl = pmd_lockptr(vmf->vma->vm_mm, vmf->pmd);
+	spin_lock(ptl);
+	return ptl;
 }
 
 static inline bool pte_map_lock(struct vm_fault *vmf)
@@ -3818,6 +3884,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 	struct page *page;
 	vm_fault_t ret = 0;
 	pte_t entry;
+	int lock_res;
 
 	/* File mapping without ->vm_ops ? */
 	if (vmf->vma_flags & VM_SHARED)
@@ -3833,8 +3900,9 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 	 *
 	 * Here we only have mmap_read_lock(mm).
 	 */
-	if (pte_alloc(vma->vm_mm, vmf->pmd))
-		return VM_FAULT_OOM;
+	lock_res = __pte_alloc(vma->vm_mm, vmf->pmd, vmf);
+	if (lock_res)
+		return lock_res == -EAGAIN ? VM_FAULT_RETRY : VM_FAULT_OOM;
 
 	/* See comment in handle_pte_fault() */
 	if (unlikely(pmd_trans_unstable(vmf->pmd)))
