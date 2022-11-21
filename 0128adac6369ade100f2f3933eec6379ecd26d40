@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d9cc8d_80bd3f16",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-21T15:26:12Z",
+      "side": 1,
+      "message": "Stick this in a local `cpu` variable to simplify this very long expression?",
+      "range": {
+        "startLine": 711,
+        "startChar": 45,
+        "endLine": 711,
+        "endChar": 65
+      },
+      "revId": "0128adac6369ade100f2f3933eec6379ecd26d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84fc364a_0801a647",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-21T15:26:12Z",
+      "side": 1,
+      "message": "Would it be cleaner just to use `last_ran` here?",
+      "range": {
+        "startLine": 471,
+        "startChar": 8,
+        "endLine": 471,
+        "endChar": 58
+      },
+      "revId": "0128adac6369ade100f2f3933eec6379ecd26d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "191f6794_b9c9f090",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-21T15:26:12Z",
+      "side": 1,
+      "message": "Why is this needed? I can\u0027t see any `__percpu` modifiers in the mix here.",
+      "range": {
+        "startLine": 726,
+        "startChar": 22,
+        "endLine": 726,
+        "endChar": 38
+      },
+      "revId": "0128adac6369ade100f2f3933eec6379ecd26d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd959e4_579c9adf",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-21T15:26:12Z",
+      "side": 1,
+      "message": "The indentation looks like it\u0027s changed here",
+      "range": {
+        "startLine": 850,
+        "startChar": 2,
+        "endLine": 850,
+        "endChar": 15
+      },
+      "revId": "0128adac6369ade100f2f3933eec6379ecd26d40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
