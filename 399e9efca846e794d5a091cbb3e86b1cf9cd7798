@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "909f8e55_d929ead4",
+        "filename": "mm/khugepaged.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2022-11-21T20:33:28Z",
+      "side": 1,
+      "message": "this is where the PMD is removed, the vm_write_end() should probably be after the following spin_unlock()",
+      "range": {
+        "startLine": 1524,
+        "startChar": 1,
+        "endLine": 1524,
+        "endChar": 45
+      },
+      "revId": "399e9efca846e794d5a091cbb3e86b1cf9cd7798",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
