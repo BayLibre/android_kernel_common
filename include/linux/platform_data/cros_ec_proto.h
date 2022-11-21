@@ -178,6 +178,7 @@ struct cros_ec_device {
 	int irq;
 	u8 *din;
 	u8 *dout;
+	dma_addr_t dout_dma;
 	int din_size;
 	int dout_size;
 	bool wake_enabled;

@@ -394,6 +394,7 @@ static int do_cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
 	u8 rx_byte;
 	int ret = 0, final_ret;
 	unsigned long delay;
+	dma_addr_t dout_dma;
 
 	len = cros_ec_prepare_tx(ec_dev, ec_msg);
 	if (len < 0)
@@ -425,7 +426,8 @@ static int do_cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
 
 	/* Transmit phase - send our message */
 	memset(&trans, 0, sizeof(trans));
-	trans.tx_buf = ec_dev->dout;
+	dout_dma = READ_ONCE(ec_dev->dout_dma);
+	trans.tx_buf = dout_dma ? (void *)dout_dma : ec_dev->dout;
 	trans.rx_buf = rx_buf;
 	trans.len = len;
 	trans.cs_change = 1;

@@ -355,6 +355,29 @@ static ssize_t ap_mode_entry_show(struct device *dev,
 	return sysfs_emit(buf, "%s\n", ap_driven_altmode ? "yes" : "no");
 }
 
+static ssize_t dma_show(struct device *dev,
+			struct device_attribute *attr, char *buf)
+{
+	struct cros_ec_dev *ec = to_cros_ec_dev(dev);
+	return scnprintf(buf, PAGE_SIZE, "0x%llx\n", READ_ONCE(ec->ec_dev->dout_dma));
+}
+
+static ssize_t dma_store(struct device *dev,
+			 struct device_attribute *attr,
+			 const char *buf, size_t count)
+{
+	struct cros_ec_dev *ec = to_cros_ec_dev(dev);
+	unsigned long long addr;
+	int ret;
+
+	ret = kstrtoull(buf, 0, &addr);
+	if (ret)
+		return ret;
+
+	WRITE_ONCE(ec->ec_dev->dout_dma, addr);
+	return count;
+}
+
 /* Module initialization */
 
 static DEVICE_ATTR_RW(reboot);
@@ -363,6 +386,7 @@ static DEVICE_ATTR_RO(flashinfo);
 static DEVICE_ATTR_RW(kb_wake_angle);
 static DEVICE_ATTR_RO(usbpdmuxinfo);
 static DEVICE_ATTR_RO(ap_mode_entry);
+static DEVICE_ATTR_RW(dma);
 
 static struct attribute *__ec_attrs[] = {
 	&dev_attr_kb_wake_angle.attr,
@@ -371,6 +395,7 @@ static struct attribute *__ec_attrs[] = {
 	&dev_attr_flashinfo.attr,
 	&dev_attr_usbpdmuxinfo.attr,
 	&dev_attr_ap_mode_entry.attr,
+	&dev_attr_dma.attr,
 	NULL,
 };
 
