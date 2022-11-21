@@ -16,6 +16,24 @@
       "message": "Hi, All\n\nCould you please help check what is still necessary to have the ath10k_core module loaded successfully, or where I am wrong in this change and the abi support change here https://android-review.googlesource.com/c/kernel/build/+/2310388?\n\nThanks,\nYongqin Liu",
       "revId": "2f793583cbbfd4ee294be33a8058e4c62d96b1e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cfe5fd6_b930c87c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-11-21T22:22:28Z",
+      "side": 1,
+      "message": "`ieee80211_alloc_hw_nm` is from mac80211.ko, and it seems to be dropped in this CL. Let me check what gki_modules_list mean",
+      "parentUuid": "faeda226_c5b2b235",
+      "revId": "2f793583cbbfd4ee294be33a8058e4c62d96b1e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
