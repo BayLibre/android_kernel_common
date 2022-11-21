@@ -1144,6 +1144,7 @@ static int spi_map_buf_attrs(struct spi_controller *ctlr, struct device *dev,
 #else
 	const bool kmap_buf = false;
 #endif
+	bool phys_buf = !virt_addr_valid(buf);
 	int desc_len;
 	int sgs;
 	struct page *vm_page;
@@ -1155,11 +1156,9 @@ static int spi_map_buf_attrs(struct spi_controller *ctlr, struct device *dev,
 	if (vmalloced_buf || kmap_buf) {
 		desc_len = min_t(unsigned long, max_seg_size, PAGE_SIZE);
 		sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
-	} else if (virt_addr_valid(buf)) {
+	} else {
 		desc_len = min_t(size_t, max_seg_size, ctlr->max_dma_len);
 		sgs = DIV_ROUND_UP(len, desc_len);
-	} else {
-		return -EINVAL;
 	}
 
 	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
@@ -1191,7 +1190,11 @@ static int spi_map_buf_attrs(struct spi_controller *ctlr, struct device *dev,
 		} else {
 			min = min_t(size_t, len, desc_len);
 			sg_buf = buf;
-			sg_set_buf(sg, sg_buf, min);
+			if (phys_buf)
+				sg_set_page(sg, pfn_to_page((phys_addr_t)sg_buf >> PAGE_SHIFT),
+					    min, offset_in_page(sg_buf));
+			else
+				sg_set_buf(sg, sg_buf, min);
 		}
 
 		buf += min;
