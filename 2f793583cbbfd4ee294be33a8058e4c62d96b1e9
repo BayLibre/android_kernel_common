@@ -34,6 +34,24 @@
       "parentUuid": "faeda226_c5b2b235",
       "revId": "2f793583cbbfd4ee294be33a8058e4c62d96b1e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3df7293_fc516a9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-11-21T22:25:33Z",
+      "side": 1,
+      "message": "Could you please check if `mac80211.ko` is in the initramfs image? It should be before and after this change, but maybe some weird bug occurs. So I want to check if it is a module missing error or module loading order issue.",
+      "parentUuid": "9cfe5fd6_b930c87c",
+      "revId": "2f793583cbbfd4ee294be33a8058e4c62d96b1e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
