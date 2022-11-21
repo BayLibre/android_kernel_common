@@ -2845,6 +2845,102 @@ int apply_to_existing_page_range(struct mm_struct *mm, unsigned long addr,
 }
 EXPORT_SYMBOL_GPL(apply_to_existing_page_range);
 
+<<<<<<< HEAD   (169ef2 UPSTREAM: io_uring: ensure that io_init_req() passes in the )
+=======
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+
+/*
+ * speculative_page_walk_begin() ... speculative_page_walk_end() protects
+ * against races with page table reclamation.
+ *
+ * This is similar to what fast GUP does, but fast GUP also needs to
+ * protect against races with THP page splitting, so it always needs
+ * to disable interrupts.
+ * Speculative page faults need to protect against page table reclamation,
+ * even with MMU_GATHER_RCU_TABLE_FREE case page table removal slow-path is
+ * not RCU-safe (see comment inside tlb_remove_table_sync_one), therefore
+ * we still have to disable IRQs.
+ */
+#define speculative_page_walk_begin() local_irq_disable()
+#define speculative_page_walk_end()   local_irq_enable()
+
+bool __pte_map_lock(struct vm_fault *vmf)
+{
+	pmd_t pmdval;
+	pte_t *pte = vmf->pte;
+	spinlock_t *ptl;
+
+	if (!(vmf->flags & FAULT_FLAG_SPECULATIVE)) {
+		vmf->ptl = pte_lockptr(vmf->vma->vm_mm, vmf->pmd);
+		if (!pte)
+			vmf->pte = pte_offset_map(vmf->pmd, vmf->address);
+		spin_lock(vmf->ptl);
+		return true;
+	}
+
+	speculative_page_walk_begin();
+	if (!mmap_seq_read_check(vmf->vma->vm_mm, vmf->seq,
+				 SPF_ABORT_PTE_MAP_LOCK_SEQ1))
+		goto fail;
+	/*
+	 * The mmap sequence count check guarantees that the page
+	 * tables are still valid at that point, and
+	 * speculative_page_walk_begin() ensures that they stay around.
+	 */
+	/*
+	 * We check if the pmd value is still the same to ensure that there
+	 * is not a huge collapse operation in progress in our back.
+	 * It also ensures that pmd was not cleared by pmd_clear in
+	 * free_pte_range and ptl is still valid.
+	 */
+	pmdval = READ_ONCE(*vmf->pmd);
+	if (!pmd_same(pmdval, vmf->orig_pmd)) {
+		count_vm_spf_event(SPF_ABORT_PTE_MAP_LOCK_PMD);
+		goto fail;
+	}
+	ptl = pte_lockptr(vmf->vma->vm_mm, &pmdval);
+	if (!pte)
+		pte = pte_offset_map(&pmdval, vmf->address);
+	/*
+	 * Try locking the page table.
+	 *
+	 * Note that we might race against zap_pte_range() which
+	 * invalidates TLBs while holding the page table lock.
+	 * We are still under the speculative_page_walk_begin() section,
+	 * and zap_pte_range() could thus deadlock with us if we tried
+	 * using spin_lock() here.
+	 *
+	 * We also don't want to retry until spin_trylock() succeeds,
+	 * because of the starvation potential against a stream of lockers.
+	 */
+	if (unlikely(!spin_trylock(ptl))) {
+		count_vm_spf_event(SPF_ABORT_PTE_MAP_LOCK_PTL);
+		goto fail;
+	}
+	/*
+	 * The check below will fail if __pte_map_lock passed its ptl barrier
+	 * before we took the ptl lock.
+	 */
+	if (!mmap_seq_read_check(vmf->vma->vm_mm, vmf->seq,
+				 SPF_ABORT_PTE_MAP_LOCK_SEQ2))
+		goto unlock_fail;
+	speculative_page_walk_end();
+	vmf->pte = pte;
+	vmf->ptl = ptl;
+	return true;
+
+unlock_fail:
+	spin_unlock(ptl);
+fail:
+	if (pte)
+		pte_unmap(pte);
+	speculative_page_walk_end();
+	return false;
+}
+
+#endif	/* CONFIG_SPECULATIVE_PAGE_FAULT */
+
+>>>>>>> CHANGE (d0ab68 ANDROID: mm: fix speculative walk which is unsafe under RCU)
 /*
  * handle_pte_fault chooses page fault handler according to an entry which was
  * read non-atomically.  Before making any commitment, on those architectures
