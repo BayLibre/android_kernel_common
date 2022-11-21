@@ -16,6 +16,236 @@
       "message": "This is too large to be reviewed as-is.  Please submit upstream first.",
       "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d5160ce_016b89ce",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "no copyright information?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 35
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "177d836d_4ba2ba62",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "are you sure?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 25
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "082ca34e_a4c37e92",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "don\u0027t crash machines 😞",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 42
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63483d97_5302f969",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "do not be noisy for normal kernel operations.",
+      "range": {
+        "startLine": 58,
+        "startChar": 3,
+        "endLine": 58,
+        "endChar": 11
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "032bfc64_d1c77f31",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "do not crash kernels for no reason.  Handle the error properly if this can actually happen.\n\nIf this can never happen, it is not needed.",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 24
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b0ebcf_111d14ab",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "is this an error or an information message?\n\nPerhaps provide the name of the pci device that will be supported?",
+      "range": {
+        "startLine": 188,
+        "startChar": 2,
+        "endLine": 188,
+        "endChar": 9
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f085cc_84f9fdb2",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "please do not make up error numbers, always return valid error codes.",
+      "range": {
+        "startLine": 190,
+        "startChar": 9,
+        "endLine": 190,
+        "endChar": 11
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39767134_b7628336",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "Link to public things, not private things.",
+      "range": {
+        "startLine": 243,
+        "startChar": 0,
+        "endLine": 243,
+        "endChar": 64
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b53f4b20_26da21fe",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "this is not ok, please fix properly.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 32
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997177f4_6cae438f",
+        "filename": "arch/lkl/drivers/pci.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-11-21T08:02:55Z",
+      "side": 1,
+      "message": "don\u0027t comment things that are obvious please.",
+      "range": {
+        "startLine": 264,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 31
+      },
+      "revId": "b7ee44144d6f62124f7c67caf33ed554b788f5b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
