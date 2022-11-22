@@ -52,6 +52,24 @@
       "parentUuid": "9cfe5fd6_b930c87c",
       "revId": "2f793583cbbfd4ee294be33a8058e4c62d96b1e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02d3bb86_afb6affd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2022-11-22T01:56:35Z",
+      "side": 1,
+      "message": "we use the vendor_boot.img, and mac80211.ko is integrated there.\nfrom the error message of ```disagrees about version``` it also means the kernel module file mac80211.ko is there I guess. \n\nwith this change, the mac80211.ko from the db845c build is dropped, instead the one from the gki build is used. the ath10k_core.ko is from the db845c build, not from the gki build.\n\nNot sure what\u0027s the difference there, in theory the mac80211.ko from the gki build should be possible to be used by the ath10k_core.ko from the db845c build I think.",
+      "parentUuid": "d3df7293_fc516a9d",
+      "revId": "2f793583cbbfd4ee294be33a8058e4c62d96b1e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
