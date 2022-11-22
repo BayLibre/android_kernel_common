@@ -34,6 +34,29 @@
       "parentUuid": "5ba20566_12a00d84",
       "revId": "e7c22d8e6ac02e20bc44cd7d34041730d65d2f8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a26d191_bd67cce4",
+        "filename": "build.config.riscv64",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2022-11-22T03:19:28Z",
+      "side": 1,
+      "message": "Bazel currently does not support setting LTO\u003dnone in build files (only in command line): b/229662633\n\nSo you\u0027ll have to build with something like `bazel build --lto\u003dnone //common:kernel_riscv` for example",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 8
+      },
+      "revId": "e7c22d8e6ac02e20bc44cd7d34041730d65d2f8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
