@@ -4600,7 +4600,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
 	int flags = 0;
 
 	if (vmf->flags & FAULT_FLAG_SPECULATIVE)
-		count_vm_spf_event(SPF_ATTEMPT_NUMA);
+		return VM_FAULT_RETRY;
 
 	/*
 	 * The "pte" at this point cannot be used safely without
