@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cb13016_28acf644",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-22T13:53:51Z",
+      "side": 1,
+      "message": "Do we really need this change?",
+      "range": {
+        "startLine": 663,
+        "startChar": 35,
+        "endLine": 663,
+        "endChar": 56
+      },
+      "revId": "4b4e1cc978157cd199ca04f7c1e980ef63787127",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a726a7_6e56b393",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-22T13:53:51Z",
+      "side": 1,
+      "message": "Maybe that should go in a dedicated config option? CONFIG_ARM64_PKVM_MODPROBE_PATH ?",
+      "range": {
+        "startLine": 436,
+        "startChar": 24,
+        "endLine": 436,
+        "endChar": 44
+      },
+      "revId": "4b4e1cc978157cd199ca04f7c1e980ef63787127",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
