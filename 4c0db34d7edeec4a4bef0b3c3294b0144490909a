@@ -22,6 +22,30 @@
       },
       "revId": "4c0db34d7edeec4a4bef0b3c3294b0144490909a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac3eae1e_f2d52b2e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-22T18:12:29Z",
+      "side": 1,
+      "message": "In the usage I have of those function, the memory will be mapped, for sure... but yeah indeed that\u0027s pretty bad for a function \"exported\" like this.\n\nHappy to drop this patch and pull yours instead even if not fully optimized. The only usage so far would be on hyp/tracing_on",
+      "parentUuid": "aa6a6896_a1c83555",
+      "range": {
+        "startLine": 557,
+        "startChar": 26,
+        "endLine": 557,
+        "endChar": 35
+      },
+      "revId": "4c0db34d7edeec4a4bef0b3c3294b0144490909a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
