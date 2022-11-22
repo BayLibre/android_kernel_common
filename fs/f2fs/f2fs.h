@@ -4156,6 +4156,7 @@ bool f2fs_lookup_age_extent_cache(struct inode *inode, pgoff_t pgofs,
 void f2fs_update_age_extent_cache(struct inode *inode, pgoff_t fofs,
 					unsigned int len, u64 age,
 					unsigned long long cur_blk_alloced);
+void f2fs_update_data_block_age(struct dnode_of_data *dn);
 void f2fs_truncate_age_extent_cache(struct inode *inode, pgoff_t fofs,
 					unsigned int len);
 int __init f2fs_create_age_extent_cache(void);

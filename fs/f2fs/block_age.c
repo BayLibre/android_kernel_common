@@ -9,8 +9,13 @@
 #include <linux/f2fs_fs.h>
 
 #include "f2fs.h"
+#include "node.h"
 #include "segment.h"
 #include <trace/events/f2fs.h>
+
+
+#define LAST_AGE_WEIGHT		30
+#define SAME_AGE_REGION		1024
 
 static struct kmem_cache *age_extent_tree_slab;
 static struct kmem_cache *age_extent_node_slab;
@@ -264,8 +269,8 @@ static inline bool __is_age_extent_mergeable(struct age_extent_info *back,
 						struct age_extent_info *front)
 {
 	return (back->fofs + back->len == front->fofs &&
-			back->age == front->age &&
-			back->last_blocks == front->last_blocks);
+			abs(back->age - front->age) <= SAME_AGE_REGION &&
+			abs(back->last_blocks - front->last_blocks) <= SAME_AGE_REGION);
 }
 
 static inline bool __is_back_age_ext_mergeable(struct age_extent_info *cur,
@@ -495,6 +500,86 @@ void f2fs_update_age_extent_cache(struct inode *inode, pgoff_t fofs,
 void f2fs_truncate_age_extent_cache(struct inode *inode, pgoff_t fofs, unsigned int len)
 {
 	f2fs_update_age_extent_cache(inode, fofs, len, 0, 0);
+}
+
+unsigned long long f2fs_get_cur_dblock_allocated(struct f2fs_sb_info *sbi)
+{
+	return atomic64_read(&sbi->total_data_alloc);
+}
+
+static unsigned long long calculate_block_age(unsigned long long new,
+							unsigned long long old)
+{
+	if (new >= old)
+		return new - (new - old) * LAST_AGE_WEIGHT / 100;
+	else
+		return new + (old - new) * LAST_AGE_WEIGHT / 100;
+}
+
+void f2fs_update_data_block_age(struct dnode_of_data *dn)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(dn->inode);
+	unsigned long long cur_total_blk_alloced = f2fs_get_cur_dblock_allocated(sbi);
+	pgoff_t fofs;
+	unsigned long long cur_age, new_age;
+	struct age_extent_info ei;
+	bool find;
+	loff_t f_size = i_size_read(dn->inode);
+
+	if (!f2fs_may_age_extent_tree(dn->inode))
+		return;
+
+	fofs = f2fs_start_bidx_of_node(ofs_of_node(dn->node_page), dn->inode) +
+								dn->ofs_in_node;
+
+
+	/* When I/O is not aligned to a PAGE_SIZE, update will happen to the last
+	 * file block even in seq write. So don't record age for newly last file
+	 * block here.
+	 */
+	if ((f_size >> PAGE_SHIFT) == fofs && f_size & (PAGE_SIZE - 1) &&
+			dn->data_blkaddr == NEW_ADDR)
+		return;
+
+	find = f2fs_lookup_age_extent_cache(dn->inode, fofs, &ei);
+	if (find) {
+		if (cur_total_blk_alloced >= ei.last_blocks)
+			cur_age = cur_total_blk_alloced - ei.last_blocks;
+		else
+			/* total_data_alloc overflow */
+			cur_age = ULLONG_MAX - ei.last_blocks + cur_total_blk_alloced;
+
+		if (ei.age)
+			new_age = calculate_block_age(cur_age, ei.age);
+		else
+			new_age = cur_age;
+
+		WARN(new_age > cur_total_blk_alloced,
+				"inode block(%lu: %lu) age changed from: %llu to %llu",
+				dn->inode->i_ino, fofs, ei.age, new_age);
+	} else {
+		f2fs_bug_on(sbi, dn->data_blkaddr == NULL_ADDR);
+
+		if (dn->data_blkaddr == NEW_ADDR)
+			/* the data block was allocated for the first time */
+			new_age = 0;
+		else {
+			if (__is_valid_data_blkaddr(dn->data_blkaddr) &&
+					!f2fs_is_valid_blkaddr(sbi, dn->data_blkaddr,
+								DATA_GENERIC_ENHANCE)) {
+				f2fs_bug_on(sbi, 1);
+				return;
+			}
+
+			/*
+			 * init block age with zero, this can happen when the block age extent
+			 * was reclaimed due to memory constraint or system reboot
+			 */
+			new_age = 0;
+		}
+	}
+
+	f2fs_update_age_extent_cache(dn->inode, fofs, 1, new_age, cur_total_blk_alloced);
 }
 
 void f2fs_destroy_age_extent_tree(struct inode *inode)
