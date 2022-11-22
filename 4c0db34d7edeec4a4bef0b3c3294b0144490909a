@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa6a6896_a1c83555",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-22T18:05:15Z",
+      "side": 1,
+      "message": "The wrprotect() and relax_perms() function only do something when there is a valid mapping in the page-table, and will silently return 0 otherwise, so a correct implementation of this should deal with this or we might have funny results...\n\nFWIW I have a hacked up version of something like this in https://android-kvm.googlesource.com/linux/+/f51b714b017f97a0420bc6ca98b4319fa08e4dad but it isn\u0027t exactly optimized.",
+      "range": {
+        "startLine": 557,
+        "startChar": 26,
+        "endLine": 557,
+        "endChar": 35
+      },
+      "revId": "4c0db34d7edeec4a4bef0b3c3294b0144490909a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
