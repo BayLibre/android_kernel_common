@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b90355_65d49426",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2022-11-23T07:13:47Z",
+      "side": 1,
+      "message": "I tried to use the gki version cfg80211.ko, and there seems no problem to load it,\nbut again there is a problem reported with the mac80211.ko, mac80211.ko is built in different ways between the gki version and the db845c version?\n\n```\n[    1.844946][    T1] init: Loading module /lib/modules/cfg80211.ko with args \u0027\u0027\n[    1.877832][    T1] cfg80211: Loading compiled-in X.509 certificates for regulatory database\n[    1.890682][    T1] cfg80211: Loaded X.509 cert \u0027sforshee: 00b28ddf47aef9cea7\u0027\n[    1.898173][   T71] platform regulatory.0: Direct firmware load for regulatory.db failed with error -2\n[    1.902671][    T1] init: Loaded kernel module /lib/modules/cfg80211.ko\n[    1.907593][   T71] cfg80211: failed to load regulatory.db\n[    1.914390][    T1] init: Loading module /lib/modules/ath.ko with args \u0027\u0027\n[    1.929137][    T1] init: Loaded kernel module /lib/modules/ath.ko\n[    1.936176][    T1] init: Loading module /lib/modules/libarc4.ko with args \u0027\u0027\n[    1.944850][    T1] init: Loaded kernel module /lib/modules/libarc4.ko\n[    1.951799][    T1] init: Loading module /lib/modules/mac80211.ko with args \u0027\u0027\n[    1.967201][    T1] mac80211: disagrees about version of symbol wiphy_new_nm\n[    1.974418][    T1] mac80211: Unknown symbol wiphy_new_nm (err -22)\n[    2.022139][    T1] init: Failed to insmod \u0027/lib/modules/mac80211.ko\u0027 with args \u0027\u0027: Invalid argument\n[    2.031456][    T1] init: LoadWithAliases was unable to load /lib/modules/mac80211.ko\n\n```",
+      "revId": "af5428656304e416e94973f144975cbe0faed440",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
