@@ -166,6 +166,30 @@
       },
       "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec4667f8_edccf70c",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-23T14:02:59Z",
+      "side": 1,
+      "message": "Thanks, yes, I missed that hiding at the top of the file 😊\nWe do need to checks for SHARE/UNSHARE though, similar to how MMIO guard handles things.",
+      "parentUuid": "94d5bf6a_d2958bed",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 230,
+        "endChar": 65
+      },
+      "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
