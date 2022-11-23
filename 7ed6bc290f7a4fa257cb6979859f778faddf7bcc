@@ -22,6 +22,30 @@
       },
       "revId": "7ed6bc290f7a4fa257cb6979859f778faddf7bcc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc85366b_31bc1ed4",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-23T14:51:56Z",
+      "side": 1,
+      "message": "In fact, for share/unshare only if this is coming from a protected VM",
+      "parentUuid": "05a56bfd_3740394b",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 231,
+        "endChar": 29
+      },
+      "revId": "7ed6bc290f7a4fa257cb6979859f778faddf7bcc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
