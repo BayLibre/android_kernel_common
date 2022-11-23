@@ -70,6 +70,30 @@
       },
       "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beaeb406_dfd2c9ab",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-23T13:12:47Z",
+      "side": 1,
+      "message": "Yep, this all happens to work already, but returning NOT_SUPPORTED here is rather confusing IMO as we\u0027re clearly supporting it. Alternatively we could have a comment or something.",
+      "parentUuid": "8fc53cf6_f4b03d4a",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 230,
+        "endChar": 65
+      },
+      "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
