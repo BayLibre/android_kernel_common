@@ -693,10 +693,10 @@ int fscrypt_set_context(struct inode *inode, void *fs_data)
 	 */
 	if (ci->ci_policy.version == FSCRYPT_POLICY_V2 &&
 	    (ci->ci_policy.v2.flags & FSCRYPT_POLICY_FLAG_IV_INO_LBLK_32)) {
-		const struct fscrypt_master_key *mk =
-			ci->ci_master_key->payload.data[0];
+		 const struct fscrypt_master_key *mk =
+                         ci->ci_master_key->payload.data[0];
 
-		fscrypt_hash_inode_number(ci, mk);
+                fscrypt_hash_inode_number(ci, mk);
 	}
 
 	return inode->i_sb->s_cop->set_context(inode, &ctx, ctxsize, fs_data);
