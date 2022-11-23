@@ -16,6 +16,24 @@
       "message": "Eric, a review of this would be great, I do not feel confident in it at all.",
       "revId": "b0033a339157a9aaa42c66b482ec9a3db2151917",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d147071_cf58c5a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-11-23T20:41:31Z",
+      "side": 1,
+      "message": "This merge is missing the changes that were made in the following commits from v5.10.154:\n\n* fscrypt: stop using keyrings subsystem for fscrypt_master_key\n* fscrypt: fix keyring memory leak on mount failure\n\nThe `fs/crypto/` directory should end up in the same state as it would if the above two commits were cherry-picked.  They are both clean cherry-picks, so it\u0027s just the merge that is causing problems for some reason.  You can get to the correct end state by doing those two cherry-picks, or alternatively by taking v5.10.154 in all the merge conflicts in `fs/crypto/` and deleting the line `struct key *key;` from `fscrypt_prepare_setflags()`.",
+      "parentUuid": "ab30bd8e_6009ace9",
+      "revId": "b0033a339157a9aaa42c66b482ec9a3db2151917",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
