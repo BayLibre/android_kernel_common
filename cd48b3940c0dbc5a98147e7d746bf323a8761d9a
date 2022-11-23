@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e693c9_5d73001c",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-23T13:06:34Z",
+      "side": 1,
+      "message": "Can you set\n\nval[0] \u003d SMCCC_RET_SUCCESS;\n\nfor both hcalls?",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 230,
+        "endChar": 65
+      },
+      "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
