@@ -94,6 +94,30 @@
       },
       "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02656a2_b24a10a3",
+        "filename": "arch/arm64/kvm/hypercalls.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-23T13:17:33Z",
+      "side": 1,
+      "message": "\u003e Hmm, so actually, do we need something here to avoid exposing this to non-protected guests in normal KVM usage?\n\nGood point, and the relinquish hcall below probably wants that too",
+      "parentUuid": "beaeb406_dfd2c9ab",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 230,
+        "endChar": 65
+      },
+      "revId": "cd48b3940c0dbc5a98147e7d746bf323a8761d9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
