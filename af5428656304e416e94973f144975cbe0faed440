@@ -34,6 +34,24 @@
       "parentUuid": "90b90355_65d49426",
       "revId": "af5428656304e416e94973f144975cbe0faed440",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6916f8a1_e5e4d413",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2022-11-24T14:52:10Z",
+      "side": 1,
+      "message": "modinfo on db845c build does not work, since the vendor_boot.img is used, there is no ko file could be found after the device booted up.\n\nAnd I think I found the reason, it\u0027s CONFIG_NL80211_TESTMODE, which is enabled in the db845c config[1], but not in the gki config.\n\nI will check and clean this change next.\n\nhttps://android-review.googlesource.com/c/kernel/common/+/2155900/6/arch/arm64/configs/db845c_gki.fragment#2",
+      "parentUuid": "ff89a89c_5ce08c62",
+      "revId": "af5428656304e416e94973f144975cbe0faed440",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
