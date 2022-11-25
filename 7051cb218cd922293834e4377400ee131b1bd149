@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ebb424c_1c5a570d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-25T14:42:16Z",
+      "side": 1,
+      "message": "Nit: pkvm_alloc_private_va_range() doesn\u0027t touch \u0026addr when it fails IIRC, so maybe we can simplify a bit",
+      "range": {
+        "startLine": 112,
+        "startChar": 3,
+        "endLine": 112,
+        "endChar": 11
+      },
+      "revId": "7051cb218cd922293834e4377400ee131b1bd149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d957ca0_465d20fd",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-25T14:42:16Z",
+      "side": 1,
+      "message": "It\u0027s probably OK to read lock __pkvm_modules_enabled lock free no? I guess there is theoretically a funny transient state, but the host should be trustworthy at that point, so it\u0027s probably fine.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 21
+      },
+      "revId": "7051cb218cd922293834e4377400ee131b1bd149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13927837_b3291553",
+        "filename": "arch/arm64/kvm/hyp/nvhe/modules.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-11-25T14:42:16Z",
+      "side": 1,
+      "message": "IIRC we have an __rodata_after_init section at EL2, could make sense to move this in there? And then we\u0027ll need to use the fixmap in close_module_reg(), but that should be pretty straightforward.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 28
+      },
+      "revId": "7051cb218cd922293834e4377400ee131b1bd149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
