@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e53b05_7c9f34c7",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Could you please clean this up? This is very messy and impossible to read. I\u0027ll point out a few instances but please go over the code and fix it all.",
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72b28373_5f2379f5",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Multiline comments are written as:\n```\n/*\n * First comment sentence. Second comment sentence. Third\n * comment sentence.\n */\n```\nhttps://www.kernel.org/doc/html/latest/process/coding-style.html#commenting",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 2
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d5c9278_7cb78210",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "spaces",
+      "range": {
+        "startLine": 27,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 4
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba63caa_7d1364a8",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Why is there a second comment here? Merge it together with the one above or delete.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 17
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c2e41b6_bc142c52",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Why three empty lines? One is enough to visually separate. But do you want that in the first place?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bae9fea_81160647",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Please align these to the same column",
+      "range": {
+        "startLine": 37,
+        "startChar": 36,
+        "endLine": 37,
+        "endChar": 42
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4439f91_5313245e",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Different alignment from neighbours",
+      "range": {
+        "startLine": 46,
+        "startChar": 37,
+        "endLine": 46,
+        "endChar": 38
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e4b0984_8dd5a1e4",
+        "filename": "arch/arm64/include/asm/kvm_s2mpu.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1059815
+      },
+      "writtenOn": "2022-11-25T13:35:17Z",
+      "side": 1,
+      "message": "Why does the comment end here and start again on the next line?",
+      "range": {
+        "startLine": 129,
+        "startChar": 54,
+        "endLine": 129,
+        "endChar": 56
+      },
+      "revId": "7152cd2be3071c5e5b802feef43e89ed1e0425c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
