@@ -24,38 +24,6 @@ static void __kvm_flush_dcache_to_poc(void *addr, size_t size)
 atomic_t num_modules = ATOMIC_INIT(0);
 DEFINE_HYP_SPINLOCK(modules_lock);
 
-bool __pkvm_modules_enabled;
-
-void pkvm_modules_lock(void)
-{
-	hyp_spin_lock(&modules_lock);
-}
-
-void pkvm_modules_unlock(void)
-{
-	hyp_spin_unlock(&modules_lock);
-}
-
-bool pkvm_modules_enabled(void)
-{
-	return __pkvm_modules_enabled;
-}
-
-int __pkvm_close_module_registration(void)
-{
-	int ret;
-
-	pkvm_modules_lock();
-
-	ret = __pkvm_modules_enabled ? 0 : -EACCES;
-	__pkvm_modules_enabled = false;
-
-	pkvm_modules_unlock();
-
-	/* The fuse is blown! No way back until reset */
-	return ret;
-}
-
 struct pkvm_module {
 	unsigned long id;
 	void *hyp_text;
@@ -114,11 +82,6 @@ int __pkvm_init_module(unsigned long args_hva)
 		return ret;
 
 	hyp_spin_lock(&modules_lock);
-
-	if (!pkvm_modules_enabled()) {
-		ret = -EACCES;
-		goto err_unmap;
-	}
 
 	module = pkvm_module_next_empty();
 	if (!module) {
@@ -191,21 +154,15 @@ end:
 
 int __pkvm_register_hcall(unsigned long hfn_kern_va, unsigned long module_id)
 {
-	struct pkvm_module *mod = NULL;
-	int reserved_id, ret;
+	struct pkvm_module *mod;
 	dyn_hcall_t hfn;
+	int reserved_id;
 
 	hyp_spin_lock(&modules_lock);
-	if (pkvm_modules_enabled()) {
-		ret = -EACCES;
-		goto err;
-	}
-
 	mod = pkvm_module_find(module_id);
-	if (!mod) {
-		ret = -ENODEV;
-		goto err;
-	}
+	hyp_spin_unlock(&modules_lock);
+	if (!mod)
+		return -ENODEV;
 
 	hfn = (void *)(hfn_kern_va - (unsigned long)mod->hyp_hva_text +
 		       (unsigned long)mod->hyp_text);
@@ -215,8 +172,8 @@ int __pkvm_register_hcall(unsigned long hfn_kern_va, unsigned long module_id)
 	reserved_id = atomic_read(&num_dynamic_hcalls);
 
 	if (reserved_id >= MAX_DYNAMIC_HCALLS) {
-		ret = -ENOMEM;
-		goto err_hcall_unlock;
+		hyp_spin_unlock(&dyn_hcall_lock);
+		return -ENOMEM;
 	}
 
 	WRITE_ONCE(host_dynamic_hcalls[reserved_id], hfn);
@@ -227,11 +184,7 @@ int __pkvm_register_hcall(unsigned long hfn_kern_va, unsigned long module_id)
 	 */
 	atomic_set_release(&num_dynamic_hcalls, reserved_id + 1);
 
-	ret = reserved_id + __KVM_HOST_SMCCC_FUNC___dynamic_hcalls;
-err_hcall_unlock:
 	hyp_spin_unlock(&dyn_hcall_lock);
-err:
-	hyp_spin_unlock(&modules_lock);
 
-	return ret;
+	return reserved_id + __KVM_HOST_SMCCC_FUNC___dynamic_hcalls;
 };
