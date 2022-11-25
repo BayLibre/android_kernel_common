@@ -38,7 +38,8 @@ struct pkvm_el2_module {
 };
 
 #ifdef MODULE
-int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this);
+int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this,
+			   unsigned long *token);
 
 /**
  * pkvm_load_el2_module: blah
@@ -46,7 +47,7 @@ int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this);
  * function_nocfi() does not work with function pointers, hence the macro in
  * lieu of a function.
  */
-#define pkvm_load_el2_module(init_fn)					\
+#define pkvm_load_el2_module(init_fn, token)				\
 ({									\
 	extern char __kvm_nvhe___hypmod_text_start[];			\
 	extern char __kvm_nvhe___hypmod_text_end[];			\
@@ -73,7 +74,7 @@ int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this);
 				  sizeof(*mod.relocs); \
 	mod.init = function_nocfi(init_fn);				\
 									\
-	__pkvm_load_el2_module(&mod, THIS_MODULE);			\
+	__pkvm_load_el2_module(&mod, THIS_MODULE, token);		\
 })
 #endif
 #endif

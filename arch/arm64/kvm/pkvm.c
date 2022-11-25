@@ -422,7 +422,8 @@ static bool offset_in_section(size_t offset, void *start, struct pkvm_module_sec
 	return (addr >= sec->start) && (addr < sec->end);
 }
 
-int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this)
+int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this,
+			   unsigned long *token)
 {
 	void *start, *end, *hyp_va;
 	enum kvm_pgtable_prot prot;
@@ -457,6 +458,15 @@ int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this)
 		module_put(this);
 		return -ENOMEM;
 	}
+
+	/*
+	 * The token can be used for other calls related to this module.
+	 * Conveniently the only information needed is this addr so let's use it
+	 * as an identifier.
+	 */
+	if (token)
+		*token = (unsigned long)hyp_va;
+
 	endrel = (void *)mod->relocs + mod->nr_relocs * sizeof(*endrel);
 	kvm_apply_hyp_module_relocations(start, hyp_va, mod->relocs, endrel);
 
