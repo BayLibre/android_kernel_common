@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcd70f1f_34788309",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-25T15:21:30Z",
+      "side": 1,
+      "message": "It is, but I wanted with this lock to bring the guarantee that when the `close_the_door` HVC returns, the module loading is really disabled on all CPUs.",
+      "parentUuid": "4d957ca0_465d20fd",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 21
+      },
+      "revId": "7051cb218cd922293834e4377400ee131b1bd149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13927837_b3291553",
         "filename": "arch/arm64/kvm/hyp/nvhe/modules.c",
         "patchSetId": 2
@@ -60,6 +84,30 @@
       "writtenOn": "2022-11-25T14:42:16Z",
       "side": 1,
       "message": "IIRC we have an __rodata_after_init section at EL2, could make sense to move this in there? And then we\u0027ll need to use the fixmap in close_module_reg(), but that should be pretty straightforward.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 28
+      },
+      "revId": "7051cb218cd922293834e4377400ee131b1bd149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facc8929_01abb790",
+        "filename": "arch/arm64/kvm/hyp/nvhe/modules.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-25T15:21:30Z",
+      "side": 1,
+      "message": "Yeah, good idea, that would reduce the attack surface",
+      "parentUuid": "13927837_b3291553",
       "range": {
         "startLine": 27,
         "startChar": 0,
