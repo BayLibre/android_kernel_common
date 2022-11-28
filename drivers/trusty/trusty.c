@@ -31,7 +31,6 @@ static bool use_high_wq;
 module_param(use_high_wq, bool, 0660);
 
 struct trusty_work {
-	struct trusty_state *ts;
 	struct task_struct *nop_thread;
 	wait_queue_head_t nop_event_wait;
 };
@@ -150,7 +149,7 @@ static unsigned long trusty_std_call_helper(struct device *dev,
 			 * Make sure this cpu will eventually re-enter trusty
 			 * even if the std_call resumes on another cpu.
 			 */
-			trusty_enqueue_nop(dev, NULL);
+			trusty_enqueue_nop(dev, NULL, false);
 		}
 		local_irq_enable();
 
@@ -190,10 +189,28 @@ static void trusty_std_call_cpu_idle(struct trusty_state *s)
 	}
 }
 
+static void trusty_adjust_nice_nopreempt(struct trusty_share_state *trusty_share_state,
+		int req_nice)
+{
+	int cpu_num = smp_processor_id();
+	int cur_nice = task_nice(current);
+
+	if (req_nice != cur_nice) {
+		/* tell Linux what priority is */
+		set_user_nice(current, req_nice);
+
+		/* now tell Trusty what the priority is */
+		if (trusty_share_state)
+			trusty_set_actual_nice(cpu_num,
+					trusty_share_state, req_nice);
+	}
+}
+
 s32 trusty_std_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 {
 	int ret;
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
+	int old_nice = task_nice(current);
 
 	if (WARN_ON(SMC_IS_FASTCALL(smcnr)))
 		return SM_ERR_INVALID_PARAMETERS;
@@ -210,6 +227,10 @@ s32 trusty_std_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 	}
 
 	if (smcnr != SMC_SC_NOP) {
+		/* always elevate for async calls into Trusty */
+		trusty_adjust_nice_nopreempt(s->trusty_share_state,
+				LINUX_NICE_FOR_TRUSTY_PRIORITY_HIGH);
+
 		mutex_lock(&s->smc_lock);
 		reinit_completion(&s->cpu_idle_completion);
 	}
@@ -230,8 +251,12 @@ s32 trusty_std_call32(struct device *dev, u32 smcnr, u32 a0, u32 a1, u32 a2)
 
 	if (smcnr == SMC_SC_NOP)
 		complete(&s->cpu_idle_completion);
-	else
+	else {
+		/* set priority back to what it was before call into Trusty */
+		trusty_adjust_nice_nopreempt(s->trusty_share_state, old_nice);
+
 		mutex_unlock(&s->smc_lock);
+	}
 
 	return ret;
 }
@@ -740,10 +765,9 @@ static bool dequeue_nop(struct trusty_state *s, u32 *args)
 	return nop;
 }
 
-static void locked_nop_work_func(struct trusty_work *tw)
+static void locked_nop_work_func(struct trusty_state *s)
 {
 	int ret;
-	struct trusty_state *s = tw->ts;
 
 	ret = trusty_std_call32(s->dev, SMC_SC_LOCKED_NOP, 0, 0, 0);
 	if (ret != 0)
@@ -753,35 +777,20 @@ static void locked_nop_work_func(struct trusty_work *tw)
 	dev_dbg(s->dev, "%s: done\n", __func__);
 }
 
-static void nop_work_func(struct trusty_work *tw)
+static void nop_work_func(struct trusty_state *s)
 {
 	int ret;
 	bool next;
 	u32 args[3];
 	u32 last_arg0;
-	struct trusty_state *s = tw->ts;
-	int old_nice = task_nice(current);
-	bool nice_changed = false;
+	int req_nice;
 
 	dequeue_nop(s, args);
 	do {
-		/*
-		 * In case use_high_wq flaged when trusty is not idle,
-		 * change the work's prio directly.
-		 */
-		if (!WARN_ON(current->policy != SCHED_NORMAL)) {
-			if (use_high_wq && task_nice(current) != MIN_NICE) {
-				nice_changed = true;
-				set_user_nice(current, MIN_NICE);
-			} else if (!use_high_wq &&
-				   task_nice(current) == MIN_NICE) {
-				nice_changed = true;
-				set_user_nice(current, 0);
-			}
-		}
-
 		dev_dbg(s->dev, "%s: %x %x %x\n",
 			__func__, args[0], args[1], args[2]);
+
+		preempt_disable();
 
 		last_arg0 = args[0];
 		ret = trusty_std_call32(s->dev, SMC_SC_NOP,
@@ -790,6 +799,17 @@ static void nop_work_func(struct trusty_work *tw)
 		next = dequeue_nop(s, args);
 
 		if (ret == SM_ERR_NOP_INTERRUPTED) {
+			int cpu_num = smp_processor_id(); /* with preempt disabled */
+
+			if (use_high_wq || !s->trusty_share_state) {
+				req_nice = LINUX_NICE_FOR_TRUSTY_PRIORITY_HIGH;
+			} else {
+				req_nice = trusty_get_requested_nice(cpu_num,
+						s->trusty_share_state);
+			}
+
+			trusty_adjust_nice_nopreempt(s->trusty_share_state, req_nice);
+
 			next = true;
 		} else if (ret != SM_ERR_NOP_DONE) {
 			dev_err(s->dev, "%s: SMC_SC_NOP %x failed %d",
@@ -802,16 +822,13 @@ static void nop_work_func(struct trusty_work *tw)
 				next = true;
 			}
 		}
+
+		preempt_enable();
 	} while (next);
-	/*
-	 * Restore nice if even changed.
-	 */
-	if (nice_changed)
-		set_user_nice(current, old_nice);
 	dev_dbg(s->dev, "%s: done\n", __func__);
 }
 
-void trusty_enqueue_nop(struct device *dev, struct trusty_nop *nop)
+void trusty_enqueue_nop(struct device *dev, struct trusty_nop *nop, int escalate_prio)
 {
 	unsigned long flags;
 	struct trusty_work *tw;
@@ -827,6 +844,10 @@ void trusty_enqueue_nop(struct device *dev, struct trusty_nop *nop)
 			list_add_tail(&nop->node, &s->nop_queue);
 		spin_unlock_irqrestore(&s->nop_lock, flags);
 	}
+
+	if (escalate_prio)
+		set_user_nice(tw->nop_thread, LINUX_NICE_FOR_TRUSTY_PRIORITY_HIGH);
+
 	wake_up_interruptible(&tw->nop_event_wait);
 	preempt_enable();
 }
@@ -849,9 +870,9 @@ EXPORT_SYMBOL(trusty_dequeue_nop);
 
 static int trusty_nop_thread(void *context)
 {
-	struct trusty_work *tw = context;
-	struct trusty_state *s = tw->ts;
-	void (*work_func)(struct trusty_work *tw);
+	struct trusty_state *s = context;
+	struct trusty_work *tw = this_cpu_ptr(s->nop_works);
+	void (*work_func)(struct trusty_state *s);
 	int ret = 0;
 
 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
@@ -872,7 +893,7 @@ static int trusty_nop_thread(void *context)
 		}
 
 		/* process work */
-		work_func(context);
+		work_func(s);
 	};
 	remove_wait_queue(&tw->nop_event_wait, &wait);
 
@@ -943,8 +964,7 @@ static int trusty_probe(struct platform_device *pdev)
 	for_each_possible_cpu(cpu) {
 		struct trusty_work *tw = per_cpu_ptr(s->nop_works, cpu);
 
-		tw->ts = s;
-		tw->nop_thread = kthread_create(trusty_nop_thread, tw,
+		tw->nop_thread = kthread_create(trusty_nop_thread, s,
 				"trusty-nop-%d", cpu);
 		if (IS_ERR(tw->nop_thread)) {
 			ret = PTR_ERR(tw->nop_thread);
