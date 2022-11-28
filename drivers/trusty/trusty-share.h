@@ -52,6 +52,7 @@ struct trusty_shared {
 	 * 'struct trusty_percpu_data percpu_data_table[]',
 	 * with 'cpu_count' as its number of elements.
 	 */
+	struct trusty_percpu_data percpu_data_table[0];
 };
 
 #endif /* _TRUSTY_SHARE_H_ */

@@ -34,6 +34,7 @@ struct trusty_work {
 	struct trusty_state *ts;
 	struct task_struct *nop_thread;
 	wait_queue_head_t nop_event_wait;
+	unsigned int cpu_num; //FIXME: there has to be a better way!
 };
 
 struct trusty_share_state;
@@ -762,6 +763,7 @@ static void nop_work_func(struct trusty_work *tw)
 	struct trusty_state *s = tw->ts;
 	int old_nice = task_nice(current);
 	bool nice_changed = false;
+	int cur_nice = task_nice(current);
 
 	dequeue_nop(s, args);
 	do {
@@ -790,6 +792,15 @@ static void nop_work_func(struct trusty_work *tw)
 		next = dequeue_nop(s, args);
 
 		if (ret == SM_ERR_NOP_INTERRUPTED) {
+			int req_nice = trusty_get_requested_nice(tw->cpu_num,
+					s->trusty_share_state);
+			if (req_nice != cur_nice) {
+				set_user_nice(current, req_nice);
+				trusty_set_actual_nice(tw->cpu_num,
+						s->trusty_share_state, req_nice);
+				cur_nice = req_nice;
+				schedule(); /* ask Linux to reschedule */
+			}
 			next = true;
 		} else if (ret != SM_ERR_NOP_DONE) {
 			dev_err(s->dev, "%s: SMC_SC_NOP %x failed %d",
@@ -943,6 +954,7 @@ static int trusty_probe(struct platform_device *pdev)
 	for_each_possible_cpu(cpu) {
 		struct trusty_work *tw = per_cpu_ptr(s->nop_works, cpu);
 
+		tw->cpu_num = cpu;
 		tw->ts = s;
 		tw->nop_thread = kthread_create(trusty_nop_thread, tw,
 				"trusty-nop-%d", cpu);
