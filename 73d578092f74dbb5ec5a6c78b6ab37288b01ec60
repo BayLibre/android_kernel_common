@@ -34,6 +34,24 @@
       "parentUuid": "6f09508d_24e275a1",
       "revId": "73d578092f74dbb5ec5a6c78b6ab37288b01ec60",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1e1a3a4_ab0138c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1370197
+      },
+      "writtenOn": "2022-11-28T21:49:37Z",
+      "side": 1,
+      "message": "So after more testing I think it would be better to merge this even if it\u0027s a no op. If we don\u0027t include this then subsequent CLs will have conflicts, so it\u0027s easier to just merge it now and let the later CL do its thing and move it to the right place later.",
+      "parentUuid": "d85aad83_65a329cd",
+      "revId": "73d578092f74dbb5ec5a6c78b6ab37288b01ec60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
