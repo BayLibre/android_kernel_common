@@ -46,6 +46,30 @@
       },
       "revId": "4c0db34d7edeec4a4bef0b3c3294b0144490909a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e758b69_28de8ddf",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-28T15:45:25Z",
+      "side": 1,
+      "message": "It seems we want the module support before tracing in the kernel... So I\u0027ll keep this patch so far to have a functional series and I\u0027ll drop it once the module support is merged.",
+      "parentUuid": "ac3eae1e_f2d52b2e",
+      "range": {
+        "startLine": 557,
+        "startChar": 26,
+        "endLine": 557,
+        "endChar": 35
+      },
+      "revId": "4c0db34d7edeec4a4bef0b3c3294b0144490909a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
