@@ -773,6 +773,12 @@ int security_binder_transfer_file(const struct cred *from,
 	return call_int_hook(binder_transfer_file, 0, from, to, file);
 }
 
+int security_binder_transfer_charge(const struct cred *from,
+				    const struct cred *to)
+{
+	return call_int_hook(binder_transfer_charge, 0, from, to);
+}
+
 int security_ptrace_access_check(struct task_struct *child, unsigned int mode)
 {
 	return call_int_hook(ptrace_access_check, 0, child, mode);

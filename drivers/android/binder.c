@@ -2457,6 +2457,11 @@ static int binder_translate_fd(u32 fd, binder_size_t fd_offset, __u32 flags,
 	if (IS_ENABLED(CONFIG_MEMCG) && (flags & BINDER_FD_FLAG_XFER_CHARGE)) {
 		struct dma_buf *dmabuf;
 
+		if (security_binder_transfer_charge(proc->cred, target_proc->cred)) {
+			ret = -EPERM;
+			goto err_security;
+		}
+
 		if (unlikely(!is_dma_buf_file(file))) {
 			binder_user_error(
 				"%d:%d got transaction with XFER_CHARGE for non-dmabuf fd, %d\n",

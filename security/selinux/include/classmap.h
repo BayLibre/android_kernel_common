@@ -173,7 +173,7 @@ const struct security_class_mapping secclass_map[] = {
 	{ "tun_socket",
 	  { COMMON_SOCK_PERMS, "attach_queue", NULL } },
 	{ "binder", { "impersonate", "call", "set_context_mgr", "transfer",
-		      NULL } },
+		      "transfer_charge", NULL } },
 	{ "cap_userns",
 	  { COMMON_CAP_PERMS, NULL } },
 	{ "cap2_userns",
