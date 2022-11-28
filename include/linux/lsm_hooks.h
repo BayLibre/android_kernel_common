@@ -1345,6 +1345,11 @@
  *	@from contains the struct cred for the sending process.
  *	@file contains the struct file being transferred.
  *	@to contains the struct cred for the receiving process.
+ * @binder_transfer_charge:
+ *	Check whether @from is allowed to transfer the memory charge for a
+ *	buffer out of its cgroup to @to.
+ *	@from contains the struct cred for the sending process.
+ *	@to contains the struct cred for the receiving process.
  *
  * @ptrace_access_check:
  *	Check permission before allowing the current process to trace the
