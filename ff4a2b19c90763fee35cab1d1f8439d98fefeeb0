@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "178dac22_10eec21f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-29T21:59:41Z",
+      "side": 1,
+      "message": "How are you generating the symbol list? We just noticed that there are none of the _traceiter* counterparts to these _tracepoint* symbols. _traceiter symbols are important to include for KMI protection.\n\nPlease generate the symbol list as described in our documentation: https://source.android.com/docs/core/architecture/kernel/abi-monitor#work-with-sym-lists\n\nIt is not correct if it is missing the _traceiter version of each hook.\n\nSee b/260757963",
+      "revId": "ff4a2b19c90763fee35cab1d1f8439d98fefeeb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
