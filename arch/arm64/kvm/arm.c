@@ -2266,8 +2266,10 @@ static int pkvm_drop_host_privileges(void)
 	return ret;
 }
 
-static int finalize_hyp_mode(void)
+static int __init finalize_hyp_mode(void)
 {
+	int ret;
+
 	if (!is_protected_kvm_enabled())
 		return 0;
 
@@ -2277,8 +2279,16 @@ static int finalize_hyp_mode(void)
 	 */
 	kmemleak_free_part(__hyp_bss_start, __hyp_bss_end - __hyp_bss_start);
 	kmemleak_free_part_phys(hyp_mem_base, hyp_mem_size);
-	return pkvm_drop_host_privileges();
+
+	ret = pkvm_drop_host_privileges();
+	if (ret) {
+		pr_err("Failed to de-privilege the host kernel: %d\n", ret);
+		BUG();
+	}
+
+	return ret;
 }
+late_initcall(finalize_hyp_mode);
 
 struct kvm_vcpu *kvm_mpidr_to_vcpu(struct kvm *kvm, unsigned long mpidr)
 {
@@ -2395,12 +2405,6 @@ int kvm_arch_init(void *opaque)
 		goto out_hyp;
 
 	if (!in_hyp_mode) {
-		err = finalize_hyp_mode();
-		if (err) {
-			kvm_err("Failed to finalize Hyp protection\n");
-			goto out_hyp;
-		}
-
 		err = init_hyp_tracefs();
 		if (err)
 			kvm_err("Failed to initialize Hyp tracing\n");
