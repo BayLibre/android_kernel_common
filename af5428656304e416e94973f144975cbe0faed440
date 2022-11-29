@@ -70,6 +70,24 @@
       "parentUuid": "6916f8a1_e5e4d413",
       "revId": "af5428656304e416e94973f144975cbe0faed440",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5119ad20_8f5f7a9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2022-11-29T04:14:58Z",
+      "side": 1,
+      "message": "Hi, Ramji\n\nWith the lkft project, db845c_create_vendor_boot_img[1] is the function we used to regenerate the vendor_boot.img, and the vendor boot ramdisk is created via the recreate_ramdisk_with_kos[2] function defined there, all ko files(which should include the gki ko files) from the db845c build dist directory will be integrated into the ramdsik image. The vendor_boot.img recreation method should be the same as the AOSP build(if not, it needs to be updated.)\nNot sure if this is all you want?\n\n[1]: https://android-git.linaro.org/android-build-configs.git/tree/lkft/scripts/dragonboard.sh?h\u003dlkft#n445\n[2]: https://android-git.linaro.org/android-build-configs.git/tree/lkft/scripts/dragonboard.sh?h\u003dlkft#n29",
+      "parentUuid": "d526bce1_e848218a",
+      "revId": "af5428656304e416e94973f144975cbe0faed440",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
