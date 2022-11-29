@@ -2256,8 +2256,10 @@ static int pkvm_drop_host_privileges(void)
 	return ret;
 }
 
-static int finalize_hyp_mode(void)
+static int __init finalize_hyp_mode(void)
 {
+	int err;
+
 	if (!is_protected_kvm_enabled())
 		return 0;
 
@@ -2267,8 +2269,15 @@ static int finalize_hyp_mode(void)
 	 */
 	kmemleak_free_part(__hyp_bss_start, __hyp_bss_end - __hyp_bss_start);
 	kmemleak_free_part_phys(hyp_mem_base, hyp_mem_size);
-	return pkvm_drop_host_privileges();
+	err = pkvm_drop_host_privileges();
+	if (err) {
+		pr_err("Failed to de-privilege the host kernel: %d\n", err);
+		BUG();
+	}
+
+	return 0;
 }
+late_initcall(finalize_hyp_mode);
 
 struct kvm_vcpu *kvm_mpidr_to_vcpu(struct kvm *kvm, unsigned long mpidr)
 {
@@ -2383,14 +2392,6 @@ int kvm_arch_init(void *opaque)
 	err = init_subsystems();
 	if (err)
 		goto out_hyp;
-
-	if (!in_hyp_mode) {
-		err = finalize_hyp_mode();
-		if (err) {
-			kvm_err("Failed to finalize Hyp protection\n");
-			goto out_hyp;
-		}
-	}
 
 	if (is_protected_kvm_enabled()) {
 		kvm_info("Protected nVHE mode initialized successfully\n");
