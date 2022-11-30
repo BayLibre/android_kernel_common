@@ -16,6 +16,24 @@
       "message": "Sorry, wait, this is a respin for a branch which is more than six months old, which is something I didn\u0027t think we supported?",
       "revId": "822a6b0993b96190a65ea4dacc52c580ea6c3e4e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0443f41_96282a3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-30T18:14:46Z",
+      "side": 1,
+      "message": "It is true that 2022-04 shouldn\u0027t be getting any new partner respins per the policy changes announced on September 19: https://source.android.com/docs/core/architecture/kernel/gki-android12-5_10-release-builds#stages_of_release_branches\n\nBased on the 6-month lifetime, respins on 2022-04 should end on 1 November. Since this is a new policy and the 6-month lifetime may have been missed by partners, we\u0027ll defer enforcement of that policy through December. Please make sure you move to a later release branch if you need additional respins.",
+      "parentUuid": "9e7dfc58_ffdda42a",
+      "revId": "822a6b0993b96190a65ea4dacc52c580ea6c3e4e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
