@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcd7806_f1d95bed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2022-11-30T03:10:48Z",
+      "side": 1,
+      "message": "Do I need to do something about these KMI warnings?\n\n```\n\u0027struct fscrypt_info at fscrypt_private.h:195:1\u0027 changed:\n  type size hasn\u0027t changed\n  there are data member changes:\n    type \u0027key*\u0027 of \u0027fscrypt_info::ci_master_key\u0027 changed:\n      pointer type changed from: \u0027key*\u0027 to: \u0027fscrypt_master_key*\u0027\n  2741 impacted interfaces\n\n\u0027struct super_block at fs.h:1450:1\u0027 changed:\n  type size hasn\u0027t changed\n  there are data member changes:\n    type \u0027key*\u0027 of \u0027super_block::s_master_keys\u0027 changed:\n      pointer type changed from: \u0027key*\u0027 to: \u0027fscrypt_keyring*\u0027\n  2741 impacted interfaces\n```\n\n`struct fscrypt_info` isn\u0027t supposed to be part of the KMI at all, as it\u0027s only used internally by built-in code in `fs/crypto/`.  We had discussed this last year, and I was told it had been fixed.  Apparently not.\n\n`struct super_block` as a whole is part of the KMI, I guess, but the specific field being changed here is likewise only for use by built-in code in `fs/crypto/`.\n\nSo I believe these changes are perfectly safe to make; it is just the ABI tooling that is complaining.",
+      "revId": "f466ca1247d733cb045a30f18e51b34d8b8c86e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
