@@ -1,3 +1,8 @@
+"""
+This module contains a full list of kernel modules
+ compiled by GKI.
+"""
+
 COMMON_GKI_MODULES_LIST = [
     # keep sorted
     "drivers/block/zram/zram.ko",
