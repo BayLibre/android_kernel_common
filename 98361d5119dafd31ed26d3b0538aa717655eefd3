@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea5a128e_941a9a61",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-30T18:58:54Z",
+      "side": 1,
+      "message": "The blocking happens later in the series but the approach will ultimately depend on the bionic fix to allow us loading modules before /init kicks in.\n\nBut I suppose the TODO could be removed from this patch?",
+      "parentUuid": "595133d0_8e99db23",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 36
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ca72595_fdaec84d",
         "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
         "patchSetId": 4
@@ -118,6 +142,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "439b541f_3f6718ae",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-30T18:58:54Z",
+      "side": 1,
+      "message": "Yep it does, that\u0027s actually on the go/pkvm-modules-todo list for an upstream friendly version :| \n\nNotice though that with our current approach, if any required module will not load, the device will not boot (as it couldn\u0027t be fully protected)",
+      "parentUuid": "5277735a_57d84b2a",
+      "range": {
+        "startLine": 125,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 30
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fea84550_f537f467",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 4
@@ -129,6 +177,30 @@
       "writtenOn": "2022-11-30T18:48:39Z",
       "side": 1,
       "message": "Do we need to check this here? I\u0027d have expected EL2 to check this later on anyway",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 441,
+        "endChar": 0
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b882350c_8292135c",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-11-30T18:58:54Z",
+      "side": 1,
+      "message": "At the time when modules are loadable, we do still trust the host. So we can still trust it for those checks?",
+      "parentUuid": "fea84550_f537f467",
       "range": {
         "startLine": 437,
         "startChar": 0,
