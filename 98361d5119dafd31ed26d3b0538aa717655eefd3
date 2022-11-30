@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29bf48d9_8669c41b",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "Useful ;)",
+      "range": {
+        "startLine": 32,
+        "startChar": 25,
+        "endLine": 32,
+        "endChar": 29
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e13e3704_395831a0",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "We\u0027ve been careful not to insert alignment padding around the two labels, so this works out. Ok.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 28
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "595133d0_8e99db23",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "Why not do that from the start? It should just be a matter of putting them in the correct place in the hypercall table.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 36
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ca72595_fdaec84d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "We should be able to reject W+X here",
+      "range": {
+        "startLine": 125,
+        "startChar": 83,
+        "endLine": 125,
+        "endChar": 87
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5277735a_57d84b2a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "We leak the page if this fails?",
+      "range": {
+        "startLine": 125,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 30
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fea84550_f537f467",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "Do we need to check this here? I\u0027d have expected EL2 to check this later on anyway",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 441,
+        "endChar": 0
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb0409dd_9771eba3",
+        "filename": "arch/arm64/kvm/va_layout.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-11-30T18:48:39Z",
+      "side": 1,
+      "message": "Any endianness concerns here?",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 11
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
