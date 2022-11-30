@@ -34,6 +34,24 @@
       "parentUuid": "449267e1_f5a7ada2",
       "revId": "f5d299c6e0c3c28b872946820577b127103ddf94",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8866169_7e73ee63",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 2096,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-11-30T19:46:46Z",
+      "side": 1,
+      "message": "We just noticed the lack of traceiter, but it may go back a long time. We currently don\u0027t have automation doing this check (hopefully coming soon). It is correct in `android12-5.10`. Looking back at 13-5.15, qcom\u0027s symbol list has never been correct. Too bad we didn\u0027t catch this earlier.\n\nAre you generating the symbol list as specified in https://source.android.com/docs/core/architecture/kernel/abi-monitor#work-with-sym-lists ?",
+      "parentUuid": "b08af44b_139a173a",
+      "revId": "f5d299c6e0c3c28b872946820577b127103ddf94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
