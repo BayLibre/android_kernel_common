@@ -645,11 +645,11 @@ void *kmem_cache_alloc(struct kmem_cache *cachep, gfp_t flags)
 EXPORT_SYMBOL(kmem_cache_alloc);
 
 
-void *kmem_cache_alloc_lru(struct kmem_cache *cachep, struct list_lru *lru, gfp_t flags)
+void *_kmem_cache_alloc_lru(struct kmem_cache *cachep, struct list_lru *lru, gfp_t flags)
 {
 	return slob_alloc_node(cachep, flags, NUMA_NO_NODE);
 }
-EXPORT_SYMBOL(kmem_cache_alloc_lru);
+EXPORT_SYMBOL(_kmem_cache_alloc_lru);
 
 void *__kmalloc_node(size_t size, gfp_t gfp, int node)
 {
@@ -657,11 +657,11 @@ void *__kmalloc_node(size_t size, gfp_t gfp, int node)
 }
 EXPORT_SYMBOL(__kmalloc_node);
 
-void *kmem_cache_alloc_node(struct kmem_cache *cachep, gfp_t gfp, int node)
+void *_kmem_cache_alloc_node(struct kmem_cache *cachep, gfp_t gfp, int node)
 {
 	return slob_alloc_node(cachep, gfp, node);
 }
-EXPORT_SYMBOL(kmem_cache_alloc_node);
+EXPORT_SYMBOL(_kmem_cache_alloc_node);
 
 static void __kmem_cache_free(void *b, int size)
 {
@@ -720,6 +720,7 @@ int kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t nr,
 			kmem_cache_free_bulk(s, i, p);
 			return 0;
 		}
+		slab_tag_add(NULL, x);
 	}
 	return i;
 }

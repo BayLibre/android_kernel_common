@@ -485,10 +485,14 @@ static inline void slab_tag_dec(const void *ptr) {}
 #define kmalloc_hooks(_do_alloc)	krealloc_hooks(NULL, _do_alloc)
 
 void *__kmalloc(size_t size, gfp_t flags) __assume_kmalloc_alignment __alloc_size(1);
-void *kmem_cache_alloc(struct kmem_cache *s, gfp_t flags) __assume_slab_alignment __malloc;
-void *kmem_cache_alloc_lru(struct kmem_cache *s, struct list_lru *lru,
+void *_kmem_cache_alloc(struct kmem_cache *s, gfp_t flags) __assume_slab_alignment __malloc;
+void *_kmem_cache_alloc_lru(struct kmem_cache *s, struct list_lru *lru,
 			   gfp_t gfpflags) __assume_slab_alignment __malloc;
 void kmem_cache_free(struct kmem_cache *s, void *objp);
+
+#define kmem_cache_alloc(_s, _flags)		kmalloc_hooks(_kmem_cache_alloc(_s, _flags))
+#define kmem_cache_alloc_lru(_s, _lru, _gfpflags)	\
+	kmalloc_hooks(_kmem_cache_alloc_lru(_s, _lru, _gfpflags))
 
 /*
  * Bulk allocation and freeing operations. These are accelerated in an
@@ -511,8 +515,10 @@ static __always_inline void kfree_bulk(size_t size, void **p)
 
 void *__kmalloc_node(size_t size, gfp_t flags, int node) __assume_kmalloc_alignment
 							 __alloc_size(1);
-void *kmem_cache_alloc_node(struct kmem_cache *s, gfp_t flags, int node) __assume_slab_alignment
+void *_kmem_cache_alloc_node(struct kmem_cache *s, gfp_t flags, int node) __assume_slab_alignment
 									 __malloc;
+#define kmem_cache_alloc_node(_s, _flags, _node)		\
+		kmalloc_hooks(_kmem_cache_alloc_node(_s, _flags, _node))
 
 void *_kmalloc_trace(struct kmem_cache *s, gfp_t flags, size_t size)
 		    __assume_kmalloc_alignment __alloc_size(3);
