@@ -237,6 +237,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6e8d2c8_1c457032",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-01T10:27:10Z",
+      "side": 1,
+      "message": "Right, and actually in the current state of the code, EL2 doesn\u0027t check anything at all, it just maps things blindly whatever EL1 asks to map. The misalignment is mostly a problem for EL1 -- the EL2 module sections will be unmapped from the host stage-2, so EL1 needs to be careful that it doesn\u0027t accidentally unmap some of its own regions.",
+      "parentUuid": "b882350c_8292135c",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 441,
+        "endChar": 0
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb0409dd_9771eba3",
         "filename": "arch/arm64/kvm/va_layout.c",
         "patchSetId": 4
@@ -248,6 +272,30 @@
       "writtenOn": "2022-11-30T18:48:39Z",
       "side": 1,
       "message": "Any endianness concerns here?",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 11
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "668eaeae_e8d21ee0",
+        "filename": "arch/arm64/kvm/va_layout.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-01T10:27:10Z",
+      "side": 1,
+      "message": "Uh, good q. If so I\u0027m guessing we have that problem upstream in kvm_hyp_apply_relocations() as well?",
+      "parentUuid": "eb0409dd_9771eba3",
       "range": {
         "startLine": 129,
         "startChar": 8,
