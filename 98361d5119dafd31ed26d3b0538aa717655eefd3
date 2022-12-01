@@ -96,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa3a69fc_181d2808",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-12-01T15:07:46Z",
+      "side": 1,
+      "message": "I think we should start off with these calls not being available past deprivilege, and then later patches can defer that if necessary.",
+      "parentUuid": "ea5a128e_941a9a61",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 36
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ca72595_fdaec84d",
         "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
         "patchSetId": 4
@@ -190,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d71c127_20fc005a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-12-01T15:07:46Z",
+      "side": 1,
+      "message": "This should be easy to fix though, no?",
+      "parentUuid": "439b541f_3f6718ae",
+      "range": {
+        "startLine": 125,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 30
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fea84550_f537f467",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 4
@@ -259,6 +307,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab88164_e6ee2c00",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-12-01T15:07:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b6e8d2c8_1c457032",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 441,
+        "endChar": 0
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb0409dd_9771eba3",
@@ -296,6 +368,30 @@
       "side": 1,
       "message": "Uh, good q. If so I\u0027m guessing we have that problem upstream in kvm_hyp_apply_relocations() as well?",
       "parentUuid": "eb0409dd_9771eba3",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 11
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c8b7e25_5a4324cd",
+        "filename": "arch/arm64/kvm/va_layout.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2022-12-01T15:07:46Z",
+      "side": 1,
+      "message": "I\u0027m not sure whether or not there\u0027s an issue -- we should check in which endianness the relocations are stored.",
+      "parentUuid": "668eaeae_e8d21ee0",
       "range": {
         "startLine": 129,
         "startChar": 8,
