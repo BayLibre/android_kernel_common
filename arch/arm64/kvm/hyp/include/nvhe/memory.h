@@ -56,9 +56,17 @@ static inline int hyp_page_count(void *addr)
 	return hyp_refcount_get(p->refcount);
 }
 
+/*
+ * Increase the refcount and return its new value.
+ */
+static inline int hyp_page_ref_inc_return(struct hyp_page *p)
+{
+	return hyp_refcount_inc(p->refcount);
+}
+
 static inline void hyp_page_ref_inc(struct hyp_page *p)
 {
-	hyp_refcount_inc(p->refcount);
+	hyp_page_ref_inc_return(p);
 }
 
 static inline void hyp_page_ref_dec(struct hyp_page *p)
