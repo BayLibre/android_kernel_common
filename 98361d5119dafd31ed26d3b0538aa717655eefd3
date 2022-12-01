@@ -120,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "347bd791_1853f2f5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-01T15:13:15Z",
+      "side": 1,
+      "message": "Ok, let\u0027s put them in the privileged section in this patch and then later on move them back in the unprivileged one once the loading fuse is in place.",
+      "parentUuid": "aa3a69fc_181d2808",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 36
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ca72595_fdaec84d",
         "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
         "patchSetId": 4
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "This should be easy to fix though, no?",
       "parentUuid": "439b541f_3f6718ae",
+      "range": {
+        "startLine": 125,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 30
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e4e0320_c48986cb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-01T15:13:15Z",
+      "side": 1,
+      "message": "I think we discussed this with Quentin when started to write this and it was somehow not easy at all... but I might mix things up, I\u0027ll check that out!",
+      "parentUuid": "5d71c127_20fc005a",
       "range": {
         "startLine": 125,
         "startChar": 8,
