@@ -285,7 +285,8 @@ static struct bio *bio_split_rw(struct bio *bio, struct queue_limits *lim,
 		if (nsegs < lim->max_segments &&
 		    bytes + bv.bv_len <= max_bytes &&
 		    bv.bv_offset + bv.bv_len <= PAGE_SIZE) {
-			nsegs++;
+			/* single-page bvec optimization */
+			nsegs += blk_segments(&q->limits, bv.bv_len);
 			bytes += bv.bv_len;
 		} else {
 			if (bvec_split_segs(lim, &bv, &nsegs, &bytes,
@@ -356,6 +357,22 @@ struct bio *__bio_split_to_limits(struct bio *bio, struct queue_limits *lim,
 		split = bio_split_write_zeroes(bio, lim, nr_segs, bs);
 		break;
 	default:
+		/*
+		 * Check whether bio splitting can be skipped. This check
+		 * may trigger the bio splitting code even if splitting is not
+		 * necessary.
+		 */
+		if (!q->limits.chunk_sectors &&
+		    (*bio)->bi_vcnt == 1 &&
+#ifdef CONFIG_BLK_SUB_PAGE_SEGMENTS
+		    (*bio)->bi_io_vec->bv_len <= q->limits.max_segment_size &&
+#endif
+		    ((*bio)->bi_io_vec[0].bv_len +
+		     (*bio)->bi_io_vec[0].bv_offset) <= PAGE_SIZE) {
+			*nr_segs = blk_segments(&q->limits,
+						(*bio)->bi_io_vec[0].bv_len);
+			break;
+		}
 		split = bio_split_rw(bio, lim, nr_segs, bs,
 				get_max_io_size(bio, lim) << SECTOR_SHIFT);
 		if (IS_ERR(split))
@@ -533,7 +550,8 @@ static int __blk_bios_map_sg(struct request_queue *q, struct bio *bio,
 			    __blk_segment_map_sg_merge(q, &bvec, &bvprv, sg))
 				goto next_bvec;
 
-			if (bvec.bv_offset + bvec.bv_len <= PAGE_SIZE)
+			if (bvec.bv_offset + bvec.bv_len <= PAGE_SIZE &&
+			    bvec.bv_len <= q->limits.max_segment_size)
 				nsegs += __blk_bvec_map_sg(bvec, sglist, sg);
 			else
 				nsegs += blk_bvec_map_sg(q, &bvec, sglist, sg);
