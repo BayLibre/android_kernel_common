@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba512a9d_c12ebf21",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-02T08:24:20Z",
+      "side": 1,
+      "message": "This still looks slightly racy as e.g. the is_uclamp_used() call in is_uclamp_equal() below may not be consistent with this one. But this should all be best effort I suppose, so that\u0027s probably not the end of the world.",
+      "range": {
+        "startLine": 726,
+        "startChar": 5,
+        "endLine": 726,
+        "endChar": 21
+      },
+      "revId": "837d6979ca44563f14c9d15bf9b9fe9db7204cb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
