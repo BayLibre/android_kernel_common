@@ -337,6 +337,10 @@ inlinecrypt		 When possible, encrypt/decrypt the contents of encrypted
 			 Documentation/block/inline-encryption.rst.
 atgc			 Enable age-threshold garbage collection, it provides high
 			 effectiveness and efficiency on background GC.
+age_extent_cache	 Enable an age extent cache based on rb-tree. It records
+			 data block update frequency of the extent per inode, in
+			 order to provide better temperature hints for data block
+			 allocation.
 discard_unit=%s		 Control discard unit, the argument can be "block", "segment"
 			 and "section", issued discard command's offset/size will be
 			 aligned to the unit, by default, "discard_unit=block" is set,
