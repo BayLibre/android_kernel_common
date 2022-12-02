@@ -102,6 +102,42 @@
       "parentUuid": "e2c87618_600a5ab0",
       "revId": "04e8e8e5ef2c43cbedb6dc36edade71282b7e0fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e9f6264_44824fbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2022-12-02T11:11:34Z",
+      "side": 1,
+      "message": "Added \"ANDROID\" tag now.",
+      "parentUuid": "231f3e3b_3b78a720",
+      "revId": "04e8e8e5ef2c43cbedb6dc36edade71282b7e0fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b86021e_130593b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2022-12-02T11:11:34Z",
+      "side": 1,
+      "message": "Like Will mentioned, we have bunch of drivers that depends on dmabuf API to provide invalidation behavior. \n\nI am not 100% sure about what the expectation of all the client here. once of the client code I happen to see is doing this. It seems they clean the caches before giving the data to TZ (so that TZ can have a non cached mapping if required) and after TZ call is returned, buffer is invalidated before accessing it so that we get the data from latest updated location.\n\nThanks,\nPavan",
+      "parentUuid": "c858f3c5_ad864e1d",
+      "revId": "04e8e8e5ef2c43cbedb6dc36edade71282b7e0fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
