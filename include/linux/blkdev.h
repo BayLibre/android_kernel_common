@@ -556,6 +556,7 @@ struct request_queue {
 #define QUEUE_FLAG_STOPPED	0	/* queue is stopped */
 #define QUEUE_FLAG_DYING	1	/* queue being torn down */
 #define QUEUE_FLAG_HAS_SRCU	2	/* SRCU is allocated */
+#define QUEUE_FLAG_SUB_PAGE_SEGMENTS 31	/* segments smaller than one page */
 #define QUEUE_FLAG_NOMERGES     3	/* disable merge attempts */
 #define QUEUE_FLAG_SAME_COMP	4	/* complete on same CPU-group */
 #define QUEUE_FLAG_FAIL_IO	5	/* fake timeout */
@@ -620,6 +621,13 @@ bool blk_queue_flag_test_and_set(unsigned int flag, struct request_queue *q);
 #define blk_queue_pm_only(q)	atomic_read(&(q)->pm_only)
 #define blk_queue_registered(q)	test_bit(QUEUE_FLAG_REGISTERED, &(q)->queue_flags)
 #define blk_queue_sq_sched(q)	test_bit(QUEUE_FLAG_SQ_SCHED, &(q)->queue_flags)
+#define blk_queue_nowait(q)	test_bit(QUEUE_FLAG_NOWAIT, &(q)->queue_flags)
+#ifdef CONFIG_BLK_SUB_PAGE_SEGMENTS
+#define blk_queue_sub_page_segments(q)				\
+	test_bit(QUEUE_FLAG_SUB_PAGE_SEGMENTS, &(q)->queue_flags)
+#else
+#define blk_queue_sub_page_segments(q) false
+#endif
 
 extern void blk_set_pm_only(struct request_queue *q);
 extern void blk_clear_pm_only(struct request_queue *q);
