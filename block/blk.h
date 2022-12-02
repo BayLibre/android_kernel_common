@@ -81,6 +81,17 @@ struct bio_vec *bvec_alloc(mempool_t *pool, unsigned short *nr_vecs,
 		gfp_t gfp_mask);
 void bvec_free(mempool_t *pool, struct bio_vec *bv, unsigned short nr_vecs);
 
+#ifdef CONFIG_BLK_SUB_PAGE_SEGMENTS
+unsigned int blk_segments(const struct queue_limits *limits,
+			  unsigned int bytes);
+#else
+static inline unsigned int blk_segments(const struct queue_limits *limits,
+					unsigned int bytes)
+{
+	return 1;
+}
+#endif
+
 static inline bool biovec_phys_mergeable(struct request_queue *q,
 		struct bio_vec *vec1, struct bio_vec *vec2)
 {
