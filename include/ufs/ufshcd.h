@@ -610,6 +610,15 @@ enum ufshcd_quirks {
 	 * auto-hibernate capability but it's FASTAUTO only.
 	 */
 	UFSHCD_QUIRK_HIBERN_FASTAUTO			= 1 << 18,
+
+	/*
+	 * The host page size exceeds the maximum DMA segment size.
+	 * Since the UFSHCI standard requires that host controllers support
+	 * values up to 256 KiB in the Data Byte Count (DBC) and Common Data
+	 * Size (CDS) fields, this quirk only needs to be set for non-compliant
+	 * host controllers.
+	 */
+	UFSHCD_QUIRK_SUB_PAGE_SEGMENTS			= 1 << 23,
 };
 
 enum ufshcd_android_quirks {
@@ -642,6 +651,7 @@ enum ufshcd_android_quirks {
 	 * keys were stored in it.
 	 */
 	UFSHCD_ANDROID_QUIRK_KEYS_IN_PRDT		= 1 << 2,
+
 };
 
 enum ufshcd_caps {
