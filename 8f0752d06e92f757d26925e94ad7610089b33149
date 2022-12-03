@@ -86,6 +86,42 @@
       "message": "The correct fix for upstream is to fix the drivers, but the change here is at least safe (compared to reverting the cited commit which would re-introduce a security issue).\n\nPlease can you upload cherry-picks for android13-* branches too, as we\u0027ll likely need this there as well.",
       "revId": "8f0752d06e92f757d26925e94ad7610089b33149",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4092d153_15f96b59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-12-03T18:55:36Z",
+      "side": 1,
+      "message": "This is a workaround for current Android branches, but android14+ will require the drivers to be fixed.",
+      "parentUuid": "0056e723_07d1875a",
+      "revId": "8f0752d06e92f757d26925e94ad7610089b33149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304fad58_1023abcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-12-03T18:55:36Z",
+      "side": 1,
+      "message": "Also needed in the other GKI branches:\nandroid11-5.4\nandroid12-5.4\nandroid13-5.10\nandroid13-5.15\n\nThis should not go into android14-5.15 - drivers need to be fixed in android14+",
+      "parentUuid": "fabc3b1a_bdde75d1",
+      "revId": "8f0752d06e92f757d26925e94ad7610089b33149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
