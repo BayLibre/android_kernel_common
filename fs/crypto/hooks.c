@@ -5,8 +5,6 @@
  * Encryption hooks for higher-level filesystem operations.
  */
 
-#include <linux/key.h>
-
 #include "fscrypt_private.h"
 
 /**
@@ -75,6 +73,7 @@ int __fscrypt_prepare_rename(struct inode *old_dir, struct dentry *old_dentry,
 	if (fscrypt_is_nokey_name(old_dentry) ||
 	    fscrypt_is_nokey_name(new_dentry))
 		return -ENOKEY;
+
 	/*
 	 * We don't need to separately check that the directory inodes' keys are
 	 * available, as it's implied by the dentries not being no-key names.
@@ -142,7 +141,6 @@ int fscrypt_prepare_setflags(struct inode *inode,
 			     unsigned int oldflags, unsigned int flags)
 {
 	struct fscrypt_info *ci;
-	struct key *key;
 	struct fscrypt_master_key *mk;
 	int err;
 
@@ -158,14 +156,13 @@ int fscrypt_prepare_setflags(struct inode *inode,
 		ci = inode->i_crypt_info;
 		if (ci->ci_policy.version != FSCRYPT_POLICY_V2)
 			return -EINVAL;
-		key = ci->ci_master_key;
-		mk = key->payload.data[0];
-		down_read(&key->sem);
+		mk = ci->ci_master_key;
+		down_read(&mk->mk_sem);
 		if (is_master_key_secret_present(&mk->mk_secret))
 			err = fscrypt_derive_dirhash_key(ci, mk);
 		else
 			err = -ENOKEY;
-		up_read(&key->sem);
+		up_read(&mk->mk_sem);
 		return err;
 	}
 	return 0;
