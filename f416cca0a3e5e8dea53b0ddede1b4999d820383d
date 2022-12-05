@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f308d372_8c547cae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-05T14:07:44Z",
+      "side": 1,
+      "message": "I find it sad that we have to factor out the entire implementation in header files like that. It\u0027s a bit difficult to do until we\u0027ve actually modularized everything, but when we get that, since we don\u0027t need to have both v1/2 and v9 compiled at the same time, we should have different Kconfig options for them, and just have io-mpt-s2mpu.c do the right thing directly based on that.\n\nIOW, I would prefer until we get support for EL2 modules, and then we can do this properly.",
+      "revId": "f416cca0a3e5e8dea53b0ddede1b4999d820383d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
