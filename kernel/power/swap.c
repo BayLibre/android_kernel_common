@@ -187,6 +187,7 @@ sector_t alloc_swapdev_block(int swap)
 	}
 	return 0;
 }
+EXPORT_SYMBOL_GPL(alloc_swapdev_block);
 
 /**
  *	free_all_swap_pages - free swap pages allocated for saving image data.
@@ -407,6 +408,12 @@ static int write_page(void *buf, sector_t offset, struct hib_bio_batch *hb)
 	}
 	return hib_submit_io(REQ_OP_WRITE, REQ_SYNC, offset, src, hb);
 }
+
+int hib_write_data_to_swap(void *buf, sector_t offset, void *hb)
+{
+	return write_page(buf, offset, (struct hib_bio_batch *)hb);
+}
+EXPORT_SYMBOL_GPL(hib_write_data_to_swap);
 
 static void release_swap_writer(struct swap_map_handle *handle)
 {
