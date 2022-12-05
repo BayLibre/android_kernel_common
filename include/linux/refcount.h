@@ -147,6 +147,18 @@ static inline unsigned int refcount_read(const refcount_t *r)
 	return atomic_read(&r->refs);
 }
 
+/**
+ * refcount_freeze - set zero to refcount if it is @count
+ * @r: the refcount
+ * @count: the expected value to match with current refcount
+ *
+ * Return: true if the passed @count is matched, false otherwise
+ */
+static inline bool refcount_freeze(refcount_t *r, int count)
+{
+	return likely(atomic_cmpxchg(&r->refs, count, 0) == count);
+}
+
 static inline __must_check bool __refcount_add_not_zero(int i, refcount_t *r, int *oldp)
 {
 	int old = refcount_read(r);
