@@ -1855,7 +1855,36 @@ static void fuse_fs_cleanup(void)
 
 static struct kobject *fuse_kobj;
 
-/* TODO Remove this once BPF_PROG_TYPE_FUSE is upstreamed */
+/*
+ * TODO Remove this once fuse-bpf is upstreamed
+ *
+ * The version numbers give us the ability to tune user mode behavior to the
+ * specific non-upstreamed version of fuse-bpf
+ *
+ * bpf_prog_type_fuse exports the bpf_prog_type_fuse 'constant', which cannot be
+ * constant until the code is upstreamed
+ */
+#define FUSE_NODE_FEATURES "features"
+static struct kobject *features_node;
+
+static ssize_t fuse_bpf_show(struct kobject *kobj,
+				       struct kobj_attribute *attr, char *buff)
+{
+	return sysfs_emit(buff, "supported\n");
+}
+
+static struct kobj_attribute fuse_bpf_attr =
+		__ATTR_RO(fuse_bpf);
+
+static struct attribute *bpf_features[] = {
+	&fuse_bpf_attr.attr,
+	NULL,
+};
+
+static const struct attribute_group bpf_features_group = {
+	.attrs = bpf_features,
+};
+
 static ssize_t bpf_prog_type_fuse_show(struct kobject *kobj,
 				       struct kobj_attribute *attr, char *buff)
 {
@@ -1873,6 +1902,7 @@ static struct attribute *bpf_attributes[] = {
 static const struct attribute_group bpf_attr_group = {
 	.attrs = bpf_attributes,
 };
+
 /* TODO remove to here */
 
 static int fuse_sysfs_init(void)
@@ -1894,8 +1924,22 @@ static int fuse_sysfs_init(void)
 	if (err)
 		goto out_fuse_remove_mount_point;
 
+	features_node = kobject_create_and_add(FUSE_NODE_FEATURES,
+					fuse_kobj);
+	if (!features_node)
+		goto out_fuse_remove_bpf_attr;
+
+	err = sysfs_create_group(features_node, &bpf_features_group);
+	if (err)
+		goto out_fuse_remove_features;
+	/* Remove to here */
+
 	return 0;
 
+ out_fuse_remove_features:
+	kobject_put(features_node);
+ out_fuse_remove_bpf_attr:
+	sysfs_remove_group(fuse_kobj, &bpf_attr_group);
  out_fuse_remove_mount_point:
 	sysfs_remove_mount_point(fuse_kobj, "connections");
  out_fuse_unregister:
@@ -1906,6 +1950,11 @@ static int fuse_sysfs_init(void)
 
 static void fuse_sysfs_cleanup(void)
 {
+	if (features_node) {
+		sysfs_remove_group(features_node, &bpf_features_group);
+		kobject_put(features_node);
+	}
+	sysfs_remove_group(fuse_kobj, &bpf_attr_group);
 	sysfs_remove_mount_point(fuse_kobj, "connections");
 	kobject_put(fuse_kobj);
 }
