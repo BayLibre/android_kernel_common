@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "629010f1_387a1508",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-06T18:57:40Z",
+      "side": 1,
+      "message": "you need feature flags, not random numbers please.",
+      "revId": "78d0128d69c1d2aadd08d65142e9588ada91dce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0ba1c8_195cab4c",
+        "filename": "Documentation/filesystems/fuse.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-06T18:57:40Z",
+      "side": 1,
+      "message": "this goes into Documentation/ABI/ please, where all sysfs files go.  not in a random other documentation file as we have tools that parse Documentation/ABI/ and compare it with a running system and will complain when things are not documented.",
+      "range": {
+        "startLine": 409,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 17
+      },
+      "revId": "78d0128d69c1d2aadd08d65142e9588ada91dce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29c92e51_3e7bee33",
+        "filename": "Documentation/filesystems/fuse.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-06T18:57:40Z",
+      "side": 1,
+      "message": "isn\u0027t \"feature flag\" more useful?  What happens if someone backports 1 feature, but not another one, to an older kernel?  Then you have an increased number but you don\u0027t know what feature it was!",
+      "range": {
+        "startLine": 428,
+        "startChar": 0,
+        "endLine": 428,
+        "endChar": 35
+      },
+      "revId": "78d0128d69c1d2aadd08d65142e9588ada91dce2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
