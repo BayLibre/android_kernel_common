@@ -512,7 +512,7 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
 	return ve_instr_len(ve);
 }
 
-bool mmio_read(int size, unsigned long addr, unsigned long *val)
+static bool mmio_read(int size, unsigned long addr, unsigned long *val)
 {
 	struct tdx_module_args args = {
 		.r10 = TDX_HYPERCALL_STANDARD,
@@ -529,7 +529,7 @@ bool mmio_read(int size, unsigned long addr, unsigned long *val)
 	return true;
 }
 
-bool mmio_write(int size, unsigned long addr, unsigned long val)
+static bool mmio_write(int size, unsigned long addr, unsigned long val)
 {
 	return !_tdx_hypercall(hcall_func(EXIT_REASON_EPT_VIOLATION), size,
 			       EPT_WRITE, addr, val);
@@ -710,7 +710,7 @@ static int virt_exception_kernel(struct pt_regs *regs, struct ve_info *ve)
 	}
 }
 
-bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve)
+static bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve)
 {
 	int insn_len;
 
@@ -1043,5 +1043,13 @@ void __init tdx_early_init(void)
 	 */
 	x86_cpuinit.parallel_bringup = false;
 
+	//JAZ: TODO: it was not here in 6.12
 	tdx_announce();
+
+	ve_x86_ops.mmio_read = mmio_read;
+	ve_x86_ops.mmio_write = mmio_write;
+	ve_x86_ops.handle_virt_exception = tdx_handle_virt_exception;
+	ve_x86_ops.get_ve_info = tdx_get_ve_info;
+
+	pr_info("Guest detected\n");
 }
