@@ -22,6 +22,30 @@
       },
       "revId": "cde693b4b6131c251460c1f02e14ad9ea0b27422",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef80bd5a_fb3d49b4",
+        "filename": "arch/arm64/tools/gen-hyprel.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-07T13:10:07Z",
+      "side": 1,
+      "message": "STT_SECTION doesn\u0027t seem easy to use from assembly code, and I don\u0027t have a good short term solution for it.\n\nWe should probably clean that up later though, filed b/261702097 so we don\u0027t forget.",
+      "parentUuid": "c141fd86_487a85df",
+      "range": {
+        "startLine": 352,
+        "startChar": 9,
+        "endLine": 352,
+        "endChar": 18
+      },
+      "revId": "cde693b4b6131c251460c1f02e14ad9ea0b27422",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
