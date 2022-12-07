@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aa92b76_cbc6e493",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-07T07:59:55Z",
+      "side": 1,
+      "message": "Only one kobject is needed.",
+      "revId": "49dced77bf3f831c2cdd9fa76dc4bb15a78c621f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bfdfceb_e8e00bec",
+        "filename": "fs/fuse/inode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1923,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-07T07:59:55Z",
+      "side": 1,
+      "message": "`sysfs_create_groups()` instead so you can have a list of your groups and only have to do this once?",
+      "range": {
+        "startLine": 1923,
+        "startChar": 7,
+        "endLine": 1923,
+        "endChar": 25
+      },
+      "revId": "49dced77bf3f831c2cdd9fa76dc4bb15a78c621f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589ff46a_9adbf436",
+        "filename": "fs/fuse/inode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1932,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-07T07:59:55Z",
+      "side": 1,
+      "message": "Why do you have a \"feature node\"?  That should not be needed, just name the group \"features\" and the subdirectory will be created automatically.",
+      "range": {
+        "startLine": 1932,
+        "startChar": 0,
+        "endLine": 1932,
+        "endChar": 62
+      },
+      "revId": "49dced77bf3f831c2cdd9fa76dc4bb15a78c621f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
