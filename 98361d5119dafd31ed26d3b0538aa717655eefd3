@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e5ba80f9_8a190820",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-07T13:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29bf48d9_8669c41b",
+      "range": {
+        "startLine": 32,
+        "startChar": 25,
+        "endLine": 32,
+        "endChar": 29
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e13e3704_395831a0",
         "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
         "patchSetId": 4
@@ -536,6 +560,30 @@
       "side": 1,
       "message": "I\u0027m not sure whether or not there\u0027s an issue -- we should check in which endianness the relocations are stored.",
       "parentUuid": "668eaeae_e8d21ee0",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 11
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f8cbbd9_1773bc24",
+        "filename": "arch/arm64/kvm/va_layout.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-07T13:11:22Z",
+      "side": 1,
+      "message": "As per our offline discussion, we should be good to go on that front.",
+      "parentUuid": "8c8b7e25_5a4324cd",
       "range": {
         "startLine": 129,
         "startChar": 8,
