@@ -481,7 +481,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_wq_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_mem);
-<<<<<<< HEAD
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_charge);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_add_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_add_file_rmap);
@@ -490,8 +489,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folios_put_refs_direct_free_extent);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_and_swap_cache);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dwc3_core_soft_reset);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dwc3_xhci_soft_reset);
-=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_hibernation_swap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_cpu_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
->>>>>>> ce101dac670d (ANDROID: vendor hooks: Add hooks to support bootloader based hibernation)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_encrypt_page);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_init_aes_encrypt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_skip_swap_map_write);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_post_image_save);
