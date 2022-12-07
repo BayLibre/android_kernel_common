@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "09b0758b_11bb0026",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-07T11:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29bf48d9_8669c41b",
+      "range": {
+        "startLine": 32,
+        "startChar": 25,
+        "endLine": 32,
+        "endChar": 29
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e13e3704_395831a0",
         "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
         "patchSetId": 4
@@ -322,6 +346,30 @@
       "side": 1,
       "message": "Yeah the error handling is non-trivial, because by this point we\u0027ve probably already mapped a bunch of module pages, and we\u0027re failing halfway through :/",
       "parentUuid": "8e4e0320_c48986cb",
+      "range": {
+        "startLine": 125,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 30
+      },
+      "revId": "98361d5119dafd31ed26d3b0538aa717655eefd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "528f38fc_ec177d7c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-07T11:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53cbed8b_917aef29",
       "range": {
         "startLine": 125,
         "startChar": 8,
