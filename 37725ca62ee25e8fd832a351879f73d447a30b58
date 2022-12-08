@@ -22,6 +22,30 @@
       },
       "revId": "37725ca62ee25e8fd832a351879f73d447a30b58",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83ec8e41_1d179516",
+        "filename": "include/trace/hooks/dmabuf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-12-08T19:28:31Z",
+      "side": 0,
+      "message": "Talked to Todd about this, and includes here lead to CRC madness after KMI freeze, so we should be forward declaring for ABI purposes. Of course for a vendor to actually use this hook, they\u0027d need to also include dma-buf.h, which is unfortunately what we\u0027re removing here. So this else case is a convenience, but not a strict necessity. The correct version of this code is a bit more complicated with the CONFIG_DMABUF_SYSFS_STATS check, so I\u0027m ok with this more simple solution.",
+      "parentUuid": "680b6235_838eb95b",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "37725ca62ee25e8fd832a351879f73d447a30b58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
