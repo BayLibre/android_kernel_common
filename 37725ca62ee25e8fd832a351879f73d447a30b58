@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "680b6235_838eb95b",
+        "filename": "include/trace/hooks/dmabuf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-12-08T18:43:37Z",
+      "side": 0,
+      "message": "Why not just add `#undef __GENKSYMS__` in the non-GKI source which includes this file?\nMy worry is that later on we might have cases when inclusion is necessary and we revive this #ifdef which would lead to the breakage in non_GKI kernels again.",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "37725ca62ee25e8fd832a351879f73d447a30b58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
