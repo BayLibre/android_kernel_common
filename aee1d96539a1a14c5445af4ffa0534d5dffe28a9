@@ -16,6 +16,24 @@
       "message": "This makes absolutely no sense. There are 2 cases:\n\n- The HW advertises PAuth, but the implementation is either buggy or not good enough: we have had `arm64.nopauth` in the kernel since `v5.12-rc1`\n\n- The hypervisor is buggy and doesn\u0027t hide that it cannot cope with PAuth: the same option applies, though fixing the hypervisor would be a lot better.\n\nSo it really doesn\u0027t matter whether your HW is broken or your hypervisor is buggy. We are already able to disable the feature at runtime.\n\nOr have you found an issue with the *existing* override code? In which case please discuss your issue upstream.",
       "revId": "aee1d96539a1a14c5445af4ffa0534d5dffe28a9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77ff982b_de8eee4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2022-12-09T15:45:46Z",
+      "side": 1,
+      "message": "Sure Marc. Thanks for details.",
+      "parentUuid": "6b8b3108_7108d37b",
+      "revId": "aee1d96539a1a14c5445af4ffa0534d5dffe28a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
