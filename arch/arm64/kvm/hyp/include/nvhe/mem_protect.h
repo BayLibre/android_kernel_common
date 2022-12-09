@@ -70,6 +70,8 @@ extern unsigned long hyp_nr_cpus;
 int __pkvm_prot_finalize(void);
 int __pkvm_host_share_hyp(u64 pfn);
 int __pkvm_host_unshare_hyp(u64 pfn);
+int __pkvm_host_wrprotect_share_hyp(u64 pfn);
+int __pkvm_host_wrprotect_unshare_hyp(u64 pfn);
 int __pkvm_host_reclaim_page(u64 pfn);
 int __pkvm_host_donate_hyp(u64 pfn, u64 nr_pages);
 int __pkvm_hyp_donate_host(u64 pfn, u64 nr_pages);
@@ -97,6 +99,7 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt);
 
 int hyp_register_host_perm_fault_handler(int (*cb)(struct kvm_cpu_context *ctxt, u64 esr, u64 addr));
 int hyp_pin_shared_mem(void *from, void *to);
+int hyp_pin_restricted_shared_mem(void *from, void *to);
 void hyp_unpin_shared_mem(void *from, void *to);
 void reclaim_guest_pages(struct pkvm_hyp_vm *vm, struct kvm_hyp_memcache *mc);
 int host_stage2_get_leaf(phys_addr_t phys, kvm_pte_t *ptep, u32 *level);
