@@ -52,6 +52,24 @@
       "parentUuid": "be82355c_8fa71e39",
       "revId": "62afd5a7ceb9af58bddfe36e49bcd3d941572643",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb046ef2_3b04919b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2022-12-09T14:35:55Z",
+      "side": 1,
+      "message": "Sorry, I have not conveyed correctly in commit message. Updated commit message now.\nThere are many features in kernel which have control to disable based on product requirements. Some of the ARM features does not have.\n\nThis patch is adding feature configuration for pointer authentication based on product requirement. Since We are not looking for pointer authentication feature in guest, we are looking to disable it. This patch would support that.\n\nPlease consider to review again and approve the change.",
+      "parentUuid": "ad525a92_385222bf",
+      "revId": "62afd5a7ceb9af58bddfe36e49bcd3d941572643",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
