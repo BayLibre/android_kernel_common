@@ -477,6 +477,7 @@
       <elf-symbol name='alloc_chrdev_region' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe3ec2f2b'/>
       <elf-symbol name='alloc_etherdev_mqs' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x35259fd5'/>
       <elf-symbol name='alloc_io_pgtable_ops' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x15b12fac'/>
+      <elf-symbol name='alloc_iova_fast' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7c9bed48'/>
       <elf-symbol name='alloc_netdev_mqs' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2c573a3e'/>
       <elf-symbol name='alloc_pages_exact' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5fc72f0e'/>
       <elf-symbol name='alloc_skb_with_frags' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbea02d1e'/>
@@ -1088,6 +1089,7 @@
       <elf-symbol name='devfreq_recommended_opp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf4fef99b'/>
       <elf-symbol name='devfreq_register_opp_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4ad171ad'/>
       <elf-symbol name='devfreq_remove_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd10cf33b'/>
+      <elf-symbol name='devfreq_remove_governor' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3e8675db'/>
       <elf-symbol name='devfreq_resume_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5311ab8'/>
       <elf-symbol name='devfreq_suspend_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe246953c'/>
       <elf-symbol name='devfreq_unregister_opp_notifier' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x766387d4'/>
@@ -1116,6 +1118,7 @@
       <elf-symbol name='device_link_add' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xac2c21b6'/>
       <elf-symbol name='device_link_del' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1017afa6'/>
       <elf-symbol name='device_match_fwnode' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6dc8bbde'/>
+      <elf-symbol name='device_match_name' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3b3efe83'/>
       <elf-symbol name='device_property_present' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x91d9d279'/>
       <elf-symbol name='device_property_read_string' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x58adfb31'/>
       <elf-symbol name='device_property_read_string_array' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe42f97a6'/>
@@ -1250,6 +1253,7 @@
       <elf-symbol name='devres_alloc_node' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb88d9dbc'/>
       <elf-symbol name='devres_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe93e49c3'/>
       <elf-symbol name='devres_release' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x66c86357'/>
+      <elf-symbol name='disable_hardirq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xbd3fe1e3'/>
       <elf-symbol name='disable_irq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3ce4ca6f'/>
       <elf-symbol name='disable_irq_nosync' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x27bbf221'/>
       <elf-symbol name='disable_percpu_irq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf21e1f9b'/>
@@ -1541,6 +1545,7 @@
       <elf-symbol name='drm_gem_dmabuf_release' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x446663c8'/>
       <elf-symbol name='drm_gem_dmabuf_vmap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7cb3fd8a'/>
       <elf-symbol name='drm_gem_dmabuf_vunmap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7a81e100'/>
+      <elf-symbol name='drm_gem_dumb_destroy' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xaf587ace'/>
       <elf-symbol name='drm_gem_dumb_map_offset' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x10a5a9a8'/>
       <elf-symbol name='drm_gem_fb_afbc_init' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x472d54e0'/>
       <elf-symbol name='drm_gem_fb_create' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xed1881c7'/>
@@ -1552,6 +1557,7 @@
       <elf-symbol name='drm_gem_free_mmap_offset' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x711731be'/>
       <elf-symbol name='drm_gem_get_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4f1f9b71'/>
       <elf-symbol name='drm_gem_handle_create' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x606ab71f'/>
+      <elf-symbol name='drm_gem_handle_delete' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7d531103'/>
       <elf-symbol name='drm_gem_lock_reservations' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe1cdfd1e'/>
       <elf-symbol name='drm_gem_map_attach' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1ba0a931'/>
       <elf-symbol name='drm_gem_map_detach' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x753cad7'/>
@@ -1802,6 +1808,7 @@
       <elf-symbol name='frame_vector_to_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc5e5573a'/>
       <elf-symbol name='free_candev' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe568f91'/>
       <elf-symbol name='free_io_pgtable_ops' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9e5c5bed'/>
+      <elf-symbol name='free_iova_fast' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6907c213'/>
       <elf-symbol name='free_irq' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc1514a3b'/>
       <elf-symbol name='free_netdev' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd67e457b'/>
       <elf-symbol name='free_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4302d0eb'/>
@@ -2194,6 +2201,7 @@
       <elf-symbol name='iommu_aux_detach_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4e0d1471'/>
       <elf-symbol name='iommu_aux_get_pasid' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd06c5058'/>
       <elf-symbol name='iommu_detach_device' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8164e337'/>
+      <elf-symbol name='iommu_detach_group' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf09ad9e8'/>
       <elf-symbol name='iommu_dev_enable_feature' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x74093be1'/>
       <elf-symbol name='iommu_dev_feature_enabled' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7d800926'/>
       <elf-symbol name='iommu_device_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9471f8c6'/>
@@ -2203,6 +2211,7 @@
       <elf-symbol name='iommu_device_unregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x940ec806'/>
       <elf-symbol name='iommu_dma_enable_best_fit_algo' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x784c3db1'/>
       <elf-symbol name='iommu_dma_get_resv_regions' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x675d61b6'/>
+      <elf-symbol name='iommu_dma_reserve_iova' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x13581bae'/>
       <elf-symbol name='iommu_domain_alloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x13c8dffc'/>
       <elf-symbol name='iommu_domain_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb095ee41'/>
       <elf-symbol name='iommu_fwspec_add_ids' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x268d5609'/>
@@ -2632,6 +2641,7 @@
       <elf-symbol name='of_count_phandle_with_args' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x8a4cc6c3'/>
       <elf-symbol name='of_cpu_node_to_id' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xab4e508e'/>
       <elf-symbol name='of_devfreq_cooling_register_power' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb5eb582b'/>
+      <elf-symbol name='of_device_alloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7ec633a7'/>
       <elf-symbol name='of_device_get_match_data' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x828144ca'/>
       <elf-symbol name='of_device_is_available' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf37d2f43'/>
       <elf-symbol name='of_device_is_compatible' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4003d5dd'/>
@@ -4216,6 +4226,7 @@
       <elf-symbol name='vlan_vids_add_by_dev' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xccb43225'/>
       <elf-symbol name='vlan_vids_del_by_dev' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd1fa0fff'/>
       <elf-symbol name='vm_get_page_prot' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2c91e17c'/>
+      <elf-symbol name='vm_insert_page' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcc59967c'/>
       <elf-symbol name='vm_iomap_memory' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x87c18a84'/>
       <elf-symbol name='vm_map_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3a934547'/>
       <elf-symbol name='vm_map_ram' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xda911df9'/>
@@ -7983,6 +7994,7 @@
         <return type-id='48b5725f'/>
       </function-type>
       <pointer-type-def type-id='7b49a935' size-in-bits='64' id='0a95e709'/>
+      <pointer-type-def type-id='e14d461f' size-in-bits='64' id='0a981d27'/>
       <pointer-type-def type-id='325adc8b' size-in-bits='64' id='0a9b173b'/>
       <qualified-type-def type-id='486f930e' const='yes' id='0aade30f'/>
       <pointer-type-def type-id='c9365c7b' size-in-bits='64' id='0ab14abf'/>
@@ -8426,6 +8438,7 @@
           <var-decl name='ops' type-id='3419b67d' visibility='default' filepath='drivers/soc/qcom/smem_state.c' line='34' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='67db36ed' size-in-bits='64' id='0c2c419d'/>
       <enum-decl name='nvmem_type' filepath='include/linux/nvmem-provider.h' line='23' column='1' id='0c30c73e'>
         <underlying-type type-id='9cac1fee'/>
         <enumerator name='NVMEM_TYPE_UNKNOWN' value='0'/>
@@ -13692,6 +13705,9 @@
       </array-type-def>
       <pointer-type-def type-id='32406f0a' size-in-bits='64' id='187ae308'/>
       <pointer-type-def type-id='22b04425' size-in-bits='64' id='187c2c79'/>
+      <array-type-def dimensions='1' type-id='7359adad' size-in-bits='8192' id='187c43b2'>
+        <subrange length='128' type-id='7ff19f0f' id='1eb1687a'/>
+      </array-type-def>
       <enum-decl name='nl80211_commands' filepath='include/uapi/linux/nl80211.h' line='1183' column='1' id='187e1e49'>
         <underlying-type type-id='9cac1fee'/>
         <enumerator name='NL80211_CMD_UNSPEC' value='0'/>
@@ -24476,6 +24492,10 @@
         <return type-id='95e97e5e'/>
       </function-type>
       <pointer-type-def type-id='cbc88d4a' size-in-bits='64' id='339c87e8'/>
+      <function-type size-in-bits='64' id='339cba5e'>
+        <parameter type-id='0c2c419d'/>
+        <return type-id='48b5725f'/>
+      </function-type>
       <pointer-type-def type-id='91015ee2' size-in-bits='64' id='33c348f4'/>
       <function-type size-in-bits='64' id='33c534fd'>
         <parameter type-id='e324928d'/>
@@ -25341,6 +25361,9 @@
         <enumerator name='SND_SOC_DPCM_UPDATE_BE' value='1'/>
         <enumerator name='SND_SOC_DPCM_UPDATE_FE' value='2'/>
       </enum-decl>
+      <array-type-def dimensions='1' type-id='55f9b227' size-in-bits='65536' id='370ec9f4'>
+        <subrange length='256' type-id='7ff19f0f' id='36e5b9fa'/>
+      </array-type-def>
       <pointer-type-def type-id='aabc6610' size-in-bits='64' id='37104a66'/>
       <pointer-type-def type-id='6703ad9d' size-in-bits='64' id='37175e4d'/>
       <pointer-type-def type-id='cfe09901' size-in-bits='64' id='37191bbd'/>
@@ -31581,6 +31604,9 @@
         <parameter type-id='f23e2572'/>
         <return type-id='48b5725f'/>
       </function-type>
+      <array-type-def dimensions='1' type-id='fb6a0229' size-in-bits='13440' id='47d6ca3f'>
+        <subrange length='6' type-id='7ff19f0f' id='52fa524b'/>
+      </array-type-def>
       <class-decl name='linux_binfmt' size-in-bits='448' is-struct='yes' visibility='default' filepath='include/linux/binfmts.h' line='91' column='1' id='47d6e76e'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='lh' type-id='72f469ec' visibility='default' filepath='include/linux/binfmts.h' line='92' column='1'/>
@@ -35628,6 +35654,7 @@
       </function-type>
       <pointer-type-def type-id='285e362f' size-in-bits='64' id='52f4f223'/>
       <pointer-type-def type-id='02e89848' size-in-bits='64' id='52f567fe'/>
+      <pointer-type-def type-id='339cba5e' size-in-bits='64' id='53072f48'/>
       <pointer-type-def type-id='f8b5874e' size-in-bits='64' id='530cb308'/>
       <function-type size-in-bits='64' id='531211f3'>
         <parameter type-id='1905517d'/>
@@ -37027,6 +37054,20 @@
       </class-decl>
       <typedef-decl name='dma_filter_fn' type-id='aa8ac136' filepath='include/linux/dmaengine.h' line='535' column='1' id='55f53546'/>
       <pointer-type-def type-id='1ee59844' size-in-bits='64' id='55f833ce'/>
+      <class-decl name='iova_fq_entry' size-in-bits='256' is-struct='yes' visibility='default' filepath='include/linux/iova.h' line='53' column='1' id='55f9b227'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='iova_pfn' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='54' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='pages' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='55' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='data' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='56' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='counter' type-id='91ce1af9' visibility='default' filepath='include/linux/iova.h' line='57' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='bss_parameters' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/net/cfg80211.h' line='1889' column='1' id='5603c5c0'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='use_cts_prot' type-id='95e97e5e' visibility='default' filepath='include/net/cfg80211.h' line='1890' column='1'/>
@@ -41102,6 +41143,7 @@
           <var-decl name='' type-id='ac5ab660' visibility='default' filepath='include/uapi/linux/btf.h' line='49' column='1'/>
         </data-member>
       </class-decl>
+      <typedef-decl name='iova_entry_dtor' type-id='08b16374' filepath='include/linux/iova.h' line='44' column='1' id='5f724086'/>
       <enum-decl name='query_opcode' filepath='drivers/scsi/ufs/ufs.h' line='398' column='1' id='5f757f13'>
         <underlying-type type-id='9cac1fee'/>
         <enumerator name='UPIU_QUERY_OPCODE_NOP' value='0'/>
@@ -43298,6 +43340,7 @@
       </class-decl>
       <pointer-type-def type-id='ce848ab1' size-in-bits='64' id='652d9ef9'/>
       <pointer-type-def type-id='5a467bb1' size-in-bits='64' id='652fafc9'/>
+      <pointer-type-def type-id='e5e68fcc' size-in-bits='64' id='6532190a'/>
       <pointer-type-def type-id='811eff86' size-in-bits='64' id='6537d478'/>
       <pointer-type-def type-id='6858ea97' size-in-bits='64' id='65399e23'/>
       <pointer-type-def type-id='c6cecc55' size-in-bits='64' id='653a1605'/>
@@ -44434,6 +44477,62 @@
         <subrange length='7' type-id='7ff19f0f' id='16fc326e'/>
       </array-type-def>
       <qualified-type-def type-id='1f2b9a61' const='yes' id='67d8ed84'/>
+      <class-decl name='iova_domain' size-in-bits='15104' is-struct='yes' visibility='default' filepath='include/linux/iova.h' line='68' column='1' id='67db36ed'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='iova_rbtree_lock' type-id='fb4018a0' visibility='default' filepath='include/linux/iova.h' line='69' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='rbroot' type-id='dec44472' visibility='default' filepath='include/linux/iova.h' line='70' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='cached_node' type-id='e6532500' visibility='default' filepath='include/linux/iova.h' line='71' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='cached32_node' type-id='e6532500' visibility='default' filepath='include/linux/iova.h' line='72' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='granule' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='73' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='320'>
+          <var-decl name='start_pfn' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='74' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='384'>
+          <var-decl name='dma_32bit_pfn' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='75' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='448'>
+          <var-decl name='max32_alloc_size' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='76' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='512'>
+          <var-decl name='fq' type-id='6532190a' visibility='default' filepath='include/linux/iova.h' line='77' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='576'>
+          <var-decl name='fq_flush_start_cnt' type-id='28ee064c' visibility='default' filepath='include/linux/iova.h' line='79' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='640'>
+          <var-decl name='fq_flush_finish_cnt' type-id='28ee064c' visibility='default' filepath='include/linux/iova.h' line='82' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='704'>
+          <var-decl name='anchor' type-id='f3a719f4' visibility='default' filepath='include/linux/iova.h' line='85' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='1024'>
+          <var-decl name='rcaches' type-id='47d6ca3f' visibility='default' filepath='include/linux/iova.h' line='86' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='14464'>
+          <var-decl name='flush_cb' type-id='a7bae79c' visibility='default' filepath='include/linux/iova.h' line='88' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='14528'>
+          <var-decl name='entry_dtor' type-id='5f724086' visibility='default' filepath='include/linux/iova.h' line='91' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='14592'>
+          <var-decl name='fq_timer' type-id='abe41e67' visibility='default' filepath='include/linux/iova.h' line='94' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='15040'>
+          <var-decl name='fq_timer_on' type-id='49178f86' visibility='default' filepath='include/linux/iova.h' line='96' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='15072'>
+          <var-decl name='best_fit' type-id='b50a4934' visibility='default' filepath='include/linux/iova.h' line='98' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='serio' size-in-bits='10432' is-struct='yes' visibility='default' filepath='include/linux/serio.h' line='21' column='1' id='67eab439'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='port_data' type-id='eaa32e2f' visibility='default' filepath='include/linux/serio.h' line='22' column='1'/>
@@ -56833,6 +56932,9 @@
       </class-decl>
       <pointer-type-def type-id='06b296c4' size-in-bits='64' id='8595687e'/>
       <pointer-type-def type-id='7ff8f2c1' size-in-bits='64' id='8596937d'/>
+      <array-type-def dimensions='1' type-id='0a981d27' size-in-bits='2048' id='859a2dd8'>
+        <subrange length='32' type-id='7ff19f0f' id='ae5bde82'/>
+      </array-type-def>
       <function-type size-in-bits='64' id='859caa73'>
         <parameter type-id='2661e0d9'/>
         <parameter type-id='95e97e5e'/>
@@ -60811,6 +60913,17 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='d6574e69' size-in-bits='64' id='8f19938d'/>
+      <class-decl name='iova_cpu_rcache' size-in-bits='192' is-struct='yes' visibility='default' filepath='drivers/iommu/iova.c' line='884' column='1' id='8f19d02e'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='drivers/iommu/iova.c' line='885' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='loaded' type-id='0a981d27' visibility='default' filepath='drivers/iommu/iova.c' line='886' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='prev' type-id='0a981d27' visibility='default' filepath='drivers/iommu/iova.c' line='887' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='734a42c0' size-in-bits='64' id='8f20abb2'/>
       <typedef-decl name='__poll_t' type-id='f0981eeb' filepath='include/uapi/linux/types.h' line='52' column='1' id='8f254b08'/>
       <pointer-type-def type-id='73627a37' size-in-bits='64' id='8f2ea2db'/>
@@ -70704,6 +70817,7 @@
           <var-decl name='resolution' type-id='3158a266' visibility='default' filepath='include/uapi/linux/input.h' line='96' column='1'/>
         </data-member>
       </class-decl>
+      <typedef-decl name='iova_flush_cb' type-id='53072f48' filepath='include/linux/iova.h' line='41' column='1' id='a7bae79c'/>
       <array-type-def dimensions='1' type-id='e151255a' size-in-bits='16384' id='a7c26c7b'>
         <subrange length='256' type-id='7ff19f0f' id='36e5b9fa'/>
       </array-type-def>
@@ -91843,6 +91957,7 @@
           <var-decl name='write_wait' type-id='72f469ec' visibility='default' filepath='include/linux/tty_ldisc.h' line='139' column='1'/>
         </data-member>
       </class-decl>
+      <pointer-type-def type-id='8f19d02e' size-in-bits='64' id='d3af9964'/>
       <pointer-type-def type-id='98bc2b95' size-in-bits='64' id='d3b23a45'/>
       <pointer-type-def type-id='e5507ab5' size-in-bits='64' id='d3b2d361'/>
       <function-type size-in-bits='64' id='d3baf253'>
@@ -98229,6 +98344,14 @@
         <return type-id='b50a4934'/>
       </function-type>
       <typedef-decl name='seqcount_t' type-id='3a74ff0b' filepath='include/linux/seqlock.h' line='70' column='1' id='e14c3b11'/>
+      <class-decl name='iova_magazine' size-in-bits='8256' is-struct='yes' visibility='default' filepath='drivers/iommu/iova.c' line='879' column='1' id='e14d461f'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='size' type-id='7359adad' visibility='default' filepath='drivers/iommu/iova.c' line='880' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='pfns' type-id='187c43b2' visibility='default' filepath='drivers/iommu/iova.c' line='881' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='hlist_head' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/linux/types.h' line='182' column='1' id='e151255a'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='first' type-id='08cbad52' visibility='default' filepath='include/linux/types.h' line='183' column='1'/>
@@ -100107,6 +100230,20 @@
         </data-member>
       </class-decl>
       <qualified-type-def type-id='6d54709d' const='yes' id='e5e56b24'/>
+      <class-decl name='iova_fq' size-in-bits='65664' is-struct='yes' visibility='default' filepath='include/linux/iova.h' line='61' column='1' id='e5e68fcc'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='entries' type-id='370ec9f4' visibility='default' filepath='include/linux/iova.h' line='62' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='65536'>
+          <var-decl name='head' type-id='f0981eeb' visibility='default' filepath='include/linux/iova.h' line='63' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='65568'>
+          <var-decl name='tail' type-id='f0981eeb' visibility='default' filepath='include/linux/iova.h' line='63' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='65600'>
+          <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='include/linux/iova.h' line='64' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='drm_vblank_crtc' size-in-bits='2560' is-struct='yes' visibility='default' filepath='include/drm/drm_vblank.h' line='91' column='1' id='e5ebb0e4'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='dev' type-id='8898134d' visibility='default' filepath='include/drm/drm_vblank.h' line='95' column='1'/>
@@ -108498,6 +108635,17 @@
           <var-decl name='mask' type-id='19c2251e' visibility='default' filepath='include/media/rc-core.h' line='40' column='1'/>
         </data-member>
       </class-decl>
+      <class-decl name='iova' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/linux/iova.h' line='19' column='1' id='f3a719f4'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='node' type-id='2a8a6332' visibility='default' filepath='include/linux/iova.h' line='20' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='pfn_hi' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='21' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='pfn_lo' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='22' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='v4l2_subdev_mbus_code_enum' size-in-bits='384' is-struct='yes' visibility='default' filepath='include/uapi/linux/v4l2-subdev.h' line='82' column='1' id='f3aba577'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='pad' type-id='3f1a6b60' visibility='default' filepath='include/uapi/linux/v4l2-subdev.h' line='83' column='1'/>
@@ -111546,6 +111694,20 @@
       </array-type-def>
       <pointer-type-def type-id='f3e87129' size-in-bits='64' id='fb55efa1'/>
       <pointer-type-def type-id='026a169a' size-in-bits='64' id='fb648468'/>
+      <class-decl name='iova_rcache' size-in-bits='2240' is-struct='yes' visibility='default' filepath='include/linux/iova.h' line='31' column='1' id='fb6a0229'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='include/linux/iova.h' line='32' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='depot_size' type-id='7359adad' visibility='default' filepath='include/linux/iova.h' line='33' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='depot' type-id='859a2dd8' visibility='default' filepath='include/linux/iova.h' line='34' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='2176'>
+          <var-decl name='cpu_rcaches' type-id='d3af9964' visibility='default' filepath='include/linux/iova.h' line='35' column='1'/>
+        </data-member>
+      </class-decl>
       <class-decl name='rproc_ops' size-in-bits='960' is-struct='yes' visibility='default' filepath='include/linux/remoteproc.h' line='382' column='1' id='fb6b0a12'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='prepare' type-id='64c391d1' visibility='default' filepath='include/linux/remoteproc.h' line='383' column='1'/>
@@ -116457,6 +116619,13 @@
         <parameter type-id='eaa32e2f' name='cookie' filepath='drivers/iommu/io-pgtable.c' line='31' column='1'/>
         <return type-id='bf4bdb64'/>
       </function-decl>
+      <function-decl name='alloc_iova_fast' mangled-name='alloc_iova_fast' filepath='drivers/iommu/iova.c' line='511' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='alloc_iova_fast'>
+        <parameter type-id='0c2c419d' name='iovad' filepath='drivers/iommu/iova.c' line='511' column='1'/>
+        <parameter type-id='7359adad' name='size' filepath='drivers/iommu/iova.c' line='511' column='1'/>
+        <parameter type-id='7359adad' name='limit_pfn' filepath='drivers/iommu/iova.c' line='512' column='1'/>
+        <parameter type-id='b50a4934' name='flush_rcache' filepath='drivers/iommu/iova.c' line='512' column='1'/>
+        <return type-id='7359adad'/>
+      </function-decl>
       <function-decl name='alloc_netdev_mqs' mangled-name='alloc_netdev_mqs' filepath='net/core/dev.c' line='10463' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='alloc_netdev_mqs'>
         <parameter type-id='95e97e5e' name='sizeof_priv' filepath='net/core/dev.c' line='10463' column='1'/>
         <parameter type-id='80f4b756' name='name' filepath='net/core/dev.c' line='10463' column='1'/>
@@ -119762,6 +119931,10 @@
         <parameter type-id='f66fa7f4' name='devfreq' filepath='drivers/devfreq/devfreq.c' line='922' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='devfreq_remove_governor' mangled-name='devfreq_remove_governor' filepath='drivers/devfreq/devfreq.c' line='1258' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devfreq_remove_governor'>
+        <parameter type-id='247297cd' name='governor' filepath='drivers/devfreq/devfreq.c' line='1258' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='devfreq_resume_device' mangled-name='devfreq_resume_device' filepath='drivers/devfreq/devfreq.c' line='1116' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='devfreq_resume_device'>
         <parameter type-id='f66fa7f4' name='devfreq' filepath='drivers/devfreq/devfreq.c' line='1116' column='1'/>
         <return type-id='95e97e5e'/>
@@ -119903,6 +120076,11 @@
       <function-decl name='device_match_fwnode' mangled-name='device_match_fwnode' filepath='drivers/base/core.c' line='4657' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='device_match_fwnode'>
         <parameter type-id='fa0b179b' name='dev' filepath='drivers/base/core.c' line='4657' column='1'/>
         <parameter type-id='eaa32e2f' name='fwnode' filepath='drivers/base/core.c' line='4657' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='device_match_name' mangled-name='device_match_name' filepath='drivers/base/core.c' line='4645' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='device_match_name'>
+        <parameter type-id='fa0b179b' name='dev' filepath='drivers/base/core.c' line='4645' column='1'/>
+        <parameter type-id='eaa32e2f' name='name' filepath='drivers/base/core.c' line='4645' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='device_property_present' mangled-name='device_property_present' filepath='drivers/base/property.c' line='35' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='device_property_present'>
@@ -120685,6 +120863,10 @@
         <parameter type-id='4a798fcf' name='match' filepath='drivers/base/devres.c' line='423' column='1'/>
         <parameter type-id='eaa32e2f' name='match_data' filepath='drivers/base/devres.c' line='423' column='1'/>
         <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='disable_hardirq' mangled-name='disable_hardirq' filepath='kernel/irq/manage.c' line='646' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='disable_hardirq'>
+        <parameter type-id='f0981eeb' name='irq' filepath='kernel/irq/manage.c' line='646' column='1'/>
+        <return type-id='b50a4934'/>
       </function-decl>
       <function-decl name='disable_irq' mangled-name='disable_irq' filepath='kernel/irq/manage.c' line='622' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='disable_irq'>
         <parameter type-id='f0981eeb' name='irq' filepath='kernel/irq/manage.c' line='622' column='1'/>
@@ -122223,6 +122405,12 @@
         <parameter type-id='eaa32e2f' name='vaddr' filepath='drivers/gpu/drm/drm_prime.c' line='697' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+      <function-decl name='drm_gem_dumb_destroy' mangled-name='drm_gem_dumb_destroy' filepath='drivers/gpu/drm/drm_gem.c' line='334' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_gem_dumb_destroy'>
+        <parameter type-id='9e99ecc1' name='file' filepath='drivers/gpu/drm/drm_gem.c' line='334' column='1'/>
+        <parameter type-id='8898134d' name='dev' filepath='drivers/gpu/drm/drm_gem.c' line='335' column='1'/>
+        <parameter type-id='8f92235e' name='handle' filepath='drivers/gpu/drm/drm_gem.c' line='336' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='drm_gem_dumb_map_offset' mangled-name='drm_gem_dumb_map_offset' filepath='drivers/gpu/drm/drm_gem.c' line='297' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_gem_dumb_map_offset'>
         <parameter type-id='9e99ecc1' name='file' filepath='drivers/gpu/drm/drm_gem.c' line='297' column='1'/>
         <parameter type-id='8898134d' name='dev' filepath='drivers/gpu/drm/drm_gem.c' line='297' column='1'/>
@@ -122282,6 +122470,11 @@
         <parameter type-id='9e99ecc1' name='file_priv' filepath='drivers/gpu/drm/drm_gem.c' line='428' column='1'/>
         <parameter type-id='abd62a96' name='obj' filepath='drivers/gpu/drm/drm_gem.c' line='429' column='1'/>
         <parameter type-id='f9409001' name='handlep' filepath='drivers/gpu/drm/drm_gem.c' line='430' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='drm_gem_handle_delete' mangled-name='drm_gem_handle_delete' filepath='drivers/gpu/drm/drm_gem.c' line='260' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_gem_handle_delete'>
+        <parameter type-id='9e99ecc1' name='filp' filepath='drivers/gpu/drm/drm_gem.c' line='260' column='1'/>
+        <parameter type-id='19c2251e' name='handle' filepath='drivers/gpu/drm/drm_gem.c' line='260' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='drm_gem_lock_reservations' mangled-name='drm_gem_lock_reservations' filepath='drivers/gpu/drm/drm_gem.c' line='1250' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='drm_gem_lock_reservations'>
@@ -123576,6 +123769,12 @@
       </function-decl>
       <function-decl name='free_io_pgtable_ops' mangled-name='free_io_pgtable_ops' filepath='drivers/iommu/io-pgtable.c' line='59' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='free_io_pgtable_ops'>
         <parameter type-id='bf4bdb64' name='ops' filepath='drivers/iommu/io-pgtable.c' line='59' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='free_iova_fast' mangled-name='free_iova_fast' filepath='drivers/iommu/iova.c' line='550' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='free_iova_fast'>
+        <parameter type-id='0c2c419d' name='iovad' filepath='drivers/iommu/iova.c' line='550' column='1'/>
+        <parameter type-id='7359adad' name='pfn' filepath='drivers/iommu/iova.c' line='550' column='1'/>
+        <parameter type-id='7359adad' name='size' filepath='drivers/iommu/iova.c' line='550' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='free_irq' mangled-name='free_irq' filepath='kernel/irq/manage.c' line='1907' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='free_irq'>
@@ -125591,6 +125790,11 @@
         <parameter type-id='fa0b179b' name='dev' filepath='drivers/iommu/iommu.c' line='2198' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
+      <function-decl name='iommu_detach_group' mangled-name='iommu_detach_group' filepath='drivers/iommu/iommu.c' line='2324' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_detach_group'>
+        <parameter type-id='bff05edb' name='domain' filepath='drivers/iommu/iommu.c' line='2324' column='1'/>
+        <parameter type-id='0b19fc54' name='group' filepath='drivers/iommu/iommu.c' line='2324' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
       <function-decl name='iommu_dev_enable_feature' mangled-name='iommu_dev_enable_feature' filepath='drivers/iommu/iommu.c' line='2957' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_dev_enable_feature'>
         <parameter type-id='fa0b179b' name='dev' filepath='drivers/iommu/iommu.c' line='2957' column='1'/>
         <parameter type-id='29d28711' name='feat' filepath='drivers/iommu/iommu.c' line='2957' column='1'/>
@@ -125634,6 +125838,12 @@
         <parameter type-id='fa0b179b' name='dev' filepath='drivers/iommu/dma-iommu.c' line='161' column='1'/>
         <parameter type-id='e84b031a' name='list' filepath='drivers/iommu/dma-iommu.c' line='161' column='1'/>
         <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='iommu_dma_reserve_iova' mangled-name='iommu_dma_reserve_iova' filepath='drivers/iommu/dma-iommu.c' line='379' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_dma_reserve_iova'>
+        <parameter type-id='fa0b179b' name='dev' filepath='drivers/iommu/dma-iommu.c' line='379' column='1'/>
+        <parameter type-id='cf29c9b3' name='base' filepath='drivers/iommu/dma-iommu.c' line='379' column='1'/>
+        <parameter type-id='91ce1af9' name='size' filepath='drivers/iommu/dma-iommu.c' line='380' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='iommu_domain_alloc' mangled-name='iommu_domain_alloc' filepath='drivers/iommu/iommu.c' line='1921' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iommu_domain_alloc'>
         <parameter type-id='5e2671f8' name='bus' filepath='drivers/iommu/iommu.c' line='1921' column='1'/>
@@ -127802,6 +128012,12 @@
         <parameter type-id='f66fa7f4' name='df' filepath='drivers/thermal/devfreq_cooling.c' line='460' column='1'/>
         <parameter type-id='0b660ebe' name='dfc_power' filepath='drivers/thermal/devfreq_cooling.c' line='461' column='1'/>
         <return type-id='2feec21f'/>
+      </function-decl>
+      <function-decl name='of_device_alloc' mangled-name='of_device_alloc' filepath='drivers/of/platform.c' line='107' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='of_device_alloc'>
+        <parameter type-id='9a537bbe' name='np' filepath='drivers/of/platform.c' line='107' column='1'/>
+        <parameter type-id='80f4b756' name='bus_id' filepath='drivers/of/platform.c' line='108' column='1'/>
+        <parameter type-id='fa0b179b' name='parent' filepath='drivers/of/platform.c' line='109' column='1'/>
+        <return type-id='db362995'/>
       </function-decl>
       <function-decl name='of_device_get_match_data' mangled-name='of_device_get_match_data' filepath='drivers/of/device.c' line='253' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='of_device_get_match_data'>
         <parameter type-id='8df61054' name='dev' filepath='drivers/of/device.c' line='253' column='1'/>
@@ -135957,6 +136173,12 @@
       <function-decl name='vm_get_page_prot' mangled-name='vm_get_page_prot' filepath='mm/mmap.c' line='111' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vm_get_page_prot'>
         <parameter type-id='7359adad' name='vm_flags' filepath='mm/mmap.c' line='111' column='1'/>
         <return type-id='2e2dcbd3'/>
+      </function-decl>
+      <function-decl name='vm_insert_page' mangled-name='vm_insert_page' filepath='mm/memory.c' line='1866' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vm_insert_page'>
+        <parameter type-id='2ae08426' name='vma' filepath='mm/memory.c' line='1866' column='1'/>
+        <parameter type-id='7359adad' name='addr' filepath='mm/memory.c' line='1866' column='1'/>
+        <parameter type-id='02f11ed4' name='page' filepath='mm/memory.c' line='1867' column='1'/>
+        <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='vm_iomap_memory' mangled-name='vm_iomap_memory' filepath='mm/memory.c' line='2392' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='vm_iomap_memory'>
         <parameter type-id='2ae08426' name='vma' filepath='mm/memory.c' line='2392' column='1'/>
