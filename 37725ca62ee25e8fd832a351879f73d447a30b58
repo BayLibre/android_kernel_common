@@ -46,6 +46,30 @@
       },
       "revId": "37725ca62ee25e8fd832a351879f73d447a30b58",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d967823b_0fe48ce0",
+        "filename": "include/trace/hooks/dmabuf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2022-12-09T00:45:53Z",
+      "side": 0,
+      "message": "\u003e Why not just add #undef __GENKSYMS__ in the non-GKI source which includes this file?\n\nThat would adding those checks in drivers/android/vendor_hooks.c . yeah, we are using android hooks driver without enabling CONFIG_DMABUF_SYSFS_STATS in a platform. \n\nYeah, forward declaration is the simple solution. I saw that 5.15 also doing the same. so I don\u0027t see why we need to add more #ifdefry in vendor hooks code now.\n\nPls ack this change and unblock us.",
+      "parentUuid": "83ec8e41_1d179516",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "37725ca62ee25e8fd832a351879f73d447a30b58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
