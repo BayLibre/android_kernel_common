@@ -40,6 +40,21 @@ struct pkvm_el2_module {
 };
 
 #ifdef MODULE
+/*
+ * Convert an EL2 module addr from the kernel VA to the hyp VA
+ */
+#define pkvm_el2_mod_va(kern_va, token)				\
+({								\
+	extern char __kvm_nvhe___hypmod_text_start[];		\
+	unsigned long hyp_text_kern_va =			\
+		(unsigned long)__kvm_nvhe___hypmod_text_start;	\
+	unsigned long offset;					\
+								\
+	offset = (unsigned long)kern_va - hyp_text_kern_va;	\
+								\
+	token + offset;						\
+})
+
 int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this,
 			   unsigned long *token);
 
@@ -77,16 +92,12 @@ int __pkvm_load_el2_module(struct pkvm_el2_module *mod, struct module *this,
 	__pkvm_load_el2_module(&mod, THIS_MODULE, token);		\
 })
 
-int __pkvm_register_el2_call(dyn_hcall_t hfn, unsigned long token,
-			     unsigned long hyp_text_kern_va);
+int __pkvm_register_el2_call(unsigned long hfn_hyp_va);
 
 #define pkvm_register_el2_mod_call(hfn, token)				\
 ({									\
-	extern char __kvm_nvhe___hypmod_text_start[];			\
-	unsigned long hyp_text_kern_va = 				\
-		(unsigned long)__kvm_nvhe___hypmod_text_start;		\
-	__pkvm_register_el2_call(function_nocfi(hfn), token,		\
-				 hyp_text_kern_va);			\
+	__pkvm_register_el2_call(pkvm_el2_mod_va(function_nocfi(hfn),	\
+						 token));		\
 })
 
 #define pkvm_el2_mod_call(id, ...)					\
