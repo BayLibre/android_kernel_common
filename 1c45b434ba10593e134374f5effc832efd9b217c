@@ -16,6 +16,24 @@
       "message": "Yeah could you add a dma-buf.h include to vendor-hooks.c under __GENKSYMS__ please.\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android12-5.10/drivers/android/vendor_hooks.c#9\n\nWorking on updating the documentation for this.",
       "revId": "1c45b434ba10593e134374f5effc832efd9b217c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5523e69c_8b68b842",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2022-12-10T03:48:42Z",
+      "side": 1,
+      "message": "Can you please help me understand why we need to add linux/dma-buf.h under #ifndef __GEKNKSYMS__? Obviously we don\u0027t want mod versions to get visibility of all structures defined in this header. however we want vendor hook code and the module (which implements the hook) to know the actual definition and KMI has to track it. \n\nWhich part makes KMI to track this structure? There are many other exports which use dma_buf structure but I am asking a general question.\n\n        struct dma_buf_sysfs_entry {\n                struct kobject kobj;\n                struct dma_buf *dmabuf;\n        } *sysfs_entry;",
+      "parentUuid": "a7d4525e_6e09bb05",
+      "revId": "1c45b434ba10593e134374f5effc832efd9b217c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
