@@ -155,7 +155,10 @@ int kvm_host_prepare_stage2(void *pgt_pool_base)
 		return ret;
 
 	host_s2_pte_ops.force_pte_cb = host_stage2_force_pte;
-	host_s2_pte_ops.pte_is_counted_cb = host_stage2_pte_is_counted;
+	if (static_branch_unlikely(&coalescing_disabled))
+		host_s2_pte_ops.pte_is_counted_cb = guest_stage2_pte_is_counted;
+	else
+		host_s2_pte_ops.pte_is_counted_cb = host_stage2_pte_is_counted;
 
 	ret = __kvm_pgtable_stage2_init(&host_mmu.pgt, mmu,
 					&host_mmu.mm_ops, KVM_HOST_S2_FLAGS,

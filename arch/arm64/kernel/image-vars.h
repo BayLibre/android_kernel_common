@@ -129,6 +129,7 @@ KVM_NVHE_ALIAS(__hyp_rodata_end);
 
 /* pKVM static key */
 KVM_NVHE_ALIAS(kvm_protected_mode_initialized);
+KVM_NVHE_ALIAS(coalescing_disabled);
 
 #endif /* CONFIG_KVM */
 

@@ -94,12 +94,24 @@ static const struct ftr_set_desc kaslr __initconst = {
 	},
 };
 
+extern struct arm64_ftr_override coalescing_override __initdata;
+
+static const struct ftr_set_desc coalescing __initconst = {
+	.name		= "coalescing",
+	.override       = &coalescing_override,
+	.fields		= {
+		{ "disabled", 0 },
+		{}
+	},
+};
+
 static const struct ftr_set_desc * const regs[] __initconst = {
 	&mmfr1,
 	&pfr1,
 	&isar1,
 	&isar2,
 	&kaslr,
+	&coalescing,
 };
 
 static const struct {
@@ -115,6 +127,7 @@ static const struct {
 	  "id_aa64isar2.gpa3=0 id_aa64isar2.apa3=0"	   },
 	{ "arm64.nomte",		"id_aa64pfr1.mte=0" },
 	{ "nokaslr",			"kaslr.disabled=1" },
+	{ "nocoalescing",		"coalescing.disabled=1" },
 };
 
 static int __init find_field(const char *cmdline,

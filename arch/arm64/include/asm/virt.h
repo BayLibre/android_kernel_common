@@ -71,6 +71,7 @@ void __hyp_set_vectors(phys_addr_t phys_vector_base);
 void __hyp_reset_vectors(void);
 
 DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
+DECLARE_STATIC_KEY_FALSE(coalescing_disabled);
 
 static inline bool is_pkvm_initialized(void)
 {

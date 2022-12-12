@@ -788,6 +788,9 @@ static void stage2_coalesce_walk_table_post(u64 addr, u64 end, u32 level,
 	struct kvm_pgtable_mm_ops *mm_ops = data->mm_ops;
 	kvm_pte_t *childp = kvm_pte_follow(*ptep, mm_ops);
 
+	if (static_branch_unlikely(&coalescing_disabled))
+		return;
+
 	/*
 	 * Decrement the refcount only on the set ownership path to avoid a
 	 * loop situation when the following happens:

@@ -45,6 +45,9 @@
 #include <kvm/arm_pmu.h>
 #include <kvm/arm_psci.h>
 
+struct arm64_ftr_override coalescing_override __initdata;
+DEFINE_STATIC_KEY_FALSE(coalescing_disabled);
+
 static enum kvm_mode kvm_mode = KVM_MODE_DEFAULT;
 DEFINE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
 
@@ -2437,6 +2440,9 @@ static int __init early_kvm_mode_cfg(char *arg)
 		pr_warn_once("KVM is not available. Ignoring kvm-arm.mode\n");
 		return 0;
 	}
+
+	if (coalescing_override.val)
+		static_branch_enable(&coalescing_disabled);
 
 	if (strcmp(arg, "protected") == 0) {
 		if (!is_kernel_in_hyp_mode())
