@@ -70,6 +70,24 @@
       "parentUuid": "f08554fb_85f3a43a",
       "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1f8182_b7415c1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-12T15:41:48Z",
+      "side": 1,
+      "message": "So yeah indeed, my thoughts were to prepare the ground, and as the structure to store the information is there... why not prepopulate it... but agreed it doesn\u0027t look amazing to expose the hyp_vmemmap knowledge to the host.\n\nTo share a structure there are the usual limitations :/ So I suppose either:\n\n- having a fixed array describing range (if we don\u0027t expect to upstream that feature, maybe that\u0027s not too bad?).\n\n- Or could create \"another\" vmemmap into a separated memblock, this one could be freed at the end of the boot? All the functions to set it up exist so it might be compact? (also could be re-used for other stuff?) But reading the entire vmemmap while we could work with ranges doesn\u0027t look amazing.",
+      "parentUuid": "19da03e9_b402dbc4",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
