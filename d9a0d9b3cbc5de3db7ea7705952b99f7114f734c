@@ -52,6 +52,24 @@
       "parentUuid": "d64875d8_3cb7dd91",
       "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19da03e9_b402dbc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-12T15:02:03Z",
+      "side": 1,
+      "message": "\u003e The host would just mark the pages in the vmemmap and the hyp, after the s2 is in place would update it based on the vmemmap.\n\nAh right, I see what you mean. I should probably make that clearer in the patch, the reason I\u0027m pushing pages into a memcache is because protected regions may fall outside memory (to protect devices etc). The hypervisor memory pool only has enough pages to cover all of *memory* with page-size stage-2 mappings. So for every protected region, I top-up the hypervisor pool, to be on the safe side. (We could probably make it smarter, but it doesn\u0027t hurt to give the hypervisor a bit more memory, it will be used to map MMIO regions).\n\nIf we go with the hyp_vmemmap approach, we\u0027ll still need to take this into account I guess? That would probably mean allocating a bigger hyp memory pool from the start to cover that need, but that does happen pretty early on. It\u0027s probably fine though, and should be better to keep all the allocations contiguous so we can keep nice big block mappings at stage-2!\n\n\u003e But that\u0027s a lot of back and forth.\n\nThinking about it a bit more, I see two things we\u0027d need to work on to make this work:\n - so far we\u0027re tried to keep struct hyp_page private to the hypervisor, the kernel only sees its size;\n - having EL2 scan the entire hyp_vmemmap page by page to update the mappings for the protected ones is pretty inefficient;\n \nFollowing your idea of having the host prepare the ground, maybe an alternative is to have the host construct a tailor-made data structure, probably something a bit like the memblock list that the host constructs for pKVM, but only to track the protected regions. Dunno how much simpler that would be, but that\u0027d be a valid option. Thoughts?",
+      "parentUuid": "f08554fb_85f3a43a",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
