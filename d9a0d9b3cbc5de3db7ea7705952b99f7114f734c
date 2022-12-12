@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e266129b_f298b8d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-12T10:44:26Z",
+      "side": 1,
+      "message": "the vmemmap_base being set quite early, couldn\u0027t the host just set the PROTECTED flags directly inside it before deprivilege? That would avoid to have a separated hypercall and to alloc pages for the host s2 too early?",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
