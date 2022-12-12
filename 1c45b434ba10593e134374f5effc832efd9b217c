@@ -34,6 +34,24 @@
       "parentUuid": "a7d4525e_6e09bb05",
       "revId": "1c45b434ba10593e134374f5effc832efd9b217c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d94c993a_e4109da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-12-12T16:39:55Z",
+      "side": 1,
+      "message": "Ideally the includes belong in the include/trace/hook header, but putting them there leads to CRC mismatches if the header gets included from a C file, and that\u0027s no good after KMI freeze. So vendor_hooks.c has been set up to perform the includes for types which need to be fully defined to avoid this problem. The KMI enforcement for any type needed for the hook comes from the vendor_hooks.c include. That is independent of any other use of the type in the kernel. Modules are of course free to also include any necessary headers to dereference pointers to such types.",
+      "parentUuid": "5523e69c_8b68b842",
+      "revId": "1c45b434ba10593e134374f5effc832efd9b217c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
