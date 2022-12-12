@@ -34,6 +34,24 @@
       "parentUuid": "e266129b_f298b8d7",
       "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f08554fb_85f3a43a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-12T14:10:49Z",
+      "side": 1,
+      "message": "\u003e Do you mean having the host pre-populate the hyp_vmemmap, and use that to mark some pages as \u0027protected\u0027?\n\nYep\n\n\u003e but not sure how that avoids the early allocation for host s2 pages?\n\nThe host would just mark the pages in the vmemmap and the hyp, after the s2 is in place would update it based on the vmemmap.\n\nBut that\u0027s a lot of back and forth.",
+      "parentUuid": "d64875d8_3cb7dd91",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
