@@ -16,6 +16,24 @@
       "message": "the vmemmap_base being set quite early, couldn\u0027t the host just set the PROTECTED flags directly inside it before deprivilege? That would avoid to have a separated hypercall and to alloc pages for the host s2 too early?",
       "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d64875d8_3cb7dd91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-12T12:39:50Z",
+      "side": 1,
+      "message": "\u003e the vmemmap_base being set quite early, couldn\u0027t the host just set the PROTECTED flags directly inside it before deprivilege?\n\nDo you mean having the host pre-populate the hyp_vmemmap, and use that to mark some pages as \u0027protected\u0027?\n\n\u003e That would avoid to have a separated hypercall and to alloc pages for the host s2 too early?\n\nI can see how that could avoid a hypercall (though that would be added complexity in the __pkvm_init path as we would have to walk the entire vmemmap I think?), but not sure how that avoids the early allocation for host s2 pages?",
+      "parentUuid": "e266129b_f298b8d7",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
