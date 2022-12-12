@@ -142,6 +142,23 @@
       "parentUuid": "f39b3c40_7fdd9c1c",
       "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa8bfcf_7b0681d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-12T16:25:00Z",
+      "side": 1,
+      "message": "As discussed with Vincent offline, this has an issue as host_stage2_unmap_dev_all() will break the protection if it ever happens.\n\nI\u0027ll work on an alternative solution ...",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
