@@ -16,6 +16,24 @@
       "message": "No driver should ever need to call this.\n\nWhy has the code that needed this in 5.10 not been upstreamed already?",
       "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80be7227_42a4aaa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-12-13T16:06:14Z",
+      "side": 1,
+      "message": "https://android-review.git.corp.google.com/c/kernel/common/+/1121591\n\nI have no idea of the history but it already exported a lot of CMA functions but not only cma_get_size. It\u0027s weird to upstream only cma_get_size without them.",
+      "parentUuid": "bb5f4aaf_2bada807",
+      "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
