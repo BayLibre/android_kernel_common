@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t this check for reg-\u003etype \u003d\u003d PKVM_MREG_MEMORY before unmap_reg_locked()?",
       "revId": "4c1c793be1cfd1e1a6d1b5a8d75eb1e4f89164d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a2f7d2_6bcb0616",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-13T12:42:09Z",
+      "side": 1,
+      "message": "Well I do want to unmap all the regions in between the \u0027moveable\u0027 regions, even if they\u0027re not memory, so I don\u0027t think this check specifically would be required. Or did you have something else in mind?\n\nBut now that you mention it, there is indeed a theoretical problem if there are protected regions that overlap with memory regions... I don\u0027t _think_ that would be the case in practice, but we should either enforce it, or make this loop work with overlapping regs. I\u0027ll look at the latter.",
+      "parentUuid": "f580797d_69ab8171",
+      "revId": "4c1c793be1cfd1e1a6d1b5a8d75eb1e4f89164d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
