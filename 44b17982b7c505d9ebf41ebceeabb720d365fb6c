@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd3159bf_36451f5a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-13T10:54:15Z",
+      "side": 1,
+      "message": "Not related to this patch but I\u0027m not sure I get the need for the \"\u0026\u0026 pte\" test, especially when it doesn\u0027t seem to be an issue for kvm_pgtable_stage2_pte_prot().",
+      "revId": "44b17982b7c505d9ebf41ebceeabb720d365fb6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
