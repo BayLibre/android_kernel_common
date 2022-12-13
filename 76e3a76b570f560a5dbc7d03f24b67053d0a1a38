@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000034227190",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2348198?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "61006dff_f98e1094",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 23,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Roderick Colenbrander \u003croderick@gaikai.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "27528c6c_31adc3f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-12-13T07:51:41Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Roderick Colenbrander \u003croderick@gaikai.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 494658934 android-build.ayeaye-python-dispatcher_20221212.01_p0",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "76e3a76b570f560a5dbc7d03f24b67053d0a1a38",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
