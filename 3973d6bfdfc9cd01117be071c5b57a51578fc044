@@ -52,6 +52,24 @@
       "parentUuid": "80be7227_42a4aaa4",
       "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3528a455_c950e2c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-12-13T19:23:21Z",
+      "side": 1,
+      "message": "Discussed this with Minchan and he pointed to a couple of unsuccessful attempts to export cma-related functions before:\nhttps://lore.kernel.org/all/20191003085528.GB21629@arrakis.emea.arm.com/\nhttps://www.spinics.net/lists/linux-mm/msg237394.html\n\nThese functions are needed for dmabuf-heaps which use CMA as storage. Since upstream is not keen on supporting dmabuf-heap features used in Android (we tried upstreaming that before: https://lore.kernel.org/linux-mm/20210121175502.274391-1-minchan@kernel.org/), I don\u0027t think we will be able to upstream this anytime soon (would require a generic in-kernel user).\n\nDue to this situation, I would ask to include the cma-related exports necessary for dmabuf heaps into android-mainline as a clear indication that we need them but don\u0027t see a way yet to upstream, so will support them long term as out-of-tree patches. Greg, WDYT?",
+      "parentUuid": "6f189341_85fe3a9c",
+      "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
