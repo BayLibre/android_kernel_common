@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f580797d_69ab8171",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2022-12-13T11:18:31Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this check for reg-\u003etype \u003d\u003d PKVM_MREG_MEMORY before unmap_reg_locked()?",
+      "revId": "4c1c793be1cfd1e1a6d1b5a8d75eb1e4f89164d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
