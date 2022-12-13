@@ -159,6 +159,24 @@
       "message": "As discussed with Vincent offline, this has an issue as host_stage2_unmap_dev_all() will break the protection if it ever happens.\n\nI\u0027ll work on an alternative solution ...",
       "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "762621c1_5f571dfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2022-12-13T10:16:14Z",
+      "side": 1,
+      "message": "Alright, I ended up reworking the whole thing by introducing the concept of \u0027moveable\u0027 regions. They\u0027re basically all PA ranges that can be \u0027moved\u0027 by pKVM from an ownership perspective. So that is defined as all memory region + all protected regions with the latest series. And I\u0027m using this list of \u0027moveable\u0027 regions to size the memory pool, so there is no special case to handle there. Let me know what you think!",
+      "parentUuid": "339e7327_68ed4a25",
+      "revId": "d9a0d9b3cbc5de3db7ea7705952b99f7114f734c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
