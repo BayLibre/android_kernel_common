@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000034381589",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2355428?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "571e4fef_0b71d0fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-12-14T23:40:30Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 495326679 android-build.ayeaye-python-dispatcher_20221214.05_p0",
+      "revId": "823fd48354e7b3b2b30c4b15c445cd8795cb7be1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000034381589",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2355428?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8a4eb4ca_6f52d7ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-12-14T23:40:30Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. The following inter-diff was found between this change and the original change\u0027:\n\n```\n1:  823fd4835 ! 1:  aea6e535a BACKPORT: UPSTREAM: usb: typec: ucsi: Wait for the USB role switches\n    @@ Metadata\n      ## Commit message ##\n         BACKPORT: UPSTREAM: usb: typec: ucsi: Wait for the USB role switches\n     \n    -    DO NOT SUBMIT - BROKEN CHERRY PICK FOR TESTING\n    -\n         When role switch module probe late than ucsi module,\n         fwnode_usb_role_switch_get() will return -EPROBE_DEFER,\n         it is better to restart ucsi init work to find\n    @@ Commit message\n         to a new parent structure]\n         Change-Id: Ia4e2521c40b9b0ffe8b6f13ec19990e7f3a60e7a\n         Signed-off-by: Udipto Goswami \u003cquic_ugoswami@quicinc.com\u003e\n    -    (cherry picked from commit aea6e535a2767e21c5d0154b63def46d26939bab)\n     \n      ## drivers/usb/typec/ucsi/ucsi.c ##\n     @@ drivers/usb/typec/ucsi/ucsi.c: static int ucsi_register_port(struct ucsi *ucsi, int index)\n\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 495326679 android-build.ayeaye-python-dispatcher_20221214.05_p0",
+      "revId": "823fd48354e7b3b2b30c4b15c445cd8795cb7be1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
