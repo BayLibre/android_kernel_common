@@ -1443,6 +1443,7 @@
   of_graph_is_present
   of_graph_parse_endpoint
   of_iomap
+  of_irq_count
   of_irq_find_parent
   of_irq_get
   of_irq_get_byname
@@ -2698,6 +2699,7 @@
   wait_for_completion_interruptible_timeout
   wait_for_completion_killable
   wait_for_completion_timeout
+  wait_on_page_bit
   wait_woken
   __wake_up
   __wake_up_locked
