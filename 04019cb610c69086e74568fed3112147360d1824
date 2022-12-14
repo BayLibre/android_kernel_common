@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1d11207_b8a6f865",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-12-14T22:54:23Z",
+      "side": 1,
+      "message": "Still a build-break:\n```\nld.lld: error: undefined symbol: devm_led_classdev_multicolor_register_ext\n\u003e\u003e\u003e referenced by led-class-multicolor.h:105 (include/linux/led-class-multicolor.h:105)\n\u003e\u003e\u003e               vmlinux.o:(ps_lightbar_register)\n\nld.lld: error: undefined symbol: led_mc_calc_color_components\n\u003e\u003e\u003e referenced by hid-playstation.c:867 (drivers/hid/hid-playstation.c:867)\n\u003e\u003e\u003e               vmlinux.o:(dualsense_lightbar_set_brightness)\npahole: .tmp_vmlinux.btf: No such file or directory\nld.lld: error: .btf.vmlinux.bin.o: unknown file type\n```",
+      "revId": "04019cb610c69086e74568fed3112147360d1824",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
