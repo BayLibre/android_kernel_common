@@ -88,6 +88,24 @@
       "parentUuid": "3528a455_c950e2c3",
       "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4bcc86b_21113ef5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-12-14T17:55:06Z",
+      "side": 1,
+      "message": "Thing is each vendor uses exported CMA functions as different implementation afaik(I guess most usecase would be dmabuf(old ION)) since some implementation relies on the vendor specific feature(sometimes, dependent with HW feature) so there is no standard implementation to be general if we want to land it into android-mainline.",
+      "parentUuid": "f264de1c_d6a44a5f",
+      "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
