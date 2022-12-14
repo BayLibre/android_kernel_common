@@ -1,6 +1,12 @@
 DEFCONFIG=gki_defconfig
-POST_DEFCONFIG_CMDS="check_defconfig"
 
 if [ -n "${GKI_BUILD_CONFIG_FRAGMENT}" ]; then
 source ${GKI_BUILD_CONFIG_FRAGMENT}
 fi
+
+POST_DEFCONFIG_CMDS="check_defconfig && update_debug_config"
+function update_debug_config() {
+    ${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
+         -e PTDUMP_DEBUGFS
+    (cd ${OUT_DIR} && make O=${OUT_DIR} $archsubarch CC=${CC} CROSS_COMPILE=${CROSS_COMPILE} olddefconfig)
+}
