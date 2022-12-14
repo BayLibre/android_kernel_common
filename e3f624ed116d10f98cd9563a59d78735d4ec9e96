@@ -16,6 +16,24 @@
       "message": "For any Google reviewers - do we care if this method is not defined for x86, on the grounds that no one other than ourselves will use this?",
       "revId": "e3f624ed116d10f98cd9563a59d78735d4ec9e96",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c96b973_ed07e9cc",
+        "filename": "arch/arm64/include/asm/set_memory.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2022-12-14T21:03:01Z",
+      "side": 1,
+      "message": "Hmm. Exporting architecture-specific function is unusual...\nI guess since this is temporary fix we don\u0027t wan\u0027t to implement something more complex but more generic, so I would be find with this. But let\u0027s see what Greg and Todd think.",
+      "parentUuid": "12301842_69f88041",
+      "revId": "e3f624ed116d10f98cd9563a59d78735d4ec9e96",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
