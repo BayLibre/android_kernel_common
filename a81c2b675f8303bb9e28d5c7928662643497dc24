@@ -45,6 +45,23 @@
       },
       "revId": "a81c2b675f8303bb9e28d5c7928662643497dc24",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f589dfae_bb52a63b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-14T18:50:06Z",
+      "side": 1,
+      "message": "That driver is set as a boolean, not to be built as a module.  If you build this as a module, you have a modified tree and so make the changes there, not here in the `android13-5.10` tree.",
+      "revId": "a81c2b675f8303bb9e28d5c7928662643497dc24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
