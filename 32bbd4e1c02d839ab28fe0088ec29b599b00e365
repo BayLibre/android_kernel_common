@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc27e3c5_10edd86f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-12-14T00:26:59Z",
+      "side": 1,
+      "message": "Causes build break:\n```\n...d13-5.15/common LLVM\u003d1 DEPMOD\u003ddepmod DTC\u003d/buildbot/src/android/common-android13-5.15/build/kernel/build-tools/path/linux-x86/dtc -j40 Image modules qcom/sdm845-db845c.dtb qcom/qrb5165-rb5.dtb Image.gz\nusr/include/linux/fuse.h:944: found __[us]{8,16,32,64} type without #include \u003clinux/types.h\u003e\nld.lld: error: undefined symbol: devm_led_classdev_multicolor_register_ext\n\u003e\u003e\u003e referenced by led-class-multicolor.h:105 (include/linux/led-class-multicolor.h:105)\n\u003e\u003e\u003e               vmlinux.o:(ps_lightbar_register)\n\nld.lld: error: undefined symbol: led_mc_calc_color_components\n\u003e\u003e\u003e referenced by hid-playstation.c:867 (drivers/hid/hid-playstation.c:867)\n\u003e\u003e\u003e               vmlinux.o:(dualsense_lightbar_set_brightness)\npahole: .tmp_vmlinux.btf: No such file or directory\nld.lld: error: .btf.vmlinux.bin.o: unknown file type\n```",
+      "revId": "32bbd4e1c02d839ab28fe0088ec29b599b00e365",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
