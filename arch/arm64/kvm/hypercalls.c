@@ -18,7 +18,6 @@
 	unsigned long f;						\
 	f = GENMASK(KVM_REG_ARM_VENDOR_HYP_BMAP_BIT_COUNT - 1, 0);	\
 	if (is_protected_kvm_enabled()) {				\
-		f |= BIT(ARM_SMCCC_KVM_FUNC_HYP_MEMINFO);		\
 		f |= BIT(ARM_SMCCC_KVM_FUNC_MEM_RELINQUISH);		\
 	}								\
 	f;								\
