@@ -124,6 +124,24 @@
       "parentUuid": "a4bcc86b_21113ef5",
       "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdb9c3f8_1310ef03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2022-12-15T18:50:24Z",
+      "side": 1,
+      "message": "About the user, it\u0027s used by vendor overriding dmabuf module along with other exported CMA functions by AOSP tag(Upstream never exported any CMA functions but Android exported most of them to support vendor module but not only this cma_get_size so what\u0027s the your main concern?)\n\nPresubmit doesn\u0027t emit any complain about the symbol. What symbol table addition do you mean?",
+      "parentUuid": "cb847505_20f9f541",
+      "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
