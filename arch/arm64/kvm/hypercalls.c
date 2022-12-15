@@ -14,14 +14,8 @@
 	GENMASK(KVM_REG_ARM_STD_BMAP_BIT_COUNT - 1, 0)
 #define KVM_ARM_SMCCC_STD_HYP_FEATURES				\
 	GENMASK(KVM_REG_ARM_STD_HYP_BMAP_BIT_COUNT - 1, 0)
-#define KVM_ARM_SMCCC_VENDOR_HYP_FEATURES ({				\
-	unsigned long f;						\
-	f = GENMASK(KVM_REG_ARM_VENDOR_HYP_BMAP_BIT_COUNT - 1, 0);	\
-	if (is_protected_kvm_enabled()) {				\
-		f |= BIT(ARM_SMCCC_KVM_FUNC_MEM_RELINQUISH);		\
-	}								\
-	f;								\
-})
+#define KVM_ARM_SMCCC_VENDOR_HYP_FEATURES			\
+	GENMASK(KVM_REG_ARM_VENDOR_HYP_BMAP_BIT_COUNT - 1, 0);
 
 static void kvm_ptp_get_time(struct kvm_vcpu *vcpu, u64 *val)
 {
@@ -84,6 +78,7 @@ static bool kvm_hvc_call_default_allowed(u32 func_id)
 	case ARM_SMCCC_ARCH_FEATURES_FUNC_ID:
 	case ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID:
 	case ARM_SMCCC_VENDOR_HYP_KVM_MEM_UNSHARE_FUNC_ID:
+	case ARM_SMCCC_VENDOR_HYP_KVM_MEM_RELINQUISH_FUNC_ID:
 		return true;
 	default:
 		/* PSCI 0.2 and up is in the 0:0x1f range */
@@ -124,9 +119,6 @@ static bool kvm_hvc_call_allowed(struct kvm_vcpu *vcpu, u32 func_id)
 				&smccc_feat->vendor_hyp_bmap);
 	case ARM_SMCCC_VENDOR_HYP_KVM_PTP_FUNC_ID:
 		return test_bit(KVM_REG_ARM_VENDOR_HYP_BIT_PTP,
-				&smccc_feat->vendor_hyp_bmap);
-	case ARM_SMCCC_VENDOR_HYP_KVM_MEM_RELINQUISH_FUNC_ID:
-		return test_bit(ARM_SMCCC_KVM_FUNC_MEM_RELINQUISH,
 				&smccc_feat->vendor_hyp_bmap);
 	default:
 		return kvm_hvc_call_default_allowed(func_id);
