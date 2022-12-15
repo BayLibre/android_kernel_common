@@ -16,6 +16,24 @@
       "message": "Why is a hook needed for `android-mainline`?",
       "revId": "06c71f3b9d0598c2213dcfb06d1e660e58c41ad3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8a2b3d9_f63ea544",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2022-12-15T01:11:00Z",
+      "side": 1,
+      "message": "I think I may have semi-caused this due to poor communication. The original patch aosp/2325057 had features I would like to seen in android-mainline before pulling to a shipping kernel. Then I changed this to say that the fix itself would not be allowed if it was not a vendor hook. So combining the two messages, you get a vendor hook in android-mainline.",
+      "parentUuid": "60cfe3d9_33b3ed9e",
+      "revId": "06c71f3b9d0598c2213dcfb06d1e660e58c41ad3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
