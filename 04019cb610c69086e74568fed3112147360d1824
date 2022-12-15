@@ -106,6 +106,24 @@
       "parentUuid": "75ddb195_8c02d459",
       "revId": "04019cb610c69086e74568fed3112147360d1824",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b4198f7_d7fe49f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2022-12-15T18:32:53Z",
+      "side": 1,
+      "message": "That can\u0027t work. db845 needs to use the same GKI image as everyone else so if it is built into GKI it can\u0027t be a module for db845c. So one of these options must be taken:\n\n1. Don\u0027t specify MULTICOLOR in gki_defconfig at all (it\u0027s a vendor module enabled in device specific fragments as db845c does)\n\n2. Build MULTICOLOR into gki_defconfig as \u003dy. Remove it from db845c\n\n3. Build as GKI module by adding to gki_defconfig as \u003dm. Remove from db845c.\n\nSo 2 questions:\nIs this needed for all android devices? (option 2 and 3)\nIf so, does it need to be built-in (option 2)",
+      "parentUuid": "d1cf5321_cde819dc",
+      "revId": "04019cb610c69086e74568fed3112147360d1824",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
