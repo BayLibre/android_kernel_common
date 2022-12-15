@@ -52,6 +52,24 @@
       "parentUuid": "ec7493fe_c3d81029",
       "revId": "04019cb610c69086e74568fed3112147360d1824",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c9bb63_7a175d41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1797860
+      },
+      "writtenOn": "2022-12-15T00:43:44Z",
+      "side": 1,
+      "message": "Ah it seems that even though I set CONFIG_LEDS_CLASS_MULTICOLOR\u003dy, this db845c has a config fragment that sets it to m instead of y\n\nValue of CONFIG_LEDS_CLASS_MULTICOLOR is redefined by fragment /home/user/workspace/android-kernel/common/arch/arm64/configs/db845c_gki.fragment:\nPrevious value: CONFIG_LEDS_CLASS_MULTICOLOR\u003dy\nNew value: CONFIG_LEDS_CLASS_MULTICOLOR\u003dm",
+      "parentUuid": "89e68d0b_4eb2a3a7",
+      "revId": "04019cb610c69086e74568fed3112147360d1824",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
