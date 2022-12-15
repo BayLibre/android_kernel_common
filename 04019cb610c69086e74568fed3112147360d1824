@@ -16,6 +16,24 @@
       "message": "Still a build-break:\n```\nld.lld: error: undefined symbol: devm_led_classdev_multicolor_register_ext\n\u003e\u003e\u003e referenced by led-class-multicolor.h:105 (include/linux/led-class-multicolor.h:105)\n\u003e\u003e\u003e               vmlinux.o:(ps_lightbar_register)\n\nld.lld: error: undefined symbol: led_mc_calc_color_components\n\u003e\u003e\u003e referenced by hid-playstation.c:867 (drivers/hid/hid-playstation.c:867)\n\u003e\u003e\u003e               vmlinux.o:(dualsense_lightbar_set_brightness)\npahole: .tmp_vmlinux.btf: No such file or directory\nld.lld: error: .btf.vmlinux.bin.o: unknown file type\n```",
       "revId": "04019cb610c69086e74568fed3112147360d1824",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7493fe_c3d81029",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1797860
+      },
+      "writtenOn": "2022-12-15T00:00:11Z",
+      "side": 1,
+      "message": "Hi Todd. For test builds what is the build command and the build type? I\u0027m building GKI aarch64 locally and not having any issues with the following command:\n\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build.sh",
+      "parentUuid": "f1d11207_b8a6f865",
+      "revId": "04019cb610c69086e74568fed3112147360d1824",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
