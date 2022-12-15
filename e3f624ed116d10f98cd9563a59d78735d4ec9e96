@@ -34,6 +34,24 @@
       "parentUuid": "12301842_69f88041",
       "revId": "e3f624ed116d10f98cd9563a59d78735d4ec9e96",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7d9e2b_f86022b6",
+        "filename": "arch/arm64/include/asm/set_memory.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-15T07:11:00Z",
+      "side": 1,
+      "message": "you should not be exporting arch-specific functions, that would imply that your code will not work on any other arch, which isn\u0027t ok for GKI kernels 😞",
+      "parentUuid": "7c96b973_ed07e9cc",
+      "revId": "e3f624ed116d10f98cd9563a59d78735d4ec9e96",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
