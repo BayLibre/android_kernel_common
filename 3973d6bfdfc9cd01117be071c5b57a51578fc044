@@ -142,6 +142,24 @@
       "parentUuid": "cb847505_20f9f541",
       "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b3ec6c8_6033323f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-16T08:10:17Z",
+      "side": 1,
+      "message": "exporting a symbol like this without adding it to a symbol list does not make it available to anyone.  And it would cause my scripts to notice it and revert the export (we don\u0027t add exports with no user.)\n\nSo we need a real user of this to be able to accept it, otherwise this commit is useless.",
+      "parentUuid": "fdb9c3f8_1310ef03",
+      "revId": "3973d6bfdfc9cd01117be071c5b57a51578fc044",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
