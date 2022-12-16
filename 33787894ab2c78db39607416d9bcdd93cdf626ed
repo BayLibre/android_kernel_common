@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000034490818",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2355428?revision\u003d4",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "e712fd59_afd8133f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-12-16T01:24:20Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. The following inter-diff was found between this change and the original change\u0027:\n\n```\n    @@ drivers/usb/typec/ucsi/ucsi.c: static int ucsi_register_port(struct ucsi *ucsi,\n      \t/* Delay other interactions with the con until registration is complete */\n      \tmutex_lock(\u0026con-\u003elock);\n      \n    +@@ drivers/usb/typec/ucsi/ucsi.c: static int ucsi_register_port(struct ucsi *ucsi, int index)\n    + \tif (con-\u003ecap.op_mode \u0026 UCSI_CONCAP_OPMODE_DEBUG_ACCESSORY)\n    + \t\t*accessory \u003d TYPEC_ACCESSORY_DEBUG;\n    + \n    +-\tcap-\u003efwnode \u003d ucsi_find_fwnode(con);\n    + \tcap-\u003edriver_data \u003d con;\n    + \tcap-\u003eops \u003d \u0026ucsi_ops;\n    + \n     @@ drivers/usb/typec/ucsi/ucsi.c: static int ucsi_register_port(struct ucsi *ucsi, int index)\n      \t\tucsi_port_psy_changed(con);\n      \t}\n    @@ drivers/usb/typec/ucsi/ucsi.h: struct ucsi {\n      \n      \tstruct work_struct work;\n     +#define UCSI_ROLE_SWITCH_RETRY_PER_HZ\t10\n    ++#define UCSI_ROLE_SWITCH_INTERVAL\t(HZ / UCSI_ROLE_SWITCH_RETRY_PER_HZ)\n     +#define UCSI_ROLE_SWITCH_WAIT_COUNT\t(10 * UCSI_ROLE_SWITCH_RETRY_PER_HZ)\n      \n      \t/* PPM Communication lock */\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 495598265 android-build.ayeaye-python-dispatcher_20221215.02_p0",
+      "revId": "33787894ab2c78db39607416d9bcdd93cdf626ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000034490818",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2355428?revision\u003d4",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "6f2f4e59_4070fb80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2022-12-16T01:24:20Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 495598265 android-build.ayeaye-python-dispatcher_20221215.02_p0",
+      "revId": "33787894ab2c78db39607416d9bcdd93cdf626ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
