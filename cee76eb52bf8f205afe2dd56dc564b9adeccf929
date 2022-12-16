@@ -16,6 +16,24 @@
       "message": "Still breaking the build.\n```\nERROR: Unable to find drivers/leds/led-class-multicolor.ko in any of the following directories:\n  bazel-out/k8-fastbuild/bin/common/db845c/staging/lib/modules/5.15.74-android13-8-04791-gdcd62d7dd9e1-abP46170310/kernel\nTarget //common:db845c_dist failed to build\nERROR: /buildbot/src/android/common-android13-5.15/common/BUILD.bazel:64:14 Middleman _middlemen/common_Sdb845c_Udist-runfiles failed: (Exit 1): bash \n```\n\ndrivers/leds/led-class-multicolor.ko needs to be removed from the db845c rules in BUILD.bazel.",
       "revId": "cee76eb52bf8f205afe2dd56dc564b9adeccf929",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc920adc_8c7a99ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1797860
+      },
+      "writtenOn": "2022-12-16T19:15:06Z",
+      "side": 1,
+      "message": "Thank you. I haven\u0027t been able to get kleaf to work so I\u0027ve been using build.sh. I removed the .ko in new patch set.",
+      "parentUuid": "b1427633_30d40019",
+      "revId": "cee76eb52bf8f205afe2dd56dc564b9adeccf929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
