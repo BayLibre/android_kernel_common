@@ -410,10 +410,14 @@ static void smmu_tlb_flush_all(void *cookie)
 		.tlbi.vmid = domain->domain_id,
 	};
 
-	if (smmu->iommu.power_is_off && smmu->caches_clean_on_power_on)
+	hyp_spin_lock(&smmu->iommu.lock);
+	if (smmu->iommu.power_is_off && smmu->caches_clean_on_power_on) {
+		hyp_spin_unlock(&smmu->iommu.lock);
 		return;
+	}
 
 	WARN_ON(smmu_send_cmd(smmu, &cmd));
+	hyp_spin_unlock(&smmu->iommu.lock);
 }
 
 static void smmu_tlb_inv_range(struct kvm_hyp_iommu_domain *domain,
@@ -429,8 +433,11 @@ static void smmu_tlb_inv_range(struct kvm_hyp_iommu_domain *domain,
 		.tlbi.leaf = leaf,
 	};
 
-	if (smmu->iommu.power_is_off && smmu->caches_clean_on_power_on)
+	hyp_spin_lock(&smmu->iommu.lock);
+	if (smmu->iommu.power_is_off && smmu->caches_clean_on_power_on) {
+		hyp_spin_unlock(&smmu->iommu.lock);
 		return;
+	}
 
 	/*
 	 * There are no mappings at high addresses since we don't use TTB1, so
@@ -444,6 +451,7 @@ static void smmu_tlb_inv_range(struct kvm_hyp_iommu_domain *domain,
 		BUG_ON(iova + granule < iova);
 		iova += granule;
 	}
+	hyp_spin_unlock(&smmu->iommu.lock);
 }
 
 static void smmu_tlb_flush_walk(unsigned long iova, size_t size,
