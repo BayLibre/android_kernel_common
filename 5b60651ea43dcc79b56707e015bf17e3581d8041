@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c308120_6fa6061a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2022-12-19T16:48:35Z",
+      "side": 1,
+      "message": "5.10 will be supported here for as long as the Android support rules say, I do not know the exact dates, sorry.\n\nFor new command line arguments, if you add them only to one branch, you then prevent anyone from updating to a newer kernel version UNLESS you also add the feature there as you are creating a new user/kernel api.  Please do NOT do that unless it is the only possible way.  For a hardware errata like this, it should not be needed at all and you can trigger off of the hardware platform description and not rely on the bootloader.",
+      "parentUuid": "9496f1fd_db62f5f2",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 13
+      },
+      "revId": "5b60651ea43dcc79b56707e015bf17e3581d8041",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8843ac38_7c41cc94",
         "filename": "mm/vmalloc.c",
         "patchSetId": 2
