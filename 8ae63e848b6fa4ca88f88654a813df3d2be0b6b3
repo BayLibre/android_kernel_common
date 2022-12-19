@@ -22,6 +22,30 @@
       },
       "revId": "8ae63e848b6fa4ca88f88654a813df3d2be0b6b3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df78ca5e_a478ba0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1294047
+      },
+      "writtenOn": "2022-12-19T01:55:07Z",
+      "side": 1,
+      "message": "Thanks for the reply.\nI found out that we updated mali\u0027s Driver Development Kit internally.\nAnd It was added by mali DDR r40. Seems to be used to determine if the page is movable and if so to actively clear the page...  \nIs this not allowed? Or I just need to upload a CL for this version of DDK separately.\n\n```git\n+static void kbase_free_pages_worker(struct work_struct *work)\n+{\n+       struct kbase_mem_migrate *mem_migrate \u003d\n+               container_of(work, struct kbase_mem_migrate, free_pages_work);\n+       struct kbase_device *kbdev \u003d container_of(mem_migrate, struct kbase_device, mem_migrate);\n+       struct page *p, *tmp;\n+       LIST_HEAD(free_list);\n+\n+       spin_lock(\u0026mem_migrate-\u003efree_pages_lock);\n+       list_splice_init(\u0026mem_migrate-\u003efree_pages_list, \u0026free_list);\n+       spin_unlock(\u0026mem_migrate-\u003efree_pages_lock);\n+\n+       list_for_each_entry_safe(p, tmp, \u0026free_list, lru) {\n+               list_del_init(\u0026p-\u003elru);\n+\n+               lock_page(p);\n+               if (PageMovable(p))\n+                       __ClearPageMovable(p);\n+               unlock_page(p);\n+\n+               kbase_free_page_metadata(kbdev, p);\n+               __free_pages(p, 0);\n+       }\n+}\n```",
+      "parentUuid": "c3189ea7_df3a6f43",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "8ae63e848b6fa4ca88f88654a813df3d2be0b6b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
