@@ -22,6 +22,7 @@
 
 static LIST_HEAD(irq_domain_list);
 static DEFINE_MUTEX(irq_domain_mutex);
+static DEFINE_MUTEX(irq_revmaps_mutex);
 
 static struct irq_domain *irq_default_domain;
 
@@ -798,6 +799,7 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
 	 * If we've already configured this interrupt,
 	 * don't do it again, or hell will break loose.
 	 */
+	mutex_lock(&irq_revmaps_mutex);
 	virq = irq_find_mapping(domain, hwirq);
 	if (virq) {
 		/*
@@ -806,7 +808,7 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
 		 * interrupt number.
 		 */
 		if (type == IRQ_TYPE_NONE || type == irq_get_trigger_type(virq))
-			return virq;
+			goto unlock;
 
 		/*
 		 * If the trigger type has not been set yet, then set
@@ -814,27 +816,32 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
 		 */
 		if (irq_get_trigger_type(virq) == IRQ_TYPE_NONE) {
 			irq_data = irq_get_irq_data(virq);
-			if (!irq_data)
-				return 0;
+			if (!irq_data) {
+				virq = 0;
+				goto unlock;
+			}
 
 			irqd_set_trigger_type(irq_data, type);
-			return virq;
+			goto unlock;
 		}
 
 		pr_warn("type mismatch, failed to map hwirq-%lu for %s!\n",
 			hwirq, of_node_full_name(to_of_node(fwspec->fwnode)));
-		return 0;
+		virq = 0;
+		goto unlock;
 	}
 
 	if (irq_domain_is_hierarchy(domain)) {
 		virq = irq_domain_alloc_irqs(domain, 1, NUMA_NO_NODE, fwspec);
-		if (virq <= 0)
-			return 0;
+		if (virq <= 0) {
+			virq = 0;
+			goto unlock;
+		}
 	} else {
 		/* Create mapping */
 		virq = irq_create_mapping(domain, hwirq);
 		if (!virq)
-			return virq;
+			goto unlock;
 	}
 
 	irq_data = irq_get_irq_data(virq);
@@ -843,12 +850,15 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
 			irq_domain_free_irqs(virq, 1);
 		else
 			irq_dispose_mapping(virq);
-		return 0;
+		virq = 0;
+		goto unlock;
 	}
 
 	/* Store trigger type */
 	irqd_set_trigger_type(irq_data, type);
 
+unlock:
+	mutex_unlock(&irq_revmaps_mutex);
 	return virq;
 }
 EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping);
