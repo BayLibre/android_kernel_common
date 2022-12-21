@@ -16,6 +16,23 @@
       "message": "Added forward declaration and moved header file to vendor-hooks.c as in the example:\n\n+#ifndef __GENKSYMS__\n+/* struct dma_buf */\n+#include \u003clinux/dma-buf.h\u003e\n+#endif",
       "revId": "ba4aad47c7f47bd8279f125b8cb23097b6693522",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c55b166_468b0c55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2022-12-21T17:56:46Z",
+      "side": 1,
+      "message": "Thanks, running our CI checks now.  We\u0027re also starting to ask for a patch in the same topic / series for adding the hook symbols to your symbol list to make finding the reason and users for a hook easier to trace. Could you also include a symbol list update.",
+      "revId": "ba4aad47c7f47bd8279f125b8cb23097b6693522",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
