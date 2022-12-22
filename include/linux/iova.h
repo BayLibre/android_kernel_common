@@ -40,7 +40,7 @@ struct iova_domain {
 	struct iova_rcache	*rcaches;
 	struct hlist_node	cpuhp_dead;
 
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE2(1, u32 best_fit:1, u32 reserved1);
 };
 
 static inline unsigned long iova_size(struct iova *iova)
