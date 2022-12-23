@@ -858,6 +858,7 @@ snd_usb_endpoint_open(struct snd_usb_audio *chip,
 	mutex_unlock(&chip->mutex);
 	return ep;
 }
+EXPORT_SYMBOL_GPL(snd_usb_endpoint_open);
 
 /*
  * snd_usb_endpoint_set_sync: Link data and sync endpoints
@@ -1525,6 +1526,7 @@ int snd_usb_endpoint_get_clock_rate(struct snd_usb_audio *chip, int clock)
 	mutex_unlock(&chip->mutex);
 	return rate;
 }
+EXPORT_SYMBOL(snd_usb_endpoint_prepare);
 
 /**
  * snd_usb_endpoint_start: start an snd_usb_endpoint
