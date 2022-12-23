@@ -117,6 +117,21 @@ MODULE_PARM_DESC(skip_validation, "Skip unit descriptor validation (default: no)
 static DEFINE_MUTEX(register_mutex);
 static struct snd_usb_audio *usb_chip[SNDRV_CARDS];
 static struct usb_driver usb_audio_driver;
+static struct snd_usb_vendor_ops *vendor_ops;
+
+int snd_usb_register_vendor_ops(struct snd_usb_vendor_ops *ops)
+{
+	vendor_ops = ops;
+	return 0;
+}
+EXPORT_SYMBOL_GPL(snd_usb_register_vendor_ops);
+
+int snd_usb_unregister_vendor_ops(void)
+{
+	vendor_ops = NULL;
+	return 0;
+}
+EXPORT_SYMBOL_GPL(snd_usb_unregister_vendor_ops);
 
 /*
  * disconnect streams
@@ -910,6 +925,10 @@ static int usb_audio_probe(struct usb_interface *intf,
 	usb_set_intfdata(intf, chip);
 	atomic_dec(&chip->active);
 	mutex_unlock(&register_mutex);
+
+	if (vendor_ops->connect_cb)
+		vendor_ops->connect_cb(intf, chip);
+
 	return 0;
 
  __error:
@@ -942,6 +961,9 @@ static void usb_audio_disconnect(struct usb_interface *intf)
 
 	if (chip == USB_AUDIO_IFACE_UNUSED)
 		return;
+
+	if (vendor_ops->disconnect_cb)
+		vendor_ops->disconnect_cb(intf);
 
 	card = chip->card;
 
