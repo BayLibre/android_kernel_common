@@ -37,6 +37,7 @@
 #include <linux/page_owner.h>
 #include <linux/sched/sysctl.h>
 #include <linux/memory-tiers.h>
+#include <linux/pgalloc_tag.h>
 #include <linux/compat.h>
 
 #include <asm/tlb.h>
@@ -3293,8 +3294,10 @@ static void __split_huge_page(struct page *page, struct list_head *list,
 	unlock_page_lruvec(lruvec);
 	/* Caller disabled irqs, so they are still disabled here */
 
-	if (can_split)
+	if (can_split) {
 		split_page_owner(head, nr);
+		pgalloc_tag_split(head, nr);
+	}
 
 	/* See comment in __split_huge_page_tail() */
 	if (PageAnon(head)) {
