@@ -824,6 +824,9 @@
   get_user_ifreq
   get_zeroed_page
   gf128mul_lle
+  gic_cpu_init
+  gic_dist_init
+  gic_dist_wait_for_rwp
   gic_resume
   gic_v2_resume
   gov_attr_set_init
@@ -2269,6 +2272,8 @@
   __traceiter_android_vh_ftrace_oops_exit
   __traceiter_android_vh_ftrace_size_check
   __traceiter_android_vh_gic_resume
+  __traceiter_android_vh_gic_suspend
+  __traceiter_android_vh_gic_v2_resume
   __traceiter_android_vh_handle_tlb_conf
   __traceiter_android_vh_ipi_stop
   __traceiter_android_vh_jiffies_update
@@ -2377,6 +2382,7 @@
   __tracepoint_android_vh_ftrace_oops_exit
   __tracepoint_android_vh_ftrace_size_check
   __tracepoint_android_vh_gic_resume
+  __tracepoint_android_vh_gic_suspend
   __tracepoint_android_vh_gic_v2_resume
   __tracepoint_android_vh_handle_tlb_conf
   __tracepoint_android_vh_ipi_stop
