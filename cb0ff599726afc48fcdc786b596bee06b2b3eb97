@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ee30f4_8be5699e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1118753
+      },
+      "writtenOn": "2022-12-27T17:04:35Z",
+      "side": 1,
+      "message": "This patch appears to cause a build failure when CONFIG_ANDROID_HOOKS is disabled (for example, with ARCH\u003darm defconfig):\n\nhttps://storage.tuxsuite.com/public/clangbuiltlinux/continuous-integration2/builds/2JGC8dCPsZEMPlkPuFiztM7k46n/build.log\n\ndrivers/cpufreq/mediatek-cpufreq-hw.c:290:8: error: implicit declaration of function \u0027register_trace_android_vh_cpufreq_offline\u0027 [-Werror,-Wimplicit-function-declaration]\n        ret \u003d register_trace_android_vh_cpufreq_offline(mtk_cpufreq_suppress, NULL);\n              ^\ndrivers/cpufreq/mediatek-cpufreq-hw.c:290:8: note: did you mean \u0027trace_android_vh_cpufreq_offline\u0027?\n./include/trace/hooks/cpufreq.h:50:1: note: \u0027trace_android_vh_cpufreq_offline\u0027 declared here\nDECLARE_HOOK(android_vh_cpufreq_offline,\n^\n./include/trace/hooks/vendor_hooks.h:119:22: note: expanded from macro \u0027DECLARE_HOOK\u0027\n#define DECLARE_HOOK DECLARE_EVENT_NOP\n                     ^\n./include/linux/tracepoint.h:571:21: note: expanded from macro \u0027DECLARE_EVENT_NOP\u0027\n        static inline void trace_##name(proto)                          \\\n                           ^\n\u003cscratch space\u003e:17:1: note: expanded from here\ntrace_android_vh_cpufreq_offline\n^\n1 error generated.\n\nIt appears that DECLARE_EVENT_NOP does not define a register stub. Should that just be done as part of DECLARE_HOOK?",
+      "revId": "cb0ff599726afc48fcdc786b596bee06b2b3eb97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
