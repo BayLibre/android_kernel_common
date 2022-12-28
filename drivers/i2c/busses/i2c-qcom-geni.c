@@ -981,6 +981,24 @@ static const struct dev_pm_ops geni_i2c_pm_ops = {
 									NULL)
 };
 
+<<<<<<< HEAD   (3bee80 ANDROID: GKI: Update symbol list for mtk)
+||||||| BASE
+const struct geni_i2c_desc i2c_master_hub = {
+	.has_core_clk = true,
+	.icc_ddr = NULL,
+	.no_dma_support = true,
+	.tx_fifo_depth = 16,
+};
+
+=======
+static const struct geni_i2c_desc i2c_master_hub = {
+	.has_core_clk = true,
+	.icc_ddr = NULL,
+	.no_dma_support = true,
+	.tx_fifo_depth = 16,
+};
+
+>>>>>>> CHANGE (a650b9 UPSTREAM: i2c: qcom-geni: change i2c_master_hub to static)
 static const struct of_device_id geni_i2c_dt_match[] = {
 	{ .compatible = "qcom,geni-i2c" },
 	{}
