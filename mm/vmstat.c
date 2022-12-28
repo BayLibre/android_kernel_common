@@ -1161,6 +1161,7 @@ const char * const vmstat_text[] = {
 	"nr_bounce",
 	"nr_zspages",
 	"nr_free_cma",
+	"nr_free_hugepage",
 
 	/* enum numa_stat_item counters */
 #ifdef CONFIG_NUMA

@@ -334,6 +334,7 @@ const char * const migratetype_names[MIGRATE_TYPES] = {
 	"CMA",
 #endif
 	"HighAtomic",
+	"Hugepage",
 #ifdef CONFIG_MEMORY_ISOLATION
 	"Isolate",
 #endif
