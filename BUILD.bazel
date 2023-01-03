@@ -12,6 +12,10 @@ package(
     ],
 )
 
+_aarch64_additional_kmi_symbol_lists = [
+    "android/abi_gki_aarch64_qcom",
+]
+
 define_common_kernels(target_configs = {
     "kernel_aarch64": {
         "module_implicit_outs": COMMON_GKI_MODULES_LIST,
