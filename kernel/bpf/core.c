@@ -33,6 +33,11 @@
 #include <linux/extable.h>
 #include <linux/log2.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/bpf.h>
+#include <trace/hooks/memory.h>
+#undef TRACE_INCLUDE_PATH
+
 #include <asm/barrier.h>
 #include <asm/unaligned.h>
 
@@ -919,6 +924,8 @@ void __weak bpf_jit_free(struct bpf_prog *fp)
 	if (fp->jited) {
 		struct bpf_binary_header *hdr = bpf_jit_binary_hdr(fp);
 
+		trace_android_vh_set_memory_rw((uintptr_t)fp->bpf_func, fp->jited_len);
+		trace_android_vh_set_memory_nx((uintptr_t)fp->bpf_func, fp->jited_len);
 		bpf_jit_binary_free(hdr);
 
 		WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
