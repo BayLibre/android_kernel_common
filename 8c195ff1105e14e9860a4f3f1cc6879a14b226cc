@@ -16,6 +16,24 @@
       "message": "This changes the behavior if no attachment to the hook since the default ret is 0.",
       "revId": "8c195ff1105e14e9860a4f3f1cc6879a14b226cc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31fbae4_f993d4b8",
+        "filename": "drivers/iommu/iova.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1955535
+      },
+      "writtenOn": "2023-01-04T23:54:16Z",
+      "side": 1,
+      "message": "Ah, yes will initialize ret to -1 above.",
+      "parentUuid": "05162c88_47910a4d",
+      "revId": "8c195ff1105e14e9860a4f3f1cc6879a14b226cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
