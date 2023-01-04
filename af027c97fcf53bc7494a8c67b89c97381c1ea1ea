@@ -22,6 +22,30 @@
       },
       "revId": "af027c97fcf53bc7494a8c67b89c97381c1ea1ea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "275e58f3_234e8fc1",
+        "filename": "mm/page_pinner.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1904204
+      },
+      "writtenOn": "2023-01-04T06:35:34Z",
+      "side": 0,
+      "message": "Hi Minchan, I too have a similar thought of moving this message, but then I was thinking Isn\u0027t it the right thing to show the page pinner is enabled only after the user can actually able to extract this pinner information i.e. only after the debugfs knobs are created? Am I wrong here?\n\nBy that, I should be moving it to the end of page_pinner_init() **only after testing the debugfs knobs creation are successful, though no reason that they can fail**. NO?\n\nIf yes, I can create another change for this.",
+      "parentUuid": "664a43e3_fed438a8",
+      "range": {
+        "startLine": 409,
+        "startChar": 1,
+        "endLine": 409,
+        "endChar": 34
+      },
+      "revId": "af027c97fcf53bc7494a8c67b89c97381c1ea1ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
