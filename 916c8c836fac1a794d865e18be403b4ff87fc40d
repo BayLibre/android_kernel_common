@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d5061a_c14c2f04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2023-01-05T22:38:34Z",
+      "side": 1,
+      "message": "Please don\u0027t remove source files from the fips140 module like this.  We are required to have copies of various things in the module, even though the kernel contains exactly the same functionality.\n\nI will add this file back in its new location.",
+      "revId": "916c8c836fac1a794d865e18be403b4ff87fc40d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
