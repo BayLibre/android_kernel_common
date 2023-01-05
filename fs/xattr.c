@@ -566,6 +566,13 @@ int setxattr_copy(const char __user *name, struct xattr_ctx *ctx)
 			error = PTR_ERR(ctx->kvalue);
 			ctx->kvalue = NULL;
 		}
+<<<<<<< HEAD   (9d79c3 ANDROID: KVM: arm64: Keep the pKVM private range under 1GiB)
+=======
+		if ((strcmp(kname, XATTR_NAME_POSIX_ACL_ACCESS) == 0) ||
+		    (strcmp(kname, XATTR_NAME_POSIX_ACL_DEFAULT) == 0))
+			posix_acl_fix_xattr_from_user(mnt_userns, d_inode(d),
+						      kvalue, size);
+>>>>>>> BRANCH (4bf3e7 f2fs: let's avoid panic if extent_tree is not created)
 	}
 
 	return error;

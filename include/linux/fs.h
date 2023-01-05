@@ -42,7 +42,10 @@
 #include <linux/mount.h>
 #include <linux/cred.h>
 #include <linux/mnt_idmapping.h>
+<<<<<<< HEAD   (9d79c3 ANDROID: KVM: arm64: Keep the pKVM private range under 1GiB)
 #include <linux/android_kabi.h>
+=======
+>>>>>>> BRANCH (4bf3e7 f2fs: let's avoid panic if extent_tree is not created)
 
 #include <asm/byteorder.h>
 #include <uapi/linux/fs.h>
