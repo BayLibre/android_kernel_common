@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70c5f2cb_c42585b9",
+        "filename": "arch/arm64/include/asm/set_memory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2023-01-05T03:19:48Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "4e1f3d66_b675c99e",
+      "range": {
+        "startLine": 11,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "c37efec0c08d6482f6cb925eb91b4b491d445317",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24ff4ffb_f9883be1",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4540329_b034097c",
+        "filename": "include/linux/set_memory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2023-01-05T03:19:48Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "24ff4ffb_f9883be1",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 6
+      },
+      "revId": "c37efec0c08d6482f6cb925eb91b4b491d445317",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "237c6f74_22237f09",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-01-05T00:37:32Z",
       "side": 1,
       "message": "Can we have here:\n```\n#ifdef CONFIG_ARM64\n\treturn arch_set_direct_map_range_uncached(addr, numpages);\n#else\n\treturn -ENOTSUPP;\n#endif\n```\n?",
+      "range": {
+        "startLine": 5858,
+        "startChar": 1,
+        "endLine": 5858,
+        "endChar": 59
+      },
+      "revId": "c37efec0c08d6482f6cb925eb91b4b491d445317",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fab708a_b03dcf3b",
+        "filename": "mm/memory.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5858,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2023-01-05T03:19:48Z",
+      "side": 1,
+      "message": "Implemented.",
+      "parentUuid": "237c6f74_22237f09",
       "range": {
         "startLine": 5858,
         "startChar": 1,
