@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f759d5c_cc66bf52",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-01-05T18:33:09Z",
+      "side": 1,
+      "message": "Nit: since all the function pointers here are naturally \u0027namespaced\u0027 my the struct we removed all the \u0027pkvm\u0027 prefixes. Would be nice to keep things consistent, but no big deal.",
+      "range": {
+        "startLine": 36,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "50e61bb94adb7cb17e269e7a77ac8f9a43b5c334",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2b61aa_c8638364",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-01-05T18:33:09Z",
+      "side": 1,
+      "message": "Ditto",
+      "range": {
+        "startLine": 37,
+        "startChar": 7,
+        "endLine": 37,
+        "endChar": 12
+      },
+      "revId": "50e61bb94adb7cb17e269e7a77ac8f9a43b5c334",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
