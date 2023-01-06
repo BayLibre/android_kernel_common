@@ -687,13 +687,17 @@ static void maybe_delete_incomplete_file(struct file *f,
 		struct file *f = bfc->bc_file;
 
 		if (f) {
-			loff_t size = i_size_read(file_inode(f));
+			error = mutex_lock_interruptible(&bfc->bc_mutex);
+			if (!error) {
+				loff_t size = i_size_read(file_inode(f));
 
-			error = vfs_truncate(&f->f_path, size);
-			if (error)
-				/* No useful action on failure */
-				pr_warn("incfs: Failed to truncate complete file: %d\n",
-					error);
+				error = vfs_truncate(&f->f_path, size);
+				if (error)
+					/* No useful action on failure */
+					pr_warn("incfs: Failed to truncate complete file: %d\n",
+						error);
+				mutex_unlock(&bfc->bc_mutex);
+			}
 		}
 	}
 
