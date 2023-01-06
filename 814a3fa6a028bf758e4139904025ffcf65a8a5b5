@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "739d0ec4_7c50f143",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-01-06T21:55:48Z",
+      "side": 1,
+      "message": "This causes a merge conflict on the tip of the branch. Please rebase and submit on the tip of the branch",
+      "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21c91de8_720c4fcc",
+        "filename": "drivers/iommu/iova.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-01-06T21:55:48Z",
+      "side": 1,
+      "message": "Should be `limit_pfn + 1` instead of `limit_pfn+1` to be consistent with style guidelines.",
+      "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "491085e2_c86395ae",
+        "filename": "include/trace/hooks/iova.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-01-06T21:55:48Z",
+      "side": 1,
+      "message": "Does it make sense to spread the vendor hooks for this feature across `include/trace/hooks/iova.h` and `include/trace/hooks/iommu.h`? To put it differently, is there a reason this shouldn\u0027t be a part of `include/trace/hooks/iommu.h`?",
+      "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
