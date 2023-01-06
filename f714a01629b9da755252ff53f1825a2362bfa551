@@ -34,6 +34,24 @@
       "parentUuid": "605af27c_457a516e",
       "revId": "f714a01629b9da755252ff53f1825a2362bfa551",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b02b86fe_7566b597",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-06T13:43:42Z",
+      "side": 1,
+      "message": "No driver should be using this, use the other, common, apis instead.  Upstream is removing this symbol anyway.  Please work with the Mali driver authors, they know about this issue already and have a fix.  Ideally they would just get their driver upstream...",
+      "parentUuid": "e389b2e7_349361bc",
+      "revId": "f714a01629b9da755252ff53f1825a2362bfa551",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
