@@ -88,6 +88,24 @@
       "parentUuid": "c10d4cbe_339c0fbd",
       "revId": "76259f9efd71c7d9a4b641f1eee3f2cd610d8314",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17ffcf8e_f2aeb7eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-06T09:34:54Z",
+      "side": 1,
+      "message": "Ah, that\u0027s not obvious at all.\n\nYou forgot to use `cherry-pick -x` for this which would have made it more obvious and made Lint happy...",
+      "parentUuid": "33820e9c_4e89275d",
+      "revId": "76259f9efd71c7d9a4b641f1eee3f2cd610d8314",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
