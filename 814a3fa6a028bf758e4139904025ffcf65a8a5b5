@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a388648_fec5ea40",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1955535
+      },
+      "writtenOn": "2023-01-06T23:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "739d0ec4_7c50f143",
+      "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21c91de8_720c4fcc",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72585f9_634b075a",
+        "filename": "drivers/iommu/iova.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1955535
+      },
+      "writtenOn": "2023-01-06T23:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21c91de8_720c4fcc",
+      "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "491085e2_c86395ae",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-01-06T21:55:48Z",
       "side": 1,
       "message": "Does it make sense to spread the vendor hooks for this feature across `include/trace/hooks/iova.h` and `include/trace/hooks/iommu.h`? To put it differently, is there a reason this shouldn\u0027t be a part of `include/trace/hooks/iommu.h`?",
+      "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d46a1d43_e0784a49",
+        "filename": "include/trace/hooks/iova.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1955535
+      },
+      "writtenOn": "2023-01-06T23:37:22Z",
+      "side": 1,
+      "message": "Good point. We don\u0027t need the new file. I modified the patch to use hooks/iommu.h. Thanks",
+      "parentUuid": "491085e2_c86395ae",
       "revId": "814a3fa6a028bf758e4139904025ffcf65a8a5b5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
