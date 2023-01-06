@@ -46,6 +46,30 @@
       },
       "revId": "19f999cff990a66d5448050d4ca7553806a3a1ea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a6de6c7_32768154",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2023-01-06T10:55:31Z",
+      "side": 0,
+      "message": "For the u64, I see that it is better, as from kvm/iommu POV it is just an ID of the driver that it is passed to the hypervisor.\n\nSo, in the future if we change the way we represent the driver, we don\u0027t have to change that in kvm/iommu as it\u0027s abstracted.",
+      "parentUuid": "4e42bfd2_93ff7a36",
+      "range": {
+        "startLine": 1135,
+        "startChar": 1,
+        "endLine": 1135,
+        "endChar": 24
+      },
+      "revId": "19f999cff990a66d5448050d4ca7553806a3a1ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
