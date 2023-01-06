@@ -16,6 +16,24 @@
       "message": "Why not wait for LTS?  There should be no need to do anything special in Android for this fix.",
       "revId": "6134813038e1ae6b2dff399d36c182ade798ee2f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc5b8c1e_d6e1b6a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1979492
+      },
+      "writtenOn": "2023-01-06T21:03:12Z",
+      "side": 1,
+      "message": "The blamed commit was introduced in v5.18 and it\u0027s not available in linux-stable/linux-5.10.y, but available in aosp/android12-5.10-lts. Thus the fix will never arrive in linux-stable/5.10.y if no-one has an interest in backporting the blamed commit as well. And we would end up waiting indefinitely for the fix to get to android.",
+      "parentUuid": "566c6cdd_b5aea49a",
+      "revId": "6134813038e1ae6b2dff399d36c182ade798ee2f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
