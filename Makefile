@@ -2039,8 +2039,15 @@ $(clean-dirs):
 
 clean: $(clean-dirs)
 	$(call cmd,rmfiles)
+<<<<<<< HEAD   (0f2c33 Revert "ANDROID: KVM: arm64: Coalesce host stage2 entries on)
 	@find $(or $(KBUILD_EXTMOD), .) $(RCS_FIND_IGNORE) \
 		\( -name '*.[aios]' -o -name '*.rsi' -o -name '*.ko' -o -name '.*.cmd' \
+=======
+	@find $(if $(KBUILD_EXTMOD), $(KBUILD_EXTMOD), .) \
+		$(if $(filter-out arch/$(SRCARCH)/boot/dts, $(dtstree)), $(dtstree)) \
+		$(RCS_FIND_IGNORE) \
+		\( -name '*.[aios]' -o -name '*.ko' -o -name '.*.cmd' \
+>>>>>>> CHANGE (09ee26 ANDROID: kbuild: Search external devicetree path when runnin)
 		-o -name '*.ko.*' \
 		-o -name '*.dtb' -o -name '*.dtbo' -o -name '*.dtb.S' -o -name '*.dt.yaml' \
 		-o -name '*.dwo' -o -name '*.lst' \
