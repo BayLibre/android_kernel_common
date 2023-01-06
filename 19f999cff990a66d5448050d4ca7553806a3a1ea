@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408f8fb4_50827d2a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-01-06T10:36:58Z",
+      "side": 0,
+      "message": "So that is the important part of the patch, it\u0027s a semantic change, the struct-\u003eu64 conversion is just incidental? So maybe the commit message should reflect that?\n\nAlso, I\u0027m guessing the struct-\u003eu64 conversion is to leverage the compiler\u0027s type system to catch an old driver being used against the new API. But clearly this problem can\u0027t go unnoticed, so maybe let\u0027s drop the struct-\u003eu64 conversion and retain the type safety... You can rename the argument to the function that has \u0027hyp_driv\u0027 or something if we want to clarify.",
+      "range": {
+        "startLine": 1135,
+        "startChar": 1,
+        "endLine": 1135,
+        "endChar": 24
+      },
+      "revId": "19f999cff990a66d5448050d4ca7553806a3a1ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
