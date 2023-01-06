@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a153e6_7f37f03a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-01-06T19:25:51Z",
+      "side": 1,
+      "message": "Please cite the patch that broke the KMI (something like \"asop/2378292 breaks the KMI for struct dw_pcie. Refactor for KMI compliance\").\n\nIt might be cleaner to squash these two patches and mark aosp/2378292 as \"BACKPORT:\".",
+      "revId": "66934f8b41dd75242a030ae89098b9aee93d8bd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4abd996_9c34eb36",
+        "filename": "drivers/pci/controller/dwc/pcie-designware-host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-01-06T19:25:51Z",
+      "side": 1,
+      "message": "Won\u0027t this break any vendor module that assumes the old use of `iatu_unroll_enabled`? Can we be sure that no vendor module looks at `iatu_unroll_enabled`?",
+      "revId": "66934f8b41dd75242a030ae89098b9aee93d8bd7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
