@@ -418,3 +418,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dm_update_clone_bio);
  */
 const struct readahead_control *GKI_struct_readahead_control;
 EXPORT_SYMBOL_GPL(GKI_struct_readahead_control);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_alloc_pages_reclaim_defer);
