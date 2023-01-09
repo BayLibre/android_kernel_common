@@ -417,6 +417,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dm_update_clone_bio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ctl_dirty_rate);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_io_update_bio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_loop_prepare_cmd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_hidinput_pre_configure_usage);
+
 /*
  * For type visibility
  */
