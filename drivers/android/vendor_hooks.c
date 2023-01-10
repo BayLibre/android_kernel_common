@@ -42,6 +42,7 @@
 #include <trace/hooks/futex.h>
 #include <trace/hooks/fips140.h>
 #include <trace/hooks/timer.h>
+#include <trace/hooks/hung_task.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -126,3 +127,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_decrypt);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks_dn);
