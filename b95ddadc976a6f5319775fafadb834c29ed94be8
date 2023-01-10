@@ -22,6 +22,30 @@
       },
       "revId": "b95ddadc976a6f5319775fafadb834c29ed94be8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e949d8_4bcddcbe",
+        "filename": "mm/page-writeback.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1889,
+      "author": {
+        "id": 1874054
+      },
+      "writtenOn": "2023-01-10T06:15:08Z",
+      "side": 1,
+      "message": "I want to execute my own rate limiting logic before executing balance_dirty_pages(), instead of skipping balance_dirty_pages() entirely. In our tests, this has achieved some benefits, such as reducing the impact of a large number of Buffer IOs on the system in a short period of time, reducing the consumption of available memory by background applications, and reducing the probability of balance_dirty_pages() blocking processes. The ultimate goal is to reduce the impact of Buffer IO on foreground applications.",
+      "parentUuid": "8f3dc90c_a125332b",
+      "range": {
+        "startLine": 1889,
+        "startChar": 1,
+        "endLine": 1889,
+        "endChar": 33
+      },
+      "revId": "b95ddadc976a6f5319775fafadb834c29ed94be8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
