@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1eca00be_eeb561ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1348429
+      },
+      "writtenOn": "2023-01-11T22:20:17Z",
+      "side": 1,
+      "message": "It has been tested (on an affected hardware) with a dedicated first-stage init vendor module (in vendor ramdisk) that registers for the hook and decides when to apply the workaround (as far as I understand those are the first modules to be loaded in a requested order, subject to dependencies). This module is being loaded early enough to make sure that affected device gets the workaround applied.",
+      "parentUuid": "e57a2aed_a738db36",
+      "revId": "1d61872f645c2fb50907d839494f2e25897d08d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc3d8e61_f230539c",
         "filename": "arch/arm64/mm/dma-mapping.c",
         "patchSetId": 2
@@ -79,6 +97,30 @@
       "side": 1,
       "message": "This will not work for any devices found by the kernel before modules are able to be loaded, so are you sure this will actually work on a real system?\n\nAnd if it will work after modules are loaded, that implies these new ops are only needed for a specific bus of devices, if so, why not just do it for that bus?",
       "parentUuid": "bde48573_799c09b1",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "1d61872f645c2fb50907d839494f2e25897d08d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e57e9776_3083a381",
+        "filename": "arch/arm64/mm/dma-mapping.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1348429
+      },
+      "writtenOn": "2023-01-11T22:20:17Z",
+      "side": 1,
+      "message": "It all boils down to the order in which the modules are loaded (this, the order, is supposed to be configurable - if I got things right). This will require a dedicated module that will register for the hook and upon it being triggered, make decision whether the workaround is to be enabled or not. As long as that module is loaded first (and that is to be controlled by vendors) the hook\u0027s callback will get called upon each driver being loaded afterwords, thus giving a way to decide whether to apply the workaround or not. \nI\u0027m not sure whether having it being considered on a per-bus basis would make much of a difference , unless I am missing smth, which is very much possible (?)",
+      "parentUuid": "b0c9e04f_92d88e2c",
       "range": {
         "startLine": 61,
         "startChar": 0,
