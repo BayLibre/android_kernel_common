@@ -16,6 +16,24 @@
       "message": "no documentation as to \"why\" this is needed and is not upstream?",
       "revId": "5c6eae76163391cd2d95fa195e6c82736d13e5b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "226dde69_5c4f26f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2023-01-11T16:44:44Z",
+      "side": 1,
+      "message": "I will add a patch description.\n\nThis patch is one of the patches in a series that adds support for block layer zone sizes that are not a power of two (npo2). We need these patches in Android to test ZUFS (zoned UFS) prototypes. As one can see here, the block layer maintainer has no plans to add support in the upstream kernel for npo2 zone sizes: https://lore.kernel.org/linux-block/20220923173618.6899-1-p.raghav@samsung.com/.",
+      "parentUuid": "b90fb9fe_ad0a95be",
+      "revId": "5c6eae76163391cd2d95fa195e6c82736d13e5b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
