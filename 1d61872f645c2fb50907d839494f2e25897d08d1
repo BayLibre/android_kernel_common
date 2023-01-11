@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e57a2aed_a738db36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-11T14:27:54Z",
+      "side": 1,
+      "message": "How was this tested?",
+      "revId": "1d61872f645c2fb50907d839494f2e25897d08d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc3d8e61_f230539c",
         "filename": "arch/arm64/mm/dma-mapping.c",
         "patchSetId": 2
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "It has been requested to provide a way to selectively apply the workaround for chosen devices, hence the hook.",
       "parentUuid": "cc3d8e61_f230539c",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "1d61872f645c2fb50907d839494f2e25897d08d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0c9e04f_92d88e2c",
+        "filename": "arch/arm64/mm/dma-mapping.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-11T14:27:54Z",
+      "side": 1,
+      "message": "This will not work for any devices found by the kernel before modules are able to be loaded, so are you sure this will actually work on a real system?\n\nAnd if it will work after modules are loaded, that implies these new ops are only needed for a specific bus of devices, if so, why not just do it for that bus?",
+      "parentUuid": "bde48573_799c09b1",
       "range": {
         "startLine": 61,
         "startChar": 0,
