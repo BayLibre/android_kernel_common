@@ -133,6 +133,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a00e666d_83deb953",
+        "filename": "arch/arm64/mm/dma-mapping.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1348429
+      },
+      "writtenOn": "2023-01-11T22:25:21Z",
+      "side": 1,
+      "message": "As much as I appreciate that this is far from being perfect: delegating outside the responsibility for getting the dependencies here right, the alternatives for fulfilling the request to apply the workaround only for specific devices, are not much better and would require additional code within the generic bits which is not very much welcomed.",
+      "parentUuid": "e57e9776_3083a381",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "1d61872f645c2fb50907d839494f2e25897d08d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37861dcd_6ed8dfd9",
         "filename": "include/trace/hooks/dma_noalias.h",
         "patchSetId": 2
