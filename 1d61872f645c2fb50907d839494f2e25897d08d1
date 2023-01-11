@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc3d8e61_f230539c",
+        "filename": "arch/arm64/mm/dma-mapping.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-11T08:47:31Z",
+      "side": 1,
+      "message": "why do this as a hook?  You know the cpu types that need the other mappings to be set up, just make that change here like you are going to have to do upstream for this same fix.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "1d61872f645c2fb50907d839494f2e25897d08d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37861dcd_6ed8dfd9",
         "filename": "include/trace/hooks/dma_noalias.h",
         "patchSetId": 2
