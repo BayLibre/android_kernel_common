@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9335c985_07f748cd",
+        "filename": "include/linux/vmalloc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-11T08:37:40Z",
+      "side": 1,
+      "message": "nit, global names should be \"subsystem_action\" so perhaps this should be \"lazy_vunmap_disable\"?\n\nBut then, having a bool with a name \"disable\" is inverse logic, also causing confusion and we really try to not add new variables with that type of logic anymore.\n\nSo how about making this the other way around:\n`extern bool lazy_vunmap_enable;`\nand have the default be `true`?",
+      "range": {
+        "startLine": 249,
+        "startChar": 12,
+        "endLine": 249,
+        "endChar": 31
+      },
+      "revId": "d55122ef40a0561c13686fcff3c8d58749c073be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
