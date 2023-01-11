@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb8ebbab_c10c8930",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-11T21:30:17Z",
+      "side": 1,
+      "message": "I think this can be signaled not just signaled_only, at least for now. If we only set this when queuing NULL it is a change in behavior compared to the current code. Right now if we, for instance, send a message to trusty on cpu1, but cpu2 gets to the dequeue_nop call before cpu1, then both cpu1 and cpu2 will call into trusty. With this CL, the call into trusty on cpu1 is eliminated for this case (EDIT: the call is not actually eliminated, just the priority change, but I don\u0027t know if that was intentional or not). If we want the behavior to change like that, I think it should be a separate change that can be tested on its own.",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23855949_8b980327",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-11T21:30:17Z",
+      "side": 1,
+      "message": "this seems more complicated than what I was suggesting.\nthe requested value should be the highest priority of request-from-trusty and signaled",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feceabad_e73e4f85",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-11T21:30:17Z",
+      "side": 1,
+      "message": "I was expecting this to also change to only enter the loop if next is set",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ce4926_48c1ffc6",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-11T21:30:17Z",
+      "side": 1,
+      "message": "We don\u0027t want to remove the call to set the priority here. If the thread is currently at a lower priority than the target priority we should boost it so it will get scheduled sooner.",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
