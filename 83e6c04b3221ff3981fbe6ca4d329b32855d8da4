@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "864b614d_4ae5f7a8",
+        "filename": "fs/incfs/vfs.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1080076
+      },
+      "writtenOn": "2023-01-12T19:43:45Z",
+      "side": 1,
+      "message": "can you explain how does the race happen here? it\u0027s pretty hard to figure from the code itself, e.g. there\u0027s no mention of the mutex at all, and it\u0027s pretty unclear for me how does the synchronization help",
+      "range": {
+        "startLine": 690,
+        "startChar": 0,
+        "endLine": 690,
+        "endChar": 52
+      },
+      "revId": "83e6c04b3221ff3981fbe6ca4d329b32855d8da4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
