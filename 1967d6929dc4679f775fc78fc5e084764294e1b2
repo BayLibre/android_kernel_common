@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca355a4_a731dd3d",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-01-12T21:11:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb8ebbab_c10c8930",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23855949_8b980327",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-01-11T21:30:17Z",
       "side": 1,
       "message": "this seems more complicated than what I was suggesting.\nthe requested value should be the highest priority of request-from-trusty and signaled",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07c03037_72f89f84",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-01-12T21:11:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23855949_8b980327",
       "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c6e3ba_f96a0d0d",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-01-12T21:11:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feceabad_e73e4f85",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9ce4926_48c1ffc6",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-01-11T21:30:17Z",
       "side": 1,
       "message": "We don\u0027t want to remove the call to set the priority here. If the thread is currently at a lower priority than the target priority we should boost it so it will get scheduled sooner.",
+      "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c9f5f4a_abb6b94c",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-01-12T21:11:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9ce4926_48c1ffc6",
       "revId": "1967d6929dc4679f775fc78fc5e084764294e1b2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
