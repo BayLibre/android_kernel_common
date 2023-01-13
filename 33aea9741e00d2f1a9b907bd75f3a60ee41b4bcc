@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b808b58_b2ccbb4c",
+        "filename": "drivers/scsi/sd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-01-13T12:41:51Z",
+      "side": 1,
+      "message": "This breaks an arm64 defconfig build for me:\n\n```\ndrivers/scsi/sd.c:1308:6: error: implicit declaration of function \u0027blk_rq_is_seq_zone_write\u0027 [-Werror,-Wimplicit-function-declaration]\n            blk_rq_is_seq_zone_write(rq))\n            ^\n1 error generated.\n```",
+      "range": {
+        "startLine": 1308,
+        "startChar": 5,
+        "endLine": 1308,
+        "endChar": 29
+      },
+      "revId": "33aea9741e00d2f1a9b907bd75f3a60ee41b4bcc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
