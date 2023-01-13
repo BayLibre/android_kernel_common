@@ -63,6 +63,30 @@
       },
       "revId": "805bbc6b9945c4e6a3af3c76b38d1e97a850431d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5022ca28_46d1c485",
+        "filename": "include/trace/hooks/logbuf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1893826
+      },
+      "writtenOn": "2023-01-13T14:03:07Z",
+      "side": 1,
+      "message": "For current design, we need to dump previous logs when this hook first be called, so we need many members inside the rb and r to get the existing logs",
+      "parentUuid": "1ab88bb1_7cda891e",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "805bbc6b9945c4e6a3af3c76b38d1e97a850431d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
