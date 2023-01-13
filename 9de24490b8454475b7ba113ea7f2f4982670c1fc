@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a240c1cd_bf4b9a4c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/switch.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-01-13T10:01:34Z",
+      "side": 1,
+      "message": "I think this one and the one below need to be swapped -- we\u0027re _exiting_ the hypervisor when entering the guest, and vice versa.",
+      "range": {
+        "startLine": 299,
+        "startChar": 2,
+        "endLine": 299,
+        "endChar": 20
+      },
+      "revId": "9de24490b8454475b7ba113ea7f2f4982670c1fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
