@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff10835_9e69046b",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-13T22:13:29Z",
+      "side": 1,
+      "message": "can you move `tw \u003d this_cpu_ptr(s-\u003enop_works);` after spin_lock_irqsave or add a comment here saying the current thread has to be already pinned to a specific cpu.",
+      "revId": "1f5770fc0d450aac797ad4635991a354061d7d47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41a11845_e402986b",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-13T22:13:29Z",
+      "side": 1,
+      "message": "If we get a trusty interrupt right before this, trusty_work.signaled will be set (and the priority should already be at the nop_nice_value or above). I think the code below will not necessarily choose the correct priority in this case. It should be treated the same as a dequeued nop request in that it should make sure the priority is at least as high as nop_nice_value. This needs to be compared with the priority request from trusty though, not with the current thread priority which could still be running at an elevated priority from a previous request. It would be good to add some comments here.",
+      "revId": "1f5770fc0d450aac797ad4635991a354061d7d47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de3b3fa7_0f2689f7",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-13T22:13:29Z",
+      "side": 1,
+      "message": "Why are you passing false here? Also it might be simpler to always call trusty_adjust_nice_nopreempt instead of only when trusty gets preempted. If trusty for instance requests a low priority, gets preempted, runs at the low priority, then goes idle then sees another nop_request from dequeue_nop, it seems it will call into trusty to process that nop request while still running at a low priority. Also, if trusty ran at a higher priority than nop_nice_value when it last went idle, the next nop request will also run at that high priority. Switching the thread back to nop_nice_value everytime it goes back to the blocking state might be better.",
+      "range": {
+        "startLine": 858,
+        "startChar": 35,
+        "endLine": 858,
+        "endChar": 40
+      },
+      "revId": "1f5770fc0d450aac797ad4635991a354061d7d47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
