@@ -873,11 +873,8 @@ unlock_out:
 static unsigned long long __calculate_block_age(unsigned long long new,
 						unsigned long long old)
 {
-	unsigned long long diff;
-
-	diff = (new >= old) ? new - (new - old) : new + (old - new);
-
-	return div_u64(diff * LAST_AGE_WEIGHT, 100);
+	return div_u64(new, 100) * (100 - LAST_AGE_WEIGHT)
+		+ div_u64(old, 100) * LAST_AGE_WEIGHT;
 }
 
 /* This returns a new age and allocated blocks in ei */
