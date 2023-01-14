@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a9dac3_d8acac44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-14T13:26:07Z",
+      "side": 1,
+      "message": "this is not a kernel issue, please solve this in userspace by properly saving off the kernel log as needed (or fixing your logging tools to not throw the logs away.)",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "805bbc6b9945c4e6a3af3c76b38d1e97a850431d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c6970c3c_93975bae",
@@ -79,6 +102,30 @@
       "side": 1,
       "message": "For current design, we need to dump previous logs when this hook first be called, so we need many members inside the rb and r to get the existing logs",
       "parentUuid": "1ab88bb1_7cda891e",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "805bbc6b9945c4e6a3af3c76b38d1e97a850431d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25652507_4b774577",
+        "filename": "include/trace/hooks/logbuf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-14T13:26:07Z",
+      "side": 1,
+      "message": "Again, these are private structures that can not be exported like this",
+      "parentUuid": "5022ca28_46d1c485",
       "range": {
         "startLine": 18,
         "startChar": 0,
