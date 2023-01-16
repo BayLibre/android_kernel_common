@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b69e4f3d_d71ffa11",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/pkvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2023-01-16T09:10:56Z",
+      "side": 1,
+      "message": "Add a comment to what this means. It could be misconstrued as something caused by an error. Maybe to clear that up and for consistency rename it to is_being_torndown (bad name, too long, can you think of a better one? Or just a comment)",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b563f0_b668ff7b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2023-01-16T09:10:56Z",
+      "side": 1,
+      "message": "(Rehashing a previos comment)\n\nSince only a dying guest can be reclaimed, do we need to rename this? Plus at this point it is dead/torn-down, not dying.",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c294106_d9c5e3a1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2053,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2023-01-16T09:10:56Z",
+      "side": 1,
+      "message": "Should this function now (or in a separate patch as part of this series) be moves to nvhe/pkvm.c as a static function, since it\u0027s only being called there? That also would help emphasise to the reader that that function is now a helper that is only called during teardown.",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "003b74ee_e38532e5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2023-01-16T09:10:56Z",
+      "side": 1,
+      "message": "nit: should the second case (phys !\u003d kvm_pte_to_phys(pte)) return an -EPERM instead? not sure about this, so feel free to resolve however you see fit 😊",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1679b44_7afa267e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2023-01-16T09:10:56Z",
+      "side": 1,
+      "message": "Not sure I understand this comment, where is this being done for the VMID?",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
