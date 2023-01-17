@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf5bf2d_1f84d347",
+        "filename": "drivers/pci/controller/dwc/pcie-designware-host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-01-17T18:36:43Z",
+      "side": 1,
+      "message": "doesn\u0027t this break vendor modules that don\u0027t know about DWC_IATU_IOCFG_SHARED? For example, if a vendor module has a test like like 499:\n```\nif (!ret \u0026\u0026 pci-\u003eio_cfg_atu_shared)\n```\nthey will assume that this flag means IOCFG_SHARED, won\u0027t it?",
+      "revId": "ceab4f6bc80c80d9feace8e2e614691a6bd7549c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
