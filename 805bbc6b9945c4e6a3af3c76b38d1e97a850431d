@@ -134,6 +134,30 @@
       },
       "revId": "805bbc6b9945c4e6a3af3c76b38d1e97a850431d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc8a1fd6_9b5a8716",
+        "filename": "include/trace/hooks/logbuf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-01-17T16:48:35Z",
+      "side": 1,
+      "message": "Can you pass pointers to the fields you need in the struct instead to avoid exposing the internal struct?",
+      "parentUuid": "25652507_4b774577",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "805bbc6b9945c4e6a3af3c76b38d1e97a850431d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
