@@ -33,6 +33,24 @@
       "message": "this Cc\u0027d stable@, 5.15 had it, but 5.10 does not afaics. Did it not apply? does it not belong there?\n\n@gregkh@google.com, any chance you remember this one?",
       "revId": "7d1d982f57843d0b494f903f90be7cb75b572261",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b89629b_819c5170",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1081223
+      },
+      "writtenOn": "2023-01-17T21:34:13Z",
+      "side": 1,
+      "message": "The original change was merged in linux 5.13, it was manually picked to android-5.10, that\u0027s why the fix isn\u0027t in 5.10.y\nI added the fixes tag of the \"backported\" change found in android-5.10.",
+      "parentUuid": "a3c0bd89_23d2c229",
+      "revId": "7d1d982f57843d0b494f903f90be7cb75b572261",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
