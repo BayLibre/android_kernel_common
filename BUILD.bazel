@@ -35,6 +35,9 @@ define_common_kernels(target_configs = {
     },
 })
 
+# Disable vendor symbol lists for now. This will be reverted before freezing the KMI.
+aarch64_additional_kmi_symbol_lists = []
+
 define_db845c(
     name = "db845c",
     outs = [
