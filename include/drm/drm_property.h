@@ -29,6 +29,9 @@
 
 #include <uapi/drm/drm_mode.h>
 
+#ifndef PAGE_SIZE
+#define PAGE_SIZE 4096
+#endif
 /**
  * struct drm_property_enum - symbolic values for enumerations
  * @head: list of enum values, linked to &drm_property.enum_list

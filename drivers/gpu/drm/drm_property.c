@@ -560,11 +560,18 @@ drm_property_create_blob(struct drm_device *dev, size_t length,
 {
 	struct drm_property_blob *blob;
 	int ret;
+	size_t size;
 
 	if (!length || length > INT_MAX - sizeof(struct drm_property_blob))
 		return ERR_PTR(-EINVAL);
 
-	blob = kvzalloc(sizeof(struct drm_property_blob)+length, GFP_KERNEL);
+	size = sizeof(struct drm_property_blob) + length;
+
+	if (likely(size < PAGE_SIZE))
+		blob = kvzalloc(size, GFP_KERNEL | GFP_NOWAIT);
+	else
+		blob = vzalloc(size);
+
 	if (!blob)
 		return ERR_PTR(-ENOMEM);
 
