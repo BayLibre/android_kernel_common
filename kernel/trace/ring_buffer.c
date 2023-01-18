@@ -713,7 +713,12 @@ __poll_t ring_buffer_poll_wait(struct ring_buffer *buffer, int cpu,
 
 	if (cpu == RING_BUFFER_ALL_CPUS)
 		work = &buffer->irq_work;
+<<<<<<< HEAD   (a6717f Merge "Merge 5.4.228 into android12-5.4-lts" into android12-)
 	else {
+=======
+		full = 0;
+	} else {
+>>>>>>> BRANCH (1349fe Linux 5.4.229)
 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
 			return -EINVAL;
 
