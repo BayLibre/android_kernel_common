@@ -16,7 +16,6 @@
 #include <linux/fsverity.h>
 #include <linux/igmp.h>
 #include <linux/ipc_namespace.h>
-#include <linux/mtd/mtd.h>
 #include <linux/pagemap.h>
 #include <linux/pr.h>
 #include <linux/skmsg.h>
@@ -79,6 +78,7 @@
 #include <trace/hooks/memory.h>
 #include <trace/hooks/module.h>
 #ifdef __GENKSYMS__
+#include <linux/mtd/mtd.h>
 #include <trace/hooks/selinux.h>
 #endif
 #include <trace/hooks/syscall_check.h>
