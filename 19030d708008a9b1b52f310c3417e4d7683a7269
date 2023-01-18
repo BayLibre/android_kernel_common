@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cf0b94f_99cd8bff",
+        "filename": "drivers/scsi/scsi_error.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-01-18T00:29:54Z",
+      "side": 1,
+      "message": "This seems to imply that retrying immediately is required for out-of-order zoned writes. Will this change brake these requests?",
+      "range": {
+        "startLine": 675,
+        "startChar": 30,
+        "endLine": 676,
+        "endChar": 31
+      },
+      "revId": "19030d708008a9b1b52f310c3417e4d7683a7269",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
