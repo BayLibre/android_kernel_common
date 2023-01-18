@@ -79,6 +79,7 @@
 #include <trace/hooks/memory.h>
 #include <trace/hooks/module.h>
 #ifdef __GENKSYMS__
+#include <linux/mtd/mtd.h>
 #include <trace/hooks/selinux.h>
 #endif
 #include <trace/hooks/syscall_check.h>
