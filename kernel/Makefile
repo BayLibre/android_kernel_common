@@ -156,3 +156,31 @@ $(obj)/kheaders_data.tar.xz: FORCE
 	$(call cmd,genikh)
 
 clean-files := kheaders_data.tar.xz kheaders.md5
+<<<<<<< HEAD   (6899a9 Merge "Merge 6.1.6 into android14-6.1" into android14-6.1)
+=======
+
+#
+# ANDROID: GKI: Generate headerfiles required for gki_module.o
+#
+# Dependencies on generated files need to be listed explicitly
+$(obj)/gki_module.o: $(obj)/gki_module_protected_exports.h \
+			$(obj)/gki_module_unprotected.h
+
+ALL_KMI_SYMBOLS := all_kmi_symbols
+
+$(obj)/gki_module_unprotected.h: $(ALL_KMI_SYMBOLS) \
+				$(srctree)/scripts/gen_gki_modules_headers.sh
+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/gen_gki_modules_headers.sh $@ \
+	"$(srctree)" \
+	$(ALL_KMI_SYMBOLS)
+
+# Generate symbol list with union of all symbol list for arm64; empty for others
+$(ALL_KMI_SYMBOLS): $(if $(filter arm64,$(ARCH)),$(wildcard $(srctree)/android/abi_gki_aarch64*),)
+	$(if $(strip $^),cat $^ > $(ALL_KMI_SYMBOLS), echo "" > $(ALL_KMI_SYMBOLS))
+
+$(obj)/gki_module_protected_exports.h: $(srctree)/android/abi_gki_protected_exports \
+				$(srctree)/scripts/gen_gki_modules_headers.sh
+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/gen_gki_modules_headers.sh $@ \
+	"$(srctree)" \
+	$<
+>>>>>>> CHANGE (5a68f7 ANDROID: GKI: Header generation fix and improvements)
