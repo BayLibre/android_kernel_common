@@ -75,7 +75,6 @@
 #include <linux/freezer.h>
 #include <linux/delayacct.h>
 #include <linux/taskstats_kern.h>
-#include <linux/random.h>
 #include <linux/tty.h>
 #include <linux/fs_struct.h>
 #include <linux/magic.h>
@@ -97,7 +96,11 @@
 #include <linux/scs.h>
 #include <linux/io_uring.h>
 #include <linux/bpf.h>
+<<<<<<< HEAD   (2f21cb Merge ca1443c7e75a ("Merge branch 'for-6.2' of git://git.ker)
 #include <linux/cpufreq_times.h>
+=======
+#include <linux/stackprotector.h>
+>>>>>>> BRANCH (268325 Merge tag 'random-6.2-rc1-for-linus' of git://git.kernel.org)
 
 #include <asm/pgalloc.h>
 #include <linux/uaccess.h>
