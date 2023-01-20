@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd6818bc_f1cfe9d1",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-01-20T21:38:31Z",
+      "side": 1,
+      "message": "If we get an interrupt right before this (and after dequeue_nop), we would handle it the next go around with the queued nop or tw-\u003esignaled. Is this acceptable? Otherwise we will need to change where tw-\u003esignaled is handled to here and return it so one level up the call stack will call back into Trusty if the interrupt happened after dequeue_nop.\nI\u0027ve changed the priority logic to always read Trusty request and then override with nop_nice_value if we\u0027ve been signaled or there\u0027s a nop queued.",
+      "parentUuid": "41a11845_e402986b",
+      "revId": "1f5770fc0d450aac797ad4635991a354061d7d47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de3b3fa7_0f2689f7",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-01-13T22:13:29Z",
       "side": 1,
       "message": "Why are you passing false here? Also it might be simpler to always call trusty_adjust_nice_nopreempt instead of only when trusty gets preempted. If trusty for instance requests a low priority, gets preempted, runs at the low priority, then goes idle then sees another nop_request from dequeue_nop, it seems it will call into trusty to process that nop request while still running at a low priority. Also, if trusty ran at a higher priority than nop_nice_value when it last went idle, the next nop request will also run at that high priority. Switching the thread back to nop_nice_value everytime it goes back to the blocking state might be better.",
+      "range": {
+        "startLine": 858,
+        "startChar": 35,
+        "endLine": 858,
+        "endChar": 40
+      },
+      "revId": "1f5770fc0d450aac797ad4635991a354061d7d47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f86afd_667694cb",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-01-20T21:38:31Z",
+      "side": 1,
+      "message": "This was passing false to differentiate from the \u0027signaled\u0027 call above; previously the thought was that only this call would read the trusty requested priority and the \u0027signaled\u0027 path would ignore it. I\u0027ve moved it out of Trusty-preempted case and passed \u0027do_nop\u0027 instead of false.",
+      "parentUuid": "de3b3fa7_0f2689f7",
       "range": {
         "startLine": 858,
         "startChar": 35,
