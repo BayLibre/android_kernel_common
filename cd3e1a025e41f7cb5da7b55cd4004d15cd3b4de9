@@ -52,6 +52,24 @@
       "parentUuid": "49771949_9636b922",
       "revId": "cd3e1a025e41f7cb5da7b55cd4004d15cd3b4de9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b73ff76_a14d269b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-20T09:01:37Z",
+      "side": 1,
+      "message": "That is a bug in the driver, no one should be directly trying to bind a driver to a device within a driver.  Please fix up the out-of-tree driver to not do that and then you will not need this change.\n\noops, nope, this is upstream code, ick.  Ok, for now this is ok, I\u0027ll work on resolving that upstream...",
+      "parentUuid": "281ed6bd_6a3fa4f3",
+      "revId": "cd3e1a025e41f7cb5da7b55cd4004d15cd3b4de9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
