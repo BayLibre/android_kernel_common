@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78ff84fc_5f81ed81",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-01-20T22:18:09Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to change anything other than also read tw-\u003esignaled  here. Letting the priority potentially get lowered to low here and waiting until the next time linux decides to schedule this thread before setting it back to a high priority can create a glitch that we should easily be able to avoid.",
+      "parentUuid": "dd6818bc_f1cfe9d1",
+      "revId": "1f5770fc0d450aac797ad4635991a354061d7d47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de3b3fa7_0f2689f7",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 2
