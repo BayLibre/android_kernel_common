@@ -46,7 +46,11 @@
 #endif
 
 #ifdef CONFIG_KASAN_HW_TAGS
+<<<<<<< HEAD   (0c8a58 UPSTREAM: usb: gadget: uvc: Prevent buffer overflow in setup)
 #define TCR_MTE_FLAGS SYS_TCR_EL1_TCMA1 | TCR_TBI1 | TCR_TBID1
+=======
+#define TCR_MTE_FLAGS TCR_TCMA1 | TCR_TBI1 | TCR_TBID1
+>>>>>>> BRANCH (c73b46 ANDROID: abi preservation for fscrypt change in 5.15.78)
 #elif defined(CONFIG_ARM64_MTE)
 /*
  * The mte_zero_clear_page_tags() implementation uses DC GZVA, which relies on
