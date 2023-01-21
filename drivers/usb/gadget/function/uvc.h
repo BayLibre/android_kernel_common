@@ -69,7 +69,11 @@ extern unsigned int uvc_gadget_trace_param;
 #define UVC_MAX_REQUEST_SIZE			64
 #define UVC_MAX_EVENTS				4
 
+<<<<<<< HEAD   (0c8a58 UPSTREAM: usb: gadget: uvc: Prevent buffer overflow in setup)
 #define UVCG_REQUEST_HEADER_LEN			12
+=======
+#define UVCG_REQUEST_HEADER_LEN			2
+>>>>>>> BRANCH (c73b46 ANDROID: abi preservation for fscrypt change in 5.15.78)
 
 /* ------------------------------------------------------------------------
  * Structures

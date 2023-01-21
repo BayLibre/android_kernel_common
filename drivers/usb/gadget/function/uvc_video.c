@@ -62,7 +62,11 @@ uvc_video_encode_header(struct uvc_video *video, struct uvc_buffer *buf,
 	if (buf->bytesused - video->queue.buf_used <= len - pos)
 		data[1] |= UVC_STREAM_EOF;
 
+<<<<<<< HEAD   (0c8a58 UPSTREAM: usb: gadget: uvc: Prevent buffer overflow in setup)
 	return pos;
+=======
+	return UVCG_REQUEST_HEADER_LEN;
+>>>>>>> BRANCH (c73b46 ANDROID: abi preservation for fscrypt change in 5.15.78)
 }
 
 static int
