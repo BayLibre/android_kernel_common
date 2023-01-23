@@ -196,4 +196,82 @@
 	__init_el2_nvhe_prepare_eret
 .endm
 
+// Warning, hardcoded register allocation
+// This will clobber x1 and x2, and expect x1 to contain
+// the id register value as read from the HW
+.macro __check_override idreg, fld, width, pass, fail
+	ubfx	x1, x1, #\fld, #\width
+	cbz	x1, \fail
+
+	adr_l	x1, \idreg\()_override
+	ldr	x2, [x1, FTR_OVR_VAL_OFFSET]
+	ldr	x1, [x1, FTR_OVR_MASK_OFFSET]
+	ubfx	x2, x2, #\fld, #\width
+	ubfx	x1, x1, #\fld, #\width
+	cmp	x1, xzr
+	and	x2, x2, x1
+	csinv	x2, x2, xzr, ne
+	cbnz	x2, \pass
+	b	\fail
+.endm
+
+.macro check_override idreg, fld, pass, fail
+	mrs	x1, \idreg\()_el1
+	__check_override \idreg \fld 4 \pass \fail
+.endm
+
+.macro finalise_el2_state
+	check_override id_aa64pfr0, ID_AA64PFR0_EL1_SVE_SHIFT, .Linit_sve_\@, .Lskip_sve_\@
+
+.Linit_sve_\@:	/* SVE register access */
+	mrs	x0, cptr_el2			// Disable SVE traps
+	bic	x0, x0, #CPTR_EL2_TZ
+	msr	cptr_el2, x0
+	isb
+	mov	x1, #ZCR_ELx_LEN_MASK		// SVE: Enable full vector
+	msr_s	SYS_ZCR_EL2, x1			// length for EL1.
+
+.Lskip_sve_\@:
+	check_override id_aa64pfr1 ID_AA64PFR1_EL1_SME_SHIFT, .Linit_sme_\@, .Lskip_sme_\@
+
+.Linit_sme_\@:	/* SME register access and priority mapping */
+	mrs	x0, cptr_el2			// Disable SME traps
+	bic	x0, x0, #CPTR_EL2_TSM
+	msr	cptr_el2, x0
+	isb
+
+	mrs	x1, sctlr_el2
+	orr	x1, x1, #SCTLR_ELx_ENTP2	// Disable TPIDR2 traps
+	msr	sctlr_el2, x1
+	isb
+
+	mov	x0, #0				// SMCR controls
+
+	// Full FP in SM?
+	mrs_s	x1, SYS_ID_AA64SMFR0_EL1
+	__check_override id_aa64smfr0 ID_AA64SMFR0_EL1_FA64_SHIFT, 1, .Linit_sme_fa64_\@, .Lskip_sme_fa64_\@
+
+.Linit_sme_fa64_\@:
+	orr	x0, x0, SMCR_ELx_FA64_MASK
+.Lskip_sme_fa64_\@:
+
+	orr	x0, x0, #SMCR_ELx_LEN_MASK	// Enable full SME vector
+	msr_s	SYS_SMCR_EL2, x0		// length for EL1.
+
+	mrs_s	x1, SYS_SMIDR_EL1		// Priority mapping supported?
+	ubfx    x1, x1, #SMIDR_EL1_SMPS_SHIFT, #1
+	cbz     x1, .Lskip_sme_\@
+
+	msr_s	SYS_SMPRIMAP_EL2, xzr		// Make all priorities equal
+
+	mrs	x1, id_aa64mmfr1_el1		// HCRX_EL2 present?
+	ubfx	x1, x1, #ID_AA64MMFR1_EL1_HCX_SHIFT, #4
+	cbz	x1, .Lskip_sme_\@
+
+	mrs_s	x1, SYS_HCRX_EL2
+	orr	x1, x1, #HCRX_EL2_SMPME_MASK	// Enable priority mapping
+	msr_s	SYS_HCRX_EL2, x1
+.Lskip_sme_\@:
+.endm
+
 #endif /* __ARM_KVM_INIT_H__ */
