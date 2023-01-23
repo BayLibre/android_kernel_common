@@ -27,6 +27,10 @@ u64 id_aa64mmfr0_el1_sys_val;
 u64 id_aa64mmfr1_el1_sys_val;
 u64 id_aa64mmfr2_el1_sys_val;
 
+struct arm64_ftr_override id_aa64pfr0_override;
+struct arm64_ftr_override id_aa64pfr1_override;
+struct arm64_ftr_override id_aa64smfr0_override;
+
 /*
  * Inject an unknown/undefined exception to an AArch64 guest while most of its
  * sysregs are live.
