@@ -39,6 +39,24 @@
       "message": "Unless we are fixing specific bugs, I\u0027m not allowing backports of fw_devlink patches so far back. It\u0027s changed a lot over the years so selectively cherry-picking isn\u0027t great.\n\nDoes this fix any specific issue?",
       "revId": "df027eac6271569a098038e38d45106ac835a724",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5854cef9_d65dcad0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1386891
+      },
+      "writtenOn": "2023-01-23T08:23:15Z",
+      "side": 1,
+      "message": "There is a kernel panic when mac80211_hwsim is used in 4.19. And the kernel panic is the same one in https://b.corp.google.com/issues/151865289 which you fixed by this CL in that branch.\n\nAnd it looks like there are related patch set(https://lore.kernel.org/all/20200221080510.197337-2-saravanak@google.com/#r) and this is the missing part in 4.19.",
+      "parentUuid": "abbeb4a8_4b68ad21",
+      "revId": "df027eac6271569a098038e38d45106ac835a724",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
