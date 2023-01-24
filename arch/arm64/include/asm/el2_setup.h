@@ -196,6 +196,7 @@
 	__init_el2_nvhe_prepare_eret
 .endm
 
+#ifndef __KVM_NVHE_HYPERVISOR__
 // Warning, hardcoded register allocation
 // This will clobber x1 and x2, and expect x1 to contain
 // the id register value as read from the HW
@@ -219,6 +220,19 @@
 	mrs	x1, \idreg\()_el1
 	__check_override \idreg \fld 4 \pass \fail
 .endm
+#else
+// This will clobber x1
+.macro __check_override idreg, fld, width, pass, fail
+	ldr_l	x1, \idreg\()_el1_sys_val
+	ubfx	x1, x1, #\fld, #\width
+	cbnz	x1, \pass
+	b	\fail
+.endm
+
+.macro check_override idreg, fld, pass, fail
+	__check_override \idreg \fld 4 \pass \fail
+.endm
+#endif
 
 .macro finalise_el2_state
 	check_override id_aa64pfr0, ID_AA64PFR0_EL1_SVE_SHIFT, .Linit_sve_\@, .Lskip_sve_\@
