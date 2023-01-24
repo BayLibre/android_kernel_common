@@ -1192,6 +1192,7 @@ acc_function_unbind(struct usb_configuration *c, struct usb_function *f)
 		acc_request_free(dev->rx_req[i], dev->ep_out);
 
 	acc_hid_unbind(dev);
+	f->config = NULL;
 }
 
 static void acc_getprotocol_work(struct work_struct *data)
@@ -1536,6 +1537,11 @@ static struct usb_function *acc_alloc(struct usb_function_instance *fi)
 	dev->function.disable = acc_function_disable;
 	dev->function.free_func = acc_free;
 	dev->function.setup = acc_ctrlrequest_configfs;
+
+	if(dev->function.config !=NULL) {
+		pr_err("config already exists!\n");
+		return ERR_PTR(-EINVAL);
+	}
 
 	return &dev->function;
 }

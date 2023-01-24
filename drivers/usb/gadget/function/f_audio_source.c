@@ -712,6 +712,7 @@ audio_unbind(struct usb_configuration *c, struct usb_function *f)
 		config->card = -1;
 		config->device = -1;
 	}
+	f->config = NULL;
 }
 
 static void audio_pcm_playback_start(struct audio_dev *audio)
@@ -1063,6 +1064,10 @@ fail_audio:
 
 static struct usb_function *audio_source_alloc(struct usb_function_instance *fi)
 {
+	if (_audio_dev.func.config != NULL) {
+		pr_err("config already exists!\n");
+		return ERR_PTR(-EINVAL);
+	}
 	return &_audio_dev.func;
 }
 
