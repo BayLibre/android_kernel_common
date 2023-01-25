@@ -1298,7 +1298,10 @@ static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
 						 GFP_KERNEL);
 		if (!hidg->report_desc) {
 			put_device(&hidg->dev);
+<<<<<<< HEAD   (bc37d9 Merge 5.4.230 into android11-5.4-lts)
 			--opts->refcnt;
+=======
+>>>>>>> BRANCH (d0f218 ANDROID: Revert "tracing/ring-buffer: Have polling block on )
 			mutex_unlock(&opts->lock);
 			return ERR_PTR(-ENOMEM);
 		}
