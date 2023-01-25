@@ -236,12 +236,12 @@ print_page_pinner(bool longterm, char __user *buf, size_t count, struct captured
 		ret = snprintf(kbuf, count, "Page pinned for %lld us\n",
 			       record->elapsed);
 	} else {
-		s64 ts_usec = record->ts_usec;
+		unsigned long ts_usec = (unsigned long)record->ts_usec;
 		unsigned long rem_usec = do_div(ts_usec, 1000000);
 
 		ret = snprintf(kbuf, count,
 			       "Page pinned ts [%5lu.%06lu]\n",
-			       (unsigned long)ts_usec, rem_usec);
+			       ts_usec, rem_usec);
 	}
 
 	if (ret >= count)
@@ -290,8 +290,7 @@ void __dump_page_pinner(struct page *page)
 	int pageblock_mt;
 	unsigned long pfn;
 	int count;
-	unsigned long rem_usec;
-	s64 ts_usec;
+	unsigned long rem_usec, ts_usec;
 
 	if (unlikely(!page_ext)) {
 		pr_alert("There is not page extension available.\n");
@@ -308,10 +307,10 @@ void __dump_page_pinner(struct page *page)
 	}
 
 	pfn = page_to_pfn(page);
-	ts_usec = page_pinner->ts_usec;
+	ts_usec = (unsigned long)page_pinner->ts_usec;
 	rem_usec = do_div(ts_usec, 1000000);
 	pr_alert("page last pinned %5lu.%06lu] count %d\n",
-		 (unsigned long)ts_usec, rem_usec, count);
+		 ts_usec, rem_usec, count);
 
 	pageblock_mt = get_pageblock_migratetype(page);
 	pr_alert("PFN %lu Block %lu type %s Flags %#lx(%pGp)\n",
