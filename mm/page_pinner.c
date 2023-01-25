@@ -237,7 +237,7 @@ print_page_pinner(bool longterm, char __user *buf, size_t count, struct captured
 			       record->elapsed);
 	} else {
 		s64 ts_usec = record->ts_usec;
-		unsigned long rem_usec = do_div(ts_usec, 1000000);
+		unsigned long rem_usec = do_div(ts_usec, (s64)1000000);
 
 		ret = snprintf(kbuf, count,
 			       "Page pinned ts [%5lu.%06lu]\n",
@@ -309,7 +309,7 @@ void __dump_page_pinner(struct page *page)
 
 	pfn = page_to_pfn(page);
 	ts_usec = page_pinner->ts_usec;
-	rem_usec = do_div(ts_usec, 1000000);
+	rem_usec = do_div(ts_usec, (s64)1000000);
 	pr_alert("page last pinned %5lu.%06lu] count %d\n",
 		 (unsigned long)ts_usec, rem_usec, count);
 
