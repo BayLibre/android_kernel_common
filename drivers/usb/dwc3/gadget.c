@@ -967,7 +967,11 @@ out:
 	return 0;
 }
 
+<<<<<<< HEAD   (e66b45 Merge branch 'android13-5.15' into android13-5.15-lts)
 void dwc3_remove_requests(struct dwc3 *dwc, struct dwc3_ep *dep, int status)
+=======
+static void dwc3_remove_requests(struct dwc3 *dwc, struct dwc3_ep *dep, int status)
+>>>>>>> BRANCH (e4a723 Linux 5.15.81)
 {
 	struct dwc3_request		*req;
 
@@ -1023,12 +1027,19 @@ static int __dwc3_gadget_ep_disable(struct dwc3_ep *dep)
 	reg &= ~DWC3_DALEPENA_EP(dep->number);
 	dwc3_writel(dwc->regs, DWC3_DALEPENA, reg);
 
+	dwc3_remove_requests(dwc, dep, -ESHUTDOWN);
+
+	dep->stream_capable = false;
+	dep->type = 0;
+	dep->flags &= DWC3_EP_TXFIFO_RESIZED;
+
 	/* Clear out the ep descriptors for non-ep0 */
 	if (dep->number > 1) {
 		dep->endpoint.comp_desc = NULL;
 		dep->endpoint.desc = NULL;
 	}
 
+<<<<<<< HEAD   (e66b45 Merge branch 'android13-5.15' into android13-5.15-lts)
 	dwc3_remove_requests(dwc, dep, -ECONNRESET);
 
 	dep->stream_capable = false;
@@ -1043,6 +1054,8 @@ static int __dwc3_gadget_ep_disable(struct dwc3_ep *dep)
 		mask |= (DWC3_EP_DELAY_STOP | DWC3_EP_TRANSFER_STARTED);
 	dep->flags &= mask;
 
+=======
+>>>>>>> BRANCH (e4a723 Linux 5.15.81)
 	return 0;
 }
 
