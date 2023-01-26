@@ -9,7 +9,7 @@ __modinst:
 include include/config/auto.conf
 include $(srctree)/scripts/Kbuild.include
 
-modules := $(sort $(shell cat $(MODORDER)))
+modules := $(call read-file, $(MODORDER))
 
 ifeq ($(KBUILD_EXTMOD),)
 dst := $(MODLIB)/kernel
@@ -26,11 +26,15 @@ suffix-$(CONFIG_MODULE_COMPRESS_GZIP)	:= .gz
 suffix-$(CONFIG_MODULE_COMPRESS_XZ)	:= .xz
 suffix-$(CONFIG_MODULE_COMPRESS_ZSTD)	:= .zst
 
+<<<<<<< HEAD   (531d6d Merge 158738ea7505 ("Merge tag 'zstd-linus-v6.2' of https://)
 modules := $(patsubst $(extmod_prefix)%, $(dst)/%$(suffix-y), $(modules))
 ifneq ($(KBUILD_EXTMOD),)
 extmod_suffix := $(shell echo "${KBUILD_EXTMOD}" | md5sum | cut -d " " -f 1)
 modules += $(dst)/modules.order.$(extmod_suffix)
 endif
+=======
+modules := $(patsubst $(extmod_prefix)%.o, $(dst)/%.ko$(suffix-y), $(modules))
+>>>>>>> BRANCH (6feb57 Merge tag 'kbuild-v6.2' of git://git.kernel.org/pub/scm/linu)
 
 __modinst: $(modules)
 	@:
