@@ -16,6 +16,24 @@
       "message": "Q: How does this currently work ? Don\u0027t we also have to create a mapping for the newly added section in `recreate_hyp_mappings` with `pkvm_create_mappings` ? See `nvhe/setup.c`",
       "revId": "04957f33e4fe63224bbc9bd919d349279c6cc982",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3480dc3_0c67b8e1",
+        "filename": "arch/arm64/kernel/vmlinux.lds.S",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-01-26T12:22:00Z",
+      "side": 1,
+      "message": "This section is not accessed from the hyp, so no mapping is necessary.",
+      "parentUuid": "68e18038_2c7a23ad",
+      "revId": "04957f33e4fe63224bbc9bd919d349279c6cc982",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
