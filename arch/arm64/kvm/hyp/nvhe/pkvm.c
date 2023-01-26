@@ -125,6 +125,8 @@ static void pvm_init_traps_aa64pfr1(struct kvm_vcpu *vcpu)
 	const u64 feature_ids = pvm_read_id_reg(vcpu, SYS_ID_AA64PFR1_EL1);
 	u64 hcr_set = 0;
 	u64 hcr_clear = 0;
+	u64 cptr_set = 0;
+	u64 hfgxtr_mask = 0;
 
 	/* Memory Tagging: Trap and Treat as Untagged if not supported. */
 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR1_EL1_MTE), feature_ids)) {
@@ -132,8 +134,20 @@ static void pvm_init_traps_aa64pfr1(struct kvm_vcpu *vcpu)
 		hcr_clear |= HCR_DCT | HCR_ATA;
 	}
 
+	/* Trap SME */
+	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR1_EL1_SME), feature_ids)) {
+		cptr_set |= CPTR_EL2_TSM;
+
+		if (cpus_have_final_cap(ARM64_SME)) {
+			hfgxtr_mask |= HFGxTR_EL2_nSMPRI_EL1_MASK |
+				       HFGxTR_EL2_nTPIDR2_EL0_MASK;
+		}
+	}
+
 	vcpu->arch.hcr_el2 |= hcr_set;
 	vcpu->arch.hcr_el2 &= ~hcr_clear;
+	vcpu->arch.cptr_el2 |= cptr_set;
+	vcpu->arch.hfgxtr_el2_mask |= hfgxtr_mask;
 }
 
 /*
@@ -242,17 +256,17 @@ static void pvm_init_trap_regs(struct kvm_vcpu *vcpu)
  */
 static void pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
-	u64 hfgxtr_mask =
-		READ_ONCE(hyp_vcpu->host_vcpu->arch.hfgxtr_el2_mask);
-
-	hyp_vcpu->vcpu.arch.hfgxtr_el2_mask = hfgxtr_mask;
 	hyp_vcpu->vcpu.arch.cptr_el2 = CPTR_EL2_DEFAULT;
 	hyp_vcpu->vcpu.arch.mdcr_el2 = 0;
+	hyp_vcpu->vcpu.arch.hfgxtr_el2_mask = 0;
 
 	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
 		u64 hcr = READ_ONCE(hyp_vcpu->host_vcpu->arch.hcr_el2);
+		u64 hfgxtr_mask =
+			READ_ONCE(hyp_vcpu->host_vcpu->arch.hfgxtr_el2_mask);
 
 		hyp_vcpu->vcpu.arch.hcr_el2 = HCR_GUEST_FLAGS | hcr;
+		hyp_vcpu->vcpu.arch.hfgxtr_el2_mask = hfgxtr_mask;
 		return;
 	}
 
