@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9913149f_1e4c79cd",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T17:30:46Z",
+      "side": 1,
+      "message": "The next patch has divergent path so needed to move the locking holder into upper layer.\n\nI could introduce the locking in gcma_free_page in this patch and move that up to callers in next patch. I know It\u0027s better to help review but that keeps me thinking to combine this patch and next patch for better review since they are tightly coupled and cannot work with each other but once I combines them, it would be rather bigger size patch and makes harder review so here we are.\n\nLet me keep checking your comments and feel it\u0027s still confusing, I will consider merging those two patches into one single patch.",
+      "parentUuid": "01026952_c5f8f8c1",
+      "range": {
+        "startLine": 274,
+        "startChar": 1,
+        "endLine": 274,
+        "endChar": 41
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a76d9440_3f416dc8",
         "filename": "mm/gcma.c",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-27T00:51:24Z",
       "side": 1,
       "message": "What\u0027s the reason to disable IRQs here? A comment would be helpful.",
+      "range": {
+        "startLine": 285,
+        "startChar": 2,
+        "endLine": 285,
+        "endChar": 16
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ea5eb58_5e4fa3e3",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T17:30:46Z",
+      "side": 1,
+      "message": "Since cleancache_putpage is called under irq disabled, every locking in GCMA functions to be used in the path need to be aware of IRQ locking.\n\nI will add the comment on the top of the file.",
+      "parentUuid": "a76d9440_3f416dc8",
       "range": {
         "startLine": 285,
         "startChar": 2,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11a7e685_ef948ffd",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T17:30:46Z",
+      "side": 1,
+      "message": "Yes. The page can be assessed only when cleancache API needs to deal with(e.g., copy the data into upper layer in cc_load). If it\u0027s zero, it means page is in the middle of freeing so we don\u0027t need evict.",
+      "parentUuid": "99eaa0d2_75e92e51",
+      "range": {
+        "startLine": 339,
+        "startChar": 7,
+        "endLine": 339,
+        "endChar": 27
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "06f210ff_ba0a0944",
         "filename": "mm/gcma.c",
         "patchSetId": 2
@@ -83,6 +155,30 @@
       "writtenOn": "2023-01-27T00:51:24Z",
       "side": 1,
       "message": "It\u0027s a bit confusing that there is no `gcma_get_page()` and it is not obvious that `gcma_put_page()` is in fact a `put_page_testzero()`, so this call pairs up with the earlier `get_page_unless_zero()`. Maybe have a `gcma_get_page()` which is the same as `get_page_unless_zero()`?",
+      "range": {
+        "startLine": 360,
+        "startChar": 3,
+        "endLine": 360,
+        "endChar": 23
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fc4e565_5c5df477",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T17:30:46Z",
+      "side": 1,
+      "message": "Okay, Let\u0027s introduce gcma_get_page and gcma_get_page_unless_zero.",
+      "parentUuid": "06f210ff_ba0a0944",
       "range": {
         "startLine": 360,
         "startChar": 3,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eda025d9_5fc63569",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T17:30:46Z",
+      "side": 1,
+      "message": "Will take try_empty_inode.",
+      "parentUuid": "d23000f4_b5015741",
+      "range": {
+        "startLine": 504,
+        "startChar": 12,
+        "endLine": 504,
+        "endChar": 28
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6f9030b_1ead2bdb",
         "filename": "mm/gcma.c",
         "patchSetId": 2
@@ -129,6 +249,30 @@
       "writtenOn": "2023-01-27T00:51:24Z",
       "side": 1,
       "message": "Doing this while holding gcma_fs-\u003ehash_lock spinlock? TBH I\u0027m not sure if that\u0027s ok. I had recently a related thread here https://lore.kernel.org/all/Y8bodcnhyMox+QjG@casper.infradead.org/ which might be worth checking.",
+      "range": {
+        "startLine": 539,
+        "startChar": 2,
+        "endLine": 539,
+        "endChar": 14
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1fc072_beddd505",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T17:30:46Z",
+      "side": 1,
+      "message": "I will remove the cpu_relax if it introduces tricky.",
+      "parentUuid": "e6f9030b_1ead2bdb",
       "range": {
         "startLine": 539,
         "startChar": 2,
