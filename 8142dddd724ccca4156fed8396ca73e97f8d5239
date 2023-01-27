@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e02450e2_cd581102",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9913149f_1e4c79cd",
+      "range": {
+        "startLine": 274,
+        "startChar": 1,
+        "endLine": 274,
+        "endChar": 41
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a76d9440_3f416dc8",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Since cleancache_putpage is called under irq disabled, every locking in GCMA functions to be used in the path need to be aware of IRQ locking.\n\nI will add the comment on the top of the file.",
       "parentUuid": "a76d9440_3f416dc8",
+      "range": {
+        "startLine": 285,
+        "startChar": 2,
+        "endLine": 285,
+        "endChar": 16
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a201ed0d_5708e34b",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ea5eb58_5e4fa3e3",
       "range": {
         "startLine": 285,
         "startChar": 2,
@@ -142,6 +190,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "717ab860_ca3a00a4",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11a7e685_ef948ffd",
+      "range": {
+        "startLine": 339,
+        "startChar": 7,
+        "endLine": 339,
+        "endChar": 27
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06f210ff_ba0a0944",
@@ -179,6 +251,30 @@
       "side": 1,
       "message": "Okay, Let\u0027s introduce gcma_get_page and gcma_get_page_unless_zero.",
       "parentUuid": "06f210ff_ba0a0944",
+      "range": {
+        "startLine": 360,
+        "startChar": 3,
+        "endLine": 360,
+        "endChar": 23
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c16d05_bba3f9ad",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fc4e565_5c5df477",
       "range": {
         "startLine": 360,
         "startChar": 3,
@@ -236,6 +332,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7def3f94_e4fae14c",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eda025d9_5fc63569",
+      "range": {
+        "startLine": 504,
+        "startChar": 12,
+        "endLine": 504,
+        "endChar": 28
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6f9030b_1ead2bdb",
@@ -273,6 +393,30 @@
       "side": 1,
       "message": "I will remove the cpu_relax if it introduces tricky.",
       "parentUuid": "e6f9030b_1ead2bdb",
+      "range": {
+        "startLine": 539,
+        "startChar": 2,
+        "endLine": 539,
+        "endChar": 14
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d4ab88_71a295d0",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:57:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f1fc072_beddd505",
       "range": {
         "startLine": 539,
         "startChar": 2,
