@@ -93,6 +93,30 @@
       },
       "revId": "18822040778dfc3dd1accae3a18b37c399884be3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c683c94a_78e0ecc1",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-01-27T22:18:27Z",
+      "side": 1,
+      "message": "I realized why I didn\u0027t add it from the beginning. Thing is we don\u0027t add every pages into gcma but only workingset pages. However, the gcma_cc_load_page is supposed to be called for every IO regardless of workingset. It means the hit ratio(i.e., hit / (hit + miss) would be skew on the high used-once pages workload since such pages were never stored from gcma first so keep increasing miss count.\n\nFor the hit ratio, I use (number of loaded pages / number of stored pages) metric.\n\nDo you have any concern or usecase in your mind with the miss counter?",
+      "parentUuid": "e2142ba5_9d29ea0e",
+      "range": {
+        "startLine": 668,
+        "startChar": 2,
+        "endLine": 668,
+        "endChar": 11
+      },
+      "revId": "18822040778dfc3dd1accae3a18b37c399884be3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
