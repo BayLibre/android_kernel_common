@@ -204,11 +204,15 @@ static void pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	hyp_vcpu->vcpu.arch.cptr_el2 = CPTR_EL2_DEFAULT;
 	hyp_vcpu->vcpu.arch.mdcr_el2 = 0;
+	hyp_vcpu->vcpu.arch.hfgxtr_el2_mask = 0;
 
 	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
 		u64 hcr = READ_ONCE(hyp_vcpu->host_vcpu->arch.hcr_el2);
+		u64 hfgxtr_mask =
+			READ_ONCE(hyp_vcpu->host_vcpu->arch.hfgxtr_el2_mask);
 
 		hyp_vcpu->vcpu.arch.hcr_el2 = HCR_GUEST_FLAGS | hcr;
+		hyp_vcpu->vcpu.arch.hfgxtr_el2_mask = hfgxtr_mask;
 		return;
 	}
 
