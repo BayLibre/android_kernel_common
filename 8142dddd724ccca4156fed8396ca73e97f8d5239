@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01026952_c5f8f8c1",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-01-27T00:51:24Z",
+      "side": 1,
+      "message": "Why not take the area-\u003efree_pages_lock here instead of relying on the caller to do that? If there is a valid reason for that, IMO the function should be called `__gcma_free_page` and should have a comment clarifying that the caller should take care of the locking.",
+      "range": {
+        "startLine": 274,
+        "startChar": 1,
+        "endLine": 274,
+        "endChar": 41
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76d9440_3f416dc8",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-01-27T00:51:24Z",
+      "side": 1,
+      "message": "What\u0027s the reason to disable IRQs here? A comment would be helpful.",
+      "range": {
+        "startLine": 285,
+        "startChar": 2,
+        "endLine": 285,
+        "endChar": 16
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99eaa0d2_75e92e51",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-01-27T00:51:24Z",
+      "side": 1,
+      "message": "So, you evict the page even if there are other users? I guess there is no way the page is mapped by someone since it\u0027s in cc?",
+      "range": {
+        "startLine": 339,
+        "startChar": 7,
+        "endLine": 339,
+        "endChar": 27
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f210ff_ba0a0944",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-01-27T00:51:24Z",
+      "side": 1,
+      "message": "It\u0027s a bit confusing that there is no `gcma_get_page()` and it is not obvious that `gcma_put_page()` is in fact a `put_page_testzero()`, so this call pairs up with the earlier `get_page_unless_zero()`. Maybe have a `gcma_get_page()` which is the same as `get_page_unless_zero()`?",
+      "range": {
+        "startLine": 360,
+        "startChar": 3,
+        "endLine": 360,
+        "endChar": 23
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d23000f4_b5015741",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-01-27T00:51:24Z",
+      "side": 1,
+      "message": "nit: It seems a more appropriate name would be `try_empty_inode` or `try_offline_inode` since it removes not the inode but the pages in that inode and then tries to prevent any new pages to be added by freezing the refcount.",
+      "range": {
+        "startLine": 504,
+        "startChar": 12,
+        "endLine": 504,
+        "endChar": 28
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6f9030b_1ead2bdb",
+        "filename": "mm/gcma.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-01-27T00:51:24Z",
+      "side": 1,
+      "message": "Doing this while holding gcma_fs-\u003ehash_lock spinlock? TBH I\u0027m not sure if that\u0027s ok. I had recently a related thread here https://lore.kernel.org/all/Y8bodcnhyMox+QjG@casper.infradead.org/ which might be worth checking.",
+      "range": {
+        "startLine": 539,
+        "startChar": 2,
+        "endLine": 539,
+        "endChar": 14
+      },
+      "revId": "8142dddd724ccca4156fed8396ca73e97f8d5239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
