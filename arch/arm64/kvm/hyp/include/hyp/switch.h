@@ -205,6 +205,15 @@ static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
 		write_sysreg_s(hcrx, SYS_HCRX_EL2);
 	}
 
+	if (vcpu->arch.hfgxtr_el2_mask) {
+		sysreg_clear_set_s(SYS_HFGRTR_EL2,
+				   vcpu->arch.hfgxtr_el2_mask,
+				   0);
+		sysreg_clear_set_s(SYS_HFGWTR_EL2,
+				   vcpu->arch.hfgxtr_el2_mask,
+				   0);
+	}
+
 	__activate_traps_hfgxtr(vcpu);
 }
 
@@ -223,6 +232,13 @@ static inline void __deactivate_traps_common(struct kvm_vcpu *vcpu)
 
 	if (cpus_have_final_cap(ARM64_HAS_HCX))
 		write_sysreg_s(HCRX_HOST_FLAGS, SYS_HCRX_EL2);
+
+	if (vcpu->arch.hfgxtr_el2_mask) {
+		sysreg_clear_set_s(SYS_HFGRTR_EL2, 0,
+				   vcpu->arch.hfgxtr_el2_mask);
+		sysreg_clear_set_s(SYS_HFGWTR_EL2, 0,
+				   vcpu->arch.hfgxtr_el2_mask);
+	}
 
 	__deactivate_traps_hfgxtr(vcpu);
 }

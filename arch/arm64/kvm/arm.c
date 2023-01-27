@@ -1401,6 +1401,16 @@ static int kvm_vcpu_set_target(struct kvm_vcpu *vcpu,
 	return kvm_reset_vcpu(vcpu);
 }
 
+static void vcpu_init_hfgxtr(struct kvm_vcpu *vcpu)
+{
+	vcpu->arch.hfgxtr_el2_mask = 0;
+
+	if (cpus_have_final_cap(ARM64_SME)) {
+		vcpu->arch.hfgxtr_el2_mask |= HFGxTR_EL2_nSMPRI_EL1_MASK |
+					      HFGxTR_EL2_nTPIDR2_EL0_MASK;
+	}
+}
+
 static int kvm_arch_vcpu_ioctl_vcpu_init(struct kvm_vcpu *vcpu,
 					 struct kvm_vcpu_init *init)
 {
@@ -1438,6 +1448,7 @@ static int kvm_arch_vcpu_ioctl_vcpu_init(struct kvm_vcpu *vcpu,
 	}
 
 	vcpu_reset_hcr(vcpu);
+	vcpu_init_hfgxtr(vcpu);
 	vcpu->arch.cptr_el2 = kvm_get_reset_cptr_el2(vcpu);
 
 	/*
