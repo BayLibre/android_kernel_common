@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac40bf0f_426decd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:49:55Z",
+      "side": 1,
+      "message": "you MUST document sysfs attributes you add to the system.",
+      "revId": "59d7e51f87e5609b6ab3e0ec5ec70db10352b564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0809fbf0_3e59d824",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:49:55Z",
+      "side": 1,
+      "message": "why are these all atomics?  Just make them u64 as you do not care about this for statistics, and it will be much faster overall.",
+      "range": {
+        "startLine": 41,
+        "startChar": 37,
+        "endLine": 41,
+        "endChar": 50
+      },
+      "revId": "59d7e51f87e5609b6ab3e0ec5ec70db10352b564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56162689_ed354dec",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:49:55Z",
+      "side": 1,
+      "message": "you forgot to document all of these in Documentation/ABI/",
+      "range": {
+        "startLine": 873,
+        "startChar": 0,
+        "endLine": 873,
+        "endChar": 48
+      },
+      "revId": "59d7e51f87e5609b6ab3e0ec5ec70db10352b564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0461824b_c3ab3d76",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:49:55Z",
+      "side": 1,
+      "message": "`sysfs_emit()` for all sysfs functions.",
+      "range": {
+        "startLine": 876,
+        "startChar": 8,
+        "endLine": 876,
+        "endChar": 15
+      },
+      "revId": "59d7e51f87e5609b6ab3e0ec5ec70db10352b564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f1c89ba_773ed32c",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:49:55Z",
+      "side": 1,
+      "message": "why have this #ifdef at all, the compiler will optimize things away if sysfs is disabled.",
+      "range": {
+        "startLine": 923,
+        "startChar": 0,
+        "endLine": 923,
+        "endChar": 19
+      },
+      "revId": "59d7e51f87e5609b6ab3e0ec5ec70db10352b564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5d6feca_661f6228",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:49:55Z",
+      "side": 1,
+      "message": "that is not what happened here :(",
+      "range": {
+        "startLine": 926,
+        "startChar": 20,
+        "endLine": 926,
+        "endChar": 28
+      },
+      "revId": "59d7e51f87e5609b6ab3e0ec5ec70db10352b564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
