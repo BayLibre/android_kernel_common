@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e94cd305_1fc431a1",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:45:28Z",
+      "side": 1,
+      "message": "no copyright line as well?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 35
+      },
+      "revId": "2d6e35524834d46d3cbaf6dc90c1cb1d48c24646",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e574ce4_f76899fd",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:45:28Z",
+      "side": 1,
+      "message": "why the use of VM_BUG_ON() still?  I thought those were all going away?",
+      "range": {
+        "startLine": 76,
+        "startChar": 1,
+        "endLine": 76,
+        "endChar": 10
+      },
+      "revId": "2d6e35524834d46d3cbaf6dc90c1cb1d48c24646",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "752f3942_12ee6d1e",
+        "filename": "mm/gcma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-01-28T07:45:28Z",
+      "side": 1,
+      "message": "why wrap this?  Just call the real function when you would call this instead.\n\nSame for the two functions below.",
+      "range": {
+        "startLine": 106,
+        "startChar": 1,
+        "endLine": 106,
+        "endChar": 22
+      },
+      "revId": "2d6e35524834d46d3cbaf6dc90c1cb1d48c24646",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
