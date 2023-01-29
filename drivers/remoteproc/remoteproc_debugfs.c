@@ -226,10 +226,14 @@ rproc_recovery_write(struct file *filp, const char __user *user_buf,
 
 	if (!strncmp(buf, "enabled", count)) {
 		/* change the flag and begin the recovery process if needed */
+		mutex_lock(&rproc->lock);
 		rproc->recovery_disabled = false;
+		mutex_unlock(&rproc->lock);
 		rproc_trigger_recovery(rproc);
 	} else if (!strncmp(buf, "disabled", count)) {
+		mutex_lock(&rproc->lock);
 		rproc->recovery_disabled = true;
+		mutex_unlock(&rproc->lock);
 	} else if (!strncmp(buf, "recover", count)) {
 		/* begin the recovery process without changing the flag */
 		rproc_trigger_recovery(rproc);
