@@ -1177,6 +1177,7 @@ struct kvm_ppc_resize_hpt {
 #define KVM_CAP_DIRTY_LOG_RING_WITH_BITMAP 225
 #define KVM_CAP_GET_CPUFREQ 226
 #define KVM_CAP_UTIL_SYNC 227
+#define KVM_CAP_GET_CPUFREQ_TBL 228
 
 #ifdef KVM_CAP_IRQ_ROUTING
 
