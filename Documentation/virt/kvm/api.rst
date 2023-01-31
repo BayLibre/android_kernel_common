@@ -8293,6 +8293,19 @@ information to host. This allows the host to make more accurate frequency
 selections when aggregating the vCPU task's util along with other tasks
 sharing the same runqueue on the host.
 
+8.42 KVM_CAP_GET_CPUFREQ_TBL
+---------------------------
+
+:Architectures: arm64
+
+This capability indicates that the KVM supports getting frequency
+tables of CPUs when available. Assuming that vCPUs are pinned to
+each host physical CPU, this allows the guest to be able to
+populate its cpufreq driver's frequency table that matches that of
+the host. This information is useful to determine the capacity of
+each of the vCPUs and allows tracking of task utilization when
+periodic frequency information is also available.
+
 9. Known KVM API problems
 =========================
 
