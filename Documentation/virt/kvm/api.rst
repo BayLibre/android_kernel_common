@@ -8281,6 +8281,18 @@ The information is useful for guests to be able to track utilization
 of tasks that are running on the vCPUs and make better task placement
 decisions.
 
+8.41 KVM_CAP_UTIL_SYNC
+----------------------
+
+:Architectures: arm64
+
+This capability indicates that the KVM supports taking utilization
+hints from the guest. This is useful when guests are able to track
+utilization of its own vCPU's runqueue and is able to feed that
+information to host. This allows the host to make more accurate frequency
+selections when aggregating the vCPU task's util along with other tasks
+sharing the same runqueue on the host.
+
 9. Known KVM API problems
 =========================
 
