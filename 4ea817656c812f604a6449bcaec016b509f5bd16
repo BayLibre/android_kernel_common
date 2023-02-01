@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f884bf40_37bfb641",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-01T11:44:19Z",
+      "side": 1,
+      "message": "This should still be done entirely in userspace, not in the kernel, there is no need for this hook from what I can tell.",
+      "revId": "4ea817656c812f604a6449bcaec016b509f5bd16",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8f83f69_8c3743a3",
+        "filename": "kernel/printk/printk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2185,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-01T11:44:19Z",
+      "side": 1,
+      "message": "why not just `\u0026r.text_buf[r.inf-\u003etext_len]`?  You really just want the buffer and how long it is, and the flags, right?",
+      "range": {
+        "startLine": 2185,
+        "startChar": 35,
+        "endLine": 2185,
+        "endChar": 63
+      },
+      "revId": "4ea817656c812f604a6449bcaec016b509f5bd16",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
