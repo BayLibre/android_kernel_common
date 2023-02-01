@@ -715,6 +715,8 @@ rwsem_spin_on_owner(struct rw_semaphore *sem, unsigned long nonspinnable)
 	struct task_struct *new, *owner;
 	unsigned long flags, new_flags;
 	enum owner_state state;
+	int cnt = 0;
+	bool time_out = false;
 
 	owner = rwsem_owner_flags(sem, &flags);
 	state = rwsem_owner_state(owner, flags, nonspinnable);
@@ -723,6 +725,10 @@ rwsem_spin_on_owner(struct rw_semaphore *sem, unsigned long nonspinnable)
 
 	rcu_read_lock();
 	for (;;) {
+		trace_android_vh_rwsem_opt_spin_start(sem, &time_out, &cnt);
+		if (time_out)
+			break;
+
 		/*
 		 * When a waiting writer set the handoff flag, it may spin
 		 * on the owner as well. Once that writer acquires the lock,
@@ -786,6 +792,8 @@ static bool rwsem_optimistic_spin(struct rw_semaphore *sem, bool wlock)
 	int prev_owner_state = OWNER_NULL;
 	int loop = 0;
 	u64 rspin_threshold = 0;
+	bool time_out = false;
+	int cnt = 0;
 	unsigned long nonspinnable = wlock ? RWSEM_WR_NONSPINNABLE
 					   : RWSEM_RD_NONSPINNABLE;
 
@@ -803,6 +811,10 @@ static bool rwsem_optimistic_spin(struct rw_semaphore *sem, bool wlock)
 	 */
 	for (;;) {
 		enum owner_state owner_state;
+
+		trace_android_vh_rwsem_opt_spin_start(sem, &time_out, &cnt);
+		if (time_out)
+			break;
 
 		owner_state = rwsem_spin_on_owner(sem, nonspinnable);
 		if (!(owner_state & OWNER_SPINNABLE))
@@ -900,6 +912,7 @@ static bool rwsem_optimistic_spin(struct rw_semaphore *sem, bool wlock)
 	osq_unlock(&sem->osq);
 done:
 	preempt_enable();
+	trace_android_vh_rwsem_opt_spin_finish(sem, taken);
 	lockevent_cond_inc(rwsem_opt_fail, !taken);
 	return taken;
 }
