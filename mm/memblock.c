@@ -849,6 +849,7 @@ int __init_memblock memblock_phys_free(phys_addr_t base, phys_addr_t size)
 	kmemleak_free_part_phys(base, size);
 	return memblock_remove_range(&memblock.reserved, base, size);
 }
+EXPORT_SYMBOL_GPL(memblock_phys_free);
 
 int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)
 {
