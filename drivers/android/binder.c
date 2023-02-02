@@ -717,7 +717,7 @@ static void binder_do_set_priority(struct binder_thread *thread,
 {
 	struct task_struct *task = thread->task;
 	int priority; /* user-space prio value */
-	bool has_cap_nice;
+	bool has_cap_nice, has_rlimit_nice = true;
 	unsigned int policy = desired->sched_policy;
 	struct sched_attr attrs = {
 		.sched_flags = SCHED_FLAG_RESET_ON_FORK
@@ -759,7 +759,7 @@ static void binder_do_set_priority(struct binder_thread *thread,
 		if (min_nice > MAX_NICE) {
 			binder_user_error("%d RLIMIT_NICE not set\n",
 					  task->pid);
-			return;
+			has_rlimit_nice = false;
 		} else if (priority < min_nice) {
 			priority = min_nice;
 		}
@@ -791,7 +791,7 @@ static void binder_do_set_priority(struct binder_thread *thread,
 	}
 
 	/* Set the actual priority and uclamp */
-	if (task->policy != policy || is_rt_policy(policy)) {
+	if (has_rlimit_nice && (task->policy != policy || is_rt_policy(policy))) {
 		attrs.sched_policy = policy;
 		attrs.sched_priority = is_rt_policy(policy) ? priority : 0;
 		attrs.sched_nice = PRIO_TO_NICE(task->static_prio);
