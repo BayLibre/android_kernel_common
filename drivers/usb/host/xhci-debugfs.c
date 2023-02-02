@@ -653,6 +653,7 @@ static void xhci_debugfs_create_ports(struct xhci_hcd *xhci,
 void xhci_debugfs_init(struct xhci_hcd *xhci)
 {
 	struct device		*dev = xhci_to_hcd(xhci)->self.controller;
+	struct android_xhci_hcd	*a_xhci = container_of(xhci, struct android_xhci_hcd, xhci);
 
 	xhci->debugfs_root = debugfs_create_dir(dev_name(dev),
 						xhci_debugfs_root);
@@ -693,7 +694,7 @@ void xhci_debugfs_init(struct xhci_hcd *xhci)
 				     "command-ring",
 				     xhci->debugfs_root);
 
-	xhci_debugfs_create_ring_dir(xhci, &xhci->event_ring,
+	xhci_debugfs_create_ring_dir(xhci, &a_xhci->interrupter->event_ring,
 				     "event-ring",
 				     xhci->debugfs_root);
 
