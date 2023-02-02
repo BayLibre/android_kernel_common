@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b473d41d_63bec1b8",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-02-02T00:38:10Z",
+      "side": 1,
+      "message": "Why are you counting the number of times you return false here? It will increment every time trusty gets preempted, but we should already have a tracepoint covering that.",
+      "revId": "310add6846775024e9a40baa00c3f0dff1ea7c44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
