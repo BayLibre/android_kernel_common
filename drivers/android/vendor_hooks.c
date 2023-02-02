@@ -91,6 +91,7 @@
 #include <trace/hooks/power.h>
 #include <trace/hooks/fault.h>
 #include <trace/hooks/traps.h>
+#include <trace/hooks/kprobe.h>
 #include <trace/hooks/fips140.h>
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/rwsem.h>
@@ -181,6 +182,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_enable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_cgroup_attach);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_cgroup_can_attach);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_cgroup_online);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_kprobe_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_oops_enter);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_oops_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_size_check);

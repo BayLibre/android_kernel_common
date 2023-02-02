@@ -32,6 +32,9 @@
 
 #include "decode-insn.h"
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/kprobe.h>
+
 DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
 DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
 
@@ -46,6 +49,7 @@ static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
 
 	/* prepare insn slot */
 	aarch64_insn_patch_text(addrs, insns, 2);
+	trace_android_rvh_kprobe_check(addrs, insns, 2);
 
 	flush_icache_range((uintptr_t)addr, (uintptr_t)(addr + MAX_INSN_SIZE));
 
@@ -125,6 +129,7 @@ void __kprobes arch_arm_kprobe(struct kprobe *p)
 	u32 insn = BRK64_OPCODE_KPROBES;
 
 	aarch64_insn_patch_text(&addr, &insn, 1);
+	trace_android_rvh_kprobe_check(addr, &insn, 1);
 }
 
 /* disarm kprobe: remove breakpoint from text */
@@ -133,6 +138,7 @@ void __kprobes arch_disarm_kprobe(struct kprobe *p)
 	void *addr = p->addr;
 
 	aarch64_insn_patch_text(&addr, &p->opcode, 1);
+	trace_android_rvh_kprobe_check(addr, &p->opcode, 1);
 }
 
 void __kprobes arch_remove_kprobe(struct kprobe *p)
