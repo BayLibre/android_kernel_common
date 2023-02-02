@@ -10,6 +10,9 @@
 #include <asm/insn.h>
 #include <asm/patching.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/jump_label.h>
+
 void arch_jump_label_transform(struct jump_entry *entry,
 			       enum jump_label_type type)
 {
@@ -25,6 +28,8 @@ void arch_jump_label_transform(struct jump_entry *entry,
 	}
 
 	aarch64_insn_patch_text_nosync(addr, insn);
+	trace_android_rvh_jump_label_transform_check(
+			addr, insn, AARCH64_INSN_SIZE);
 }
 
 void arch_jump_label_transform_static(struct jump_entry *entry,
