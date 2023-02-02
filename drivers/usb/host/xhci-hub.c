@@ -1082,7 +1082,6 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
 	struct xhci_bus_state *bus_state;
 	u32 link_state;
 	u32 portnum;
-	int ret;
 
 	bus_state = &port->rhub->bus_state;
 	link_state = portsc & PORT_PLS_MASK;
@@ -1098,21 +1097,14 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
 		if (link_state == XDEV_U2)
 			*status |= USB_PORT_STAT_L1;
 		if (link_state == XDEV_U0) {
-			if (port->resume_timestamp)
-				usb_hcd_end_port_resume(&port->rhub->hcd->self,
-							portnum);
-			port->resume_timestamp = 0;
-			clear_bit(portnum, &bus_state->resuming_ports);
 			if (bus_state->suspended_ports & (1 << portnum)) {
 				bus_state->suspended_ports &= ~(1 << portnum);
 				bus_state->port_c_suspend |= 1 << portnum;
 			}
 		}
 		if (link_state == XDEV_RESUME) {
-			ret = xhci_handle_usb2_port_link_resume(port, status,
-								portsc, flags);
-			if (ret)
-				return;
+			xhci_handle_usb2_port_link_resume(port, status, portsc,
+							  flags);
 		}
 	}
 
@@ -1121,14 +1113,13 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
 	 * or resuming. Port either resumed to U0/U1/U2, disconnected, or in a
 	 * error state. Resume related variables should be cleared in all those cases.
 	 */
-	if (link_state != XDEV_U3 && link_state != XDEV_RESUME) {
-		if (bus_state->resume_done[portnum] ||
-		    test_bit(portnum, &bus_state->resuming_ports)) {
-			bus_state->resume_done[portnum] = 0;
-			clear_bit(portnum, &bus_state->resuming_ports);
-			usb_hcd_end_port_resume(&port->rhub->hcd->self, portnum);
-		}
-		bus_state->suspended_ports &= ~(1 << portnum);
+	if ((link_state != XDEV_U3 &&
+	     link_state != XDEV_RESUME) &&
+	    (port->resume_timestamp ||
+	     test_bit(portnum, &bus_state->resuming_ports))) {
+		port->resume_timestamp = 0;
+		clear_bit(portnum, &bus_state->resuming_ports);
+		usb_hcd_end_port_resume(&port->rhub->hcd->self, portnum);
 	}
 }
 
