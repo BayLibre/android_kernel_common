@@ -28,6 +28,7 @@
 #include <drm/drm_file.h>
 #include <drm/drm_framebuffer.h>
 #include <drm/drm_property.h>
+#include <trace/hooks/drm_property.h>
 
 #include "drm_crtc_internal.h"
 
@@ -560,11 +561,21 @@ drm_property_create_blob(struct drm_device *dev, size_t length,
 {
 	struct drm_property_blob *blob;
 	int ret;
+	size_t size;
+	void *drm_property;
 
 	if (!length || length > INT_MAX - sizeof(struct drm_property_blob))
 		return ERR_PTR(-EINVAL);
 
-	blob = kvzalloc(sizeof(struct drm_property_blob)+length, GFP_KERNEL);
+	size = sizeof(struct drm_property_blob) + length;
+
+	trace_android_vh_drm_property_alloc(size, &drm_property);
+
+	if (!drm_property)
+		blob = kvzalloc(sizeof(struct drm_property_blob)+length, GFP_KERNEL);
+	else
+		blob = drm_property;
+
 	if (!blob)
 		return ERR_PTR(-ENOMEM);
 
