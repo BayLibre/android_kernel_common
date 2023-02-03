@@ -16,6 +16,24 @@
       "message": "Why are you counting the number of times you return false here? It will increment every time trusty gets preempted, but we should already have a tracepoint covering that.",
       "revId": "310add6846775024e9a40baa00c3f0dff1ea7c44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1302a0a_55f20569",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-02-03T17:25:40Z",
+      "side": 1,
+      "message": "Otherwise the dequeue trace point can be very noisy when Trusty gets preempted a lot (which is the case during busy-test). This counter was an attempt to cut down on the noise in trace logs but still tell the user how many times dequeue returned false. The only way to return false here is the preempted case so maybe it would be clearer to label it as preempt_cnt instead.\n\nAlternatively, I could get rid of the false count, only print the dequeue trace when true, and then add a separate trace point in nop_work_func() for the two cases that do_nop is forced to true (preempted or special case). This would allow separate control of a potentially noisy trace point, for when it is important to see the \u0027noise\u0027. Thoughts or other recommendations?",
+      "parentUuid": "b473d41d_63bec1b8",
+      "revId": "310add6846775024e9a40baa00c3f0dff1ea7c44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
