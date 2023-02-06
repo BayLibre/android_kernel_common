@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000037532344",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2422180?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "764c5319_44299c57",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-02-06T03:38:16Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 506619300 android-build.ayeaye-python-dispatcher_20230202.05_p0",
+      "revId": "aef94b13e8b398eeab4ec96e6cd53766b88aac39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000037532344",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2422180?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "368f8839_4c91f94f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-02-06T03:38:16Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\n\n```\n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_si);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_shmem_page_flag);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around_migrate_page);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_test_clear_look_around_ref);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dma_buf_stats_teardown);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_reclaim_bypass);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_failure_bypass);\n    + /*\n    +  * For type visibility\n    +  */\n     \n      ## include/trace/hooks/mm.h ##\n     @@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_set_shmem_page_flag,\n      DECLARE_HOOK(android_vh_remove_vmalloc_stack,\n      \tTP_PROTO(struct vm_struct *vm),\n      \tTP_ARGS(vm));\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (f69b64 UPSTREAM: cgroup: Add missing cpus_read_lock() to cgroup_att)\n    + DECLARE_HOOK(android_vh_test_clear_look_around_ref,\n    + \tTP_PROTO(struct page *page),\n    + \tTP_ARGS(page));\n    +@@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_look_around,\n    + \tTP_PROTO(struct page_vma_mapped_walk *pvmw, struct page *page,\n    + \t\tstruct vm_area_struct *vma, int *referenced),\n    + \tTP_ARGS(pvmw, page, vma, referenced));\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +DECLARE_HOOK(android_vh_alloc_pages_reclaim_bypass,\n     +\tTP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,\n     +\tint migratetype, struct page **page),\n    @@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_set_shmem_page_flag,\n     +\tTP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,\n     +\tint migratetype, struct page **page),\n     +\tTP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (dec2f5 ANDROID: vendor_hooks:vendor hook for __alloc_pages_slowpath)\n      /* macro versions of hooks are no longer required */\n      \n      #endif /* _TRACE_HOOK_MM_H */\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 506619300 android-build.ayeaye-python-dispatcher_20230202.05_p0",
+      "revId": "aef94b13e8b398eeab4ec96e6cd53766b88aac39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
