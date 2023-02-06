@@ -34,6 +34,24 @@
       "parentUuid": "b473d41d_63bec1b8",
       "revId": "310add6846775024e9a40baa00c3f0dff1ea7c44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a0ff26_ce208822",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-02-06T18:32:33Z",
+      "side": 1,
+      "message": "I don\u0027t think we should be counting events just to report them in a different tracepoint. Either report the event when it happens or leave it out completely.",
+      "parentUuid": "a1302a0a_55f20569",
+      "revId": "310add6846775024e9a40baa00c3f0dff1ea7c44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
