@@ -106,6 +106,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/cfg80211.h>
 #include <trace/hooks/bl_hib.h>
+#include <trace/hooks/drm_property.h>
 #include <trace/hooks/dm.h>
 #include <trace/hooks/direct_io.h>
 #include <trace/hooks/loop.h>
@@ -406,6 +407,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_inactive_ratio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_hibernation_swap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_cpu_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_save_hib_resume_bdev);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_drm_property_alloc);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dma_buf_stats_teardown);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_or_pageout);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_retry);
