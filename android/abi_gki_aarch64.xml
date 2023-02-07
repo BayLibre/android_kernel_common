@@ -106494,14 +106494,7 @@
         <parameter type-id='95e97e5e'/>
         <return type-id='95e97e5e'/>
       </function-type>
-      <class-decl name='fscrypt_keyring' size-in-bits='8256' is-struct='yes' visibility='default' filepath='fs/crypto/keyring.c' line='30' column='1' id='dd510bd0'>
-        <data-member access='public' layout-offset-in-bits='0'>
-          <var-decl name='lock' type-id='fb4018a0' visibility='default' filepath='fs/crypto/keyring.c' line='35' column='1'/>
-        </data-member>
-        <data-member access='public' layout-offset-in-bits='64'>
-          <var-decl name='key_hashtable' type-id='64f4baeb' visibility='default' filepath='fs/crypto/keyring.c' line='38' column='1'/>
-        </data-member>
-      </class-decl>
+      <class-decl name='fscrypt_keyring' is-struct='yes' visibility='default' is-declaration-only='yes' id='dd510bd0'/>
       <pointer-type-def type-id='a7d74313' size-in-bits='64' id='dd575c43'/>
       <class-decl name='cstate' size-in-bits='1536' is-struct='yes' visibility='default' filepath='include/net/slhc_vj.h' line='128' column='1' id='dd60e4df'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -159513,12 +159506,12 @@
         <parameter type-id='77292cc0' name='ops' filepath='drivers/usb/core/hcd.c' line='3154' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='usb_os_desc_prepare_interf_dir' mangled-name='usb_os_desc_prepare_interf_dir' filepath='drivers/usb/gadget/configfs.c' line='1228' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_os_desc_prepare_interf_dir'>
-        <parameter type-id='97aff453' name='parent' filepath='drivers/usb/gadget/configfs.c' line='1229' column='1'/>
-        <parameter type-id='95e97e5e' name='n_interf' filepath='drivers/usb/gadget/configfs.c' line='1230' column='1'/>
-        <parameter type-id='b6338998' name='desc' filepath='drivers/usb/gadget/configfs.c' line='1231' column='1'/>
-        <parameter type-id='9b23c9ad' name='names' filepath='drivers/usb/gadget/configfs.c' line='1232' column='1'/>
-        <parameter type-id='2730d015' name='owner' filepath='drivers/usb/gadget/configfs.c' line='1233' column='1'/>
+      <function-decl name='usb_os_desc_prepare_interf_dir' mangled-name='usb_os_desc_prepare_interf_dir' filepath='drivers/usb/gadget/configfs.c' line='1234' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_os_desc_prepare_interf_dir'>
+        <parameter type-id='97aff453' name='parent' filepath='drivers/usb/gadget/configfs.c' line='1235' column='1'/>
+        <parameter type-id='95e97e5e' name='n_interf' filepath='drivers/usb/gadget/configfs.c' line='1236' column='1'/>
+        <parameter type-id='b6338998' name='desc' filepath='drivers/usb/gadget/configfs.c' line='1237' column='1'/>
+        <parameter type-id='9b23c9ad' name='names' filepath='drivers/usb/gadget/configfs.c' line='1238' column='1'/>
+        <parameter type-id='2730d015' name='owner' filepath='drivers/usb/gadget/configfs.c' line='1239' column='1'/>
         <return type-id='97aff453'/>
       </function-decl>
       <function-decl name='usb_otg_state_string' mangled-name='usb_otg_state_string' filepath='drivers/usb/common/common.c' line='43' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_otg_state_string'>
