@@ -16,6 +16,24 @@
       "message": "IS this change really needed (in terms of naming/smcc number)? We can only say now that host can only relcaim pages for dying/torn-down guests.",
       "revId": "e5b01b4875972ff13a2d2cc2f483cd7d2521a311",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "568b645f_7845dd3a",
+        "filename": "arch/arm64/include/asm/kvm_asm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 0,
+      "message": "As per the other comment, I find it a bit clearer to change the name since the semantics has changed, but again no strong opinion. And in terms of SMCCC numbers, they\u0027re not stable anyway, so it also felt clearer to put all the teardown-related functions next to each other.",
+      "parentUuid": "1f2a7a02_dc7ded13",
+      "revId": "e5b01b4875972ff13a2d2cc2f483cd7d2521a311",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0a5c6d5_b839b966",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "Apologies for the long delay in getting back to this!",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b69e4f3d_d71ffa11",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-01-16T09:10:56Z",
       "side": 1,
       "message": "Add a comment to what this means. It could be misconstrued as something caused by an error. Maybe to clear that up and for consistency rename it to is_being_torndown (bad name, too long, can you think of a better one? Or just a comment)",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6203a379_7443d66d",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/pkvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "I suck massively at naming so if you have a better idea please shout. Meanwhile I\u0027ll stick a comment.",
+      "parentUuid": "b69e4f3d_d71ffa11",
       "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -35,6 +70,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8232df0_cadeaf99",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "I find it clearer to change the name of the function when its semantic changes too, but no strong opinion.",
+      "parentUuid": "d4b563f0_b668ff7b",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c294106_d9c5e3a1",
@@ -52,6 +105,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8149a295_7cc3fe27",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2053,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "This is messing with ownership changes and such, so I\u0027d personally rather keep all that logic in mem_protect.c",
+      "parentUuid": "3c294106_d9c5e3a1",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "003b74ee_e38532e5",
@@ -65,6 +136,24 @@
       "writtenOn": "2023-01-16T09:10:56Z",
       "side": 1,
       "message": "nit: should the second case (phys !\u003d kvm_pte_to_phys(pte)) return an -EPERM instead? not sure about this, so feel free to resolve however you see fit 😊",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25788e63_a8f83343",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "003b74ee_e38532e5",
       "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -99,6 +188,42 @@
       "writtenOn": "2023-01-16T09:15:57Z",
       "side": 1,
       "message": "Make this comment more assertive and lose the `XXX`? The TLB entries are tagged by VMID; the VMID is not recycled until after a flush during teardown finalisation. Hence the final VMID flush suffices.",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cc03dd2_90c0155e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "edc74d1e_b7b54f4e",
+      "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcbc1f57_6a591d77",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-08T11:47:53Z",
+      "side": 1,
+      "message": "We invalidate the whole TLB in the finalize function, so doing a TLBI for every unmap here is uncecessary.",
+      "parentUuid": "b1679b44_7afa267e",
       "revId": "0865201aa96c48e3ee575e56a12a5ad366c78f32",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
