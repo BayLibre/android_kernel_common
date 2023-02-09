@@ -16,6 +16,24 @@
       "message": "doesn\u0027t this break vendor modules that don\u0027t know about DWC_IATU_IOCFG_SHARED? For example, if a vendor module has a test like like 499:\n```\nif (!ret \u0026\u0026 pci-\u003eio_cfg_atu_shared)\n```\nthey will assume that this flag means IOCFG_SHARED, won\u0027t it?",
       "revId": "ceab4f6bc80c80d9feace8e2e614691a6bd7549c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f1e919d_e28a79af",
+        "filename": "drivers/pci/controller/dwc/pcie-designware-host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2023-02-09T02:16:08Z",
+      "side": 1,
+      "message": "No, this doesn\u0027t break vendor modules.\nThe pci-\u003eiatu_unroll_enabled logic are all handle in \"pcie-designware.c\" and \"pcie-designware-host.c\" which are both inside the GKI. So this change has nothing to do with the vendor modules .",
+      "parentUuid": "eaf5bf2d_1f84d347",
+      "revId": "ceab4f6bc80c80d9feace8e2e614691a6bd7549c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
