@@ -51,6 +51,24 @@
       "parentUuid": "eaf5bf2d_1f84d347",
       "revId": "ceab4f6bc80c80d9feace8e2e614691a6bd7549c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3126ff9f_9df21a49",
+        "filename": "drivers/pci/controller/dwc/pcie-designware-host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-02-09T18:49:13Z",
+      "side": 1,
+      "message": "So you are saying that no vendor module will ever look at io_cfg_atu_shared or use IOCFG_SHARED. How can you be confident of that? I\u0027m not.\n\nHow about setting DWC_IATU_IOCFG_SHARED in a vendor hook so it is completely compatible? All of the tests can stay since the bit will only be set via vendor hook.\n\nThis should be squashed with asop/2378292 (turned into \"BACKPORT\")",
+      "parentUuid": "2f1e919d_e28a79af",
+      "revId": "ceab4f6bc80c80d9feace8e2e614691a6bd7549c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
