@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be49a45b_ebca0b5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2023-02-09T02:18:25Z",
+      "side": 1,
+      "message": "Just check the latest mainline code, there no vendor module(out of pcie-designware.c or pcie-designware-host.c) use iatu_unroll_enabled or io_cfg_atu_shared till these two variable rename, so I don\u0027t think this change could be a break to vendor module.",
+      "revId": "ceab4f6bc80c80d9feace8e2e614691a6bd7549c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaf5bf2d_1f84d347",
