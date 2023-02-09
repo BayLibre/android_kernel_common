@@ -685,6 +685,11 @@ static void fpsimd_host_restore(void)
 	sysreg_clear_set(cptr_el2, CPTR_EL2_TZ | CPTR_EL2_TFP, 0);
 	isb();
 
+	if (system_supports_sve()) {
+		sve_cond_update_zcr_vq(ZCR_ELx_LEN_MASK, SYS_ZCR_EL2);
+		isb();
+	}
+
 	if (unlikely(is_protected_kvm_enabled())) {
 		struct pkvm_hyp_vcpu *hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
 		struct user_fpsimd_state *host_fpsimd_state;
@@ -700,9 +705,6 @@ static void fpsimd_host_restore(void)
 
 		hyp_vcpu->vcpu.arch.fp_state = FP_STATE_HOST_OWNED;
 	}
-
-	if (system_supports_sve())
-		sve_cond_update_zcr_vq(ZCR_ELx_LEN_MASK, SYS_ZCR_EL2);
 }
 
 static void handle___pkvm_vcpu_load(struct kvm_cpu_context *host_ctxt)
