@@ -34,4 +34,5 @@ void pkvm_remove_mappings(void *from, void *to);
 int __pkvm_map_module_page(u64 pfn, void *va, enum kvm_pgtable_prot prot, bool is_protected);
 void __pkvm_unmap_module_page(u64 pfn, void *va);
 void *__pkvm_alloc_module_va(u64 nr_pages);
+phys_addr_t __pkvm_module_pa(void *va);
 #endif /* __KVM_HYP_MM_H */
