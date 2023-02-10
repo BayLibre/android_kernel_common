@@ -16,6 +16,11 @@ static struct hyp_buffer_pages_backing hyp_buffer_pages_backing;
 DEFINE_PER_CPU(struct hyp_rb_per_cpu, trace_rb);
 DEFINE_HYP_SPINLOCK(trace_rb_lock);
 
+struct hyp_rb_per_cpu *rb_this_cpu(void)
+{
+	return this_cpu_ptr(&trace_rb);
+}
+
 static bool rb_set_flag(struct hyp_buffer_page *bpage, int new_flag)
 {
 	unsigned long ret, val = (unsigned long)bpage->list.next;
@@ -261,9 +266,24 @@ rb_reserve_trace_entry(struct hyp_rb_per_cpu *cpu_buffer, unsigned long length)
 {
 	struct ring_buffer_event *rb_event;
 
+	/*
+	 * Paired with rb_cpu_init()
+	 */
+	if (atomic_cmpxchg_acquire(&cpu_buffer->status, HYP_RB_READY,
+				   HYP_RB_WRITE) == HYP_RB_UNUSED)
+		return NULL;
+
 	rb_event = rb_reserve_next(cpu_buffer, length);
 
 	return &rb_event->array[1];
+}
+
+void rb_release_trace_entry(struct hyp_rb_per_cpu *cpu_buffer)
+{
+	/*
+	 * Paired with rb_cpu_teardown()
+	 */
+	atomic_set_release(&cpu_buffer->status, HYP_RB_READY);
 }
 
 static int rb_update_footers(struct hyp_rb_per_cpu *cpu_buffer)
