@@ -24,6 +24,8 @@
 #include <asm/alternative.h>
 #include <asm/insn.h>
 #include <asm/scs.h>
+#include <asm/kvm_hyptrace.h>
+#include <asm/kvm_hypevents_defs.h>
 #include <asm/sections.h>
 
 static u64 module_direct_base __ro_after_init = 0;
@@ -583,10 +585,51 @@ static int module_init_ftrace_plt(const Elf_Ehdr *hdr,
 	return 0;
 }
 
+static inline int find_symbol_table_idx(const Elf_Ehdr *hdr,
+					const Elf_Shdr *sechdrs)
+{
+	int idx;
+
+	for (idx = 1; idx < hdr->e_shnum; idx++) {
+		if (sechdrs[idx].sh_type == SHT_SYMTAB)
+			return idx;
+	}
+
+	return -ENOEXEC;
+}
+
+static inline const Elf_Sym *find_symbol(const Elf_Ehdr *hdr,
+					 const Elf_Shdr *sechdrs,
+					 const char *symbol)
+{
+	int idx = find_symbol_table_idx(hdr, sechdrs);
+	const Elf_Shdr *symsec;
+	const Elf_Sym *sym;
+	char *strtab;
+	int i;
+
+	if (idx < 0)
+		return NULL;
+
+	symsec = &sechdrs[idx];
+	sym = (void *)symsec->sh_addr;
+	strtab = (char *)hdr + sechdrs[symsec->sh_link].sh_offset;
+
+	for (i = 1; i < symsec->sh_size / sizeof(Elf_Sym); i++) {
+		const char *name = strtab + sym[i].st_name;
+
+		if (!strcmp(name, symbol))
+			return &sym[i];
+	}
+
+	return NULL;
+}
+
 static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 			   struct module *mod)
 {
 #ifdef CONFIG_KVM
+	struct pkvm_el2_module *hyp_mod = &mod->arch.hyp;
 	const Elf_Shdr *s;
 
 	/*
@@ -597,7 +640,7 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 	if (!s || !s->sh_size)
 		return 0;
 
-	mod->arch.hyp.text = (struct pkvm_module_section) {
+	hyp_mod->text = (struct pkvm_module_section) {
 		.start	= (void *)s->sh_addr,
 		.end	= (void *)s->sh_addr + s->sh_size,
 	};
@@ -631,6 +674,33 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 			.start	= (void *)s->sh_addr,
 			.end	= (void *)s->sh_addr + s->sh_size,
 		};
+	}
+
+	s = find_section(hdr, sechdrs, "_hyp_events");
+	if (s) {
+		unsigned long event_id_start, event_id_end;
+		const Elf_Sym *sym;
+
+		sym = find_symbol(hdr, sechdrs,
+				  "__kvm_nvhe___hyp_event_ids_start");
+		event_id_start = sym ? sym->st_value : 0;
+
+		sym = find_symbol(hdr, sechdrs,
+				  "__kvm_nvhe___hyp_event_ids_end");
+		event_id_end = sym ? sym->st_value : 0;
+
+		if (event_id_start && event_id_end) {
+			hyp_mod->hyp_event_ids = (void *)event_id_start;
+			hyp_mod->nr_hyp_event_ids =
+					(event_id_end - event_id_start) /
+					sizeof(*hyp_mod->hyp_event_ids);
+			hyp_mod->hyp_events = (void *)s->sh_addr;
+			hyp_mod->nr_hyp_events = s->sh_size /
+						 sizeof(*hyp_mod->hyp_events);
+		} else {
+			pr_warn("%s contains _hyp_events but no _hyp_event_ids",
+				mod->name);
+		}
 	}
 #endif
 	return 0;
