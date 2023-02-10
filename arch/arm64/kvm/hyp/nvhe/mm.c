@@ -130,6 +130,23 @@ void assert_in_mod_range(unsigned long addr)
 static inline void update_mod_range(unsigned long addr, size_t size) { }
 #endif
 
+/*
+ * pKVM module addresses being allocated from the private range, it is not
+ * possible to translate a VA to PA using the generic __hyp_pa().
+ * __pkvm_module_pa() fills this gap.
+ */
+phys_addr_t __pkvm_module_pa(void *va)
+{
+	kvm_pte_t pte;
+	u32 level;
+
+	hyp_spin_lock(&pkvm_pgd_lock);
+	WARN_ON(kvm_pgtable_get_leaf(&pkvm_pgtable, (u64)va, &pte, &level));
+	hyp_spin_unlock(&pkvm_pgd_lock);
+
+	return kvm_pte_to_phys(pte) + offset_in_page(va);
+}
+
 void *__pkvm_alloc_module_va(u64 nr_pages)
 {
 	size_t size = nr_pages << PAGE_SHIFT;

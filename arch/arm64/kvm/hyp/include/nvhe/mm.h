@@ -39,4 +39,5 @@ void assert_in_mod_range(unsigned long addr);
 #else
 static inline void assert_in_mod_range(unsigned long addr) { }
 #endif /* CONFIG_NVHE_EL2_DEBUG */
+phys_addr_t __pkvm_module_pa(void *va);
 #endif /* __KVM_HYP_MM_H */
