@@ -22,6 +22,7 @@
 #include <asm/setup.h>
 
 #include "hyp_constants.h"
+#include "hyp_events.h"
 
 DEFINE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
 
