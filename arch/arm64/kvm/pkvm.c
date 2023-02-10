@@ -20,6 +20,7 @@
 #include <asm/kvm_pkvm_module.h>
 
 #include "hyp_constants.h"
+#include "hyp_events.h"
 
 static struct reserved_mem *pkvm_firmware_mem;
 static phys_addr_t *pvmfw_base = &kvm_nvhe_sym(pvmfw_base);
