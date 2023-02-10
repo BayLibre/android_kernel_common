@@ -7,6 +7,8 @@
 #include <linux/kvm_host.h>
 #include <linux/mm.h>
 
+#include <hyp/adjust_pc.h>
+
 #include <kvm/arm_hypercalls.h>
 #include <kvm/arm_psci.h>
 
@@ -46,6 +48,8 @@ static DEFINE_PER_CPU(struct pkvm_hyp_vcpu *, loaded_hyp_vcpu);
  * Only valid when (fp_state == FP_STATE_GUEST_OWNED) in the hyp vCPU structure.
  */
 unsigned long __ro_after_init kvm_arm_hyp_host_fp_state[NR_CPUS];
+
+static bool (*default_guest_smc_handler)(struct kvm_vcpu *vcpu);
 
 static void *__get_host_fpsimd_bytes(void)
 {
@@ -1657,6 +1661,30 @@ static bool pkvm_forward_trng(struct kvm_vcpu *vcpu)
 	}
 
 	return true;
+}
+
+bool kvm_handle_pvm_smc64(struct kvm_vcpu *vcpu, u64 *exit_code)
+{
+	bool handled = false;
+
+	if (smp_load_acquire(&default_guest_smc_handler))
+		handled = default_guest_smc_handler(vcpu);
+	if (handled) {
+		/* SMC was trapped, move ELR past the current PC. */
+		__kvm_skip_instr(vcpu);
+	}
+
+	return handled;
+}
+
+int __pkvm_register_guest_smc_handler(bool (*cb)(struct kvm_vcpu *vcpu))
+{
+	/*
+	 * Paired with smp_load_acquire(&default_guest_smc_handler) in
+	 * kvm_handle_pvm_smc64(). Ensure memory stores happening during a pKVM module
+	 * init are observed before executing the callback.
+	 */
+	return cmpxchg_release(&default_guest_smc_handler, NULL, cb) ? -EBUSY : 0;
 }
 
 /*
