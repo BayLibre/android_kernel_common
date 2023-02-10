@@ -27,6 +27,7 @@
 #include "trace_arm.h"
 
 #include "hyp_trace.h"
+#include "hyp_events.h"
 
 #include <linux/uaccess.h>
 #include <asm/ptrace.h>
@@ -2079,8 +2080,6 @@ static void kvm_hyp_init_symbols(void)
 	kvm_nvhe_sym(kvm_host_sve_max_vl) = kvm_host_sve_max_vl;
 }
 
-int kvm_hyp_init_events(void);
-
 static int kvm_hyp_init_protection(u32 hyp_va_bits)
 {
 	void *addr = phys_to_virt(hyp_mem_base);
@@ -2314,10 +2313,7 @@ static int init_hyp_mode(void)
 
 	kvm_hyp_init_symbols();
 
-	/* TODO: Real .h interface */
-#ifdef CONFIG_TRACING
 	kvm_hyp_init_events();
-#endif
 
 	if (is_protected_kvm_enabled()) {
 		init_cpu_logical_map();
