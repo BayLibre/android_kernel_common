@@ -8,6 +8,14 @@ struct hyp_event_id {
 	void *data;
 };
 
+#define HYP_EVENT_NAME_MAX 32
+
+struct hyp_event {
+	struct trace_event_call *call;
+	char name[HYP_EVENT_NAME_MAX];
+	bool *enabled;
+};
+
 struct hyp_entry_hdr {
 	unsigned short id;
 };
