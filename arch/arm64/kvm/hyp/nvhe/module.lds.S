@@ -17,6 +17,9 @@ SECTIONS {
 	.hyp.rodata : {
 		HYP_SECTION_SYMBOL_NAME(.rodata) = .;
 		*(.rodata .rodata.*)
+		__hyp_event_ids_start = .;
+		*(HYP_SECTION_NAME(.event_ids))
+		__hyp_event_ids_end = .;
 	}
 
 	.hyp.data : {
