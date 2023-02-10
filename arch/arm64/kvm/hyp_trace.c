@@ -16,6 +16,7 @@
 
 #include "hyp_constants.h"
 #include "hyp_trace.h"
+#include "hyp_events.h"
 
 #define RB_POLL_MS 100
 
@@ -1042,7 +1043,6 @@ static void hyp_tracefs_create_cpu_file(const char *file_name,
 		pr_warn("Failed to create tracefs %pd/%s\n", parent, file_name);
 }
 
-void kvm_hyp_init_events_tracefs(struct dentry *parent);
 bool kvm_hyp_events_enable_early(void);
 
 int init_hyp_tracefs(void)
