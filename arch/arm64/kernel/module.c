@@ -20,6 +20,8 @@
 #include <asm/alternative.h>
 #include <asm/insn.h>
 #include <asm/scs.h>
+#include <asm/kvm_hyptrace.h>
+#include <asm/kvm_hypevents_defs.h>
 #include <asm/sections.h>
 
 void *module_alloc(unsigned long size)
@@ -511,6 +513,7 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 			   struct module *mod)
 {
 #ifdef CONFIG_KVM
+	struct pkvm_el2_module *hyp_mod = &mod->arch.hyp;
 	const Elf_Shdr *s;
 
 	/*
@@ -521,7 +524,7 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 	if (!s || !s->sh_size)
 		return 0;
 
-	mod->arch.hyp.text = (struct pkvm_module_section) {
+	hyp_mod->text = (struct pkvm_module_section) {
 		.start	= (void *)s->sh_addr,
 		.end	= (void *)s->sh_addr + s->sh_size,
 	};
@@ -555,6 +558,25 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 			.start	= (void *)s->sh_addr,
 			.end	= (void *)s->sh_addr + s->sh_size,
 		};
+	}
+
+	s = find_section(hdr, sechdrs, "_hyp_events");
+	if (s) {
+		hyp_mod->hyp_events = (void *)s->sh_addr;
+		hyp_mod->nr_hyp_events = s->sh_size /
+			sizeof(*hyp_mod->hyp_events);
+
+		s = find_section(hdr, sechdrs, ".hyp.event_ids");
+		if (s) {
+			hyp_mod->hyp_event_ids = (void *)s->sh_addr;
+			hyp_mod->nr_hyp_event_ids = s->sh_size /
+					sizeof(*hyp_mod->hyp_event_ids);
+		} else {
+			hyp_mod->hyp_events = NULL;
+			hyp_mod->nr_hyp_events = 0;
+			pr_warn("%s contains _hyp_events but no .hyp.event_ids",
+				mod->name);
+		}
 	}
 #endif
 	return 0;
