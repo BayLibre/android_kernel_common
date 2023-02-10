@@ -32,6 +32,7 @@ SECTIONS {
 	}
 	.hyp.rodata : ALIGN(PAGE_SIZE) {
 		*(.hyp.rodata)
+		*(_hyp_event_ids)
 		. = ALIGN(PAGE_SIZE);
 	}
 	.hyp.data : ALIGN(PAGE_SIZE) {
