@@ -36,24 +36,33 @@ struct hyp_rb_per_cpu {
 	atomic_t overrun;
 };
 
-static inline bool __start_write_hyp_rb(struct hyp_rb_per_cpu *rb)
-{
-	return atomic_cmpxchg(&rb->status, HYP_RB_WRITABLE, HYP_RB_WRITING)
-		!= HYP_RB_NONWRITABLE;
-}
+struct hyp_rb_per_cpu *rb_this_cpu(void);
+void *rb_reserve_trace_entry(struct hyp_rb_per_cpu *cpu_buffer,
+			     unsigned long length);
+void rb_release_trace_entry(struct hyp_rb_per_cpu *cpu_buffer);
 
-static inline void __stop_write_hyp_rb(struct hyp_rb_per_cpu *rb)
-{
-	/*
-	 * Paired with rb_cpu_disable()
-	 */
-	atomic_set_release(&rb->status, HYP_RB_WRITABLE);
-}
+#undef HYP_EVENT
+#define HYP_EVENT(__name, __proto, __struct, __assign, __printk)		\
+	HYP_EVENT_FORMAT(__name, __struct);					\
+	extern atomic_t __name##_enabled;					\
+	extern struct hyp_event_id hyp_event_id_##__name;			\
+	static inline void trace_##__name(__proto)				\
+	{									\
+		size_t length = sizeof(struct trace_hyp_format_##__name);	\
+		struct hyp_rb_per_cpu *rb = rb_this_cpu();			\
+		struct trace_hyp_format_##__name *__entry;			\
+										\
+		if (!atomic_read(&__name##_enabled))				\
+			return;							\
+		__entry = rb_reserve_trace_entry(rb, length);			\
+		if (!__entry)							\
+			return;							\
+		__entry->hdr.id = hyp_event_id_##__name.id;			\
+		__assign							\
+		rb_release_trace_entry(rb);					\
+	}
 
-struct hyp_rb_per_cpu;
-DECLARE_PER_CPU(struct hyp_rb_per_cpu, trace_rb);
-
-void *rb_reserve_trace_entry(struct hyp_rb_per_cpu *cpu_buffer, unsigned long length);
+/* TODO: atomic_t to static_branch */
 
 int __pkvm_load_tracing(unsigned long pack_va, size_t pack_size);
 void __pkvm_teardown_tracing(void);
@@ -62,29 +71,17 @@ int __pkvm_rb_swap_reader_page(int cpu);
 int __pkvm_rb_update_footers(int cpu);
 int __pkvm_enable_event(unsigned short id, bool enable);
 
-#define HYP_EVENT(__name, __proto, __struct, __assign, __printk)		\
-	HYP_EVENT_FORMAT(__name, __struct);					\
-	extern atomic_t __name##_enabled;					\
-	extern unsigned short hyp_event_id_##__name;				\
-	static inline void trace_##__name(__proto)				\
-	{									\
-		size_t length = sizeof(struct trace_hyp_format_##__name);	\
-		struct hyp_rb_per_cpu *rb = this_cpu_ptr(&trace_rb);		\
-		struct trace_hyp_format_##__name *__entry;			\
-										\
-		if (!atomic_read(&__name##_enabled))				\
-			return;							\
-		if (!__start_write_hyp_rb(rb))					\
-			return;							\
-		__entry = rb_reserve_trace_entry(rb, length);			\
-		__entry->hdr.id = hyp_event_id_##__name;			\
-		__assign							\
-		__stop_write_hyp_rb(rb);					\
-	}
-
-/* TODO: atomic_t to static_branch */
-
 #else
+static inline struct hyp_rb_per_cpu *rb_this_cpu(void) { return NULL; }
+
+static inline void *rb_reserve_trace_entry(struct hyp_rb_per_cpu *cpu_buffer,
+					   unsigned long length)
+{
+	return NULL;
+}
+
+static inline void rb_release_trace_entry(struct hyp_rb_per_cpu *cpu_buffer) { }
+
 static inline int __pkvm_load_tracing(unsigned long pack_va, size_t pack_size)
 {
 	return -ENODEV;
@@ -104,6 +101,7 @@ static inline int __pkvm_rb_update_footers(int cpu)
 	return -ENODEV;
 }
 
+#undef HYP_EVENT
 #define HYP_EVENT(__name, __proto, __struct, __assign, __printk)	\
 	static inline void trace_##__name(__proto) {}
 
