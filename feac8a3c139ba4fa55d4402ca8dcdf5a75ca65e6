@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37abd208_6e3ba292",
+        "filename": "include/trace/hooks/logbuf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2023-02-13T17:20:35Z",
+      "side": 1,
+      "message": "Is this ifdef really needed? I don\u0027t see it in other hooks.\n\nAs far as I know, trace/hooks/vendor_hooks.h already has a suppression mechanism, which makes DECLARE_HOOK noop if tracepoints/vendor_hooks are disabled.",
+      "revId": "feac8a3c139ba4fa55d4402ca8dcdf5a75ca65e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
