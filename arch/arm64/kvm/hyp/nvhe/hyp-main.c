@@ -413,7 +413,7 @@ static const hyp_entry_exit_handler_fn exit_hyp_vm_handlers[] = {
 
 static struct user_fpsimd_state *get_host_fpsimd_state(void)
 {
-	return this_cpu_ptr(&loaded_host_fpsimd_state);
+	return &host_fp_states[hyp_smp_processor_id()].fpsimd_state;
 }
 
 static void flush_hyp_vgic_state(struct pkvm_hyp_vcpu *hyp_vcpu)
