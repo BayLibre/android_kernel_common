@@ -13,6 +13,23 @@
 #include <asm/kvm_pgtable.h>
 #include <asm/sysreg.h>
 
+/*
+ * Stores the sve state for the host in protected mode.
+ */
+struct kvm_host_sve_state {
+	u64 zcr_el1;
+
+	/*
+	 * Ordering is important since __sve_save_state/__sve_restore_state
+	 * relies on it.
+	 */
+	u32 fpsr;
+	u32 fpcr;
+
+	/* Must be SVE_VQ_BYTES (128 bit) aligned. */
+	char *sve_regs[];
+};
+
 /* Maximum number of VMs that can co-exist under pKVM. */
 #define KVM_MAX_PVMS 255
 
