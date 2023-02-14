@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd51b7d_6aad3a31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-14T10:53:31Z",
+      "side": 1,
+      "message": "This breaks the abi still:\n\nLeaf changes summary: 1 artifact changed\nChanged leaf types summary: 1 leaf type changed\nRemoved/Changed/Added functions summary: 0 Removed, 0 Changed, 0 Added function\nRemoved/Changed/Added variables summary: 0 Removed, 0 Changed, 0 Added variable\n\n\u0027struct css_set at cgroup-defs.h:191:1\u0027 changed:\n  type size changed from 3072 to 3328 (in bits)\n  2 data member insertions:\n    \u0027list_head mg_src_preload_node\u0027, at offset 3072 (in bits) at cgroup-defs.h:281:1\n    \u0027list_head mg_dst_preload_node\u0027, at offset 3200 (in bits) at cgroup-defs.h:282:1\n  3170 impacted interfaces\n  \nHow did you test this?",
+      "revId": "078e1db60ccfc8bdb7dac74c139f239e365438ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
