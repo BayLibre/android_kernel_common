@@ -1945,6 +1945,72 @@ int __pkvm_guest_unshare_host(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 nr_pages,
 	return ret;
 }
 
+int __pkvm_guest_share_hyp(struct pkvm_hyp_vcpu *vcpu, u64 ipa)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	struct pkvm_mem_transition share = {
+		.nr_pages	= 1,
+		.initiator	= {
+			.id	= PKVM_ID_GUEST,
+			.addr	= ipa,
+			.guest	= {
+				.hyp_vm = vm,
+				.mc = &vcpu->vcpu.arch.stage2_mc,
+			},
+		},
+		.completer	= {
+			.id	= PKVM_ID_HYP,
+			.prot = PAGE_HYP,
+		},
+	};
+
+	u64 nr_shared;
+
+	guest_lock_component(vm);
+	hyp_lock_component();
+
+	ret = do_share(&share, &nr_shared);
+
+	hyp_unlock_component();
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
+int __pkvm_guest_unshare_hyp(struct pkvm_hyp_vcpu *vcpu, u64 ipa)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	struct pkvm_mem_transition share = {
+		.nr_pages	= 1,
+		.initiator	= {
+			.id	= PKVM_ID_GUEST,
+			.addr	= ipa,
+			.guest	= {
+				.hyp_vm = vm,
+				.mc = &vcpu->vcpu.arch.stage2_mc,
+			},
+		},
+		.completer	= {
+			.id	= PKVM_ID_HYP,
+			.prot	= PAGE_HYP,
+		},
+	};
+
+	u64 nr_unshared;
+
+	guest_lock_component(vm);
+	hyp_lock_component();
+
+	ret = do_unshare(&share, &nr_unshared);
+
+	hyp_unlock_component();
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
 int __pkvm_host_unshare_hyp(u64 pfn)
 {
 	int ret;
