@@ -30,6 +30,8 @@ struct kvm_host_sve_state {
 	char *sve_regs[];
 };
 
+struct kvm_host_sve_state *pkvm_get_host_sve_state(void);
+
 /* Maximum number of VMs that can co-exist under pKVM. */
 #define KVM_MAX_PVMS 255
 
