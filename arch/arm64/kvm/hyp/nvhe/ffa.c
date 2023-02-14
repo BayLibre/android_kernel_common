@@ -64,7 +64,9 @@ struct kvm_ffa_buffers {
  * relying on the locking of the hyp FFA buffers.
  */
 static struct kvm_ffa_buffers hyp_buffers;
-static struct kvm_ffa_buffers host_buffers;
+
+/* Endpoint buffers (or partition buffers per FF-A naming) */
+static struct kvm_ffa_buffers endp_buffers[KVM_MAX_PVMS];
 static u32 hyp_ffa_version;
 static bool has_version_negotiated;
 static hyp_spinlock_t version_lock;
@@ -230,7 +232,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 	}
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (host_buffers.tx) {
+	if (endp_buffers[vm_handle].tx) {
 		ret = FFA_RET_DENIED;
 		goto out_unlock;
 	}
@@ -269,8 +271,8 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 		goto err_unpin_tx;
 	}
 
-	host_buffers.tx = tx_virt;
-	host_buffers.rx = rx_virt;
+	endp_buffers[vm_handle].tx = tx_virt;
+	endp_buffers[vm_handle].rx = rx_virt;
 
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
@@ -295,25 +297,28 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 {
 	DECLARE_REG(u32, id, ctxt, 1);
 	int ret = 0;
+	struct kvm_ffa_buffers *buffers;
 
 	if (id != HOST_FFA_ID) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out;
 	}
 
+	buffers = &endp_buffers[vm_handle];
+
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.tx) {
+	if (!buffers->tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
 	}
 
-	hyp_unpin_shared_mem(host_buffers.tx, host_buffers.tx + 1);
-	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(host_buffers.tx)));
-	host_buffers.tx = NULL;
+	hyp_unpin_shared_mem(buffers->tx, buffers->tx + 1);
+	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(buffers->tx)));
+	buffers->tx = NULL;
 
-	hyp_unpin_shared_mem(host_buffers.rx, host_buffers.rx + 1);
-	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(host_buffers.rx)));
-	host_buffers.rx = NULL;
+	hyp_unpin_shared_mem(buffers->rx, buffers->rx + 1);
+	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(buffers->rx)));
+	buffers->rx = NULL;
 
 	ffa_unmap_hyp_buffers_locked();
 
@@ -410,11 +415,11 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 		goto out;
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.tx)
+	if (!endp_buffers[vm_handle].tx)
 		goto out_unlock;
 
 	buf = hyp_buffers.tx;
-	memcpy(buf, host_buffers.tx, fraglen);
+	memcpy(buf, endp_buffers[vm_handle].tx, fraglen);
 	nr_ranges = fraglen / sizeof(*buf);
 
 	ret = ffa_host_share_ranges(buf, nr_ranges);
@@ -478,7 +483,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	}
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.tx) {
+	if (!endp_buffers[vm_handle].tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
 	}
@@ -489,7 +494,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	}
 
 	buf = hyp_buffers.tx;
-	memcpy(buf, host_buffers.tx, fraglen);
+	memcpy(buf, endp_buffers[vm_handle].tx, fraglen);
 
 	ep_mem_access = (void *)buf +
 			ffa_mem_desc_offset(buf, 0, hyp_ffa_version);
@@ -778,7 +783,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 	u32 count, partition_sz, copy_sz;
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.rx) {
+	if (!endp_buffers[vm_handle].rx) {
 		ffa_to_smccc_res(res, FFA_RET_BUSY);
 		goto out_unlock;
 	}
@@ -811,7 +816,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 		goto out_unlock;
 	}
 
-	memcpy(host_buffers.rx, hyp_buffers.rx, copy_sz);
+	memcpy(endp_buffers[vm_handle].rx, hyp_buffers.rx, copy_sz);
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
