@@ -79,7 +79,10 @@ struct pkvm_hyp_vm {
  * Tracks host fp and advanced feature state, e.g., sve, at the hypervisor.
  */
 struct pkvm_host_fp_state {
-	struct user_fpsimd_state fpsimd_state;
+	union {
+		struct user_fpsimd_state fpsimd_state;
+		struct kvm_host_sve_state sve_state;
+	};
 };
 
 extern struct pkvm_host_fp_state *host_fp_states;
@@ -155,5 +158,7 @@ static inline bool pkvm_ipa_range_has_pvmfw(struct pkvm_hyp_vm *vm,
 int pkvm_load_pvmfw_pages(struct pkvm_hyp_vm *vm, u64 ipa, phys_addr_t phys,
 			  u64 size);
 void pkvm_poison_pvmfw_pages(void);
+
+size_t pkvm_host_fp_state_size(void);
 
 #endif /* __ARM64_KVM_NVHE_PKVM_H__ */
