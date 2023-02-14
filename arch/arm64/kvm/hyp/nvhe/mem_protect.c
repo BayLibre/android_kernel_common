@@ -880,6 +880,10 @@ struct pkvm_mem_transition {
 				struct pkvm_hyp_vcpu *hyp_vcpu;
 				phys_addr_t phys;
 			} guest;
+
+			struct {
+				u64	completer_addr;
+			} hyp;
 		};
 
 		const enum kvm_pgtable_prot		prot;
@@ -1208,12 +1212,13 @@ static int hyp_ack_donation(u64 addr, const struct pkvm_mem_transition *tx)
 	return __hyp_check_page_state_range(addr, size, PKVM_NOPAGE);
 }
 
-static int hyp_complete_share(u64 addr, const struct pkvm_mem_transition *tx,
+static int hyp_complete_share(u64 addr, struct pkvm_mem_transition *tx,
 			      enum kvm_pgtable_prot perms)
 {
 	void *start = (void *)addr, *end = start + (tx->nr_pages * PAGE_SIZE);
 	enum kvm_pgtable_prot prot;
 
+	tx->completer.hyp.completer_addr = addr;
 	prot = pkvm_mkstate(perms, PKVM_PAGE_SHARED_BORROWED);
 	return pkvm_create_mappings_locked(start, end, prot);
 }
@@ -1800,6 +1805,70 @@ int __pkvm_guest_share_host(struct pkvm_hyp_vcpu *vcpu, u64 ipa)
 
 	guest_unlock_component(vm);
 	host_unlock_component();
+
+	return ret;
+}
+
+int __pkvm_guest_share_hyp(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 *hyp_va)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	struct pkvm_mem_transition share = {
+		.nr_pages	= 1,
+		.initiator	= {
+			.id	= PKVM_ID_GUEST,
+			.addr	= ipa,
+			.guest	= {
+				.hyp_vcpu = vcpu,
+			},
+		},
+		.completer	= {
+			.id	= PKVM_ID_HYP,
+			.prot	= PAGE_HYP,
+		},
+	};
+
+	if (!hyp_va)
+		return -EINVAL;
+
+	guest_lock_component(vm);
+	hyp_lock_component();
+
+	ret = do_share(&share);
+	if (!ret)
+		*hyp_va = share.completer.hyp.completer_addr;
+	hyp_unlock_component();
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
+int __pkvm_guest_unshare_hyp(struct pkvm_hyp_vcpu *vcpu, u64 ipa)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	struct pkvm_mem_transition unshare = {
+		.nr_pages	= 1,
+		.initiator	= {
+			.id	= PKVM_ID_GUEST,
+			.addr	= ipa,
+			.guest	= {
+				.hyp_vcpu = vcpu,
+			},
+		},
+		.completer	= {
+			.id	= PKVM_ID_HYP,
+			.prot	= PAGE_HYP
+		},
+	};
+
+	guest_lock_component(vm);
+	hyp_lock_component();
+
+	ret = do_unshare(&unshare);
+
+	hyp_unlock_component();
+	guest_unlock_component(vm);
 
 	return ret;
 }
