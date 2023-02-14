@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f69ec74_ebc2dbb6",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-02-14T15:51:57Z",
+      "side": 1,
+      "message": "In which case would this be false? In the instances we have found with an empty rodata, the start value was a bit odd, but non-0 no?\n\nHow about we move all the empty sections to the end of secs_map[] by hacking into __pkvm_cmp_mod_sec (a section with start\u003d\u003dend will always be \u0027greater\u0027) for example? And then you can you can probably iterate over the array as done here to figure out the number of non-empty sections, and use that instead of ARRAY_SIZE.",
+      "range": {
+        "startLine": 626,
+        "startChar": 2,
+        "endLine": 626,
+        "endChar": 12
+      },
+      "revId": "a97f3460a7504dd6b8007abbe8adb652ad9bfb24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
