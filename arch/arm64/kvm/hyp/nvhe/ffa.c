@@ -55,15 +55,13 @@ struct kvm_ffa_descriptor_buffer {
 static struct kvm_ffa_descriptor_buffer ffa_desc_buf;
 
 struct kvm_ffa_buffers {
-	hyp_spinlock_t lock;
 	void *tx;
 	void *rx;
 };
 
 /*
  * Note that we don't currently lock these buffers explicitly, instead
- * relying on the locking of the host FFA buffers as we only have one
- * client.
+ * relying on the locking of the hyp FFA buffers.
  */
 static struct kvm_ffa_buffers hyp_buffers;
 static struct kvm_ffa_buffers host_buffers;
@@ -71,6 +69,7 @@ static u32 hyp_ffa_version;
 static bool has_version_negotiated;
 static hyp_spinlock_t version_lock;
 static unsigned short hyp_buff_refcnt;
+static hyp_spinlock_t kvm_ffa_hyp_lock;
 
 static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
 {
@@ -230,7 +229,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 		goto out;
 	}
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	if (host_buffers.tx) {
 		ret = FFA_RET_DENIED;
 		goto out_unlock;
@@ -274,7 +273,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 	host_buffers.rx = rx_virt;
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
 	ffa_to_smccc_res(res, ret);
 	return;
@@ -302,7 +301,7 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 		goto out;
 	}
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	if (!host_buffers.tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
@@ -319,7 +318,7 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 	ffa_unmap_hyp_buffers_locked();
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
 	ffa_to_smccc_res(res, ret);
 }
@@ -410,7 +409,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	if (fraglen % sizeof(*buf))
 		goto out;
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	if (!host_buffers.tx)
 		goto out_unlock;
 
@@ -435,7 +434,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 		WARN_ON(ffa_host_unshare_ranges(buf, nr_ranges));
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
 	if (ret)
 		ffa_to_smccc_res(res, ret);
@@ -478,7 +477,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 		goto out;
 	}
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	if (!host_buffers.tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
@@ -529,7 +528,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	}
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
 	if (ret)
 		ffa_to_smccc_res(res, ret);
@@ -563,7 +562,7 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 
 	handle = PACK_HANDLE(handle_lo, handle_hi);
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
 
 	buf = hyp_buffers.tx;
 	*buf = (struct ffa_mem_region) {
@@ -625,7 +624,7 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 	WARN_ON(ffa_host_unshare_ranges(reg->constituents,
 					reg->addr_range_cnt));
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 
 	if (ret)
 		ffa_to_smccc_res(res, ret);
@@ -778,7 +777,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 	DECLARE_REG(u32, flags, ctxt, 5);
 	u32 count, partition_sz, copy_sz;
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	if (!host_buffers.rx) {
 		ffa_to_smccc_res(res, FFA_RET_BUSY);
 		goto out_unlock;
@@ -814,7 +813,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 
 	memcpy(host_buffers.rx, hyp_buffers.rx, copy_sz);
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
 
 bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
@@ -930,15 +929,11 @@ int hyp_ffa_init(void *pages)
 	};
 
 	hyp_buffers = (struct kvm_ffa_buffers) {
-		.lock	= __HYP_SPIN_LOCK_UNLOCKED,
 		.tx	= tx,
 		.rx	= rx,
 	};
 
-	host_buffers = (struct kvm_ffa_buffers) {
-		.lock	= __HYP_SPIN_LOCK_UNLOCKED,
-	};
-
+	kvm_ffa_hyp_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	version_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	return 0;
 }
