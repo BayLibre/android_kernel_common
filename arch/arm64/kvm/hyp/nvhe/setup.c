@@ -39,9 +39,18 @@ static void *ffa_proxy_pages;
 static struct kvm_pgtable_mm_ops pkvm_pgtable_mm_ops;
 static struct hyp_pool hpool;
 
-unsigned long hyp_host_fp_pages(void)
+size_t pkvm_host_fp_state_size(void)
 {
-	return PAGE_ALIGN(hyp_nr_cpus * sizeof(struct pkvm_host_fp_state)) >>
+	if (system_supports_sve())
+		return sizeof(struct kvm_host_sve_state) +
+		       SVE_SIG_REGS_SIZE(sve_vq_from_vl(hyp_sve_max_vl));
+	else
+		return sizeof(struct user_fpsimd_state);
+}
+
+static unsigned long hyp_host_fp_pages(void)
+{
+	return PAGE_ALIGN(hyp_nr_cpus * pkvm_host_fp_state_size()) >>
 	       PAGE_SHIFT;
 }
 

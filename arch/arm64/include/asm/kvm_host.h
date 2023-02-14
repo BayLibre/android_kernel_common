@@ -472,7 +472,15 @@ struct kvm_vcpu_arch {
 	struct kvm_guest_debug_arch vcpu_debug_state;
 	struct kvm_guest_debug_arch external_debug_state;
 
-	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
+	/*
+	 * Track the host fp simd state at hyp. The SVE state contains the
+	 * fpsimd state, and is tracked only in pKVM if the host support SVE.
+	 * All pointers are in hyp VA.
+	 */
+	union {
+		struct user_fpsimd_state *host_fpsimd_state;
+		struct kvm_host_sve_state *host_sve_state;
+	};
 
 	struct {
 		/* {Break,watch}point registers */
