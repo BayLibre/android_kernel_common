@@ -34,6 +34,24 @@
       "parentUuid": "7cd32142_edda78eb",
       "revId": "7b5466b5457801e935469ddded2f1f6413aa4c3d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e6119ca_9f068241",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-02-14T22:11:21Z",
+      "side": 1,
+      "message": "Also, for some reason, because riscv does not have NDK_TRIPLE, when I try to cross compile Bazel `cc_binary`\u0027ies in riscv, it\u0027ll complain that the standard headers (e.g. `stdio.h`) is not found. Apparently for arm64 / x86_64, these headers are found from NDK_TRIPLE (probably under sysroot?). If we are dropping `NDK_TRIPLE`, where should these headers be found from?",
+      "parentUuid": "42e69401_9baef64a",
+      "revId": "7b5466b5457801e935469ddded2f1f6413aa4c3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
