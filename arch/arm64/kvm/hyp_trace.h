@@ -7,7 +7,7 @@
 #include <linux/workqueue.h>
 
 struct ht_iterator {
-	struct ring_buffer_iter *buf_iter;
+	struct ring_buffer_iter **buf_iter;
 	struct trace_buffer *trace_buffer;
 	struct hyp_entry_hdr *ent;
 	struct trace_seq seq;
@@ -18,6 +18,7 @@ struct ht_iterator {
 	struct delayed_work poke_work;
 	unsigned long lost_events;
 	int cpu;
+	int ent_cpu;
 };
 
 #ifdef CONFIG_TRACING
