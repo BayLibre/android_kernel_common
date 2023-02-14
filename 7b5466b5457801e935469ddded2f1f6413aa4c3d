@@ -52,6 +52,24 @@
       "parentUuid": "42e69401_9baef64a",
       "revId": "7b5466b5457801e935469ddded2f1f6413aa4c3d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50bef046_39d1cb4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1114194
+      },
+      "writtenOn": "2023-02-14T22:12:05Z",
+      "side": 1,
+      "message": "Because if we use bazel to drive the entire build, then we can build bionic from source. Then we don\u0027t need to check in yet another copy of llvm tools from the NDK just to have a prebuilt libc.so.",
+      "parentUuid": "42e69401_9baef64a",
+      "revId": "7b5466b5457801e935469ddded2f1f6413aa4c3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
