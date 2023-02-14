@@ -134,6 +134,8 @@ extern bool kvm_nvhe_sym(smccc_trng_available);
 
 extern bool kvm_nvhe_sym(__pkvm_modules_enabled);
 
+extern u32 kvm_nvhe_sym(kvm_sve_max_vl);
+
 struct kvm_nvhe_clock_data {
 	u32 mult;
 	u32 shift;

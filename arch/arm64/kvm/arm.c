@@ -1988,7 +1988,7 @@ static int do_pkvm_init(u32 hyp_va_bits)
 	cpu_hyp_init_context();
 	ret = kvm_call_hyp_nvhe(__pkvm_init, hyp_mem_base, hyp_mem_size,
 				num_possible_cpus(), kern_hyp_va(per_cpu_base),
-				hyp_va_bits);
+				hyp_va_bits, sve_max_vl());
 	cpu_hyp_init_features();
 
 	/*
@@ -2015,6 +2015,7 @@ static void kvm_hyp_init_symbols(void)
 	kvm_nvhe_sym(__icache_flags) = __icache_flags;
 	kvm_nvhe_sym(kvm_arm_vmid_bits) = kvm_arm_vmid_bits;
 	kvm_nvhe_sym(smccc_trng_available) = smccc_trng_available;
+	kvm_nvhe_sym(kvm_sve_max_vl) = kvm_sve_max_vl;
 }
 
 int kvm_hyp_init_events(void);
