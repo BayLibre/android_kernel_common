@@ -22,6 +22,7 @@
 #include <nvhe/trap_handler.h>
 
 unsigned long hyp_nr_cpus;
+u32 hyp_sve_max_vl;
 
 phys_addr_t pvmfw_base;
 phys_addr_t pvmfw_size;
@@ -394,7 +395,7 @@ out:
 }
 
 int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long nr_cpus,
-		unsigned long *per_cpu_base, u32 hyp_va_bits)
+		unsigned long *per_cpu_base, u32 hyp_va_bits, u32 sve_max_vl)
 {
 	struct kvm_nvhe_init_params *params;
 	void *virt = hyp_phys_to_virt(phys);
@@ -408,6 +409,7 @@ int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long nr_cpus,
 
 	hyp_spin_lock_init(&pkvm_pgd_lock);
 	hyp_nr_cpus = nr_cpus;
+	hyp_sve_max_vl = sve_max_vl;
 
 	ret = divide_memory_pool(virt, size);
 	if (ret)
