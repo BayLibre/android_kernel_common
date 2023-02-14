@@ -196,7 +196,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 		goto out;
 	}
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&hyp_buffers.lock);
 	if (host_buffers.tx) {
 		ret = FFA_RET_DENIED;
 		goto out_unlock;
@@ -236,7 +236,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 	host_buffers.rx = rx_virt;
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&hyp_buffers.lock);
 out:
 	ffa_to_smccc_res(res, ret);
 	return;
@@ -264,7 +264,7 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 		goto out;
 	}
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&hyp_buffers.lock);
 	if (!host_buffers.tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
@@ -281,7 +281,7 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 	spmd_unmap_ffa_buffers();
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&hyp_buffers.lock);
 out:
 	ffa_to_smccc_res(res, ret);
 }
@@ -372,7 +372,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	if (fraglen % sizeof(*buf))
 		goto out;
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&hyp_buffers.lock);
 	if (!host_buffers.tx)
 		goto out_unlock;
 
@@ -397,7 +397,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 		WARN_ON(ffa_host_unshare_ranges(buf, nr_ranges));
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&hyp_buffers.lock);
 out:
 	if (ret)
 		ffa_to_smccc_res(res, ret);
@@ -442,7 +442,7 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 		goto out;
 	}
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&hyp_buffers.lock);
 	if (!host_buffers.tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
@@ -486,7 +486,7 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 	}
 
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&hyp_buffers.lock);
 out:
 	if (ret)
 		ffa_to_smccc_res(res, ret);
@@ -512,7 +512,7 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 
 	handle = PACK_HANDLE(handle_lo, handle_hi);
 
-	hyp_spin_lock(&host_buffers.lock);
+	hyp_spin_lock(&hyp_buffers.lock);
 
 	buf = hyp_buffers.tx;
 	*buf = (struct ffa_mem_region) {
@@ -568,7 +568,7 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 	WARN_ON(ffa_host_unshare_ranges(reg->constituents,
 					reg->addr_range_cnt));
 out_unlock:
-	hyp_spin_unlock(&host_buffers.lock);
+	hyp_spin_unlock(&hyp_buffers.lock);
 
 	if (ret)
 		ffa_to_smccc_res(res, ret);
