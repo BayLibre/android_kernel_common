@@ -33,6 +33,7 @@
 #include <nvhe/ffa.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/memory.h>
+#include <nvhe/pkvm.h>
 #include <nvhe/trap_handler.h>
 #include <nvhe/spinlock.h>
 
@@ -54,11 +55,6 @@ struct kvm_ffa_descriptor_buffer {
 
 static struct kvm_ffa_descriptor_buffer ffa_desc_buf;
 
-struct kvm_ffa_buffers {
-	void *tx;
-	void *rx;
-};
-
 /*
  * Note that we don't currently lock these buffers explicitly, instead
  * relying on the locking of the hyp FFA buffers.
@@ -69,6 +65,22 @@ static u32 hyp_ffa_version;
 static bool has_version_negotiated;
 static hyp_spinlock_t version_lock;
 static hyp_spinlock_t kvm_ffa_hyp_lock;
+
+static struct kvm_ffa_buffers *ffa_get_buffers(struct kvm_cpu_context *ctxt, u16 vm_handle)
+{
+	struct pkvm_hyp_vcpu *hyp_vcpu;
+	struct kvm_vcpu *vcpu;
+	struct pkvm_hyp_vm *vm;
+
+	if (vm_handle == HOST_FFA_ID)
+		return &host_buffers;
+
+	vcpu = container_of(ctxt, struct kvm_vcpu, arch.ctxt);
+	hyp_vcpu = container_of(vcpu, struct pkvm_hyp_vcpu, vcpu);
+	vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
+
+	return &vm->ffa_buf;
+}
 
 static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
 {
@@ -184,6 +196,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 	DECLARE_REG(u32, npages, ctxt, 3);
 	int ret = 0;
 	void *rx_virt, *tx_virt;
+	struct kvm_ffa_buffers *ffa_buf;
 
 	if (npages != (KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE) / FFA_PAGE_SIZE) {
 		ret = FFA_RET_INVALID_PARAMETERS;
@@ -196,7 +209,8 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 	}
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (host_buffers.tx) {
+	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
+	if (ffa_buf->tx) {
 		ret = FFA_RET_DENIED;
 		goto out_unlock;
 	}
@@ -227,8 +241,8 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 		goto err_unpin_tx;
 	}
 
-	host_buffers.tx = tx_virt;
-	host_buffers.rx = rx_virt;
+	ffa_buf->tx = tx_virt;
+	ffa_buf->rx = rx_virt;
 
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
@@ -251,6 +265,7 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 {
 	DECLARE_REG(u32, id, ctxt, 1);
 	int ret = 0;
+	struct kvm_ffa_buffers *ffa_buf;
 
 	if (id != HOST_FFA_ID) {
 		ret = FFA_RET_INVALID_PARAMETERS;
@@ -258,18 +273,20 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 	}
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.tx) {
+	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
+	if (!ffa_buf->tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
 	}
 
-	hyp_unpin_shared_mem(host_buffers.tx, host_buffers.tx + 1);
-	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(host_buffers.tx)));
-	host_buffers.tx = NULL;
+	hyp_unpin_shared_mem(ffa_buf->tx, ffa_buf->tx + 1);
+	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(ffa_buf->tx)));
+	ffa_buf->tx = NULL;
 
-	hyp_unpin_shared_mem(host_buffers.rx, host_buffers.rx + 1);
-	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(host_buffers.rx)));
-	host_buffers.rx = NULL;
+	hyp_unpin_shared_mem(ffa_buf->rx, ffa_buf->rx + 1);
+	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(ffa_buf->rx)));
+	ffa_buf->rx = NULL;
+
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
@@ -355,6 +372,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	struct ffa_mem_region_addr_range *buf;
 	int ret = FFA_RET_INVALID_PARAMETERS;
 	u32 nr_ranges;
+	struct kvm_ffa_buffers *ffa_buf;
 
 	if (fraglen > KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE)
 		goto out;
@@ -363,11 +381,12 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 		goto out;
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.tx)
+	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
+	if (!ffa_buf->tx)
 		goto out_unlock;
 
 	buf = hyp_buffers.tx;
-	memcpy(buf, host_buffers.tx, fraglen);
+	memcpy(buf, ffa_buf->tx, fraglen);
 	nr_ranges = fraglen / sizeof(*buf);
 
 	ret = ffa_host_share_ranges(buf, nr_ranges);
@@ -415,6 +434,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	struct ffa_mem_region_attributes *ep_mem_access;
 	struct ffa_composite_mem_region *reg;
 	struct ffa_mem_region *buf;
+	struct kvm_ffa_buffers *ffa_buf;
 	u32 offset, nr_ranges;
 	int ret = 0;
 
@@ -431,7 +451,8 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	}
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.tx) {
+	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
+	if (!ffa_buf->tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
 	}
@@ -442,7 +463,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	}
 
 	buf = hyp_buffers.tx;
-	memcpy(buf, host_buffers.tx, fraglen);
+	memcpy(buf, ffa_buf->tx, fraglen);
 
 	ep_mem_access = (void *)buf +
 			ffa_mem_desc_offset(buf, 0, hyp_ffa_version);
@@ -729,9 +750,11 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 	DECLARE_REG(u32, uuid3, ctxt, 4);
 	DECLARE_REG(u32, flags, ctxt, 5);
 	u32 count, partition_sz, copy_sz;
+	struct kvm_ffa_buffers *ffa_buf;
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
-	if (!host_buffers.rx) {
+	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
+	if (!ffa_buf->rx) {
 		ffa_to_smccc_res(res, FFA_RET_BUSY);
 		goto out_unlock;
 	}
@@ -764,7 +787,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 		goto out_unlock;
 	}
 
-	memcpy(host_buffers.rx, hyp_buffers.rx, copy_sz);
+	memcpy(ffa_buf->rx, hyp_buffers.rx, copy_sz);
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
