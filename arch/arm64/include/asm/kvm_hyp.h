@@ -134,6 +134,15 @@ extern bool kvm_nvhe_sym(smccc_trng_available);
 
 extern bool kvm_nvhe_sym(__pkvm_modules_enabled);
 
+extern u32 hyp_sve_max_vl;
+
+static inline u32 sve_vl_from_zcr(u64 zcr)
+{
+	u32 vl = ((zcr & ZCR_ELx_LEN_MASK) + 1) * 8;
+
+	return max(vl, 32U);
+}
+
 struct kvm_nvhe_clock_data {
 	u32 mult;
 	u32 shift;
