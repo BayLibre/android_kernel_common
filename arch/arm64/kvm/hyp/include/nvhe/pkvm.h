@@ -86,7 +86,10 @@ struct pkvm_hyp_vm {
  * Tracks host fp and advanced feature state, e.g., sve, at the hypervisor.
  */
 struct pkvm_host_fp_state {
-	struct user_fpsimd_state fpsimd_state;
+	union {
+		struct user_fpsimd_state fpsimd_state;
+		struct kvm_host_sve_state sve_state;
+	};
 };
 
 extern struct pkvm_host_fp_state *host_fp_states;
@@ -167,5 +170,7 @@ void pkvm_poison_pvmfw_pages(void);
  * Notify pKVM about events that can undermine pKVM security.
  */
 void pkvm_handle_system_misconfiguration(enum pkvm_system_misconfiguration event);
+
+size_t pkvm_host_fp_state_size(void);
 
 #endif /* __ARM64_KVM_NVHE_PKVM_H__ */
