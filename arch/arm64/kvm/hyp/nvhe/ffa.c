@@ -70,6 +70,7 @@ static struct kvm_ffa_buffers host_buffers;
 static u32 hyp_ffa_version;
 static bool has_version_negotiated;
 static hyp_spinlock_t version_lock;
+static unsigned short hyp_buff_refcnt;
 
 static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
 {
@@ -111,9 +112,15 @@ static bool is_ffa_call(u64 func_id)
 	       ARM_SMCCC_FUNC_NUM(func_id) <= FFA_MAX_FUNC_NUM;
 }
 
-static int ffa_map_hyp_buffers(u64 ffa_page_count)
+static int ffa_map_hyp_buffers_locked(u64 ffa_page_count)
 {
 	struct arm_smccc_res res;
+
+	if (hyp_buff_refcnt == USHRT_MAX)
+		return FFA_RET_BUSY;
+
+	if (++hyp_buff_refcnt > 1)
+		return FFA_RET_SUCCESS;
 
 	arm_smccc_1_1_smc(FFA_FN64_RXTX_MAP,
 			  hyp_virt_to_phys(hyp_buffers.tx),
@@ -122,19 +129,34 @@ static int ffa_map_hyp_buffers(u64 ffa_page_count)
 			  0, 0, 0, 0,
 			  &res);
 
-	return res.a0 == FFA_SUCCESS ? FFA_RET_SUCCESS : res.a2;
+	if (res.a0 != FFA_SUCCESS) {
+		hyp_buff_refcnt--;
+		return res.a2;
+	}
+
+	return FFA_RET_SUCCESS;
 }
 
-static int ffa_unmap_hyp_buffers(void)
+static int ffa_unmap_hyp_buffers_locked(void)
 {
 	struct arm_smccc_res res;
+
+	WARN_ON(hyp_buff_refcnt == 0);
+
+	if (--hyp_buff_refcnt > 0)
+		return FFA_RET_SUCCESS;
 
 	arm_smccc_1_1_smc(FFA_RXTX_UNMAP,
 			  HOST_FFA_ID,
 			  0, 0, 0, 0, 0, 0,
 			  &res);
 
-	return res.a0 == FFA_SUCCESS ? FFA_RET_SUCCESS : res.a2;
+	if (res.a0 != FFA_SUCCESS) {
+		hyp_buff_refcnt++;
+		return res.a2;
+	}
+
+	return FFA_RET_SUCCESS;
 }
 
 static void ffa_mem_frag_tx(struct arm_smccc_res *res, u32 handle_lo,
@@ -217,7 +239,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 	 * Map our hypervisor buffers into the SPMD before mapping and
 	 * pinning the host buffers in our own address space.
 	 */
-	ret = ffa_map_hyp_buffers(npages);
+	ret = ffa_map_hyp_buffers_locked(npages);
 	if (ret)
 		goto out_unlock;
 
@@ -263,7 +285,7 @@ err_unshare_rx:
 err_unshare_tx:
 	__pkvm_host_unshare_hyp(hyp_phys_to_pfn(tx));
 err_unmap:
-	ffa_unmap_hyp_buffers();
+	ffa_unmap_hyp_buffers_locked();
 	goto out_unlock;
 }
 
@@ -292,7 +314,7 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(host_buffers.rx)));
 	host_buffers.rx = NULL;
 
-	ffa_unmap_hyp_buffers();
+	ffa_unmap_hyp_buffers_locked();
 
 out_unlock:
 	hyp_spin_unlock(&host_buffers.lock);
