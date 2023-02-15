@@ -68,6 +68,7 @@ struct kvm_ffa_buffers {
  */
 static struct kvm_ffa_buffers hyp_buffers;
 static struct kvm_ffa_buffers non_secure_el1_buffers[KVM_MAX_PVMS];
+static u8 hyp_buffer_refcnt;
 
 static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
 {
@@ -105,6 +106,9 @@ static int spmd_map_ffa_buffers(u64 ffa_page_count)
 {
 	struct arm_smccc_res res;
 
+	if (hyp_buffer_refcnt > 0)
+		return FFA_RET_SUCCESS;
+
 	arm_smccc_1_1_smc(FFA_FN64_RXTX_MAP,
 			  hyp_virt_to_phys(hyp_buffers.tx),
 			  hyp_virt_to_phys(hyp_buffers.rx),
@@ -118,6 +122,12 @@ static int spmd_map_ffa_buffers(u64 ffa_page_count)
 static int spmd_unmap_ffa_buffers(void)
 {
 	struct arm_smccc_res res;
+
+	/* We unmap the buffers from the spmd only when no one references
+	 * them.
+	 */
+	if (hyp_buffer_refcnt != 0)
+		return FFA_RET_SUCCESS;
 
 	arm_smccc_1_1_smc(FFA_RXTX_UNMAP,
 			  HOST_FFA_ID,
@@ -233,7 +243,7 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 
 	non_secure_el1_buffers[vmid].tx = tx_virt;
 	non_secure_el1_buffers[vmid].rx = rx_virt;
-
+	hyp_buffer_refcnt++;
 out_unlock:
 	hyp_spin_unlock(&hyp_buffers.lock);
 out:
@@ -278,6 +288,9 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 			     non_secure_el1_buffers[vmid].rx + 1);
 	WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(non_secure_el1_buffers[vmid].rx)));
 	non_secure_el1_buffers[vmid].rx = NULL;
+
+	if (hyp_buffer_refcnt > 0)
+		hyp_buffer_refcnt--;
 
 	spmd_unmap_ffa_buffers();
 
