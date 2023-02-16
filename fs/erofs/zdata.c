@@ -150,8 +150,21 @@ int __init z_erofs_init_zip_subsystem(void)
 	int err = z_erofs_create_pcluster_pool();
 
 	if (err)
+<<<<<<< HEAD   (bdaa8a ANDROID: dma-buf: heaps: Don't lock unused dmabuf_page_pool )
 		return err;
 	err = z_erofs_init_workqueue();
+=======
+		goto out_error_pcluster_pool;
+
+	z_erofs_workqueue = alloc_workqueue("erofs_worker",
+			WQ_UNBOUND | WQ_HIGHPRI, num_possible_cpus());
+	if (!z_erofs_workqueue) {
+		err = -ENOMEM;
+		goto out_error_workqueue_init;
+	}
+
+	err = erofs_init_percpu_workers();
+>>>>>>> CHANGE (1476f2 UPSTREAM: erofs: fix an error code in z_erofs_init_zip_subsy)
 	if (err)
 		z_erofs_destroy_pcluster_pool();
 	return err;
