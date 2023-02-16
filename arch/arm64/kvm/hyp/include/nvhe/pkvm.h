@@ -50,7 +50,9 @@ struct pkvm_hyp_vcpu {
 /* Holds tha hyp address of the mapped RX/TX buffers inside the hypervisor */
 struct kvm_ffa_buffers {
 	void *tx;
+	u64 tx_ipa;
 	void *rx;
+	u64 rx_ipa;
 };
 
 #define PKVM_VCPU_FROM_CTXT(ctxt) ((struct pkvm_hyp_vcpu *)container_of(\
