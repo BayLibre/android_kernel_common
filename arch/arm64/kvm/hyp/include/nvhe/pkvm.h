@@ -44,8 +44,16 @@ struct pkvm_hyp_vcpu {
 /* Holds the hyp address of the mapped RX/TX buffers inside the hypervisor */
 struct kvm_ffa_buffers {
 	void *tx;
+	u64 tx_ipa;
 	void *rx;
+	u64 rx_ipa;
 };
+
+/*
+ * Start the VM table handle at the offset defined instead of at 0.
+ * Mainly for sanity checking and debugging.
+ */
+#define HANDLE_OFFSET 0x1000
 
 /*
  * Holds the relevant data for running a protected vm.
