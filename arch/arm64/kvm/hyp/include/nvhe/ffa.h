@@ -12,6 +12,10 @@
 #define FFA_MIN_FUNC_NUM 0x60
 #define FFA_MAX_FUNC_NUM 0xFF
 
+/* FF-A VM handle - 0 is reserved for the host */
+#define FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu)	((hyp_vcpu) == NULL ? 0 :\
+	((((hyp_vcpu)->vcpu).kvm->arch.pkvm.handle) - HANDLE_OFFSET + 1))
+
 int hyp_ffa_init(void *pages);
 bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id);
 bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code);
