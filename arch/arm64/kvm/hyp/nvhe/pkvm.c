@@ -235,12 +235,6 @@ static int pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
 	return 0;
 }
 
-/*
- * Start the VM table handle at the offset defined instead of at 0.
- * Mainly for sanity checking and debugging.
- */
-#define HANDLE_OFFSET 0x1000
-
 static unsigned int vm_handle_to_idx(pkvm_handle_t handle)
 {
 	return handle - HANDLE_OFFSET;
