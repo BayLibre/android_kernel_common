@@ -46,6 +46,30 @@
       },
       "revId": "50be85ff187492de1ad59b6cf1f79333174da49c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e7695d_d8457dbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-16T17:13:20Z",
+      "side": 1,
+      "message": "Drivers should never be messing with irq routing like this, that is what the core kernel is for instead, sorry.\n\nIt\u0027s not valid because it is not used by any other kernel driver in the tree.  If you disagree with this, please submit the driver that uses this upstream and I will be glad to review it.",
+      "parentUuid": "e6db4ada_4d6761d1",
+      "range": {
+        "startLine": 10,
+        "startChar": 15,
+        "endLine": 10,
+        "endChar": 31
+      },
+      "revId": "50be85ff187492de1ad59b6cf1f79333174da49c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
