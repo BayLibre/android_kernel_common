@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38e86f07_0a93201d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-02-17T19:54:34Z",
+      "side": 1,
+      "message": "Are you saying this patch will be reverted when/if fuse-bpf lands upstream? (I suspect not). This interface will be available in this kernel until it is EOL. Shouldn\u0027t this comment be in the user-space code that relies on it instead of here? That code will need to be changed to also check the yet-to-be-defined upstream mechanism.",
+      "revId": "d375cc2203a3ae90ccb558eff4bbf9a6f73fb195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
