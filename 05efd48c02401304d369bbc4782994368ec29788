@@ -16,6 +16,24 @@
       "message": "Sorry to bikeshed, but I think \"fault\" is a poor choice of terminology here given that it tends to be used in conjunction with page faults!\n\nHow about repainting this along the lines of:\n\n`pkvm_report_fault_event()` \u003d\u003e `pkvm_handle_system_misconfiguration()`\n`enum pkvm_fault_event` \u003d\u003e `enum pkvm_system_misconfiguration`\n\n?",
       "revId": "05efd48c02401304d369bbc4782994368ec29788",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b5b87d_c0ce7844",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2023-02-17T12:37:06Z",
+      "side": 1,
+      "message": "Yes, it might be confusing. I can repaint it to system_misconfiguration, however what I had in mind that this can be used to report other errors not only limited to system configuration, however, I can\u0027t find other use for now, so I will rename it to system_misconfiguration.",
+      "parentUuid": "06142524_f38f9a41",
+      "revId": "05efd48c02401304d369bbc4782994368ec29788",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
