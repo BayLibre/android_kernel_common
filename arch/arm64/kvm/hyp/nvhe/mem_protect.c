@@ -1390,6 +1390,41 @@ unlock:
 	return ret;
 }
 
+int __pkvm_guest_share_ffa(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 nr_pages, phys_addr_t *out_addr)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	kvm_pte_t pte;
+
+	if (!out_addr)
+		return -EINVAL;
+
+	guest_lock_component(vm);
+	ret = __guest_request_page_transition(ipa, &pte, &nr_pages, vcpu, PKVM_PAGE_OWNED);
+	if (!ret)
+		ret = __guest_initiate_page_transition(ipa, pte, nr_pages, vcpu, PKVM_PAGE_SHARED_OWNED);
+
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
+int __pkvm_guest_unshare_ffa(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 nr_pages)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	kvm_pte_t pte;
+
+	guest_lock_component(vm);
+	ret = __guest_request_page_transition(ipa, &pte, &nr_pages, vcpu, PKVM_PAGE_SHARED_OWNED);
+	if (!ret)
+		ret = __guest_initiate_page_transition(ipa, pte, nr_pages, vcpu, PKVM_PAGE_OWNED);
+
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
 int __pkvm_guest_unshare_host(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 nr_pages,
 			      u64 *nr_unshared)
 {
