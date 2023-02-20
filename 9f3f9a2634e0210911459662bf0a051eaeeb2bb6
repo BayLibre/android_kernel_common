@@ -16,6 +16,29 @@
       "message": "LGTM",
       "revId": "9f3f9a2634e0210911459662bf0a051eaeeb2bb6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f5a4814_d9dbccb5",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-02-20T17:17:40Z",
+      "side": 1,
+      "message": "if that is a temporary copy, perhaps clean it up afterwards. In particular, the name \u0027protected_exports\u0027 in the root of ${OUT_DIR} is quite non-descriptive for a left-over artefact.",
+      "range": {
+        "startLine": 105,
+        "startChar": 10,
+        "endLine": 105,
+        "endChar": 19
+      },
+      "revId": "9f3f9a2634e0210911459662bf0a051eaeeb2bb6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
