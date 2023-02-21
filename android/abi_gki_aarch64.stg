@@ -284710,6 +284710,14 @@ function {
   parameter_id: 0x6720d32f
 }
 function {
+  id: 0x2a59f7ea
+  return_type_id: 0x239e18b5
+  parameter_id: 0x054f691a
+  parameter_id: 0x6720d32f
+  parameter_id: 0x6720d32f
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x2a5b8aea
   return_type_id: 0x48b5725f
   parameter_id: 0xeb0f6de6
@@ -287542,6 +287550,11 @@ function {
   return_type_id: 0x38b136d3
   parameter_id: 0x0258f96e
   parameter_id: 0xf435685e
+}
+function {
+  id: 0x69238486
+  return_type_id: 0x1d19a9d5
+  parameter_id: 0x49b889e7
 }
 function {
   id: 0x6940ae3e
@@ -300599,6 +300612,14 @@ function {
   parameter_id: 0x29f042bf
 }
 function {
+  id: 0x9b87e6ee
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18a16691
+  parameter_id: 0x0483e6f8
+  parameter_id: 0xf435685e
+  parameter_id: 0x17a93606
+}
+function {
   id: 0x9b87f766
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -308366,6 +308387,12 @@ function {
   return_type_id: 0x02eb105a
   parameter_id: 0x0258f96e
   parameter_id: 0x3e10b518
+}
+function {
+  id: 0xd6b27f6b
+  return_type_id: 0x49b889e7
+  parameter_id: 0x18456730
+  parameter_id: 0x0a193bb7
 }
 function {
   id: 0xd6c42b2c
@@ -318611,6 +318638,15 @@ elf_symbol {
   full_name: "cfg80211_vendor_cmd_reply"
 }
 elf_symbol {
+  id: 0x4ce62869
+  name: "cgroup_path_ns"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x53cab7bd
+  type_id: 0x9b87e6ee
+  full_name: "cgroup_path_ns"
+}
+elf_symbol {
   id: 0x6d77f512
   name: "cgroup_taskset_first"
   is_defined: true
@@ -327202,6 +327238,15 @@ elf_symbol {
   crc: 0x774e1d09
   type_id: 0x31ab6254
   full_name: "find_pid_ns"
+}
+elf_symbol {
+  id: 0xdc16d76a
+  name: "find_task_by_vpid"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6c108627
+  type_id: 0x69238486
+  full_name: "find_task_by_vpid"
 }
 elf_symbol {
   id: 0x69beea41
@@ -336758,6 +336803,15 @@ elf_symbol {
   full_name: "nla_reserve"
 }
 elf_symbol {
+  id: 0x85e07b67
+  name: "nla_reserve_64bit"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x7fe952f4
+  type_id: 0x2a59f7ea
+  full_name: "nla_reserve_64bit"
+}
+elf_symbol {
   id: 0x6359420c
   name: "nla_strscpy"
   is_defined: true
@@ -339502,6 +339556,15 @@ elf_symbol {
   crc: 0x5c6198e4
   type_id: 0x70cd0122
   full_name: "pick_migrate_task"
+}
+elf_symbol {
+  id: 0x634946e6
+  name: "pid_nr_ns"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2c1dbbb1
+  type_id: 0xd6b27f6b
+  full_name: "pid_nr_ns"
 }
 elf_symbol {
   id: 0x0c0b5c37
@@ -357209,6 +357272,10 @@ symbols {
     value: 0x297ae84e
   }
   symbol {
+    key: "cgroup_path_ns"
+    value: 0x4ce62869
+  }
+  symbol {
     key: "cgroup_taskset_first"
     value: 0x6d77f512
   }
@@ -361023,6 +361090,10 @@ symbols {
   symbol {
     key: "find_pid_ns"
     value: 0x90d375c5
+  }
+  symbol {
+    key: "find_task_by_vpid"
+    value: 0xdc16d76a
   }
   symbol {
     key: "find_vma"
@@ -365273,6 +365344,10 @@ symbols {
     value: 0x49027247
   }
   symbol {
+    key: "nla_reserve_64bit"
+    value: 0x85e07b67
+  }
+  symbol {
     key: "nla_strscpy"
     value: 0x6359420c
   }
@@ -366491,6 +366566,10 @@ symbols {
   symbol {
     key: "pick_migrate_task"
     value: 0x4ef078c0
+  }
+  symbol {
+    key: "pid_nr_ns"
+    value: 0x634946e6
   }
   symbol {
     key: "pid_task"
