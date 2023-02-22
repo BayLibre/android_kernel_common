@@ -121,4 +121,6 @@ void cfg80211_rdev_free_coalesce(struct cfg80211_registered_device *rdev);
 int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info);
 int nl80211_pmsr_dump_results(struct sk_buff *skb, struct netlink_callback *cb);
 
+int nl80211_send_chandef(struct sk_buff *msg, const struct cfg80211_chan_def *chandef);
+
 #endif /* __NET_WIRELESS_NL80211_H */
