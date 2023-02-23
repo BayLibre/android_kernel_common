@@ -16,6 +16,24 @@
       "message": "How NEEDS_DELAYED_RETRY is handled in scsi layer?",
       "revId": "ca2a5c653d63dd1be091c91f87c61c0a7658fdf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf1f1c5_584dc6a9",
+        "filename": "drivers/scsi/scsi_error.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2023-02-23T21:45:36Z",
+      "side": 1,
+      "message": "That\u0027s an interesting question. This code occurs in the function scsi_check_sense(). If that function returns NEEDS_DELAYED_RETRY then its caller (scsi_decide_disposition()) will also return NEEDS_DELAYED_RETRY. The caller of scsi_decide_disposition() is scsi_complete(). That function will call scsi_eh_scmd_add() for the return value NEEDS_DELAYED_RETRY. scsi_eh_scmd_add() will change the host state into SHOST_RECOVERY. This causes queuing of new SCSI commands to be postponed until the error handler has finished and also causes the error handler to be activated after all pending SCSI commands have completed. The SCSI error handler will perform the following actions:\n* Submit a REQUEST SENSE command and wait until it completes.\n* Resubmit the SCSI commands for which scsi_decide_disposition() returned NEEDS_DELAYED_RETRY. See also scsi_eh_flush_done_q().",
+      "parentUuid": "2d5648f1_0a6dcd60",
+      "revId": "ca2a5c653d63dd1be091c91f87c61c0a7658fdf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
