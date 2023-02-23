@@ -33,6 +33,24 @@
       "message": "Please submit fix upstream first.",
       "revId": "ae784e1e0c23d36eece04323d5f7a146edd7f603",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70673ac7_cabdb5fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125654
+      },
+      "writtenOn": "2023-02-23T20:22:18Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nThis issue is not present in the upstream kernel or the 5.10 stable kernel. The issue seems to have been introduced when the Linux 5.10.110 update was brought to the android13-5.10-lts kernel, and then later introduced in android13-5.10. Maybe there was a problem in conflict resolution as there is a related patch \"e4c777fd8c37  amba: Make the remove callback return void\", but in upstream kernels that only affects amba_remove().\n\nThanks,\nIonela.",
+      "parentUuid": "34730bb1_b9738476",
+      "revId": "ae784e1e0c23d36eece04323d5f7a146edd7f603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
