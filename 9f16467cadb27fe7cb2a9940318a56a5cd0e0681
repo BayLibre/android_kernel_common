@@ -45,6 +45,29 @@
       },
       "revId": "9f16467cadb27fe7cb2a9940318a56a5cd0e0681",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f97b927_4849e90f",
+        "filename": "drivers/staging/android/debug_kinfo.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-24T08:53:59Z",
+      "side": 1,
+      "message": "this is already exported, why do you need it again?\n\nAnd it is arm64 only, this will break the build on other platforms, how was this tested?",
+      "range": {
+        "startLine": 182,
+        "startChar": 24,
+        "endLine": 182,
+        "endChar": 38
+      },
+      "revId": "9f16467cadb27fe7cb2a9940318a56a5cd0e0681",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
