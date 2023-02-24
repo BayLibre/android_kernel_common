@@ -137,6 +137,29 @@
       },
       "revId": "a7afd56d400f326f46d87121ae03c1368778119c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e69e6d_0155ffd9",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-02-24T23:03:03Z",
+      "side": 1,
+      "message": "Pick a different init call level that can happen as early as possible, but only after AMUs get to register and cpufreq has initialized. That way, we\u0027ll get the benefit earlier during boot.",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 22
+      },
+      "revId": "a7afd56d400f326f46d87121ae03c1368778119c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

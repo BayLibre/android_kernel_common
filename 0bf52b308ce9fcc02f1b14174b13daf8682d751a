@@ -22,6 +22,30 @@
       },
       "revId": "0bf52b308ce9fcc02f1b14174b13daf8682d751a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58311fdd_5bdd163a",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-02-24T23:03:03Z",
+      "side": 1,
+      "message": "This will absolutely get called out in upstream. But let\u0027s not be blocked on this for sending v1 out.\n\nIf you have time fix it, or else put a `TODO for v2`.\n\nAlso add a comment that points out that this will only take effect if a freq source like AMU, etc hasn\u0027t already been registered.",
+      "parentUuid": "d064e54a_3be90cd9",
+      "range": {
+        "startLine": 159,
+        "startChar": 1,
+        "endLine": 159,
+        "endChar": 56
+      },
+      "revId": "0bf52b308ce9fcc02f1b14174b13daf8682d751a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
