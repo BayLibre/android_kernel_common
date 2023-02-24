@@ -994,7 +994,6 @@ struct rq {
 
 	unsigned long		cpu_capacity;
 	unsigned long		cpu_capacity_orig;
-	unsigned long		cpu_capacity_inverted;
 
 	struct callback_head	*balance_callback;
 
@@ -1085,7 +1084,8 @@ struct rq {
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
-	ANDROID_KABI_RESERVE(4);
+	unsigned long		cpu_capacity_inverted;
+	unsigned long		reserved;
 };
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
