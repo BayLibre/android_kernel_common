@@ -22,6 +22,30 @@
       },
       "revId": "903038dd227717141ce0bfbb0f40f328938ae8e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dddeb531_8733c28b",
+        "filename": "arch/arm64/kernel/vmlinux.lds.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-02-24T14:49:57Z",
+      "side": 0,
+      "message": "This section contains things relevant for hyp events, but it is only used by the host.\n\nNot having HYPERVISOR_ can eventually avoid mixing it up with other sections that are actually used by the hyp.",
+      "parentUuid": "c7f0ab8d_e47770d6",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 25
+      },
+      "revId": "903038dd227717141ce0bfbb0f40f328938ae8e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
