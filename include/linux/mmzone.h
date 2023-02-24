@@ -60,6 +60,9 @@ enum migratetype {
 	 */
 	MIGRATE_CMA,
 #endif
+#ifdef CONFIG_MEMORY_METADATA
+	MIGRATE_METADATA,
+#endif
 	MIGRATE_PCPTYPES, /* the number of types on the pcp lists */
 	MIGRATE_HIGHATOMIC = MIGRATE_PCPTYPES,
 #ifdef CONFIG_MEMORY_ISOLATION
@@ -79,6 +82,14 @@ extern const char * const migratetype_names[MIGRATE_TYPES];
 #  define is_migrate_cma(migratetype) false
 #  define is_migrate_cma_page(_page) false
 #  define get_cma_migrate_type() MIGRATE_MOVABLE
+#endif
+
+#ifdef CONFIG_MEMORY_METADATA
+#  define is_migrate_metadata(migratetype) unlikely((migratetype) == MIGRATE_METADATA)
+#  define is_migrate_metadata_page(_page) (get_pageblock_migratetype(_page) == MIGRATE_METADATA)
+#else
+#  define is_migrate_metadata(migratetype) false
+#  define is_migrate_metadata_page(_page) false
 #endif
 
 static inline bool is_migrate_movable(int mt)

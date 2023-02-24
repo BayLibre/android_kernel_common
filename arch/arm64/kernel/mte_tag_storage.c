@@ -13,6 +13,8 @@
 #include <linux/string.h>
 #include <linux/xarray.h>
 
+__ro_after_init DEFINE_STATIC_KEY_FALSE(mte_tag_storage_enabled_key);
+
 struct tag_region {
 	struct range mem_range;	/* Memory associated with the tag storage, in PFNs. */
 	struct range tag_range;	/* Tag storage memory, in PFNs. */
@@ -247,4 +249,9 @@ out_err:
 		memblock_remove(PFN_PHYS(tag_range->start), PFN_PHYS(range_len(tag_range)));
 	}
 	num_tag_regions = 0;
+}
+
+bool alloc_can_use_tag_storage(gfp_t gfp_mask)
+{
+	return !(gfp_mask & __GFP_ZEROTAGS);
 }
