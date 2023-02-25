@@ -9479,7 +9479,11 @@ void netdev_stats_to_stats64(struct rtnl_link_stats64 *stats64,
 
 	BUILD_BUG_ON(n > sizeof(*stats64) / sizeof(u64));
 	for (i = 0; i < n; i++)
+<<<<<<< HEAD   (afb657 Merge 5.4.231 into android12-5.4-lts)
 		dst[i] = src[i];
+=======
+		dst[i] = (unsigned long)atomic_long_read(&src[i]);
+>>>>>>> BRANCH (64121e Linux 5.4.232)
 	/* zero out counters that only exist in rtnl_link_stats64 */
 	memset((char *)stats64 + n * sizeof(u64), 0,
 	       sizeof(*stats64) - n * sizeof(u64));

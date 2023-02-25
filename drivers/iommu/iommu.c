@@ -1885,8 +1885,13 @@ static size_t iommu_pgsize(struct iommu_domain *domain,
 	return pgsize;
 }
 
+<<<<<<< HEAD   (afb657 Merge 5.4.231 into android12-5.4-lts)
 static int __iommu_map(struct iommu_domain *domain, unsigned long iova,
 		       phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
+=======
+int __iommu_map(struct iommu_domain *domain, unsigned long iova,
+	      phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
+>>>>>>> BRANCH (64121e Linux 5.4.232)
 {
 	const struct iommu_ops *ops = domain->ops;
 	unsigned long orig_iova = iova;
@@ -1942,6 +1947,7 @@ static int __iommu_map(struct iommu_domain *domain, unsigned long iova,
 	return ret;
 }
 
+<<<<<<< HEAD   (afb657 Merge 5.4.231 into android12-5.4-lts)
 static int _iommu_map(struct iommu_domain *domain, unsigned long iova,
 		      phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
 {
@@ -1960,13 +1966,24 @@ int iommu_map(struct iommu_domain *domain, unsigned long iova,
 {
 	might_sleep();
 	return _iommu_map(domain, iova, paddr, size, prot, GFP_KERNEL);
+=======
+int iommu_map(struct iommu_domain *domain, unsigned long iova,
+	      phys_addr_t paddr, size_t size, int prot)
+{
+	might_sleep();
+	return __iommu_map(domain, iova, paddr, size, prot, GFP_KERNEL);
+>>>>>>> BRANCH (64121e Linux 5.4.232)
 }
 EXPORT_SYMBOL_GPL(iommu_map);
 
 int iommu_map_atomic(struct iommu_domain *domain, unsigned long iova,
 	      phys_addr_t paddr, size_t size, int prot)
 {
+<<<<<<< HEAD   (afb657 Merge 5.4.231 into android12-5.4-lts)
 	return _iommu_map(domain, iova, paddr, size, prot, GFP_ATOMIC);
+=======
+	return __iommu_map(domain, iova, paddr, size, prot, GFP_ATOMIC);
+>>>>>>> BRANCH (64121e Linux 5.4.232)
 }
 EXPORT_SYMBOL_GPL(iommu_map_atomic);
 
@@ -2046,9 +2063,15 @@ size_t iommu_unmap_fast(struct iommu_domain *domain,
 }
 EXPORT_SYMBOL_GPL(iommu_unmap_fast);
 
+<<<<<<< HEAD   (afb657 Merge 5.4.231 into android12-5.4-lts)
 static size_t __iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
 			     struct scatterlist *sg, unsigned int nents, int prot,
 			     gfp_t gfp)
+=======
+size_t __iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
+		    struct scatterlist *sg, unsigned int nents, int prot,
+		    gfp_t gfp)
+>>>>>>> BRANCH (64121e Linux 5.4.232)
 {
 	const struct iommu_ops *ops = domain->ops;
 	size_t len = 0, mapped = 0;
