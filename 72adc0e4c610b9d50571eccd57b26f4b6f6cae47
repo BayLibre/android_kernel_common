@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe789380_4a968900",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-27T10:10:38Z",
+      "side": 1,
+      "message": "needs a changelog text saying why this is happening and what it is for.  Please read the kernel documentation for how to write a good changelog.",
+      "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ced88459_fbf2102e",
@@ -31,6 +48,23 @@
       "writtenOn": "2023-02-27T09:45:58Z",
       "side": 1,
       "message": "I don\u0027t think this is going to work with aosp/2455073 because that is on master branch, whereas this is only for common-android-mainline. This isn\u0027t to actually enable Rust in the kernel, it\u0027s just the first step to get the kernel build with CONFIG_RUST_IS_AVAILABLE\u003dy set.",
+      "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb7865c8_ccc06cae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-02-27T10:10:38Z",
+      "side": 1,
+      "message": "Why do you want this enabled on this branch?  We don\u0027t really support any builds of external modules off of this very well, given the constant churn of apis.\n\nAlso how will this interact with the rust kernel changes going into 6.3-rc1?",
       "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
