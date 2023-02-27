@@ -39,6 +39,30 @@
       },
       "revId": "9f3f9a2634e0210911459662bf0a051eaeeb2bb6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f9eecc_8442f959",
+        "filename": "scripts/gen_gki_modules_headers.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-02-27T23:49:33Z",
+      "side": 1,
+      "message": "This has been replaced by http://aosp/2441359 which creates the file in the kernel\u0027s object tree; `kleaf` anyway doesn\u0027t hold the intermediate build artifacts unless specifically asked and when asked this file can be useful to debug what symbols should have been made to the header file.",
+      "parentUuid": "7f5a4814_d9dbccb5",
+      "range": {
+        "startLine": 105,
+        "startChar": 10,
+        "endLine": 105,
+        "endChar": 19
+      },
+      "revId": "9f3f9a2634e0210911459662bf0a051eaeeb2bb6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
