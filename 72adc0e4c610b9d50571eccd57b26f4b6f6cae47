@@ -16,6 +16,23 @@
       "message": "I don\u0027t t",
       "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4192090_e25f240f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2023-02-27T09:45:58Z",
+      "side": 1,
+      "message": "I don\u0027t think this is going to work with aosp/2455073 because that is on master branch, whereas this is only for common-android-mainline. This isn\u0027t to actually enable Rust in the kernel, it\u0027s just the first step to get the kernel build with CONFIG_RUST_IS_AVAILABLE\u003dy set.",
+      "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
