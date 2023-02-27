@@ -67,6 +67,24 @@
       "message": "Why do you want this enabled on this branch?  We don\u0027t really support any builds of external modules off of this very well, given the constant churn of apis.\n\nAlso how will this interact with the rust kernel changes going into 6.3-rc1?",
       "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b934033c_da719f37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2023-02-27T10:24:32Z",
+      "side": 1,
+      "message": "\u003e Why do you want this enabled on this branch? We don\u0027t really support any builds of external modules off of this very well, given the constant churn of apis.\n\nI was previously adding this to a separate private branch but maennich@ encouraged me to separate out the changes needed to build Rust here since they\u0027ll be used eventually, and he and others were already exploring how to add Rust support in android-mainline.\n\n\u003e Also how will this interact with the rust kernel changes going into 6.3-rc1?\n\nI will not be touching any files from upstream in android-mainline, only Android-specific files. Don\u0027t want to cause merge conflicts.",
+      "parentUuid": "fb7865c8_ccc06cae",
+      "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
