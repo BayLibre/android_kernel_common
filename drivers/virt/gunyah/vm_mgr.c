@@ -665,7 +665,8 @@ static long gh_vm_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			return -EFAULT;
 
 		/* All other flag bits are reserved for future use */
-		if (region.flags & ~(GH_MEM_ALLOW_READ | GH_MEM_ALLOW_WRITE | GH_MEM_ALLOW_EXEC))
+		if (region.flags & ~(GH_MEM_ALLOW_READ | GH_MEM_ALLOW_WRITE | GH_MEM_ALLOW_EXEC |
+			GH_MEM_LENT))
 			return -EINVAL;
 
 		r = gh_vm_mem_alloc(ghvm, &region);
@@ -778,6 +779,7 @@ static long gh_android_check_extension(unsigned long arg)
 {
 	switch (arg) {
 	case GH_ANDROID_CAP_UAPI:
+	case GH_ANDROID_CAP_USER_MEM_LEND:
 		return 1;
 	default:
 		return 0;

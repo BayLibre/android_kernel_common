@@ -28,6 +28,11 @@
 #define GH_MEM_ALLOW_READ	(1UL << 0)
 #define GH_MEM_ALLOW_WRITE	(1UL << 1)
 #define GH_MEM_ALLOW_EXEC	(1UL << 2)
+/*
+ * The guest will be lent the memory instead of shared.
+ * In other words, the guest has exclusive access to the memory region and the host loses access.
+ */
+#define GH_MEM_LENT		(1UL << 3)
 
 /**
  * struct gh_userspace_memory_region - Userspace memory descripion for GH_VM_SET_USER_MEM_REGION
@@ -265,6 +270,7 @@ struct gh_vcpu_run {
 #define GH_ANDROID_IOCTL_TYPE		'A'
 
 #define GH_ANDROID_CAP_UAPI		1
+#define GH_ANDROID_CAP_USER_MEM_LEND	2
 
 /*
  * Check if a gunyah ACK extension is available.  Argument is extension number,
