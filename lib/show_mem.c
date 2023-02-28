@@ -7,6 +7,7 @@
 
 #include <linux/mm.h>
 #include <linux/cma.h>
+#include <linux/memory_metadata.h>
 #include <trace/hooks/mm.h>
 
 void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
@@ -38,6 +39,9 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
 	printk("%lu pages reserved\n", reserved);
 #ifdef CONFIG_CMA
 	printk("%lu pages cma reserved\n", totalcma_pages);
+#endif
+#ifdef CONFIG_MEMORY_METADATA
+	printk("%lu pages metadata reserved\n", totalmetadata_pages);
 #endif
 #ifdef CONFIG_MEMORY_FAILURE
 	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));

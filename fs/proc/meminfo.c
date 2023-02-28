@@ -17,6 +17,9 @@
 #include <linux/cma.h>
 #endif
 #include <trace/hooks/mm.h>
+#ifdef CONFIG_MEMORY_METADATA
+#include <linux/memory_metadata.h>
+#endif
 #include <asm/page.h>
 #include "internal.h"
 #include <trace/hooks/mm.h>
@@ -156,6 +159,11 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 	show_val_kb(m, "CmaTotal:       ", totalcma_pages);
 	show_val_kb(m, "CmaFree:        ",
 		    global_zone_page_state(NR_FREE_CMA_PAGES));
+#endif
+#ifdef CONFIG_MEMORY_METADATA
+	show_val_kb(m, "MetadataTotal:  ", totalmetadata_pages);
+	show_val_kb(m, "MetadataFree:   ",
+		    global_zone_page_state(NR_FREE_METADATA_PAGES));
 #endif
 	trace_android_vh_meminfo_proc_show(m);
 
