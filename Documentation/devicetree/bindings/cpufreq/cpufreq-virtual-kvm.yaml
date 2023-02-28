@@ -1,0 +1,88 @@
+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/cpufreq/cpufreq-virtual-kvm.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: Virtual KVM CPUFreq
+
+maintainers:
+  - David Dai <davidai@google.com>
+
+description:
+  KVM CPUFreq is a virtualized driver in guest kernels that sends frequency
+  selection of its vCPUs as a hint to the host through MMIO regions. The host
+  uses hint to schedule vCPU threads and select CPU frequency. It enables
+  accurate Per-Entity Load Tracking for tasks running in the guest by querying
+  host CPU frequency unless a virtualized FIE exists(Like AMUs).
+
+properties:
+  compatible:
+    const: virtual,kvm-cpufreq
+  reg:
+    maxItems: 1
+
+required:
+  - compatible
+  - reg
+
+additionalProperties: false
+
+examples:
+  - |
+    cpus {
+      #address-cells = <1>;
+      #size-cells = <0>;
+
+      cpu@0 {
+        compatible = "arm,arm-v8";
+        device_type = "cpu";
+        reg = <0x0>;
+        operating-points-v2 = <&opp_table0>;
+      };
+
+      cpu@1 {
+        compatible = "arm,arm-v8";
+        device_type = "cpu";
+        reg = <0x0>;
+        operating-points-v2 = <&opp_table1>;
+      };
+    };
+
+    opp_table0: opp-table-0 {
+      compatible = "operating-points-v2";
+
+      opp1098000000 {
+        opp-hz = /bits/ 64 <1098000000>;
+        opp-level = <1>;
+      };
+
+      opp1197000000 {
+        opp-hz = /bits/ 64 <1197000000>;
+        opp-level = <2>;
+      };
+    };
+
+    opp_table1: opp-table-1 {
+      compatible = "operating-points-v2";
+
+      opp1106000000 {
+        opp-hz = /bits/ 64 <1106000000>;
+        opp-level = <1>;
+      };
+
+      opp1277000000 {
+        opp-hz = /bits/ 64 <1277000000>;
+        opp-level = <2>;
+      };
+    };
+
+    virt-soc {
+      #address-cells = <1>;
+      #size-cells = <1>;
+
+      cpufreq {
+        reg = <0x1040000 0x10>;
+        compatible = "virtual,kvm-cpufreq";
+      };
+    };
