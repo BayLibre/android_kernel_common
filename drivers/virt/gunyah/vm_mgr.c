@@ -780,6 +780,6 @@ long gh_dev_vm_mgr_ioctl(struct gh_rm *rm, unsigned int cmd, unsigned long arg)
 	case GH_CREATE_VM:
 		return gh_dev_ioctl_create_vm(rm, arg);
 	default:
-		return -ENOIOCTLCMD;
+		return ghd_ioctl(cmd, arg);
 	}
 }

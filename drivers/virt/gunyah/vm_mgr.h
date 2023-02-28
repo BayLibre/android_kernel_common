@@ -68,4 +68,6 @@ struct gh_vm_mem *gh_vm_mem_find_by_addr(struct gh_vm *ghvm, u64 guest_phys_addr
 
 int gh_vm_mmio_write(struct gh_vm *ghvm, u64 addr, u32 len, u64 data);
 
+long ghd_ioctl(unsigned int cmd, unsigned long arg);
+
 #endif
