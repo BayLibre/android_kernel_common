@@ -4,6 +4,8 @@
 
 #include <linux/gfp.h>
 
+extern unsigned long totalmetadata_pages;
+
 #ifdef CONFIG_MEMORY_METADATA
 
 #include <asm/memory_metadata.h>

@@ -271,6 +271,7 @@ atomic_long_t _totalram_pages __read_mostly;
 EXPORT_SYMBOL(_totalram_pages);
 unsigned long totalreserve_pages __read_mostly;
 unsigned long totalcma_pages __read_mostly;
+unsigned long totalmetadata_pages __read_mostly;
 
 int percpu_pagelist_high_fraction;
 gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
@@ -3237,9 +3238,14 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
 		 */
 		list_add_tail(&page->pcp_list, list);
 		allocated++;
-		if (is_migrate_cma(get_pcppage_migratetype(page)))
+		if (is_migrate_cma(get_pcppage_migratetype(page))) {
 			__mod_zone_page_state(zone, NR_FREE_CMA_PAGES,
 					      -(1 << order));
+		}
+		if (is_migrate_metadata(get_pcppage_migratetype(page))) {
+			__mod_zone_page_state(zone, NR_FREE_METADATA_PAGES,
+					      -(1 << order));
+		}
 	}
 
 	/*
@@ -4081,6 +4087,10 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
 	if (!(alloc_flags & ALLOC_CMA))
 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
 #endif
+#ifdef CONFIG_MEMORY_METADATA
+	if (!(alloc_flags & ALLOC_FROM_METADATA))
+		unusable_free += zone_page_state(z, NR_FREE_METADATA_PAGES);
+#endif
 
 	return unusable_free;
 }
@@ -4150,10 +4160,15 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
 			if (!free_area_empty(area, mt))
 				return true;
 		}
-
 #ifdef CONFIG_CMA
 		if ((alloc_flags & ALLOC_CMA) &&
 		    !free_area_empty(area, MIGRATE_CMA)) {
+			return true;
+		}
+#endif
+#ifdef CONFIG_MEMORY_METADATA
+		if ((alloc_flags & ALLOC_FROM_METADATA) &&
+		    !free_area_empty(area, MIGRATE_METADATA)) {
 			return true;
 		}
 #endif
@@ -6211,6 +6226,9 @@ static void show_migration_types(unsigned char type)
 #ifdef CONFIG_CMA
 		[MIGRATE_CMA]		= 'C',
 #endif
+#ifdef CONFIG_MEMORY_METADATA
+		[MIGRATE_METADATA]	= 'T',
+#endif
 #ifdef CONFIG_MEMORY_ISOLATION
 		[MIGRATE_ISOLATE]	= 'I',
 #endif
@@ -6270,7 +6288,8 @@ void __show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_i
 		" mapped:%lu shmem:%lu pagetables:%lu\n"
 		" sec_pagetables:%lu bounce:%lu\n"
 		" kernel_misc_reclaimable:%lu\n"
-		" free:%lu free_pcp:%lu free_cma:%lu\n",
+		" free:%lu free_pcp:%lu free_cma:%lu\n"
+		" free_metadata:%lu\n",
 		global_node_page_state(NR_ACTIVE_ANON),
 		global_node_page_state(NR_INACTIVE_ANON),
 		global_node_page_state(NR_ISOLATED_ANON),
@@ -6290,7 +6309,8 @@ void __show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_i
 		global_node_page_state(NR_KERNEL_MISC_RECLAIMABLE),
 		global_zone_page_state(NR_FREE_PAGES),
 		free_pcp,
-		global_zone_page_state(NR_FREE_CMA_PAGES));
+		global_zone_page_state(NR_FREE_CMA_PAGES),
+		global_zone_page_state(NR_FREE_METADATA_PAGES));
 
 	for_each_online_pgdat(pgdat) {
 		if (show_mem_node_skip(filter, pgdat->node_id, nodemask))
@@ -6386,6 +6406,7 @@ void __show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_i
 			" free_pcp:%lukB"
 			" local_pcp:%ukB"
 			" free_cma:%lukB"
+			" free_metadata:%lukB"
 			"\n",
 			zone->name,
 			K(zone_page_state(zone, NR_FREE_PAGES)),
@@ -6406,7 +6427,8 @@ void __show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_i
 			K(zone_page_state(zone, NR_BOUNCE)),
 			K(free_pcp),
 			K(this_cpu_read(zone->per_cpu_pageset->count)),
-			K(zone_page_state(zone, NR_FREE_CMA_PAGES)));
+			K(zone_page_state(zone, NR_FREE_CMA_PAGES)),
+			K(zone_page_state(zone, NR_FREE_METADATA_PAGES)));
 		printk("lowmem_reserve[]:");
 		for (i = 0; i < MAX_NR_ZONES; i++)
 			printk(KERN_CONT " %ld", zone->lowmem_reserve[i]);
