@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9196195_323897f2",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-02-28T19:33:13Z",
+      "side": 1,
+      "message": "I think this would be more at home in arch/arm64/kvm/pkvm.c now that it\u0027s driven by an initcall. That then raises the questions as to whether it should drive pkvm_firmware_rmem_clear(), rather than have two separate initcalls.",
+      "range": {
+        "startLine": 2269,
+        "startChar": 18,
+        "endLine": 2269,
+        "endChar": 35
+      },
+      "revId": "f4e81c665132c833a81e78799e9c02a9c777199e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
