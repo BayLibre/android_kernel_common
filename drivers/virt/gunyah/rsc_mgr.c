@@ -17,6 +17,7 @@
 #include <linux/gunyah_rsc_mgr.h>
 #include <linux/platform_device.h>
 #include <linux/miscdevice.h>
+#include <trace/hooks/gunyah.h>
 
 #include <asm/gunyah.h>
 
@@ -737,8 +738,13 @@ static long gh_dev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	struct miscdevice *miscdev = filp->private_data;
 	struct gh_rm *rm = container_of(miscdev, struct gh_rm, miscdev);
+	long ret = 0;
 
-	return gh_dev_vm_mgr_ioctl(rm, cmd, arg);
+	ret = gh_dev_vm_mgr_ioctl(rm, cmd, arg);
+	if (ret == -ENOIOCTLCMD)
+		trace_android_rvh_gunyah_loader_dev_ioctl(filp, cmd, arg, &ret);
+
+	return ret;
 }
 
 static const struct file_operations gh_dev_fops = {
