@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6447c90d_6d8f89f8",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-02-28T19:58:49Z",
+      "side": 1,
+      "message": "This feels quite error prone. Could we instead change the switch on the exec_prot so we fall into a default error case for unsupported exec permissions?",
+      "range": {
+        "startLine": 584,
+        "startChar": 38,
+        "endLine": 584,
+        "endChar": 67
+      },
+      "revId": "0dade62c0b41bfec3d141afd9b410ce7fdc1ce1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
