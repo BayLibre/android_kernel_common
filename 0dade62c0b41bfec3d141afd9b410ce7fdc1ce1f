@@ -22,6 +22,30 @@
       },
       "revId": "0dade62c0b41bfec3d141afd9b410ce7fdc1ce1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e43e762b_c7b80c83",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-03-02T10:17:45Z",
+      "side": 1,
+      "message": "I did try that, sadly the compiler gets in the way. With the following code:\n\n```\n        switch(exec_prot) {\n        case KVM_PGTABLE_PROT_X:\n                goto set_ap;\n        case 0:\n                exec_type \u003d KVM_PTE_LEAF_ATTR_HI_S2_XN_XN;\n                break;\n        case KVM_PGTABLE_PROT_PXN:\n                exec_type \u003d KVM_PTE_LEAF_ATTR_HI_S2_XN_PXN;\n                break;\n        case KVM_PGTABLE_PROT_UXN:\n                exec_type \u003d KVM_PTE_LEAF_ATTR_HI_S2_XN_UXN;\n                break;\n        default:\n                return -EINVAL;\n        }\n```\n\nMy compiler complains with:\n\n```\narch/arm64/kvm/hyp/pgtable.c: In function ‘stage2_set_prot_attr’:\narch/arm64/kvm/hyp/pgtable.c:597:2: error: case value ‘0’ not in enumerated type ‘enum kvm_pgtable_prot’ [-Werror\u003dswitch]\n  597 |  case 0:\n      |  ^~~~\n```\n\nI thought about adding a KVM_PGTABLE_PROT_NONE \u003d 0, but that felt a bit overkill just for that. So the above felt like a good enough implementation of \"is there more than one prot set\". Happy to change though if you think that\u0027s better.",
+      "parentUuid": "6447c90d_6d8f89f8",
+      "range": {
+        "startLine": 584,
+        "startChar": 38,
+        "endLine": 584,
+        "endChar": 67
+      },
+      "revId": "0dade62c0b41bfec3d141afd9b410ce7fdc1ce1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
