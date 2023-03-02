@@ -46,6 +46,30 @@
       },
       "revId": "d3f1a9fba979cd910abb2522da6c8dafecf64421",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "604eaa7f_ded907af",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1980590
+      },
+      "writtenOn": "2023-03-02T10:06:34Z",
+      "side": 1,
+      "message": "Ok, I understood your situation. But, the time to apply GKI patches and vendor specific patches to main branch is different at our side. So, if GKI patches are applied first, system can\u0027t boot up because one of the pkvm_module_ops is essential to boot in our use case. Is there any critical issue to add new ops to the end of pkvm_module_ops?",
+      "parentUuid": "759cd2c1_796ab9a9",
+      "range": {
+        "startLine": 42,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 48
+      },
+      "revId": "d3f1a9fba979cd910abb2522da6c8dafecf64421",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
