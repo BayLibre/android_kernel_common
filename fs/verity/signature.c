@@ -109,8 +109,11 @@ int __fsverity_verify_signature(const struct inode *inode, const u8 *signature,
 		return err;
 	}
 
+<<<<<<< HEAD   (1a4a84 Merge f18f9845f2f1 ("Merge tag 'fscrypt-for-linus' of git://)
 	pr_debug("Valid signature for file digest %s:%*phN\n",
 		 hash_alg->name, hash_alg->digest_size, file_digest);
+=======
+>>>>>>> BRANCH (6639c3 Merge tag 'fsverity-for-linus' of git://git.kernel.org/pub/s)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(__fsverity_verify_signature);
