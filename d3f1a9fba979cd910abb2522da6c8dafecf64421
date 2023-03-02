@@ -22,6 +22,30 @@
       },
       "revId": "d3f1a9fba979cd910abb2522da6c8dafecf64421",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "759cd2c1_796ab9a9",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-03-02T09:17:07Z",
+      "side": 1,
+      "message": "Hi, we don\u0027t provide a stable module interface _yet_. As per the GKI schedule, we will freeze (which means guarantee backward compatibility) the module interface on June 16th 2023. Until then, modules need to be rebuilt with the kernel after every kernel update. Please note that this is a GKI-wide policy, not a pKVM specific thing. Thanks",
+      "parentUuid": "c75c2b70_6bd954c1",
+      "range": {
+        "startLine": 42,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 48
+      },
+      "revId": "d3f1a9fba979cd910abb2522da6c8dafecf64421",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
