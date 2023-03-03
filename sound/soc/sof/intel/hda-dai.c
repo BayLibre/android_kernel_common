@@ -212,6 +212,10 @@ static int hda_link_hw_params(struct snd_pcm_substream *substream,
 	int stream_tag;
 	int ret;
 
+	link = snd_hdac_ext_bus_get_link(bus, codec_dai->component->name);
+	if (!link)
+		return -EINVAL;
+
 	/* get stored dma data if resuming from system suspend */
 	link_dev = snd_soc_dai_get_dma_data(dai, substream);
 	if (!link_dev) {
@@ -232,6 +236,7 @@ static int hda_link_hw_params(struct snd_pcm_substream *substream,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD   (68c404 Revert "Revert "nvmem: core: remove nvmem_config wp_gpio"")
 	link = snd_hdac_ext_bus_get_link(bus, codec_dai->component->name);
 	if (!link)
 		return -EINVAL;
@@ -241,6 +246,10 @@ static int hda_link_hw_params(struct snd_pcm_substream *substream,
 		snd_soc_dai_set_tdm_slot(codec_dai, stream_tag, 0, 0, 0);
 	else
 		snd_soc_dai_set_tdm_slot(codec_dai, 0, stream_tag, 0, 0);
+=======
+	/* set the hdac_stream in the codec dai */
+	snd_soc_dai_set_stream(codec_dai, hdac_stream(link_dev), substream->stream);
+>>>>>>> BRANCH (60b502 Linux 5.15.95)
 
 	p_params.s_fmt = snd_pcm_format_width(params_format(params));
 	p_params.ch = params_channels(params);
