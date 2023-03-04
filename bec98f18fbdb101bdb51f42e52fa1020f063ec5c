@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c52fda7_c5a78374",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-03-04T01:52:04Z",
+      "side": 1,
+      "message": "The comment is confusing because you aren\u0027t doing anything explicit to preserve stuff.\n\nSo, maybe say something like?\n\n    Dummy offline() to avoid exit() being called and freeing resources.\n\nActually, you don\u0027t deregister FIE during exit. Shouldn\u0027t you do that on exit()?",
+      "range": {
+        "startLine": 187,
+        "startChar": 1,
+        "endLine": 187,
+        "endChar": 55
+      },
+      "revId": "bec98f18fbdb101bdb51f42e52fa1020f063ec5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
