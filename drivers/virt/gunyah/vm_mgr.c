@@ -779,6 +779,8 @@ long gh_dev_vm_mgr_ioctl(struct gh_rm *rm, unsigned int cmd, unsigned long arg)
 	switch (cmd) {
 	case GH_CREATE_VM:
 		return gh_dev_ioctl_create_vm(rm, arg);
+	case GH_ANDROID_TENTATIVE_UAPI:
+		return 0;
 	default:
 		return -ENOIOCTLCMD;
 	}
