@@ -1,0 +1,51 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000039744245",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2471160?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "3245ef97_448fc687",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 29,
+                "startChar": 0,
+                "endLine": 29,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/virt/gunyah/gunyah_ioeventfd.ko\",\n    \"drivers/virt/gunyah/gunyah_irqfd.ko\",\n"
+            },
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 30,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "2b6be244_de6d09f7",
+        "filename": "modules.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-03-04T02:24:29Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier modules.bzl` to format the file, or apply the suggested fix.",
+      "revId": "7b282c0779602e4a76f6388c1f48acf741cfd6cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
