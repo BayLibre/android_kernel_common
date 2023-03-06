@@ -3756,7 +3756,8 @@ int __isolate_free_page(struct page *page, unsigned int order)
 		 * exists.
 		 */
 		watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
-		if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
+		if (!zone_watermark_ok(zone, 0, watermark, 0,
+		    ALLOC_CMA | ALLOC_FROM_METADATA))
 			return 0;
 
 		__mod_zone_freepage_state(zone, -(1UL << order), mt);
