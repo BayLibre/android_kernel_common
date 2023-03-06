@@ -70,6 +70,30 @@
       },
       "revId": "d3f1a9fba979cd910abb2522da6c8dafecf64421",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d086a476_b14139ac",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-03-06T10:14:45Z",
+      "side": 1,
+      "message": "There is no technical requirement preventing the addition of the ops at the end of the struct, but this will give you a false sense of security because the ABI will still not be stable for now -- the various structs/enums being passed to the ops callbacks have no stability guarantees either _yet_ ...",
+      "parentUuid": "604eaa7f_ded907af",
+      "range": {
+        "startLine": 42,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 48
+      },
+      "revId": "d3f1a9fba979cd910abb2522da6c8dafecf64421",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
