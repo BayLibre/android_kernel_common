@@ -282002,6 +282002,12 @@ function {
   parameter_id: 0x1ce51dde
 }
 function {
+  id: 0x9ab9affb
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x4585663f
+}
+function {
   id: 0x9abc5077
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -294973,6 +294979,24 @@ elf_symbol {
   full_name: "__traceiter_sched_util_est_se_tp"
 }
 elf_symbol {
+  id: 0x62a42e92
+  name: "__traceiter_softirq_entry"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x263c5561
+  type_id: 0x9ab9affb
+  full_name: "__traceiter_softirq_entry"
+}
+elf_symbol {
+  id: 0xa7ccbbf5
+  name: "__traceiter_softirq_exit"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1b06a32a
+  type_id: 0x9ab9affb
+  full_name: "__traceiter_softirq_exit"
+}
+elf_symbol {
   id: 0x863777a0
   name: "__traceiter_suspend_resume"
   is_defined: true
@@ -295925,6 +295949,24 @@ elf_symbol {
   crc: 0x3a74e484
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_sched_util_est_se_tp"
+}
+elf_symbol {
+  id: 0x9a65f074
+  name: "__tracepoint_softirq_entry"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x12c92cec
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_softirq_entry"
+}
+elf_symbol {
+  id: 0x158cc323
+  name: "__tracepoint_softirq_exit"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x54cebae9
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_softirq_exit"
 }
 elf_symbol {
   id: 0x5b327cd6
@@ -329354,6 +329396,14 @@ symbols {
     value: 0xf574f9d9
   }
   symbol {
+    key: "__traceiter_softirq_entry"
+    value: 0x62a42e92
+  }
+  symbol {
+    key: "__traceiter_softirq_exit"
+    value: 0xa7ccbbf5
+  }
+  symbol {
     key: "__traceiter_suspend_resume"
     value: 0x863777a0
   }
@@ -329776,6 +329826,14 @@ symbols {
   symbol {
     key: "__tracepoint_sched_util_est_se_tp"
     value: 0xf586b3bb
+  }
+  symbol {
+    key: "__tracepoint_softirq_entry"
+    value: 0x9a65f074
+  }
+  symbol {
+    key: "__tracepoint_softirq_exit"
+    value: 0x158cc323
   }
   symbol {
     key: "__tracepoint_suspend_resume"
