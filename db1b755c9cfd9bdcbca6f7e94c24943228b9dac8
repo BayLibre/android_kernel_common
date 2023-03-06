@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5bd7664_b9ec45e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1973055
+      },
+      "writtenOn": "2023-03-06T08:48:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ab3b984_5f734ec9",
+      "revId": "db1b755c9cfd9bdcbca6f7e94c24943228b9dac8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b35ea772_f9bdf02c",
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "Thank you for your reply:)\nAbout get_trip_temp(), yes, you’re right. The line 738 conditional statement is redundant here and the get_trip_temp() should be called unconditionally. I will fix it and modify the comment of enable in the next patchset.\n\nThe switch_on_temp is not returned by my driver. So it\u0027s not the real reason in current situation. It is \u0027update\u0027 that does not include the influence of other factors like \u0027override\u0027 state, so I want to add a vh here to update the value of \u0027update’ under the influence of ‘override’.",
       "parentUuid": "b35ea772_f9bdf02c",
+      "range": {
+        "startLine": 743,
+        "startChar": 36,
+        "endLine": 743,
+        "endChar": 50
+      },
+      "revId": "db1b755c9cfd9bdcbca6f7e94c24943228b9dac8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41161f36_ff6b2913",
+        "filename": "drivers/thermal/gov_power_allocator.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 1973055
+      },
+      "writtenOn": "2023-03-06T08:48:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dee87265_377487ab",
       "range": {
         "startLine": 743,
         "startChar": 36,
