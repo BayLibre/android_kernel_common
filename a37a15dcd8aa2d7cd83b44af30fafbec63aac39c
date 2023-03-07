@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5482d0e_26ad7868",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-03-07T19:13:17Z",
+      "side": 1,
+      "message": "Makes sense. Probably will cause some performance regression but since ALLOC_SPLIT_PTLOCKS is not defined in production (it is enabled by DEBUG_SPINLOCK), I think that is ok. Definitely better than UAF.",
+      "revId": "a37a15dcd8aa2d7cd83b44af30fafbec63aac39c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
