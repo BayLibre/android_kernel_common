@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d53c66f3_17aeff4c",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-03-08T03:18:47Z",
+      "side": 1,
+      "message": "\u003e It might be useful to park it at some point in the suspend path though so trusty won\u0027t run after that point.\n\nThat\u0027s a different set of callbacks right? I found `syscore_ops` that look like they could be used for that.",
+      "parentUuid": "6e72cc5a_63461e80",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "408d6710_a6ac0001",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 2
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I did not look into that. I copied the trusty-irq code.",
       "parentUuid": "408d6710_a6ac0001",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56142098_f2425aa4",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-03-08T03:18:47Z",
+      "side": 1,
+      "message": "It seems that `trusty-irq` and now this file are the only ones with multiple colons. Everything else in the kernel seems to follow the recommended format of `X/Y:online`.\n\nWe might need to fix this later, but it can be a follow-up.",
+      "parentUuid": "f12c494c_b6136997",
       "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
