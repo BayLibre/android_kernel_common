@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e714a556_02d86caf",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-03-08T19:48:57Z",
+      "side": 1,
+      "message": "Replaced with \"cpu %d up\\n\". dev_dbg does not always add the function name so I need the message here to be distinct from the message in trusty_cpu_down:\n```\n# echo file trusty* +p \u003e/d/dynamic_debug/control                               \n# echo 1 \u003e/sys/devices/system/cpu/cpu2/online                                  \n[  479.991669][    T0] Detected PIPT I-cache on CPU2\n[  479.995556][    T0] CPU2: Booted secondary processor 0x0000000002 [0x411fd070]\n[  480.003566][   T20] trusty trusty: cpu 2 up\n```",
+      "parentUuid": "bbc1b6fa_0f81d13b",
+      "range": {
+        "startLine": 1017,
+        "startChar": 33,
+        "endLine": 1017,
+        "endChar": 41
+      },
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b83f2794_2197961c",
@@ -125,6 +149,30 @@
       "writtenOn": "2023-03-08T13:36:19Z",
       "side": 1,
       "message": "you just crashed the system when panic_on_warn is enabled 😞",
+      "range": {
+        "startLine": 1175,
+        "startChar": 1,
+        "endLine": 1175,
+        "endChar": 8
+      },
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b34ce11_7ad90674",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1175,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-03-08T19:48:57Z",
+      "side": 1,
+      "message": "Removed. Most callers of cpuhp_state_remove_instance I could find don\u0027t check the return value at all.",
+      "parentUuid": "a642090c_4f579a31",
       "range": {
         "startLine": 1175,
         "startChar": 1,
