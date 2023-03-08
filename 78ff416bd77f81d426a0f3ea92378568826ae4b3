@@ -56,6 +56,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb76c2cc_6c95d30e",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-03-08T05:57:22Z",
+      "side": 1,
+      "message": "Perhaps I should change this to use kthread_create_on_cpu now and add an export line. The kthread_parkme and kthread_unpark functions we need here are not listed in android13-5.10/android/abi_gki_aarch64_generic so the gki kernels will need to be updated anyway.",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "408d6710_a6ac0001",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 2
