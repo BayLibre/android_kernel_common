@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbc1b6fa_0f81d13b",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-03-08T13:36:19Z",
+      "side": 1,
+      "message": "dev_dbg() gives you __func__ for free already, no need to ever specify it again in a message, that would just result in duplicate information (and waste of space).",
+      "range": {
+        "startLine": 1017,
+        "startChar": 33,
+        "endLine": 1017,
+        "endChar": 41
+      },
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b83f2794_2197961c",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 2
@@ -67,6 +90,29 @@
       "writtenOn": "2023-03-08T05:57:22Z",
       "side": 1,
       "message": "Perhaps I should change this to use kthread_create_on_cpu now and add an export line. The kthread_parkme and kthread_unpark functions we need here are not listed in android13-5.10/android/abi_gki_aarch64_generic so the gki kernels will need to be updated anyway.",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a642090c_4f579a31",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1175,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-03-08T13:36:19Z",
+      "side": 1,
+      "message": "you just crashed the system when panic_on_warn is enabled 😞",
+      "range": {
+        "startLine": 1175,
+        "startChar": 1,
+        "endLine": 1175,
+        "endChar": 8
+      },
       "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
