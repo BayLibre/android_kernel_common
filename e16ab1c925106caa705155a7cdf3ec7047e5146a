@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000039994523",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2476804?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "55ed5253_67d9d61e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-03-08T12:26:10Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\n\n```\n      ## build.config.gki.aarch64 ##\n    -@@ build.config.gki.aarch64: android/abi_gki_aarch64_vivo\n    +@@ build.config.gki.aarch64: android/abi_gki_aarch64_unisoc\n    + android/abi_gki_aarch64_virtual_device\n    + android/abi_gki_aarch64_vivo\n      android/abi_gki_aarch64_xiaomi\n    - android/abi_gki_aarch64_asus\n    - android/abi_gki_aarch64_transsion\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (dc4677 FROMLIST: binder: fix UAF of alloc-\u003evma in race with munmap()\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++android/abi_gki_aarch64_asus\n    ++android/abi_gki_aarch64_transsion\n     +android/abi_gki_aarch64_tuxera\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (5f30de ANDROID: GKI: Add Tuxera symbol list)\n      \"\n      \n      FILES\u003d\"${FILES}\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 514748107 android-build.ayeaye-python-dispatcher_20230307.05_p0",
+      "revId": "e16ab1c925106caa705155a7cdf3ec7047e5146a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
