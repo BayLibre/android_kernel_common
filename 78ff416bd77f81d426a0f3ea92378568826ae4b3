@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b83f2794_2197961c",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-03-08T00:15:11Z",
+      "side": 1,
+      "message": "If I\u0027m understanding the docs right, this should never happen on the main (boot) processor, only on the secondary ones? Do we need to handle the main CPU going to sleep too?",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408d6710_a6ac0001",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-03-08T00:15:11Z",
+      "side": 1,
+      "message": "Per the kernel docs, should this be `trusty/cpu:online`? Does it matter?\n\n```\nThe @name argument is used for sysfs output and for instrumentation. The naming convention is “subsys:mode” or “subsys/driver:mode”, e.g. “perf:mode” or “perf/x86:mode”.\n[...]\nExamples for @name arguments: “perf/online”, “perf/x86:prepare”, “RCU/tree:dying”, “sched/waitempty”\n\n```",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
