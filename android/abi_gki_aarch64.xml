@@ -2496,11 +2496,13 @@
       <elf-symbol name='kthread_flush_worker' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa1e00cf8'/>
       <elf-symbol name='kthread_mod_delayed_work' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdc7df190'/>
       <elf-symbol name='kthread_park' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2a5dfe48'/>
+      <elf-symbol name='kthread_parkme' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf95322f4'/>
       <elf-symbol name='kthread_queue_delayed_work' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd8e29f6d'/>
       <elf-symbol name='kthread_queue_work' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb39fdd2f'/>
       <elf-symbol name='kthread_should_park' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x79defbe1'/>
       <elf-symbol name='kthread_should_stop' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb3f7646e'/>
       <elf-symbol name='kthread_stop' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x7c78dedd'/>
+      <elf-symbol name='kthread_unpark' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xe4c7c35'/>
       <elf-symbol name='kthread_unuse_mm' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x44dd5714'/>
       <elf-symbol name='kthread_use_mm' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb6dab3d9'/>
       <elf-symbol name='kthread_worker_fn' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x955b0e2e'/>
@@ -15879,7 +15881,7 @@
       </class-decl>
       <pointer-type-def type-id='064acd7a' size-in-bits='64' id='1c475548'/>
       <pointer-type-def type-id='97e3fb6c' size-in-bits='64' id='1c51ec16'/>
-      <class-decl name='pci_sriov' size-in-bits='1280' is-struct='yes' visibility='default' filepath='drivers/pci/controller/dwc/../../pci.h' line='324' column='1' id='1c590219'>
+      <class-decl name='pci_sriov' size-in-bits='1280' is-struct='yes' visibility='default' filepath='drivers/pci/pci.h' line='324' column='1' id='1c590219'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='pos' type-id='95e97e5e' visibility='default' filepath='drivers/pci/pci.h' line='325' column='1'/>
         </data-member>
@@ -92883,7 +92885,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='4e13c9d9' size-in-bits='64' id='d064f511'/>
-      <class-decl name='device_private' size-in-bits='1728' is-struct='yes' visibility='default' filepath='drivers/base/firmware_loader/../base.h' line='88' column='1' id='d066d157'>
+      <class-decl name='device_private' size-in-bits='1728' is-struct='yes' visibility='default' filepath='drivers/base/base.h' line='88' column='1' id='d066d157'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='klist_children' type-id='6160a6ce' visibility='default' filepath='drivers/base/base.h' line='89' column='1'/>
         </data-member>
@@ -102495,7 +102497,7 @@
         <enumerator name='NL80211_TIMEOUT_AUTH' value='2'/>
         <enumerator name='NL80211_TIMEOUT_ASSOC' value='3'/>
       </enum-decl>
-      <class-decl name='driver_private' size-in-bits='1472' is-struct='yes' visibility='default' filepath='drivers/base/firmware_loader/../base.h' line='58' column='1' id='e44b8083'>
+      <class-decl name='driver_private' size-in-bits='1472' is-struct='yes' visibility='default' filepath='drivers/base/base.h' line='58' column='1' id='e44b8083'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='kobj' type-id='b6ab8849' visibility='default' filepath='drivers/base/base.h' line='59' column='1'/>
         </data-member>
@@ -130988,6 +130990,9 @@
         <parameter type-id='f23e2572' name='k' filepath='kernel/kthread.c' line='587' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='kthread_parkme' mangled-name='kthread_parkme' filepath='kernel/kthread.c' line='259' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='kthread_parkme'>
+        <return type-id='48b5725f'/>
+      </function-decl>
       <function-decl name='kthread_queue_delayed_work' mangled-name='kthread_queue_delayed_work' filepath='kernel/kthread.c' line='1004' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='kthread_queue_delayed_work'>
         <parameter type-id='c41f4539' name='worker' filepath='kernel/kthread.c' line='1004' column='1'/>
         <parameter type-id='d56697f1' name='dwork' filepath='kernel/kthread.c' line='1005' column='1'/>
@@ -131008,6 +131013,10 @@
       <function-decl name='kthread_stop' mangled-name='kthread_stop' filepath='kernel/kthread.c' line='631' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='kthread_stop'>
         <parameter type-id='f23e2572' name='k' filepath='kernel/kthread.c' line='631' column='1'/>
         <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='kthread_unpark' mangled-name='kthread_unpark' filepath='kernel/kthread.c' line='556' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='kthread_unpark'>
+        <parameter type-id='f23e2572' name='k' filepath='kernel/kthread.c' line='556' column='1'/>
+        <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='kthread_unuse_mm' mangled-name='kthread_unuse_mm' filepath='kernel/kthread.c' line='1365' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='kthread_unuse_mm'>
         <parameter type-id='df4b7819' name='mm' filepath='kernel/kthread.c' line='1365' column='1'/>
@@ -141652,6 +141661,7 @@
     </abi-instr>
   </abi-corpus>
 </abi-corpus-group>
+
 <!--
      libabigail: abidw: 2.1.0SOONG BUILD NUMBER PLACEHOLDER
 -->
