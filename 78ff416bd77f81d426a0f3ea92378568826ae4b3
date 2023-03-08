@@ -96,6 +96,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5375083_a930cc8f",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-08T19:47:21Z",
+      "side": 1,
+      "message": "kthread_create_on_cpu now has an EXPORT_SYMBOL() upstream as of 5.16: 800977f6f32e (\"kthread: add the helper function kthread_run_on_cpu()\"). Using it here seems reasonable. You can cherry-pick/backport that patch and then add kthread_create_on_cpu() to the symbol-list.",
+      "parentUuid": "cb76c2cc_6c95d30e",
+      "revId": "78ff416bd77f81d426a0f3ea92378568826ae4b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a642090c_4f579a31",
         "filename": "drivers/trusty/trusty.c",
         "patchSetId": 2
