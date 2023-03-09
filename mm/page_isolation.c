@@ -53,6 +53,13 @@ static struct page *has_unmovable_pages(unsigned long start_pfn, unsigned long e
 		return page;
 	}
 
+	if (is_migrate_metadata_page(page)) {
+		if (is_migrate_metadata(migratetype))
+			return NULL;
+		else
+			return page;
+	}
+
 	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
 		page = pfn_to_page(pfn);
 
@@ -397,7 +404,7 @@ static int isolate_single_pageblock(unsigned long boundary_pfn, int flags,
 				pfn = head_pfn + nr_pages;
 				continue;
 			}
-#if defined CONFIG_COMPACTION || defined CONFIG_CMA
+#if defined CONFIG_COMPACTION || defined CONFIG_CMA || defined CONFIG_MEMORY_METADATA
 			/*
 			 * hugetlb, lru compound (THP), and movable compound pages
 			 * can be migrated. Otherwise, fail the isolation.
@@ -467,7 +474,7 @@ static int isolate_single_pageblock(unsigned long boundary_pfn, int flags,
 				pfn = outer_pfn;
 				continue;
 			} else
-#endif
+#endif /* CONFIG_COMPACTION || CONFIG_CMA || CONFIG_MEMORY_METADATA */
 				goto failed;
 		}
 
@@ -497,10 +504,10 @@ failed:
  * @gfp_flags:		GFP flags used for migrating pages that sit across the
  *			range boundaries.
  *
- * Making page-allocation-type to be MIGRATE_ISOLATE means free pages in
- * the range will never be allocated. Any free pages and pages freed in the
- * future will not be allocated again. If specified range includes migrate types
- * other than MOVABLE or CMA, this will fail with -EBUSY. For isolating all
+ * Making page-allocation-type to be MIGRATE_ISOLATE means free pages in the
+ * range will never be allocated. Any free pages and pages freed in the future
+ * will not be allocated again. If specified range includes migrate types other
+ * than MOVABLE, CMA or METADATA, this will fail with -EBUSY. For isolating all
  * pages in the range finally, the caller have to free all pages in the range.
  * test_page_isolated() can be used for test it.
  *

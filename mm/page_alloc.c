@@ -9467,9 +9467,9 @@ int __alloc_contig_migrate_range(struct compact_control *cc,
  * @start:	start PFN to allocate
  * @end:	one-past-the-last PFN to allocate
  * @migratetype:	migratetype of the underlying pageblocks (either
- *			#MIGRATE_MOVABLE or #MIGRATE_CMA).  All pageblocks
- *			in range must have the same migratetype and it must
- *			be either of the two.
+ *			#MIGRATE_MOVABLE, #MIGRATE_CMA or #MIGRATE_METADATA).
+ *			All pageblocks in range must have the same migratetype
+ *			and it must be either of the three.
  * @gfp_mask:	GFP mask to use during compaction
  *
  * The PFN range does not have to be pageblock aligned. The PFN range must
