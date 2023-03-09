@@ -46,6 +46,30 @@
       },
       "revId": "9f8c6b72d2d2ba58f29bc9656e19fe5f64872c4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14b0fa7_05d417df",
+        "filename": "net/mac80211/cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3247,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-03-09T14:46:19Z",
+      "side": 1,
+      "message": "I think it\u0027s just a whitespace change (the upstream version puts the new \u00270\u0027 on a new line), but it rings alarm bells for me because it means this was applied manually rather than using e.g. `git cherry-pick`",
+      "parentUuid": "d45721ed_2bf0ee2e",
+      "range": {
+        "startLine": 3247,
+        "startChar": 0,
+        "endLine": 3247,
+        "endChar": 66
+      },
+      "revId": "9f8c6b72d2d2ba58f29bc9656e19fe5f64872c4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
