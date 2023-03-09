@@ -90,6 +90,25 @@ phys_addr_t __ro_after_init arm64_dma_phys_limit;
 phys_addr_t __ro_after_init arm64_dma_phys_limit = PHYS_MASK + 1;
 #endif
 
+#ifdef CONFIG_DMA32_PHYS_LIMIT
+unsigned int arm64_dma32_limit;
+static int __init early_arm64_dma32_limit_param(char *buf)
+{
+	int ret = 0;
+
+	if (!buf)
+		return -EINVAL;
+
+	ret = kstrtouint(buf, 16, &arm64_dma32_limit);
+	if (ret)
+		return -EINVAL;
+
+	return 0;
+}
+
+early_param("arm64_dma32_limit", early_arm64_dma32_limit_param);
+#endif
+
 /*
  * Provide a run-time mean of disabling ZONE_DMA32 if it is enabled via
  * CONFIG_ZONE_DMA32.
@@ -163,6 +182,10 @@ static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
 	else if (phys_start > zone_mask)
 		zone_mask = U32_MAX;
 
+#ifdef CONFIG_DMA32_PHYS_LIMIT
+	if (arm64_dma32_limit)
+		return arm64_dma32_limit;
+#endif
 	return min(zone_mask, memblock_end_of_DRAM() - 1) + 1;
 }
 
