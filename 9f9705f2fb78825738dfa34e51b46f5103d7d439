@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69b4a924_4250eb6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-03-09T07:34:23Z",
+      "side": 1,
+      "message": "The ABI is breaking here.  Either these need to wait until the next ABI break is accepted, or they need to be reworked to not change the abi, your choice.\n\nThe error is:\n```unction symbol \u0027void ufshcd_auto_hibern8_update(struct ufs_hba*, u32)\u0027 changed\n  CRC changed from 0xe36669e4 to 0x8c55b090\n\nfunction symbol \u0027int ufshcd_bkops_ctrl(struct ufs_hba*, enum bkops_status)\u0027 changed\n  CRC changed from 0x9599e773 to 0xd96979f1\n\nfunction symbol \u0027int ufshcd_dme_configure_adapt(struct ufs_hba*, int, int)\u0027 changed\n  CRC changed from 0x38bfbc80 to 0xdc4d013b\n\n... 19 omitted; 22 symbols have only CRC changes\n\ntype \u0027struct ufs_hba\u0027 changed\n  member \u0027u32 mcq_capabilities\u0027 was added\n  3 members (\u0027int nutmrs\u0027 .. \u0027u32 ufs_version\u0027) changed\n    offset changed by 32\n  member \u0027bool ext_iid_sup\u0027 was added\n\ntype \u0027enum attr_idn\u0027 changed\n  enumerator \u0027QUERY_ATTR_IDN_EXT_IID_EN\u0027 (42) was added\n\ntype \u0027struct ufs_dev_info\u0027 changed\n  member \u0027bool b_ext_iid_en\u0027 was added\n```",
+      "revId": "9f9705f2fb78825738dfa34e51b46f5103d7d439",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
