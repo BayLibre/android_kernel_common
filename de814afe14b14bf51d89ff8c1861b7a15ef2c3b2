@@ -16,6 +16,29 @@
       "message": "I can +2 this if/when there are no more review comments.",
       "revId": "de814afe14b14bf51d89ff8c1861b7a15ef2c3b2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f819101_8d8e2af8",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2023-03-09T21:25:02Z",
+      "side": 1,
+      "message": "cpu is defined as an unsigned type on line 1022. Does this format specifier need to be \"%u\"?",
+      "range": {
+        "startLine": 1030,
+        "startChar": 22,
+        "endLine": 1030,
+        "endChar": 24
+      },
+      "revId": "de814afe14b14bf51d89ff8c1861b7a15ef2c3b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
