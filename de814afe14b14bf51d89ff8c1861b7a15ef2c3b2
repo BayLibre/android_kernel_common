@@ -65,6 +65,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "554880bd_58c92f29",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-03-09T22:16:21Z",
+      "side": 1,
+      "message": "It seems to be pretty common to print cpu numbers as signed even if the value is unsigned as the numbers are small. I could change it, but we would need to wait for another presubmit run,",
+      "parentUuid": "9f819101_8d8e2af8",
+      "range": {
+        "startLine": 1030,
+        "startChar": 22,
+        "endLine": 1030,
+        "endChar": 24
+      },
+      "revId": "de814afe14b14bf51d89ff8c1861b7a15ef2c3b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6f99ed72_42f3aedc",
@@ -78,6 +102,30 @@
       "writtenOn": "2023-03-09T21:50:34Z",
       "side": 1,
       "message": "Unrelated, but I\u0027m wondering if this should be !IS_ERR_OR_NULL\n\nWhat if that loop on line 1099 ends prematurely due to that goto statement on line 1108? Wouldn\u0027t tw-\u003enop_thread then be NULL for certain cpus?",
+      "range": {
+        "startLine": 1137,
+        "startChar": 6,
+        "endLine": 1137,
+        "endChar": 13
+      },
+      "revId": "de814afe14b14bf51d89ff8c1861b7a15ef2c3b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30439bdb_01f4ba42",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-03-09T22:16:21Z",
+      "side": 1,
+      "message": "It was initialized on line 1094 to ERR_PTR(-EINVAL)",
+      "parentUuid": "6f99ed72_42f3aedc",
       "range": {
         "startLine": 1137,
         "startChar": 6,
