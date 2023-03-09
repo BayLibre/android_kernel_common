@@ -46,7 +46,7 @@ static inline void count_compact_events(enum vm_event_item item, long delta)
 #define count_compact_events(item, delta) do { } while (0)
 #endif
 
-#if defined CONFIG_COMPACTION || defined CONFIG_CMA
+#if defined CONFIG_COMPACTION || defined CONFIG_CMA || defined CONFIG_MEMORY_METADATA
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/compaction.h>
@@ -1279,7 +1279,7 @@ isolate_migratepages_range(struct compact_control *cc, unsigned long start_pfn,
 	return ret;
 }
 
-#endif /* CONFIG_COMPACTION || CONFIG_CMA */
+#endif /* CONFIG_COMPACTION || CONFIG_CMA || CONFIG_MEMORY_METADATA */
 #ifdef CONFIG_COMPACTION
 
 static bool suitable_migration_source(struct compact_control *cc,
