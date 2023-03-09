@@ -22,6 +22,30 @@
       },
       "revId": "9f8c6b72d2d2ba58f29bc9656e19fe5f64872c4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45721ed_2bf0ee2e",
+        "filename": "net/mac80211/cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3247,
+      "author": {
+        "id": 1839988
+      },
+      "writtenOn": "2023-03-09T14:21:24Z",
+      "side": 1,
+      "message": "Upstream commit just adding additional \"0\" param to this call. I think that way it is inline with upstream commit.\n\nIf the concern here is about 2nd argument (which is not modified/related to current upstream commit) being different. That is due to mac80211 module not having EHT and MLO changes in android13-5.15.",
+      "parentUuid": "c245fc4b_66a5197b",
+      "range": {
+        "startLine": 3247,
+        "startChar": 0,
+        "endLine": 3247,
+        "endChar": 66
+      },
+      "revId": "9f8c6b72d2d2ba58f29bc9656e19fe5f64872c4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
