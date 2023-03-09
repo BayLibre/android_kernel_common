@@ -70,6 +70,30 @@
       },
       "revId": "9f8c6b72d2d2ba58f29bc9656e19fe5f64872c4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "508890bf_89bda4c3",
+        "filename": "net/mac80211/cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3247,
+      "author": {
+        "id": 1839988
+      },
+      "writtenOn": "2023-03-09T14:57:50Z",
+      "side": 1,
+      "message": "Thanks for the clarification. \n\nWe applied with \"git\" tool only, but this line gets conflict due to 2nd argument is different compared upstream code. We resolved the conflicts manually and no manual changes done in non-conflicted code.\n\nIn upstream commit \"0\" went to new line since the number of characters in line crossed 80 chars limit. Here no need of new line since it is not crossing 80 chars/line limit.",
+      "parentUuid": "e14b0fa7_05d417df",
+      "range": {
+        "startLine": 3247,
+        "startChar": 0,
+        "endLine": 3247,
+        "endChar": 66
+      },
+      "revId": "9f8c6b72d2d2ba58f29bc9656e19fe5f64872c4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
