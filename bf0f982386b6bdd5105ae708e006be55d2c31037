@@ -22,6 +22,30 @@
       },
       "revId": "bf0f982386b6bdd5105ae708e006be55d2c31037",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39a11e18_df70ee4e",
+        "filename": "arch/arm64/kvm/hyp_trace.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-03-10T12:51:58Z",
+      "side": 1,
+      "message": "It only protects against changes to the ring-buffers. Everything before is only affecting the iterator which is private to the reader here.",
+      "parentUuid": "da5f7a46_6de34a5c",
+      "range": {
+        "startLine": 634,
+        "startChar": 0,
+        "endLine": 648,
+        "endChar": 0
+      },
+      "revId": "bf0f982386b6bdd5105ae708e006be55d2c31037",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
