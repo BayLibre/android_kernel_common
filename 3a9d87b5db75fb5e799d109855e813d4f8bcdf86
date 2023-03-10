@@ -22,6 +22,30 @@
       },
       "revId": "3a9d87b5db75fb5e799d109855e813d4f8bcdf86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ec7d18_958d76bf",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-03-10T13:13:43Z",
+      "side": 1,
+      "message": "Seems like we could but as this is soon after the rootfs_initcall, it won\u0027t give much time to the initramfs to be extracted.\n\nWhat was the original reason for the device_initcall_sync?",
+      "parentUuid": "7510fa38_d66fa700",
+      "range": {
+        "startLine": 475,
+        "startChar": 0,
+        "endLine": 475,
+        "endChar": 13
+      },
+      "revId": "3a9d87b5db75fb5e799d109855e813d4f8bcdf86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
