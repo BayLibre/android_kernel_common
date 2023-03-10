@@ -46,6 +46,30 @@
       },
       "revId": "77ec923ab3eed1a63f5ec017a80f240de8ebb071",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5754b2d6_9d090547",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1220,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-03-10T13:16:07Z",
+      "side": 1,
+      "message": "yikes, do we have modules issuing HVCs directly? We need to take care to avoid that by providing out-of-line wrappers instead so that the KMI is tracked properly.",
+      "parentUuid": "12e659b4_ff871c41",
+      "range": {
+        "startLine": 1220,
+        "startChar": 0,
+        "endLine": 1220,
+        "endChar": 43
+      },
+      "revId": "77ec923ab3eed1a63f5ec017a80f240de8ebb071",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
