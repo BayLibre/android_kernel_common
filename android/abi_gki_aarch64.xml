@@ -143,6 +143,7 @@
       <elf-symbol name='__i2c_smbus_xfer' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x53eea490'/>
       <elf-symbol name='__i2c_transfer' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x74210c6f'/>
       <elf-symbol name='__iio_device_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x122a9634'/>
+      <elf-symbol name='__iio_trigger_register' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1b174e36'/>
       <elf-symbol name='__inet6_lookup_established' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1cd4b3ad'/>
       <elf-symbol name='__inet_lookup_established' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc328de8f'/>
       <elf-symbol name='__init_rwsem' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf5a94b83'/>
@@ -3010,7 +3011,10 @@
       <elf-symbol name='iio_read_const_attr' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1de95da3'/>
       <elf-symbol name='iio_read_mount_matrix' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4657b098'/>
       <elf-symbol name='iio_show_mount_matrix' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3fd71ac4'/>
+      <elf-symbol name='iio_trigger_alloc' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9f710efb'/>
+      <elf-symbol name='iio_trigger_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x165fa02e'/>
       <elf-symbol name='iio_trigger_notify_done' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x32c17b35'/>
+      <elf-symbol name='iio_trigger_unregister' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc327a9e0'/>
       <elf-symbol name='iio_update_buffers' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6304f8c5'/>
       <elf-symbol name='iio_write_channel_raw' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfd0c8ed0'/>
       <elf-symbol name='ilookup' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5823099b'/>
@@ -44279,7 +44283,23 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='538b7809' size-in-bits='64' id='5f0d472d'/>
-      <class-decl name='fsverity_operations' is-struct='yes' visibility='default' is-declaration-only='yes' id='5f0d764c'/>
+      <class-decl name='fsverity_operations' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/linux/fsverity.h' line='18' column='1' id='5f0d764c'>
+        <data-member access='public' layout-offset-in-bits='0'>
+          <var-decl name='begin_enable_verity' type-id='4da4101d' visibility='default' filepath='include/linux/fsverity.h' line='33' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='64'>
+          <var-decl name='end_enable_verity' type-id='f3a5c46a' visibility='default' filepath='include/linux/fsverity.h' line='55' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='128'>
+          <var-decl name='get_verity_descriptor' type-id='c60354f3' visibility='default' filepath='include/linux/fsverity.h' line='72' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='192'>
+          <var-decl name='read_merkle_tree_page' type-id='68b31938' visibility='default' filepath='include/linux/fsverity.h' line='93' column='1'/>
+        </data-member>
+        <data-member access='public' layout-offset-in-bits='256'>
+          <var-decl name='write_merkle_tree_block' type-id='c748f227' visibility='default' filepath='include/linux/fsverity.h' line='110' column='1'/>
+        </data-member>
+      </class-decl>
       <pointer-type-def type-id='0caa7082' size-in-bits='64' id='5f29549c'/>
       <class-decl name='configfs_attribute' size-in-bits='320' is-struct='yes' visibility='default' filepath='include/linux/configfs.h' line='117' column='1' id='5f2e9b8f'>
         <data-member access='public' layout-offset-in-bits='0'>
@@ -48579,7 +48599,12 @@
         <parameter type-id='5d6479ae'/>
         <return type-id='95e97e5e'/>
       </function-type>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <class-decl name='module_layout' size-in-bits='640' is-struct='yes' visibility='default' filepath='include/linux/module.h' line='328' column='1' id='68b3d9a8'>
+=======
+      <pointer-type-def type-id='e151e1f6' size-in-bits='64' id='68b31938'/>
+      <class-decl name='module_layout' size-in-bits='640' is-struct='yes' visibility='default' filepath='include/linux/module.h' line='327' column='1' id='68b3d9a8'>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='base' type-id='eaa32e2f' visibility='default' filepath='include/linux/module.h' line='330' column='1'/>
         </data-member>
@@ -53461,6 +53486,13 @@
         <parameter type-id='8582e5ec'/>
         <parameter type-id='4db02c58'/>
         <return type-id='c91d1bf1'/>
+      </function-type>
+      <function-type size-in-bits='64' id='74fec388'>
+        <parameter type-id='77e79a4b'/>
+        <parameter type-id='eaa32e2f'/>
+        <parameter type-id='b59d7dce'/>
+        <parameter type-id='91ce1af9'/>
+        <return type-id='95e97e5e'/>
       </function-type>
       <function-type size-in-bits='64' id='7506f11b'>
         <parameter type-id='b7c1d7d5'/>
@@ -66042,6 +66074,13 @@
       <typedef-decl name='u64' type-id='d3130597' filepath='include/asm-generic/int-ll64.h' line='23' column='1' id='91ce1af9'/>
       <pointer-type-def type-id='d7c60ba9' size-in-bits='64' id='91d0de51'/>
       <pointer-type-def type-id='d0fea0bb' size-in-bits='64' id='91d6c443'/>
+      <function-type size-in-bits='64' id='91dc7ea3'>
+        <parameter type-id='7e666abe'/>
+        <parameter type-id='eaa32e2f'/>
+        <parameter type-id='91ce1af9'/>
+        <parameter type-id='95e97e5e'/>
+        <return type-id='95e97e5e'/>
+      </function-type>
       <function-type size-in-bits='64' id='91de15a8'>
         <parameter type-id='7e666abe'/>
         <parameter type-id='cd1b45ab'/>
@@ -90690,6 +90729,7 @@
         </data-member>
       </class-decl>
       <pointer-type-def type-id='e9ec35ef' size-in-bits='64' id='c7432356'/>
+      <pointer-type-def type-id='91dc7ea3' size-in-bits='64' id='c748f227'/>
       <union-decl name='__anonymous_union__' size-in-bits='4096' is-anonymous='yes' visibility='default' filepath='include/uapi/sound/asound.h' line='1054' column='1' id='c74bfd7b'>
         <data-member access='public'>
           <var-decl name='value' type-id='1fd26250' visibility='default' filepath='include/uapi/sound/asound.h' line='1055' column='1'/>
@@ -102377,6 +102417,12 @@
           <var-decl name='first' type-id='08cbad52' visibility='default' filepath='include/linux/types.h' line='183' column='1'/>
         </data-member>
       </class-decl>
+      <function-type size-in-bits='64' id='e151e1f6'>
+        <parameter type-id='7e666abe'/>
+        <parameter type-id='7359adad'/>
+        <parameter type-id='7359adad'/>
+        <return type-id='02f11ed4'/>
+      </function-type>
       <pointer-type-def type-id='20b17040' size-in-bits='64' id='e153f6de'/>
       <pointer-type-def type-id='4d94804e' size-in-bits='64' id='e15671b8'/>
       <pointer-type-def type-id='59aa7dba' size-in-bits='64' id='e15aece4'/>
@@ -110614,6 +110660,7 @@
           <var-decl name='memsw' type-id='635c3685' visibility='default' filepath='include/linux/memcontrol.h' line='222' column='1'/>
         </data-member>
       </union-decl>
+      <pointer-type-def type-id='74fec388' size-in-bits='64' id='f3a5c46a'/>
       <class-decl name='rc_scancode_filter' size-in-bits='64' is-struct='yes' visibility='default' filepath='include/media/rc-core.h' line='38' column='1' id='f3a6417e'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='data' type-id='19c2251e' visibility='default' filepath='include/media/rc-core.h' line='39' column='1'/>
@@ -115660,9 +115707,17 @@
       </function-type>
       <pointer-type-def type-id='46f53066' size-in-bits='64' id='fffb07a4'/>
       <qualified-type-def type-id='55efd1a3' const='yes' id='fffdaf52'/>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <var-decl name='GKI_struct_gic_chip_data' type-id='d3100295' mangled-name='GKI_struct_gic_chip_data' visibility='default' filepath='drivers/android/vendor_hooks.c' line='478' column='1' elf-symbol-id='GKI_struct_gic_chip_data'/>
+=======
+      <var-decl name='GKI_struct_gic_chip_data' type-id='d3100295' mangled-name='GKI_struct_gic_chip_data' visibility='default' filepath='drivers/android/vendor_hooks.c' line='487' column='1' elf-symbol-id='GKI_struct_gic_chip_data'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
       <var-decl name='GKI_struct_selinux_state' type-id='4ae52763' mangled-name='GKI_struct_selinux_state' visibility='default' filepath='security/selinux/vendor_hooks.c' line='21' column='1' elf-symbol-id='GKI_struct_selinux_state'/>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <var-decl name='GKI_struct_swap_slots_cache' type-id='30eaa112' mangled-name='GKI_struct_swap_slots_cache' visibility='default' filepath='drivers/android/vendor_hooks.c' line='483' column='1' elf-symbol-id='GKI_struct_swap_slots_cache'/>
+=======
+      <var-decl name='GKI_struct_swap_slots_cache' type-id='30eaa112' mangled-name='GKI_struct_swap_slots_cache' visibility='default' filepath='drivers/android/vendor_hooks.c' line='492' column='1' elf-symbol-id='GKI_struct_swap_slots_cache'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
       <function-decl name='PDE_DATA' mangled-name='PDE_DATA' filepath='fs/proc/generic.c' line='802' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='PDE_DATA'>
         <parameter type-id='c5a4eb7f' name='inode' filepath='fs/proc/generic.c' line='802' column='1'/>
         <return type-id='eaa32e2f'/>
@@ -116370,9 +116425,15 @@
         <parameter type-id='ab7bbd67' name='attr' filepath='fs/crypto/hooks.c' line='122' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='__generic_file_write_iter' mangled-name='__generic_file_write_iter' filepath='mm/filemap.c' line='3532' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__generic_file_write_iter'>
         <parameter type-id='80f25feb' name='iocb' filepath='mm/filemap.c' line='3532' column='1'/>
         <parameter type-id='4fa10f9e' name='from' filepath='mm/filemap.c' line='3532' column='1'/>
+=======
+      <function-decl name='__generic_file_write_iter' mangled-name='__generic_file_write_iter' filepath='mm/filemap.c' line='3570' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__generic_file_write_iter'>
+        <parameter type-id='80f25feb' name='iocb' filepath='mm/filemap.c' line='3570' column='1'/>
+        <parameter type-id='4fa10f9e' name='from' filepath='mm/filemap.c' line='3570' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='79a0948f'/>
       </function-decl>
       <function-decl name='__genphy_config_aneg' mangled-name='__genphy_config_aneg' filepath='drivers/net/phy/phy_device.c' line='2091' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__genphy_config_aneg'>
@@ -116493,6 +116554,11 @@
       <function-decl name='__iio_device_register' mangled-name='__iio_device_register' filepath='drivers/iio/industrialio-core.c' line='1721' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__iio_device_register'>
         <parameter type-id='226853d2' name='indio_dev' filepath='drivers/iio/industrialio-core.c' line='1721' column='1'/>
         <parameter type-id='2730d015' name='this_mod' filepath='drivers/iio/industrialio-core.c' line='1721' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='__iio_trigger_register' mangled-name='__iio_trigger_register' filepath='drivers/iio/industrialio-trigger.c' line='66' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__iio_trigger_register'>
+        <parameter type-id='54e54fbb' name='trig_info' filepath='drivers/iio/industrialio-trigger.c' line='66' column='1'/>
+        <parameter type-id='2730d015' name='this_mod' filepath='drivers/iio/industrialio-trigger.c' line='67' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='__inet6_lookup_established' mangled-name='__inet6_lookup_established' filepath='net/ipv6/inet6_hashtables.c' line='51' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__inet6_lookup_established'>
@@ -126811,8 +126877,13 @@
         <parameter type-id='f0981eeb' name='order' filepath='drivers/dma-buf/heaps/page_pool.c' line='114' column='1'/>
         <return type-id='586a9713'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='dmabuf_page_pool_destroy' mangled-name='dmabuf_page_pool_destroy' filepath='drivers/dma-buf/heaps/page_pool.c' line='138' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmabuf_page_pool_destroy'>
         <parameter type-id='586a9713' name='pool' filepath='drivers/dma-buf/heaps/page_pool.c' line='138' column='1'/>
+=======
+      <function-decl name='dmabuf_page_pool_destroy' mangled-name='dmabuf_page_pool_destroy' filepath='drivers/dma-buf/heaps/page_pool.c' line='156' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmabuf_page_pool_destroy'>
+        <parameter type-id='586a9713' name='pool' filepath='drivers/dma-buf/heaps/page_pool.c' line='156' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='dmabuf_page_pool_free' mangled-name='dmabuf_page_pool_free' filepath='drivers/dma-buf/heaps/page_pool.c' line='95' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmabuf_page_pool_free'>
@@ -130105,7 +130176,11 @@
         <parameter type-id='69bf7bee' name='lend' filepath='mm/filemap.c' line='760' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='filemap_allow_speculation' mangled-name='filemap_allow_speculation' filepath='mm/filemap.c' line='2961' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='filemap_allow_speculation'>
+=======
+      <function-decl name='filemap_allow_speculation' mangled-name='filemap_allow_speculation' filepath='mm/filemap.c' line='3004' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='filemap_allow_speculation'>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='b50a4934'/>
       </function-decl>
       <function-decl name='filemap_check_errors' mangled-name='filemap_check_errors' filepath='mm/filemap.c' line='370' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='filemap_check_errors'>
@@ -130130,10 +130205,17 @@
         <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='460' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='filemap_map_pages' mangled-name='filemap_map_pages' filepath='mm/filemap.c' line='2968' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='filemap_map_pages'>
         <parameter type-id='d02f4143' name='vmf' filepath='mm/filemap.c' line='2968' column='1'/>
         <parameter type-id='7359adad' name='start_pgoff' filepath='mm/filemap.c' line='2969' column='1'/>
         <parameter type-id='7359adad' name='end_pgoff' filepath='mm/filemap.c' line='2969' column='1'/>
+=======
+      <function-decl name='filemap_map_pages' mangled-name='filemap_map_pages' filepath='mm/filemap.c' line='3011' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='filemap_map_pages'>
+        <parameter type-id='d02f4143' name='vmf' filepath='mm/filemap.c' line='3011' column='1'/>
+        <parameter type-id='7359adad' name='start_pgoff' filepath='mm/filemap.c' line='3012' column='1'/>
+        <parameter type-id='7359adad' name='end_pgoff' filepath='mm/filemap.c' line='3012' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='e9265215'/>
       </function-decl>
       <function-decl name='filemap_write_and_wait_range' mangled-name='filemap_write_and_wait_range' filepath='mm/filemap.c' line='654' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='filemap_write_and_wait_range'>
@@ -130914,9 +130996,15 @@
         <parameter type-id='14a7c87f' name='get_inode' filepath='fs/libfs.c' line='1038' column='1'/>
         <return type-id='27675065'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='generic_file_direct_write' mangled-name='generic_file_direct_write' filepath='mm/filemap.c' line='3324' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_file_direct_write'>
         <parameter type-id='80f25feb' name='iocb' filepath='mm/filemap.c' line='3324' column='1'/>
         <parameter type-id='4fa10f9e' name='from' filepath='mm/filemap.c' line='3324' column='1'/>
+=======
+      <function-decl name='generic_file_direct_write' mangled-name='generic_file_direct_write' filepath='mm/filemap.c' line='3362' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_file_direct_write'>
+        <parameter type-id='80f25feb' name='iocb' filepath='mm/filemap.c' line='3362' column='1'/>
+        <parameter type-id='4fa10f9e' name='from' filepath='mm/filemap.c' line='3362' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='79a0948f'/>
       </function-decl>
       <function-decl name='generic_file_llseek' mangled-name='generic_file_llseek' filepath='fs/read_write.c' line='144' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_file_llseek'>
@@ -130933,9 +131021,15 @@
         <parameter type-id='69bf7bee' name='eof' filepath='fs/read_write.c' line='87' column='1'/>
         <return type-id='69bf7bee'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='generic_file_mmap' mangled-name='generic_file_mmap' filepath='mm/filemap.c' line='3078' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_file_mmap'>
         <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3078' column='1'/>
         <parameter type-id='2ae08426' name='vma' filepath='mm/filemap.c' line='3078' column='1'/>
+=======
+      <function-decl name='generic_file_mmap' mangled-name='generic_file_mmap' filepath='mm/filemap.c' line='3116' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_file_mmap'>
+        <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3116' column='1'/>
+        <parameter type-id='2ae08426' name='vma' filepath='mm/filemap.c' line='3116' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='generic_file_open' mangled-name='generic_file_open' filepath='fs/open.c' line='1386' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_file_open'>
@@ -130977,10 +131071,17 @@
         <parameter type-id='807869d3' name='duplex_chg_out' filepath='drivers/net/mii.c' line='586' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='generic_perform_write' mangled-name='generic_perform_write' filepath='mm/filemap.c' line='3427' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_perform_write'>
         <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3427' column='1'/>
         <parameter type-id='4fa10f9e' name='i' filepath='mm/filemap.c' line='3428' column='1'/>
         <parameter type-id='69bf7bee' name='pos' filepath='mm/filemap.c' line='3428' column='1'/>
+=======
+      <function-decl name='generic_perform_write' mangled-name='generic_perform_write' filepath='mm/filemap.c' line='3465' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_perform_write'>
+        <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3465' column='1'/>
+        <parameter type-id='4fa10f9e' name='i' filepath='mm/filemap.c' line='3466' column='1'/>
+        <parameter type-id='69bf7bee' name='pos' filepath='mm/filemap.c' line='3466' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='79a0948f'/>
       </function-decl>
       <function-decl name='generic_read_dir' mangled-name='generic_read_dir' filepath='fs/libfs.c' line='224' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='generic_read_dir'>
@@ -131570,10 +131671,17 @@
         <parameter type-id='5bed570d' name='desc' filepath='drivers/gpio/gpiolib.c' line='3214' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='grab_cache_page_write_begin' mangled-name='grab_cache_page_write_begin' filepath='mm/filemap.c' line='3409' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='grab_cache_page_write_begin'>
         <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3409' column='1'/>
         <parameter type-id='7359adad' name='index' filepath='mm/filemap.c' line='3410' column='1'/>
         <parameter type-id='f0981eeb' name='flags' filepath='mm/filemap.c' line='3410' column='1'/>
+=======
+      <function-decl name='grab_cache_page_write_begin' mangled-name='grab_cache_page_write_begin' filepath='mm/filemap.c' line='3447' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='grab_cache_page_write_begin'>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3447' column='1'/>
+        <parameter type-id='7359adad' name='index' filepath='mm/filemap.c' line='3448' column='1'/>
+        <parameter type-id='f0981eeb' name='flags' filepath='mm/filemap.c' line='3448' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='02f11ed4'/>
       </function-decl>
       <function-decl name='gro_cells_destroy' mangled-name='gro_cells_destroy' filepath='net/core/gro_cells.c' line='92' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='gro_cells_destroy'>
@@ -132585,8 +132693,21 @@
         <parameter type-id='26a90f95' name='buf' filepath='drivers/iio/industrialio-core.c' line='538' column='1'/>
         <return type-id='79a0948f'/>
       </function-decl>
+      <function-decl name='iio_trigger_alloc' mangled-name='iio_trigger_alloc' filepath='drivers/iio/industrialio-trigger.c' line='563' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iio_trigger_alloc'>
+        <parameter type-id='80f4b756' name='fmt' filepath='drivers/iio/industrialio-trigger.c' line='563' column='1'/>
+        <parameter is-variadic='yes'/>
+        <return type-id='54e54fbb'/>
+      </function-decl>
+      <function-decl name='iio_trigger_free' mangled-name='iio_trigger_free' filepath='drivers/iio/industrialio-trigger.c' line='576' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iio_trigger_free'>
+        <parameter type-id='54e54fbb' name='trig' filepath='drivers/iio/industrialio-trigger.c' line='576' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
       <function-decl name='iio_trigger_notify_done' mangled-name='iio_trigger_notify_done' filepath='drivers/iio/industrialio-trigger.c' line='203' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iio_trigger_notify_done'>
         <parameter type-id='54e54fbb' name='trig' filepath='drivers/iio/industrialio-trigger.c' line='203' column='1'/>
+        <return type-id='48b5725f'/>
+      </function-decl>
+      <function-decl name='iio_trigger_unregister' mangled-name='iio_trigger_unregister' filepath='drivers/iio/industrialio-trigger.c' line='106' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iio_trigger_unregister'>
+        <parameter type-id='54e54fbb' name='trig_info' filepath='drivers/iio/industrialio-trigger.c' line='106' column='1'/>
         <return type-id='48b5725f'/>
       </function-decl>
       <function-decl name='iio_update_buffers' mangled-name='iio_update_buffers' filepath='drivers/iio/industrialio-buffer.c' line='1113' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='iio_update_buffers'>
@@ -137187,6 +137308,7 @@
         <parameter type-id='3eb7c31c' name='gfp_mask' filepath='mm/filemap.c' line='1797' column='1'/>
         <return type-id='02f11ed4'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='pagecache_write_begin' mangled-name='pagecache_write_begin' filepath='mm/filemap.c' line='3281' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pagecache_write_begin'>
         <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3281' column='1'/>
         <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3281' column='1'/>
@@ -137195,8 +137317,19 @@
         <parameter type-id='f0981eeb' name='flags' filepath='mm/filemap.c' line='3282' column='1'/>
         <parameter type-id='9f93c9da' name='pagep' filepath='mm/filemap.c' line='3283' column='1'/>
         <parameter type-id='63e171df' name='fsdata' filepath='mm/filemap.c' line='3283' column='1'/>
+=======
+      <function-decl name='pagecache_write_begin' mangled-name='pagecache_write_begin' filepath='mm/filemap.c' line='3319' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pagecache_write_begin'>
+        <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3319' column='1'/>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3319' column='1'/>
+        <parameter type-id='69bf7bee' name='pos' filepath='mm/filemap.c' line='3320' column='1'/>
+        <parameter type-id='f0981eeb' name='len' filepath='mm/filemap.c' line='3320' column='1'/>
+        <parameter type-id='f0981eeb' name='flags' filepath='mm/filemap.c' line='3320' column='1'/>
+        <parameter type-id='9f93c9da' name='pagep' filepath='mm/filemap.c' line='3321' column='1'/>
+        <parameter type-id='63e171df' name='fsdata' filepath='mm/filemap.c' line='3321' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='95e97e5e'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='pagecache_write_end' mangled-name='pagecache_write_end' filepath='mm/filemap.c' line='3292' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pagecache_write_end'>
         <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3292' column='1'/>
         <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3292' column='1'/>
@@ -137205,6 +137338,16 @@
         <parameter type-id='f0981eeb' name='copied' filepath='mm/filemap.c' line='3293' column='1'/>
         <parameter type-id='02f11ed4' name='page' filepath='mm/filemap.c' line='3294' column='1'/>
         <parameter type-id='eaa32e2f' name='fsdata' filepath='mm/filemap.c' line='3294' column='1'/>
+=======
+      <function-decl name='pagecache_write_end' mangled-name='pagecache_write_end' filepath='mm/filemap.c' line='3330' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pagecache_write_end'>
+        <parameter type-id='77e79a4b' name='file' filepath='mm/filemap.c' line='3330' column='1'/>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3330' column='1'/>
+        <parameter type-id='69bf7bee' name='pos' filepath='mm/filemap.c' line='3331' column='1'/>
+        <parameter type-id='f0981eeb' name='len' filepath='mm/filemap.c' line='3331' column='1'/>
+        <parameter type-id='f0981eeb' name='copied' filepath='mm/filemap.c' line='3331' column='1'/>
+        <parameter type-id='02f11ed4' name='page' filepath='mm/filemap.c' line='3332' column='1'/>
+        <parameter type-id='eaa32e2f' name='fsdata' filepath='mm/filemap.c' line='3332' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='pagevec_lookup_range' mangled-name='pagevec_lookup_range' filepath='mm/swap.c' line='1278' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='pagevec_lookup_range'>
@@ -139606,17 +139749,32 @@
         <parameter type-id='43c38462' name='rdev' filepath='drivers/regulator/core.c' line='5586' column='1'/>
         <return type-id='29af9a71'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='read_cache_page' mangled-name='read_cache_page' filepath='mm/filemap.c' line='3250' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='read_cache_page'>
         <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3250' column='1'/>
         <parameter type-id='7359adad' name='index' filepath='mm/filemap.c' line='3251' column='1'/>
         <parameter type-id='83ac4446' name='filler' filepath='mm/filemap.c' line='3252' column='1'/>
         <parameter type-id='eaa32e2f' name='data' filepath='mm/filemap.c' line='3253' column='1'/>
+=======
+      <function-decl name='read_cache_page' mangled-name='read_cache_page' filepath='mm/filemap.c' line='3288' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='read_cache_page'>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3288' column='1'/>
+        <parameter type-id='7359adad' name='index' filepath='mm/filemap.c' line='3289' column='1'/>
+        <parameter type-id='83ac4446' name='filler' filepath='mm/filemap.c' line='3290' column='1'/>
+        <parameter type-id='eaa32e2f' name='data' filepath='mm/filemap.c' line='3291' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='02f11ed4'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='read_cache_page_gfp' mangled-name='read_cache_page_gfp' filepath='mm/filemap.c' line='3273' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='read_cache_page_gfp'>
         <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3273' column='1'/>
         <parameter type-id='7359adad' name='index' filepath='mm/filemap.c' line='3274' column='1'/>
         <parameter type-id='3eb7c31c' name='gfp' filepath='mm/filemap.c' line='3275' column='1'/>
+=======
+      <function-decl name='read_cache_page_gfp' mangled-name='read_cache_page_gfp' filepath='mm/filemap.c' line='3311' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='read_cache_page_gfp'>
+        <parameter type-id='f57039f0' name='mapping' filepath='mm/filemap.c' line='3311' column='1'/>
+        <parameter type-id='7359adad' name='index' filepath='mm/filemap.c' line='3312' column='1'/>
+        <parameter type-id='3eb7c31c' name='gfp' filepath='mm/filemap.c' line='3313' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='02f11ed4'/>
       </function-decl>
       <function-decl name='readahead_gfp_mask' mangled-name='readahead_gfp_mask' filepath='mm/readahead.c' line='118' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='readahead_gfp_mask'>
@@ -145096,9 +145254,15 @@
         <parameter type-id='b50a4934' name='may_swap' filepath='mm/vmscan.c' line='3419' column='1'/>
         <return type-id='7359adad'/>
       </function-decl>
+<<<<<<< HEAD   (fb4b72 ANDROID: GKI: Add Tuxera symbol list)
       <function-decl name='try_to_release_page' mangled-name='try_to_release_page' filepath='mm/filemap.c' line='3655' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='try_to_release_page'>
         <parameter type-id='02f11ed4' name='page' filepath='mm/filemap.c' line='3655' column='1'/>
         <parameter type-id='3eb7c31c' name='gfp_mask' filepath='mm/filemap.c' line='3655' column='1'/>
+=======
+      <function-decl name='try_to_release_page' mangled-name='try_to_release_page' filepath='mm/filemap.c' line='3693' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='try_to_release_page'>
+        <parameter type-id='02f11ed4' name='page' filepath='mm/filemap.c' line='3693' column='1'/>
+        <parameter type-id='3eb7c31c' name='gfp_mask' filepath='mm/filemap.c' line='3693' column='1'/>
+>>>>>>> CHANGE (26638f ANDROID: GKI: update xiaomi symbol list)
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='try_to_writeback_inodes_sb' mangled-name='try_to_writeback_inodes_sb' filepath='fs/fs-writeback.c' line='2502' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='try_to_writeback_inodes_sb'>
@@ -146760,12 +146924,12 @@
         <parameter type-id='bc57058f' name='id' filepath='drivers/usb/core/driver.c' line='715' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
-      <function-decl name='usb_os_desc_prepare_interf_dir' mangled-name='usb_os_desc_prepare_interf_dir' filepath='drivers/usb/gadget/configfs.c' line='1228' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_os_desc_prepare_interf_dir'>
-        <parameter type-id='97aff453' name='parent' filepath='drivers/usb/gadget/configfs.c' line='1229' column='1'/>
-        <parameter type-id='95e97e5e' name='n_interf' filepath='drivers/usb/gadget/configfs.c' line='1230' column='1'/>
-        <parameter type-id='b6338998' name='desc' filepath='drivers/usb/gadget/configfs.c' line='1231' column='1'/>
-        <parameter type-id='9b23c9ad' name='names' filepath='drivers/usb/gadget/configfs.c' line='1232' column='1'/>
-        <parameter type-id='2730d015' name='owner' filepath='drivers/usb/gadget/configfs.c' line='1233' column='1'/>
+      <function-decl name='usb_os_desc_prepare_interf_dir' mangled-name='usb_os_desc_prepare_interf_dir' filepath='drivers/usb/gadget/configfs.c' line='1234' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_os_desc_prepare_interf_dir'>
+        <parameter type-id='97aff453' name='parent' filepath='drivers/usb/gadget/configfs.c' line='1235' column='1'/>
+        <parameter type-id='95e97e5e' name='n_interf' filepath='drivers/usb/gadget/configfs.c' line='1236' column='1'/>
+        <parameter type-id='b6338998' name='desc' filepath='drivers/usb/gadget/configfs.c' line='1237' column='1'/>
+        <parameter type-id='9b23c9ad' name='names' filepath='drivers/usb/gadget/configfs.c' line='1238' column='1'/>
+        <parameter type-id='2730d015' name='owner' filepath='drivers/usb/gadget/configfs.c' line='1239' column='1'/>
         <return type-id='97aff453'/>
       </function-decl>
       <function-decl name='usb_otg_state_string' mangled-name='usb_otg_state_string' filepath='drivers/usb/common/common.c' line='43' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='usb_otg_state_string'>
