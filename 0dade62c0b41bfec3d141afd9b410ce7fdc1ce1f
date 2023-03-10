@@ -46,6 +46,30 @@
       },
       "revId": "0dade62c0b41bfec3d141afd9b410ce7fdc1ce1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8e4a30d_787e0e9e",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-03-10T13:01:27Z",
+      "side": 1,
+      "message": "Damn, thanks for trying though.\n\nI suppose we could spell out the if in the default case:\n\n```\n        u64 exec_type \u003d KVM_PTE_LEAF_ATTR_HI_S2_XN_XN;\n\n        switch(exec_prot) {\n        case KVM_PGTABLE_PROT_X:\n                goto set_ap;\n        case KVM_PGTABLE_PROT_PXN:\n                exec_type \u003d KVM_PTE_LEAF_ATTR_HI_S2_XN_PXN;\n                break;\n        case KVM_PGTABLE_PROT_UXN:\n                exec_type \u003d KVM_PTE_LEAF_ATTR_HI_S2_XN_UXN;\n                break;\n        default:\n                if (exec_prot)\n                    return -EINVAL;\n        }\n```\n\nWhat do you think?",
+      "parentUuid": "e43e762b_c7b80c83",
+      "range": {
+        "startLine": 584,
+        "startChar": 38,
+        "endLine": 584,
+        "endChar": 67
+      },
+      "revId": "0dade62c0b41bfec3d141afd9b410ce7fdc1ce1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
