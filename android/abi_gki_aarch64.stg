@@ -278610,6 +278610,13 @@ function {
   parameter_id: 0x6d7f5ff6
 }
 function {
+  id: 0x12dd8909
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0a134144
+  parameter_id: 0x33756485
+  parameter_id: 0x33756485
+}
+function {
   id: 0x12e01214
   return_type_id: 0x48b5725f
   parameter_id: 0x09e10e1f
@@ -289730,6 +289737,12 @@ function {
   parameter_id: 0x2efd5036
   parameter_id: 0xf1a6dfed
   parameter_id: 0xf435685e
+}
+function {
+  id: 0x5ee8f086
+  return_type_id: 0x18bd6530
+  parameter_id: 0x22ce5396
+  parameter_id: 0x33756485
 }
 function {
   id: 0x5eef7e83
@@ -340570,6 +340583,15 @@ elf_symbol {
   full_name: "msleep_interruptible"
 }
 elf_symbol {
+  id: 0xce6c8813
+  name: "mtree_load"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x32e8cfea
+  type_id: 0x5ee8f086
+  full_name: "mtree_load"
+}
+elf_symbol {
   id: 0x6792f365
   name: "mutex_is_locked"
   is_defined: true
@@ -359033,6 +359055,15 @@ elf_symbol {
   full_name: "xsk_uses_need_wakeup"
 }
 elf_symbol {
+  id: 0x0fc8c78d
+  name: "zap_vma_ptes"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xfdf7ea78
+  type_id: 0x12dd8909
+  full_name: "zap_vma_ptes"
+}
+elf_symbol {
   id: 0xa5d58813
   name: "zlib_deflate"
   is_defined: true
@@ -371279,6 +371310,10 @@ symbols {
     value: 0x1a083689
   }
   symbol {
+    key: "mtree_load"
+    value: 0xce6c8813
+  }
+  symbol {
     key: "mutex_is_locked"
     value: 0x6792f365
   }
@@ -379485,6 +379520,10 @@ symbols {
   symbol {
     key: "xsk_uses_need_wakeup"
     value: 0xbb650596
+  }
+  symbol {
+    key: "zap_vma_ptes"
+    value: 0x0fc8c78d
   }
   symbol {
     key: "zlib_deflate"
