@@ -34,6 +34,7 @@
 #include <linux/kmemleak.h>
 #include <linux/sched.h>
 #include <linux/jiffies.h>
+#include <linux/page-isolation.h>
 #include <trace/events/cma.h>
 
 #include "cma.h"
@@ -126,8 +127,13 @@ static void __init cma_activate_area(struct cma *cma)
 	}
 
 	for (pfn = base_pfn; pfn < base_pfn + cma->count;
-	     pfn += pageblock_nr_pages)
-		init_cma_reserved_pageblock(pfn_to_page(pfn));
+	     pfn += pageblock_nr_pages) {
+		struct page *page = pfn_to_page(pfn);
+
+		set_pageblock_migratetype(page, MIGRATE_CMA);
+		init_reserved_pageblock(page);
+		page_zone(page)->cma_pages += pageblock_nr_pages;
+	}
 
 	spin_lock_init(&cma->lock);
 
@@ -143,8 +149,9 @@ not_in_zone:
 out_error:
 	/* Expose all pages to the buddy, they are useless for CMA. */
 	if (!cma->reserve_pages_on_error) {
-		for (pfn = base_pfn; pfn < base_pfn + cma->count; pfn++)
-			free_reserved_page(pfn_to_page(pfn));
+		for (pfn = base_pfn; pfn < base_pfn + cma->count;
+		     pfn += pageblock_nr_pages)
+			init_reserved_pageblock(pfn_to_page(pfn));
 	}
 	totalcma_pages -= cma->count;
 	cma->count = 0;
