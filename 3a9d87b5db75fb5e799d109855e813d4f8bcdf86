@@ -46,6 +46,30 @@
       },
       "revId": "3a9d87b5db75fb5e799d109855e813d4f8bcdf86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66271828_b2a7ce50",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-03-13T11:26:01Z",
+      "side": 1,
+      "message": "`device_initcall_sync()` is the first initcall level to run after KVM has initialised (since iirc KVM is initialised via `module_init()` which equates to `device_initcall()` when it is built-in). Keeping the window between init failure and clearing of pvmfw as small as possible seems like a sensible thing to do.\n\nI\u0027m a bit nervous if we\u0027re racing against unpacking the initramfs, as that seems dodgy regardless of which initcall level we\u0027re using. Can we not block on that completing instead?",
+      "parentUuid": "69ec7d18_958d76bf",
+      "range": {
+        "startLine": 475,
+        "startChar": 0,
+        "endLine": 475,
+        "endChar": 13
+      },
+      "revId": "3a9d87b5db75fb5e799d109855e813d4f8bcdf86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
