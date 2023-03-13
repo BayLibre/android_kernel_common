@@ -4783,9 +4783,16 @@ no_journal:
 		}
 	}
 
+<<<<<<< HEAD   (29a6ff FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)
 	if (ext4_has_feature_verity(sb) && blocksize != PAGE_SIZE) {
 		ext4_msg(sb, KERN_ERR, "Unsupported blocksize for fs-verity");
 		goto failed_mount_wq;
+=======
+	if (DUMMY_ENCRYPTION_ENABLED(sbi) && !sb_rdonly(sb) &&
+	    !ext4_has_feature_encrypt(sb)) {
+		ext4_set_feature_encrypt(sb);
+		ext4_commit_super(sb);
+>>>>>>> BRANCH (91209b fscrypt: fix ext4 breakage in fscrypt)
 	}
 
 	/*
