@@ -70,6 +70,30 @@
       },
       "revId": "3a9d87b5db75fb5e799d109855e813d4f8bcdf86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c3ad188_d332f460",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-03-13T11:47:38Z",
+      "side": 1,
+      "message": "No risk of race, we are blocking until the initramfs is ready. Using late_initcall just give more time for the unpacking to execute in parallel and hopefully reduce a bit the boot time. I haven\u0027t check any numbers though but I can do it.",
+      "parentUuid": "66271828_b2a7ce50",
+      "range": {
+        "startLine": 475,
+        "startChar": 0,
+        "endLine": 475,
+        "endChar": 13
+      },
+      "revId": "3a9d87b5db75fb5e799d109855e813d4f8bcdf86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
