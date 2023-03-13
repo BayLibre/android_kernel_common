@@ -140,7 +140,11 @@ static int fill_kobj_path(const struct kobject *kobj, char *path, int length)
  *
  * Return: The newly allocated memory, caller must free with kfree().
  */
+#ifdef __GENKSYMS__	/* ANDROID HACK for ABI CRC issues */
+char *kobject_get_path(struct kobject *kobj, gfp_t gfp_mask)
+#else
 char *kobject_get_path(const struct kobject *kobj, gfp_t gfp_mask)
+#endif
 {
 	char *path;
 	int len;
