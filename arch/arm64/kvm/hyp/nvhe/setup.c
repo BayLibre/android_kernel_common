@@ -69,7 +69,7 @@ static int divide_memory_pool(void *virt, unsigned long size)
 	if (!ffa_proxy_pages)
 		return -ENOMEM;
 
-	nr_pages = hyp_host_fp_pages(hyp_nr_cpus);
+	nr_pages = hyp_host_fp_pages(hyp_nr_cpus, kvm_host_sve_max_vl);
 	hyp_host_fp_base = hyp_early_alloc_contig(nr_pages);
 	if (!hyp_host_fp_base)
 		return -ENOMEM;
