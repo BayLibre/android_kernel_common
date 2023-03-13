@@ -326245,6 +326245,15 @@ elf_symbol {
   full_name: "usb_submit_urb"
 }
 elf_symbol {
+  id: 0x5d6fb7c5
+  name: "usb_udc_vbus_handler"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x924546eb
+  type_id: 0x1874e22c
+  full_name: "usb_udc_vbus_handler"
+}
+elf_symbol {
   id: 0x4eea2829
   name: "usb_unanchor_urb"
   is_defined: true
@@ -343619,6 +343628,10 @@ symbols {
   symbol {
     key: "usb_submit_urb"
     value: 0x6fe64b22
+  }
+  symbol {
+    key: "usb_udc_vbus_handler"
+    value: 0x5d6fb7c5
   }
   symbol {
     key: "usb_unanchor_urb"
