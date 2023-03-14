@@ -1,0 +1,157 @@
+root_id: 0x25a8b173
+typedef {
+  id: 0xedf277ba
+  name: "__u64"
+  referred_type_id: 0xd5df6730
+}
+typedef {
+  id: 0x92233392
+  name: "u64"
+  referred_type_id: 0xedf277ba
+}
+primitive {
+  id: 0xd5df6730
+  name: "unsigned long long"
+  encoding: UNSIGNED_INTEGER
+  bytesize: 0x00000008
+}
+elf_symbol {
+  id: 0x6eb8e0de
+  name: "__SCT__cond_resched"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc07351b3
+}
+elf_symbol {
+  id: 0x2774f26d
+  name: "__SCT__might_resched"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe2c17b5d
+}
+elf_symbol {
+  id: 0xbf08277f
+  name: "__SCT__preempt_schedule"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x48d88a2c
+}
+elf_symbol {
+  id: 0xa603b607
+  name: "__SCT__preempt_schedule_notrace"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x688e72e1
+}
+elf_symbol {
+  id: 0xc13daeb5
+  name: "__SCT__tp_func_dma_fence_emit"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa796679d
+}
+elf_symbol {
+  id: 0x8b2fd235
+  name: "__SCT__tp_func_xdp_exception"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8fa9d9e8
+}
+elf_symbol {
+  id: 0x7d0d7b3f
+  name: "__sw_hweight32"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x74c134b9
+}
+elf_symbol {
+  id: 0xa6e6c879
+  name: "jiffies"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x15ba50a6
+  type_id: 0x92233392
+  full_name: "jiffies_64"
+}
+elf_symbol {
+  id: 0xec5de79b
+  name: "memcpy"
+  is_defined: true
+  symbol_type: FUNCTION
+  binding: WEAK
+  crc: 0x69acdf38
+}
+elf_symbol {
+  id: 0x48ffba03
+  name: "memmove"
+  is_defined: true
+  symbol_type: FUNCTION
+  binding: WEAK
+  crc: 0xb0e602eb
+}
+elf_symbol {
+  id: 0xd1412061
+  name: "memset"
+  is_defined: true
+  symbol_type: FUNCTION
+  binding: WEAK
+  crc: 0xfb578fc5
+}
+elf_symbol {
+  id: 0xf45442b1
+  name: "phys_base"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x4c9d28b0
+}
+symbols {
+  id: 0x25a8b173
+  symbol {
+    key: "__SCT__cond_resched"
+    value: 0x6eb8e0de
+  }
+  symbol {
+    key: "__SCT__might_resched"
+    value: 0x2774f26d
+  }
+  symbol {
+    key: "__SCT__preempt_schedule"
+    value: 0xbf08277f
+  }
+  symbol {
+    key: "__SCT__preempt_schedule_notrace"
+    value: 0xa603b607
+  }
+  symbol {
+    key: "__SCT__tp_func_dma_fence_emit"
+    value: 0xc13daeb5
+  }
+  symbol {
+    key: "__SCT__tp_func_xdp_exception"
+    value: 0x8b2fd235
+  }
+  symbol {
+    key: "__sw_hweight32"
+    value: 0x7d0d7b3f
+  }
+  symbol {
+    key: "jiffies"
+    value: 0xa6e6c879
+  }
+  symbol {
+    key: "memcpy"
+    value: 0xec5de79b
+  }
+  symbol {
+    key: "memmove"
+    value: 0x48ffba03
+  }
+  symbol {
+    key: "memset"
+    value: 0xd1412061
+  }
+  symbol {
+    key: "phys_base"
+    value: 0xf45442b1
+  }
+}
