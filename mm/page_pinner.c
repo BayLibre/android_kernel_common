@@ -58,7 +58,7 @@ static struct longterm_pinner acf_pinner = {
 static bool page_pinner_enabled;
 DEFINE_STATIC_KEY_FALSE(page_pinner_inited);
 
-DEFINE_STATIC_KEY_TRUE(failure_tracking);
+DEFINE_STATIC_KEY_FALSE(failure_tracking);
 EXPORT_SYMBOL(failure_tracking);
 
 static depot_stack_handle_t failure_handle;
