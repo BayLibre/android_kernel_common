@@ -814,7 +814,10 @@ enum {
 	FI_ALIGNED_WRITE,	/* enable aligned write */
 	FI_COW_FILE,		/* indicate COW file */
 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
+<<<<<<< HEAD   (5b483d Merge changes I95ce33fb,I03723a9f,I4b1cf7f1,I6e17c9b3,I44617)
 	FI_ATOMIC_REPLACE,	/* indicate atomic replace */
+=======
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	FI_MAX,			/* max flag, never be used */
 };
 

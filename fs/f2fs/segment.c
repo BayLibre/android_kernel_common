@@ -192,18 +192,33 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
 	if (!f2fs_is_atomic_file(inode))
 		return;
 
+<<<<<<< HEAD   (5b483d Merge changes I95ce33fb,I03723a9f,I4b1cf7f1,I6e17c9b3,I44617)
 	clear_inode_flag(fi->cow_inode, FI_COW_FILE);
 	iput(fi->cow_inode);
 	fi->cow_inode = NULL;
+=======
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	release_atomic_write_cnt(inode);
 	clear_inode_flag(inode, FI_ATOMIC_COMMITTED);
+<<<<<<< HEAD   (5b483d Merge changes I95ce33fb,I03723a9f,I4b1cf7f1,I6e17c9b3,I44617)
 	clear_inode_flag(inode, FI_ATOMIC_REPLACE);
+=======
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	clear_inode_flag(inode, FI_ATOMIC_FILE);
 	stat_dec_atomic_inode(inode);
+
+<<<<<<< HEAD   (5b483d Merge changes I95ce33fb,I03723a9f,I4b1cf7f1,I6e17c9b3,I44617)
+	if (clean) {
+		truncate_inode_pages_final(inode->i_mapping);
+		f2fs_i_size_write(inode, fi->original_i_size);
+=======
+	F2FS_I(inode)->atomic_write_task = NULL;
 
 	if (clean) {
 		truncate_inode_pages_final(inode->i_mapping);
 		f2fs_i_size_write(inode, fi->original_i_size);
+		fi->original_i_size = 0;
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	}
 }
 
@@ -255,6 +270,9 @@ retry:
 	}
 
 	f2fs_put_dnode(&dn);
+
+	trace_f2fs_replace_atomic_write_block(inode, F2FS_I(inode)->cow_inode,
+					index, *old_addr, new_addr, recover);
 	return 0;
 }
 
