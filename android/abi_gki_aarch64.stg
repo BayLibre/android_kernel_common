@@ -290505,6 +290505,11 @@ function {
   parameter_id: 0x0d5f1839
 }
 function {
+  id: 0xcd9f7f34
+  return_type_id: 0x4585663f
+  parameter_id: 0x0d10073d
+}
+function {
   id: 0xcdea9cab
   return_type_id: 0x4585663f
   parameter_id: 0x0cc78943
@@ -328405,6 +328410,15 @@ elf_symbol {
   full_name: "xhci_gen_setup"
 }
 elf_symbol {
+  id: 0xf30af7b3
+  name: "xhci_get_endpoint_index"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x57d4050a
+  type_id: 0xcd9f7f34
+  full_name: "xhci_get_endpoint_index"
+}
+elf_symbol {
   id: 0x71f2808e
   name: "xhci_init_driver"
   is_defined: true
@@ -344579,6 +344593,10 @@ symbols {
   symbol {
     key: "xhci_gen_setup"
     value: 0xc46f1f1f
+  }
+  symbol {
+    key: "xhci_get_endpoint_index"
+    value: 0xf30af7b3
   }
   symbol {
     key: "xhci_init_driver"
