@@ -253582,16 +253582,20 @@ enumeration {
       value: 320
     }
     enumerator {
-      name: "__NL80211_ATTR_AFTER_LAST"
+      name: "NL80211_ATTR_TD_BITMAP"
       value: 321
+    }
+    enumerator {
+      name: "__NL80211_ATTR_AFTER_LAST"
+      value: 322
     }
     enumerator {
       name: "NUM_NL80211_ATTR"
-      value: 321
+      value: 322
     }
     enumerator {
       name: "NL80211_ATTR_MAX"
-      value: 320
+      value: 321
     }
   }
 }
@@ -267261,6 +267265,15 @@ function {
   parameter_id: 0x31675062
 }
 function {
+  id: 0x1cc28608
+  return_type_id: 0x48b5725f
+  parameter_id: 0x32a623d7
+  parameter_id: 0x3f0185ef
+  parameter_id: 0x3f0185ef
+  parameter_id: 0x295c7202
+  parameter_id: 0xf1a6dfed
+}
+function {
   id: 0x1cc37408
   return_type_id: 0x48b5725f
   parameter_id: 0x32a623d7
@@ -267430,13 +267443,6 @@ function {
   id: 0x1cea7cc2
   return_type_id: 0x48b5725f
   parameter_id: 0x31c8b544
-}
-function {
-  id: 0x1cf1b6c6
-  return_type_id: 0x48b5725f
-  parameter_id: 0x32a623d7
-  parameter_id: 0x3f0185ef
-  parameter_id: 0xf1a6dfed
 }
 function {
   id: 0x1cf3d6fb
@@ -292611,7 +292617,7 @@ elf_symbol {
   name: "__cfg80211_alloc_event_skb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x361130b9
+  crc: 0xde4f6977
   type_id: 0x6c2e1f92
   full_name: "__cfg80211_alloc_event_skb"
 }
@@ -292620,7 +292626,7 @@ elf_symbol {
   name: "__cfg80211_alloc_reply_skb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa274eee6
+  crc: 0xf1f24993
   type_id: 0x6f4d03a8
   full_name: "__cfg80211_alloc_reply_skb"
 }
@@ -298904,8 +298910,8 @@ elf_symbol {
   name: "cfg80211_port_authorized"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3d557d66
-  type_id: 0x1cf1b6c6
+  crc: 0x48ea813d
+  type_id: 0x1cc28608
   full_name: "cfg80211_port_authorized"
 }
 elf_symbol {
