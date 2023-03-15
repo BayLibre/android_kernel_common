@@ -699,6 +699,8 @@ static void fpsimd_host_restore(void)
 			u64 vq_len = sve_vq_from_vl(kvm_host_sve_max_vl) - 1;
 
 			write_sysreg_el1(sve_state->zcr_el1, SYS_ZCR);
+			if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+				vq_len = min(vq_len, sve_state->zcr_el1 & ZCR_ELx_LEN_MASK);
 			sve_cond_update_zcr_vq(vq_len, SYS_ZCR_EL2);
 			__sve_restore_state(sve_state->sve_regs +
 					    sve_ffr_offset(kvm_host_sve_max_vl),

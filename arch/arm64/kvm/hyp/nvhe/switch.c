@@ -196,6 +196,19 @@ static void kvm_hyp_handle_fpsimd_host(struct kvm_vcpu *vcpu)
 		}
 
 		sve_state->zcr_el1 = read_sysreg_el1(SYS_ZCR);
+
+		/*
+		 * For non-protected vms, there isn't an issue of leaking
+		 * information about whether the guest has used fpsimd/sve or
+		 * not, nor in the contents of the vector bits above what the
+		 * host has been using. This could save some bandwidth.
+		 * For protected vms, the host should not be able to tell
+		 * whether the guest has even triggerred fpsimd/sve.
+		 */
+		if (!vcpu_is_protected(vcpu))
+			vq_len = min(vq_len,
+				     sve_state->zcr_el1 & ZCR_ELx_LEN_MASK);
+
 		sve_cond_update_zcr_vq(vq_len, SYS_ZCR_EL2);
 		__sve_save_state(sve_state->sve_regs +
 					sve_ffr_offset(kvm_host_sve_max_vl),
