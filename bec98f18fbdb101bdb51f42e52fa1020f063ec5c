@@ -22,6 +22,30 @@
       },
       "revId": "bec98f18fbdb101bdb51f42e52fa1020f063ec5c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d009b227_98826798",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-03-15T20:37:33Z",
+      "side": 1,
+      "message": "Done for the comment update. For FIE during exit, since the SCALE_FREQ_SOURCE_ARCH shares the same type as AMU, deregistering using that enum will remove AMU counters if they registered before this driver. SCALE_FREQ_SOURCE_ARCH is currently being used such that it doesn\u0027t override AMU FIEs if they registered before hand.",
+      "parentUuid": "3c52fda7_c5a78374",
+      "range": {
+        "startLine": 187,
+        "startChar": 1,
+        "endLine": 187,
+        "endChar": 55
+      },
+      "revId": "bec98f18fbdb101bdb51f42e52fa1020f063ec5c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
