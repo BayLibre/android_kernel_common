@@ -203,8 +203,6 @@ SECTIONS
 	/* everything from this point to __init_begin will be marked RO NX */
 	RO_DATA(PAGE_SIZE)
 
-	HYPERVISOR_RODATA_SECTIONS
-
 #ifdef CONFIG_TRACING
 	.rodata.hyp_events : {
 		__hyp_events_start = .;
@@ -212,7 +210,7 @@ SECTIONS
 		__hyp_events_end = .;
 	}
 #endif
-
+        HYPERVISOR_RODATA_SECTIONS
 	idmap_pg_dir = .;
 	. += IDMAP_DIR_SIZE;
 	idmap_pg_end = .;
