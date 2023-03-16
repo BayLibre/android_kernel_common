@@ -22,6 +22,7 @@ struct tipc_msg_buf {
 	size_t rpos;
 	size_t shm_cnt;
 	struct list_head node;
+	bool reclaim_in_progress; //FIXME: use reclaim_msg_buf_list in vds struct instead
 };
 
 enum tipc_chan_event {
