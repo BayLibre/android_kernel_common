@@ -686,9 +686,9 @@ static int ffa_guest_unshare_ranges(struct ffa_mem_region_addr_range *ranges,
 	return __ffa_guest_unshare_ranges(ranges, pkvm_vcpu, 0, 0, nranges);
 }
 
-static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
-			       struct kvm_cpu_context *ctxt,
-			       u64 vmid)
+static int do_ffa_mem_frag_tx(struct arm_smccc_res *res,
+			      struct kvm_cpu_context *ctxt,
+			      u64 vmid, u64 *exit_code)
 {
 	DECLARE_REG(u32, handle_lo, ctxt, 1);
 	DECLARE_REG(u32, handle_hi, ctxt, 2);
@@ -712,7 +712,13 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	memcpy(buf, non_secure_el1_buffers[vmid].tx, fraglen);
 	nr_ranges = fraglen / sizeof(*buf);
 
-	ret = ffa_host_share_ranges(buf, nr_ranges);
+	if (vmid == 0) {
+		ret = ffa_host_share_ranges(buf, nr_ranges);
+	} else {
+		ret = ffa_guest_share_ranges(buf, nr_ranges, ctxt, vmid,
+					     exit_code);
+	}
+
 	if (ret) {
 		/*
 		 * We're effectively aborting the transaction, so we need
@@ -725,8 +731,14 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	}
 
 	spmd_mem_frag_tx(res, handle_lo, handle_hi, fraglen, endpoint_id);
-	if (res->a0 != FFA_SUCCESS && res->a0 != FFA_MEM_FRAG_RX)
-		WARN_ON(ffa_host_unshare_ranges(buf, nr_ranges));
+	if (res->a0 != FFA_SUCCESS && res->a0 != FFA_MEM_FRAG_RX) {
+		if (vmid == 0) {
+			WARN_ON(ffa_host_unshare_ranges(buf, nr_ranges));
+		} else {
+			WARN_ON(ffa_guest_unshare_ranges(buf, nr_ranges,
+							 ctxt, vmid));
+		}
+	}
 
 out_unlock:
 	hyp_spin_unlock(&hyp_buffers.lock);
@@ -742,7 +754,7 @@ out:
 	 * sharing/donating them again and may possibly lead to subsequent
 	 * failures, but this will not compromise confidentiality.
 	 */
-	return;
+	return ret;
 }
 
 static __always_inline int do_ffa_mem_xfer(const u64 func_id,
@@ -1089,7 +1101,7 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt)
 		do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, host_ctxt, 0, NULL);
 		goto out_handled;
 	case FFA_MEM_FRAG_TX:
-		do_ffa_mem_frag_tx(&res, host_ctxt, 0);
+		do_ffa_mem_frag_tx(&res, host_ctxt, 0, NULL);
 		goto out_handled;
 	}
 
@@ -1133,9 +1145,11 @@ int kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 	case FFA_MEM_RECLAIM:
 		do_ffa_mem_reclaim(&res, ctxt, vmid);
 		goto out_handled;
+	case FFA_MEM_FRAG_TX:
+		ret = do_ffa_mem_frag_tx(&res, ctxt, vmid, exit_code);
+		goto out_handled;
 	case FFA_MEM_LEND:
 	case FFA_FN64_MEM_LEND:
-	case FFA_MEM_FRAG_TX:
 		break;
 	}
 
