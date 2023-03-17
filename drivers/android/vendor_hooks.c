@@ -54,6 +54,7 @@
 #include <trace/hooks/power.h>
 #include <trace/hooks/fault.h>
 #include <trace/hooks/traps.h>
+#include <trace/hooks/mm.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -138,6 +139,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_module_init_rw_nx);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_module_permit_before_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_module_permit_after_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_is_initialized);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_mmap_file);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_file_open);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_bpf_syscall);
