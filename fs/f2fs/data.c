@@ -749,6 +749,12 @@ int f2fs_submit_page_bio(struct f2fs_io_info *fio)
 
 	if (fio->io_wbc && !is_read_io(fio->op))
 		wbc_account_cgroup_owner(fio->io_wbc, fio->page, PAGE_SIZE);
+<<<<<<< HEAD   (850461 Revert "FROMLIST: power_supply: Use of-thermal cdev registra)
+=======
+
+	__attach_io_flag(fio);
+	bio_set_op_attrs(bio, fio->op, fio->op_flags);
+>>>>>>> BRANCH (abddfc Linux 5.15.99)
 
 	inc_page_count(fio->sbi, is_read_io(fio->op) ?
 			__read_io_type(page) : WB_DATA_TYPE(fio->page));
