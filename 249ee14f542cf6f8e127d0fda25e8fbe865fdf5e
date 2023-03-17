@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13b950d6_1d32c82f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-17T15:29:42Z",
+      "side": 1,
+      "message": "Please provide details regarding the \"enhancement\". Why is this needed? Why can it not be implemented upstream?",
+      "revId": "249ee14f542cf6f8e127d0fda25e8fbe865fdf5e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab79ffb4_c5fce785",
+        "filename": "include/linux/irqchip/arm-gic-v3.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-17T15:29:42Z",
+      "side": 1,
+      "message": "this causes there to be multiple public `struct gic_chip_data` declarations. If we must do this, let\u0027s call it `gic_chip_data_v3` or something like that.",
+      "revId": "249ee14f542cf6f8e127d0fda25e8fbe865fdf5e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "104173b8_f18f8907",
         "filename": "include/trace/hooks/gic.h",
         "patchSetId": 2
