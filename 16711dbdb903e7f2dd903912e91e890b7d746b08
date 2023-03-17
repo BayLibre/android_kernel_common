@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ede13177_bf0ca26b",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-03-17T21:31:02Z",
+      "side": 1,
+      "message": "If we\u0027re returning an error, we probably don\u0027t want to also take a resource.",
+      "range": {
+        "startLine": 440,
+        "startChar": 1,
+        "endLine": 442,
+        "endChar": 26
+      },
+      "revId": "16711dbdb903e7f2dd903912e91e890b7d746b08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0392498_cda1c7f9",
+        "filename": "fs/notify/inotify/inotify_user.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-03-17T21:31:02Z",
+      "side": 1,
+      "message": "This skips the path_put, leaking the path.",
+      "range": {
+        "startLine": 768,
+        "startChar": 3,
+        "endLine": 770,
+        "endChar": 0
+      },
+      "revId": "16711dbdb903e7f2dd903912e91e890b7d746b08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
