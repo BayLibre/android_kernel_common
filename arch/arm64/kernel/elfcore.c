@@ -53,7 +53,7 @@ static int mte_dump_tag_range(struct coredump_params *cprm,
 		}
 
 		if (!tags) {
-			tags = mte_allocate_tag_storage();
+			tags = mte_allocate_temp_tag_storage();
 			if (!tags) {
 				put_page(page);
 				ret = 0;
@@ -70,7 +70,7 @@ static int mte_dump_tag_range(struct coredump_params *cprm,
 	}
 
 	if (tags)
-		mte_free_tag_storage(tags);
+		mte_free_temp_tag_storage(tags);
 
 	return ret;
 }

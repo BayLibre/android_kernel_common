@@ -29,8 +29,8 @@ void mte_restore_tags(swp_entry_t entry, struct page *page);
 void mte_restore_page_tags(void *page_addr, const void *tag_storage);
 void mte_invalidate_tags(int type, pgoff_t offset);
 void mte_invalidate_tags_area(int type);
-void *mte_allocate_tag_storage(void);
-void mte_free_tag_storage(char *storage);
+void *mte_allocate_temp_tag_storage(void);
+void mte_free_temp_tag_storage(char *storage);
 
 #ifdef CONFIG_ARM64_MTE
 

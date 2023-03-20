@@ -9,13 +9,13 @@
 
 static DEFINE_XARRAY(mte_pages);
 
-void *mte_allocate_tag_storage(void)
+void *mte_allocate_temp_tag_storage(void)
 {
 	/* tags granule is 16 bytes, 2 tags stored per byte */
 	return kmalloc(MTE_PAGE_TAG_STORAGE, GFP_KERNEL);
 }
 
-void mte_free_tag_storage(char *storage)
+void mte_free_temp_tag_storage(char *storage)
 {
 	kfree(storage);
 }
@@ -27,7 +27,7 @@ int mte_save_tags(struct page *page)
 	if (!page_mte_tagged(page))
 		return 0;
 
-	tag_storage = mte_allocate_tag_storage();
+	tag_storage = mte_allocate_temp_tag_storage();
 	if (!tag_storage)
 		return -ENOMEM;
 
@@ -36,11 +36,11 @@ int mte_save_tags(struct page *page)
 	/* page_private contains the swap entry.val set in do_swap_page */
 	ret = xa_store(&mte_pages, page_private(page), tag_storage, GFP_KERNEL);
 	if (WARN(xa_is_err(ret), "Failed to store MTE tags")) {
-		mte_free_tag_storage(tag_storage);
+		mte_free_temp_tag_storage(tag_storage);
 		return xa_err(ret);
 	} else if (ret) {
 		/* Entry is being replaced, free the old entry */
-		mte_free_tag_storage(ret);
+		mte_free_temp_tag_storage(ret);
 	}
 
 	return 0;
@@ -66,7 +66,7 @@ void mte_invalidate_tags(int type, pgoff_t offset)
 	swp_entry_t entry = swp_entry(type, offset);
 	void *tags = xa_erase(&mte_pages, entry.val);
 
-	mte_free_tag_storage(tags);
+	mte_free_temp_tag_storage(tags);
 }
 
 void mte_invalidate_tags_area(int type)
@@ -80,7 +80,7 @@ void mte_invalidate_tags_area(int type)
 	xa_lock(&mte_pages);
 	xas_for_each(&xa_state, tags, last_entry.val - 1) {
 		__xa_erase(&mte_pages, xa_state.xa_index);
-		mte_free_tag_storage(tags);
+		mte_free_temp_tag_storage(tags);
 	}
 	xa_unlock(&mte_pages);
 }
