@@ -34,6 +34,24 @@
       "parentUuid": "39acb442_9f5e5f60",
       "revId": "747788abb9740826c3973414ca4a1218e9449a62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78d885dc_968f388e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-20T16:38:42Z",
+      "side": 1,
+      "message": "That looks pretty spammy to me. Could we throttle it only 1 per proc? Currently there are one per node but no value in the message after the first one:\n```\n[  309.406503] binder: mediaswcodec:HwBinder:1097_4[1097:2154]: missing RTPRIO permission\n[  309.406630] binder: mediaswcodec:HwBinder:1097_4[1097:2154]: missing RTPRIO permission\n[  309.406717] binder: mediaswcodec:HwBinder:1097_4[1097:2154]: missing RTPRIO permission\n[  309.416038] binder: mediaswcodec:HwBinder:1097_3[1097:2138]: missing RTPRIO permission\n```\nMaybe set an indication in the binder_proc that we\u0027ve already logged this issue.",
+      "parentUuid": "de9bb6a6_b0de6a8f",
+      "revId": "747788abb9740826c3973414ca4a1218e9449a62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
