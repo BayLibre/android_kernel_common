@@ -52,6 +52,24 @@
       "parentUuid": "02f34f0f_12f46c9a",
       "revId": "6600ba5dca3990e48f2322fdda09058455509989",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a9df35b_f672bc5f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-20T23:33:15Z",
+      "side": 1,
+      "message": "It won\u0027t be allowed to be promoted to X. However, X is still determined by these \"minimum node priority\" settings. If we change the settings then X can become a different value (lower), and the kernel could allow a downgrade.\n\nI don\u0027t think we want to lower the \"minimum node priority\" just because a process can\u0027t inherit realtime.",
+      "parentUuid": "55c54b7b_1dce2412",
+      "revId": "6600ba5dca3990e48f2322fdda09058455509989",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
