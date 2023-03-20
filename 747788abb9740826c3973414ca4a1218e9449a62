@@ -88,6 +88,24 @@
       "parentUuid": "433a5fe8_02e79a70",
       "revId": "747788abb9740826c3973414ca4a1218e9449a62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c15742de_4da71a07",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-20T17:57:09Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ll swap the __func__ in favor of tsk-\u003ecomm. I agree that is more useful. BTW, I only added the group leader as several threads had the generic `HwBinder*` name from the threadpool and this is not very indicative of were the issue comes from. I\u0027ll come up with a good balance.",
+      "parentUuid": "2dd4e8dc_4a869080",
+      "revId": "747788abb9740826c3973414ca4a1218e9449a62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
