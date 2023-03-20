@@ -228,7 +228,7 @@ static int save_tags(struct page *page, unsigned long pfn)
 {
 	void *tag_storage, *ret;
 
-	tag_storage = mte_allocate_tag_storage();
+	tag_storage = mte_allocate_temp_tag_storage();
 	if (!tag_storage)
 		return -ENOMEM;
 
@@ -236,10 +236,10 @@ static int save_tags(struct page *page, unsigned long pfn)
 
 	ret = xa_store(&mte_pages, pfn, tag_storage, GFP_KERNEL);
 	if (WARN(xa_is_err(ret), "Failed to store MTE tags")) {
-		mte_free_tag_storage(tag_storage);
+		mte_free_temp_tag_storage(tag_storage);
 		return xa_err(ret);
 	} else if (WARN(ret, "swsusp: %s: Duplicate entry", __func__)) {
-		mte_free_tag_storage(ret);
+		mte_free_temp_tag_storage(ret);
 	}
 
 	return 0;
@@ -252,7 +252,7 @@ static void swsusp_mte_free_storage(void)
 
 	xa_lock(&mte_pages);
 	xas_for_each(&xa_state, tags, ULONG_MAX) {
-		mte_free_tag_storage(tags);
+		mte_free_temp_tag_storage(tags);
 	}
 	xa_unlock(&mte_pages);
 
@@ -308,7 +308,7 @@ static void swsusp_mte_restore_tags(void)
 
 		mte_restore_page_tags(page_address(page), tags);
 
-		mte_free_tag_storage(tags);
+		mte_free_temp_tag_storage(tags);
 		n++;
 	}
 	xa_unlock(&mte_pages);
