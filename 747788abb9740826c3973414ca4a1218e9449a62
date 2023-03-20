@@ -16,6 +16,24 @@
       "message": "should the above changes to node elements be undone in this error case? Any idea how frequent this case is? Could this be spammy?",
       "revId": "747788abb9740826c3973414ca4a1218e9449a62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9bb6a6_b0de6a8f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-20T16:01:45Z",
+      "side": 1,
+      "message": "It\u0027s not way too spammy as this is per-node creation and not per-transaction. Here is a sample log from a device: b/260918856#comment37. As expected, the worst part comes from the boot.\n\nWe could undo the changes done to the nodes in case of misconfiguration. I also thought about setting an extended error so it can be propagated. However, this would change the current behavior and since we have multiple cases it seems safer to track them down and fix most of them first, before making it an actual error.",
+      "parentUuid": "39acb442_9f5e5f60",
+      "revId": "747788abb9740826c3973414ca4a1218e9449a62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
