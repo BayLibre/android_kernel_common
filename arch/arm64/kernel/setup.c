@@ -43,6 +43,7 @@
 #include <asm/cpu_ops.h>
 #include <asm/hypervisor.h>
 #include <asm/kasan.h>
+#include <asm/mte_tag_storage.h>
 #include <asm/numa.h>
 #include <asm/scs.h>
 #include <asm/sections.h>
@@ -336,6 +337,12 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
 
 	if (!efi_enabled(EFI_BOOT) && ((u64)_text % MIN_KIMG_ALIGN) != 0)
 	     pr_warn(FW_BUG "Kernel image misaligned at boot, please fix your bootloader!");
+
+	/*
+	 * Must be called before memory limits are enforced by
+	 * arm64_memblock_init().
+	 */
+	mte_tag_storage_init();
 
 	arm64_memblock_init();
 
