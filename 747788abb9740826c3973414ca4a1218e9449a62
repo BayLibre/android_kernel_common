@@ -52,6 +52,24 @@
       "parentUuid": "de9bb6a6_b0de6a8f",
       "revId": "747788abb9740826c3973414ca4a1218e9449a62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "433a5fe8_02e79a70",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-20T17:01:38Z",
+      "side": 1,
+      "message": "Sorry, I forgot to mention that I removed the `ratelimited` in the build from that log. I only did so locally to get a more extensive list of current processes that are misconfigured. So here it\u0027s already being throttled (although not per process). Also, I added `task-\u003ecomm` and `task-\u003egroup_leader` bits just to get more information locally.\n\nI think we could add a per-process log but that would require storing an additional flag in `struct binder_proc` and I\u0027m not sure it\u0027s worth it.",
+      "parentUuid": "78d885dc_968f388e",
+      "revId": "747788abb9740826c3973414ca4a1218e9449a62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
