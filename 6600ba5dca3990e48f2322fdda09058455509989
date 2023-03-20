@@ -34,6 +34,24 @@
       "parentUuid": "bbd95ea9_e5ec82e8",
       "revId": "6600ba5dca3990e48f2322fdda09058455509989",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55c54b7b_1dce2412",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-20T23:28:02Z",
+      "side": 1,
+      "message": "Oh, I thought the `!capable(CAP_SYS_NICE) \u0026\u0026 !rlimit(...)` meant that it is not allowed to promote. We\u0027re just promoting anyway?",
+      "parentUuid": "02f34f0f_12f46c9a",
+      "revId": "6600ba5dca3990e48f2322fdda09058455509989",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
