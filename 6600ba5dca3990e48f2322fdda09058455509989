@@ -16,6 +16,24 @@
       "message": "what about undoing the settings on error... or perhaps better, don\u0027t set the new values until after verifying?",
       "revId": "6600ba5dca3990e48f2322fdda09058455509989",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02f34f0f_12f46c9a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-20T23:13:08Z",
+      "side": 1,
+      "message": "Changing the settings will have an impact on transactions PI. These values are still used to determine the minimum node priority. So I don\u0027t know that clearing them will have a positive performance impact.\n\nThe idea here is to flag userspace misconfiguration. This change doesn\u0027t really target a \"problem\" with the driver\u0027s behavior.\n\nI could explore the idea of clearing these values which is basically the same as forcing: SCHED_NORMAL, nice(0) and !inherit_rt. However, this would require doing a deeper performance testing.",
+      "parentUuid": "bbd95ea9_e5ec82e8",
+      "revId": "6600ba5dca3990e48f2322fdda09058455509989",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
