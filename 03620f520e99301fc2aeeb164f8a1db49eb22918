@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d83de3b_edc63e61",
+        "filename": "drivers/virt/gunyah/rsc_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-20T23:01:12Z",
+      "side": 1,
+      "message": "this doesn\u0027t look right - won\u0027t this attempt to kfree a part of `gh_rm`?",
+      "revId": "03620f520e99301fc2aeeb164f8a1db49eb22918",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6aa09bb_153d88be",
+        "filename": "drivers/virt/gunyah/rsc_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-20T23:01:12Z",
+      "side": 1,
+      "message": "It looks like adev is already allocated as part of `gh_rm`. Should this function be `gh_adev_init` instead?",
+      "revId": "03620f520e99301fc2aeeb164f8a1db49eb22918",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
