@@ -14,9 +14,10 @@ static inline bool metadata_storage_enabled(void)
 {
 	return false;
 }
+
 static inline bool alloc_can_use_metadata_pages(gfp_t gfp_mask)
 {
-	return false;
+	return !(gfp_mask & __GFP_TAGGED);
 }
 
 #define page_has_metadata(page)			page_mte_tagged(page)
