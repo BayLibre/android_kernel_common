@@ -70,6 +70,24 @@
       "parentUuid": "55c54b7b_1dce2412",
       "revId": "6600ba5dca3990e48f2322fdda09058455509989",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7452a31_814a8c69",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-03-20T23:58:25Z",
+      "side": 1,
+      "message": "Ok. Staying compatible is the right thing for now. Are you planning to follow up on all the offenders who come up? I suspect this new message will cause quite a few bugs to come your way (even though it is someone else\u0027s issue).\n\nSince it is only in android-mainline, not many folks will notice it (for now). Are you planning to backport this to GKI kernels?",
+      "parentUuid": "3a9df35b_f672bc5f",
+      "revId": "6600ba5dca3990e48f2322fdda09058455509989",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
