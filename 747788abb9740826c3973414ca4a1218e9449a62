@@ -106,6 +106,24 @@
       "parentUuid": "2dd4e8dc_4a869080",
       "revId": "747788abb9740826c3973414ca4a1218e9449a62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b97bd1ec_9790830a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-20T18:58:12Z",
+      "side": 1,
+      "message": "The RTPRIO is almost certainly a permission that will be set per service/process as opposed to per-thread. So it\u0027s more informative to use the task-\u003ecomm from the group_leader here.",
+      "parentUuid": "c15742de_4da71a07",
+      "revId": "747788abb9740826c3973414ca4a1218e9449a62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
