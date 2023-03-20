@@ -53,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d057f9d_6ac76525",
+        "filename": "include/linux/irqchip/arm-gic-v3.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1891695
+      },
+      "writtenOn": "2023-03-20T17:58:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab79ffb4_c5fce785",
+      "revId": "249ee14f542cf6f8e127d0fda25e8fbe865fdf5e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "104173b8_f18f8907",
@@ -66,6 +84,30 @@
       "writtenOn": "2023-03-17T10:19:38Z",
       "side": 1,
       "message": "Please fix this ERROR reported by GKI Guidelines: Please do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor...\n\nAnalyzer Description: Validates that changes do not have prohibited expressions in them.\nOwner: gki-eng-team@google.com\n\nPlease do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor-hooks for details.\n\nGrepping around, it looks like `vendor_hooks.h` handles this with a lovely `#ifndef __GENKEYMS__` guard.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "249ee14f542cf6f8e127d0fda25e8fbe865fdf5e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3900d25_8adc7a0c",
+        "filename": "include/trace/hooks/gic.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1891695
+      },
+      "writtenOn": "2023-03-20T17:58:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "104173b8_f18f8907",
       "range": {
         "startLine": 10,
         "startChar": 0,
