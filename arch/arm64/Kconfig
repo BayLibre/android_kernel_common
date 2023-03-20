@@ -2047,6 +2047,17 @@ config ARM64_SME
 	  register state capable of holding two dimensional matrix tiles to
 	  enable various matrix operations.
 
+if ARM64_MTE
+config ARM64_MTE_TAG_STORAGE
+	bool "Dynamic MTE tag storage management"
+	help
+	  Adds support for dynamic management of the memory used by the hardware
+	  for storing MTE tags. This memory can be used as regular data memory
+	  when it's not used for storing tags.
+
+	  If unsure, say N
+endif # ARM64_MTE
+
 config ARM64_MODULE_PLTS
 	bool "Use PLTs to allow module memory to spill over into vmalloc area"
 	depends on MODULES
