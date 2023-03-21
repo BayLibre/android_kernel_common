@@ -16,6 +16,24 @@
       "message": "Please focus on the FROMLIST stuff first, and then let\u0027s worry about any potential future issues for ANDROID-only things.  This should not be needed now, there is no need to add this at this point in time.",
       "revId": "0e63dd0dd0a5cf715e428717ca36ee4e3f257552",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d179a17_4b8b9baf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-03-21T16:59:34Z",
+      "side": 1,
+      "message": "Hi Greg, there are other virtual machines beyond AVF which we need to support which aren\u0027t covered by the FROMLIST stuff. The patches for that support aren\u0027t yet posted to kernel.org (because it adds more patches to an already large initial series). We\u0027ll continue to improve Gunyah support in kernel.org as it gets accepted there with the goal so we don\u0027t have to carry any ANDROID-only patches. We definitely won\u0027t be able to get that support in time for android14-6.1 and this patch allows us to enable the extra features in vendor kernel in meantime.",
+      "parentUuid": "5557bb1d_8a032d89",
+      "revId": "0e63dd0dd0a5cf715e428717ca36ee4e3f257552",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
