@@ -34,6 +34,24 @@
       "parentUuid": "5557bb1d_8a032d89",
       "revId": "0e63dd0dd0a5cf715e428717ca36ee4e3f257552",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28384e08_a52f109a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-03-21T17:25:10Z",
+      "side": 1,
+      "message": "I do not know about virtual machine stuff like that, sorry.\n\nDon\u0027t do android-specific user/kernel apis please, we don\u0027t allow that for any other type of submission as you would be forced to support that for 10+ years.  Please just submit the needed changes upstream first and then add the new ioctls here as well.",
+      "parentUuid": "2d179a17_4b8b9baf",
+      "revId": "0e63dd0dd0a5cf715e428717ca36ee4e3f257552",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
