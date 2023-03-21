@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8941bb9_bb7ffa2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-03-21T14:53:19Z",
+      "side": 1,
+      "message": "```\n--- common/arch/arm64/configs/gki_defconfig\t2023-03-21 10:24:12.370641578 +0000\n+++ common/defconfig\t2023-03-21 10:35:39.049703570 +0000\n@@ -254,7 +254,6 @@\n CONFIG_NET_SCH_FQ\u003dy\n CONFIG_NET_SCH_INGRESS\u003dy\n CONFIG_NET_CLS_BASIC\u003dy\n-CONFIG_NET_CLS_TCINDEX\u003dy\n CONFIG_NET_CLS_FW\u003dy\n CONFIG_NET_CLS_U32\u003dy\n CONFIG_CLS_U32_MARK\u003dy\nERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig\nERROR: /buildbot/src/android/common-android14-5.15/common/BUILD.bazel:31:22\n```",
+      "revId": "457ddb152328c4f805f12249ef362ef57261b40e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
