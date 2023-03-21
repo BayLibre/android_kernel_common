@@ -88,6 +88,24 @@
       "parentUuid": "3a9df35b_f672bc5f",
       "revId": "6600ba5dca3990e48f2322fdda09058455509989",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdef00b0_e8073553",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-03-21T00:15:04Z",
+      "side": 1,
+      "message": "Yes, I was planning on following up on all offenders. However, let me confirm with smoreland@ that this is actually an error on HIDL, as we are setting `inherit_rt` unconditionally there.",
+      "parentUuid": "f7452a31_814a8c69",
+      "revId": "6600ba5dca3990e48f2322fdda09058455509989",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
