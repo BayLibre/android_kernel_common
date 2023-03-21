@@ -22,6 +22,30 @@
       },
       "revId": "8c7121425208151a8b112b9f72c846d22962019f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ee42276_b0d72ae5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1937254
+      },
+      "writtenOn": "2023-03-21T11:42:33Z",
+      "side": 1,
+      "message": "Ack.\nNO. This requires the platform hooks to handle error flags. The pcie AER can only know about this error but cannot handle it. When the pcie returns a slave error to the infra bus, the kernel panic will appear. Platform hooks are required to ignore this error flag.",
+      "parentUuid": "3f1445fb_fa623537",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "8c7121425208151a8b112b9f72c846d22962019f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
