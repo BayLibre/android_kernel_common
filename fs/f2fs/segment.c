@@ -194,7 +194,10 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
 
 	release_atomic_write_cnt(inode);
 	clear_inode_flag(inode, FI_ATOMIC_COMMITTED);
+<<<<<<< HEAD   (e0923f ANDROID: gic: Add vendor hook for gic-v3 resume)
 	clear_inode_flag(inode, FI_ATOMIC_REPLACE);
+=======
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	clear_inode_flag(inode, FI_ATOMIC_FILE);
 	stat_dec_atomic_inode(inode);
 

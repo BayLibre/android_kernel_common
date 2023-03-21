@@ -813,7 +813,10 @@ enum {
 	FI_ALIGNED_WRITE,	/* enable aligned write */
 	FI_COW_FILE,		/* indicate COW file */
 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
+<<<<<<< HEAD   (e0923f ANDROID: gic: Add vendor hook for gic-v3 resume)
 	FI_ATOMIC_REPLACE,	/* indicate atomic replace */
+=======
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	FI_MAX,			/* max flag, never be used */
 };
 

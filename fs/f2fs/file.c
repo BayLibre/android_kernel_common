@@ -2117,10 +2117,18 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
 	}
 
 	f2fs_write_inode(inode, NULL);
+<<<<<<< HEAD   (e0923f ANDROID: gic: Add vendor hook for gic-v3 resume)
+=======
+
+	isize = i_size_read(inode);
+	fi->original_i_size = isize;
+	f2fs_i_size_write(fi->cow_inode, isize);
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 
 	stat_inc_atomic_inode(inode);
 
 	set_inode_flag(inode, FI_ATOMIC_FILE);
+<<<<<<< HEAD   (e0923f ANDROID: gic: Add vendor hook for gic-v3 resume)
 
 	isize = i_size_read(inode);
 	fi->original_i_size = isize;
@@ -2132,6 +2140,8 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
 	}
 	f2fs_i_size_write(fi->cow_inode, isize);
 
+=======
+>>>>>>> BRANCH (1cc3fc Linux 6.1.18)
 	f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
 
 	f2fs_update_time(sbi, REQ_TIME);
