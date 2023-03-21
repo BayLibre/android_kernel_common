@@ -117,6 +117,30 @@
       },
       "revId": "fa2a98bc1d3dd6922493c3de1d49b915a9e44a7c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86974965_72695d62",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 7
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-03-21T00:51:22Z",
+      "side": 1,
+      "message": "In that case they should go as protected GKI modules and these files needs to be updated as well:\n\n1. https://cs.android.com/android/kernel/superproject/+/common-android14-6.1:common/android/gki_protected_modules\n2. https://cs.android.com/android/kernel/superproject/+/common-android14-6.1:common/android/abi_gki_protected_exports - After updating the #1; run `tools/bazel run //common:kernel_aarch64_abi_update_protected_exports`\n\nRef: https://source.android.com/docs/core/architecture/kernel/convert-or-add#configure-new\n\nAre these only required for `android14-6.1` and not `android14-5.15`?",
+      "parentUuid": "c86a3408_08607058",
+      "range": {
+        "startLine": 536,
+        "startChar": 0,
+        "endLine": 538,
+        "endChar": 25
+      },
+      "revId": "fa2a98bc1d3dd6922493c3de1d49b915a9e44a7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
