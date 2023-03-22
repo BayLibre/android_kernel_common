@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0237499_8ffbeedc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2023-03-22T18:59:23Z",
+      "side": 1,
+      "message": "sepolicy_neverallows_vendor tests are blocking for now if I add to the following for user varaint:\n+  allow dump_power vendor_usb_debugfs:dir r_dir_perms;\n+  allow dump_power vendor_usb_debugfs:file r_file_perms;\n\n[ 30% 57/187] //system/sepolicy:sepolicy_neverallows_vendor Neverallow check: sepolicy_neverallows_vendor\nFAILED: out/soong/.intermediates/system/sepolicy/sepolicy_neverallows_vendor/policy\nout/host/linux-x86/bin/checkpolicy -M -c 30 -o out/soong/.intermediates/system/sepolicy/sepolicy_neverallows_vendor/policy out/soong/.intermediates/system/sepolicy/sepolicy_neverallows_vendor.checkpolicy.conf/android_common/sepolicy_neverallows_vendor.checkpolicy.conf # hash of input list: 15871fa7f1904c26cfc726ea362c19ede7f225bff09f1871b1f7d5657882753a\nlibsepol.report_failure: neverallow on line 651 of system/sepolicy/private/domain.te (or line 49017 of out/soong/.intermediates/system/sepolicy/sepolicy_neverallows_vendor.checkpolicy.conf/android_common/sepolicy_neverallows_vendor.checkpolicy.conf) violated by allow dump_power vendor_usb_debugfs:file { ioctl read lock open watch watch_reads };\nlibsepol.check_assertions: 1 neverallow failures occurred\nError while expanding policy\n10:31:26 ninja failed with: exit status 1\n\nWill file a bug with the test owner with relevant context.",
+      "parentUuid": "38b441fb_0e3ee20e",
+      "revId": "7d7bd94d05aed025ad81834911b361e1901e7434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4127979b_13cd0c12",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
