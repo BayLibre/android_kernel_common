@@ -365,4 +365,12 @@ void free_contig_range(unsigned long pfn, unsigned long nr_pages);
 extern void init_cma_reserved_pageblock(struct page *page);
 #endif
 
+#ifdef CONFIG_MEMORY_METADATA
+extern void init_metadata_reserved_pageblock(struct page *page);
+#else
+static inline void init_metadata_reserved_pageblock(struct page *page)
+{
+}
+#endif
+
 #endif /* __LINUX_GFP_H */
