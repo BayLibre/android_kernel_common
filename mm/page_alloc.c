@@ -2348,9 +2348,9 @@ void __init page_alloc_init_late(void)
 		set_zone_contiguous(zone);
 }
 
-#ifdef CONFIG_CMA
-/* Free whole pageblock and set its migration type to MIGRATE_CMA. */
-void __init init_cma_reserved_pageblock(struct page *page)
+#if defined(CONFIG_CMA) || defined(CONFIG_MEMORY_METADATA)
+static void __init init_reserved_pageblock(struct page *page,
+					   enum migratetype migratetype)
 {
 	unsigned i = pageblock_nr_pages;
 	struct page *p = page;
@@ -2360,14 +2360,31 @@ void __init init_cma_reserved_pageblock(struct page *page)
 		set_page_count(p, 0);
 	} while (++p, --i);
 
-	set_pageblock_migratetype(page, MIGRATE_CMA);
+	set_pageblock_migratetype(page, migratetype);
 	set_page_refcounted(page);
 	__free_pages(page, pageblock_order);
 
 	adjust_managed_page_count(page, pageblock_nr_pages);
+}
+
+#ifdef CONFIG_CMA
+/* Free whole pageblock and set its migration type to MIGRATE_CMA. */
+void __init init_cma_reserved_pageblock(struct page *page)
+{
+	init_reserved_pageblock(page, MIGRATE_CMA);
 	page_zone(page)->cma_pages += pageblock_nr_pages;
 }
 #endif
+
+#ifdef CONFIG_MEMORY_METADATA
+/* Free whole pageblock and set its migration type to MIGRATE_METADATA. */
+void __init init_metadata_reserved_pageblock(struct page *page)
+{
+	init_reserved_pageblock(page, MIGRATE_METADATA);
+	page_zone(page)->metadata_pages += pageblock_nr_pages;
+}
+#endif
+#endif /* CONFIG_CMA || CONFIG_MEMORY_METADATA */
 
 /*
  * The order of subdivision here is critical for the IO subsystem.
