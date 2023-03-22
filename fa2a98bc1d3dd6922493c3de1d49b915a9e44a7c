@@ -261,6 +261,30 @@
       },
       "revId": "fa2a98bc1d3dd6922493c3de1d49b915a9e44a7c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe4c0616_32e98d90",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 7
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-03-22T23:56:33Z",
+      "side": 1,
+      "message": "\u003e Sure I\u0027ll give it a shot, hopefully tomorrow (little swamped).\n\nNo worries, this is not urgent or blocking on my end. I\u0027d put aosp/2503456 as higher priority than testing this as we\u0027d end up being unable to consume these Gunyah changes downstream.\n\n\u003e To test this, I am assuming...\n\nYou could pick up the whole series. Easiest would be to `git pull` this commit and manually revert the changes to abi_gki_protected_exports.",
+      "parentUuid": "01e51895_6b840aed",
+      "range": {
+        "startLine": 536,
+        "startChar": 0,
+        "endLine": 538,
+        "endChar": 25
+      },
+      "revId": "fa2a98bc1d3dd6922493c3de1d49b915a9e44a7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
