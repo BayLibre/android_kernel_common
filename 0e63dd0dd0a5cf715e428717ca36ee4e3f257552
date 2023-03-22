@@ -52,6 +52,24 @@
       "parentUuid": "2d179a17_4b8b9baf",
       "revId": "0e63dd0dd0a5cf715e428717ca36ee4e3f257552",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa6037c4_9f7297ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-03-22T20:27:55Z",
+      "side": 1,
+      "message": "\u003e Don\u0027t do android-specific user/kernel apis please, we don\u0027t allow that for any other type of submission as you would be forced to support that for 10+ years.\n\nSo far, we have two. These UAPIs were originally part of the upstream contribution, but Will Deacon asked us to drop the support for lending memory and that we (pKVM and Gunyah) converge on restricted_memfd which is still in relatively early development on kernel.org. The first UAPI is to bring our initial version of memory lending into ACK since restricted_memfd will not be ready for android14-6.1. The 2nd UAPI is for the protected firmware. This UAPI is upstream ready, but depends on the memory lend APIs to be usable so it doesn\u0027t yet make sense to submit to kernel.org.\n\nMarking as resolved since this discussion was about UAPI and this patch doesn\u0027t introduce android-specific UAPI.",
+      "parentUuid": "28384e08_a52f109a",
+      "revId": "0e63dd0dd0a5cf715e428717ca36ee4e3f257552",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
