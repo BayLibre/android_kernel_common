@@ -52,6 +52,24 @@
       "parentUuid": "87634085_e699429e",
       "revId": "1875e5faf76b4a4d4b4ff150cd087b461a6fd6d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e376c16_00e4b13c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1937254
+      },
+      "writtenOn": "2023-03-22T11:35:23Z",
+      "side": 1,
+      "message": "Dear sir,\n\nThank you for your suggestion.\n\n1. The PCIE timing is reasonable, otherwise the read command will jam the CPU and the infra will timeout if it fails to receive the return value. PCIE or Infra bus tracks it in advance.\n2. After pcie timeout, pcie hardware cannot avoid not sending a slave error to infra. This hardware design optimization (pcie does not send slave error to infra) will be performed on the next IC.\n\nYour suggestion MTK has long considered, and various software workarounds have considered it.\n\n\nThe customer want cherry-pick this patch to kernel-6.1.\nhttps://android-review.googlesource.com/c/kernel/common/+/2193421",
+      "parentUuid": "b786daea_307bfc9c",
+      "revId": "1875e5faf76b4a4d4b4ff150cd087b461a6fd6d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
