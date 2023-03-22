@@ -278,12 +278,27 @@ static void clocksource_verify_percpu(struct clocksource *cs)
 			testcpu, cs_nsec_min, cs_nsec_max, cs->name);
 }
 
+static inline void clocksource_reset_watchdog(void)
+{
+	struct clocksource *cs;
+
+	list_for_each_entry(cs, &watchdog_list, wd_list)
+		cs->flags &= ~CLOCK_SOURCE_WATCHDOG;
+}
+
+
 static void clocksource_watchdog(struct timer_list *unused)
 {
 	u64 csnow, wdnow, cslast, wdlast, delta;
 	int next_cpu, reset_pending;
 	int64_t wd_nsec, cs_nsec;
 	struct clocksource *cs;
+<<<<<<< HEAD   (2b5ee1 Merge 5.10.172 into android12-5.10-lts)
+=======
+	enum wd_read_status read_ret;
+	unsigned long extra_wait = 0;
+	u32 md;
+>>>>>>> BRANCH (e5f315 Linux 5.10.173)
 
 	spin_lock(&watchdog_lock);
 	if (!watchdog_running)
@@ -300,10 +315,34 @@ static void clocksource_watchdog(struct timer_list *unused)
 			continue;
 		}
 
+<<<<<<< HEAD   (2b5ee1 Merge 5.10.172 into android12-5.10-lts)
 		if (!cs_watchdog_read(cs, &csnow, &wdnow)) {
+=======
+		read_ret = cs_watchdog_read(cs, &csnow, &wdnow);
+
+		if (read_ret == WD_READ_UNSTABLE) {
+>>>>>>> BRANCH (e5f315 Linux 5.10.173)
 			/* Clock readout unreliable, so give it up. */
 			__clocksource_unstable(cs);
 			continue;
+		}
+
+		/*
+		 * When WD_READ_SKIP is returned, it means the system is likely
+		 * under very heavy load, where the latency of reading
+		 * watchdog/clocksource is very big, and affect the accuracy of
+		 * watchdog check. So give system some space and suspend the
+		 * watchdog check for 5 minutes.
+		 */
+		if (read_ret == WD_READ_SKIP) {
+			/*
+			 * As the watchdog timer will be suspended, and
+			 * cs->last could keep unchanged for 5 minutes, reset
+			 * the counters.
+			 */
+			clocksource_reset_watchdog();
+			extra_wait = HZ * 300;
+			break;
 		}
 
 		/* Clocksource initialized ? */
@@ -394,7 +433,7 @@ static void clocksource_watchdog(struct timer_list *unused)
 	 * pair clocksource_stop_watchdog() clocksource_start_watchdog().
 	 */
 	if (!timer_pending(&watchdog_timer)) {
-		watchdog_timer.expires += WATCHDOG_INTERVAL;
+		watchdog_timer.expires += WATCHDOG_INTERVAL + extra_wait;
 		add_timer_on(&watchdog_timer, next_cpu);
 	}
 out:
@@ -417,14 +456,6 @@ static inline void clocksource_stop_watchdog(void)
 		return;
 	del_timer(&watchdog_timer);
 	watchdog_running = 0;
-}
-
-static inline void clocksource_reset_watchdog(void)
-{
-	struct clocksource *cs;
-
-	list_for_each_entry(cs, &watchdog_list, wd_list)
-		cs->flags &= ~CLOCK_SOURCE_WATCHDOG;
 }
 
 static void clocksource_resume_watchdog(void)
