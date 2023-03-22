@@ -196,6 +196,33 @@ void __init kvm_hyp_reserve(void)
 		 hyp_mem_base);
 }
 
+static int __pkvm_create_hyp_vcpu(struct kvm *host_kvm, struct kvm_vcpu *host_vcpu,
+				  unsigned long idx, size_t *total_sz)
+{
+	size_t hyp_vcpu_sz = PAGE_ALIGN(PKVM_HYP_VCPU_SIZE);
+	pkvm_handle_t handle = host_kvm->arch.pkvm.handle;
+	void *hyp_vcpu;
+	int ret = 0;
+
+	/* Indexing of the vcpus to be sequential starting at 0. */
+	if (WARN_ON(host_vcpu->vcpu_idx != idx))
+		return -EINVAL;
+
+	hyp_vcpu = alloc_pages_exact(hyp_vcpu_sz, GFP_KERNEL_ACCOUNT);
+	if (!hyp_vcpu)
+		return -ENOMEM;
+
+	ret = kvm_call_hyp_nvhe(__pkvm_init_vcpu, handle, host_vcpu, hyp_vcpu);
+	if (ret) {
+		free_pages_exact(hyp_vcpu, hyp_vcpu_sz);
+		return ret;
+	}
+
+	*total_sz += hyp_vcpu_sz;
+
+	return ret;
+}
+
 /*
  * Allocates and donates memory for hypervisor VM structs at EL2.
  *
@@ -208,7 +235,7 @@ void __init kvm_hyp_reserve(void)
  */
 static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 {
-	size_t pgd_sz, hyp_vm_sz, hyp_vcpu_sz, last_ran_sz, total_sz;
+	size_t pgd_sz, hyp_vm_sz, last_ran_sz, total_sz;
 	struct kvm_vcpu *host_vcpu;
 	pkvm_handle_t handle;
 	void *pgd, *hyp_vm, *last_ran;
@@ -259,30 +286,10 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	total_sz = hyp_vm_sz + last_ran_sz + pgd_sz;
 
 	/* Donate memory for the vcpus at hyp and initialize it. */
-	hyp_vcpu_sz = PAGE_ALIGN(PKVM_HYP_VCPU_SIZE);
 	kvm_for_each_vcpu(idx, host_vcpu, host_kvm) {
-		void *hyp_vcpu;
-
-		/* Indexing of the vcpus to be sequential starting at 0. */
-		if (WARN_ON(host_vcpu->vcpu_idx != idx)) {
-			ret = -EINVAL;
+		ret = __pkvm_create_hyp_vcpu(host_kvm, host_vcpu, idx, &total_sz);
+		if (ret)
 			goto destroy_vm;
-		}
-
-		hyp_vcpu = alloc_pages_exact(hyp_vcpu_sz, GFP_KERNEL_ACCOUNT);
-		if (!hyp_vcpu) {
-			ret = -ENOMEM;
-			goto destroy_vm;
-		}
-
-		total_sz += hyp_vcpu_sz;
-
-		ret = kvm_call_hyp_nvhe(__pkvm_init_vcpu, handle, host_vcpu,
-					hyp_vcpu);
-		if (ret) {
-			free_pages_exact(hyp_vcpu, hyp_vcpu_sz);
-			goto destroy_vm;
-		}
 	}
 
 	atomic64_set(&host_kvm->stat.protected_hyp_mem, total_sz);
