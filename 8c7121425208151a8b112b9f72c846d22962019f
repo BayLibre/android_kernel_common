@@ -70,6 +70,30 @@
       },
       "revId": "8c7121425208151a8b112b9f72c846d22962019f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1e13373_425d44ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1937254
+      },
+      "writtenOn": "2023-03-22T02:19:13Z",
+      "side": 1,
+      "message": "Dear sirs,\nLet me briefly describe the whole problem.\nBackground: The read command passes through the infra bus, infra sends the command to the pcie bus, and pcie starts timing; pcie sends the command to the wifi device. But there is a problem inside wifi and no data is returned to pcie. When the pcie timing reaches 50ms, it will trigger the timeout and reply the slave error to the infra bus. All of the above are reasonable.\nAnalysis: But as long as infra hardware receives slave error, it will consider it an error, trigger do_serror, and then restart the phone. If the phone restarts, the customer experience is very bad.\nPurpose: I want to ignore this error before arm64_serror_panic through vendor hooks. On the one hand, it prints the status of the wifi end for debugging, and on the other hand, it is used to reset the wifi. The purpose is to keep the mobile phone platform from hanging up.",
+      "parentUuid": "7933552e_0843faee",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "8c7121425208151a8b112b9f72c846d22962019f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
