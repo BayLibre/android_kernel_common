@@ -16,6 +16,24 @@
       "message": "Why isn\u0027t the correct fix for this submitted upstream already?  What is needed to be done to get it fixed properly instead of this vendor hook?",
       "revId": "1875e5faf76b4a4d4b4ff150cd087b461a6fd6d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87634085_e699429e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1937254
+      },
+      "writtenOn": "2023-03-22T02:31:26Z",
+      "side": 1,
+      "message": "1. For mobile phone customer manufacturers, they want to mass produce quickly.\n2. At present, only this EP wifi is encountered. Its internal bus is not stable enough, and there will be a problem of read completion timeout. At this time, if the AP is a mobile phone platform, if the kernel panics, the wifi firmware log cannot be saved and the wifi status cannot be debugged. Only the AP platform can find a way to avoid kernel panic.\n3. The infra bus cannot turn off the slave error monitoring, after all, there are other modules to be monitored.\n\nThis is not a common problem, nor is it a problem with the AP platform. The AP platform is set for this wifi provided by the customer mobile phone provider, and does not need submitted upstream.",
+      "parentUuid": "094bc5d9_b2557ee1",
+      "revId": "1875e5faf76b4a4d4b4ff150cd087b461a6fd6d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
