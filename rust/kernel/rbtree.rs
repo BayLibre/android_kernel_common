@@ -22,6 +22,14 @@ struct Node<K, V> {
     value: V,
 }
 
+// SAFETY: An `RBTree` allows the same kinds of access to its values that a struct allows to its
+// fields, so we use the same Send condition as would be used for a struct with K and V fields.
+unsafe impl<K: Send, V: Send> Send for Node<K, V> {}
+
+// SAFETY: An `RBTree` allows the same kinds of access to its values that a struct allows to its
+// fields, so we use the same Sync condition as would be used for a struct with K and V fields.
+unsafe impl<K: Sync, V: Sync> Sync for Node<K, V> {}
+
 /// A red-black tree with owned nodes.
 ///
 /// It is backed by the kernel C red-black trees.

@@ -33,7 +33,7 @@ use crate::{
     defs::*,
     error::{BinderError, BinderResult},
     node::{DeliveredNodeDeath, Node, NodeDeath, NodeRef},
-    range_alloc::{self, RangeAllocator},
+    range_alloc::{RangeAllocator, ReserveNewBox},
     thread::{PushWorkRes, Thread},
     DeliverToRead, DeliverToReadListAdapter,
 };
@@ -651,9 +651,13 @@ impl Process {
         size: usize,
         is_oneway: bool,
     ) -> BinderResult<Allocation<'_>> {
-        let alloc = range_alloc::ReserveNewBox::try_new()?;
+        let alloc: ReserveNewBox<AllocationInfo> = ReserveNewBox::try_new()?;
         let mut inner = self.inner.lock();
-        let mapping = inner.mapping.as_mut().ok_or_else(BinderError::new_dead)?;
+        let mut mapping = inner.mapping.as_mut().ok_or_else(BinderError::new_dead)?;
+        drop(mapping);
+        drop(inner);
+        inner = self.inner.lock();
+        mapping = inner.mapping.as_mut().ok_or_else(BinderError::new_dead)?;
         let offset = mapping.alloc.reserve_new(size, is_oneway, alloc)?;
         Ok(Allocation::new(
             self,
