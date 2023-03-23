@@ -599,24 +599,24 @@ static void init_pkvm_hyp_vm(struct kvm *host_kvm, struct pkvm_hyp_vm *hyp_vm,
 
 static int init_pkvm_hyp_vcpu_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcpu *host_vcpu)
 {
-	size_t sve_state_size;
-	void *sve_state;
+	void *sve_state = READ_ONCE(host_vcpu->arch.sve_state);
+	unsigned int sve_max_vl = READ_ONCE(host_vcpu->arch.sve_max_vl);
+	size_t sve_state_size = _vcpu_sve_state_size(sve_max_vl);
 
-	hyp_vcpu->vcpu.arch.sve_state = READ_ONCE(host_vcpu->arch.sve_state);
-	hyp_vcpu->vcpu.arch.sve_max_vl = READ_ONCE(host_vcpu->arch.sve_max_vl);
+	if (!sve_state || !sve_state_size)
+		goto err;
 
-	sve_state = kern_hyp_va(hyp_vcpu->vcpu.arch.sve_state);
-	sve_state_size = vcpu_sve_state_size(&hyp_vcpu->vcpu);
+	if (!hyp_pin_shared_mem(sve_state, sve_state + sve_state_size))
+		goto err;
 
-	if (!hyp_vcpu->vcpu.arch.sve_state || !sve_state_size ||
-		hyp_pin_shared_mem(sve_state, sve_state + sve_state_size)) {
-		clear_bit(KVM_ARM_VCPU_SVE, hyp_vcpu->vcpu.arch.features);
-		hyp_vcpu->vcpu.arch.sve_state = NULL;
-		hyp_vcpu->vcpu.arch.sve_max_vl = 0;
-		return -EINVAL;
-	}
+	hyp_vcpu->vcpu.arch.sve_state = kern_hyp_va(sve_state);
+	hyp_vcpu->vcpu.arch.sve_max_vl = sve_max_vl;
 
 	return 0;
+
+err:
+	clear_bit(KVM_ARM_VCPU_SVE, hyp_vcpu->vcpu.arch.features);
+	return -EINVAL;
 }
 
 static int init_pkvm_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu,
