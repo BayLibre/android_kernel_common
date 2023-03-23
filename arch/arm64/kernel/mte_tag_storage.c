@@ -296,6 +296,24 @@ static int __init mte_tag_storage_activate_regions(void)
 		}
 	}
 
+	/*
+	 * MTE disabled, tag storage pages can be used like any other pages. The
+	 * only restriction is that the pages cannot be used by kexec because
+	 * the memory is marked as reserved in the memblock allocator.
+	 */
+	if (!system_supports_mte()) {
+		for (i = 0; i< num_tag_regions; i++) {
+			tag_range = &tag_regions[i].tag_range;
+			for (pfn = tag_range->start;
+			     pfn <= tag_range->end;
+			     pfn += pageblock_nr_pages) {
+				init_reserved_pageblock(pfn_to_page(pfn), MIGRATE_MOVABLE);
+			}
+		}
+
+		return 0;
+	}
+
 	for (i = 0; i < num_tag_regions; i++) {
 		tag_range = &tag_regions[i].tag_range;
 		for (pfn = tag_range->start; pfn <= tag_range->end; pfn += pageblock_nr_pages) {

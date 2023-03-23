@@ -2349,8 +2349,7 @@ void __init page_alloc_init_late(void)
 }
 
 #if defined(CONFIG_CMA) || defined(CONFIG_MEMORY_METADATA)
-static void __init init_reserved_pageblock(struct page *page,
-					   enum migratetype migratetype)
+void __init init_reserved_pageblock(struct page *page, enum migratetype migratetype)
 {
 	unsigned i = pageblock_nr_pages;
 	struct page *p = page;
