@@ -33,6 +33,42 @@
       "message": "What do we do about the affected ABI?\n\n```\ntype \u0027struct pci_host_bridge\u0027 changed\n  member \u0027unsigned int no_inc_mrrs\u0027 was added\n  8 members (\u0027unsigned int native_aer\u0027 .. \u0027unsigned int size_windows\u0027) changed\n    offset changed by 1\n```",
       "revId": "a880d7ebc53ec8595200175f860f35ef8755e91f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9914fafa_75ad11d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-03-23T14:19:54Z",
+      "side": 1,
+      "message": "Odd, we removed code and it increased?",
+      "parentUuid": "d4836b1b_ae458fa4",
+      "revId": "a880d7ebc53ec8595200175f860f35ef8755e91f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c43fb8_c4c0bbb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-03-23T14:19:54Z",
+      "side": 1,
+      "message": "I\u0027ll fix it up, I have more reverts for that, already done in other branches, thanks!",
+      "parentUuid": "1be895f1_6e61656b",
+      "revId": "a880d7ebc53ec8595200175f860f35ef8755e91f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
