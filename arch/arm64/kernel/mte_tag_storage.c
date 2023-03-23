@@ -269,12 +269,41 @@ out_err:
 	num_tag_regions = 0;
 }
 
+/* alloc_contig_range() requires all pages to be in the same zone. */
+static int __init mte_tag_storage_check_zone(void)
+{
+	struct range *tag_range;
+	struct zone *zone;
+	unsigned long pfn;
+	u32 block_size;
+	int i, j;
+
+	for (i = 0; i < num_tag_regions; i++) {
+		block_size = tag_regions[i].block_size;
+		if (block_size == 1)
+			continue;
+
+		tag_range = &tag_regions[i].tag_range;
+		for (pfn = tag_range->start; pfn <= tag_range->end; pfn += block_size) {
+			zone = page_zone(pfn_to_page(pfn));
+			for (j = 1; j < block_size; j++) {
+				if (page_zone(pfn_to_page(pfn + j)) != zone) {
+					pr_err("Tag block pages in different zones");
+					return -EINVAL;
+				}
+			}
+		}
+	}
+
+	 return 0;
+}
+
 static int __init mte_tag_storage_activate_regions(void)
 {
 	phys_addr_t dram_start, dram_end;
 	struct range *tag_range;
 	unsigned long pfn;
-	int i;
+	int i, ret;
 
 	if (num_tag_regions == 0)
 		return 0;
@@ -325,6 +354,10 @@ static int __init mte_tag_storage_activate_regions(void)
 		pr_info("KASAN HW tags enabled, disabling tag storage");
 		return 0;
 	}
+
+	ret = mte_tag_storage_check_zone();
+	if (ret)
+		return ret;
 
 	for (i = 0; i < num_tag_regions; i++) {
 		tag_range = &tag_regions[i].tag_range;
