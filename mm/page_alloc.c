@@ -2347,9 +2347,8 @@ void __init page_alloc_init_late(void)
 		set_zone_contiguous(zone);
 }
 
-#if defined(CONFIG_CMA) || defined(CONFIG_MEMORY_METADATA)
-static void __init init_reserved_pageblock(struct page *page,
-					   enum migratetype migratetype)
+void __init init_reserved_pageblock(struct page *page,
+				    enum migratetype migratetype)
 {
 	unsigned i = pageblock_nr_pages;
 	struct page *p = page;
@@ -2383,7 +2382,6 @@ void __init init_metadata_reserved_pageblock(struct page *page)
 	page_zone(page)->metadata_pages += pageblock_nr_pages;
 }
 #endif
-#endif /* CONFIG_CMA || CONFIG_MEMORY_METADATA */
 
 /*
  * The order of subdivision here is critical for the IO subsystem.
