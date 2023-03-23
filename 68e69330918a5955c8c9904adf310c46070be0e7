@@ -16,6 +16,24 @@
       "message": "There was nothing changed here, are you sure this was needed?",
       "revId": "68e69330918a5955c8c9904adf310c46070be0e7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "503cec14_2866ce1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2023-03-23T09:51:04Z",
+      "side": 1,
+      "message": "At the time I cherry-picked the commit, the equivalent fix from Linux stable was not yet integrated in android-4.19-stable, so the gerrit cherry-picked commit contained changes. While my patch was reviewed, the fix from Linux stable got in android-4.19-stable. After my patch passed review, gerrit applied the commit with --allow-empty.\n\nI agree that gerrit shouldn\u0027t apply individual commits with --allow-empty. Looking into the gerrit docummentation (https://gerrit-review.googlesource.com/Documentation/config-project-config.html#submit.rejectEmptyCommit) I see there\u0027s a submit.rejectEmptyCommit option, but it handles both individual commits and merges with the same option. And allowing merges with empty commits is desirable. It looks like gerrit configuration could be improved.",
+      "parentUuid": "9f6e047a_0877cba2",
+      "revId": "68e69330918a5955c8c9904adf310c46070be0e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
