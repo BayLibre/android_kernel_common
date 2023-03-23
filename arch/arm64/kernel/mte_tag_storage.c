@@ -260,12 +260,45 @@ out_err:
 	num_tag_regions = 0;
 }
 
+/* alloc_contig_range() requires all pages to be in the same zone. */
+static int __init mte_tag_storage_check_zone(void)
+{
+	unsigned long max_num_blocks, max_num_pages;
+	struct range *tag_range;
+	struct zone *zone;
+	unsigned long pfn;
+	int i, j;
+
+	/*
+	 * The maximum allocation order is 10, which corresponds to 2^10 >> 5
+	 * contiguous tag blocks.
+	 */
+	 max_num_blocks = (1ul << (MAX_ORDER - 1)) >> 5;
+
+	 for (i = 0; i < num_tag_regions; i++) {
+		 tag_range = &tag_regions[i].tag_range;
+		 max_num_pages = max_num_blocks * tag_regions[i].block_size;
+
+		 for (pfn = tag_range->start; pfn <= tag_range->end; pfn += max_num_pages) {
+			 zone = page_zone(pfn_to_page(pfn));
+			 for (j = pfn + 1; j < pfn + max_num_pages; j++) {
+				 if (page_zone(pfn_to_page(j)) != zone) {
+					 pr_err("Tag block pages in different zones");
+					 return -EINVAL;
+				 }
+			 }
+		 }
+	 }
+
+	 return 0;
+}
+
 static int __init mte_tag_storage_activate_regions(void)
 {
 	phys_addr_t dram_start, dram_end;
 	struct range *tag_range;
 	unsigned long pfn;
-	int i;
+	int i, ret;
 
 	if (num_tag_regions == 0)
 		return 0;
@@ -304,6 +337,10 @@ static int __init mte_tag_storage_activate_regions(void)
 
 		return 0;
 	}
+
+	ret = mte_tag_storage_check_zone();
+	if (ret)
+		return ret;
 
 	for (i = 0; i < num_tag_regions; i++) {
 		tag_range = &tag_regions[i].tag_range;
