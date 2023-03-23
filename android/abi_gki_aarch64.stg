@@ -21366,6 +21366,11 @@ pointer_reference {
   pointee_type_id: 0xe5d16cd3
 }
 pointer_reference {
+  id: 0x33e53462
+  kind: POINTER
+  pointee_type_id: 0xe5d43714
+}
+pointer_reference {
   id: 0x33e9627e
   kind: POINTER
   pointee_type_id: 0xe5e56f65
@@ -29209,6 +29214,11 @@ qualified {
   id: 0xe5d16cd3
   qualifier: CONST
   qualified_type_id: 0xe70205c6
+}
+qualified {
+  id: 0xe5d43714
+  qualifier: CONST
+  qualified_type_id: 0xe7176adb
 }
 qualified {
   id: 0xe61b174c
@@ -90061,6 +90071,19 @@ member {
   type_id: 0x1d10c881
 }
 member {
+  id: 0x4baf7b66
+  name: "hook_ops_type"
+  type_id: 0xd62e128a
+  offset: 200
+  bitsize: 8
+}
+member {
+  id: 0xe4d65578
+  name: "hooknum"
+  type_id: 0x4585663f
+  offset: 224
+}
+member {
   id: 0x645b3570
   name: "hooks"
   type_id: 0xc3ac8280
@@ -132171,6 +132194,12 @@ member {
   offset: 64
 }
 member {
+  id: 0xcaa851c4
+  name: "pf"
+  type_id: 0x295c7202
+  offset: 192
+}
+member {
   id: 0xcaa852eb
   name: "pf"
   type_id: 0x295c7202
@@ -137266,6 +137295,12 @@ member {
   name: "priority"
   type_id: 0x6720d32f
   offset: 128
+}
+member {
+  id: 0x10837b6d
+  name: "priority"
+  type_id: 0x6720d32f
+  offset: 256
 }
 member {
   id: 0x10908a33
@@ -221774,6 +221809,21 @@ struct_union {
   }
 }
 struct_union {
+  id: 0xe7176adb
+  kind: STRUCT
+  name: "nf_hook_ops"
+  definition {
+    bytesize: 40
+    member_id: 0xcc6ce804
+    member_id: 0xce0b4088
+    member_id: 0x59119163
+    member_id: 0xcaa851c4
+    member_id: 0x4baf7b66
+    member_id: 0xe4d65578
+    member_id: 0x10837b6d
+  }
+}
+struct_union {
   id: 0xf66ec631
   kind: STRUCT
   name: "nf_hook_state"
@@ -252243,6 +252293,20 @@ enumeration {
   }
 }
 enumeration {
+  id: 0xd62e128a
+  name: "nf_hook_ops_type"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "NF_HOOK_OP_UNDEFINED"
+    }
+    enumerator {
+      name: "NF_HOOK_OP_NF_TABLES"
+      value: 1
+    }
+  }
+}
+enumeration {
   id: 0x14ba251a
   name: "nf_log_type"
   definition {
@@ -262603,6 +262667,13 @@ function {
   return_type_id: 0x48b5725f
   parameter_id: 0x0e5eb556
   parameter_id: 0x18bd6530
+}
+function {
+  id: 0x136e393b
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0ca27481
+  parameter_id: 0x33e53462
+  parameter_id: 0x4585663f
 }
 function {
   id: 0x137596b0
@@ -287810,6 +287881,13 @@ function {
   parameter_id: 0x0f627bc8
   parameter_id: 0x0a22a423
   parameter_id: 0x084d74bf
+}
+function {
+  id: 0x9e768b87
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0ca27481
+  parameter_id: 0x33e53462
+  parameter_id: 0x4585663f
 }
 function {
   id: 0x9e792fe6
@@ -314614,6 +314692,24 @@ elf_symbol {
   full_name: "nf_conntrack_destroy"
 }
 elf_symbol {
+  id: 0x43078d96
+  name: "nf_register_net_hooks"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x70605ac7
+  type_id: 0x9e768b87
+  full_name: "nf_register_net_hooks"
+}
+elf_symbol {
+  id: 0x619db28f
+  name: "nf_unregister_net_hooks"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf77ab776
+  type_id: 0x136e393b
+  full_name: "nf_unregister_net_hooks"
+}
+elf_symbol {
   id: 0x915620e9
   name: "nla_find"
   is_defined: true
@@ -338601,6 +338697,14 @@ symbols {
   symbol {
     key: "nf_conntrack_destroy"
     value: 0xc8ea3547
+  }
+  symbol {
+    key: "nf_register_net_hooks"
+    value: 0x43078d96
+  }
+  symbol {
+    key: "nf_unregister_net_hooks"
+    value: 0x619db28f
   }
   symbol {
     key: "nla_find"
