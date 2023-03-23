@@ -1202,6 +1202,8 @@ config LOCK_MM_AND_FIND_VMA
 
 config MEMORY_METADATA
 	bool
+	select MEMORY_ISOLATION
+	select MIGRATION
 
 source "mm/damon/Kconfig"
 

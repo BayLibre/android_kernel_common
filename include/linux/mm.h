@@ -1854,14 +1854,17 @@ static inline bool page_needs_cow_for_dma(struct vm_area_struct *vma,
 	return page_maybe_dma_pinned(page);
 }
 
-/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin pages */
+/* MIGRATE_CMA, MIGRATE_METADATA and ZONE_MOVABLE do not allow pin folios */
 #ifdef CONFIG_MIGRATION
 static inline bool is_longterm_pinnable_page(struct page *page)
 {
-#ifdef CONFIG_CMA
+#if defined(CONFIG_CMA) || defined(CONFIG_MEMORY_METADATA)
 	int mt = get_pageblock_migratetype(page);
 
-	if (mt == MIGRATE_CMA || mt == MIGRATE_ISOLATE)
+	if (mt == MIGRATE_ISOLATE)
+		return false;
+
+	if (is_migrate_cma(mt) || is_migrate_metadata(mt))
 		return false;
 #endif
 	/* The zero page may always be pinned */
