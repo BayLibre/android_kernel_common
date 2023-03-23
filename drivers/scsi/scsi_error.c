@@ -300,6 +300,7 @@ enum blk_eh_timer_return scsi_times_out(struct request *req)
 	if (host->eh_deadline != -1 && !host->last_reset)
 		host->last_reset = jiffies;
 
+<<<<<<< HEAD   (49cae6 UPSTREAM: ext4: fix another off-by-one fsmap error on 1k blo)
 	if (host->hostt->eh_timed_out2) {
 		switch (host->hostt->eh_timed_out2(scmd)) {
 		case SCSI_EH_DONE:
@@ -308,6 +309,21 @@ enum blk_eh_timer_return scsi_times_out(struct request *req)
 			return BLK_EH_RESET_TIMER;
 		case SCSI_EH_NOT_HANDLED:
 			break;
+=======
+	if (host->hostt->eh_timed_out)
+		rtn = host->hostt->eh_timed_out(scmd);
+
+	if (rtn == BLK_EH_DONE) {
+		/*
+		 * If scsi_done() has already set SCMD_STATE_COMPLETE, do not
+		 * modify *scmd.
+		 */
+		if (test_and_set_bit(SCMD_STATE_COMPLETE, &scmd->state))
+			return BLK_EH_DONE;
+		if (scsi_abort_command(scmd) != SUCCESS) {
+			set_host_byte(scmd, DID_TIME_OUT);
+			scsi_eh_scmd_add(scmd);
+>>>>>>> BRANCH (d773f5 Revert "nvmem: core: Fix a conflict between MTD and NVMEM on)
 		}
 	} else if (host->hostt->eh_timed_out &&
 		   host->hostt->eh_timed_out(scmd) == BLK_EH_RESET_TIMER) {
