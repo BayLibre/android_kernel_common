@@ -16,6 +16,23 @@
       "message": "Interesting finding:\n\n```\nkernel_x86_64_allmodconfig on aosp_kernel-common-android12-5.10-lts: File with significant size growth: vmlinux : 256 MiB -\u003e 268 MiB (+12 MiB)\n```",
       "revId": "a880d7ebc53ec8595200175f860f35ef8755e91f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be895f1_6e61656b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-03-23T14:18:36Z",
+      "side": 1,
+      "message": "What do we do about the affected ABI?\n\n```\ntype \u0027struct pci_host_bridge\u0027 changed\n  member \u0027unsigned int no_inc_mrrs\u0027 was added\n  8 members (\u0027unsigned int native_aer\u0027 .. \u0027unsigned int size_windows\u0027) changed\n    offset changed by 1\n```",
+      "revId": "a880d7ebc53ec8595200175f860f35ef8755e91f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
