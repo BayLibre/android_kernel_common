@@ -337661,6 +337661,33 @@ elf_symbol {
   full_name: "icc_provider_del"
 }
 elf_symbol {
+  id: 0x30251c53
+  name: "icc_provider_deregister"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x640e2e5a
+  type_id: 0x1c28df2b
+  full_name: "icc_provider_deregister"
+}
+elf_symbol {
+  id: 0x9d4abe0a
+  name: "icc_provider_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xdc029e57
+  type_id: 0x1c28df2b
+  full_name: "icc_provider_init"
+}
+elf_symbol {
+  id: 0x12c6c0e3
+  name: "icc_provider_register"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x886e40fd
+  type_id: 0x91306d97
+  full_name: "icc_provider_register"
+}
+elf_symbol {
   id: 0xc8d0d1e5
   name: "icc_put"
   is_defined: true
@@ -372151,6 +372178,18 @@ symbols {
   symbol {
     key: "icc_provider_del"
     value: 0x577a8e49
+  }
+  symbol {
+    key: "icc_provider_deregister"
+    value: 0x30251c53
+  }
+  symbol {
+    key: "icc_provider_init"
+    value: 0x9d4abe0a
+  }
+  symbol {
+    key: "icc_provider_register"
+    value: 0x12c6c0e3
   }
   symbol {
     key: "icc_put"
