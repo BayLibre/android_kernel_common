@@ -16,6 +16,24 @@
       "message": "Please fix the conflict markers - regenerate the XML",
       "revId": "95ab6eb65faf549e7ebde186977039b2d3d6e26d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cea79a6f_0d1b7acc",
+        "filename": "android/abi_gki_aarch64.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 106439,
+      "author": {
+        "id": 1933031
+      },
+      "writtenOn": "2023-03-24T09:09:52Z",
+      "side": 1,
+      "message": "remote: Resolving deltas: 100% (4/4)\nremote: Waiting for private key checker: 1/1 objects left\nremote: Processing changes: refs: 1, done\nTo https://android.googlesource.com/kernel/common\n ! [remote rejected]           HEAD -\u003e refs/for/android13-5.15-2023-01 (cannot add patch set to 2504897.)\nError: Failed to push some references to\u0027https://android.googlesource.com/kernel/common\u0027\n\nHi,I re-built this side in the monthly branch and couldn\u0027t push it to this change after compiling\n\nMaybe I need to trouble you to solve this problem\n\nthanks",
+      "parentUuid": "76000a87_9c2ae705",
+      "revId": "95ab6eb65faf549e7ebde186977039b2d3d6e26d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
