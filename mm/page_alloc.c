@@ -3950,10 +3950,20 @@ struct page *rmqueue(struct zone *preferred_zone,
 	WARN_ON_ONCE((gfp_flags & __GFP_NOFAIL) && (order > 1));
 
 	if (likely(pcp_allowed_order(order))) {
-		page = rmqueue_pcplist(preferred_zone, zone, order,
-				migratetype, alloc_flags);
-		if (likely(page))
-			goto out;
+		/*
+		 * PCP lists keep MIGRATE_CMA/MIGRATE_METADATA pages on the same
+		 * movable list. Make sure it's allowed to allocate both type of
+		 * pages before allocating from the movable list.
+		 */
+		bool movable_allowed = (!IS_ENABLED(CONFIG_MEMORY_METADATA) ||
+					(alloc_flags & ALLOC_FROM_METADATA));
+
+		if (migratetype != MIGRATE_MOVABLE || movable_allowed) {
+			page = rmqueue_pcplist(preferred_zone, zone, order,
+					migratetype, alloc_flags);
+			if (likely(page))
+				goto out;
+		}
 	}
 
 	page = rmqueue_buddy(preferred_zone, zone, order, alloc_flags,
@@ -5557,6 +5567,14 @@ unsigned long __alloc_pages_bulk(gfp_t gfp, int preferred_nid,
 	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &alloc_gfp, &alloc_flags))
 		goto out;
 	gfp = alloc_gfp;
+
+	/*
+	 * pcp lists puts MIGRATE_METADATA on the MIGRATE_MOVABLE list, don't
+	 * use pcp if allocating metadata pages is not allowed.
+	 */
+	if (metadata_storage_enabled() && ac.migratetype == MIGRATE_MOVABLE &&
+	    !(alloc_flags & ALLOC_FROM_METADATA))
+		goto failed;
 
 	/* Find an allowed local zone that meets the low watermark. */
 	for_each_zone_zonelist_nodemask(zone, z, ac.zonelist, ac.highest_zoneidx, ac.nodemask) {
