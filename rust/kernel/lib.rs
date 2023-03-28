@@ -37,6 +37,7 @@ mod allocator;
 mod build_assert;
 pub mod error;
 pub mod init;
+pub mod io_buffer;
 pub mod prelude;
 pub mod print;
 mod static_assert;
@@ -46,6 +47,7 @@ pub mod str;
 pub mod sync;
 pub mod task;
 pub mod types;
+pub mod user_ptr;
 
 #[doc(hidden)]
 pub use bindings;
