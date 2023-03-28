@@ -39,6 +39,7 @@ pub mod cred;
 pub mod error;
 pub mod init;
 pub mod io_buffer;
+pub mod iov_iter;
 pub mod prelude;
 pub mod print;
 mod static_assert;
