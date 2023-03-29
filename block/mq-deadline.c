@@ -389,9 +389,24 @@ deadline_next_request(struct deadline_data *dd, struct dd_per_prio *per_prio,
 	 */
 	spin_lock_irqsave(&dd->zone_lock, flags);
 	while (rq) {
+		unsigned int zno __maybe_unused;
+
 		if (blk_req_can_dispatch_to_zone(rq))
 			break;
+
+#ifdef CONFIG_BLK_DEV_ZONED
+		zno = blk_rq_zone_no(rq);
+
 		rq = deadline_skip_seq_writes(dd, rq);
+
+		/*
+		 * Skip all other write requests for the zone with zone number
+		 * 'zno'. This prevents that this function selects a zoned write
+		 * that is not the first write for a given zone.
+		 */
+		while (rq && blk_rq_zone_no(rq) == zno)
+			rq = deadline_latter_request(rq);
+#endif
 	}
 	spin_unlock_irqrestore(&dd->zone_lock, flags);
 
