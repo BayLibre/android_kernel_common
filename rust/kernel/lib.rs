@@ -15,6 +15,7 @@
 #![feature(allocator_api)]
 #![feature(associated_type_defaults)]
 #![feature(coerce_unsized)]
+#![feature(const_mut_refs)]
 #![feature(core_ffi_c)]
 #![feature(c_size_t)]
 #![feature(dispatch_from_dyn)]
@@ -44,6 +45,7 @@ pub mod file;
 pub mod init;
 pub mod io_buffer;
 pub mod iov_iter;
+pub mod miscdev;
 pub mod mm;
 pub mod pages;
 pub mod prelude;
