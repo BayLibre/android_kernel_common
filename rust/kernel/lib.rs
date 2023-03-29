@@ -13,8 +13,10 @@
 
 #![no_std]
 #![feature(allocator_api)]
+#![feature(associated_type_defaults)]
 #![feature(coerce_unsized)]
 #![feature(core_ffi_c)]
+#![feature(c_size_t)]
 #![feature(dispatch_from_dyn)]
 #![feature(explicit_generic_args_with_impl_trait)]
 #![feature(generic_associated_types)]
@@ -37,6 +39,7 @@ mod allocator;
 mod build_assert;
 pub mod cred;
 pub mod error;
+pub mod file;
 pub mod init;
 pub mod io_buffer;
 pub mod iov_iter;
