@@ -57,7 +57,7 @@
 #define FUOUT_EN(_opts) (EPOUT_EN(_opts) \
 				&& ((_opts)->c_mute_present \
 				|| (_opts)->c_volume_present))
-#define EPOUT_FBACK_IN_EN(_opts) ((_opts)->c_sync == USB_ENDPOINT_SYNC_ASYNC)
+#define EPOUT_FBACK_IN_EN(_opts) ((_opts)->c_sync == USB_ENDPOINT_SYNC_SYNC)
 
 struct f_uac2 {
 	struct g_audio g_audio;
@@ -338,6 +338,8 @@ static struct usb_endpoint_descriptor fs_epout_desc = {
 	.bDescriptorType = USB_DT_ENDPOINT,
 
 	.bEndpointAddress = USB_DIR_OUT,
+	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC,
+	.wMaxPacketSize = cpu_to_le16(1022),
 	/* .bmAttributes = DYNAMIC */
 	/* .wMaxPacketSize = DYNAMIC */
 	.bInterval = 1,
@@ -347,6 +349,8 @@ static struct usb_endpoint_descriptor hs_epout_desc = {
 	.bLength = USB_DT_ENDPOINT_SIZE,
 	.bDescriptorType = USB_DT_ENDPOINT,
 
+	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC,
+	.wMaxPacketSize = cpu_to_le16(1023),
 	/* .bmAttributes = DYNAMIC */
 	/* .wMaxPacketSize = DYNAMIC */
 	.bInterval = 4,
@@ -357,6 +361,8 @@ static struct usb_endpoint_descriptor ss_epout_desc = {
 	.bDescriptorType = USB_DT_ENDPOINT,
 
 	.bEndpointAddress = USB_DIR_OUT,
+	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC,
+	.wMaxPacketSize = cpu_to_le16(1024),
 	/* .bmAttributes = DYNAMIC */
 	/* .wMaxPacketSize = DYNAMIC */
 	.bInterval = 4,
@@ -472,7 +478,8 @@ static struct usb_endpoint_descriptor fs_epin_desc = {
 	.bDescriptorType = USB_DT_ENDPOINT,
 
 	.bEndpointAddress = USB_DIR_IN,
-	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_ASYNC,
+	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC,
+	.wMaxPacketSize = cpu_to_le16(1022),
 	/* .wMaxPacketSize = DYNAMIC */
 	.bInterval = 1,
 };
@@ -481,7 +488,8 @@ static struct usb_endpoint_descriptor hs_epin_desc = {
 	.bLength = USB_DT_ENDPOINT_SIZE,
 	.bDescriptorType = USB_DT_ENDPOINT,
 
-	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_ASYNC,
+	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC,
+	.wMaxPacketSize = cpu_to_le16(1023),
 	/* .wMaxPacketSize = DYNAMIC */
 	.bInterval = 4,
 };
@@ -491,7 +499,8 @@ static struct usb_endpoint_descriptor ss_epin_desc = {
 	.bDescriptorType = USB_DT_ENDPOINT,
 
 	.bEndpointAddress = USB_DIR_IN,
-	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_ASYNC,
+	.bmAttributes = USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC,
+	.wMaxPacketSize = cpu_to_le16(1024),
 	/* .wMaxPacketSize = DYNAMIC */
 	.bInterval = 4,
 };
@@ -681,7 +690,7 @@ static int set_ep_max_packet_size(const struct f_uac2_opts *uac2_opts,
 		ssize = uac2_opts->c_ssize;
 	}
 
-	if (!is_playback && (uac2_opts->c_sync == USB_ENDPOINT_SYNC_ASYNC)) {
+	if (!is_playback && (uac2_opts->c_sync == USB_ENDPOINT_SYNC_SYNC)) {
 	  // Win10 requires max packet size + 1 frame
 		srate = srate * (1000 + uac2_opts->fb_max) / 1000;
 		// updated srate is always bigger, therefore DIV_ROUND_UP always yields +1
@@ -1075,11 +1084,11 @@ afunc_bind(struct usb_configuration *cfg, struct usb_function *fn)
 
 		if (EPOUT_FBACK_IN_EN(uac2_opts)) {
 			fs_epout_desc.bmAttributes =
-			  USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_ASYNC;
+			  USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC;
 			hs_epout_desc.bmAttributes =
-			  USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_ASYNC;
+			  USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC;
 			ss_epout_desc.bmAttributes =
-			  USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_ASYNC;
+			  USB_ENDPOINT_XFER_ISOC | USB_ENDPOINT_SYNC_SYNC;
 			std_as_out_if1_desc.bNumEndpoints++;
 		} else {
 			fs_epout_desc.bmAttributes =
@@ -1801,8 +1810,8 @@ static ssize_t f_uac2_opts_##name##_show(struct config_item *item,	\
 									\
 	mutex_lock(&opts->lock);					\
 	switch (opts->name) {						\
-	case USB_ENDPOINT_SYNC_ASYNC:					\
-		str = "async";						\
+	case USB_ENDPOINT_SYNC_SYNC:					\
+		str = "sync";						\
 		break;							\
 	case USB_ENDPOINT_SYNC_ADAPTIVE:				\
 		str = "adaptive";					\
