@@ -1080,6 +1080,7 @@ struct kvm_ppc_resize_hpt {
 #define KVM_CAP_ARM_MTE 205
 #define KVM_CAP_ARM_PROTECTED_VM 0xffbadab1
 #define KVM_CAP_GET_CUR_CPUFREQ 512
+#define KVM_CAP_UTIL_HINT 513
 
 #ifdef KVM_CAP_IRQ_ROUTING
 
