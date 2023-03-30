@@ -2625,6 +2625,13 @@
 # required by sii902x.ko
   hdmi_avi_infoframe_pack
 
+# required by skw.ko
+  cfg80211_check_combinations
+  cfg80211_cqm_beacon_loss_notify
+  cfg80211_reg_can_beacon_relax
+  cfg80211_shutdown_all_interfaces
+  netdev_alloc_frag
+
 # required by smsc95xx.ko
   csum_partial
   __mdiobus_register
