@@ -162,8 +162,21 @@ static void
 deadline_add_rq_rb(struct dd_per_prio *per_prio, struct request *rq)
 {
 	struct rb_root *root = deadline_rb_root(per_prio, rq);
+	struct request **next_rq = &per_prio->next_rq[rq_data_dir(rq)];
 
 	elv_rb_add(root, rq);
+	if (*next_rq == NULL || !blk_queue_is_zoned(rq->q))
+		return;
+#ifdef CONFIG_BLK_DEV_ZONED
+	/*
+	 * If a request got requeued or requests have been submitted out of
+	 * order, make sure that per zone the request with the lowest LBA is
+	 * submitted first.
+	 */
+	if (blk_rq_pos(rq) < blk_rq_pos(*next_rq) &&
+	    blk_rq_zone_no(rq) == blk_rq_zone_no(*next_rq))
+		*next_rq = rq;
+#endif
 }
 
 static inline void
@@ -814,6 +827,8 @@ static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 		list_add(&rq->queuelist, &per_prio->dispatch);
 		rq->fifo_time = jiffies;
 	} else {
+		struct list_head *insert_before;
+
 		deadline_add_rq_rb(per_prio, rq);
 
 		if (rq_mergeable(rq)) {
@@ -826,7 +841,14 @@ static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 		 * set expire time and add to fifo list
 		 */
 		rq->fifo_time = jiffies + dd->fifo_expire[data_dir];
-		list_add_tail(&rq->queuelist, &per_prio->fifo_list[data_dir]);
+		insert_before = &per_prio->fifo_list[data_dir];
+		if (blk_rq_is_seq_zone_write(rq)) {
+			struct request *rq2 = deadline_latter_request(rq);
+
+			if (rq2 && blk_rq_zone_no(rq2) == blk_rq_zone_no(rq))
+				insert_before = &rq2->queuelist;
+		}
+		list_add_tail(&rq->queuelist, insert_before);
 	}
 }
 
