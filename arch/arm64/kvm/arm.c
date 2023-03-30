@@ -230,6 +230,7 @@ static int kvm_check_extension(struct kvm *kvm, long ext)
 	case KVM_CAP_SET_GUEST_DEBUG:
 	case KVM_CAP_VCPU_ATTRIBUTES:
 	case KVM_CAP_PTP_KVM:
+	case KVM_CAP_GET_CUR_CPUFREQ:
 		r = 1;
 		break;
 	case KVM_CAP_ARM_NISV_TO_USER:

@@ -3,11 +3,23 @@
 
 #include <linux/arm-smccc.h>
 #include <linux/kvm_host.h>
+#include <linux/cpufreq.h>
+#include <linux/sched.h>
+#include <uapi/linux/sched/types.h>
 
 #include <asm/kvm_emulate.h>
 
 #include <kvm/arm_hypercalls.h>
 #include <kvm/arm_psci.h>
+
+static void kvm_sched_get_cur_cpufreq(struct kvm_vcpu *vcpu, u64 *val)
+{
+	unsigned long ret_freq;
+
+	ret_freq = cpufreq_get(task_cpu(current));
+
+	val[0] = ret_freq;
+}
 
 static void kvm_ptp_get_time(struct kvm_vcpu *vcpu, u64 *val)
 {
@@ -148,6 +160,9 @@ int kvm_hvc_call_handler(struct kvm_vcpu *vcpu)
 	case ARM_SMCCC_VENDOR_HYP_KVM_MMIO_GUARD_MAP_FUNC_ID:
 		if (kvm_vm_is_protected(vcpu->kvm) && !topup_hyp_memcache(vcpu))
 			val[0] = SMCCC_RET_SUCCESS;
+		break;
+	case ARM_SMCCC_VENDOR_HYP_KVM_GET_CUR_CPUFREQ_FUNC_ID:
+		kvm_sched_get_cur_cpufreq(vcpu, val);
 		break;
 	case ARM_SMCCC_TRNG_VERSION:
 	case ARM_SMCCC_TRNG_FEATURES:

@@ -6506,6 +6506,14 @@ This capability indicates that the KVM virtual PTP service is
 supported in the host. A VMM can check whether the service is
 available to the guest on migration.
 
+8.40 KVM_CAP_GET_CUR_CPUFREQ
+------------------------
+
+:Architectures: arm64
+
+This capability indicates that KVM supports getting the
+frequency of the current CPU that the vCPU thread is running on.
+
 9. Known KVM API problems
 =========================
 
