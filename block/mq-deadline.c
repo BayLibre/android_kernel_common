@@ -369,6 +369,7 @@ static struct request *
 deadline_next_request(struct deadline_data *dd, struct dd_per_prio *per_prio,
 		      enum dd_data_dir data_dir)
 {
+	struct request_queue *q;
 	struct request *rq;
 	unsigned long flags;
 
@@ -376,8 +377,9 @@ deadline_next_request(struct deadline_data *dd, struct dd_per_prio *per_prio,
 	if (!rq)
 		return NULL;
 
-	if (data_dir == DD_READ || !blk_queue_is_zoned(rq->q) ||
-	    blk_queue_pipeline_zoned_writes(rq->q))
+	q = rq->q;
+	if (data_dir == DD_READ || !blk_queue_is_zoned(q) ||
+	    blk_queue_pipeline_zoned_writes(q))
 		return rq;
 
 	/*
