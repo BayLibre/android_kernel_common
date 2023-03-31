@@ -328,8 +328,10 @@ static void blk_kick_flush(struct request_queue *q, struct blk_flush_queue *fq,
 		 * account of this driver tag
 		 */
 		flush_rq->rq_flags |= RQF_MQ_INFLIGHT;
-	} else
+	} else {
 		flush_rq->internal_tag = first_rq->internal_tag;
+		blk_mq_sched_prepare(flush_rq);
+	}
 
 	flush_rq->cmd_flags = REQ_OP_FLUSH | REQ_PREFLUSH;
 	flush_rq->cmd_flags |= (flags & REQ_DRV) | (flags & REQ_FAILFAST_MASK);
@@ -423,7 +425,7 @@ void blk_insert_flush(struct request *rq)
 	 */
 	if ((policy & REQ_FSEQ_DATA) &&
 	    !(policy & (REQ_FSEQ_PREFLUSH | REQ_FSEQ_POSTFLUSH))) {
-		blk_mq_request_bypass_insert(rq, false, false);
+		blk_mq_sched_insert_request(rq, false, false, false);
 		return;
 	}
 
