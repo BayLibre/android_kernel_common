@@ -3553,6 +3553,9 @@ enum mf_action_page_type {
 };
 
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
+extern void clear_huge_page_tags(struct page *page,
+				 unsigned long addr_hint,
+				 unsigned int pages_per_huge_page);
 extern void clear_huge_page(struct page *page,
 			    unsigned long addr_hint,
 			    unsigned int pages_per_huge_page);
