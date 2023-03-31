@@ -300,7 +300,7 @@ size_t kvm_iommu_map_pages(pkvm_handle_t domain_id, unsigned long iova,
 	if (!IS_ALIGNED(iova | paddr | pgsize, granule))
 		goto out_put_domain;
 
-	ret = __pkvm_host_share_dma(paddr, size, !(prot & IOMMU_MMIO));
+	ret = __pkvm_host_use_dma(paddr, size, !(prot & IOMMU_MMIO));
 	if (ret)
 		goto out_put_domain;
 
@@ -319,12 +319,12 @@ size_t kvm_iommu_map_pages(pkvm_handle_t domain_id, unsigned long iova,
 	}
 
 	/*
-	 * Unshare the bits that haven't been mapped yet. The host calls back
-	 * either to continue mapping, or to unmap and unshare what's been done
+	 * unuse the bits that haven't been mapped yet. The host calls back
+	 * either to continue mapping, or to unmap and unuse what's been done
 	 * so far.
 	 */
 	if (pgcount)
-		__pkvm_host_unshare_dma(paddr, pgcount * pgsize);
+		__pkvm_host_unuse_dma(paddr, pgcount * pgsize);
 out_put_domain:
 	domain_put(domain);
 	return total_mapped;
@@ -364,7 +364,7 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 
 	while (total_unmapped < size) {
 		/*
-		 * One page/block at a time so that we can unshare each page.
+		 * One page/block at a time so that we can unuse each page.
 		 * The IOVA range provided may not be physically contiguous, and
 		 * @pgsize may be larger than the one used when mapping.
 		 */
@@ -372,7 +372,7 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 		if (!unmapped || !paddr)
 			goto out_put_domain;
 
-		ret = __pkvm_host_unshare_dma(paddr, unmapped);
+		ret = __pkvm_host_unuse_dma(paddr, unmapped);
 		if (WARN_ON(ret))
 			goto out_put_domain;
 
