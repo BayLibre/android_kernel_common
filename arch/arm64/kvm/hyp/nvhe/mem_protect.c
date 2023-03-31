@@ -513,6 +513,22 @@ bool addr_is_memory(phys_addr_t phys)
 	return !!find_mem_range(phys, &range);
 }
 
+static bool is_range_refcounted(phys_addr_t addr, u64 size)
+{
+	struct hyp_page *p;
+	int i, nr_pages;
+
+	nr_pages = size >> PAGE_SHIFT;
+
+	for (i = 0 ; i < nr_pages ; ++i) {
+		p = hyp_phys_to_page(addr);
+		if (p->refcount)
+			return true;
+	}
+
+	return false;
+}
+
 static bool addr_is_allowed_memory(phys_addr_t phys)
 {
 	struct memblock_region *reg;
@@ -902,6 +918,9 @@ static int host_request_owned_transition(u64 *completer_addr,
 	u64 size = tx->nr_pages * PAGE_SIZE;
 	u64 addr = tx->initiator.addr;
 
+	if (is_range_refcounted(addr, size))
+		return -EINVAL;
+
 	*completer_addr = tx->initiator.host.completer_addr;
 	return __host_check_page_state_range(addr, size, PKVM_PAGE_OWNED);
 }
@@ -911,6 +930,9 @@ static int host_request_unshare(u64 *completer_addr,
 {
 	u64 size = tx->nr_pages * PAGE_SIZE;
 	u64 addr = tx->initiator.addr;
+
+	if (is_range_refcounted(addr, size))
+		return -EINVAL;
 
 	*completer_addr = tx->initiator.host.completer_addr;
 	return __host_check_page_state_range(addr, size, PKVM_PAGE_SHARED_OWNED);
@@ -1310,8 +1332,18 @@ static int guest_request_share(u64 *completer_addr,
 static int guest_request_unshare(u64 *completer_addr,
 				 const struct pkvm_mem_transition *tx)
 {
-	return __guest_request_page_transition(completer_addr, tx,
-					       PKVM_PAGE_SHARED_OWNED);
+	u64 size = tx->nr_pages * PAGE_SIZE;
+	int ret;
+
+	ret = __guest_request_page_transition(completer_addr, tx,
+					      PKVM_PAGE_SHARED_OWNED);
+	if (ret)
+		return ret;
+
+	if (is_range_refcounted(*completer_addr, size))
+		return -EINVAL;
+
+	return 0;
 }
 
 static int __guest_initiate_page_transition(u64 *completer_addr,
@@ -1392,9 +1424,6 @@ static int check_share(struct pkvm_mem_share *share)
 	case PKVM_ID_GUEST:
 		ret = guest_ack_share(completer_addr, tx, share->completer_prot);
 		break;
-	case PKVM_ID_IOMMU:
-		ret = 0;
-		break;
 	default:
 		ret = -EINVAL;
 	}
@@ -1438,9 +1467,6 @@ static int __do_share(struct pkvm_mem_share *share)
 		break;
 	case PKVM_ID_GUEST:
 		ret = guest_complete_share(completer_addr, tx, share->completer_prot);
-		break;
-	case PKVM_ID_IOMMU:
-		ret = 0;
 		break;
 	default:
 		ret = -EINVAL;
@@ -1500,9 +1526,6 @@ static int check_unshare(struct pkvm_mem_share *share)
 		/* See check_share() */
 		ret = 0;
 		break;
-	case PKVM_ID_IOMMU:
-		ret = 0;
-		break;
 	default:
 		ret = -EINVAL;
 	}
@@ -1539,9 +1562,6 @@ static int __do_unshare(struct pkvm_mem_share *share)
 		break;
 	case PKVM_ID_FFA:
 		/* See __do_share() */
-		ret = 0;
-		break;
-	case PKVM_ID_IOMMU:
 		ret = 0;
 		break;
 	default:
@@ -2051,48 +2071,14 @@ int __pkvm_host_unshare_ffa(u64 pfn, u64 nr_pages)
 	return ret;
 }
 
-static int __host_check_page_dma_shared(phys_addr_t phys_addr)
-{
-	int ret;
-	u64 hyp_addr;
-
-	/*
-	 * The page is already refcounted. Make sure it's owned by the host, and
-	 * not part of the hyp pool.
-	 */
-	ret = __host_check_page_state_range(phys_addr, PAGE_SIZE,
-					    PKVM_PAGE_SHARED_OWNED);
-	if (ret)
-		return ret;
-
-	/*
-	 * Refcounted and owned by host, means it's either mapped in the
-	 * SMMU, or it's some VM/VCPU state shared with the hypervisor.
-	 * The host has no reason to use a page for both.
-	 */
-	hyp_addr = (u64)hyp_phys_to_virt(phys_addr);
-	return __hyp_check_page_state_range(hyp_addr, PAGE_SIZE, PKVM_NOPAGE);
-}
-
-static int __pkvm_host_share_dma_page(phys_addr_t phys_addr, bool is_ram)
+static int __pkvm_host_use_dma_page(phys_addr_t phys_addr, bool is_ram)
 {
 	int ret;
 	struct hyp_page *p = hyp_phys_to_page(phys_addr);
-	struct pkvm_mem_share share = {
-		.tx	= {
-			.nr_pages	= 1,
-			.initiator	= {
-				.id	= PKVM_ID_HOST,
-				.addr	= phys_addr,
-			},
-			.completer	= {
-				.id	= PKVM_ID_IOMMU,
-			},
-		},
-	};
+	kvm_pte_t pte;
+	enum pkvm_page_state state;
 
 	hyp_assert_lock_held(&host_mmu.lock);
-	hyp_assert_lock_held(&pkvm_pgd_lock);
 
 	/*
 	 * Some differences between handling of RAM and device memory:
@@ -2110,51 +2096,49 @@ static int __pkvm_host_share_dma_page(phys_addr_t phys_addr, bool is_ram)
 	if (!is_ram)
 		return addr_is_memory(phys_addr) ? -EINVAL : 0;
 
-	ret = hyp_page_ref_inc_return(p);
-	BUG_ON(ret == 0);
-	if (ret < 0)
-		return ret;
-	else if (ret == 1)
-		ret = do_share(&share);
-	else
-		ret = __host_check_page_dma_shared(phys_addr);
-
+	/*
+	 * When we support guests adding mappings to the IOMMU, this should change to
+	 * ctxt->pgt.
+	 */
+	ret = kvm_pgtable_get_leaf(&host_mmu.pgt, phys_addr, &pte, NULL);
 	if (ret)
-		hyp_page_ref_dec(p);
+		return ret;
 
-	return ret;
+	state = host_get_page_state(pte, phys_addr);
+
+	if (state == PKVM_NOPAGE)
+		return -EPERM;
+
+	/*
+	 * Technically, this page is accessible by the host, however it seems strange,
+	 * so we don't allow DMA to be mapped to pages accessible from hyp even if the
+	 * host shared the page.
+	 */
+	if (state == PKVM_PAGE_SHARED_BORROWED || state == PKVM_PAGE_SHARED_OWNED) {
+		ret = __hyp_check_page_state_range(phys_addr, PAGE_SIZE, PKVM_NOPAGE);
+		if (ret)
+			return ret;
+	}
+
+	hyp_page_ref_inc(p);
+
+	return 0;
 }
 
-static int __pkvm_host_unshare_dma_page(phys_addr_t phys_addr)
+static int __pkvm_host_unuse_dma_page(phys_addr_t phys_addr)
 {
 	struct hyp_page *p = hyp_phys_to_page(phys_addr);
-	struct pkvm_mem_share share = {
-		.tx	= {
-			.nr_pages	= 1,
-			.initiator	= {
-				.id	= PKVM_ID_HOST,
-				.addr	= phys_addr,
-			},
-			.completer	= {
-				.id	= PKVM_ID_IOMMU,
-			},
-		},
-	};
-
-	hyp_assert_lock_held(&host_mmu.lock);
-	hyp_assert_lock_held(&pkvm_pgd_lock);
 
 	if (!addr_is_memory(phys_addr))
 		return 0;
 
-	if (!hyp_page_ref_dec_and_test(p))
-		return 0;
+	hyp_page_ref_dec(p);
 
-	return do_unshare(&share);
+	return 0;
 }
 
 /*
- * __pkvm_host_share_dma - Mark host memory as used for DMA
+ * __pkvm_host_use_dma - Mark host memory as used for DMA
  * @phys_addr:	physical address of the DMA region
  * @size:	size of the DMA region
  * @is_ram:	whether it is RAM or device memory
@@ -2168,7 +2152,7 @@ static int __pkvm_host_unshare_dma_page(phys_addr_t phys_addr)
  * refcounting, for example if all devices and sub-devices map the same MSI
  * doorbell page. It will do for now.
  */
-int __pkvm_host_share_dma(phys_addr_t phys_addr, size_t size, bool is_ram)
+int __pkvm_host_use_dma(phys_addr_t phys_addr, size_t size, bool is_ram)
 {
 	int i;
 	int ret;
@@ -2181,7 +2165,7 @@ int __pkvm_host_share_dma(phys_addr_t phys_addr, size_t size, bool is_ram)
 	hyp_lock_component();
 
 	for (i = 0; i < nr_pages; i++) {
-		ret = __pkvm_host_share_dma_page(phys_addr + i * PAGE_SIZE,
+		ret = __pkvm_host_use_dma_page(phys_addr + i * PAGE_SIZE,
 						 is_ram);
 		if (ret)
 			break;
@@ -2189,7 +2173,7 @@ int __pkvm_host_share_dma(phys_addr_t phys_addr, size_t size, bool is_ram)
 
 	if (ret) {
 		for (--i; i >= 0; --i)
-			__pkvm_host_unshare_dma_page(phys_addr + i * PAGE_SIZE);
+			__pkvm_host_unuse_dma_page(phys_addr + i * PAGE_SIZE);
 	}
 
 	hyp_unlock_component();
@@ -2198,14 +2182,11 @@ int __pkvm_host_share_dma(phys_addr_t phys_addr, size_t size, bool is_ram)
 	return ret;
 }
 
-int __pkvm_host_unshare_dma(phys_addr_t phys_addr, size_t size)
+int __pkvm_host_unuse_dma(phys_addr_t phys_addr, size_t size)
 {
 	int i;
 	int ret;
 	size_t nr_pages = size >> PAGE_SHIFT;
-
-	host_lock_component();
-	hyp_lock_component();
 
 	/*
 	 * We end up here after the caller successfully unmapped the page from
@@ -2213,13 +2194,10 @@ int __pkvm_host_unshare_dma(phys_addr_t phys_addr, size_t size)
 	 * in the host s2, there can be no failure.
 	 */
 	for (i = 0; i < nr_pages; i++) {
-		ret = __pkvm_host_unshare_dma_page(phys_addr + i * PAGE_SIZE);
+		ret = __pkvm_host_unuse_dma_page(phys_addr + i * PAGE_SIZE);
 		if (ret)
 			break;
 	}
-
-	hyp_unlock_component();
-	host_unlock_component();
 
 	return ret;
 }
