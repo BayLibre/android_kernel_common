@@ -61,7 +61,6 @@ enum pkvm_component_id {
 	PKVM_ID_HYP,
 	PKVM_ID_FFA,
 	PKVM_ID_GUEST,
-	PKVM_ID_IOMMU,
 	PKVM_ID_PROTECTED,
 	PKVM_ID_MAX = PKVM_ID_PROTECTED,
 };
@@ -87,8 +86,8 @@ int __pkvm_remove_ioguard_page(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa);
 bool __pkvm_check_ioguard_page(struct pkvm_hyp_vcpu *hyp_vcpu);
 int __pkvm_guest_relinquish_to_host(struct pkvm_hyp_vcpu *vcpu,
 				    u64 ipa, u64 *ppa);
-int __pkvm_host_share_dma(u64 phys_addr, size_t size, bool is_ram);
-int __pkvm_host_unshare_dma(u64 phys_addr, size_t size);
+int __pkvm_host_use_dma(u64 phys_addr, size_t size, bool is_ram);
+int __pkvm_host_unuse_dma(u64 phys_addr, size_t size);
 int __pkvm_host_add_remove_page(u64 pfn, bool remove);
 
 bool addr_is_memory(phys_addr_t phys);
