@@ -356,5 +356,5 @@ core_initcall(mte_tag_storage_activate_regions)
 
 bool alloc_can_use_tag_storage(gfp_t gfp_mask)
 {
-	return !(gfp_mask & __GFP_ZEROTAGS);
+	return !(gfp_mask & __GFP_TAGGED);
 }
