@@ -287,8 +287,9 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 {
 	struct blk_mq_tags *tags = blk_mq_tags_from_data(data);
 	struct request *rq = tags->static_rqs[tag];
+	struct elevator_queue *e = data->q->elevator;
 
-	if (data->q->elevator) {
+	if (e) {
 		rq->tag = BLK_MQ_NO_TAG;
 		rq->internal_tag = tag;
 	} else {
@@ -337,8 +338,6 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	refcount_set(&rq->ref, 1);
 
 	if (!op_is_flush(data->cmd_flags)) {
-		struct elevator_queue *e = data->q->elevator;
-
 		rq->elv.icq = NULL;
 		if (e && e->type->ops.prepare_request) {
 			if (e->type->icq_cache)
