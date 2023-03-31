@@ -5946,6 +5946,8 @@ EXPORT_SYMBOL(__might_fault);
 #endif
 
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
+
+typedef void (*process_subpage_fn_t)(unsigned long addr, int idx, void *arg);
 /*
  * Process all subpages of the specified huge page with the specified
  * operation.  The target subpage will be processed last to keep its
@@ -5953,8 +5955,7 @@ EXPORT_SYMBOL(__might_fault);
  */
 static inline void process_huge_page(
 	unsigned long addr_hint, unsigned int pages_per_huge_page,
-	void (*process_subpage)(unsigned long addr, int idx, void *arg),
-	void *arg)
+	process_subpage_fn_t process_subpage, void *arg)
 {
 	int i, n, base, l;
 	unsigned long addr = addr_hint &
@@ -5999,7 +6000,8 @@ static inline void process_huge_page(
 
 static void clear_gigantic_page(struct page *page,
 				unsigned long addr,
-				unsigned int pages_per_huge_page)
+				unsigned int pages_per_huge_page,
+				bool tagged)
 {
 	int i;
 	struct page *p;
@@ -6008,8 +6010,18 @@ static void clear_gigantic_page(struct page *page,
 	for (i = 0; i < pages_per_huge_page; i++) {
 		p = nth_page(page, i);
 		cond_resched();
-		clear_user_highpage(p, addr + i * PAGE_SIZE);
+		if (tagged)
+			tag_clear_highpage(p);
+		else
+			clear_user_highpage(p, addr + i * PAGE_SIZE);
 	}
+}
+
+static void clear_subpage_tags(unsigned long addr, int idx, void *arg)
+{
+	struct page *page = arg;
+
+	tag_clear_highpage(page + idx);
 }
 
 static void clear_subpage(unsigned long addr, int idx, void *arg)
@@ -6019,18 +6031,35 @@ static void clear_subpage(unsigned long addr, int idx, void *arg)
 	clear_user_highpage(page + idx, addr);
 }
 
-void clear_huge_page(struct page *page,
-		     unsigned long addr_hint, unsigned int pages_per_huge_page)
+static void __clear_huge_page(struct page *page,
+			      unsigned long addr_hint,
+			      unsigned int pages_per_huge_page,
+			      bool tagged)
 {
 	unsigned long addr = addr_hint &
 		~(((unsigned long)pages_per_huge_page << PAGE_SHIFT) - 1);
+	process_subpage_fn_t process_subpage = tagged ?
+		clear_subpage_tags : clear_subpage;
 
 	if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
-		clear_gigantic_page(page, addr, pages_per_huge_page);
+		clear_gigantic_page(page, addr, pages_per_huge_page, tagged);
 		return;
 	}
 
-	process_huge_page(addr_hint, pages_per_huge_page, clear_subpage, page);
+	process_huge_page(addr_hint, pages_per_huge_page, process_subpage, page);
+}
+
+void clear_huge_page_tags(struct page *page,
+			  unsigned long addr_hint,
+			  unsigned int pages_per_huge_page)
+{
+	__clear_huge_page(page, addr_hint, pages_per_huge_page, true);
+}
+
+void clear_huge_page(struct page *page,
+		     unsigned long addr_hint, unsigned int pages_per_huge_page)
+{
+	__clear_huge_page(page, addr_hint, pages_per_huge_page, false);
 }
 
 static void copy_user_gigantic_page(struct page *dst, struct page *src,
