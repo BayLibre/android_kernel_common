@@ -66,6 +66,7 @@ struct fscrypt_name {
  */
 #define FS_CFLG_OWN_PAGES (1U << 1)
 
+#ifdef FSCRYPT_INTERNAL
 /* Crypto operations for filesystems */
 struct fscrypt_operations {
 
@@ -177,6 +178,7 @@ struct fscrypt_operations {
 	struct block_device **(*get_devices)(struct super_block *sb,
 					     unsigned int *num_devs);
 };
+#endif /* FSCRYPT_INTERNAL */
 
 static inline struct fscrypt_info *fscrypt_get_info(const struct inode *inode)
 {

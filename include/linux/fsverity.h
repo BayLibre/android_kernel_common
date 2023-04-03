@@ -26,6 +26,7 @@
 /* Arbitrary limit to bound the kmalloc() size.  Can be changed. */
 #define FS_VERITY_MAX_DESCRIPTOR_SIZE	16384
 
+#ifdef FSVERITY_INTERNAL
 /* Verity operations for filesystems */
 struct fsverity_operations {
 
@@ -121,6 +122,7 @@ struct fsverity_operations {
 	int (*write_merkle_tree_block)(struct inode *inode, const void *buf,
 				       u64 pos, unsigned int size);
 };
+#endif /* FSVERITY_INTERNAL */
 
 #ifdef CONFIG_FS_VERITY
 
