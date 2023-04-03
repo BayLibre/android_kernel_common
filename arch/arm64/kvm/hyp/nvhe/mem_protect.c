@@ -31,6 +31,7 @@ struct pkvm_moveable_reg pkvm_moveable_regs[PKVM_NR_MOVEABLE_REGS];
 unsigned int pkvm_moveable_regs_nr;
 
 static struct hyp_pool host_s2_pool;
+static DEFINE_PER_CPU(bool, host_s2_can_alloc);
 
 static DEFINE_PER_CPU(struct pkvm_hyp_vm *, __current_vm);
 #define current_vm (*this_cpu_ptr(&__current_vm))
@@ -97,6 +98,8 @@ static void *host_s2_zalloc_pages_exact(size_t size)
 
 static void *host_s2_zalloc_page(void *pool)
 {
+	WARN_ON(!__this_cpu_read(host_s2_can_alloc));
+
 	return hyp_alloc_pages(pool, 0);
 }
 
@@ -170,7 +173,7 @@ static int prepopulate_host_stage2(void)
 int kvm_host_prepare_stage2(void *pgt_pool_base)
 {
 	struct kvm_s2_mmu *mmu = &host_mmu.arch.mmu;
-	int ret;
+	int ret, cpu;
 
 	prepare_host_vtcr();
 	hyp_spin_lock_init(&host_mmu.lock);
@@ -192,6 +195,9 @@ int kvm_host_prepare_stage2(void *pgt_pool_base)
 	mmu->pgd_phys = __hyp_pa(host_mmu.pgt.pgd);
 	mmu->pgt = &host_mmu.pgt;
 	atomic64_set(&mmu->vmid.id, 0);
+
+	for (cpu = 0; cpu < hyp_nr_cpus; cpu++)
+		*per_cpu_ptr(&host_s2_can_alloc, cpu) = true;
 
 	return prepopulate_host_stage2();
 }
@@ -769,12 +775,15 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	u64 esr, addr;
 	int ret = -EPERM;
 
+	__this_cpu_write(host_s2_can_alloc, false);
+
 	esr = read_sysreg_el2(SYS_ESR);
 	BUG_ON(!__get_fault_info(esr, &fault));
 
 	addr = (fault.hpfar_el2 & HPFAR_MASK) << 8;
 	addr |= fault.far_el2 & FAR_MASK;
 
+	trace_host_mem_abort(esr, addr);
 	host_lock_component();
 
 	/* Check if an IOMMU device can handle the DABT. */
@@ -791,12 +800,12 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	if ((esr & ESR_ELx_FSC_TYPE) == FSC_PERM)
 		ret = handle_host_perm_fault(host_ctxt, esr, addr);
 
+	__this_cpu_write(host_s2_can_alloc, true);
+
 	if (ret == -EPERM)
 		host_inject_abort(host_ctxt);
 	else
 		BUG_ON(ret && ret != -EAGAIN);
-
-	trace_host_mem_abort(esr, addr);
 }
 
 struct pkvm_mem_transition {
