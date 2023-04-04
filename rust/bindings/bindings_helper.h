@@ -19,6 +19,7 @@
 #include <linux/security.h>
 #include <linux/pid_namespace.h>
 #include <linux/poll.h>
+#include <linux/workqueue.h>
 #include <uapi/linux/android/binder.h>
 
 /* `bindgen` gets confused at certain things. */
