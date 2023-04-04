@@ -16,6 +16,24 @@
       "message": "Looks like this has been queued in the upstream maintainers\u0027 tree:\n  https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git/log/?h\u003ddev\n\nAnd can be resubmitted as FROMGIT.\n\nFrom the thread (https://lore.kernel.org/rcu/105d5e6e-d0b7-46c6-8f8e-574091e45eb1@paulmck-laptop/) Paul mentions:\n  \"Either way, this fixes only one bug of two.\" \n\nDo we need to make sure the follow up patch that Paul submitted is also backported?",
       "revId": "446c6d9f152472ad6539d3ce1d25dd41d6bedfea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1094a97_95056e29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2023-04-04T20:32:39Z",
+      "side": 1,
+      "message": "No there is only one bug to fix. The second bug he is referring to is in the test, which did not catch the first bug ;-). I\u0027d say that is more a limitation of the test than a bug in it though.\n\nI am OK with Android backporting it, but isn\u0027t it better/safer to have it come through the stable trees?",
+      "parentUuid": "bf0b25dc_79d4f4c0",
+      "revId": "446c6d9f152472ad6539d3ce1d25dd41d6bedfea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
