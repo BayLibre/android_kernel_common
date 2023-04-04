@@ -319,6 +319,13 @@ pid_t rust_helper_task_tgid_nr_ns(struct task_struct *tsk, struct pid_namespace 
 }
 EXPORT_SYMBOL_GPL(rust_helper_task_tgid_nr_ns);
 
+void rust_helper___INIT_WORK_WITH_KEY(struct work_struct *work,
+		work_func_t func, bool on_stack, struct lock_class_key *key)
+{
+	__INIT_WORK_WITH_KEY(work, func, on_stack, key);
+}
+EXPORT_SYMBOL_GPL(rust_helper___INIT_WORK_WITH_KEY);
+
 /*
  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
  * as the Rust `usize` type, so we can use it in contexts where Rust
