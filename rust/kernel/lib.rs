@@ -59,6 +59,7 @@ pub mod std_vendor;
 pub mod str;
 pub mod sync;
 pub mod task;
+pub mod task_work;
 pub mod types;
 pub mod user_ptr;
 pub mod workqueue;

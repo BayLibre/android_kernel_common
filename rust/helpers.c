@@ -32,6 +32,7 @@
 #include <linux/security.h>
 #include <linux/sched.h>
 #include <linux/sched/signal.h>
+#include <linux/task_work.h>
 #include <linux/wait.h>
 #include <linux/uidgid.h>
 #include <linux/uio.h>
@@ -325,6 +326,12 @@ void rust_helper___INIT_WORK_WITH_KEY(struct work_struct *work,
 	__INIT_WORK_WITH_KEY(work, func, on_stack, key);
 }
 EXPORT_SYMBOL_GPL(rust_helper___INIT_WORK_WITH_KEY);
+
+void rust_helper_init_task_work(struct callback_head *twork, task_work_func_t func)
+{
+	init_task_work(twork, func);
+}
+EXPORT_SYMBOL_GPL(rust_helper_init_task_work);
 
 /*
  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type

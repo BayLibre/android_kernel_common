@@ -17,6 +17,7 @@
 #include <linux/uio.h>
 #include <linux/uidgid.h>
 #include <linux/security.h>
+#include <linux/task_work.h>
 #include <linux/pid_namespace.h>
 #include <linux/poll.h>
 #include <linux/workqueue.h>
