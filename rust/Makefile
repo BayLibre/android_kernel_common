@@ -19,13 +19,19 @@ obj-$(CONFIG_RUST) += alloc.o bindings.o kernel.o
 always-$(CONFIG_RUST) += exports_alloc_generated.h exports_bindings_generated.h \
     exports_kernel_generated.h
 
-ifdef CONFIG_RUST_BUILD_ASSERT_ALLOW
-obj-$(CONFIG_RUST) += build_error.o
-else
+ifdef CONFIG_RUST_BUILD_ASSERT_DENY
 always-$(CONFIG_RUST) += build_error.o
+else
+obj-$(CONFIG_RUST) += build_error.o
 endif
 
 obj-$(CONFIG_RUST) += exports.o
+
+always-$(CONFIG_RUST_KERNEL_KUNIT_TEST) += doctests_kernel_generated.rs
+always-$(CONFIG_RUST_KERNEL_KUNIT_TEST) += doctests_kernel_generated_kunit.c
+
+obj-$(CONFIG_RUST_KERNEL_KUNIT_TEST) += doctests_kernel_generated.o
+obj-$(CONFIG_RUST_KERNEL_KUNIT_TEST) += doctests_kernel_generated_kunit.o
 
 # Avoids running `$(RUSTC)` for the sysroot when it may not be available.
 ifdef CONFIG_RUST
@@ -39,9 +45,11 @@ ifeq ($(quiet),silent_)
 cargo_quiet=-q
 rust_test_quiet=-q
 rustdoc_test_quiet=--test-args -q
+rustdoc_test_kernel_quiet=>/dev/null
 else ifeq ($(quiet),quiet_)
 rust_test_quiet=-q
 rustdoc_test_quiet=--test-args -q
+rustdoc_test_kernel_quiet=>/dev/null
 else
 cargo_quiet=--verbose
 endif
@@ -154,6 +162,27 @@ quiet_cmd_rustdoc_test = RUSTDOC T $<
 		-L$(objtree)/$(obj)/test --output $(objtree)/$(obj)/doc \
 		--crate-name $(subst rusttest-,,$@) $<
 
+quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
+      cmd_rustdoc_test_kernel = \
+	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
+	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
+	OBJTREE=$(abspath $(objtree)) \
+	$(RUSTDOC) --test $(rust_flags) \
+		@$(objtree)/include/generated/rustc_cfg \
+		-L$(objtree)/$(obj) --extern alloc --extern kernel \
+		--extern build_error --extern macros \
+		--extern bindings \
+		--no-run --crate-name kernel -Zunstable-options \
+		--test-builder $(objtree)/scripts/rustdoc_test_builder \
+		$< $(rustdoc_test_kernel_quiet); \
+	$(objtree)/scripts/rustdoc_test_gen
+
+%/doctests_kernel_generated.rs %/doctests_kernel_generated_kunit.c: \
+    $(src)/kernel/lib.rs $(obj)/kernel.o \
+    $(objtree)/scripts/rustdoc_test_builder \
+    $(objtree)/scripts/rustdoc_test_gen FORCE
+	$(call if_changed,rustdoc_test_kernel)
+
 # We cannot use `-Zpanic-abort-tests` because some tests are dynamic,
 # so for the moment we skip `-Cpanic=abort`.
 quiet_cmd_rustc_test = RUSTC T  $<
@@ -261,7 +290,16 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
 	-fno-inline-functions-called-once \
 	--param=% --param asan-%
 
+# Ignore RISC-V extensions that Clang does not recognize.
+bindgen_c_flags_patsubst2 = $(patsubst -march=rv%_zihintpause,-march=rv%,$(c_flags))
+bindgen_c_flags_patsubst1 = $(patsubst -march=rv%_zicbom,-march=rv%,$(bindgen_c_flags_patsubst2))
+bindgen_c_flags_patsubst  = $(patsubst -march=rv%_zicsr_zifencei,-march=rv%,$(bindgen_c_flags_patsubst1))
+
 # Derived from `scripts/Makefile.clang`.
+BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+BINDGEN_TARGET_powerpc	:= powerpc64le-linux-gnu
+BINDGEN_TARGET_riscv	:= riscv64-linux-gnu
 BINDGEN_TARGET_x86	:= x86_64-linux-gnu
 BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
 
@@ -270,7 +308,7 @@ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
 # some configurations, with new GCC versions, etc.
 bindgen_extra_c_flags = -w --target=$(BINDGEN_TARGET)
 
-bindgen_c_flags = $(filter-out $(bindgen_skip_c_flags), $(c_flags)) \
+bindgen_c_flags = $(filter-out $(bindgen_skip_c_flags), $(bindgen_c_flags_patsubst)) \
 	$(bindgen_extra_c_flags)
 endif
 
@@ -314,8 +352,7 @@ quiet_cmd_exports = EXPORTS $@
       cmd_exports = \
 	$(NM) -p --defined-only $< \
 		| grep -E ' (T|R|D) ' | cut -d ' ' -f 3 \
-		| xargs -Isymbol \
-		echo 'EXPORT_SYMBOL_RUST_GPL(symbol);' > $@
+		| awk 'NF {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$0}' > $@
 
 $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
 	$(call if_changed,exports)
@@ -332,6 +369,7 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
 quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
       cmd_rustc_procmacro = \
 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) \
+		-C linker-flavor=gcc -C linker=$(HOSTCC) \
 		--emit=dep-info,link --extern proc_macro \
 		--crate-type proc-macro --out-dir $(objtree)/$(obj) \
 		--crate-name $(patsubst lib%.so,%,$(notdir $@)) $<; \
@@ -360,22 +398,8 @@ rust-analyzer:
 	$(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) \
 		$(RUST_LIB_SRC) > $(objtree)/rust-project.json
 
-redirect-intrinsics = \
-	__eqsf2 __gesf2 __lesf2 __nesf2 __unordsf2 \
-	__unorddf2 \
-	__muloti4 __multi3 \
-	__udivmodti4 __udivti3 __umodti3
-
-ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
-	# These intrinsics are defined for ARM64 and RISCV64
-	redirect-intrinsics += \
-		__ashrti3 \
-		__ashlti3 __lshrti3
-endif
-
 $(obj)/core.o: private skip_clippy = 1
 $(obj)/core.o: private skip_flags = -Dunreachable_pub
-$(obj)/core.o: private rustc_objcopy = $(foreach sym,$(redirect-intrinsics),--redefine-sym $(sym)=__rust$(sym))
 $(obj)/core.o: private rustc_target_flags = $(core-cfgs)
 $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs $(obj)/target.json FORCE
 	$(call if_changed_dep,rustc_library)

@@ -52,7 +52,7 @@ const __LOG_PREFIX: &[u8] = b"rust_kernel\0";
 /// The top level entrypoint to implementing a kernel module.
 ///
 /// For any teardown or cleanup operations, your type may implement [`Drop`].
-pub trait Module: Sized + Sync {
+pub trait Module: Sized + Sync {asdfasd
     /// Called at module initialization time.
     ///
     /// Use this method to perform whatever setup or registration your module
