@@ -59,6 +59,7 @@ pub mod sync;
 pub mod task;
 pub mod types;
 pub mod user_ptr;
+pub mod workqueue;
 
 pub mod linked_list;
 pub mod raw_list;
