@@ -16,6 +16,24 @@
       "message": "The request we get back from SPM (FFA_MEM_RETRIEVE_REQ) contains repainted descriptors as far as I can see, which does not work when we try to unshare the ranges with the guest.",
       "revId": "3af8956a3a2bbd1ff8dc764f289cb162e5a3a8bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6f43c7_193cadb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2023-04-04T13:46:07Z",
+      "side": 1,
+      "message": "That\u0027s a good point. We will need to store the IPA \u003c-\u003e PA as well as the handle that identifies the region in an array of structures per VM.",
+      "parentUuid": "58edd81f_e125976c",
+      "revId": "3af8956a3a2bbd1ff8dc764f289cb162e5a3a8bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
