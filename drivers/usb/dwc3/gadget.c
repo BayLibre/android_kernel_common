@@ -1673,6 +1673,7 @@ static int __dwc3_gadget_get_frame(struct dwc3 *dwc)
  */
 static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool interrupt)
 {
+<<<<<<< HEAD   (90eb02 Revert "HID: core: Provide new max_buffer_size attribute to )
 	struct dwc3_gadget_ep_cmd_params params;
 	u32 cmd;
 	int ret;
@@ -1690,6 +1691,29 @@ static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool int
 		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
 	else if (!ret)
 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+=======
+	struct dwc3 *dwc = dep->dwc;
+	struct dwc3_gadget_ep_cmd_params params;
+	u32 cmd;
+	int ret;
+
+	cmd = DWC3_DEPCMD_ENDTRANSFER;
+	cmd |= force ? DWC3_DEPCMD_HIPRI_FORCERM : 0;
+	cmd |= interrupt ? DWC3_DEPCMD_CMDIOC : 0;
+	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
+	memset(&params, 0, sizeof(params));
+	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
+	WARN_ON_ONCE(ret);
+	dep->resource_index = 0;
+
+	if (!interrupt) {
+		if (!DWC3_IP_IS(DWC3) || DWC3_VER_IS_PRIOR(DWC3, 310A))
+			mdelay(1);
+		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
+	} else if (!ret) {
+		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+	}
+>>>>>>> BRANCH (387078 Linux 5.10.177)
 
 	return ret;
 }
@@ -3687,6 +3711,7 @@ static void dwc3_reset_gadget(struct dwc3 *dwc)
 void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
 	bool interrupt)
 {
+<<<<<<< HEAD   (90eb02 Revert "HID: core: Provide new max_buffer_size attribute to )
 	struct dwc3 *dwc = dep->dwc;
 
 	/*
@@ -3698,6 +3723,8 @@ void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
 	if (dep->number <= 1 && dwc->ep0state != EP0_DATA_PHASE)
 		return;
 
+=======
+>>>>>>> BRANCH (387078 Linux 5.10.177)
 	if (!(dep->flags & DWC3_EP_TRANSFER_STARTED) ||
 	    (dep->flags & DWC3_EP_DELAY_STOP) ||
 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
@@ -3739,8 +3766,16 @@ void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
 	 * enabled, the EndTransfer command will have completed upon
 	 * returning from this function.
 	 *
-	 * This mode is NOT available on the DWC_usb31 IP.
+	 * This mode is NOT available on the DWC_usb31 IP.  In this
+	 * case, if the IOC bit is not set, then delay by 1ms
+	 * after issuing the EndTransfer command.  This allows for the
+	 * controller to handle the command completely before DWC3
+	 * remove requests attempts to unmap USB request buffers.
 	 */
+<<<<<<< HEAD   (90eb02 Revert "HID: core: Provide new max_buffer_size attribute to )
+=======
+
+>>>>>>> BRANCH (387078 Linux 5.10.177)
 	__dwc3_stop_active_transfer(dep, force, interrupt);
 }
 EXPORT_SYMBOL_GPL(dwc3_stop_active_transfer);

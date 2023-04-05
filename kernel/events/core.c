@@ -3773,6 +3773,20 @@ ctx_sched_in(struct perf_event_context *ctx,
 	if (likely(!ctx->nr_events))
 		return;
 
+<<<<<<< HEAD   (90eb02 Revert "HID: core: Provide new max_buffer_size attribute to )
+=======
+	if (!(is_active & EVENT_TIME)) {
+		/* start ctx time */
+		__update_context_time(ctx, false);
+		perf_cgroup_set_timestamp(task, ctx);
+		/*
+		 * CPU-release for the below ->is_active store,
+		 * see __load_acquire() in perf_event_time_now()
+		 */
+		barrier();
+	}
+
+>>>>>>> BRANCH (387078 Linux 5.10.177)
 	ctx->is_active |= (event_type | EVENT_TIME);
 	if (ctx->task) {
 		if (!is_active)
@@ -8665,7 +8679,7 @@ static void perf_event_bpf_output(struct perf_event *event, void *data)
 
 	perf_event_header__init_id(&bpf_event->event_id.header,
 				   &sample, event);
-	ret = perf_output_begin(&handle, data, event,
+	ret = perf_output_begin(&handle, &sample, event,
 				bpf_event->event_id.header.size);
 	if (ret)
 		return;
