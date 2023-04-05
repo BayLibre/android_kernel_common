@@ -1008,6 +1008,7 @@ compaction_capture(struct capture_control *capc, struct page *page,
 
 	/* Do not accidentally pollute CMA or isolated regions*/
 	if (is_migrate_cma(migratetype) ||
+	    is_migrate_metadata(migratetype) ||
 	    is_migrate_isolate(migratetype))
 		return false;
 

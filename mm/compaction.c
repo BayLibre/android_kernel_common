@@ -10,6 +10,7 @@
  */
 #include <linux/cpu.h>
 #include <linux/swap.h>
+#include <linux/memory_metadata.h>
 #include <linux/migrate.h>
 #include <linux/compaction.h>
 #include <linux/mm_inline.h>
@@ -1280,10 +1281,16 @@ static bool suitable_migration_source(struct compact_control *cc,
 	if (pageblock_skip_persistent(page))
 		return false;
 
+	block_mt = get_pageblock_migratetype(page);
+
+	if (metadata_storage_enabled() && cc->direct_compaction &&
+	    is_migrate_metadata(block_mt) &&
+	    cc->migratetype == MIGRATE_MOVABLE &&
+	    !(cc->alloc_flags & ALLOC_FROM_METADATA))
+		return false;
+
 	if ((cc->mode != MIGRATE_ASYNC) || !cc->direct_compaction)
 		return true;
-
-	block_mt = get_pageblock_migratetype(page);
 
 	if (cc->migratetype == MIGRATE_MOVABLE)
 		return is_migrate_movable(block_mt);
