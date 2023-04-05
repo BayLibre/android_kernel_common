@@ -8,6 +8,7 @@
 
 #include <nvhe/mem_protect.h>
 #include <nvhe/pkvm.h>
+#include <nvhe/pviommu.h>
 
 static bool pkvm_guest_iommu_map(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
@@ -31,12 +32,31 @@ static bool pkvm_guest_iommu_detach_dev(struct pkvm_hyp_vcpu *hyp_vcpu)
 
 static bool pkvm_guest_iommu_version(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
-	return false;
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+
+	smccc_set_retval(vcpu, SMCCC_RET_SUCCESS, PVIOMMU_VERSION, 0, 0);
+	return true;
 }
 
 static bool pkvm_guest_iommu_get_feature(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
-	return false;
+	/* Arg1 reserved for the iommu currently unused. */
+	unsigned long req_feature = smccc_get_arg2(&hyp_vcpu->vcpu);
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+
+	switch (req_feature) {
+	case PVIOMMU_REQUEST_FEATURE_PGSZ_BITMAP:
+		/*
+		 * We only advertise page size for IOMMU bit map and not the actual page size
+		 * bit map as the guest memory might be contiguous in IPA space but not in physical
+		 * space.
+		 */
+		smccc_set_retval(vcpu, SMCCC_RET_SUCCESS, PAGE_SIZE, 0, 0);
+		return true;
+	}
+
+	smccc_set_retval(vcpu, SMCCC_RET_INVALID_PARAMETER, 0, 0, 0);
+	return true;
 }
 
 static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu)
