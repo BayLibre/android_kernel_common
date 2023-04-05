@@ -2101,6 +2101,8 @@ static void scsi_restart_operations(struct Scsi_Host *shost)
 	 * now that error recovery is done, we will need to ensure that these
 	 * requests are started.
 	 */
+	shost_for_each_device(sdev, shost)
+		blk_mq_kick_requeue_list(sdev->request_queue);
 	scsi_run_host_queues(shost);
 
 	/*
@@ -2388,6 +2390,7 @@ int
 scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
 {
 	struct scsi_cmnd *scmd;
+	struct scsi_device *sdev;
 	struct Scsi_Host *shost = dev->host;
 	struct request *rq;
 	unsigned long flags;
@@ -2470,6 +2473,8 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
 			     "waking up host to restart after TMF\n"));
 
 	wake_up(&shost->host_wait);
+	shost_for_each_device(sdev, shost)
+		blk_mq_kick_requeue_list(sdev->request_queue);
 	scsi_run_host_queues(shost);
 
 	kfree(rq);
