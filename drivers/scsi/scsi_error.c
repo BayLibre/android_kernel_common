@@ -2101,6 +2101,8 @@ static void scsi_restart_operations(struct Scsi_Host *shost)
 	 * now that error recovery is done, we will need to ensure that these
 	 * requests are started.
 	 */
+	shost_for_each_device(sdev, shost)
+		blk_mq_kick_requeue_list(sdev->request_queue);
 	scsi_run_host_queues(shost);
 
 	/*
