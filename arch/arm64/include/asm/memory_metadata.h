@@ -5,10 +5,12 @@
 #ifndef __ASM_MEMORY_METADATA_H
 #define __ASM_MEMORY_METADATA_H
 
+#include <asm/mte.h>
 #include <asm/mte_tag_storage.h>
 
 #define arch_metadata_storage_enabled()			mte_tag_storage_enabled()
 
 #define arch_alloc_can_use_metadata_pages(gfp_mask)	alloc_can_use_tag_storage(gfp_mask)
+#define arch_page_has_metadata(page)			page_mte_tagged(page)
 
 #endif /* __ASM_MTE_TAG_STORAGE_H  */
