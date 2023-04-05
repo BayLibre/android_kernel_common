@@ -127,7 +127,7 @@ static void scsi_mq_requeue_cmd(struct scsi_cmnd *cmd)
 	} else {
 		WARN_ON_ONCE(true);
 	}
-	blk_mq_requeue_request(rq, true);
+	blk_mq_requeue_request(rq, !scsi_host_in_recovery(cmd->device->host));
 }
 
 /**
@@ -166,7 +166,8 @@ static void __scsi_queue_insert(struct scsi_cmnd *cmd, int reason, bool unbusy)
 	 */
 	cmd->result = 0;
 
-	blk_mq_requeue_request(scsi_cmd_to_rq(cmd), true);
+	blk_mq_requeue_request(scsi_cmd_to_rq(cmd),
+			       !scsi_host_in_recovery(cmd->device->host));
 }
 
 /**
@@ -470,10 +471,16 @@ void scsi_requeue_run_queue(struct work_struct *work)
 	scsi_run_queue(q);
 }
 
+/*
+ * Transfer requests from the requeue_list to from where these can be dispatched
+ * and run the request queues.
+ */
 void scsi_run_host_queues(struct Scsi_Host *shost)
 {
 	struct scsi_device *sdev;
 
+	shost_for_each_device(sdev, shost)
+		blk_mq_kick_requeue_list(sdev->request_queue);
 	shost_for_each_device(sdev, shost)
 		scsi_run_queue(sdev->request_queue);
 }
