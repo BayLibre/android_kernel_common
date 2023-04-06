@@ -29,7 +29,9 @@
 #include <linux/export.h>
 #include <linux/dma-buf.h>
 #include <linux/rbtree.h>
+#include <linux/memcontrol.h>
 #include <linux/module.h>
+#include <linux/scatterlist.h>
 
 #include <drm/drm.h>
 #include <drm/drm_drv.h>
@@ -275,6 +277,15 @@ void drm_gem_dmabuf_release(struct dma_buf *dma_buf)
 {
 	struct drm_gem_object *obj = dma_buf->priv;
 	struct drm_device *dev = obj->dev;
+	struct sg_table *table = obj->funcs->get_sg_table(obj);
+
+	if (!IS_ERR(table) && !mem_cgroup_disabled()) {
+		struct scatterlist *sg;
+		int i;
+		for_each_sg(table->sgl, sg, table->orig_nents, i)
+			mod_memcg_page_state(sg_page(sg), MEMCG_DMABUF, -sg_page_count(sg));
+	} else pr_warn("TJM: Could not get sg_table for drm gem dmabuf object (driver private memory?)\n"); // TODO Delete
+
 
 	/* drop the reference on the export fd holds */
 	drm_gem_object_put(obj);

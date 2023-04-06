@@ -23,6 +23,7 @@
  */
 
 #include <drm/drm_prime.h>
+#include <linux/memcontrol.h>
 #include <linux/virtio_dma_buf.h>
 
 #include "virtgpu_drv.h"
@@ -135,6 +136,15 @@ struct dma_buf *virtgpu_gem_prime_export(struct drm_gem_object *obj,
 	buf = virtio_dma_buf_export(&exp_info);
 	if (IS_ERR(buf))
 		return buf;
+
+    if (!mem_cgroup_disabled() && virtio_gpu_is_shmem(bo)) {
+    	struct sg_table *table = bo->base.sgt;
+    	struct scatterlist *sg;
+    	int i;
+
+    	for_each_sg(table->sgl, sg, table->nents, i)
+    		mod_memcg_page_state(sg_page(sg), MEMCG_DMABUF, sg_page_count(sg));
+    }
 
 	drm_dev_get(dev);
 	drm_gem_object_get(obj);

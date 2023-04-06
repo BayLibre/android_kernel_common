@@ -16,6 +16,7 @@
 #include <linux/dma-resv.h>
 #include <linux/err.h>
 #include <linux/highmem.h>
+#include <linux/memcontrol.h>
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/scatterlist.h>
@@ -46,11 +47,11 @@ struct dma_heap_attachment {
 	bool uncached;
 };
 
-#define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO | __GFP_COMP)
-#define MID_ORDER_GFP (LOW_ORDER_GFP | __GFP_NOWARN)
+#define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO | __GFP_COMP | __GFP_ACCOUNT)
+#define MID_ORDER_GFP (LOW_ORDER_GFP | __GFP_NOWARN | __GFP_ACCOUNT)
 #define HIGH_ORDER_GFP  (((GFP_HIGHUSER | __GFP_ZERO | __GFP_NOWARN \
 				| __GFP_NORETRY) & ~__GFP_RECLAIM) \
-				| __GFP_COMP)
+				| __GFP_COMP | __GFP_ACCOUNT)
 static gfp_t order_flags[] = {HIGH_ORDER_GFP, MID_ORDER_GFP, LOW_ORDER_GFP};
 /*
  * The selection of the orders used for allocation (1MB, 64K, 4K) is designed
@@ -318,7 +319,7 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
 	table = &buffer->sg_table;
 	for_each_sgtable_sg(table, sg, i) {
 		struct page *page = sg_page(sg);
-
+		mod_memcg_page_state(page, MEMCG_DMABUF, -(1 << compound_order(page)));
 		__free_pages(page, compound_order(page));
 	}
 	sg_free_table(table);
@@ -353,6 +354,8 @@ static struct page *alloc_largest_available(unsigned long size,
 		page = alloc_pages(order_flags[i], orders[i]);
 		if (!page)
 			continue;
+		mod_memcg_page_state(page, MEMCG_DMABUF, 1 << orders[i]);
+
 		return page;
 	}
 	return NULL;
@@ -446,13 +449,15 @@ static struct dma_buf *system_heap_do_allocate(struct dma_heap *heap,
 free_pages:
 	for_each_sgtable_sg(table, sg, i) {
 		struct page *p = sg_page(sg);
-
+		mod_memcg_page_state(p, MEMCG_DMABUF, -(1 << compound_order(p)));
 		__free_pages(p, compound_order(p));
 	}
 	sg_free_table(table);
 free_buffer:
-	list_for_each_entry_safe(page, tmp_page, &pages, lru)
+	list_for_each_entry_safe(page, tmp_page, &pages, lru) {
+		mod_memcg_page_state(page, MEMCG_DMABUF, -(1 << compound_order(page)));
 		__free_pages(page, compound_order(page));
+	}
 	kfree(buffer);
 
 	return ERR_PTR(ret);
