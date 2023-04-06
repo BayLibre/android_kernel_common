@@ -22,6 +22,7 @@
 #include <linux/fs.h>
 #include <linux/dma-fence.h>
 #include <linux/wait.h>
+#include <linux/memcontrol.h>
 
 struct device;
 struct dma_buf;
@@ -356,6 +357,9 @@ struct dma_buf_ops {
 	 * will be populated with the buffer's flags.
 	 */
 	int (*get_flags)(struct dma_buf *dmabuf, unsigned long *flags);
+
+	// TODO Docs
+	int (*transfer_charge)(struct dma_buf *dmabuf, struct mem_cgroup *from, struct mem_cgroup *to);
 };
 
 /**
@@ -712,4 +716,5 @@ void dma_buf_vunmap(struct dma_buf *dmabuf, struct iosys_map *map);
 int dma_buf_vmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map);
 void dma_buf_vunmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map);
 int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags);
+int dma_buf_transfer_charge(struct file *dmabuf_file, struct task_struct *target);
 #endif /* __DMA_BUF_H__ */

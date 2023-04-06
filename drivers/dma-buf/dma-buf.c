@@ -1652,6 +1652,43 @@ void dma_buf_vunmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map)
 }
 EXPORT_SYMBOL_NS_GPL(dma_buf_vunmap_unlocked, DMA_BUF);
 
+/**
+ * dma_buf_transfer_charge - Change the cgroup to which the provided dma_buf is charged.
+ * @dmabuf_file:	[in]	file for buffer whose charge will be migrated to a different cgroup
+ * @target:		[in]	the task_struct of the destination process for the cgroup charge
+ *
+ * Only tasks that belong to the same cgroup the buffer is currently charged to
+ * may call this function, otherwise it will return -EPERM.
+ *
+ * Returns 0 on success, or a negative errno code otherwise.
+ */
+int dma_buf_transfer_charge(struct file *dmabuf_file, struct task_struct *target)
+{
+	struct mem_cgroup *current_cg, *target_cg;
+	struct dma_buf *dmabuf;
+
+	if (!IS_ENABLED(CONFIG_MEMCG))
+		return 0;
+
+	if (WARN_ON(!dmabuf_file) || WARN_ON(!target))
+		return -EINVAL;
+
+	if (!is_dma_buf_file(dmabuf_file))
+		return -EBADF;
+	dmabuf = dmabuf_file->private_data;
+
+	if (!dmabuf->ops->transfer_charge)
+		return -EOPNOTSUPP;
+
+	current_cg = mem_cgroup_from_task(current);
+	target_cg = mem_cgroup_from_task(target);
+
+	if (current_cg != target_cg)
+		return dmabuf->ops->transfer_charge(dmabuf, current_cg, target_cg);
+
+	return 0;
+}
+
 int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags)
 {
 	int ret = 0;

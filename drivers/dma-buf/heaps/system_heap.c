@@ -326,6 +326,14 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
 	kfree(buffer);
 }
 
+static int system_heap_transfer_charge(struct dma_buf *dmabuf, struct mem_cgroup *from, struct mem_cgroup *to)
+{
+	struct system_heap_buffer *buffer = dmabuf->priv;
+	struct sg_table *table = &buffer->sg_table;
+
+	return mem_cgroup_move_dmabuf_charges(table, from, to);
+}
+
 static const struct dma_buf_ops system_heap_buf_ops = {
 	.attach = system_heap_attach,
 	.detach = system_heap_detach,
@@ -337,6 +345,7 @@ static const struct dma_buf_ops system_heap_buf_ops = {
 	.vmap = system_heap_vmap,
 	.vunmap = system_heap_vunmap,
 	.release = system_heap_dma_buf_release,
+	.transfer_charge = system_heap_transfer_charge,
 };
 
 static struct page *alloc_largest_available(unsigned long size,

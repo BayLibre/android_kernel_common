@@ -21,6 +21,7 @@
 #include <linux/vmstat.h>
 #include <linux/writeback.h>
 #include <linux/page-flags.h>
+#include <linux/scatterlist.h>
 
 struct mem_cgroup;
 struct obj_cgroup;
@@ -1145,6 +1146,10 @@ unsigned long mem_cgroup_soft_limit_reclaim(pg_data_t *pgdat, int order,
 						gfp_t gfp_mask,
 						unsigned long *total_scanned);
 
+int mem_cgroup_move_dmabuf_charges(struct sg_table *table,
+				   struct mem_cgroup *from,
+				   struct mem_cgroup *to);
+
 #else /* CONFIG_MEMCG */
 
 #define MEM_CGROUP_ID_SHIFT	0
@@ -1574,6 +1579,14 @@ static inline
 unsigned long mem_cgroup_soft_limit_reclaim(pg_data_t *pgdat, int order,
 					    gfp_t gfp_mask,
 					    unsigned long *total_scanned)
+{
+	return 0;
+}
+
+static inline 
+int mem_cgroup_move_dmabuf_charges(struct sg_table *table,
+				   struct mem_cgroup *from,
+				   struct mem_cgroup *to)
 {
 	return 0;
 }

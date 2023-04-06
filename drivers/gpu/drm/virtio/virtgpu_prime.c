@@ -72,6 +72,18 @@ static void virtgpu_gem_unmap_dma_buf(struct dma_buf_attachment *attach,
 	drm_gem_unmap_dma_buf(attach, sgt, dir);
 }
 
+static int virtio_transfer_charge(struct dma_buf *dmabuf, struct mem_cgroup *from, struct mem_cgroup *to)
+{
+	struct drm_gem_object *obj = dmabuf->priv;
+	struct virtio_gpu_object *bo = gem_to_virtio_gpu_obj(obj);
+	struct sg_table *table = bo->base.sgt;
+
+	if (virtio_gpu_is_shmem(bo))
+		return mem_cgroup_move_dmabuf_charges(table, from, to);
+
+	return 0;
+}
+
 static const struct virtio_dma_buf_ops virtgpu_dmabuf_ops =  {
 	.ops = {
 		.cache_sgt_mapping = true,
@@ -83,6 +95,7 @@ static const struct virtio_dma_buf_ops virtgpu_dmabuf_ops =  {
 		.mmap = drm_gem_dmabuf_mmap,
 		.vmap = drm_gem_dmabuf_vmap,
 		.vunmap = drm_gem_dmabuf_vunmap,
+		.transfer_charge = virtio_transfer_charge,
 	},
 	.device_attach = drm_gem_map_attach,
 	.get_uuid = virtgpu_virtio_get_uuid,

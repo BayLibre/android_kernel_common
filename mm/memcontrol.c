@@ -6253,6 +6253,67 @@ put:			/* get_mctgt_type() gets the page */
 	return ret;
 }
 
+int mem_cgroup_move_dmabuf_charges(struct sg_table *table,
+				   struct mem_cgroup *from,
+				   struct mem_cgroup *to)
+{
+	struct sg_page_iter piter;
+	struct page *page;
+	unsigned int total_pages = 0;
+	int ret;
+
+	for_each_sgtable_page(table, &piter, 0) {
+		unsigned int nr_pages;
+
+		page = sg_page_iter_page(&piter);
+		nr_pages = 1 << compound_order(page);
+
+		// if (page_memcg_check(page) != from) // TODO mem_cgroup_move_account returns EINVAL instead of EPERM for this
+			// goto unwind;
+
+		ret = try_charge(to, GFP_KERNEL | __GFP_NORETRY, nr_pages);
+		if (ret)
+			goto unwind;
+
+		preempt_disable();
+		if (!isolate_lru_page(page)) {
+			ret = mem_cgroup_move_account(page, PageCompound(page), from, to);
+			putback_lru_page(page);
+		}
+		preempt_enable();
+		if (ret) {
+			refill_stock(to, nr_pages);
+			goto unwind;
+		}
+		total_pages += nr_pages;
+	}
+	refill_stock(from, total_pages);
+	mod_memcg_state(from, MEMCG_DMABUF, -total_pages);
+	mod_memcg_state(to, MEMCG_DMABUF, total_pages);
+	return 0;
+
+unwind:
+	for_each_sgtable_page(table, &piter, 0) {
+		struct page *unwind_page = sg_page_iter_page(&piter);
+		unsigned int nr_pages = 1 << compound_order(unwind_page);
+
+		if (unwind_page == page)
+			break;
+
+		preempt_disable();
+		if (!isolate_lru_page(page)) {
+			ret = mem_cgroup_move_account(unwind_page, PageCompound(unwind_page), to, from);
+			putback_lru_page(unwind_page);
+		}
+		preempt_enable();
+		if (ret)
+			pr_warn("Could not return page charge to originating cgroup\n");
+		refill_stock(to, nr_pages);
+	}
+	return ret;
+}
+EXPORT_SYMBOL(mem_cgroup_move_dmabuf_charges);
+
 static const struct mm_walk_ops charge_walk_ops = {
 	.pmd_entry	= mem_cgroup_move_charge_pte_range,
 };
