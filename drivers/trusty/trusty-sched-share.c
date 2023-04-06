@@ -107,7 +107,7 @@ err_rsrc_alloc_sg:
 	return result;
 }
 
-struct trusty_sched_share_state *trusty_register_sched_share(struct device *device)
+struct trusty_sched_share_state *trusty_alloc_sched_share(struct device *device)
 {
 	int result = 0;
 	struct trusty_sched_share_state *sched_share_state = NULL;
@@ -127,6 +127,21 @@ struct trusty_sched_share_state *trusty_register_sched_share(struct device *devi
 
 	shared = (struct trusty_sched_shared *)sched_share_state->sched_shared_vm;
 	shared->cpu_count = nr_cpu_ids;
+
+	return sched_share_state;
+
+err_resources_alloc:
+	kfree(sched_share_state);
+	dev_warn(sched_share_state->dev,
+		 "Trusty-Sched_Share API not available.\n");
+err_sched_state_alloc:
+	return NULL;
+}
+
+int trusty_register_sched_share(struct device *device,
+		struct trusty_sched_share_state *sched_share_state)
+{
+	int result = 0;
 
 	dev_dbg(device, "%s: calling api SMC_SC_SCHED_SHARE_REGISTER...\n",
 		__func__);
@@ -151,7 +166,7 @@ struct trusty_sched_share_state *trusty_register_sched_share(struct device *devi
 	dev_dbg(device, "%s: sched_share_state=%llx\n", __func__,
 		(u64)sched_share_state);
 
-	return sched_share_state;
+	return result;
 
 err_smc_std_call32:
 	result = trusty_reclaim_memory(sched_share_state->dev,
@@ -172,12 +187,7 @@ err_smc_std_call32:
 		vfree(sched_share_state->sched_shared_vm);
 	}
 	kfree(sched_share_state->sg);
-err_resources_alloc:
-	kfree(sched_share_state);
-	dev_warn(sched_share_state->dev,
-		 "Trusty-Sched_Share API not available.\n");
-err_sched_state_alloc:
-	return NULL;
+	return -EIO;
 }
 
 void trusty_unregister_sched_share(struct trusty_sched_share_state *sched_share_state)

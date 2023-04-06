@@ -62,6 +62,8 @@ struct trusty_state {
 	u16 ffa_local_id;
 	u16 ffa_remote_id;
 	struct mutex share_memory_msg_lock; /* protects share_memory_msg */
+	struct mutex first_interrupt_lock;
+	bool first_interrupt_received;
 };
 
 static inline unsigned long smc(unsigned long r0, unsigned long r1,
@@ -205,8 +207,8 @@ static void trusty_std_call_cpu_idle(struct trusty_state *s)
 	ret = wait_for_completion_timeout(&s->cpu_idle_completion, HZ * 10);
 	if (!ret) {
 		dev_warn(s->dev,
-			 "%s: timed out waiting for cpu idle to clear, retry anyway\n",
-			 __func__);
+			 "%s: cpu= %lu timed out waiting for cpu idle to clear, retry anyway\n",
+			 __func__, smp_processor_id());
 	}
 }
 
@@ -870,6 +872,25 @@ static void nop_work_func(struct trusty_work *tw)
 	u32 args[3];
 	u32 last_arg0;
 	struct trusty_state *s = tw->s;
+	static bool first_interrupt_handled;
+
+	/* upon first interrupt, need to finish sched share init */
+	if (unlikely(!first_interrupt_handled && s->first_interrupt_received)) {
+		mutex_lock(&s->first_interrupt_lock);
+		/* first cpu does init; others cpus will wait & then go */
+		if (!first_interrupt_handled) {
+
+			ret = trusty_register_sched_share(s->dev,
+						s->trusty_sched_share_state);
+			if (ret) {
+				dev_err(s->dev, "%s: failed (%d) to share mem for cpu priorities\n",
+						__func__, ret);
+			}
+
+			first_interrupt_handled = true;
+		}
+		mutex_unlock(&s->first_interrupt_lock);
+	}
 
 	do_nop = dequeue_nop(s, args);
 
@@ -929,6 +950,10 @@ void trusty_enqueue_nop(struct device *dev, struct trusty_nop *nop)
 	struct trusty_work *tw;
 	struct trusty_state *s = platform_get_drvdata(to_platform_device(dev));
 	int cur_nice;
+
+	/* trigger additional init upon interrupts being enabled */
+	if (unlikely(!s->first_interrupt_received))
+		s->first_interrupt_received = true;
 
 	trace_trusty_enqueue_nop(nop);
 	preempt_disable();
@@ -1059,6 +1084,9 @@ static int trusty_probe(struct platform_device *pdev)
 	ATOMIC_INIT_NOTIFIER_HEAD(&s->notifier);
 	init_completion(&s->cpu_idle_completion);
 
+	mutex_init(&s->first_interrupt_lock);
+	s->first_interrupt_received = false;
+
 	s->dev->dma_parms = &s->dma_parms;
 	dma_set_max_seg_size(s->dev, 0xfffff000); /* dma_parms limit */
 	/*
@@ -1118,7 +1146,7 @@ static int trusty_probe(struct platform_device *pdev)
 		goto err_add_cpuhp_instance;
 	}
 
-	s->trusty_sched_share_state = trusty_register_sched_share(&pdev->dev);
+	s->trusty_sched_share_state = trusty_alloc_sched_share(&pdev->dev);
 
 	ret = of_platform_populate(pdev->dev.of_node, NULL, NULL, &pdev->dev);
 	if (ret < 0) {
