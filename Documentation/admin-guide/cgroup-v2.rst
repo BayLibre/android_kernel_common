@@ -1457,7 +1457,8 @@ PAGE_SIZE multiple when read back.
 
 	  dmabuf (npn)
 		Amount of memory used for exported DMA buffers allocated by the cgroup.
-		Stays with the allocating cgroup regardless of how the buffer is shared.
+		Stays with the allocating cgroup regardless of how the buffer is shared
+		unless explicitly transferred.
 
 	  workingset_refault_anon
 		Number of refaults of previously evicted anonymous pages.
