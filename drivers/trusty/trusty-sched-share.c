@@ -33,6 +33,13 @@ struct trusty_sched_share_state {
 	u32 num_pages;
 };
 
+static inline struct trusty_percpu_data *trusty_get_trusty_percpu_data(
+		struct trusty_sched_shared *tsh, int cpu_num)
+{
+	return (struct trusty_percpu_data *)((unsigned char *)tsh + tsh->hdr_size +
+			(cpu_num * tsh->percpu_data_size));
+}
+
 static int
 trusty_sched_share_resources_allocate(struct trusty_sched_share_state *share_state)
 {
@@ -107,12 +114,13 @@ err_rsrc_alloc_sg:
 	return result;
 }
 
-struct trusty_sched_share_state *trusty_register_sched_share(struct device *device)
+struct trusty_sched_share_state *trusty_alloc_sched_share(struct device *device)
 {
 	int result = 0;
 	struct trusty_sched_share_state *sched_share_state = NULL;
 	struct trusty_sched_shared *shared;
 	uint sched_share_state_size;
+	unsigned int cpu;
 
 	sched_share_state_size = sizeof(*sched_share_state);
 
@@ -127,6 +135,24 @@ struct trusty_sched_share_state *trusty_register_sched_share(struct device *devi
 
 	shared = (struct trusty_sched_shared *)sched_share_state->sched_shared_vm;
 	shared->cpu_count = nr_cpu_ids;
+
+	for_each_possible_cpu(cpu) {
+		trusty_get_trusty_percpu_data(shared, cpu)->ask_shadow_priority
+				= TRUSTY_SHADOW_PRIORITY_NORMAL;
+	}
+
+	return sched_share_state;
+
+err_resources_alloc:
+	kfree(sched_share_state);
+err_sched_state_alloc:
+	return NULL;
+}
+
+int trusty_register_sched_share(struct device *device,
+		struct trusty_sched_share_state *sched_share_state)
+{
+	int result = 0;
 
 	dev_dbg(device, "%s: calling api SMC_SC_SCHED_SHARE_REGISTER...\n",
 		__func__);
@@ -151,7 +177,7 @@ struct trusty_sched_share_state *trusty_register_sched_share(struct device *devi
 	dev_dbg(device, "%s: sched_share_state=%llx\n", __func__,
 		(u64)sched_share_state);
 
-	return sched_share_state;
+	return result;
 
 err_smc_std_call32:
 	result = trusty_reclaim_memory(sched_share_state->dev,
@@ -172,12 +198,7 @@ err_smc_std_call32:
 		vfree(sched_share_state->sched_shared_vm);
 	}
 	kfree(sched_share_state->sg);
-err_resources_alloc:
-	kfree(sched_share_state);
-	dev_warn(sched_share_state->dev,
-		 "Trusty-Sched_Share API not available.\n");
-err_sched_state_alloc:
-	return NULL;
+	return -EIO;
 }
 
 void trusty_unregister_sched_share(struct trusty_sched_share_state *sched_share_state)
@@ -197,6 +218,15 @@ void trusty_unregister_sched_share(struct trusty_sched_share_state *sched_share_
 			"call SMC_SC_SCHED_SHARE_UNREGISTER failed, error=%d\n",
 			result);
 	}
+}
+
+void trusty_free_sched_share(struct trusty_sched_share_state *sched_share_state)
+{
+	int result;
+
+	if (!sched_share_state)
+		return;
+
 	result = trusty_reclaim_memory(sched_share_state->dev,
 				       sched_share_state->sched_shared_mem_id,
 				       sched_share_state->sg,
@@ -237,13 +267,6 @@ static inline int map_trusty_prio_to_linux_nice(int trusty_prio)
 	}
 
 	return new_nice;
-}
-
-static inline struct trusty_percpu_data *trusty_get_trusty_percpu_data(
-		struct trusty_sched_shared *tsh, int cpu_num)
-{
-	return (struct trusty_percpu_data *)((unsigned char *)tsh + tsh->hdr_size +
-			(cpu_num * tsh->percpu_data_size));
 }
 
 int trusty_get_requested_nice(unsigned int cpu_num, struct trusty_sched_share_state *tcpu_state)

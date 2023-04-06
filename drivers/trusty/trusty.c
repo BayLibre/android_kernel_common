@@ -205,8 +205,8 @@ static void trusty_std_call_cpu_idle(struct trusty_state *s)
 	ret = wait_for_completion_timeout(&s->cpu_idle_completion, HZ * 10);
 	if (!ret) {
 		dev_warn(s->dev,
-			 "%s: timed out waiting for cpu idle to clear, retry anyway\n",
-			 __func__);
+			 "%s: cpu= %lu timed out waiting for cpu idle to clear, retry anyway\n",
+			 __func__, smp_processor_id());
 	}
 }
 
@@ -1118,7 +1118,11 @@ static int trusty_probe(struct platform_device *pdev)
 		goto err_add_cpuhp_instance;
 	}
 
-	s->trusty_sched_share_state = trusty_register_sched_share(&pdev->dev);
+	s->trusty_sched_share_state = trusty_alloc_sched_share(&pdev->dev);
+	if (!s->trusty_sched_share_state) {
+		dev_err(s->dev, "%s: unabled to allocate sched memory\n", __func__);
+		goto err_alloc_sched_share;
+	}
 
 	ret = of_platform_populate(pdev->dev.of_node, NULL, NULL, &pdev->dev);
 	if (ret < 0) {
@@ -1126,9 +1130,18 @@ static int trusty_probe(struct platform_device *pdev)
 		goto err_add_children;
 	}
 
+	ret = trusty_register_sched_share(s->dev, s->trusty_sched_share_state);
+	if (ret) {
+		dev_err(s->dev, "%s: failed (%d) to share mem for cpu priorities\n",
+				__func__, ret);
+	}
+
 	return 0;
 
 err_add_children:
+	if (s->trusty_sched_share_state)
+		trusty_free_sched_share(s->trusty_sched_share_state);
+err_alloc_sched_share:
 	cpuhp_state_remove_instance(trusty_cpuhp_slot, &s->cpuhp_node);
 err_add_cpuhp_instance:
 err_thread_create:
@@ -1170,6 +1183,8 @@ static int trusty_remove(struct platform_device *pdev)
 		kthread_stop(tw->nop_thread);
 	}
 	free_percpu(s->nop_works);
+
+	trusty_free_sched_share(s->trusty_sched_share_state);
 
 	mutex_destroy(&s->share_memory_msg_lock);
 	mutex_destroy(&s->smc_lock);
