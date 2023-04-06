@@ -17,15 +17,16 @@ struct pviommu {
 	u32				pgsize_bitmap;
 };
 
+struct pviommu_domain {
+	struct iommu_domain		domain;
+	unsigned long			id; /* pKVM domain ID. */
+};
+
 struct pviommu_master {
 	struct device			*dev;
 	struct pviommu			*iommu;
 	u32				ssid_bits;
-};
-
-struct pviommu_domain {
-	struct iommu_domain		domain;
-	unsigned long			id; /* pKVM domain ID. */
+	struct pviommu_domain		*domain;
 };
 
 static int pviommu_map_pages(struct iommu_domain *domain, unsigned long iova,
@@ -59,9 +60,59 @@ static void pviommu_domain_free(struct iommu_domain *domain)
 	kfree(pv_domain);
 }
 
+static int smccc_to_linux_ret(u64 smccc_ret)
+{
+	switch (smccc_ret) {
+	case SMCCC_RET_SUCCESS:
+		return 0;
+	case SMCCC_RET_NOT_SUPPORTED:
+		return -EOPNOTSUPP;
+	case SMCCC_RET_NOT_REQUIRED:
+		return -ENOENT;
+	case SMCCC_RET_INVALID_PARAMETER:
+		return -EINVAL;
+	};
+
+	return -ENODEV;
+}
+
 static int pviommu_attach_dev(struct iommu_domain *domain, struct device *dev)
 {
-	return 0;
+	int ret = 0, i;
+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+	struct pviommu *pv;
+	struct pviommu_domain *pv_domain = container_of(domain, struct pviommu_domain, domain);
+	struct pviommu_master *master;
+	struct arm_smccc_res res;
+	u32 sid;
+
+	if (!fwspec)
+		return -ENOENT;
+
+	master = dev_iommu_priv_get(dev);
+	pv = master->iommu;
+	master->domain = pv_domain;
+
+	for (i = 0; i < fwspec->num_ids; i++) {
+		sid = fwspec->ids[i];
+		arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_ATTACH_DEV_FUNC_ID,
+				  pv->id, sid, 0 /* PASID */,
+				  pv_domain->id, master->ssid_bits, &res);
+		if (res.a0) {
+			ret = smccc_to_linux_ret(res.a0);
+			break;
+		}
+	}
+
+	if (ret) {
+		while (i--) {
+			arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_DETACH_DEV_FUNC_ID,
+					  pv->id, sid, 0 /* PASID */,
+					  pv_domain->id, &res);
+		}
+	}
+
+	return ret;
 }
 
 static struct iommu_domain *pviommu_domain_alloc(unsigned int type)
