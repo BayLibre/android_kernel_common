@@ -69,4 +69,10 @@ config PROTECTED_NVHE_STACKTRACE
 
 	  If unsure, or not using protected nVHE (pKVM), say N.
 
+config MODULE_PATH
+	string "Path to modules"
+	default ""
+	help
+	   This is used by pKVM modules loading. If empty, the modules will be
+           searched into the default patch /lib/modules/<uname> otherwise.
 endif # VIRTUALIZATION
