@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5f155bb_c41619e0",
+        "filename": "drivers/trusty/trusty-sched-share-api.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "I think this should return an error code, not a pointer, now that the caller cares if it failed or not.",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2447a39c_cc783aaa",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "I think everything in trusty_sched_share_resources_allocate except `mem \u003d vzalloc(share_state-\u003ebuf_size);` could be deferred to trusty_register_sched_share",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28ced0b4_96999fd0",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "This is reclaiming and freeing memory not allocated by this function. trusty_free_sched_share will also try to free this again. You either need to move the allocation here, or remove this. If you remove this cleanup though, you need to add some new state to tell trusty_unregister_sched_share if it needs to do anything.",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e10071_fd29c095",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "this is no longer correct. sched_share_state can be non-null even if trusty_register_sched_share failed. You need to check something set by trusty_register_sched_share. This can be an existing field if you move initialization of items not used by the nop threads (e.g. the sg table) from trusty_alloc_sched_share to trusty_register_sched_share. (or you can pre-initialize everything and add a separate field)",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c3faaa9_0ecbcd62",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "this should not be necessary anymore the sched_share_state pointer itself is no longer optional",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09912f4_6acffe74",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "can you move this to a separate CL?",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe3bf122_d787a6a9",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "ret is not an error at this point since the last call that used it was successful. Returning 0 from probe after freeing all the state will not go well.",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d35041_69cb15d5",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "this is the compatibility path, and should not be a dev_err message. trusty_register_sched_share should probably return void",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dd4b18b_bb014261",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-06T22:33:39Z",
+      "side": 1,
+      "message": "this is not needed. If trusty_sched_share_state is NULL you jump to err_alloc_sched_share. You can remove all the existing code paths that have special handling for trusty_sched_share_state being NULL as well since they should also not be reachable now.",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
