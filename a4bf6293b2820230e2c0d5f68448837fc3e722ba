@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000042311415",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2527821?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "5f49acc9_064b26d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-04-07T11:56:54Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/a53ce18cacb477dd0513c607f187d16f0fa96f71) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003da53ce18cacb477dd0513c607f187d16f0fa96f71)\n\n```\n      ## kernel/sched/core.c ##\n     @@ kernel/sched/core.c: static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)\n      \n    @@ kernel/sched/fair.c: enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *\n     +\t\tse-\u003eexec_start \u003d 0;\n      \n      \tcheck_schedstat_required();\n    - \tupdate_stats_enqueue_fair(cfs_rq, se, flags);\n    + \tupdate_stats_enqueue(cfs_rq, se, flags);\n     @@ kernel/sched/fair.c: static void migrate_task_rq_fair(struct task_struct *p, int new_cpu)\n      \t/* Tell new CPU we are migrated */\n    - \tse-\u003eavg.last_update_time \u003d 0;\n    + \tp-\u003ese.avg.last_update_time \u003d 0;\n      \n     -\t/* We have migrated, no longer consider this task hot */\n    --\tse-\u003eexec_start \u003d 0;\n    +-\tp-\u003ese.exec_start \u003d 0;\n     -\n      \tupdate_scan_period(p, new_cpu);\n      }\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 522351811 android-build.ayeaye-python-dispatcher_20230406.05_p0",
+      "revId": "a4bf6293b2820230e2c0d5f68448837fc3e722ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
