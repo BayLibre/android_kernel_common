@@ -173,6 +173,23 @@
       "parentUuid": "345c3582_0ef76148",
       "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd75544_23d9a390",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-04-07T21:56:14Z",
+      "side": 1,
+      "message": "I tried running `make rustavailable` with this change, and here\u0027s what it gives me:\n\n```\n***\n*** Rust compiler \u0027rustc\u0027 is too new. This may or may not work.\n***   Your version:     1.65.0\n***   Expected version: 1.62.0\n***\n***\n*** Rust bindings generator \u0027bindgen\u0027 is too new. This may or may not work.\n***   Your version:     0.64.0\n***   Expected version: 0.56.0\n***\n***\n*** Source code for the \u0027core\u0027 standard library could not be found\n*** at \u0027/mnt/sdc/android/kernel/prebuilts/rust/linux-x86/1.65.0/lib/rustlib/src/rust/library/core/src/lib.rs\u0027.\n***\n```\n\nDo we need an update in mainline branch?",
+      "revId": "72adc0e4c610b9d50571eccd57b26f4b6f6cae47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
