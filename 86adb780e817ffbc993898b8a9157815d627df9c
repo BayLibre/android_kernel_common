@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c34f6782_acef75b1",
+        "filename": "drivers/trusty/trusty-sched-share-api.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "It needs to return the pointer so it can be stored in the trusty_state struct of the caller",
+      "parentUuid": "d5f155bb_c41619e0",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2447a39c_cc783aaa",
         "filename": "drivers/trusty/trusty-sched-share.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2023-04-06T22:33:39Z",
       "side": 1,
       "message": "I think everything in trusty_sched_share_resources_allocate except `mem \u003d vzalloc(share_state-\u003ebuf_size);` could be deferred to trusty_register_sched_share",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91614ba0_750997b5",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Attempt made ... note that if we don\u0027t make it to trusty_share_memory call (now part of register), accessing ask_shadow_priority will crash system with unhandled kernel paging request. Without a workaround for this issue, I will have to go back to the original version of trusty_sched_share_resources_allocate() being a part of alloc process. I\u0027ll keep looking to see if there\u0027s another bug (in original code or this patch) that is causinng this behavior.\n\nNote that the crash will never happen in the normal case when memory is available for scatterlist and vmalloc_to_page works for all the entries; argument could be made that if these fail there are bigger problems and a crash is the least of worries. Therefore, is a reasonable workaround to panic if either of these fail (which would lead to a non-obvious crash a bit later)?",
+      "parentUuid": "2447a39c_cc783aaa",
       "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0e74688_98eb077c",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28ced0b4_96999fd0",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00e10071_fd29c095",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-04-06T22:33:39Z",
       "side": 1,
       "message": "this is no longer correct. sched_share_state can be non-null even if trusty_register_sched_share failed. You need to check something set by trusty_register_sched_share. This can be an existing field if you move initialization of items not used by the nop threads (e.g. the sg table) from trusty_alloc_sched_share to trusty_register_sched_share. (or you can pre-initialize everything and add a separate field)",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1d75f7_7c3e46b3",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00e10071_fd29c095",
       "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -86,6 +158,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57030730_c70dba31",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c3faaa9_0ecbcd62",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b09912f4_6acffe74",
@@ -99,6 +189,24 @@
       "writtenOn": "2023-04-06T22:33:39Z",
       "side": 1,
       "message": "can you move this to a separate CL?",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61b71eca_b9dabeec",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b09912f4_6acffe74",
       "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -120,6 +228,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64546e67_90970500",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe3bf122_d787a6a9",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97d35041_69cb15d5",
@@ -137,6 +263,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74903d74_8d27ce2e",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97d35041_69cb15d5",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dd4b18b_bb014261",
@@ -150,6 +294,24 @@
       "writtenOn": "2023-04-06T22:33:39Z",
       "side": 1,
       "message": "this is not needed. If trusty_sched_share_state is NULL you jump to err_alloc_sched_share. You can remove all the existing code paths that have special handling for trusty_sched_share_state being NULL as well since they should also not be reachable now.",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbfb2cb_6ebb2905",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-07T20:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dd4b18b_bb014261",
       "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
