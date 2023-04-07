@@ -59280,6 +59280,12 @@ member {
   offset: 1152
 }
 member {
+  id: 0x997c26ba
+  name: "connect_lock"
+  type_id: 0xa7c362b0
+  offset: 7616
+}
+member {
   id: 0x1c7178cc
   name: "connect_time"
   type_id: 0x33756485
@@ -244108,13 +244114,14 @@ struct_union {
   kind: STRUCT
   name: "usb_udc"
   definition {
-    bytesize: 952
+    bytesize: 1000
     member_id: 0xd477fd9a
     member_id: 0x1875f4a8
     member_id: 0xce1ac88b
     member_id: 0x7c00e340
     member_id: 0xa8b1a153
     member_id: 0x5367cfd2
+    member_id: 0x997c26ba
   }
 }
 struct_union {
