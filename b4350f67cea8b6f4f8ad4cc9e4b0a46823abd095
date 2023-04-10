@@ -67,6 +67,24 @@
       "message": "You should probably also call this if you don\u0027t have a valid sched_shared_mem_id. I don\u0027t like your current init flow though. trusty_register_sched_share allocates resources that you don\u0027t free if SMC_SC_SCHED_SHARE_REGISTER fails. I think trusty_unregister_sched_share should undo everything trusty_register_sched_share did and if trusty_register_sched_share fails, it should go back to the state it was in before. If you are leaving the extra buffers allocated anyway, why defer the allocation at all.",
       "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aedb4d6a_4198af4e",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-10T20:05:17Z",
+      "side": 1,
+      "message": "Note that if trusty_register_sched_share but also fail to reclaim the memory, you will need remember that, and don\u0027t call vfree in trusty_free_sched_share.",
+      "parentUuid": "c910cf68_132190e8",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
