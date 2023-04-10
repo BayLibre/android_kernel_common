@@ -22,6 +22,30 @@
       },
       "revId": "838f9dd26593e73224971e9cb246522fe1662401",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b66508a6_3e66a663",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1933031
+      },
+      "writtenOn": "2023-04-10T09:13:48Z",
+      "side": 1,
+      "message": "tools/bazel run //common:kernel_aarch64_abi_dist\ntools/bazel run //common:kernel_aarch64_abi_update_symbol_list \u0026\u0026\ntools/bazel run //common:kernel_aarch64_abi_update\nRecompiled according to the above steps",
+      "parentUuid": "f49827e2_190bf849",
+      "range": {
+        "startLine": 50,
+        "startChar": 2,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "838f9dd26593e73224971e9cb246522fe1662401",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
