@@ -45,20 +45,29 @@ static void pkvm_guest_iommu_free_id(int domain_id)
 	guest_domains[domain_id / BITS_PER_LONG] &= ~(1UL << (domain_id % BITS_PER_LONG));
 }
 
-static bool pkvm_guest_iommu_map(struct pkvm_hyp_vcpu *hyp_vcpu)
+/*
+ * check if vcpu has requested memory before
+ */
+static bool __need_req(struct kvm_vcpu *vcpu)
 {
-	return false;
-}
+	struct kvm_hyp_req *hyp_req = vcpu->arch.hyp_reqs;
 
-static bool pkvm_guest_iommu_unmap(struct pkvm_hyp_vcpu *hyp_vcpu)
-{
-	return false;
+	return hyp_req->type != KVM_HYP_LAST_REQ;
 }
 
 static void pkvm_pviommu_hyp_req(u64 *exit_code)
 {
 	write_sysreg_el2(read_sysreg_el2(SYS_ELR) - 4, SYS_ELR);
 	*exit_code = ARM_EXCEPTION_HYP_REQ;
+}
+
+static bool prev_guest_req(struct kvm_vcpu *vcpu, u64 *exit_code)
+{
+	if (!__need_req(vcpu))
+		return false;
+
+	pkvm_pviommu_hyp_req(exit_code);
+	return true;
 }
 
 static bool pkvm_guest_iommu_attach_dev(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
@@ -198,6 +207,116 @@ static bool pkvm_guest_iommu_free_domain(struct pkvm_hyp_vcpu *hyp_vcpu)
 	return true;
 }
 
+static int __smccc_prot_linux(u64 prot)
+{
+	int iommu_prot = 0;
+
+	if (prot & ARM_SMCCC_KVM_PVIOMMU_READ)
+		iommu_prot |= IOMMU_READ;
+	if (prot & ARM_SMCCC_KVM_PVIOMMU_WRITE)
+		iommu_prot |= IOMMU_WRITE;
+	if (prot & ARM_SMCCC_KVM_PVIOMMU_CACHE)
+		iommu_prot |= IOMMU_CACHE;
+	if (prot & ARM_SMCCC_KVM_PVIOMMU_NOEXEC)
+		iommu_prot |= IOMMU_NOEXEC;
+	if (prot & ARM_SMCCC_KVM_PVIOMMU_MMIO)
+		iommu_prot |= IOMMU_MMIO;
+	if (prot & ARM_SMCCC_KVM_PVIOMMU_PRIV)
+		iommu_prot |= IOMMU_PRIV;
+
+	return iommu_prot;
+}
+
+static bool pkvm_guest_iommu_map(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
+{
+	size_t mapped, total_mapped = 0;
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	u64 domain = smccc_get_arg1(vcpu);
+	u64 iova = smccc_get_arg2(vcpu);
+	u64 ipa = smccc_get_arg3(vcpu);
+	u64 pgsize = smccc_get_arg4(vcpu);
+	u64 pgcount = smccc_get_arg5(vcpu);
+	u64 prot = smccc_get_arg6(vcpu);
+	u64 paddr;
+	int ret;
+	u64 smccc_ret = SMCCC_RET_SUCCESS;
+
+	/* In theory we can support larger page sizes, see pkvm_guest_iommu_get_feature(). */
+	if (pgsize != PAGE_SIZE) {
+		smccc_set_retval(vcpu, SMCCC_RET_INVALID_PARAMETER, 0, 0, 0);
+		return true;
+	}
+
+	/* See comment below after kvm_iommu_map_pages(). */
+	if (prev_guest_req(vcpu, exit_code))
+		return false;
+
+	while (pgcount--) {
+		/*
+		 * We need to get the PA and atomically use the page temporarily to avoid
+		 * racing with relinquish.
+		 */
+		ret = pkvm_get_guest_pa_request_use_dma(hyp_vcpu, ipa, pgsize * pgcount,
+							&paddr, exit_code);
+		if (ret)
+			break;
+
+		mapped = kvm_iommu_map_pages(domain, iova, paddr,
+					     pgsize, 1, __smccc_prot_linux(prot));
+		WARN_ON(__pkvm_unuse_dma(paddr, PAGE_SIZE, hyp_vcpu));
+		/*
+		 * In case we need memory, we return the current mapped pages, and on the next
+		 * HVC we would return directly to host to fulfill the request as the current
+		 * context can't be saved.
+		 * We rely on requests only cleared with exit reason ARM_EXCEPTION_HYP_REQ, as
+		 * it is possible that a guest can exit for other reasons as ARM_EXCEPTION_IRQ
+		 * however in this case the request should be retained in the next time we run
+		 * the vcpu.
+		 */
+		if (!mapped) {
+			if (!__need_req(vcpu))
+				smccc_ret = SMCCC_RET_INVALID_PARAMETER;
+			break;
+		}
+
+		ipa += pgsize;
+		iova += pgsize;
+		total_mapped += pgsize;
+	}
+
+	smccc_set_retval(vcpu, smccc_ret, total_mapped, 0, 0);
+	return true;
+}
+
+static bool pkvm_guest_iommu_unmap(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
+{
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	u64 domain = smccc_get_arg1(vcpu);
+	u64 iova = smccc_get_arg2(vcpu);
+	u64 pgsize = smccc_get_arg3(vcpu);
+	u64 pgcount = smccc_get_arg4(vcpu);
+	size_t unmapped, size = pgsize * pgcount;
+	unsigned long ret = SMCCC_RET_SUCCESS;
+
+	if (pgsize != PAGE_SIZE) {
+		smccc_set_retval(vcpu, SMCCC_RET_INVALID_PARAMETER, 0, 0, 0);
+		return true;
+	}
+
+	/* See comment in pkvm_guest_iommu_map(). */
+	if (prev_guest_req(vcpu, exit_code))
+		return false;
+
+	unmapped = kvm_iommu_unmap_pages(domain, iova, pgsize, pgcount);
+	if (unmapped < size) {
+		if (!__need_req(vcpu))
+			ret = SMCCC_RET_INVALID_PARAMETER;
+	}
+
+	smccc_set_retval(vcpu, ret, unmapped, 0, 0);
+	return true;
+}
+
 bool kvm_handle_pviommu_hvc(struct kvm_vcpu *vcpu, u64 *exit_code)
 {
 	u32 fn = smccc_get_function(vcpu);
@@ -223,9 +342,9 @@ bool kvm_handle_pviommu_hvc(struct kvm_vcpu *vcpu, u64 *exit_code)
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_DETACH_DEV_FUNC_ID:
 		return pkvm_guest_iommu_detach_dev(hyp_vcpu);
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_MAP_FUNC_ID:
-		return pkvm_guest_iommu_map(hyp_vcpu);
+		return pkvm_guest_iommu_map(hyp_vcpu, exit_code);
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_UNMAP_FUNC_ID:
-		return pkvm_guest_iommu_unmap(hyp_vcpu);
+		return pkvm_guest_iommu_unmap(hyp_vcpu, exit_code);
 	}
 
 	return false;
