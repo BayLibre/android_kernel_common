@@ -282,10 +282,14 @@ bool pkvm_device_request_mmio(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 
 	ret = pkvm_get_guest_pa_request(hyp_vcpu, ipa, PAGE_SIZE,
 					&token, &level, exit_code);
-	if (ret == -ENOENT)
+	if (ret == -ENOENT) {
+		/* Repeat next time. */
+		write_sysreg_el2(read_sysreg_el2(SYS_ELR) - 4, SYS_ELR);
 		return false;
-	else if (ret)
+	}
+	else if (ret) {
 		goto out_inval;
+	}
 
 	/* It's expected the address is mapped as page for MMIO */
 	WARN_ON(level != KVM_PGTABLE_LAST_LEVEL);
