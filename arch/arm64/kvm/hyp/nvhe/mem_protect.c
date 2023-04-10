@@ -2755,6 +2755,24 @@ int pkvm_get_guest_pa_request(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa,
 	return 0;
 }
 
+/* Get a PA and use the page for DMA */
+int pkvm_get_guest_pa_request_use_dma(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa,
+				      size_t ipa_size_request, u64 *out_pa, u64 *exit_code)
+{
+	s8 level;
+	int ret;
+
+	host_lock_component();
+	ret = pkvm_get_guest_pa_request(hyp_vcpu, ipa, ipa_size_request, out_pa,
+					&level, exit_code);
+	if (ret)
+		goto out_ret;
+	__pkvm_use_dma_page(*out_pa);
+out_ret:
+	host_unlock_component();
+	return ret;
+}
+
 #ifdef CONFIG_PKVM_SELFTESTS
 struct pkvm_expected_state {
 	enum pkvm_page_state host;
