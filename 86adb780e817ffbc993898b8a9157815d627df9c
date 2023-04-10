@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17bef24a_683a530b",
+        "filename": "drivers/trusty/trusty-sched-share-api.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-10T20:01:39Z",
+      "side": 1,
+      "message": "You can use a separate argument for that. While Linux does support returning error codes in pointers, I think it is simpler to return a normal error code in this internal api instead of multiplexing it with the pointer. Alternatively, if the function is reduced to only do allocations, and not the memory-share call, you could also just return NULL on failure, as NULL is a common way to indicate out of memory errors.",
+      "parentUuid": "c34f6782_acef75b1",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2447a39c_cc783aaa",
         "filename": "drivers/trusty/trusty-sched-share.c",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Attempt made ... note that if we don\u0027t make it to trusty_share_memory call (now part of register), accessing ask_shadow_priority will crash system with unhandled kernel paging request. Without a workaround for this issue, I will have to go back to the original version of trusty_sched_share_resources_allocate() being a part of alloc process. I\u0027ll keep looking to see if there\u0027s another bug (in original code or this patch) that is causinng this behavior.\n\nNote that the crash will never happen in the normal case when memory is available for scatterlist and vmalloc_to_page works for all the entries; argument could be made that if these fail there are bigger problems and a crash is the least of worries. Therefore, is a reasonable workaround to panic if either of these fail (which would lead to a non-obvious crash a bit later)?",
       "parentUuid": "2447a39c_cc783aaa",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52c2e0f_6036be0b",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-10T20:01:39Z",
+      "side": 1,
+      "message": "How does it crash? You also need to initialize hdr_size and percpu_data_size to get the correct result, but ask_shadow_priority should be within vzalloc even if you use 0 for hdr_size and percpu_data_size.",
+      "parentUuid": "91614ba0_750997b5",
       "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },

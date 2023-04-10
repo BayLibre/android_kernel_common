@@ -16,6 +16,57 @@
       "message": "Still a WIP.",
       "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23b78905_12737658",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-10T20:01:39Z",
+      "side": 1,
+      "message": "This is not a new issue, but tsh-\u003ehdr_size and tsh-\u003epercpu_data_size is in a memory region writable by another OS. It should not be trusted here.",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34acdb61_57a101ac",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-10T20:01:39Z",
+      "side": 1,
+      "message": "This might work right now, but the ff-a spec defines 0xFFFFFFFFFFFFFFFF as an invalid id, not 0. Although it does also require passing 0 as the id in APIs where it has not yet been allocated, I do not see any requirement that the SPM does not use 0 also as a valid handle.",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c910cf68_132190e8",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-10T20:01:39Z",
+      "side": 1,
+      "message": "You should probably also call this if you don\u0027t have a valid sched_shared_mem_id. I don\u0027t like your current init flow though. trusty_register_sched_share allocates resources that you don\u0027t free if SMC_SC_SCHED_SHARE_REGISTER fails. I think trusty_unregister_sched_share should undo everything trusty_register_sched_share did and if trusty_register_sched_share fails, it should go back to the state it was in before. If you are leaving the extra buffers allocated anyway, why defer the allocation at all.",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
