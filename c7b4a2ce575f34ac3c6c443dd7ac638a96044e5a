@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0a40d34_2b5df684",
+        "filename": "arch/arm64/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 1036,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T12:25:10Z",
+      "side": 1,
+      "message": "remove this and add it to the gki_defconfig?",
+      "range": {
+        "startLine": 1036,
+        "startChar": 0,
+        "endLine": 1036,
+        "endChar": 10
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "563c9137_9262a174",
+        "filename": "arch/arm64/include/asm/android_erratum_pgtable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T12:25:10Z",
+      "side": 1,
+      "message": "do you really want to crash the system?  If this can happen, why not detect and recover and return an error?",
+      "range": {
+        "startLine": 48,
+        "startChar": 1,
+        "endLine": 48,
+        "endChar": 8
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd18d4c_b50a0fa7",
+        "filename": "arch/arm64/include/asm/pgtable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T12:25:10Z",
+      "side": 1,
+      "message": "why not put at the top of the file?",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 40
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c04baa2e_2af7e822",
+        "filename": "arch/arm64/kvm/android_erratum_pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T12:25:10Z",
+      "side": 1,
+      "message": "also need a copyright line?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 49
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "636abe4d_2f07d158",
+        "filename": "arch/arm64/kvm/android_erratum_pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T12:25:10Z",
+      "side": 1,
+      "message": "if this can happen, why warn?",
+      "range": {
+        "startLine": 45,
+        "startChar": 6,
+        "endLine": 45,
+        "endChar": 13
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
