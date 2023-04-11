@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e263cb_b98043f8",
+        "filename": "drivers/trusty/trusty-sched-share-api.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-11T21:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17bef24a_683a530b",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2447a39c_cc783aaa",
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "How does it crash? You also need to initialize hdr_size and percpu_data_size to get the correct result, but ask_shadow_priority should be within vzalloc even if you use 0 for hdr_size and percpu_data_size.",
       "parentUuid": "91614ba0_750997b5",
+      "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7cafd85_18304a84",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-11T21:08:03Z",
+      "side": 1,
+      "message": "Crash has been fixed by initializing hdr_size and percpu_data_size in alloc function. It is doubly fixed using sizeof() instead of these members when calculating the offset (see Arve\u0027s comment regarding these members being writable by another OS).",
+      "parentUuid": "d52c2e0f_6036be0b",
       "revId": "86adb780e817ffbc993898b8a9157815d627df9c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },

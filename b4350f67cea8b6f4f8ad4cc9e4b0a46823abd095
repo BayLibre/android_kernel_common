@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac5d86de_ed1232b3",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-11T21:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23b78905_12737658",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34acdb61_57a101ac",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-04-10T20:01:39Z",
       "side": 1,
       "message": "This might work right now, but the ff-a spec defines 0xFFFFFFFFFFFFFFFF as an invalid id, not 0. Although it does also require passing 0 as the id in APIs where it has not yet been allocated, I do not see any requirement that the SPM does not use 0 also as a valid handle.",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "674412bb_b83bebbc",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-11T21:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34acdb61_57a101ac",
       "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -83,6 +119,24 @@
       "side": 1,
       "message": "Note that if trusty_register_sched_share but also fail to reclaim the memory, you will need remember that, and don\u0027t call vfree in trusty_free_sched_share.",
       "parentUuid": "c910cf68_132190e8",
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd51a3a8_31cbd5a7",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-11T21:08:03Z",
+      "side": 1,
+      "message": "I reworked all this by getting rid of the trusty_sched_share_resources_init \u0027helper\u0027. Now if memory is freed in the error path, the pointer is set to NULL so that it is safe to call vfree in the unload path.",
+      "parentUuid": "aedb4d6a_4198af4e",
       "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
