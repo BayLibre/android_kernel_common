@@ -33,7 +33,25 @@ static int pviommu_map_pages(struct iommu_domain *domain, unsigned long iova,
 			     phys_addr_t paddr, size_t pgsize, size_t pgcount,
 			     int prot, gfp_t gfp, size_t *mapped)
 {
-	return 0;
+	int ret;
+	struct pviommu_domain *pv_domain = container_of(domain, struct pviommu_domain, domain);
+	struct arm_smccc_res res;
+	size_t requested_size = pgsize * pgcount, cur_mapped;
+
+	*mapped = 0;
+	while (*mapped < requested_size) {
+		arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_MAP_FUNC_ID,
+				  pv_domain->id, iova, paddr, pgsize, pgcount, prot, &res);
+		cur_mapped = res.a1;
+		ret = res.a0;
+		*mapped += cur_mapped;
+		iova += cur_mapped;
+		paddr += cur_mapped;
+		pgcount -= cur_mapped / pgsize;
+		if (ret && (ret != -EAGAIN))
+			break;
+	}
+	return ret;
 }
 
 static size_t pviommu_unmap_pages(struct iommu_domain *domain, unsigned long iova,
