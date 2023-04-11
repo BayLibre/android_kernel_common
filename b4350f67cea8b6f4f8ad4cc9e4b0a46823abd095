@@ -85,6 +85,29 @@
       "parentUuid": "c910cf68_132190e8",
       "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c3b2ce_3291b3b7",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1952791
+      },
+      "writtenOn": "2023-04-11T11:57:20Z",
+      "side": 1,
+      "message": "@gregkh@google.com - is WARN_ON recommended here - I saw a comment before that it will crash the system when `panic_on_warn` is enabled...",
+      "range": {
+        "startLine": 148,
+        "startChar": 2,
+        "endLine": 148,
+        "endChar": 14
+      },
+      "revId": "b4350f67cea8b6f4f8ad4cc9e4b0a46823abd095",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
