@@ -24,6 +24,26 @@
       "robotId": "ayeaye",
       "robotRunId": "AR00000000000042508849",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/2528782?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8d35d6a6_e5190d26",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-04-11T09:52:25Z",
+      "side": 1,
+      "message": "Commit needs to contain a properly formatted Bug: or Fixes: line.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 523118416 android-build.ayeaye-python-dispatcher_20230410.05_p0",
+      "revId": "35e412e7ec050129b3f64a0d8d8a23fc0e7f8ef8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000042508849",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2528782?revision\u003d1",
       "fixSuggestions": [
         {
           "fixId": "ea7b7bad_76377d83",
@@ -52,6 +72,49 @@
         "id": 1757831
       },
       "writtenOn": "2023-04-11T09:52:00Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Arnaldo Carvalho de Melo \u003cacme@kernel.org\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 523118416 android-build.ayeaye-python-dispatcher_20230410.05_p0",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "35e412e7ec050129b3f64a0d8d8a23fc0e7f8ef8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000042508849",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2528782?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "91f2b9da_d469148c",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 63,
+                "startChar": 0,
+                "endLine": 63,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Arnaldo Carvalho de Melo \u003cacme@kernel.org\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "6d2132ab_309561b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-04-11T09:52:25Z",
       "side": 1,
       "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Arnaldo Carvalho de Melo \u003cacme@kernel.org\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 523118416 android-build.ayeaye-python-dispatcher_20230410.05_p0",
       "range": {
