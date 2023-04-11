@@ -115,6 +115,28 @@ static int pviommu_attach_dev(struct iommu_domain *domain, struct device *dev)
 	return ret;
 }
 
+static void pviommu_detach_dev(struct pviommu_master *master)
+{
+	int i;
+	struct device *dev = master->dev;
+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+	struct pviommu *pv = master->iommu;
+	struct pviommu_domain *pv_domain = master->domain;
+	struct arm_smccc_res res;
+	u32 sid;
+
+	if (!fwspec)
+		return;
+
+	for (i = 0; i < fwspec->num_ids; i++) {
+		sid = fwspec->ids[i];
+		arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_DETACH_DEV_FUNC_ID,
+				  pv->id, sid, 0, pv_domain->id, &res);
+		if (res.a0 != SMCCC_RET_SUCCESS)
+			dev_err(dev, "Failed to detach_dev sid %d, err %ld\n", sid, res.a0);
+	}
+}
+
 static struct iommu_domain *pviommu_domain_alloc(unsigned int type)
 {
 	struct pviommu_domain *pv_domain;
@@ -179,6 +201,9 @@ static struct iommu_device *pviommu_probe_device(struct device *dev)
 
 static void pviommu_release_device(struct device *dev)
 {
+	struct pviommu_master *master = dev_iommu_priv_get(dev);
+
+	pviommu_detach_dev(master);
 }
 
 static int pviommu_of_xlate(struct device *dev, struct of_phandle_args *args)
