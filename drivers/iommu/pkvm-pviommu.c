@@ -79,7 +79,23 @@ static size_t pviommu_unmap_pages(struct iommu_domain *domain, unsigned long iov
 				  size_t pgsize, size_t pgcount,
 				  struct iommu_iotlb_gather *gather)
 {
-	return 0;
+	int ret;
+	struct pviommu_domain *pv_domain = container_of(domain, struct pviommu_domain, domain);
+	struct arm_smccc_res res;
+	size_t total_unmapped = 0, unmapped, requested_size = pgsize * pgcount;
+
+	while (total_unmapped < requested_size) {
+		arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_UNMAP_FUNC_ID,
+				  pv_domain->id, iova, pgsize, pgcount, &res);
+		ret = res.a0;
+		unmapped = res.a1;
+		total_unmapped += unmapped;
+		iova += unmapped;
+		pgcount -= unmapped / pgsize;
+		if (ret)
+			break;
+	}
+	return total_unmapped;
 }
 
 static phys_addr_t pviommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
