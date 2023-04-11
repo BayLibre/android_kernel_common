@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124881ef_c663c56f",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-11T21:57:24Z",
+      "side": 1,
+      "message": "You should not free sched_shared_vm here, since it may still be used on this side.",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae403a5_303cdb9e",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-11T21:57:24Z",
+      "side": 1,
+      "message": "return early if !is_registered instead. This function should not need to do anything if is_registered is not set.",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416d8c72_ad22a430",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-11T21:57:24Z",
+      "side": 1,
+      "message": "This should not be needed if !is_registered",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2c751da_b20c12c2",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-11T21:57:24Z",
+      "side": 1,
+      "message": "If trusty_register_sched_share failed and then failed to reclaim the memory we will try again here. We don\u0027t really need to do that. Can we move this trusty_reclaim_memory call to trusty_unregister_sched_share instead and have this function only responsible for freeing sched_shared_vm when sched_shared_mem_id \u003d\u003d FFA_INVALID_MEMID?",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
