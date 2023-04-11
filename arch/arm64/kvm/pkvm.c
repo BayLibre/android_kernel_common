@@ -624,7 +624,8 @@ static void free_modprobe_argv(struct subprocess_info *info)
  * security is enforced by making sure this can be called only when pKVM is
  * enabled, not yet completely initialized.
  */
-static int __init pkvm_request_early_module(char *module_name, char *module_path)
+static int __init __pkvm_request_early_module(char *module_name,
+					      char *module_path)
 {
 	char *modprobe_path = CONFIG_MODPROBE_PATH;
 	struct subprocess_info *info;
@@ -691,6 +692,18 @@ err_free_strdup:
 	kfree(module_path);
 
 	return -ENOMEM;
+}
+
+static int __init pkvm_request_early_module(char *module_name, char *module_path)
+{
+	int err = __pkvm_request_early_module(module_name, module_path);
+
+	if (!module_path)
+		return err;
+
+	pr_info("Fallback to default pkvm module path\n");
+
+	return __pkvm_request_early_module(module_name, NULL);
 }
 
 int __init pkvm_load_early_modules(void)
