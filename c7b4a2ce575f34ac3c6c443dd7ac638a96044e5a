@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "565e54d6_820d6533",
+        "filename": "arch/arm64/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 1036,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T14:26:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b790c483_a4ac879e",
+      "range": {
+        "startLine": 1036,
+        "startChar": 0,
+        "endLine": 1036,
+        "endChar": 10
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "563c9137_9262a174",
@@ -95,6 +119,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "500b2f2c_93aad455",
+        "filename": "arch/arm64/include/asm/android_erratum_pgtable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T14:26:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6ad8a37e_2ebd9a6f",
+      "range": {
+        "startLine": 48,
+        "startChar": 1,
+        "endLine": 48,
+        "endChar": 8
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cd18d4c_b50a0fa7",
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "`android_erratum_pgtable.h` relies on some of the macros defined earlier in this file (e.g. `pte_valid()`) and is effectively closely tied to `asm/pgtable.h`. There are header guards ensuring that it doesn\u0027t get included anywhere else. I put the code in its own file to keep it out of the way of upstream changes.",
       "parentUuid": "9cd18d4c_b50a0fa7",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 40
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6598273_99e6473d",
+        "filename": "arch/arm64/include/asm/pgtable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T14:26:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f074396e_d1e663d6",
       "range": {
         "startLine": 315,
         "startChar": 0,
@@ -250,6 +322,30 @@
       "side": 1,
       "message": "It would be a useful developer indicator that `PKVM_HOST_MAX_EARLY_NC_REGIONS` needs bumping up, since some early DMA mappings would not be covered by the workaround.",
       "parentUuid": "636abe4d_2f07d158",
+      "range": {
+        "startLine": 45,
+        "startChar": 6,
+        "endLine": 45,
+        "endChar": 13
+      },
+      "revId": "c7b4a2ce575f34ac3c6c443dd7ac638a96044e5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ea5e007_72d015ad",
+        "filename": "arch/arm64/kvm/android_erratum_pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-11T14:26:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5599b090_ac292fcc",
       "range": {
         "startLine": 45,
         "startChar": 6,
