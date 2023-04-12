@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a28418_0c7987ef",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-12T01:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "124881ef_c663c56f",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ae403a5_303cdb9e",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-04-11T21:57:24Z",
       "side": 1,
       "message": "return early if !is_registered instead. This function should not need to do anything if is_registered is not set.",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71913073_32114e5f",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-12T01:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ae403a5_303cdb9e",
       "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f3dd1be_94888074",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-12T01:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "416d8c72_ad22a430",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2c751da_b20c12c2",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-04-11T21:57:24Z",
       "side": 1,
       "message": "If trusty_register_sched_share failed and then failed to reclaim the memory we will try again here. We don\u0027t really need to do that. Can we move this trusty_reclaim_memory call to trusty_unregister_sched_share instead and have this function only responsible for freeing sched_shared_vm when sched_shared_mem_id \u003d\u003d FFA_INVALID_MEMID?",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa01bd5_54595064",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1964575
+      },
+      "writtenOn": "2023-04-12T01:35:35Z",
+      "side": 1,
+      "message": "I understand what you are saying about symmetry. I\u0027ve moved this into unregister. It will still retry the reclaim if it failed, but I think that redundancy is ok.",
+      "parentUuid": "d2c751da_b20c12c2",
       "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
