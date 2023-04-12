@@ -139,6 +139,24 @@
       "parentUuid": "d2c751da_b20c12c2",
       "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5b32e35_4a8dad1e",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-12T01:52:50Z",
+      "side": 1,
+      "message": "It is not redundant anymore though. If trusty_register_sched_share fails with or without the reclaim failing is_registered should be false, and this reclaim path will not be executed. This is fine. It might be useful to create a helper function for this reclaim, on-success set sched_shared_mem_id to FFA_INVALID_MEMID sequence though since it is not small and it is critical that you set the state that  trusty_free_sched_share expects.",
+      "parentUuid": "4fa01bd5_54595064",
+      "revId": "182016a938502c0fd780a15cae5fe3d05bcf3463",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
