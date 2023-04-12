@@ -29,6 +29,42 @@ struct blk_flush_queue {
 	spinlock_t		mq_flush_lock;
 };
 
+/**
+ * struct rq_flush_info - information required to process a flush operation.
+ * @offset: Offset of this data structure from the start of struct request.
+ * @seq: Bitfield that tracks which phases still have to be executed.
+ * @list: List entry in one of the lists related to flushing.
+ * @saved_end_io: Used to save rq->end_io.
+ */
+struct rq_flush_info {
+	unsigned int		offset;
+	unsigned int		seq;
+	struct list_head	list;
+	rq_end_io_fn		*saved_end_io;
+};
+
+/* Convert a request pointer into an rq_flush_info pointer. @rq may be NULL. */
+static inline struct rq_flush_info *__rq_flush_info(struct request *rq,
+						    unsigned int cmd_size)
+{
+	return blk_mq_rq_to_pdu(rq) + round_up(cmd_size, sizeof(void *));
+}
+
+/*
+ * Convert a request pointer into an rq_flush_info pointer. Both @rq and
+ * @rq->q must be != NULL.
+ */
+static inline struct rq_flush_info *rq_flush_info(struct request *rq)
+{
+	return __rq_flush_info(rq, rq->q->tag_set->cmd_size);
+}
+
+static inline unsigned int request_size(unsigned int cmd_size)
+{
+	return round_up((uintptr_t)__rq_flush_info(NULL, cmd_size) +
+			sizeof(struct rq_flush_info), cache_line_size());
+}
+
 extern struct kmem_cache *blk_requestq_cachep;
 extern struct kobj_type blk_queue_ktype;
 extern struct ida blk_queue_ida;

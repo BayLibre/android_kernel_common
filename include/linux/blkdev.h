@@ -111,6 +111,12 @@ enum mq_rq_state {
 	MQ_RQ_COMPLETE		= 2,
 };
 
+#ifdef __GENKSYMS__
+#define ATTR_DEPRECATED
+#else
+#define ATTR_DEPRECATED __attribute__((deprecated))
+#endif
+
 /*
  * Try to put the fields that are referenced together in the same cacheline.
  *
@@ -177,7 +183,7 @@ struct request {
 			unsigned int		seq;
 			struct list_head	list;
 			rq_end_io_fn		*saved_end_io;
-		} flush;
+		} flush ATTR_DEPRECATED;
 	};
 
 	struct gendisk *rq_disk;
