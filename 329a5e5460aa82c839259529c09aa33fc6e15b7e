@@ -1,0 +1,51 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000042622195",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2533341?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "8a43e706_7a95a165",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/misc/pkvm-pl011/pkvm_pl011.ko\",\n"
+            },
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "7f97e841_59d06086",
+        "filename": "modules.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-04-12T15:41:09Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier modules.bzl` to format the file, or apply the suggested fix.",
+      "revId": "329a5e5460aa82c839259529c09aa33fc6e15b7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
