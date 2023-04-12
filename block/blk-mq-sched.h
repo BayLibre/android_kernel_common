@@ -9,6 +9,7 @@
 
 void blk_mq_sched_assign_ioc(struct request *rq);
 
+void blk_mq_sched_prepare(struct request *rq);
 bool blk_mq_sched_try_merge(struct request_queue *q, struct bio *bio,
 		unsigned int nr_segs, struct request **merged_request);
 bool __blk_mq_sched_bio_merge(struct request_queue *q, struct bio *bio,
