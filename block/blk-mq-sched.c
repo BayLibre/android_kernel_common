@@ -18,6 +18,21 @@
 #include "blk-mq-tag.h"
 #include "blk-wbt.h"
 
+/* Prepare a request for insertion into an I/O scheduler. */
+void blk_mq_sched_prepare(struct request *rq)
+{
+	struct elevator_queue *e = rq->q->elevator;
+
+	rq->elv.icq = NULL;
+	if (e && e->type->ops.prepare_request) {
+		if (e->type->icq_cache)
+			blk_mq_sched_assign_ioc(rq);
+
+		e->type->ops.prepare_request(rq);
+		rq->rq_flags |= RQF_ELVPRIV;
+	}
+}
+
 void blk_mq_sched_assign_ioc(struct request *rq)
 {
 	struct request_queue *q = rq->q;
