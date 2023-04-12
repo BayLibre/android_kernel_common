@@ -112,9 +112,17 @@ static unsigned int blk_flush_policy(unsigned long fflags, struct request *rq)
 	return policy;
 }
 
+static struct request *flush_list_entry_to_rq(struct list_head *e)
+{
+	struct rq_flush_info *fi = container_of(e, typeof(*fi), list);
+
+	WARN_ON_ONCE(!fi->offset);
+	return (void *)fi - fi->offset;
+}
+
 static unsigned int blk_flush_cur_seq(struct request *rq)
 {
-	return 1 << ffz(rq->flush.seq);
+	return 1 << ffz(rq_flush_info(rq)->seq);
 }
 
 static void blk_flush_restore_request(struct request *rq)
@@ -128,7 +136,7 @@ static void blk_flush_restore_request(struct request *rq)
 
 	/* make @rq a normal request */
 	rq->rq_flags &= ~RQF_FLUSH_SEQ;
-	rq->end_io = rq->flush.saved_end_io;
+	rq->end_io = rq_flush_info(rq)->saved_end_io;
 }
 
 static void blk_flush_queue_rq(struct request *rq, bool add_front)
@@ -167,9 +175,11 @@ static void blk_flush_complete_seq(struct request *rq,
 	struct request_queue *q = rq->q;
 	struct list_head *pending = &fq->flush_queue[fq->flush_pending_idx];
 	unsigned int cmd_flags;
+	struct rq_flush_info *fi = rq_flush_info(rq);
 
-	BUG_ON(rq->flush.seq & seq);
-	rq->flush.seq |= seq;
+	WARN_ON_ONCE(!fi->offset);
+	BUG_ON(fi->seq & seq);
+	fi->seq |= seq;
 	cmd_flags = rq->cmd_flags;
 
 	if (likely(!error))
@@ -183,11 +193,11 @@ static void blk_flush_complete_seq(struct request *rq,
 		/* queue for flush */
 		if (list_empty(pending))
 			fq->flush_pending_since = jiffies;
-		list_move_tail(&rq->flush.list, pending);
+		list_move_tail(&fi->list, pending);
 		break;
 
 	case REQ_FSEQ_DATA:
-		list_move_tail(&rq->flush.list, &fq->flush_data_in_flight);
+		list_move_tail(&fi->list, &fq->flush_data_in_flight);
 		blk_flush_queue_rq(rq, true);
 		break;
 
@@ -199,7 +209,7 @@ static void blk_flush_complete_seq(struct request *rq,
 		 * normal completion and end it.
 		 */
 		BUG_ON(!list_empty(&rq->queuelist));
-		list_del_init(&rq->flush.list);
+		list_del_init(&fi->list);
 		blk_flush_restore_request(rq);
 		blk_mq_end_request(rq, error);
 		break;
@@ -214,8 +224,7 @@ static void blk_flush_complete_seq(struct request *rq,
 static void flush_end_io(struct request *flush_rq, blk_status_t error)
 {
 	struct request_queue *q = flush_rq->q;
-	struct list_head *running;
-	struct request *rq, *n;
+	struct list_head *running, *entry, *n;
 	unsigned long flags = 0;
 	struct blk_flush_queue *fq = blk_get_flush_queue(q, flush_rq->mq_ctx);
 
@@ -254,7 +263,8 @@ static void flush_end_io(struct request *flush_rq, blk_status_t error)
 	fq->flush_running_idx ^= 1;
 
 	/* and push the waiting requests to the next stage */
-	list_for_each_entry_safe(rq, n, running, flush.list) {
+	list_for_each_safe(entry, n, running) {
+		struct request *rq = flush_list_entry_to_rq(entry);
 		unsigned int seq = blk_flush_cur_seq(rq);
 
 		BUG_ON(seq != REQ_FSEQ_PREFLUSH && seq != REQ_FSEQ_POSTFLUSH);
@@ -286,8 +296,7 @@ static void blk_kick_flush(struct request_queue *q, struct blk_flush_queue *fq,
 			   unsigned int flags)
 {
 	struct list_head *pending = &fq->flush_queue[fq->flush_pending_idx];
-	struct request *first_rq =
-		list_first_entry(pending, struct request, flush.list);
+	struct request *first_rq;
 	struct request *flush_rq = fq->flush_rq;
 
 	/* C1 described at the top of this file */
@@ -316,6 +325,7 @@ static void blk_kick_flush(struct request_queue *q, struct blk_flush_queue *fq,
 	 * In case of IO scheduler, flush rq need to borrow scheduler tag
 	 * just for cheating put/get driver tag.
 	 */
+	first_rq = flush_list_entry_to_rq(pending->next);
 	flush_rq->mq_ctx = first_rq->mq_ctx;
 	flush_rq->mq_hctx = first_rq->mq_hctx;
 
@@ -387,6 +397,7 @@ void blk_insert_flush(struct request *rq)
 	unsigned long fflags = q->queue_flags;	/* may change, cache */
 	unsigned int policy = blk_flush_policy(fflags, rq);
 	struct blk_flush_queue *fq = blk_get_flush_queue(q, rq->mq_ctx);
+	struct rq_flush_info *fi = rq_flush_info(rq);
 
 	/*
 	 * @policy now records what operations need to be done.  Adjust
@@ -431,10 +442,10 @@ void blk_insert_flush(struct request *rq)
 	 * @rq should go through flush machinery.  Mark it part of flush
 	 * sequence and submit for further processing.
 	 */
-	memset(&rq->flush, 0, sizeof(rq->flush));
-	INIT_LIST_HEAD(&rq->flush.list);
+	fi->seq = 0;
+	INIT_LIST_HEAD(&fi->list);
 	rq->rq_flags |= RQF_FLUSH_SEQ;
-	rq->flush.saved_end_io = rq->end_io; /* Usually NULL */
+	fi->saved_end_io = rq->end_io; /* Usually NULL */
 
 	rq->end_io = mq_flush_data_end_io;
 
@@ -465,7 +476,7 @@ struct blk_flush_queue *blk_alloc_flush_queue(int node, int cmd_size,
 					      gfp_t flags)
 {
 	struct blk_flush_queue *fq;
-	int rq_sz = sizeof(struct request);
+	struct rq_flush_info *fi;
 
 	fq = kzalloc_node(sizeof(*fq), flags, node);
 	if (!fq)
@@ -473,14 +484,15 @@ struct blk_flush_queue *blk_alloc_flush_queue(int node, int cmd_size,
 
 	spin_lock_init(&fq->mq_flush_lock);
 
-	rq_sz = round_up(rq_sz + cmd_size, cache_line_size());
-	fq->flush_rq = kzalloc_node(rq_sz, flags, node);
+	fq->flush_rq = kzalloc_node(request_size(cmd_size), flags, node);
 	if (!fq->flush_rq)
 		goto fail_rq;
 
 	INIT_LIST_HEAD(&fq->flush_queue[0]);
 	INIT_LIST_HEAD(&fq->flush_queue[1]);
 	INIT_LIST_HEAD(&fq->flush_data_in_flight);
+	fi = __rq_flush_info(fq->flush_rq, cmd_size);
+	fi->offset = (void *)fi - (void *)fq->flush_rq;
 
 	return fq;
 
