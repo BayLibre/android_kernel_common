@@ -34,6 +34,24 @@
       "parentUuid": "77da8507_76acdde7",
       "revId": "18fe971b6a577a6f6b7e0308d1a1f3812987b1f7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7d9eca5_258030ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1795686
+      },
+      "writtenOn": "2023-04-12T07:00:51Z",
+      "side": 1,
+      "message": "@gregkh@google.com\nI will remove this function from the driver; the new alternative is to use the dma_sync_single_for_device function.\n\n@surenb@google.com\nDue to the architecture of the STB SoC, we have to use a fixed range of physically contiguous memory, so we cannot use the dma_alloc_attrs function.",
+      "parentUuid": "63ce4016_e76fbbe3",
+      "revId": "18fe971b6a577a6f6b7e0308d1a1f3812987b1f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
