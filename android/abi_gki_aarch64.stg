@@ -1,4 +1,4 @@
-root_id: 0x25a8b173
+root_id: 0x84ea5130
 void {
   id: 0x48b5725f
 }
@@ -310917,6 +310917,15 @@ function {
   parameter_id: 0x0b756bd6
 }
 function {
+  id: 0x9bb5868f
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x078316ff
+  parameter_id: 0x11cfee5a
+  parameter_id: 0x11cfee5a
+  parameter_id: 0x11cfee5a
+}
+function {
   id: 0x9bb62df9
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -324739,6 +324748,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_ufs_check_int_errors"
 }
 elf_symbol {
+  id: 0x6a6dc806
+  name: "__traceiter_android_vh_ufs_clock_scaling"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xce9715cc
+  type_id: 0x9bb5868f
+  full_name: "__traceiter_android_vh_ufs_clock_scaling"
+}
+elf_symbol {
   id: 0xa56348c9
   name: "__traceiter_android_vh_ufs_compl_command"
   is_defined: true
@@ -326222,6 +326240,15 @@ elf_symbol {
   crc: 0xb5efc415
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_ufs_check_int_errors"
+}
+elf_symbol {
+  id: 0x08a49528
+  name: "__tracepoint_android_vh_ufs_clock_scaling"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7310f377
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_ufs_clock_scaling"
 }
 elf_symbol {
   id: 0xa03a7d43
@@ -369283,7 +369310,7 @@ elf_symbol {
   full_name: "zs_unmap_object"
 }
 symbols {
-  id: 0x25a8b173
+  id: 0x84ea5130
   symbol {
     key: "I_BDEV"
     value: 0x2dddbe52
@@ -370965,6 +370992,10 @@ symbols {
     value: 0xe31bb308
   }
   symbol {
+    key: "__traceiter_android_vh_ufs_clock_scaling"
+    value: 0x6a6dc806
+  }
+  symbol {
     key: "__traceiter_android_vh_ufs_compl_command"
     value: 0xa56348c9
   }
@@ -371623,6 +371654,10 @@ symbols {
   symbol {
     key: "__tracepoint_android_vh_ufs_check_int_errors"
     value: 0x609a86da
+  }
+  symbol {
+    key: "__tracepoint_android_vh_ufs_clock_scaling"
+    value: 0x08a49528
   }
   symbol {
     key: "__tracepoint_android_vh_ufs_compl_command"
