@@ -13,6 +13,7 @@
 #include <linux/writeback.h>
 #include <linux/pagevec.h>
 #include <linux/prefetch.h>
+#include <linux/cleancache.h>
 #include <linux/fsverity.h>
 #include "extent_io.h"
 #include "extent-io-tree.h"
@@ -956,6 +957,7 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
 	size_t pg_offset = 0;
 	size_t iosize;
 	size_t blocksize = fs_info->sectorsize;
+	struct extent_io_tree *tree = &BTRFS_I(inode)->io_tree;
 
 	ret = set_folio_extent_mapped(folio);
 	if (ret < 0) {
@@ -963,8 +965,17 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
 		return ret;
 	}
 
+	if (!folio_test_uptodate(folio)) {
+		if (cleancache_get_page(&folio->page) == 0) {
+			BUG_ON(blocksize != folio_size(folio));
+			unlock_extent(tree, start, end, NULL);
+			folio_unlock(folio);
+			goto out;
+		}
+	}
+
 	if (folio->index == last_byte >> folio_shift(folio)) {
-		size_t zero_offset = offset_in_folio(folio, last_byte);
+		                size_t zero_offset = offset_in_folio(folio, last_byte);
 
 		if (zero_offset) {
 			iosize = folio_size(folio) - zero_offset;
