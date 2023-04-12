@@ -177,7 +177,7 @@ struct request {
 			unsigned int		seq;
 			struct list_head	list;
 			rq_end_io_fn		*saved_end_io;
-		} flush;
+		} flush /* DEPRECATED - DO NOT USE */;
 	};
 
 	struct gendisk *rq_disk;
