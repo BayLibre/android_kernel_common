@@ -16,6 +16,24 @@
       "message": "what is `page_trylock_result` for? Why get a result and then not use it for anything? If the result isn\u0027t needed then the hook should be renamed.",
       "revId": "2cfd953df126aacba55df033e423ffd7a60f6949",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "086ad588_57e98dd3",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-04-12T01:52:54Z",
+      "side": 1,
+      "message": "Hi Sir：\n\npage_trylock_result will tell us if the page trylock fail in the reclaim process.\n\ntrace_android_vh_page_trylock_get_result will also be used page_check_references and the bool will be used.\n\nIn this case, we use trace_android_vh_page_trylock_get_result because we want to  apply for one less hook.\n\nPls review.",
+      "parentUuid": "bc2e3cbb_351931ea",
+      "revId": "2cfd953df126aacba55df033e423ffd7a60f6949",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
