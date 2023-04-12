@@ -288,6 +288,7 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	struct blk_mq_tags *tags = blk_mq_tags_from_data(data);
 	struct request *rq = tags->static_rqs[tag];
 	struct elevator_queue *e = data->q->elevator;
+	struct rq_flush_info *fi;
 
 	if (e) {
 		rq->tag = BLK_MQ_NO_TAG;
@@ -347,6 +348,9 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 			rq->rq_flags |= RQF_ELVPRIV;
 		}
 	}
+
+	fi = rq_flush_info(rq);
+	fi->offset = (void *)fi - (void *)rq;
 
 	data->hctx->queued++;
 	trace_android_vh_blk_rq_ctx_init(rq, tags, data, alloc_time_ns);
@@ -2438,11 +2442,10 @@ int blk_mq_alloc_rqs(struct blk_mq_tag_set *set, struct blk_mq_tags *tags,
 	INIT_LIST_HEAD(&tags->page_list);
 
 	/*
-	 * rq_size is the size of the request plus driver payload, rounded
-	 * to the cacheline size
+	 * rq_size is the size of the request plus driver payload and flush
+	 * information, rounded up to the cacheline size.
 	 */
-	rq_size = round_up(sizeof(struct request) + set->cmd_size,
-				cache_line_size());
+	rq_size = request_size(set->cmd_size);
 	trace_android_vh_blk_alloc_rqs(&rq_size, set, tags);
 	left = rq_size * depth;
 
