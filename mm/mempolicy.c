@@ -98,6 +98,7 @@
 #include <linux/security.h>
 #include <linux/syscalls.h>
 #include <linux/ctype.h>
+#include <linux/memory_metadata.h>
 #include <linux/mm_inline.h>
 #include <linux/mmu_notifier.h>
 #include <linux/printk.h>
@@ -1240,6 +1241,9 @@ static struct page *new_page(struct page *page, unsigned long start)
 
 	if (folio_test_large(src))
 		gfp = GFP_TRANSHUGE;
+
+	if (page_has_metadata(page))
+		gfp |= __GFP_TAGGED;
 
 	/*
 	 * if !vma, vma_alloc_folio() will use task or system default policy
