@@ -48,6 +48,7 @@
 #include <linux/ptrace.h>
 #include <linux/oom.h>
 #include <linux/memory.h>
+#include <linux/memory_metadata.h>
 #include <linux/random.h>
 #include <linux/sched/sysctl.h>
 #include <linux/memory-tiers.h>
@@ -1642,6 +1643,8 @@ struct page *alloc_migration_target(struct page *page, unsigned long private)
 	zidx = zone_idx(folio_zone(folio));
 	if (is_highmem_idx(zidx) || zidx == ZONE_MOVABLE)
 		gfp_mask |= __GFP_HIGHMEM;
+	if (page_has_metadata(page))
+		gfp_mask |= __GFP_TAGGED;
 
 	new_folio = __folio_alloc(gfp_mask, order, nid, mtc->nmask);
 
