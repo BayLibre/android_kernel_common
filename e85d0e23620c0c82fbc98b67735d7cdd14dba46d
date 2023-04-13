@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "debc079f_043b28e3",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-13T17:25:44Z",
+      "side": 1,
+      "message": "I would reverse this and print a warning and return if vm_is_shared is not set. It should always be set when this function is called (as far as I can see in the current code).",
+      "revId": "e85d0e23620c0c82fbc98b67735d7cdd14dba46d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7710df88_24249287",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-13T17:25:44Z",
+      "side": 1,
+      "message": "You don\u0027t have to return here. This call should never fail, unless trusty has panicked, and if it does trusty_reclaim_memory might also fail, but it is safe to try.",
+      "revId": "e85d0e23620c0c82fbc98b67735d7cdd14dba46d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "748d5cfe_11afc7c0",
+        "filename": "drivers/trusty/trusty-sched-share.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-13T17:25:44Z",
+      "side": 1,
+      "message": "this is backwards. We want to free the memory if it is not shared (never shared or successfully reclaimed), and not free if it is still shared.",
+      "revId": "e85d0e23620c0c82fbc98b67735d7cdd14dba46d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e285ae4_b41366b7",
+        "filename": "drivers/trusty/trusty.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2023-04-13T17:25:44Z",
+      "side": 1,
+      "message": "...it? This sentence seems incomplete.",
+      "revId": "e85d0e23620c0c82fbc98b67735d7cdd14dba46d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
