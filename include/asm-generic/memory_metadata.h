@@ -20,6 +20,10 @@ static inline bool page_has_metadata(struct page *page)
 {
 	return false;
 }
+static inline bool folio_has_metadata(struct folio *folio)
+{
+	return false;
+}
 #endif /* !CONFIG_MEMORY_METADATA */
 
 #endif /* __ASM_GENERIC_MEMORY_METADATA_H */

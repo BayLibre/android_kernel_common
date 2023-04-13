@@ -21,6 +21,10 @@ static inline bool alloc_can_use_metadata_pages(gfp_t gfp_mask)
 
 #define page_has_metadata(page)			page_mte_tagged(page)
 
+static inline bool folio_has_metadata(struct folio *folio)
+{
+	return page_has_metadata(&folio->page);
+}
 #endif /* CONFIG_MEMORY_METADATA */
 
 #endif /* __ASM_MEMORY_METADATA_H  */

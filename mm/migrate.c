@@ -52,6 +52,7 @@
 #include <linux/sched/sysctl.h>
 #include <linux/memory-tiers.h>
 
+#include <asm/memory_metadata.h>
 #include <asm/tlbflush.h>
 
 #include <trace/events/migrate.h>
@@ -1629,6 +1630,9 @@ struct page *alloc_migration_target(struct page *page, unsigned long private)
 	if (nid == NUMA_NO_NODE)
 		nid = folio_nid(folio);
 
+	if (folio_has_metadata(folio))
+		gfp_mask |= __GFP_TAGGED;
+
 	if (folio_test_hugetlb(folio)) {
 		struct hstate *h = page_hstate(&folio->page);
 
@@ -2120,6 +2124,8 @@ static struct page *alloc_misplaced_dst_page(struct page *page,
 			__GFP_NOWARN;
 		gfp &= ~__GFP_RECLAIM;
 	}
+	if (page_has_metadata(page))
+		gfp |= __GFP_TAGGED;
 	new = __folio_alloc_node(gfp, order, nid);
 
 	return &new->page;

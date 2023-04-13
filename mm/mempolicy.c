@@ -103,6 +103,7 @@
 #include <linux/printk.h>
 #include <linux/swapops.h>
 
+#include <asm/memory_metadata.h>
 #include <asm/tlbflush.h>
 #include <asm/tlb.h>
 #include <linux/uaccess.h>
@@ -1240,6 +1241,9 @@ static struct page *new_page(struct page *page, unsigned long start)
 
 	if (folio_test_large(src))
 		gfp = GFP_TRANSHUGE;
+
+	if (folio_has_metadata(src))
+		gfp |= __GFP_TAGGED;
 
 	/*
 	 * if !vma, vma_alloc_folio() will use task or system default policy
