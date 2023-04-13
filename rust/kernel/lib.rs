@@ -16,6 +16,8 @@
 #![feature(associated_type_defaults)]
 #![feature(coerce_unsized)]
 #![feature(const_mut_refs)]
+#![feature(const_ptr_offset_from)]
+#![feature(const_refs_to_cell)]
 #![feature(c_size_t)]
 #![feature(dispatch_from_dyn)]
 #![feature(explicit_generic_args_with_impl_trait)]
