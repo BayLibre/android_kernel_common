@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "123367bd_dd803f05",
+        "filename": "Kbuild",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-13T14:05:48Z",
+      "side": 1,
+      "message": "why is this needed?",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 28
+      },
+      "revId": "64daa1c0926945052d5a27729af1971e04e06c97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3133399c_607d5964",
+        "filename": "rust/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-13T14:05:48Z",
+      "side": 1,
+      "message": "a config switch should not be needed, it should all trigger off of CONFIG_RUST, which will be set for either external modules or in-kernel support for obvious reasons (the config has to be the same for both for any type of kernel build, that\u0027s a long-time requirement.)",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "64daa1c0926945052d5a27729af1971e04e06c97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
