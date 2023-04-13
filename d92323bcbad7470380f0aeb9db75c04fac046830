@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34052165_5b4e0a36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-04-13T01:41:48Z",
+      "side": 1,
+      "message": "Hi Sir：\nI had modified the comment and commit-message as follows:\nThe page with trylock-bit will be added ret_pages and handled in\ntrace_android_vh_handle_failed_page_trylock. If the page carried with\ntrylock-bit after unlocked by shrink_page_list will cause some error-issues\nin other scene, so clear trylock-bit here.\n\npls review.",
+      "parentUuid": "5d5be344_dc671680",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 13,
+        "endChar": 82
+      },
+      "revId": "d92323bcbad7470380f0aeb9db75c04fac046830",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9581b85e_c9bcdb20",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-12T21:30:33Z",
       "side": 1,
       "message": "This description is very confusing. If all you want is to clear the trylock bit, why aren\u0027t you using existing and more appropriately named `trace_android_vh_page_trylock_clear`?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 40
+      },
+      "revId": "d92323bcbad7470380f0aeb9db75c04fac046830",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48c747f_bea82d2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-04-13T01:41:48Z",
+      "side": 1,
+      "message": "Hi Sir:\n\nhaha,There is a historical reason that trace_android_vh_page_trylock_clear will clear two bits, trace_android_vh_page_trylock_clear would pass the parameter to\ndecided if only clear trylock-bit in limine, but we all pass parameter to false in limine so that google let us detele the parameters...\n\nIn this case, we use trace_android_vh_page_trylock_get_result because we want to  apply for one less hook.",
+      "parentUuid": "9581b85e_c9bcdb20",
       "range": {
         "startLine": 16,
         "startChar": 0,
