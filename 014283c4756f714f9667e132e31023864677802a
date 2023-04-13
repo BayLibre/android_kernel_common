@@ -22,6 +22,30 @@
       },
       "revId": "014283c4756f714f9667e132e31023864677802a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b549c5c6_f6ee09fc",
+        "filename": "android/abi_gki_aarch64_db845c",
+        "patchSetId": 3
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2023-04-13T22:59:47Z",
+      "side": 0,
+      "message": "This what kleaf produces for me when I run `//common:db845c_abi_update_symbol_list`. Since the last update of this symbol list, `drivers/interconnect/qcom/sm8450.c` was modified to remove a use of `qcom_icc_xlate_extended`. It looks like that was a merge from Greg:\n\nhttps://android.googlesource.com/kernel/common/+/e598cf599a39c6fceb5575f6cc20fad77f85af84\n\n\naosp/2513600\n\nI guess because there were no ABI build failures at that time (no symbols were missing from this list, they were just in a different spot or removed) there was no trigger to remake the symbol list. But the absence of `dmabuf_page_pool_get_size` under this topic required the symbol list to be regenerated which also found these differences.",
+      "parentUuid": "4852aedd_e90198e1",
+      "range": {
+        "startLine": 584,
+        "startChar": 2,
+        "endLine": 584,
+        "endChar": 25
+      },
+      "revId": "014283c4756f714f9667e132e31023864677802a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
