@@ -1974,6 +1974,10 @@ static void __setscheduler_uclamp(struct task_struct *p,
 			      attr->sched_util_max, true);
 		trace_android_vh_setscheduler_uclamp(p, UCLAMP_MAX, attr->sched_util_max);
 	}
+
+	p->sched_reset_uclamp_on_fork = !!(attr->sched_flags &
+				     SCHED_FLAG_RESET_UCLAMP_ON_FORK);
+
 }
 
 static void uclamp_fork(struct task_struct *p)
@@ -1987,7 +1991,7 @@ static void uclamp_fork(struct task_struct *p)
 	for_each_clamp_id(clamp_id)
 		p->uclamp[clamp_id].active = false;
 
-	if (likely(!p->sched_reset_on_fork))
+	if (likely(!p->sched_reset_on_fork && !p->sched_reset_uclamp_on_fork))
 		return;
 
 	for_each_clamp_id(clamp_id) {

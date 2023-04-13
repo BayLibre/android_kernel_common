@@ -888,6 +888,9 @@ struct task_struct {
 	unsigned			sched_reset_on_fork:1;
 	unsigned			sched_contributes_to_load:1;
 	unsigned			sched_migrated:1;
+#ifdef CONFIG_UCLAMP_TASK
+	unsigned			sched_reset_uclamp_on_fork:1;
+#endif
 
 	/* Force alignment to the next boundary: */
 	unsigned			:0;
