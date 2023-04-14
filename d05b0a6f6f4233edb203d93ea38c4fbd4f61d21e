@@ -16,6 +16,24 @@
       "message": "debugfs can be mounted during bugreport dumps. Is this really needed?",
       "revId": "d05b0a6f6f4233edb203d93ea38c4fbd4f61d21e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "108a6d8f_73104cf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2023-04-14T02:28:33Z",
+      "side": 1,
+      "message": "Discovered another problem that needs to be solved. linux upstream\u0027s tcpm logbuffer does not wraparound once full. Whereas we want it to wrap around so that we capture relevant info in the bugreport when the user collects one. Greg KH wants to get rid of the logbuffer altogether and move to tracing. But trace events are not default enabled in Android, so that implies, even if user can somehow enable the trace event, user would have repro the issue and collect the bugreport. That would cause inconvenience to the end user. This implies I would still need the vendor hook: https://patchwork.kernel.org/project/linux-usb/patch/20230410073134.488762-1-badhri@google.com/ till wrapping tcpm logs is allowed in linux upstream.",
+      "parentUuid": "df92b27f_411d514e",
+      "revId": "d05b0a6f6f4233edb203d93ea38c4fbd4f61d21e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
