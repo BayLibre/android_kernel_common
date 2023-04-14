@@ -111,7 +111,7 @@ static void gh_ioevent_unbind(struct gh_vm_function_instance *f)
 	kfree(iofd);
 }
 
-DECLARE_GH_VM_FUNCTION_INIT(ioeventfd, GH_FN_IOEVENTFD,
+DECLARE_GH_VM_FUNCTION_INIT(ioeventfd, GH_FN_IOEVENTFD, 3,
 				gh_ioeventfd_bind, gh_ioevent_unbind);
 MODULE_DESCRIPTION("Gunyah ioeventfds");
 MODULE_LICENSE("GPL");

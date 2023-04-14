@@ -53,6 +53,18 @@ struct gh_vm_function_instance {
 int gh_vm_function_register(struct gh_vm_function *f);
 void gh_vm_function_unregister(struct gh_vm_function *f);
 
+/* Since the function identifiers were setup in a uapi header as an
+ * enum and we do no want to change that, the user must supply the expanded
+ * constant as well and the compiler checks they are the same.
+ * See also MODULE_ALIAS_RDMA_NETLINK.
+ */
+#define MODULE_ALIAS_GH_VM_FUNCTION(_type, _idx)			\
+	static inline void __maybe_unused __chk##_idx(void)		\
+	{								\
+		BUILD_BUG_ON(_type != _idx);				\
+	}								\
+	MODULE_ALIAS("ghfunc:" __stringify(_idx))
+
 #define DECLARE_GH_VM_FUNCTION(_name, _type, _bind, _unbind)	\
 	static struct gh_vm_function _name = {		\
 		.type = _type,						\
@@ -60,15 +72,15 @@ void gh_vm_function_unregister(struct gh_vm_function *f);
 		.mod = THIS_MODULE,					\
 		.bind = _bind,						\
 		.unbind = _unbind,					\
-	};								\
-	MODULE_ALIAS("ghfunc:"__stringify(_type))
+	}
 
 #define module_gh_vm_function(__gf)					\
 	module_driver(__gf, gh_vm_function_register, gh_vm_function_unregister)
 
-#define DECLARE_GH_VM_FUNCTION_INIT(_name, _type, _bind, _unbind)	\
-	DECLARE_GH_VM_FUNCTION(_name, _type, _bind, _unbind);	\
-	module_gh_vm_function(_name)
+#define DECLARE_GH_VM_FUNCTION_INIT(_name, _type, _idx, _bind, _unbind)	\
+	DECLARE_GH_VM_FUNCTION(_name, _type, _bind, _unbind);		\
+	module_gh_vm_function(_name);					\
+	MODULE_ALIAS_GH_VM_FUNCTION(_type, _idx)
 
 struct gh_vm_resource_ticket {
 	struct list_head list; /* for gh_vm's resources list */
