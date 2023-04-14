@@ -457,6 +457,6 @@ static void gh_vcpu_unbind(struct gh_vm_function_instance *f)
 	kref_put(&vcpu->kref, vcpu_release);
 }
 
-DECLARE_GH_VM_FUNCTION_INIT(vcpu, GH_FN_VCPU, gh_vcpu_bind, gh_vcpu_unbind);
+DECLARE_GH_VM_FUNCTION_INIT(vcpu, GH_FN_VCPU, 1, gh_vcpu_bind, gh_vcpu_unbind);
 MODULE_DESCRIPTION("Gunyah vCPU Driver");
 MODULE_LICENSE("GPL");
