@@ -12,6 +12,39 @@
 #include <nvhe/pviommu.h>
 #include <nvhe/pviommu-host.h>
 
+static DEFINE_HYP_SPINLOCK(pviommu_guest_domain_lock);
+
+#define KVM_IOMMU_MAX_GUEST_DOMAINS		(KVM_IOMMU_MAX_DOMAINS >> 1)
+static unsigned long guest_domains[KVM_IOMMU_MAX_GUEST_DOMAINS / BITS_PER_LONG];
+
+/*
+ * Guests doens't have separate domain space as the host, but they share the upper half
+ * of the domain ids, so they would ask for a domain and get a domain id as a return.
+ * This is a rare operation for guests, so bruteforcing the domain space should be fine
+ * for now, however we can improve this by having a hint for last allocated domain_id or
+ * use a pseudo-random number.
+ */
+static int pkvm_guest_iommu_alloc_id(void)
+{
+	int i;
+
+	for (i = 0 ; i < ARRAY_SIZE(guest_domains) ; ++i) {
+		if (guest_domains[i] != ~0UL)
+			return ffz(guest_domains[i]) + (KVM_IOMMU_MAX_DOMAINS >> 1);
+	}
+
+	return -EBUSY;
+}
+
+static void pkvm_guest_iommu_free_id(int domain_id)
+{
+	domain_id -= (KVM_IOMMU_MAX_DOMAINS >> 1);
+	if (WARN_ON(domain_id < 0) || (domain_id >= KVM_IOMMU_MAX_GUEST_DOMAINS))
+		return;
+
+	guest_domains[domain_id / BITS_PER_LONG] &= ~(1UL << (domain_id % BITS_PER_LONG));
+}
+
 static bool pkvm_guest_iommu_map(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	return false;
@@ -116,14 +149,53 @@ static bool pkvm_guest_iommu_get_feature(struct pkvm_hyp_vcpu *hyp_vcpu)
 	return true;
 }
 
-static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu)
+static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 {
-	return false;
+	int ret;
+	int domain_id = 0;
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+
+	hyp_spin_lock(&pviommu_guest_domain_lock);
+	domain_id = pkvm_guest_iommu_alloc_id();
+	if (domain_id < 0)
+		goto out_inval;
+
+	ret = kvm_iommu_alloc_domain(domain_id, KVM_IOMMU_DOMAIN_ANY_TYPE);
+	if (ret == -ENOMEM) {
+		pkvm_guest_iommu_free_id(domain_id);
+		hyp_spin_unlock(&pviommu_guest_domain_lock);
+		pkvm_pviommu_hyp_req(exit_code);
+		return false;
+	} else if (ret) {
+		pkvm_guest_iommu_free_id(domain_id);
+		goto out_inval;
+	}
+
+	hyp_spin_unlock(&pviommu_guest_domain_lock);
+	smccc_set_retval(vcpu, SMCCC_RET_SUCCESS, domain_id, 0, 0);
+	return true;
+
+out_inval:
+	hyp_spin_unlock(&pviommu_guest_domain_lock);
+	smccc_set_retval(vcpu, SMCCC_RET_INVALID_PARAMETER, 0, 0, 0);
+	return true;
 }
 
 static bool pkvm_guest_iommu_free_domain(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
-	return false;
+	int ret;
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	u64 domain_id = smccc_get_arg1(vcpu);
+
+	hyp_spin_lock(&pviommu_guest_domain_lock);
+	ret = kvm_iommu_free_domain(domain_id);
+	if (!ret)
+		pkvm_guest_iommu_free_id(domain_id);
+	hyp_spin_unlock(&pviommu_guest_domain_lock);
+
+	smccc_set_retval(vcpu, ret ?  SMCCC_RET_INVALID_PARAMETER : SMCCC_RET_SUCCESS,
+			 0, 0, 0);
+	return true;
 }
 
 bool kvm_handle_pviommu_hvc(struct kvm_vcpu *vcpu, u64 *exit_code)
@@ -143,7 +215,7 @@ bool kvm_handle_pviommu_hvc(struct kvm_vcpu *vcpu, u64 *exit_code)
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_GET_FEATURE_FUNC_ID:
 		return pkvm_guest_iommu_get_feature(hyp_vcpu);
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_ALLOC_DOMAIN_FUNC_ID:
-		return pkvm_guest_iommu_alloc_domain(hyp_vcpu);
+		return pkvm_guest_iommu_alloc_domain(hyp_vcpu, exit_code);
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_FREE_DOMAIN_FUNC_ID:
 		return pkvm_guest_iommu_free_domain(hyp_vcpu);
 	case ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_ATTACH_DEV_FUNC_ID:
