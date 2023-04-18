@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2339145_6a8a3650",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1999075
+      },
+      "writtenOn": "2023-04-18T03:28:34Z",
+      "side": 1,
+      "message": "Please help to review, thanks!",
+      "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ec3caeb_b0f9eec0",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-04-17T10:56:14Z",
       "side": 1,
       "message": "why is this needed?  What xhci quirk is not upstream?",
+      "range": {
+        "startLine": 2436,
+        "startChar": 0,
+        "endLine": 2436,
+        "endChar": 30
+      },
+      "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3204ce39_a541464e",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2436,
+      "author": {
+        "id": 1999075
+      },
+      "writtenOn": "2023-04-18T03:28:34Z",
+      "side": 1,
+      "message": "Because I need to enable the CONFIG_USB_XHCI_PCI and CONFIG_USB_XHCI_PCI_RENESAS. And then run the build/build_abi.sh and report the \"symbols missing from symbol list\". And the __tracepoint_xhci_dbg_quirks id one of the missing symbol.",
+      "parentUuid": "0ec3caeb_b0f9eec0",
       "range": {
         "startLine": 2436,
         "startChar": 0,
@@ -49,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "319b2b73_0fea49c2",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2535,
+      "author": {
+        "id": 1999075
+      },
+      "writtenOn": "2023-04-18T03:28:34Z",
+      "side": 1,
+      "message": "Because the new feature that needs to enable the CONFIG_USB_XHCI_PCI and CONFIG_USB_XHCI_PCI_RENESAS",
+      "parentUuid": "c8d6d2e8_d18874ff",
+      "range": {
+        "startLine": 2535,
+        "startChar": 2,
+        "endLine": 2535,
+        "endChar": 29
+      },
+      "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b68c29a7_503225a1",
         "filename": "android/abi_gki_aarch64_qcom",
         "patchSetId": 2
@@ -60,6 +125,30 @@
       "writtenOn": "2023-04-17T10:56:14Z",
       "side": 1,
       "message": "what module needs this?",
+      "range": {
+        "startLine": 2653,
+        "startChar": 2,
+        "endLine": 2653,
+        "endChar": 16
+      },
+      "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a6a24a_70c7f63e",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2653,
+      "author": {
+        "id": 1999075
+      },
+      "writtenOn": "2023-04-18T03:28:34Z",
+      "side": 1,
+      "message": "drivers/usb/host/xhci-pci.c",
+      "parentUuid": "b68c29a7_503225a1",
       "range": {
         "startLine": 2653,
         "startChar": 2,
