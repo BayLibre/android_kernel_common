@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbb8b6b3_7e694373",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-18T12:54:26Z",
+      "side": 1,
+      "message": "Our tools can not handle adding so many new symbols at the same time.  Please break this up into a set of patches, first add the new files with no new symbols, and then add the new symbols grouped by subsystem/functionality, in order for us to be able to properly review them.\n\nAs it is, this commit is much too large to review all at once.",
+      "revId": "6b1a1ca7d329abc568296888611a3dada83fff05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
