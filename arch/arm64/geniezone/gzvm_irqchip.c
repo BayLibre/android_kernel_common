@@ -10,8 +10,15 @@
 #include <linux/gzvm_drv.h>
 #include "gzvm_arch.h"
 
+static bool lr_signals_eoi(uint64_t lr_val)
+{
+	return !(lr_val & ICH_LR_STATE) && (lr_val & ICH_LR_EOI) &&
+		 !(lr_val & ICH_LR_HW);
+}
+
 /**
- * gzvm_sync_vgic_state() - Check all LRs synced from gz hypervisor
+ * gzvm_sync_vgic_state() - Check all LRs synced from gz hypervisor.
+ * @vcpu: Pointer to gzvm_vcpu.
  *
  * Traverse all LRs, see if any EOIed vint, notify_acked_irq if any.
  * GZ does not fold/unfold everytime KVM_RUN, so we have to traverse all saved
@@ -20,6 +27,19 @@
  */
 void gzvm_sync_vgic_state(struct gzvm_vcpu *vcpu)
 {
+	int i;
+
+	for (i = 0; i < vcpu->hwstate->nr_lrs; i++) {
+		u32 vintid;
+		u64 lr_val = vcpu->hwstate->lr[i];
+		/* 0 means unused */
+		if (!lr_val)
+			continue;
+
+		vintid = lr_val & ICH_LR_VIRTUAL_ID_MASK;
+		if (lr_signals_eoi(lr_val))
+			gzvm_notify_acked_irq(vcpu->gzvm, vintid - VGIC_NR_PRIVATE_IRQS);
+	}
 }
 
 /* is_irq_valid() - Check the irq number and irq_type are matched */

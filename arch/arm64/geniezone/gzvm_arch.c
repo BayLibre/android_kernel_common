@@ -273,3 +273,8 @@ int gzvm_arch_inject_irq(struct gzvm *gzvm, unsigned int vcpu_idx, u32 irq_type,
 	/* default use spi */
 	return gzvm_vgic_inject_spi(gzvm, vcpu_idx, irq, level);
 }
+
+void gzvm_sync_hwstate(struct gzvm_vcpu *vcpu)
+{
+	gzvm_sync_vgic_state(vcpu);
+}
