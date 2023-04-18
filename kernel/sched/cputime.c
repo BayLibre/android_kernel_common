@@ -499,7 +499,7 @@ void account_process_tick(struct task_struct *p, int user_tick)
 		return;
 	}
 
-	cputime = TICK_NSEC;
+	cputime = DYN_TICK_NSEC;
 	steal = steal_account_process_time(ULONG_MAX);
 
 	if (steal >= cputime)
