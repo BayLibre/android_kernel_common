@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2e0170_d5542017",
+        "filename": "drivers/dma-buf/dma-heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1339568
+      },
+      "writtenOn": "2023-04-18T19:55:01Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem right, this function dma_heap_find() also takes the heap_list_lock (does this now just lock up?) then unconditionally releases it, meaning you list_add() without the lock below.",
+      "revId": "fd8b6d93a5ccd02149c93e9b24d59f829eec9bbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
