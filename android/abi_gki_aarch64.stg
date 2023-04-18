@@ -288648,6 +288648,12 @@ function {
   parameter_id: 0x6720d32f
 }
 function {
+  id: 0x198668f4
+  return_type_id: 0x48b5725f
+  parameter_id: 0x2668e644
+  parameter_id: 0x21003da7
+}
+function {
   id: 0x198f0b17
   return_type_id: 0x48b5725f
   parameter_id: 0x245d6a13
@@ -336623,6 +336629,24 @@ elf_symbol {
   full_name: "drm_atomic_add_affected_planes"
 }
 elf_symbol {
+  id: 0x27bb2715
+  name: "drm_atomic_bridge_chain_disable"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x7d3868d1
+  type_id: 0x198668f4
+  full_name: "drm_atomic_bridge_chain_disable"
+}
+elf_symbol {
+  id: 0xa7187ebf
+  name: "drm_atomic_bridge_chain_enable"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x74a55529
+  type_id: 0x198668f4
+  full_name: "drm_atomic_bridge_chain_enable"
+}
+elf_symbol {
   id: 0x4fa53f59
   name: "drm_atomic_commit"
   is_defined: true
@@ -376445,6 +376469,14 @@ symbols {
   symbol {
     key: "drm_atomic_add_affected_planes"
     value: 0x098d4189
+  }
+  symbol {
+    key: "drm_atomic_bridge_chain_disable"
+    value: 0x27bb2715
+  }
+  symbol {
+    key: "drm_atomic_bridge_chain_enable"
+    value: 0xa7187ebf
   }
   symbol {
     key: "drm_atomic_commit"
