@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "487b7743_b251b7ea",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2436,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-18T07:58:29Z",
+      "side": 1,
+      "message": "Ah, the issue is that XHCI_PCI_RENESAS is not enabled, let\u0027s enable that by default instead, which will resolve these symbols from not being needed to be exported.",
+      "parentUuid": "3204ce39_a541464e",
+      "range": {
+        "startLine": 2436,
+        "startChar": 0,
+        "endLine": 2436,
+        "endChar": 30
+      },
+      "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8d6d2e8_d18874ff",
         "filename": "android/abi_gki_aarch64_qcom",
         "patchSetId": 2
