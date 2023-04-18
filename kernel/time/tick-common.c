@@ -81,6 +81,30 @@ int tick_is_oneshot_available(void)
 	return tick_broadcast_oneshot_available();
 }
 
+#ifdef CONFIG_DYN_HZ
+long long dyn_tick_nsec = TICK_NSEC;
+
+static int __init set_dyn_hz(char *str)
+{
+	int ret, dyn_hz;
+
+	ret = kstrtoint(str, 0, &dyn_hz);
+	if (ret)
+		return ret;
+	if (dyn_hz > HZ || dyn_hz < 100)
+		dyn_hz = HZ;
+	dyn_tick_nsec = TICK_NSEC * HZ / dyn_hz;
+	return 1;
+}
+#else /* !CONFIG_DYN_HZ */
+static int __init set_dyn_hz(char *str)
+{
+	pr_warn("CONFIG_DYN_HZ not enabled, ignoring dyn_hz boot argument\n");
+	return -1;
+}
+#endif /* CONFIG_DYN_HZ */
+__setup("dyn_hz=", set_dyn_hz);
+
 /*
  * Periodic tick
  */
@@ -91,8 +115,7 @@ static void tick_periodic(int cpu)
 		write_seqcount_begin(&jiffies_seq);
 
 		/* Keep track of the next tick event */
-		tick_next_period = ktime_add_ns(tick_next_period, TICK_NSEC);
-
+		tick_next_period = ktime_add_ns(tick_next_period, DYN_TICK_NSEC);
 		do_timer(1);
 		write_seqcount_end(&jiffies_seq);
 		raw_spin_unlock(&jiffies_lock);
@@ -129,7 +152,7 @@ void tick_handle_periodic(struct clock_event_device *dev)
 		 * Setup the next period for devices, which do not have
 		 * periodic mode:
 		 */
-		next = ktime_add_ns(next, TICK_NSEC);
+		next = ktime_add_ns(next, DYN_TICK_NSEC);
 
 		if (!clockevents_program_event(dev, next, false))
 			return;
@@ -175,7 +198,7 @@ void tick_setup_periodic(struct clock_event_device *dev, int broadcast)
 		for (;;) {
 			if (!clockevents_program_event(dev, next, false))
 				return;
-			next = ktime_add_ns(next, TICK_NSEC);
+			next = ktime_add_ns(next, DYN_TICK_NSEC);
 		}
 	}
 }
@@ -577,4 +600,10 @@ void __init tick_init(void)
 {
 	tick_broadcast_init();
 	tick_nohz_init();
+	if (DYN_TICK_NSEC != TICK_NSEC) {
+		long dynhz = TICK_NSEC * HZ;
+
+		do_div(dynhz, DYN_TICK_NSEC);
+		pr_info("dynHZ in use! HZ=%ld dynHZ=%ld\n", (long)HZ, dynhz);
+	}
 }
