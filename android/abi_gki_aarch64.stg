@@ -301372,6 +301372,13 @@ elf_symbol {
   crc: 0xf93aae46
 }
 elf_symbol {
+  id: 0xeaf0b860
+  name: "__arm_smccc_sve_check"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3d93c7c2
+}
+elf_symbol {
   id: 0x8920b575
   name: "__bitmap_and"
   is_defined: true
@@ -343817,6 +343824,10 @@ symbols {
   symbol {
     key: "__arm_smccc_smc"
     value: 0x21c9fe20
+  }
+  symbol {
+    key: "__arm_smccc_sve_check"
+    value: 0xeaf0b860
   }
   symbol {
     key: "__bitmap_and"
