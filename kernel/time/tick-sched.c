@@ -121,7 +121,7 @@ static unsigned long tick_do_update_jiffies64(ktime_t now)
 	/*
 	 * Keep the tick_next_period variable up to date.
 	 */
-	nextp = ktime_add_ns(last_jiffies_update, TICK_NSEC);
+	nextp = ktime_add_ns(last_jiffies_update, DYN_TICK_NSEC);
 
 	if (IS_ENABLED(CONFIG_64BIT)) {
 		/*
@@ -788,7 +788,7 @@ static void tick_nohz_restart(struct tick_sched *ts, ktime_t now)
 	hrtimer_set_expires(&ts->sched_timer, ts->last_tick);
 
 	/* Forward the time to expire in the future */
-	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+	hrtimer_forward(&ts->sched_timer, now, DYN_TICK_NSEC);
 
 	if (ts->nohz_mode == NOHZ_MODE_HIGHRES) {
 		hrtimer_start_expires(&ts->sched_timer,
@@ -836,7 +836,7 @@ static ktime_t tick_nohz_next_event(struct tick_sched *ts, int cpu)
 	 */
 	if (rcu_needs_cpu() || arch_needs_cpu() ||
 	    irq_work_needs_cpu() || local_timer_softirq_pending()) {
-		next_tick = basemono + TICK_NSEC;
+		next_tick = basemono + DYN_TICK_NSEC;
 	} else {
 		/*
 		 * Get the next pending timer. If high resolution
@@ -854,7 +854,7 @@ static ktime_t tick_nohz_next_event(struct tick_sched *ts, int cpu)
 	 * force prod the timer.
 	 */
 	delta = next_tick - basemono;
-	if (delta <= (u64)TICK_NSEC) {
+	if (delta <= (u64)DYN_TICK_NSEC) {
 		/*
 		 * Tell the timer code that the base is not idle, i.e. undo
 		 * the effect of get_next_timer_interrupt():
@@ -1404,7 +1404,7 @@ static void tick_nohz_handler(struct clock_event_device *dev)
 		return;
 	}
 
-	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+	hrtimer_forward(&ts->sched_timer, now, DYN_TICK_NSEC);
 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
 }
 
@@ -1441,7 +1441,7 @@ static void tick_nohz_switch_to_nohz(void)
 	next = tick_init_jiffy_update();
 
 	hrtimer_set_expires(&ts->sched_timer, next);
-	hrtimer_forward_now(&ts->sched_timer, TICK_NSEC);
+	hrtimer_forward_now(&ts->sched_timer, DYN_TICK_NSEC);
 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
 	tick_nohz_activate(ts, NOHZ_MODE_LOWRES);
 }
@@ -1547,13 +1547,13 @@ void tick_setup_sched_timer(void)
 
 	/* Offset the tick to avert jiffies_lock contention. */
 	if (sched_skew_tick) {
-		u64 offset = TICK_NSEC >> 1;
+		u64 offset = DYN_TICK_NSEC >> 1;
 		do_div(offset, num_possible_cpus());
 		offset *= smp_processor_id();
 		hrtimer_add_expires_ns(&ts->sched_timer, offset);
 	}
 
-	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+	hrtimer_forward(&ts->sched_timer, now, DYN_TICK_NSEC);
 	hrtimer_start_expires(&ts->sched_timer, HRTIMER_MODE_ABS_PINNED_HARD);
 	tick_nohz_activate(ts, NOHZ_MODE_HIGHRES);
 }
