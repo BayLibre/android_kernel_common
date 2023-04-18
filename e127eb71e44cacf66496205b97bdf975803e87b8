@@ -16,6 +16,24 @@
       "message": "Does it make sense for these to be GKI modules? I don\u0027t see a use case for them on the device (FTDI chips are used for serial debugging, but the device isn\u0027t generally connected to the USB side of them).",
       "revId": "e127eb71e44cacf66496205b97bdf975803e87b8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f807312d_21755350",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-18T08:24:04Z",
+      "side": 1,
+      "message": "Yes, they are used by many systems, and we want them to be GKI modules and not have to be enabled by the OEM individually.",
+      "parentUuid": "82d9c881_2b40d819",
+      "revId": "e127eb71e44cacf66496205b97bdf975803e87b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
