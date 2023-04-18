@@ -157,6 +157,30 @@
       },
       "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69652d00_33ffc534",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2653,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-18T07:46:00Z",
+      "side": 1,
+      "message": "We should just enable CONFIG_USB_XHCI_PCI in the gki defconfig instead of requiring this to be an external module.  Can you submit a patch for that instead?",
+      "parentUuid": "a9a6a24a_70c7f63e",
+      "range": {
+        "startLine": 2653,
+        "startChar": 2,
+        "endLine": 2653,
+        "endChar": 16
+      },
+      "revId": "c45c55c97f20684064958f0c4aee7fd25dd0f42c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
