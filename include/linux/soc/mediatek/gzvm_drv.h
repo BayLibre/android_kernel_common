@@ -17,6 +17,7 @@
  */
 #define GZVM_PA_ERR_BAD (0x7ffULL << 52)
 
+#define GZVM_VCPU_MMAP_SIZE  PAGE_SIZE
 #define INVALID_VM_ID   0xffff
 
 /*
@@ -34,7 +35,10 @@
  * The following data structures are for data transferring between driver and
  * hypervisor, and they're aligned with hypervisor definitions
  */
+#define GZVM_MAX_VCPUS		 8
 #define GZVM_MAX_MEM_REGION	10
+
+#define GZVM_VCPU_RUN_MAP_SIZE		(PAGE_SIZE * 2)
 
 /**
  * struct mem_region_addr_range: identical to ffa memory constituent
@@ -81,9 +85,18 @@ struct gzvm_memslot {
 	u32 slot_id;
 };
 
+struct gzvm_vcpu {
+	struct gzvm *gzvm;
+	int vcpuid;
+	/* lock of vcpu*/
+	struct mutex lock;
+	struct gzvm_vcpu_run *run;
+};
+
 /**
  * struct gzvm: the following data structures are for data transferring between
  * driver and hypervisor, and they're aligned with hypervisor definitions.
+ * @vcpus: VM's cpu descriptors
  * @mm: userspace tied to this vm
  * @memslot: VM's memory slot descriptor
  * @lock: lock for list_add
@@ -91,6 +104,7 @@ struct gzvm_memslot {
  * @vm_id: vm id
  */
 struct gzvm {
+	struct gzvm_vcpu *vcpus[GZVM_MAX_VCPUS];
 	struct mm_struct *mm;
 	struct gzvm_memslot memslot[GZVM_MAX_MEM_REGION];
 	struct mutex lock;
@@ -105,6 +119,8 @@ int gzvm_err_to_errno(unsigned long err);
 
 void gzvm_destroy_all_vms(void);
 
+void gzvm_destroy_vcpus(struct gzvm *gzvm);
+
 /* arch-dependant functions */
 int gzvm_arch_probe(void);
 int gzvm_arch_set_memregion(u16 vm_id, size_t buf_size,
@@ -118,5 +134,13 @@ int gzvm_vm_ioctl_arch_enable_cap(struct gzvm *gzvm,
 
 int gzvm_gfn_to_hva_memslot(struct gzvm_memslot *memslot, u64 gfn,
 			    u64 *hva_memslot);
+
+int gzvm_vm_ioctl_create_vcpu(struct gzvm *gzvm, u32 cpuid);
+int gzvm_arch_vcpu_update_one_reg(struct gzvm_vcpu *vcpu, __u64 reg_id,
+				  bool is_write, __u64 *data);
+int gzvm_arch_create_vcpu(u16 vm_id, int vcpuid, void *run);
+int gzvm_arch_vcpu_run(struct gzvm_vcpu *vcpu, __u64 *exit_reason);
+int gzvm_arch_destroy_vcpu(u16 vm_id, int vcpuid);
+int gzvm_arch_inform_exit(u16 vm_id);
 
 #endif /* __GZVM_DRV_H__ */
