@@ -89,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad933a41_a6b61702",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-04-19T18:18:41Z",
+      "side": 1,
+      "message": "So, can this code be upstreamed? it would help with maintenance on your end and perhaps getting some feedback.",
+      "parentUuid": "98cd17e3_d9f1cbab",
+      "revId": "f3f335cb8f4e679fdd273383faf126f70e4e7f4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d89e3a7d_69069732",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 1
@@ -124,6 +142,30 @@
       "side": 1,
       "message": "these hooks are all used on OPPO customized freezer.\n\nwhen the process receives a specified signal or a sync binder,and so on,OPPO\u0027s freezer will unfreeze it, so we need it.",
       "parentUuid": "d89e3a7d_69069732",
+      "range": {
+        "startLine": 302,
+        "startChar": 29,
+        "endLine": 302,
+        "endChar": 53
+      },
+      "revId": "f3f335cb8f4e679fdd273383faf126f70e4e7f4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68f8fcdf_77451168",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-04-19T18:18:41Z",
+      "side": 1,
+      "message": "where in this patch is `android_vh_binder_preset()` hook specifically being used?",
+      "parentUuid": "439f5b22_91a91ff3",
       "range": {
         "startLine": 302,
         "startChar": 29,
