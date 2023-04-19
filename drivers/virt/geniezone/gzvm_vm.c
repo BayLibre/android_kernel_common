@@ -9,6 +9,7 @@
 #include <linux/kvm_host.h>
 #include <linux/miscdevice.h>
 #include <linux/module.h>
+#include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/gzvm_drv.h>
 
@@ -59,9 +60,10 @@ static int fill_constituents(struct mem_region_addr_range *consti,
 			     int *consti_cnt, int max_nr_consti, gfn_t gfn,
 			     u32 total_pages, struct gzvm_memslot *slot)
 {
-	int i, nr_pages;
 	hfn_t pfn, prev_pfn;
 	gfn_t gfn_end;
+	int nr_pages = 1;
+	int i = 0;
 
 	if (unlikely(total_pages == 0))
 		return -EINVAL;
@@ -74,8 +76,6 @@ static int fill_constituents(struct mem_region_addr_range *consti,
 	consti[0].pg_cnt = 1;
 	gfn++;
 	prev_pfn = pfn;
-	i = 0;
-	nr_pages = 1;
 	while (i < max_nr_consti && gfn < gfn_end) {
 		if (gzvm_gfn_to_pfn_memslot(slot, gfn, &pfn) != 0)
 			return -EFAULT;
@@ -92,10 +92,10 @@ static int fill_constituents(struct mem_region_addr_range *consti,
 		gfn++;
 		nr_pages++;
 	}
-	if (i == max_nr_consti)
-		*consti_cnt = i;
-	else
-		*consti_cnt = (i + 1);
+
+	if (i != max_nr_consti)
+		i++;
+	*consti_cnt = i;
 
 	return nr_pages;
 }
@@ -105,9 +105,9 @@ static int
 register_memslot_addr_range(struct gzvm *gzvm, struct gzvm_memslot *memslot)
 {
 	struct gzvm_memory_region_ranges *region;
-	u32 buf_size;
-	int max_nr_consti, remain_pages;
 	gfn_t gfn, gfn_end;
+	int max_nr_consti, remain_pages;
+	u32 buf_size;
 
 	buf_size = PAGE_SIZE * 2;
 	region = alloc_pages_exact(buf_size, GFP_KERNEL);
@@ -206,6 +206,10 @@ static long gzvm_vm_ioctl(struct file *filp, unsigned int ioctl,
 		ret = gzvm_dev_ioctl_check_extension(gzvm, arg);
 		break;
 	}
+	case GZVM_CREATE_VCPU: {
+		ret = gzvm_vm_ioctl_create_vcpu(gzvm, arg);
+		break;
+	}
 	case GZVM_SET_USER_MEMORY_REGION: {
 		struct gzvm_userspace_memory_region userspace_mem;
 
@@ -240,6 +244,7 @@ static void gzvm_destroy_vm(struct gzvm *gzvm)
 
 	mutex_lock(&gzvm->lock);
 
+	gzvm_destroy_vcpus(gzvm);
 	gzvm_arch_destroy_vm(gzvm->vm_id);
 
 	mutex_lock(&gzvm_list_lock);
@@ -275,8 +280,10 @@ static struct gzvm *gzvm_create_vm(unsigned long vm_type)
 		return ERR_PTR(-ENOMEM);
 
 	ret = gzvm_arch_create_vm();
-	if (ret < 0)
-		goto err;
+	if (ret < 0) {
+		kfree(gzvm);
+		return ERR_PTR(ret);
+	}
 
 	gzvm->vm_id = ret;
 	gzvm->mm = current->mm;
@@ -289,10 +296,6 @@ static struct gzvm *gzvm_create_vm(unsigned long vm_type)
 	pr_info("VM-%u is created\n", gzvm->vm_id);
 
 	return gzvm;
-
-err:
-	kfree(gzvm);
-	return ERR_PTR(ret);
 }
 
 /**
@@ -306,18 +309,14 @@ int gzvm_dev_ioctl_create_vm(unsigned long vm_type)
 	int ret;
 
 	gzvm = gzvm_create_vm(vm_type);
-	if (IS_ERR(gzvm)) {
-		ret = PTR_ERR(gzvm);
-		goto error;
-	}
+	if (IS_ERR(gzvm))
+		return PTR_ERR(gzvm);
 
 	ret = anon_inode_getfd("gzvm-vm", &gzvm_vm_fops, gzvm,
 			       O_RDWR | O_CLOEXEC);
-	if (ret < 0)
-		goto error;
-
-error:
-	return ret;
+	if (ret)
+		return ret;
+	return 0;
 }
 
 void destroy_all_vm(void)
