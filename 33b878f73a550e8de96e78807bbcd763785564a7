@@ -16,6 +16,24 @@
       "message": "This is an internal structure that can not be accessed by any kernel module.",
       "revId": "33b878f73a550e8de96e78807bbcd763785564a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05868d1a_2468ed96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2003345
+      },
+      "writtenOn": "2023-04-19T14:57:27Z",
+      "side": 1,
+      "message": "This patch was cherry picked from Android13/Android12.\n\nAs disscused in [aosp/1625544](https://android-review.googlesource.com/c/kernel/common/+/1625544), this symbol is used in kernel/cgroup/cgroup.c, and we need it to implement oem\u0027s power tuning scheme in vendor module. This is necessary for us because can_attach \u0026 cancel_attach are missing in the current freezer control, and we need it to determine if a task can be attached to a cgroup.",
+      "parentUuid": "25146d9e_015d3753",
+      "revId": "33b878f73a550e8de96e78807bbcd763785564a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
