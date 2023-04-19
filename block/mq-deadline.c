@@ -310,7 +310,7 @@ static struct request *deadline_skip_seq_writes(struct deadline_data *dd,
 	do {
 		pos += blk_rq_sectors(rq);
 		rq = deadline_latter_request(rq);
-	} while (rq && blk_rq_pos(rq) == pos);
+	} while (rq && blk_rq_pos(rq) == pos && blk_rq_is_seq_zoned_write(rq));
 
 	return rq;
 }
