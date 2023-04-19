@@ -47,4 +47,28 @@ enum {
 #define MT_HVC_GZVM_PROBE		GZVM_HCALL_ID(GZVM_FUNC_PROBE)
 #define MT_HVC_GZVM_ENABLE_CAP		GZVM_HCALL_ID(GZVM_FUNC_ENABLE_CAP)
 
+static inline gzvm_id_t get_vmid_from_tuple(unsigned int tuple)
+{
+	return (gzvm_id_t)(tuple >> 16);
+}
+
+static inline gzvm_vcpu_id_t get_vcpuid_from_tuple(unsigned int tuple)
+{
+	return (gzvm_vcpu_id_t)(tuple & 0xffff);
+}
+
+static inline unsigned int
+assemble_vm_vcpu_tuple(gzvm_id_t vmid, gzvm_vcpu_id_t vcpuid)
+{
+	return ((unsigned int)vmid << 16 | vcpuid);
+}
+
+static inline void
+disassemble_vm_vcpu_tuple(unsigned int tuple, gzvm_id_t *vmid,
+			  gzvm_vcpu_id_t *vcpuid)
+{
+	*vmid = get_vmid_from_tuple(tuple);
+	*vcpuid = get_vcpuid_from_tuple(tuple);
+}
+
 #endif /* __GZVM_ARCH_H__ */
