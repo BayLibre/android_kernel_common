@@ -11,6 +11,7 @@ package(
     ],
 )
 
+<<<<<<< HEAD   (0210fa UPSTREAM: crypto: algboss - compile out test-related code wh)
 _aarch64_additional_kmi_symbol_lists = [
     # keep sorted
     "android/abi_gki_aarch64_db845c",
@@ -18,6 +19,26 @@ _aarch64_additional_kmi_symbol_lists = [
     "android/abi_gki_aarch64_pixel",
     "android/abi_gki_aarch64_virtual_device",
 ]
+=======
+filegroup(
+    name = "aarch64_additional_kmi_symbol_lists",
+    srcs = [
+        # keep sorted
+        "android/abi_gki_aarch64_db845c",
+        "android/abi_gki_aarch64_exynos",
+        "android/abi_gki_aarch64_galaxy",
+        "android/abi_gki_aarch64_imx",
+        "android/abi_gki_aarch64_mtk",
+        "android/abi_gki_aarch64_oplus",
+        "android/abi_gki_aarch64_pixel",
+        "android/abi_gki_aarch64_qcom",
+        "android/abi_gki_aarch64_virtual_device",
+        "android/abi_gki_aarch64_vivo",
+        "android/abi_gki_aarch64_xiaomi",
+    ],
+    visibility = ["//visibility:public"],
+)
+>>>>>>> CHANGE (053a90 ANDROID: GKI: add init symbol list file for vivo)
 
 define_common_kernels(target_configs = {
     "kernel_aarch64": {
