@@ -34,6 +34,40 @@
       "parentUuid": "27f77b09_8d17f381",
       "revId": "7eea8cda7fc2e435c291815634c41613ae2cee2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f184f18_911869cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2023-04-20T13:34:35Z",
+      "side": 1,
+      "message": "Unclear naming of one of the hooks. Overall is the description of this patch a bit thin",
+      "revId": "7eea8cda7fc2e435c291815634c41613ae2cee2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "707fefca_68c0a42f",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1884,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2023-04-20T13:34:35Z",
+      "side": 1,
+      "message": "The name of this hooks does not indicate that its only called in an error condition. The name suggest its always called. Can this be adjusted?",
+      "revId": "7eea8cda7fc2e435c291815634c41613ae2cee2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
