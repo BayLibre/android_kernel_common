@@ -105,6 +105,42 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe0d6d3_fd2c43e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1867620
+      },
+      "writtenOn": "2023-04-20T03:37:07Z",
+      "side": 1,
+      "message": "The above mentioned policy \"when the process receives a specified signal or a sync binder,and so on,OPPO\u0027s freezer will unfreeze it\" is implemented in kernel code which has been open source.",
+      "parentUuid": "ad933a41_a6b61702",
+      "revId": "f3f335cb8f4e679fdd273383faf126f70e4e7f4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc48c0f_3e5b7236",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1867620
+      },
+      "writtenOn": "2023-04-20T03:37:07Z",
+      "side": 1,
+      "message": "the change you offered can not be opened by us.\nI think it should be this change:\nhttps://android-review.googlesource.com/c/kernel/common/+/2411128\n\nmy commit is almost the same to 2411128,but we also need android_vh_binder_preset at binder_open().\n\nI forgot trace_android_vh_binder_preset at binder_open(), and I push it again later.",
+      "parentUuid": "1167e6fb_8ba9c49c",
+      "revId": "f3f335cb8f4e679fdd273383faf126f70e4e7f4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d89e3a7d_69069732",
@@ -166,6 +202,30 @@
       "side": 1,
       "message": "where in this patch is `android_vh_binder_preset()` hook specifically being used?",
       "parentUuid": "439f5b22_91a91ff3",
+      "range": {
+        "startLine": 302,
+        "startChar": 29,
+        "endLine": 302,
+        "endChar": 53
+      },
+      "revId": "f3f335cb8f4e679fdd273383faf126f70e4e7f4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "975d9368_2c0d1674",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1867620
+      },
+      "writtenOn": "2023-04-20T03:37:07Z",
+      "side": 1,
+      "message": "I forgot trace_android_vh_binder_preset at binder_open(), and I push it again later.",
+      "parentUuid": "68f8fcdf_77451168",
       "range": {
         "startLine": 302,
         "startChar": 29,
