@@ -1553,6 +1553,7 @@ static ssize_t tipc_read_iter(struct kiocb *iocb, struct iov_iter *iter)
 	ret = len;
 	list_del(&mb->node);
 	tipc_chan_put_rxbuf(dn->chan, mb);
+	mb = NULL;
 
 out:
 	trace_trusty_ipc_read_end(dn->chan, ret, mb);
