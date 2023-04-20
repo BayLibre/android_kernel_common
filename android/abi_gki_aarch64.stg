@@ -291674,6 +291674,12 @@ function {
   parameter_id: 0xfc0e1dbd
 }
 function {
+  id: 0x9b7aef3b
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x35555629
+}
+function {
   id: 0x9b7c03b3
   return_type_id: 0x6720d32f
   parameter_id: 0x1a8d1bcb
@@ -304714,6 +304720,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_shrink_slab_bypass"
 }
 elf_symbol {
+  id: 0x95030fb3
+  name: "__traceiter_android_vh_si_meminfo"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa882a25f
+  type_id: 0x9b7aef3b
+  full_name: "__traceiter_android_vh_si_meminfo"
+}
+elf_symbol {
   id: 0x58e7556b
   name: "__traceiter_android_vh_sync_txn_recvd"
   is_defined: true
@@ -306251,6 +306266,15 @@ elf_symbol {
   crc: 0x55f40be4
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_shrink_slab_bypass"
+}
+elf_symbol {
+  id: 0xfa7ab445
+  name: "__tracepoint_android_vh_si_meminfo"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xb9d9a6b0
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_si_meminfo"
 }
 elf_symbol {
   id: 0x39e68fed
@@ -345418,6 +345442,10 @@ symbols {
     value: 0xdfd06b97
   }
   symbol {
+    key: "__traceiter_android_vh_si_meminfo"
+    value: 0x95030fb3
+  }
+  symbol {
     key: "__traceiter_android_vh_sync_txn_recvd"
     value: 0x58e7556b
   }
@@ -346100,6 +346128,10 @@ symbols {
   symbol {
     key: "__tracepoint_android_vh_shrink_slab_bypass"
     value: 0x3e70324d
+  }
+  symbol {
+    key: "__tracepoint_android_vh_si_meminfo"
+    value: 0xfa7ab445
   }
   symbol {
     key: "__tracepoint_android_vh_sync_txn_recvd"
