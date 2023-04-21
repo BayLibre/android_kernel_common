@@ -52,6 +52,24 @@
       "parentUuid": "96d5bd32_12cbe498",
       "revId": "87814351b1d6556d782cc9f0d1bdeff2e80da326",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "775dbea9_763f4050",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-21T07:58:23Z",
+      "side": 1,
+      "message": "Hi Greg, Our changes are realized based on Qcom\u0027s code like dwc3-msm-core.c which is not contained by upstream code, so there is no way to send our changes upstream.\n\nSince Qcom\u0027s dwc3 msm driver is built as ko, so we will register the hook handle in the driver and the handle is to print log about dwc3 event type(event-\u003etype.type).\n\nSo as the other two hooks we submitted on kernel-5.15 before:\nTo print log about usb_ctrlrequest:\nhttps://android-review.googlesource.com/c/kernel/common/+/2074383\n\nTo print log about ep0state status:\nhttps://android-review.googlesource.com/c/kernel/common/+/2078059\n\nAnd since these three hooks are for debug purpose and hook relevant changes are based on none-upstream code, please help to evaluate if these hooks can be merged.\n\nThanks a lot.",
+      "parentUuid": "a3639176_2bb266f7",
+      "revId": "87814351b1d6556d782cc9f0d1bdeff2e80da326",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
