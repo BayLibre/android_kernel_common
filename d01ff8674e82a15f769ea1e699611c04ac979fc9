@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9942eca_b0036fdf",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-04-21T13:32:41Z",
+      "side": 1,
+      "message": "If we have adjacent memblocks, do we end up with `addr \u003d\u003d reg-\u003ebase` here? I\u0027m worried that a size of 0 will rounded up to `PAGE_SIZE` in the pgtable code.",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 85
+      },
+      "revId": "d01ff8674e82a15f769ea1e699611c04ac979fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc64bc20_23c7b8d3",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-04-21T13:32:41Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 163,
+        "startChar": 9,
+        "endLine": 163,
+        "endChar": 42
+      },
+      "revId": "d01ff8674e82a15f769ea1e699611c04ac979fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e76ee46_f3128d1e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-04-21T13:32:41Z",
+      "side": 1,
+      "message": "Can we guarantee that no IOMMUs have registered at this point? If not, I think we have to take their MMIO regions into account.",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 196,
+        "endChar": 31
+      },
+      "revId": "d01ff8674e82a15f769ea1e699611c04ac979fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
