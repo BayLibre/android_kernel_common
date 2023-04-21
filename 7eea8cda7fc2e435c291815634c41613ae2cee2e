@@ -71,6 +71,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f9ebf9f_31d19275",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-21T08:45:45Z",
+      "side": 1,
+      "message": "Hi Greg, our changes are based on mtk driver code like mtk-mmc.c which is non-upstream code, so there is no way to send our changes upstream.\n\nIf you want to check the hook handles, I can attach them on comment.\n\nThanks.",
+      "parentUuid": "23b27b3a_e3892eac",
+      "revId": "7eea8cda7fc2e435c291815634c41613ae2cee2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "707fefca_68c0a42f",
@@ -84,6 +102,24 @@
       "writtenOn": "2023-04-20T13:34:35Z",
       "side": 1,
       "message": "The name of this hooks does not indicate that its only called in an error condition. The name suggest its always called. Can this be adjusted?",
+      "revId": "7eea8cda7fc2e435c291815634c41613ae2cee2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "503fe5d1_0962464c",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1884,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-21T08:45:45Z",
+      "side": 1,
+      "message": "Hi Viktor, the name is adjusted as required, please review.\n\nThanks.",
+      "parentUuid": "707fefca_68c0a42f",
       "revId": "7eea8cda7fc2e435c291815634c41613ae2cee2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
