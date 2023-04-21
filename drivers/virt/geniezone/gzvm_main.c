@@ -113,11 +113,12 @@ static int gzvm_drv_probe(void)
 		return ret;
 	gzvm_debug_dev = &gzvm_dev;
 
-	return 0;
+	return gzvm_drv_irqfd_init();
 }
 
 static int gzvm_drv_remove(void)
 {
+	gzvm_drv_irqfd_exit();
 	destroy_all_vm();
 	misc_deregister(&gzvm_dev);
 	return 0;
