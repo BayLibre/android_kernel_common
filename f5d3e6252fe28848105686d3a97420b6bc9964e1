@@ -1,0 +1,256 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9f55704_d7e2e603",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "PAGE_SIZE",
+      "range": {
+        "startLine": 14,
+        "startChar": 23,
+        "endLine": 14,
+        "endChar": 27
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93243cad_20b159ad",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "c-style comments only",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 2
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676cbb3c_e5c5c789",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "If all this is done under task_lock which is a spinlock, then this should be GFP_ATOMIC. You don\u0027t want to sleep while holding it. A comment should be also added here explaining why we need that.",
+      "range": {
+        "startLine": 39,
+        "startChar": 39,
+        "endLine": 39,
+        "endChar": 49
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d099812_caea29fb",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "need a check for find_get_pid() return to be non-NULL",
+      "range": {
+        "startLine": 46,
+        "startChar": 1,
+        "endLine": 46,
+        "endChar": 11
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d0e66d_232229ae",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "you need `get_pid_task` here because once you call `rcu_read_unlock` and later `task_unlock`, the `task` can be destroyed from under you. You need to take a refcount on it, which is what `get_pid_task` will do. It also does `rcu_read_lock/rcu_read_unlock` internally, so you won\u0027t need them here.\n\nBut don\u0027t forget `put_task_struct(task)` once you don\u0027t need it anymore.",
+      "range": {
+        "startLine": 48,
+        "startChar": 8,
+        "endLine": 48,
+        "endChar": 16
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f680a0d1_41077126",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "You are missing `put_pid(pid_struct)` because `find_get_pid` took a refcount on that object, so you are leaking it. You can call `put_pid` here since you are not using it after this anymore.",
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2bd1643_97f52c0b",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "Instead of dropping the task_lock, Just use `strscpy_pad(buf, tsk-\u003ecomm, buf_size);` directly (see implementation of `get_task_comm` here: https://elixir.bootlin.com/linux/v6.3-rc7/source/fs/exec.c#L1217).",
+      "range": {
+        "startLine": 55,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 56
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dde19c32_1627c75e",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "this is the last usage of `task`, so you can add `put_task_struct(task);` here.",
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9989683b_c25dddfe",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "Missing `put_cred` because `get_task_cred` took a refcount.",
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dee8080_2e0ecccd",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "indents",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 8
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b11bdc_c792e3a7",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "break up long lines",
+      "range": {
+        "startLine": 157,
+        "startChar": 2,
+        "endLine": 157,
+        "endChar": 160
+      },
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "667ddf56_21375965",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-04-21T21:47:03Z",
+      "side": 1,
+      "message": "kfree(kernelBuffer);",
+      "revId": "f5d3e6252fe28848105686d3a97420b6bc9964e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
