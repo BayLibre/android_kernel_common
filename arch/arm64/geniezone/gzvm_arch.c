@@ -16,11 +16,10 @@
  *
  * Return: The wrapper helps caller to convert geniezone errno to Linux errno.
  */
-static int gzvm_hypcall_wrapper(unsigned long a0, unsigned long a1,
-				unsigned long a2, unsigned long a3,
-				unsigned long a4, unsigned long a5,
-				unsigned long a6, unsigned long a7,
-				struct arm_smccc_res *res)
+int gzvm_hypcall_wrapper(unsigned long a0, unsigned long a1, unsigned long a2,
+			 unsigned long a3, unsigned long a4, unsigned long a5,
+			 unsigned long a6, unsigned long a7,
+			 struct arm_smccc_res *res)
 {
 	arm_smccc_hvc(a0, a1, a2, a3, a4, a5, a6, a7, res);
 	return gz_err_to_errno(res->a0);
@@ -258,4 +257,19 @@ int gzvm_arch_create_vcpu(gzvm_id_t vm_id, int vcpuid, void *run)
 				   0, &res);
 
 	return ret;
+}
+
+int gzvm_arch_create_device(gzvm_id_t vm_id, struct gzvm_create_device *gzvm_dev)
+{
+	struct arm_smccc_res res;
+
+	return gzvm_hypcall_wrapper(MT_HVC_GZVM_CREATE_DEVICE, vm_id,
+				    virt_to_phys(gzvm_dev), 0, 0, 0, 0, 0, &res);
+}
+
+int gzvm_arch_inject_irq(struct gzvm *gzvm, unsigned int vcpu_idx, u32 irq_type,
+			 u32 irq, bool level)
+{
+	/* default use spi */
+	return gzvm_vgic_inject_spi(gzvm, vcpu_idx, irq, level);
 }

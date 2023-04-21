@@ -4,6 +4,6 @@
 #
 include $(srctree)/drivers/virt/geniezone/Makefile
 
-gzvm-y += gzvm_arch.o
+gzvm-y += gzvm_arch.o gzvm_irqchip.o
 
 obj-$(CONFIG_MTK_GZVM) += gzvm.o

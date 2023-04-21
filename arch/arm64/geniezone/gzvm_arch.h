@@ -71,4 +71,15 @@ disassemble_vm_vcpu_tuple(unsigned int tuple, gzvm_id_t *vmid,
 	*vcpuid = get_vcpuid_from_tuple(tuple);
 }
 
+int gzvm_hypcall_wrapper(unsigned long a0, unsigned long a1, unsigned long a2,
+			 unsigned long a3, unsigned long a4, unsigned long a5,
+			 unsigned long a6, unsigned long a7,
+			 struct arm_smccc_res *res);
+
+void gzvm_sync_vgic_state(struct gzvm_vcpu *vcpu);
+int gzvm_vgic_inject_irq(struct gzvm *gzvm, unsigned int vcpu_idx, u32 irq_type,
+			 u32 irq, bool level);
+int gzvm_vgic_inject_spi(struct gzvm *gzvm, unsigned int vcpu_idx,
+			 u32 spi_irq, bool level);
+
 #endif /* __GZVM_ARCH_H__ */
