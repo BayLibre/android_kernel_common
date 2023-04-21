@@ -52,6 +52,24 @@
       "parentUuid": "9fccdecd_e744f294",
       "revId": "9ba94c7cd42a9decf0677a6736d5d865244d7f16",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7cc00c9_f41816c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-04-21T15:21:33Z",
+      "side": 1,
+      "message": "The fact that it is an upstream config has nothing to do with how it is set in gki_defconfig. Since no one else uses it, this should be set to \"\u003dm\" (GKI module). The other ones probably should be changed to \"\u003dm\" as well, but we\u0027ll leave that for a later release.\n\nIs there any reason that adding this as a vendor module won\u0027t work for you?",
+      "parentUuid": "c810ac7d_9a3c8d78",
+      "revId": "9ba94c7cd42a9decf0677a6736d5d865244d7f16",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
