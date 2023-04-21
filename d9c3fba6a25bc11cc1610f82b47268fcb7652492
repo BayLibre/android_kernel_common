@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87246487_e7aae0e1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-04-21T13:45:20Z",
+      "side": 1,
+      "message": "nit: It might be cleaner to have this as an `in_host_abort` flag, which could be set in a new `host_abort_enter()` function that could also call `trace_host_mem_abort()`",
+      "range": {
+        "startLine": 778,
+        "startChar": 18,
+        "endLine": 778,
+        "endChar": 35
+      },
+      "revId": "d9c3fba6a25bc11cc1610f82b47268fcb7652492",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
