@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b3d6d835_4f022df9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-04-24T09:49:30Z",
+      "side": 1,
+      "message": "Assuming that the blocks are page-aligned the page-table code should do the right thing (that is, nothing at all). I think that should already be true, but I can add a sanity check if you feel that would be useful?",
+      "parentUuid": "b9942eca_b0036fdf",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 85
+      },
+      "revId": "d01ff8674e82a15f769ea1e699611c04ac979fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc64bc20_23c7b8d3",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5bf7c318_ec5f9cdb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-04-24T09:49:30Z",
+      "side": 1,
+      "message": "Uh, the \u0027max\u0027 part actually isn\u0027t-- this code is inspired from the page recycling path where we iterate over the moveable regions, which can overlap. But no need here w/ memblocks, I\u0027ll get rid of it.",
+      "parentUuid": "cc64bc20_23c7b8d3",
+      "range": {
+        "startLine": 163,
+        "startChar": 9,
+        "endLine": 163,
+        "endChar": 42
+      },
+      "revId": "d01ff8674e82a15f769ea1e699611c04ac979fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e76ee46_f3128d1e",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2023-04-21T13:32:41Z",
       "side": 1,
       "message": "Can we guarantee that no IOMMUs have registered at this point? If not, I think we have to take their MMIO regions into account.",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 196,
+        "endChar": 31
+      },
+      "revId": "d01ff8674e82a15f769ea1e699611c04ac979fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da54f400_d37c6720",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-04-24T09:49:30Z",
+      "side": 1,
+      "message": "Yep we should be fine, this is being called from the __pkvm_init() hypercall (specifically the *_finalize part once we\u0027ve switched to the hyp-owned stage-1 pgt), which is called from kvm_init().",
+      "parentUuid": "4e76ee46_f3128d1e",
       "range": {
         "startLine": 196,
         "startChar": 8,
