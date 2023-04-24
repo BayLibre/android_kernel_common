@@ -40,6 +40,7 @@
 unsigned int sysctl_sched_latency			= 6000000ULL;
 EXPORT_SYMBOL_GPL(sysctl_sched_latency);
 static unsigned int normalized_sysctl_sched_latency	= 6000000ULL;
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_runtime);
 
 /*
  * The initial- and re-scaling of tunables is configurable
