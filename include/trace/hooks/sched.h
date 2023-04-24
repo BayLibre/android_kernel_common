@@ -332,6 +332,10 @@ DECLARE_HOOK(android_vh_sched_pelt_multiplier,
 	TP_PROTO(unsigned int old, unsigned int cur, int *ret),
 	TP_ARGS(old, cur, ret));
 
+DECLARE_HOOK(android_vh_prune_account,
+	TP_PROTO(int user_tick, bool *should_account, int *ticks),
+	TP_ARGS(user_tick, should_account, ticks));
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
