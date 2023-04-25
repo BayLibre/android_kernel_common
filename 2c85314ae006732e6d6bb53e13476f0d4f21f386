@@ -34,6 +34,24 @@
       "parentUuid": "6631aa85_2f18be88",
       "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2747f3d_1615e6c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-04-25T20:01:42Z",
+      "side": 1,
+      "message": "\u003e This updates the list and doesn\u0027t check whether the current list is sufficient or not.\n\nI didn\u0027t observe list being updated.\n\n\u003e However, common:kernel_aarch64_abi_dist checks for any diff in this file and I expect that to fail if you don\u0027t update the protected list.\n\nIt did not.",
+      "parentUuid": "241b2e71_3800585f",
+      "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
