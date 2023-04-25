@@ -304155,6 +304155,13 @@ function {
   parameter_id: 0xf1a6dfed
 }
 function {
+  id: 0x2524b83a
+  return_type_id: 0xb94e10c7
+  parameter_id: 0x18ea6ae3
+  parameter_id: 0x0858434c
+  parameter_id: 0x2ed8b8f9
+}
+function {
   id: 0x25445990
   return_type_id: 0xb94e10c7
   parameter_id: 0x18ea6ae3
@@ -322790,6 +322797,13 @@ function {
   parameter_id: 0x1aeeade4
   parameter_id: 0x29c4a9fa
   parameter_id: 0x052fac00
+}
+function {
+  id: 0x9b9d9a99
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18ea6ae3
+  parameter_id: 0x0858434c
+  parameter_id: 0x1a080f6e
 }
 function {
   id: 0x9b9ef31d
@@ -387172,6 +387186,15 @@ elf_symbol {
   full_name: "v4l2_m2m_next_buf"
 }
 elf_symbol {
+  id: 0x0ec6b6da
+  name: "v4l2_m2m_poll"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x66202a46
+  type_id: 0x2524b83a
+  full_name: "v4l2_m2m_poll"
+}
+elf_symbol {
   id: 0x5b4a7ca1
   name: "v4l2_m2m_qbuf"
   is_defined: true
@@ -387179,6 +387202,15 @@ elf_symbol {
   crc: 0xf85fd7dd
   type_id: 0x9b9c3080
   full_name: "v4l2_m2m_qbuf"
+}
+elf_symbol {
+  id: 0x36a4341f
+  name: "v4l2_m2m_querybuf"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x477bda98
+  type_id: 0x9b9c3080
+  full_name: "v4l2_m2m_querybuf"
 }
 elf_symbol {
   id: 0xabff52f7
@@ -387197,6 +387229,15 @@ elf_symbol {
   crc: 0xc6fca5ad
   type_id: 0x12ca5ec4
   full_name: "v4l2_m2m_release"
+}
+elf_symbol {
+  id: 0x1f068d9a
+  name: "v4l2_m2m_reqbufs"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1b578a39
+  type_id: 0x9b9d9a99
+  full_name: "v4l2_m2m_reqbufs"
 }
 elf_symbol {
   id: 0x9cac5dd9
@@ -387224,6 +387265,15 @@ elf_symbol {
   crc: 0x3b931c8d
   type_id: 0x9b8743c4
   full_name: "v4l2_m2m_streamoff"
+}
+elf_symbol {
+  id: 0xbccca110
+  name: "v4l2_m2m_streamon"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8a219791
+  type_id: 0x9b8743c4
+  full_name: "v4l2_m2m_streamon"
 }
 elf_symbol {
   id: 0xaa045f6b
@@ -413767,8 +413817,16 @@ symbols {
     value: 0xb4198f5a
   }
   symbol {
+    key: "v4l2_m2m_poll"
+    value: 0x0ec6b6da
+  }
+  symbol {
     key: "v4l2_m2m_qbuf"
     value: 0x5b4a7ca1
+  }
+  symbol {
+    key: "v4l2_m2m_querybuf"
+    value: 0x36a4341f
   }
   symbol {
     key: "v4l2_m2m_register_media_controller"
@@ -413777,6 +413835,10 @@ symbols {
   symbol {
     key: "v4l2_m2m_release"
     value: 0x54693ef1
+  }
+  symbol {
+    key: "v4l2_m2m_reqbufs"
+    value: 0x1f068d9a
   }
   symbol {
     key: "v4l2_m2m_request_queue"
@@ -413789,6 +413851,10 @@ symbols {
   symbol {
     key: "v4l2_m2m_streamoff"
     value: 0x2e96531c
+  }
+  symbol {
+    key: "v4l2_m2m_streamon"
+    value: 0xbccca110
   }
   symbol {
     key: "v4l2_m2m_suspend"
