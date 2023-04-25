@@ -37,6 +37,9 @@ DECLARE_HOOK(android_vh_page_add_new_anon_rmap,
 	TP_PROTO(struct page *page, struct vm_area_struct *vma,
 		unsigned long address),
 	TP_ARGS(page, vma, address));
+DECLARE_HOOK(android_vh_madvise_cold_pageout_skip,
+	TP_PROTO(struct vm_area_struct *vma, struct page *page, bool pageout, bool *need_skip),
+	TP_ARGS(vma, page, pageout, need_skip));
 
 #endif /* _TRACE_HOOK_MM_H */
 
