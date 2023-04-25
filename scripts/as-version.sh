@@ -21,6 +21,7 @@ get_canonical_version()
 	echo $((10000 * $1 + 100 * ${2:-0} + ${3:-0}))
 }
 
+<<<<<<< HEAD   (3ad342 Revert "net: mdio: fix owner field for mdio buses registered)
 # Clang fails to handle -Wa,--version unless -no-integrated-as is given.
 # We check -(f)integrated-as, expecting it is explicitly passed in for the
 # integrated assembler case.
@@ -78,5 +79,51 @@ if [ "$cversion" -lt "$min_cversion" ]; then
 	echo >&2 "***"
 	exit 1
 fi
+=======
+# Clang fails to handle -Wa,--version unless -fno-integrated-as is given.
+# We check -fintegrated-as, expecting it is explicitly passed in for the
+# integrated assembler case.
+check_integrated_as()
+{
+	while [ $# -gt 0 ]; do
+		if [ "$1" = -fintegrated-as ]; then
+			# For the integrated assembler, we do not check the
+			# version here. It is the same as the clang version, and
+			# it has been already checked by scripts/cc-version.sh.
+			echo LLVM 0
+			exit 0
+		fi
+		shift
+	done
+}
+
+check_integrated_as "$@"
+
+orig_args="$@"
+
+# Get the first line of the --version output.
+IFS='
+'
+set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler /dev/null -o /dev/null 2>/dev/null)
+
+# Split the line on spaces.
+IFS=' '
+set -- $1
+
+if [ "$1" = GNU -a "$2" = assembler ]; then
+	shift $(($# - 1))
+	version=$1
+	name=GNU
+else
+	echo "$orig_args: unknown assembler invoked" >&2
+	exit 1
+fi
+
+# Some distributions append a package release number, as in 2.34-4.fc32
+# Trim the hyphen and any characters that follow.
+version=${version%-*}
+
+cversion=$(get_canonical_version $version)
+>>>>>>> BRANCH (791a85 Linux 5.10.178)
 
 echo $name $cversion
