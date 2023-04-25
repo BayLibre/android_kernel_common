@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "756f80b2_974285fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "Hi Greg and Viktor,\n\nI illustrated our hook purpose and relevant hook handle on code, please have a look.\n\nThe reason why we these hooks:\n1.Our code flow needs these hooks to fix some issues when in sd situation:\na.sdr104 compatible issue.\nb.bad card issue.\nc.fast power off function.\n\n2.Our sd card factory test needs the irq count in mmc_gpio_cd_irqt.\n\nThe reason why we can\u0027t sent these code upstream directly:\n1.Since we only use sd card in our situation, we can\u0027t ensure the code stability in mmc card situation.\n2.The hook handle is to fix sd card issues that we encountered and to meet some factory test requirement, so the code may not suitable to all the genetic usage.\n\nThanks.",
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03481677_a6d09cc4",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "/* mmc_blk_reset hook handle\n * 1.mark MMC_BAD_CARD flag, which will be used in sdhci_get_cd(mmc/host/sdhci.c) and be cleared in mmc_gpio_cd_irqt.(mmc/core/slot-gpio.c).\n * 2.set card status MMC_CARD_REMOVED.\n * 3.schedule mmc_rescan.\n */\nstatic void vmmc_blk_reset(void *data, struct mmc_host *host, int err)\n{\n\tif (err) {\n\t\tpr_err(\"%s: %d: %s failed to reset %d\\n\",\n\t\t       __func__, __LINE__, mmc_hostname(host), err);\n\n\t\tif (host-\u003ecard \u0026\u0026 mmc_card_sd(host-\u003ecard)) {\n\t\t\tpr_err(\"%s: %d: %s removing bad card\\n\",\n\t\t\t       __func__, __LINE__, mmc_hostname(host));\n\t\t\thost-\u003eandroid_oem_data1 |\u003d MMC_BAD_CARD;\n\t\t\tmmc_card_set_removed(host-\u003ecard);\n\t\t\tmmc_detect_change(host, msecs_to_jiffies(1000));\n\t\t}\n\t}\n}",
+      "range": {
+        "startLine": 1017,
+        "startChar": 2,
+        "endLine": 1017,
+        "endChar": 32
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adb78057_c7d1b0b4",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "/* mmc_blk_mq_rw_recovery hook handle\n * 1.mark MMC_BAD_CARD flag, which will be used in sdhci_get_cd(mmc/host/sdhci.c) and be cleared in mmc_gpio_cd_irqt.(mmc/core/slot-gpio.c).\n * 2.set card status MMC_CARD_REMOVED.\n * 3.schedule mmc_rescan.\n */\nstatic void vmmc_blk_mq_rw_recovery(void *data, struct mmc_card *card)\n{\n\tif (mmc_card_sd(card) \u0026\u0026 (!mmc_card_removed(card))) {\n\t\tpr_err(\"%s: %d: %s removing bad card\\n\",\n\t\t       __func__, __LINE__, mmc_hostname(card-\u003ehost));\n\t\tcard-\u003ehost-\u003eandroid_oem_data1 |\u003d MMC_BAD_CARD;\n\t\tmmc_card_set_removed(card);\n\t\tmmc_detect_change(card-\u003ehost, msecs_to_jiffies(1000));\n\t}\n}",
+      "range": {
+        "startLine": 1874,
+        "startChar": 2,
+        "endLine": 1874,
+        "endChar": 41
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f66427c_8b63b6ee",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "/* sd_update_bus_speed_mode hook handle\n * 1.check if SDR104 is supported, if not, try to set sd_bus_speed DDR50 if supported.\n */\nstatic void vsd_update_bus_speed_mode(void *data, struct mmc_card *card)\n{\n\tconst char *const uhs_speeds[] \u003d {\n\t\t[UHS_SDR12_BUS_SPEED] \u003d \"SDR12 \",\n\t\t[UHS_SDR25_BUS_SPEED] \u003d \"SDR25 \",\n\t\t[UHS_SDR50_BUS_SPEED] \u003d \"SDR50 \",\n\t\t[UHS_SDR104_BUS_SPEED] \u003d \"SDR104 \",\n\t\t[UHS_DDR50_BUS_SPEED] \u003d \"DDR50 \",\n\t};\n\tbool support_sdr104 \u003d\n\t\tcard-\u003ehost-\u003eandroid_oem_data1 \u0026 MMC_SUPPORT_SDR104;\n\n\tif ((!support_sdr104) \u0026\u0026 (card-\u003esd_bus_speed \u003d\u003d UHS_SDR104_BUS_SPEED)) {\n\t\tif ((card-\u003ehost-\u003ecaps \u0026 MMC_CAP_UHS_DDR50) \u0026\u0026\n\t\t    (card-\u003esw_caps.sd3_bus_mode \u0026 SD_MODE_UHS_DDR50)) {\n\t\t\tcard-\u003esd_bus_speed \u003d UHS_DDR50_BUS_SPEED;\n\t\t}\n\t}\n\tpr_info(\"%s: %d: %s %s SDR104, final mode %s\\n\",\n\t\t__func__, __LINE__, mmc_hostname(card-\u003ehost),\n\t\tsupport_sdr104 ? \"support\" : \"not support\", uhs_speeds[card-\u003esd_bus_speed]);\n}",
+      "range": {
+        "startLine": 487,
+        "startChar": 1,
+        "endLine": 487,
+        "endChar": 42
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de0b2059_57e567c3",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1884,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "/* mmc_attach_sd_err hook handle\n * 1.mark  MMC_BAD_CARD flag, which will be used in sdhci_get_cd(mmc/host/sdhci.c) and be cleared in mmc_gpio_cd_irqt.(mmc/core/slot-gpio.c).\n */\nstatic void vmmc_attach_sd_err(void *data, struct mmc_host *host, u32 ocr, int err)\n{\n\thost-\u003eandroid_oem_data1 |\u003d MMC_BAD_CARD;\n\tpr_info(\"%s: %d: %s set bad card: %d(ocr\u003d0x%08x)\\n\",\n\t\t__func__, __LINE__, mmc_hostname(host), err, ocr);\n}",
+      "range": {
+        "startLine": 1884,
+        "startChar": 1,
+        "endLine": 1884,
+        "endChar": 35
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61386798_0d206164",
+        "filename": "drivers/mmc/core/slot-gpio.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "/* mmc_gpio_cd_irqt hook handle\n * 1.counter the irq count, we will use it in our factory test.\n * 2.update card status.\n * 3.Clear the bad card state MMC_BAD_CARD.\n * 4.check the inserted status of card, return directly if status is not right.\n * 5.schedule mmc_rescan, and set the delay according to MMC_FAST_POWER_OFF.\n */\nstatic void vmmc_gpio_cd_irqt(void *data, struct mmc_host *host, bool *allow)\n{\n\tint status;\n\n\t*allow \u003d false;\n\t/*\n\t * In case host-\u003eops are not yet initialized return immediately.\n\t * The card will get detected later when host driver calls\n\t * mmc_add_host() after host-\u003eops are initialized.\n\t */\n\tif (host-\u003eslot.android_oem_data1)\n\t\tint_cnt++;\n\tif (!host-\u003eops) {\n\t\tpr_err(\"%s: %d: %s host-\u003eops null\\n\",\n\t\t       __func__, __LINE__, mmc_hostname(host));\n\t\treturn;\n\t}\n\tif (host-\u003eops-\u003ecard_event) {\n\t\thost-\u003eops-\u003ecard_event(host);\n\t\thost-\u003eandroid_oem_data1 \u0026\u003d ~MMC_BAD_CARD;\n\t\tpr_info(\"%s: %d: %s clear bad card flag\\n\",\n\t\t\t__func__, __LINE__, mmc_hostname(host));\n\t}\n\n\tstatus \u003d mmc_gpio_get_cd(host);\n\tif (status \u003c 0) {\n\t\tpr_err(\"%s: %d: %s mmc_gpio_get_cd err: %d\\n\",\n\t\t       __func__, __LINE__, mmc_hostname(host), status);\n\t\treturn;\n\t}\n\n\tif(!(host-\u003ecaps2 \u0026 MMC_CAP2_CD_ACTIVE_HIGH)){\n\t\tsd_cmd_done_status \u003d 0;\n\t}\n\tpr_info(\"%s: %d: %s slot status %s, GPIO_ACTIVE_%s\\n\",\n\t\t__func__, __LINE__, mmc_hostname(host), status ? \"HIGH\" : \"LOW\",\n\t\t(host-\u003ecaps2 \u0026 MMC_CAP2_CD_ACTIVE_HIGH) ? \"HIGH\" : \"LOW\");\n\thost-\u003etrigger_card_event \u003d true;\n\tif (!host-\u003ecard)\n\t\tmmc_detect_change(host, msecs_to_jiffies(2050));\n\telse\n\t\tmmc_detect_change(host, msecs_to_jiffies(host-\u003eandroid_oem_data1 \u0026 MMC_FAST_POWER_OFF ? 50 : 1000));\n}",
+      "range": {
+        "startLine": 37,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 34
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2bd4f3a_c9c6c466",
+        "filename": "drivers/mmc/host/sdhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2509,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "/* sdhci_get_cd hook handle\n * 1. if MMC_BAD_CARD, return directly in sdhci_get_cd.\n */\nstatic void vsdhci_get_cd(void *data, struct sdhci_host *host, bool *allow)\n{\n\t*allow \u003d true;\n\n\tif (host-\u003emmc-\u003eandroid_oem_data1 \u0026 MMC_BAD_CARD) {\n\t\t*allow \u003d false;\n\t\tpr_info(\"%s: %d: %s bad card allow\u003d%d\\n\",\n\t\t\t__func__, __LINE__, mmc_hostname(host-\u003emmc), *allow);\n\t}\n}",
+      "range": {
+        "startLine": 2509,
+        "startChar": 1,
+        "endLine": 2509,
+        "endChar": 30
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81340309_7cce2b2e",
+        "filename": "include/linux/mmc/host.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "1.enable irq counter.\n2.counter the irq count which will be used in factory test.",
+      "range": {
+        "startLine": 288,
+        "startChar": 1,
+        "endLine": 288,
+        "endChar": 17
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "997783e2_bd340ee7",
+        "filename": "include/linux/mmc/host.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 2003620
+      },
+      "writtenOn": "2023-04-25T10:45:38Z",
+      "side": 1,
+      "message": "record status of:\n1.MMC_BAD_CARD(bad card status flag).\n2.MMC_FAST_POWER_OFF(if support fast power off function).\n3.MMC_SUPPORT_SDR104(if support sdr104).",
+      "range": {
+        "startLine": 528,
+        "startChar": 1,
+        "endLine": 528,
+        "endChar": 17
+      },
+      "revId": "a085c64ba89494355af05235676cd63d9ed1ba84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
