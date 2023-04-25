@@ -106,6 +106,24 @@
       "parentUuid": "edd73d6d_86fb9900",
       "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2118d57_f5982eff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-04-25T21:58:23Z",
+      "side": 1,
+      "message": "For the presubmit check it is part of the `_update` and not the `_dist`; so another user error on myside. \n\n```\nbazel run --config\u003dfast //common:kernel_aarch64_abi_update\nINFO: Analyzed target //common:kernel_aarch64_abi_update (0 packages loaded, 12 targets configured).\nINFO: Found 1 target...\nINFO: From [stg] Comparing Kernel ABI @//common:kernel_aarch64_abi_diff:\nINFO: \nTarget //common:kernel_aarch64_abi_update up-to-date:\n  bazel-bin/common/kernel_aarch64_abi_update\nINFO: Elapsed time: 227.222s, Critical Path: 225.90s\nINFO: 16 processes: 10 internal, 4 linux-sandbox, 2 local.\nINFO: Build completed successfully, 16 total actions\nINFO: Running command line: bazel-bin/common/kernel_aarch64_abi_update\nFiles common/kernel_aarch64_abi_protected_exports/protected_exports and common/android/abi_gki_protected_exports_aarch64 differ\nERROR: protected exports list must be updated before updating ABI definition. To update, execute \u0027tools/bazel run //common:kernel_aarch64_abi_update_protected_exports\u0027.\n```\n\nSo, looks like it\u0027s all good.",
+      "parentUuid": "2eb6a2e0_cf4d7eb2",
+      "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
