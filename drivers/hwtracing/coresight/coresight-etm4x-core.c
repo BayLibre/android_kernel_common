@@ -447,9 +447,17 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
 		if (etm4x_sspcicrn_present(drvdata, i))
 			etm4x_relaxed_write32(csa, config->ss_pe_cmp[i], TRCSSPCICRn(i));
 	}
+<<<<<<< HEAD   (0334ff Revert "net: mdio: fix owner field for mdio buses registered)
 	for (i = 0; i < drvdata->nr_addr_cmp; i++) {
 		etm4x_relaxed_write64(csa, config->addr_val[i], TRCACVRn(i));
 		etm4x_relaxed_write64(csa, config->addr_acc[i], TRCACATRn(i));
+=======
+	for (i = 0; i < drvdata->nr_addr_cmp * 2; i++) {
+		writeq_relaxed(config->addr_val[i],
+			       drvdata->base + TRCACVRn(i));
+		writeq_relaxed(config->addr_acc[i],
+			       drvdata->base + TRCACATRn(i));
+>>>>>>> BRANCH (791a85 Linux 5.10.178)
 	}
 	for (i = 0; i < drvdata->numcidc; i++)
 		etm4x_relaxed_write64(csa, config->ctxid_pid[i], TRCCIDCVRn(i));
