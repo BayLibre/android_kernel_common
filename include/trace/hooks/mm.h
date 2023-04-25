@@ -89,10 +89,12 @@ DECLARE_HOOK(android_vh_show_smap,
 	TP_PROTO(struct seq_file *m, unsigned long writeback,
 		unsigned long same, unsigned long huge),
 	TP_ARGS(m, writeback, same, huge));
-
 DECLARE_RESTRICTED_HOOK(android_rvh_ctl_dirty_rate,
 	TP_PROTO(void *unused),
 	TP_ARGS(unused), 1);
+DECLARE_HOOK(android_vh_madvise_cold_pageout_skip,
+	TP_PROTO(struct vm_area_struct *vma, struct page *page, bool pageout, bool *need_skip),
+	TP_ARGS(vma, page, pageout, need_skip));
 
 #endif /* _TRACE_HOOK_MM_H */
 
