@@ -88,6 +88,24 @@
       "parentUuid": "440fbf68_0db5d8d3",
       "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb6a2e0_cf4d7eb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-04-25T21:46:29Z",
+      "side": 1,
+      "message": "There was an issue in my test. I was using the `build` and not `run`. `build` doesn\u0027t update the source files. I removed the few symbols from the list and did this `bazel run --config\u003dfast //common:kernel_aarch64_abi_update_protected_exports` and it did update the list correctly.\n\nPlease check and let me know.",
+      "parentUuid": "edd73d6d_86fb9900",
+      "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
