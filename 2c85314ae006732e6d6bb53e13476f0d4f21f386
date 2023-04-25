@@ -16,6 +16,24 @@
       "message": "Hi Ramji, could you please check out this change and revert the android/abi_gki_protected_exports_aarch64 and see if kleaf behaving as expected? I think the protected exports are required but both of these build commands are passing:\n\n```\ntools/bazel run //common:kernel_aarch64_abi_update_protected_exports\ntools/bazel build //common:kernel_aarch64\n```",
       "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "241b2e71_3800585f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-04-25T19:09:51Z",
+      "side": 1,
+      "message": "Hi Elliot:\n\nYes, it is as expected.\n\n`tools/bazel run //common:kernel_aarch64_abi_update_protected_exports` : This updates the list and doesn\u0027t check whether the current list is sufficient or not. If it sufficient there won\u0027t be any change.\n\n`tools/bazel build //common:kernel_aarch64`: We don\u0027t have any check during the build time. However, `common:kernel_aarch64_abi_dist` checks for any diff in this file and I expect that to fail if you don\u0027t update the protected list. This also runs in the presubmit; to catch the changes which requires this list to be updated.",
+      "parentUuid": "6631aa85_2f18be88",
+      "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
