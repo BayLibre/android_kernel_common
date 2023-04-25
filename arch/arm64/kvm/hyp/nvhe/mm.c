@@ -33,8 +33,8 @@ struct hyp_fixmap_slot {
 };
 static DEFINE_PER_CPU(struct hyp_fixmap_slot, fixmap_slots);
 
-static int __pkvm_create_mappings(unsigned long start, unsigned long size,
-				  unsigned long phys, enum kvm_pgtable_prot prot)
+int __pkvm_create_mappings(unsigned long start, unsigned long size,
+			   unsigned long phys, enum kvm_pgtable_prot prot)
 {
 	int err;
 
