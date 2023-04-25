@@ -178,6 +178,24 @@
       "parentUuid": "7c5dcb39_d1e10f46",
       "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f0ba925_755fb2e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-04-25T22:28:14Z",
+      "side": 1,
+      "message": "No, It shouldn\u0027t require. I removed the `baswap` and run without it and it restored. It just sets the `lto\u003dfast` which I don\u0027t think affects this.\n\nFull log for reference:\n\n```\nramjiyani@ramjiyani:~/repos/android14-6.1/common$ git diff\nramjiyani@ramjiyani:~/repos/android14-6.1/common$ vi android/abi_gki_protected_exports_aarch64 \nramjiyani@ramjiyani:~/repos/android14-6.1/common$ git diff\ndiff --git a/android/abi_gki_protected_exports_aarch64 b/android/abi_gki_protected_exports_aarch64\nindex 9fb9385e392c..4e001653a29c 100644\n--- a/android/abi_gki_protected_exports_aarch64\n+++ b/android/abi_gki_protected_exports_aarch64\n@@ -12,7 +12,6 @@ alloc_canfd_skb\n alloc_canxl_skb\n arc4_crypt\n arc4_setkey\n-baswap\n bt_accept_dequeue\n bt_accept_enqueue\n bt_accept_unlink\nramjiyani@ramjiyani:~/repos/android14-6.1/common$ cd ..\nramjiyani@ramjiyani:~/repos/android14-6.1$ bazel clean \u0026\u0026 bazel run //common:kernel_aarch64_abi_update_protected_exports \nINFO: Removing cache directory for $OUT_DIR: /usr/local/google/home/ramjiyani/repos/android14-6.1/out/cache\nINFO: Starting clean (this may take a while). Consider using --async if the clean takes more than several minutes.\nINFO: Analyzed target //common:kernel_aarch64_abi_update_protected_exports (50 packages loaded, 92559 targets configured).\nINFO: Found 1 target...\nINFO: From Creating build environment (btf_debug_info\u003ddefault;kbuild_symtypes;lto\u003ddefault;notrim;with_vmlinux) @//common:kernel_aarch64_env:\nWARNING: MAKE_GOALS from build.config is being deprecated, use make_goals in kernel_build;\nConsider adding:\n\nmake_goals \u003d [\n  \"Image\",\n  \"modules\",\n  \"Image.lz4\",\n  \"Image.gz\",\n],\n\nto @//common:kernel_aarch64 kernel.\nINFO: From Extracting protected exports @//common:kernel_aarch64_abi_protected_exports:\n\u003e\u003e\u003e\u003e Modules are in bazel-out/k8-fastbuild-ST-9a82732d9a6a/bin/common/kernel_aarch64_abi_protected_exports_intermediates with list common/android/gki_aarch64_protected_modules and symbols in list bazel-out/k8-fastbuild-ST-9a82732d9a6a/bin/common/kernel_aarch64_abi_protected_exports/protected_exports\nTarget //common:kernel_aarch64_abi_update_protected_exports up-to-date:\n  bazel-bin/common/kernel_aarch64_abi_update_protected_exports\nINFO: Elapsed time: 166.137s, Critical Path: 147.82s\nINFO: 252 processes: 245 internal, 7 linux-sandbox.\nINFO: Build completed successfully, 252 total actions\nINFO: Running command line: bazel-bin/common/kernel_aarch64_abi_update_protected_exports\nramjiyani@ramjiyani:~/repos/android14-6.1$ cd common\nramjiyani@ramjiyani:~/repos/android14-6.1/common$ git diff\nramjiyani@ramjiyani:~/repos/android14-6.1/common$\n```",
+      "parentUuid": "307d760f_a6cd5e23",
+      "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
