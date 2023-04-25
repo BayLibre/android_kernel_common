@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6631aa85_2f18be88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-04-25T03:06:54Z",
+      "side": 1,
+      "message": "Hi Ramji, could you please check out this change and revert the android/abi_gki_protected_exports_aarch64 and see if kleaf behaving as expected? I think the protected exports are required but both of these build commands are passing:\n\n```\ntools/bazel run //common:kernel_aarch64_abi_update_protected_exports\ntools/bazel build //common:kernel_aarch64\n```",
+      "revId": "2c85314ae006732e6d6bb53e13476f0d4f21f386",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
