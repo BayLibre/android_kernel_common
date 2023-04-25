@@ -16,6 +16,24 @@
       "message": "Test failures (ABI changes):\n```\nfunction symbol changed from \u0027int gh_rm_call(struct gh_rm*, u32, void*, size_t, void**, size_t*)\u0027 to \u0027int gh_rm_call(struct gh_rm*, u32, const void*, size_t, void**, size_t*)\u0027\n  CRC changed from 0xfef4ce1d to 0xe73a01d\n  type changed from \u0027int(struct gh_rm*, u32, void*, size_t, void**, size_t*)\u0027 to \u0027int(struct gh_rm*, u32, const void*, size_t, void**, size_t*)\u0027\n    parameter 3 type changed from \u0027void*\u0027 to \u0027const void*\u0027\n      pointed-to type changed from \u0027void\u0027 to \u0027const void\u0027\n        qualifier const added\n\nfunction symbol \u0027int devm_gh_rm_register_platform_ops(struct device*, struct gh_rm_platform_ops*)\u0027 changed\n  CRC changed from 0x5cd3947f to 0x9cf6a8e1\n\ntype \u0027struct gh_rm_mem_entry\u0027 changed\n  member \u0027__le64 phys_addr\u0027 was added\n  member \u0027__le64 ipa_base\u0027 was removed\n```",
       "revId": "f32129e1a408d9cd5a0b491d6763432441d3484e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fe928e_853a3dcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-04-25T21:47:21Z",
+      "side": 1,
+      "message": "KMI changes were expected here. I wasn\u0027t expecting `devm_gh_rm_register_platform_ops` CRC changed though... I\u0027ll see what I can find.",
+      "parentUuid": "98e8a5d9_ec6df99b",
+      "revId": "f32129e1a408d9cd5a0b491d6763432441d3484e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
