@@ -1469,6 +1469,11 @@ err_no_ref:
  */
 static void binder_free_ref(struct binder_ref *ref)
 {
+<<<<<<< HEAD   (a15411 ANDROID: abi_gki_aarch64_qcom: update QCOM symbol list)
+=======
+	trace_android_vh_binder_del_ref(ref->proc ? ref->proc->tsk : NULL,
+					ref->data.desc);
+>>>>>>> CHANGE (c86e24 ANDROID: fix use of plain integer as NULL pointer)
 	if (ref->node)
 		binder_free_node(ref->node);
 	kfree(ref->death);
@@ -2972,6 +2977,13 @@ static int binder_proc_transaction(struct binder_transaction *t,
 	if (!thread && !pending_async && !skip)
 		thread = binder_select_thread_ilocked(proc);
 
+<<<<<<< HEAD   (a15411 ANDROID: abi_gki_aarch64_qcom: update QCOM symbol list)
+=======
+	trace_android_vh_binder_proc_transaction(current, proc->tsk,
+		thread ? thread->task : NULL, node->debug_id, t->code,
+		pending_async);
+
+>>>>>>> CHANGE (c86e24 ANDROID: fix use of plain integer as NULL pointer)
 	if (thread) {
 		binder_transaction_priority(thread, t, node);
 		binder_enqueue_thread_work_ilocked(thread, &t->work);
