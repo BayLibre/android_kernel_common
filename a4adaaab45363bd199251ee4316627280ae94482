@@ -117,6 +117,24 @@
       "parentUuid": "19fc9c80_1310b843",
       "revId": "a4adaaab45363bd199251ee4316627280ae94482",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f148b0bf_bc01ab31",
+        "filename": "include/linux/pm_qos.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-26T12:22:17Z",
+      "side": 1,
+      "message": "If the pointer is NULL or not should be all that you need to know. \"magic numbers\" do not work at all, please don\u0027t use them, the kernel community has been ripping the last remaining usages of them out recently.",
+      "parentUuid": "78be5927_fb782255",
+      "revId": "a4adaaab45363bd199251ee4316627280ae94482",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
