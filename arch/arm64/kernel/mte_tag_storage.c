@@ -314,6 +314,18 @@ static int __init mte_tag_storage_activate_regions(void)
 		return 0;
 	}
 
+	/*
+	 * The kernel allocates memory in non-preemptible contexts, which makes
+	 * migration impossible when reserving the associated tag storage.
+	 *
+	 * The check is safe to make because KASAN HW tags are enabled before
+	 * the rest of the init functions are called, in smp_prepare_boot_cpu().
+	 */
+	if (kasan_hw_tags_enabled()) {
+		pr_info("KASAN HW tags enabled, disabling tag storage");
+		return 0;
+	}
+
 	for (i = 0; i < num_tag_regions; i++) {
 		tag_range = &tag_regions[i].tag_range;
 		for (pfn = tag_range->start; pfn <= tag_range->end; pfn += pageblock_nr_pages) {
