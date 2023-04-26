@@ -832,18 +832,13 @@ static int scsi_io_completion_nz_result(struct scsi_cmnd *cmd, int result,
 	struct scsi_sense_hdr sshdr;
 
 	sense_valid = scsi_command_normalize_sense(cmd, &sshdr);
-	if (sense_valid)
+	if (sense_valid) {
 		sense_current = !scsi_sense_is_deferred(&sshdr);
+		scsi_req(req)->sense_len = min(8 + cmd->sense_buffer[7],
+					       SCSI_SENSE_BUFFERSIZE);
+	}
 
 	if (blk_rq_is_passthrough(req)) {
-		if (sense_valid) {
-			/*
-			 * SG_IO wants current and deferred errors
-			 */
-			scsi_req(req)->sense_len =
-				min(8 + cmd->sense_buffer[7],
-				    SCSI_SENSE_BUFFERSIZE);
-		}
 		if (sense_current)
 			*blk_statp = scsi_result_to_blk_status(cmd, result);
 	} else if (blk_rq_bytes(req) == 0 && sense_current) {
