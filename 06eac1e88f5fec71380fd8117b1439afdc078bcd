@@ -39,6 +39,24 @@
       "message": "Why is the needed changes for this not sent upstream already, so that a hook is not required again?",
       "revId": "06eac1e88f5fec71380fd8117b1439afdc078bcd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0c89145_29fb304b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1795686
+      },
+      "writtenOn": "2023-04-26T15:08:24Z",
+      "side": 1,
+      "message": "David Wang has opened an issue to discuss the dma-buf problems, and the conclusion is that we cannot upstream this part. https://partnerissuetracker.corp.google.com/u/3/issues/179095756.\n\nAs a result, I need to move the patch from the android13-5.15 branch to the android13-5.10 branch to use the custom heap flags.",
+      "parentUuid": "c80ca945_6b713448",
+      "revId": "06eac1e88f5fec71380fd8117b1439afdc078bcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
