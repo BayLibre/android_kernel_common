@@ -145,6 +145,7 @@
   scsi_done
   scsi_remove_device
 
+<<<<<<< HEAD
 #required by mi_sched.ko
   __traceiter_android_vh_scheduler_tick
   __traceiter_android_vh_free_user
@@ -185,3 +186,6 @@
   __tracepoint_android_rvh_set_cpus_allowed_comm
   __tracepoint_android_rvh_dequeue_task
   cpuset_cpus_allowed
+
+#required by touch module
+  power_supply_is_system_supplied
