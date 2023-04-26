@@ -34,6 +34,24 @@
       "parentUuid": "f4930c79_78227509",
       "revId": "12da9b26742a99e3320f0e71b9259c608bc97f87",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56be887e_2711156b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1692443
+      },
+      "writtenOn": "2023-04-26T00:48:31Z",
+      "side": 1,
+      "message": "We should show all memory reference information of vendor module. To find the cause of memory leak, we should know the reference count of page allocated by alloc_pages on vendor module. (It is not included to kernel memory statistics) And, that should be showed in real-time to figure out the problem at that point.\n\nI guess these vendor hook should be added.",
+      "parentUuid": "c496ef5c_11e08421",
+      "revId": "12da9b26742a99e3320f0e71b9259c608bc97f87",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
