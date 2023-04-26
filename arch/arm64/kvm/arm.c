@@ -2033,6 +2033,7 @@ static void kvm_hyp_init_symbols(void)
 	kvm_nvhe_sym(id_aa64mmfr0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
 	kvm_nvhe_sym(id_aa64mmfr1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
 	kvm_nvhe_sym(id_aa64mmfr2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64MMFR2_EL1);
+<<<<<<< HEAD   (e6092a ANDROID: ABI: Update symbol list for imx)
 	kvm_nvhe_sym(id_aa64smfr0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64SMFR0_EL1);
 	kvm_nvhe_sym(__icache_flags) = __icache_flags;
 	kvm_nvhe_sym(kvm_arm_vmid_bits) = kvm_arm_vmid_bits;
@@ -2041,6 +2042,9 @@ static void kvm_hyp_init_symbols(void)
 }
 
 int kvm_hyp_init_events(void);
+=======
+}
+>>>>>>> BRANCH (f17b0a Linux 6.1.25)
 
 static int kvm_hyp_init_protection(u32 hyp_va_bits)
 {
@@ -2229,11 +2233,14 @@ static int init_hyp_mode(void)
 
 	kvm_hyp_init_symbols();
 
+<<<<<<< HEAD   (e6092a ANDROID: ABI: Update symbol list for imx)
 	/* TODO: Real .h interface */
 #ifdef CONFIG_TRACING
 	kvm_hyp_init_events();
 #endif
 
+=======
+>>>>>>> BRANCH (f17b0a Linux 6.1.25)
 	if (is_protected_kvm_enabled()) {
 		init_cpu_logical_map();
 
