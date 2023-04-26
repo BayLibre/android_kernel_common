@@ -140,6 +140,30 @@ void synchronize_irq(unsigned int irq)
 }
 EXPORT_SYMBOL(synchronize_irq);
 
+static void dump_one_irq_pending_state(unsigned int irq, struct irq_desc *desc)
+{
+	int ret;
+	bool pending;
+	struct irqaction *action;
+
+	ret = irq_get_irqchip_state(irq, IRQCHIP_STATE_PENDING, &pending);
+	if (!ret && pending)
+		/* In case of shared interrupt lines */
+		for_each_action_of_desc(desc, action)
+			if (irq == action->irq)
+				pr_info("Pending interrupt detected: name %s dev name: %s IRQ: %u\n",
+					desc->name, action->name, irq);
+}
+
+void irq_dump_pending_state(void)
+{
+	unsigned int irq;
+	struct irq_desc *desc;
+
+	for_each_irq_desc(irq, desc)
+		dump_one_irq_pending_state(irq, desc);
+}
+
 #ifdef CONFIG_SMP
 cpumask_var_t irq_default_affinity;
 
