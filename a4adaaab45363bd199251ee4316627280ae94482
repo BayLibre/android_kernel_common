@@ -135,6 +135,24 @@
       "parentUuid": "78be5927_fb782255",
       "revId": "a4adaaab45363bd199251ee4316627280ae94482",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "639909ef_bfc27088",
+        "filename": "include/linux/pm_qos.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2003165
+      },
+      "writtenOn": "2023-04-27T14:02:15Z",
+      "side": 1,
+      "message": "Take \u0027data\u0027 as a pointer. If we only use this pointer, we can\u0027t guarantee that it is valid.",
+      "parentUuid": "f148b0bf_bc01ab31",
+      "revId": "a4adaaab45363bd199251ee4316627280ae94482",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
