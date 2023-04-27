@@ -16,6 +16,24 @@
       "message": "The parent patch to this one needs to wait until May 10 KMI update. Since this symbol is added for the previous patch you can decide the approach:\n\n1) rebase this one on top of aosp/2551090 and we can merge it now, OR\n2) mark all three for the May 10 KMI update\n\nSo either rebase it (1), or tell me to add all three to the KMI update",
       "revId": "c4f3a3051970536e8ed2e580aa0368807b8bd30f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ee77b8_94f06864",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2003165
+      },
+      "writtenOn": "2023-04-27T14:16:35Z",
+      "side": 1,
+      "message": "Thank you for your advice. I\u0027d rather merge it now and leave the KMI break patch until May 10.\n\nI have rebased this patch to aosp/2551090. The KMI break patch is still in this series because I\u0027m not sure how to treat it for now. So feel free to abandon it if it blocks the merge.",
+      "parentUuid": "ead3946f_b7f28f34",
+      "revId": "c4f3a3051970536e8ed2e580aa0368807b8bd30f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
