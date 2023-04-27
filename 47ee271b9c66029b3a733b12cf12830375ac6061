@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4f91060_03a808a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2004445
+      },
+      "writtenOn": "2023-04-27T03:08:17Z",
+      "side": 1,
+      "message": "There are several .ko in touch.（I collectively refer to touch module in patch 5）\nsend_sig_info is used by touch module for diagnostics. The module will communicate with our debug tool.Thus, we have to use this in our driver.\npower_supply_is_system_supplied is used by touch module for spi, to obtain the charger status. Thus, touchscreen can change its scan mode to eliminate charger distractions.\nBoth of them are needed in our project.",
+      "revId": "47ee271b9c66029b3a733b12cf12830375ac6061",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0844390b_f4dbe59b",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-04-26T12:06:48Z",
       "side": 1,
       "message": "no touchscreen driver should be sending signals, use the proper input apis instead.",
+      "range": {
+        "startLine": 135,
+        "startChar": 2,
+        "endLine": 135,
+        "endChar": 15
+      },
+      "revId": "47ee271b9c66029b3a733b12cf12830375ac6061",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e468faf3_01f92837",
+        "filename": "android/abi_gki_aarch64_xiaomi",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 2004445
+      },
+      "writtenOn": "2023-04-27T03:08:17Z",
+      "side": 1,
+      "message": "There are several .ko in touch.（I collectively refer to touch module in patch 5）\nsend_sig_info is used by touch module for diagnostics. The module will communicate with our debug tool.Thus, we have to use this in our driver.\npower_supply_is_system_supplied is used by touch module for spi, to obtain the charger status. Thus, touchscreen can change its scan mode to eliminate charger distractions.\nBoth of them are needed in our project.",
+      "parentUuid": "0844390b_f4dbe59b",
       "range": {
         "startLine": 135,
         "startChar": 2,
