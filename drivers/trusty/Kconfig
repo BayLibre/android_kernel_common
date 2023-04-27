@@ -112,6 +112,17 @@ config TRUSTY_CRASH_IS_PANIC
 	 If N, it will contine to run the kernel, but trusty operations will
 	 return errors.
 
+config TRUSTY_VIRTIO_RX_POLL
+	bool "Periodically poll the virtio RX queue"
+	depends on TRUSTY_VIRTIO
+	default n
+	help
+	  Enables polling the RX queue in the Trusty virtio driver. This is a
+	  temporary solution for the lack of FFA notification support.
+
+	  If set to N, the Trusty virtio driver will only reschedule checking
+	  the RX queue when Trusty returns.
+
 endif # TRUSTY
 
 endmenu

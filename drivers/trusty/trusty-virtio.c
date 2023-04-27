@@ -9,6 +9,7 @@
 #include <linux/kernel.h>
 
 #include <linux/dma-map-ops.h>
+#include <linux/hrtimer.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/notifier.h>
@@ -34,6 +35,8 @@ struct trusty_vdev;
 static bool use_high_wq;
 module_param(use_high_wq, bool, 0660);
 
+static const u64 virtio_ms_delay = 10;
+
 struct trusty_ctx {
 	struct device		*dev;
 	void			*shared_va;
@@ -47,6 +50,7 @@ struct trusty_ctx {
 	struct mutex		mlock; /* protects vdev_list */
 	struct workqueue_struct	*kick_wq;
 	struct workqueue_struct	*check_wq;
+	struct hrtimer		check_vqs_timer;
 };
 
 struct trusty_vring {
@@ -104,6 +108,17 @@ static int trusty_call_notify(struct notifier_block *nb,
 	queue_work(tctx->check_wq, &tctx->check_vqs);
 
 	return NOTIFY_OK;
+}
+
+static enum hrtimer_restart reschedule_check_vqs(struct hrtimer *timer)
+{
+	struct trusty_ctx *tctx = container_of(timer, struct trusty_ctx, check_vqs_timer);
+
+	queue_work(tctx->check_wq, &tctx->check_vqs);
+
+	hrtimer_forward_now(timer, ms_to_ktime(virtio_ms_delay));
+
+	return HRTIMER_RESTART;
 }
 
 static void kick_vq(struct trusty_ctx *tctx,
@@ -668,6 +683,11 @@ static int trusty_virtio_add_devices(struct trusty_ctx *tctx)
 		goto err_start_virtio;
 	}
 
+	/* start timer for checking vqs */
+	if (IS_ENABLED(CONFIG_TRUSTY_VIRTIO_RX_POLL))
+		hrtimer_start(&tctx->check_vqs_timer, ms_to_ktime(virtio_ms_delay),
+				HRTIMER_MODE_REL);
+
 	/* attach shared area */
 	tctx->shared_va = descr_va;
 	tctx->shared_id = descr_id;
@@ -730,6 +750,10 @@ static int trusty_virtio_probe(struct platform_device *pdev)
 
 	tctx->dev = &pdev->dev;
 	tctx->call_notifier.notifier_call = trusty_call_notify;
+	if (IS_ENABLED(CONFIG_TRUSTY_VIRTIO_RX_POLL)) {
+		hrtimer_init(&tctx->check_vqs_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+		tctx->check_vqs_timer.function = reschedule_check_vqs;
+	}
 	mutex_init(&tctx->mlock);
 	INIT_LIST_HEAD(&tctx->vdev_list);
 	INIT_WORK(&tctx->check_vqs, check_all_vqs);
@@ -776,6 +800,9 @@ static int trusty_virtio_remove(struct platform_device *pdev)
 {
 	struct trusty_ctx *tctx = platform_get_drvdata(pdev);
 	int ret;
+
+	if (IS_ENABLED(CONFIG_TRUSTY_VIRTIO_RX_POLL))
+		hrtimer_cancel(&tctx->check_vqs_timer);
 
 	/* unregister call notifier and wait until workqueue is done */
 	trusty_call_notifier_unregister(tctx->dev->parent,
