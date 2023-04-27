@@ -16,6 +16,24 @@
       "message": "These functions are not to be used by any drivers, sorry.\n\nSchedulers should not care about users or ids either as they are obviously not the same in a running system, and policy decisions can not work on them.",
       "revId": "2dbc9065e48b8f6b1d3c14ada319c23a44c20d2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45697723_44663b6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2003165
+      },
+      "writtenOn": "2023-04-27T13:51:50Z",
+      "side": 1,
+      "message": "It will be used in our `ko` module. We need this to access our user task data. This is not directly related to schedulers like CFS, but we do require this component to implement our tuning policy, such as setting a VIP task.",
+      "parentUuid": "ab8c00b1_36fc6e95",
+      "revId": "2dbc9065e48b8f6b1d3c14ada319c23a44c20d2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
