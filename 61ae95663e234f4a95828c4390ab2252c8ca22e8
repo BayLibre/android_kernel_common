@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000043702301",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2566914?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "2fe18860_242e6853",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-04-27T01:21:59Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/9a47c1ef5a95d1fd229ee5e375985f809a9d8177) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d9a47c1ef5a95d1fd229ee5e375985f809a9d8177)\n\n```\n      ## include/net/cfg80211.h ##\n     @@ include/net/cfg80211.h: struct cfg80211_pmk_conf {\n       *\tthe real status code for failures. Used only for the authentication\n    @@ net/wireless/trace.h: TRACE_EVENT(rdev_external_auth,\n      \t\t\t   __entry-\u003estatus \u003d params-\u003estatus;\n     +\t\t\t   MAC_ASSIGN(mld_addr, params-\u003emld_addr);\n      \t    ),\n    - \t    TP_printk(WIPHY_PR_FMT \", \" NETDEV_PR_FMT \", bssid: %pM\"\n    --\t\t      \", ssid: %s, status: %u\", WIPHY_PR_ARG, NETDEV_PR_ARG,\n    --\t\t      __entry-\u003ebssid, __entry-\u003essid, __entry-\u003estatus)\n    -+\t\t      \", ssid: %s, status: %u, mld_addr: %pM\",\n    -+\t\t      WIPHY_PR_ARG, NETDEV_PR_ARG, __entry-\u003ebssid,\n    -+\t\t      __entry-\u003essid, __entry-\u003estatus, __entry-\u003emld_addr)\n    - );\n    - \n    - TRACE_EVENT(rdev_start_radar_detection,\n    + \t    TP_printk(WIPHY_PR_FMT \", \" NETDEV_PR_FMT \", bssid: \" MAC_PR_FMT\n    + \t\t      \", ssid: %s, status: %u\", WIPHY_PR_ARG, NETDEV_PR_ARG,\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 527283821 android-build.ayeaye-python-dispatcher_20230426.05_p0",
+      "revId": "61ae95663e234f4a95828c4390ab2252c8ca22e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
