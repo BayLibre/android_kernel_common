@@ -323086,6 +323086,13 @@ function {
   parameter_id: 0x120540d1
 }
 function {
+  id: 0x9b2aae3f
+  return_type_id: 0x6720d32f
+  parameter_id: 0x1a6ea392
+  parameter_id: 0x09a1684b
+  parameter_id: 0x5d8155a5
+}
+function {
   id: 0x9b2ba01c
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -383097,6 +383104,15 @@ elf_symbol {
   full_name: "snd_usb_endpoint_prepare"
 }
 elf_symbol {
+  id: 0x3b425caf
+  name: "snd_usb_power_domain_set"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x58a96414
+  type_id: 0x9b2aae3f
+  full_name: "snd_usb_power_domain_set"
+}
+elf_symbol {
   id: 0x32cae5ee
   name: "snprintf"
   is_defined: true
@@ -414190,6 +414206,10 @@ symbols {
   symbol {
     key: "snd_usb_endpoint_prepare"
     value: 0x14184fbf
+  }
+  symbol {
+    key: "snd_usb_power_domain_set"
+    value: 0x3b425caf
   }
   symbol {
     key: "snprintf"
