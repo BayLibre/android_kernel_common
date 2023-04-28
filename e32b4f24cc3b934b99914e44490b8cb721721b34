@@ -106,6 +106,24 @@
       "parentUuid": "0918f450_916964dc",
       "revId": "e32b4f24cc3b934b99914e44490b8cb721721b34",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f16132d2_ee0f1457",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-04-28T15:50:42Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer to use the current patchset assuming it doesn\u0027t cause unacceptable contention - are we comfortable with that?\n\nI\u0027ll talk to our tools folks about being permissive on structs declared in C files since they can\u0027t be harmful (since no vendor module can know the format anyway), but it isn\u0027t permissive in this way now.",
+      "parentUuid": "ae572797_180fc034",
+      "revId": "e32b4f24cc3b934b99914e44490b8cb721721b34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
