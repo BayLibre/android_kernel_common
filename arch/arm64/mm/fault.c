@@ -932,25 +932,6 @@ void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long esr,
 }
 NOKPROBE_SYMBOL(do_debug_exception);
 
-/*
- * Used during anonymous page fault handling.
- */
-struct page *alloc_zeroed_user_highpage_movable(struct vm_area_struct *vma,
-						unsigned long vaddr)
-{
-	gfp_t flags = GFP_HIGHUSER_MOVABLE | __GFP_ZERO | __GFP_CMA;
-
-	/*
-	 * If the page is mapped with PROT_MTE, initialise the tags at the
-	 * point of allocation and page zeroing as this is usually faster than
-	 * separate DC ZVA and STGM.
-	 */
-	if (vma->vm_flags & VM_MTE)
-		flags |= __GFP_TAGGED;
-
-	return alloc_page_vma(flags, vma, vaddr);
-}
-
 void tag_clear_highpage(struct page *page)
 {
 	/* Tag storage pages cannot be tagged. */
