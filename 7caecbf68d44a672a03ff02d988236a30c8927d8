@@ -51,6 +51,24 @@
       "parentUuid": "47403f1e_1de909f1",
       "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "907e0d4b_f2a0852a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1973520
+      },
+      "writtenOn": "2023-04-28T11:32:37Z",
+      "side": 1,
+      "message": "We do need this \"heap_flags\" hook now, from which we can enable \"heap_flags\".\nOur hardware related dmabuf heap need this heap_flags to bind with different hardware ID, as well as allocate buffer from differnt \"memory\".\nOther vendors can not get benefit from our \"heap_flags\", cause they can not recognize them.",
+      "parentUuid": "c567f5f1_1561d50c",
+      "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
