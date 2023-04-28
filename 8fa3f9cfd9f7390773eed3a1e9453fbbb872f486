@@ -22,6 +22,30 @@
       },
       "revId": "8fa3f9cfd9f7390773eed3a1e9453fbbb872f486",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73389602_e4979ee4",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 852,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2023-04-28T17:10:10Z",
+      "side": 1,
+      "message": "If the module is unloaded, the relevant subsystem (vmalloc, or whatever subsystem it is that allocated the space and registered it with kmemleak in the first place) should kmemleak_free() the whole space. This is my understanding anyway.",
+      "parentUuid": "252e7a90_600b7c04",
+      "range": {
+        "startLine": 852,
+        "startChar": 1,
+        "endLine": 852,
+        "endChar": 19
+      },
+      "revId": "8fa3f9cfd9f7390773eed3a1e9453fbbb872f486",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
