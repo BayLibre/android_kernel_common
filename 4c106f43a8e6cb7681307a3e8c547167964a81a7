@@ -16,6 +16,24 @@
       "message": "These should just show up through the stable release, right?  Why not wait for them then?  Otherwise these have to wait for the next KABI break.",
       "revId": "4c106f43a8e6cb7681307a3e8c547167964a81a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f362f0_97039542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2023-04-28T13:35:48Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nWe have noticed that this change is needed to allow ADB to work consistently(needed for testing) when the device is booted while having USB connected. We are trying to enable this branch in our products. So seeing what would be the quickest path.\n\nI observe that \"BACKPORT: FROMGIT: usb: gadget: udc: core: Invoke usb_gadget_connect only when started\", the one before in this stack, has merge conflicts when it is \n cherrypicked it to linux-5.15.y. Should I follow https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3 and resend the patch for linux-5.15.y ?\n\nI was looking at the documentation(https://www.kernel.org/category/releases.html) but I wasn\u0027t sure how long would it take to reach the linux-5.15.y and then the android14-5.15. Usually how long does it take ?\n\nIf merging to linux-5.15.y takes longer than the next KABI break, I was wondering whether we could merge this patch into android14-5.15 in the interest of time.\n\nOn a sidenote, I am assuming linux-5.15.y \n from https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git is the LTS branch where this patch will be applied. Please correct me if I wrong.",
+      "parentUuid": "e3e761cf_35ce4713",
+      "revId": "4c106f43a8e6cb7681307a3e8c547167964a81a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
