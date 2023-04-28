@@ -189,6 +189,24 @@
       "parentUuid": "831492fb_b9e45c7a",
       "revId": "a4adaaab45363bd199251ee4316627280ae94482",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a31f6be6_76148ef4",
+        "filename": "include/linux/pm_qos.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-28T11:58:07Z",
+      "side": 1,
+      "message": "You can not trust a pointer, then you can not trust a random \"magic value\", sorry.  \n\nAnd if you can not control the setting of this, then it is not a valid OEM_DATA field to add at all, as it would be useless.",
+      "parentUuid": "944f50c1_9abb2294",
+      "revId": "a4adaaab45363bd199251ee4316627280ae94482",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
