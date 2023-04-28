@@ -16,6 +16,29 @@
       "message": "This is the first relase kmi symbols for ZEKU in branch common-android14-5.15.",
       "revId": "6233d76092e1af98de5c54ffd223a6f9ac25d84f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e5ac982_7b5ac0a0",
+        "filename": "android/abi_gki_aarch64_zeku",
+        "patchSetId": 1
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-04-28T08:33:49Z",
+      "side": 1,
+      "message": "this should not be needed, now that the reneasys xhci driver is merged.\n\nWhat does this zeku_xhci-hcd driver do?  Why is it not sent upstream already?",
+      "range": {
+        "startLine": 2131,
+        "startChar": 0,
+        "endLine": 2131,
+        "endChar": 15
+      },
+      "revId": "6233d76092e1af98de5c54ffd223a6f9ac25d84f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
