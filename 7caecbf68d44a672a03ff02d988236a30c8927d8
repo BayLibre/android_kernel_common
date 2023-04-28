@@ -33,6 +33,24 @@
       "message": "What out-of-tree heap dma code needs this?  Why not submit the needed changes upstream instead?",
       "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c567f5f1_1561d50c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1973520
+      },
+      "writtenOn": "2023-04-28T09:54:09Z",
+      "side": 1,
+      "message": "We have a heap which need user-space send some configs in heap_flags to the dmabuf heap driver.\nWe can not upstream these \"heap_flags\", cause these heap_flags was hardware related in our SOC.\nOther vendor can\u0027t use it.\nIf we upstream this \"heap_flags\", other vendor will be confused.",
+      "parentUuid": "47403f1e_1de909f1",
+      "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
