@@ -16,6 +16,24 @@
       "message": "breaks KMI. This patch must be refactored to avoid changing a KMI type.",
       "revId": "e32b4f24cc3b934b99914e44490b8cb721721b34",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcb5c6e5_4c3eb517",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2023-04-28T13:54:14Z",
+      "side": 1,
+      "message": "Hi Todd,\n\nMoving the connect_lock outside usb_udc struct (KMI type). This implies that the lock would be common to all usb_udc instances (one per udc controller instance) instead of having one per udc controller instance. A minor tradeoff in performance in the interest of the code thread safe (to solve a race). Hoping that this solves the KMI breakage.\n\nWould this be OK ?\n\nOne a different note, say if this patch comes from linux-5.10.y as is, would it still come under the purview of KMI breakage ?",
+      "parentUuid": "1e05beb3_032ec64e",
+      "revId": "e32b4f24cc3b934b99914e44490b8cb721721b34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
