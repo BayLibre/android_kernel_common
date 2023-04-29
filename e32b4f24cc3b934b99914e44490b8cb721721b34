@@ -160,6 +160,24 @@
       "parentUuid": "a901c036_e8c2f05f",
       "revId": "e32b4f24cc3b934b99914e44490b8cb721721b34",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a381b8ca_0026ec47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-04-29T08:34:34Z",
+      "side": 1,
+      "message": "Yes, clearly so, but it seems like we shouldn\u0027t flag an ABI issue for types declared in C files where no module can #include them to get the definition. I filed an enhancement request: b/280123359. IMHO, they should be treated as \"declaration only\" by the ABI tooling.",
+      "parentUuid": "7dace6b6_5afd2fc6",
+      "revId": "e32b4f24cc3b934b99914e44490b8cb721721b34",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
