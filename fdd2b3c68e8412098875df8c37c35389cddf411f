@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7cedff_5a8bb1bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-04-29T11:05:40Z",
+      "side": 1,
+      "message": "I\u0027m going to -2 this:\n\nBy my understanding this feature is designed for server grade networking.\nie. networking at 40+gbps or really even 100+gbps speeds.\n\nI have significant doubts that it will provide any measurable (performance/cpu) benefits at (only really reachable in benchmarks) speeds of ~5gbps.\n[and even less real world benefits at even optimistic real world speeds of ~1-2gbps]\n\nIt\u0027s also worth pointing out that this feature provides benefits to extremely fast *single* TCP streams, and requires the TCP server itself to be able to sustain such speeds as well.  There are very few servers on the internet which are capable (or willing) of serving a user with a single super high throughput multigigabit tcp stream.\n\nI doubt that currently, in the real world, we even hit the current (ie. pre this patchset) 64kB gro aggregation limit.\n\nPlease provide benchmark numbers to prove otherwise...\n\nI think not deviating from upstream LTS (and having to make sure future LTS merges don\u0027t conflict) wins out.  Especially since a feature like this can get silent conflicts (if someone adds code that does not use the accessors, it won\u0027t break at compile time, but will introduce a logic - and potentially even security - bug)\n\nFurthermore, this deviation from established way network packets look, is actually even exposed to userspace (see the patch in the series which affects af_packet).  This means if we merge this, we should also do an audit to make sure nothing is negatively affected by big tcp packets.  [probably needs to be done anyway... just for 6.~5 ipv4 and earlier for ipv6]\n\nFor this reason, I would hope this feature (even for ipv6 which 6.1 already supports) defaults to off.\n\nI\u0027m almost certain our existing bpf code is not capable of handling ipv6 big tcp.  I have doubts about support in the 464xlat/clatd code paths as well (for both ipv4 and ipv6).  For example there\u0027s buffers sized at 64kB [max packet size].  There\u0027s various places where we assume no ipv6 jumbograms, etc...",
+      "revId": "fdd2b3c68e8412098875df8c37c35389cddf411f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
