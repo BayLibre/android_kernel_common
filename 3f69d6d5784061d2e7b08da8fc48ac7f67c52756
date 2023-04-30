@@ -33,6 +33,23 @@
       "message": "nit, you need a copyright line.",
       "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "649c7777_9a43b6ce",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-04-30T21:30:05Z",
+      "side": 1,
+      "message": "@aliceryhl@google.com -  LMK your thoughts.  This operation takes a descriptor from Reserved -\u003e Free.  If a neighbor happens to be free, then we could re-use an existing allocation in `free_tree`. Otherwise, we have to allocate a new one. Does that mean I need to introduce a `no_alloc` flavor of this method as well?",
+      "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
