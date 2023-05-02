@@ -694,7 +694,8 @@ static void smmu_put_ref_domain(struct hyp_arm_smmu_v3_device *smmu,
 }
 
 static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
-			   struct kvm_hyp_iommu_domain *domain, u32 sid)
+			   struct kvm_hyp_iommu_domain *domain,
+			   u32 sid, u32 pasid, u32 pasid_bits)
 {
 	int i;
 	int ret = -EINVAL;
@@ -789,7 +790,7 @@ out_unlock:
 }
 
 static int smmu_detach_dev(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
-			   struct kvm_hyp_iommu_domain *domain, u32 sid)
+			   struct kvm_hyp_iommu_domain *domain, u32 sid, u32 pasid)
 {
 	u64 *dst;
 	int i, ret = -ENODEV;
