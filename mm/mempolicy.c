@@ -113,6 +113,11 @@
 /* Internal flags */
 #define MPOL_MF_DISCONTIG_OK (MPOL_MF_INTERNAL << 0)	/* Skip checks for continuous vmas */
 #define MPOL_MF_INVERT (MPOL_MF_INTERNAL << 1)		/* Invert check for nodemask */
+#ifdef CONFIG_MEMORY_METADATA
+#define MPOL_MF_METADATA_ONLY (MPOL_MF_INTERNAL << 2)	/* Only queue metadata pages */
+#else
+#define MPOL_MF_METADATA_ONLY 0
+#endif
 
 static struct kmem_cache *policy_cache;
 static struct kmem_cache *sn_cache;
@@ -440,8 +445,16 @@ static inline bool queue_pages_required(struct page *page,
 {
 	int nid = page_to_nid(page);
 	unsigned long flags = qp->flags;
+	bool node_ok, metadata_ok;
 
-	return node_isset(nid, *qp->nmask) == !(flags & MPOL_MF_INVERT);
+	node_ok = node_isset(nid, *qp->nmask) == !(flags & MPOL_MF_INVERT);
+	if (!node_ok)
+		return false;
+
+	metadata_ok = (!metadata_storage_enabled() ||
+			!(flags & MPOL_MF_METADATA_ONLY) ||
+			is_migrate_metadata_page(page));
+	return metadata_ok;
 }
 
 /*
@@ -1707,6 +1720,137 @@ SYSCALL_DEFINE4(migrate_pages, pid_t, pid, unsigned long, maxnode,
 	return kernel_migrate_pages(pid, maxnode, old_nodes, new_nodes);
 }
 
+#ifdef CONFIG_MEMORY_METADATA
+int vma_migrate_metadata_pages(struct vm_area_struct *vma,
+			       unsigned long old_vma_flags, unsigned long start,
+			       unsigned long end, unsigned int gfp_mask)
+{
+	struct migration_target_control mtc = {
+		.nid = NUMA_NO_NODE,
+	};
+	nodemask_t nodes = NODE_MASK_ALL;
+	LIST_HEAD(metadatapages);
+	unsigned long flags;
+	int ret;
+
+	if (WARN_ON_ONCE(gfp_mask & __GFP_TAGGED))
+		gfp_mask &= ~__GFP_TAGGED;
+	mtc.gfp_mask = gfp_mask;
+
+	if (WARN_ON_ONCE(old_vma_flags & VM_MTE))
+		return -EINVAL;
+
+	flags = MPOL_MF_MOVE_ALL |
+		MPOL_MF_STRICT |
+		MPOL_MF_DISCONTIG_OK |
+		MPOL_MF_METADATA_ONLY;
+
+	lru_cache_disable();
+
+	ret = queue_pages_range(vma->vm_mm, start, end, &nodes, flags,
+				&metadatapages, false);
+	if (ret)
+		goto out;
+
+	if (list_empty(&metadatapages))
+		goto out;
+
+	for (;;) {
+		ret = migrate_pages(&metadatapages, alloc_migration_target, NULL,
+				(unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
+		if (ret == 0 || ret != -EBUSY)
+			break;
+	}
+
+	if (!list_empty(&metadatapages))
+		putback_movable_pages(&metadatapages);
+
+out:
+	lru_cache_enable();
+
+	return ret;
+}
+
+int vma_allocate_metadata_storage(struct vm_area_struct *vma, unsigned long start,
+				  unsigned long end, unsigned int gfp_mask)
+{
+	struct migration_target_control mtc = {
+		.nid = NUMA_NO_NODE,
+	};
+	nodemask_t nodes = NODE_MASK_ALL;
+	struct page *page, *next;
+	LIST_HEAD(reservedlist);
+	LIST_HEAD(pagelist);
+	unsigned long flags;
+	unsigned long order;
+	int ret;
+
+	if (WARN_ON_ONCE(!(gfp_mask & __GFP_TAGGED)))
+		gfp_mask |= __GFP_TAGGED;
+	mtc.gfp_mask = gfp_mask;
+
+	if (WARN_ON_ONCE(!(vma->vm_flags & VM_MTE)))
+		return -EINVAL;
+
+	flags = MPOL_MF_MOVE_ALL |
+		MPOL_MF_STRICT |
+		MPOL_MF_DISCONTIG_OK;
+
+	lru_cache_disable();
+
+	/*
+	 * Queue all pages. None of them should be metadata pages because they
+	 * were removed by migrate_metadata_pages().
+	 */
+	ret = queue_pages_range(vma->vm_mm, start, end, &nodes, flags,
+				&pagelist, false);
+	if (ret)
+		goto out;
+
+	if (list_empty(&pagelist))
+		goto out;
+
+	list_for_each_entry_safe(page, next, &pagelist, lru) {
+		order = compound_order(page);
+		for (;;) {
+			ret = reserve_metadata_storage(page, order, gfp_mask & ~__GFP_TAGGED);
+			if (ret == 0 || ret != -EBUSY)
+				break;
+		}
+		/*
+		 * Remove the page from the migrate list if metadata storage was
+		 * reserved. Otherwise, keep it so it's migrated to a page for
+		 * which metadata storage will be reserved on allocation
+		 * (mtc->gfp_mask has the __GFP_TAGGED flag set).
+		 */
+		if (ret == 0) {
+			list_del(&page->lru);
+			list_add(&page->lru, &reservedlist);
+		}
+	}
+
+	if (list_empty(&pagelist))
+		goto out;
+
+	for (;;) {
+		ret = migrate_pages(&pagelist, alloc_migration_target, NULL,
+				    (unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
+		if (ret == 0 || ret != -EBUSY)
+			break;
+	}
+
+out:
+	if (!list_empty(&pagelist))
+		putback_movable_pages(&pagelist);
+
+	if (!list_empty(&reservedlist))
+		putback_movable_pages(&reservedlist);
+
+	lru_cache_enable();
+
+	return ret;
+}
+#endif
 
 /* Retrieve NUMA policy */
 static int kernel_get_mempolicy(int __user *policy,
