@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd32d3db_6c7762da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-05-02T07:57:52Z",
+      "side": 1,
+      "message": "It\u0027s to reduce the worst-case complexity of these syscalls. I agree that this would be good to explain in the commit.",
+      "parentUuid": "a8f6c281_3e65fc34",
+      "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "090b0697_daa656ea",
         "filename": "drivers/android/range_alloc.rs",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2023-04-30T21:30:05Z",
       "side": 1,
       "message": "@aliceryhl@google.com -  LMK your thoughts.  This operation takes a descriptor from Reserved -\u003e Free.  If a neighbor happens to be free, then we could re-use an existing allocation in `free_tree`. Otherwise, we have to allocate a new one. Does that mean I need to introduce a `no_alloc` flavor of this method as well?",
+      "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73431195_cba9a68e",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-05-02T07:57:52Z",
+      "side": 1,
+      "message": "Hmm, fixing this is going to be somewhat annoying. Ideally, this method would never need to allocate.\n\nC binder avoids this allocation by using the same objects in both the full list and the free list, so even if this needs to add a new object to the free list, we don\u0027t need to allocate because the object in the other list can be in both lists. Our linked list bindings supports this kind of thing, but our RBTree bindings do not yet support it.\n\nI guess we could also move the free list allocation to the descriptor when the descriptor is not free, so that we can just move it back to the free list in this method, but fixing the RBTree would probably be the best solution.",
+      "parentUuid": "649c7777_9a43b6ce",
       "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
