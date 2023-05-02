@@ -1,8 +1,67 @@
 [abi_symbol_list]
+  alarm_start
+  blkcg_root
+  blkg_lookup_slowpath
   __blk_mq_debugfs_rq_show
+  blk_mq_debugfs_rq_show
+  blk_mq_sched_request_inserted
+  blk_mq_sched_try_insert_merge
+  blk_mq_sched_try_merge
+  bsearch
+  copy_from_kernel_nofault
+  create_function_device
+  driver_find
+  dump_align
+  dump_emit
+  elevator_alloc
+  elv_bio_merge_ok
+  elv_rb_add
+  elv_rb_del
+  elv_rb_find
+  elv_rb_former_request
+  elv_rb_latter_request
+  elv_register
+  elv_rqhash_add
+  elv_rqhash_del
+  elv_unregister
+  file_ra_state_init
+  generic_file_read_iter
+  get_mm_exe_file
   __hrtimer_get_remaining
+  kernfs_find_and_get_ns
+  kernfs_put
   __kfree_skb
+  kimage_vaddr
+  kstrtos16
+  kthread_blkcg
+  kthread_park
+  kthread_should_park
+  name_to_dev_t
+  of_add_property
   __percpu_down_read
+  pm_get_active_wakeup_sources
+  rcuwait_wake_up
+  register_kretprobe
+  register_net_sysctl
+  regulator_bulk_free
+  sbitmap_queue_min_shallow_depth
+  seq_list_next
+  seq_list_start
+  skb_copy_ubufs
+  smpboot_register_percpu_thread
+  smpboot_unregister_percpu_thread
+  smp_call_function_single_async
+  snd_soc_add_card_controls
+  snd_soc_dai_set_tristate
+  stack_trace_save
+  stack_trace_save_regs
+  stack_trace_save_tsk
+  tcp_register_congestion_control
+  tcp_reno_cong_avoid
+  tcp_reno_ssthresh
+  tcp_reno_undo_cwnd
+  tcp_slow_start
+  tcp_unregister_congestion_control
   __traceiter_android_rvh_dequeue_task_idle
   __traceiter_android_rvh_report_bug
   __traceiter_android_rvh_schedule_bug
@@ -39,65 +98,6 @@
   __tracepoint_android_vh_watchdog_timer_softlockup
   __tracepoint_android_vh_wq_lockup_pool
   __tracepoint_kfree_skb
-  alarm_start
-  blk_mq_debugfs_rq_show
-  blk_mq_sched_request_inserted
-  blk_mq_sched_try_insert_merge
-  blk_mq_sched_try_merge
-  blkcg_root
-  blkg_lookup_slowpath
-  bsearch
-  copy_from_kernel_nofault
-  create_function_device
-  driver_find
-  dump_align
-  dump_emit
-  elevator_alloc
-  elv_bio_merge_ok
-  elv_rb_add
-  elv_rb_del
-  elv_rb_find
-  elv_rb_former_request
-  elv_rb_latter_request
-  elv_register
-  elv_rqhash_add
-  elv_rqhash_del
-  elv_unregister
-  file_ra_state_init
-  generic_file_read_iter
-  get_mm_exe_file
-  kernfs_find_and_get_ns
-  kernfs_put
-  kimage_vaddr
-  kstrtos16
-  kthread_blkcg
-  kthread_park
-  kthread_should_park
-  name_to_dev_t
-  of_add_property
-  pm_get_active_wakeup_sources
-  rcuwait_wake_up
-  register_kretprobe
-  register_net_sysctl
-  regulator_bulk_free
-  sbitmap_queue_min_shallow_depth
-  seq_list_next
-  seq_list_start
-  skb_copy_ubufs
-  smp_call_function_single_async
-  smpboot_register_percpu_thread
-  smpboot_unregister_percpu_thread
-  snd_soc_add_card_controls
-  snd_soc_dai_set_tristate
-  stack_trace_save
-  stack_trace_save_regs
-  stack_trace_save_tsk
-  tcp_register_congestion_control
-  tcp_reno_cong_avoid
-  tcp_reno_ssthresh
-  tcp_reno_undo_cwnd
-  tcp_slow_start
-  tcp_unregister_congestion_control
   unregister_kretprobe
   usb_alloc_dev
   usb_set_device_state

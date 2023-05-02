@@ -1363,24 +1363,24 @@
   ce_aes_expandkey
 
 # required by aic8800_fdrv.ko
-  cfg80211_cqm_rssi_notify
-  cfg80211_cqm_pktloss_notify
-  cfg80211_rx_unexpected_4addr_frame
-  cfg80211_notify_new_peer_candidate
-  cfg80211_ft_event
-  cfg80211_report_obss_beacon_khz
-  ieee80211_amsdu_to_8023s
-  skb_append
-  cfg80211_probe_status
-  cfg80211_ch_switch_started_notify
-  ieee80211_chandef_to_operating_class
   cfg80211_cac_event
+  cfg80211_ch_switch_started_notify
+  cfg80211_cqm_pktloss_notify
+  cfg80211_cqm_rssi_notify
+  cfg80211_ft_event
+  cfg80211_notify_new_peer_candidate
+  cfg80211_probe_status
   cfg80211_radar_event
+  cfg80211_report_obss_beacon_khz
+  cfg80211_rx_unexpected_4addr_frame
+  ieee80211_amsdu_to_8023s
+  ieee80211_chandef_to_operating_class
+  skb_append
 
 # required by aic_btusb.ko
-  usb_interrupt_msg
-  usb_disable_autosuspend
   __pskb_copy_fclone
+  usb_disable_autosuspend
+  usb_interrupt_msg
 
 # required by aic_load_fw.ko
   send_sig
@@ -1904,16 +1904,16 @@
   lzo1x_1_compress
 
 # moal.ko
-  cpu_latency_qos_request_active
   cfg80211_auth_timeout
-  in4_pton
-  iw_handler_set_spy
-  iw_handler_get_spy
-  iw_handler_set_thrspy
-  iw_handler_get_thrspy
   cfg80211_report_wowlan_wakeup
-  sdio_release_irq
+  cpu_latency_qos_request_active
+  in4_pton
+  iw_handler_get_spy
+  iw_handler_get_thrspy
+  iw_handler_set_spy
+  iw_handler_set_thrspy
   sdio_claim_irq
+  sdio_release_irq
 
 # required by nvme-core.ko
   bd_set_nr_sectors
@@ -2194,13 +2194,13 @@
   mmc_pwrseq_unregister
 
 # required by r8168.ko
-  pci_set_mwi
+  pci_choose_state
   pci_clear_mwi
+  pci_set_mwi
   proc_get_parent_data
+  remove_proc_subtree
   skb_checksum_help
   __skb_gso_segment
-  remove_proc_subtree
-  pci_choose_state
 
 # required by reboot-mode.ko
   devres_release
@@ -2613,8 +2613,8 @@
   sdhci_request
 
 # required by sensorbox.ko
-  kernel_sigaction
   hidraw_report_event
+  kernel_sigaction
 
 # required by sensor_dev.ko
   class_create_file_ns
@@ -2685,11 +2685,11 @@
   of_prop_next_string
 
 # required by snd-soc-rockchip-multi-dais.ko
-  snd_soc_component_initialize
-  snd_soc_add_component
-  snd_soc_rtdcom_lookup
-  snd_pcm_format_size
   snd_hwparams_to_dma_slave_config
+  snd_pcm_format_size
+  snd_soc_add_component
+  snd_soc_component_initialize
+  snd_soc_rtdcom_lookup
 
 # required by snd-soc-rockchip-multicodecs.ko
   of_parse_phandle_with_fixed_args
@@ -2903,18 +2903,18 @@
   usb_store_new_id
 
 # required by usb_audio.ko
-  usb_composite_probe
-  usb_get_function_instance
-  usb_string_ids_tab
   usb_add_config
-  usb_gadget_connect
-  usb_put_function
-  usb_get_function
   usb_composite_overwrite_options
-  usb_gadget_disconnect
-  usb_remove_function
+  usb_composite_probe
   usb_composite_unregister
   usb_ep_autoconfig_reset
+  usb_gadget_connect
+  usb_gadget_disconnect
+  usb_get_function
+  usb_get_function_instance
+  usb_put_function
+  usb_remove_function
+  usb_string_ids_tab
 
 # required by v4l2-fwnode.ko
   fwnode_device_is_available
@@ -2952,15 +2952,15 @@
 
 # required by wlan_mt7663_usb.ko
   cfg80211_assoc_timeout
-  skb_pull_rcsum
-  sched_set_normal
-  cfg80211_tx_mlme_mgmt
-  cfg80211_rx_mlme_mgmt
   cfg80211_rx_assoc_resp
-  usb_string
+  cfg80211_rx_mlme_mgmt
+  cfg80211_tx_mlme_mgmt
+  dev_valid_name
+  sched_set_normal
+  skb_pull_rcsum
   usb_anchor_empty
   usb_reset_endpoint
-  dev_valid_name
+  usb_string
 
 # required by zram.ko
   __alloc_percpu
