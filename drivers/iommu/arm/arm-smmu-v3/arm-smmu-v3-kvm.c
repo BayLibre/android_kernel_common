@@ -33,6 +33,7 @@ struct kvm_arm_smmu_master {
 	struct device			*dev;
 	struct kvm_arm_smmu_domain	*domain;
 	bool				idmapped; /* Stage-2 is transparently identity mapped*/
+	u32				ssid_bits;
 };
 
 struct kvm_arm_smmu_domain {
@@ -145,6 +146,8 @@ static struct iommu_device *kvm_arm_smmu_probe_device(struct device *dev)
 	master->dev = dev;
 	master->smmu = smmu;
 	master->idmapped = device_property_read_bool(dev, "iommu-idmapped");
+	device_property_read_u32(dev, "pasid-num-bits", &master->ssid_bits);
+	master->ssid_bits = min(smmu->ssid_bits, master->ssid_bits);
 	dev_iommu_priv_set(dev, master);
 
 	if (!device_link_add(dev, smmu->dev,
@@ -254,7 +257,7 @@ static int kvm_arm_smmu_detach_dev(struct host_arm_smmu_device *host_smmu,
 		int sid = fwspec->ids[i];
 
 		ret = kvm_call_hyp_nvhe(__pkvm_host_iommu_detach_dev,
-					host_smmu->id, master->domain->id, sid);
+					host_smmu->id, master->domain->id, sid, 0);
 		if (ret) {
 			dev_err(smmu->dev, "cannot detach device %s (0x%x): %d\n",
 				dev_name(master->dev), sid, ret);
@@ -298,7 +301,7 @@ static int kvm_arm_smmu_attach_dev(struct iommu_domain *domain,
 
 		ret = kvm_call_hyp_nvhe_mc(smmu, __pkvm_host_iommu_attach_dev,
 					   host_smmu->id, kvm_smmu_domain->id,
-					   sid);
+					   sid, 0, master->ssid_bits);
 		if (ret) {
 			dev_err(smmu->dev, "cannot attach device %s (0x%x): %d\n",
 				dev_name(dev), sid, ret);
@@ -825,6 +828,7 @@ static int kvm_arm_smmu_probe(struct platform_device *pdev)
 	hyp_smmu->features = smmu->features;
 	hyp_smmu->pgtable_cfg = cfg;
 	hyp_smmu->iommu.power_domain = power_domain;
+	hyp_smmu->ssid_bits = smmu->ssid_bits;
 
 	kvm_arm_smmu_cur++;
 
