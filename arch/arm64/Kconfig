@@ -2051,6 +2051,7 @@ if ARM64_MTE
 config ARM64_MTE_TAG_STORAGE
 	bool "Dynamic MTE tag storage management"
 	select MEMORY_METADATA
+	select NUMA
 	depends on ARCH_KEEP_MEMBLOCK
 	help
 	  Adds support for dynamic management of the memory used by the hardware

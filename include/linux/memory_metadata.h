@@ -19,6 +19,12 @@ extern unsigned long totalmetadata_pages;
 #define reserve_metadata_storage(page, order, gfp) arch_reserve_metadata_storage(page, order, gfp)
 #define free_metadata_storage(page, order) 	arch_free_metadata_storage(page, order)
 
+int vma_migrate_metadata_pages(struct vm_area_struct *vma,
+			       unsigned long old_vma_flags, unsigned long start,
+			       unsigned long end, gfp_t gfp_mask);
+
+int vma_allocate_metadata_storage(struct vm_area_struct *vma, unsigned long start,
+				  unsigned long end, gfp_t gfp_mask);
 #else
 static inline bool metadata_storage_enabled(void)
 {
@@ -42,6 +48,18 @@ static inline int reserve_metadata_storage(struct page *page, int order, gfp_t g
 }
 static inline void free_metadata_storage(struct page *page, int order)
 {
+}
+static inline int vma_migrate_metadata_pages(struct vm_area_struct *vma,
+					     unsigned long old_vma_flags,
+					     unsigned long start,
+					     unsigned long end, gfp_t gfp_mask)
+{
+	return 0;
+}
+static inline int vma_allocate_metadata_storage(struct vm_area_struct *vma, unsigned long start,
+						unsigned long end, gfp_t gfp_mask)
+{
+	return 0;
 }
 #endif /* CONFIG_MEMORY_METADATA */
 

@@ -21,6 +21,7 @@
 #include <linux/syscalls.h>
 #include <linux/swap.h>
 #include <linux/swapops.h>
+#include <linux/memory_metadata.h>
 #include <linux/mmu_notifier.h>
 #include <linux/migrate.h>
 #include <linux/perf_event.h>
@@ -626,6 +627,22 @@ mprotect_fixup(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	}
 
 success:
+
+	if (metadata_storage_enabled() && (newflags & VM_MTE) && !(oldflags & VM_MTE)) {
+		error = vma_migrate_metadata_pages(
+			vma, oldflags, start, end, GFP_HIGHUSER_MOVABLE);
+		/*
+		 * Cannot migrate metadata pages and metadata pages cannot have
+		 * tags assigned to them. Treat it like an access permission
+		 * violation. Userspace can recover this by munmap'ing the range
+		 * and mmap'ing it directly with PROT_MTE.
+		 */
+		if (error) {
+			error = -EACCES;
+			goto fail;
+		}
+	}
+
 	/*
 	 * vm_flags and vm_page_prot are protected by the mmap_lock
 	 * held in write mode.
@@ -642,6 +659,22 @@ success:
 	else
 		try_change_writable = !!(vma->vm_flags & VM_WRITE);
 	vma_set_page_prot(vma);
+
+	if (metadata_storage_enabled() && (newflags & VM_MTE) && !(oldflags & VM_MTE)) {
+		error = vma_allocate_metadata_storage(vma, start, end,
+				GFP_HIGHUSER_MOVABLE | __GFP_TAGGED);
+		if (error) {
+			vm_flags_reset(vma, oldflags);
+			vma_set_page_prot(vma);
+			error = -EACCES;
+			goto fail;
+		}
+
+		/*
+		 * Still call change_protection() to modify !pte_present entries
+		 * not handled above.
+		 */
+	}
 
 	change_protection(tlb, vma, start, end, vma->vm_page_prot,
 			  try_change_writable ? MM_CP_TRY_CHANGE_WRITABLE : 0);
