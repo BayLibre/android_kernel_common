@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96f93546_4aa08cb3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-05-02T14:35:37Z",
+      "side": 1,
+      "message": "updated, LMKWYT",
+      "parentUuid": "bd32d3db_6c7762da",
+      "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "090b0697_daa656ea",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "Hmm, fixing this is going to be somewhat annoying. Ideally, this method would never need to allocate.\n\nC binder avoids this allocation by using the same objects in both the full list and the free list, so even if this needs to add a new object to the free list, we don\u0027t need to allocate because the object in the other list can be in both lists. Our linked list bindings supports this kind of thing, but our RBTree bindings do not yet support it.\n\nI guess we could also move the free list allocation to the descriptor when the descriptor is not free, so that we can just move it back to the free list in this method, but fixing the RBTree would probably be the best solution.",
       "parentUuid": "649c7777_9a43b6ce",
+      "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83998ca7_8e8b9890",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-05-02T14:35:37Z",
+      "side": 1,
+      "message": "First - we should probably figure out a way to test the real life performance before going too far...LMK if you have any thoughts on how to best do that.\n\nAnother approach I thought about was dropping `DescriptorState` and having 3 separate trees (or lists...or maps).  Since the \"next\" entry is simply a function of `offset + size`, we could just store the previous offset to preserve the concept of adjacency.\n```\nstruct Descriptor\u003cT\u003e {\n  is_oneway: bool,\n  size: usize,\n  offset: usize,\n  data: Option\u003cT\u003e,\n  prev_offset: Option\u003cusize\u003e\n}\n\nimpl\u003cT\u003e Descriptor\u003cT\u003e {\n  fn next_offset(\u0026self) -\u003e usize {\n    self.offset + self.size\n  }\n}\n\nstruct RangeAllocator\u003cT\u003e {\n  free_oneway_space: usize,\n  free: RBTree\u003cusize, Descriptor\u003cT\u003e\u003e,\n  reserved: RBTree\u003cusize, Descriptor\u003cT\u003e\u003e,\n  allocated: RBTree\u003cusize, Descriptor\u003cT\u003e\u003e,\n}\n```\n\nI think we\u0027ve chatted about this...another benefit here is that one can more easily play around with which collection is used: `RBTree`, `LinkedList`, or even `HashTable`.  The last one giving us `O(1)` lookup, but requiring a binding to the kernel\u0027s [implementation](https://lwn.net/Articles/510202/) - which is not dynamically sized IIUC - but maybe there is some fixed size that will work.\n\nThe downside is that we\u0027d still need something else to keep track of free descriptors by size if we want better than `O(n)` lookup for `reserve_new`.  But maybe if the different states are separated, `O(n)` lookup would be fine in practice...",
+      "parentUuid": "73431195_cba9a68e",
       "revId": "3f69d6d5784061d2e7b08da8fc48ac7f67c52756",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
