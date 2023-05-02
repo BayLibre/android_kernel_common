@@ -93,6 +93,7 @@ static struct kmem_cache *mm_slot_cache __read_mostly;
 
 struct collapse_control {
 	bool is_khugepaged;
+	bool has_metadata;
 
 	/* Num pages scanned per node */
 	u32 node_load[MAX_NUMNODES];
@@ -965,6 +966,9 @@ static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
 	gfp_t gfp = (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpmask() :
 		     GFP_TRANSHUGE);
 	int node = hpage_collapse_find_target_node(cc);
+
+	if (cc->has_metadata)
+		gfp |= __GFP_TAGGED;
 
 	if (!hpage_collapse_alloc_page(hpage, gfp, node, &cc->alloc_nmask))
 		return SCAN_ALLOC_HUGE_PAGE_FAIL;
@@ -2333,6 +2337,7 @@ skip:
 			VM_BUG_ON(khugepaged_scan.address < hstart ||
 				  khugepaged_scan.address + HPAGE_PMD_SIZE >
 				  hend);
+			cc->has_metadata = vma->vm_flags & VM_MTE;
 			if (IS_ENABLED(CONFIG_SHMEM) && vma->vm_file) {
 				struct file *file = get_file(vma->vm_file);
 				pgoff_t pgoff = linear_page_index(vma,
@@ -2682,6 +2687,7 @@ int madvise_collapse(struct vm_area_struct *vma, struct vm_area_struct **prev,
 		mmap_assert_locked(mm);
 		memset(cc->node_load, 0, sizeof(cc->node_load));
 		nodes_clear(cc->alloc_nmask);
+		cc->has_metadata = vma->vm_flags & VM_MTE;
 		if (IS_ENABLED(CONFIG_SHMEM) && vma->vm_file) {
 			struct file *file = get_file(vma->vm_file);
 			pgoff_t pgoff = linear_page_index(vma, addr);
