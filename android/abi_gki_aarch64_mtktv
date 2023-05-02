@@ -57,8 +57,8 @@
   blocking_notifier_chain_register
   blocking_notifier_chain_unregister
   block_is_partially_uptodate
-  bpf_trace_run10
   bpf_trace_run1
+  bpf_trace_run10
   bpf_trace_run2
   bpf_trace_run3
   bpf_trace_run4
@@ -812,9 +812,9 @@
   irq_to_desc
   is_bad_inode
   is_vmalloc_addr
+  jiffies
   jiffies_64_to_clock_t
   jiffies64_to_nsecs
-  jiffies
   jiffies_to_msecs
   jiffies_to_usecs
   kasan_flag_enabled
@@ -937,8 +937,8 @@
   memmove
   memparse
   memremap
-  memset64
   memset
+  memset64
   __memset_io
   memstart_addr
   memunmap
@@ -1010,8 +1010,8 @@
   nla_find
   nla_memcpy
   __nla_parse
-  nla_put_64bit
   nla_put
+  nla_put_64bit
   nla_put_nohdr
   nla_reserve
   nla_strscpy
