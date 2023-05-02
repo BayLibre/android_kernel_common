@@ -20,6 +20,7 @@
 #include <linux/swapops.h>
 #include <linux/shmem_fs.h>
 
+#include <asm/memory_metadata.h>
 #include <asm/tlb.h>
 #include <asm/pgalloc.h>
 #include "internal.h"
@@ -93,6 +94,7 @@ static struct kmem_cache *mm_slot_cache __read_mostly;
 
 struct collapse_control {
 	bool is_khugepaged;
+	bool has_metadata;
 
 	/* Num pages scanned per node */
 	u32 node_load[MAX_NUMNODES];
@@ -965,6 +967,9 @@ static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
 	gfp_t gfp = (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpmask() :
 		     GFP_TRANSHUGE);
 	int node = hpage_collapse_find_target_node(cc);
+
+	if (cc->has_metadata)
+		gfp |= __GFP_TAGGED;
 
 	if (!hpage_collapse_alloc_page(hpage, gfp, node, &cc->alloc_nmask))
 		return SCAN_ALLOC_HUGE_PAGE_FAIL;
@@ -2322,6 +2327,7 @@ skip:
 		if (khugepaged_scan.address < hstart)
 			khugepaged_scan.address = hstart;
 		VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
+		cc->has_metadata = vma_has_metadata(vma);
 
 		while (khugepaged_scan.address < hend) {
 			bool mmap_locked = true;
@@ -2656,6 +2662,7 @@ int madvise_collapse(struct vm_area_struct *vma, struct vm_area_struct **prev,
 	if (!cc)
 		return -ENOMEM;
 	cc->is_khugepaged = false;
+	cc->has_metadata = vma_has_metadata(vma);
 
 	mmgrab(mm);
 	lru_add_drain_all();

@@ -35,6 +35,10 @@ static inline bool folio_has_metadata(struct folio *folio)
 {
 	return false;
 }
+static inline bool vma_has_metadata(struct vm_area_struct *vma)
+{
+	return false;
+}
 #endif /* !CONFIG_MEMORY_METADATA */
 
 #endif /* __ASM_GENERIC_MEMORY_METADATA_H */

@@ -5,6 +5,8 @@
 #ifndef __ASM_MEMORY_METADATA_H
 #define __ASM_MEMORY_METADATA_H
 
+#include <linux/mm.h>
+
 #include <asm-generic/memory_metadata.h>
 
 #include <asm/mte.h>
@@ -39,6 +41,11 @@ static inline int reserve_metadata_storage(struct page *page, int order, gfp_t g
 
 static inline void free_metadata_storage(struct page *page, int order)
 {
+}
+
+static inline bool vma_has_metadata(struct vm_area_struct *vma)
+{
+	return vma && (vma->vm_flags & VM_MTE);
 }
 #endif /* CONFIG_MEMORY_METADATA */
 
