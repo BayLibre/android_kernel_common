@@ -73,6 +73,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c3e414_3c56aa0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-05-02T15:49:46Z",
+      "side": 1,
+      "message": "Hi,\n\nBACKPORT/UPSTREAM is only valid for picking changes from Linux mainline. The commit sha `81a9c7d6ac00bd6070cfc9ef517246092bc5f81c` is from `f2fs-stable-linux-5.10.y` and does not qualify as \"Linux mainline\". Yet, the commit d98af5f45520 is the corresponding upstream change and would be valid. Hence, just replace the sha with d98af5f4552058a5c22030641ef79cee92c61f54 and it becomes a valid BACKPORT commit:\n```\n(cherry picked from commit d98af5f4552058a5c22030641ef79cee92c61f54)\n```\nCheers,\nMatthias",
+      "parentUuid": "dfa25b99_b06424b5",
+      "revId": "727b15f49a6ef49e67bf9a52baf1b6f095ad03e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "fafb7f62_21081c58",
