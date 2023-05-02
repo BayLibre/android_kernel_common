@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c73b9089_71c94a4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2023-05-02T00:40:37Z",
+      "side": 1,
+      "message": "tools/bazel run //common:kernel_aarch64_abi_update_symbol_list \u0026\u0026\ntools/bazel run //common:kernel_aarch64_abi_update\n\nThe above commands are NOPs because the KMI is not changing with this patch, as b38e72d30c99 added them already. Thus, we don\u0027t share any output from these tools",
+      "revId": "936edf8e70805bcf8a8f202751d3b5974a0d8da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
