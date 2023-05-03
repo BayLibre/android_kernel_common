@@ -207,6 +207,24 @@
       "parentUuid": "944f50c1_9abb2294",
       "revId": "a4adaaab45363bd199251ee4316627280ae94482",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b8c700_cb20626e",
+        "filename": "include/linux/pm_qos.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2003165
+      },
+      "writtenOn": "2023-05-03T16:44:56Z",
+      "side": 1,
+      "message": "I\u0027m sorry for the confusion. The OEM_DATA field is set and used in our OEM code. However, the initialization of the freq_qos_request field may not be under our control. Therefore, if we only use one pointer, the pointer may be !NULL after the freq_qos_request field is initialized. This may make it difficult to determine whether the pointer is valid in the OEM code. Thanks.",
+      "parentUuid": "a31f6be6_76148ef4",
+      "revId": "a4adaaab45363bd199251ee4316627280ae94482",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
