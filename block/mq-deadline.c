@@ -760,6 +760,7 @@ static bool dd_bio_merge(struct request_queue *q, struct bio *bio,
  */
 static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 			      bool at_head)
+	__must_hold(dd->lock)
 {
 	struct request_queue *q = hctx->queue;
 	struct deadline_data *dd = q->elevator->elevator_data;
@@ -786,7 +787,9 @@ static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 	}
 
 	if (blk_mq_sched_try_insert_merge(q, rq, &free)) {
+		spin_unlock(&dd->lock);
 		blk_mq_free_requests(&free);
+		spin_lock(&dd->lock);
 		return;
 	}
 
