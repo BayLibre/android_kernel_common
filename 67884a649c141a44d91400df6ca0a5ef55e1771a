@@ -34,6 +34,24 @@
       "parentUuid": "c3640ab1_1c6c5d93",
       "revId": "67884a649c141a44d91400df6ca0a5ef55e1771a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f84c32ce_2f44c214",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2023-05-03T13:38:56Z",
+      "side": 1,
+      "message": "This code is never actually called on Android - the only reason to include it would be to avoid having a gadget in the kernel\u0027s executable segment that could potentially be abused to defeat the shadow call stack. Do we have shadow call stack on v5.4 and v4.19?",
+      "parentUuid": "6bd024e0_1a0298f7",
+      "revId": "67884a649c141a44d91400df6ca0a5ef55e1771a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
