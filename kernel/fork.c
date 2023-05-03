@@ -967,7 +967,6 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
 	tsk->splice_pipe = NULL;
 	tsk->task_frag.page = NULL;
 	tsk->wake_q.next = NULL;
-	tsk->pf_io_worker = NULL;
 
 	account_kernel_stack(tsk, 1);
 
@@ -1998,21 +1997,15 @@ static __latent_entropy struct task_struct *copy_process(
 	recalc_sigpending();
 	spin_unlock_irq(&current->sighand->siglock);
 	retval = -ERESTARTNOINTR;
-	if (task_sigpending(current))
+	if (signal_pending(current))
 		goto fork_out;
 
 	retval = -ENOMEM;
 	p = dup_task_struct(current, node);
 	if (!p)
 		goto fork_out;
-	if (args->io_thread) {
-		/*
-		 * Mark us an IO worker, and block any signal that isn't
-		 * fatal or STOP
-		 */
+	if (args->io_thread)
 		p->flags |= PF_IO_WORKER;
-		siginitsetinv(&p->blocked, sigmask(SIGKILL)|sigmask(SIGSTOP));
-	}
 
 	cpufreq_task_times_init(p);
 
@@ -2510,8 +2503,14 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
 		.stack_size	= (unsigned long)arg,
 		.io_thread	= 1,
 	};
+	struct task_struct *tsk;
 
-	return copy_process(NULL, 0, node, &args);
+	tsk = copy_process(NULL, 0, node, &args);
+	if (!IS_ERR(tsk)) {
+		sigfillset(&tsk->blocked);
+		sigdelsetmask(&tsk->blocked, sigmask(SIGKILL));
+	}
+	return tsk;
 }
 
 /*
