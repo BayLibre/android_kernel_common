@@ -1575,8 +1575,11 @@ static int android_setup(struct usb_gadget *gadget,
 		value = acc_ctrlrequest_composite(cdev, c);
 #endif
 
-	if (value < 0)
+	if (value < 0) {
+		spin_lock_irqsave(&gi->spinlock, flags);
 		value = composite_setup(gadget, c);
+		spin_unlock_irqrestore(&gi->spinlock, flags);
+	}
 
 	if (c->bRequest == USB_REQ_SET_CONFIGURATION &&
 						cdev->config) {
