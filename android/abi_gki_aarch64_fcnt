@@ -1,10 +1,10 @@
 [abi_symbol_list]
 # required by nonvolatile.ko
-  __lock_page
-  sync_blockdev
-  read_cache_page
-  blkdev_put
   blkdev_get_by_path
+  blkdev_put
+  __lock_page
+  read_cache_page
+  sync_blockdev
 
 # required by fj_watchdog.ko
   del_timer
@@ -26,9 +26,9 @@
   snd_pcm_hw_constraint_mask64
 
 # required by camera.ko
-  i2c_unregister_device
-  i2c_smbus_write_byte_data
   i2c_smbus_read_byte_data
+  i2c_smbus_write_byte_data
+  i2c_unregister_device
 
 # required by semi_touch_driver.ko
   filp_close
@@ -36,8 +36,8 @@
   vfs_llseek
 
 # required by cdfingerfp.ko
-  wakeup_source_remove
   wakeup_source_add
+  wakeup_source_remove
 
 # required by drv2624-ram.ko
   devm_led_classdev_unregister
@@ -49,8 +49,8 @@
   simple_strtoull
 
 # required by spidev
-  stream_open
   kmalloc_order
+  stream_open
 
 # required by sdhci-msm
   mmc_gpio_set_cd_wake

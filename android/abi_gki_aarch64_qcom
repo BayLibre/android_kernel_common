@@ -8,9 +8,9 @@
   alarm_cancel
   alarm_init
   alarm_start_relative
+  alarmtimer_get_rtcdev
   alloc_chrdev_region
   __alloc_disk_node
-  alarmtimer_get_rtcdev
   alloc_etherdev_mqs
   alloc_io_pgtable_ops
   alloc_netdev_mqs
@@ -451,10 +451,10 @@
   dev_pm_opp_register_notifier
   dev_pm_opp_remove
   dev_pm_opp_unregister_notifier
-  dev_printk
   dev_pm_qos_add_request
   dev_pm_qos_remove_request
   dev_pm_qos_update_request
+  dev_printk
   dev_queue_xmit
   dev_remove_pack
   devres_add
@@ -523,6 +523,7 @@
   dma_get_merge_boundary
   dma_get_sgtable_attrs
   dma_get_slave_channel
+  dmam_alloc_attrs
   dma_max_mapping_size
   dma_mmap_attrs
   dma_pool_alloc
@@ -541,7 +542,6 @@
   dma_resv_wait_timeout_rcu
   dma_set_coherent_mask
   dma_set_mask
-  dmam_alloc_attrs
   do_exit
   do_wait_intr
   down
@@ -794,8 +794,8 @@
   drm_vma_offset_manager_destroy
   drm_vma_offset_manager_init
   drm_vma_offset_remove
-  drop_nlink
   drm_wait_one_vblank
+  drop_nlink
   dump_stack
   enable_irq
   enable_percpu_irq
@@ -1580,8 +1580,8 @@
   proc_create_net_single
   proc_dointvec
   proc_mkdir
-  proc_remove
   proc_mkdir_data
+  proc_remove
   proto_register
   proto_unregister
   pskb_expand_head
@@ -1792,8 +1792,6 @@
   scsi_scan_host
   scsi_sense_desc_find
   sdev_prefix_printk
-  search_binary_handler
-  security_sock_graft
   sdhci_add_host
   sdhci_enable_clk
   sdhci_get_property
@@ -1802,6 +1800,8 @@
   sdhci_remove_host
   sdhci_reset
   sdhci_set_bus_width
+  search_binary_handler
+  security_sock_graft
   send_sig_info
   seq_hex_dump
   seq_lseek

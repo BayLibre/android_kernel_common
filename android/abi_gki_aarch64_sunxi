@@ -1,11 +1,11 @@
 [abi_symbol_list]
 # commonly used symbols
+  dev_pm_set_wake_irq
+  down_interruptible
+  kmalloc_order
+  of_find_node_by_type
   pinctrl_get
   pinctrl_gpio_set_config
-  of_find_node_by_type
-  kmalloc_order
-  down_interruptible
-  dev_pm_set_wake_irq
 
 # required by ccu-sunxi-ng.ko
   clk_notifier_register
@@ -34,8 +34,8 @@
   rq_flush_dcache_pages
 
 # required by sunxi_iommu.ko
-  iommu_group_register_notifier
   iommu_group_alloc
+  iommu_group_register_notifier
 
 # required by uas.ko
   int_to_scsilun
@@ -67,10 +67,10 @@
   of_io_request_and_map
 
 # required by tee.ko optee.ko
+  dump_page
   gen_pool_best_fit
   gen_pool_set_algo
   gen_pool_virt_to_phys
-  dump_page
 
 # required by sunxi_nsi.ko
   device_remove_groups
@@ -175,8 +175,8 @@
   bt_info
 
 # required by snd_aloop.ko
-  _snd_pcm_lib_alloc_vmalloc_buffer
   snd_pcm_format_set_silence
+  _snd_pcm_lib_alloc_vmalloc_buffer
   snd_pcm_lib_free_vmalloc_buffer
   snd_pcm_lib_get_vmalloc_page
 
@@ -189,7 +189,6 @@
   skcipher_walk_virt
 
 # required by vin_v4l2.ko
-  v4l2_i2c_subdev_init
   media_entity_find_link
   media_entity_remote_pad
   __media_entity_setup_link
@@ -205,12 +204,13 @@
   v4l2_event_subdev_unsubscribe
   v4l2_g_ctrl
   v4l2_i2c_new_subdev
+  v4l2_i2c_subdev_init
   v4l2_spi_new_subdev
   v4l_bound_align_image
-  vb2_plane_cookie
-  vb2_dma_contig_set_max_seg_size
   vb2_dma_contig_clear_max_seg_size
   vb2_dma_contig_memops
+  vb2_dma_contig_set_max_seg_size
+  vb2_plane_cookie
 
 # required by init-input.ko
   of_find_i2c_device_by_node
@@ -221,17 +221,17 @@
   create_empty_buffers
   d_add_ci
   d_obtain_alias
+  end_buffer_read_sync
   generic_error_remove_page
   generic_file_open
   ihold
+  io_schedule
+  is_bad_inode
   load_nls_default
   __lock_page
   make_bad_inode
   truncate_inode_pages_final
   __vmalloc
-  io_schedule
-  is_bad_inode
-  end_buffer_read_sync
 
 # required by squashfs.ko
   get_tree_bdev
@@ -244,15 +244,15 @@
   zlib_inflate_workspacesize
 
 # required by cpufreq_ondemand.ko
-  cpufreq_dbs_governor_init
   cpufreq_dbs_governor_exit
+  cpufreq_dbs_governor_init
+  cpufreq_dbs_governor_limits
   cpufreq_dbs_governor_start
   cpufreq_dbs_governor_stop
-  cpufreq_dbs_governor_limits
-  store_sampling_rate
-  gov_update_cpu_data
   dbs_update
   get_cpu_idle_time_us
+  gov_update_cpu_data
+  store_sampling_rate
 
 # required by disp.ko
   memblock_free
@@ -344,14 +344,14 @@
   cfg80211_stop_iface
 
 # required by sunxi_drm_heap.ko
-  xa_erase
   __xa_alloc
+  xa_erase
   xa_load
 
 # required by sunxi_nsipmu.ko
   devm_devfreq_event_add_edev
 
 # required by sunxi_dmc.ko
-  devfreq_event_get_edev_by_phandle
-  devfreq_event_enable_edev
   devfreq_event_disable_edev
+  devfreq_event_enable_edev
+  devfreq_event_get_edev_by_phandle
