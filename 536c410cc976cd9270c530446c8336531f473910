@@ -16,6 +16,24 @@
       "message": "Looks fine.  I did notice that \"fscrypt: destroy keyring after security_sb_delete()\" is missing from upstream-f2fs-stable-linux-6.1.y, which seems unexpected.  But this branch got it anyway via LTS.",
       "revId": "536c410cc976cd9270c530446c8336531f473910",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afdbe3a2_d9fee4ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2023-05-04T17:51:30Z",
+      "side": 1,
+      "message": "Thank you to point that out. Let me add it in f2fs-stable and update the merge commit.",
+      "parentUuid": "ab3a17ce_4a2a943b",
+      "revId": "536c410cc976cd9270c530446c8336531f473910",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
