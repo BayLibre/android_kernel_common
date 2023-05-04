@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "291b22bd_d4699165",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "No C++-style comments please.\n\nDo not describe what you are doing (the code is already there to see). Describe why: we are holding such and such spinlock, so shouldn\u0027t sleep while holding it.",
+      "range": {
+        "startLine": 43,
+        "startChar": 1,
+        "endLine": 45,
+        "endChar": 59
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2865cfb8_d57eba87",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "!pid_struct",
+      "range": {
+        "startLine": 54,
+        "startChar": 5,
+        "endLine": 54,
+        "endChar": 23
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc82bf0_a461be9f",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "You just leaked pid_struct. Placing `put_pid(pid_struct)` before the check would fix that.",
+      "range": {
+        "startLine": 62,
+        "startChar": 2,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5277d0d3_b0e0553c",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "You leaked task. Need `put_task_struct(task);` before return.",
+      "range": {
+        "startLine": 70,
+        "startChar": 2,
+        "endLine": 70,
+        "endChar": 8
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f75e9069_0fdaebac",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "same as above.\nAlso leaked cred, needs `put_cred(cred);`",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 9
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8d0c04f_860d3d8f",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "No need for comments describing what you are doing unless it\u0027s not obvious (the code should tell that).",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 35
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc0c52a_7e934f36",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "were you able to generate OOM-kills using memory pressure for testing? If so, these test-only features can be removed.",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 1
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "224dc9e8_6434b0ec",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "Greg commented that we should not be using misc devices. I think a simple char device would do.",
+      "range": {
+        "startLine": 142,
+        "startChar": 14,
+        "endLine": 142,
+        "endChar": 24
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42dd9547_e6323234",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "80 char lines limit.",
+      "range": {
+        "startLine": 149,
+        "startChar": 60,
+        "endLine": 149,
+        "endChar": 96
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93938688_6264a8f7",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "If this has been tested please remove all the debug printk\u0027s",
+      "range": {
+        "startLine": 167,
+        "startChar": 1,
+        "endLine": 167,
+        "endChar": 89
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d99699f0_79cc9a8d",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "There is no need to allocate page-sized buffer here. You can\u0027t send more that `count` bytes to the user anyway.",
+      "range": {
+        "startLine": 169,
+        "startChar": 24,
+        "endLine": 169,
+        "endChar": 33
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7784000_2df1b817",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "If oom_kill_list is protected by memhealth_lock then you should take that lock before iterating over oom_kill_list",
+      "range": {
+        "startLine": 175,
+        "startChar": 29,
+        "endLine": 175,
+        "endChar": 42
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d39a4e3_f4dedc8e",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "The `offset` you are passed as a parameter is in bytes, not in record numbers. You should be obtaining `temp_size` and comparing it with the `threashold`.",
+      "range": {
+        "startLine": 177,
+        "startChar": 5,
+        "endLine": 177,
+        "endChar": 24
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "579f69f9_842f8c00",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "You should make sure your data does not grow more than `count` parameter passed to this function.",
+      "range": {
+        "startLine": 193,
+        "startChar": 3,
+        "endLine": 193,
+        "endChar": 13
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00771c4a_6c7948a3",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "update?",
+      "range": {
+        "startLine": 258,
+        "startChar": 28,
+        "endLine": 258,
+        "endChar": 47
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddbddfeb_5045a321",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "missing misc_deregister(\u0026memhealth_misc);",
+      "range": {
+        "startLine": 268,
+        "startChar": 2,
+        "endLine": 268,
+        "endChar": 17
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3ddd13e_d2735392",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-04T21:29:47Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 276,
+        "startChar": 2,
+        "endLine": 276,
+        "endChar": 17
+      },
+      "revId": "029a92f3bea7a8bf2eb52a62544159c1811eeed8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
