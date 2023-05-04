@@ -294495,6 +294495,14 @@ function {
   parameter_id: 0x33756485
 }
 function {
+  id: 0x10c45080
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0258f96e
+  parameter_id: 0x3b4ce03a
+  parameter_id: 0x9565759f
+  parameter_id: 0x9565759f
+}
+function {
   id: 0x10c48dc9
   return_type_id: 0x48b5725f
   parameter_id: 0x0258f96e
@@ -310300,6 +310308,14 @@ function {
   parameter_id: 0x6720d32f
   parameter_id: 0x38264f07
   parameter_id: 0x1d19a9d5
+}
+function {
+  id: 0x84ba5d97
+  return_type_id: 0x6720d32f
+  parameter_id: 0x6720d32f
+  parameter_id: 0x3fa672fd
+  parameter_id: 0x3e10b518
+  parameter_id: 0xe5e56f65
 }
 function {
   id: 0x84bb5eaa
@@ -326782,6 +326798,13 @@ function {
   parameter_id: 0x064d6086
 }
 function {
+  id: 0x9cae8e59
+  return_type_id: 0x6720d32f
+  parameter_id: 0x074f1a14
+  parameter_id: 0x3e10b518
+  parameter_id: 0x17a49e9b
+}
+function {
   id: 0x9cb0358f
   return_type_id: 0x6720d32f
   parameter_id: 0x052fac00
@@ -334336,6 +334359,11 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0xf03fb3d2
+  return_type_id: 0x2efe8065
+  parameter_id: 0xeb0f6de6
+}
+function {
   id: 0xf0429094
   return_type_id: 0x2ac683aa
   parameter_id: 0x39c6a784
@@ -336702,6 +336730,15 @@ elf_symbol {
   crc: 0xa7061758
   type_id: 0x8b7d8884
   full_name: "__devm_regmap_init_spmi_ext"
+}
+elf_symbol {
+  id: 0x8a84f79f
+  name: "__devm_release_region"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xfebd6ac8
+  type_id: 0x10c45080
+  full_name: "__devm_release_region"
 }
 elf_symbol {
   id: 0x2ccf76fa
@@ -342913,6 +342950,15 @@ elf_symbol {
   crc: 0x2773c485
   type_id: 0x145d9dd5
   full_name: "__wake_up_locked"
+}
+elf_symbol {
+  id: 0x2168939c
+  name: "__wake_up_locked_key"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x09337cd0
+  type_id: 0x14427ab8
+  full_name: "__wake_up_locked_key"
 }
 elf_symbol {
   id: 0x83ada50d
@@ -350769,6 +350815,15 @@ elf_symbol {
   full_name: "dev_uc_unsync"
 }
 elf_symbol {
+  id: 0xfc7749bc
+  name: "dev_vprintk_emit"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x435c3de3
+  type_id: 0x84ba5d97
+  full_name: "dev_vprintk_emit"
+}
+elf_symbol {
   id: 0x55a1ee95
   name: "devfreq_add_device"
   is_defined: true
@@ -357870,6 +357925,15 @@ elf_symbol {
   full_name: "dw_pcie_host_init"
 }
 elf_symbol {
+  id: 0x9d898d75
+  name: "dw_pcie_own_conf_map_bus"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xdada205d
+  type_id: 0x5f5b0712
+  full_name: "dw_pcie_own_conf_map_bus"
+}
+elf_symbol {
   id: 0x9ec4a8cb
   name: "dw_pcie_read"
   is_defined: true
@@ -363867,6 +363931,15 @@ elf_symbol {
   full_name: "iio_dealloc_pollfunc"
 }
 elf_symbol {
+  id: 0xea065265
+  name: "iio_device_alloc"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x58b19746
+  type_id: 0x582c94c3
+  full_name: "iio_device_alloc"
+}
+elf_symbol {
   id: 0xd50bc6e1
   name: "iio_device_attach_buffer"
   is_defined: true
@@ -363883,6 +363956,15 @@ elf_symbol {
   crc: 0xb5e15a16
   type_id: 0x9ba2048f
   full_name: "iio_device_claim_direct_mode"
+}
+elf_symbol {
+  id: 0x70513762
+  name: "iio_device_free"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe6bef431
+  type_id: 0x16bab633
+  full_name: "iio_device_free"
 }
 elf_symbol {
   id: 0x49e3dfdd
@@ -369633,6 +369715,24 @@ elf_symbol {
   full_name: "name_to_dev_t"
 }
 elf_symbol {
+  id: 0xc1add767
+  name: "names_cachep"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x3096be16
+  type_id: 0x2efd5036
+  full_name: "names_cachep"
+}
+elf_symbol {
+  id: 0x9a02788c
+  name: "napi_build_skb"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3dea451c
+  type_id: 0x6fa775f5
+  full_name: "napi_build_skb"
+}
+elf_symbol {
   id: 0xc258a893
   name: "napi_complete_done"
   is_defined: true
@@ -370801,6 +370901,15 @@ elf_symbol {
   crc: 0xffc4c177
   type_id: 0x910e73b6
   full_name: "of_address_to_resource"
+}
+elf_symbol {
+  id: 0x017aa13b
+  name: "of_alias_get_highest_id"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0321cdbf
+  type_id: 0x9204ce69
+  full_name: "of_alias_get_highest_id"
 }
 elf_symbol {
   id: 0x058addcb
@@ -372858,6 +372967,15 @@ elf_symbol {
   full_name: "pci_free_irq_vectors"
 }
 elf_symbol {
+  id: 0x50bce06e
+  name: "pci_generic_config_read"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xee17d223
+  type_id: 0x944cc77b
+  full_name: "pci_generic_config_read"
+}
+elf_symbol {
   id: 0x133a7a3e
   name: "pci_generic_config_read32"
   is_defined: true
@@ -372865,6 +372983,15 @@ elf_symbol {
   crc: 0x461dbf1f
   type_id: 0x944cc77b
   full_name: "pci_generic_config_read32"
+}
+elf_symbol {
+  id: 0xdeaa9b25
+  name: "pci_generic_config_write"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4de321e0
+  type_id: 0x944cfb0d
+  full_name: "pci_generic_config_write"
 }
 elf_symbol {
   id: 0x6f7d4414
@@ -373344,6 +373471,15 @@ elf_symbol {
   full_name: "pcie_capability_write_word"
 }
 elf_symbol {
+  id: 0xb7c9d0b8
+  name: "pcie_get_mps"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xb5c18500
+  type_id: 0x99f942bc
+  full_name: "pcie_get_mps"
+}
+elf_symbol {
   id: 0x8897c24a
   name: "pcie_get_speed_cap"
   is_defined: true
@@ -373351,6 +373487,15 @@ elf_symbol {
   crc: 0xd1271f0d
   type_id: 0x2ec04b91
   full_name: "pcie_get_speed_cap"
+}
+elf_symbol {
+  id: 0xffa3ecd1
+  name: "pcie_set_mps"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x11898d1f
+  type_id: 0x9865c1f0
+  full_name: "pcie_set_mps"
 }
 elf_symbol {
   id: 0x42595f98
@@ -379084,6 +379229,15 @@ elf_symbol {
   crc: 0xddca6629
   type_id: 0x94d99adc
   full_name: "rtc_set_alarm"
+}
+elf_symbol {
+  id: 0xae7aa450
+  name: "rtc_set_time"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0de72d63
+  type_id: 0x94662870
+  full_name: "rtc_set_time"
 }
 elf_symbol {
   id: 0x2edd194c
@@ -386425,6 +386579,15 @@ elf_symbol {
   full_name: "tty_chars_in_buffer"
 }
 elf_symbol {
+  id: 0xae3ac3f6
+  name: "tty_dev_name_to_number"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xb11d9000
+  type_id: 0x92c581e2
+  full_name: "tty_dev_name_to_number"
+}
+elf_symbol {
   id: 0xa7c71d5a
   name: "tty_driver_flush_buffer"
   is_defined: true
@@ -386497,6 +386660,24 @@ elf_symbol {
   full_name: "tty_insert_flip_string_fixed_flag"
 }
 elf_symbol {
+  id: 0xdeb902aa
+  name: "tty_kclose"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x7ef28311
+  type_id: 0x1b27f18a
+  full_name: "tty_kclose"
+}
+elf_symbol {
+  id: 0x43145b7f
+  name: "tty_kopen_exclusive"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xed8b428d
+  type_id: 0xf03fb3d2
+  full_name: "tty_kopen_exclusive"
+}
+elf_symbol {
   id: 0x30f9f63f
   name: "tty_kref_put"
   is_defined: true
@@ -386531,6 +386712,15 @@ elf_symbol {
   crc: 0x84e4e08c
   type_id: 0x797c68f3
   full_name: "tty_ldisc_ref"
+}
+elf_symbol {
+  id: 0xf0c9c0bf
+  name: "tty_lock"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xb1870afb
+  type_id: 0x1b27f18a
+  full_name: "tty_lock"
 }
 elf_symbol {
   id: 0x8a712bc6
@@ -386659,6 +386849,15 @@ elf_symbol {
   full_name: "tty_register_ldisc"
 }
 elf_symbol {
+  id: 0xc2ec2319
+  name: "tty_set_ldisc"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5c1f40d5
+  type_id: 0x97a3c07a
+  full_name: "tty_set_ldisc"
+}
+elf_symbol {
   id: 0xe9e8ea7d
   name: "tty_set_termios"
   is_defined: true
@@ -386711,6 +386910,15 @@ elf_symbol {
   crc: 0x5641485b
   type_id: 0x1d825cc4
   full_name: "tty_termios_encode_baud_rate"
+}
+elf_symbol {
+  id: 0xfd34f897
+  name: "tty_unlock"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6bcd9817
+  type_id: 0x1b27f18a
+  full_name: "tty_unlock"
 }
 elf_symbol {
   id: 0x6eee841a
@@ -390041,6 +390249,15 @@ elf_symbol {
   crc: 0x15af1906
   type_id: 0x9c543337
   full_name: "v4l2_device_register_subdev"
+}
+elf_symbol {
+  id: 0xdc3fca57
+  name: "v4l2_device_set_name"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0bd11284
+  type_id: 0x9cae8e59
+  full_name: "v4l2_device_set_name"
 }
 elf_symbol {
   id: 0x23051526
@@ -393849,6 +394066,10 @@ symbols {
     value: 0x6f0a4a19
   }
   symbol {
+    key: "__devm_release_region"
+    value: 0x8a84f79f
+  }
+  symbol {
     key: "__devm_request_region"
     value: 0x2ccf76fa
   }
@@ -396607,6 +396828,10 @@ symbols {
   symbol {
     key: "__wake_up_locked"
     value: 0xaf704e67
+  }
+  symbol {
+    key: "__wake_up_locked_key"
+    value: 0x2168939c
   }
   symbol {
     key: "__wake_up_sync"
@@ -400105,6 +400330,10 @@ symbols {
     value: 0x1938c508
   }
   symbol {
+    key: "dev_vprintk_emit"
+    value: 0xfc7749bc
+  }
+  symbol {
     key: "devfreq_add_device"
     value: 0x55a1ee95
   }
@@ -403253,6 +403482,10 @@ symbols {
     value: 0xb8395a3e
   }
   symbol {
+    key: "dw_pcie_own_conf_map_bus"
+    value: 0x9d898d75
+  }
+  symbol {
     key: "dw_pcie_read"
     value: 0x9ec4a8cb
   }
@@ -405917,12 +406150,20 @@ symbols {
     value: 0x7ee06725
   }
   symbol {
+    key: "iio_device_alloc"
+    value: 0xea065265
+  }
+  symbol {
     key: "iio_device_attach_buffer"
     value: 0xd50bc6e1
   }
   symbol {
     key: "iio_device_claim_direct_mode"
     value: 0xdf70779d
+  }
+  symbol {
+    key: "iio_device_free"
+    value: 0x70513762
   }
   symbol {
     key: "iio_device_id"
@@ -408481,6 +408722,14 @@ symbols {
     value: 0x55bed293
   }
   symbol {
+    key: "names_cachep"
+    value: 0xc1add767
+  }
+  symbol {
+    key: "napi_build_skb"
+    value: 0x9a02788c
+  }
+  symbol {
     key: "napi_complete_done"
     value: 0xc258a893
   }
@@ -408999,6 +409248,10 @@ symbols {
   symbol {
     key: "of_address_to_resource"
     value: 0x458a15db
+  }
+  symbol {
+    key: "of_alias_get_highest_id"
+    value: 0x017aa13b
   }
   symbol {
     key: "of_alias_get_id"
@@ -409913,8 +410166,16 @@ symbols {
     value: 0x8ffabaa9
   }
   symbol {
+    key: "pci_generic_config_read"
+    value: 0x50bce06e
+  }
+  symbol {
     key: "pci_generic_config_read32"
     value: 0x133a7a3e
+  }
+  symbol {
+    key: "pci_generic_config_write"
+    value: 0xdeaa9b25
   }
   symbol {
     key: "pci_generic_config_write32"
@@ -410129,8 +410390,16 @@ symbols {
     value: 0x1070f731
   }
   symbol {
+    key: "pcie_get_mps"
+    value: 0xb7c9d0b8
+  }
+  symbol {
     key: "pcie_get_speed_cap"
     value: 0x8897c24a
+  }
+  symbol {
+    key: "pcie_set_mps"
+    value: 0xffa3ecd1
   }
   symbol {
     key: "pcim_enable_device"
@@ -412679,6 +412948,10 @@ symbols {
   symbol {
     key: "rtc_set_alarm"
     value: 0x5c6aa8cb
+  }
+  symbol {
+    key: "rtc_set_time"
+    value: 0xae7aa450
   }
   symbol {
     key: "rtc_time64_to_tm"
@@ -415945,6 +416218,10 @@ symbols {
     value: 0x0b4dd20d
   }
   symbol {
+    key: "tty_dev_name_to_number"
+    value: 0xae3ac3f6
+  }
+  symbol {
     key: "tty_driver_flush_buffer"
     value: 0xa7c71d5a
   }
@@ -415977,6 +416254,14 @@ symbols {
     value: 0x59f7bc61
   }
   symbol {
+    key: "tty_kclose"
+    value: 0xdeb902aa
+  }
+  symbol {
+    key: "tty_kopen_exclusive"
+    value: 0x43145b7f
+  }
+  symbol {
     key: "tty_kref_put"
     value: 0x30f9f63f
   }
@@ -415991,6 +416276,10 @@ symbols {
   symbol {
     key: "tty_ldisc_ref"
     value: 0x0b050f75
+  }
+  symbol {
+    key: "tty_lock"
+    value: 0xf0c9c0bf
   }
   symbol {
     key: "tty_mode_ioctl"
@@ -416049,6 +416338,10 @@ symbols {
     value: 0x2aefba25
   }
   symbol {
+    key: "tty_set_ldisc"
+    value: 0xc2ec2319
+  }
+  symbol {
     key: "tty_set_termios"
     value: 0xe9e8ea7d
   }
@@ -416071,6 +416364,10 @@ symbols {
   symbol {
     key: "tty_termios_encode_baud_rate"
     value: 0x4cc18d95
+  }
+  symbol {
+    key: "tty_unlock"
+    value: 0xfd34f897
   }
   symbol {
     key: "tty_unregister_device"
@@ -417551,6 +417848,10 @@ symbols {
   symbol {
     key: "v4l2_device_register_subdev"
     value: 0xabdb2ade
+  }
+  symbol {
+    key: "v4l2_device_set_name"
+    value: 0xdc3fca57
   }
   symbol {
     key: "v4l2_device_unregister"
