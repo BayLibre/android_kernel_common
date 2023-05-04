@@ -8,6 +8,7 @@
 #include <linux/usb.h>
 #include <linux/usb/audio.h>
 #include <linux/slab.h>
+#include <linux/moduleparam.h>
 
 #include <sound/core.h>
 #include <sound/pcm.h>
@@ -22,6 +23,14 @@
 #include "pcm.h"
 #include "clock.h"
 #include "quirks.h"
+
+static uint max_packs_vendor = 0;
+static uint max_queue_vendor = 0;
+
+module_param(max_packs_vendor, uint, 0644);
+MODULE_PARM_DESC(max_packs_vendor, "Max packet size.");
+module_param(max_queue_vendor, uint, 0644);
+MODULE_PARM_DESC(max_queue_vendor, "Max queue size.");
 
 enum {
 	EP_STATE_STOPPED,
@@ -1113,6 +1122,10 @@ static int data_ep_set_params(struct snd_usb_endpoint *ep)
 	if (ep->sync_source && !ep->implicit_fb_sync)
 		max_packs_per_urb = min(max_packs_per_urb,
 					1U << ep->sync_source->syncinterval);
+
+	if ((max_packs_vendor > 0) && (max_packs_vendor <= MAX_PACKS_HS))
+		max_packs_per_urb = max_packs_vendor;
+
 	max_packs_per_urb = max(1u, max_packs_per_urb >> ep->datainterval);
 
 	/*
@@ -1176,6 +1189,12 @@ static int data_ep_set_params(struct snd_usb_endpoint *ep)
 		/* try to use enough URBs to contain an entire ALSA buffer */
 		max_urbs = min((unsigned) MAX_URBS,
 				MAX_QUEUE * packs_per_ms / urb_packs);
+
+		if ((max_queue_vendor > 0) && (max_queue_vendor <= MAX_QUEUE)) {
+			max_urbs = min(max_urbs,
+				max_queue_vendor * packs_per_ms / urb_packs);
+		}
+
 		ep->nurbs = min(max_urbs, urbs_per_period * ep->cur_buffer_periods);
 	}
 
