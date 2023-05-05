@@ -69,6 +69,24 @@
       "parentUuid": "c567f5f1_1561d50c",
       "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73552c22_b161a184",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1973520
+      },
+      "writtenOn": "2023-05-05T07:26:06Z",
+      "side": 1,
+      "message": "hello Greg,\n\n\"system\" and \"cma\" heap is the standard dmabuf heap.\nThe dmabuf heap flag limitation maybe used to format the interface for standard dmabuf heap like \"system\" and \"cma\" heap.\n\nBut vendor heaps are various, and it\u0027s hard to follow the \"standard heap flags\".\nExpcially for the situation, the heap flags designed accordding to the hareware.\nSo that, we need this vendor hook to deploy our dmabuf heap.\n\nThe other way comes to my mind, is seperate the \"dmabuf heap flags\", the lower 32bits is for standard heap flags, the upper 32bits is for vendor designed function.\nI can try to do that, but it could be a long discustion after that.\n\nThanks",
+      "parentUuid": "907e0d4b_f2a0852a",
+      "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
