@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c26328d5_21004935",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-05T20:28:55Z",
+      "side": 1,
+      "message": "I think it might make more sense to define these as actual offsets i.e.:\n\n```\n#define CORE_CUR_FREQ 0x0\n#define CORE_SET_FREQ 0x4\n```\n\nThis way, if the size of the register space for a device changes, you just have to worry about encoding the new offset here, instead of having to change the multiplier to get to the next interface for each definition.\n\nand then use a per-cpu offset to hold the bases of each interface for each CPU. That way your accesses become (using read as an example)\n\n```\nreadl_relaxed(this_cpu_ptr(bases) + CORE_CUR_FREQ);\n```",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "554d29f3_bc123693",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-05T20:28:55Z",
+      "side": 1,
+      "message": "nit: s/arithmatics/arithmetic",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "348e3e6a_55f79ed0",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-05T20:28:55Z",
+      "side": 1,
+      "message": "It might be best to have a driver specific structure that contains this field and whatever other fields you\u0027ll need in the future, and dynamically allocate it in the probe function instead?",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf7f7f5a_5d857d25",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-05T20:28:55Z",
+      "side": 1,
+      "message": "Is there a chance that there may be different versions of this interface? I wonder if it might be worth abstracting the get/set_core_freq operations by adding function pointers for both operations, and then you select which versions of the interface (and by extension ops) to use?",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58510572_f467b52d",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-05T20:28:55Z",
+      "side": 1,
+      "message": "What\u0027s the rationale for having this run at a higher/earlier initcall level? Given that you\u0027re not doing anything special in the `init` and `exit` calls, it seems that you could replace those calls with `module_platform_driver()`?",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
