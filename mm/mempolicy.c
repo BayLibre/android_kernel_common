@@ -1729,8 +1729,8 @@ int vma_migrate_metadata_pages(struct vm_area_struct *vma,
 		.nid = NUMA_NO_NODE,
 	};
 	nodemask_t nodes = NODE_MASK_ALL;
+	unsigned long flags, cflags;
 	LIST_HEAD(metadatapages);
-	unsigned long flags;
 	int ret;
 
 	if (WARN_ON_ONCE(gfp_mask & __GFP_TAGGED))
@@ -1745,6 +1745,7 @@ int vma_migrate_metadata_pages(struct vm_area_struct *vma,
 		MPOL_MF_DISCONTIG_OK |
 		MPOL_MF_METADATA_ONLY;
 
+	cflags = memalloc_isolate_save();
 	lru_cache_disable();
 
 	ret = queue_pages_range(vma->vm_mm, start, end, &nodes, flags,
@@ -1767,6 +1768,7 @@ int vma_migrate_metadata_pages(struct vm_area_struct *vma,
 
 out:
 	lru_cache_enable();
+	memalloc_isolate_restore(cflags);
 
 	return ret;
 }
@@ -1778,10 +1780,10 @@ int vma_allocate_metadata_storage(struct vm_area_struct *vma, unsigned long star
 		.nid = NUMA_NO_NODE,
 	};
 	nodemask_t nodes = NODE_MASK_ALL;
+	unsigned long flags, cflags;
 	struct page *page, *next;
 	LIST_HEAD(reservedlist);
 	LIST_HEAD(pagelist);
-	unsigned long flags;
 	unsigned long order;
 	int ret;
 
@@ -1796,6 +1798,7 @@ int vma_allocate_metadata_storage(struct vm_area_struct *vma, unsigned long star
 		MPOL_MF_STRICT |
 		MPOL_MF_DISCONTIG_OK;
 
+	cflags = memalloc_isolate_save();
 	lru_cache_disable();
 
 	/*
@@ -1847,6 +1850,7 @@ out:
 		putback_movable_pages(&reservedlist);
 
 	lru_cache_enable();
+	memalloc_isolate_restore(cflags);
 
 	return ret;
 }
