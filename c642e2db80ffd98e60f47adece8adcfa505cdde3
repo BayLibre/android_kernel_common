@@ -16,6 +16,24 @@
       "message": "Nope. We are not exporting random functions without any explanation why they are needed. I don\u0027t see any rationale neither in the patch description nor in the bug. Please explain in the bug why you need all these internal core mm functions in your drivers.",
       "revId": "c642e2db80ffd98e60f47adece8adcfa505cdde3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d454e6b8_93682b3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1949205
+      },
+      "writtenOn": "2023-05-05T12:56:25Z",
+      "side": 1,
+      "message": "We try to iterate a certain address range of a given process to determine whether the pte-relevant pages should be deactivated, readahead or discarded.\nThe function do_madvise is the interface that tell the kernel how it should handle a particular memory region. As such, we utilize the madvise mechanism to do our readahead operations by exporting this function.\nall other functions are used to do deactivation, readahead or discard operations.\nfunctions: mm_find_pmd, walk_page_range, walk_page_range_novma, walk_page_vma, walk_page_mapping, folio_referenced, are used to iterate through a certain address space to find out the pte-relevant pages that should be readahead.\nfunctions: vm_normal_page, pages_add_anon_rmap, page_add_new_anon_rmap, page_add_file_rmap, page_remove_rmap, are used to allocate page table entries and establish mapping between pages and the ptes, when perform readahead operations.\nthe read_swap_cache_async function is used to read a page from the swap cache asynchronously.\nswap_free, folio_free_swap is used to free a swap slot that the corresponding page has been read into memory already.",
+      "parentUuid": "f1db9419_8532740b",
+      "revId": "c642e2db80ffd98e60f47adece8adcfa505cdde3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
