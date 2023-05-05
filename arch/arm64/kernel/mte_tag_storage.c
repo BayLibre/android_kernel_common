@@ -458,9 +458,9 @@ static int order_to_blocks(int order)
 int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 {
 	unsigned long start_block, end_block;
+	unsigned long flags, cflags;
 	struct tag_region *region;
 	unsigned long block;
-	unsigned long flags;
 	int ret = 0;
 	int tries;
 
@@ -492,6 +492,7 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 	}
 	xa_unlock_irqrestore(&tag_blocks_reserved, flags);
 
+	cflags = memalloc_isolate_save();
 	for (block = start_block; block < end_block; block += region->block_size) {
 		/* Refcount incremented above. */
 		if (tag_storage_block_is_reserved(block))
@@ -516,6 +517,7 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 		count_vm_events(METADATA_RESERVE_SUCCESS, region->block_size);
 	}
 
+	memalloc_isolate_restore(cflags);
 	mutex_unlock(&tag_blocks_lock);
 
 	return 0;
@@ -531,6 +533,7 @@ out_error:
 	}
 	xa_unlock_irqrestore(&tag_blocks_reserved, flags);
 
+	memalloc_isolate_restore(cflags);
 	mutex_unlock(&tag_blocks_lock);
 
 	count_vm_events(METADATA_RESERVE_FAIL, region->block_size);

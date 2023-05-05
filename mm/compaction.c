@@ -777,6 +777,9 @@ static bool too_many_isolated(pg_data_t *pgdat)
 
 	unsigned long active, inactive, isolated;
 
+	if (current->flags & PF_MEMALLOC_ISOLATE)
+		return false;
+
 	inactive = node_page_state(pgdat, NR_INACTIVE_FILE) +
 			node_page_state(pgdat, NR_INACTIVE_ANON);
 	active = node_page_state(pgdat, NR_ACTIVE_FILE) +
