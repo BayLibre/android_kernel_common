@@ -361,6 +361,19 @@ static inline void memalloc_pin_restore(unsigned int flags)
 	current->flags = (current->flags & ~PF_MEMALLOC_PIN) | flags;
 }
 
+static inline unsigned int memalloc_isolate_save(void)
+{
+	unsigned int flags = current->flags & PF_MEMALLOC_ISOLATE;
+
+	current->flags |= PF_MEMALLOC_ISOLATE;
+	return flags;
+}
+
+static inline void memalloc_isolate_restore(unsigned int flags)
+{
+	current->flags = (current->flags & ~PF_MEMALLOC_ISOLATE) | flags;
+}
+
 #ifdef CONFIG_MEMCG
 DECLARE_PER_CPU(struct mem_cgroup *, int_active_memcg);
 /**

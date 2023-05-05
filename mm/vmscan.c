@@ -2373,6 +2373,9 @@ static int too_many_isolated(struct pglist_data *pgdat, int file,
 	if (current_is_kswapd())
 		return 0;
 
+	if (current->flags & PF_MEMALLOC_ISOLATE)
+		return 0;
+
 	if (!writeback_throttling_sane(sc))
 		return 0;
 
