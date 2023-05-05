@@ -3806,6 +3806,7 @@ ssize_t generic_perform_write(struct file *file,
 		size_t copied;		/* Bytes copied from user */
 		void *fsdata = NULL;
 
+		trace_android_rvh_generic_write(PAGE_SIZE);
 		offset = (pos & (PAGE_SIZE - 1));
 		bytes = min_t(unsigned long, PAGE_SIZE - offset,
 						iov_iter_count(i));
