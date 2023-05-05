@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cf6e9c8_30ce917f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1741425
+      },
+      "writtenOn": "2023-05-05T20:37:15Z",
+      "side": 1,
+      "message": "Using the vendor hooks for customized freezer violates the following CDD. The correct way to improve freezer is to have both of the Linux kernel and Android framework patches reviewed and merged into upstream/AOSP. Probably we can start from a bug or feature request to improve Freezer.\n\n[C-0-2] Devices MUST NOT alter the lifecycle or lifecycle semantics of a particular type of system component (such as Service, Activity, ContentProvider, etc.).\n\nPlease see https://source.android.com/docs/compatibility/13/android-13-cdd#35_api_behavioral_compatibility for more details. Thanks!",
+      "revId": "4283f88323f991222b10ab01c01679cfb6a2ee6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
