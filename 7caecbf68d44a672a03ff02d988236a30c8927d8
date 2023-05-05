@@ -122,6 +122,24 @@
       "parentUuid": "439dcc2c_7821a33e",
       "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12616bb1_fefccada",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-05-05T23:51:41Z",
+      "side": 1,
+      "message": "dmabuf heaps intentionally avoid these sorts of opaque heap-specific flags.\n\nThe interface does have a (currently unused) flags field, but those are for well defined flags that are generic enough to appropriately apply to multiple heaps.\n\nI\u0027d recommend instead registering multiple heap types each with the specific property you\u0027d use the \"vendor designated flag\" for.\n\nAlternatively, you might try to abstract out and clearly express the flags need in a way that would be generally useful.",
+      "parentUuid": "73552c22_b161a184",
+      "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
