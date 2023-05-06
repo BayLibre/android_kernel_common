@@ -13,6 +13,7 @@ struct oom_control;
 struct slabinfo;
 struct cma;
 struct compact_control;
+struct rw_semaphore;
 
 DECLARE_RESTRICTED_HOOK(android_rvh_set_skip_swapcache_flags,
 			TP_PROTO(gfp_t *flags),
@@ -134,6 +135,9 @@ DECLARE_HOOK(android_vh_mem_cgroup_css_offline,
 DECLARE_HOOK(android_vh_si_meminfo,
 	TP_PROTO(struct sysinfo *val),
 	TP_ARGS(val));
+DECLARE_HOOK(android_vh_do_page_trylock,
+	TP_PROTO(struct page *page, struct rw_semaphore *sem, bool *got_lock, bool *success),
+	TP_ARGS(page, sem, got_lock, success));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
