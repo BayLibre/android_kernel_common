@@ -97,8 +97,11 @@
   blocking_notifier_chain_unregister
   bpf_trace_run1
   bpf_trace_run10
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   bpf_trace_run11
   bpf_trace_run12
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   bpf_trace_run2
   bpf_trace_run3
   bpf_trace_run4
@@ -128,6 +131,7 @@
   cdev_device_add
   cdev_device_del
   cdev_init
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   __cfg80211_alloc_event_skb
   __cfg80211_alloc_reply_skb
   cfg80211_chandef_create
@@ -159,6 +163,8 @@
   cfg80211_update_owe_info_event
   cfg80211_vendor_cmd_reply
   __cfi_slowpath_diag
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   __check_object_size
   check_preempt_curr
   __class_create
@@ -268,7 +274,11 @@
   __cpu_online_mask
   cpu_pm_register_notifier
   __cpu_possible_mask
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   cpupri_find_fitness
+=======
+  __cpu_present_mask
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   cpu_scale
   cpus_read_lock
   cpus_read_unlock
@@ -289,7 +299,15 @@
   crypto_comp_compress
   crypto_comp_decompress
   crypto_destroy_tfm
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   __crypto_memneq
+=======
+  crypto_has_alg
+  __crypto_memneq
+  crypto_register_notifier
+  crypto_register_shash
+  crypto_req_done
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   crypto_shash_digest
   crypto_shash_finup
   crypto_shash_setkey
@@ -297,6 +315,11 @@
   crypto_skcipher_decrypt
   crypto_skcipher_encrypt
   crypto_skcipher_setkey
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
+=======
+  crypto_unregister_notifier
+  crypto_unregister_shash
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   __crypto_xor
   csum_ipv6_magic
   csum_partial
@@ -329,6 +352,10 @@
   del_timer_sync
   desc_to_gpio
   destroy_workqueue
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
+=======
+  dev_addr_mod
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   dev_alloc_name
   __dev_change_net_namespace
   dev_close
@@ -353,7 +380,10 @@
   __dev_get_by_index
   dev_get_by_index
   dev_get_by_name
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   dev_get_stats
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   device_add
   device_add_disk
   device_add_groups
@@ -791,6 +821,10 @@
   emergency_restart
   enable_irq
   enable_percpu_irq
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
+=======
+  errno_to_blk_status
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   ether_setup
   eth_mac_addr
   ethtool_op_get_link
@@ -857,7 +891,10 @@
   gcd
   generic_file_llseek
   generic_handle_domain_irq
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   generic_iommu_put_resv_regions
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   genlmsg_multicast_allns
   genlmsg_put
   genl_register_family
@@ -879,6 +916,7 @@
   get_cpu_iowait_time_us
   get_device
   __get_free_pages
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   get_governor_parent_kobj
   gether_cleanup
   gether_connect
@@ -895,6 +933,8 @@
   gether_set_ifname
   gether_set_qmult
   gether_setup_name_default
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   get_net_ns_by_fd
   get_net_ns_by_pid
   get_pid_task
@@ -1008,9 +1048,6 @@
   idr_get_next
   idr_preload
   idr_remove
-  ieee80211_channel_to_freq_khz
-  ieee80211_freq_khz_to_channel
-  ieee80211_get_channel_khz
   ieee802154_alloc_hw
   ieee802154_free_hw
   ieee802154_register_hw
@@ -1139,8 +1176,11 @@
   kernel_param_lock
   kernel_param_unlock
   kernel_restart
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   kern_mount
   kern_unmount
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   key_create_or_update
   key_put
   keyring_alloc
@@ -1152,7 +1192,11 @@
   __kfifo_out_peek
   kfree
   kfree_sensitive
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   kfree_skb_list
+=======
+  kfree_skb_list_reason
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   kfree_skb_reason
   kill_anon_super
   kill_fasync
@@ -1317,12 +1361,19 @@
   netdev_update_features
   netif_carrier_off
   netif_carrier_on
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   netif_napi_add
+=======
+  netif_napi_add_weight
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   __netif_napi_del
   netif_receive_skb
   netif_receive_skb_list
   netif_rx
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   netif_rx_ni
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   netif_tx_stop_all_queues
   netif_tx_wake_queue
   netlink_broadcast
@@ -1333,8 +1384,11 @@
   netlink_unregister_notifier
   net_ns_type_operations
   net_ratelimit
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   nf_register_net_hooks
   nf_unregister_net_hooks
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   nla_find
   nla_memcpy
   __nla_parse
@@ -1606,11 +1660,19 @@
   pskb_expand_head
   __pskb_pull_tail
   ___pskb_trim
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   __put_cred
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   put_device
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   put_iova_domain
   __put_net
   __put_page
+=======
+  put_disk
+  __put_net
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   put_pid
   put_sg_io_hdr
   __put_task_struct
@@ -1719,9 +1781,6 @@
   regulator_set_voltage
   regulator_set_voltage_sel_regmap
   regulator_unregister
-  regulatory_hint
-  regulatory_set_wiphy_regd
-  regulatory_set_wiphy_regd_sync
   release_firmware
   __release_region
   remap_pfn_range
@@ -1751,7 +1810,12 @@
   __rht_bucket_nested
   rht_bucket_nested
   rht_bucket_nested_insert
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   root_task_group
+=======
+  __root_device_register
+  root_device_unregister
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   round_jiffies
   round_jiffies_relative
   round_jiffies_up
@@ -2012,6 +2076,10 @@
   __sw_hweight32
   __sw_hweight64
   __sw_hweight8
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
+=======
+  sync_blockdev
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   sync_file_create
   sync_file_get_fence
   synchronize_irq
@@ -2038,7 +2106,10 @@
   sysfs_update_group
   sysrq_mask
   system_freezable_wq
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   system_freezing_cnt
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   system_highpri_wq
   system_long_wq
   system_power_efficient_wq
@@ -2567,10 +2638,13 @@
   watchdog_register_device
   watchdog_set_restart_priority
   watchdog_unregister_device
+<<<<<<< HEAD   (913110 FROMLIST: binder: fix UAF caused by faulty buffer cleanup)
   wiphy_free
   wiphy_new_nm
   wiphy_register
   wiphy_unregister
+=======
+>>>>>>> CHANGE (e9f0e3 ANDROID: GKI: Trimmed symbol lists for 80211 modules)
   wireless_nlevent_flush
   woken_wake_function
   work_busy
