@@ -308097,6 +308097,11 @@ function {
   parameter_id: 0xf435685e
 }
 function {
+  id: 0x56fd367d
+  return_type_id: 0x18bd6530
+  parameter_id: 0x01ae1e33
+}
+function {
   id: 0x57022f7c
   return_type_id: 0x18bd6530
   parameter_id: 0x0665e6b6
@@ -315962,6 +315967,14 @@ function {
   parameter_id: 0x213e084f
   parameter_id: 0x029d7f27
   parameter_id: 0x084d74bf
+}
+function {
+  id: 0x9420019d
+  return_type_id: 0x6720d32f
+  parameter_id: 0x2fb647c0
+  parameter_id: 0x92233392
+  parameter_id: 0x18bd6530
+  parameter_id: 0xf435685e
 }
 function {
   id: 0x94203dd2
@@ -378584,6 +378597,15 @@ elf_symbol {
   full_name: "regulator_get_current_limit_regmap"
 }
 elf_symbol {
+  id: 0x4a781b7f
+  name: "regulator_get_drvdata"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd7c2947f
+  type_id: 0x56fd367d
+  full_name: "regulator_get_drvdata"
+}
+elf_symbol {
   id: 0xc92def38
   name: "regulator_get_linear_step"
   is_defined: true
@@ -388189,6 +388211,15 @@ elf_symbol {
   crc: 0x8516ffba
   type_id: 0x966d72df
   full_name: "ucsi_register"
+}
+elf_symbol {
+  id: 0x720b6de3
+  name: "ucsi_send_command"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xdba4426b
+  type_id: 0x9420019d
+  full_name: "ucsi_send_command"
 }
 elf_symbol {
   id: 0xe750d0b7
@@ -413358,6 +413389,10 @@ symbols {
     value: 0xfd198070
   }
   symbol {
+    key: "regulator_get_drvdata"
+    value: 0x4a781b7f
+  }
+  symbol {
     key: "regulator_get_linear_step"
     value: 0xc92def38
   }
@@ -417628,6 +417663,10 @@ symbols {
   symbol {
     key: "ucsi_register"
     value: 0x74041438
+  }
+  symbol {
+    key: "ucsi_send_command"
+    value: 0x720b6de3
   }
   symbol {
     key: "ucsi_set_drvdata"
