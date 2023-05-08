@@ -296787,6 +296787,13 @@ function {
   parameter_id: 0x34d86d1c
 }
 function {
+  id: 0x9abddc00
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x4585663f
+  parameter_id: 0x11cfee5a
+}
+function {
   id: 0x9abe486f
   return_type_id: 0x6720d32f
   parameter_id: 0x18a2fb63
@@ -306478,6 +306485,12 @@ function {
   parameter_id: 0x13580d6c
 }
 function {
+  id: 0xc867c639
+  return_type_id: 0x2b16c036
+  parameter_id: 0x2b16c036
+  parameter_id: 0x2b16c036
+}
+function {
   id: 0xc8743fe5
   return_type_id: 0x4585663f
   parameter_id: 0x18a2fb63
@@ -312260,6 +312273,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_cma_alloc_start"
 }
 elf_symbol {
+  id: 0x6bb36fb1
+  name: "__traceiter_android_vh_cma_drain_all_pages_bypass"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc098c853
+  type_id: 0x9abddc00
+  full_name: "__traceiter_android_vh_cma_drain_all_pages_bypass"
+}
+elf_symbol {
   id: 0x9247dcb1
   name: "__traceiter_android_vh_cpu_idle_enter"
   is_defined: true
@@ -314247,6 +314269,15 @@ elf_symbol {
   crc: 0xe870063b
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_cma_alloc_start"
+}
+elf_symbol {
+  id: 0x606ee087
+  name: "__tracepoint_android_vh_cma_drain_all_pages_bypass"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x3337fabd
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_cma_drain_all_pages_bypass"
 }
 elf_symbol {
   id: 0x26324a1f
@@ -320977,6 +321008,15 @@ elf_symbol {
   crc: 0xa52c26b6
   type_id: 0x16ea4d90
   full_name: "crypto_unregister_templates"
+}
+elf_symbol {
+  id: 0x2c08983d
+  name: "css_next_descendant_pre"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x02c7e6e5
+  type_id: 0xc867c639
+  full_name: "css_next_descendant_pre"
 }
 elf_symbol {
   id: 0x81bdacc5
@@ -358334,6 +358374,10 @@ symbols {
     value: 0x1104ae4c
   }
   symbol {
+    key: "__traceiter_android_vh_cma_drain_all_pages_bypass"
+    value: 0x6bb36fb1
+  }
+  symbol {
     key: "__traceiter_android_vh_cpu_idle_enter"
     value: 0x9247dcb1
   }
@@ -359216,6 +359260,10 @@ symbols {
   symbol {
     key: "__tracepoint_android_vh_cma_alloc_start"
     value: 0x62c56ae6
+  }
+  symbol {
+    key: "__tracepoint_android_vh_cma_drain_all_pages_bypass"
+    value: 0x606ee087
   }
   symbol {
     key: "__tracepoint_android_vh_cpu_idle_enter"
@@ -362208,6 +362256,10 @@ symbols {
   symbol {
     key: "crypto_unregister_templates"
     value: 0x9b2d60fa
+  }
+  symbol {
+    key: "css_next_descendant_pre"
+    value: 0x2c08983d
   }
   symbol {
     key: "csum_ipv6_magic"
