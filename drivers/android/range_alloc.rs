@@ -8,22 +8,83 @@ use kernel::{
 };
 
 pub(crate) struct RangeAllocator<T> {
+    size: usize,
     tree: RBTree<usize, Descriptor<T>>,
     free_tree: RBTree<(usize, usize), ()>,
     free_oneway_space: usize,
+    oneway_spam_detected: bool,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+enum Reservation {
+    OneWay {
+        pid: i32,
+        allocated: bool,
+        spam_suspect: bool,
+    },
+    TwoWay {
+        pid: i32,
+        allocated: bool,
+    },
+}
+
+impl Reservation {
+    fn new(pid: i32, oneway: Option<bool>) -> Self {
+        match oneway {
+            Some(spam_suspect) => Self::OneWay {
+                pid,
+                allocated: false,
+                spam_suspect,
+            },
+            None => Self::TwoWay {
+                pid,
+                allocated: false,
+            },
+        }
+    }
+
+    fn allocate(&mut self) {
+        match self {
+            Self::OneWay { allocated, .. } | Self::TwoWay { allocated, .. } => *allocated = true,
+        }
+    }
+
+    fn deallocate(&mut self) {
+        match self {
+            Self::OneWay { allocated, .. } | Self::TwoWay { allocated, .. } => *allocated = false,
+        }
+    }
+
+    fn pid(&self) -> i32 {
+        match self {
+            Self::OneWay { pid, .. } | Self::TwoWay { pid, .. } => *pid,
+        }
+    }
+
+    fn is_allocated(&self) -> bool {
+        match self {
+            Self::OneWay { allocated, .. } | Self::TwoWay { allocated, .. } => *allocated,
+        }
+    }
+
+    fn is_oneway(&self) -> bool {
+        match self {
+            Self::OneWay { .. } => true,
+            _ => false,
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 enum DescriptorState {
     Free,
-    Reserved { is_oneway: bool },
-    Allocated { is_oneway: bool },
+    Reserved(Reservation),
 }
 
 impl DescriptorState {
     fn is_allocated(&self) -> bool {
         match self {
-            DescriptorState::Allocated { .. } => true,
+            DescriptorState::Reserved(reservation) => reservation.is_allocated(),
             _ => false,
         }
     }
@@ -37,6 +98,8 @@ impl<T> RangeAllocator<T> {
         free_tree.try_insert((size, 0), ())?;
         Ok(Self {
             free_oneway_space: size / 2,
+            oneway_spam_detected: false,
+            size,
             tree,
             free_tree,
         })
@@ -53,6 +116,7 @@ impl<T> RangeAllocator<T> {
         &mut self,
         size: usize,
         is_oneway: bool,
+        pid: i32,
         alloc: ReserveNewBox<T>,
     ) -> Result<usize> {
         // Compute new value of free_oneway_space, which is set only on success.
@@ -65,6 +129,17 @@ impl<T> RangeAllocator<T> {
             self.free_oneway_space
         };
 
+        let oneway_spam = if is_oneway && new_oneway_space < self.size / 10 {
+            /*
+             * Start detecting spammers once we have less than 20%
+             * of async space left (which is less than 10% of total
+             * buffer size).
+             */
+            Some(self.low_oneway_space(pid))
+        } else {
+            None
+        };
+
         let (found_size, found_offset) = match self.find_best_match(size) {
             None => {
                 pr_warn!("ENOSPC from range_alloc.reserve_new - size: {}", size);
@@ -72,11 +147,13 @@ impl<T> RangeAllocator<T> {
             }
             Some(desc) => {
                 let found = (desc.size, desc.offset);
-                desc.state = DescriptorState::Reserved { is_oneway };
+                desc.state = DescriptorState::Reserved(Reservation::new(pid, oneway_spam));
                 desc.size = size;
                 found
             }
         };
+
+        self.oneway_spam_detected = oneway_spam == Some(true);
         self.free_oneway_space = new_oneway_space;
         self.free_tree.remove(&(found_size, found_offset));
 
@@ -101,6 +178,7 @@ impl<T> RangeAllocator<T> {
         &mut self,
         size: usize,
         is_oneway: bool,
+        pid: i32,
     ) -> Result<Option<usize>> {
         // Compute new value of free_oneway_space, which is set only on success.
         let new_oneway_space = if is_oneway {
@@ -110,6 +188,17 @@ impl<T> RangeAllocator<T> {
             }
         } else {
             self.free_oneway_space
+        };
+
+        let oneway_spam = if is_oneway && new_oneway_space < self.size / 10 {
+            /*
+             * Start detecting spammers once we have less than 20%
+             * of async space left (which is less than 10% of total
+             * buffer size).
+             */
+            Some(self.low_oneway_space(pid))
+        } else {
+            None
         };
 
         let (found_size, found_offset) = match self.find_best_match(size) {
@@ -122,12 +211,13 @@ impl<T> RangeAllocator<T> {
             }
             Some(desc) if desc.size == size => {
                 let found = (desc.size, desc.offset);
-                desc.state = DescriptorState::Reserved { is_oneway };
+                desc.state = DescriptorState::Reserved(Reservation::new(pid, oneway_spam));
                 found
             }
             _ => return Ok(None),
         };
 
+        self.oneway_spam_detected = oneway_spam == Some(true);
         self.free_oneway_space = new_oneway_space;
         self.free_tree.remove(&(found_size, found_offset));
         Ok(Some(found_offset))
@@ -152,14 +242,14 @@ impl<T> RangeAllocator<T> {
                 );
                 return Err(EINVAL);
             }
-            DescriptorState::Allocated { .. } => {
+            DescriptorState::Reserved(reservation) if reservation.is_allocated() => {
                 pr_warn!(
                     "EPERM from range_alloc.reservation_abort - offset: {}",
                     offset
                 );
                 return Err(EPERM);
             }
-            DescriptorState::Reserved { is_oneway } => is_oneway,
+            DescriptorState::Reserved(reservation) => reservation.is_oneway(),
         };
 
         let mut size = desc.size;
@@ -217,8 +307,10 @@ impl<T> RangeAllocator<T> {
             ENOENT
         })?;
 
-        let is_oneway = match desc.state {
-            DescriptorState::Reserved { is_oneway } => is_oneway,
+        match desc.state {
+            DescriptorState::Reserved(mut reservation) if !reservation.is_allocated() => {
+                reservation.allocate()
+            }
             _ => {
                 pr_warn!(
                     "ENOENT from range_alloc.reservation_commit - offset: {}",
@@ -228,7 +320,6 @@ impl<T> RangeAllocator<T> {
             }
         };
 
-        desc.state = DescriptorState::Allocated { is_oneway };
         desc.data = data;
 
         Ok(())
@@ -239,7 +330,7 @@ impl<T> RangeAllocator<T> {
     ///
     /// Returns the size of the existing entry and the data associated with it.
     pub(crate) fn reserve_existing(&mut self, offset: usize) -> Result<(usize, Option<T>)> {
-        let mut desc = self.tree.get_mut(&offset).ok_or_else(|| {
+        let desc = self.tree.get_mut(&offset).ok_or_else(|| {
             pr_warn!(
                 "ENOENT from range_alloc.reserve_existing - offset: {}",
                 offset
@@ -247,8 +338,10 @@ impl<T> RangeAllocator<T> {
             ENOENT
         })?;
 
-        let is_oneway = match desc.state {
-            DescriptorState::Allocated { is_oneway } => is_oneway,
+        match desc.state {
+            DescriptorState::Reserved(mut reservation) if reservation.is_allocated() => {
+                reservation.deallocate()
+            }
             _ => {
                 pr_warn!(
                     "ENOENT from range_alloc.reserve_existing - offset: {}",
@@ -257,8 +350,6 @@ impl<T> RangeAllocator<T> {
                 return Err(ENOENT);
             }
         };
-
-        desc.state = DescriptorState::Reserved { is_oneway };
 
         Ok((desc.size, desc.data.take()))
     }
@@ -270,6 +361,37 @@ impl<T> RangeAllocator<T> {
                 callback(desc.offset, desc.size, desc.data.take());
             }
         }
+    }
+
+    /*
+     * Find the amount and size of buffers allocated by the current caller;
+     * The idea is that once we cross the threshold, whoever is responsible
+     * for the low async space is likely to try to send another async txn,
+     * and at some point we'll catch them in the act. This is more efficient
+     * than keeping a map per pid.
+     */
+    fn low_oneway_space(&self, pid: i32) -> bool {
+        let mut iter = self.tree.iter();
+        let mut total_alloc_size = 0;
+        let mut num_buffers = 0;
+        while let Some((_, next)) = iter.next() {
+            match next.state {
+                DescriptorState::Free => {}
+                DescriptorState::Reserved(reservation) => {
+                    if reservation.is_oneway() && reservation.pid() == pid {
+                        num_buffers = num_buffers + 1;
+                        total_alloc_size = total_alloc_size + next.size
+                    }
+                }
+            }
+        }
+
+        /*
+         * Warn if this pid has more than 50 transactions, or more than 50% of
+         * async space (which is 25% of total buffer size). Oneway spam is only
+         * detected when the threshold is exceeded.
+         */
+        num_buffers > 50 || total_alloc_size > self.size / 4
     }
 }
 
@@ -325,6 +447,7 @@ impl<T> ReserveNewBox<T> {
 
 // TODO: uncomment once test support is available
 // #[kunit_tests(rust_android_binder_driver_range_alloc)]
+#[cfg(test)]
 #[allow(dead_code, unused_imports)] // TODO: remove once test support is available
 mod tests {
     use core::iter::Iterator;
@@ -784,10 +907,10 @@ mod tests {
                 assert!(free_tree.get(&(desc.size, desc.offset)).is_some());
             }
             // oneway descriptors consume oneway space
-            DescriptorState::Reserved { is_oneway } if is_oneway => {
+            DescriptorState::Reserved { is_oneway, .. } if is_oneway => {
                 consumed_oneway_space += desc.size;
             }
-            DescriptorState::Allocated { is_oneway } if is_oneway => {
+            DescriptorState::Allocated { is_oneway, .. } if is_oneway => {
                 consumed_oneway_space += desc.size;
             }
             _ => {}
@@ -811,10 +934,10 @@ mod tests {
                     assert!(free_tree.get(&(desc.size, desc.offset)).is_some());
                 }
                 // oneway descriptors consume oneway space
-                DescriptorState::Reserved { is_oneway } if is_oneway => {
+                DescriptorState::Reserved { is_oneway, .. } if is_oneway => {
                     consumed_oneway_space += desc.size;
                 }
-                DescriptorState::Allocated { is_oneway } if is_oneway => {
+                DescriptorState::Allocated { is_oneway, .. } if is_oneway => {
                     consumed_oneway_space += desc.size;
                 }
                 _ => {}
