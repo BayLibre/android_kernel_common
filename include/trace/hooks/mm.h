@@ -53,6 +53,14 @@ DECLARE_HOOK(android_vh_io_statistics,
 DECLARE_HOOK(android_vh_pagetypeinfo_show,
 	TP_PROTO(struct seq_file *m),
 	TP_ARGS(m));
+DECLARE_HOOK(android_vh_dm_bufio_shrink_scan_bypass,
+	TP_PROTO(unsigned long dm_bufio_current_allocated, bool *bypass),
+	TP_ARGS(dm_bufio_current_allocated, bypass));
+DECLARE_HOOK(android_vh_cleanup_old_buffers_bypass,
+	TP_PROTO(unsigned long dm_bufio_current_allocated,
+		unsigned long *max_age_hz,
+		bool *bypass),
+	TP_ARGS(dm_bufio_current_allocated, max_age_hz, bypass));
 
 struct cma;
 DECLARE_HOOK(android_vh_cma_alloc_bypass,
