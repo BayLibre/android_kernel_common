@@ -792,7 +792,7 @@ static inline bool pcp_allowed_order(unsigned int order)
 
 static inline void free_the_page(struct page *page, unsigned int order)
 {
-	if (pcp_allowed_order(order))		/* Via pcp? */
+	if (pcp_allowed_order(order) && !is_migrate_metadata_page(page))		/* Via pcp? */
 		free_unref_page(page, order);
 	else
 		__free_pages_ok(page, order, FPI_NONE);
