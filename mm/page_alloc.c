@@ -4327,6 +4327,7 @@ static inline unsigned int gfp_to_alloc_flags_fast(gfp_t gfp_mask,
 #ifdef CONFIG_MEMORY_METADATA
 	if (metadata_storage_enabled() &&
 	    gfp_migratetype(gfp_mask) == MIGRATE_MOVABLE &&
+	    !(gfp_mask & __GFP_NO_MIGRATE_METADATA) &&
 	    alloc_can_use_metadata_pages(gfp_mask))
 		alloc_flags |= ALLOC_FROM_METADATA;
 #endif

@@ -1735,6 +1735,8 @@ int vma_migrate_metadata_pages(struct vm_area_struct *vma,
 
 	if (WARN_ON_ONCE(gfp_mask & __GFP_TAGGED))
 		gfp_mask &= ~__GFP_TAGGED;
+	/* Don't replace metadata pages with other metadata pages. */
+	gfp_mask |= __GFP_NO_MIGRATE_METADATA;
 	mtc.gfp_mask = gfp_mask;
 
 	if (WARN_ON_ONCE(old_vma_flags & VM_MTE))
