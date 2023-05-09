@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cf70410_468590de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930676
+      },
+      "writtenOn": "2023-05-09T00:33:20Z",
+      "side": 1,
+      "message": "I filed a bug as below.\nhttps://partnerissuetracker.corp.google.com/issues/281566498\n\nWe\u0027ve met panic also as below without this revert patch.\n\n[   85.810361] [1:batterystats-wo: 1012] ------------[ cut here ]------------\n[   85.810397] [1:batterystats-wo: 1012] Voluntary context switch within RCU read-side critical section!\n[   85.810424] [1:batterystats-wo: 1012] WARNING: CPU: 1 PID: 1012 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x724/0x95c\n...\n[   85.812938] [1:batterystats-wo: 1012] CPU: 1 PID: 1012 Comm: batterystats-wo Tainted: G S      WC  E      6.1.25-android14-5-00069-gae82965dff57 #1\n[   85.812966] [1:batterystats-wo: 1012] Hardware name: Samsung ERD9945 board based on S5E9945 (DT)\n[   85.812987] [1:batterystats-wo: 1012] pstate: 624000c5 (nZCv daIF +PAN -UAO +TCO -DIT -SSBS BTYPE\u003d--)\n[   85.813015] [1:batterystats-wo: 1012] pc : rcu_note_context_switch+0x724/0x95c\n[   85.813043] [1:batterystats-wo: 1012] lr : rcu_note_context_switch+0x724/0x95c\n[   85.813068] [1:batterystats-wo: 1012] sp : ffffffc02a9d7800\n[   85.813086] [1:batterystats-wo: 1012] x29: ffffffc02a9d7840 x28: ffffffd00b8cc938 x27: 0000000000000000\n[   85.813128] [1:batterystats-wo: 1012] x26: ffffff8915c11f00 x25: daffff8951198000 x24: 0000000000000000\n[   85.813170] [1:batterystats-wo: 1012] x23: ffffffd00b22df00 x22: ffffffb90a9e4000 x21: daffff8951198000\n[   85.813211] [1:batterystats-wo: 1012] x20: daffff8951198000 x19: efffffc000000000 x18: 0000000000000000\n[   85.813253] [1:batterystats-wo: 1012] x17: 2065726568207475 x16: 00000000000000da x15: 2d2d2d2d2d2d2d20\n[   85.813295] [1:batterystats-wo: 1012] x14: 5d32313031203a6f x13: 00000000000911d8 x12: 0000000000091180\n[   85.813336] [1:batterystats-wo: 1012] x11: 00000000ffffffff x10: ffffffb90a9e4000 x9 : 025252a2b7bbb400\n[   85.813378] [1:batterystats-wo: 1012] x8 : 025252a2b7bbb400 x7 : 00000000000911d8 x6 : 0000000000091180\n[   85.813419] [1:batterystats-wo: 1012] x5 : ffffffc02a9d7508 x4 : ffffffd00b2a2700 x3 : ffffffd0092db4ac\n[   85.813461] [1:batterystats-wo: 1012] x2 : 0000000000000001 x1 : 0000000000000004 x0 : 000000000000003f\n[   85.813502] [1:batterystats-wo: 1012] Call trace:\n[   85.813519] [1:batterystats-wo: 1012]  rcu_note_context_switch+0x724/0x95c\n[   85.813545] [1:batterystats-wo: 1012]  __schedule+0xf4/0xf58\n[   85.813574] [1:batterystats-wo: 1012]  schedule+0xd8/0x160\n[   85.813599] [1:batterystats-wo: 1012]  rt_mutex_slowlock_block+0x1f8/0x454\n[   85.813623] [1:batterystats-wo: 1012]  rt_mutex_lock_nested+0x200/0x554\n[   85.813646] [1:batterystats-wo: 1012]  uid_cputime_show+0x160/0x388\n[   85.813675] [1:batterystats-wo: 1012]  seq_read_iter+0x230/0x6a4\n[   85.813699] [1:batterystats-wo: 1012]  seq_read+0xb8/0xfc\n[   85.813721] [1:batterystats-wo: 1012]  proc_reg_read+0x148/0x180\n[   85.813744] [1:batterystats-wo: 1012]  vfs_read+0x12c/0x358\n[   85.813770] [1:batterystats-wo: 1012]  ksys_read+0xa4/0x11c\n[   85.813794] [1:batterystats-wo: 1012]  __arm64_sys_read+0x48/0x54\n[   85.813818] [1:batterystats-wo: 1012]  invoke_syscall+0x64/0x164\n[   85.813845] [1:batterystats-wo: 1012]  el0_svc_common+0xc4/0x140\n[   85.813870] [1:batterystats-wo: 1012]  do_el0_svc+0x50/0x120\n[   85.813894] [1:batterystats-wo: 1012]  el0_svc+0x2c/0x80\n[   85.813917] [1:batterystats-wo: 1012]  el0t_64_sync_handler+0x48/0x114\n[   85.813940] [1:batterystats-wo: 1012]  el0t_64_sync+0x190/0x194\n[   85.813967] [1:batterystats-wo: 1012] Kernel panic - not syncing: kernel: panic_on_warn set",
+      "revId": "eeb4f08fa748b705f1b805b3c4d24f691e5751b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
