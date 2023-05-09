@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000044521350",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2584332?revision\u003d5",
+      "fixSuggestions": [
+        {
+          "fixId": "2880e98a_17fad86b",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 55,
+                "startChar": 0,
+                "endLine": 55,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: tanghuan@vivo.com \u003ctanghuan\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "516f3ec6_fcbe579e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-05-09T13:45:58Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: tanghuan@vivo.com \u003ctanghuan\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 530306745 android-build.ayeaye-python-dispatcher_20230508.05_p0",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 0
+      },
+      "revId": "802202c0ad233bebd2df6d69d6d632abb2ee0d76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
