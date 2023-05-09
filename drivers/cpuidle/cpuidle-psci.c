@@ -316,7 +316,9 @@ static int psci_idle_init_cpu(struct device *dev, int cpu)
 	 * state index 0.
 	 */
 	drv->states[0].enter = psci_enter_idle_state;
-	drv->states[0].exit_latency = 1;
+	// by jay
+	//drv->states[0].exit_latency = 1;
+	drv->states[0].exit_latency = 14;
 	drv->states[0].target_residency = 1;
 	drv->states[0].power_usage = UINT_MAX;
 	strcpy(drv->states[0].name, "WFI");
