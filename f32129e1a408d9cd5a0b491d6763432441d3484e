@@ -51,6 +51,24 @@
       "message": "May be these are required to be defined in in a separate list as we don\u0027t have these modules for the `x86_64`.\n\n```\nAARCH64_GKI_MODULES_LIST \u003d [\n    #keep sorted\n    \"drivers/virt/gunyah/gunyah_ioeventfd.ko\",\n    \"drivers/virt/gunyah/gunyah_irqfd.ko\",\n    \"drivers/virt/gunyah/gunyah_vcpu.ko\",\n]\n```\n\nAnd in the `BUILD.bazel` for the `kernel_aarch64*`:\n\n```\n\"module_implicit_outs\": AARCH64_GKI_MODULES_LIST + COMMON_GKI_MODULES_LIST,\n```",
       "revId": "f32129e1a408d9cd5a0b491d6763432441d3484e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e85a0b47_c1114cbb",
+        "filename": "modules.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-05-09T23:39:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7882bbb0_16dd5614",
+      "revId": "f32129e1a408d9cd5a0b491d6763432441d3484e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
