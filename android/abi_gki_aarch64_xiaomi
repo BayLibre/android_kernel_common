@@ -166,3 +166,8 @@
   __tracepoint_android_vh_freq_qos_add_request
   __tracepoint_android_rvh_dequeue_task_fair
   __tracepoint_android_rvh_entity_tick
+
+#required by millet.ko
+  __traceiter_android_rvh_refrigerator
+  __tracepoint_android_rvh_refrigerator
+  freezer_cgrp_subsys
