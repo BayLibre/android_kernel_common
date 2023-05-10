@@ -20,6 +20,8 @@
 #include <linux/vm_event_item.h>
 #include <linux/xarray.h>
 
+#include <asm/cacheflush.h>
+
 __ro_after_init DEFINE_STATIC_KEY_FALSE(mte_tag_storage_enabled_key);
 
 struct tag_region {
@@ -429,9 +431,14 @@ bool page_tag_storage_reserved(struct page *page)
 		tag_storage_block_is_reserved(block);
 }
 
-static int tag_storage_reserve_block(unsigned long block)
+static int tag_storage_reserve_block(unsigned long block, unsigned long block_size)
 {
+	unsigned long block_va;
 	int ret;
+
+	block_va = (unsigned long)page_to_virt(pfn_to_page(block));
+	/* Avoid writeback of dirty data cache lines corrupting tags. */
+	dcache_inval_poc(block_va, block_va + block_size * PAGE_SIZE);
 
 	ret = xa_err(xa_store(&tag_blocks_reserved, block, pfn_to_page(block), GFP_KERNEL));
 	if (!ret)
@@ -508,7 +515,7 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 		if (ret)
 			goto out_error;
 
-		ret = tag_storage_reserve_block(block);
+		ret = tag_storage_reserve_block(block, region->block_size);
 		if (ret) {
 			free_contig_range(block, region->block_size);
 			goto out_error;
@@ -545,6 +552,7 @@ void free_tag_storage(struct page *page, int order)
 {
 	unsigned long block, start_block, end_block;
 	struct tag_region *region;
+	unsigned long page_va;
 	unsigned long flags;
 	int ret;
 
@@ -554,8 +562,14 @@ void free_tag_storage(struct page *page, int order)
 	ret = tag_storage_find_block(page, &start_block, &region);
 	if (WARN_ON_ONCE(ret))
 		return;
-
 	end_block = start_block + order_to_blocks(order) * region->block_size;
+
+	page_va = (unsigned long)page_to_virt(page);
+	/*
+	 * Remove dirty tag cache lines to avoid corruption of the tag storage
+	 * page contents when it gets freed back to the page allocator.
+	 */
+	dcache_inval_tags_poc(page_va, page_va + (PAGE_SIZE << order));
 
 	xa_lock_irqsave(&tag_blocks_reserved, flags);
 	for (block = start_block; block < end_block; block += region->block_size) {
