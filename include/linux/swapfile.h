@@ -14,5 +14,7 @@ unsigned long arch_max_swapfile_size(void);
 extern unsigned long swapfile_maximum_size;
 /* Whether swap migration entry supports storing A/D bits for the arch */
 extern bool swap_migration_ad_supported;
-
+int unuse_swap_pte(struct vm_area_struct *vma, pmd_t *pmd,
+		unsigned long addr, swp_entry_t entry, struct folio *folio);
+int unuse_swap_page(struct vm_area_struct *vma, unsigned long addr);
 #endif /* _LINUX_SWAPFILE_H */

@@ -1899,6 +1899,67 @@ out:
 	return ret;
 }
 
+int unuse_swap_pte(struct vm_area_struct *vma, pmd_t *pmd,
+		unsigned long addr, swp_entry_t entry, struct folio *folio)
+{
+	return unuse_pte(vma, pmd, addr, entry, folio);
+}
+EXPORT_SYMBOL_GPL(unuse_swap_pte);
+
+/**
+ * unuse_swap_page - unuse swap pte
+ * @vma: user vma to unuse swap
+ * @address: user virtual address
+ *
+ * Note: this is only safe if the mmap lock is held when called.
+ * Return 1 for success; 0 for no processing; negative for error code.
+ */
+int unuse_swap_page(struct vm_area_struct *vma, unsigned long addr)
+{
+	struct page *page;
+	struct folio *folio;
+	swp_entry_t entry;
+	pmd_t *pmd;
+	pte_t *pte;
+	pte_t ptent;
+	int ret;
+
+	if (addr < vma->vm_start || addr >= vma->vm_end)
+		return -EINVAL;
+	pmd = mm_find_pmd(vma->vm_mm, addr);
+	if (!pmd)
+		return -EFAULT;
+
+	pte = pte_offset_map(pmd, addr);
+	ptent = *pte;
+	barrier();
+	pte_unmap(pte);
+
+	if (!is_swap_pte(ptent))
+		return 0;
+
+	entry = pte_to_swp_entry(ptent);
+	if (non_swap_entry(entry))
+		return 0;
+
+	page = read_swap_cache_async(entry, GFP_HIGHUSER_MOVABLE,
+						vma, addr, true, NULL);
+	if (!page)
+		return -ENOMEM;
+
+	folio = page_folio(page);
+	folio_lock(folio);
+	folio_wait_writeback(folio);
+	ret = unuse_swap_pte(vma, pmd, addr, entry, folio);
+	if (ret >= 0)
+		folio_free_swap(folio);
+	folio_unlock(folio);
+	folio_put(folio);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(unuse_swap_page);
+
 static inline int unuse_pmd_range(struct vm_area_struct *vma, pud_t *pud,
 				unsigned long addr, unsigned long end,
 				unsigned int type)
