@@ -24,8 +24,15 @@
 #include <linux/sbitmap.h>
 #include <linux/uuid.h>
 #include <linux/xarray.h>
+<<<<<<< HEAD   (cbb42d Revert "ANDROID: Allow MODVERSIONS + Rust with no symbol exp)
 #include <linux/file.h>
 #include <linux/lockdep.h>
+||||||| BASE
+#include <linux/android_kabi.h>
+=======
+#include <linux/android_kabi.h>
+#include <linux/android_vendor.h>
+>>>>>>> CHANGE (b169eb ANDROID: GKI: add ANDROID_OEM_DATA() in struct request_queue)
 
 struct module;
 struct request_queue;
@@ -593,6 +600,21 @@ struct request_queue {
 	struct mutex		debugfs_mutex;
 
 	bool			mq_sysfs_init_done;
+<<<<<<< HEAD   (cbb42d Revert "ANDROID: Allow MODVERSIONS + Rust with no symbol exp)
+||||||| BASE
+
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
+	ANDROID_KABI_RESERVE(3);
+	ANDROID_KABI_RESERVE(4);
+=======
+	ANDROID_OEM_DATA(1);
+
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
+	ANDROID_KABI_RESERVE(3);
+	ANDROID_KABI_RESERVE(4);
+>>>>>>> CHANGE (b169eb ANDROID: GKI: add ANDROID_OEM_DATA() in struct request_queue)
 };
 
 /* Keep blk_queue_flag_name[] in sync with the definitions below */
