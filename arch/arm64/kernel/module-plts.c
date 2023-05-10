@@ -8,6 +8,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/sort.h>
+#include <linux/rhashtable.h>
 
 static struct plt_entry __get_adrp_add_pair(u64 dst, u64 pc,
 					    enum aarch64_insn_register reg)
@@ -148,22 +149,44 @@ static int cmp_rela(const void *a, const void *b)
 	return i;
 }
 
+/*
 static bool duplicate_rel(const Elf64_Rela *rela, int num)
 {
-	/*
-	 * Entries are sorted by type, symbol index and addend. That means
-	 * that, if a duplicate entry exists, it must be in the preceding
-	 * slot.
-	 */
 	return num > 0 && cmp_rela(rela + num, rela + num - 1) == 0;
 }
+*/
+
+struct Elf64_entry {
+	struct rhash_head l;
+	Elf64_Rela rela;	
+};
+
+static int cmp_rela_hash_obj(struct rhashtable_compare_arg * arg, const void *ptr)
+{
+	const struct Elf64_entry *entry = ptr;
+	const Elf64_Rela *rela = arg->key;
+
+	return cmp_rela(entry, rela);
+}
+
+static const struct rhashtable_params elf64_params = {
+	.key_len = sizeof(Elf64_Rela),
+	.key_offset = offsetof(struct Elf64_entry, rela),
+	.head_offset = offsetof(struct Elf64_entry, l),
+	// .automatic_shrinking = true,
+	.obj_cmpfn = cmp_rela_hash_obj,
+};
 
 static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
 			       Elf64_Word dstidx, Elf_Shdr *dstsec)
 {
+	struct rhashtable elf64_entries;
 	unsigned int ret = 0;
 	Elf64_Sym *s;
 	int i;
+	struct Elf64_entry *e;
+
+	rhashtable_init(&elf64_entries, &elf64_params);
 
 	for (i = 0; i < num; i++) {
 		u64 min_align;
@@ -202,8 +225,13 @@ static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
 			 * having to search the list for duplicates each time we
 			 * emit one.
 			 */
-			if (rela[i].r_addend != 0 || !duplicate_rel(rela, i))
+			e = kzalloc(sizeof(*e), GFP_KERNEL);
+			if (!e)
+				return -ENOMEM;
+			e->rela = rela[i];
+			if (rela[i].r_addend != 0 || !rhashtable_lookup_get_insert_fast(&elf64_entries, &e->l, elf64_params))    // !duplicate_rel(rela, i))
 				ret++;
+
 			break;
 		case R_AARCH64_ADR_PREL_PG_HI21_NC:
 		case R_AARCH64_ADR_PREL_PG_HI21:
