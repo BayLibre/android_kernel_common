@@ -6167,6 +6167,7 @@ static void ufshcd_err_handler(struct work_struct *work)
 	unsigned long flags;
 	bool err_xfer = false;
 	bool err_tm = false;
+	bool host_sem_taken = false;
 	int err = 0, pmc_err;
 	int tag;
 	bool needs_reset = false, needs_restore = false;
@@ -6175,13 +6176,18 @@ static void ufshcd_err_handler(struct work_struct *work)
 
 	hba = container_of(work, struct ufs_hba, eh_work);
 
-	down(&hba->host_sem);
+	if (hba->pm_op_in_progress)
+		host_sem_taken = true;
+
+	if (!host_sem_taken)
+		down(&hba->host_sem);
 	spin_lock_irqsave(hba->host->host_lock, flags);
 	if (ufshcd_err_handling_should_stop(hba)) {
 		if (hba->ufshcd_state != UFSHCD_STATE_ERROR)
 			hba->ufshcd_state = UFSHCD_STATE_OPERATIONAL;
 		spin_unlock_irqrestore(hba->host->host_lock, flags);
-		up(&hba->host_sem);
+		if (!host_sem_taken)
+			up(&hba->host_sem);
 		return;
 	}
 	ufshcd_set_eh_in_progress(hba);
@@ -6341,7 +6347,8 @@ skip_err_handling:
 	ufshcd_clear_eh_in_progress(hba);
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
 	ufshcd_err_handling_unprepare(hba);
-	up(&hba->host_sem);
+	if (!host_sem_taken)
+		up(&hba->host_sem);
 }
 
 /**
