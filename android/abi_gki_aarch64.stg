@@ -1,4 +1,4 @@
-root_id: 0x25a8b173
+root_id: 0x84ea5130
 void {
   id: 0x48b5725f
 }
@@ -339997,6 +339997,15 @@ elf_symbol {
   full_name: "__traceiter_android_rvh_wake_up_new_task"
 }
 elf_symbol {
+  id: 0x4871eea0
+  name: "__traceiter_android_vh_account_process_tick_granularity"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe197cc30
+  type_id: 0x9a37ef2c
+  full_name: "__traceiter_android_vh_account_process_tick_granularity"
+}
+elf_symbol {
   id: 0x505f4289
   name: "__traceiter_android_vh_alter_futex_plist_add"
   is_defined: true
@@ -342155,6 +342164,15 @@ elf_symbol {
   crc: 0x6b60d8f1
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_rvh_wake_up_new_task"
+}
+elf_symbol {
+  id: 0xc565980a
+  name: "__tracepoint_android_vh_account_process_tick_granularity"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x8b735b03
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_account_process_tick_granularity"
 }
 elf_symbol {
   id: 0xd82141b7
@@ -394595,7 +394613,7 @@ elf_symbol {
   full_name: "zs_unmap_object"
 }
 symbols {
-  id: 0x25a8b173
+  id: 0x84ea5130
   symbol {
     key: "I_BDEV"
     value: 0x2dddbe52
@@ -396293,6 +396311,10 @@ symbols {
     value: 0xebcd0234
   }
   symbol {
+    key: "__traceiter_android_vh_account_process_tick_granularity"
+    value: 0x4871eea0
+  }
+  symbol {
     key: "__traceiter_android_vh_alter_futex_plist_add"
     value: 0x505f4289
   }
@@ -397251,6 +397273,10 @@ symbols {
   symbol {
     key: "__tracepoint_android_rvh_wake_up_new_task"
     value: 0xdcf22716
+  }
+  symbol {
+    key: "__tracepoint_android_vh_account_process_tick_granularity"
+    value: 0xc565980a
   }
   symbol {
     key: "__tracepoint_android_vh_alter_futex_plist_add"
