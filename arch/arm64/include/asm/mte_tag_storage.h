@@ -7,6 +7,8 @@
 
 #include <linux/mm_types.h>
 
+extern void dcache_inval_tags_poc(unsigned long start, unsigned long end);
+
 #ifdef CONFIG_ARM64_MTE_TAG_STORAGE
 void mte_tag_storage_init(void);
 bool page_tag_storage_reserved(struct page *page);
