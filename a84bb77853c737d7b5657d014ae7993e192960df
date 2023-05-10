@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c406f97_2ae59f9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-10T10:03:52Z",
+      "side": 1,
+      "message": "Please use the normal in-kernel apis already for drivers, you should not need these exports.",
+      "revId": "a84bb77853c737d7b5657d014ae7993e192960df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a837c67b_19c22039",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1907,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-10T10:03:52Z",
+      "side": 1,
+      "message": "sorry, but no, this is just a wrapper around the above function which is not exported for drivers to use.",
+      "range": {
+        "startLine": 1907,
+        "startChar": 0,
+        "endLine": 1907,
+        "endChar": 34
+      },
+      "revId": "a84bb77853c737d7b5657d014ae7993e192960df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01668786_7525f5d7",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1915,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-10T10:03:52Z",
+      "side": 1,
+      "message": "that is not a normal kernel return code at all.",
+      "range": {
+        "startLine": 1915,
+        "startChar": 10,
+        "endLine": 1915,
+        "endChar": 23
+      },
+      "revId": "a84bb77853c737d7b5657d014ae7993e192960df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
