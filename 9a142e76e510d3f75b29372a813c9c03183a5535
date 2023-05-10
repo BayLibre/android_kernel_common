@@ -16,6 +16,24 @@
       "message": "Why wasn\u0027t the original commit rebased? This should be a cherry-pick from the original patch and any required amends can be listed in the commit message. This has a different Change-Id too.",
       "revId": "9a142e76e510d3f75b29372a813c9c03183a5535",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f105b5a9_4ed8d9e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2023-05-10T01:54:56Z",
+      "side": 1,
+      "message": "Hi, the origin patch can not be cherry-pick into android14-5.10 \u0026 android14-6.1. There has no file named futex.c. So I decide to create a new issue and move these hook into new files.\n\nIs it better to process like this commit?\nhttps://android-review.googlesource.com/c/kernel/common/+/2564452",
+      "parentUuid": "b29d2755_225f7c61",
+      "revId": "9a142e76e510d3f75b29372a813c9c03183a5535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
