@@ -13,6 +13,13 @@
 
 #include <linux/bitops.h>
 #include <linux/types.h>
+<<<<<<< HEAD   (cbb42d Revert "ANDROID: Allow MODVERSIONS + Rust with no symbol exp)
+||||||| BASE
+#include <linux/android_kabi.h>
+=======
+#include <linux/android_kabi.h>
+#include <linux/android_vendor.h>
+>>>>>>> CHANGE (f50d19 ANDROID: GKI: Add ANDROID_OEM_DATA in struct ufs_dev_info)
 #include <uapi/scsi/scsi_bsg_ufs.h>
 #include <linux/time64.h>
 
@@ -588,12 +595,21 @@ struct ufs_dev_info {
 	/* UFS EXT_IID Enable */
 	bool	b_ext_iid_en;
 
+<<<<<<< HEAD   (cbb42d Revert "ANDROID: Allow MODVERSIONS + Rust with no symbol exp)
 	/* UFS RTC */
 	enum ufs_rtc_time rtc_type;
 	time64_t rtc_time_baseline;
 	u32 rtc_update_period;
 
 	u8 rtt_cap; /* bDeviceRTTCap */
+||||||| BASE
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
+=======
+	ANDROID_OEM_DATA(1);
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
+>>>>>>> CHANGE (f50d19 ANDROID: GKI: Add ANDROID_OEM_DATA in struct ufs_dev_info)
 };
 
 /*
