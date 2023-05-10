@@ -285980,6 +285980,11 @@ function {
   parameter_id: 0x15b54c6f
 }
 function {
+  id: 0x1f07d2c7
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3e7e0d52
+}
+function {
   id: 0x1f0d7714
   return_type_id: 0x48b5725f
   parameter_id: 0x38342a1b
@@ -294939,6 +294944,11 @@ function {
   parameter_id: 0xf435685e
   parameter_id: 0xf435685e
   parameter_id: 0x0efc9002
+}
+function {
+  id: 0x921f607b
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3e7e0d52
 }
 function {
   id: 0x9220b9bd
@@ -313075,6 +313085,12 @@ function {
   parameter_id: 0x31fa879c
 }
 function {
+  id: 0xc2e99087
+  return_type_id: 0x0ab9fa4c
+  parameter_id: 0x0258f96e
+  parameter_id: 0x4585663f
+}
+function {
   id: 0xc3320c3e
   return_type_id: 0x4585663f
   parameter_id: 0x37a5cb14
@@ -318163,6 +318179,15 @@ elf_symbol {
   full_name: "__page_mapcount"
 }
 elf_symbol {
+  id: 0xe595f8f9
+  name: "__page_pinner_put_page"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9c81e126
+  type_id: 0x11388634
+  full_name: "__page_pinner_put_page"
+}
+elf_symbol {
   id: 0xdc9a73c7
   name: "__pagevec_release"
   is_defined: true
@@ -319421,6 +319446,15 @@ elf_symbol {
   crc: 0x875ffc4a
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_prepare_prio_fork"
+}
+elf_symbol {
+  id: 0x13f466b7
+  name: "__traceiter_android_rvh_refrigerator"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x811d8704
+  type_id: 0x9a1a471c
+  full_name: "__traceiter_android_rvh_refrigerator"
 }
 elf_symbol {
   id: 0xe3e24295
@@ -321779,6 +321813,15 @@ elf_symbol {
   crc: 0xadd0283e
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_rvh_prepare_prio_fork"
+}
+elf_symbol {
+  id: 0x3b6248c1
+  name: "__tracepoint_android_rvh_refrigerator"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xaa020dd1
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_rvh_refrigerator"
 }
 elf_symbol {
   id: 0x18bac297
@@ -332173,6 +332216,15 @@ elf_symbol {
   full_name: "devm_hwspin_lock_register"
 }
 elf_symbol {
+  id: 0xe896baa8
+  name: "devm_hwspin_lock_request_specific"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x36d01cc2
+  type_id: 0xc2e99087
+  full_name: "devm_hwspin_lock_request_specific"
+}
+elf_symbol {
   id: 0xa29138c1
   name: "devm_i2c_new_dummy_device"
   is_defined: true
@@ -339346,6 +339398,15 @@ elf_symbol {
   full_name: "freezer_active"
 }
 elf_symbol {
+  id: 0x3918f832
+  name: "freezer_cgrp_subsys"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x85c823b4
+  type_id: 0x00571446
+  full_name: "freezer_cgrp_subsys"
+}
+elf_symbol {
   id: 0x238d82fe
   name: "freezing_slow_path"
   is_defined: true
@@ -340679,6 +340740,24 @@ elf_symbol {
   crc: 0xf4d771f8
   type_id: 0x977a5487
   full_name: "gh_rm_notifier_unregister"
+}
+elf_symbol {
+  id: 0x62906068
+  name: "gh_rm_register_platform_ops"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa577ae43
+  type_id: 0x921f607b
+  full_name: "gh_rm_register_platform_ops"
+}
+elf_symbol {
+  id: 0x35ffaad3
+  name: "gh_rm_unregister_platform_ops"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5759f053
+  type_id: 0x1f07d2c7
+  full_name: "gh_rm_unregister_platform_ops"
 }
 elf_symbol {
   id: 0x5a582da8
@@ -351562,6 +351641,15 @@ elf_symbol {
   full_name: "page_mapping"
 }
 elf_symbol {
+  id: 0x44e50ff8
+  name: "page_pinner_inited"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xacfe4142
+  type_id: 0x8e47c273
+  full_name: "page_pinner_inited"
+}
+elf_symbol {
   id: 0xec5c680b
   name: "page_pool_alloc_pages"
   is_defined: true
@@ -359221,6 +359309,15 @@ elf_symbol {
   full_name: "sdhci_enable_clk"
 }
 elf_symbol {
+  id: 0x5ab300fb
+  name: "sdhci_enable_v4_mode"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x80ef52da
+  type_id: 0x1ec711b9
+  full_name: "sdhci_enable_v4_mode"
+}
+elf_symbol {
   id: 0x33d40ef0
   name: "sdhci_execute_tuning"
   is_defined: true
@@ -359264,6 +359361,24 @@ elf_symbol {
   crc: 0x4d110990
   type_id: 0x1f5b92f5
   full_name: "sdhci_remove_host"
+}
+elf_symbol {
+  id: 0xdc85b8be
+  name: "sdhci_request"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4885a3af
+  type_id: 0x1dbab156
+  full_name: "sdhci_request"
+}
+elf_symbol {
+  id: 0xd1dc3f24
+  name: "sdhci_request_atomic"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x30c50c36
+  type_id: 0x90a203ea
+  full_name: "sdhci_request_atomic"
 }
 elf_symbol {
   id: 0xa6a2da07
@@ -373946,6 +374061,10 @@ symbols {
     value: 0x8d43f7e0
   }
   symbol {
+    key: "__page_pinner_put_page"
+    value: 0xe595f8f9
+  }
+  symbol {
     key: "__pagevec_release"
     value: 0xdc9a73c7
   }
@@ -374504,6 +374623,10 @@ symbols {
   symbol {
     key: "__traceiter_android_rvh_prepare_prio_fork"
     value: 0xeccbc3c1
+  }
+  symbol {
+    key: "__traceiter_android_rvh_refrigerator"
+    value: 0x13f466b7
   }
   symbol {
     key: "__traceiter_android_rvh_replace_next_task_fair"
@@ -375552,6 +375675,10 @@ symbols {
   symbol {
     key: "__tracepoint_android_rvh_prepare_prio_fork"
     value: 0x50605d97
+  }
+  symbol {
+    key: "__tracepoint_android_rvh_refrigerator"
+    value: 0x3b6248c1
   }
   symbol {
     key: "__tracepoint_android_rvh_replace_next_task_fair"
@@ -380178,6 +380305,10 @@ symbols {
     value: 0x40c3a63b
   }
   symbol {
+    key: "devm_hwspin_lock_request_specific"
+    value: 0xe896baa8
+  }
+  symbol {
     key: "devm_i2c_new_dummy_device"
     value: 0xa29138c1
   }
@@ -383358,6 +383489,10 @@ symbols {
     value: 0x2ed5588c
   }
   symbol {
+    key: "freezer_cgrp_subsys"
+    value: 0x3918f832
+  }
+  symbol {
     key: "freezing_slow_path"
     value: 0x238d82fe
   }
@@ -383948,6 +384083,14 @@ symbols {
   symbol {
     key: "gh_rm_notifier_unregister"
     value: 0x3049a5e5
+  }
+  symbol {
+    key: "gh_rm_register_platform_ops"
+    value: 0x62906068
+  }
+  symbol {
+    key: "gh_rm_unregister_platform_ops"
+    value: 0x35ffaad3
   }
   symbol {
     key: "gic_nonsecure_priorities"
@@ -388786,6 +388929,10 @@ symbols {
     value: 0x4f3e5356
   }
   symbol {
+    key: "page_pinner_inited"
+    value: 0x44e50ff8
+  }
+  symbol {
     key: "page_pool_alloc_pages"
     value: 0xec5c680b
   }
@@ -392190,6 +392337,10 @@ symbols {
     value: 0x6febaf59
   }
   symbol {
+    key: "sdhci_enable_v4_mode"
+    value: 0x5ab300fb
+  }
+  symbol {
     key: "sdhci_execute_tuning"
     value: 0x33d40ef0
   }
@@ -392208,6 +392359,14 @@ symbols {
   symbol {
     key: "sdhci_remove_host"
     value: 0xad3b5931
+  }
+  symbol {
+    key: "sdhci_request"
+    value: 0xdc85b8be
+  }
+  symbol {
+    key: "sdhci_request_atomic"
+    value: 0xd1dc3f24
   }
   symbol {
     key: "sdhci_reset"
