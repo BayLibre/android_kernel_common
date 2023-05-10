@@ -27,6 +27,13 @@
 #include <ufs/ufs.h>
 #include <ufs/ufs_quirks.h>
 #include <ufs/ufshci.h>
+<<<<<<< HEAD   (5723a2 ANDROID: vendor_hooks: Add hooks for oem percpu-rwsem optima)
+||||||| BASE
+#include <linux/android_kabi.h>
+=======
+#include <linux/android_kabi.h>
+#include <linux/android_vendor.h>
+>>>>>>> CHANGE (a55d27 ANDROID: GKI: Add ANDROID_OEM_DATA() in struct ufs_hba)
 
 #define UFSHCD "ufshcd"
 
@@ -1124,9 +1131,14 @@ struct ufs_hba {
 	struct ufs_hw_queue *dev_cmd_queue;
 	struct ufshcd_mcq_opr_info_t mcq_opr[OPR_MAX];
 
+<<<<<<< HEAD   (5723a2 ANDROID: vendor_hooks: Add hooks for oem percpu-rwsem optima)
 	struct delayed_work ufs_rtc_update_work;
 	struct pm_qos_request pm_qos_req;
 	bool pm_qos_enabled;
+||||||| BASE
+=======
+	ANDROID_OEM_DATA(1);
+>>>>>>> CHANGE (a55d27 ANDROID: GKI: Add ANDROID_OEM_DATA() in struct ufs_hba)
 };
 
 /**
