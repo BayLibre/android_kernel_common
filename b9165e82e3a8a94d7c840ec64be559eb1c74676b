@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000044702674",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2584077?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "d5069420_e1eaf9f1",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 28,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Shreyas K K \u003cshrekk@qti.qualcomm.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "0a7a5818_ec2c5f59",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-05-11T11:50:35Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Shreyas K K \u003cshrekk@qti.qualcomm.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 530920414 android-build.ayeaye-python-dispatcher_20230510.05_p0",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 0
+      },
+      "revId": "b9165e82e3a8a94d7c840ec64be559eb1c74676b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
