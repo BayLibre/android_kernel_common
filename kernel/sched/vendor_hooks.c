@@ -113,14 +113,35 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_inherit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_restore);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+<<<<<<< HEAD   (9c8fb18c9387eb441d9b34f0d4e1f8c94d801e0b ANDROID: GKI: Update symbols list for exynos)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_ptr);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
+<<<<<<< PATCH SET (b0efb7db4067d1be3fd30c6349b610ebfc584f97 ANDROID: Add new hook to enable overriding uclamp_validate())
+||||||| BASE   (390c2b429d090269bbb0bbe316c8032ac8860369 ANDROID: sched: Add vendor hooks for override sugov behavior)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
+
+>>>>>>> CHANGE (124897124a0f2e91ec85462d375fd394ca7eb526 ANDROID: Add new hook to enable overriding uclamp_validate())
+||||||| BASE      (9c8fb18c9387eb441d9b34f0d4e1f8c94d801e0b ANDROID: GKI: Update symbols list for exynos)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_fits_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_task_comm);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+>>>>>>> BASE      (908f587f7ebe0a9120ff319c2719fd1d5c276fc5 ANDROID: sched: add vendor hook to modify affinity)
