@@ -33,6 +33,23 @@
       "message": "Elliot, can you have someone at QC who is familiar with these patches give a CR+1 to them all?",
       "revId": "f804355aace106911737aea7a99fa4f8dd3cd4ef",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed718557_2351c3c2",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-05-11T07:10:46Z",
+      "side": 1,
+      "message": "Needs to change this line as follow to fix the buildifier error:\n\n`load(\":modules.bzl\", \"AARCH64_GKI_MODULES_LIST\", \"COMMON_GKI_MODULES_LIST\")`",
+      "revId": "f804355aace106911737aea7a99fa4f8dd3cd4ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
