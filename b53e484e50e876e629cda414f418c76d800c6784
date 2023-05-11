@@ -16,6 +16,24 @@
       "message": "please submit this upstream first.",
       "revId": "b53e484e50e876e629cda414f418c76d800c6784",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "890cbb35_62975ed2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2007625
+      },
+      "writtenOn": "2023-05-11T05:45:31Z",
+      "side": 1,
+      "message": "there is already a large fix in upstream for this issue https://patchwork.kernel.org/project/linux-scsi/list/?series\u003d686444\u0026state\u003d* \n\nbut the change is big, hence pushed one alternative which is also helping resolve deadlock which I have mentioned in the commit text.\n\nnow in 5.15, should we backport the big change? or we can use this small workaround? as porting a big change at this stage might bring other stability issues.\n\npushed this change so that I can start discussion in bugnizer with all the info, which I am about to file.",
+      "parentUuid": "60a5dee3_d489bc72",
+      "revId": "b53e484e50e876e629cda414f418c76d800c6784",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
