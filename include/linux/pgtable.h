@@ -735,6 +735,12 @@ static inline int pgd_same(pgd_t pgd_a, pgd_t pgd_b)
 	set_pgd(pgdp, pgd); \
 })
 
+#ifndef __HAVE_ARCH_SWAP_RESTORE
+static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+{
+}
+#endif
+
 #ifndef __HAVE_ARCH_DO_SWAP_PAGE
 /*
  * Some architectures support metadata associated with a page. When a
@@ -743,14 +749,14 @@ static inline int pgd_same(pgd_t pgd_a, pgd_t pgd_b)
  * processors support an ADI (Application Data Integrity) tag for the
  * page as metadata for the page. arch_do_swap_page() can restore this
  * metadata when a page is swapped back in.
+ *
+ * This hook is deprecated. Architectures should hook arch_swap_restore()
+ * instead, because this hook is not called on all code paths that can
+ * swap in a page, particularly those where mm and vma are not available
+ * (e.g. swapoff for shmem pages).
  */
-static inline void arch_do_swap_page(struct mm_struct *mm,
-				     struct vm_area_struct *vma,
-				     unsigned long addr,
-				     pte_t pte, pte_t oldpte)
-{
-
-}
+#define arch_do_swap_page(mm, vma, addr, pte, oldpte) \
+	arch_swap_restore(pte_to_swp_entry(oldpte), page_folio(pte_page(pte)))
 #endif
 
 #ifndef __HAVE_ARCH_UNMAP_ONE
@@ -789,12 +795,6 @@ static inline void arch_swap_invalidate_page(int type, pgoff_t offset)
 }
 
 static inline void arch_swap_invalidate_area(int type)
-{
-}
-#endif
-
-#ifndef __HAVE_ARCH_SWAP_RESTORE
-static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
 {
 }
 #endif
