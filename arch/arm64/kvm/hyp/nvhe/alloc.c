@@ -797,3 +797,14 @@ u8 hyp_alloc_missing_donations(void)
 
 	return __missing;
 }
+
+size_t hyp_alloc_size(void *addr)
+{
+	char *chunk_data = (char *)addr;
+	struct chunk_hdr *chunk;
+
+	chunk = chunk_get(container_of(chunk_data, struct chunk_hdr, data));
+
+	return chunk->alloc_size;
+}
+
