@@ -1330,6 +1330,11 @@ const char * const vmstat_text[] = {
 	"cma_alloc_success",
 	"cma_alloc_fail",
 #endif
+#ifdef CONFIG_MEMORY_METADATA
+	"metadata_reserve_success",
+	"metadata_reserve_fail",
+	"metadata_reserve_free",
+#endif
 	"unevictable_pgs_culled",
 	"unevictable_pgs_scanned",
 	"unevictable_pgs_rescued",

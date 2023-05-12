@@ -12,8 +12,12 @@
 #include <linux/of_device.h>
 #include <linux/of_fdt.h>
 #include <linux/pageblock-flags.h>
+#include <linux/page-flags.h>
+#include <linux/page_owner.h>
 #include <linux/range.h>
+#include <linux/sched/mm.h>
 #include <linux/string.h>
+#include <linux/vm_event_item.h>
 #include <linux/xarray.h>
 
 __ro_after_init DEFINE_STATIC_KEY_FALSE(mte_tag_storage_enabled_key);
@@ -28,6 +32,9 @@ struct tag_region {
 
 static struct tag_region tag_regions[MAX_TAG_REGIONS];
 static int num_tag_regions;
+
+static DEFINE_XARRAY_FLAGS(tag_blocks_reserved, XA_FLAGS_LOCK_IRQ);
+static DEFINE_MUTEX(tag_blocks_lock);
 
 static int __init tag_storage_of_flat_get_range(unsigned long node, const __be32 *reg,
 						int reg_len, struct range *range)
@@ -350,11 +357,199 @@ static int __init mte_tag_storage_activate_regions(void)
 		}
 	}
 
+	return ret;
+}
+core_initcall(mte_tag_storage_activate_regions);
+
+static int tag_storage_find_block_in_region(struct page *page, unsigned long *blockp,
+					    struct tag_region *region)
+{
+	struct range *tag_range = &region->tag_range;
+	struct range *mem_range = &region->mem_range;
+	u64 page_pfn = page_to_pfn(page);
+	u64 block, block_offset;
+
+	if (!(mem_range->start <= page_pfn && page_pfn <= mem_range->end))
+		return -ERANGE;
+
+	block_offset = (page_pfn - mem_range->start) >> 5;
+	block = tag_range->start + block_offset;
+	if (block + region->block_size - 1 > tag_range->end) {
+		pr_err("Block 0x%llx-0x%llx is outside tag region 0x%llx-0x%llx\n",
+			PFN_PHYS(block), PFN_PHYS(block + region->block_size),
+			PFN_PHYS(tag_range->start), PFN_PHYS(tag_range->end));
+		return -ERANGE;
+	}
+	*blockp = block;
+
 	return 0;
 }
-core_initcall(mte_tag_storage_activate_regions)
+
+static int tag_storage_find_block(struct page *page, unsigned long *block,
+				  struct tag_region **region)
+{
+	int i, ret;
+
+	for (i = 0; i < num_tag_regions; i++) {
+		ret = tag_storage_find_block_in_region(page, block, &tag_regions[i]);
+		if (ret == 0) {
+			*region = &tag_regions[i];
+			return 0;
+		}
+	}
+
+	return -EINVAL;
+}
+
+static bool tag_storage_block_is_reserved(unsigned long block)
+{
+	return xa_load(&tag_blocks_reserved, block) != NULL;
+}
+
+bool page_tag_storage_reserved(struct page *page)
+{
+	struct tag_region *region;
+	unsigned long block;
+
+	return tag_storage_find_block(page, &block, &region) == 0 &&
+		tag_storage_block_is_reserved(block);
+}
+
+static int tag_storage_reserve_block(unsigned long block)
+{
+	int ret;
+
+	ret = xa_err(xa_store(&tag_blocks_reserved, block, pfn_to_page(block), GFP_KERNEL));
+	if (!ret)
+		page_ref_inc(pfn_to_page(block));
+
+	return ret;
+}
 
 bool alloc_can_use_tag_storage(gfp_t gfp_mask)
 {
 	return !(gfp_mask & __GFP_TAGGED);
+}
+
+bool alloc_requires_tag_storage(gfp_t gfp_mask)
+{
+	return gfp_mask & __GFP_TAGGED;
+}
+
+static int order_to_blocks(int order)
+{
+	return max((1 << order) >> 5, 1);
+}
+
+int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
+{
+	unsigned long start_block, end_block;
+	struct tag_region *region;
+	unsigned long block;
+	unsigned long flags;
+	int ret = 0;
+	int tries;
+
+	VM_WARN_ON_ONCE(!preemptible());
+
+	/*
+	 * __alloc_contig_migrate_range() ignores gfp when allocating the
+	 * destination page for migration. Regardless, massage gfp flags and
+	 * remove __GFP_TAGGED to avoid recursion in case gfp stops being
+	 * ignored.
+	 */
+	gfp &= ~__GFP_TAGGED;
+	if (!(gfp & __GFP_NORETRY))
+		gfp |= __GFP_RETRY_MAYFAIL;
+
+	ret = tag_storage_find_block(page, &start_block, &region);
+	if (WARN_ON_ONCE(ret))
+		return 0;
+
+	end_block = start_block + order_to_blocks(order) * region->block_size;
+
+	mutex_lock(&tag_blocks_lock);
+
+	/* Make sure existing entries are not freed from out under out feet. */
+	xa_lock_irqsave(&tag_blocks_reserved, flags);
+	for (block = start_block; block < end_block; block += region->block_size) {
+		if (tag_storage_block_is_reserved(block))
+			page_ref_inc(pfn_to_page(block));
+	}
+	xa_unlock_irqrestore(&tag_blocks_reserved, flags);
+
+	for (block = start_block; block < end_block; block += region->block_size) {
+		/* Refcount incremented above. */
+		if (tag_storage_block_is_reserved(block))
+			continue;
+
+		tries = 5;
+		while (tries--) {
+			ret = alloc_contig_range(block, block + region->block_size, MIGRATE_METADATA, gfp);
+			if (ret == 0 || ret != -EBUSY)
+				break;
+		}
+
+		if (ret)
+			goto out_error;
+
+		ret = tag_storage_reserve_block(block);
+		if (ret) {
+			free_contig_range(block, region->block_size);
+			goto out_error;
+		}
+
+		count_vm_events(METADATA_RESERVE_SUCCESS, region->block_size);
+	}
+
+	mutex_unlock(&tag_blocks_lock);
+
+	return 0;
+
+out_error:
+	xa_lock_irqsave(&tag_blocks_reserved, flags);
+	for (block = start_block; block < end_block; block += region->block_size) {
+		if (tag_storage_block_is_reserved(block) &&
+		    page_ref_dec_return(pfn_to_page(block)) == 1) {
+			__xa_erase(&tag_blocks_reserved, block);
+			free_contig_range(block, region->block_size);
+		}
+	}
+	xa_unlock_irqrestore(&tag_blocks_reserved, flags);
+
+	mutex_unlock(&tag_blocks_lock);
+
+	count_vm_events(METADATA_RESERVE_FAIL, region->block_size);
+
+	return ret;
+}
+
+void free_tag_storage(struct page *page, int order)
+{
+	unsigned long block, start_block, end_block;
+	struct tag_region *region;
+	unsigned long flags;
+	int ret;
+
+	if (WARN_ON_ONCE(!page_mte_tagged(page)))
+		return;
+
+	ret = tag_storage_find_block(page, &start_block, &region);
+	if (WARN_ON_ONCE(ret))
+		return;
+
+	end_block = start_block + order_to_blocks(order) * region->block_size;
+
+	xa_lock_irqsave(&tag_blocks_reserved, flags);
+	for (block = start_block; block < end_block; block += region->block_size) {
+		if (WARN_ON_ONCE(!tag_storage_block_is_reserved(block)))
+			continue;
+
+		if (page_ref_dec_return(pfn_to_page(block)) == 1) {
+			__xa_erase(&tag_blocks_reserved, block);
+			free_contig_range(block, region->block_size);
+			count_vm_events(METADATA_RESERVE_FREE, region->block_size);
+		}
+	}
+	xa_unlock_irqrestore(&tag_blocks_reserved, flags);
 }
