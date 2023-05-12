@@ -357,6 +357,8 @@ static int __init mte_tag_storage_activate_regions(void)
 		}
 	}
 
+	ret = reserve_tag_storage(ZERO_PAGE(0), 0, GFP_HIGHUSER_MOVABLE);
+
 	return ret;
 }
 core_initcall(mte_tag_storage_activate_regions);
