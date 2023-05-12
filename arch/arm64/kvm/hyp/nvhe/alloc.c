@@ -11,6 +11,7 @@
 
 #include <linux/build_bug.h>
 #include <linux/hash.h>
+#include <linux/kvm_host.h>
 #include <linux/list.h>
 
 #define MIN_ALLOC 8UL
@@ -598,6 +599,17 @@ end:
 	return ret ? NULL : chunk_data(chunk);
 }
 
+void *hyp_alloc_account(size_t size, struct kvm *host_kvm)
+{
+	void *addr = hyp_alloc(size);
+
+	if (addr)
+		atomic64_add(ALIGN(size, MIN_ALLOC),
+			     &host_kvm->stat.protected_hyp_mem);
+
+	return addr;
+}
+
 void hyp_free(void *addr)
 {
 	struct chunk_hdr *chunk, *prev_chunk, *next_chunk;
@@ -620,6 +632,20 @@ void hyp_free(void *addr)
 		WARN_ON(chunk_merge(chunk, allocator));
 
 	hyp_spin_unlock(&allocator->lock);
+}
+
+void hyp_free_account(void *addr, struct kvm *host_kvm)
+{
+	char *chunk_data = (char *)addr;
+	struct chunk_hdr *chunk;
+	size_t size;
+
+	chunk = chunk_get(container_of(chunk_data, struct chunk_hdr, data));
+	size = chunk->alloc_size;
+
+	hyp_free(addr);
+
+	atomic64_sub(size, &host_kvm->stat.protected_hyp_mem);
 }
 
 /*
