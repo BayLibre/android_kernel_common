@@ -93,9 +93,18 @@ define_db845c(
         "arch/arm64/boot/dts/qcom/qrb5165-rb5.dtb",
         "arch/arm64/boot/dts/qcom/sdm845-db845c.dtb",
     ],
+<<<<<<< HEAD   (01df29 UPSTREAM: KVM: arm64: Fix buffer overflow in kvm_arm_set_fw_)
     define_abi_targets = True,
     kmi_symbol_list = "//common:android/abi_gki_aarch64_db845c",
     kmi_symbol_list_add_only = True,
+=======
+    make_goals = [
+        "modules",
+        "qcom/sdm845-db845c.dtb",
+        "qcom/qrb5165-rb5.dtb",
+        "qcom/sm8450-qrd.dtb",
+    ],
+>>>>>>> CHANGE (86e7d1 ANDROID: db845c: Remove MAKE_GOALS from build.config)
     module_outs = [
         # keep sorted
         "crypto/michael_mic.ko",
@@ -275,8 +284,17 @@ kernel_build(
         "vmlinux.symvers",
     ],
     build_config = "build.config.rockpi4",
+<<<<<<< HEAD   (01df29 UPSTREAM: KVM: arm64: Fix buffer overflow in kvm_arm_set_fw_)
     collect_unstripped_modules = True,
     kmi_symbol_list = "//common:android/abi_gki_rockpi4",
+=======
+    dtstree = "//common-modules/virtual-device:rockpi4_dts",
+    make_goals = [
+        "Image",
+        "modules",
+        "rk3399-rock-pi-4b.dtb",
+    ],
+>>>>>>> CHANGE (86e7d1 ANDROID: db845c: Remove MAKE_GOALS from build.config)
     module_outs = COMMON_GKI_MODULES_LIST + [
         # keep sorted
         "drivers/block/virtio_blk.ko",
