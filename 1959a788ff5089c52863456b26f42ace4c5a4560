@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a0f837d_6e1f68a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-12T12:53:35Z",
+      "side": 1,
+      "message": "Yes it is.",
+      "parentUuid": "cfc057f7_81066838",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 14
+      },
+      "revId": "1959a788ff5089c52863456b26f42ace4c5a4560",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8a06ec87_065aef94",
@@ -96,6 +120,24 @@
       "side": 1,
       "message": "oppo\u0027s network static module need to add trace functions in the four tracepoints to time network packet. and the four symbols is export in branch android13-5.10, and the four symbols is still needed in branch android14-6.1.",
       "parentUuid": "85d82bdb_8ec97724",
+      "revId": "1959a788ff5089c52863456b26f42ace4c5a4560",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04aaa798_03c3a53f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-12T12:53:35Z",
+      "side": 1,
+      "message": "network modules should not need to trace anything like this, that\u0027s best done from userspace using the normal networking tracing functionality, right?",
+      "parentUuid": "365d1ffb_7d68ba06",
       "revId": "1959a788ff5089c52863456b26f42ace4c5a4560",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
