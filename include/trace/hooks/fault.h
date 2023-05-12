@@ -20,7 +20,12 @@ DECLARE_RESTRICTED_HOOK(android_rvh_do_sp_pc_abort,
 	TP_PROTO(unsigned long addr, unsigned long esr, struct pt_regs *regs),
 	TP_ARGS(addr, esr, regs),
 	TP_CONDITION(!user_mode(regs)));
-
+DECLARE_RESTRICTED_HOOK(android_rvh_do_page_fault_begin,
+	TP_PROTO(unsigned long addr, unsigned int esr, struct pt_regs *regs),
+	TP_ARGS(addr, esr, regs), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_do_page_fault_end,
+	TP_PROTO(struct mm_struct *mm, unsigned long addr, unsigned int mm_flags, vm_fault_t fault),
+	TP_ARGS(mm, addr, mm_flags, fault), 1);
 #endif /* _TRACE_HOOK_FAULT_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>

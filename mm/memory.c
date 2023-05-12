@@ -80,6 +80,7 @@
 #include <linux/set_memory.h>
 
 #include <trace/events/kmem.h>
+#include <trace/hooks/mm.h>
 
 #include <asm/io.h>
 #include <asm/mmu_context.h>
@@ -5243,6 +5244,7 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
 	}
 
 	mm_account_fault(regs, address, flags, ret);
+	trace_android_vh_handle_mm_fault(vma, address, flags, ret);
 
 	return ret;
 }

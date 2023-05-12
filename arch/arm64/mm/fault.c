@@ -610,6 +610,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
 	}
 
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
+	trace_android_rvh_do_page_fault_begin(addr, esr, regs);
 
 	/*
 	 * As per x86, we may deadlock here. However, since the kernel only
@@ -653,6 +654,8 @@ retry:
 		goto retry;
 	}
 	mmap_read_unlock(mm);
+
+	trace_android_rvh_do_page_fault_end(mm, addr, mm_flags, fault);
 
 	/*
 	 * Handle the "normal" (no error) case first.

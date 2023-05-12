@@ -24,6 +24,11 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_readahead_gfp_mask,
 			TP_PROTO(unsigned int *flags),	/* gfp_t *flags */
 			TP_ARGS(flags), 1);
 
+DECLARE_HOOK(android_vh_handle_mm_fault,
+		TP_PROTO(struct vm_area_struct *vma, unsigned long addr,
+			unsigned int flags, vm_fault_t fault),
+		TP_ARGS(vma, addr, flags, fault));
+
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
