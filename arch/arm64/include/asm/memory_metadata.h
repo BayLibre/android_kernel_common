@@ -12,5 +12,8 @@
 
 #define arch_alloc_can_use_metadata_pages(gfp_mask)	alloc_can_use_tag_storage(gfp_mask)
 #define arch_page_has_metadata(page)			page_mte_tagged(page)
+#define arch_alloc_requires_metadata(gfp_mask)		alloc_requires_tag_storage(gfp_mask)
+#define arch_reserve_metadata_storage(page, order, gfp)	reserve_tag_storage(page, order, gfp)
+#define arch_free_metadata_storage(page, order) 	free_tag_storage(page, order)
 
 #endif /* __ASM_MTE_TAG_STORAGE_H  */

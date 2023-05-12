@@ -1446,6 +1446,9 @@ static __always_inline bool free_pages_prepare(struct page *page,
 	trace_mm_page_free(page, order);
 	kmsan_free_page(page, order);
 
+	if (metadata_storage_enabled() && page_has_metadata(page))
+		free_metadata_storage(page, order);
+
 	if (unlikely(PageHWPoison(page)) && !order) {
 		/*
 		 * Do not let hwpoison pages hit pcplists/buddy
@@ -4331,6 +4334,24 @@ static inline unsigned int gfp_to_alloc_flags_fast(gfp_t gfp_mask,
 	return alloc_flags;
 }
 
+#ifdef CONFIG_MEMORY_METADATA
+static void return_page_to_buddy(struct page *page, int order)
+{
+	struct zone *zone = page_zone(page);
+	unsigned long pfn = page_to_pfn(page);
+	unsigned long flags;
+	int migratetype = get_pfnblock_migratetype(page, pfn);
+
+	spin_lock_irqsave(&zone->lock, flags);
+	__free_one_page(page, pfn, zone, order, migratetype, FPI_TO_TAIL);
+	spin_unlock_irqrestore(&zone->lock, flags);
+}
+#else
+static void return_page_to_buddy(struct page *page, int order)
+{
+}
+#endif
+
 /*
  * get_page_from_freelist goes through the zonelist trying to allocate
  * a page.
@@ -4344,6 +4365,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
 	struct pglist_data *last_pgdat = NULL;
 	bool last_pgdat_dirty_ok = false;
 	bool no_fallback;
+	int ret;
 
 retry:
 	/*
@@ -4454,6 +4476,15 @@ try_this_zone:
 		page = rmqueue(ac->preferred_zoneref->zone, zone, order,
 				gfp_mask, alloc_flags, ac->migratetype);
 		if (page) {
+			if (metadata_storage_enabled() && alloc_requires_metadata(gfp_mask)) {
+				ret = reserve_metadata_storage(page, order, gfp_mask);
+				if (ret != 0) {
+					return_page_to_buddy(page, order);
+					page = NULL;
+					goto no_page;
+				}
+			}
+
 			prep_new_page(page, order, gfp_mask, alloc_flags);
 
 			/*
@@ -4464,7 +4495,10 @@ try_this_zone:
 				reserve_highatomic_pageblock(page, zone, order);
 
 			return page;
-		} else {
+		}
+
+no_page:
+		if (!page) {
 #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
 			/* Try again if zone has deferred pages */
 			if (static_branch_unlikely(&deferred_pages)) {
@@ -4654,6 +4688,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
 	struct page *page = NULL;
 	unsigned long pflags;
 	unsigned int noreclaim_flag;
+	int ret;
 
 	if (!order)
 		return NULL;
@@ -4676,6 +4711,14 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
 	 * count a compaction stall
 	 */
 	count_vm_event(COMPACTSTALL);
+
+	if (metadata_storage_enabled() && page && alloc_requires_metadata(gfp_mask)) {
+		ret = reserve_metadata_storage(page, order, gfp_mask);
+		if (ret != 0) {
+			return_page_to_buddy(page, order);
+			page = NULL;
+		}
+	}
 
 	/* Prep a captured page if available */
 	if (page)

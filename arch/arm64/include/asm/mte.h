@@ -37,8 +37,18 @@ void mte_free_temp_tag_storage(char *storage);
 /* track which pages have valid allocation tags */
 #define PG_mte_tagged	PG_arch_2
 
+#ifdef CONFIG_MEMORY_METADATA
+DECLARE_STATIC_KEY_FALSE(mte_tag_storage_enabled_key);
+extern bool page_tag_storage_reserved(struct page *page);
+#endif
+
 static inline void set_page_mte_tagged(struct page *page)
 {
+#ifdef CONFIG_MEMORY_METADATA
+	/* Open code mte_tag_storage_enabled() */
+	WARN_ON_ONCE(static_branch_likely(&mte_tag_storage_enabled_key) &&
+		     !page_tag_storage_reserved(page));
+#endif
 	/*
 	 * Ensure that the tags written prior to this function are visible
 	 * before the page flags update.
