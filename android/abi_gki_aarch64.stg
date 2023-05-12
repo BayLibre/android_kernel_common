@@ -283088,6 +283088,14 @@ function {
   parameter_id: 0xa9403390
 }
 function {
+  id: 0x360a8ce9
+  return_type_id: 0x33756485
+  parameter_id: 0x1d5bae2a
+  parameter_id: 0x33756485
+  parameter_id: 0xf1a6dfed
+  parameter_id: 0x4585663f
+}
+function {
   id: 0x360ab09d
   return_type_id: 0x0490bb4a
   parameter_id: 0x3e146274
@@ -360243,6 +360251,15 @@ elf_symbol {
   full_name: "try_to_del_timer_sync"
 }
 elf_symbol {
+  id: 0x8814f5b8
+  name: "try_to_free_mem_cgroup_pages"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5810e60b
+  type_id: 0x360a8ce9
+  full_name: "try_to_free_mem_cgroup_pages"
+}
+elf_symbol {
   id: 0xe54aec5b
   name: "try_wait_for_completion"
   is_defined: true
@@ -389452,6 +389469,10 @@ symbols {
   symbol {
     key: "try_to_del_timer_sync"
     value: 0x2f855953
+  }
+  symbol {
+    key: "try_to_free_mem_cgroup_pages"
+    value: 0x8814f5b8
   }
   symbol {
     key: "try_wait_for_completion"
