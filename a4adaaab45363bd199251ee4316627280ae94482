@@ -225,6 +225,24 @@
       "parentUuid": "a31f6be6_76148ef4",
       "revId": "a4adaaab45363bd199251ee4316627280ae94482",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cd49b1e_de003f52",
+        "filename": "include/linux/pm_qos.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-05-13T14:03:29Z",
+      "side": 1,
+      "message": "I had a quick look at the usage of `freq_qos_request` in the kernel. It seems to me most of the requests are zero\u0027ed during initialization. So, have you actually encountered the opposite? Could you provide an example?\n\nSee, if the pointer might be !NULL during initialization, then by the same logic, the \"magic value\" could also be a match by mistake. I can see this happening if the allocated memory was reused from an older request for instance.",
+      "parentUuid": "f1b8c700_cb20626e",
+      "revId": "a4adaaab45363bd199251ee4316627280ae94482",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
