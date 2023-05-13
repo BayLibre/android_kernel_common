@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa4b0adf_fd2de11a",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-05-13T02:20:27Z",
+      "side": 1,
+      "message": "I ended up defining some compatible string specific data structs to represent the different types of \"register\" mappings we could have in the future and moved them to policy-\u003edriver_data. Defining it per-cpu may not always make sense in the event that policies may end up getting shared.",
+      "parentUuid": "c26328d5_21004935",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "554d29f3_bc123693",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-05T20:28:55Z",
       "side": 1,
       "message": "nit: s/arithmatics/arithmetic",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02336e07_3579f00b",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-05-13T02:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "554d29f3_bc123693",
       "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93d71e87_7b68cbc6",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-05-13T02:20:27Z",
+      "side": 1,
+      "message": "Makes sense, see comment above.",
+      "parentUuid": "348e3e6a_55f79ed0",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf7f7f5a_5d857d25",
@@ -69,6 +123,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22710901_209f42fc",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-05-13T02:20:27Z",
+      "side": 1,
+      "message": "Done, similar to the the driver specific structures, there will be compatible-string specific ops for read/write",
+      "parentUuid": "bf7f7f5a_5d857d25",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58510572_f467b52d",
@@ -82,6 +154,24 @@
       "writtenOn": "2023-05-05T20:28:55Z",
       "side": 1,
       "message": "What\u0027s the rationale for having this run at a higher/earlier initcall level? Given that you\u0027re not doing anything special in the `init` and `exit` calls, it seems that you could replace those calls with `module_platform_driver()`?",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "218b83c6_69abea5a",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-05-13T02:20:27Z",
+      "side": 1,
+      "message": "There\u0027s a measurable(albeit marginal) benefit to having an earlier initcall during boot up of guests, so would like to keep this as is.",
+      "parentUuid": "58510572_f467b52d",
       "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
