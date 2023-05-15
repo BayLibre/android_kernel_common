@@ -87,6 +87,8 @@ static struct vfsmount *shm_mnt;
 
 #include <linux/uaccess.h>
 
+#include <asm/memory_metadata.h>
+
 #include "internal.h"
 
 #define BLOCKS_PER_PAGE  (PAGE_SIZE/512)
@@ -1526,7 +1528,7 @@ static struct folio *shmem_swapin(swp_entry_t swap, gfp_t gfp,
  */
 static gfp_t limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
 {
-	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
+	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM | __GFP_TAGGED;
 	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
 	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
 	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
@@ -1924,6 +1926,8 @@ repeat:
 		goto alloc_nohuge;
 
 	huge_gfp = vma_thp_gfp_mask(vma);
+	if (vma_has_metadata(vma))
+		huge_gfp |= __GFP_TAGGED;
 	huge_gfp = limit_gfp_mask(huge_gfp, gfp);
 	folio = shmem_alloc_and_acct_folio(huge_gfp, inode, index, true);
 	if (IS_ERR(folio)) {
@@ -2083,6 +2087,10 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
 	struct folio *folio = NULL;
 	int err;
 	vm_fault_t ret = VM_FAULT_LOCKED;
+
+	/* Fixup gfp flags for metadata enabled VMAs. */
+	if (vma_has_metadata(vma))
+		gfp |= __GFP_TAGGED;
 
 	/*
 	 * Trinity finds that probing a hole which tmpfs is punching can
