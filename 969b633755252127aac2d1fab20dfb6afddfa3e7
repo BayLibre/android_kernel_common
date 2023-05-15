@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c67164d_656704e1",
+        "filename": "drivers/irqchip/irq-gic-v3.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1399,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-05-15T16:21:03Z",
+      "side": 1,
+      "message": "Since you are exporting this into the global namespace, shouldn\u0027t this be `gic_v3_resume` instead?",
+      "revId": "969b633755252127aac2d1fab20dfb6afddfa3e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
