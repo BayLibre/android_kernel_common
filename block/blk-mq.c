@@ -337,7 +337,7 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	data->ctx->rq_dispatched[op_is_sync(data->cmd_flags)]++;
 	refcount_set(&rq->ref, 1);
 
-	if (!op_is_flush(data->cmd_flags)) {
+	if (!op_is_flush(data->cmd_flags) && !blk_rq_is_passthrough(rq)) {
 		rq->elv.icq = NULL;
 		if (e && e->type->ops.prepare_request) {
 			if (e->type->icq_cache)
