@@ -372,6 +372,12 @@ static int __init mte_tag_storage_activate_regions(void)
 	}
 
 	ret = reserve_tag_storage(ZERO_PAGE(0), 0, GFP_HIGHUSER_MOVABLE);
+	if (ret) {
+		pr_info("MTE tag storage disabled");
+	} else {
+		static_branch_enable(&mte_tag_storage_enabled_key);
+		pr_info("MTE tag storage enabled\n");
+	}
 
 	return ret;
 }
