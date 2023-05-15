@@ -1925,6 +1925,8 @@ repeat:
 
 	huge_gfp = vma_thp_gfp_mask(vma);
 	huge_gfp = limit_gfp_mask(huge_gfp, gfp);
+	if (vma->vm_flags & VM_MTE)
+		huge_gfp |= VM_MTE;
 	folio = shmem_alloc_and_acct_folio(huge_gfp, inode, index, true);
 	if (IS_ERR(folio)) {
 alloc_nohuge:
@@ -2083,6 +2085,10 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
 	struct folio *folio = NULL;
 	int err;
 	vm_fault_t ret = VM_FAULT_LOCKED;
+
+	/* Fixup gfp flags for MTE enabled VMAs. */
+	if (vma->vm_flags & VM_MTE)
+		gfp |= __GFP_TAGGED;
 
 	/*
 	 * Trinity finds that probing a hole which tmpfs is punching can
