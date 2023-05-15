@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ce47737_e486589f",
+        "filename": "fs/exec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-05-15T21:33:15Z",
+      "side": 1,
+      "message": "This breaks the KMI due to changes in visibility for the generated functions associated with the task_rename tracepoint. This line should be moved to the file where the task_rename tracepoint is instantiated (kernel/fork.c). I think that will resolve the issue. If not, this will have to wait for the next KMI update on May 24.\n\n```\nfunction symbol \u0027int __traceiter_task_rename(void*, struct task_struct*, const char*)\u0027 changed\n  CRC changed from 0xc4fccde to 0x558fc438\n```",
+      "revId": "85280d9e9571b03e8546510a51dd7c7ca04291fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
