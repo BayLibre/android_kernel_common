@@ -429,6 +429,11 @@ int z_erofs_fill_inode(struct inode *inode);
 int z_erofs_map_blocks_iter(struct inode *inode,
 			    struct erofs_map_blocks *map,
 			    int flags);
+void *erofs_get_pcpubuf(unsigned int requiredpages);
+void erofs_put_pcpubuf(void *ptr);
+int erofs_pcpubuf_growsize(unsigned int nrpages);
+void erofs_pcpubuf_init(void);
+void erofs_pcpubuf_exit(void);
 #else
 static inline int z_erofs_fill_inode(struct inode *inode) { return -EOPNOTSUPP; }
 static inline int z_erofs_map_blocks_iter(struct inode *inode,
@@ -437,6 +442,8 @@ static inline int z_erofs_map_blocks_iter(struct inode *inode,
 {
 	return -EOPNOTSUPP;
 }
+static inline void erofs_pcpubuf_init(void) {}
+static inline void erofs_pcpubuf_exit(void) {}
 #endif	/* !CONFIG_EROFS_FS_ZIP */
 
 struct erofs_map_dev {
@@ -505,13 +512,6 @@ static inline void *erofs_vm_map_ram(struct page **pages, unsigned int count)
 	}
 	return NULL;
 }
-
-/* pcpubuf.c */
-void *erofs_get_pcpubuf(unsigned int requiredpages);
-void erofs_put_pcpubuf(void *ptr);
-int erofs_pcpubuf_growsize(unsigned int nrpages);
-void erofs_pcpubuf_init(void);
-void erofs_pcpubuf_exit(void);
 
 /* sysfs.c */
 int erofs_register_sysfs(struct super_block *sb);
