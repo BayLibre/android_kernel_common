@@ -243,6 +243,24 @@
       "parentUuid": "f1b8c700_cb20626e",
       "revId": "a4adaaab45363bd199251ee4316627280ae94482",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd0c64bc_a55482fe",
+        "filename": "include/linux/pm_qos.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2003165
+      },
+      "writtenOn": "2023-05-16T13:32:49Z",
+      "side": 1,
+      "message": "I have refactored some code to use one field and noticed that the pointer is initialized in the vh of `freq_qos_add_request`/`freq_qos_update_request`. For now, everything seems to be working fine, so I will try to use one field as you suggested. Thank you for your patience.",
+      "parentUuid": "7cd49b1e_de003f52",
+      "revId": "a4adaaab45363bd199251ee4316627280ae94482",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
