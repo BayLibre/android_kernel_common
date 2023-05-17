@@ -34,6 +34,24 @@
       "parentUuid": "54fa5635_c563d083",
       "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416fd72c_6945ada0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-05-17T17:06:20Z",
+      "side": 1,
+      "message": "Thought on it a little more and did some experiments -- I don\u0027t think `__GENKSYMS__` is what I need. `struct gh_rm` is already not directly tracked by crc checker. I don\u0027t want ABI tools to track it because it is supposed to be an opaque pointer. This is opposite problem that vendor hooks have -- where they had the opaque pointer we wanted to not appear opaque in the ABI. As I understand from the docs [1], `__GENKSYMS__` is supposed to help maintain stability of the CRC, not remove definitions from the ABI.",
+      "parentUuid": "4c6ef2c6_5948974b",
+      "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
