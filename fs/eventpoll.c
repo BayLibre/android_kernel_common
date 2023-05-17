@@ -39,6 +39,7 @@
 #include <linux/compat.h>
 #include <linux/rculist.h>
 #include <net/busy_poll.h>
+#include <trace/hooks/fs.h>
 
 /*
  * LOCKING:
@@ -256,6 +257,9 @@ static struct kmem_cache *epi_cache __read_mostly;
 
 /* Slab cache used to allocate "struct eppoll_entry" */
 static struct kmem_cache *pwq_cache __read_mostly;
+
+/* Name of wakeup source created by eventpoll */
+static char *ws_name = NULL;
 
 /*
  * List of files with newly added links, where we may need to limit the number
@@ -1367,15 +1371,25 @@ static int ep_create_wakeup_source(struct epitem *epi)
 {
 	struct name_snapshot n;
 	struct wakeup_source *ws;
+	size_t max_len = 64;
 
+	if (unlikely(!ws_name)) {
+		ws_name = kzalloc(max_len, GFP_KERNEL);
+		if (unlikely(!ws_name))
+			return -ENOMEM;
+	}
+	strscpy(ws_name, "eventpoll", max_len);
+	trace_android_vh_ep_create_wakeup_source(ws_name, max_len);
 	if (!epi->ep->ws) {
-		epi->ep->ws = wakeup_source_register(NULL, "eventpoll");
+		epi->ep->ws = wakeup_source_register(NULL, ws_name);
 		if (!epi->ep->ws)
 			return -ENOMEM;
 	}
 
 	take_dentry_name_snapshot(&n, epi->ffd.file->f_path.dentry);
-	ws = wakeup_source_register(NULL, n.name.name);
+	strscpy(ws_name, n.name.name, max_len);
+	trace_android_vh_ep_create_wakeup_source(ws_name, max_len);
+	ws = wakeup_source_register(NULL, ws_name);
 	release_dentry_name_snapshot(&n);
 
 	if (!ws)
