@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6409da57_aef2ae31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-17T01:01:14Z",
+      "side": 1,
+      "message": "Please provide performance benefits for such custom readahead logic in the bug. Why kernel\u0027s default readahead mechanism in not enough? Maybe it\u0027s something that can be proposed upstream to improve Linux kernel?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "da2ce881233ecec5b3502ae51ad88f665a843c3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0d1e5e2_3ad27e35",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-17T01:01:14Z",
+      "side": 1,
+      "message": "Page fault is the hottest path in the kernel mm. Even disabled tracepoints are not free. Have you measured performance hit from adding these tracepoints in this path? PFT (page fault test) from mmtests suite would be a good one to try. I\u0027m not convinced that stats collection is important enough task to regress this path.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 53
+      },
+      "revId": "da2ce881233ecec5b3502ae51ad88f665a843c3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "069cfa07_503b5d92",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -48,6 +94,29 @@
       "writtenOn": "2023-05-16T22:39:57Z",
       "side": 1,
       "message": "Please create a patch on top of this one to add the symbols to your symbol list.",
+      "revId": "da2ce881233ecec5b3502ae51ad88f665a843c3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68eb882_bc19b85f",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-17T01:01:14Z",
+      "side": 1,
+      "message": "This path will cause you to miss `trace_android_rvh_do_page_fault_end`",
+      "range": {
+        "startLine": 650,
+        "startChar": 2,
+        "endLine": 650,
+        "endChar": 11
+      },
       "revId": "da2ce881233ecec5b3502ae51ad88f665a843c3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
