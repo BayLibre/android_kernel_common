@@ -16,6 +16,24 @@
       "message": "IIUC, the purpose of this is to disable block io-throttling once in a while even though cgroup is set on the block device ? Why not just just remove the throttling on the block device through sys/fs/cgroup ?",
       "revId": "2f5c1d4114d42da0c4d743d8765d0abc4267553f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4565dbe2_97698b84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1975505
+      },
+      "writtenOn": "2023-05-17T03:28:32Z",
+      "side": 1,
+      "message": "Android currently uses uid directory in /sys/fs/cgroup to manage application processes.\nIf we use blkio in cgroup v2, it will take time to loop through these directories to add or remove speed limit policies.",
+      "parentUuid": "56bd8283_a6efacd1",
+      "revId": "2f5c1d4114d42da0c4d743d8765d0abc4267553f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
