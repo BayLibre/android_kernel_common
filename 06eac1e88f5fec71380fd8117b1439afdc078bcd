@@ -129,6 +129,24 @@
       "parentUuid": "c80ca945_6b713448",
       "revId": "06eac1e88f5fec71380fd8117b1439afdc078bcd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a995bdb2_6819c2d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2023-05-17T15:53:53Z",
+      "side": 1,
+      "message": "Upstream changes would require vendor specific flags in a UAPI that make no sense as part of the common dma-heap interface. The best alternative is to create at least 8 different heaps to cover all the functionality they are relying on a couple of flags for now, but that seems a little unreasonable to me. So I think we should take this to allow vendors to bypass the heap flag restriction where both upstreaming a fix and implementing multiple heaps are not ideal.",
+      "parentUuid": "b0c89145_29fb304b",
+      "revId": "06eac1e88f5fec71380fd8117b1439afdc078bcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
