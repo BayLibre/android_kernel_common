@@ -186,6 +186,10 @@ Before jumping into the kernel, the following conditions must be met:
   System caches which do not respect architected cache maintenance by VA
   operations (not recommended) must be configured and disabled.
 
+  For CPUs with the Memory Tagging Extension feature (FEAT_MTE2), the
+  address range corresponding to the entire memory accessible to the kernel
+  must have the Allocation Tags cleaned to PoC.
+
 - Architected timers
 
   CNTFRQ must be programmed with the timer frequency and CNTVOFF must
