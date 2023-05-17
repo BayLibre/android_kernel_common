@@ -16,6 +16,24 @@
       "message": "No, please do not make the code worse just for the crc checker.\n\nEither work around this in future changes by using the __GENKYMS__ define for when you add new symbols, or by defining the type based on if __GENKSYMS__ is enabled or not when you build the .h file.\n\nBut to go backwards and just use a void * is not a good idea for all of the obvious reasons that would entail.",
       "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c6ef2c6_5948974b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-05-17T16:12:21Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with the `__GENKSYMS__` approach. I\u0027ve uploaded PS#3 but it didn\u0027t have desired effect on the KMI (KMI did not change at all). The documentation mentions I should wrap the definition of `struct gh_rm` with `#ifndef __GENKSYMS__`, but it didn\u0027t seem to have the effect. Am I doing the right thing?",
+      "parentUuid": "54fa5635_c563d083",
+      "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
