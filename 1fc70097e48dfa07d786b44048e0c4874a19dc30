@@ -34,6 +34,24 @@
       "parentUuid": "1f36d1b3_e3881d92",
       "revId": "1fc70097e48dfa07d786b44048e0c4874a19dc30",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fab971c_e14505a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-05-17T19:22:49Z",
+      "side": 1,
+      "message": "Greg,\n\nif you are OK with non-LTS uses of ANDROID_KABI_RESERVE() for feature backports, then we can do that. These new macros were created in the 5.15 kernels to allocate space in some structs for features that we knew would be backported once they landed upstream so we didn\u0027t consume KABI fields. We can\u0027t use the VENDOR/OEM data fields since vendor modules are free to assume that those are available for their use.\n\nSo, it\u0027s either open up KABI fields for partner use when backporting features or use these 5.15 macros. I\u0027m fine with KABI if you are, but there will probably be more requests for those in the future, up until now we\u0027ve been a hard no for any non-LTS uses.",
+      "parentUuid": "50e42a4a_6e44cfac",
+      "revId": "1fc70097e48dfa07d786b44048e0c4874a19dc30",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
