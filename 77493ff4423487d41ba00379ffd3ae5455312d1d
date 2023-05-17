@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54fa5635_c563d083",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-17T06:56:29Z",
+      "side": 1,
+      "message": "No, please do not make the code worse just for the crc checker.\n\nEither work around this in future changes by using the __GENKYMS__ define for when you add new symbols, or by defining the type based on if __GENKSYMS__ is enabled or not when you build the .h file.\n\nBut to go backwards and just use a void * is not a good idea for all of the obvious reasons that would entail.",
+      "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
