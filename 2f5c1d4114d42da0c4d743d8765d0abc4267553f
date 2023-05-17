@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abf34a37_75a0e479",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-17T11:48:09Z",
+      "side": 1,
+      "message": "Do not use a vendor driver for UFS, use the in-kernel UFS driver, or the hooks already present for that layer.  Do not touch the core block layer for a UFS-specific issue with your hardware, that\u0027s not the correct place to do it at all.",
+      "parentUuid": "c39c2c19_0bbea1a7",
+      "revId": "2f5c1d4114d42da0c4d743d8765d0abc4267553f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ac62d44_490f6ba8",
         "filename": "block/blk-throttle.c",
         "patchSetId": 1
