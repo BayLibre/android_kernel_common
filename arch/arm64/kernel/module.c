@@ -558,6 +558,24 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 	return 0;
 }
 
+static void rht_node_free(void *ptr, void *arg)
+{
+	kfree(ptr);
+}
+
+void module_arch_cleanup(struct module *mod)
+{
+	if (mod->arch.core.elf64_rela_rht) {
+		rhashtable_free_and_destroy(mod->arch.core.elf64_rela_rht, rht_node_free, NULL);
+		kfree(mod->arch.core.elf64_rela_rht);
+	}
+
+	if (mod->arch.init.elf64_rela_rht) {
+		rhashtable_free_and_destroy(mod->arch.init.elf64_rela_rht, rht_node_free, NULL);
+		kfree(mod->arch.init.elf64_rela_rht);
+	}
+}
+
 int module_finalize(const Elf_Ehdr *hdr,
 		    const Elf_Shdr *sechdrs,
 		    struct module *me)

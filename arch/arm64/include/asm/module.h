@@ -6,12 +6,14 @@
 #define __ASM_MODULE_H
 
 #include <asm-generic/module.h>
+#include <linux/rhashtable.h>
 
 #ifdef CONFIG_ARM64_MODULE_PLTS
 struct mod_plt_sec {
 	int			plt_shndx;
 	int			plt_num_entries;
 	int			plt_max_entries;
+	struct rhashtable	*elf64_rela_rht;
 };
 
 #define ARM64_MODULE_PLTS_ARCHDATA					\
