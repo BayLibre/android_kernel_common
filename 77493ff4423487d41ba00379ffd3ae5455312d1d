@@ -70,6 +70,24 @@
       "parentUuid": "416fd72c_6945ada0",
       "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c92244e_b96e84c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2023-05-18T16:46:25Z",
+      "side": 1,
+      "message": "The symbol is already hidden from CRC generation logic. I want to hide the symbols from ABI representation and as far as my experiments show me `__GENKSYMS__` is not sufficient for that. Am I doing the wrong thing here (I\u0027ve uploaded what I did)?",
+      "parentUuid": "b82fa575_35fa637f",
+      "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
