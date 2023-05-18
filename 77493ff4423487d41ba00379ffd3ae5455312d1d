@@ -52,6 +52,24 @@
       "parentUuid": "4c6ef2c6_5948974b",
       "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b82fa575_35fa637f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-18T15:04:16Z",
+      "side": 1,
+      "message": "`__GENKSYMS__` is what is defined when the pre-processing stage happens to create the CRC definitions of the symbols.  You can use that to \"hide\" symbols from the CRC generation logic, which is what you want to do here.  So please use that.",
+      "parentUuid": "416fd72c_6945ada0",
+      "revId": "77493ff4423487d41ba00379ffd3ae5455312d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
