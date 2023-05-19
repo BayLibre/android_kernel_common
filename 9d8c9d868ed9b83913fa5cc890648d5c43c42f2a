@@ -16,6 +16,24 @@
       "message": "I did the cherry-pick from the web interface and it seems that gerrit uses \"git cherry-pick -x\", which is not what we want when backporting from Linux LTS, as the upstream commit is already specified in the commit message.",
       "revId": "9d8c9d868ed9b83913fa5cc890648d5c43c42f2a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a996ca0_eef1967b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2023-05-19T09:42:29Z",
+      "side": 1,
+      "message": "So I removed manually the line added by \"git cherry-pick -x\"\n(cherry picked from commit ab5254f09b3962afc1e9425d8f049fe244b863ae)",
+      "parentUuid": "da825b29_64167723",
+      "revId": "9d8c9d868ed9b83913fa5cc890648d5c43c42f2a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
