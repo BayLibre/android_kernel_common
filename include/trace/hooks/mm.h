@@ -86,6 +86,14 @@ DECLARE_HOOK(android_vh_kmalloc_slab,
 DECLARE_HOOK(android_vh_adjust_kvmalloc_flags,
 	TP_PROTO(unsigned int order, gfp_t *alloc_flags),
 	TP_ARGS(order, alloc_flags));
+DECLARE_HOOK(android_vh_get_page_wmark,
+	TP_PROTO(unsigned int alloc_flags, unsigned long *page_wmark),
+	TP_ARGS(alloc_flags, page_wmark));
+DECLARE_HOOK(android_vh_page_add_new_anon_rmap,
+	TP_PROTO(struct page *page, struct vm_area_struct *vma,
+		unsigned long address),
+	TP_ARGS(page, vma, address));
+
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
