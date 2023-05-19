@@ -300,6 +300,14 @@ void __cleancache_invalidate_fs(struct super_block *sb)
 }
 EXPORT_SYMBOL(__cleancache_invalidate_fs);
 
+void __cleancache_get_size(unsigned long *nr_free, unsigned long *nr_used)
+{
+	if (cleancache_ops && cleancache_ops->get_size)
+		cleancache_ops->get_size(nr_free, nr_used);
+	else
+		*nr_free = *nr_used = 0;
+}
+
 static int __init init_cleancache(void)
 {
 #ifdef CONFIG_DEBUG_FS

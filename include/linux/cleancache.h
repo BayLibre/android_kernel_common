@@ -36,6 +36,7 @@ struct cleancache_ops {
 	void (*invalidate_page)(int, struct cleancache_filekey, pgoff_t);
 	void (*invalidate_inode)(int, struct cleancache_filekey);
 	void (*invalidate_fs)(int);
+	void (*get_size)(unsigned long *nr_free, unsigned long *nr_used);
 };
 
 extern int cleancache_register_ops(const struct cleancache_ops *ops);
@@ -46,6 +47,7 @@ extern void __cleancache_put_page(struct page *);
 extern void __cleancache_invalidate_page(struct address_space *, struct page *);
 extern void __cleancache_invalidate_inode(struct address_space *);
 extern void __cleancache_invalidate_fs(struct super_block *);
+extern void __cleancache_get_size(unsigned long *nr_free, unsigned long *nr_used);
 
 #ifdef CONFIG_CLEANCACHE
 #define cleancache_enabled (1)
@@ -119,6 +121,14 @@ static inline void cleancache_invalidate_fs(struct super_block *sb)
 {
 	if (cleancache_enabled)
 		__cleancache_invalidate_fs(sb);
+}
+
+static inline void cleancache_get_size(unsigned long *nr_free, unsigned long *nr_used)
+{
+	if (cleancache_enabled)
+		__cleancache_get_size(nr_free, nr_used);
+	else
+		*nr_free = *nr_used = 0;
 }
 
 #endif /* _LINUX_CLEANCACHE_H */
