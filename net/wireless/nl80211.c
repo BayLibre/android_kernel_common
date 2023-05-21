@@ -379,7 +379,15 @@ he_bss_color_policy[NL80211_HE_BSS_COLOR_ATTR_MAX + 1] = {
 	[NL80211_HE_BSS_COLOR_ATTR_PARTIAL] = { .type = NLA_FLAG },
 };
 
-static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
+/*
+ * NOTE: netlink policy to validate the reserved attributes added after
+ * NL80211_TXRATE_HE_LTF is unknown. so, update nl80211_txattr_policy to
+ * validate only till last known attribute. If any reserved attribute enabled in
+ * enum enum nl80211_tx_rate_attributes while backporting UAPI changes, this
+ * policy must be updated accordingly.
+ */
+static const struct nla_policy
+nl80211_txattr_policy[NL80211_TXRATE_HE_LTF + 1] = {
 	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
 				    .len = NL80211_MAX_SUPP_RATES },
 	[NL80211_TXRATE_HT] = { .type = NLA_BINARY,
@@ -395,8 +403,15 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
 						   NL80211_RATE_INFO_HE_4XLTF),
 };
 
+/*
+ * NOTE: netlink policy to validate the reserved attributes added after
+ * NL80211_TID_CONFIG_ATTR_TX_RATE is unknown. so, update
+ * nl80211_tid_config_attr_policy to validate only till last known attribute.
+ * If any reserved attribute enabled in enum nl80211_tid_config_attr while
+ * backporting UAPI changes, this policy must be updated accordingly.
+ */
 static const struct nla_policy
-nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_MAX + 1] = {
+nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_TX_RATE + 1] = {
 	[NL80211_TID_CONFIG_ATTR_VIF_SUPP] = { .type = NLA_U64 },
 	[NL80211_TID_CONFIG_ATTR_PEER_SUPP] = { .type = NLA_U64 },
 	[NL80211_TID_CONFIG_ATTR_OVERRIDE] = { .type = NLA_FLAG },
@@ -12598,8 +12613,15 @@ static int nl80211_get_power_save(struct sk_buff *skb, struct genl_info *info)
 	return err;
 }
 
+/*
+ * NOTE: netlink policy to validate the reserved attributes added after
+ * NL80211_ATTR_CQM_RSSI_LEVEL is unknown. so, update nl80211_attr_cqm_policy
+ * to validate only till last known attribute. If any reserved attribute enabled
+ * in enum nl80211_attr_cqm while backporting UAPI changes, this policy must be
+ * updated accordingly.
+ */
 static const struct nla_policy
-nl80211_attr_cqm_policy[NL80211_ATTR_CQM_MAX + 1] = {
+nl80211_attr_cqm_policy[NL80211_ATTR_CQM_RSSI_LEVEL + 1] = {
 	[NL80211_ATTR_CQM_RSSI_THOLD] = { .type = NLA_BINARY },
 	[NL80211_ATTR_CQM_RSSI_HYST] = { .type = NLA_U32 },
 	[NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT] = { .type = NLA_U32 },
@@ -17299,11 +17321,18 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 	},
 };
 
+/*
+ * NOTE: netlink policy to validate the reserved attributes added after
+ * NL80211_ATTR_PUNCT_BITMAP is unknown. so, use NL80211_ATTR_PUNCT_BITMAP as
+ * MAX attribute to validate, this is needed to ignore unknown attributes sent
+ * by userspace. If any reserved attribute enabled in enum nl80211_attrs while
+ * backporting UAPI changes, then "maxattr" value must be updated accordingly.
+ */
 static struct genl_family nl80211_fam __ro_after_init = {
 	.name = NL80211_GENL_NAME,	/* have users key off the name instead */
 	.hdrsize = 0,			/* no private header */
 	.version = 1,			/* no particular meaning now */
-	.maxattr = NL80211_ATTR_MAX,
+	.maxattr = NL80211_ATTR_PUNCT_BITMAP,
 	.policy = nl80211_policy,
 	.netnsok = true,
 	.pre_doit = nl80211_pre_doit,
