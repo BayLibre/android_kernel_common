@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5629348_fa698464",
+        "filename": "rust/kernel/user_ptr.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1730345
+      },
+      "writtenOn": "2023-05-22T23:02:28Z",
+      "side": 1,
+      "message": "Why can\u0027t this be `self.1 \u003d self.1.checked_sub(num_skip).ok_or(EFAULT)?;`?",
+      "revId": "e5bb828cc22907a125cb8e904599b8744a55796d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
