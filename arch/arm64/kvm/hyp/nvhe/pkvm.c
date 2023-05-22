@@ -379,7 +379,7 @@ teardown_donated_memory(struct kvm_hyp_memcache *mc, void *addr, size_t size)
 	memset(addr, 0, size);
 
 	for (start = addr; start < addr + size; start += PAGE_SIZE)
-		push_hyp_memcache(mc, start, hyp_virt_to_phys);
+		push_hyp_memcache(mc, start, hyp_virt_to_phys, 0);
 
 	unmap_donated_memory_noclear(addr, size);
 }
@@ -1041,8 +1041,11 @@ int __pkvm_finalize_teardown_vm(pkvm_handle_t handle)
 
 		vcpu_mc = &hyp_vcpu->vcpu.arch.stage2_mc;
 		while (vcpu_mc->nr_pages) {
-			addr = pop_hyp_memcache(vcpu_mc, hyp_phys_to_virt);
-			push_hyp_memcache(mc, addr, hyp_virt_to_phys);
+			unsigned long order;
+			addr = pop_hyp_memcache(vcpu_mc, hyp_phys_to_virt, &order);
+			/* We don't expect vcpu to have higher order pages. */
+			WARN_ON(order);
+			push_hyp_memcache(mc, addr, hyp_virt_to_phys, order);
 			unmap_donated_memory_noclear(addr, PAGE_SIZE);
 		}
 
