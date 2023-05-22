@@ -89,20 +89,25 @@ struct kvm_hyp_memcache {
 
 static inline void push_hyp_memcache(struct kvm_hyp_memcache *mc,
 				     phys_addr_t *p,
-				     phys_addr_t (*to_pa)(void *virt))
+				     phys_addr_t (*to_pa)(void *virt),
+				     unsigned long order)
 {
 	*p = mc->head;
 	mc->head = to_pa(p);
+	mc->head |= order;
 	mc->nr_pages++;
 }
 
 static inline void *pop_hyp_memcache(struct kvm_hyp_memcache *mc,
-				     void *(*to_va)(phys_addr_t phys))
+				     void *(*to_va)(phys_addr_t phys),
+				     unsigned long *order)
 {
-	phys_addr_t *p = to_va(mc->head);
+	phys_addr_t *p = to_va(PAGE_ALIGN_DOWN(mc->head));
 
 	if (!mc->nr_pages)
 		return NULL;
+
+	*order = (unsigned long)mc->head & (PAGE_SIZE - 1);
 
 	mc->head = *p;
 	mc->nr_pages--;
@@ -112,28 +117,34 @@ static inline void *pop_hyp_memcache(struct kvm_hyp_memcache *mc,
 
 static inline int __topup_hyp_memcache(struct kvm_hyp_memcache *mc,
 				       unsigned long min_pages,
-				       void *(*alloc_fn)(void *arg),
+				       void *(*alloc_fn)(void *arg, unsigned long order),
 				       phys_addr_t (*to_pa)(void *virt),
-				       void *arg)
+				       void *arg,
+				       unsigned long order)
 {
 	while (mc->nr_pages < min_pages) {
-		phys_addr_t *p = alloc_fn(arg);
+		phys_addr_t *p = alloc_fn(arg, order);
 
 		if (!p)
 			return -ENOMEM;
-		push_hyp_memcache(mc, p, to_pa);
+		push_hyp_memcache(mc, p, to_pa, order);
 	}
 
 	return 0;
 }
 
 static inline void __free_hyp_memcache(struct kvm_hyp_memcache *mc,
-				       void (*free_fn)(void *virt, void *arg),
+				       void (*free_fn)(void *virt, void *arg, unsigned long order),
 				       void *(*to_va)(phys_addr_t phys),
 				       void *arg)
 {
-	while (mc->nr_pages)
-		free_fn(pop_hyp_memcache(mc, to_va), arg);
+	unsigned long order;
+	void *p;
+
+	while (mc->nr_pages) {
+		p = pop_hyp_memcache(mc, to_va, &order);
+		free_fn(p, arg, order);
+	}
 }
 
 #define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)
@@ -141,7 +152,7 @@ static inline void __free_hyp_memcache(struct kvm_hyp_memcache *mc,
 void free_hyp_memcache(struct kvm_hyp_memcache *mc,
 		       unsigned long flags);
 int topup_hyp_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages,
-		       unsigned long flags);
+		       unsigned long flags, unsigned long order);
 
 struct kvm_vmid {
 	atomic64_t id;

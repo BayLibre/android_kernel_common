@@ -469,13 +469,17 @@ int pkvm_create_stack(phys_addr_t phys, unsigned long *haddr)
 	return ret;
 }
 
-void *pkvm_admit_host_page(void *arg)
+void *pkvm_admit_host_page(void *arg, unsigned long order)
 {
+	phys_addr_t p;
 	struct kvm_hyp_memcache *host_mc = arg;
 
 	if (!host_mc->nr_pages)
 		return NULL;
 
+	BUG_ON(order != (host_mc->head & (PAGE_SIZE - 1)));
+
+	p = PAGE_ALIGN_DOWN(host_mc->head);
 	/*
 	 * The host still owns the pages in its memcache, so we need to go
 	 * through a full host-to-hyp donation cycle to change it. Fortunately,
@@ -483,10 +487,10 @@ void *pkvm_admit_host_page(void *arg)
 	 * succeeds we're good to go. Because mc is a copy of the memcache
 	 * struct, the host cannot modify mc->head between donate and pop.
 	 */
-	if (__pkvm_host_donate_hyp(hyp_phys_to_pfn(host_mc->head), 1))
+	if (__pkvm_host_donate_hyp(hyp_phys_to_pfn(p), 1 << order))
 		return NULL;
 
-	return pop_hyp_memcache(host_mc, hyp_phys_to_virt);
+	return pop_hyp_memcache(host_mc, hyp_phys_to_virt, &order);
 }
 
 /* Refill our local memcache by poping pages from the one provided by the host. */
@@ -497,7 +501,7 @@ int refill_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages,
 	int ret;
 
 	ret =  __topup_hyp_memcache(mc, min_pages, pkvm_admit_host_page,
-				    hyp_virt_to_phys, &tmp);
+				    hyp_virt_to_phys, &tmp, 0);
 	*host_mc = tmp;
 
 	return ret;
