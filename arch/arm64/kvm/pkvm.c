@@ -843,7 +843,7 @@ int __pkvm_topup_hyp_alloc(unsigned long nr_pages)
 	};
 	int ret;
 
-	ret = topup_hyp_memcache(&mc, nr_pages, 0);
+	ret = topup_hyp_memcache(&mc, nr_pages, 0, 0);
 	if (ret)
 		return ret;
 

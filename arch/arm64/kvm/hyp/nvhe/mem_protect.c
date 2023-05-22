@@ -239,15 +239,17 @@ static void *guest_s2_zalloc_page(void *mc)
 {
 	struct hyp_page *p;
 	void *addr;
+	unsigned long order;
 
 	addr = hyp_alloc_pages(&current_vm->pool, 0);
 	if (addr)
 		return addr;
 
-	addr = pop_hyp_memcache(mc, hyp_phys_to_virt);
+	addr = pop_hyp_memcache(mc, hyp_phys_to_virt, &order);
 	if (!addr)
 		return addr;
 
+	WARN_ON(order);
 	memset(addr, 0, PAGE_SIZE);
 	p = hyp_virt_to_page(addr);
 	memset(p, 0, sizeof(*p));
