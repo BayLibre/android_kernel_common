@@ -318,6 +318,8 @@ struct queue_limits {
 	 * due to possible offsets.
 	 */
 	unsigned int		dma_alignment;
+
+	bool			sub_page_limits;
 };
 
 typedef int (*report_zones_cb)(struct blk_zone *zone, unsigned int idx,
