@@ -229,6 +229,24 @@
       "parentUuid": "8c0e07cf_8f408de1",
       "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63d8387e_c52f67f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2023-05-22T18:53:36Z",
+      "side": 1,
+      "message": "This is the same cherry-pick as aosp/2507348 discussed at https://b.corp.google.com/issues/275191442#comment11. Without the hook, they need either a large number of heaps, or to abandon dma-buf heaps entirely and make their own exporter with support for their vendor specific flags. None of those solutions are ideal, and IMO this is the least-bad for their case.",
+      "parentUuid": "5fc0c230_29a2f70f",
+      "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
