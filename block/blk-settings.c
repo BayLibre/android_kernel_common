@@ -106,6 +106,14 @@ void blk_queue_bounce_limit(struct request_queue *q, enum blk_bounce bounce)
 }
 EXPORT_SYMBOL(blk_queue_bounce_limit);
 
+/* For debugfs. */
+int blk_sub_page_limit_queues_get(void *data, u64 *val)
+{
+	*val = READ_ONCE(blk_nr_sub_page_limit_queues);
+
+	return 0;
+}
+
 /**
  * blk_enable_sub_page_limits - enable support for max_segment_size values smaller than PAGE_SIZE and for max_hw_sectors values below PAGE_SIZE >> SECTOR_SHIFT
  * @lim: request queue limits for which to enable support of these features.
