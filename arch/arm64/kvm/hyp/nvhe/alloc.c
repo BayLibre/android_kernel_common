@@ -156,7 +156,7 @@ static void hyp_allocator_unmap(struct hyp_allocator *allocator,
 		phys_addr_t pa = __pkvm_private_range_pa((void *)__va);
 		void *page = hyp_phys_to_virt(pa);
 
-		push_hyp_memcache(mc, page, hyp_virt_to_phys);
+		push_hyp_memcache(mc, page, hyp_virt_to_phys, 0);
 		__va += PAGE_SIZE;
 	}
 
@@ -186,14 +186,16 @@ static int hyp_allocator_map(struct hyp_allocator *allocator,
 
 	while (nr_pages < (size >> PAGE_SHIFT)) {
 		void *page;
+		unsigned long order;
 
-		page = pop_hyp_memcache(mc, hyp_phys_to_virt);
-		WARN_ON(!page);
+		page = pop_hyp_memcache(mc, hyp_phys_to_virt, &order);
+		/* We only expect 1 page at a time for now. */
+		WARN_ON(!page || order);
 
 		ret = __pkvm_create_mappings(va, PAGE_SIZE,
 					     hyp_virt_to_phys(page), PAGE_HYP);
 		if (ret) {
-			push_hyp_memcache(mc, page, hyp_virt_to_phys);
+			push_hyp_memcache(mc, page, hyp_virt_to_phys, 0);
 			break;
 		}
 		va += PAGE_SIZE;
@@ -709,9 +711,11 @@ static void hyp_allocator_reclaim(struct hyp_allocator *allocator,
 		alloc_mc = &allocator->mc[cpu];
 
 		while (alloc_mc->nr_pages) {
-			void *page = pop_hyp_memcache(alloc_mc, hyp_phys_to_virt);
+			unsigned long order;
+			void *page = pop_hyp_memcache(alloc_mc, hyp_phys_to_virt, &order);
 
-			push_hyp_memcache(mc, page, hyp_virt_to_phys);
+			WARN_ON(order);
+			push_hyp_memcache(mc, page, hyp_virt_to_phys, 0);
 			WARN_ON(__pkvm_hyp_donate_host(hyp_virt_to_pfn(page), 1));
 
 			target--;
@@ -735,10 +739,12 @@ static void hyp_allocator_reclaim(struct hyp_allocator *allocator,
 
 	alloc_mc = &allocator->mc[hyp_smp_processor_id()];
 	while (alloc_mc->nr_pages) {
-		void *page = pop_hyp_memcache(alloc_mc, hyp_phys_to_virt);
+		unsigned long order;
+		void *page = pop_hyp_memcache(alloc_mc, hyp_phys_to_virt, &order);
 
+		WARN_ON(order);
 		memset(page, 0, PAGE_SIZE);
-		push_hyp_memcache(mc, page, hyp_virt_to_phys);
+		push_hyp_memcache(mc, page, hyp_virt_to_phys, 0);
 		WARN_ON(__pkvm_hyp_donate_host(hyp_virt_to_pfn(page), 1));
 	}
 done:
