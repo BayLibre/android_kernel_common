@@ -37,7 +37,7 @@ void *kvm_iommu_donate_page(void)
 		return NULL;
 	}
 
-	p = pkvm_admit_host_page(&tmp);
+	p = pkvm_admit_host_page(&tmp, 0);
 	if (!p)
 		return NULL;
 
