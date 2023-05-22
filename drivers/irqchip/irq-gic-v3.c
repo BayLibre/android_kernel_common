@@ -38,7 +38,11 @@
 
 #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
 #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
+<<<<<<< HEAD   (6c32ac UPSTREAM: sched/fair: Limit sched slice duration)
 #define FLAGS_WORKAROUND_MTK_GICR_SAVE		(1ULL << 2)
+=======
+#define FLAGS_WORKAROUND_ASR_ERRATUM_8601001	(1ULL << 3)
+>>>>>>> CHANGE (f17cd5 BACKPORT: irqchip/gic-v3: Work around affinity issues on ASR)
 
 #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
 
@@ -651,6 +655,11 @@ static int gic_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu)
 static u64 gic_mpidr_to_affinity(unsigned long mpidr)
 {
 	u64 aff;
+
+	/* ASR8601 needs to have its affinities shifted down... */
+	if (unlikely(gic_data.flags & FLAGS_WORKAROUND_ASR_ERRATUM_8601001))
+		mpidr = (MPIDR_AFFINITY_LEVEL(mpidr, 1)	|
+			 (MPIDR_AFFINITY_LEVEL(mpidr, 2) << 8));
 
 	aff = ((u64)MPIDR_AFFINITY_LEVEL(mpidr, 3) << 32 |
 	       MPIDR_AFFINITY_LEVEL(mpidr, 2) << 16 |
@@ -1792,9 +1801,18 @@ static bool gic_enable_quirk_hip06_07(void *data)
 	return false;
 }
 
+<<<<<<< HEAD   (6c32ac UPSTREAM: sched/fair: Limit sched slice duration)
 static bool gic_enable_quirk_arm64_2941627(void *data)
 {
 	static_branch_enable(&gic_arm64_2941627_erratum);
+=======
+static bool gic_enable_quirk_asr8601(void *data)
+{
+	struct gic_chip_data *d = data;
+
+	d->flags |= FLAGS_WORKAROUND_ASR_ERRATUM_8601001;
+
+>>>>>>> CHANGE (f17cd5 BACKPORT: irqchip/gic-v3: Work around affinity issues on ASR)
 	return true;
 }
 
@@ -1805,9 +1823,15 @@ static const struct gic_quirk gic_quirks[] = {
 		.init	= gic_enable_quirk_msm8996,
 	},
 	{
+<<<<<<< HEAD   (6c32ac UPSTREAM: sched/fair: Limit sched slice duration)
 		.desc	= "GICv3: Mediatek Chromebook GICR save problem",
 		.property = "mediatek,broken-save-restore-fw",
 		.init	= gic_enable_quirk_mtk_gicr,
+=======
+		.desc	= "GICv3: ASR erratum 8601001",
+		.compatible = "asr,asr8601-gic-v3",
+		.init	= gic_enable_quirk_asr8601,
+>>>>>>> CHANGE (f17cd5 BACKPORT: irqchip/gic-v3: Work around affinity issues on ASR)
 	},
 	{
 		.desc	= "GICv3: HIP06 erratum 161010803",
