@@ -286,7 +286,7 @@ static struct bio *bio_split_rw(struct bio *bio, struct queue_limits *lim,
 		    bytes + bv.bv_len <= max_bytes &&
 		    bv.bv_offset + bv.bv_len <= PAGE_SIZE) {
 			/* single-page bvec optimization */
-			nsegs += blk_segments(&q->limits, bv.bv_len);
+			nsegs += blk_segments(lim, bv.bv_len);
 			bytes += bv.bv_len;
 		} else {
 			if (bvec_split_segs(lim, &bv, &nsegs, &bytes,
@@ -346,7 +346,7 @@ struct bio *__bio_split_to_limits(struct bio *bio, struct queue_limits *lim,
 		       unsigned int *nr_segs)
 {
 	struct bio_set *bs = &bio->bi_bdev->bd_disk->bio_split;
-	struct bio *split;
+	struct bio *split = NULL;
 
 	switch (bio_op(bio)) {
 	case REQ_OP_DISCARD:
@@ -362,15 +362,15 @@ struct bio *__bio_split_to_limits(struct bio *bio, struct queue_limits *lim,
 		 * may trigger the bio splitting code even if splitting is not
 		 * necessary.
 		 */
-		if (!q->limits.chunk_sectors &&
-		    (*bio)->bi_vcnt == 1 &&
+		if (!lim->chunk_sectors &&
+		    bio->bi_vcnt == 1 &&
 #ifdef CONFIG_BLK_SUB_PAGE_SEGMENTS
-		    (*bio)->bi_io_vec->bv_len <= q->limits.max_segment_size &&
+		    bio->bi_io_vec->bv_len <= lim->max_segment_size &&
 #endif
-		    ((*bio)->bi_io_vec[0].bv_len +
-		     (*bio)->bi_io_vec[0].bv_offset) <= PAGE_SIZE) {
-			*nr_segs = blk_segments(&q->limits,
-						(*bio)->bi_io_vec[0].bv_len);
+		    (bio->bi_io_vec[0].bv_len +
+		     bio->bi_io_vec[0].bv_offset) <= PAGE_SIZE) {
+			*nr_segs = blk_segments(lim,
+						bio->bi_io_vec[0].bv_len);
 			break;
 		}
 		split = bio_split_rw(bio, lim, nr_segs, bs,
