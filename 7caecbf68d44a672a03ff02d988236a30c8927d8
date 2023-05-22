@@ -247,6 +247,24 @@
       "parentUuid": "5fc0c230_29a2f70f",
       "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33ac589e_57fb0fc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-05-22T20:03:03Z",
+      "side": 1,
+      "message": "I\u0027m not sure extending upstream interfaces with vendor specific flags is least bad, as it makes for potential complications breaking vendor userland if future flags are added upstream.\n\nHaving a separate vendor specific exporter driver seems least likely to complicate things in my mind. I understand the frustration in having to create a similar but different interface, but out of tree vendor specific extensions of exiting upstream APIs is more problematic.\n\nI\u0027d strongly push folks to bring their requirements to the community, while also up-streaming drivers that use this extension so the upstream interface can grow in a way that satisfies the need.",
+      "parentUuid": "63d8387e_c52f67f6",
+      "revId": "7caecbf68d44a672a03ff02d988236a30c8927d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
