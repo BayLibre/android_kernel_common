@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc843d90_efec0334",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "just call it `oom_victim_list` and remove the comment.",
+      "range": {
+        "startLine": 26,
+        "startChar": 24,
+        "endLine": 26,
+        "endChar": 77
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7590e8a7_ed1ad769",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "A better name would be `oom_victim`.",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 20
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aff5380_34fc6550",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "#define would do I think, unless you want to make it configurable. I would go with a constant to start with.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 11
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69704eab_bf115e38",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "Explain why not what you are doing. IIRC this function might be called with spinlock being held, that\u0027s why you don\u0027t want to be preempted.",
+      "range": {
+        "startLine": 49,
+        "startChar": 3,
+        "endLine": 50,
+        "endChar": 26
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f5d5f03_c763c636",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "Instead of printing, change the function to return the error code and return appropriate code from here, like ENOMEM. Same in other cases.",
+      "range": {
+        "startLine": 54,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 9
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5525d95f_5239588e",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "`new_node` is leaked. You need to free it before returning.",
+      "range": {
+        "startLine": 61,
+        "startChar": 2,
+        "endLine": 61,
+        "endChar": 9
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8378989_d61c0dd3",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "return -ENOMEM\n\nHowever, you don\u0027t need this buffer. You are reading record by record into nextMsgLine, then aggregating them into kernelBuffer and then copying into userspace buffer using copy_to_user(). You can copy from nextMsgLine directly into userspace buffer instead:\n```\n  size_t bytes_copied \u003d 0;\n  ...\n  temp_size \u003d snprintf(nextMsgLine, ...);\n  if (temp_size + bytes_copied \u003e\u003d count)\n    break;\n  copy_to_user(buf + bytes_copied, nextMsgLine, temp_size);\n  bytes_copied +\u003d temp_size;\n  ... \n```",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4b9c7c_022202d4",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "long line. Keep them under 80 chars.",
+      "range": {
+        "startLine": 154,
+        "startChar": 3,
+        "endLine": 154,
+        "endChar": 86
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7e23f9a_e2aeecf3",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-05-23T16:48:10Z",
+      "side": 1,
+      "message": "You can have many pollers which will be passing different `filp`. therefore `last_oom_kill_data_poll` can\u0027t be global. If has to be tied to the `filep`.\n\nLucky for you, struct file has a member called `private_data` where you can stash your `last_oom_kill_data_poll`. You will have to define `proc_open` and `proc_release` callbacks for `oom_kills_list_proc_ops` and inside `proc_open` handler you should allocate `filep-\u003eprivate_data` and inside `proc_release` handler you should free it.",
+      "range": {
+        "startLine": 204,
+        "startChar": 5,
+        "endLine": 204,
+        "endChar": 28
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
