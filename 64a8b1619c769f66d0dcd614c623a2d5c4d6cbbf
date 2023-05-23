@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "600aebe9_f8b05f0d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-05-23T08:19:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45f53f80_058e6add",
+      "revId": "64a8b1619c769f66d0dcd614c623a2d5c4d6cbbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c92b2be6_05398ead",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-15T21:04:20Z",
       "side": 1,
       "message": "Is the intent to add this to gki_defconfig as a GKI module? (\u003dm) or as a built-in? (\u003dy)",
+      "revId": "64a8b1619c769f66d0dcd614c623a2d5c4d6cbbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc2523bf_7d099cb7",
+        "filename": "drivers/virt/geniezone/Kconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-05-23T08:19:53Z",
+      "side": 1,
+      "message": "It would be a GKI module(\u003dm) for our intention. Shall we submit patch for the corresponding config somewhere in `arch/arm64/configs/gki_defconfig`?",
+      "parentUuid": "c92b2be6_05398ead",
       "revId": "64a8b1619c769f66d0dcd614c623a2d5c4d6cbbf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
