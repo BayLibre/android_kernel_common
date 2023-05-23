@@ -15,7 +15,9 @@ use crate::{context::Context, process::Process};
 
 mod context;
 mod defs;
+mod error;
 mod process;
+mod thread;
 
 module! {
     type: BinderModule,
