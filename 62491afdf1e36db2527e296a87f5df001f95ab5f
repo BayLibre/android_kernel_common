@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000045374477",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2599688?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8479e492_161e7cf1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-05-23T02:14:10Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/53156443a30368c0759c22e54a8d5cacc1b543cc) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d53156443a30368c0759c22e54a8d5cacc1b543cc)\n\n```\n      ## mm/memory.c ##\n     @@ mm/memory.c: retry_pud:\n       * updates.  However, note that the handling of PERF_COUNT_SW_PAGE_FAULTS should\n    @@ mm/memory.c: retry_pud:\n     +\t * To preserve the behavior of older kernels, PGFAULT counters record\n     +\t * both successful and failed faults, as opposed to perf counters,\n     +\t * which ignore failed cases.\n    - \t */\n    --\tif (ret \u0026 (VM_FAULT_ERROR | VM_FAULT_RETRY))\n    ++\t */\n     +\tcount_vm_event(PGFAULT);\n     +\tcount_memcg_event_mm(mm, PGFAULT);\n     +\n    @@ mm/memory.c: retry_pud:\n     +\t * valid).  That includes arch_vma_access_permitted() failing before\n     +\t * reaching here. So this is not a \"this many hardware page faults\"\n     +\t * counter.  We should use the hw profiling for that.\n    -+\t */\n    + \t */\n    +-\tif (ret \u0026 (VM_FAULT_ERROR | VM_FAULT_RETRY))\n     +\tif (ret \u0026 VM_FAULT_ERROR)\n      \t\treturn;\n      \n      \t/*\n    -@@ mm/memory.c: static vm_fault_t sanitize_fault_flags(struct vm_area_struct *vma,\n    +@@ mm/memory.c: static void lru_gen_exit_fault(void)\n      vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,\n      \t\t\t   unsigned int flags, struct pt_regs *regs)\n      {\n    @@ mm/memory.c: static vm_fault_t sanitize_fault_flags(struct vm_area_struct *vma,\n     -\tcount_vm_event(PGFAULT);\n     -\tcount_memcg_event_mm(vma-\u003evm_mm, PGFAULT);\n     -\n    - \tret \u003d sanitize_fault_flags(vma, \u0026flags);\n    - \tif (ret)\n    --\t\treturn ret;\n    -+\t\tgoto out;\n    + \t/* do counter updates before entering really critical section. */\n    + \tcheck_sync_rss_stat(current);\n      \n      \tif (!arch_vma_access_permitted(vma, flags \u0026 FAULT_FLAG_WRITE,\n      \t\t\t\t\t    flags \u0026 FAULT_FLAG_INSTRUCTION,\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 534069704 android-build.ayeaye-python-dispatcher_20230522.05_p0",
+      "revId": "62491afdf1e36db2527e296a87f5df001f95ab5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
