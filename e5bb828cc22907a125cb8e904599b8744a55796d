@@ -16,6 +16,24 @@
       "message": "Why can\u0027t this be `self.1 \u003d self.1.checked_sub(num_skip).ok_or(EFAULT)?;`?",
       "revId": "e5bb828cc22907a125cb8e904599b8744a55796d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0a15fc_f91f94e0",
+        "filename": "rust/kernel/user_ptr.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-05-23T07:04:13Z",
+      "side": 1,
+      "message": "You\u0027re right, we could simplify it like that.",
+      "parentUuid": "b5629348_fa698464",
+      "revId": "e5bb828cc22907a125cb8e904599b8744a55796d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
