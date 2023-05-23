@@ -340562,7 +340562,20 @@ function {
   parameter_id: 0x379d63b0
 }
 function {
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   id: 0x9ba47b26
+||||||| BASE
+  id: 0x9ba5a0e6
+=======
+  id: 0x9ba47dcc
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x0483e6f8
+  parameter_id: 0x6720d32f
+}
+function {
+  id: 0x9ba5a0e6
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
   parameter_id: 0x01222f7d
@@ -361571,6 +361584,7 @@ elf_symbol {
   full_name: "__traceiter_android_vh_enable_thermal_genl_check"
 }
 elf_symbol {
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   id: 0x1921d10d
   name: "__traceiter_android_vh_exit_check"
   is_defined: true
@@ -361587,6 +361601,16 @@ elf_symbol {
   crc: 0x0486ae7c
   type_id: 0x9bc3617d
   full_name: "__traceiter_android_vh_exit_mm"
+||||||| BASE
+=======
+  id: 0x7f1591a1
+  name: "__traceiter_android_vh_ep_create_wakeup_source"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1e8ed582
+  type_id: 0x9ba47dcc
+  full_name: "__traceiter_android_vh_ep_create_wakeup_source"
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
 }
 elf_symbol {
   id: 0x1f554c2a
@@ -364073,6 +364097,7 @@ elf_symbol {
   full_name: "__traceiter_android_vh_sysrq_crash"
 }
 elf_symbol {
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   id: 0xdd9dd67b
   name: "__traceiter_android_vh_task_blocks_on_rtmutex"
   is_defined: true
@@ -364332,6 +364357,16 @@ elf_symbol {
   crc: 0xd2ac8d57
   type_id: 0x9be2da56
   full_name: "__traceiter_android_vh_tune_swappiness"
+||||||| BASE
+=======
+  id: 0x641d703d
+  name: "__traceiter_android_vh_timerfd_create"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8c68d59c
+  type_id: 0x9ba47dcc
+  full_name: "__traceiter_android_vh_timerfd_create"
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
 }
 elf_symbol {
   id: 0x8a773cc3
@@ -368456,6 +368491,7 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_enable_thermal_genl_check"
 }
 elf_symbol {
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   id: 0x684e5f4f
   name: "__tracepoint_android_vh_exit_check"
   is_defined: true
@@ -368472,6 +368508,16 @@ elf_symbol {
   crc: 0x70b59c72
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_exit_mm"
+||||||| BASE
+=======
+  id: 0xdef7c547
+  name: "__tracepoint_android_vh_ep_create_wakeup_source"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7db48833
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_ep_create_wakeup_source"
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
 }
 elf_symbol {
   id: 0x0d418d38
@@ -370958,6 +371004,7 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_sysrq_crash"
 }
 elf_symbol {
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   id: 0xe5bf742d
   name: "__tracepoint_android_vh_task_blocks_on_rtmutex"
   is_defined: true
@@ -371217,6 +371264,16 @@ elf_symbol {
   crc: 0x772e4b01
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_tune_swappiness"
+||||||| BASE
+=======
+  id: 0x2df766e3
+  name: "__tracepoint_android_vh_timerfd_create"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x181a4352
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_timerfd_create"
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
 }
 elf_symbol {
   id: 0x18e67da1
@@ -435742,8 +435799,13 @@ interface {
   symbol_id: 0xf432d1c9
   symbol_id: 0x02c8f91b
   symbol_id: 0xdcaa59a3
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   symbol_id: 0x1921d10d
   symbol_id: 0xb38eccdd
+||||||| BASE
+=======
+  symbol_id: 0x7f1591a1
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
   symbol_id: 0x1f554c2a
   symbol_id: 0x343adff1
   symbol_id: 0x9c6911fb
@@ -436020,6 +436082,7 @@ interface {
   symbol_id: 0x58e7556b
   symbol_id: 0x2ecf85e9
   symbol_id: 0x34a01a22
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   symbol_id: 0xdd9dd67b
   symbol_id: 0xf376df6b
   symbol_id: 0xa578d54c
@@ -436049,6 +436112,10 @@ interface {
   symbol_id: 0x351ae4d8
   symbol_id: 0x39155e73
   symbol_id: 0x3947ecb4
+||||||| BASE
+=======
+  symbol_id: 0x641d703d
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
   symbol_id: 0x8a773cc3
   symbol_id: 0x8af2b51e
   symbol_id: 0x5ab5402f
@@ -436507,8 +436574,13 @@ interface {
   symbol_id: 0x732a182b
   symbol_id: 0xe5deb919
   symbol_id: 0x54b2cd01
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   symbol_id: 0x684e5f4f
   symbol_id: 0xac5d150b
+||||||| BASE
+=======
+  symbol_id: 0xdef7c547
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
   symbol_id: 0x0d418d38
   symbol_id: 0x2121385f
   symbol_id: 0x9ad783c1
@@ -436785,6 +436857,7 @@ interface {
   symbol_id: 0x39e68fed
   symbol_id: 0xefb9e5a3
   symbol_id: 0x3fe0157c
+<<<<<<< HEAD   (fbc642 ANDROID: Add IFTTT analyzer markers for GKI modules)
   symbol_id: 0xe5bf742d
   symbol_id: 0x4e038641
   symbol_id: 0xcc46e666
@@ -436814,6 +436887,10 @@ interface {
   symbol_id: 0xfa2b4906
   symbol_id: 0x49b955bd
   symbol_id: 0xfe6b6962
+||||||| BASE
+=======
+  symbol_id: 0x2df766e3
+>>>>>>> CHANGE (634ea3 ANDROID: Update the ABI symbol list)
   symbol_id: 0x18e67da1
   symbol_id: 0x6436c788
   symbol_id: 0x1f1a25bd
