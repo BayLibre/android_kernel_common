@@ -187,7 +187,26 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_transaction_received);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_oem_binder_struct);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_special_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_buffer_release);
+<<<<<<< HEAD   (9f1495 ANDROID: mm: create vendor hooks for memory reclaim)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mglru_should_abort_scan);
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_ioctl_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_exited);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_spawn_new_thread);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_has_special_work_ilocked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_acct_update_power);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_ioctl_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_exited);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_spawn_new_thread);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_has_special_work_ilocked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_shrink_slab);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_acct_update_power);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
+>>>>>>> CHANGE (aa254e ANDROID: mm: create vendor hooks for do_shrink_slab())
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_folio_look_around_ref);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around_migrate_folio);
