@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000045478071",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2601992?revision\u003d3",
+      "fixSuggestions": [
+        {
+          "fixId": "7b49b803_28e85f4e",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Sooyong Suk \u003cs.suk@samsung.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "cfae50f0_2b1181fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-05-24T08:01:34Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Sooyong Suk \u003cs.suk@samsung.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 534431837 android-build.ayeaye-python-dispatcher_20230523.05_p0",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "bcdb7eec6730d2a2a5bbd858fa281351f772d14f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
