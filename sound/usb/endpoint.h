@@ -23,6 +23,9 @@ int snd_usb_endpoint_set_params(struct snd_usb_audio *chip,
 int snd_usb_endpoint_prepare(struct snd_usb_audio *chip,
 			     struct snd_usb_endpoint *ep);
 int snd_usb_endpoint_get_clock_rate(struct snd_usb_audio *chip, int clock);
+int snd_usb_endpoint_get_clock_rate_v2(struct snd_usb_audio *chip,
+				       int clock,
+				       int stream);
 
 bool snd_usb_endpoint_compatible(struct snd_usb_audio *chip,
 				 struct snd_usb_endpoint *ep,
