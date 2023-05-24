@@ -846,8 +846,10 @@ static int hw_rule_rate(struct snd_pcm_hw_params *params,
 				continue;
 			}
 		}
-
-		r = snd_usb_endpoint_get_clock_rate(chip, fp->clock);
+		if (subs && subs->pcm_substream)
+			r = snd_usb_endpoint_get_clock_rate(chip, fp->clock, subs->pcm_substream->stream);
+		else
+			r = snd_usb_endpoint_get_clock_rate(chip, fp->clock);
 		if (r > 0) {
 			if (!snd_interval_test(it, r))
 				continue;

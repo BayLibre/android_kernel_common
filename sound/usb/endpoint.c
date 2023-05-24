@@ -1536,6 +1536,27 @@ int snd_usb_endpoint_get_clock_rate(struct snd_usb_audio *chip, int clock)
 	return rate;
 }
 
+/* get the current rate set to the given clock by any endpoint and stream */
+int snd_usb_endpoint_get_clock_rate_v2(struct snd_usb_audio *chip, int clock, int stream)
+{
+	struct snd_usb_endpoint *ep;
+	bool is_playback = stream = SNDRV_PCM_STREAM_PLAPBACK;
+	int rate = 0;
+
+	if (!clock)
+		return 0;
+	mutex_lock(&chip->mutex);
+	list_for_each_entry(ep, &chip->ep_list, list) {
+		if (ep->cur_clock == clock && ep->cur_rate &&
+		    ep->type == SND_USB_ENDPOINT_TYPE_DATA &&
+		    usb_pipeout(ep->pipe) == is_playback) {
+			rate = ep->cur_rate;
+			break;
+		}
+	}
+	mutex_unlock(&chip->mutex);
+	return rate;
+}
 /**
  * snd_usb_endpoint_start: start an snd_usb_endpoint
  *
