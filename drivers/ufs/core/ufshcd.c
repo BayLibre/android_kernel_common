@@ -1782,7 +1782,7 @@ EXPORT_SYMBOL_GPL(ufshcd_unfreeze_scsi_devs);
  * @hba: per adapter instance
  * @async: This indicates whether caller should ungate clocks asynchronously.
  */
-int ufshcd_hold(struct ufs_hba *hba, bool async)
+void ufshcd_hold(struct ufs_hba *hba, bool async)
 {
 	bool flush_result;
 	unsigned long flags;
@@ -1791,7 +1791,7 @@ int ufshcd_hold(struct ufs_hba *hba, bool async)
 
 	if (!ufshcd_is_clkgating_allowed(hba) ||
 	    !hba->clk_gating.is_initialized)
-		return 0;
+		return;
 	spin_lock_irqsave(hba->host->host_lock, flags);
 	hba->clk_gating.active_reqs++;
 
@@ -1811,7 +1811,7 @@ start:
 			spin_unlock_irqrestore(hba->host->host_lock, flags);
 			flush_result = flush_work(&hba->clk_gating.ungate_work);
 			if (hba->clk_gating.is_suspended && !flush_result)
-				return 0;
+				return;
 			spin_lock_irqsave(hba->host->host_lock, flags);
 			goto start;
 		}
@@ -1852,8 +1852,6 @@ start:
 		break;
 	}
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
-
-	return 0;
 }
 EXPORT_SYMBOL_GPL(ufshcd_hold);
 
