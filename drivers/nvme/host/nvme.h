@@ -691,6 +691,10 @@ static inline bool nvme_try_complete_req(struct request *req, __le16 status,
 	nvme_should_fail(req);
 	if (unlikely(blk_should_fake_timeout(req->q)))
 		return true;
+	if (likely(req->mq_hctx->nr_ctx == 1)) {
+		WRITE_ONCE(req->state, MQ_RQ_COMPLETE);
+		return false;
+	}
 	return blk_mq_complete_request_remote(req);
 }
 
