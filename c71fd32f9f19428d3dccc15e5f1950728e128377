@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000045564115",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2604396?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "341c1ccf_3bd0d683",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-05-25T08:21:58Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2570891](https://android-review.googlesource.com/c/2570891)\n\n```\n      ## arch/arm64/kvm/hyp/nvhe/mem_protect.c ##\n     @@ arch/arm64/kvm/hyp/nvhe/mem_protect.c: static int __check_page_state_visitor(u64 addr, u64 end, u32 level,\n      \tstruct check_walk_data *d \u003d arg;\n      \tkvm_pte_t pte \u003d *ptep;\n      \n    --\tif (kvm_pte_valid(pte) \u0026\u0026 !addr_is_allowed_memory(kvm_pte_to_phys(pte)))\n    --\t\treturn -EINVAL;\n    --\n    - \treturn d-\u003eget_page_state(pte, addr) \u003d\u003d d-\u003edesired ? 0 : -EPERM;\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (914e94 Revert \"Revert \"mm/rmap: Fix anon_vma-\u003edegree ambiguity lead)\n    + \tif (kvm_pte_valid(pte) \u0026\u0026 !addr_is_allowed_memory(kvm_pte_to_phys(pte)))\n    + \t\treturn -EINVAL;\n    + \n    + \treturn d-\u003eget_page_state(pte) \u003d\u003d d-\u003edesired ? 0 : -EPERM;\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++\treturn d-\u003eget_page_state(pte, addr) \u003d\u003d d-\u003edesired ? 0 : -EPERM;\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (fa4146 ANDROID: KVM: arm64: Move addr_is_allowed_memory() check int)\n      }\n      \n    + static int check_page_state_range(struct kvm_pgtable *pgt, u64 addr, u64 size,\n     @@ arch/arm64/kvm/hyp/nvhe/mem_protect.c: static int check_page_state_range(struct kvm_pgtable *pgt, u64 addr, u64 size,\n      \n    - static enum pkvm_page_state host_get_page_state(kvm_pte_t pte, u64 addr)\n    + static enum pkvm_page_state host_get_page_state(kvm_pte_t pte)\n      {\n     +\tif (!addr_is_allowed_memory(addr))\n     +\t\treturn PKVM_NOPAGE;\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 534853889 android-build.ayeaye-python-dispatcher_20230524.05_p0",
+      "revId": "c71fd32f9f19428d3dccc15e5f1950728e128377",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
