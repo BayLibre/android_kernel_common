@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30e94537_045c5cb2",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc843d90_efec0334",
+      "range": {
+        "startLine": 26,
+        "startChar": 24,
+        "endLine": 26,
+        "endChar": 77
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7590e8a7_ed1ad769",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-23T16:48:10Z",
       "side": 1,
       "message": "A better name would be `oom_victim`.",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 20
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a064bbe_bbe1c890",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7590e8a7_ed1ad769",
       "range": {
         "startLine": 28,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94ae7705_47727442",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aff5380_34fc6550",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 11
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69704eab_bf115e38",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-05-23T16:48:10Z",
       "side": 1,
       "message": "Explain why not what you are doing. IIRC this function might be called with spinlock being held, that\u0027s why you don\u0027t want to be preempted.",
+      "range": {
+        "startLine": 49,
+        "startChar": 3,
+        "endLine": 50,
+        "endChar": 26
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d6df8ae_964c4b18",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69704eab_bf115e38",
       "range": {
         "startLine": 49,
         "startChar": 3,
@@ -116,6 +212,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b600a7aa_cc6f0ee9",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f5d5f03_c763c636",
+      "range": {
+        "startLine": 54,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 9
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5525d95f_5239588e",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-05-23T16:48:10Z",
       "side": 1,
       "message": "`new_node` is leaked. You need to free it before returning.",
+      "range": {
+        "startLine": 61,
+        "startChar": 2,
+        "endLine": 61,
+        "endChar": 9
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d9ac497_7cf3f81d",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5525d95f_5239588e",
       "range": {
         "startLine": 61,
         "startChar": 2,
@@ -164,6 +308,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b879375_fee5285c",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "I attempted to remove the local `kernelBuffer` and just perform the copy directly to the user buffer instead, but would end up hanging when trying to write. \n\nLooks like performing `copy_to_user` during a `spinlock` might be the issue. From what I gathered is that `copy_to_user` has the possibility of going to sleep, not sure if this is the cause of the issue.",
+      "parentUuid": "d8378989_d61c0dd3",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c4b9c7c_022202d4",
         "filename": "drivers/android/memhealth.c",
         "patchSetId": 13
@@ -175,6 +343,30 @@
       "writtenOn": "2023-05-23T16:48:10Z",
       "side": 1,
       "message": "long line. Keep them under 80 chars.",
+      "range": {
+        "startLine": 154,
+        "startChar": 3,
+        "endLine": 154,
+        "endChar": 86
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0df2338_9b2bc5d5",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c4b9c7c_022202d4",
       "range": {
         "startLine": 154,
         "startChar": 3,
@@ -198,6 +390,30 @@
       "writtenOn": "2023-05-23T16:48:10Z",
       "side": 1,
       "message": "You can have many pollers which will be passing different `filp`. therefore `last_oom_kill_data_poll` can\u0027t be global. If has to be tied to the `filep`.\n\nLucky for you, struct file has a member called `private_data` where you can stash your `last_oom_kill_data_poll`. You will have to define `proc_open` and `proc_release` callbacks for `oom_kills_list_proc_ops` and inside `proc_open` handler you should allocate `filep-\u003eprivate_data` and inside `proc_release` handler you should free it.",
+      "range": {
+        "startLine": 204,
+        "startChar": 5,
+        "endLine": 204,
+        "endChar": 28
+      },
+      "revId": "59d02e26e7efb4bcfb304272e73ffd6d659c1952",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a540573_29173515",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-25T20:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7e23f9a_e2aeecf3",
       "range": {
         "startLine": 204,
         "startChar": 5,
