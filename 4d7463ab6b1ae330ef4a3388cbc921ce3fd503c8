@@ -16,6 +16,24 @@
       "message": "This kernel has [`memory.reclaim`](https://android.googlesource.com/kernel/common/+/refs/heads/android14-6.1/mm/memcontrol.c#6705) available from userspace. Do you still need this export in the kernel?",
       "revId": "4d7463ab6b1ae330ef4a3388cbc921ce3fd503c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7622f1f_dcf66acb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1969321
+      },
+      "writtenOn": "2023-05-25T03:26:16Z",
+      "side": 1,
+      "message": "cause we use memcg in kernelspace, and resort the memcg by andorid_oem_data. so we need use this symbols in kernelspace to reclaim memory. \nnow we use the memory.reclaim in userspace but this need some time to fix some performance issues.",
+      "parentUuid": "48e60791_859fb866",
+      "revId": "4d7463ab6b1ae330ef4a3388cbc921ce3fd503c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
