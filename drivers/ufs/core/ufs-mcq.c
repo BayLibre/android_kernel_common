@@ -368,7 +368,7 @@ void ufshcd_mcq_make_queues_operational(struct ufs_hba *hba)
 		 * Submission Queue Attribute
 		 */
 		ufsmcq_writel(hba, (1 << QUEUE_EN_OFFSET) | qsize |
-			      (i << QUEUE_ID_OFFSET),
+			      (hwq->cqid << QUEUE_ID_OFFSET),
 			      MCQ_CFG_n(REG_SQATTR, i));
 	}
 }

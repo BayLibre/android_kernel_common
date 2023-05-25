@@ -307,6 +307,7 @@ struct ufs_pwr_mode_info {
  * @op_runtime_config: called to config Operation and runtime regs Pointers
  * @get_outstanding_cqs: called to get outstanding completion queues
  * @config_esi: called to config Event Specific Interrupt
+ * @config_cqid: called to config cqid for each sq
  */
 struct ufs_hba_variant_ops {
 	const char *name;
@@ -352,6 +353,7 @@ struct ufs_hba_variant_ops {
 	int	(*get_outstanding_cqs)(struct ufs_hba *hba,
 				       unsigned long *ocqs);
 	int	(*config_esi)(struct ufs_hba *hba);
+	int	(*config_cqid)(struct ufs_hba *hba);
 };
 
 /* clock gating state  */
@@ -1134,6 +1136,7 @@ struct ufs_hw_queue {
 	dma_addr_t cqe_dma_addr;
 	u32 max_entries;
 	u32 id;
+	u32 cqid;
 	u32 sq_tail_slot;
 	spinlock_t sq_lock;
 	u32 cq_tail_slot;

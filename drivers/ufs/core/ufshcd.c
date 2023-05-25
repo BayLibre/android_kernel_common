@@ -8554,11 +8554,22 @@ err:
 static void ufshcd_config_mcq(struct ufs_hba *hba)
 {
 	int ret;
+	struct ufs_hw_queue *hwq;
+	int i;
 
 	ret = ufshcd_mcq_vops_config_esi(hba);
 	dev_info(hba->dev, "ESI %sconfigured\n", ret ? "is not " : "");
 
 	ufshcd_enable_intr(hba, UFSHCD_ENABLE_MCQ_INTRS);
+
+	ret = ufshcd_mcq_vops_config_cqid(hba);
+	if (ret) {
+		for (i = 0; i < hba->nr_hw_queues; i++) {
+			hwq = &hba->uhq[i];
+			hwq->cqid = i;
+		}
+	}
+
 	ufshcd_mcq_make_queues_operational(hba);
 	ufshcd_mcq_config_mac(hba, hba->nutrs);
 
