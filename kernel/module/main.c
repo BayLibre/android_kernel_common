@@ -2732,6 +2732,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	long err = 0;
 	char *after_dashes;
 
+	pr_info("VILAS: Module started loading\n");
+
 	/*
 	 * Do the signature check (if any) first. All that
 	 * the signature check needs is info->len, it does
@@ -2904,6 +2906,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
 
 	/* Done! */
 	trace_module_load(mod);
+
+	pr_info("VILAS: Module %s finished loading\n", mod->name);
 
 	return do_init_module(mod);
 
