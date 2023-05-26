@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28114214_5caa1a16",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-26T21:52:31Z",
+      "side": 1,
+      "message": "Is it expected that each version of this interface will have a register that is defined in the enum at the start of the file? If not, that might seem a bit awkward as that enum grows but some of the other versions don\u0027t keep up with it because they don\u0027t have to.\n\nI wonder if it might make more sense to define the offsets as structures with names, so something like\n\n```\n/* I\u0027m saying v1 is optional here since v2 doesn\u0027t exist, but just trying to make a point */\nstruct kvm_cpufreq_offsets[_v1] \u003d {\n        .cur_freq_reg \u003d 0x0,\n        .set_freq_reg \u003d 0x4,\n};\n```\n\nYou can keep the pointers to these offsets structures opaque and type cast in the functions that use them?",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce746407_c9340447",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-26T21:52:31Z",
+      "side": 1,
+      "message": "nit: consider adding a local variable, `u32 reg_cnt` to store `drv_data-\u003einfo-\u003eoffsets_len` to make the code easier to read.",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd6f915_ec158450",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-26T21:52:31Z",
+      "side": 1,
+      "message": "`devm_*` functions should be used for allocating resources that are tied to the lifetime of a device. This is so that the resources can automatically be freed in case of an error while the device probes or when the device is removed from the system.\n\nIn this case however, it seems that the data structures allocated here should be tied to the lifetime of the policy structure. The policy structure can be freed without removing the device, but this structure would still be allocated for no reason.\n\nI think it\u0027d be best to use `kzalloc()` here instead, and `kfree()` in `kvm_cpufreq_cpu_exit()` and at the end of this function in case of an error.",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79280504_782b033a",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-26T21:52:31Z",
+      "side": 1,
+      "message": "as discussed offline, this can be `struct_size(*policy_data, reg, drv_data-\u003einfo-\u003eoffsets_len)`",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5d84143_502db3a5",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-26T21:52:31Z",
+      "side": 1,
+      "message": "What\u0027s the rationale for storing the offsets into the virtual address range of the regsiters? I understand that you save some time in computing this, but is it worth the cost in memory? Suppose you had a large register space? I think it might be best to compute these values on the fly?",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5405894_d1516e0b",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-05-26T21:52:31Z",
+      "side": 1,
+      "message": "Consider using `dev_pm_opp_free_cpufreq_table()` here so that the allocation and deallocation of the data structure is symmetric.",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
