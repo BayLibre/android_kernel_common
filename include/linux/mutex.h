@@ -19,9 +19,13 @@
 #include <asm/processor.h>
 #include <linux/osq_lock.h>
 #include <linux/debug_locks.h>
+<<<<<<< HEAD
 #include <linux/android_vendor.h>
 
 struct device;
+=======
+#include <linux/cleanup.h>
+>>>>>>> 54da6a092431 (locking: Introduce __cleanup() based infrastructure)
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
@@ -247,5 +251,8 @@ extern int mutex_trylock(struct mutex *lock);
 extern void mutex_unlock(struct mutex *lock);
 
 extern int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);
+
+DEFINE_GUARD(mutex, struct mutex *, mutex_lock(_T), mutex_unlock(_T))
+DEFINE_FREE(mutex, struct mutex *, if (_T) mutex_unlock(_T))
 
 #endif /* __LINUX_MUTEX_H */
