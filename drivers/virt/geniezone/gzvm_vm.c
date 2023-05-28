@@ -263,7 +263,7 @@ gzvm_vm_ioctl_set_memory_region(struct gzvm *gzvm,
 
 	ret = gzvm_arch_memregion_purpose(gzvm, mem);
 	if (ret) {
-		dev_err(&gzvm_debug_dev->dev,
+		dev_err(gzvm_dev.this_device,
 			"Failed to config memory region for the specified purpose\n");
 		return -EFAULT;
 	}
