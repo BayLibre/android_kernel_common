@@ -4248,8 +4248,15 @@ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
 		break;
 	case DWC3_DEVICE_EVENT_SUSPEND:
 		/* It changed to be suspend event for version 2.30a and above */
-		if (!DWC3_VER_IS_PRIOR(DWC3, 230A))
+		if (!DWC3_VER_IS_PRIOR(DWC3, 230A)) {
+			if (device_property_read_bool(dwc->dev,
+						"snps,bus-suspend-disconnect")) {
+				/* Handle as disconnect event */
+				dwc3_gadget_disconnect_interrupt(dwc);
+				break;
+			}
 			dwc3_gadget_suspend_interrupt(dwc, event->event_info);
+		}
 		break;
 	case DWC3_DEVICE_EVENT_SOF:
 	case DWC3_DEVICE_EVENT_ERRATIC_ERROR:
