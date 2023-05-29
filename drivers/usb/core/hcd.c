@@ -922,9 +922,13 @@ static int usb_register_bus(struct usb_bus *bus)
 {
 	int result = -E2BIG;
 	int busnum;
+	int start = 1;
 
 	mutex_lock(&usb_bus_idr_lock);
-	busnum = idr_alloc(&usb_bus_idr, bus, 1, USB_MAXBUS, GFP_KERNEL);
+	if (bus->busnum > 0)
+		start = bus->busnum;
+
+	busnum = idr_alloc(&usb_bus_idr, bus, start, USB_MAXBUS, GFP_KERNEL);
 	if (busnum < 0) {
 		pr_err("%s: failed to get bus number\n", usbcore_name);
 		goto error_find_busnum;
