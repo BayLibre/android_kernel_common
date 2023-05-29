@@ -195,6 +195,7 @@ static int xhci_plat_probe(struct platform_device *pdev)
 	int			ret;
 	int			irq;
 	struct xhci_plat_priv	*priv = NULL;
+	int busnum;
 
 
 	if (usb_disabled())
@@ -341,6 +342,10 @@ static int xhci_plat_probe(struct platform_device *pdev)
 
 	hcd->tpl_support = of_usb_host_tpl_support(sysdev->of_node);
 	xhci->shared_hcd->tpl_support = hcd->tpl_support;
+	busnum = of_alias_get_id(sysdev->of_node, "usb");
+	if (busnum > 0)
+		hcd->self.busnum = busnum;
+
 
 	if (priv) {
 		ret = xhci_priv_plat_setup(hcd);
@@ -357,6 +362,9 @@ static int xhci_plat_probe(struct platform_device *pdev)
 	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
 	if (ret)
 		goto disable_usb_phy;
+
+	if (busnum > 0)
+		xhci->shared_hcd->self.busnum = busnum + 1;
 
 	if (HCC_MAX_PSA(xhci->hcc_params) >= 4)
 		xhci->shared_hcd->can_do_streams = 1;
