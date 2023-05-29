@@ -28,6 +28,8 @@ struct blk_mq_ctx {
 	struct request_queue	*queue;
 	struct blk_mq_ctxs      *ctxs;
 	struct kobject		kobj;
+
+	ANDROID_OEM_DATA(1);
 } ____cacheline_aligned_in_smp;
 
 void blk_mq_submit_bio(struct bio *bio);
