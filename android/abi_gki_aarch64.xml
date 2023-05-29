@@ -123651,12 +123651,6 @@
         <enumerator name='PORT_RESET' value='83'/>
         <enumerator name='PORT_RESET_WAIT_OFF' value='84'/>
       </enum-decl>
-      <enum-decl name='tcpm_transmit_status' filepath='include/linux/usb/tcpm.h' line='32' column='1' id='a2f9e316'>
-        <underlying-type type-id='9cac1fee'/>
-        <enumerator name='TCPC_TX_SUCCESS' value='0'/>
-        <enumerator name='TCPC_TX_DISCARDED' value='1'/>
-        <enumerator name='TCPC_TX_FAILED' value='2'/>
-      </enum-decl>
       <union-decl name='power_supply_propval' size-in-bits='64' visibility='default' filepath='include/linux/power_supply.h' line='243' column='1' id='08942f16'>
         <data-member access='public'>
           <var-decl name='intval' type-id='95e97e5e' visibility='default' filepath='include/linux/power_supply.h' line='244' column='1'/>
@@ -123665,6 +123659,12 @@
           <var-decl name='strval' type-id='80f4b756' visibility='default' filepath='include/linux/power_supply.h' line='245' column='1'/>
         </data-member>
       </union-decl>
+      <enum-decl name='tcpm_transmit_status' filepath='include/linux/usb/tcpm.h' line='32' column='1' id='a2f9e316'>
+        <underlying-type type-id='9cac1fee'/>
+        <enumerator name='TCPC_TX_SUCCESS' value='0'/>
+        <enumerator name='TCPC_TX_DISCARDED' value='1'/>
+        <enumerator name='TCPC_TX_FAILED' value='2'/>
+      </enum-decl>
       <class-decl name='power_supply' size-in-bits='10176' is-struct='yes' visibility='default' filepath='include/linux/power_supply.h' line='307' column='1' id='98749268'>
         <data-member access='public' layout-offset-in-bits='0'>
           <var-decl name='desc' type-id='cb9cd99f' visibility='default' filepath='include/linux/power_supply.h' line='308' column='1'/>
