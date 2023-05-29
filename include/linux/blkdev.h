@@ -545,6 +545,8 @@ struct request_queue {
 
 	bool			mq_sysfs_init_done;
 
+	ANDROID_OEM_DATA(1);
+
 	/**
 	 * @srcu: Sleepable RCU. Use as lock when type of the request queue
 	 * is blocking (BLK_MQ_F_BLOCKING). Must be the last member
