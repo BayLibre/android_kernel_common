@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f6b01c_1aeaa5fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-05-30T18:22:52Z",
+      "side": 1,
+      "message": "Same here -- strip_modules directly controls INSTALL_MOD_STRIP, but it doesn\u0027t control DO_NOT_STRIP_MODULES, right? We are deleting this because we discard its value before entering creates_module_staging, IIUC?",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "deda36e0e282607eecf1c74c3e1f0ae7763c3bfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
