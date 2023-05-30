@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8ed0ca_b2722289",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4aebdf0e_b0d5cae2",
+      "range": {
+        "startLine": 37,
+        "startChar": 33,
+        "endLine": 37,
+        "endChar": 68
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "880f1462_8e0a5ca3",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-26T21:41:19Z",
       "side": 1,
       "message": "put_task_struct(task); before returning",
+      "range": {
+        "startLine": 79,
+        "startChar": 2,
+        "endLine": 79,
+        "endChar": 17
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7487f61_baeeb13c",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "880f1462_8e0a5ca3",
       "range": {
         "startLine": 79,
         "startChar": 2,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc9f7021_86e551e3",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12c6c110_b57ad9d5",
+      "range": {
+        "startLine": 85,
+        "startChar": 2,
+        "endLine": 86,
+        "endChar": 69
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6b3db48_d4233704",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-05-26T21:41:19Z",
       "side": 1,
       "message": "You can move it right after `strscpy_pad()` call, then you don\u0027t need two of them in the different branches.",
+      "range": {
+        "startLine": 87,
+        "startChar": 2,
+        "endLine": 87,
+        "endChar": 24
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80bda1b4_2b35ab98",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6b3db48_d4233704",
       "range": {
         "startLine": 87,
         "startChar": 2,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5cf7e93_af9472e6",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Suggestion didn\u0027t work, cuttlefish would crash after running that logic.",
+      "parentUuid": "758b6a7f_dda9bb27",
+      "range": {
+        "startLine": 106,
+        "startChar": 2,
+        "endLine": 113,
+        "endChar": 14
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80894b4a_4b99aeb0",
         "filename": "drivers/android/memhealth.c",
         "patchSetId": 15
@@ -129,6 +249,30 @@
       "writtenOn": "2023-05-26T21:41:19Z",
       "side": 1,
       "message": "no spaces please. Always check with scripts/checkpatch.pl.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 4
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca91394_aa497d97",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80894b4a_4b99aeb0",
       "range": {
         "startLine": 132,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdc740ad_1be3f1f2",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fbd986c_b6ba6532",
+      "range": {
+        "startLine": 149,
+        "startChar": 31,
+        "endLine": 149,
+        "endChar": 32
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79f3332f_170ec2c5",
@@ -175,6 +343,30 @@
       "writtenOn": "2023-05-26T21:41:19Z",
       "side": 1,
       "message": "no spaces please",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 4
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2397d5d_27ae1e0d",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79f3332f_170ec2c5",
       "range": {
         "startLine": 158,
         "startChar": 0,
@@ -208,6 +400,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f904470_f33d5a88",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d9785fd_3e6767f5",
+      "range": {
+        "startLine": 187,
+        "startChar": 23,
+        "endLine": 187,
+        "endChar": 39
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b599e84_99901d48",
@@ -221,6 +437,30 @@
       "writtenOn": "2023-05-26T21:41:19Z",
       "side": 1,
       "message": "either all tabs or all spaces",
+      "range": {
+        "startLine": 214,
+        "startChar": 12,
+        "endLine": 214,
+        "endChar": 13
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a050084_38ce9366",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b599e84_99901d48",
       "range": {
         "startLine": 214,
         "startChar": 12,
@@ -254,6 +494,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10514f0b_9d797c12",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa3362f8_4a77d9a6",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 231,
+        "endChar": 71
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93a1e8e3_afedfb6b",
@@ -267,6 +531,30 @@
       "writtenOn": "2023-05-26T21:41:19Z",
       "side": 1,
       "message": "this should probably be an error because without this the driver is not usable",
+      "range": {
+        "startLine": 252,
+        "startChar": 2,
+        "endLine": 253,
+        "endChar": 71
+      },
+      "revId": "9030fad3f50a518601beeb88137cdbb71bdaf54b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d05a3338_5d7f952a",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-05-30T18:43:44Z",
+      "side": 1,
+      "message": "Adjusted to an `pr_err`. Should we also return an error as well? If so, what do you suggest?",
+      "parentUuid": "93a1e8e3_afedfb6b",
       "range": {
         "startLine": 252,
         "startChar": 2,
