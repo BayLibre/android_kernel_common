@@ -16,6 +16,24 @@
       "message": "Why isn\u0027t this upstream also?",
       "revId": "8d742761c6acb0169b1774eba7b3e93a3b1987ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c90486_745fb44d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-05-30T18:16:33Z",
+      "side": 1,
+      "message": "From Joel\u0027s note in the commit message this was being modified upstream at the time\n\n```\n[ joel: Upstream is rewriting this code, so I am merging this as a CHROMIUM\n  patch. There is no harm in including it.\n  Link: https://lore.kernel.org/rcu/658624.1669849522@warthog.procyon.org.uk/#t ]\n```\n\nJoel, has the status changed upstream and is it less risky to pick something newer from upstream if available now?\n\nPersonally I am keen on keeping the patches inline with chromeos which they deploy in production and means has more test coverage, IIUC.\n\nThe question I have is why we don\u0027t need this in 5.10?",
+      "parentUuid": "f034a4f7_042a2f8d",
+      "revId": "8d742761c6acb0169b1774eba7b3e93a3b1987ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
