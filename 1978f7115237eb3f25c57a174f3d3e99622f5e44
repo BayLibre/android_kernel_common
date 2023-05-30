@@ -16,6 +16,24 @@
       "message": "Hmm, the upstream commit https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d7e6631f782a16dcf528679478a9a6a8f71215d6f claims to be not reachable by any branch. probably that is the LTS commit and this",
       "revId": "1978f7115237eb3f25c57a174f3d3e99622f5e44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bc7ffe7_99ab45b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-30T17:11:31Z",
+      "side": 1,
+      "message": "Odd, it is in the LTS upstream branch.  I\u0027m cherry-picking them to find the offending patch that is causing breakages, and this is the one 😊",
+      "parentUuid": "f0c6b741_133f87ba",
+      "revId": "1978f7115237eb3f25c57a174f3d3e99622f5e44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
