@@ -16,6 +16,23 @@
       "message": "just have a normal USB driver be bound to your device, it will be notified when a USB device is found that matches what you are looking for.\n\nOr use the in-kernel USB notifier that notifies you already of all USB devices being added or removed in the system.  No Android-specific hook should be needed at all here.",
       "revId": "56903ea6798ab722bdadc8bf3112886bb6f70bce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d623fac9_70e04e79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-05-31T15:08:47Z",
+      "side": 1,
+      "message": "Also, you had a year to get your dwc3 changes upstream, based on the previous hook.  What happened to them that still requires this one?",
+      "revId": "56903ea6798ab722bdadc8bf3112886bb6f70bce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
