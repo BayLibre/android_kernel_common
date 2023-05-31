@@ -6,7 +6,9 @@
 #if !defined(_TRACE_HOOK_MMC_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _TRACE_HOOK_MMC_H
 #include <trace/hooks/vendor_hooks.h>
+
 struct mmc_host;
+struct blk_mq_queue_data;
 
 /*
  * Following tracepoints are not exported in tracefs and provide a
@@ -19,6 +21,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_mmc_suspend,
 DECLARE_RESTRICTED_HOOK(android_rvh_mmc_resume,
 	TP_PROTO(struct mmc_host *host, bool *resume_success),
 	TP_ARGS(host, resume_success), 1);
+
+DECLARE_HOOK(android_vh_mmc_check_status,
+	TP_PROTO(const struct blk_mq_queue_data *bd, int *status),
+	TP_ARGS(bd, status));
 
 #endif /* _TRACE_HOOK_MMC_H */
 /* This part must be outside protection */
