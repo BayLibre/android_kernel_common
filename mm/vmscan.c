@@ -1958,6 +1958,7 @@ static __always_inline void update_lru_sizes(struct lruvec *lruvec,
  */
 static bool skip_cma(struct page *page, struct scan_control *sc)
 {
+<<<<<<< HEAD   (5aead1 ANDROID: vendor_hook: fix the error record position of mutex)
        return !current_is_kswapd() &&
                        gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
                        get_pageblock_migratetype(page) == MIGRATE_CMA;
@@ -1966,6 +1967,16 @@ static bool skip_cma(struct page *page, struct scan_control *sc)
 static bool skip_cma(struct page *page, struct scan_control *sc)
 {
        return false;
+=======
+	return !current_is_kswapd() &&
+			gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
+			get_pageblock_migratetype(page) == MIGRATE_CMA;
+}
+#else
+static bool skip_cma(struct page *page, struct scan_control *sc)
+{
+	return false;
+>>>>>>> CHANGE (de6232 BACKPORT: mm: skip CMA pages when they are not available)
 }
 #endif
 
