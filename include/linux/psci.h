@@ -20,6 +20,7 @@ int psci_cpu_suspend_enter(u32 state);
 bool psci_power_state_is_valid(u32 state);
 int psci_set_osi_mode(bool enable);
 bool psci_has_osi_support(void);
+bool psci_mem_protect_supported(void);
 
 struct psci_operations {
 	u32 (*get_version)(void);

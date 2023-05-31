@@ -342,6 +342,11 @@ static int __init psci_features(u32 psci_func_id)
 			      psci_func_id, 0, 0);
 }
 
+bool psci_mem_protect_supported(void)
+{
+	return psci_features(PSCI_1_1_FN_MEM_PROTECT) != PSCI_RET_NOT_SUPPORTED;
+}
+
 #ifdef CONFIG_CPU_IDLE
 static int psci_suspend_finisher(unsigned long state)
 {
