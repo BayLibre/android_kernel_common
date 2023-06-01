@@ -248,6 +248,7 @@ gzvm_vm_ioctl_set_memory_region(struct gzvm *gzvm,
 	memslot->vma = vma;
 	memslot->flags = mem->flags;
 	memslot->slot_id = mem->slot;
+	gzvm_arch_memregion_purpose(gzvm, mem);
 	return register_memslot_addr_range(gzvm, memslot);
 }
 
