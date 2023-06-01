@@ -703,7 +703,7 @@ static int power_allocator_throttle(struct thermal_zone_device *tz, int trip)
 	int ret;
 	int switch_on_temp, control_temp;
 	struct power_allocator_params *params = tz->governor_data;
-	bool update;
+	bool update = false, force_reset = false, force_ipa = false;
 
 	lockdep_assert_held(&tz->lock);
 
@@ -716,14 +716,32 @@ static int power_allocator_throttle(struct thermal_zone_device *tz, int trip)
 
 	ret = tz->ops->get_trip_temp(tz, params->trip_switch_on,
 				     &switch_on_temp);
+
+	/*
+	 * Control the IPA by user.
+	 *
+	 * @force_reset: if true, reset ipa.
+	 * @force_ipa: if true, enable power allocator.
+	 * @update: if true, renew the update flag value and reset cdev->state.
+	 */
+	trace_android_vh_thermal_power_throttle(tz, ret, switch_on_temp, &force_reset,
+						&force_ipa, &update);
+
+	if (force_reset)
+		goto reset;
+	else if (force_ipa)
+		goto ipa;
+
 	if (!ret && (tz->temperature < switch_on_temp)) {
-		update = (tz->last_temperature >= switch_on_temp);
+reset:
+		update |= (tz->last_temperature >= switch_on_temp);
 		tz->passive = 0;
 		reset_pid_controller(params);
 		allow_maximum_power(tz, update);
 		return 0;
 	}
 
+ipa:
 	tz->passive = 1;
 
 	ret = tz->ops->get_trip_temp(tz, params->trip_max_desired_temperature,
