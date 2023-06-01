@@ -48,6 +48,11 @@ DECLARE_HOOK(android_vh_thermal_power_cap,
 	TP_PROTO(u32 *power_range),
 	TP_ARGS(power_range));
 
+DECLARE_HOOK(android_vh_thermal_power_throttle,
+	TP_PROTO(struct thermal_zone_device *tz, int ret,  int switch_on_temp,
+		 bool *force_enable, bool *force_disable, bool *update),
+	TP_ARGS(tz, ret, switch_on_temp, force_enable, force_disable, update));
+
 #endif /* _TRACE_HOOK_THERMAL_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
