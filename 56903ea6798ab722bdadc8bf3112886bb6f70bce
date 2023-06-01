@@ -33,6 +33,24 @@
       "message": "Also, you had a year to get your dwc3 changes upstream, based on the previous hook.  What happened to them that still requires this one?",
       "revId": "56903ea6798ab722bdadc8bf3112886bb6f70bce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "854d52af_e651abb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943840
+      },
+      "writtenOn": "2023-06-01T01:42:05Z",
+      "side": 1,
+      "message": "Dear Greg,\nThere are two controller: dwc3 3.1/2.0 controller and SPRD 2.0 controller in UNISOC platform.\nWe use dwc3 controller by default. SPRD 2.0 controller is only used for audio offload feature.\nWe need this hook to do:\n1, prevent the headset devices be registered into system with dwc3 controller\n2, to notify dwc3 controller exit\n3, to start SPRD 2.0 controller, then enumerate the USB headset device again.\n\nIt not common feature, no changes in dwc3 just exit, but we really need this hook to realize UNISOC‘s feature.",
+      "parentUuid": "d623fac9_70e04e79",
+      "revId": "56903ea6798ab722bdadc8bf3112886bb6f70bce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
