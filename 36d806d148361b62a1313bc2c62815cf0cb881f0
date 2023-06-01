@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "715f005c_791b0193",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-06-01T10:56:42Z",
+      "side": 1,
+      "message": "This is a port from the chromeos-5.10 tree. To reduce the risk; I copied their backport faithfully as they ship rather than redoing it all from scratch.\n\nI have to say this one I pulled additionally as the later code dependeded on it and it was required to avoid having to resolve conflicts when applying the later patches.",
+      "parentUuid": "4c78c8c7_1034b23f",
+      "revId": "36d806d148361b62a1313bc2c62815cf0cb881f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89222801_6de9680e",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-06-01T06:36:58Z",
       "side": 1,
       "message": "!cpumask_empty? as in upstream",
+      "range": {
+        "startLine": 2218,
+        "startChar": 31,
+        "endLine": 2218,
+        "endChar": 45
+      },
+      "revId": "36d806d148361b62a1313bc2c62815cf0cb881f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73dff6b5_2b13a137",
+        "filename": "kernel/rcu/tree_plugin.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2218,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-06-01T10:56:42Z",
+      "side": 1,
+      "message": "Yeah could do.",
+      "parentUuid": "89222801_6de9680e",
       "range": {
         "startLine": 2218,
         "startChar": 31,
