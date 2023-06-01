@@ -69,6 +69,24 @@
       "parentUuid": "854d52af_e651abb5",
       "revId": "56903ea6798ab722bdadc8bf3112886bb6f70bce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "592499f4_82cbacab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943840
+      },
+      "writtenOn": "2023-06-01T09:20:40Z",
+      "side": 1,
+      "message": "Dear Greg,\nNormally it should not required. It\u0027s really UNISOC ASIC design drawback. In UNISOC, Synopsys controller + PHY doesn\u0027t support USB audio offload feature. It\u0027s need to switch to MUSB controller when USB headset detected.\n\nThe realization is bad, these codes should not be upstreamed to destroy the Linux elegant style. But for UNISOC， we cannot change the design now, it\u0027s the efficiency way to resolve design issue.",
+      "parentUuid": "7753d65d_baecf3e1",
+      "revId": "56903ea6798ab722bdadc8bf3112886bb6f70bce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
