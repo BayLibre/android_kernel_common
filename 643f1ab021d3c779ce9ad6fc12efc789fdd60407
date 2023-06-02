@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe649885_b4a8bdf6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-06-02T18:14:59Z",
+      "side": 1,
+      "message": "Before the most recent patch set I was also able to show evidence that these changes *actually* make the worst case performance better. Having flashed the kernel to a virtual device, I put it under sustained load with a binder throughput test (running in a loop).  We don\u0027t have rust tracing yet, so I measured before/after [kernel log timestamps](https://android-review.git.corp.google.com/c/kernel/common/+/2590285/4) around all of the `range_alloc` operations. The data shows the worst case performance is significantly improved with the `rbtree` version.",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1caa4d5_e586379a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-06-02T18:14:59Z",
+      "side": 1,
+      "message": "Before the most recent patch set I was also able to show evidence that these changes *actually* make the worst case performance better. Having flashed the kernel to a virtual device, I put it under sustained load with a binder throughput test (running in a loop).  We don\u0027t have rust tracing yet, so I measured before/after [kernel log timestamps]() to get an idea of how long the `range_alloc` operations were taking.  The data shows that with the rbtree version, worst case performance is significantly better.",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
