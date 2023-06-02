@@ -16,6 +16,24 @@
       "message": "the contributor (transsion) cannot see the detailed error message, so let me (TAM of transsion) copy and paste some key ABI check error message: \n\nfunction symbol \u0027struct block_device* I_BDEV(struct inode*)\u0027 changed\n  CRC changed from 0x643ab287 to 0xb9ed6d5f\n\nfunction symbol \u0027void __ClearPageMovable(struct page*)\u0027 changed\n  CRC changed from 0x6b61e392 to 0xbe4ec140\n\nfunction symbol \u0027void __SetPageMovable(struct page*, const struct movable_operations*)\u0027 changed\n  CRC changed from 0xc458591f to 0x43c9c702\n\n... 1577 omitted; 1580 symbols have only CRC changes\n\ntype \u0027struct pglist_data\u0027 changed\n  3 members (\u0027unsigned long flags\u0027 .. \u0027struct lru_gen_memcg memcg_lru\u0027) changed\n    offset changed by 64\n\ntype \u0027struct mem_cgroup_per_node\u0027 changed\n  byte size changed from 2328 to 2336\n  9 members (\u0027struct lruvec_stats_percpu* lruvec_stats_percpu\u0027 .. \u0027struct mem_cgroup* memcg\u0027) changed\n    offset changed by 64\n\ntype \u0027struct lruvec\u0027 changed\n  byte size changed from 1416 to 1424\n  member \u0027u64 android_vendor_data1\u0027 was added\n\ntype \u0027struct swap_info_struct\u0027 changed\n  byte size changed from 272 to 280\n  member \u0027u64 android_vendor_data1\u0027 was added\n  member \u0027struct plist_node avail_lists[0]\u0027 changed\n    offset changed by 64",
       "revId": "3f7deb43788989c83c74888b55fb628a72bcbc8a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03204d18_914ce6b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-06-02T19:46:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a92a59c_702e3663",
+      "revId": "3f7deb43788989c83c74888b55fb628a72bcbc8a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
