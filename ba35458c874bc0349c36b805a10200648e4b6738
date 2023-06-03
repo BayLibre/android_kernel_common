@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1dec1bd_a32e81b5",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-06-03T21:03:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28114214_5caa1a16",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce746407_c9340447",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-26T21:52:31Z",
       "side": 1,
       "message": "nit: consider adding a local variable, `u32 reg_cnt` to store `drv_data-\u003einfo-\u003eoffsets_len` to make the code easier to read.",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd21231_f9ad0801",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-06-03T21:03:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ce746407_c9340447",
       "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f13b1e50_4f6a700c",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-06-03T21:03:54Z",
+      "side": 1,
+      "message": "Ended up removing the cpu policy data, see comment below.",
+      "parentUuid": "acd6f915_ec158450",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79280504_782b033a",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-05-26T21:52:31Z",
       "side": 1,
       "message": "as discussed offline, this can be `struct_size(*policy_data, reg, drv_data-\u003einfo-\u003eoffsets_len)`",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfa7137a_11faf7d7",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-06-03T21:03:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "79280504_782b033a",
       "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -86,6 +158,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4360b8c7_9e648e61",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-06-03T21:03:54Z",
+      "side": 1,
+      "message": "Since I\u0027d expect the cpufreq MMIO interface to be quite simple, I don\u0027t expect there to be a large cost in memory even if there were a large number of vCPUs. That being said, I was originally concerned with reducing any sort of latency since the get/set_freq calls are in the hot path for the scheduler. However, there were no measurable performance differences when running through the benchmarks, so I ended up getting rid of the extra cpu policy data to simplify the driver a bit.",
+      "parentUuid": "c5d84143_502db3a5",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5405894_d1516e0b",
@@ -99,6 +189,24 @@
       "writtenOn": "2023-05-26T21:52:31Z",
       "side": 1,
       "message": "Consider using `dev_pm_opp_free_cpufreq_table()` here so that the allocation and deallocation of the data structure is symmetric.",
+      "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d48a3c_232dcd95",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-06-03T21:03:54Z",
+      "side": 1,
+      "message": "I ended removing cpu policy specific driver data and since `dev_pm_opp_free_cpufreq_table()` does not actually use the device handle and simply calls kfree, I think it\u0027s just simpler to just call kfree here.",
+      "parentUuid": "d5405894_d1516e0b",
       "revId": "ba35458c874bc0349c36b805a10200648e4b6738",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
