@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "146aec9f_90393af5",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-06-05T13:19:32Z",
+      "side": 1,
+      "message": "Doesn\u0027t this result in us setting RES0 bits on CPUs without FEAT_XNX?",
+      "range": {
+        "startLine": 589,
+        "startChar": 0,
+        "endLine": 594,
+        "endChar": 0
+      },
+      "revId": "81c2df79213a7fbff64a5d24614e6ea1491530d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
