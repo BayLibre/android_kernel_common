@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "346f4101_862055ff",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2417,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-06-05T18:09:50Z",
+      "side": 1,
+      "message": "Should it be `count - 1` as on the lists?",
+      "range": {
+        "startLine": 2417,
+        "startChar": 29,
+        "endLine": 2417,
+        "endChar": 34
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70215b91_6f18a619",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2425,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-06-05T18:09:50Z",
+      "side": 1,
+      "message": "Same here, `count - 1` ?",
+      "range": {
+        "startLine": 2425,
+        "startChar": 30,
+        "endLine": 2425,
+        "endChar": 35
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3a15a02_ad1e882c",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2451,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-06-05T18:09:50Z",
+      "side": 1,
+      "message": "Should this start from 0?",
+      "range": {
+        "startLine": 2451,
+        "startChar": 59,
+        "endLine": 2451,
+        "endChar": 60
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47cba710_5e790590",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-06-05T18:09:50Z",
+      "side": 1,
+      "message": "Do we need the `mas_set(\u0026mas, vma-\u003evm_end);` before this free?",
+      "range": {
+        "startLine": 3109,
+        "startChar": 1,
+        "endLine": 3109,
+        "endChar": 14
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
