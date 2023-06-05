@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "745f7ec1_4dbe0882",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2417,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T20:16:21Z",
+      "side": 1,
+      "message": "You might be right. I\u0027ll check with Liam. His code for the reference is: http://git.infradead.org/users/jedix/linux-maple.git/commitdiff/d124cb5c499873d535a2f81ff58461d2d57c66cc\n\nThis does not really affect us since it needs CONFIG_DEBUG_VM_MAPLE_TREE\u003dy but we should fix it if this is incorrect.",
+      "parentUuid": "346f4101_862055ff",
+      "range": {
+        "startLine": 2417,
+        "startChar": 29,
+        "endLine": 2417,
+        "endChar": 34
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70215b91_6f18a619",
         "filename": "mm/mmap.c",
         "patchSetId": 2
@@ -83,6 +107,30 @@
       "writtenOn": "2023-06-05T18:09:50Z",
       "side": 1,
       "message": "Do we need the `mas_set(\u0026mas, vma-\u003evm_end);` before this free?",
+      "range": {
+        "startLine": 3109,
+        "startChar": 1,
+        "endLine": 3109,
+        "endChar": 14
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfebc9d8_15df4349",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T20:16:21Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s needed because because __mt_destroy() will destroy the tree anyway before we drop the mmap_lock by calling mmap_write_unlock() (see below).",
+      "parentUuid": "47cba710_5e790590",
       "range": {
         "startLine": 3109,
         "startChar": 1,
