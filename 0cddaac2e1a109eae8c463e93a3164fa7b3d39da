@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a12b86f_97ad0ab5",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T18:57:16Z",
+      "side": 1,
+      "message": "Place the lists on different lines and next to the locks protecting them like this:\n\n```\n/* List of oom victims */\nstatic struct list_head oom_victim_list;\nstatic size_t oom_victim_count;\nstatic size_t oom_victim_removed_count;\n/*\n * Lock protecting oom_victim_list, oom_victim_count and\n * oom_victim_removed_count \n */\nstatic DEFINE_MUTEX(memhealth_mutex);\n/* List of new oom victims not yet added into oom_victim_list */\n\nstatic struct list_head new_oom_victims_list;\n/* Lock protecting new_oom_victims_list */\nstatic DEFINE_SPINLOCK(memhealth_spin_lock);\n```",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 3
+      },
+      "revId": "0cddaac2e1a109eae8c463e93a3164fa7b3d39da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8e0c0de_7daf7c8e",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T18:57:16Z",
+      "side": 1,
+      "message": "Let\u0027s remove this testing code from the driver.",
+      "range": {
+        "startLine": 232,
+        "startChar": 1,
+        "endLine": 251,
+        "endChar": 0
+      },
+      "revId": "0cddaac2e1a109eae8c463e93a3164fa7b3d39da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1831564e_7aae81ca",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T18:57:16Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 37
+      },
+      "revId": "0cddaac2e1a109eae8c463e93a3164fa7b3d39da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2969d9da_328f5738",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T18:57:16Z",
+      "side": 1,
+      "message": "before returning you need to cleanup OOM_VICTIM_LIST_ENTRY and MEMHEALTH_DIRECTORY:\n```\nremove_proc_entry(OOM_VICTIM_LIST_ENTRY, proc_memhealth_dir);\nremove_proc_entry(MEMHEALTH_DIRECTORY, NULL);\n```",
+      "range": {
+        "startLine": 294,
+        "startChar": 2,
+        "endLine": 295,
+        "endChar": 31
+      },
+      "revId": "0cddaac2e1a109eae8c463e93a3164fa7b3d39da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67e5c50_4bae1ced",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-05T18:57:16Z",
+      "side": 1,
+      "message": "let\u0027s remove it.",
+      "range": {
+        "startLine": 1179,
+        "startChar": 0,
+        "endLine": 1180,
+        "endChar": 33
+      },
+      "revId": "0cddaac2e1a109eae8c463e93a3164fa7b3d39da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
