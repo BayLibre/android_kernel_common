@@ -38,6 +38,19 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/f2fs.h>
 
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_sync_file_enter);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_sync_file_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_write_checkpoint);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_gc_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_gc_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_issue_discard);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_dataread_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_dataread_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_datawrite_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_datawrite_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_write_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_unlink_enter);
+
 static struct kmem_cache *f2fs_inode_cachep;
 
 #ifdef CONFIG_F2FS_FAULT_INJECTION
