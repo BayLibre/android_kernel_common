@@ -145,8 +145,8 @@
   ipv6_skip_exthdr
   is_dma_buf_file
   iterate_fd
-  jiffies_64
   jiffies
+  jiffies_64
   jiffies_to_msecs
   kasan_flag_enabled
   kasprintf
@@ -197,8 +197,8 @@
   memory_cgrp_subsys
   memory_cgrp_subsys_enabled_key
   memparse
-  memset64
   memset
+  memset64
   memstart_addr
   migrate_page_copy
   misc_deregister
@@ -222,10 +222,10 @@
   nla_find
   nla_memcpy
   __nla_parse
-  nla_put_64bit
   nla_put
-  nla_reserve_64bit
+  nla_put_64bit
   nla_reserve
+  nla_reserve_64bit
   nonseekable_open
   nr_cpu_ids
   __num_online_cpus
@@ -389,10 +389,10 @@
   __traceiter_android_vh_cma_drain_all_pages_bypass
   __traceiter_android_vh_cpufreq_acct_update_power
   __traceiter_android_vh_del_page_from_lrulist
+  __traceiter_android_vh_dm_bufio_shrink_scan_bypass
   __traceiter_android_vh_do_futex
   __traceiter_android_vh_do_page_trylock
   __traceiter_android_vh_do_traversal_lruvec
-  __traceiter_android_vh_dm_bufio_shrink_scan_bypass
   __traceiter_android_vh_drain_all_pages_bypass
   __traceiter_android_vh_dup_task_struct
   __traceiter_android_vh_exit_mm
@@ -452,6 +452,18 @@
   __traceiter_block_rq_merge
   __traceiter_block_rq_requeue
   __traceiter_block_split
+  __traceiter_f2fs_dataread_end
+  __traceiter_f2fs_dataread_start
+  __traceiter_f2fs_datawrite_end
+  __traceiter_f2fs_datawrite_start
+  __traceiter_f2fs_gc_begin
+  __traceiter_f2fs_gc_end
+  __traceiter_f2fs_issue_discard
+  __traceiter_f2fs_sync_file_enter
+  __traceiter_f2fs_sync_file_exit
+  __traceiter_f2fs_unlink_enter
+  __traceiter_f2fs_write_begin
+  __traceiter_f2fs_write_checkpoint
   __traceiter_net_dev_queue
   __traceiter_net_dev_xmit
   __traceiter_netif_receive_skb
@@ -557,6 +569,18 @@
   __tracepoint_block_rq_merge
   __tracepoint_block_rq_requeue
   __tracepoint_block_split
+  __tracepoint_f2fs_dataread_end
+  __tracepoint_f2fs_dataread_start
+  __tracepoint_f2fs_datawrite_end
+  __tracepoint_f2fs_datawrite_start
+  __tracepoint_f2fs_gc_begin
+  __tracepoint_f2fs_gc_end
+  __tracepoint_f2fs_issue_discard
+  __tracepoint_f2fs_sync_file_enter
+  __tracepoint_f2fs_sync_file_exit
+  __tracepoint_f2fs_unlink_enter
+  __tracepoint_f2fs_write_begin
+  __tracepoint_f2fs_write_checkpoint
   __tracepoint_net_dev_queue
   __tracepoint_net_dev_xmit
   __tracepoint_netif_receive_skb
