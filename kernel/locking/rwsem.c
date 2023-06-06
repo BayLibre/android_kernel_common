@@ -1368,7 +1368,11 @@ static inline void __up_read(struct rw_semaphore *sem)
 	DEBUG_RWSEMS_WARN_ON(sem->magic != sem, sem);
 	DEBUG_RWSEMS_WARN_ON(!is_rwsem_reader_owned(sem), sem);
 
+<<<<<<< HEAD   (63dc3a FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)
 	trace_android_vh_record_rwsem_lock_starttime(current, 0);
+=======
+	preempt_disable();
+>>>>>>> CHANGE (be4040 ANDROID: vendor_hook: Avoid clearing protect-flag before wak)
 	rwsem_clear_reader_owned(sem);
 	tmp = atomic_long_add_return_release(-RWSEM_READER_BIAS, &sem->count);
 	DEBUG_RWSEMS_WARN_ON(tmp < 0, sem);
@@ -1377,6 +1381,11 @@ static inline void __up_read(struct rw_semaphore *sem)
 		clear_nonspinnable(sem);
 		rwsem_wake(sem);
 	}
+<<<<<<< HEAD   (63dc3a FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)
+=======
+	trace_android_vh_record_rwsem_lock_starttime(current, 0);
+	preempt_enable();
+>>>>>>> CHANGE (be4040 ANDROID: vendor_hook: Avoid clearing protect-flag before wak)
 }
 
 /*
@@ -1394,13 +1403,13 @@ static inline void __up_write(struct rw_semaphore *sem)
 	DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) &&
 			    !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE), sem);
 
-	trace_android_vh_record_rwsem_lock_starttime(current, 0);
 	preempt_disable();
 	rwsem_clear_owner(sem);
 	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
 	preempt_enable();
 	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
 		rwsem_wake(sem);
+	trace_android_vh_record_rwsem_lock_starttime(current, 0);
 }
 
 /*
