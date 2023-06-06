@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd041bd7_ebb7eaed",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2417,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-06-06T16:57:22Z",
+      "side": 1,
+      "message": "Suren up to you, I\u0027m ok to keep these as is if you want to avoid another rebase of the series",
+      "parentUuid": "57bb2440_c0c60b89",
+      "range": {
+        "startLine": 2417,
+        "startChar": 29,
+        "endLine": 2417,
+        "endChar": 34
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70215b91_6f18a619",
         "filename": "mm/mmap.c",
         "patchSetId": 2
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "no.  The VMA at zero is passed in as \"vma\" here.  The maple state is initialized in mm/memory.c:unmap_vmas() as MA_STATE(mas, mt, start_t, start_t); so we will deal with vma 0, then vma 1 (if necessary).",
       "parentUuid": "e3a15a02_ad1e882c",
+      "range": {
+        "startLine": 2451,
+        "startChar": 59,
+        "endLine": 2451,
+        "endChar": 60
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61467f33_9d2c721f",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2451,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-06-06T16:57:22Z",
+      "side": 1,
+      "message": "Ack, thanks for clarifying Liam.",
+      "parentUuid": "0746caee_1e379179",
       "range": {
         "startLine": 2451,
         "startChar": 59,
