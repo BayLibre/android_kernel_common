@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57bb2440_c0c60b89",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2417,
+      "author": {
+        "id": 2011975
+      },
+      "writtenOn": "2023-06-06T16:32:33Z",
+      "side": 1,
+      "message": "yes, and in upstream this change has been made.  It will make zero difference though since this is the upper limit of the search, so the first vma will be found.",
+      "parentUuid": "745f7ec1_4dbe0882",
+      "range": {
+        "startLine": 2417,
+        "startChar": 29,
+        "endLine": 2417,
+        "endChar": 34
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70215b91_6f18a619",
         "filename": "mm/mmap.c",
         "patchSetId": 2
@@ -73,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59466db9_70eefe65",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2425,
+      "author": {
+        "id": 2011975
+      },
+      "writtenOn": "2023-06-06T16:32:33Z",
+      "side": 1,
+      "message": "yes, and again this change exists in the upstream version.",
+      "parentUuid": "70215b91_6f18a619",
+      "range": {
+        "startLine": 2425,
+        "startChar": 30,
+        "endLine": 2425,
+        "endChar": 35
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e3a15a02_ad1e882c",
         "filename": "mm/mmap.c",
         "patchSetId": 2
@@ -84,6 +132,30 @@
       "writtenOn": "2023-06-05T18:09:50Z",
       "side": 1,
       "message": "Should this start from 0?",
+      "range": {
+        "startLine": 2451,
+        "startChar": 59,
+        "endLine": 2451,
+        "endChar": 60
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0746caee_1e379179",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2451,
+      "author": {
+        "id": 2011975
+      },
+      "writtenOn": "2023-06-06T16:32:33Z",
+      "side": 1,
+      "message": "no.  The VMA at zero is passed in as \"vma\" here.  The maple state is initialized in mm/memory.c:unmap_vmas() as MA_STATE(mas, mt, start_t, start_t); so we will deal with vma 0, then vma 1 (if necessary).",
+      "parentUuid": "e3a15a02_ad1e882c",
       "range": {
         "startLine": 2451,
         "startChar": 59,
@@ -131,6 +203,30 @@
       "side": 1,
       "message": "I don\u0027t think it\u0027s needed because because __mt_destroy() will destroy the tree anyway before we drop the mmap_lock by calling mmap_write_unlock() (see below).",
       "parentUuid": "47cba710_5e790590",
+      "range": {
+        "startLine": 3109,
+        "startChar": 1,
+        "endLine": 3109,
+        "endChar": 14
+      },
+      "revId": "9e6479744b7df5b67f950a7c26070fa53c4baad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b485245_9b7229b8",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 2011975
+      },
+      "writtenOn": "2023-06-06T16:32:33Z",
+      "side": 1,
+      "message": "mas isn\u0027t passed through here, why would it matter?  I do this in the upstream patch set since I am passing through the maple struct for the same reason I pass through 1 to unmap_region() as you asked in the previous question: the first VMA is passed through so we start the search after the first VMA.  Note vma_end is exclusive vs maple tree mapping of inclusive, so this is one beyond what is actually covered.",
+      "parentUuid": "dfebc9d8_15df4349",
       "range": {
         "startLine": 3109,
         "startChar": 1,
