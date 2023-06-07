@@ -52,6 +52,24 @@
       "parentUuid": "0edf864b_50ccecd7",
       "revId": "f6af1cad8017d61aa5850c3a880d0c5c003627d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c4ceea3_490338b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2023-06-07T04:13:25Z",
+      "side": 1,
+      "message": "Most of the code we developed is especially for our phone product, they may not work well with other platform or other product, we want to merge it upstream, and we are trying to do this, but the community may not accept it.\n\nThis hook isn\u0027t intended for tracing purposes, We want to add some OEM data to the struct request, the first version listed below, and that version was rejected by the Google team.\nAs a result, we have enlarged the payload of the struct request to store OEM data within the request\u0027s payload.\nThis information is used by some OEM-specific drivers, such as an OEM-specific I/O scheduler which is built as a module.\n\ndiff --git a/include/linux/blkdev.h b/include/linux/blkdev.h\nindex e30acaed8f86..1225cf3e0ba3 100644\n--- a/include/linux/blkdev.h\n+++ b/include/linux/blkdev.h\n@@ -242,6 +242,8 @@ struct request {\n        */\n        rq_end_io_fn *end_io;\n        void *end_io_data;\n\\+      ANDROID_OEM_DATA_ARRAY(1, 7);\n };",
+      "parentUuid": "0b9e47d2_bae0742b",
+      "revId": "f6af1cad8017d61aa5850c3a880d0c5c003627d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
