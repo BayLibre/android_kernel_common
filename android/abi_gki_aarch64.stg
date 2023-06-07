@@ -306463,6 +306463,14 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0x9bca5e70
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x1e820193
+  parameter_id: 0x7be80061
+  parameter_id: 0x4585663f
+}
+function {
   id: 0x9bca85c1
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -307328,6 +307336,12 @@ function {
   parameter_id: 0x4585663f
   parameter_id: 0x22b36393
   parameter_id: 0x23e856d0
+}
+function {
+  id: 0x9bf93663
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x15a30023
 }
 function {
   id: 0x9bf97de0
@@ -322875,6 +322889,33 @@ elf_symbol {
   full_name: "__traceiter_binder_transaction_received"
 }
 elf_symbol {
+  id: 0x8068eeb3
+  name: "__traceiter_block_bio_queue"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2f252fd6
+  type_id: 0x9bf93663
+  full_name: "__traceiter_block_bio_queue"
+}
+elf_symbol {
+  id: 0xfdf83a19
+  name: "__traceiter_block_getrq"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xef6b0cd9
+  type_id: 0x9bf93663
+  full_name: "__traceiter_block_getrq"
+}
+elf_symbol {
+  id: 0x73ba3e80
+  name: "__traceiter_block_rq_complete"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5827ebeb
+  type_id: 0x9bca5e70
+  full_name: "__traceiter_block_rq_complete"
+}
+elf_symbol {
   id: 0xc4cbd22c
   name: "__traceiter_block_rq_insert"
   is_defined: true
@@ -322882,6 +322923,33 @@ elf_symbol {
   crc: 0x8169293d
   type_id: 0x9bd5b265
   full_name: "__traceiter_block_rq_insert"
+}
+elf_symbol {
+  id: 0x18fb5d72
+  name: "__traceiter_block_rq_issue"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9f962fc2
+  type_id: 0x9bd5b265
+  full_name: "__traceiter_block_rq_issue"
+}
+elf_symbol {
+  id: 0x77d40b1c
+  name: "__traceiter_block_rq_merge"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc8298a71
+  type_id: 0x9bd5b265
+  full_name: "__traceiter_block_rq_merge"
+}
+elf_symbol {
+  id: 0xdd24ab36
+  name: "__traceiter_block_rq_requeue"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8b588579
+  type_id: 0x9bd5b265
+  full_name: "__traceiter_block_rq_requeue"
 }
 elf_symbol {
   id: 0xce25d5be
@@ -325800,6 +325868,33 @@ elf_symbol {
   full_name: "__tracepoint_binder_transaction_received"
 }
 elf_symbol {
+  id: 0x18343f2d
+  name: "__tracepoint_block_bio_queue"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xa13ed1a6
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_block_bio_queue"
+}
+elf_symbol {
+  id: 0xef8c9bf3
+  name: "__tracepoint_block_getrq"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xfc12d508
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_block_getrq"
+}
+elf_symbol {
+  id: 0xaf8a4962
+  name: "__tracepoint_block_rq_complete"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xbb319d4d
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_block_rq_complete"
+}
+elf_symbol {
   id: 0x48239fa6
   name: "__tracepoint_block_rq_insert"
   is_defined: true
@@ -325807,6 +325902,33 @@ elf_symbol {
   crc: 0xf4a00349
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_block_rq_insert"
+}
+elf_symbol {
+  id: 0xbcf87a84
+  name: "__tracepoint_block_rq_issue"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x960f8928
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_block_rq_issue"
+}
+elf_symbol {
+  id: 0xf4acf4ca
+  name: "__tracepoint_block_rq_merge"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x4520b967
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_block_rq_merge"
+}
+elf_symbol {
+  id: 0x9772d1c0
+  name: "__tracepoint_block_rq_requeue"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xa964672d
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_block_rq_requeue"
 }
 elf_symbol {
   id: 0x9600f350
@@ -376667,7 +376789,13 @@ interface {
   symbol_id: 0x6a8145ff
   symbol_id: 0xb0bf7fd6
   symbol_id: 0x6911084f
+  symbol_id: 0x8068eeb3
+  symbol_id: 0xfdf83a19
+  symbol_id: 0x73ba3e80
   symbol_id: 0xc4cbd22c
+  symbol_id: 0x18fb5d72
+  symbol_id: 0x77d40b1c
+  symbol_id: 0xdd24ab36
   symbol_id: 0xce25d5be
   symbol_id: 0x7443ed9a
   symbol_id: 0x58dd6501
@@ -376992,7 +377120,13 @@ interface {
   symbol_id: 0xc09d36c9
   symbol_id: 0x42dbeb24
   symbol_id: 0xf57e8f65
+  symbol_id: 0x18343f2d
+  symbol_id: 0xef8c9bf3
+  symbol_id: 0xaf8a4962
   symbol_id: 0x48239fa6
+  symbol_id: 0xbcf87a84
+  symbol_id: 0xf4acf4ca
+  symbol_id: 0x9772d1c0
   symbol_id: 0x9600f350
   symbol_id: 0x4971cb68
   symbol_id: 0x78b22997
