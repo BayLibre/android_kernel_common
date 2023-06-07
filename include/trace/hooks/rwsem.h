@@ -17,6 +17,9 @@ DECLARE_HOOK(android_vh_rwsem_init,
 DECLARE_HOOK(android_vh_rwsem_wake,
 	TP_PROTO(struct rw_semaphore *sem),
 	TP_ARGS(sem));
+DECLARE_HOOK(android_vh_rwsem_read_finished,
+	TP_PROTO(struct rw_semaphore *sem),
+	TP_ARGS(sem));
 DECLARE_HOOK(android_vh_rwsem_write_finished,
 	TP_PROTO(struct rw_semaphore *sem),
 	TP_ARGS(sem));

@@ -1656,6 +1656,7 @@ EXPORT_SYMBOL(down_write_trylock);
 void up_read(struct rw_semaphore *sem)
 {
 	rwsem_release(&sem->dep_map, _RET_IP_);
+	trace_android_vh_rwsem_read_finished(sem);
 	__up_read(sem);
 }
 EXPORT_SYMBOL(up_read);
