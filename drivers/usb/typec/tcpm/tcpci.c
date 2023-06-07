@@ -174,8 +174,10 @@ static int tcpci_start_toggling(struct tcpc_dev *tcpc,
 	int ret;
 	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
 	unsigned int reg = TCPC_ROLE_CTRL_DRP;
+	bool bypass = false;
 
-	if (port_type != TYPEC_PORT_DRP)
+	trace_android_rvh_typec_tcpci_allow_non_drp_port(&bypass);
+	if ((port_type != TYPEC_PORT_DRP) && !bypass)
 		return -EOPNOTSUPP;
 
 	/* Handle vendor drp toggling */

@@ -54,6 +54,10 @@ DECLARE_HOOK(android_vh_typec_tcpm_log,
 	TP_PROTO(const char *log, bool *bypass),
 	TP_ARGS(log, bypass));
 
+DECLARE_RESTRICTED_HOOK(android_rvh_typec_tcpci_allow_non_drp_port,
+	TP_PROTO(bool *bypass),
+	TP_ARGS(bypass), 1);
+
 #endif /* _TRACE_HOOK_UFSHCD_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
