@@ -51,6 +51,40 @@
       "parentUuid": "f1caa4d5_e586379a",
       "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51faa5bf_6e101d44",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-06-07T07:51:42Z",
+      "side": 1,
+      "message": "This changes the state to `None`, but you never set it to `Allocated`. Is that intentional?",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7956b4e1_b2f9d1fe",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-06-07T07:51:42Z",
+      "side": 1,
+      "message": "This is not wrong, but I think you can just do `self.data` here.",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
