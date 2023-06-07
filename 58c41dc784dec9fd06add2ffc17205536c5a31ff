@@ -16,6 +16,24 @@
       "message": "Alistair, this is still an issue, and upstream applied more changes on top of this that still does not solve the problem.  Is anyone looking into this?  I don\u0027t want to have to revert 2 upstream patches for forever if at all possible (it\u0027s also hitting the LTS branches now...)",
       "revId": "58c41dc784dec9fd06add2ffc17205536c5a31ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32657236_79ed1b16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2023-06-07T21:00:51Z",
+      "side": 1,
+      "message": "I\u0027m not looking into it, but I can. The original author did acknowledge this problem with some x86 tests though, so it isn\u0027t Android-specific. I personally think this whole feature should be reverted upstream if it regressed userspace.",
+      "parentUuid": "4afd9431_1da4deff",
+      "revId": "58c41dc784dec9fd06add2ffc17205536c5a31ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
