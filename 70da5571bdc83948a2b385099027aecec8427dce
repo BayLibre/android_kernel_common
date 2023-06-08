@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000046370687",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2618549?revision\u003d5",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "c3ae6558_ff4810bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-06-08T00:17:28Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/dd03762ab608e058c8f390ad9cf667e490089796) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003ddd03762ab608e058c8f390ad9cf667e490089796)\n\n```\n      ## arch/arm64/Kconfig ##\n     @@ arch/arm64/Kconfig: config ARM64\n      \tselect HAVE_ARCH_KASAN_VMALLOC if HAVE_ARCH_KASAN\n    @@ arch/arm64/kernel/vdso/Makefile: ccflags-y +\u003d -DDISABLE_BRANCH_PROFILING -DBUILD\n      KCOV_INSTRUMENT\t\t\t:\u003d n\n     \n      ## arch/arm64/kvm/hyp/nvhe/Makefile ##\n    -@@ arch/arm64/kvm/hyp/nvhe/Makefile: KBUILD_CFLAGS :\u003d $(filter-out $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS) $(CC_FLAGS_CFI)\n    - # cause crashes. Just disable it.\n    - GCOV_PROFILE\t:\u003d n\n    - KASAN_SANITIZE\t:\u003d n\n    -+KCSAN_SANITIZE\t:\u003d n\n    - UBSAN_SANITIZE\t:\u003d n\n    - KCOV_INSTRUMENT\t:\u003d n\n    +@@ arch/arm64/kvm/hyp/nvhe/Makefile: $(obj)/hyp.lds: $(src)/hyp.lds.S FORCE\n      \n    + include $(srctree)/arch/arm64/kvm/hyp/nvhe/Makefile.nvhe\n    + obj-y :\u003d kvm_nvhe.o\n    ++KCSAN_SANITIZE :\u003d n\n     \n      ## kernel/kcsan/Makefile ##\n     @@ kernel/kcsan/Makefile: CFLAGS_REMOVE_debugfs.o \u003d $(CC_FLAGS_FTRACE)\n      CFLAGS_REMOVE_report.o \u003d $(CC_FLAGS_FTRACE)\n      \n      CFLAGS_core.o :\u003d $(call cc-option,-fno-conserve-stack) \\\n    -+\t$(call cc-option,-mno-outline-atomics) \\\n    ++    $(call cc-option,-mno-outline-atomics) \\\n      \t-fno-stack-protector -DDISABLE_BRANCH_PROFILING\n      \n      obj-y :\u003d core.o debugfs.o report.o\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 538489768 android-build.ayeaye-python-dispatcher_20230607.04_p0",
+      "revId": "70da5571bdc83948a2b385099027aecec8427dce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
