@@ -25,6 +25,16 @@ int ucall_nr_pages_required(uint64_t page_size)
  */
 static struct ucall_header *ucall_pool;
 
+vm_paddr_t get_ucall_pool_gpa(struct kvm_vm *vm)
+{
+	return addr_gva2gpa(vm, (vm_vaddr_t) read_guest_global(vm, ucall_pool));
+}
+
+size_t get_ucall_pool_size(void)
+{
+	return sizeof(struct ucall_header);
+}
+
 void ucall_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
 {
 	struct ucall_header *hdr;
