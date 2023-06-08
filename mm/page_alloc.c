@@ -3801,6 +3801,11 @@ static inline void zone_statistics(struct zone *preferred_zone, struct zone *z,
 #endif
 }
 
+static bool use_cma_first(struct zone *zone, unsigned int order, unsigned int alloc_flags)
+{
+	return false;
+}
+
 static __always_inline
 struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
 			   unsigned int order, unsigned int alloc_flags,
@@ -3824,12 +3829,21 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
 				trace_mm_page_alloc_zone_locked(page, order, migratetype);
 		}
 		if (!page) {
-			if (alloc_flags & ALLOC_CMA && migratetype == MIGRATE_MOVABLE)
-				page = __rmqueue_cma(zone, order, migratetype,
-						     alloc_flags);
+			if (alloc_flags & ALLOC_CMA) {
+				bool use_cma_first_check = false;
+				bool try_cma;
+
+				trace_android_vh_use_cma_first_check(&use_cma_first_check);
+				try_cma = use_cma_first_check ?
+					use_cma_first(zone, order, alloc_flags) :
+					migratetype == MIGRATE_MOVABLE;
+				if (try_cma)
+					page = __rmqueue_cma(zone, order, migratetype,
+							alloc_flags);
+			}
 			if (!page)
 				page = __rmqueue(zone, order, migratetype,
-						 alloc_flags);
+						alloc_flags);
 		}
 		if (!page) {
 			spin_unlock_irqrestore(&zone->lock, flags);
