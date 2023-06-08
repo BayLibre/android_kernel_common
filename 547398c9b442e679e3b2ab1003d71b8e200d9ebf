@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1987f6d_bfd3a269",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-08T13:27:48Z",
+      "side": 1,
+      "message": "There will be an ABI break here, as we are fast-forwarding the changes from the `android14-5.15` branch into the `-lts` branch at this point in time.  We need a \"simple\" commit like this in order for gerrit to allow the fast-forward.\n\nNot to say that this commit shouldn\u0027t also be cherry-picked everywhere else, it\u0027s been bugging me for a long time as I do local in-tree builds all the time...",
+      "revId": "547398c9b442e679e3b2ab1003d71b8e200d9ebf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
