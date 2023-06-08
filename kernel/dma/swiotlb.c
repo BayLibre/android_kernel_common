@@ -69,6 +69,7 @@
 #define INVALID_PHYS_ADDR (~(phys_addr_t)0)
 
 enum swiotlb_force swiotlb_force;
+EXPORT_SYMBOL_GPL(swiotlb_force);
 
 struct io_tlb_mem io_tlb_default_mem;
 
@@ -654,6 +655,7 @@ void swiotlb_tbl_unmap_single(struct device *dev, phys_addr_t tlb_addr,
 
 	swiotlb_release_slots(dev, tlb_addr);
 }
+EXPORT_SYMBOL_GPL(swiotlb_tbl_unmap_single);
 
 void swiotlb_sync_single_for_device(struct device *dev, phys_addr_t tlb_addr,
 		size_t size, enum dma_data_direction dir)
@@ -672,6 +674,7 @@ void swiotlb_sync_single_for_cpu(struct device *dev, phys_addr_t tlb_addr,
 	else
 		BUG_ON(dir != DMA_TO_DEVICE);
 }
+EXPORT_SYMBOL_GPL(swiotlb_sync_single_for_cpu);
 
 /*
  * Create a swiotlb mapping for the buffer at @paddr, and in case of DMAing
@@ -706,6 +709,7 @@ dma_addr_t swiotlb_map(struct device *dev, phys_addr_t paddr, size_t size,
 		arch_sync_dma_for_device(swiotlb_addr, size, dir);
 	return dma_addr;
 }
+EXPORT_SYMBOL_GPL(swiotlb_map);
 
 size_t swiotlb_max_mapping_size(struct device *dev)
 {
