@@ -289215,6 +289215,14 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0x1dfa429f
+  return_type_id: 0x48b5725f
+  parameter_id: 0x310ec01d
+  parameter_id: 0x498e6bfd
+  parameter_id: 0x18bd6530
+  parameter_id: 0x6d7f5ff6
+}
+function {
   id: 0x1dfacbed
   return_type_id: 0x48b5725f
   parameter_id: 0x360c66c5
@@ -368162,6 +368170,15 @@ elf_symbol {
   full_name: "smp_call_function_any"
 }
 elf_symbol {
+  id: 0xdf906b66
+  name: "smp_call_function_many"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe2df8e9a
+  type_id: 0x1dfa429f
+  full_name: "smp_call_function_many"
+}
+elf_symbol {
   id: 0x4c674d1e
   name: "smp_call_function_single"
   is_defined: true
@@ -385424,6 +385441,7 @@ interface {
   symbol_id: 0x5d808bbc
   symbol_id: 0xf46be251
   symbol_id: 0x824ee5eb
+  symbol_id: 0xdf906b66
   symbol_id: 0x4c674d1e
   symbol_id: 0x1f9b728b
   symbol_id: 0x99a17453
