@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa93c68e_1d9327c3",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 12
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-06-09T20:55:07Z",
+      "side": 1,
+      "message": "This method and the below are down to the inner `RBTreeNodeReservation` not being Copy/Clone/Debug/PartialEq.  Is this is an ok way to stub those things out in a test?",
+      "revId": "2e592463af64115ad0ccf63600d8ec70f630c160",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

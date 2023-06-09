@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7af3b195_7a05c2b9",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-06-09T20:55:07Z",
+      "side": 1,
+      "message": "No, it was a mistake. Is there any better pattern here? It feels weird to `take` only to put back again conditionally, but I don\u0027t see anything like `take_if`.",
+      "parentUuid": "51faa5bf_6e101d44",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7956b4e1_b2f9d1fe",
         "filename": "drivers/android/range_alloc.rs",
         "patchSetId": 10
@@ -83,6 +101,24 @@
       "writtenOn": "2023-06-07T07:51:42Z",
       "side": 1,
       "message": "This is not wrong, but I think you can just do `self.data` here.",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea49fc10_34695871",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-06-09T20:55:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7956b4e1_b2f9d1fe",
       "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
