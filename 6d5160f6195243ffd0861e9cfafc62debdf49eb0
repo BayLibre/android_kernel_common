@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000046525901",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2620997?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "99edcf31_2e426177",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-06-09T16:13:04Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/8c3812c8f74f050278d734ec4b90149d84bdbefb) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d8c3812c8f74f050278d734ec4b90149d84bdbefb)\n\n```\n      ## drivers/firmware/arm_ffa/driver.c ##\n     @@ drivers/firmware/arm_ffa/driver.c: static int ffa_sync_send_receive(struct ffa_device *dev,\n      \t\t\t\t       dev-\u003emode_32bit, data);\n    @@ drivers/firmware/arm_ffa/driver.c: ffa_memory_share(struct ffa_device *dev, stru\n      \t/* Note that upon a successful MEM_LEND request the caller\n      \t * must ensure that the memory region specified is not accessed\n     \n    - ## drivers/tee/optee/ffa_abi.c ##\n    -@@ drivers/tee/optee/ffa_abi.c: static int optee_ffa_shm_register(struct tee_context *ctx, struct tee_shm *shm,\n    - \tif (rc)\n    - \t\treturn rc;\n    - \targs.sg \u003d sgt.sgl;\n    --\trc \u003d ffa_ops-\u003ememory_share(ffa_dev, \u0026args);\n    -+\trc \u003d ffa_ops-\u003ememory_share(\u0026args);\n    - \tsg_free_table(\u0026sgt);\n    - \tif (rc)\n    - \t\treturn rc;\n    -\n      ## include/linux/arm_ffa.h ##\n     @@ include/linux/arm_ffa.h: struct ffa_dev_ops {\n      \tint (*sync_send_receive)(struct ffa_device *dev,\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 538785926 android-build.ayeaye-python-dispatcher_20230608.04_p0",
+      "revId": "6d5160f6195243ffd0861e9cfafc62debdf49eb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
