@@ -253860,6 +253860,24 @@ enumeration {
   }
 }
 enumeration {
+  id: 0x307a856b
+  name: "swiotlb_force"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "SWIOTLB_NORMAL"
+    }
+    enumerator {
+      name: "SWIOTLB_FORCE"
+      value: 1
+    }
+    enumerator {
+      name: "SWIOTLB_NO_FORCE"
+      value: 2
+    }
+  }
+}
+enumeration {
   id: 0x1b285d08
   name: "switch_power_state"
   definition {
@@ -259146,6 +259164,23 @@ function {
   parameter_id: 0x33756485
   parameter_id: 0xf435685e
   parameter_id: 0x18bd6530
+}
+function {
+  id: 0x12c712a5
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0258f96e
+  parameter_id: 0xbdd18903
+  parameter_id: 0xf435685e
+  parameter_id: 0xcd84e3cd
+}
+function {
+  id: 0x12c71e78
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0258f96e
+  parameter_id: 0xbdd18903
+  parameter_id: 0xf435685e
+  parameter_id: 0xcd84e3cd
+  parameter_id: 0x33756485
 }
 function {
   id: 0x12c79320
@@ -267567,6 +267602,13 @@ function {
   id: 0x3bdd4d7d
   return_type_id: 0x33756485
   parameter_id: 0x29c600bb
+}
+function {
+  id: 0x3c0f874a
+  return_type_id: 0x48b5725f
+  parameter_id: 0xbdd18903
+  parameter_id: 0xf435685e
+  parameter_id: 0xcd84e3cd
 }
 function {
   id: 0x3c2a7319
@@ -301133,6 +301175,24 @@ elf_symbol {
   full_name: "arch_freq_scale"
 }
 elf_symbol {
+  id: 0xbd5a911a
+  name: "arch_sync_dma_for_cpu"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xfb30defd
+  type_id: 0x3c0f874a
+  full_name: "arch_sync_dma_for_cpu"
+}
+elf_symbol {
+  id: 0xa7c11cc2
+  name: "arch_sync_dma_for_device"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5abcdaf3
+  type_id: 0x3c0f874a
+  full_name: "arch_sync_dma_for_device"
+}
+elf_symbol {
   id: 0xc447be59
   name: "arch_timer_read_counter"
   is_defined: true
@@ -308942,6 +309002,24 @@ elf_symbol {
   crc: 0x4fd950ed
   type_id: 0x1023f4f6
   full_name: "dma_contiguous_default_area"
+}
+elf_symbol {
+  id: 0x331baaf7
+  name: "dma_direct_map_sg"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd0a51af4
+  type_id: 0x9d4b1066
+  full_name: "dma_direct_map_sg"
+}
+elf_symbol {
+  id: 0x61d7eb0a
+  name: "dma_direct_unmap_sg"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xedf75011
+  type_id: 0x1053a2da
+  full_name: "dma_direct_unmap_sg"
 }
 elf_symbol {
   id: 0xd13969dd
@@ -334464,6 +334542,42 @@ elf_symbol {
   full_name: "suspend_set_ops"
 }
 elf_symbol {
+  id: 0x8a71741f
+  name: "swiotlb_force"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xf439c77b
+  type_id: 0x307a856b
+  full_name: "swiotlb_force"
+}
+elf_symbol {
+  id: 0x97d36a5b
+  name: "swiotlb_map"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xfd999ece
+  type_id: 0xbe42b117
+  full_name: "swiotlb_map"
+}
+elf_symbol {
+  id: 0x779d0715
+  name: "swiotlb_sync_single_for_cpu"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x73763494
+  type_id: 0x12c712a5
+  full_name: "swiotlb_sync_single_for_cpu"
+}
+elf_symbol {
+  id: 0xfd232a71
+  name: "swiotlb_tbl_unmap_single"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd7b78305
+  type_id: 0x12c71e78
+  full_name: "swiotlb_tbl_unmap_single"
+}
+elf_symbol {
   id: 0xa24d2a51
   name: "symbol_put_addr"
   is_defined: true
@@ -342464,6 +342578,8 @@ interface {
   symbol_id: 0x520c1997
   symbol_id: 0x2d3715da
   symbol_id: 0x7ff45ec2
+  symbol_id: 0xbd5a911a
+  symbol_id: 0xa7c11cc2
   symbol_id: 0xc447be59
   symbol_id: 0xc6d0ad0a
   symbol_id: 0x9403cfad
@@ -343332,6 +343448,8 @@ interface {
   symbol_id: 0x710f1fc2
   symbol_id: 0xaa54a71f
   symbol_id: 0x5f554bc7
+  symbol_id: 0x331baaf7
+  symbol_id: 0x61d7eb0a
   symbol_id: 0xd13969dd
   symbol_id: 0xe2ee283f
   symbol_id: 0x2762abc3
@@ -346165,6 +346283,10 @@ interface {
   symbol_id: 0x0e1b0b82
   symbol_id: 0xfb52ace2
   symbol_id: 0x44e002a2
+  symbol_id: 0x8a71741f
+  symbol_id: 0x97d36a5b
+  symbol_id: 0x779d0715
+  symbol_id: 0xfd232a71
   symbol_id: 0xa24d2a51
   symbol_id: 0x1fe11014
   symbol_id: 0x75fe69c4
