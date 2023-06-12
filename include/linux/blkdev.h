@@ -328,6 +328,8 @@ struct queue_limits {
 	 */
 	unsigned int		dma_alignment;
 
+	bool			sub_page_limits;
+
 	ANDROID_OEM_DATA(1);
 	ANDROID_KABI_RESERVE(1);
 };
