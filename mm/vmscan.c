@@ -57,6 +57,8 @@
 #include <linux/rculist_nulls.h>
 #include <linux/random.h>
 
+#include <linux/log2.h>
+
 #include <asm/tlbflush.h>
 #include <asm/div64.h>
 
@@ -2473,6 +2475,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 	enum vm_event_item item;
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
 	bool stalled = false;
+	int kswapd_order;
 
 	while (unlikely(too_many_isolated(pgdat, file, sc))) {
 		if (stalled)
@@ -2513,9 +2516,15 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 
 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
 	item = current_is_kswapd() ? PGSTEAL_KSWAPD : PGSTEAL_DIRECT;
-	if (!cgroup_reclaim(sc))
+	kswapd_order = min_t(int, ilog2(nr_reclaimed), 36);
+	if (!cgroup_reclaim(sc)) {
 		__count_vm_events(item, nr_reclaimed);
+		if (current_is_kswapd())
+			count_vm_event(NR_KSWAPD_RECLAIM_ORDER_0 + kswapd_order);
+	}
 	__count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
+	if (current_is_kswapd())
+		__count_memcg_events(lruvec_memcg(lruvec), NR_KSWAPD_RECLAIM_ORDER_0 + kswapd_order, 1);
 	__count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
 	spin_unlock_irq(&lruvec->lru_lock);
 
@@ -5063,6 +5072,7 @@ static int evict_folios(struct lruvec *lruvec, struct scan_control *sc, int swap
 	bool skip_retry = false;
 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+	int kswapd_order;
 
 	spin_lock_irq(&lruvec->lru_lock);
 
@@ -5119,9 +5129,15 @@ retry:
 		reset_batch_size(lruvec, walk);
 
 	item = current_is_kswapd() ? PGSTEAL_KSWAPD : PGSTEAL_DIRECT;
-	if (!cgroup_reclaim(sc))
+	kswapd_order = min_t(int, ilog2(reclaimed), 36);
+	if (!cgroup_reclaim(sc)) {
 		__count_vm_events(item, reclaimed);
+		if (current_is_kswapd())
+			count_vm_event(NR_KSWAPD_RECLAIM_ORDER_0 + kswapd_order);
+	}
 	__count_memcg_events(memcg, item, reclaimed);
+	if (current_is_kswapd())
+		__count_memcg_events(lruvec_memcg(lruvec), NR_KSWAPD_RECLAIM_ORDER_0 + kswapd_order, 1);
 	__count_vm_events(PGSTEAL_ANON + type, reclaimed);
 
 	spin_unlock_irq(&lruvec->lru_lock);
