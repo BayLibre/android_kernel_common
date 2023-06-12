@@ -124,6 +124,7 @@
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(task_newtask);
 EXPORT_TRACEPOINT_SYMBOL_GPL(task_rename);
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_process_fork);
 
 /*
  * Protected counters by write_lock_irq(&tasklist_lock)

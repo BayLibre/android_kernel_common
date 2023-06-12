@@ -81,6 +81,8 @@
  */
 static unsigned int oops_limit = 10000;
 
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_process_exit);
+
 #ifdef CONFIG_SYSCTL
 static struct ctl_table kern_exit_table[] = {
 	{
