@@ -98,7 +98,7 @@ the ``bindgen`` tool. A particular version is required.
 
 Install it via (note that this will download and build the tool from source)::
 
-	cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen
+	cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen-cli
 
 
 Requirements: Developing
