@@ -52,6 +52,24 @@
       "parentUuid": "40386274_feb8518c",
       "revId": "1f85fc4b1a32e8d60c5d152fb286a5c0c8ce2987",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "501f90c9_f6e3dd6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-06-12T17:15:59Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with xarray, but I\u0027ll check it out. We have two uses for rbtree:\n\n 1. Key-value maps with integer keys.\n 2. In the range allocator, we use it to find the smallest chunk with size at least some lower bound. (allowing several chunks to have the same size)\n \nWould xarray work for that?",
+      "parentUuid": "d250970b_0f426d3a",
+      "revId": "1f85fc4b1a32e8d60c5d152fb286a5c0c8ce2987",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
