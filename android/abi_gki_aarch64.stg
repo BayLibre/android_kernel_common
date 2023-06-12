@@ -168762,6 +168762,12 @@ member {
   offset: 1088
 }
 member {
+  id: 0x4c1b044f
+  name: "sub_page_limits"
+  type_id: 0x6d7f5ff6
+  offset: 840
+}
+member {
   id: 0xedd64f59
   name: "sub_reg_offsets"
   type_id: 0x2db8f717
@@ -227098,6 +227104,7 @@ struct_union {
     member_id: 0x06473753
     member_id: 0x1bdd5453
     member_id: 0x26582f94
+    member_id: 0x4c1b044f
     member_id: 0xaf3e33dd
     member_id: 0x2d081f94
     member_id: 0xd671ce1e
@@ -307525,7 +307532,7 @@ elf_symbol {
   name: "__traceiter_block_bio_remap"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb7c4eb6f
+  crc: 0x8d8ccb6a
   type_id: 0x9bc0b776
   full_name: "__traceiter_block_bio_remap"
 }
@@ -313023,7 +313030,7 @@ elf_symbol {
   name: "bio_end_io_acct_remapped"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd596a5e4
+  crc: 0xb66bb5e2
   type_id: 0x153e4f8f
   full_name: "bio_end_io_acct_remapped"
 }
@@ -313068,7 +313075,7 @@ elf_symbol {
   name: "bio_start_io_acct"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x79dde4b9
+  crc: 0x8c4262a4
   type_id: 0x34c40d5b
   full_name: "bio_start_io_acct"
 }
@@ -313248,7 +313255,7 @@ elf_symbol {
   name: "blk_cleanup_queue"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xda1ac272
+  crc: 0x671b8f31
   type_id: 0x12c8ce83
   full_name: "blk_cleanup_queue"
 }
@@ -313320,7 +313327,7 @@ elf_symbol {
   name: "blk_get_queue"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0cce3e87
+  crc: 0x76bb4de6
   type_id: 0xfcf4c414
   full_name: "blk_get_queue"
 }
@@ -313329,7 +313336,7 @@ elf_symbol {
   name: "blk_get_request"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb4e94255
+  crc: 0xe4189a01
   type_id: 0xdd12f833
   full_name: "blk_get_request"
 }
@@ -313617,7 +313624,7 @@ elf_symbol {
   name: "blk_put_queue"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7c3755fa
+  crc: 0xc79c9603
   type_id: 0x12c8ce83
   full_name: "blk_put_queue"
 }
@@ -313626,7 +313633,7 @@ elf_symbol {
   name: "blk_put_request"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfa4cdb22
+  crc: 0xd7e92faf
   type_id: 0x1738d1f7
   full_name: "blk_put_request"
 }
@@ -313662,7 +313669,7 @@ elf_symbol {
   name: "blk_queue_flag_clear"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x774cad03
+  crc: 0xea92e49d
   type_id: 0x01dc01ed
   full_name: "blk_queue_flag_clear"
 }
@@ -313671,7 +313678,7 @@ elf_symbol {
   name: "blk_queue_flag_set"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe1362caf
+  crc: 0x2d3a9402
   type_id: 0x01dc01ed
   full_name: "blk_queue_flag_set"
 }
@@ -313680,7 +313687,7 @@ elf_symbol {
   name: "blk_queue_flag_test_and_set"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x50e761e9
+  crc: 0x4ce936fe
   type_id: 0xefe00b7a
   full_name: "blk_queue_flag_test_and_set"
 }
@@ -313932,7 +313939,7 @@ elf_symbol {
   name: "blk_sync_queue"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xeab976ad
+  crc: 0x21fe9d02
   type_id: 0x12c8ce83
   full_name: "blk_sync_queue"
 }
@@ -321342,7 +321349,7 @@ elf_symbol {
   name: "disk_end_io_acct"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf3dbe6a9
+  crc: 0x8a531cd5
   type_id: 0x19ced518
   full_name: "disk_end_io_acct"
 }
@@ -321360,7 +321367,7 @@ elf_symbol {
   name: "disk_start_io_acct"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3ac47391
+  crc: 0x3e57d005
   type_id: 0x38e7f5d8
   full_name: "disk_start_io_acct"
 }
@@ -353242,7 +353249,7 @@ elf_symbol {
   name: "submit_bio"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1deede58
+  crc: 0xea4385ec
   type_id: 0x60a1bb39
   full_name: "submit_bio"
 }
@@ -353251,7 +353258,7 @@ elf_symbol {
   name: "submit_bio_noacct"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x91c0ee74
+  crc: 0xef4232f5
   type_id: 0x60a1bb39
   full_name: "submit_bio_noacct"
 }
