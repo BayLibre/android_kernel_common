@@ -1094,6 +1094,8 @@ static int v4l_querycap(const struct v4l2_ioctl_ops *ops,
 
 	ret = ops->vidioc_querycap(file, fh, cap);
 
+	pr_err("micya: in v4l_querycap %s, ret: %i", vfd->name, ret);
+
 	/*
 	 * Drivers must not change device_caps, so check for this and
 	 * warn if this happened.
@@ -2090,6 +2092,9 @@ static int v4l_reqbufs(const struct v4l2_ioctl_ops *ops,
 	struct v4l2_requestbuffers *p = arg;
 	int ret = check_fmt(file, p->type);
 
+	struct video_device *vfd = video_devdata(file);
+	pr_err("micya: in v4l_reqbufs %s, ret: %i", vfd->name, ret);
+
 	if (ret)
 		return ret;
 
@@ -2112,6 +2117,9 @@ static int v4l_qbuf(const struct v4l2_ioctl_ops *ops,
 {
 	struct v4l2_buffer *p = arg;
 	int ret = check_fmt(file, p->type);
+
+	struct video_device *vfd = video_devdata(file);
+	pr_err("micya: in v4l_qbuf %s, ret %i", vfd->name, ret);
 
 	return ret ? ret : ops->vidioc_qbuf(file, fh, p);
 }
