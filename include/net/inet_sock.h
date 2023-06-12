@@ -254,9 +254,12 @@ struct inet_sock {
 		__u16 lo;
 		__u16 hi;
 	}			local_port_range;
+<<<<<<< HEAD   (212aa0 Merge 6.1.31 into android14-6.1-lts)
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
+=======
+>>>>>>> BRANCH (76ba31 Linux 6.1.32)
 };
 
 #define IPCORK_OPT	1	/* ip-options has been held in ipcork.opt */
