@@ -59,6 +59,26 @@
       "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/c3b9f95598b8029b7e8d9a6b3ad14280e712c70c) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dc3b9f95598b8029b7e8d9a6b3ad14280e712c70c)\n\n```\n      ## include/linux/sched.h ##\n     @@ include/linux/sched.h: struct sched_statistics {\n    @@ kernel/sched/fair.c: update_stats_dequeue(struct cfs_rq *cfs_rq, struct sched_en\n      \t\t\t\t      rq_clock(rq_of(cfs_rq)));\n      \t}\n      }\n    -@@ kernel/sched/fair.c: set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n    +@@ kernel/sched/fair.c: void set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n      \t */\n      \tif (schedstat_enabled() \u0026\u0026\n      \t    rq_of(cfs_rq)-\u003ecfs.load.weight \u003e\u003d 2*se-\u003eload.weight) {\n    --\t\t__schedstat_set(se-\u003estatistics.slice_max,\n    --\t\t\t\tmax((u64)se-\u003estatistics.slice_max,\n    +-\t\tschedstat_set(se-\u003estatistics.slice_max,\n    +-\t\t\tmax((u64)schedstat_val(se-\u003estatistics.slice_max),\n    +-\t\t\t    se-\u003esum_exec_runtime - se-\u003eprev_sum_exec_runtime));\n     +\t\tstruct sched_statistics *stats;\n     +\n     +\t\tstats \u003d __schedstats_from_se(se);\n     +\t\t__schedstat_set(stats-\u003eslice_max,\n     +\t\t\t\tmax((u64)stats-\u003eslice_max,\n    - \t\t\t\t    se-\u003esum_exec_runtime - se-\u003eprev_sum_exec_runtime));\n    ++\t\t\t\t    se-\u003esum_exec_runtime - se-\u003eprev_sum_exec_runtime));\n      \t}\n      \n    + \tse-\u003eprev_sum_exec_runtime \u003d se-\u003esum_exec_runtime;\n     @@ kernel/sched/fair.c: static int wake_affine(struct sched_domain *sd, struct task_struct *p,\n      \tif (sched_feat(WA_WEIGHT) \u0026\u0026 target \u003d\u003d nr_cpumask_bits)\n      \t\ttarget \u003d wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 538785926 android-build.ayeaye-python-dispatcher_20230608.04_p0",
       "revId": "0bb2365bf62d0ef8eb8e513eb9ad3a9350da2e8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000046578686",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2621549?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "c45794bc_5e8a75c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-06-12T19:31:41Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/c3b9f95598b8029b7e8d9a6b3ad14280e712c70c) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dc3b9f95598b8029b7e8d9a6b3ad14280e712c70c)\n\n```\n      ## include/linux/sched.h ##\n     @@ include/linux/sched.h: struct sched_statistics {\n    @@ kernel/sched/fair.c: update_stats_dequeue(struct cfs_rq *cfs_rq, struct sched_en\n      \t\t\t\t      rq_clock(rq_of(cfs_rq)));\n      \t}\n      }\n    -@@ kernel/sched/fair.c: set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n    +@@ kernel/sched/fair.c: void set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)\n      \t */\n      \tif (schedstat_enabled() \u0026\u0026\n      \t    rq_of(cfs_rq)-\u003ecfs.load.weight \u003e\u003d 2*se-\u003eload.weight) {\n    --\t\t__schedstat_set(se-\u003estatistics.slice_max,\n    --\t\t\t\tmax((u64)se-\u003estatistics.slice_max,\n    +-\t\tschedstat_set(se-\u003estatistics.slice_max,\n    +-\t\t\tmax((u64)schedstat_val(se-\u003estatistics.slice_max),\n    +-\t\t\t    se-\u003esum_exec_runtime - se-\u003eprev_sum_exec_runtime));\n     +\t\tstruct sched_statistics *stats;\n     +\n     +\t\tstats \u003d __schedstats_from_se(se);\n     +\t\t__schedstat_set(stats-\u003eslice_max,\n     +\t\t\t\tmax((u64)stats-\u003eslice_max,\n    - \t\t\t\t    se-\u003esum_exec_runtime - se-\u003eprev_sum_exec_runtime));\n    ++\t\t\t\t    se-\u003esum_exec_runtime - se-\u003eprev_sum_exec_runtime));\n      \t}\n      \n    + \tse-\u003eprev_sum_exec_runtime \u003d se-\u003esum_exec_runtime;\n     @@ kernel/sched/fair.c: static int wake_affine(struct sched_domain *sd, struct task_struct *p,\n      \tif (sched_feat(WA_WEIGHT) \u0026\u0026 target \u003d\u003d nr_cpumask_bits)\n      \t\ttarget \u003d wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 538785926 android-build.ayeaye-python-dispatcher_20230608.04_p0",
+      "revId": "0bb2365bf62d0ef8eb8e513eb9ad3a9350da2e8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
