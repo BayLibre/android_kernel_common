@@ -4081,7 +4081,10 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
 
 static void dwc3_gadget_wakeup_interrupt(struct dwc3 *dwc)
 {
+<<<<<<< HEAD   (26c1cc Merge 6.1.30 into android14-6.1-lts)
 
+=======
+>>>>>>> BRANCH (d2869a Linux 6.1.31)
 	dwc->suspended = false;
 
 	/*
