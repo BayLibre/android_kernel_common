@@ -16,6 +16,24 @@
       "message": "Hi Greg,\n\nI have removed the module.c, and change the \"bool ads_page_owner, bool ads_slub_debug, unsigned long ads_vmalloc_nr_pages,unsigned long ads_pcpu_nr_pages\" to be static.\n\nThanks!",
       "revId": "9f9858d63f1addbedd25b5cbdb118dfdcc92df71",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b606719_58003800",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-12T11:52:33Z",
+      "side": 1,
+      "message": "Do you still need all of these different symbols for the 6.1 tree?  If not, can you trim them down to just what you need?",
+      "parentUuid": "e0c5ca8a_036ea5d7",
+      "revId": "9f9858d63f1addbedd25b5cbdb118dfdcc92df71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
