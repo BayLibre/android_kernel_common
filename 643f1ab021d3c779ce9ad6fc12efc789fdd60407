@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c07ca43_d8150ada",
+        "filename": "drivers/android/range_alloc.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2023-06-12T14:13:03Z",
+      "side": 1,
+      "message": "I racked my brain a lot over this.  LMK what you think if this pattern that I use (in one form or another) in 3 places to avoid the conditional \"don\u0027t forget to put it back\" code.\n\n```\n        let (new_state, reservation) \u003d match desc.state.take() {\n            Some(DescriptorState::Reserved(reservation)) \u003d\u003e (None, Ok(reservation)),\n            None \u003d\u003e {\n                pr_warn!(\n                    \"EINVAL from range_alloc.reservation_abort - offset: {}\",\n                    offset\n                );\n                (None, Err(EINVAL))\n            }\n            allocated \u003d\u003e {\n                pr_warn!(\n                    \"EPERM from range_alloc.reservation_abort - offset: {}\",\n                    offset\n                );\n                (allocated, Err(EPERM))\n            }\n        };\n\n        desc.state \u003d new_state;\n        let reservation \u003d reservation?;\n```",
+      "parentUuid": "7af3b195_7a05c2b9",
+      "revId": "643f1ab021d3c779ce9ad6fc12efc789fdd60407",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7956b4e1_b2f9d1fe",
         "filename": "drivers/android/range_alloc.rs",
         "patchSetId": 10
