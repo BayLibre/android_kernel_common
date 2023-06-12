@@ -299,6 +299,7 @@ enum blk_bounce {
 
 struct queue_limits {
 	enum blk_bounce		bounce;
+	bool			sub_page_limits;
 	unsigned long		seg_boundary_mask;
 	unsigned long		virt_boundary_mask;
 
