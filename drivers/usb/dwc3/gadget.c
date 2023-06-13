@@ -4081,7 +4081,10 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
 
 static void dwc3_gadget_wakeup_interrupt(struct dwc3 *dwc)
 {
+<<<<<<< HEAD   (fd07e1 ANDROID: GKI: add skb_pull_data to android/abi_gki_aarch64_v)
 
+=======
+>>>>>>> BRANCH (d2869a Linux 6.1.31)
 	dwc->suspended = false;
 
 	/*
