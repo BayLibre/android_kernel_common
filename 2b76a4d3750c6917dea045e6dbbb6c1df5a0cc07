@@ -16,6 +16,24 @@
       "message": "sysfs attribute callbacks should never be exported, just read the data properly from userspace.",
       "revId": "2b76a4d3750c6917dea045e6dbbb6c1df5a0cc07",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c06401ca_7f3f6160",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2012155
+      },
+      "writtenOn": "2023-06-13T14:59:41Z",
+      "side": 1,
+      "message": "We use this index to observe the smartphone power consuming behavior. Because we have the timing restriction, it is a little difficult for us to get such information from user space. We would like to know what if we add hooks in log_irq_wakeup_reason, log_suspend_abort_reaon, and log_abnormal_wakeup_reason? \nThanks.",
+      "parentUuid": "491a0e8d_2f175ced",
+      "revId": "2b76a4d3750c6917dea045e6dbbb6c1df5a0cc07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
