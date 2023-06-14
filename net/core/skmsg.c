@@ -1212,7 +1212,20 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
 
 	if (unlikely(!sock || !sock->ops || !sock->ops->read_skb))
 		return;
+<<<<<<< HEAD   (32d0f3 Revert "tcp: deny tcp_disconnect() when threads are waiting")
 	sock->ops->read_skb(sk, sk_psock_verdict_recv);
+=======
+	copied = sock->ops->read_skb(sk, sk_psock_verdict_recv);
+	if (copied >= 0) {
+		struct sk_psock *psock;
+
+		rcu_read_lock();
+		psock = sk_psock(sk);
+		if (psock)
+			psock->saved_data_ready(sk);
+		rcu_read_unlock();
+	}
+>>>>>>> BRANCH (ca87e7 Linux 6.1.34)
 }
 
 void sk_psock_start_verdict(struct sock *sk, struct sk_psock *psock)
