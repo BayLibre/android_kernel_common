@@ -324580,6 +324580,15 @@ elf_symbol {
   full_name: "__traceiter_android_rvh_sched_setaffinity"
 }
 elf_symbol {
+  id: 0xe2000fca
+  name: "__traceiter_android_rvh_sched_waking"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x039b4b2c
+  type_id: 0x9bdbdcc4
+  full_name: "__traceiter_android_rvh_sched_waking"
+}
+elf_symbol {
   id: 0x2bb177b4
   name: "__traceiter_android_rvh_schedule"
   is_defined: true
@@ -327683,6 +327692,15 @@ elf_symbol {
   crc: 0x9b40afe0
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_rvh_sched_setaffinity"
+}
+elf_symbol {
+  id: 0x3a04cee8
+  name: "__tracepoint_android_rvh_sched_waking"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x037d89ae
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_rvh_sched_waking"
 }
 elf_symbol {
   id: 0x51af6212
@@ -380667,6 +380685,7 @@ interface {
   symbol_id: 0x671862a7
   symbol_id: 0x415dd5e7
   symbol_id: 0xd7ca6cc8
+  symbol_id: 0xe2000fca
   symbol_id: 0x2bb177b4
   symbol_id: 0x40bb3f78
   symbol_id: 0x0f807f10
@@ -381012,6 +381031,7 @@ interface {
   symbol_id: 0x8ffb9d8d
   symbol_id: 0x7babd1c5
   symbol_id: 0x43527efa
+  symbol_id: 0x3a04cee8
   symbol_id: 0x51af6212
   symbol_id: 0xa5be18ba
   symbol_id: 0x0daed96e
