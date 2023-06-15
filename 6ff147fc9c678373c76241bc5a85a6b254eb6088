@@ -39,6 +39,30 @@
       },
       "revId": "6ff147fc9c678373c76241bc5a85a6b254eb6088",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67310563_8c3a30a6",
+        "filename": "include/linux/usb/role.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-15T12:21:33Z",
+      "side": 1,
+      "message": "Depends on the enum, if they are renumberd, yes, that can break the abi.  Try it and see!",
+      "parentUuid": "5a5df892_71c2ad2e",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "6ff147fc9c678373c76241bc5a85a6b254eb6088",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
