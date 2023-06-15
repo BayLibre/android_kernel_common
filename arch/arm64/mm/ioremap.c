@@ -70,6 +70,44 @@ static int __init ioremap_guard_setup(char *str)
 }
 early_param("ioremap_guard", ioremap_guard_setup);
 
+void gzvm_init_ioremap_services(void)
+{
+	struct arm_smccc_res res;
+	size_t granule;
+
+	if (!ioremap_guard)
+		return;
+
+	memset(&res, 0, sizeof(res));
+	arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_GZVM_FEATURES_FUNC_ID, &res);
+	if (!(res.a0 | 1 << ARM_SMCCC_GZVM_FUNC_MMIO_GUARD_INFO ) ||
+	    !(res.a0 | 1 << ARM_SMCCC_GZVM_FUNC_MMIO_GUARD_ENROLL ) ||
+	    !(res.a0 | 1 << ARM_SMCCC_GZVM_FUNC_MMIO_GUARD_MAP ) ||
+	    !(res.a0 | 1 << ARM_SMCCC_GZVM_FUNC_MMIO_GUARD_UNMAP ))
+		return;
+
+	memset(&res, 0, sizeof(res));
+	arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_GZVM_MMIO_GUARD_INFO_FUNC_ID,
+			     0, 0, 0, &res);
+	granule = res.a0;
+	if (granule > PAGE_SIZE || !granule || (granule & (granule - 1))) {
+		pr_warn("GZVM MMIO guard initialization failed: "
+			"guard granule (%lu), page size (%lu)\n",
+			granule, PAGE_SIZE);
+		return;
+	}
+
+	arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_GZVM_MMIO_GUARD_ENROLL_FUNC_ID,
+			     &res);
+	if (res.a0 == SMCCC_RET_SUCCESS) {
+		guard_granule = granule;
+		static_branch_enable(&ioremap_guard_key);
+		pr_info("Using GZVM MMIO guard for ioremap\n");
+	} else {
+		pr_warn("GZVM MMIO guard registration failed (%ld)\n", res.a0);
+	}
+}
+
 void kvm_init_ioremap_services(void)
 {
 	struct arm_smccc_res res;

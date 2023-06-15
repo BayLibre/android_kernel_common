@@ -16,4 +16,9 @@ void kvm_init_memrelinquish_services(void);
 static inline void kvm_init_memrelinquish_services(void) {}
 #endif
 
+void gzvm_init_hyp_services(void);
+void gzvm_init_ioremap_services(void);
+void gzvm_init_memshare_services(void);
+void gzvm_init_memrelinquish_services(void);
+
 #endif

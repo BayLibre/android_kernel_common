@@ -14,6 +14,25 @@
 
 static unsigned long memshare_granule_sz;
 
+void gzvm_init_memrelinquish_services(void)
+{
+	struct arm_smccc_res res;
+
+	memset(&res, 0, sizeof(res));
+	arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_GZVM_FEATURES_FUNC_ID, &res);
+	if (!(res.a0 | 1 << ARM_SMCCC_GZVM_FUNC_HYP_MEMINFO ) ||
+	    !(res.a0 | 1 << ARM_SMCCC_GZVM_FUNC_MEM_RELINQUISH ))
+		return;
+
+	memset(&res, 0, sizeof(res));
+	arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_GZVM_HYP_MEMINFO_FUNC_ID,
+			     0, 0, 0, &res);
+	if (res.a0 > PAGE_SIZE) /* Includes error codes */
+		return;
+
+	memshare_granule_sz = res.a0;
+}
+
 void kvm_init_memrelinquish_services(void)
 {
 	int i;
