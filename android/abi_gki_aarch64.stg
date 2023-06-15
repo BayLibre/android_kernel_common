@@ -335719,6 +335719,15 @@ elf_symbol {
   full_name: "console_unlock"
 }
 elf_symbol {
+  id: 0x06f42cb2
+  name: "console_verbose"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x04c8aebf
+  type_id: 0x10985193
+  full_name: "console_verbose"
+}
+elf_symbol {
   id: 0xca337eb1
   name: "consume_skb"
   is_defined: true
@@ -382455,6 +382464,7 @@ interface {
   symbol_id: 0x85d79e5f
   symbol_id: 0xf9f01d9c
   symbol_id: 0x5a70b6f0
+  symbol_id: 0x06f42cb2
   symbol_id: 0xca337eb1
   symbol_id: 0x9e7d8d76
   symbol_id: 0x610edc84
