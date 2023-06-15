@@ -11,6 +11,10 @@
 extern void dcache_inval_tags_poc(unsigned long start, unsigned long end);
 
 #ifdef CONFIG_ARM64_MTE_TAG_STORAGE
+
+/* page has had the associated tag storage reserved */
+#define PG_tag_storage_reserved	PG_arch_4
+
 DECLARE_STATIC_KEY_FALSE(mte_tag_storage_enabled_key);
 
 static inline bool mte_tag_storage_enabled(void)
