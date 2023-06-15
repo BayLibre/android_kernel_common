@@ -430,11 +430,7 @@ static bool tag_storage_block_is_reserved(unsigned long block)
 
 bool page_tag_storage_reserved(struct page *page)
 {
-	struct tag_region *region;
-	unsigned long block;
-
-	return tag_storage_find_block(page, &block, &region) == 0 &&
-		tag_storage_block_is_reserved(block);
+	return !!test_bit(PG_tag_storage_reserved, &page->flags);
 }
 
 static int tag_storage_reserve_block(unsigned long block, unsigned long block_size)
@@ -474,8 +470,8 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 	unsigned long flags, cflags;
 	struct tag_region *region;
 	unsigned long block;
+	int i, tries;
 	int ret = 0;
-	int tries;
 
 	VM_WARN_ON_ONCE(!preemptible());
 
@@ -529,6 +525,9 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 
 		count_vm_events(METADATA_RESERVE_SUCCESS, region->block_size);
 	}
+
+	for (i = 0; i < (1 << order); i++)
+		set_bit(PG_tag_storage_reserved, &(page + i)->flags);
 
 	memalloc_isolate_restore(cflags);
 	mutex_unlock(&tag_blocks_lock);
