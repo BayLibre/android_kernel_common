@@ -16,6 +16,24 @@
       "message": "Why not fix this properly by adding the needed work-around, or quirk, to the driver itself based on the hardware identification and submit that upstream?  That way no hook would be needed.",
       "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95c547ca_ba2257a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2013287
+      },
+      "writtenOn": "2023-06-15T07:48:42Z",
+      "side": 1,
+      "message": "Hi Greg Kroah-Hartman,\nWe had submit this patch to upstream, but the maintainer said that we also needed to push our host driver. Since we still need time to fix our host driver to satisfy upstream requirement, we hope to add vendor hook first while using android 14.\n\nhttps://www.spinics.net/lists/linux-mmc/msg72867.html",
+      "parentUuid": "9ae4ff6d_6f1e4465",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
