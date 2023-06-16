@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15ffa6ac_57f8ffc5",
+        "filename": "drivers/android/android_debug_symbols.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1905376
+      },
+      "writtenOn": "2023-06-16T07:30:39Z",
+      "side": 1,
+      "message": "Okay, I would remove the _stext and _etext. But we hope to keep the _text and _end. The reson as follow:\nAt kernel exception handle flow, cache around address of CPU register pointing to, may need to be printed, to check if cache is unstable, especially for text cache.\nBut arm64 vmalloc address may map to IO address, which is power off or clock disabled,\nand accessing these IO address may cause recurisive SError or external abort exception, which is a disaster especially in suspend/resume scenario. \nIn KO we can hardly judge whether the vmalloc address is mapped to IO address in a simple way.\nIf _text/_end is available, then if the address is within vmalloc region, and the address is within kernel text region, we can print the data of this region, which is safe.\n\nIf _text/_end is available, we can also make some check on text region when exception occurs.",
+      "parentUuid": "b00be592_f9ccfd82",
+      "range": {
+        "startLine": 49,
+        "startChar": 21,
+        "endLine": 49,
+        "endChar": 26
+      },
+      "revId": "3114184a084d82413b0582ecca31f6cedfac63a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdc2f06e_ed89aac2",
         "filename": "drivers/android/android_debug_symbols.c",
         "patchSetId": 3
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "245484dd_33f285f1",
+        "filename": "drivers/android/android_debug_symbols.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1905376
+      },
+      "writtenOn": "2023-06-16T07:30:39Z",
+      "side": 1,
+      "message": "okay,I would remove it.",
+      "parentUuid": "cdc2f06e_ed89aac2",
+      "range": {
+        "startLine": 54,
+        "startChar": 31,
+        "endLine": 54,
+        "endChar": 45
+      },
+      "revId": "3114184a084d82413b0582ecca31f6cedfac63a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "003ee80e_fcda99dd",
         "filename": "drivers/android/android_debug_symbols.c",
         "patchSetId": 3
@@ -77,6 +125,24 @@
       "writtenOn": "2023-06-15T21:11:01Z",
       "side": 1,
       "message": "this is a function, are you SURE this is ok?  It could change ABI and then your code will break.",
+      "revId": "3114184a084d82413b0582ecca31f6cedfac63a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46bd9a47_cd7c54e5",
+        "filename": "drivers/android/android_debug_symbols.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1905376
+      },
+      "writtenOn": "2023-06-16T07:30:39Z",
+      "side": 1,
+      "message": "This function is also exist in android13-5.15,the patch is:\nhttps://android-review.googlesource.com/c/kernel/common/+/2108531",
+      "parentUuid": "003ee80e_fcda99dd",
       "revId": "3114184a084d82413b0582ecca31f6cedfac63a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
