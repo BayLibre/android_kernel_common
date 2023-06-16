@@ -360,6 +360,7 @@ int blk_ksm_evict_key(struct blk_keyslot_manager *ksm,
 {
 	struct blk_ksm_keyslot *slot;
 	int err;
+<<<<<<< HEAD   (4c20c2 Merge 5.10.179 into android12-5.10-lts)
 
 	if (blk_ksm_is_passthrough(ksm)) {
 		if (ksm->ksm_ll_ops.keyslot_evict) {
@@ -370,6 +371,8 @@ int blk_ksm_evict_key(struct blk_keyslot_manager *ksm,
 		}
 		return 0;
 	}
+=======
+>>>>>>> BRANCH (4c893f Linux 5.10.180)
 
 	blk_ksm_hw_enter(ksm);
 	slot = blk_ksm_find_keyslot(ksm, key);
