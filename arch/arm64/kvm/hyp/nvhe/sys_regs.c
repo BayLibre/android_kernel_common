@@ -100,7 +100,7 @@ static u64 get_pvm_id_aa64pfr0(const struct kvm_vcpu *vcpu)
 
 static u64 get_pvm_id_aa64pfr1(const struct kvm_vcpu *vcpu)
 {
-	const struct kvm *kvm = (const struct kvm *)kern_hyp_va(vcpu->kvm);
+	const struct kvm *kvm = vcpu->kvm;
 	u64 allow_mask = PVM_ID_AA64PFR1_ALLOW;
 
 	if (!kvm_has_mte(kvm))
