@@ -203,6 +203,8 @@ void virtio_gpu_dequeue_ctrl_func(struct work_struct *work)
 	struct virtio_gpu_ctrl_hdr *resp;
 	u64 fence_id;
 
+	DRM_ERROR("jasonjason virtio_gpu_dequeue_ctrl_func() called");
+
 	INIT_LIST_HEAD(&reclaim_list);
 	spin_lock(&vgdev->ctrlq.qlock);
 	do {
@@ -212,7 +214,11 @@ void virtio_gpu_dequeue_ctrl_func(struct work_struct *work)
 	} while (!virtqueue_enable_cb(vgdev->ctrlq.vq));
 	spin_unlock(&vgdev->ctrlq.qlock);
 
+	DRM_ERROR("jasonjason virtio_gpu_dequeue_ctrl_func() finished reclaiming vbufs");
+
 	list_for_each_entry(entry, &reclaim_list, list) {
+		DRM_ERROR("jasonjason virtio_gpu_dequeue_ctrl_func() processing entry");
+
 		resp = (struct virtio_gpu_ctrl_hdr *)entry->resp_buf;
 
 		trace_virtio_gpu_cmd_response(vgdev->ctrlq.vq, resp);
@@ -231,8 +237,13 @@ void virtio_gpu_dequeue_ctrl_func(struct work_struct *work)
 			fence_id = le64_to_cpu(resp->fence_id);
 			virtio_gpu_fence_event_process(vgdev, fence_id);
 		}
-		if (entry->resp_cb)
+		if (entry->resp_cb) {
+			DRM_ERROR("jasonjason virtio_gpu_dequeue_ctrl_func() processing entry callback");
 			entry->resp_cb(vgdev, entry);
+			DRM_ERROR("jasonjason virtio_gpu_dequeue_ctrl_func() processing entry callback - done");
+		}
+
+		DRM_ERROR("jasonjason virtio_gpu_dequeue_ctrl_func() processing entry - done");
 	}
 	wake_up(&vgdev->ctrlq.ack_queue);
 
@@ -676,7 +687,11 @@ static void virtio_gpu_cmd_get_capset_info_cb(struct virtio_gpu_device *vgdev,
 		(struct virtio_gpu_resp_capset_info *)vbuf->resp_buf;
 	int i = le32_to_cpu(cmd->capset_index);
 
+	DRM_ERROR("jasonjason virtio_gpu_cmd_get_capset_info_cb() for capset i:%d, about to wait on display lock\n", i);
+
 	spin_lock(&vgdev->display_info_lock);
+
+	DRM_ERROR("jasonjason virtio_gpu_cmd_get_capset_info_cb() for capset i:%d, locked display lock\n", i);
 	if (vgdev->capsets) {
 		vgdev->capsets[i].id = le32_to_cpu(resp->capset_id);
 		vgdev->capsets[i].max_version = le32_to_cpu(resp->capset_max_version);
