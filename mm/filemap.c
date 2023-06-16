@@ -2662,6 +2662,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
 	ra->size = ra->ra_pages;
 	ra->async_size = ra->ra_pages / 4;
 	ractl._index = ra->start;
+	trace_android_vh_tune_mmap_readaround(&ractl, vmf->pgoff);
 	do_page_cache_ra(&ractl, ra->size, ra->async_size);
 	return fpin;
 }

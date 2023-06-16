@@ -220,6 +220,9 @@ DECLARE_HOOK(android_vh_subpage_dma_contig_alloc,
 DECLARE_HOOK(android_vh_ra_tuning_max_page,
 	TP_PROTO(struct readahead_control *ractl, unsigned long *max_page),
 	TP_ARGS(ractl, max_page));
+DECLARE_HOOK(android_vh_tune_mmap_readaround,
+	TP_PROTO(struct readahead_control *ractl, pgoff_t pgoff),
+	TP_ARGS(ractl, pgoff));
 DECLARE_RESTRICTED_HOOK(android_rvh_handle_pte_fault_end,
 	TP_PROTO(struct vm_fault *vmf, unsigned long highest_memmap_pfn),
 	TP_ARGS(vmf, highest_memmap_pfn), 1);
