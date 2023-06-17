@@ -1690,8 +1690,10 @@ inval:
 static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(u64, func_id, host_ctxt, 0);
+	DECLARE_REG(u64, client_id, host_ctxt, 7);
 	struct pkvm_hyp_vcpu *hyp_vcpu;
 	bool handled;
+	u64 old_client_id, new_client_id;
 
 	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
 	if (hyp_vcpu && hyp_vcpu->vcpu.arch.fp_state == FP_STATE_GUEST_OWNED)
@@ -1702,8 +1704,21 @@ static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 	handled = kvm_host_psci_handler(host_ctxt, func_id);
 	if (!handled)
 		handled = kvm_host_ffa_handler(host_ctxt, func_id);
-	if (!handled && smp_load_acquire(&default_host_smc_handler))
+	if (!handled && smp_load_acquire(&default_host_smc_handler)) {
+		old_client_id = client_id;
+		new_client_id = (client_id & ~0xffffULL) | HOST_FFA_ID;
+		client_id = new_client_id;
+
 		handled = default_host_smc_handler(&host_ctxt->regs);
+
+		if (client_id == new_client_id) {
+			/* DEN0028 specifies that r7 is preserved across SMCs
+			 * unless the call uses it to return a result.
+			 */
+			client_id = old_client_id;
+		}
+	}
+
 	if (!handled) {
 		__hyp_exit();
 		__kvm_hyp_host_forward_smc(host_ctxt);
