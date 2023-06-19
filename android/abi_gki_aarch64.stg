@@ -284617,6 +284617,70 @@ enumeration {
   }
 }
 enumeration {
+  id: 0x503181cf
+  name: "android_debug_per_cpu_symbol"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "ADS_IRQ_STACK_PTR"
+    }
+    enumerator {
+      name: "ADS_DEBUG_PER_CPU_END"
+      value: 1
+    }
+  }
+}
+enumeration {
+  id: 0x705ce9b7
+  name: "android_debug_symbol"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "ADS_SDATA"
+    }
+    enumerator {
+      name: "ADS_BSS_END"
+      value: 1
+    }
+    enumerator {
+      name: "ADS_PER_CPU_START"
+      value: 2
+    }
+    enumerator {
+      name: "ADS_PER_CPU_END"
+      value: 3
+    }
+    enumerator {
+      name: "ADS_TEXT"
+      value: 4
+    }
+    enumerator {
+      name: "ADS_SEND"
+      value: 5
+    }
+    enumerator {
+      name: "ADS_LINUX_BANNER"
+      value: 6
+    }
+    enumerator {
+      name: "ADS_TOTAL_CMA"
+      value: 7
+    }
+    enumerator {
+      name: "ADS_SLAB_CACHES"
+      value: 8
+    }
+    enumerator {
+      name: "ADS_SLAB_MUTEX"
+      value: 9
+    }
+    enumerator {
+      name: "ADS_END"
+      value: 10
+    }
+  }
+}
+enumeration {
   id: 0x635e163e
   name: "arch_timer_erratum_match_type"
   definition {
@@ -316466,10 +316530,17 @@ function {
   parameter_id: 0x27a7c613
 }
 function {
+<<<<<<< HEAD   (ace77d BACKPORT: FROMLIST: firmware: arm_scmi: set mailbox timeout )
   id: 0x42792ea0
   return_type_id: 0x315b7e01
   parameter_id: 0x21003da7
   parameter_id: 0x2ef43f67
+||||||| BASE
+=======
+  id: 0x429ad182
+  return_type_id: 0x18bd6530
+  parameter_id: 0x503181cf
+>>>>>>> CHANGE (8cd2dc ANDROID: ABI: add android_debug_symbol to whitelist)
 }
 function {
   id: 0x42a927f9
@@ -316819,6 +316890,11 @@ function {
   return_type_id: 0xc9082b19
   parameter_id: 0x397d00ab
   parameter_id: 0x6720d32f
+}
+function {
+  id: 0x4a818b9c
+  return_type_id: 0x18bd6530
+  parameter_id: 0x705ce9b7
 }
 function {
   id: 0x4abfefa4
@@ -368113,6 +368189,7 @@ elf_symbol {
   full_name: "amba_request_regions"
 }
 elf_symbol {
+<<<<<<< HEAD   (ace77d BACKPORT: FROMLIST: firmware: arm_scmi: set mailbox timeout )
   id: 0xdc66fe63
   name: "android_create_function_device"
   is_defined: true
@@ -368120,6 +368197,27 @@ elf_symbol {
   crc: 0xcdd93950
   type_id: 0xac6cacda
   full_name: "android_create_function_device"
+||||||| BASE
+=======
+  id: 0x5653e7da
+  name: "android_debug_per_cpu_symbol"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8ee3d8d9
+  namespace: "MINIDUMP"
+  type_id: 0x429ad182
+  full_name: "android_debug_per_cpu_symbol"
+}
+elf_symbol {
+  id: 0xffaebc56
+  name: "android_debug_symbol"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1d505a43
+  namespace: "MINIDUMP"
+  type_id: 0x4a818b9c
+  full_name: "android_debug_symbol"
+>>>>>>> CHANGE (8cd2dc ANDROID: ABI: add android_debug_symbol to whitelist)
 }
 elf_symbol {
   id: 0xd8dbec6e
@@ -428598,7 +428696,13 @@ interface {
   symbol_id: 0x8480d9c1
   symbol_id: 0xb7d7d836
   symbol_id: 0xacb3d1d3
+<<<<<<< HEAD   (ace77d BACKPORT: FROMLIST: firmware: arm_scmi: set mailbox timeout )
   symbol_id: 0xdc66fe63
+||||||| BASE
+=======
+  symbol_id: 0x5653e7da
+  symbol_id: 0xffaebc56
+>>>>>>> CHANGE (8cd2dc ANDROID: ABI: add android_debug_symbol to whitelist)
   symbol_id: 0xd8dbec6e
   symbol_id: 0x95eaf556
   symbol_id: 0xf2d017ff
