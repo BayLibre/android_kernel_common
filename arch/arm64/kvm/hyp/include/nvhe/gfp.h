@@ -26,5 +26,5 @@ void hyp_put_page(struct hyp_pool *pool, void *addr);
 
 /* Used pages cannot be freed */
 int hyp_pool_init(struct hyp_pool *pool, u64 pfn, unsigned int nr_pages,
-		  unsigned int reserved_pages);
+		  unsigned int reserved_pages, bool empty_alloc);
 #endif /* __KVM_HYP_GFP_H */
