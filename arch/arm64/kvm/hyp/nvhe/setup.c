@@ -341,7 +341,7 @@ void __noreturn __pkvm_init_finalise(void)
 	pfn = hyp_virt_to_pfn(hyp_pgt_base);
 	nr_pages = hyp_s1_pgtable_pages();
 	reserved_pages = hyp_early_alloc_nr_used_pages();
-	ret = hyp_pool_init(&hpool, pfn, nr_pages, reserved_pages);
+	ret = hyp_pool_init(&hpool, pfn, nr_pages, reserved_pages, false);
 	if (ret)
 		goto out;
 
