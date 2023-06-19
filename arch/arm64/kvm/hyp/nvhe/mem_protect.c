@@ -121,7 +121,7 @@ static int prepare_s2_pool(void *pgt_pool_base)
 
 	pfn = hyp_virt_to_pfn(pgt_pool_base);
 	nr_pages = host_s2_pgtable_pages();
-	ret = hyp_pool_init(&host_s2_pool, pfn, nr_pages, 0);
+	ret = hyp_pool_init(&host_s2_pool, pfn, nr_pages, 0, false);
 	if (ret)
 		return ret;
 
@@ -287,7 +287,7 @@ int kvm_guest_prepare_stage2(struct pkvm_hyp_vm *vm, void *pgd)
 	int ret;
 
 	nr_pages = kvm_pgtable_stage2_pgd_size(vm->kvm.arch.vtcr) >> PAGE_SHIFT;
-	ret = hyp_pool_init(&vm->pool, hyp_virt_to_pfn(pgd), nr_pages, 0);
+	ret = hyp_pool_init(&vm->pool, hyp_virt_to_pfn(pgd), nr_pages, 0, false);
 	if (ret)
 		return ret;
 
