@@ -16,6 +16,24 @@
       "message": "If we enable backing readahead calls, we may need to revisit this.",
       "revId": "ecb131e850fd9ac0f36aa8e0b04155079909e37c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f9b3d0_14ab6324",
+        "filename": "fs/fuse/backing.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2023-06-20T17:57:58Z",
+      "side": 1,
+      "message": "This CL does not address handling readaheads in the fuse-bpf model, which would require us to (among other things) move this fput to after backing_file has potentially been used in the call to backing below.",
+      "parentUuid": "0590e46c_75edfdbf",
+      "revId": "ecb131e850fd9ac0f36aa8e0b04155079909e37c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
