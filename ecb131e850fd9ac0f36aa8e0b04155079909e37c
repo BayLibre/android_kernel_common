@@ -34,6 +34,40 @@
       "parentUuid": "0590e46c_75edfdbf",
       "revId": "ecb131e850fd9ac0f36aa8e0b04155079909e37c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68cbd0b_2fd52da6",
+        "filename": "fs/fuse/file.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2023-06-20T18:57:06Z",
+      "side": 1,
+      "message": "Any particular reason why not compacting this to \"else if (sync) {\" and saving one level of {}\u0027s?",
+      "revId": "ecb131e850fd9ac0f36aa8e0b04155079909e37c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "533a858f_3d1f15f9",
+        "filename": "fs/fuse/file.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1973,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2023-06-20T18:57:06Z",
+      "side": 1,
+      "message": "fuse_file_put always calls refcount_dec_and_test if CONFIG_FUSE_BPF is set. Is that correct behavior from fuse_write_inode ?",
+      "revId": "ecb131e850fd9ac0f36aa8e0b04155079909e37c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
