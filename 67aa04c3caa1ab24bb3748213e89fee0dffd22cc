@@ -88,6 +88,24 @@
       "parentUuid": "722cf611_a2a2c98d",
       "revId": "67aa04c3caa1ab24bb3748213e89fee0dffd22cc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "512f75d5_7cdf1ff5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-21T09:07:27Z",
+      "side": 1,
+      "message": "Why can the existing userspace tools not meet your needs?  What are your needs?\n\nDoing this within the kernel is very odd as it is adding policy there, which should be done in userspace instead.\n\nPlease post your kernel code upstream and we will be glad to review it there first, but exporting these symbols is generally not a good thing for obvious reasons (i.e. it looks like you are a root kit that is wanting to snoop on all filesystem accesses...)",
+      "parentUuid": "b58d3c9c_6a683b44",
+      "revId": "67aa04c3caa1ab24bb3748213e89fee0dffd22cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
