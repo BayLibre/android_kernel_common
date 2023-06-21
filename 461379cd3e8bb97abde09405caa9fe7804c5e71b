@@ -42,6 +42,49 @@
       },
       "revId": "461379cd3e8bb97abde09405caa9fe7804c5e71b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000047185557",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2627760?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "36f82e16_524c4511",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 119,
+                "startChar": 0,
+                "endLine": 119,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Johan Hovold \u003cjohan+linaro@kernel.org\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "0bb68bb6_631b5345",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-06-21T12:56:09Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Johan Hovold \u003cjohan+linaro@kernel.org\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 540542397 android-build.ayeaye-python-dispatcher_20230615.00_p0",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 0
+      },
+      "revId": "461379cd3e8bb97abde09405caa9fe7804c5e71b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
