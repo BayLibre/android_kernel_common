@@ -16,6 +16,23 @@
       "message": "Nice work, thanks for sticking with this!",
       "revId": "c9f587a1024ecf7b79ad35d2a9a71512c4457535",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c5c161b_48b9423d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-21T09:12:46Z",
+      "side": 1,
+      "message": "Breaks the build:\n```...tput_user_root/0bff201173d7f9f4b05eee35c041b37b/sandbox/linux-sandbox/6/execroot/__main__/common/include/linux/mm.h:1973:21: error: static declaration of \u0027folio_address\u0027 follows non-static declaration\nstatic inline void *folio_address(const struct folio *folio)\n^\n...id14-6.1/out/bazel/output_user_root/0bff201173d7f9f4b05eee35c041b37b/sandbox/linux-sandbox/6/execroot/__main__/common/drivers/android/../../mm/slab.h:160:9: note: previous implicit declaration is here\nreturn folio_address(slab_folio(slab));\n^\n28 warnings and 13 errors generated.```",
+      "revId": "c9f587a1024ecf7b79ad35d2a9a71512c4457535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
