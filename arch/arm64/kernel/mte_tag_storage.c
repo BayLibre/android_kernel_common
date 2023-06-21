@@ -211,8 +211,6 @@ static int __init fdt_init_tag_storage(unsigned long node, const char *uname,
 		pr_err("Invalid or missing 'block-size' property");
 		return -EINVAL;
 	}
-
-	block_size = PFN_UP(block_size);
 	if (range_len(tag_range) % block_size != 0) {
 		pr_err("Tag storage region size is not a multiple of allocation block size");
 		return -EINVAL;
