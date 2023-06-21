@@ -682,11 +682,19 @@ struct arm_smmu_stream {
 	struct rb_node			node;
 };
 
+/* List of {masters, ssid} that a domain is attached to */
+struct arm_smmu_attached_domain {
+	struct list_head	domain_head;
+	struct arm_smmu_domain  *domain;
+	struct arm_smmu_master  *master;
+	int			ssid;
+};
+
 /* SMMU private data for each master */
 struct arm_smmu_master {
 	struct arm_smmu_device		*smmu;
 	struct device			*dev;
-	struct arm_smmu_domain		*domain;
+	struct arm_smmu_attached_domain	non_pasid_domain;
 	struct list_head		domain_head;
 	struct arm_smmu_stream		*streams;
 	struct arm_smmu_s1_cfg		owned_s1_cfg;
@@ -724,8 +732,8 @@ struct arm_smmu_domain {
 
 	struct iommu_domain			domain;
 
-	struct list_head			devices;
-	spinlock_t				devices_lock;
+	struct list_head			attached_domains;
+	spinlock_t				attached_domains_lock;
 
 	struct list_head			mmu_notifiers;
 };
@@ -748,8 +756,8 @@ void arm_smmu_tlb_inv_range_asid(unsigned long iova, size_t size, int asid,
 				 size_t granule, bool leaf,
 				 struct arm_smmu_domain *smmu_domain);
 bool arm_smmu_free_asid(struct arm_smmu_ctx_desc *cd);
-int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain, int ssid,
-			    unsigned long iova, size_t size);
+int arm_smmu_atc_inv_domain_ssid(struct arm_smmu_domain *smmu_domain, int ssid,
+				 unsigned long iova, size_t size);
 
 #ifdef CONFIG_ARM_SMMU_V3_SVA
 bool arm_smmu_sva_supported(struct arm_smmu_device *smmu);

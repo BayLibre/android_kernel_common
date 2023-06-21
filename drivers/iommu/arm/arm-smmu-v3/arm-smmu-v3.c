@@ -1702,7 +1702,14 @@ static irqreturn_t arm_smmu_combined_irq_handler(int irq, void *dev)
 }
 
 static void
-arm_smmu_atc_inv_to_cmd(int ssid, unsigned long iova, size_t size,
+arm_smmu_atc_inv_cmd_set_ssid(int ssid, struct arm_smmu_cmdq_ent *cmd)
+{
+	cmd->substream_valid = !!ssid;
+	cmd->atc.ssid = ssid;
+}
+
+static void
+arm_smmu_atc_inv_to_cmd(unsigned long iova, size_t size,
 			struct arm_smmu_cmdq_ent *cmd)
 {
 	size_t log2_span;
@@ -1727,8 +1734,8 @@ arm_smmu_atc_inv_to_cmd(int ssid, unsigned long iova, size_t size,
 	 */
 	*cmd = (struct arm_smmu_cmdq_ent) {
 		.opcode			= CMDQ_OP_ATC_INV,
-		.substream_valid	= !!ssid,
-		.atc.ssid		= ssid,
+		.substream_valid	= false,
+		.atc.ssid		= 0,
 	};
 
 	if (!size) {
@@ -1774,8 +1781,7 @@ static int arm_smmu_atc_inv_master(struct arm_smmu_master *master)
 	struct arm_smmu_cmdq_ent cmd;
 	struct arm_smmu_cmdq_batch cmds;
 
-	arm_smmu_atc_inv_to_cmd(0, 0, 0, &cmd);
-
+	arm_smmu_atc_inv_to_cmd(0, 0, &cmd);
 	cmds.num = 0;
 	for (i = 0; i < master->num_streams; i++) {
 		cmd.atc.sid = master->streams[i].id;
@@ -1785,13 +1791,19 @@ static int arm_smmu_atc_inv_master(struct arm_smmu_master *master)
 	return arm_smmu_cmdq_batch_submit(master->smmu, &cmds);
 }
 
-int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain, int ssid,
-			    unsigned long iova, size_t size)
+/*
+ * If ssid is non-zero, issue atc invalidations with the given ssid instead of
+ * the one the domain is attached to. This is used by SVA since it's pasid
+ * attachments aren't recorded in smmu_domain yet.
+ */
+int arm_smmu_atc_inv_domain_ssid(struct arm_smmu_domain *smmu_domain, int ssid,
+				 unsigned long iova, size_t size)
 {
 	int i;
 	unsigned long flags;
 	struct arm_smmu_cmdq_ent cmd;
 	struct arm_smmu_master *master;
+	struct arm_smmu_attached_domain *attached_domain;
 	struct arm_smmu_cmdq_batch cmds;
 
 	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_ATS))
@@ -1814,23 +1826,35 @@ int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain, int ssid,
 	if (!atomic_read(&smmu_domain->nr_ats_masters))
 		return 0;
 
-	arm_smmu_atc_inv_to_cmd(ssid, iova, size, &cmd);
+	arm_smmu_atc_inv_to_cmd(iova, size, &cmd);
 
 	cmds.num = 0;
 
-	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
-	list_for_each_entry(master, &smmu_domain->devices, domain_head) {
+	spin_lock_irqsave(&smmu_domain->attached_domains_lock, flags);
+	list_for_each_entry(attached_domain, &smmu_domain->attached_domains,
+			    domain_head) {
+		master = attached_domain->master;
 		if (!master->ats_enabled)
 			continue;
+		if (ssid != 0)
+			arm_smmu_atc_inv_cmd_set_ssid(ssid, &cmd);
+		else
+			arm_smmu_atc_inv_cmd_set_ssid(attached_domain->ssid, &cmd);
 
 		for (i = 0; i < master->num_streams; i++) {
 			cmd.atc.sid = master->streams[i].id;
 			arm_smmu_cmdq_batch_add(smmu_domain->smmu, &cmds, &cmd);
 		}
 	}
-	spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
+	spin_unlock_irqrestore(&smmu_domain->attached_domains_lock, flags);
 
 	return arm_smmu_cmdq_batch_submit(smmu_domain->smmu, &cmds);
+}
+
+static int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain,
+				   unsigned long iova, size_t size)
+{
+	return arm_smmu_atc_inv_domain_ssid(smmu_domain, 0, iova, size);
 }
 
 /* IO_PGTABLE API */
@@ -1854,7 +1878,7 @@ static void arm_smmu_tlb_inv_context(void *cookie)
 		cmd.tlbi.vmid	= smmu_domain->s2_cfg.vmid;
 		arm_smmu_cmdq_issue_cmd_with_sync(smmu, &cmd);
 	}
-	arm_smmu_atc_inv_domain(smmu_domain, 0, 0, 0);
+	arm_smmu_atc_inv_domain(smmu_domain, 0, 0);
 }
 
 static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
@@ -1942,7 +1966,7 @@ static void arm_smmu_tlb_inv_range_domain(unsigned long iova, size_t size,
 	 * Unfortunately, this can't be leaf-only since we may have
 	 * zapped an entire table.
 	 */
-	arm_smmu_atc_inv_domain(smmu_domain, 0, iova, size);
+	arm_smmu_atc_inv_domain(smmu_domain, iova, size);
 }
 
 void arm_smmu_tlb_inv_range_asid(unsigned long iova, size_t size, int asid,
@@ -2022,8 +2046,8 @@ static struct iommu_domain *arm_smmu_domain_alloc(unsigned type)
 		return NULL;
 
 	mutex_init(&smmu_domain->init_mutex);
-	INIT_LIST_HEAD(&smmu_domain->devices);
-	spin_lock_init(&smmu_domain->devices_lock);
+	INIT_LIST_HEAD(&smmu_domain->attached_domains);
+	spin_lock_init(&smmu_domain->attached_domains_lock);
 	INIT_LIST_HEAD(&smmu_domain->mmu_notifiers);
 
 	return &smmu_domain->domain;
@@ -2261,12 +2285,12 @@ static bool arm_smmu_ats_supported(struct arm_smmu_master *master)
 	return dev_is_pci(dev) && pci_ats_supported(to_pci_dev(dev));
 }
 
-static void arm_smmu_enable_ats(struct arm_smmu_master *master)
+static void arm_smmu_enable_ats(struct arm_smmu_master *master,
+				struct arm_smmu_domain *smmu_domain)
 {
 	size_t stu;
 	struct pci_dev *pdev;
 	struct arm_smmu_device *smmu = master->smmu;
-	struct arm_smmu_domain *smmu_domain = master->domain;
 
 	/* Don't enable ATS at the endpoint if it's not enabled in the STE */
 	if (!master->ats_enabled)
@@ -2282,10 +2306,9 @@ static void arm_smmu_enable_ats(struct arm_smmu_master *master)
 		dev_err(master->dev, "Failed to enable ATS (STU %zu)\n", stu);
 }
 
-static void arm_smmu_disable_ats(struct arm_smmu_master *master)
+static void arm_smmu_disable_ats(struct arm_smmu_master *master,
+				 struct arm_smmu_domain *smmu_domain)
 {
-	struct arm_smmu_domain *smmu_domain = master->domain;
-
 	if (!master->ats_enabled)
 		return;
 
@@ -2349,18 +2372,17 @@ static void arm_smmu_disable_pasid(struct arm_smmu_master *master)
 static void arm_smmu_detach_dev(struct arm_smmu_master *master)
 {
 	unsigned long flags;
-	struct arm_smmu_domain *smmu_domain = master->domain;
+	struct arm_smmu_domain *smmu_domain = master->non_pasid_domain.domain;
 
 	if (!smmu_domain)
 		return;
 
-	arm_smmu_disable_ats(master);
+	arm_smmu_disable_ats(master, smmu_domain);
 
-	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
-	list_del(&master->domain_head);
-	spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
+	spin_lock_irqsave(&smmu_domain->attached_domains_lock, flags);
+	list_del(&master->non_pasid_domain.domain_head);
+	spin_unlock_irqrestore(&smmu_domain->attached_domains_lock, flags);
 
-	master->domain = NULL;
 	master->ats_enabled = false;
 	if (master->s1_cfg)
 		arm_smmu_write_ctx_desc(
@@ -2369,6 +2391,7 @@ static void arm_smmu_detach_dev(struct arm_smmu_master *master)
 			0, NULL);
 	master->s1_cfg = NULL;
 	master->s2_cfg = NULL;
+	master->non_pasid_domain.domain = NULL;
 	arm_smmu_install_ste_for_dev(master);
 }
 
@@ -2417,7 +2440,6 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 		goto out_unlock;
 	}
 
-	master->domain = smmu_domain;
 	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1) {
 		master->s1_cfg = &master->owned_s1_cfg;
 		ret = arm_smmu_write_ctx_desc(
@@ -2426,7 +2448,6 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 			0, &smmu_domain->cd);
 		if (ret) {
 			master->s1_cfg = NULL;
-			master->domain = NULL;
 			goto out_unlock;
 		}
 	} else if (smmu_domain->stage == ARM_SMMU_DOMAIN_S2 ||
@@ -2437,13 +2458,17 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 	if (smmu_domain->stage != ARM_SMMU_DOMAIN_BYPASS)
 		master->ats_enabled = arm_smmu_ats_supported(master);
 
+	master->non_pasid_domain.master = master;
+	master->non_pasid_domain.domain = smmu_domain;
+	master->non_pasid_domain.ssid = 0;
 	arm_smmu_install_ste_for_dev(master);
 
-	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
-	list_add(&master->domain_head, &smmu_domain->devices);
-	spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
+	spin_lock_irqsave(&smmu_domain->attached_domains_lock, flags);
+	list_add(&master->non_pasid_domain.domain_head,
+		 &smmu_domain->attached_domains);
+	spin_unlock_irqrestore(&smmu_domain->attached_domains_lock, flags);
 
-	arm_smmu_enable_ats(master);
+	arm_smmu_enable_ats(master, smmu_domain);
 
 out_unlock:
 	mutex_unlock(&smmu_domain->init_mutex);
