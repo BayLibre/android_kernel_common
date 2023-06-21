@@ -52,6 +52,24 @@
       "parentUuid": "a6669c54_aaa0ac85",
       "revId": "67aa04c3caa1ab24bb3748213e89fee0dffd22cc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "722cf611_a2a2c98d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956079
+      },
+      "writtenOn": "2023-06-21T01:40:12Z",
+      "side": 1,
+      "message": "As I know, the userspace tools are fanotify \u0026 inotify. So far, they both can\u0027t meet our demand. So I developed a dedicated driver to make up for their shortcomings.(persistent inode mark and to find the real caller in Android)    \n\nfsnotify is a good backend to impletement filesystem notification. I think it would be nice to use it to develope more notification module.",
+      "parentUuid": "8e84b6bc_7a139617",
+      "revId": "67aa04c3caa1ab24bb3748213e89fee0dffd22cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
