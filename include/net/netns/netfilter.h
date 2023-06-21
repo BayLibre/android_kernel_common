@@ -23,8 +23,11 @@ struct netns_nf {
 	struct nf_hook_entries __rcu *hooks_arp[NF_ARP_NUMHOOKS];
 #endif
 	struct nf_hook_entries __rcu *hooks_bridge[NF_INET_NUMHOOKS];
+<<<<<<< HEAD   (5ac3d0 Merge "Merge 4.19.286 into android-4.19-stable" into android)
 #if IS_ENABLED(CONFIG_DECNET)
 	struct nf_hook_entries __rcu *hooks_decnet[NF_DN_NUMHOOKS];
+=======
+>>>>>>> BRANCH (10c994 Linux 4.19.287)
 #endif
 #if IS_ENABLED(CONFIG_NF_DEFRAG_IPV4)
 	bool			defrag_ipv4;
