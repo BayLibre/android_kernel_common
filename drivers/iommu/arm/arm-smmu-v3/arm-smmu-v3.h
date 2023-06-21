@@ -595,6 +595,7 @@ struct arm_smmu_s1_cfg {
 	struct arm_smmu_ctx_desc_cfg	cdcfg;
 	u8				s1fmt;
 	u8				s1cdmax;
+	bool				stall_enabled;
 };
 
 struct arm_smmu_s2_cfg {
@@ -713,7 +714,6 @@ struct arm_smmu_domain {
 	struct mutex				init_mutex; /* Protects smmu pointer */
 
 	struct io_pgtable_ops			*pgtbl_ops;
-	bool					stall_enabled;
 	atomic_t				nr_ats_masters;
 
 	enum arm_smmu_domain_stage		stage;
@@ -742,7 +742,9 @@ extern struct xarray arm_smmu_asid_xa;
 extern struct mutex arm_smmu_asid_lock;
 extern struct arm_smmu_ctx_desc quiet_cd;
 
-int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain, int ssid,
+int arm_smmu_write_ctx_desc(struct arm_smmu_device *smmu,
+			    struct arm_smmu_s1_cfg *s1_cfg,
+			    struct arm_smmu_master *smmu_master, int ssid,
 			    struct arm_smmu_ctx_desc *cd);
 void arm_smmu_tlb_inv_asid(struct arm_smmu_device *smmu, u16 asid);
 void arm_smmu_tlb_inv_range_asid(unsigned long iova, size_t size, int asid,
