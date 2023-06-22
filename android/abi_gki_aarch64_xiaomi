@@ -255,3 +255,9 @@
   tty_port_close_start
   tty_port_lower_dtr_rts
   tty_port_close_end
+
+# required by mi_mem_center.ko
+  __traceiter_android_vh_rmqueue_smallest_bypass
+  __tracepoint_android_vh_rmqueue_smallest_bypass
+  __traceiter_android_vh_free_one_page_bypass
+  __tracepoint_android_vh_free_one_page_bypass
