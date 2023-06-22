@@ -104,6 +104,13 @@ DECLARE_RESTRICTED_HOOK(android_rvh_vmalloc_node_bypass,
 DECLARE_RESTRICTED_HOOK(android_rvh_vfree_bypass,
 	TP_PROTO(const void *addr, bool *bypass),
 	TP_ARGS(addr, bypass), 1);
+DECLARE_HOOK(android_vh_rmqueue_smallest_bypass,
+	TP_PROTO(struct page **page, struct zone *zone, int order, int migratetype),
+	TP_ARGS(page, zone, order, migratetype));
+DECLARE_HOOK(android_vh_free_one_page_bypass,
+	TP_PROTO(struct page *page, struct zone *zone, int order, int migratetype,
+		int fpi_flags, bool *bypass),
+	TP_ARGS(page, zone, order, migratetype, fpi_flags, bypass));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
