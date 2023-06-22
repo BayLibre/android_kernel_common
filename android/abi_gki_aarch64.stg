@@ -300845,6 +300845,14 @@ function {
   parameter_id: 0x3d3b5dd7
 }
 function {
+  id: 0x92d2af21
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3e10b518
+  parameter_id: 0x3185812b
+  parameter_id: 0x4585663f
+  parameter_id: 0x4585663f
+}
+function {
   id: 0x92d3b873
   return_type_id: 0x6720d32f
   parameter_id: 0x3dcae1c0
@@ -359743,6 +359751,15 @@ elf_symbol {
   full_name: "param_set_uint"
 }
 elf_symbol {
+  id: 0xe48076c0
+  name: "param_set_uint_minmax"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4d337ca1
+  type_id: 0x92d2af21
+  full_name: "param_set_uint_minmax"
+}
+elf_symbol {
   id: 0x1eafdf64
   name: "param_set_ulong"
   is_defined: true
@@ -385436,6 +385453,7 @@ interface {
   symbol_id: 0x34de6be7
   symbol_id: 0x9cc61d04
   symbol_id: 0x07e4f5ea
+  symbol_id: 0xe48076c0
   symbol_id: 0x1eafdf64
   symbol_id: 0x67d6372c
   symbol_id: 0x0a48d5ac
