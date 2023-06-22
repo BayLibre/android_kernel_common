@@ -115,6 +115,7 @@ define_common_kernels(target_configs = {
     },
 })
 
+<<<<<<< HEAD   (b3667d ANDROID: GKI: Convert MACsec to GKI module)
 _DB845C_MODULE_OUTS = [
     # keep sorted
     "crypto/michael_mic.ko",
@@ -308,6 +309,10 @@ _DB845C_WATCHDOG_MODULE_OUTS = [
 
 kernel_build(
     name = "db845c_no_kgdb",
+=======
+kernel_build(
+    name = "db845c",
+>>>>>>> CHANGE (ec0fc5 ANDROID: db845c: Local define for db845c targets)
     outs = [
         "arch/arm64/boot/dts/qcom/qrb5165-rb5.dtb",
         "arch/arm64/boot/dts/qcom/sdm845-db845c.dtb",
@@ -335,6 +340,7 @@ kernel_build(
         "arch/arm64/boot/dts/qcom/sdm845-db845c.dtb",
         "arch/arm64/boot/dts/qcom/sm8450-qrd.dtb",
     ],
+<<<<<<< HEAD   (b3667d ANDROID: GKI: Convert MACsec to GKI module)
     # Enable mixed build.
     base_kernel = ":kernel_aarch64",
     build_config = "build.config.db845c",
@@ -354,6 +360,9 @@ alias(
         "//build/kernel/kleaf:kgdb_is_true": "db845c_with_kgdb",
         "//conditions:default": "db845c_no_kgdb",
     }),
+=======
+    strip_modules = True,
+>>>>>>> CHANGE (ec0fc5 ANDROID: db845c: Local define for db845c targets)
 )
 
 kernel_abi(
