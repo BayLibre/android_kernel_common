@@ -255,3 +255,7 @@
   tty_port_close_start
   tty_port_lower_dtr_rts
   tty_port_close_end
+
+#required by mtdoops.ko
+  of_node_name_prefix
+  bdi_unregister
