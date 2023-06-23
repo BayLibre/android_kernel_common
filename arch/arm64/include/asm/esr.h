@@ -185,6 +185,8 @@
 /* BRK instruction trap from AArch64 state */
 #define ESR_ELx_BRK64_ISS_COMMENT_MASK	0xffff
 
+#define esr_comment(esr) ((esr) & ESR_ELx_BRK64_ISS_COMMENT_MASK)
+
 /* ISS field definitions for System instruction traps */
 #define ESR_ELx_SYS64_ISS_RES0_SHIFT	22
 #define ESR_ELx_SYS64_ISS_RES0_MASK	(UL(0x7) << ESR_ELx_SYS64_ISS_RES0_SHIFT)
