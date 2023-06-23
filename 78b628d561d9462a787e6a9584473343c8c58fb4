@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0964c888_856e8cd9",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-23T20:39:46Z",
+      "side": 1,
+      "message": "IIUC /proc should show only information about the namespace of the process which mounted it. If we need to support multiple PID namespaces we would have to filter the reports coming out of oom-killer but the file format would stay the same (only PIDs from the one namespace will be there).\n\nSince Android has CONFIG_PID_NS\u003dn, this should not a problem and we can make this driver depend on !CONFIG_PID_NS. When upstreaming we will not be constrained to hooking to the oom-killer\u0027s tracepoint (which provides only PID), so we can handle multiple namespaces as well.",
+      "parentUuid": "ebaa00ee_fe964652",
+      "range": {
+        "startLine": 42,
+        "startChar": 7,
+        "endLine": 42,
+        "endChar": 10
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc03bd5b_ae7bb95e",
         "filename": "drivers/android/memhealth.c",
         "patchSetId": 23
