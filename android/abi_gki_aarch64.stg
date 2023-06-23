@@ -320339,6 +320339,11 @@ function {
   parameter_id: 0x358ff5b7
 }
 function {
+  id: 0xf10ce2b4
+  return_type_id: 0x6d7f5ff6
+  parameter_id: 0x3ea2e6c1
+}
+function {
   id: 0xf1208847
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x3861403d
@@ -347067,6 +347072,15 @@ elf_symbol {
   full_name: "fwnode_get_next_child_node"
 }
 elf_symbol {
+  id: 0xff713254
+  name: "fwnode_get_phy_node"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd42ed8cf
+  type_id: 0x3842a55f
+  full_name: "fwnode_get_phy_node"
+}
+elf_symbol {
   id: 0x02e45228
   name: "fwnode_gpiod_get_index"
   is_defined: true
@@ -361540,6 +361554,15 @@ elf_symbol {
   crc: 0x62104126
   type_id: 0x92acc9b8
   full_name: "phylink_ethtool_set_wol"
+}
+elf_symbol {
+  id: 0x03646fd6
+  name: "phylink_expects_phy"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4278d56a
+  type_id: 0xf10ce2b4
+  full_name: "phylink_expects_phy"
 }
 elf_symbol {
   id: 0x2c092465
@@ -384053,6 +384076,7 @@ interface {
   symbol_id: 0x11780300
   symbol_id: 0x183013c2
   symbol_id: 0x55d636ec
+  symbol_id: 0xff713254
   symbol_id: 0x02e45228
   symbol_id: 0x90df3dac
   symbol_id: 0x98cceeb9
@@ -385661,6 +385685,7 @@ interface {
   symbol_id: 0xeab149af
   symbol_id: 0x0a235dd5
   symbol_id: 0xa92902da
+  symbol_id: 0x03646fd6
   symbol_id: 0x2c092465
   symbol_id: 0x161b2b54
   symbol_id: 0x707a35cb
