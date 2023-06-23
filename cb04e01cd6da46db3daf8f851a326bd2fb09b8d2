@@ -16,6 +16,24 @@
       "message": "Do you know what would block CONFIG_GPIO_SIFIVE being a module upstream?",
       "revId": "cb04e01cd6da46db3daf8f851a326bd2fb09b8d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa04cfbf_07b2d5ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2009035
+      },
+      "writtenOn": "2023-06-23T01:51:32Z",
+      "side": 1,
+      "message": "Nothing should block that. Other than needing EXPORT_SYMBOL_GPL(of_irq_count), it\u0027s a trivial conversion. I will disable that option. CONFIG_CLK_SIFIVE_PRCI can also be converted to build as a module, so I\u0027ll disable it as well.",
+      "parentUuid": "0b731873_330a20cb",
+      "revId": "cb04e01cd6da46db3daf8f851a326bd2fb09b8d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
