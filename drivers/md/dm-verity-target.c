@@ -538,7 +538,11 @@ static int verity_verify_io(struct dm_verity_io *io)
 				return -EIO;
 			}
 			if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA,
+<<<<<<< HEAD   (1085ee Merge 26b1b0d0bebd ("mailbox: zynqmp: Fix counts of child no)
 					   cur_block))
+=======
+					      cur_block))
+>>>>>>> BRANCH (fc097c dm verity: skip redundant verity_handle_err() on I/O errors)
 				return -EIO;
 		}
 	}
