@@ -16,6 +16,24 @@
       "message": "Submit upstream first please.",
       "revId": "cab2d40d1874a6147d2fc4ea441eb9e38e399c61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea627c45_9771d8a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1871516
+      },
+      "writtenOn": "2023-06-26T03:52:26Z",
+      "side": 1,
+      "message": "Hi Greg,\n I\u0027ve sumbit to upstream in mainline from their requirement.\nhttps://lore.kernel.org/all/20230619033127.2522477-1-yixuanjiang@google.com/\n\n But one question is, codebase is quite different between mainline and 5.15\nI have to sumbit following related patches to prevent the conflict. \n  1 patch https://lore.kernel.org/all/20190812130950.5D45B2740CBD@ypsilon.sirena.org.uk/\n   11 patches https://lore.kernel.org/all/166618909923.493922.5185619310945017595.b4-ty@kernel.org/\n   3 patches\nhttps://lore.kernel.org/all/168175969132.1283403.6453839618623845019.b4-ty@kernel.org/   \n\n So do I also need to cherry-pick these patches to ACK 5.15 ?",
+      "parentUuid": "3374b930_4af73698",
+      "revId": "cab2d40d1874a6147d2fc4ea441eb9e38e399c61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
