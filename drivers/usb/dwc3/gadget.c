@@ -3823,7 +3823,11 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
 	struct dwc3_vendor	*vdwc = container_of(dwc, struct dwc3_vendor, dwc);
 	int			reg;
 
+<<<<<<< HEAD   (1257ff Revert "ASoC: fsl_micfil: Fix error handler with pm_runtime_)
 	vdwc->suspended = false;
+=======
+	dwc->suspended = false;
+>>>>>>> BRANCH (0ab064 Linux 5.15.114)
 
 	dwc3_gadget_set_link_state(dwc, DWC3_LINK_STATE_RX_DET);
 
@@ -3848,7 +3852,11 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
 	struct dwc3_vendor	*vdwc = container_of(dwc, struct dwc3_vendor, dwc);
 	u32			reg;
 
+<<<<<<< HEAD   (1257ff Revert "ASoC: fsl_micfil: Fix error handler with pm_runtime_)
 	vdwc->suspended = false;
+=======
+	dwc->suspended = false;
+>>>>>>> BRANCH (0ab064 Linux 5.15.114)
 
 	/*
 	 * Ideally, dwc3_reset_gadget() would trigger the function
@@ -4066,9 +4074,13 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
 
 static void dwc3_gadget_wakeup_interrupt(struct dwc3 *dwc)
 {
+<<<<<<< HEAD   (1257ff Revert "ASoC: fsl_micfil: Fix error handler with pm_runtime_)
 	struct dwc3_vendor	*vdwc = container_of(dwc, struct dwc3_vendor, dwc);
 
 	vdwc->suspended = false;
+=======
+	dwc->suspended = false;
+>>>>>>> BRANCH (0ab064 Linux 5.15.114)
 
 	/*
 	 * TODO take core out of low power mode when that's
@@ -4186,8 +4198,13 @@ static void dwc3_gadget_suspend_interrupt(struct dwc3 *dwc,
 	struct dwc3_vendor	*vdwc = container_of(dwc, struct dwc3_vendor, dwc);
 	enum dwc3_link_state next = evtinfo & DWC3_LINK_STATE_MASK;
 
+<<<<<<< HEAD   (1257ff Revert "ASoC: fsl_micfil: Fix error handler with pm_runtime_)
 	if (!vdwc->suspended && next == DWC3_LINK_STATE_U3) {
 		vdwc->suspended = true;
+=======
+	if (!dwc->suspended && next == DWC3_LINK_STATE_U3) {
+		dwc->suspended = true;
+>>>>>>> BRANCH (0ab064 Linux 5.15.114)
 		dwc3_suspend_gadget(dwc);
 	}
 

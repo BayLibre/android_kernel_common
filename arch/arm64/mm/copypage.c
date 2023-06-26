@@ -21,8 +21,12 @@ void copy_highpage(struct page *to, struct page *from)
 
 	copy_page(kto, kfrom);
 
+<<<<<<< HEAD   (1257ff Revert "ASoC: fsl_micfil: Fix error handler with pm_runtime_)
 	if (kasan_hw_tags_enabled())
 		page_kasan_tag_reset(to);
+=======
+	page_kasan_tag_reset(to);
+>>>>>>> BRANCH (0ab064 Linux 5.15.114)
 
 	if (system_supports_mte() && test_bit(PG_mte_tagged, &from->flags)) {
 		set_bit(PG_mte_tagged, &to->flags);
