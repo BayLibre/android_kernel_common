@@ -78,7 +78,7 @@ static inline bool page_mte_tagged(struct page *page)
 }
 
 void mte_zero_clear_page_tags(void *addr);
-void mte_sync_tags(pte_t pte);
+void mte_sync_tags(pte_t *pteval);
 void mte_copy_page_tags(void *kto, const void *kfrom);
 void mte_thread_init_user(void);
 void mte_thread_switch(struct task_struct *next);
@@ -106,7 +106,7 @@ static inline bool page_mte_tagged(struct page *page)
 static inline void mte_zero_clear_page_tags(void *addr)
 {
 }
-static inline void mte_sync_tags(pte_t pte)
+static inline void mte_sync_tags(pte_t *pteval)
 {
 }
 static inline void mte_copy_page_tags(void *kto, const void *kfrom)
