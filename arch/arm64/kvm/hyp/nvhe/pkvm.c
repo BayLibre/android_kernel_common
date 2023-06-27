@@ -392,10 +392,6 @@ int __pkvm_reclaim_dying_guest_page(pkvm_handle_t handle, u64 pfn, u64 ipa)
 	if (!hyp_vm || !hyp_vm->is_dying)
 		goto unlock;
 
-	ret = guest_ffa_reclaim_memory(hyp_vm);
-	if (ret)
-		goto unlock;
-
 	ret = __pkvm_host_reclaim_page(hyp_vm, pfn, ipa);
 	if (ret)
 		goto unlock;
@@ -976,13 +972,10 @@ int __pkvm_start_teardown_vm(pkvm_handle_t handle)
 	} else if (WARN_ON(hyp_refcount_get(hyp_vm->refcount))) {
 		ret = -EBUSY;
 		goto unlock;
-	} else if (hyp_vm->is_dying) {
-		ret = -EINVAL;
-		goto unlock;
 	}
 
 	hyp_vm->is_dying = true;
-
+	ret = guest_ffa_reclaim_memory(hyp_vm);
 unlock:
 	hyp_write_unlock(&vm_table_lock);
 
