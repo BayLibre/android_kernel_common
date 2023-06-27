@@ -288308,6 +288308,13 @@ function {
   parameter_id: 0x3e6239e1
 }
 function {
+  id: 0x1b6dacf7
+  return_type_id: 0x48b5725f
+  parameter_id: 0x2c32dd96
+  parameter_id: 0x3e6239e1
+  parameter_id: 0x030b9acf
+}
+function {
   id: 0x1b71ad71
   return_type_id: 0x48b5725f
   parameter_id: 0x2fa7f388
@@ -373858,6 +373865,15 @@ elf_symbol {
   full_name: "ttm_eu_backoff_reservation"
 }
 elf_symbol {
+  id: 0x42083e9a
+  name: "ttm_eu_fence_buffer_objects"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x844d1fc4
+  type_id: 0x1b6dacf7
+  full_name: "ttm_eu_fence_buffer_objects"
+}
+elf_symbol {
   id: 0x697b29f0
   name: "ttm_eu_reserve_buffers"
   is_defined: true
@@ -387039,6 +387055,7 @@ interface {
   symbol_id: 0x7d656c6a
   symbol_id: 0x19abe185
   symbol_id: 0x07c1d025
+  symbol_id: 0x42083e9a
   symbol_id: 0x697b29f0
   symbol_id: 0x88860085
   symbol_id: 0x27015d04
