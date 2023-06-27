@@ -337,7 +337,7 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
 	 */
 	if (system_supports_mte() && pte_access_permitted(pte, false) &&
 	    !pte_special(pte) && pte_tagged(pte))
-		mte_sync_tags(pte);
+		mte_sync_tags(&pte);
 
 	__check_racy_pte_update(mm, ptep, pte);
 
@@ -451,6 +451,26 @@ static inline int pmd_protnone(pmd_t pmd)
 	return pte_protnone(pmd_pte(pmd));
 }
 #endif
+
+#ifdef CONFIG_ARCH_HAS_FAULT_ON_ACCESS
+static inline bool fault_on_access_pte(pte_t pte)
+{
+	return (pte_val(pte) & (PTE_PROT_NONE | PTE_TAG_STORAGE_NONE | PTE_VALID)) ==
+		(PTE_PROT_NONE | PTE_TAG_STORAGE_NONE);
+}
+
+static inline bool fault_on_access_pmd(pmd_t pmd)
+{
+	return fault_on_access_pte(pmd_pte(pmd));
+}
+
+static inline vm_fault_t arch_do_page_fault_on_access(struct vm_fault *vmf)
+{
+	if (tag_storage_enabled())
+		return handle_page_missing_tag_storage(vmf);
+	return VM_FAULT_SIGBUS;
+}
+#endif /* CONFIG_ARCH_HAS_FAULT_ON_ACCESS */
 
 #define pmd_present_invalid(pmd)     (!!(pmd_val(pmd) & PMD_PRESENT_INVALID))
 
@@ -821,8 +841,8 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 	 * in MAIR_EL1. The mask below has to include PTE_ATTRINDX_MASK.
 	 */
 	const pteval_t mask = PTE_USER | PTE_PXN | PTE_UXN | PTE_RDONLY |
-			      PTE_PROT_NONE | PTE_VALID | PTE_WRITE | PTE_GP |
-			      PTE_ATTRINDX_MASK;
+			      PTE_PROT_NONE | PTE_TAG_STORAGE_NONE | PTE_VALID |
+			      PTE_WRITE | PTE_GP | PTE_ATTRINDX_MASK;
 	/* preserve the hardware dirty information */
 	if (pte_hw_dirty(pte))
 		pte = pte_mkdirty(pte);
