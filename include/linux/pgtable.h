@@ -1473,6 +1473,18 @@ static inline int pmd_protnone(pmd_t pmd)
 }
 #endif /* CONFIG_NUMA_BALANCING */
 
+#ifndef CONFIG_MEMORY_METADATA
+static inline bool pte_metadata_none(pte_t pte)
+{
+	return false;
+}
+
+static inline bool pmd_metadata_none(pmd_t pmd)
+{
+	return false;
+}
+#endif /* CONFIG_MEMORY_METADATA */
+
 #endif /* CONFIG_MMU */
 
 #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP

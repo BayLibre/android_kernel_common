@@ -451,6 +451,18 @@ static inline int pmd_protnone(pmd_t pmd)
 }
 #endif
 
+#ifdef CONFIG_MEMORY_METADATA
+static inline bool pte_metadata_none(pte_t pte)
+{
+	return (((pte_val(pte) & (PTE_VALID | PTE_PROT_NONE)) == PTE_PROT_NONE)
+		&& (pte_val(pte) & PTE_METADATA_NONE));
+}
+static inline bool pmd_metadata_none(pmd_t pmd)
+{
+	return pte_metadata_none(pmd_pte(pmd));
+}
+#endif
+
 #define pmd_present_invalid(pmd)     (!!(pmd_val(pmd) & PMD_PRESENT_INVALID))
 
 static inline int pmd_present(pmd_t pmd)
@@ -820,8 +832,8 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 	 * in MAIR_EL1. The mask below has to include PTE_ATTRINDX_MASK.
 	 */
 	const pteval_t mask = PTE_USER | PTE_PXN | PTE_UXN | PTE_RDONLY |
-			      PTE_PROT_NONE | PTE_VALID | PTE_WRITE | PTE_GP |
-			      PTE_ATTRINDX_MASK;
+			      PTE_PROT_NONE | PTE_METADATA_NONE | PTE_VALID |
+			      PTE_WRITE | PTE_GP | PTE_ATTRINDX_MASK;
 	/* preserve the hardware dirty information */
 	if (pte_hw_dirty(pte))
 		pte = pte_mkdirty(pte);
