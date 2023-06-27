@@ -96,6 +96,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "947322b3_9ee82725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-27T09:48:49Z",
+      "side": 1,
+      "message": "`address_space` is not a function, so I do not understand what you are asking for here.\n\nThe function `swapcache_mapping` should not be called by any driver, right?  What code uses it?",
+      "parentUuid": "373dda5f_9f0bd699",
+      "revId": "5616315fd941fb22d44fe4332554f56965374c68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e356ba9d_b0adf5a1",
         "filename": "android/abi_gki_aarch64_vivo",
         "patchSetId": 2
