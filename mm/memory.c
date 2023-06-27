@@ -51,6 +51,7 @@
 #include <linux/swap.h>
 #include <linux/highmem.h>
 #include <linux/pagemap.h>
+#include <linux/page-isolation.h>
 #include <linux/memremap.h>
 #include <linux/kmsan.h>
 #include <linux/ksm.h>
@@ -82,6 +83,7 @@
 #include <trace/events/kmem.h>
 
 #include <asm/io.h>
+#include <asm/memory_metadata.h>
 #include <asm/mmu_context.h>
 #include <asm/pgalloc.h>
 #include <linux/uaccess.h>
@@ -4765,6 +4767,147 @@ static vm_fault_t do_fault(struct vm_fault *vmf)
 	return ret;
 }
 
+/* Returns with the page reference dropped. */
+static void migrate_metadata_none_page(struct page *page, struct vm_area_struct *vma)
+{
+	struct migration_target_control mtc = {
+		.nid = NUMA_NO_NODE,
+		.gfp_mask = GFP_HIGHUSER_MOVABLE | __GFP_TAGGED,
+	};
+	LIST_HEAD(pagelist);
+	int ret, tries;
+
+	lru_cache_disable();
+
+	if (!isolate_lru_page(page)) {
+		put_page(page);
+		lru_cache_enable();
+		return;
+	}
+	/* Isolate just grabbed another reference, drop ours. */
+	put_page(page);
+
+	list_add_tail(&page->lru, &pagelist);
+
+	tries = 5;
+	while (tries--) {
+		ret = migrate_pages(&pagelist, alloc_migration_target, NULL,
+				    (unsigned long)&mtc, MIGRATE_SYNC, MR_METADATA_NONE, NULL);
+		if (ret == 0 || ret != -EBUSY)
+			break;
+	}
+
+	if (ret != 0) {
+		list_del(&page->lru);
+		putback_movable_pages(&pagelist);
+	}
+	lru_cache_enable();
+}
+
+static vm_fault_t do_metadata_none_page(struct vm_fault *vmf)
+{
+	struct vm_area_struct *vma = vmf->vma;
+	struct page *page = NULL;
+	bool do_migrate = false;
+	pte_t new_pte, old_pte;
+	bool writable = false;
+	vm_fault_t err;
+	int ret;
+
+	/*
+	 * The pte at this point cannot be used safely without validation
+	 * through pte_same().
+	 */
+	vmf->ptl = pte_lockptr(vma->vm_mm, vmf->pmd);
+	spin_lock(vmf->ptl);
+	if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
+		pte_unmap_unlock(vmf->pte, vmf->ptl);
+		return 0;
+	}
+
+	/* Get the normal PTE  */
+	old_pte = ptep_get(vmf->pte);
+	new_pte = pte_modify(old_pte, vma->vm_page_prot);
+
+	/*
+	 * Detect now whether the PTE could be writable; this information
+	 * is only valid while holding the PT lock.
+	 */
+	writable = pte_write(new_pte);
+
+	page = vm_normal_page(vma, vmf->address, new_pte);
+	if (!page)
+		goto out_map;
+
+	/*
+	 * This should never happen, once a VMA has been marked as tagged, that
+	 * cannot be changed.
+	 */
+	if (!(vma->vm_flags & VM_MTE))
+		goto out_map;
+
+	/* Prevent the page from being unmapped from under us. */
+	get_page(page);
+
+	pte_unmap_unlock(vmf->pte, vmf->ptl);
+
+	/*
+	 * Probably the page is being isolated for migration, replay the fault
+	 * to give time for the entry to be replaced by a migration pte.
+	 */
+	if (unlikely(is_migrate_isolate_page(page))) {
+		if (!(vmf->flags & FAULT_FLAG_TRIED))
+			err = VM_FAULT_RETRY;
+		else
+			err = 0;
+		put_page(page);
+		return 0;
+	} else if (is_migrate_metadata_page(page)) {
+		do_migrate = true;
+	} else {
+		ret = reserve_metadata_storage(page, 0, GFP_HIGHUSER_MOVABLE);
+		if (ret == -EINTR) {
+			put_page(page);
+			return VM_FAULT_RETRY;
+		} else if (ret) {
+			do_migrate = true;
+		}
+	}
+	if (do_migrate) {
+		migrate_metadata_none_page(page, vma);
+		/*
+		 * Either the page was migrated, in which case there's nothing
+		 * we need to do; either migration failed, in which case all we
+		 * can do is try again. So don't change the pte.
+		 */
+		return 0;
+	}
+
+	put_page(page);
+
+	spin_lock(vmf->ptl);
+	if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
+		pte_unmap_unlock(vmf->pte, vmf->ptl);
+		return 0;
+	}
+
+out_map:
+	/*
+	 * Make it present again, depending on how arch implements
+	 * non-accessible ptes, some can allow access by kernel mode.
+	 */
+	old_pte = ptep_modify_prot_start(vma, vmf->address, vmf->pte);
+	new_pte = pte_modify(old_pte, vma->vm_page_prot);
+	new_pte = pte_mkyoung(new_pte);
+	if (writable)
+		new_pte = pte_mkwrite(new_pte);
+	ptep_modify_prot_commit(vma, vmf->address, vmf->pte, old_pte, new_pte);
+	update_mmu_cache(vma, vmf->address, vmf->pte);
+	pte_unmap_unlock(vmf->pte, vmf->ptl);
+
+	return 0;
+}
+
 int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
 		      unsigned long addr, int page_nid, int *flags)
 {
@@ -5054,8 +5197,11 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
 	if (!pte_present(vmf->orig_pte))
 		return do_swap_page(vmf);
 
-	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
+		if (metadata_storage_enabled() && pte_metadata_none(vmf->orig_pte))
+			return do_metadata_none_page(vmf);
 		return do_numa_page(vmf);
+	}
 
 	vmf->ptl = pte_lockptr(vmf->vma->vm_mm, vmf->pmd);
 	spin_lock(vmf->ptl);

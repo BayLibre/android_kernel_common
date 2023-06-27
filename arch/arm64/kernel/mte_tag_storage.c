@@ -531,6 +531,10 @@ int reserve_metadata_storage(struct page *page, int order, gfp_t gfp)
 
 	mutex_lock(&tag_blocks_lock);
 
+	/* Can happen for concurrent accesses to a METADATA_NONE page. */
+	if (page_tag_storage_reserved(page))
+		goto out_unlock;
+
 	/* Make sure existing entries are not freed from out under out feet. */
 	xa_lock_irqsave(&tag_blocks_reserved, flags);
 	for (block = start_block; block < end_block; block += region->block_size) {
@@ -568,6 +572,8 @@ int reserve_metadata_storage(struct page *page, int order, gfp_t gfp)
 		set_bit(PG_tag_storage_reserved, &(page + i)->flags);
 
 	memalloc_isolate_restore(cflags);
+
+out_unlock:
 	mutex_unlock(&tag_blocks_lock);
 
 	return 0;

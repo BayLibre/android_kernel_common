@@ -33,6 +33,7 @@
 #include <linux/userfaultfd_k.h>
 #include <linux/memory-tiers.h>
 #include <asm/cacheflush.h>
+#include <asm/memory_metadata.h>
 #include <asm/mmu_context.h>
 #include <asm/tlbflush.h>
 #include <asm/tlb.h>
@@ -81,6 +82,7 @@ static unsigned long change_pte_range(struct mmu_gather *tlb,
 	unsigned long pages = 0;
 	int target_node = NUMA_NO_NODE;
 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
+	bool prot_metadata_none = cp_flags & MM_CP_PROT_METADATA_NONE;
 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
 	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
 
@@ -165,6 +167,40 @@ static unsigned long change_pte_range(struct mmu_gather *tlb,
 				    !toptier)
 					xchg_page_access_time(page,
 						jiffies_to_msecs(jiffies));
+			}
+
+			if (prot_metadata_none) {
+				struct page *page;
+
+				/*
+				 * Skip METADATA_NONE pages, but not NUMA pages,
+				 * just so we don't get two faults, one after
+				 * the other. The page fault handling code
+				 * might end up migrating the current page
+				 * anyway, so there really is no need to keep
+				 * the pte marked for NUMA balancing.
+				 */
+				if (pte_protnone(oldpte) && pte_metadata_none(oldpte))
+					continue;
+
+				page = vm_normal_page(vma, addr, oldpte);
+				if (!page || is_zone_device_page(page))
+					continue;
+
+				/* Page already mapped as tagged in a shared VMA. */
+				if (page_has_metadata(page))
+					continue;
+
+				/*
+				 * The LRU takes a page reference, which means
+				 * that page_count > 1 is true even if the page
+				 * is not COW. Reserving tag storage for a COW
+				 * page is ok, because one mapping of that page
+				 * won't be migrated; but not reserving tag
+				 * storage for a page is definitely wrong. So
+				 * don't skip pages that might be COW, like
+				 * NUMA does.
+				 */
 			}
 
 			oldpte = ptep_modify_prot_start(vma, addr, pte);
@@ -507,6 +543,13 @@ unsigned long change_protection(struct mmu_gather *tlb,
 
 	BUG_ON((cp_flags & MM_CP_UFFD_WP_ALL) == MM_CP_UFFD_WP_ALL);
 
+#ifdef CONFIG_MEMORY_METADATA
+	if (cp_flags & MM_CP_PROT_METADATA_NONE)
+		newprot = PAGE_METADATA_NONE;
+#else
+	WARN_ON_ONCE(cp_flags & MM_CP_PROT_METADATA_NONE);
+#endif
+
 	if (is_vm_hugetlb_page(vma))
 		pages = hugetlb_change_protection(vma, start, end, newprot,
 						  cp_flags);
@@ -553,6 +596,7 @@ mprotect_fixup(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	struct mm_struct *mm = vma->vm_mm;
 	unsigned long oldflags = vma->vm_flags;
 	long nrpages = (end - start) >> PAGE_SHIFT;
+	unsigned int mm_cp_flags = 0;
 	unsigned long charged = 0;
 	bool try_change_writable;
 	pgoff_t pgoff;
@@ -644,6 +688,10 @@ success:
 	else
 		try_change_writable = !!(vma->vm_flags & VM_WRITE);
 	vma_set_page_prot(vma);
+
+	mm_cp_flags = try_change_writable ? MM_CP_TRY_CHANGE_WRITABLE : 0;
+	if (metadata_storage_enabled() && (newflags & VM_MTE) && !(oldflags & VM_MTE))
+		mm_cp_flags |= MM_CP_PROT_METADATA_NONE;
 
 	change_protection(tlb, vma, start, end, vma->vm_page_prot,
 			  try_change_writable ? MM_CP_TRY_CHANGE_WRITABLE : 0);
