@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1896f52_11307487",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-06-27T00:21:35Z",
+      "side": 1,
+      "message": "I\u0027d generally agree, but we\u0027ll never have multiple instances of cpufreq drivers in a system.",
+      "parentUuid": "348e3e6a_55f79ed0",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf7f7f5a_5d857d25",
         "filename": "drivers/cpufreq/kvm-cpufreq.c",
         "patchSetId": 19
@@ -136,6 +154,24 @@
       "writtenOn": "2023-05-13T02:20:27Z",
       "side": 1,
       "message": "Done, similar to the the driver specific structures, there will be compatible-string specific ops for read/write",
+      "parentUuid": "bf7f7f5a_5d857d25",
+      "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26ff7eb1_87aa42bf",
+        "filename": "drivers/cpufreq/kvm-cpufreq.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-06-27T00:21:35Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to do function pointers yet. We can change to that later if we need to.",
       "parentUuid": "bf7f7f5a_5d857d25",
       "revId": "dd56e0941e95f103b5f200992d387113bc053d9e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
