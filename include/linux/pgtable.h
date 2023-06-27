@@ -1453,7 +1453,7 @@ static inline int pmd_devmap_trans_unstable(pmd_t *pmd)
 	return pmd_devmap(*pmd) || pmd_trans_unstable(pmd);
 }
 
-#ifndef CONFIG_NUMA_BALANCING
+#if !defined(CONFIG_NUMA_BALANCING) && !defined(CONFIG_MEMORY_METADATA)
 /*
  * Technically a PTE can be PROTNONE even when not doing NUMA balancing but
  * the only case the kernel cares is for NUMA balancing and is only ever set
