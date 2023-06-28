@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3f2f02_236d5b2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-28T17:27:25Z",
+      "side": 1,
+      "message": "I think you should add some ABI padding to one structure, see below for the details.  I can help you implement this if needed.",
+      "revId": "8e649f4917ada7d530a371039b9726952ae7a8d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb21071d_36ce6950",
+        "filename": "android/abi_gki_aarch64.stg",
+        "patchSetId": 4
+      },
+      "lineNbr": 264324,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-06-28T17:27:25Z",
+      "side": 1,
+      "message": "you are now guaranteeing that this structure can never change.  Are you sure that will be the case?  I would recommend adding some ANDROID_KABI_RESERVE() fields in here first.",
+      "range": {
+        "startLine": 264324,
+        "startChar": 0,
+        "endLine": 264324,
+        "endChar": 25
+      },
+      "revId": "8e649f4917ada7d530a371039b9726952ae7a8d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
