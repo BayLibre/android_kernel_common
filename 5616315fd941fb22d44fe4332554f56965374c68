@@ -204,6 +204,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5f2884d_9ca43821",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2010921
+      },
+      "writtenOn": "2023-06-28T02:21:28Z",
+      "side": 1,
+      "message": "This function is used in the slc-pinned function of the storage module.\nSLC-Pinned is a solid-state drive (SSD) storage technology used to improve SSD write performance and reliability.The slc-pinned function needs to get the file inode and its pinned data, so as to determine whether it is pinned. The specific call relationship is as follows: ufswbp_prep_fn--\u003eufswbp_is_coldfile--\u003eufswhint_get_whint--\u003eufswhint_get_inode--\u003epage_file_mapping--\u003efolio_file_mapping-- -\u003eswapcache_mapping",
+      "parentUuid": "35e029ac_be61fb0a",
+      "revId": "5616315fd941fb22d44fe4332554f56965374c68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e356ba9d_b0adf5a1",
         "filename": "android/abi_gki_aarch64_vivo",
         "patchSetId": 2
