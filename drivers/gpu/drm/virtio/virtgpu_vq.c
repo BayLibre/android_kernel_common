@@ -36,6 +36,10 @@
 #include "virtgpu_drv.h"
 #include "virtgpu_trace.h"
 
+#if IS_ENABLED(CONFIG_TRACE_GPU_WORK_PERIOD)
+#include <trace/events/gpu_work_period.h>
+#endif
+
 #define MAX_INLINE_CMD_SIZE   96
 #define MAX_INLINE_RESP_SIZE  24
 #define VBUFFER_SIZE          (sizeof(struct virtio_gpu_vbuffer) \
@@ -216,6 +220,14 @@ void virtio_gpu_dequeue_ctrl_func(struct work_struct *work)
 		resp = (struct virtio_gpu_ctrl_hdr *)entry->resp_buf;
 
 		trace_virtio_gpu_cmd_response(vgdev->ctrlq.vq, resp);
+
+#if IS_ENABLED(CONFIG_TRACE_GPU_WORK_PERIOD)
+		trace_gpu_worker_period(vgdev->id,
+							    /*TODO: figure out UID*/0,
+								/*start_time_ns=*/0,
+								/*end_time_ns=*/1000,
+								/*total_active_duration_ns=*/1000);
+#endif
 
 		if (resp->type != cpu_to_le32(VIRTIO_GPU_RESP_OK_NODATA)) {
 			if (le32_to_cpu(resp->type) >= VIRTIO_GPU_RESP_ERR_UNSPEC) {
