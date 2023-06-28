@@ -16,6 +16,29 @@
       "message": "Hi Greg\n\nThere are no errors when build, could you please help review and merge?\n\nThanks!",
       "revId": "7fde7e65d64045ed6319cbcedcf2bd505a595b4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5116e0f8_b8021d19",
+        "filename": "drivers/android/android_debug_symbols.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-06-28T12:35:33Z",
+      "side": 1,
+      "message": "The configuration documentation states, that \"This driver is statically compiled into kernel\". Why keep the module definition?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 0
+      },
+      "revId": "7fde7e65d64045ed6319cbcedcf2bd505a595b4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
