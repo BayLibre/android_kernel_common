@@ -436,6 +436,11 @@ int vgic_lazy_init(struct kvm *kvm)
 int kvm_vgic_map_resources(struct kvm *kvm)
 {
 	struct vgic_dist *dist = &kvm->arch.vgic;
+<<<<<<< HEAD   (1118d7 ANDROID: GKI: irq-gic-v3: fix up breakage in 6.1.35 merge)
+=======
+	enum vgic_type type;
+	gpa_t dist_base;
+>>>>>>> BRANCH (a1c449 Linux 6.1.36)
 	int ret = 0;
 
 	if (likely(vgic_ready(kvm)))
@@ -448,15 +453,34 @@ int kvm_vgic_map_resources(struct kvm *kvm)
 	if (!irqchip_in_kernel(kvm))
 		goto out;
 
-	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2)
+	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2) {
 		ret = vgic_v2_map_resources(kvm);
-	else
+		type = VGIC_V2;
+	} else {
 		ret = vgic_v3_map_resources(kvm);
+		type = VGIC_V3;
+	}
 
 	if (ret)
 		__kvm_vgic_destroy(kvm);
+<<<<<<< HEAD   (1118d7 ANDROID: GKI: irq-gic-v3: fix up breakage in 6.1.35 merge)
 	else
 		dist->ready = true;
+=======
+		goto out;
+	}
+	dist->ready = true;
+	dist_base = dist->vgic_dist_base;
+	mutex_unlock(&kvm->arch.config_lock);
+
+	ret = vgic_register_dist_iodev(kvm, dist_base, type);
+	if (ret) {
+		kvm_err("Unable to register VGIC dist MMIO regions\n");
+		kvm_vgic_destroy(kvm);
+	}
+	mutex_unlock(&kvm->slots_lock);
+	return ret;
+>>>>>>> BRANCH (a1c449 Linux 6.1.36)
 
 out:
 	mutex_unlock(&kvm->lock);
