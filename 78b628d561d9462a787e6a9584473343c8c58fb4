@@ -348,6 +348,54 @@
       },
       "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "047b0db8_9227e7e7",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-28T21:00:48Z",
+      "side": 1,
+      "message": "we will generate that properly and userspace should ensure to parse it correctly. All it needs to do is to read until the `/n` is reached.",
+      "parentUuid": "2b780d97_26ed98b1",
+      "range": {
+        "startLine": 186,
+        "startChar": 21,
+        "endLine": 186,
+        "endChar": 33
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5acef646_a4d6c56e",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-06-28T21:00:48Z",
+      "side": 1,
+      "message": "We could add some capability requirement inside oom_victim_list_seq_open()",
+      "parentUuid": "0c22c60d_8341960c",
+      "range": {
+        "startLine": 186,
+        "startChar": 21,
+        "endLine": 186,
+        "endChar": 33
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
