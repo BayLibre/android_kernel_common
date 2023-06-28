@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8560865_a064d456",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1623,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-28T03:20:37Z",
+      "side": 1,
+      "message": "It is not enough for us. There are two reasons.\n1. We also need this hook in free_unref_page to capture pages being freed to pcp list.\n2. That hook you mentioned is inside the zone-\u003elock critical section, which may cause contention issues. We are not freeing pages to buddy, so we don\u0027t need this lock held.",
+      "parentUuid": "039a5fc0_188374e5",
+      "range": {
+        "startLine": 1623,
+        "startChar": 1,
+        "endLine": 1623,
+        "endChar": 14
+      },
+      "revId": "4cc2ee5562d29b6a9df714208e5945afa587bea0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bcdcc10_2723d5cc",
         "filename": "mm/util.c",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-27T23:16:21Z",
       "side": 1,
       "message": "nit: trace_android_vh_kvmalloc_node_use_vmalloc",
+      "range": {
+        "startLine": 600,
+        "startChar": 1,
+        "endLine": 600,
+        "endChar": 44
+      },
+      "revId": "4cc2ee5562d29b6a9df714208e5945afa587bea0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aff334d_e72304a7",
+        "filename": "mm/util.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-28T03:20:37Z",
+      "side": 1,
+      "message": "fixed",
+      "parentUuid": "4bcdcc10_2723d5cc",
       "range": {
         "startLine": 600,
         "startChar": 1,
