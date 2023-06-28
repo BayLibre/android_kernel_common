@@ -240,6 +240,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "197bc047_0fd4d129",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2010921
+      },
+      "writtenOn": "2023-06-28T07:19:52Z",
+      "side": 1,
+      "message": "Hi,\nBecause storage needs to obtain the block layer\u0027s request-\u003ebio-\u003ebi_write_hint field for some new memory feature development, and this field has been removed in Android 14 version, So we can only get the bi_write_hint by accessing the inode.\nThanks",
+      "parentUuid": "fb34918e_46532555",
+      "revId": "5616315fd941fb22d44fe4332554f56965374c68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e356ba9d_b0adf5a1",
         "filename": "android/abi_gki_aarch64_vivo",
         "patchSetId": 2
