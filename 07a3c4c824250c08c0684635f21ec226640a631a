@@ -34,6 +34,24 @@
       "parentUuid": "ed79d9ad_ede3b1ee",
       "revId": "07a3c4c824250c08c0684635f21ec226640a631a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3e15c27_8e3129d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-28T07:18:25Z",
+      "side": 1,
+      "message": "4 functions with some sub-type change:\n\n  [C] \u0027function int __page_mapcount(page*)\u0027 at util.c:778:1 has some sub-type changes:\n    CRC (modversions) changed from 0x3bf87961 to 0xd4a6b2d2\n\n  [C] \u0027function bool page_mapped(page*)\u0027 at util.c:712:1 has some sub-type changes:\n    CRC (modversions) changed from 0x2296bb4c to 0xfed483e5\n\n  [C] \u0027function address_space* page_mapping(page*)\u0027 at util.c:742:1 has some sub-type changes:\n    CRC (modversions) changed from 0x5000845d to 0xee2d0be6\n\n  ... 1 omitted; 4 symbols have only CRC changes\n\n\nYou mean these? I haven\u0027t modified them, why their crc changed?",
+      "parentUuid": "43b58992_c56ed59b",
+      "revId": "07a3c4c824250c08c0684635f21ec226640a631a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
