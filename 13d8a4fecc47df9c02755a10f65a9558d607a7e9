@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3737b9cd_ac163a7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-28T06:58:14Z",
+      "side": 1,
+      "message": "These are a series of our memory allocation optimizations. You can find the detailed usage of each hook in https://partnerissuetracker.corp.google.com/u/1/issues/288216516. So we perfer not to spilt them. I think these are named by their usages. Do you have any better idea to name them?",
+      "parentUuid": "e88f7583_daba3b1e",
+      "revId": "13d8a4fecc47df9c02755a10f65a9558d607a7e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64b28501_3a246267",
         "filename": "mm/util.c",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2023-06-28T06:21:56Z",
       "side": 1,
       "message": "why are you using \u0026 here?  Why would you want to change the flags?",
+      "range": {
+        "startLine": 600,
+        "startChar": 51,
+        "endLine": 600,
+        "endChar": 64
+      },
+      "revId": "13d8a4fecc47df9c02755a10f65a9558d607a7e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d54ccbb7_9f84322e",
+        "filename": "mm/util.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-28T06:58:14Z",
+      "side": 1,
+      "message": "In some situations, we will clear the __GFP_DIRECT_RECLAIM flag to avoid running into direct reclaim path.",
+      "parentUuid": "64b28501_3a246267",
       "range": {
         "startLine": 600,
         "startChar": 51,
