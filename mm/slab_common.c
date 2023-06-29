@@ -1001,6 +1001,7 @@ void *kmalloc_order(size_t size, gfp_t flags, unsigned int order)
 		ret = page_address(page);
 		mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
 				      PAGE_SIZE << order);
+		trace_android_vh_slab_check_show(NULL);
 	}
 	ret = kasan_kmalloc_large(ret, size, flags);
 	/* As ret might get tagged, call kmemleak hook after KASAN. */
