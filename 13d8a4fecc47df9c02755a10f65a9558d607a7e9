@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98416d3f_8ccf7730",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-29T16:51:01Z",
+      "side": 1,
+      "message": "OK, I also posted it here.",
+      "parentUuid": "ec81dcf0_fb4b2819",
+      "revId": "13d8a4fecc47df9c02755a10f65a9558d607a7e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64b28501_3a246267",
@@ -139,6 +157,30 @@
       "side": 1,
       "message": "Well, it will increase the changes that your allocation will fail.",
       "parentUuid": "32188eaa_04155a1a",
+      "range": {
+        "startLine": 600,
+        "startChar": 51,
+        "endLine": 600,
+        "endChar": 64
+      },
+      "revId": "13d8a4fecc47df9c02755a10f65a9558d607a7e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daeb88ee_195f5db0",
+        "filename": "mm/util.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-29T16:51:01Z",
+      "side": 1,
+      "message": "The flags is only changed for kmalloc. We want to release kmalloc from time-wasting reclaiming or compacting jobs. If the kmalloc fails, it is high probability to sucessfully get pages from vmalloc then. I think that is what expected for calling kvmalloc.",
+      "parentUuid": "673f47de_4c035eb6",
       "range": {
         "startLine": 600,
         "startChar": 51,
