@@ -33,6 +33,24 @@
       "message": "Why isn\u0027t this sent upstream for the 4.14.y releases there?",
       "revId": "dc5c6c520a1e7cab603179f08c7a7384cc0b4d23",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f36e359_121cfa9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-06-29T14:29:45Z",
+      "side": 1,
+      "message": "While it applies cleanly to 4.14.320, it doesn\u0027t build.\n\nThis is because XFRMA_IF_ID isn\u0027t defined.\n\nThe patch which defines it doesn\u0027t apply...\n\nThere\u0027s clearly been a fair bit of backporting in 4.14 ACK that isn\u0027t in LTS.",
+      "parentUuid": "5a182827_1d0234bb",
+      "revId": "dc5c6c520a1e7cab603179f08c7a7384cc0b4d23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
