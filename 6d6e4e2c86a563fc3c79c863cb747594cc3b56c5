@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a0525f8_9f1790e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-06-29T12:33:01Z",
+      "side": 1,
+      "message": "actually, the parent change is broken, and this change reveals it when building the target `//common-modules/virtual-device:virtual_device_arm_dist`\n\n```\nIn file included from common/drivers/android/android_debug_symbols.c:12:\ncommon/arch/arm/include/asm/stacktrace.h:41:21: error: call to undeclared function \u0027in_entry_text\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n                frame-\u003eex_frame \u003d in_entry_text(frame-\u003epc);\n                                  ^\nIn file included from common/drivers/android/android_debug_symbols.c:13:\ncommon/arch/arm/include/asm/sections.h:14:20: error: static declaration of \u0027in_entry_text\u0027 follows non-static declaration\nstatic inline bool in_entry_text(unsigned long addr)\n                   ^\ncommon/arch/arm/include/asm/stacktrace.h:41:21: note: previous implicit declaration is here\n                frame-\u003eex_frame \u003d in_entry_text(frame-\u003epc);\n                                  ^\n```\n\nI think we should revert the submission.",
+      "revId": "6d6e4e2c86a563fc3c79c863cb747594cc3b56c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
