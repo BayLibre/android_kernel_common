@@ -34,8 +34,9 @@
 #include "internal.h"
 #include "swap.h"
 
-#ifndef __GENSYMS__
+#ifndef __GENKSYMS__
 #include <trace/hooks/syscall_check.h>
+#include <trace/hooks/mm.h>
 #endif
 
 /**
