@@ -48,6 +48,8 @@
 #include <linux/debugfs.h>
 #include <trace/events/kmem.h>
 
+#include <trace/hooks/mm.h>
+
 #include "internal.h"
 
 /*
@@ -7133,7 +7135,11 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
 			     gfp_t flags, int node)
 {
 	void *ret;
+	bool use_vmalloc = false;
 
+	trace_android_vh_kvmalloc_node_use_vmalloc(size, &flags, &use_vmalloc);
+	if (use_vmalloc)
+		goto use_vmalloc_node;
 	/*
 	 * It doesn't really make sense to fallback to vmalloc for sub page
 	 * requests
@@ -7160,6 +7166,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
 	 * about the resulting pointer, and cannot play
 	 * protection games.
 	 */
+use_vmalloc_node:
 	return __vmalloc_node_range_noprof(size, align, VMALLOC_START, VMALLOC_END,
 			flags, PAGE_KERNEL, VM_ALLOW_HUGE_VMAP,
 			node, __builtin_return_address(0));
