@@ -88,6 +88,24 @@
       "parentUuid": "90ea9f0d_2f08871e",
       "revId": "07a3c4c824250c08c0684635f21ec226640a631a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a65aeeec_1dd2530e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928204
+      },
+      "writtenOn": "2023-06-30T01:38:29Z",
+      "side": 1,
+      "message": "It is fixed by placing hook file inclusion under protection of \"#ifndef __GENKSYMS__\" in util.c.\n #ifndef __GENKSYMS__\n #include \u003ctrace/hooks/syscall_check.h\u003e\n+#include \u003ctrace/hooks/mm.h\u003e\n #endif\n \n You can see in the newly updated patch, the crc changes didn\u0027t happen.",
+      "parentUuid": "46560384_457de0ac",
+      "revId": "07a3c4c824250c08c0684635f21ec226640a631a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
