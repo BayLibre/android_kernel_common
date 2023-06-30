@@ -183,6 +183,9 @@ DECLARE_HOOK(android_vh_use_cma_first_check,
 DECLARE_HOOK(android_vh_alloc_highpage_movable_gfp_adjust,
 	TP_PROTO(gfp_t *gfp_mask),
 	TP_ARGS(gfp_mask));
+DECLARE_HOOK(android_vh_tune_sync_mmap_readahead,
+	TP_PROTO(struct vm_fault *vmf, struct readahead_control *ractl),
+	TP_ARGS(vmf, ractl));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
