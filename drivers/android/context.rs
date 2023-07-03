@@ -2,14 +2,14 @@
 
 use kernel::{
     linked_list::{GetLinks, Links, List},
-    security,
     prelude::*,
-    task::Kuid,
+    security,
     str::{CStr, CString},
     sync::{Arc, Mutex},
+    task::Kuid,
 };
 
-use crate::{process::Process, error::BinderError, node::NodeRef};
+use crate::{error::BinderError, node::NodeRef, process::Process};
 
 // This module defines the global variable containing the list of contexts. Since the
 // `kernel::sync` bindings currently don't support mutexes in globals, we use a temporary
