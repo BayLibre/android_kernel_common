@@ -6,7 +6,7 @@
 //!
 //! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
 
-use crate::bindings;
+use crate::{bindings, task::Kuid};
 use crate::types::AlwaysRefCounted;
 use core::cell::UnsafeCell;
 
@@ -47,6 +47,14 @@ impl Credential {
             bindings::security_cred_getsecid(self.0.get(), &mut secid);
         }
         secid
+    }
+
+    /// Returns the effective UID of the given credential.
+    pub fn euid(&self) -> Kuid {
+        Kuid {
+            // SAFETY: By the type invariant, we know that `self.0` is valid.
+            kuid: unsafe { (*self.0.get()).euid },
+        }
     }
 }
 
