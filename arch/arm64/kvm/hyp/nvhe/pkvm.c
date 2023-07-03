@@ -47,6 +47,11 @@ static DEFINE_PER_CPU(struct pkvm_hyp_vcpu *, loaded_hyp_vcpu);
  */
 unsigned long __ro_after_init kvm_arm_hyp_host_fp_state[NR_CPUS];
 
+static inline void account_hyp_alloc(void *alloc, struct kvm *host_kvm)
+{
+	atomic64_add(hyp_alloc_size(alloc), &host_kvm->stat.protected_hyp_mem);
+}
+
 static void *__get_host_fpsimd_bytes(void)
 {
 	/*
@@ -644,6 +649,7 @@ static int init_pkvm_hyp_vcpu_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcp
 			ret = hyp_alloc_errno();
 			goto err;
 		}
+		account_hyp_alloc(sve_state, kern_hyp_va(host_vcpu->kvm));
 	} else {
 		ret = hyp_pin_shared_mem(sve_state, sve_state + sve_state_size);
 		if (ret)
@@ -818,12 +824,14 @@ int __pkvm_init_vm(struct kvm *host_kvm, unsigned long pgd_hva)
 		ret = hyp_alloc_errno();
 		goto err_unpin_kvm;
 	}
+	account_hyp_alloc((void *)hyp_vm, host_kvm);
 
 	last_ran = hyp_alloc(pkvm_get_last_ran_size());
 	if (!last_ran) {
 		ret = hyp_alloc_errno();
 		goto err_free_vm;
 	}
+	account_hyp_alloc((void *)last_ran, host_kvm);
 
 	ret = -EINVAL;
 	pgd_size = kvm_pgtable_stage2_pgd_size(host_mmu.arch.vtcr);
@@ -886,6 +894,8 @@ int __pkvm_init_vcpu(pkvm_handle_t handle, struct kvm_vcpu *host_vcpu)
 		ret = -ENOENT;
 		goto unlock_vm;
 	}
+
+	account_hyp_alloc((void *)hyp_vcpu, hyp_vm->host_kvm);
 
 	hyp_spin_lock(&hyp_vm->vcpus_lock);
 	idx = hyp_vm->nr_vcpus;
