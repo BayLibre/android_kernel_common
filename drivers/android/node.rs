@@ -1,14 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0
 
 use kernel::{
+    io_buffer::IoBufferWriter,
     linked_list::Links,
     prelude::*,
-    user_ptr::UserSlicePtrWriter,
-    io_buffer::IoBufferWriter,
     sync::{Arc, Guard, LockedBy, SpinLockBackend},
+    user_ptr::UserSlicePtrWriter,
 };
 
-use crate::{DeliverToRead, thread::Thread, process::{Process, ProcessInner}, defs::*};
+use crate::{
+    defs::*,
+    process::{Process, ProcessInner},
+    thread::Thread,
+    DeliverToRead,
+};
 
 struct CountState {
     /// The reference count.
