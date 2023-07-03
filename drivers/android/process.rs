@@ -16,6 +16,7 @@ use kernel::{
     file::{self, File},
     list::{HasListLinks, List, ListArc, ListArcSafe, ListItem, ListLinks},
     mm,
+    page::Page,
     prelude::*,
     rbtree::{self, RBTree},
     sync::poll::PollTable,
@@ -27,15 +28,34 @@ use kernel::{
 };
 
 use crate::{
+    allocation::{Allocation, AllocationInfo},
     context::Context,
     defs::*,
-    error::BinderError,
+    error::{BinderError, BinderResult},
     node::{Node, NodeRef},
+    range_alloc::{self, RangeAllocator},
     thread::{PushWorkRes, Thread},
     DArc, DLArc, DTRWrap, DeliverToRead,
 };
 
 use core::mem::take;
+
+struct Mapping {
+    address: usize,
+    alloc: RangeAllocator<AllocationInfo>,
+    pages: Arc<Vec<Page>>,
+}
+
+impl Mapping {
+    fn new(address: usize, size: usize, pages: Arc<Vec<Page>>) -> Result<Self> {
+        let alloc = RangeAllocator::new(size)?;
+        Ok(Self {
+            address,
+            alloc,
+            pages,
+        })
+    }
+}
 
 const PROC_DEFER_FLUSH: u8 = 1;
 const PROC_DEFER_RELEASE: u8 = 2;
@@ -48,6 +68,7 @@ pub(crate) struct ProcessInner {
     /// INVARIANT: Threads pushed to this list must be owned by this process.
     ready_threads: List<Thread>,
     nodes: RBTree<u64, DArc<Node>>,
+    mapping: Option<Mapping>,
     work: List<DTRWrap<dyn DeliverToRead>>,
 
     /// The number of requested threads that haven't registered yet.
@@ -68,6 +89,7 @@ impl ProcessInner {
             is_dead: false,
             threads: RBTree::new(),
             ready_threads: List::new(),
+            mapping: None,
             nodes: RBTree::new(),
             work: List::new(),
             requested_thread_count: 0,
@@ -479,6 +501,15 @@ impl Process {
         Ok(target)
     }
 
+    pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
+        // When handle is zero, try to get the context manager.
+        if handle == 0 {
+            Ok(self.ctx.get_manager_node(true)?)
+        } else {
+            Ok(self.get_node_from_handle(handle, true)?)
+        }
+    }
+
     pub(crate) fn get_node_from_handle(&self, handle: u32, strong: bool) -> Result<NodeRef> {
         self.node_refs
             .lock()
@@ -526,6 +557,97 @@ impl Process {
                     // This only fails if the process is dead.
                     let _ = inner.push_work(node);
                 }
+            }
+        }
+        Ok(())
+    }
+
+    pub(crate) fn buffer_alloc(
+        self: &Arc<Self>,
+        size: usize,
+        is_oneway: bool,
+    ) -> BinderResult<Allocation> {
+        let alloc = range_alloc::ReserveNewBox::try_new()?;
+        let mut inner = self.inner.lock();
+        let mapping = inner.mapping.as_mut().ok_or_else(BinderError::new_dead)?;
+        let offset = mapping.alloc.reserve_new(size, is_oneway, alloc)?;
+        Ok(Allocation::new(
+            self.clone(),
+            offset,
+            size,
+            mapping.address + offset,
+            mapping.pages.clone(),
+        ))
+    }
+
+    pub(crate) fn buffer_get(self: &Arc<Self>, ptr: usize) -> Option<Allocation> {
+        let mut inner = self.inner.lock();
+        let mapping = inner.mapping.as_mut()?;
+        let offset = ptr.checked_sub(mapping.address)?;
+        let (size, odata) = mapping.alloc.reserve_existing(offset).ok()?;
+        let mut alloc = Allocation::new(self.clone(), offset, size, ptr, mapping.pages.clone());
+        if let Some(data) = odata {
+            alloc.set_info(data);
+        }
+        Some(alloc)
+    }
+
+    pub(crate) fn buffer_raw_free(&self, ptr: usize) {
+        let mut inner = self.inner.lock();
+        if let Some(ref mut mapping) = &mut inner.mapping {
+            if ptr < mapping.address
+                || mapping
+                    .alloc
+                    .reservation_abort(ptr - mapping.address)
+                    .is_err()
+            {
+                pr_warn!(
+                    "Pointer {:x} failed to free, base = {:x}\n",
+                    ptr,
+                    mapping.address
+                );
+            }
+        }
+    }
+
+    pub(crate) fn buffer_make_freeable(&self, offset: usize, data: Option<AllocationInfo>) {
+        let mut inner = self.inner.lock();
+        if let Some(ref mut mapping) = &mut inner.mapping {
+            if mapping.alloc.reservation_commit(offset, data).is_err() {
+                pr_warn!("Offset {} failed to be marked freeable\n", offset);
+            }
+        }
+    }
+
+    fn create_mapping(&self, vma: &mut mm::virt::Area) -> Result {
+        use kernel::page::PAGE_SIZE;
+        let size = core::cmp::min(vma.end() - vma.start(), bindings::SZ_4M as usize);
+        let page_count = size / PAGE_SIZE;
+
+        // Allocate and map all pages.
+        //
+        // N.B. If we fail halfway through mapping these pages, the kernel will unmap them.
+        let mut pages = Vec::new();
+        pages.try_reserve_exact(page_count)?;
+        let mut address = vma.start();
+        for _ in 0..page_count {
+            let page = Page::new()?;
+            vma.insert_page(address, &page)?;
+            pages.try_push(page)?;
+            address += PAGE_SIZE;
+        }
+
+        let ref_pages = Arc::try_new(pages)?;
+        let mapping = Mapping::new(vma.start(), size, ref_pages)?;
+
+        // Save pages for later.
+        let mut inner = self.inner.lock();
+        match &inner.mapping {
+            None => inner.mapping = Some(mapping),
+            Some(_) => {
+                drop(inner);
+                drop(mapping);
+                return Err(EBUSY);
             }
         }
         Ok(())
@@ -630,18 +752,6 @@ impl Process {
 
         self.ctx.deregister_process(&self);
 
-        // Cancel all pending work items.
-        while let Some(work) = self.get_work() {
-            work.into_arc().cancel();
-        }
-
-        // Drop all references. We do this dance with `swap` to avoid destroying the references
-        // while holding the lock.
-        let mut refs = self.node_refs.lock();
-        let mut node_refs = take(&mut refs.by_handle);
-        drop(refs);
-        drop(node_refs);
-
         // Move the threads out of `inner` so that we can iterate over them without holding the
         // lock.
         let mut inner = self.inner.lock();
@@ -652,6 +762,33 @@ impl Process {
         for thread in threads.values() {
             thread.release();
         }
+
+        // Cancel all pending work items.
+        while let Some(work) = self.get_work() {
+            work.into_arc().cancel();
+        }
+
+        // Free any resources kept alive by allocated buffers.
+        let omapping = self.inner.lock().mapping.take();
+        if let Some(mut mapping) = omapping {
+            let address = mapping.address;
+            let pages = mapping.pages.clone();
+            mapping.alloc.take_for_each(|offset, size, odata| {
+                let ptr = offset + address;
+                let mut alloc = Allocation::new(self.clone(), offset, size, ptr, pages.clone());
+                if let Some(data) = odata {
+                    alloc.set_info(data);
+                }
+                drop(alloc)
+            });
+        }
+
+        // Drop all references. We do this dance with `swap` to avoid destroying the references
+        // while holding the lock.
+        let mut refs = self.node_refs.lock();
+        let mut node_refs = take(&mut refs.by_handle);
+        drop(refs);
+        drop(node_refs);
     }
 
     pub(crate) fn flush(this: ArcBorrow<'_, Process>) -> Result {
@@ -769,11 +906,27 @@ impl Process {
     }
 
     pub(crate) fn mmap(
-        _this: ArcBorrow<'_, Process>,
+        this: ArcBorrow<'_, Process>,
         _file: &File,
-        _vma: &mut mm::virt::Area,
+        vma: &mut mm::virt::Area,
     ) -> Result {
-        Err(EINVAL)
+        // We don't allow mmap to be used in a different process.
+        if !core::ptr::eq(kernel::current!().group_leader(), &*this.task) {
+            return Err(EINVAL);
+        }
+        if vma.start() == 0 {
+            return Err(EINVAL);
+        }
+        let mut flags = vma.flags();
+        use mm::virt::flags::*;
+        if flags & WRITE != 0 {
+            return Err(EPERM);
+        }
+        flags |= DONTCOPY | MIXEDMAP;
+        flags &= !MAYWRITE;
+        vma.set_flags(flags);
+        // TODO: Set ops. We need to learn when the user unmaps so that we can stop using it.
+        this.create_mapping(vma)
     }
 
     pub(crate) fn poll(
