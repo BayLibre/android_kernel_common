@@ -86,7 +86,7 @@ type Pid = bindings::pid_t;
 #[derive(Copy, Clone)]
 #[repr(transparent)]
 pub struct Kuid {
-    kuid: bindings::kuid_t,
+    pub(crate) kuid: bindings::kuid_t,
 }
 
 impl Task {
