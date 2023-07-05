@@ -335,6 +335,7 @@ DECLARE_HOOK(android_vh_split_large_folio_bypass,
 	TP_PROTO(bool *bypass),
 	TP_ARGS(bypass));
 
+<<<<<<< HEAD   (09d40a ANDROID: GKI: update symbol list for xiaomi)
 DECLARE_HOOK(android_vh_cma_alloc_set_max_retries,
 	TP_PROTO(int *max_retries),
 	TP_ARGS(max_retries));
@@ -344,6 +345,15 @@ DECLARE_HOOK(android_vh_do_group_exit,
 DECLARE_HOOK(android_vh_init_adjust_zone_wmark,
 	TP_PROTO(struct zone *zone, u64 interval),
 	TP_ARGS(zone, interval));
+||||||| BASE
+=======
+DECLARE_HOOK(android_vh_compact_finished,
+	TP_PROTO(bool *abort_compact),
+	TP_ARGS(abort_compact));
+DECLARE_HOOK(android_vh_madvise_cold_or_pageout_abort,
+	TP_PROTO(struct vm_area_struct *vma, bool *abort_madvise),
+	TP_ARGS(vma, abort_madvise));
+>>>>>>> CHANGE (dd2c5e ANDROID: vendor_hook: Add hook to abort reclaim and compacti)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
