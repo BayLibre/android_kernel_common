@@ -351751,6 +351751,15 @@ elf_symbol {
   full_name: "iommu_map"
 }
 elf_symbol {
+  id: 0x3d770021
+  name: "iommu_map_atomic"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf6ea81c3
+  type_id: 0x96c4a3ba
+  full_name: "iommu_map_atomic"
+}
+elf_symbol {
   id: 0x21c33dfe
   name: "iommu_map_sg"
   is_defined: true
@@ -384519,6 +384528,7 @@ interface {
   symbol_id: 0x119c23e5
   symbol_id: 0x9aea043a
   symbol_id: 0xbfb0ba46
+  symbol_id: 0x3d770021
   symbol_id: 0x21c33dfe
   symbol_id: 0x6c972a39
   symbol_id: 0x5334a8b4
