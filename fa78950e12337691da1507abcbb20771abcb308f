@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29639e9a_a68a3544",
+        "filename": "drivers/virt/geniezone/gzvm_main.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-07-05T09:59:07Z",
+      "side": 1,
+      "message": "do not have a single global structure just for debugging, save it off in your platform specific structure and tie it to the misc device and you should be fine.",
+      "range": {
+        "startLine": 114,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 15
+      },
+      "revId": "fa78950e12337691da1507abcbb20771abcb308f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bb234fba_6bf99f23",
         "filename": "include/uapi/linux/gzvm.h",
         "patchSetId": 7
