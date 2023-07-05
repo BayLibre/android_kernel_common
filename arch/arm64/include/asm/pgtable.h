@@ -336,7 +336,7 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
 	 */
 	if (system_supports_mte() && pte_access_permitted(pte, false) &&
 	    !pte_special(pte) && pte_tagged(pte))
-		mte_sync_tags(pte);
+		mte_sync_tags(&pte);
 
 	__check_racy_pte_update(mm, ptep, pte);
 
