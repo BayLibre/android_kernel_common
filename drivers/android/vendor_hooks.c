@@ -311,4 +311,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_post_image_save);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_pageout_skip);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rmqueue_smallest_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_one_page_bypass);
+<<<<<<< PATCH SET (b8c93f ANDROID: vendor_hook: Add hook to abort reclaim and compacti)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_or_pageout_abort);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compact_finished);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
+>>>>>>> BASE      (5e7421 ANDROID: ABI: Update symbol for Exynos SoC)
