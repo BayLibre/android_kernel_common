@@ -369,3 +369,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_large_alloced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_netlink_poll);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ep_create_wakeup_source);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timerfd_create);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_clean_tag_page);
