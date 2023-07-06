@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048278143",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2651024?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "d0452516_9f3a6ce9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-06T22:03:23Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/cc2195fe536c28e192df5d07e6dd277af36814b4) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dcc2195fe536c28e192df5d07e6dd277af36814b4)\n\n```\n      ## drivers/firmware/arm_ffa/driver.c ##\n     @@\n      #include \u003clinux/io.h\u003e\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_msg_send_direct_req(u16 src_id\n     +static int ffa_mem_first_frag(u32 func_id, phys_addr_t buf, u32 buf_sz,\n     +\t\t\t      u32 frag_len, u32 len, u64 *handle)\n     +{\n    -+\tffa_value_t ret;\n    ++\tstruct arm_smccc_1_2_regs ret;\n     +\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t      .a0 \u003d func_id, .a1 \u003d len, .a2 \u003d frag_len,\n     +\t\t      .a3 \u003d buf, .a4 \u003d buf_sz,\n     +\t\t      }, \u0026ret);\n     +\n     +\twhile (ret.a0 \u003d\u003d FFA_MEM_OP_PAUSE)\n    -+\t\tinvoke_ffa_fn((ffa_value_t){\n    ++\t\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t\t      .a0 \u003d FFA_MEM_OP_RESUME,\n     +\t\t\t      .a1 \u003d ret.a1, .a2 \u003d ret.a2,\n     +\t\t\t      }, \u0026ret);\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_msg_send_direct_req(u16 src_id\n     +\n     +static int ffa_mem_next_frag(u64 handle, u32 frag_len)\n     +{\n    -+\tffa_value_t ret;\n    ++\tstruct arm_smccc_1_2_regs ret;\n     +\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t      .a0 \u003d FFA_MEM_FRAG_TX,\n     +\t\t      .a1 \u003d HANDLE_LOW(handle), .a2 \u003d HANDLE_HIGH(handle),\n     +\t\t      .a3 \u003d frag_len,\n     +\t\t      }, \u0026ret);\n     +\n     +\twhile (ret.a0 \u003d\u003d FFA_MEM_OP_PAUSE)\n    -+\t\tinvoke_ffa_fn((ffa_value_t){\n    ++\t\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t\t      .a0 \u003d FFA_MEM_OP_RESUME,\n     +\t\t\t      .a1 \u003d ret.a1, .a2 \u003d ret.a2,\n     +\t\t\t      }, \u0026ret);\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_msg_send_direct_req(u16 src_id\n     +\n     +static int ffa_memory_reclaim(u64 g_handle, u32 flags)\n     +{\n    -+\tffa_value_t ret;\n    ++\tstruct arm_smccc_1_2_regs ret;\n     +\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t      .a0 \u003d FFA_MEM_RECLAIM,\n     +\t\t      .a1 \u003d HANDLE_LOW(g_handle), .a2 \u003d HANDLE_HIGH(g_handle),\n     +\t\t      .a3 \u003d flags,\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 544328428 android-build.ayeaye-python-dispatcher_20230629.03_p0",
+      "revId": "499d0a1ff5d6fdcf4073ecfb9451de5fe054920a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
