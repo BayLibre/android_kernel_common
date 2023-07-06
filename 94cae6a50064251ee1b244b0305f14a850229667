@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048278161",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2651023?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "ec03c63e_6f1b5f3d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-06T22:03:02Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/d0c0bce831223b08e5bade2cefc93c3ddb790796) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd0c0bce831223b08e5bade2cefc93c3ddb790796)\n\n```\n      ## drivers/firmware/arm_ffa/bus.c ##\n     @@ drivers/firmware/arm_ffa/bus.c: static int ffa_device_match(struct device *dev, struct device_driver *drv)\n      \tffa_dev \u003d to_ffa_dev(dev);\n    @@ drivers/firmware/arm_ffa/common.h\n      #include \u003clinux/arm-smccc.h\u003e\n      #include \u003clinux/err.h\u003e\n      \n    -@@ drivers/firmware/arm_ffa/common.h: typedef void (ffa_fn)(ffa_value_t, ffa_value_t *);\n    +@@ drivers/firmware/arm_ffa/common.h: typedef void (*ffa_fn)(struct arm_smccc_1_2_regs, struct arm_smccc_1_2_regs *);\n      \n      int arm_ffa_bus_init(void);\n      void arm_ffa_bus_exit(void);\n    @@ drivers/firmware/arm_ffa/common.h: typedef void (ffa_fn)(ffa_value_t, ffa_value_\n     +void ffa_device_match_uuid(struct ffa_device *ffa_dev, const uuid_t *uuid);\n      \n      #ifdef CONFIG_ARM_FFA_SMCCC\n    - int __init ffa_transport_init(ffa_fn **invoke_ffa_fn);\n    + int __init ffa_transport_init(ffa_fn * invoke_ffa_fn);\n     \n      ## drivers/firmware/arm_ffa/driver.c ##\n     @@\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_version_check(u32 *version)\n      \n     +static int ffa_rx_release(void)\n     +{\n    -+\tffa_value_t ret;\n    ++\tstruct arm_smccc_1_2_regs ret;\n     +\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t      .a0 \u003d FFA_RX_RELEASE,\n     +\t\t      }, \u0026ret);\n     +\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_version_check(u32 *version)\n     +\n      static int ffa_rxtx_map(phys_addr_t tx_buf, phys_addr_t rx_buf, u32 pg_cnt)\n      {\n    - \tffa_value_t ret;\n    + \tstruct arm_smccc_1_2_regs ret;\n     @@ drivers/firmware/arm_ffa/driver.c: static int ffa_rxtx_unmap(u16 vm_id)\n      \treturn 0;\n      }\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_rxtx_unmap(u16 vm_id)\n     +\t\t\t struct ffa_partition_info *buffer, int num_partitions)\n     +{\n     +\tint count;\n    -+\tffa_value_t partition_info;\n    ++\tstruct arm_smccc_1_2_regs partition_info;\n     +\n     +\tmutex_lock(\u0026drv_info-\u003erx_lock);\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t      .a0 \u003d FFA_PARTITION_INFO_GET,\n     +\t\t      .a1 \u003d uuid0, .a2 \u003d uuid1, .a3 \u003d uuid2, .a4 \u003d uuid3,\n     +\t\t      }, \u0026partition_info);\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_id_get(u16 *vm_id)\n     +\t\t\t\t   struct ffa_send_direct_data *data)\n     +{\n     +\tu32 req_id, resp_id, src_dst_ids \u003d PACK_TARGET_INFO(src_id, dst_id);\n    -+\tffa_value_t ret;\n    ++\tstruct arm_smccc_1_2_regs ret;\n     +\n     +\tif (mode_32bit) {\n     +\t\treq_id \u003d FFA_MSG_SEND_DIRECT_REQ;\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_id_get(u16 *vm_id)\n     +\t\tresp_id \u003d FFA_FN_NATIVE(MSG_SEND_DIRECT_RESP);\n     +\t}\n     +\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t      .a0 \u003d req_id, .a1 \u003d src_dst_ids, .a2 \u003d 0,\n     +\t\t      .a3 \u003d data-\u003edata0, .a4 \u003d data-\u003edata1, .a5 \u003d data-\u003edata2,\n     +\t\t      .a6 \u003d data-\u003edata3, .a7 \u003d data-\u003edata4,\n     +\t\t      }, \u0026ret);\n     +\n     +\twhile (ret.a0 \u003d\u003d FFA_INTERRUPT)\n    -+\t\tinvoke_ffa_fn((ffa_value_t){\n    ++\t\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t\t      .a0 \u003d FFA_RUN, .a1 \u003d ret.a1,\n     +\t\t\t      }, \u0026ret);\n     +\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 544328428 android-build.ayeaye-python-dispatcher_20230629.03_p0",
+      "revId": "94cae6a50064251ee1b244b0305f14a850229667",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
