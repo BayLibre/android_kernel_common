@@ -20,6 +20,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8495b4e_c67fd6cc",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "This seems like a no-op. Could we just remove it?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7970416a_888aecd1",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "Is this redundant with `TIPC_CONNECTED_TX_FULL`? It seems like they\u0027re both set and cleared at the same time, so you could get rid of one of them? Maybe the state, since it seems to add a lot of duplication.",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88012fee_ecd526fd",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "See my other comment: would it work to check for `TIPC_CHAN_FLAGS_FC_ACTIVE` instead?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3fb481f2_278b6d21",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 14
@@ -48,6 +99,91 @@
       "writtenOn": "2023-07-06T22:47:15Z",
       "side": 1,
       "message": "Is there a Linux convention to follow here, e.g., `if (!timeout)`?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b62e058_41ee1835",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "This function is `static` and only has 3 callers, wouldn\u0027t it be simpler to just update all the call sites?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e862670d_dd531c31",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "You don\u0027t seem to decrement `pending_msg_cnt` anywhere. What happens if the queue can hold multiple messages, and 2 of them go out at the same time?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa2be90_6704e43b",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "You\u0027re checking this flag in several places, so maybe add a static helper function?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a19fa6bb_c865a96d",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "Could the two cases be simplified as `chan-\u003epending_msg_cnt \u003e\u003d MAX(1, chan-\u003emax_msg_cnt - 1)`? I don\u0027t remember if `max_msg_cnt` can ever be zero.",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40775d9_4ce58496",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 2074,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T23:45:49Z",
+      "side": 1,
+      "message": "So once flow control is enabled, transmission completely stops until the queue empties up? Could this cause deadlocks where NS processes one message from the queue, sends a response and then waits for a counter-response that it never gets?",
       "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
