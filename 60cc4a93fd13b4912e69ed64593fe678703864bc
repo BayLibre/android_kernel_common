@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fb67bd5_fdb290f0",
+        "filename": "drivers/trusty/doc/tipc_ns_write_sequence.md",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T22:47:15Z",
+      "side": 1,
+      "message": "Where is this used? Is this the right place to store this file?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3fb481f2_278b6d21",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 14
@@ -14,6 +31,23 @@
       "writtenOn": "2023-06-30T05:54:49Z",
       "side": 1,
       "message": "In the other case where the tx queue is full, do we need to kick or call into Trusty explicitly so the scheduler gives it some CPU cycles to empty the queue?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31f9c5d3_cb6ecb23",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-06T22:47:15Z",
+      "side": 1,
+      "message": "Is there a Linux convention to follow here, e.g., `if (!timeout)`?",
       "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
