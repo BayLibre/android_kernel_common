@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecacf2ce_17e58878",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-06T16:39:08Z",
+      "side": 1,
+      "message": "Just to note, if someone is using `dpcm_lock` in an external module, then it\u0027s possible this patch would be breaking their drivers. I grep\u0027d the Pixel 6 drivers and didn\u0027t find any references. IMO, I think it\u0027s better to rename the variable so that partners would fail compiling their drivers if there are references to `dpcm_lock`.",
+      "parentUuid": "5cfdffe3_f7d1a8b8",
+      "range": {
+        "startLine": 910,
+        "startChar": 1,
+        "endLine": 910,
+        "endChar": 22
+      },
+      "revId": "4468e544e81edde92205d6130b7b6c9d6dc00129",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21e6c824_cec66758",
         "filename": "sound/soc/soc-core.c",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-06T16:26:16Z",
       "side": 1,
       "message": "Let\u0027s drop this.",
+      "range": {
+        "startLine": 2342,
+        "startChar": 1,
+        "endLine": 2342,
+        "endChar": 34
+      },
+      "revId": "4468e544e81edde92205d6130b7b6c9d6dc00129",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e02fe0fc_fac499b6",
+        "filename": "sound/soc/soc-core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-06T16:39:08Z",
+      "side": 1,
+      "message": "On second thought, maybe we should keep this (with the new `unused` variable) just in case someone is using the original `dpcm_lock` variable from a previously compiled module? That would prevent an all out crash if `dpcm_lock` is used before init\u0027ing it, but I\u0027m not sure what would happen if the module uses `dpcm_lock` with this patch applied to the kernel.",
+      "parentUuid": "21e6c824_cec66758",
       "range": {
         "startLine": 2342,
         "startChar": 1,
