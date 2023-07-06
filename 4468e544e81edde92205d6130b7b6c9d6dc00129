@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cfdffe3_f7d1a8b8",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-06T16:26:16Z",
+      "side": 1,
+      "message": "We don\u0027t want anyone using this after this patch is applied. So let\u0027s rename it to something like `ununsed`. Here is an example of how to do that and retain the ABI:\n\n```\n#ifdef __GENKSYMS__\nspinlock_t dpcm_lock;\n#else\nspinlock_t unused;\n#endif\n```",
+      "range": {
+        "startLine": 910,
+        "startChar": 1,
+        "endLine": 910,
+        "endChar": 22
+      },
+      "revId": "4468e544e81edde92205d6130b7b6c9d6dc00129",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21e6c824_cec66758",
+        "filename": "sound/soc/soc-core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-06T16:26:16Z",
+      "side": 1,
+      "message": "Let\u0027s drop this.",
+      "range": {
+        "startLine": 2342,
+        "startChar": 1,
+        "endLine": 2342,
+        "endChar": 34
+      },
+      "revId": "4468e544e81edde92205d6130b7b6c9d6dc00129",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
