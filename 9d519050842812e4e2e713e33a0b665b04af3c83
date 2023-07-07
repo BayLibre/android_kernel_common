@@ -52,6 +52,24 @@
       "parentUuid": "1d34d236_41317a38",
       "revId": "9d519050842812e4e2e713e33a0b665b04af3c83",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c24791c_54b04c0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1897817
+      },
+      "writtenOn": "2023-07-07T15:40:38Z",
+      "side": 1,
+      "message": "How to make sure of \" not perform atomics to non-cacheable memory\"?\nwe cannot ensure this, and that\u0027s why we want to use option to disable it from software side. Because we don\u0027t want to crash the system even if there is a LSE atomic instruction performed with non-cachable data.\n\nDo you have any suggestions on any mechanism to deal with LSE instruction only on cachable data? we also want to have less performance impact for cached memory , but so far there is no good idea. \n\n\nhere is the backgroud we want this option to be configurable:\n1. compile time disablement not possible because of gki compliant needed.\n\nthe current GKI generic kernel image can be run on fully LSE_ATOMIC supported qcom soc platforms, and also soc that have cpu supported LSE_ATOMIC but memory controller which didn\u0027t support it.\nThat\u0027s why we cannot disable the CONFIG_LSE_ATOMIC in compile stage.\n\n2. the memory and compiler is independent from the ko end, and it is better to deal with the instruction instead of crash the whole system.\n\nThe memory whether cachable or non-cachable can be independently defined by clients/users, and the compiler also independently generate the LSE instruction not aware of which data is cachable or not.",
+      "parentUuid": "1866b369_fead44da",
+      "revId": "9d519050842812e4e2e713e33a0b665b04af3c83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
