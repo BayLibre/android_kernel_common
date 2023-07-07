@@ -420,6 +420,30 @@
       },
       "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "242af2d9_dbea0821",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-07-07T16:02:30Z",
+      "side": 1,
+      "message": "Sorry, I don\u0027t understand your point. Even comm_show() used to read /proc/$pid/comm ultimately does a simple strscpy_pad(buf, tsk-\u003ecomm, buf_size). Note that entry-\u003eprocess_name is a copy of tsk-\u003ecomm.\n\nMaybe it would be easier to explain by example? Could you please point to an example where a task name is generated properly in procfs?",
+      "parentUuid": "33a03a76_ac4e9f81",
+      "range": {
+        "startLine": 186,
+        "startChar": 21,
+        "endLine": 186,
+        "endChar": 33
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
