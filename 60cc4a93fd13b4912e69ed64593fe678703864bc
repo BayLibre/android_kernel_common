@@ -190,6 +190,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97d9190f_cca2efe3",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 1861,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-07T00:33:31Z",
+      "side": 1,
+      "message": "This seems backwards- but not forwards-compatible. Should we do what some of the other handlers do if the length doesn\u0027t match: call `dev_err` and then return? Alternatively, what `_handle_release` does: only return if we didn\u0027t get enough bytes?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "248b739d_8dff0cb8",
+        "filename": "drivers/trusty/trusty-ipc.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 2030,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2023-07-07T00:33:31Z",
+      "side": 1,
+      "message": "Should this be aligned with `vds`?",
+      "revId": "60cc4a93fd13b4912e69ed64593fe678703864bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d40775d9_4ce58496",
         "filename": "drivers/trusty/trusty-ipc.c",
         "patchSetId": 14
