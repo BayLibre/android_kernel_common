@@ -468,7 +468,7 @@ config TOOLCHAIN_HAS_ZBB
 	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64ima_zbb)
 	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zbb)
 	depends on LLD_VERSION >= 150000 || LD_VERSION >= 23900
-	depends on AS_IS_GNU
+	depends on AS_IS_GNU || (AS_IS_LLVM && AS_VERSION >= 170003)
 
 config RISCV_ISA_ZBB
 	bool "Zbb extension support for bit manipulation instructions"
