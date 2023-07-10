@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ac57e99_4f16b206",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 23
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-07-10T17:51:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98dc67d0_26f0469a",
+      "range": {
+        "startLine": 111,
+        "startChar": 18,
+        "endLine": 111,
+        "endChar": 27
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebaa00ee_fe964652",
@@ -202,6 +226,30 @@
       "writtenOn": "2023-06-23T10:06:58Z",
       "side": 1,
       "message": "don\u0027t we have a ktime_t or something better to use?",
+      "range": {
+        "startLine": 45,
+        "startChar": 10,
+        "endLine": 45,
+        "endChar": 14
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "283fb6d3_0545dbe1",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-07-10T17:51:28Z",
+      "side": 1,
+      "message": "Changed to `ktime_t`.",
+      "parentUuid": "462ed114_f6deda53",
       "range": {
         "startLine": 45,
         "startChar": 10,
@@ -460,6 +508,30 @@
       "side": 1,
       "message": "Let\u0027s see what your documentation shows for how you are displaying the process name information, maybe I am just confused here as to how you will handle names with spaces in them and parsing them properly.",
       "parentUuid": "242af2d9_dbea0821",
+      "range": {
+        "startLine": 186,
+        "startChar": 21,
+        "endLine": 186,
+        "endChar": 33
+      },
+      "revId": "78b628d561d9462a787e6a9584473343c8c58fb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e66cdf7_bd50fbc3",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-07-10T17:51:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "047b0db8_9227e7e7",
       "range": {
         "startLine": 186,
         "startChar": 21,
