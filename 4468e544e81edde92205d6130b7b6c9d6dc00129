@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77321b0d_05b4b921",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1871516
+      },
+      "writtenOn": "2023-07-10T08:06:59Z",
+      "side": 1,
+      "message": "No, I could not guarantee if no other driver use this lock.\n\nMy question is could it still retain ABI even the struct has changed?\n\nIf there is limitation on 13-5.15, could I just take revert patch to fix the deadlock issue?\nhttps://android-review.git.corp.google.com/c/kernel/common/+/2648899\n\nIt wouldn\u0027t fit current upstream 5.15 or 14-5.15, but it will keep original lock flow without regression issue and it does not break ABI.",
+      "parentUuid": "3e337afc_69b2dc9d",
+      "range": {
+        "startLine": 910,
+        "startChar": 1,
+        "endLine": 910,
+        "endChar": 22
+      },
+      "revId": "4468e544e81edde92205d6130b7b6c9d6dc00129",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21e6c824_cec66758",
         "filename": "sound/soc/soc-core.c",
         "patchSetId": 6
