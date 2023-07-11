@@ -400,9 +400,34 @@ DECLARE_HOOK(android_vh_sched_pelt_multiplier,
 	TP_PROTO(unsigned int old, unsigned int cur, int *ret),
 	TP_ARGS(old, cur, ret));
 
+<<<<<<< HEAD   (f62607aa89509bcda2fc90a13a027fa9da9e017e ANDROID: ABI: update symbol list for mtk)
 DECLARE_RESTRICTED_HOOK(android_rvh_post_init_entity_util_avg,
 	TP_PROTO(struct sched_entity *se),
 	TP_ARGS(se), 1);
+||||||| BASE   (06a574beb9fb84eee2bf57b817b191a6f123bb96 ANDROID: fix incorrect #ifdef for CONFIG_ANDROID_VENDOR_OEM_)
+DECLARE_HOOK(android_vh_tick_nohz_idle_stop_tick,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
+DECLARE_HOOK(android_vh_mmput,
+	TP_PROTO(struct mm_struct *mm),
+	TP_ARGS(mm));
+=======
+DECLARE_HOOK(android_vh_tick_nohz_idle_stop_tick,
+	TP_PROTO(void *unused),
+	TP_ARGS(unused));
+DECLARE_HOOK(android_vh_mmput,
+	TP_PROTO(struct mm_struct *mm),
+	TP_ARGS(mm));
+
+DECLARE_HOOK(android_vh_prio_inheritance,
+	TP_PROTO(struct task_struct *p, int *saved_prio, bool *prio_inherited),
+	TP_ARGS(p, saved_prio, prio_inherited));
+
+DECLARE_HOOK(android_vh_prio_restore,
+	TP_PROTO(int saved_prio),
+	TP_ARGS(saved_prio));
+
+>>>>>>> CHANGE (f3b22c78684096edf57aff04e5113c4ddabffcaa ANDROID: fs/proc: Perform priority inheritance around access)
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */

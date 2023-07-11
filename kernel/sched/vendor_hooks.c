@@ -105,5 +105,15 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_move_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc_early);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_free);
+<<<<<<< HEAD   (f62607aa89509bcda2fc90a13a027fa9da9e017e ANDROID: ABI: update symbol list for mtk)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
+||||||| BASE   (06a574beb9fb84eee2bf57b817b191a6f123bb96 ANDROID: fix incorrect #ifdef for CONFIG_ANDROID_VENDOR_OEM_)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_entity_delayed);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_entity_delayed);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
+>>>>>>> CHANGE (f3b22c78684096edf57aff04e5113c4ddabffcaa ANDROID: fs/proc: Perform priority inheritance around access)
