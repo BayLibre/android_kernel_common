@@ -19,6 +19,26 @@
       "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/d302c2398ba269e788a4f37ae57c07a7fcabaa42) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd302c2398ba269e788a4f37ae57c07a7fcabaa42)\n\n```\n      ## include/linux/mm.h ##\n     @@ include/linux/mm.h: enum mf_flags {\n    @@ include/linux/mm.h: extern void shake_page(struct page *p);\n      extern int soft_offline_page(unsigned long pfn, int flags);\n      #ifdef CONFIG_MEMORY_FAILURE\n     +extern void memory_failure_queue(unsigned long pfn, int flags);\n    - extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,\n    - \t\t\t\t\tbool *migratable_cleared);\n    - void num_poisoned_pages_inc(unsigned long pfn);\n    - void num_poisoned_pages_sub(unsigned long pfn, long i);\n    + extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags);\n      #else\n     +static inline void memory_failure_queue(unsigned long pfn, int flags)\n     +{\n     +}\n    -+\n    - static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,\n    - \t\t\t\t\tbool *migratable_cleared)\n    + static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags)\n      {\n    + \treturn 0;\n     \n      ## mm/memory.c ##\n     @@ mm/memory.c: static inline int __wp_page_copy_user(struct page *dst, struct page *src,\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 544328428 android-build.ayeaye-python-dispatcher_20230629.03_p0",
       "revId": "41a3d9bd66c486d3bafcd0871d9dbd4643161656",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048544581",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2653191?revision\u003d3",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "87d8e087_b0e63083",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-11T17:37:44Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/d302c2398ba269e788a4f37ae57c07a7fcabaa42) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd302c2398ba269e788a4f37ae57c07a7fcabaa42)\n\n```\n      ## include/linux/mm.h ##\n     @@ include/linux/mm.h: enum mf_flags {\n    @@ include/linux/mm.h: extern void shake_page(struct page *p);\n      extern int soft_offline_page(unsigned long pfn, int flags);\n      #ifdef CONFIG_MEMORY_FAILURE\n     +extern void memory_failure_queue(unsigned long pfn, int flags);\n    - extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,\n    - \t\t\t\t\tbool *migratable_cleared);\n    - void num_poisoned_pages_inc(unsigned long pfn);\n    - void num_poisoned_pages_sub(unsigned long pfn, long i);\n    + extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags);\n      #else\n     +static inline void memory_failure_queue(unsigned long pfn, int flags)\n     +{\n     +}\n    -+\n    - static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,\n    - \t\t\t\t\tbool *migratable_cleared)\n    + static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags)\n      {\n    + \treturn 0;\n     \n      ## mm/memory.c ##\n     @@ mm/memory.c: static inline int __wp_page_copy_user(struct page *dst, struct page *src,\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 544328428 android-build.ayeaye-python-dispatcher_20230629.03_p0",
+      "revId": "41a3d9bd66c486d3bafcd0871d9dbd4643161656",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
