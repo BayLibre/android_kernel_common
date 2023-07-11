@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c5a171e_7506c003",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2023-07-11T02:10:19Z",
+      "side": 1,
+      "message": "Sorry, I haven\u0027t make myself clearly in the changelog text.\n1. with the patch \"locking/rtmutex: Squash !RT tasks to DEFAULT_PRIO\", we can not inherit prio between cfs tasks in rtmutex, all the cfs\u0027s rtmutex_waiter prio are 120:\nstatic __always_inline int __waiter_prio(struct task_struct *task) {\n        if (!rt_prio(prio))\n            return DEFAULT_PRIO;\n}\n2. we want to mark some important cfs(like renderthread) with a special flag, and hope this flag can be inherited through rtmutex.",
+      "parentUuid": "8accd80d_396046f5",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 152
+      },
+      "revId": "d837e43fdff3b5c8283713870207506a2371dfd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e061b693_c7787024",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-10T15:59:20Z",
       "side": 1,
       "message": "why is this restricted?",
+      "range": {
+        "startLine": 90,
+        "startChar": 29,
+        "endLine": 90,
+        "endChar": 63
+      },
+      "revId": "d837e43fdff3b5c8283713870207506a2371dfd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0742f03_1d0089b8",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2023-07-11T02:10:19Z",
+      "side": 1,
+      "message": "I don\u0027t quite understand the difference between normal hooks and restrict hooks. But I know there are no more than two modulers can register a same restrict hook, this can avoid mutual influence on each other.\nIt\u0027s sufficient here to use the normal one?",
+      "parentUuid": "e061b693_c7787024",
       "range": {
         "startLine": 90,
         "startChar": 29,
