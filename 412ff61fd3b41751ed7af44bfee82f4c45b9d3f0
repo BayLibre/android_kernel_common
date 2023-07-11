@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048550983",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2620995?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "e9cf77ea_cfec641c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-11T17:55:16Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/cb1f4c2c15bb708b1ec8c70926c43ab6b6c93ecb) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dcb1f4c2c15bb708b1ec8c70926c43ab6b6c93ecb)\n\n```\n      ## drivers/firmware/arm_ffa/driver.c ##\n     @@ drivers/firmware/arm_ffa/driver.c: static int ffa_memory_reclaim(u64 g_handle, u32 flags)\n      \treturn 0;\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_memory_reclaim(u64 g_handle, u\n     +static int ffa_features(u32 func_feat_id, u32 input_props,\n     +\t\t\tu32 *if_props_1, u32 *if_props_2)\n     +{\n    -+\tffa_value_t id;\n    ++\tstruct arm_smccc_1_2_regs id;\n     +\n     +\tif (!ARM_SMCCC_IS_FAST_CALL(func_feat_id) \u0026\u0026 input_props) {\n     +\t\tpr_err(\"%s: Invalid Parameters: %x, %x\", __func__,\n    @@ drivers/firmware/arm_ffa/driver.c: static int ffa_memory_reclaim(u64 g_handle, u\n     +\t\treturn ffa_to_linux_errno(FFA_RET_INVALID_PARAMETERS);\n     +\t}\n     +\n    -+\tinvoke_ffa_fn((ffa_value_t){\n    ++\tinvoke_ffa_fn((struct arm_smccc_1_2_regs){\n     +\t\t.a0 \u003d FFA_FEATURES, .a1 \u003d func_feat_id, .a2 \u003d input_props,\n     +\t\t}, \u0026id);\n     +\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 544328428 android-build.ayeaye-python-dispatcher_20230629.03_p0",
+      "revId": "412ff61fd3b41751ed7af44bfee82f4c45b9d3f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
