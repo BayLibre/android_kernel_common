@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048543297",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2653188?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "a68462b7_b4261d49",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-11T16:42:19Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/6c26bd4384da24841bac4f067741bbca18b0fb74) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d6c26bd4384da24841bac4f067741bbca18b0fb74)\n\n```\n      ## mm/mmap.c ##\n    -@@ mm/mmap.c: do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,\n    +@@ mm/mmap.c: do_mas_align_munmap(struct ma_state *mas, struct vm_area_struct *vma,\n      \t\t}\n      \t\tvma_start_write(next);\n    - \t\tmas_set_range(\u0026mas_detach, next-\u003evm_start, next-\u003evm_end - 1);\n    + \t\tmas_set(\u0026mas_detach, count);\n     -\t\tif (mas_store_gfp(\u0026mas_detach, next, GFP_KERNEL))\n     +\t\terror \u003d mas_store_gfp(\u0026mas_detach, next, GFP_KERNEL);\n     +\t\tif (error)\n      \t\t\tgoto munmap_gather_failed;\n      \t\tvma_mark_detached(next, true);\n      \t\tif (next-\u003evm_flags \u0026 VM_LOCKED)\n    -@@ mm/mmap.c: do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,\n    - \t\tBUG_ON(count !\u003d test_count);\n    - \t}\n    - #endif\n    --\t/* Point of no return */\n    --\terror \u003d -ENOMEM;\n    - \tvma_iter_set(vmi, start);\n    --\tif (vma_iter_clear_gfp(vmi, start, end, GFP_KERNEL))\n    -+\terror \u003d vma_iter_clear_gfp(vmi, start, end, GFP_KERNEL);\n    -+\tif (error)\n    - \t\tgoto clear_tree_failed;\n    - \n    -+\t/* Point of no return */\n    - \tmm-\u003elocked_vm -\u003d locked_vm;\n    - \tmm-\u003emap_count -\u003d count;\n    - \t/*\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 544328428 android-build.ayeaye-python-dispatcher_20230629.03_p0",
+      "revId": "e3009794a64f222fda861432bfde405dca009c73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
