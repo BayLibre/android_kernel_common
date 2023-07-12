@@ -45,6 +45,23 @@
       },
       "revId": "76a40184f7f7e26a15588e820c62d15158b4177e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aedb01d0_9f988c68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962105
+      },
+      "writtenOn": "2023-07-12T03:12:57Z",
+      "side": 1,
+      "message": "Thank you very much for carefully reviewing the patch.\nThe function mem_dump_obj() is available in KMI of android 13-5.15 (android/abi_gki_aarch64_qcom).\nCurrently, GKI2.0 is being used, and we need to develop some debugging functions to use the function mem_dump_obj() to obtain some memory information to confirm memory or stability issues.\nThe function kmem_valid_obj() is used in conjunction with mem_dump_obj() to reduce log printing.",
+      "revId": "76a40184f7f7e26a15588e820c62d15158b4177e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
