@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0476b1c8_3a9524ba",
+        "filename": "drivers/virt/geniezone/gzvm_main.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-12T16:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29639e9a_a68a3544",
+      "range": {
+        "startLine": 114,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 15
+      },
+      "revId": "fa78950e12337691da1507abcbb20771abcb308f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb234fba_6bf99f23",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-03T19:26:18Z",
       "side": 1,
       "message": "where are the structures for these ioctls?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 62
+      },
+      "revId": "fa78950e12337691da1507abcbb20771abcb308f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "469d823e_3aa0f3c0",
+        "filename": "include/uapi/linux/gzvm.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-12T16:56:01Z",
+      "side": 1,
+      "message": "We pass the capability in concern as argument to check whether it is supported or not. The return value is stated in the newly added documentation.",
+      "parentUuid": "bb234fba_6bf99f23",
       "range": {
         "startLine": 25,
         "startChar": 0,
