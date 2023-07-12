@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bf1af0c_48146cc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2023-07-12T02:56:29Z",
+      "side": 1,
+      "message": "Get it 😊\n1. Our android OS has many important cfs tasks, such as RenderThread, PMS..., we call them \"user-aware threads\" and give them different \"user-aware property\"(which is not the same concept with nice value used in scheduler). With this \"user-aware property\", we have an ability to control kernel resources more granularly.\n2. We want this \"user-aware property\" to be inherited across rtmutex, also, we will use rtmutex in our feature.\n3. \"user-aware property\" will be mapped to different rtmutex_waiter prios (100, 101, 102...). And the DEFAULT_PRIO is just used for those normal cfs tasks we don\u0027t care about.\n4. The rtmutex owner will inherit \"user-aware property\"(this member is saved in struct task_struct) once the \"user-aware thread\" is blocked on it, and clear it\u0027s \"user-aware property\" when unlock.",
+      "parentUuid": "f2ee8e56_613ace55",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 152
+      },
+      "revId": "d837e43fdff3b5c8283713870207506a2371dfd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e061b693_c7787024",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 1
