@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa1220c3_64fc0546",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-07-12T03:23:21Z",
+      "side": 1,
+      "message": "Ok, please update the commit message with similar explanation.",
+      "parentUuid": "3bf1af0c_48146cc9",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 152
+      },
+      "revId": "d837e43fdff3b5c8283713870207506a2371dfd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e061b693_c7787024",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 1
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "I don\u0027t quite understand the difference between normal hooks and restrict hooks. But I know there are no more than two modulers can register a same restrict hook, this can avoid mutual influence on each other.\nIt\u0027s sufficient here to use the normal one?",
       "parentUuid": "e061b693_c7787024",
+      "range": {
+        "startLine": 90,
+        "startChar": 29,
+        "endLine": 90,
+        "endChar": 63
+      },
+      "revId": "d837e43fdff3b5c8283713870207506a2371dfd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a671265f_293eacd3",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-07-12T03:23:21Z",
+      "side": 1,
+      "message": "Given all the other tracepoints in this file are not restricted, I suspect you can get away with it not being restricted here. (Though I suspect the hook for kernel/sched/core.c may need to be restricted).",
+      "parentUuid": "b0742f03_1d0089b8",
       "range": {
         "startLine": 90,
         "startChar": 29,
