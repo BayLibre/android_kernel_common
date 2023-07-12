@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e080ef7_da6249dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-12T17:08:29Z",
+      "side": 1,
+      "message": "We move it to architecture specific implementation.",
+      "parentUuid": "5598afb1_5a8b1ce1",
+      "revId": "dbe58af1ae36b3e545784a0e111c2e1a992efe50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cd50037_ef305a09",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-07-03T19:33:22Z",
       "side": 1,
       "message": "hard coded irq???",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 23
+      },
+      "revId": "dbe58af1ae36b3e545784a0e111c2e1a992efe50",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e5f50a9_371947d2",
+        "filename": "include/uapi/linux/gzvm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-12T17:08:29Z",
+      "side": 1,
+      "message": "It\u0027s moved to `arch/arm64/geniezone/gzvm_arch_common.h` around line 54.",
+      "parentUuid": "4cd50037_ef305a09",
       "range": {
         "startLine": 61,
         "startChar": 8,
