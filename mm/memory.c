@@ -4881,6 +4881,18 @@ static vm_fault_t do_metadata_none_page(struct vm_fault *vmf)
 			put_page(page);
 			return VM_FAULT_RETRY;
 		} else if (ret) {
+			// TODO: support migrating swap metadata with the page.
+			if (unlikely(page_metadata_in_swap(page))) {
+				vm_fault_t err;
+
+				if (vmf->flags & FAULT_FLAG_TRIED)
+					err = VM_FAULT_OOM;
+				else
+					err = VM_FAULT_RETRY;
+
+				put_page(page);
+				return err;
+			}
 			do_migrate = true;
 		}
 	}

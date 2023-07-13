@@ -1072,6 +1072,13 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
 		mte_restore_page_tags_by_swp_entry(entry, &folio->page);
 }
 
+#ifdef CONFIG_ARM64_MTE_TAG_STORAGE
+
+#define __HAVE_ARCH_SWAP_PREPARE_TO_RESTORE
+int arch_swap_prepare_to_restore(swp_entry_t entry, struct folio *folio);
+
+#endif /* CONFIG_ARM64_MTE_TAG_STORAGE */
+
 #endif /* CONFIG_ARM64_MTE */
 
 /*

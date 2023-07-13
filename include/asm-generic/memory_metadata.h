@@ -39,6 +39,10 @@ static inline bool vma_has_metadata(struct vm_area_struct *vma)
 {
 	return false;
 }
+static inline bool page_metadata_in_swap(struct page *page)
+{
+	return false;
+}
 #endif /* !CONFIG_MEMORY_METADATA */
 
 #endif /* __ASM_GENERIC_MEMORY_METADATA_H */

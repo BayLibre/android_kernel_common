@@ -37,6 +37,20 @@ DEFINE_STATIC_KEY_FALSE(mte_async_or_asymm_mode);
 EXPORT_SYMBOL_GPL(mte_async_or_asymm_mode);
 #endif
 
+static bool mte_restore_saved_tags(struct page *page)
+{
+	void *tags = mte_erase_page_tags_by_pfn(page);
+
+	if (likely(!tags))
+		return false;
+
+	mte_restore_page_tags_from_mem(page_address(page), tags);
+	mte_free_tags_mem(tags);
+	set_page_mte_tagged(page);
+
+	return true;
+}
+
 void mte_sync_tags(pte_t *pteval)
 {
 	struct page *page = pte_page(*pteval);
@@ -51,6 +65,9 @@ void mte_sync_tags(pte_t *pteval)
 
 		/* if PG_mte_tagged is set, tags have already been initialised */
 		if (!page_mte_tagged(page)) {
+			if (metadata_storage_enabled() &&
+			    unlikely(mte_restore_saved_tags(page)))
+				continue;
 			mte_clear_page_tags(page_address(page));
 			set_page_mte_tagged(page);
 		}
