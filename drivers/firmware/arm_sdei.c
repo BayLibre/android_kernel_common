@@ -852,6 +852,7 @@ static void sdei_smccc_hvc(unsigned long function_id,
 }
 NOKPROBE_SYMBOL(sdei_smccc_hvc);
 
+#ifdef CONFIG_ACPI_APEI_GHES
 int sdei_register_ghes(struct ghes *ghes, sdei_event_callback *normal_cb,
 		       sdei_event_callback *critical_cb)
 {
@@ -918,6 +919,7 @@ int sdei_unregister_ghes(struct ghes *ghes)
 
 	return err;
 }
+#endif /* CONFIG_ACPI_APEI_GHES */
 
 static int sdei_get_conduit(struct platform_device *pdev)
 {
@@ -1037,6 +1039,7 @@ static struct platform_driver sdei_driver = {
 	.probe		= sdei_probe,
 };
 
+#ifdef CONFIG_ACPI_APEI_GHES
 static bool __init sdei_present_acpi(void)
 {
 	acpi_status status;
@@ -1058,14 +1061,24 @@ static bool __init sdei_present_acpi(void)
 
 	return true;
 }
+#else
+static bool __init sdei_present_acpi(void)
+{
+	return false;
+}
+#endif /* CONFIG_ACPI_APEI_GHES */
 
 void __init sdei_init(void)
 {
 	struct platform_device *pdev;
 	int ret;
+	static bool sdei_init_complete = false;
+
+	if (sdei_init_complete)
+		return;
 
 	ret = platform_driver_register(&sdei_driver);
-	if (ret || !sdei_present_acpi())
+	if (ret || (!sdei_present_acpi() && IS_ENABLED(CONFIG_ACPI_APEI_GHES)))
 		return;
 
 	pdev = platform_device_register_simple(sdei_driver.driver.name,
@@ -1076,6 +1089,8 @@ void __init sdei_init(void)
 		pr_info("Failed to register ACPI:SDEI platform device %d\n",
 			ret);
 	}
+
+	sdei_init_complete = true;
 }
 
 int sdei_event_handler(struct pt_regs *regs,
