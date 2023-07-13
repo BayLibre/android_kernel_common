@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048702421",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2655961?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "2be63e81_d23d6676",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-13T03:04:14Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 547503078 android-build.ayeaye-python-dispatcher_20230712.03_p0",
+      "revId": "348a8f808226ab72a966084aad2797c9c3b6cbc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048702421",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2655961?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "9710280b_329a58dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-13T03:04:14Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2651556](https://r.android.com/c/2651556) on branch android13-5.15.\n\n```\n      ## android/abi_gki_aarch64_oplus ##\n     @@\n    +   __traceiter_android_vh_cache_show\n        __traceiter_android_vh_check_uninterruptible_tasks_dn\n    -   __traceiter_android_vh_cleanup_old_buffers_bypass\n        __traceiter_android_vh_cma_drain_all_pages_bypass\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (63dc3a FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +  __traceiter_android_vh_compact_finished\n    -   __traceiter_android_vh_alloc_pages_reclaim_bypass\n    -   __traceiter_android_vh_free_unref_page_bypass\n    -   __traceiter_android_vh_kvmalloc_node_use_vmalloc\n    ++  __traceiter_android_vh_alloc_pages_reclaim_bypass\n    ++  __traceiter_android_vh_free_unref_page_bypass\n    ++  __traceiter_android_vh_kvmalloc_node_use_vmalloc\n    ++  __traceiter_android_vh_should_alloc_pages_retry\n    ++  __traceiter_android_vh_unreserve_highatomic_bypass\n    ++  __traceiter_android_vh_rmqueue_bulk_bypass\n    ++  __traceiter_android_vh_tune_mmap_readaround\n    ++  __traceiter_android_vh_ra_tuning_max_page\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (aa7bd5 ANDROID: GKI: Update symbols to symbol list)\n    +   __traceiter_android_vh_cpufreq_acct_update_power\n    +   __traceiter_android_vh_del_page_from_lrulist\n    +   __traceiter_android_vh_do_futex\n     @@\n        __traceiter_android_vh_irqtime_account_process_tick\n        __traceiter_android_vh_killed_process\n    @@ android/abi_gki_aarch64_oplus\n        __traceiter_android_vh_mem_cgroup_alloc\n        __traceiter_android_vh_mem_cgroup_css_offline\n     @@\n    -   __tracepoint_android_vh_check_uninterruptible_tasks_dn\n    -   __tracepoint_android_vh_cleanup_old_buffers_bypass\n    +   __tracepoint_android_vh_build_sched_domains\n    +   __tracepoint_android_vh_cache_show\n        __tracepoint_android_vh_cma_drain_all_pages_bypass\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (63dc3a FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +  __tracepoint_android_vh_compact_finished\n    -   __tracepoint_android_vh_alloc_pages_reclaim_bypass\n    -   __tracepoint_android_vh_free_unref_page_bypass\n    -   __tracepoint_android_vh_kvmalloc_node_use_vmalloc\n    ++  __tracepoint_android_vh_alloc_pages_reclaim_bypass\n    ++  __tracepoint_android_vh_free_unref_page_bypass\n    ++  __tracepoint_android_vh_kvmalloc_node_use_vmalloc\n    ++  __tracepoint_android_vh_should_alloc_pages_retry\n    ++  __tracepoint_android_vh_unreserve_highatomic_bypass\n    ++  __tracepoint_android_vh_rmqueue_bulk_bypass\n    ++  __tracepoint_android_vh_tune_mmap_readaround\n    ++  __tracepoint_android_vh_ra_tuning_max_page\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (aa7bd5 ANDROID: GKI: Update symbols to symbol list)\n    +   __tracepoint_android_vh_cpufreq_acct_update_power\n    +   __tracepoint_android_vh_del_page_from_lrulist\n    +   __tracepoint_android_vh_do_futex\n     @@\n        __tracepoint_android_vh_irqtime_account_process_tick\n        __tracepoint_android_vh_killed_process\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 547503078 android-build.ayeaye-python-dispatcher_20230712.03_p0",
+      "revId": "348a8f808226ab72a966084aad2797c9c3b6cbc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
