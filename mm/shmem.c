@@ -1787,6 +1787,10 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
 	}
 	folio_wait_writeback(folio);
 
+	error = arch_swap_prepare_to_restore(swap, folio);
+	if (error)
+		goto unlock;
+
 	/*
 	 * Some architectures may have to restore extra metadata to the
 	 * folio after reading from swap.
