@@ -3777,6 +3777,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	bool exclusive = false;
 	swp_entry_t entry;
 	pte_t pte;
+	int error;
 	vm_fault_t ret = 0;
 	void *shadow = NULL;
 
@@ -3945,6 +3946,16 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	}
 
 	cgroup_throttle_swaprate(page, GFP_KERNEL);
+
+	/*
+	 * Some architecture may need to perform certain operations before
+	 * arch_swap_restore() in preemptible context (like memory allocations).
+	 */
+	error = arch_swap_prepare_to_restore(entry, folio);
+	if (error) {
+		ret = VM_FAULT_ERROR;
+		goto out_page;
+	}
 
 	/*
 	 * Back out if somebody else already faulted in this pte.
