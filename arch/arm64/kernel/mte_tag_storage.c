@@ -603,7 +603,8 @@ void free_metadata_storage(struct page *page, int order)
 	struct tag_region *region;
 	unsigned long page_va;
 	unsigned long flags;
-	int ret;
+	void *tags;
+	int i, ret;
 
 	if (WARN_ONCE(!page_mte_tagged(page), "pfn 0x%lx is not tagged", page_to_pfn(page)))
 		return;
@@ -618,6 +619,12 @@ void free_metadata_storage(struct page *page, int order)
 	 * page contents when it gets freed back to the page allocator.
 	 */
 	dcache_inval_tags_poc(page_va, page_va + (PAGE_SIZE << order));
+
+	for (i = 0; i < (1 << order); i++) {
+		tags = mte_erase_page_tags_by_pfn(page + i);
+		if (unlikely(tags))
+			mte_free_tags_mem(tags);
+	}
 
 	end_block = start_block + order_to_num_blocks(order) * region->block_size;
 

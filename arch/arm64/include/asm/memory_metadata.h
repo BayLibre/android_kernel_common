@@ -43,6 +43,7 @@ static inline bool vma_has_metadata(struct vm_area_struct *vma)
 
 int reserve_metadata_storage(struct page *page, int order, gfp_t gfp_mask);
 void free_metadata_storage(struct page *page, int order);
+bool page_metadata_in_swap(struct page *page);
 #endif /* CONFIG_MEMORY_METADATA */
 
 #endif /* __ASM_MEMORY_METADATA_H  */
