@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81e4b8f3_ef29f9eb",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-13T22:13:46Z",
+      "side": 1,
+      "message": "By keeping the spinlock variable in the struct and just renaming it to `unused`, we will ensure backwards compatibility for drivers that are not re-compiled with this GKI kernel. When they try to re-compile, if they are using the `dpcm_lock`, then they will get a build failure and can re-factor their OOT drivers to use the new locking logic.\n\nI think that\u0027s reasonable.",
+      "parentUuid": "8e63ed90_ab7fcf23",
+      "range": {
+        "startLine": 910,
+        "startChar": 1,
+        "endLine": 910,
+        "endChar": 22
+      },
+      "revId": "4468e544e81edde92205d6130b7b6c9d6dc00129",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21e6c824_cec66758",
         "filename": "sound/soc/soc-core.c",
         "patchSetId": 6
