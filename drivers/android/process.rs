@@ -622,6 +622,14 @@ impl Process {
         Ok(())
     }
 
+    /// Decrements the refcount of the given node, if one exists.
+    pub(crate) fn update_node(&self, ptr: u64, cookie: u64, strong: bool) {
+        let mut inner = self.inner.lock();
+        if let Ok(Some(node)) = inner.get_existing_node(ptr, cookie) {
+            inner.update_node_refcount(&node, false, strong, 1, None);
+        }
+    }
+
     pub(crate) fn inc_ref_done(&self, reader: &mut UserSlicePtrReader, strong: bool) -> Result {
         let ptr = reader.read::<u64>()?;
         let cookie = reader.read::<u64>()?;
