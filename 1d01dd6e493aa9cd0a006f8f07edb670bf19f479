@@ -16,6 +16,24 @@
       "message": "this is not allowed to be hardcoded, please put this in your dts.",
       "revId": "1d01dd6e493aa9cd0a006f8f07edb670bf19f479",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5573975_4db827e6",
+        "filename": "arch/arm64/geniezone/gzvm_arch_common.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-14T02:14:55Z",
+      "side": 1,
+      "message": "After some internal discussion, we\u0027d like to propose a solution to remove the hard-coded irq number here and make it provided by GenieZone hypervisor. The reason is that this is a virtual interrupt handled by GenieZone hypervisor and injected to guest linux when hrtimer is fired for switching guest timer to host. Thus, the irq number might not be necessarily stated here either hard-coded or in dts for GenieZone hypervisor driver(gzvm-ko). Please refer to the following pseudo code for demonstration and let us know if it works for you.\n\n```\n// this hwstate would be filled by GenieZone hypervisor\nstruct gzvm_vcpu_hwstate {\n        ..snip..\n        __le32 vtimer_irq_num;\n};\n\n\nstatic void mtimer_irq_forward(struct gzvm_vcpu *vcpu)\n{\n    gzvm_vgic_inject_ppi(vcpu-\u003egzvm, vcpu-\u003evcpuid, vcpu-\u003ehwstate-\u003evtimer_irq_num, 1);\n}\n```",
+      "parentUuid": "e430176f_a7160d35",
+      "revId": "1d01dd6e493aa9cd0a006f8f07edb670bf19f479",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
