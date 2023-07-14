@@ -4345,6 +4345,7 @@ static inline unsigned int gfp_to_alloc_flags_cma(gfp_t gfp_mask,
 #ifdef CONFIG_CMA
 	if (gfp_migratetype(gfp_mask) == MIGRATE_MOVABLE && gfp_mask & __GFP_CMA)
 		alloc_flags |= ALLOC_CMA;
+	trace_android_vh_alloc_flags_cma_adjust(gfp_mask, &alloc_flags);
 #endif
 	return alloc_flags;
 }
