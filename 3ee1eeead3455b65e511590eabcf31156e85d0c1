@@ -296,6 +296,30 @@
       },
       "revId": "3ee1eeead3455b65e511590eabcf31156e85d0c1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b933af13_8255764d",
+        "filename": "include/linux/gzvm_drv.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-07-17T19:38:44Z",
+      "side": 1,
+      "message": "If you need access to the device, then pass it around properly in the functions, otherwise making it global like this does not help with anything real.",
+      "parentUuid": "ebb5868f_4e728d36",
+      "range": {
+        "startLine": 92,
+        "startChar": 25,
+        "endLine": 92,
+        "endChar": 33
+      },
+      "revId": "3ee1eeead3455b65e511590eabcf31156e85d0c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
