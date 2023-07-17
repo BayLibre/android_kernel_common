@@ -51,6 +51,24 @@
       "message": "Can you explain in more detail why this fixes a race? It seems like this would do nothing since `rproc-\u003erecovery_disabled` can still end up as either true or false based on which task grabs the mutex first. How is this different from each just setting the value (which is an atomic operation). Seems like the mutexes aren\u0027t protecting anything.",
       "revId": "c7c9d4bd6afb26e5c6c098db3f15b338314b708f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e15628e_3cfa42da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1931330
+      },
+      "writtenOn": "2023-07-17T21:53:59Z",
+      "side": 1,
+      "message": "Hey Todd, we were missing another tracepoint change in the remoteproc_sysfs file. Could you review #3.",
+      "parentUuid": "9c7eb4db_a48a9b0b",
+      "revId": "c7c9d4bd6afb26e5c6c098db3f15b338314b708f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
