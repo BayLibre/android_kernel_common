@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d27f57_fa890a0c",
+        "filename": "drivers/virt/geniezone/gzvm_vm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-17T08:28:28Z",
+      "side": 1,
+      "message": "The lock is ought to be protecting `gzvm_list`, the list maintains the running VM instances, from race condition.",
+      "parentUuid": "dd385e5d_57368b86",
+      "range": {
+        "startLine": 15,
+        "startChar": 20,
+        "endLine": 15,
+        "endChar": 34
+      },
+      "revId": "3ee1eeead3455b65e511590eabcf31156e85d0c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93ee8d74_9fa2df9e",
@@ -64,6 +88,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4144a372_39e55951",
+        "filename": "drivers/virt/geniezone/gzvm_vm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-17T08:28:28Z",
+      "side": 1,
+      "message": "It\u0027s the list maintaining all the running VM instances.",
+      "parentUuid": "93ee8d74_9fa2df9e",
+      "range": {
+        "startLine": 16,
+        "startChar": 17,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "3ee1eeead3455b65e511590eabcf31156e85d0c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc33d8de_e579831d",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-07-13T17:50:51Z",
       "side": 1,
       "message": "when the kernel is working properly, it is quiet.",
+      "range": {
+        "startLine": 366,
+        "startChar": 1,
+        "endLine": 366,
+        "endChar": 44
+      },
+      "revId": "3ee1eeead3455b65e511590eabcf31156e85d0c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3f6027d_4ab720db",
+        "filename": "drivers/virt/geniezone/gzvm_vm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-17T08:28:28Z",
+      "side": 1,
+      "message": "We\u0027d like to turn it from `pr_info` to `pr_debug` to make sure at least we could see the log when VM is spawn and running.",
+      "parentUuid": "dc33d8de_e579831d",
       "range": {
         "startLine": 366,
         "startChar": 1,
@@ -192,6 +264,30 @@
       "writtenOn": "2023-07-13T17:50:51Z",
       "side": 1,
       "message": "why is this not static?",
+      "range": {
+        "startLine": 92,
+        "startChar": 25,
+        "endLine": 92,
+        "endChar": 33
+      },
+      "revId": "3ee1eeead3455b65e511590eabcf31156e85d0c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebb5868f_4e728d36",
+        "filename": "include/linux/gzvm_drv.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-07-17T08:28:28Z",
+      "side": 1,
+      "message": "In order to \"use `dev_err()` whenever possible\"[ref], we need to declare a variable of a device to put the content of debug information. As a consequence, we\u0027d like to share this variable among all the files for simplicity. That\u0027s why we extern this gzvm_dev for elsewhere might need it.\n\n[ref] https://patchwork.kernel.org/project/linux-mediatek/patch/20230413090735.4182-4-yi-de.wu@mediatek.com/#25298694",
+      "parentUuid": "2d306c3a_fff47a57",
       "range": {
         "startLine": 92,
         "startChar": 25,
