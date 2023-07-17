@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048928417",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2658201?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "15a92a29_cff57779",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-17T06:29:30Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 547772451 android-build.ayeaye-python-dispatcher_20230713.03_p0",
+      "revId": "e61f85d171cb33180687e08c05a327ef9c0f73fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000048928417",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2658201?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "5a2d4292_f2afd19d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-17T06:29:30Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2618489](https://r.android.com/c/2618489) on branch android13-5.15.\n\n```\n      ## include/linux/percpu-rwsem.h ##\n     @@ include/linux/percpu-rwsem.h: static inline bool percpu_down_read_trylock(struct percpu_rw_semaphore *sem)\n    @@ kernel/locking/rwsem.c: static inline void __up_read(struct rw_semaphore *sem)\n      \tDEBUG_RWSEMS_WARN_ON(sem-\u003emagic !\u003d sem, sem);\n      \tDEBUG_RWSEMS_WARN_ON(!is_rwsem_reader_owned(sem), sem);\n      \n    --\ttrace_android_vh_record_rwsem_lock_starttime(current, 0);\n    - \tpreempt_disable();\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (63dc3a FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)\n    + \ttrace_android_vh_record_rwsem_lock_starttime(current, 0);\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++\tpreempt_disable();\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (be4040 ANDROID: vendor_hook: Avoid clearing protect-flag before wak)\n      \trwsem_clear_reader_owned(sem);\n      \ttmp \u003d atomic_long_add_return_release(-RWSEM_READER_BIAS, \u0026sem-\u003ecount);\n    + \tDEBUG_RWSEMS_WARN_ON(tmp \u003c 0, sem);\n     @@ kernel/locking/rwsem.c: static inline void __up_read(struct rw_semaphore *sem)\n      \t\tclear_nonspinnable(sem);\n      \t\trwsem_wake(sem);\n      \t}\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (63dc3a FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +\ttrace_android_vh_record_rwsem_lock_starttime(current, 0);\n    - \tpreempt_enable();\n    ++\tpreempt_enable();\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (be4040 ANDROID: vendor_hook: Avoid clearing protect-flag before wak)\n      }\n      \n    + /*\n     @@ kernel/locking/rwsem.c: static inline void __up_write(struct rw_semaphore *sem)\n      \tDEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) !\u003d current) \u0026\u0026\n      \t\t\t    !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE), sem);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 547772451 android-build.ayeaye-python-dispatcher_20230713.03_p0",
+      "revId": "e61f85d171cb33180687e08c05a327ef9c0f73fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
