@@ -12,6 +12,7 @@ use kernel::{
 };
 
 use crate::{
+    allocation::TranslatedFds,
     defs::*,
     error::{BinderError, BinderResult},
     node::{Node, NodeRef},
@@ -45,18 +46,20 @@ impl Transaction {
         tr: &BinderTransactionDataSg,
     ) -> BinderResult<Arc<Self>> {
         let trd = &tr.transaction_data;
+        let allow_fds = node_ref.node.flags & FLAT_BINDER_FLAG_ACCEPTS_FDS != 0;
         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
         let to = node_ref.node.owner.clone();
-        let mut alloc = match from.copy_transaction_data(&to, tr, txn_security_ctx_off.as_mut()) {
-            Ok(alloc) => alloc,
-            Err(err) => {
-                if !err.is_dead() {
-                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
+        let mut alloc =
+            match from.copy_transaction_data(&to, tr, allow_fds, txn_security_ctx_off.as_mut()) {
+                Ok(alloc) => alloc,
+                Err(err) => {
+                    if !err.is_dead() {
+                        pr_warn!("Failure in copy_transaction_data: {:?}", err);
+                    }
+                    return Err(err);
                 }
-                return Err(err);
-            }
-        };
+            };
         if trd.flags & TF_ONE_WAY != 0 {
             if stack_next.is_some() {
                 pr_warn!("Oneway transaction should not be in a transaction stack.");
@@ -93,9 +96,10 @@ impl Transaction {
         from: &Arc<Thread>,
         to: Arc<Process>,
         tr: &BinderTransactionDataSg,
+        allow_fds: bool,
     ) -> BinderResult<Arc<Self>> {
         let trd = &tr.transaction_data;
-        let mut alloc = match from.copy_transaction_data(&to, tr, None) {
+        let mut alloc = match from.copy_transaction_data(&to, tr, allow_fds, None) {
             Ok(alloc) => alloc,
             Err(err) => {
                 pr_warn!("Failure in copy_transaction_data: {:?}", err);
@@ -203,6 +207,24 @@ impl Transaction {
             }
         }
     }
+
+    fn prepare_file_list(&self) -> Result<TranslatedFds> {
+        let mut alloc = self.to.buffer_get(self.data_address).ok_or(ESRCH)?;
+
+        match alloc.translate_fds() {
+            Ok(translated) => {
+                alloc.keep_alive();
+                Ok(translated)
+            }
+            Err(err) => {
+                // Free the allocation eagerly, and don't attempt to free it again when we drop the
+                // transaction.
+                drop(alloc);
+                self.free_allocation.store(false, Ordering::Relaxed);
+                Err(err)
+            }
+        }
+    }
 }
 
 impl DeliverToRead for Transaction {
@@ -213,6 +235,13 @@ impl DeliverToRead for Transaction {
                 self.from.deliver_reply(reply, &self);
             }
         });
+        let files = if let Ok(list) = self.prepare_file_list() {
+            list
+        } else {
+            // On failure to process the list, we send a reply back to the sender and ignore the
+            // transaction on the recipient.
+            return Ok(true);
+        };
 
         let mut tr_sec = BinderTransactionDataSecctx::default();
         let tr = tr_sec.tr_data();
@@ -264,6 +293,8 @@ impl DeliverToRead for Transaction {
         // `drop` is guaranteed to see this relaxed store because `Arc` guarantess that everything
         // that happens when an object is referenced happens-before the eventual `drop`.
         self.free_allocation.store(false, Ordering::Relaxed);
+
+        files.commit();
 
         // When this is not a reply and not a oneway transaction, update `current_transaction`. If
         // it's a reply, `current_transaction` has already been updated appropriately.
