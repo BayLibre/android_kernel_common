@@ -156,7 +156,7 @@ pub mod flags {
 ///   closed.
 /// * A light refcount must be dropped before returning to userspace.
 #[repr(transparent)]
-pub struct File(Opaque<bindings::file>);
+pub struct File(pub(crate) Opaque<bindings::file>);
 
 // SAFETY: By design, the only way to access a `File` is via an immutable reference or an `ARef`.
 // This means that the only situation in which a `File` can be accessed mutably is when the
