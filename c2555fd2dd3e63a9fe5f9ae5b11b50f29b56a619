@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a602b39f_9c411b72",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-07-18T17:01:15Z",
+      "side": 1,
+      "message": "this enum is uapi and cannot be inserted in the middle",
+      "range": {
+        "startLine": 182,
+        "startChar": 1,
+        "endLine": 182,
+        "endChar": 31
+      },
+      "revId": "c2555fd2dd3e63a9fe5f9ae5b11b50f29b56a619",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "765c3fe3_0cd5a632",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-07-18T17:01:15Z",
+      "side": 1,
+      "message": "insert before here",
+      "range": {
+        "startLine": 202,
+        "startChar": 1,
+        "endLine": 202,
+        "endChar": 12
+      },
+      "revId": "c2555fd2dd3e63a9fe5f9ae5b11b50f29b56a619",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "746e3459_6f9bd808",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6819,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-07-18T17:01:15Z",
+      "side": 1,
+      "message": "you need to change the documentation file",
+      "range": {
+        "startLine": 6819,
+        "startChar": 15,
+        "endLine": 6819,
+        "endChar": 36
+      },
+      "revId": "c2555fd2dd3e63a9fe5f9ae5b11b50f29b56a619",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41848100_50879bc1",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6823,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-07-18T17:01:15Z",
+      "side": 1,
+      "message": "Maybe we should use the _minmax version and set\n  .extra1 to \u00260\nand\n  .extra2 to \u0026600\nperhaps...\n\n(see SYSCTL_ONE up above)",
+      "range": {
+        "startLine": 6823,
+        "startChar": 18,
+        "endLine": 6823,
+        "endChar": 31
+      },
+      "revId": "c2555fd2dd3e63a9fe5f9ae5b11b50f29b56a619",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be5fcc3_7635f937",
+        "filename": "net/ipv6/ndisc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-07-18T17:01:15Z",
+      "side": 1,
+      "message": "kernel code would probably often skip !\u003d 0",
+      "range": {
+        "startLine": 1309,
+        "startChar": 14,
+        "endLine": 1309,
+        "endChar": 19
+      },
+      "revId": "c2555fd2dd3e63a9fe5f9ae5b11b50f29b56a619",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
