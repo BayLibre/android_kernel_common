@@ -3801,7 +3801,11 @@ err_destroy_flow_rule:
 	if (flow)
 		nft_flow_rule_destroy(flow);
 err_release_rule:
+<<<<<<< HEAD   (bfa917 Revert "gpiolib: Fix irq_domain resource tracking for gpioch)
 	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+=======
+	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
+>>>>>>> BRANCH (a5e46b UPSTREAM: io_uring/poll: serialize poll linked timer start w)
 	nf_tables_rule_destroy(&ctx, rule);
 err_release_expr:
 	for (i = 0; i < n; i++) {
