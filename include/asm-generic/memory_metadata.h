@@ -7,6 +7,8 @@
 
 extern unsigned long totalmetadata_pages;
 
+void migrate_metadata_none_page(struct page *page, struct vm_area_struct *vma);
+
 #ifndef CONFIG_MEMORY_METADATA
 static inline bool metadata_storage_enabled(void)
 {
