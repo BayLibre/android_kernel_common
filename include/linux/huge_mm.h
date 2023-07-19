@@ -264,6 +264,7 @@ struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
 		pud_t *pud, int flags, struct dev_pagemap **pgmap);
 
 vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
+vm_fault_t do_huge_pmd_metadata_none_page(struct vm_fault *vmf);
 
 extern struct page *huge_zero_page;
 extern unsigned long huge_zero_pfn;
@@ -396,6 +397,11 @@ static inline spinlock_t *pud_trans_huge_lock(pud_t *pud,
 }
 
 static inline vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+{
+	return 0;
+}
+
+static inline vm_fault_t do_huge_pmd_metadata_none_page(struct vm_fault *vmf)
 {
 	return 0;
 }

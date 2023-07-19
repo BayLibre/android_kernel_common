@@ -4779,7 +4779,7 @@ static vm_fault_t do_fault(struct vm_fault *vmf)
 }
 
 /* Returns with the page reference dropped. */
-static void migrate_metadata_none_page(struct page *page, struct vm_area_struct *vma)
+void migrate_metadata_none_page(struct page *page, struct vm_area_struct *vma)
 {
 	struct migration_target_control mtc = {
 		.nid = NUMA_NO_NODE,
@@ -5344,8 +5344,11 @@ retry_pud:
 			return 0;
 		}
 		if (pmd_trans_huge(vmf.orig_pmd) || pmd_devmap(vmf.orig_pmd)) {
-			if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma))
+			if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma)) {
+				if (metadata_storage_enabled() && pmd_metadata_none(vmf.orig_pmd))
+					return do_huge_pmd_metadata_none_page(&vmf);
 				return do_huge_pmd_numa_page(&vmf);
+			}
 
 			if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
 			    !pmd_write(vmf.orig_pmd)) {

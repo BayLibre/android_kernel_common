@@ -26,6 +26,7 @@
 #include <linux/mman.h>
 #include <linux/memremap.h>
 #include <linux/pagemap.h>
+#include <linux/page-isolation.h>
 #include <linux/debugfs.h>
 #include <linux/migrate.h>
 #include <linux/hashtable.h>
@@ -38,6 +39,7 @@
 #include <linux/sched/sysctl.h>
 #include <linux/memory-tiers.h>
 
+#include <asm/memory_metadata.h>
 #include <asm/tlb.h>
 #include <asm/pgalloc.h>
 #include "internal.h"
@@ -1470,6 +1472,108 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
 
 	return page;
 }
+
+vm_fault_t do_huge_pmd_metadata_none_page(struct vm_fault *vmf)
+{
+	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
+	struct vm_area_struct *vma = vmf->vma;
+	pmd_t old_pmd = vmf->orig_pmd;
+	struct page *page = NULL;
+	bool do_migrate = false;
+	bool writable = false;
+	vm_fault_t err;
+	pmd_t new_pmd;
+	int ret;
+
+	vmf->ptl = pmd_lockptr(vma->vm_mm, vmf->pmd);
+	spin_lock(vmf->ptl);
+	if (unlikely(!pmd_same(*vmf->pmd, old_pmd))) {
+		spin_unlock(vmf->ptl);
+		return 0;
+	}
+
+	new_pmd = pmd_modify(old_pmd, vma->vm_page_prot);
+
+	/*
+	 * Detect now whether the PMD could be writable; this information
+	 * is only valid while holding the PT lock.
+	 */
+	writable = pmd_write(new_pmd);
+
+	page = vm_normal_page_pmd(vma, vmf->address, new_pmd);
+	if (!page)
+		goto out_map;
+
+	/*
+	 * This should never happen, once a VMA has been marked as tagged, that
+	 * cannot be changed.
+	 */
+	if (!(vma->vm_flags & VM_MTE))
+		goto out_map;
+
+	/* Prevent the page from being unmapped from under us. */
+	get_page(page);
+
+	spin_unlock(vmf->ptl);
+	writable = false;
+
+	if (unlikely(is_migrate_isolate_page(page))) {
+		if (!(vmf->flags & FAULT_FLAG_TRIED))
+			err = VM_FAULT_RETRY;
+		else
+			err = 0;
+		put_page(page);
+	} else if (is_migrate_metadata_page(page)) {
+		do_migrate = true;
+	} else {
+		ret = reserve_metadata_storage(page, HPAGE_PMD_ORDER, GFP_HIGHUSER_MOVABLE);
+		if (ret == -EINTR) {
+			put_page(page);
+			return VM_FAULT_RETRY;
+		} else if (ret) {
+			if (unlikely(page_metadata_in_swap(page))) {
+				if (vmf->flags & FAULT_FLAG_TRIED)
+					err = VM_FAULT_OOM;
+				else
+					err = VM_FAULT_RETRY;
+
+				put_page(page);
+				return err;
+			}
+			do_migrate = true;
+		}
+	}
+
+	if (do_migrate) {
+		migrate_metadata_none_page(page, vma);
+		/*
+		 * Either the page was migrated, in which case there's nothing
+		 * we need to do; either migration failed, in which case all we
+		 * can do is try again. So don't change the pte.
+		 */
+		return 0;
+	}
+
+	put_page(page);
+
+	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+	if (unlikely(!pmd_same(*vmf->pmd, old_pmd))) {
+		spin_unlock(vmf->ptl);
+		return 0;
+	}
+
+out_map:
+	new_pmd = pmd_modify(old_pmd, vma->vm_page_prot);
+	new_pmd = pmd_mkyoung(new_pmd);
+	if (writable)
+		new_pmd = pmd_mkwrite(new_pmd);
+	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, new_pmd);
+	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+	spin_unlock(vmf->ptl);
+
+	return 0;
+}
+
 
 /* NUMA hinting page fault entry point for trans huge pmds */
 vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
