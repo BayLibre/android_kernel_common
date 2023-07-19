@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed42086d_7dcf56d6",
+        "filename": "sound/soc/soc-core.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2345,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-19T15:28:21Z",
+      "side": 1,
+      "message": "Please remove the ifdef. That only should be used for retaining the KMI. You\u0027ll also need to use the new `unused` variable here to init the spinlock since `dpcm_lock` isn\u0027t available during the compilation phase.\n\n```suggestion\n\tspin_lock_init(\u0026card-\u003eunused);\n\n```",
+      "range": {
+        "startLine": 2342,
+        "startChar": 0,
+        "endLine": 2345,
+        "endChar": 0
+      },
+      "revId": "5150fc87b24b33f8dc48259a4004dd6d137018c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
