@@ -52,6 +52,24 @@
       "parentUuid": "0b497eb0_0931724c",
       "revId": "214e6f268b6a576c603d01a27410192c1e03e942",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e8f0c65_c0b7c63f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-07-20T20:54:01Z",
+      "side": 1,
+      "message": "IIUC, these APIs are using below structs and those structs need to be padded with `ANDROID_KABI_RESERVE()`:\n\n```\nstruct wwan_port (common/drivers/net/wwan/wwan_core.c)\nstruct wwan_ops *ops (common/include/linux/wwan.h)\n```\n\nIf yes, how do I decide how many `ANDROID_KABI_RESERVE()` calls should be padded for each struct?\n\nSome APIs are also using the `struct sk_buff` which is not currently padded; but I guess we can\u0027t pad that one at this point. Correct?",
+      "parentUuid": "2d478f47_75ccb96f",
+      "revId": "214e6f268b6a576c603d01a27410192c1e03e942",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
