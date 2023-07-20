@@ -11,6 +11,7 @@
 #include <linux/wait.h>
 #include <linux/sched.h>
 #include <linux/fs.h>
+#include <linux/file.h>
 #include <linux/fdtable.h>
 #include <linux/errname.h>
 #include <linux/jiffies.h>
@@ -22,6 +23,7 @@
 #include <linux/workqueue.h>
 #include <linux/shrinker.h>
 #include <linux/list_lru.h>
+#include <linux/task_work.h>
 #include <linux/rust_binder.h>
 #include <uapi/linux/android/binder.h>
 #include <uapi/linux/android/binderfs.h>
