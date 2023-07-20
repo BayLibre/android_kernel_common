@@ -39,6 +39,30 @@
       },
       "revId": "44d54d11d9f31df6569281a489a02d386512da7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36717623_e82fbdd1",
+        "filename": "drivers/firmware/arm_sdei.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 2006583
+      },
+      "writtenOn": "2023-07-20T02:40:23Z",
+      "side": 1,
+      "message": "Thanks for your review, if user enable CONFIG_ACPI_APEI_GHES, sdei_init will be called by ghes module, at the same time, other vendor module may also call sdei_init, this sdei_init_complete will prevent this case,thanks!",
+      "parentUuid": "205570f2_30b31d05",
+      "range": {
+        "startLine": 1071,
+        "startChar": 1,
+        "endLine": 1071,
+        "endChar": 24
+      },
+      "revId": "44d54d11d9f31df6569281a489a02d386512da7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
