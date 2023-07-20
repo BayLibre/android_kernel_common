@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0864a4c8_5eb3a390",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-20T15:47:33Z",
+      "side": 1,
+      "message": "Please re-order the patches so that the hook is introduced before the symbols. The series cannot be tested without *both* patches being in-sync - right now the vendor hook patch is out-of-date wrt the symbol patch. When you update a patch  be sure to always rebase the whole series or it is not testable or submitable.",
+      "revId": "f1ce011f5146365dbd025766a01486e244250ccd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
