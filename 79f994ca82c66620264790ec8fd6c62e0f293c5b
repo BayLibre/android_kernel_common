@@ -33,6 +33,24 @@
       "message": "KABI fields are only for LTS updates. Is this patch in the 5.15 stable branch?",
       "revId": "79f994ca82c66620264790ec8fd6c62e0f293c5b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "192878f3_28e75831",
+        "filename": "include/sound/soc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1111,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-07-20T17:26:26Z",
+      "side": 1,
+      "message": "Yes, they were reverted due to ABI issues on the 5.15-lts branch here:\n\nhttps://android-review.git.corp.google.com/c/kernel/common/+/2635798\n\nLooks like there were a couple others reverted. Let me see if I can pull those in as well.",
+      "parentUuid": "c8e45785_9e2dc418",
+      "revId": "79f994ca82c66620264790ec8fd6c62e0f293c5b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
