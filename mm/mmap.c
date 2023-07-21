@@ -537,6 +537,7 @@ inline int vma_expand(struct ma_state *mas, struct vm_area_struct *vma,
 			int error;
 
 			anon_vma = next->anon_vma;
+			vma_start_write(vma);
 			vma->anon_vma = anon_vma;
 			error = anon_vma_clone(vma, next);
 			if (error)
@@ -733,6 +734,7 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
 		if (exporter && exporter->anon_vma && !importer->anon_vma) {
 			int error;
 
+			vma_start_write(importer);
 			importer->anon_vma = exporter->anon_vma;
 			error = anon_vma_clone(importer, exporter);
 			if (error)
