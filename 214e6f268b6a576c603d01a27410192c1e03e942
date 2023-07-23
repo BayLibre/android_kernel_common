@@ -70,6 +70,24 @@
       "parentUuid": "2d478f47_75ccb96f",
       "revId": "214e6f268b6a576c603d01a27410192c1e03e942",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b983c90_b0eb42b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-07-23T07:52:02Z",
+      "side": 1,
+      "message": "`sk_buff` should already be handled, I see 2 reserved fields in there, don\u0027t you?\n\nAn internal structure like `struct wwan_port` should not need to be padded, as no one can modify it or use it externally, right?  The wwan_ops should probably get 2 added.",
+      "parentUuid": "8e8f0c65_c0b7c63f",
+      "revId": "214e6f268b6a576c603d01a27410192c1e03e942",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
