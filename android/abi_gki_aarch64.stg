@@ -15117,6 +15117,11 @@ pointer_reference {
   pointee_type_id: 0x9ebc14d6
 }
 pointer_reference {
+  id: 0x2d3f7275
+  kind: POINTER
+  pointee_type_id: 0x9ebd2f48
+}
+pointer_reference {
   id: 0x2d3f9ded
   kind: POINTER
   pointee_type_id: 0x9ebe912b
@@ -22667,6 +22672,11 @@ pointer_reference {
   pointee_type_id: 0xf7842e25
 }
 pointer_reference {
+  id: 0x3771eb5c
+  kind: POINTER
+  pointee_type_id: 0xf7874bee
+}
+pointer_reference {
   id: 0x37765a7c
   kind: POINTER
   pointee_type_id: 0xf7998f6d
@@ -30195,6 +30205,11 @@ qualified {
   id: 0xf784797b
   qualifier: CONST
   qualified_type_id: 0xae565365
+}
+qualified {
+  id: 0xf7874bee
+  qualifier: CONST
+  qualified_type_id: 0xae5a9933
 }
 qualified {
   id: 0xf7f2fa8a
@@ -245153,6 +245168,44 @@ enumeration {
   }
 }
 enumeration {
+  id: 0x0af5108b
+  name: "kernel_read_file_id"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "READING_UNKNOWN"
+    }
+    enumerator {
+      name: "READING_FIRMWARE"
+      value: 1
+    }
+    enumerator {
+      name: "READING_MODULE"
+      value: 2
+    }
+    enumerator {
+      name: "READING_KEXEC_IMAGE"
+      value: 3
+    }
+    enumerator {
+      name: "READING_KEXEC_INITRAMFS"
+      value: 4
+    }
+    enumerator {
+      name: "READING_POLICY"
+      value: 5
+    }
+    enumerator {
+      name: "READING_X509_CERTIFICATE"
+      value: 6
+    }
+    enumerator {
+      name: "READING_MAX_ID"
+      value: 7
+    }
+  }
+}
+enumeration {
   id: 0x093a9d02
   name: "key_being_used_for"
   definition {
@@ -267517,14 +267570,6 @@ function {
   parameter_id: 0x038de60c
 }
 function {
-  id: 0x9116f146
-  return_type_id: 0x6720d32f
-  parameter_id: 0x3267a784
-  parameter_id: 0x0258f96e
-  parameter_id: 0x18bd6530
-  parameter_id: 0x2dcd339f
-}
-function {
   id: 0x91190ace
   return_type_id: 0x6720d32f
   parameter_id: 0x3267a784
@@ -269511,6 +269556,16 @@ function {
   id: 0x929a4d8e
   return_type_id: 0x6720d32f
   parameter_id: 0x3c6aba87
+}
+function {
+  id: 0x929aa3b0
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3e10b518
+  parameter_id: 0x27a7c613
+  parameter_id: 0x0cbf60eb
+  parameter_id: 0xf435685e
+  parameter_id: 0x379d63b0
+  parameter_id: 0x0af5108b
 }
 function {
   id: 0x929b931d
@@ -276621,6 +276676,12 @@ function {
   parameter_id: 0x13580d6c
 }
 function {
+  id: 0x9b1b47aa
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x2d3f7275
+}
+function {
   id: 0x9b1c809c
   return_type_id: 0x6720d32f
   parameter_id: 0x19c40476
@@ -282462,6 +282523,12 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0x9e021d71
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0d7ce7cc
+  parameter_id: 0x3771eb5c
+}
+function {
   id: 0x9e06a19a
   return_type_id: 0x3e10b518
   parameter_id: 0x3e10b518
@@ -283185,6 +283252,12 @@ function {
   return_type_id: 0x6720d32f
   parameter_id: 0x0e6618c4
   parameter_id: 0x295c7202
+}
+function {
+  id: 0x9ebd2f48
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0d7ce7cc
+  parameter_id: 0x18bd6530
 }
 function {
   id: 0x9ebe912b
@@ -306166,15 +306239,6 @@ elf_symbol {
   full_name: "driver_find_device"
 }
 elf_symbol {
-  id: 0x9b35e60f
-  name: "driver_for_each_device"
-  is_defined: true
-  symbol_type: FUNCTION
-  crc: 0x2ba045b6
-  type_id: 0x9116f146
-  full_name: "driver_for_each_device"
-}
-elf_symbol {
   id: 0x1f0cd029
   name: "driver_register"
   is_defined: true
@@ -316161,6 +316225,15 @@ elf_symbol {
   full_name: "kernel_power_off"
 }
 elf_symbol {
+  id: 0x2c66b4ca
+  name: "kernel_read_file_from_path"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x615d3447
+  type_id: 0x929aa3b0
+  full_name: "kernel_read_file_from_path"
+}
+elf_symbol {
   id: 0x05b57a3a
   name: "kernel_recvmsg"
   is_defined: true
@@ -316932,6 +317005,15 @@ elf_symbol {
   crc: 0xf95322f4
   type_id: 0x10985193
   full_name: "kthread_parkme"
+}
+elf_symbol {
+  id: 0x40c3dc92
+  name: "kthread_queue_delayed_work"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xdae9a243
+  type_id: 0xf387c34f
+  full_name: "kthread_queue_delayed_work"
 }
 elf_symbol {
   id: 0xb27aa180
@@ -326006,15 +326088,6 @@ elf_symbol {
   crc: 0x40f0683e
   type_id: 0x1a9c8a01
   full_name: "reset_control_put"
-}
-elf_symbol {
-  id: 0x9c7a2d6c
-  name: "reset_control_release"
-  is_defined: true
-  symbol_type: FUNCTION
-  crc: 0x1e0670c6
-  type_id: 0x1a9c8a01
-  full_name: "reset_control_release"
 }
 elf_symbol {
   id: 0x48fc2cb6
@@ -335444,6 +335517,15 @@ elf_symbol {
   full_name: "usb_find_common_endpoints"
 }
 elf_symbol {
+  id: 0xeb504c34
+  name: "usb_for_each_dev"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6692a607
+  type_id: 0x9b1b47aa
+  full_name: "usb_for_each_dev"
+}
+elf_symbol {
   id: 0x4ec99a42
   name: "usb_free_all_descriptors"
   is_defined: true
@@ -335919,6 +336001,15 @@ elf_symbol {
   crc: 0xac5af729
   type_id: 0x10d459f4
   full_name: "usb_kill_urb"
+}
+elf_symbol {
+  id: 0x5754262e
+  name: "usb_lock_device_for_reset"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1e383132
+  type_id: 0x9e021d71
+  full_name: "usb_lock_device_for_reset"
 }
 elf_symbol {
   id: 0x2db08c33
@@ -341141,7 +341232,6 @@ interface {
   symbol_id: 0x8fbdd27e
   symbol_id: 0xbde576b8
   symbol_id: 0xa6a7d8d9
-  symbol_id: 0x9b35e60f
   symbol_id: 0x1f0cd029
   symbol_id: 0xd90c83a1
   symbol_id: 0xe5349379
@@ -342249,6 +342339,7 @@ interface {
   symbol_id: 0xff4a14be
   symbol_id: 0x4e60d546
   symbol_id: 0x0e6a648c
+  symbol_id: 0x2c66b4ca
   symbol_id: 0x05b57a3a
   symbol_id: 0x5da7d3fd
   symbol_id: 0x51fc2e7c
@@ -342335,6 +342426,7 @@ interface {
   symbol_id: 0x49232ca9
   symbol_id: 0xec609d3e
   symbol_id: 0x44f92a6d
+  symbol_id: 0x40c3dc92
   symbol_id: 0xb27aa180
   symbol_id: 0x1504ce0b
   symbol_id: 0xeb6e491f
@@ -343343,7 +343435,6 @@ interface {
   symbol_id: 0x0c73acc8
   symbol_id: 0xd76b82b2
   symbol_id: 0x30c7b7f4
-  symbol_id: 0x9c7a2d6c
   symbol_id: 0x48fc2cb6
   symbol_id: 0xb5e4cc08
   symbol_id: 0xd41c441b
@@ -344391,6 +344482,7 @@ interface {
   symbol_id: 0xb3507f92
   symbol_id: 0x792a6c04
   symbol_id: 0x4a8ce807
+  symbol_id: 0xeb504c34
   symbol_id: 0x4ec99a42
   symbol_id: 0xf83f300d
   symbol_id: 0x57c3f1e7
@@ -344444,6 +344536,7 @@ interface {
   symbol_id: 0x83676405
   symbol_id: 0x89c78ea4
   symbol_id: 0x37cf2035
+  symbol_id: 0x5754262e
   symbol_id: 0x2db08c33
   symbol_id: 0x927b119c
   symbol_id: 0x0f633308
