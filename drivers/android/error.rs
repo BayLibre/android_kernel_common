@@ -21,6 +21,13 @@ impl BinderError {
         }
     }
 
+    pub(crate) fn new_frozen() -> Self {
+        Self {
+            reply: BR_FROZEN_REPLY,
+            source: None,
+        }
+    }
+
     pub(crate) fn is_dead(&self) -> bool {
         self.reply == BR_DEAD_REPLY
     }
