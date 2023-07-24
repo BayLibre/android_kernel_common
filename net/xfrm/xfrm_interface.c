@@ -1,3 +1,4 @@
+<<<<<<< HEAD   (054fa5 FROMLIST: fuse: revalidate: don't invalidate if interrupted)
 // SPDX-License-Identifier: GPL-2.0
 /*
  *	XFRM virtual interface
@@ -1036,3 +1037,5 @@ MODULE_ALIAS_RTNL_LINK("xfrm");
 MODULE_ALIAS_NETDEV("xfrm0");
 MODULE_AUTHOR("Steffen Klassert");
 MODULE_DESCRIPTION("XFRM virtual interface");
+=======
+>>>>>>> BRANCH (59b65e Revert "gpio: Allow per-parent interrupt data")
