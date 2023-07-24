@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a2438f9_e36d500c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-24T22:17:56Z",
+      "side": 1,
+      "message": "If this was cherry-picked from aosp/1564662, then why doesn\u0027t the Change-Id match?\n\nAlso, this is not an exact match for that patch.",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77dbdade_72df49a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-24T22:17:56Z",
+      "side": 1,
+      "message": "Why can\u0027t this feature be submitted upstream instead of using a vendor hook? Please explain in the commit message.",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a19e18b_212f8178",
+        "filename": "include/trace/hooks/timer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-24T22:17:56Z",
+      "side": 1,
+      "message": "please remove this unneeded inclusion",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71d16c3_0ee73598",
+        "filename": "kernel/time/timer.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-24T22:17:56Z",
+      "side": 1,
+      "message": "This does not match aosp/1564662 and is not mentioned in the commit message.\n\nIf the `LVL_GRAN(lvl)` is needed, isn\u0027t that an  upstream issue? Please submit that part of the change upstream.",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
