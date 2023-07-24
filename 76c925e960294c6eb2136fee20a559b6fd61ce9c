@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fa2b6e3_2839f379",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-07-24T18:17:08Z",
+      "side": 1,
+      "message": "Hitting some pre-submit checks that need to be addressed. The change may need to be rebased against android14-6.1 as well.",
+      "revId": "76c925e960294c6eb2136fee20a559b6fd61ce9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c850ebc2_06259a11",
+        "filename": "include/trace/hooks/dtask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-07-24T18:17:08Z",
+      "side": 1,
+      "message": "This line needs to use tab not spaces to avoid catching our lint checks.",
+      "revId": "76c925e960294c6eb2136fee20a559b6fd61ce9c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
