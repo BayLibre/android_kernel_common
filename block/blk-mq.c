@@ -539,6 +539,7 @@ void blk_mq_free_request(struct request *rq)
 	if (unlikely(laptop_mode && !blk_rq_is_passthrough(rq)))
 		laptop_io_completion(q->disk->bdi);
 
+	trace_android_vh_rq_qos_done(rq);
 	rq_qos_done(q, rq);
 
 	WRITE_ONCE(rq->state, MQ_RQ_IDLE);
@@ -564,6 +565,7 @@ inline void __blk_mq_end_request(struct request *rq, blk_status_t error)
 	blk_account_io_done(rq, now);
 
 	if (rq->end_io) {
+		trace_android_vh_rq_qos_done(rq);
 		rq_qos_done(rq->q, rq);
 		rq->end_io(rq, error);
 	} else {
