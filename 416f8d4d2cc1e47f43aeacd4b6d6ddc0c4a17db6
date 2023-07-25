@@ -16,6 +16,29 @@
       "message": "Please create a patch on top of this one to add the symbol to your symbol list and update the ABI",
       "revId": "416f8d4d2cc1e47f43aeacd4b6d6ddc0c4a17db6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6503a37f_8d94e146",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2023-07-25T16:43:28Z",
+      "side": 1,
+      "message": "Why have two `trace_android_vh_rq_qos_done(rq)` calls been inserted instead of inserting a single `trace_android_vh_rq_qos_done(rq)` call in `blk_account_io_done()`? I prefer a single call in `blk_account_io_done()` since blk_mq_free_request() can also be called if no I/O has been performed, e.g. from error paths.",
+      "range": {
+        "startLine": 542,
+        "startChar": 1,
+        "endLine": 542,
+        "endChar": 34
+      },
+      "revId": "416f8d4d2cc1e47f43aeacd4b6d6ddc0c4a17db6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
