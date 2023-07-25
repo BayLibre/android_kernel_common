@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0479bdec_28644564",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-25T00:12:21Z",
+      "side": 1,
+      "message": "Yes, thank you for the reference. It would be preferable to actually cherry-pick so the Change-Id is preserved. In the future, please do that.",
+      "parentUuid": "c3fcdc0e_a1efb319",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "77dbdade_72df49a6",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -49,6 +67,24 @@
       "writtenOn": "2023-07-24T22:17:56Z",
       "side": 1,
       "message": "Why can\u0027t this feature be submitted upstream instead of using a vendor hook? Please explain in the commit message.",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bdfd174_4056922f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-25T00:12:21Z",
+      "side": 1,
+      "message": "Please explain in the commit message why this feature cannot be submitted upstream. It seems like a more precise timer is useful for the community.",
+      "parentUuid": "77dbdade_72df49a6",
       "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -84,6 +120,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "5a19e18b_212f8178",
+      "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a073b15c_195010c8",
+        "filename": "include/trace/hooks/timer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-07-25T00:12:21Z",
+      "side": 1,
+      "message": "inclusion of `linux/tracepoint.h` is still there. Please remove it.",
+      "parentUuid": "479bf837_cf1a6bf8",
       "revId": "4f66304574a850c9d865555bf1329f2cc7feb83f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
