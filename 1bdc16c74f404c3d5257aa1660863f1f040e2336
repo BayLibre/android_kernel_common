@@ -52,6 +52,24 @@
       "parentUuid": "a86ea7df_d4a9dd6b",
       "revId": "1bdc16c74f404c3d5257aa1660863f1f040e2336",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaf90f47_8bc6921b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-07-25T20:56:06Z",
+      "side": 1,
+      "message": "I\u0027m afraid all I know about that is in go/whatrepo under P23.\n\nPresumably you\u0027d need to check out the appropriate kernel 5.15 branch for P23,\nthen patch in this CL (this patch is for 5.10, but I think it would be identical for 5.15), build it, and use the pick prebuilt command to copy it over into your actual android workdir.",
+      "parentUuid": "011247f3_01884138",
+      "revId": "1bdc16c74f404c3d5257aa1660863f1f040e2336",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
