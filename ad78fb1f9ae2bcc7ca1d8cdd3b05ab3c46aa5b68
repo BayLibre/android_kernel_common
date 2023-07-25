@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c148cce2_17dc0cc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1013969
+      },
+      "writtenOn": "2023-07-25T16:17:31Z",
+      "side": 1,
+      "message": "We don\u0027t have an upstream driver and we are developing selective graphic buffer reclamation while TTM reclaims buffers from its LRU when it doesn\u0027t find a room to allocate buffer from dedicated memory like VRAM. We can implement graphic buffer reclamation without this but the problem is that the client drivers can\u0027t update the page counter in TTM. If it is not updated, TTM eventually cause unexpected, repeated graphic buffer reclamation.",
+      "parentUuid": "9f013cf5_084c9976",
+      "revId": "ad78fb1f9ae2bcc7ca1d8cdd3b05ab3c46aa5b68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4922e8a1_cfb6c0e3",
         "filename": "drivers/gpu/drm/ttm/ttm_tt.c",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2023-07-25T09:36:37Z",
       "side": 1,
       "message": "must be EXPORT_SYMBOL_GPL() if this is to be considered.",
+      "range": {
+        "startLine": 373,
+        "startChar": 9,
+        "endLine": 373,
+        "endChar": 10
+      },
+      "revId": "ad78fb1f9ae2bcc7ca1d8cdd3b05ab3c46aa5b68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "813b7148_65da1b08",
+        "filename": "drivers/gpu/drm/ttm/ttm_tt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1013969
+      },
+      "writtenOn": "2023-07-25T16:17:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4922e8a1_cfb6c0e3",
       "range": {
         "startLine": 373,
         "startChar": 9,
