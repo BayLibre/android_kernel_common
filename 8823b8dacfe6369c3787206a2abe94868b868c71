@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63500655_3276e399",
+        "filename": "fs/fuse/fuse_i.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-07-26T23:14:06Z",
+      "side": 1,
+      "message": "This wasn\u0027t ifdef\u0027d before. Does this still compile with CONFIG_FUSE_BPF off?",
+      "range": {
+        "startLine": 81,
+        "startChar": 1,
+        "endLine": 81,
+        "endChar": 26
+      },
+      "revId": "8823b8dacfe6369c3787206a2abe94868b868c71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
