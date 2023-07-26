@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000049643518",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2677275?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "e3d78c3f_95517d96",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-26T12:31:14Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 550881213 android-build.ayeaye-python-dispatcher_20230725.04_p0",
+      "revId": "b11b080ca41ca60374808c5db44893e7314d8b80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000049643518",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2677275?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "642806b1_c267b302",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-07-26T12:31:14Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2558712](https://r.android.com/c/2558712) on branch android13-5.15.\n\n```\n      ## drivers/android/binder_alloc.c ##\n     @@ drivers/android/binder_alloc.c: err_no_vma:\n      static inline void binder_alloc_set_vma(struct binder_alloc *alloc,\n      \t\tstruct vm_area_struct *vma)\n      {\n    +-\tif (vma)\n    +-\t\talloc-\u003evma_vm_mm \u003d vma-\u003evm_mm;\n     -\t/*\n     -\t * If we see alloc-\u003evma is not NULL, buffer data structures set up\n     -\t * completely. Look at smp_rmb side binder_alloc_get_vma.\n    @@ drivers/android/binder_alloc.c: static struct binder_buffer *binder_alloc_new_bu\n      \tsize_t size, data_offsets_size;\n      \tint ret;\n      \n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (1747f8 ANDROID: ABI: Update oplus symbol list)\n    + \tmmap_read_lock(alloc-\u003evma_vm_mm);\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +\t/* Check binder_alloc is fully initialized */\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (343808 BACKPORT: FROMGIT: binder: add lockless binder_alloc_(set|ge)\n      \tif (!binder_alloc_get_vma(alloc)) {\n    + \t\tmmap_read_unlock(alloc-\u003evma_vm_mm);\n      \t\tbinder_alloc_debug(BINDER_DEBUG_USER_ERROR,\n    - \t\t\t\t   \"%d: binder_alloc_buf, no vma\\n\",\n     @@ drivers/android/binder_alloc.c: int binder_alloc_mmap_handler(struct binder_alloc *alloc,\n      \tbuffer-\u003efree \u003d 1;\n      \tbinder_insert_free_buffer(alloc, buffer);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 550881213 android-build.ayeaye-python-dispatcher_20230725.04_p0",
+      "revId": "b11b080ca41ca60374808c5db44893e7314d8b80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
