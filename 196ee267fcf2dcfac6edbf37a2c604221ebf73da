@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92ee4cbc_41ce066c",
+        "filename": "fs/fuse/backing.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-07-26T21:19:15Z",
+      "side": 1,
+      "message": "If this line is reachable, it is a bug. iput checks for null, not error values.\nUnsure if this differs across kernel versions.",
+      "range": {
+        "startLine": 1259,
+        "startChar": 2,
+        "endLine": 1262,
+        "endChar": 3
+      },
+      "revId": "196ee267fcf2dcfac6edbf37a2c604221ebf73da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
