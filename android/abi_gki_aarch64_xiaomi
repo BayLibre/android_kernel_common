@@ -310,3 +310,17 @@
 # required by SAGT module
   __traceiter_android_rvh_before_do_sched_yield
   __tracepoint_android_rvh_before_do_sched_yield
+
+#required by ero_mi_fs.ko
+  path_get
+  path_put
+  file_open_root
+  filp_close
+  get_fs_type
+  fs_kobj
+  kset_register
+  wait_for_completion_io
+  noop_direct_IO
+  iov_iter_alignment
+  filemap_read
+  dotdot_name
