@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "437e28ad_c3e27582",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1013969
+      },
+      "writtenOn": "2023-07-26T04:17:13Z",
+      "side": 1,
+      "message": "As you can see, ttm_tt_populate() was just exported 3 years ago as its maintainer refactored TTM. ttm_tt_unpopulte() has not been exported yet just there is no user in the upstream kernel and no mobile GPU is using TTM.\nI know ack team recommends upstreaming and I agree. However, as you know we can\u0027t upstream just our GPU driver without a platform that runs the GPU in the upstream kernel. Exynos2200 is not upstreamed yet and it is the first SOC with Xclipse GPU.",
+      "parentUuid": "d56637b5_8eeea811",
+      "revId": "ad78fb1f9ae2bcc7ca1d8cdd3b05ab3c46aa5b68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4922e8a1_cfb6c0e3",
         "filename": "drivers/gpu/drm/ttm/ttm_tt.c",
         "patchSetId": 1
