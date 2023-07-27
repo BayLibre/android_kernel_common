@@ -16147,6 +16147,11 @@ pointer_reference {
   pointee_type_id: 0x9d4915b9
 }
 pointer_reference {
+  id: 0x2dc28e15
+  kind: POINTER
+  pointee_type_id: 0x9d4adec8
+}
+pointer_reference {
   id: 0x2dc2cfb0
   kind: POINTER
   pointee_type_id: 0x9d4bd85c
@@ -33943,6 +33948,10 @@ member {
   type_id: 0x230a7397
 }
 member {
+  id: 0x2b0c17ae
+  type_id: 0x231e2eaa
+}
+member {
   id: 0x2b33b39f
   type_id: 0x23e0a7c8
   offset: 3584
@@ -34613,6 +34622,10 @@ member {
   offset: 840
 }
 member {
+  id: 0x36752b74
+  type_id: 0x56faddc1
+}
+member {
   id: 0x36888cc2
   type_id: 0x550c431b
 }
@@ -34711,6 +34724,11 @@ member {
   id: 0x3801ddd5
   type_id: 0x6f2909ad
   offset: 832
+}
+member {
+  id: 0x38249613
+  type_id: 0x6fbc1272
+  offset: 2880
 }
 member {
   id: 0x386200a0
@@ -40074,10 +40092,9 @@ member {
   offset: 320
 }
 member {
-  id: 0xedc9a74d
+  id: 0xedc9a9c6
   name: "android_kabi_reserved0"
   type_id: 0x92233392
-  offset: 2880
 }
 member {
   id: 0x2d08103a
@@ -119223,6 +119240,11 @@ member {
   offset: 1408
 }
 member {
+  id: 0xe53004af
+  name: "notify_port_status"
+  type_id: 0x2dc28e15
+}
+member {
   id: 0xe90f3a32
   name: "notify_priv"
   type_id: 0x18bd6530
@@ -184996,6 +185018,14 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x231e2eaa
+  kind: STRUCT
+  definition {
+    bytesize: 8
+    member_id: 0xedc9a9c6
+  }
+}
+struct_union {
   id: 0x235335cf
   kind: STRUCT
   definition {
@@ -188436,6 +188466,16 @@ struct_union {
     bytesize: 8
     member_id: 0xe733e49b
     member_id: 0x7cb52b3e
+  }
+}
+struct_union {
+  id: 0x6fbc1272
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0xe53004af
+    member_id: 0x2b0c17ae
+    member_id: 0x36752b74
   }
 }
 struct_union {
@@ -232142,7 +232182,7 @@ struct_union {
     member_id: 0x975fa344
     member_id: 0x04f8f40a
     member_id: 0xed700ac6
-    member_id: 0xedc9a74d
+    member_id: 0x38249613
     member_id: 0x2d081c69
     member_id: 0x63760faa
     member_id: 0xac8946c7
@@ -281185,6 +281225,14 @@ function {
   return_type_id: 0x6720d32f
   parameter_id: 0x01c5a749
   parameter_id: 0x2e27d122
+}
+function {
+  id: 0x9d4adec8
+  return_type_id: 0x6720d32f
+  parameter_id: 0x05c2a3ca
+  parameter_id: 0x6720d32f
+  parameter_id: 0x914dbfdc
+  parameter_id: 0x914dbfdc
 }
 function {
   id: 0x9d4b1066
