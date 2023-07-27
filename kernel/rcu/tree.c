@@ -3020,6 +3020,27 @@ __call_rcu_common(struct rcu_head *head, rcu_callback_t func, bool lazy_in)
 	}
 }
 
+/* Enable lazy rcu at boot time */
+int param_set_rcu_lazy(const char *val, const struct kernel_param *kp)
+{
+#ifdef CONFIG_RCU_LAZY
+	int ret;
+	rcu_barrier();
+	ret = param_set_bool(val, kp);
+	rcu_barrier();
+	return ret;
+#else
+	return -ENOENT;
+#endif
+}
+static const struct kernel_param_ops rcu_lazy_ops = {
+	.flags = KERNEL_PARAM_OPS_FL_NOARG,
+	.set = param_set_rcu_lazy,
+	.get = param_get_bool,
+};
+static bool android_enable_rcu_lazy;
+module_param_cb(android_enable_rcu_lazy, &rcu_lazy_ops, &android_enable_rcu_lazy, 0644);
+
 #ifdef CONFIG_RCU_LAZY
 /**
  * call_rcu_flush() - Queue RCU callback for invocation after grace period, and
@@ -3094,7 +3115,8 @@ EXPORT_SYMBOL_GPL(call_rcu_flush);
  */
 void call_rcu(struct rcu_head *head, rcu_callback_t func)
 {
-	return __call_rcu_common(head, func, IS_ENABLED(CONFIG_RCU_LAZY));
+	return __call_rcu_common(head, func, IS_ENABLED(CONFIG_RCU_LAZY) &&
+				 READ_ONCE(android_enable_rcu_lazy));
 }
 EXPORT_SYMBOL_GPL(call_rcu);
 
