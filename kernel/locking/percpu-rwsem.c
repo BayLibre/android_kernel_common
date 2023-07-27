@@ -26,6 +26,13 @@ void _trace_android_vh_record_pcpu_rwsem_starttime(struct task_struct *tsk,
 }
 EXPORT_SYMBOL_GPL(_trace_android_vh_record_pcpu_rwsem_starttime);
 
+void _trace_andriod_vh_record_pcpu_rwsem_special_time(
+		unsigned long settime, struct percpu_rw_semaphore *sem)
+{
+	trace_andriod_vh_record_pcpu_rwsem_special_time(settime, sem);
+}
+EXPORT_SYMBOL_GPL(_trace_andriod_vh_record_pcpu_rwsem_special_time);
+
 int __percpu_init_rwsem(struct percpu_rw_semaphore *sem,
 			const char *name, struct lock_class_key *key)
 {
@@ -242,6 +249,8 @@ void __sched percpu_down_write(struct percpu_rw_semaphore *sem)
 	rwsem_acquire(&sem->dep_map, 0, 0, _RET_IP_);
 	trace_contention_begin(sem, LCB_F_PERCPU | LCB_F_WRITE);
 
+	trace_andriod_vh_record_pcpu_rwsem_special_time(jiffies, sem);
+
 	/* Notify readers to take the slow path. */
 	rcu_sync_enter(&sem->rss);
 
@@ -295,5 +304,6 @@ void percpu_up_write(struct percpu_rw_semaphore *sem)
 	 */
 	rcu_sync_exit(&sem->rss);
 	trace_android_vh_record_pcpu_rwsem_starttime(current, 0);
+	trace_andriod_vh_record_pcpu_rwsem_special_time(jiffies, sem);
 }
 EXPORT_SYMBOL_GPL(percpu_up_write);

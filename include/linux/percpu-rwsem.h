@@ -9,6 +9,9 @@
 #include <linux/rcu_sync.h>
 #include <linux/lockdep.h>
 
+void _trace_andriod_vh_record_pcpu_rwsem_special_time(
+		unsigned long settime, struct percpu_rw_semaphore *sem);
+
 void _trace_android_vh_record_pcpu_rwsem_starttime(
 		struct task_struct *tsk, unsigned long settime);
 
@@ -54,6 +57,8 @@ static inline void percpu_down_read(struct percpu_rw_semaphore *sem)
 	rwsem_acquire_read(&sem->dep_map, 0, 0, _RET_IP_);
 
 	preempt_disable();
+	_trace_andriod_vh_record_pcpu_rwsem_special_time(jiffies, sem);
+
 	/*
 	 * We are in an RCU-sched read-side critical section, so the writer
 	 * cannot both change sem->state from readers_fast and start checking
@@ -93,6 +98,7 @@ static inline bool percpu_down_read_trylock(struct percpu_rw_semaphore *sem)
 	 */
 
 	if (ret) {
+		_trace_andriod_vh_record_pcpu_rwsem_special_time(jiffies, sem);
 		_trace_android_vh_record_pcpu_rwsem_starttime(current, jiffies);
 		rwsem_acquire_read(&sem->dep_map, 0, 1, _RET_IP_);
 	}
@@ -125,6 +131,7 @@ static inline void percpu_up_read(struct percpu_rw_semaphore *sem)
 		rcuwait_wake_up(&sem->writer);
 	}
 	_trace_android_vh_record_pcpu_rwsem_starttime(current, 0);
+	_trace_andriod_vh_record_pcpu_rwsem_special_time(0, sem);
 	preempt_enable();
 }
 
