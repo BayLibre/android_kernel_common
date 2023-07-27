@@ -27,6 +27,7 @@
 #include "gadget.h"
 #include "io.h"
 
+
 #define DWC3_ALIGN_FRAME(d, n)	(((d)->frame_number + ((d)->interval * (n))) \
 					& ~((d)->interval - 1))
 
