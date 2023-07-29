@@ -22,6 +22,30 @@
       },
       "revId": "dc9a177aa5165af721c7503bccf2de057ebc2057",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "778f5286_0a6f65a0",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3050,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-07-29T16:32:58Z",
+      "side": 1,
+      "message": "Yes you\u0027re right. This should stay false always. It should behave like call_rcu() when CONFIG_RCU_LAZY I got confused and thought it will be true, but it should be false.",
+      "parentUuid": "1450b9a8_a7e0fa0c",
+      "range": {
+        "startLine": 3050,
+        "startChar": 39,
+        "endLine": 3050,
+        "endChar": 54
+      },
+      "revId": "dc9a177aa5165af721c7503bccf2de057ebc2057",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
