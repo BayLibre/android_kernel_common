@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e32111af_3d1aa9cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-07-31T20:34:12Z",
+      "side": 1,
+      "message": "https://android-review.googlesource.com/c/kernel/common/+/2661736 was much more descriptive. Please reuse it.\nIn the future please do not create new patches, instead update the existing ones because that preserves previous comments. To do that you need to reuse the same SHA in the `Change-Id` tag when pushing the patches.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 70
+      },
+      "revId": "ba9f38dd80a65c5de97a055a04de906dfa762224",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "835d76c8_e5277715",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3179,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-07-31T20:34:12Z",
+      "side": 1,
+      "message": "Just `trace_android_vh_try_cma_fallback` seems like a better name.",
+      "range": {
+        "startLine": 3179,
+        "startChar": 2,
+        "endLine": 3179,
+        "endChar": 38
+      },
+      "revId": "ba9f38dd80a65c5de97a055a04de906dfa762224",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
