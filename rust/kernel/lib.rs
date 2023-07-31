@@ -49,6 +49,7 @@ pub mod pages;
 pub mod prelude;
 pub mod print;
 pub mod security;
+pub mod seq_file;
 mod static_assert;
 #[doc(hidden)]
 pub mod std_vendor;
