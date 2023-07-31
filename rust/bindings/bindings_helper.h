@@ -19,6 +19,7 @@
 #include <linux/mm.h>
 #include <linux/uio.h>
 #include <linux/security.h>
+#include <linux/seq_file.h>
 #include <linux/poll.h>
 #include <linux/workqueue.h>
 #include <linux/shrinker.h>
