@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23e3ae83_8a976e01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-07-31T18:08:38Z",
+      "side": 1,
+      "message": "symbols list and ABI should be updated in a separate patch which is rebased on top of this one.",
+      "revId": "3c035fdd7112e1cb702f46b04f81760ecc0c72cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf6b008c_3dac20f1",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-07-31T18:08:38Z",
+      "side": 1,
+      "message": "No, we are not exporting internal locks. If you need to do something while holding the locks then implement a function that does that entire operation, takes and releases the locks in that function.\n\nFunctions should also be declared in a header file which you are missing.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 0
+      },
+      "revId": "3c035fdd7112e1cb702f46b04f81760ecc0c72cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
