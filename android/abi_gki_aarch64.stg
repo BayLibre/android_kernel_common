@@ -306628,6 +306628,12 @@ function {
   parameter_id: 0x92233392
 }
 function {
+  id: 0x9b6151cc
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x33baebd5
+}
+function {
   id: 0x9b618705
   return_type_id: 0x6720d32f
   parameter_id: 0x1b8590a8
@@ -325160,6 +325166,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_typec_tcpm_log"
 }
 elf_symbol {
+  id: 0x3c2df440
+  name: "__traceiter_android_vh_ufs_alloc_host"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5eec3346
+  type_id: 0x9b6151cc
+  full_name: "__traceiter_android_vh_ufs_alloc_host"
+}
+elf_symbol {
   id: 0xe31bb308
   name: "__traceiter_android_vh_ufs_check_int_errors"
   is_defined: true
@@ -328335,6 +328350,15 @@ elf_symbol {
   crc: 0x2b257da2
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_typec_tcpm_log"
+}
+elf_symbol {
+  id: 0x24a1ad56
+  name: "__tracepoint_android_vh_ufs_alloc_host"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xedb1c1ca
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_ufs_alloc_host"
 }
 elf_symbol {
   id: 0x609a86da
@@ -380962,6 +380986,7 @@ interface {
   symbol_id: 0x9545623c
   symbol_id: 0x558490b1
   symbol_id: 0x8af2b51e
+  symbol_id: 0x3c2df440
   symbol_id: 0xe31bb308
   symbol_id: 0x6a6dc806
   symbol_id: 0xa56348c9
@@ -381315,6 +381340,7 @@ interface {
   symbol_id: 0x75a2f39e
   symbol_id: 0x7b5c377f
   symbol_id: 0x6436c788
+  symbol_id: 0x24a1ad56
   symbol_id: 0x609a86da
   symbol_id: 0x08a49528
   symbol_id: 0xa03a7d43
