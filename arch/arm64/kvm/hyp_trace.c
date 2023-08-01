@@ -33,6 +33,9 @@ static struct hyp_buffer_pages_backing hyp_buffer_pages_backing;
 static DEFINE_MUTEX(hyp_trace_lock);
 static DEFINE_PER_CPU(struct mutex, hyp_trace_reader_lock);
 
+static bool ht_printk_on __ro_after_init;
+static struct ht_iterator *ht_printk_iter;
+
 static int bpage_backing_setup(struct hyp_trace_pack *pack)
 {
 	size_t backing_size;
@@ -772,6 +775,8 @@ again:
 	return ret;
 }
 
+static void ht_printk(void);
+
 static void __poke_reader(struct work_struct *work)
 {
 	struct delayed_work *dwork = to_delayed_work(work);
@@ -780,6 +785,9 @@ static void __poke_reader(struct work_struct *work)
 	iter = container_of(dwork, struct ht_iterator, poke_work);
 
 	hyp_poke_tracing(iter->cpu, iter->cpus);
+
+	if (iter == ht_printk_iter)
+		ht_printk();
 
 	schedule_delayed_work((struct delayed_work *)work,
 			      msecs_to_jiffies(RB_POLL_MS));
@@ -967,6 +975,89 @@ static void hyp_tracefs_create_cpu_file(const char *file_name,
 		pr_warn("Failed to create tracefs %pd/%s\n", parent, file_name);
 }
 
+static int set_ht_printk_on(char *str)
+{
+	if ((strcmp(str, "=0") != 0 && strcmp(str, "=off") != 0))
+		ht_printk_on = true;
+
+	return 1;
+}
+__setup("ht_printk", set_ht_printk_on);
+
+static int ht_printk_init(void)
+{
+	int ret = 0, cpu;
+
+	if (!ht_printk_on)
+		return 0;
+
+	mutex_lock(&hyp_trace_lock);
+
+	if (!hyp_trace_buffer) {
+		ret = hyp_load_tracing();
+		if (ret)
+			goto unlock;
+	}
+
+	ht_printk_iter = kzalloc(sizeof(*ht_printk_iter), GFP_KERNEL);
+	if (!ht_printk_iter) {
+		ret = -ENOMEM;
+		goto unlock;
+	}
+
+	ht_printk_iter->cpu = RING_BUFFER_ALL_CPUS;
+
+	if (!zalloc_cpumask_var(&ht_printk_iter->cpus, GFP_KERNEL)) {
+		ret = -ENOMEM;
+		goto unlock;
+	}
+
+	for_each_possible_cpu(cpu) {
+		if (!ring_buffer_poke(hyp_trace_buffer, cpu))
+			cpumask_set_cpu(cpu, ht_printk_iter->cpus);
+	}
+
+	INIT_DELAYED_WORK(&ht_printk_iter->poke_work, __poke_reader);
+	if (hyp_trace_on)
+		schedule_delayed_work(&ht_printk_iter->poke_work,
+				      msecs_to_jiffies(RB_POLL_MS));
+	list_add(&ht_printk_iter->list, &hyp_pipe_readers);
+	hyp_inc_readers();
+
+unlock:
+	if (ret) {
+		kfree(ht_printk_iter);
+		ht_printk_iter = NULL;
+	}
+
+	mutex_unlock(&hyp_trace_lock);
+
+	return ret;
+}
+
+static void ht_printk(void)
+{
+	if (!ht_printk_on)
+		return;
+
+	trace_seq_init(&ht_printk_iter->seq);
+
+	hyp_trace_read_start(ht_printk_iter->cpu);
+	while (ht_next_pipe_event(ht_printk_iter)) {
+		ht_print_trace_fmt(ht_printk_iter);
+		ring_buffer_consume(hyp_trace_buffer, ht_printk_iter->ent_cpu,
+				    NULL, NULL);
+	}
+	hyp_trace_read_stop(ht_printk_iter->cpu);
+
+	/* Nothing has been written in the seq_buf */
+	if (!ht_printk_iter->seq.seq.len)
+		return;
+
+	trace_seq_putc(&ht_printk_iter->seq, 0);
+	printk("%s", ht_printk_iter->seq.buffer);
+}
+
 void kvm_hyp_init_events_tracefs(struct dentry *parent);
 bool kvm_hyp_events_enable_early(void);
 
@@ -1042,6 +1133,8 @@ int init_hyp_tracefs(void)
 		if (err)
 			pr_warn("Failed to start early events tracing: %d\n", err);
 	}
+	if (ht_printk_init())
+		pr_warn("Failed to init ht_printk");
 
 	return 0;
 }
