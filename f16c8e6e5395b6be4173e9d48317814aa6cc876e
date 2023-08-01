@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df7a7f1d_14301648",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3031,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-01T16:22:54Z",
+      "side": 1,
+      "message": "when the kernel works properly , it is quiet.",
+      "range": {
+        "startLine": 3031,
+        "startChar": 1,
+        "endLine": 3031,
+        "endChar": 8
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09228659_ed20c7d1",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3034,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-01T16:22:54Z",
+      "side": 1,
+      "message": "again when all is working properly, the kernel is quiet.  Just don\u0027t have this option at all if the config option is not present, or properly make this an error message and error out the boot process.",
+      "range": {
+        "startLine": 3034,
+        "startChar": 1,
+        "endLine": 3034,
+        "endChar": 8
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baedf67b_22e9364f",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-01T16:22:54Z",
+      "side": 1,
+      "message": "why is this needed?  It\u0027s a bool, set at boot time, it\u0027s not going to change.",
+      "range": {
+        "startLine": 3120,
+        "startChar": 69,
+        "endLine": 3120,
+        "endChar": 78
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
