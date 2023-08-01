@@ -17842,6 +17842,11 @@ pointer_reference {
   pointee_type_id: 0x9de31a69
 }
 pointer_reference {
+  id: 0x2de928d9
+  kind: POINTER
+  pointee_type_id: 0x9de445fa
+}
+pointer_reference {
   id: 0x2de9a54b
   kind: POINTER
   pointee_type_id: 0x9de673b1
@@ -26407,6 +26412,11 @@ pointer_reference {
   pointee_type_id: 0xc5725d9a
 }
 pointer_reference {
+  id: 0x3bcd0c02
+  kind: POINTER
+  pointee_type_id: 0xc574d697
+}
+pointer_reference {
   id: 0x3bd2bf42
   kind: POINTER
   pointee_type_id: 0xc50a1b96
@@ -29927,6 +29937,11 @@ typedef {
   referred_type_id: 0x0b526877
 }
 typedef {
+  id: 0x9de445fa
+  name: "v4l2_check_dv_timings_fnc"
+  referred_type_id: 0xf2553153
+}
+typedef {
   id: 0x7c355df7
   name: "v4l2_ctrl_notify_fnc"
   referred_type_id: 0x0def8d1d
@@ -30280,6 +30295,11 @@ qualified {
   id: 0xc5725d9a
   qualifier: CONST
   qualified_type_id: 0x658ec0e0
+}
+qualified {
+  id: 0xc574d697
+  qualifier: CONST
+  qualified_type_id: 0x6594ecd4
 }
 qualified {
   id: 0xc596e113
@@ -292737,6 +292757,14 @@ function {
   parameter_id: 0x34e62f02
 }
 function {
+  id: 0x90bd2dd7
+  return_type_id: 0x6720d32f
+  parameter_id: 0x376789dd
+  parameter_id: 0x3bcd0c02
+  parameter_id: 0x2de928d9
+  parameter_id: 0x18bd6530
+}
+function {
   id: 0x90bfa7c3
   return_type_id: 0x6720d32f
   parameter_id: 0x32a623d7
@@ -315444,6 +315472,12 @@ function {
   parameter_id: 0x33d0e528
 }
 function {
+  id: 0xf2553153
+  return_type_id: 0x6d7f5ff6
+  parameter_id: 0x324e7f0f
+  parameter_id: 0x18bd6530
+}
+function {
   id: 0xf25d597f
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x3399c453
@@ -316181,6 +316215,11 @@ function {
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x11cfee5a
   parameter_id: 0x064d6086
+}
+function {
+  id: 0xfad7a092
+  return_type_id: 0x6d7f5ff6
+  parameter_id: 0x11cfee5a
 }
 function {
   id: 0xfaddfa97
@@ -349222,6 +349261,15 @@ elf_symbol {
   full_name: "kthread_flush_worker"
 }
 elf_symbol {
+  id: 0x2fbecafd
+  name: "kthread_freezable_should_stop"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xca7d8764
+  type_id: 0xfad7a092
+  full_name: "kthread_freezable_should_stop"
+}
+elf_symbol {
   id: 0x49232ca9
   name: "kthread_mod_delayed_work"
   is_defined: true
@@ -373615,6 +373663,15 @@ elf_symbol {
   full_name: "v4l2_device_unregister_subdev"
 }
 elf_symbol {
+  id: 0x5c266e47
+  name: "v4l2_enum_dv_timings_cap"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x922ecd29
+  type_id: 0x90bd2dd7
+  full_name: "v4l2_enum_dv_timings_cap"
+}
+elf_symbol {
   id: 0xd40ec4d6
   name: "v4l2_event_dequeue"
   is_defined: true
@@ -380704,6 +380761,7 @@ interface {
   symbol_id: 0xeae01788
   symbol_id: 0x84839142
   symbol_id: 0xa9c37a1d
+  symbol_id: 0x2fbecafd
   symbol_id: 0x49232ca9
   symbol_id: 0xec609d3e
   symbol_id: 0x44f92a6d
@@ -383415,6 +383473,7 @@ interface {
   symbol_id: 0xdc3fca57
   symbol_id: 0x23051526
   symbol_id: 0xad9b8781
+  symbol_id: 0x5c266e47
   symbol_id: 0xd40ec4d6
   symbol_id: 0xcd00be9c
   symbol_id: 0xef302a24
