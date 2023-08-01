@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+%YAML 1.2
+---
+$id: "http://devicetree.org/schemas/android/google,debug-kinfo.ymal#"
+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+
+title: debug-kinfo for necessary kernel information stroed in memory
+
+maintainers:
+  — Song Xue <quic_songxue@quicinc.com>
+
+description: |
+  Debug-kinfo is used for adding device node to store necessary kernel information
+  in reserved memory.
+
+properties:
+ compatible:
+  const: google,debug-kinfo
+
+ memory-region:
+   maxItems: 1
+   description:
+      A phandle for a reserverd memory area that stores kernel debug information
+
+required:
+   - compatible
+   - memory-region
+
+examples:
+  - |
+        google,debug-kinfo {
+                compatible = "google,debug-kinfo";
+                memory-region = <&kinfo_mem>;
+        };
+
+        kinfo_mem: debug_kinfo_region {
+                alloc-ranges = <0x0 0x00000000 0xffffffff 0xffffffff>;
+                size = <0x0 0x1000>;
+                no-map;
+        };
