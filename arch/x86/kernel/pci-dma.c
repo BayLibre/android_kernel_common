@@ -89,13 +89,10 @@ int pci_xen_swiotlb_init_late(void)
 	if (dma_ops == &xen_swiotlb_dma_ops)
 		return 0;
 
-	/* we can work with the default swiotlb */
-	if (!io_tlb_default_mem.nslabs) {
-		int rc = swiotlb_init_late(swiotlb_size_or_default(),
-					   GFP_KERNEL, xen_swiotlb_fixup);
-		if (rc < 0)
-			return rc;
-	}
+	int rc = swiotlb_init_late(swiotlb_size_or_default(),
+				   GFP_KERNEL, xen_swiotlb_fixup);
+	if (rc < 0)
+		return rc;
 
 	/* XXX: this switches the dma ops under live devices! */
 	dma_ops = &xen_swiotlb_dma_ops;
