@@ -4,6 +4,7 @@
  */
 
 #include <linux/device.h>
+#include <linux/file.h>
 #include <linux/kdev_t.h>
 #include <linux/miscdevice.h>
 #include <linux/module.h>
@@ -40,7 +41,21 @@ int gzvm_err_to_errno(unsigned long err)
 	return -EINVAL;
 }
 
+static long gzvm_dev_ioctl(struct file *filp, unsigned int cmd,
+			   unsigned long user_args)
+{
+	switch (cmd) {
+	case GZVM_CREATE_VM:
+		return gzvm_dev_ioctl_create_vm(user_args);
+	default:
+		break;
+	}
+
+	return -ENOTTY;
+}
+
 static const struct file_operations gzvm_chardev_ops = {
+	.unlocked_ioctl = gzvm_dev_ioctl,
 	.llseek		= noop_llseek,
 };
 
@@ -62,6 +77,7 @@ static int gzvm_drv_probe(struct platform_device *pdev)
 
 static void gzvm_drv_remove(struct platform_device *pdev)
 {
+	gzvm_destroy_all_vms();
 	misc_deregister(&gzvm_dev);
 }
 
