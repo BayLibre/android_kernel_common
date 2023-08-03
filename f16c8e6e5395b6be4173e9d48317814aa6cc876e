@@ -212,6 +212,30 @@
       },
       "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55cbeec2_130f6422",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-03T14:23:12Z",
+      "side": 1,
+      "message": "\u003e Another note, it might be prettier to wrap both the IS_ENABLED() and READ_ONCE() in a different inline function for readability sake.\n\nSince this is a backport, I tend to prefer to keep the code similar to the original as much as possible to make potential conflict resolution easier.\n\n\u003e If you are, you could make it a READ_ONCE() in that patch.\n\nIt is a runtime toggle since the permission is 0644. It 0444, but I got an email asking if it can be set to be modified by init scripts. I don\u0027t feel strongly about it and after offline discussion with you it seemed no harm in making it 0644 as the code is correct.",
+      "parentUuid": "e594a68c_2d963a32",
+      "range": {
+        "startLine": 3120,
+        "startChar": 69,
+        "endLine": 3120,
+        "endChar": 78
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
