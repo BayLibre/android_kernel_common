@@ -3966,19 +3966,18 @@ static int ext4_rename(struct inode *old_dir, struct dentry *old_dentry,
 			return retval;
 	}
 
-	/*
-	 * We need to protect against old.inode directory getting converted
-	 * from inline directory format into a normal one.
-	 */
-	if (S_ISDIR(old.inode->i_mode))
-		inode_lock_nested(old.inode, I_MUTEX_NONDIR2);
-
 	old.bh = ext4_find_entry(old.dir, &old.dentry->d_name, &old.de,
+<<<<<<< HEAD   (9710ae Merge branch 'android12-5.10' into branch 'android12-5.10-lt)
 				 &old.inlined, &old.lblk);
 	if (IS_ERR(old.bh)) {
 		retval = PTR_ERR(old.bh);
 		goto unlock_moved_dir;
 	}
+=======
+				 &old.inlined);
+	if (IS_ERR(old.bh))
+		return PTR_ERR(old.bh);
+>>>>>>> BRANCH (3602db Linux 5.10.188)
 
 	/*
 	 *  Check for inode number is _not_ due to possible IO errors.
@@ -4167,10 +4166,6 @@ release_bh:
 	brelse(old.dir_bh);
 	brelse(old.bh);
 	brelse(new.bh);
-
-unlock_moved_dir:
-	if (S_ISDIR(old.inode->i_mode))
-		inode_unlock(old.inode);
 
 	return retval;
 }
