@@ -164,6 +164,30 @@
       },
       "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deadd2ff_6a6fb74f",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2023-08-03T14:09:40Z",
+      "side": 1,
+      "message": "Strictly speaking, it might be OK. However, KCSAN would have complaints about it.\n\nI said *might* because my recent view of plain accesses on data races have changed due to compiler optimizations.\n\nIn any case, the KCSAN reason should be enough to make it READ_ONCE and it also documents that this is a data-race access.\n\nAnother note, it might be prettier to wrap both the IS_ENABLED() and READ_ONCE() in a different inline function for readability sake.",
+      "parentUuid": "aca004c8_da2c5646",
+      "range": {
+        "startLine": 3120,
+        "startChar": 69,
+        "endLine": 3120,
+        "endChar": 78
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
