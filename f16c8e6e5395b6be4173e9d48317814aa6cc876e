@@ -188,6 +188,30 @@
       },
       "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e594a68c_2d963a32",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2023-08-03T14:13:06Z",
+      "side": 1,
+      "message": "I think what Greg is getting at is, there is no data race to begin with because boot time params are parsed before Lazy-RCU can be used. So in that case, it is OK to drop it then. Sorry I wasn\u0027t sure whether you were also planning on doing a runtime toggle. If you are, you could make it a READ_ONCE() in that patch.",
+      "parentUuid": "deadd2ff_6a6fb74f",
+      "range": {
+        "startLine": 3120,
+        "startChar": 69,
+        "endLine": 3120,
+        "endChar": 78
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
