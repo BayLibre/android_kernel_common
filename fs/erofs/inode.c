@@ -193,7 +193,12 @@ static struct page *erofs_read_inode(struct inode *inode,
 
 	inode->i_flags &= ~S_DAX;
 	if (test_opt(&sbi->opt, DAX_ALWAYS) && S_ISREG(inode->i_mode) &&
+<<<<<<< HEAD   (5a220b Merge e649333bcfe1 ("octeontx2-pf: Add additional check for )
 	    vi->datalayout == EROFS_INODE_FLAT_PLAIN)
+=======
+	    (vi->datalayout == EROFS_INODE_FLAT_PLAIN ||
+	     vi->datalayout == EROFS_INODE_CHUNK_BASED))
+>>>>>>> BRANCH (cdd3cd Linux 5.15.121)
 		inode->i_flags |= S_DAX;
 	if (!nblks)
 		/* measure inode.i_blocks as generic filesystems */

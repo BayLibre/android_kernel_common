@@ -2072,8 +2072,9 @@ static void update_fs_metadata(struct f2fs_sb_info *sbi, int secs)
 	}
 }
 
-int f2fs_resize_fs(struct f2fs_sb_info *sbi, __u64 block_count)
+int f2fs_resize_fs(struct file *filp, __u64 block_count)
 {
+	struct f2fs_sb_info *sbi = F2FS_I_SB(file_inode(filp));
 	__u64 old_block_count, shrunk_blocks;
 	struct cp_control cpc = { CP_RESIZE, 0, 0, 0 };
 	unsigned int secs;
@@ -2111,12 +2112,23 @@ int f2fs_resize_fs(struct f2fs_sb_info *sbi, __u64 block_count)
 		return -EINVAL;
 	}
 
+	err = mnt_want_write_file(filp);
+	if (err)
+		return err;
+
 	shrunk_blocks = old_block_count - block_count;
 	secs = div_u64(shrunk_blocks, BLKS_PER_SEC(sbi));
 
 	/* stop other GC */
+<<<<<<< HEAD   (5a220b Merge e649333bcfe1 ("octeontx2-pf: Add additional check for )
 	if (!f2fs_down_write_trylock(&sbi->gc_lock))
 		return -EAGAIN;
+=======
+	if (!down_write_trylock(&sbi->gc_lock)) {
+		err = -EAGAIN;
+		goto out_drop_write;
+	}
+>>>>>>> BRANCH (cdd3cd Linux 5.15.121)
 
 	/* stop CP to protect MAIN_SEC in free_segment_range */
 	f2fs_lock_op(sbi);
@@ -2135,13 +2147,30 @@ int f2fs_resize_fs(struct f2fs_sb_info *sbi, __u64 block_count)
 
 out_unlock:
 	f2fs_unlock_op(sbi);
+<<<<<<< HEAD   (5a220b Merge e649333bcfe1 ("octeontx2-pf: Add additional check for )
 	f2fs_up_write(&sbi->gc_lock);
+=======
+	up_write(&sbi->gc_lock);
+out_drop_write:
+	mnt_drop_write_file(filp);
+>>>>>>> BRANCH (cdd3cd Linux 5.15.121)
 	if (err)
 		return err;
 
 	freeze_super(sbi->sb);
+<<<<<<< HEAD   (5a220b Merge e649333bcfe1 ("octeontx2-pf: Add additional check for )
 	f2fs_down_write(&sbi->gc_lock);
 	f2fs_down_write(&sbi->cp_global_sem);
+=======
+
+	if (f2fs_readonly(sbi->sb)) {
+		thaw_super(sbi->sb);
+		return -EROFS;
+	}
+
+	down_write(&sbi->gc_lock);
+	down_write(&sbi->cp_global_sem);
+>>>>>>> BRANCH (cdd3cd Linux 5.15.121)
 
 	spin_lock(&sbi->stat_lock);
 	if (shrunk_blocks + valid_user_blocks(sbi) +
