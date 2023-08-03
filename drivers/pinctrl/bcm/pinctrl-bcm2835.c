@@ -351,6 +351,21 @@ static int bcm2835_gpio_direction_output(struct gpio_chip *chip,
 	return pinctrl_gpio_direction_output(chip->base + offset);
 }
 
+<<<<<<< HEAD   (774cde Merge bcea444ab4c0 ("clk: imx: clk-imx8mp: improve error han)
+=======
+static int bcm2835_of_gpio_ranges_fallback(struct gpio_chip *gc,
+					   struct device_node *np)
+{
+	struct pinctrl_dev *pctldev = of_pinctrl_get(np);
+
+	if (!pctldev)
+		return 0;
+
+	return gpiochip_add_pin_range(gc, pinctrl_dev_get_devname(pctldev), 0, 0,
+				      gc->ngpio);
+}
+
+>>>>>>> BRANCH (378641 powerpc: update ppc_save_regs to save current r1 in pt_regs)
 static const struct gpio_chip bcm2835_gpio_chip = {
 	.label = MODULE_NAME,
 	.owner = THIS_MODULE,
