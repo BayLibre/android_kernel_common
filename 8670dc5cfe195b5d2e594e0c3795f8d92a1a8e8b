@@ -70,6 +70,30 @@
       },
       "revId": "8670dc5cfe195b5d2e594e0c3795f8d92a1a8e8b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009c330f_c800bcd9",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-03T10:33:17Z",
+      "side": 1,
+      "message": "Thanks for removing it.\n\nYes, kernel_kobj is exported, if you really really need to export new sysfs entries, you can place them there.  The mm_kobj is only for mm-core sysfs files, which should not be added to by any external module at all.",
+      "parentUuid": "a88f4640_d4c9938b",
+      "range": {
+        "startLine": 189,
+        "startChar": 2,
+        "endLine": 189,
+        "endChar": 9
+      },
+      "revId": "8670dc5cfe195b5d2e594e0c3795f8d92a1a8e8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
