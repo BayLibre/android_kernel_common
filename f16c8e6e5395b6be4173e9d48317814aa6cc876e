@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "796ce1cc_fef0d4f2",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3031,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-03T10:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df7a7f1d_14301648",
+      "range": {
+        "startLine": 3031,
+        "startChar": 1,
+        "endLine": 3031,
+        "endChar": 8
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09228659_ed20c7d1",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "882c5578_1d0b7726",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3034,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-03T10:58:46Z",
+      "side": 1,
+      "message": "I\u0027m a bit paranoid to be honest. But I think GKI config will be the same and if someone disabled it then it\u0027s on them to realize what\u0027s going on. It\u0027s just on the field these kind of info on debug message can be useful if we got reports of some sort of problems. Removing it anyway.",
+      "parentUuid": "09228659_ed20c7d1",
+      "range": {
+        "startLine": 3034,
+        "startChar": 1,
+        "endLine": 3034,
+        "endChar": 8
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baedf67b_22e9364f",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-08-01T16:22:54Z",
       "side": 1,
       "message": "why is this needed?  It\u0027s a bool, set at boot time, it\u0027s not going to change.",
+      "range": {
+        "startLine": 3120,
+        "startChar": 69,
+        "endLine": 3120,
+        "endChar": 78
+      },
+      "revId": "f16c8e6e5395b6be4173e9d48317814aa6cc876e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aca004c8_da2c5646",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-03T10:58:46Z",
+      "side": 1,
+      "message": "Joel thought it was necessary in earlier version, but not sure if it still needed now, right. Joel, do you think it\u0027s still needed with the rcu_barrier() now in place around the write?",
+      "parentUuid": "baedf67b_22e9364f",
       "range": {
         "startLine": 3120,
         "startChar": 69,
