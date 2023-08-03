@@ -348,6 +348,7 @@ void snd_jack_report(struct snd_jack *jack, int status)
 {
 	struct snd_jack_kctl *jack_kctl;
 #ifdef CONFIG_SND_JACK_INPUT_DEV
+	struct input_dev *idev;
 	int i;
 #endif
 
@@ -359,26 +360,36 @@ void snd_jack_report(struct snd_jack *jack, int status)
 					    status & jack_kctl->mask_bits);
 
 #ifdef CONFIG_SND_JACK_INPUT_DEV
+<<<<<<< HEAD   (90de35 Merge 5.4.250 into android12-5.4-lts)
 	if (!jack->input_dev)
+=======
+	idev = input_get_device(jack->input_dev);
+	if (!idev)
+>>>>>>> BRANCH (887433 Linux 5.4.251)
 		return;
 
 	for (i = 0; i < ARRAY_SIZE(jack->key); i++) {
 		int testbit = SND_JACK_BTN_0 >> i;
 
 		if (jack->type & testbit)
-			input_report_key(jack->input_dev, jack->key[i],
+			input_report_key(idev, jack->key[i],
 					 status & testbit);
 	}
 
 	for (i = 0; i < ARRAY_SIZE(jack_switch_types); i++) {
 		int testbit = 1 << i;
 		if (jack->type & testbit)
-			input_report_switch(jack->input_dev,
+			input_report_switch(idev,
 					    jack_switch_types[i],
 					    status & testbit);
 	}
 
+<<<<<<< HEAD   (90de35 Merge 5.4.250 into android12-5.4-lts)
 	input_sync(jack->input_dev);
+=======
+	input_sync(idev);
+	input_put_device(idev);
+>>>>>>> BRANCH (887433 Linux 5.4.251)
 #endif /* CONFIG_SND_JACK_INPUT_DEV */
 }
 EXPORT_SYMBOL(snd_jack_report);

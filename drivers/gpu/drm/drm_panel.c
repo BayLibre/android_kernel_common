@@ -44,14 +44,25 @@ static LIST_HEAD(panel_list);
 /**
  * drm_panel_init - initialize a panel
  * @panel: DRM panel
+ * @dev: parent device of the panel
+ * @funcs: panel operations
+ * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
+ *	the panel interface
  *
- * Sets up internal fields of the panel so that it can subsequently be added
- * to the registry.
+ * Initialize the panel structure for subsequent registration with
+ * drm_panel_add().
  */
-void drm_panel_init(struct drm_panel *panel)
+void drm_panel_init(struct drm_panel *panel, struct device *dev,
+		    const struct drm_panel_funcs *funcs, int connector_type)
 {
 	INIT_LIST_HEAD(&panel->list);
+<<<<<<< HEAD   (90de35 Merge 5.4.250 into android12-5.4-lts)
 	BLOCKING_INIT_NOTIFIER_HEAD(&panel->nh);
+=======
+	panel->dev = dev;
+	panel->funcs = funcs;
+	panel->connector_type = connector_type;
+>>>>>>> BRANCH (887433 Linux 5.4.251)
 }
 EXPORT_SYMBOL(drm_panel_init);
 
