@@ -426,6 +426,7 @@ struct compact_control {
 	bool rescan;			/* Rescanning the same pageblock */
 	bool alloc_contig;		/* alloc_contig_range allocation */
 	bool source_has_metadata;	/* source pages have associated metadata */
+	bool reserve_metadata;
 };
 
 /*

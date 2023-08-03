@@ -552,6 +552,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
 	bool locked = false;
 	unsigned long blockpfn = *start_pfn;
 	unsigned int order;
+	int ret;
 
 	/* Strict mode is for isolation, speed is secondary */
 	if (strict)
@@ -607,6 +608,11 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
 
 		/* Found a free page, will break it into order-0 pages */
 		order = buddy_order(page);
+		if (metadata_storage_enabled() && cc->reserve_metadata) {
+			ret = reserve_metadata_storage(page, order, cc->gfp_mask);
+			if (ret)
+				goto isolate_fail;
+		}
 		isolated = __isolate_free_page(page, order);
 		if (!isolated)
 			break;
@@ -1724,6 +1730,9 @@ static struct page *compaction_alloc(struct page *migratepage,
 {
 	struct compact_control *cc = (struct compact_control *)data;
 	struct page *freepage;
+
+	if (metadata_storage_enabled())
+		cc->reserve_metadata = page_has_metadata(migratepage);
 
 	if (list_empty(&cc->freepages)) {
 		isolate_freepages(cc);
