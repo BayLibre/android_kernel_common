@@ -16,6 +16,24 @@
       "message": "no new symbols are being added overall here, so why the .xml file update?",
       "revId": "3053ea92b30cf87766012bcb4d3f704dadb6cc82",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61839a81_a09b09e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2012127
+      },
+      "writtenOn": "2023-08-04T06:04:17Z",
+      "side": 1,
+      "message": "Indeed, I just update the file android/abi_gki_aarch64_exynos_wear. Other files are changed after I run the abi update command.\nBUILD_CONFIG\u003dcommon/build.config.gki.aarch64 build/build_abi.sh --update",
+      "parentUuid": "3ec89f59_f1aaf350",
+      "revId": "3053ea92b30cf87766012bcb4d3f704dadb6cc82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
