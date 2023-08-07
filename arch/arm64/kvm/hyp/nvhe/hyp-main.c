@@ -1114,6 +1114,9 @@ static void handle___pkvm_init_vm(struct kvm_cpu_context *host_ctxt)
 	host_kvm = kern_hyp_va(host_kvm);
 	cpu_reg(host_ctxt, 1) = __pkvm_init_vm(host_kvm, vm_hva, pgd_hva,
 					       last_ran_hva);
+
+	trace_hyp_printk("This is pkvm_init_vm vm_hva=%llx pgd_hva=%llx",
+			 vm_hva, pgd_hva);
 }
 
 static void handle___pkvm_init_vcpu(struct kvm_cpu_context *host_ctxt)
@@ -1124,6 +1127,9 @@ static void handle___pkvm_init_vcpu(struct kvm_cpu_context *host_ctxt)
 
 	host_vcpu = kern_hyp_va(host_vcpu);
 	cpu_reg(host_ctxt, 1) = __pkvm_init_vcpu(handle, host_vcpu, vcpu_hva);
+
+	trace_hyp_printk("This is pkvm_init_vcpu vcpu_hva=%llx",
+			 vcpu_hva);
 }
 
 static void handle___pkvm_start_teardown_vm(struct kvm_cpu_context *host_ctxt)
@@ -1131,6 +1137,7 @@ static void handle___pkvm_start_teardown_vm(struct kvm_cpu_context *host_ctxt)
 	DECLARE_REG(pkvm_handle_t, handle, host_ctxt, 1);
 
 	cpu_reg(host_ctxt, 1) = __pkvm_start_teardown_vm(handle);
+	trace_hyp_printk("Teardown!!!");
 }
 
 static void handle___pkvm_finalize_teardown_vm(struct kvm_cpu_context *host_ctxt)

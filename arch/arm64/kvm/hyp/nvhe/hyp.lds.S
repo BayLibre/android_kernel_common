@@ -19,6 +19,7 @@ SECTIONS {
 #ifdef CONFIG_TRACING
 	. = ALIGN(PAGE_SIZE);
 	HYP_SECTION(.event_ids)
+	HYP_SECTION(.printk_fmts)
 #endif
 
 	/*

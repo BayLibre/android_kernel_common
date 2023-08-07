@@ -12,6 +12,54 @@
 
 #include "hyp_trace.h"
 
+/* Host copy of the struct hyp_printk_fmt */
+struct __hyp_printk_fmt {
+	char			*fmt;
+	u8			id;
+	struct list_head	node;
+};
+
+__ro_after_init LIST_HEAD(hyp_printk_fmt_list);
+
+static const char *hyp_printk_fmt_from_id(u8 fmt_id)
+{
+	struct __hyp_printk_fmt *__fmt;
+
+	list_for_each_entry(__fmt, &hyp_printk_fmt_list, node) {
+		if (__fmt->id == fmt_id)
+			return __fmt->fmt;
+	}
+
+	return "Unknown Format";
+}
+
+extern struct hyp_printk_fmt __hyp_printk_fmts_start[];
+extern struct hyp_printk_fmt __hyp_printk_fmts_end[];
+
+static void hyp_printk_fmt_init(void)
+{
+	struct hyp_printk_fmt *fmt = __hyp_printk_fmts_start;
+	u8 id = 0;
+
+	for (; (unsigned long)fmt < (unsigned long)__hyp_printk_fmts_end;
+	     fmt++, id++) {
+		struct __hyp_printk_fmt *__fmt = kmalloc(sizeof(*__fmt), GFP_KERNEL);
+
+		if (!__fmt)
+			return;
+
+		__fmt->fmt = kmalloc(strlen(fmt->fmt) + 1, GFP_KERNEL);
+		if (!__fmt->fmt) {
+			kfree(__fmt);
+			return;
+		}
+
+		strcpy(__fmt->fmt, fmt->fmt);
+		fmt->id = __fmt->id = id;
+		list_add(&__fmt->node, &hyp_printk_fmt_list);
+	}
+}
+
 #define HYP_EVENT_NAME_MAX 32
 
 struct hyp_event {
@@ -55,8 +103,10 @@ struct hyp_event {
 
 #undef HYP_EVENT
 #undef HE_PRINTK
+#undef HE_PRINTK_UNKNOWN_FMT
 #define __entry REC
 #define HE_PRINTK(fmt, args...) "\"" fmt "\", " __stringify(args)
+#define HE_PRINTK_UNKNOWN_FMT(fmt, args...) "Unknown"
 #define HYP_EVENT(__name, __proto, __struct, __assign, __printk)		\
 	static char hyp_event_print_fmt_##__name[] = __printk;			\
 	static struct trace_event_functions hyp_event_funcs_##__name = {	\
@@ -372,6 +422,8 @@ int kvm_hyp_init_events(void)
 	struct hyp_event *event = __hyp_events_start;
 	struct hyp_event_id *hyp_event_id = __hyp_event_ids_start;
 	int ret, err = -ENODEV;
+
+	hyp_printk_fmt_init();
 
 	/* TODO: BUILD_BUG nr events host side / hyp side */
 
