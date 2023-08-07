@@ -7,8 +7,57 @@
 #include <linux/rcupdate.h>
 
 #include <asm/kvm_host.h>
-#include <asm/kvm_define_hypevents.h>
 #include <asm/setup.h>
+
+/* Host copy of the struct hyp_printk_fmt */
+struct __hyp_printk_fmt {
+	char			*fmt;
+	u8			id;
+	struct list_head	node;
+};
+
+__ro_after_init LIST_HEAD(hyp_printk_fmt_list);
+
+static const char *hyp_printk_fmt_from_id(u8 fmt_id)
+{
+	struct __hyp_printk_fmt *__fmt;
+
+	list_for_each_entry(__fmt, &hyp_printk_fmt_list, node) {
+		if (__fmt->id == fmt_id)
+			return __fmt->fmt;
+	}
+
+	return "Unknown Format";
+}
+
+#include <asm/kvm_define_hypevents.h>
+
+extern struct hyp_printk_fmt __hyp_printk_fmts_start[];
+extern struct hyp_printk_fmt __hyp_printk_fmts_end[];
+
+static void hyp_printk_fmt_init(void)
+{
+	struct hyp_printk_fmt *fmt = __hyp_printk_fmts_start;
+	u8 id = 0;
+
+	for (; (unsigned long)fmt < (unsigned long)__hyp_printk_fmts_end;
+	     fmt++, id++) {
+		struct __hyp_printk_fmt *__fmt = kzalloc(sizeof(*__fmt), GFP_KERNEL);
+
+		if (!__fmt)
+			return;
+
+		__fmt->fmt = kmalloc(strlen(fmt->fmt) + 1, GFP_KERNEL);
+		if (!__fmt->fmt) {
+			kfree(__fmt);
+			return;
+		}
+
+		strcpy(__fmt->fmt, fmt->fmt);
+		fmt->id = __fmt->id = id;
+		list_add(&__fmt->node, &hyp_printk_fmt_list);
+	}
+}
 
 extern struct hyp_event __hyp_events_start[];
 extern struct hyp_event __hyp_events_end[];
@@ -352,6 +401,8 @@ int hyp_trace_init_events(void)
 {
 	int nr_events = nr_events(__hyp_events_start, __hyp_events_end);
 	int nr_event_ids = nr_events(__hyp_event_ids_start, __hyp_event_ids_end);
+
+	hyp_printk_fmt_init();
 
 	return hyp_event_table_init(__hyp_events_start, nr_events,
 				    __hyp_event_ids_start, nr_event_ids);
