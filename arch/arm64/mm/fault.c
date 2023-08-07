@@ -38,7 +38,9 @@
 #include <asm/debug-monitors.h>
 #include <asm/esr.h>
 #include <asm/kprobes.h>
+#include <asm/memory_metadata.h>
 #include <asm/mte.h>
+#include <asm/mte_tag_storage.h>
 #include <asm/processor.h>
 #include <asm/sysreg.h>
 #include <asm/system_misc.h>
@@ -972,10 +974,31 @@ struct page *alloc_zeroed_user_highpage_movable(struct vm_area_struct *vma,
 	return alloc_page_vma(flags, vma, vaddr);
 }
 
+static void save_zero_page_tags(struct page *page)
+{
+	void *tags;
+
+	clear_page(page_address(page));
+
+	tags = kmalloc(MTE_PAGE_TAG_STORAGE_SIZE, GFP_KERNEL | __GFP_ZERO);
+	if (WARN_ON(!tags))
+		return;
+
+	if (WARN_ON(mte_save_page_tags_by_pfn(page, tags)))
+		mte_free_tags_mem(tags);
+}
+
 void tag_clear_highpage(struct page *page)
 {
 	/* Tag storage pages cannot be tagged. */
 	WARN_ON_ONCE(is_migrate_metadata_page(page));
+
+	if (metadata_storage_enabled() &&
+	    unlikely(!page_tag_storage_reserved(page))) {
+		save_zero_page_tags(page);
+		return;
+	}
+
 	mte_zero_clear_page_tags(page_address(page));
 	set_page_mte_tagged(page);
 }
