@@ -33,6 +33,24 @@
       "message": "My feedback is as follows:\n- I\u0027m surprised that there is a need to modify `cmd_size` from the host driver. Does this perhaps mean that this is part of an effort to add support for a UFS host controller that is not fully conforming with the UFSHCI specification?\n- Apparently commit f2e2fe3dec7f (\"scsi: ufs: Declare SCSI host template const\") has not yet been backported to the android14-6.1 kernel. Anyway, ufshcd_driver_template should not be modified.",
       "revId": "e7cefed58a93ee75b1e705e8a3554a833e71c1af",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86afb47d_ba087f62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2023-08-08T07:21:29Z",
+      "side": 1,
+      "message": "Actually, We just want to add OEM padding to struct request. To avoid violating KMI, we choose to modify \u0027cmd_size\u0027 instead. \nIf the \u0027ufshcd_driver_template\u0027 structure becomes const, then this hook will become invalid. I will try to find another way.",
+      "parentUuid": "c8082e32_2d2a7b33",
+      "revId": "e7cefed58a93ee75b1e705e8a3554a833e71c1af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
