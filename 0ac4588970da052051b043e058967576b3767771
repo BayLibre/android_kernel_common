@@ -16,6 +16,24 @@
       "message": "checkpatch runs on an individual, external, diff, not on a whole file or tree, so how will this target be actually used?",
       "revId": "0ac4588970da052051b043e058967576b3767771",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4497ae37_f423b5fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-08-09T20:55:45Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nSee commit message. Running\n\n```\ntools/bazel run //common:checkpatch\n```\n\nruns this script: https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/impl/checkpatch.sh\n\n... (which is a re-write of this legacy script, though with slightly different flags and sementics https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/static_analysis/checkpatch.sh )\n\nBoth the new and the old `checkpatch.sh` calls `git format-patch` to create a patch of either HEAD or a given git sha1 from flags, then executes scripts/checkpatch.pl on the patch:\n\nhttps://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/impl/checkpatch.sh;l\u003d71;drc\u003d4a7ab9fbb2926a2cc43639618f01d7c0b12f2d07",
+      "parentUuid": "2cf44f5e_eac3b91b",
+      "revId": "0ac4588970da052051b043e058967576b3767771",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
