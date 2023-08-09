@@ -28,7 +28,9 @@
 #include <linux/reset.h>
 #include <linux/sched.h>
 #include <linux/slab.h>
+#include <linux/arm-smccc.h>
 #include <linux/units.h>
+#include <linux/dma-mapping.h>
 
 #include "i2c-designware-core.h"
 
@@ -211,7 +213,14 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
 	struct device *device = &pdev->dev;
 	struct i2c_adapter *adap;
 	struct dw_i2c_dev *dev;
-	int irq, ret;
+	int irq, ret, version;
+	dma_addr_t dma_handle;
+	void *cpu_addr;
+	unsigned int pattern;
+	struct arm_smccc_res res;
+	struct resource *r;
+
+	dev_err(&pdev->dev, "Prooooobing\n");
 
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0)
@@ -242,6 +251,42 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
 	ret = i2c_dw_fw_parse_and_configure(dev);
 	if (ret)
 		goto exit_reset;
+
+	if (!is_protected_kvm_enabled()) {
+		r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+		arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_DEV_REQ_MMIO_FUNC_ID, r->start, 0, 0, 0, 0, 0, &res);
+		pr_err("%s request(%llx) => a0: %lx a1:%lx",__func__,r->start >> PAGE_SHIFT, res.a0, res.a1);
+	}
+
+	/* Version expected 0x3132302a */
+	version = readl_relaxed(dev->base + 0xf8);
+	dev_err(&pdev->dev, "Version read %x", version);
+	WARN_ON(version != 0x3132302a);
+
+	/* Allocate 4 bytes for DMA and set the buffer address. */
+	cpu_addr = dma_alloc_coherent(&pdev->dev, 4, &dma_handle, GFP_KERNEL);
+	/* Address of DMA buffer. */
+	writel_relaxed(dma_handle, dev->base + 0x90);
+
+	/* Write to CPU address, reading MMIO will read it through DMA. */
+	WRITE_ONCE(*(unsigned int *)cpu_addr, 0x55AA55AA);
+	/* Order DMA buffer write with MMIO read. */
+	mb();
+	pattern = readl_relaxed(dev->base + 0x8c);
+	dev_err(&pdev->dev, "Read pattern %x dma_handle %llx\n", pattern, dma_handle);
+	WARN_ON(pattern != 0x55AA55AA);
+
+	/* Write to the MMIO which writes to the buffer through DMA and read it from CPU.*/
+	writel_relaxed(0xDEADBEEF, dev->base + 0x8c);
+	/* As the previous write updates cpu_addr(DMA), make sure write is done before reading. */
+	pattern = readl_relaxed(dev->base + 0x8c);
+	/* Order DMA buffer read with MMIO read. */
+	rmb();
+	pattern = READ_ONCE(*(unsigned int *)cpu_addr);
+	dev_err(&pdev->dev, "Read pattern from CPU %x\n", pattern);
+	WARN_ON(pattern != 0xDEADBEEF);
+
+	dma_free_coherent(&pdev->dev, 4, cpu_addr, dma_handle);
 
 	ret = i2c_dw_probe_lock_support(dev);
 	if (ret)
