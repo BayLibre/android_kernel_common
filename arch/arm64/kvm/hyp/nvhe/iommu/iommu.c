@@ -122,7 +122,6 @@ out_unlock:
 int kvm_iommu_free_domain(pkvm_handle_t domain_id)
 {
 	int ret = -EINVAL;
-	struct io_pgtable iopt;
 	struct kvm_hyp_iommu_domain *domain;
 
 	hyp_spin_lock(&iommu_domains_lock);
@@ -133,17 +132,8 @@ int kvm_iommu_free_domain(pkvm_handle_t domain_id)
 	if (WARN_ON(atomic_cmpxchg_release(&domain->refs, 1, 0) != 1))
 		goto out_unlock;
 
-	iopt = domain_to_iopt(domain, domain_id);
-
+	ret = kvm_iommu_ops->free_domain(domain, domain_id);
 	memset(domain, 0, sizeof(*domain));
-	/*
-	 * A domain can be freed without being attached.
-	 * this is SMMUv3 specific and will improved next.
-	 */
-	if (domain->pgtable)
-		ret = kvm_iommu_ops->free_iopt(&iopt);
-	else
-		ret = 0;
 
 out_unlock:
 	hyp_spin_unlock(&iommu_domains_lock);
@@ -396,7 +386,7 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_iommu_memcache *mc,
 	int ret;
 
 	if (WARN_ON(!ops->get_iommu_by_id ||
-		    !ops->free_iopt ||
+		    !ops->free_domain ||
 		    !ops->alloc_domain ||
 		    !ops->attach_dev ||
 		    !ops->detach_dev))
