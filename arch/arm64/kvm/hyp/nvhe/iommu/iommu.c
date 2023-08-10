@@ -208,7 +208,7 @@ static void domain_put(struct kvm_hyp_iommu_domain *domain)
 	BUG_ON(!atomic_dec_return_release(&domain->refs));
 }
 
-int kvm_iommu_alloc_domain(pkvm_handle_t domain_id)
+int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, u32 type)
 {
 	int ret = -EINVAL;
 	struct kvm_hyp_iommu_domain *domain;
@@ -221,7 +221,7 @@ int kvm_iommu_alloc_domain(pkvm_handle_t domain_id)
 	if (atomic_read(&domain->refs))
 		goto out_unlock;
 
-	ret = kvm_iommu_ops->alloc_domain(domain, domain_id);
+	ret = kvm_iommu_ops->alloc_domain(domain, domain_id, type);
 	if (ret)
 		goto out_unlock;
 	atomic_set_release(&domain->refs, 1);
@@ -575,7 +575,8 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
 		/* A bit hacky way to populate first domain to be used immediately. */
 		kvm_hyp_iommu_domains[0] = hyp_alloc_pages(&iommu_idmap_pool, 0);
 		kvm_iommu_ops = ops;
-		ret = kvm_iommu_alloc_domain(KVM_IOMMU_DOMAIN_IDMAP_ID);
+		ret = kvm_iommu_alloc_domain(KVM_IOMMU_DOMAIN_IDMAP_ID,
+					     KVM_IOMMU_DOMAIN_IDMAP_TYPE);
 	} else {
 		kvm_iommu_ops = ops;
 	}
