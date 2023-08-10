@@ -191,7 +191,7 @@ static void domain_put(struct kvm_hyp_iommu_domain *domain)
 	BUG_ON(!atomic_dec_return_release(&domain->refs));
 }
 
-int kvm_iommu_alloc_domain(pkvm_handle_t domain_id)
+int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, u32 type)
 {
 	int ret = -EINVAL;
 	struct kvm_hyp_iommu_domain *domain;
@@ -202,7 +202,7 @@ int kvm_iommu_alloc_domain(pkvm_handle_t domain_id)
 		goto out_unlock;
 
 	domain->domain_id = domain_id;
-	ret = kvm_iommu_ops->alloc_domain(domain);
+	ret = kvm_iommu_ops->alloc_domain(domain, type);
 	if (ret)
 		goto out_unlock;
 
@@ -537,7 +537,7 @@ static int kvm_iommu_init_idmap_domain(void)
 	/* A bit hacky way to populate first domain to be used immediately. */
 	kvm_hyp_iommu_domains[0] = hyp_alloc_pages(&iommu_idmap_pool, 0);
 	/* The host must guarantee that the allocator can be used from this context. */
-	return kvm_iommu_alloc_domain(KVM_IOMMU_DOMAIN_IDMAP_ID);
+	return kvm_iommu_alloc_domain(KVM_IOMMU_DOMAIN_IDMAP_ID, KVM_IOMMU_DOMAIN_IDMAP_TYPE);
 }
 
 int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
