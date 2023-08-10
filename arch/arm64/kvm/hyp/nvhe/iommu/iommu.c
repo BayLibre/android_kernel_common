@@ -18,6 +18,12 @@ struct kvm_iommu_paddr_cache {
 };
 static DEFINE_PER_CPU(struct kvm_iommu_paddr_cache, kvm_iommu_unmap_cache);
 struct kvm_hyp_iommu_memcache *kvm_hyp_iommu_memcaches;
+/*
+ * This lock protect domain operations, that can't be done using the atomic refcount
+ * It is used for alloc/free domains, so it shouldn't have a lot of overhead as
+ * these are rare operations, while map/unmap are left lockless.
+ */
+static DEFINE_HYP_SPINLOCK(iommu_domains_lock);
 
 void *kvm_iommu_donate_page(void)
 {
@@ -81,7 +87,7 @@ int kvm_iommu_alloc_domain(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (!iommu)
 		return -EINVAL;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (!domain)
 		goto out_unlock;
@@ -97,7 +103,7 @@ int kvm_iommu_alloc_domain(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 
 	domain->refs = 1;
 out_unlock:
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 	return ret;
 }
 
@@ -111,7 +117,7 @@ int kvm_iommu_free_domain(pkvm_handle_t iommu_id, pkvm_handle_t domain_id)
 	if (!iommu)
 		return -EINVAL;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (!domain)
 		goto out_unlock;
@@ -124,7 +130,7 @@ int kvm_iommu_free_domain(pkvm_handle_t iommu_id, pkvm_handle_t domain_id)
 	memset(domain, 0, sizeof(*domain));
 
 out_unlock:
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 
 	return ret;
 }
@@ -140,7 +146,7 @@ int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (!iommu)
 		return -EINVAL;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (!domain || !domain->refs || domain->refs == UINT_MAX)
 		goto out_unlock;
@@ -151,7 +157,7 @@ int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 
 	domain->refs++;
 out_unlock:
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 	return ret;
 }
 
@@ -166,7 +172,7 @@ int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (!iommu)
 		return -EINVAL;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (!domain || domain->refs <= 1)
 		goto out_unlock;
@@ -177,7 +183,7 @@ int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 
 	domain->refs--;
 out_unlock:
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 	return ret;
 }
 
@@ -210,7 +216,7 @@ size_t kvm_iommu_map_pages(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (!iommu)
 		return 0;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (!domain)
 		goto err_unlock;
@@ -244,7 +250,7 @@ size_t kvm_iommu_map_pages(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (pgcount)
 		__pkvm_host_unuse_dma(paddr, pgcount * pgsize);
 err_unlock:
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 	return total_mapped;
 }
 
@@ -291,7 +297,7 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (!iommu)
 		return 0;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (!domain)
 		goto out_unlock;
@@ -314,7 +320,7 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	}
 
 out_unlock:
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 	return total_unmapped;
 }
 
@@ -329,12 +335,12 @@ phys_addr_t kvm_iommu_iova_to_phys(pkvm_handle_t iommu_id,
 	if (!iommu)
 		return 0;
 
-	hyp_spin_lock(&iommu->lock);
+	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(iommu, domain_id);
 	if (domain)
 		phys = domain->pgtable->ops.iova_to_phys(&domain->pgtable->ops, iova);
 
-	hyp_spin_unlock(&iommu->lock);
+	hyp_spin_unlock(&iommu_domains_lock);
 	return phys;
 }
 
