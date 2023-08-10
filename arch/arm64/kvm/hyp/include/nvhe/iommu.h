@@ -98,7 +98,7 @@ struct kvm_iommu_tlb_cookie {
 struct kvm_iommu_ops {
 	int (*init)(unsigned long arg);
 	struct kvm_hyp_iommu *(*get_iommu_by_id)(pkvm_handle_t smmu_id);
-	int (*free_iopt)(struct io_pgtable *iopt);
+	int (*free_domain)(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_id);
 	int (*attach_dev)(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
 			  struct kvm_hyp_iommu_domain *domain, u32 endpoint_id);
 	int (*detach_dev)(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
