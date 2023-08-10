@@ -692,10 +692,22 @@ int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_
 	return 0;
 }
 
+int smmu_free_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_id)
+{
+	struct io_pgtable iopt = domain_to_iopt(domain, domain_id);
+
+	hyp_free(domain->priv);
+
+	/* A domain can be freed before any device is attached. */
+	if (domain->pgtable)
+		return kvm_arm_io_pgtable_free(&iopt);
+	return 0;
+}
+
 struct kvm_iommu_ops smmu_ops = {
 	.init				= smmu_init,
 	.get_iommu_by_id		= smmu_id_to_iommu,
-	.free_iopt			= kvm_arm_io_pgtable_free,
+	.free_domain			= smmu_free_domain,
 	.attach_dev			= smmu_attach_dev,
 	.detach_dev			= smmu_detach_dev,
 	.alloc_domain			= smmu_alloc_domain,
