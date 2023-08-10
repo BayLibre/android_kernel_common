@@ -17,6 +17,9 @@
  */
 #define KVM_IOMMU_DOMAIN_IDMAP_ID	0
 
+/* Used in alloc_domain type argument. */
+#define KVM_IOMMU_DOMAIN_IDMAP_TYPE	0
+
 #define KVM_IOMMU_DOMAIN_NR_START	(KVM_IOMMU_DOMAIN_IDMAP_ID + 1)
 /*
  * Parameters from the trusted host:
