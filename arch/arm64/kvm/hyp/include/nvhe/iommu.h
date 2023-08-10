@@ -28,7 +28,7 @@ void kvm_iommu_reclaim_pages_iopt(void *p, u8 order, void *cookie);
 int kvm_iommu_request(struct kvm_hyp_req *req);
 
 /* Hypercall handlers */
-int kvm_iommu_alloc_domain(pkvm_handle_t domain_id);
+int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, u32 type);
 int kvm_iommu_free_domain(pkvm_handle_t domain_id);
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 u32 endpoint_id, u32 pasid, u32 pasid_bits);
@@ -58,7 +58,7 @@ struct kvm_iommu_ops {
 			  u32 endpoint_id, u32 pasid, u32 pasid_bits);
 	int (*detach_dev)(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
 			  struct kvm_hyp_iommu_domain *domain, u32 endpoint_id, u32 pasid);
-	int (*alloc_domain)(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_id);
+	int (*alloc_domain)(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_id, u32 type);
 	bool (*dabt_handler)(struct kvm_cpu_context *host_ctxt, u64 esr, u64 addr);
 	int (*suspend)(struct kvm_hyp_iommu *iommu);
 	int (*resume)(struct kvm_hyp_iommu *iommu);
