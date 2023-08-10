@@ -56,6 +56,7 @@ struct domain_iommu_node {
 struct hyp_arm_smmu_v3_domain {
 	struct kvm_hyp_iommu_domain     *domain;
 	struct list_head		iommu_list;
+	u32				type;
 };
 
 #define for_each_smmu(smmu) \
@@ -801,7 +802,7 @@ out_unlock:
 	return ret;
 }
 
-int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain)
+int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain, u32 type)
 {
 	struct hyp_arm_smmu_v3_domain *smmu_domain;
 
@@ -812,6 +813,8 @@ int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain)
 	/* Can't do much without the IOMMU. */
 	INIT_LIST_HEAD(&smmu_domain->iommu_list);
 	smmu_domain->domain = domain;
+	smmu_domain->type = type;
+
 	domain->priv = (void *)smmu_domain;
 
 	return 0;
