@@ -542,11 +542,20 @@ static int smmu_init_device(struct hyp_arm_smmu_v3_device *smmu)
 	if (ret)
 		return ret;
 
-	smmu->pgtable_cfg.tlb = &smmu_tlb_ops;
+	smmu->pgtable_cfg_s1.tlb = &smmu_tlb_ops;
+	smmu->pgtable_cfg_s2.tlb = &smmu_tlb_ops;
 
-	ret = kvm_arm_io_pgtable_init(&smmu->pgtable_cfg, &smmu->pgtable);
-	if (ret)
-		return ret;
+	if (smmu->features & ARM_SMMU_FEAT_TRANS_S1) {
+		ret = kvm_arm_io_pgtable_init(&smmu->pgtable_cfg_s1, &smmu->pgtable_s1);
+		if (ret)
+			return ret;
+	}
+
+	if (smmu->features & ARM_SMMU_FEAT_TRANS_S2) {
+		ret = kvm_arm_io_pgtable_init(&smmu->pgtable_cfg_s2, &smmu->pgtable_s2);
+		if (ret)
+			return ret;
+	}
 
 	ret = smmu_init_registers(smmu);
 	if (ret)
@@ -637,8 +646,14 @@ int smmu_domain_finalise(struct hyp_arm_smmu_v3_device *smmu,
 	int ret;
 	struct io_pgtable iopt;
 	size_t pgd_size;
+	struct hyp_arm_smmu_v3_domain *smmu_domain = domain->priv;
 
-	domain->pgtable = &smmu->pgtable.iop;
+	if ((smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2) ||
+	   (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS)) {
+		domain->pgtable = &smmu->pgtable_s2.iop;
+	} else {
+		domain->pgtable = &smmu->pgtable_s1.iop;
+	}
 
 	iopt = domain_to_iopt(domain, domain_id);
 	pgd_size = kvm_arm_io_pgtable_size(&iopt);
@@ -670,7 +685,10 @@ static bool smmu_domain_compat(struct hyp_arm_smmu_v3_device *smmu,
 	if (!smmu_domain->domain->pgtable)
 		return true;
 
-	cfg1 = &smmu->pgtable_cfg;
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2 ||
+	    smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS) {
+		cfg1 = &smmu->pgtable_cfg_s2;
+	}
 	cfg2 = &smmu_domain->domain->pgtable->cfg;
 
 	/* Best effort. */
