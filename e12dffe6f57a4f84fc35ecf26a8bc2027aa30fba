@@ -1,0 +1,87 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000050888616",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2705553?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "da7f6347_3d3f621a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-08-11T14:58:10Z",
+      "side": 1,
+      "message": "Commit does not have a valid tag, such as ANDROID:\n\nANDROID: Patch only relevant for Android, unlikely to be upstreamed\nUPSTREAM: Unmodified patch from upstream, needs reference to upstream sha\nBACKPORT: Modified patch from upstream, needs reference to upstream sha\nFROMGIT: Patch from an upstream git repository, needs reference to upstream sha\nFROMLIST: Patch from an upstream mailing list, needs URL to upstream\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 555464450 android-build.ayeaye-python-dispatcher_20230810.04_p0",
+      "revId": "e12dffe6f57a4f84fc35ecf26a8bc2027aa30fba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000050888616",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2705553?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "3d763f01_3ef73a4a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-08-11T14:58:10Z",
+      "side": 1,
+      "message": "Can not find the original change on base branch (android13-5.15) for this change.\nPlease ensure that the Change-Id of this change is same as the original change on the base branch.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 555464450 android-build.ayeaye-python-dispatcher_20230810.04_p0",
+      "revId": "e12dffe6f57a4f84fc35ecf26a8bc2027aa30fba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000050888616",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2705553?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "74fd49b1_2c19709a",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 38,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: vikas.saharawat \u003cvikas.saharawat@mediatek.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "ee2acb9a_d3b209ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-08-11T14:58:10Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: vikas.saharawat \u003cvikas.saharawat@mediatek.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 555464450 android-build.ayeaye-python-dispatcher_20230810.04_p0",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "e12dffe6f57a4f84fc35ecf26a8bc2027aa30fba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
