@@ -38,6 +38,7 @@
   cleancache_register_ops
   __const_udelay
   copy_from_kernel_nofault
+  copy_page
   cpu_hwcaps
   cpu_number
   __cpu_online_mask
@@ -180,6 +181,7 @@
   __list_del_entry_valid
   log_post_read_mmio
   log_read_mmio
+  log_suspend_abort_reason
   memblock_free
   memcpy
   __memcpy_fromio
@@ -338,6 +340,7 @@
   __traceiter_android_vh_madvise_pageout_swap_entry
   __traceiter_android_vh_madvise_swapin_walk_pmd_entry
   __traceiter_android_vh_meminfo_cache_adjust
+  __traceiter_android_vh_meminfo_proc_show
   __traceiter_android_vh_mutex_wait_finish
   __traceiter_android_vh_mutex_wait_start
   __traceiter_android_vh_process_madvise_end
@@ -380,6 +383,7 @@
   __tracepoint_android_vh_madvise_pageout_swap_entry
   __tracepoint_android_vh_madvise_swapin_walk_pmd_entry
   __tracepoint_android_vh_meminfo_cache_adjust
+  __tracepoint_android_vh_meminfo_proc_show
   __tracepoint_android_vh_mutex_wait_finish
   __tracepoint_android_vh_mutex_wait_start
   __tracepoint_android_vh_process_madvise_end
@@ -418,9 +422,9 @@
   up_write
   usb_alloc_dev
   usb_gstrings_attach
-  usb_set_configuration
   usbnet_get_endpoints
   usbnet_link_change
+  usb_set_configuration
   usb_set_device_state
   vfree
   vfs_fsync_range
