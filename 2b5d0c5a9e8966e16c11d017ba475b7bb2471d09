@@ -22,6 +22,30 @@
       },
       "revId": "2b5d0c5a9e8966e16c11d017ba475b7bb2471d09",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb11ac2_ef044956",
+        "filename": "arch/arm64/tools/cpucaps",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2023-08-14T11:07:17Z",
+      "side": 1,
+      "message": "Greg, Han,\n\nI believe the original edit to cpucaps which replaced ANDROID_RESERVED_1 was correct. Will Deacon reclaimed certain cpucaps precisely to allow this type of backport. Please see commit 38e30fccb85a1b0a92daf2d76ef56f43b22fde6f.\n\nApologies I was on vacation last week while this went round in circles!",
+      "parentUuid": "83f302dc_d1203adb",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "2b5d0c5a9e8966e16c11d017ba475b7bb2471d09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
