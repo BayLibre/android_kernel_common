@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3701028_cfc3bf04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-14T16:20:26Z",
+      "side": 1,
+      "message": "This does not explain why this change is needed.  Especially as it almost duplicates the existing vendorhook.",
+      "revId": "3f9ad715a6cfafee19b5adcea06d5e780e32b803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8355b1_c652946d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-14T16:20:26Z",
+      "side": 1,
+      "message": "Please rework and resubmit.",
+      "revId": "3f9ad715a6cfafee19b5adcea06d5e780e32b803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2997ea0_022a848f",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-14T16:20:26Z",
+      "side": 1,
+      "message": "This is a very vague name. What is \"special\" about it? Or \"special\" about the time?\n\nAs it seems the reason for this change is the existing vendorhook is called too late, maybe android_vh_record_pcpu_rwsem_time_early might be a more clear name?",
+      "revId": "3f9ad715a6cfafee19b5adcea06d5e780e32b803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a8e41b_12fc2e50",
+        "filename": "include/linux/percpu-rwsem.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-14T16:20:26Z",
+      "side": 1,
+      "message": "So, I see you\u0027re following the example with _trace_android_vh_record_pcpu_rwsem_starttime below, but the commit message needs a clear explanation of why you\u0027re adding a intermediary function for the tracepoint, as this makes the tracepoint always have the cost-overhead of a function call.",
+      "revId": "3f9ad715a6cfafee19b5adcea06d5e780e32b803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1128b1fd_8b1c449e",
+        "filename": "kernel/cgroup/cgroup.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-14T16:20:26Z",
+      "side": 1,
+      "message": "This export should probably be a separate patch.",
+      "revId": "3f9ad715a6cfafee19b5adcea06d5e780e32b803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61095625_50f34e92",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-14T16:20:26Z",
+      "side": 1,
+      "message": "Again, its not immediately clear why this intermediate function is needed. Why can\u0027t the trace point be directly called? (This is something your commit message should explain).",
+      "revId": "3f9ad715a6cfafee19b5adcea06d5e780e32b803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
