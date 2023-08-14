@@ -1710,6 +1710,15 @@ static void handle___pkvm_ptdump(struct kvm_cpu_context *host_ctxt)
 		cpu_reg(host_ctxt, 0) = SMCCC_RET_NOT_SUPPORTED;
 }
 
+static void handle___pkvm_devices_init(struct kvm_cpu_context *host_ctxt)
+{
+	/*
+	 * Devices must be initlized after the IOMMUs driver is initlized.
+	 * We do this in a separte HVC to avoid complixity.
+	 */
+	cpu_reg(host_ctxt, 1) = pkvm_init_devices();
+}
+
 static void handle___pkvm_host_iommu_map_sg(struct kvm_cpu_context *host_ctxt)
 {
 	unsigned long ret;
@@ -1748,6 +1757,7 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_init_module),
 	HANDLE_FUNC(__pkvm_register_hcall),
 	HANDLE_FUNC(__pkvm_iommu_init),
+	HANDLE_FUNC(__pkvm_devices_init),
 	HANDLE_FUNC(__pkvm_prot_finalize),
 
 	HANDLE_FUNC(__pkvm_host_share_hyp),

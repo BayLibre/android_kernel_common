@@ -619,6 +619,10 @@ static int __init finalize_pkvm(void)
 
 	dump_pkvm_devices();
 
+	ret = kvm_call_hyp_nvhe(__pkvm_devices_init);
+	if (ret)
+		pr_warn("Assignable devices failed to initialize in the hypervisor %d", ret);
+
 	/*
 	 * Exclude HYP sections from kmemleak so that they don't get peeked
 	 * at, which would end badly once inaccessible.
