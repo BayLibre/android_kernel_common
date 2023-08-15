@@ -33,6 +33,23 @@
       "message": "Thanks for reworking your patch!",
       "revId": "1d65089267ccd9ac1fe42166f16bea3cae79d5a0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0b40676_5986b885",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-15T16:12:07Z",
+      "side": 1,
+      "message": "Sorry, this patch doesn\u0027t build. Could you fix and resubmit?\n\n\n...include/linux/percpu-rwsem.h:101:59: error: incompatible pointer types passing \u0027struct percpu_rw_semaphore *\u0027 to parameter of type \u0027struct percpu_rw_semaphore *\u0027 [-Werror,-Wincompatible-pointer-types]\n_trace_android_vh_record_pcpu_rwsem_time_early(jiffies, sem);\n^~~\n...d14-6.1/out/bazel/output_user_root/0bff201173d7f9f4b05eee35c041b37b/sandbox/linux-sandbox/29/execroot/__main__/common/include/linux/percpu-rwsem.h:13:54: note: passing argument to parameter \u0027sem\u0027 here\nunsigned long settime, struct percpu_rw_semaphore *sem);\n^\n...include/linux/percpu-rwsem.h:134:52: error: incompatible pointer types passing \u0027struct percpu_rw_semaphore *\u0027 to parameter of type \u0027struct percpu_rw_semaphore *\u0027 [-Werror,-Wincompatible-pointer-types]\n_trace_android_vh_record_pcpu_rwsem_time_early(0, sem);\n^~~\n...d14-6.1/out/bazel/output_user_root/0bff201173d7f9f4b05eee35c041b37b/sandbox/linux-sandbox/29/execroot/__main__/common/include/linux/percpu-rwsem.h:13:54: note: passing argument to parameter \u0027sem\u0027 here\nunsigned long settime, struct percpu_rw_semaphore *sem);\n^\n4 errors generated.",
+      "revId": "1d65089267ccd9ac1fe42166f16bea3cae79d5a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
