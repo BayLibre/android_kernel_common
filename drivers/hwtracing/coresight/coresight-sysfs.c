@@ -154,7 +154,7 @@ int coresight_make_links(struct coresight_device *orig,
 		if (!outs)
 			break;
 		ins = devm_kasprintf(&target->dev, GFP_KERNEL,
-				     "in:%d", conn->child_port);
+				     "in:%s", dev_name(&orig->dev));
 		if (!ins)
 			break;
 		link = devm_kzalloc(&orig->dev,
