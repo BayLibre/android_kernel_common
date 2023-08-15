@@ -329,6 +329,13 @@
   page_pool_put_page_bulk
   build_skb_around
 
+<<<<<<< PATCH SET (bbefc8 ANDROID: GKI: Update symbol list for xiaomi)
+#required by lock_optimization module
+  __traceiter_android_vh_record_pcpu_rwsem_time_early
+  __tracepoint_android_vh_record_pcpu_rwsem_time_early
+
+=======
 #required by xm_ispv4_pcie.ko
   pci_ioremap_bar
   pci_disable_pcie_error_reporting
+>>>>>>> BASE      (c2611a ANDROID: GKI: update symbol list file for xiaomi)
