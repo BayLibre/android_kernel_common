@@ -16,6 +16,23 @@
       "message": "This function should only be used by the driver core, and is not exported at all (it\u0027s gone) in newer kernel versions, so please do not use it anymore.",
       "revId": "74a47b95e8799623a3bed78cc400be452d173add",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2b6c3f_ae09bbdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-15T18:59:35Z",
+      "side": 1,
+      "message": "Wait, sorry, this is an ANDROID-only symbol, it\u0027s never been upstream, my fault.\n\nBut even then, no driver should need to call this, why are you needing it?",
+      "revId": "74a47b95e8799623a3bed78cc400be452d173add",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
