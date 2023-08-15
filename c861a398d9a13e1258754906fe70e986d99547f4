@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "478aee63_d8c59dd7",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3024,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-15T16:24:17Z",
+      "side": 1,
+      "message": "static?",
+      "range": {
+        "startLine": 3024,
+        "startChar": 0,
+        "endLine": 3024,
+        "endChar": 3
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e18a0f4_56ee35ab",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3027,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-15T16:24:17Z",
+      "side": 1,
+      "message": "did you run checkpatch on this?  Blank line after variable definitions.",
+      "range": {
+        "startLine": 3027,
+        "startChar": 0,
+        "endLine": 3027,
+        "endChar": 9
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e75f3762_d1487681",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3032,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-15T16:24:17Z",
+      "side": 1,
+      "message": "please, no #ifdef in .c files if at all possible...",
+      "range": {
+        "startLine": 3032,
+        "startChar": 0,
+        "endLine": 3032,
+        "endChar": 5
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "660f471a_eec2a665",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3042,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-15T16:24:17Z",
+      "side": 1,
+      "message": "why is this even a valid option if the config option is not allowing it?\n\nYou will fail to parse it, but userspace will never know about it, right?  Are you sure this is safe/wise?",
+      "range": {
+        "startLine": 3042,
+        "startChar": 0,
+        "endLine": 3042,
+        "endChar": 88
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
