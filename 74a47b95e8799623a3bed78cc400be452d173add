@@ -33,6 +33,24 @@
       "message": "Wait, sorry, this is an ANDROID-only symbol, it\u0027s never been upstream, my fault.\n\nBut even then, no driver should need to call this, why are you needing it?",
       "revId": "74a47b95e8799623a3bed78cc400be452d173add",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d7ac74b_c9352121",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2036171
+      },
+      "writtenOn": "2023-08-16T07:37:55Z",
+      "side": 1,
+      "message": "Hello, we are using this symbol to know wakeup reason of specific IC(like wifi/modem) which using IRQF_NO_SUSPEND flag as it\u0027s irq.\nBecause the irq which using IRQF_NO_SUSPEND not calling log_irq_wakeup_reason() so we used log_suspend_abort_reason as workaround.",
+      "parentUuid": "5d2b6c3f_ae09bbdb",
+      "revId": "74a47b95e8799623a3bed78cc400be452d173add",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
