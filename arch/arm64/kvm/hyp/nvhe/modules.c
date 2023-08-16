@@ -5,6 +5,8 @@
 #include <asm/kvm_host.h>
 #include <asm/kvm_pkvm_module.h>
 
+#include <nvhe/alloc.h>
+#include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/modules.h>
 #include <nvhe/mm.h>
@@ -117,6 +119,23 @@ const struct pkvm_module_ops module_ops = {
 	.hyp_pa = hyp_virt_to_phys,
 	.hyp_va = hyp_phys_to_virt,
 	.kern_hyp_va = __kern_hyp_va,
+	.hyp_alloc = hyp_alloc,
+	.hyp_alloc_errno = hyp_alloc_errno,
+	.hyp_free = hyp_free,
+	.iommu_donate_pages = kvm_iommu_donate_pages,
+	.iommu_donate_pages_iopt = kvm_iommu_donate_pages_iopt,
+	.iommu_reclaim_pages = kvm_iommu_reclaim_pages,
+	.iommu_reclaim_pages_iopt = kvm_iommu_reclaim_pages_iopt,
+	.iommu_request = kvm_iommu_request,
+	.iommu_init_device = kvm_iommu_init_device,
+	.create_hyp_device_mapping = pkvm_create_hyp_device_mapping,
+	.create_mappings = pkvm_create_mappings,
+	.udelay = pkvm_udelay,
+	.hyp_alloc_missing_donations = hyp_alloc_missing_donations,
+#ifdef CONFIG_LIST_HARDENED
+	.list_add_valid_or_report = __list_add_valid_or_report,
+	.list_del_entry_valid_or_report = __list_del_entry_valid_or_report,
+#endif
 };
 
 int __pkvm_init_module(void *module_init)
