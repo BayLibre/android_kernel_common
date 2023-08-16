@@ -7,6 +7,7 @@
 #include <linux/export.h>
 
 typedef void (*dyn_hcall_t)(struct user_pt_regs *);
+struct kvm_hyp_iommu;
 
 #ifdef CONFIG_MODULES
 enum pkvm_psci_notification {
@@ -161,6 +162,23 @@ struct pkvm_module_ops {
 	phys_addr_t (*hyp_pa)(void *x);
 	void* (*hyp_va)(phys_addr_t phys);
 	unsigned long (*kern_hyp_va)(unsigned long x);
+	void * (*hyp_alloc)(size_t size);
+	int (*hyp_alloc_errno)(void);
+	void (*hyp_free)(void *addr);
+	void * (*iommu_donate_pages)(u8 order, bool request);
+	void * (*iommu_donate_pages_iopt)(u8 order, bool request, void *cookie);
+	void (*iommu_reclaim_pages)(void *p, u8 order);
+	void (*iommu_reclaim_pages_iopt)(void *p, u8 order, void *cookie);
+	int (*iommu_request)(struct kvm_hyp_req *req);
+	int (*iommu_init_device)(struct kvm_hyp_iommu *iommu);
+	int (*create_hyp_device_mapping)(u64 base, u64 size, void __iomem *haddr);
+	int (*create_mappings)(void *from, void *to, enum kvm_pgtable_prot prot);
+	void (*udelay)(unsigned long usecs);
+	u8 (*hyp_alloc_missing_donations)(void);
+	bool (*__list_add_valid_or_report)(struct list_head *new,
+					   struct list_head *prev,
+					   struct list_head *next) ___preserve_most;
+	bool (*__list_del_entry_valid_or_report)(struct list_head *entry) ___preserve_most;
 };
 
 int __pkvm_load_el2_module(struct module *this, unsigned long *token);
