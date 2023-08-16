@@ -63,6 +63,12 @@ static bool vgic_present, kvm_arm_initialised;
 static DEFINE_PER_CPU(unsigned char, kvm_hyp_initialized);
 DEFINE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
 
+void *kvm_kern_hyp_va(void *addr)
+{
+	return kern_hyp_va(addr);
+}
+EXPORT_SYMBOL_GPL(kvm_kern_hyp_va);
+
 bool is_kvm_arm_initialised(void)
 {
 	return kvm_arm_initialised;
