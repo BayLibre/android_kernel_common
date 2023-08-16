@@ -51,7 +51,7 @@ static unsigned long                   pkvm_module_token;
 	((typeof(kvm_nvhe_sym(x)) *)(pkvm_el2_mod_va(&kvm_nvhe_sym(x), pkvm_module_token)))
 #else
 #define ksym_ref_addr_nvhe(x) \
-	((typeof(kvm_nvhe_sym(x)) *)(kern_hyp_va(lm_alias(&kvm_nvhe_sym(x)))))
+	((typeof(kvm_nvhe_sym(x)) *)(kvm_kern_hyp_va(lm_alias(&kvm_nvhe_sym(x)))))
 #endif
 
 static size_t				kvm_arm_smmu_cur;
@@ -1013,7 +1013,7 @@ static int kvm_arm_smmu_v3_init(void)
 	 *
 	 * kvm_arm_smmu_memcache is shared between hypervisor and host.
 	 */
-	kvm_hyp_arm_smmu_v3_smmus = kern_hyp_va(kvm_arm_smmu_array);
+	kvm_hyp_arm_smmu_v3_smmus = kvm_kern_hyp_va(kvm_arm_smmu_array);
 	kvm_hyp_arm_smmu_v3_count = kvm_arm_smmu_count;
 
 	/*
