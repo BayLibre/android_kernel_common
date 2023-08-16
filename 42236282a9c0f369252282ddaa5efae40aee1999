@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb9adf5a_d7e95741",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-16T22:28:43Z",
+      "side": 1,
+      "message": "Updated the documentation",
+      "parentUuid": "c4a23974_6d4b1802",
+      "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6061accf_54564c12",
@@ -41,6 +59,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03bb1e8c_8fb2b24a",
+        "filename": "Documentation/ABI/testing/procfs-driver-memhealth",
+        "patchSetId": 27
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-16T22:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6061accf_54564c12",
+      "range": {
+        "startLine": 5,
+        "startChar": 77,
+        "endLine": 5,
+        "endChar": 84
+      },
+      "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a390be29_aa63bc4d",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-07-13T17:42:04Z",
       "side": 1,
       "message": "how big will this file get over time?  Will it ever roll over?  Will it grow until the kernel runs out of memory?  Or something else?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c89dd09_1768b4bc",
+        "filename": "Documentation/ABI/testing/procfs-driver-memhealth",
+        "patchSetId": 27
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-16T22:28:43Z",
+      "side": 1,
+      "message": "Done. Updated the documentation to reflect our `oom_victim_list` max size.\n\nOur limit is determined by `(PAGE_SIZE/sizeof(struct oom_victim))`.",
+      "parentUuid": "a390be29_aa63bc4d",
       "range": {
         "startLine": 17,
         "startChar": 0,
@@ -122,6 +188,72 @@
         "startChar": 23,
         "endLine": 20,
         "endChar": 36
+      },
+      "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa7e49ce_2d1459a8",
+        "filename": "Documentation/ABI/testing/procfs-driver-memhealth",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-16T22:28:43Z",
+      "side": 1,
+      "message": "This field is the last one in each record, userspace parsers can skip earlier fields and treat the rest as one field representing process name",
+      "parentUuid": "c205077b_b7758d4b",
+      "range": {
+        "startLine": 20,
+        "startChar": 23,
+        "endLine": 20,
+        "endChar": 36
+      },
+      "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af7024d8_a77342a2",
+        "filename": "Documentation/ABI/testing/procfs-driver-memhealth",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-16T22:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40f595ae_2210cb31",
+      "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b31061d_528c54da",
+        "filename": "Documentation/ABI/testing/procfs-driver-memhealth",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-16T22:28:43Z",
+      "side": 1,
+      "message": "Milliseconds, I went ahead and noted it on the documentation.",
+      "parentUuid": "eedc8790_ce810e4b",
+      "range": {
+        "startLine": 20,
+        "startChar": 8,
+        "endLine": 20,
+        "endChar": 13
       },
       "revId": "42236282a9c0f369252282ddaa5efae40aee1999",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
