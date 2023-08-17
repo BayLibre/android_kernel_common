@@ -1035,3 +1035,4 @@ static int kvm_arm_smmu_v3_register(void)
 }
 
 core_initcall(kvm_arm_smmu_v3_register);
+MODULE_LICENSE("GPL v2");
