@@ -228,7 +228,7 @@ static int smmu_alloc_l2_strtab(struct hyp_arm_smmu_v3_device *smmu, u32 idx)
 	/* Ensure the empty stream table is visible before the descriptor write */
 	wmb();
 
-	if ((cmpxchg64_relaxed(&smmu->strtab_base[idx], 0, l2ptr | span) != 0))
+	if ((__ll_sc__cmpxchg_case_64(&smmu->strtab_base[idx], 0, l2ptr | span) != 0))
 		kvm_iommu_reclaim_pages(table, 0);
 
 	return 0;
