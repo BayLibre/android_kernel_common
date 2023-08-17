@@ -59,6 +59,8 @@
 #include <asm/cacheflush.h>
 #include <asm/syscall.h>	/* for syscall_get_* */
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/dtask.h>
 /*
  * SLAB caches for signal bits.
  */
@@ -997,6 +999,7 @@ static void complete_signal(int sig, struct task_struct *p, enum pid_type type)
 {
 	struct signal_struct *signal = p->signal;
 	struct task_struct *t;
+	bool wake;
 
 	/*
 	 * Now find a thread we can wake up to take the signal off the queue.
@@ -1053,7 +1056,11 @@ static void complete_signal(int sig, struct task_struct *p, enum pid_type type)
 			__for_each_thread(signal, t) {
 				task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
 				sigaddset(&t->pending.signal, SIGKILL);
-				signal_wake_up(t, 1);
+
+				wake = true;
+				trace_android_vh_exit_signal_whether_wake(t, &wake);
+				if (wake)
+					signal_wake_up(t, 1);
 			}
 			return;
 		}
