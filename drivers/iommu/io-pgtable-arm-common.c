@@ -131,7 +131,7 @@ static arm_lpae_iopte arm_lpae_install_table(arm_lpae_iopte *table,
 	 */
 	dma_wmb();
 
-	old = cmpxchg64_relaxed(ptep, curr, new);
+	old = __ll_sc__cmpxchg_case_64(ptep, curr, new);
 
 	if (cfg->coherent_walk || (old & ARM_LPAE_PTE_SW_SYNC))
 		return old;
