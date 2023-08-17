@@ -14,6 +14,8 @@
 #include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 
+#include "arm-smmu-v3-module.h"
+
 bool __ro_after_init selftest_running;
 
 #define io_pgtable_cfg_to_pgtable(x) container_of((x), struct io_pgtable, cfg)
