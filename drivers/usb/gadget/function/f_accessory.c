@@ -406,15 +406,18 @@ static void acc_complete_out(struct usb_ep *ep, struct usb_request *req)
 {
 	struct acc_dev *dev = get_acc_dev();
 
-	if (!dev)
+	if (!dev) {
+		pr_err("[Ray] %s: no dev\n", __func__);
 		return;
+	}
 
 	dev->rx_done = 1;
 	if (req->status == -ESHUTDOWN) {
-		pr_debug("acc_complete_out set disconnected");
+		pr_err("[Ray] acc_complete_out set disconnected");
 		acc_set_disconnected(dev);
 	}
 
+	pr_err("[Ray] %s: wake up\n", __func__);
 	wake_up(&dev->read_wq);
 	put_acc_dev(dev);
 }
@@ -697,7 +700,7 @@ static ssize_t acc_read(struct file *fp, char __user *buf,
 	unsigned xfer;
 	int ret = 0;
 
-	pr_debug("acc_read(%zu)\n", count);
+	pr_err("[Ray] acc_read(%zu)\n", count);
 
 	if (dev->disconnected) {
 		pr_debug("acc_read disconnected");
@@ -708,7 +711,7 @@ static ssize_t acc_read(struct file *fp, char __user *buf,
 		count = BULK_BUFFER_SIZE;
 
 	/* we will block until we're online */
-	pr_debug("acc_read: waiting for online\n");
+	pr_err("[Ray] acc_read: waiting for online: %d\n", dev->online);
 	ret = wait_event_interruptible(dev->read_wq, dev->online);
 	if (ret < 0) {
 		r = ret;
@@ -752,6 +755,7 @@ requeue_req:
 	/* wait for a request to complete */
 	ret = wait_event_interruptible(dev->read_wq, dev->rx_done);
 	if (ret < 0) {
+		pr_err("[Ray] %s: requeue_req wait event fail:%d, rx_done:%d\n", __func__, ret, dev->rx_done);
 		r = ret;
 		ret = usb_ep_dequeue(dev->ep_out, req);
 		if (ret != 0) {

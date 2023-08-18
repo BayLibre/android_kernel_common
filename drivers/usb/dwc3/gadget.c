@@ -961,6 +961,7 @@ void dwc3_remove_requests(struct dwc3 *dwc, struct dwc3_ep *dep, int status)
 		return;
 
 	/* - giveback all requests to gadget driver */
+	pr_err("[Ray] %s ++\n", __func__);
 	while (!list_empty(&dep->started_list)) {
 		req = next_request(&dep->started_list);
 
@@ -1511,6 +1512,7 @@ static int dwc3_prepare_trbs(struct dwc3_ep *dep)
 	 * otherwise we will prepare TRBs completely out of order and that will
 	 * break things.
 	 */
+	pr_err("[Ray] %s ++\n", __func__);
 	list_for_each_entry(req, &dep->started_list, list) {
 		if (req->num_pending_sgs > 0) {
 			ret = dwc3_prepare_trbs_sg(dep, req);
@@ -1594,6 +1596,7 @@ static int __dwc3_gadget_kick_transfer(struct dwc3_ep *dep)
 	if (!ret && !starting)
 		return ret;
 
+	pr_err("[Ray] %s ++\n", __func__);
 	req = next_request(&dep->started_list);
 	if (!req) {
 		dep->flags |= DWC3_EP_PENDING_REQUEST;
@@ -1626,6 +1629,7 @@ static int __dwc3_gadget_kick_transfer(struct dwc3_ep *dep)
 
 		dwc3_stop_active_transfer(dep, true, true);
 
+		pr_err("[Ray] %s: clean started list\n", __func__);
 		list_for_each_entry_safe(req, tmp, &dep->started_list, list)
 			dwc3_gadget_move_cancelled_request(req, DWC3_REQUEST_STATUS_DEQUEUED);
 
@@ -2026,6 +2030,7 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
 
 	unsigned long			flags;
 	int				ret = 0;
+	int				count=0;
 
 	trace_dwc3_ep_dequeue(req);
 
@@ -2044,6 +2049,7 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
 	}
 
 	list_for_each_entry(r, &dep->started_list, list) {
+		pr_err("[Ray] %s: start to explore started_list: count:%d\n", __func__, count);
 		if (r == req) {
 			struct dwc3_request *t;
 
@@ -2098,6 +2104,7 @@ int __dwc3_gadget_ep_set_halt(struct dwc3_ep *dep, int value, int protocol)
 			trb = &dwc->ep0_trb[dep->trb_enqueue];
 
 		transfer_in_flight = trb->ctrl & DWC3_TRB_CTRL_HWO;
+		pr_err("[Ray] %s: set halt\n", __func__);
 		started = !list_empty(&dep->started_list);
 
 		if (!protocol && ((dep->direction && transfer_in_flight) ||
@@ -2125,6 +2132,7 @@ int __dwc3_gadget_ep_set_halt(struct dwc3_ep *dep, int value, int protocol)
 
 		dwc3_stop_active_transfer(dep, true, true);
 
+		pr_err("[Ray] %s: clear halt\n", __func__);
 		if (!list_empty(&dep->started_list))
 			dep->flags |= DWC3_EP_DELAY_START;
 
@@ -3091,6 +3099,7 @@ static int dwc3_gadget_init_endpoint(struct dwc3 *dwc, u8 epnum)
 	dep->endpoint.caps.dir_out = !direction;
 
 	INIT_LIST_HEAD(&dep->pending_list);
+	pr_err("[Ray] %s: init started list\n", __func__);
 	INIT_LIST_HEAD(&dep->started_list);
 	INIT_LIST_HEAD(&dep->cancelled_list);
 
@@ -3320,6 +3329,7 @@ static void dwc3_gadget_ep_cleanup_completed_requests(struct dwc3_ep *dep,
 	struct dwc3_request	*req;
 	struct dwc3_request	*tmp;
 
+	pr_err("[Ray] %s ++\n", __func__);
 	list_for_each_entry_safe(req, tmp, &dep->started_list, list) {
 		int ret;
 
@@ -3346,6 +3356,7 @@ static bool dwc3_gadget_ep_should_continue(struct dwc3_ep *dep)
 	 * We only need to check the first entry of the started list. We can
 	 * assume the completed requests are removed from the started list.
 	 */
+	pr_err("[Ray] %s ++\n", __func__);
 	req = next_request(&dep->started_list);
 	if (!req)
 		return false;
