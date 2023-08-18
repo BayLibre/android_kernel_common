@@ -43,6 +43,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff64ddc6_b9edbe20",
+        "filename": "include/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-08-18T21:29:01Z",
+      "side": 1,
+      "message": "Ew. Should there be a compile-time assert somewhere that (\u0026sysctl_header - \u0026ndisk_evict_nocarrier) \u003e\u003d 1?",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7cf6e16_29c8c54a",
         "filename": "include/linux/ipv6.h",
         "patchSetId": 4
@@ -89,6 +106,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "571e8bdd_15db968c",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-08-18T21:29:01Z",
+      "side": 1,
+      "message": "Is there any way that changing the value of DEVCONF_MAX could bite us? Eg, a vendor modules built with the old definition allocates something that is now too small?",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2922b7da_30424c0c",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 4
@@ -106,6 +140,23 @@
         "endLine": 2751,
         "endChar": 70
       },
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d59c653_1b4d1482",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6818,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-08-18T21:29:01Z",
+      "side": 1,
+      "message": "how is this being used by userspace and by whom?",
       "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
