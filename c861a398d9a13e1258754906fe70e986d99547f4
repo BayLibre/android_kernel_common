@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f0abfeb_367d1d13",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3024,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-18T11:17:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "478aee63_d8c59dd7",
+      "range": {
+        "startLine": 3024,
+        "startChar": 0,
+        "endLine": 3024,
+        "endChar": 3
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e18a0f4_56ee35ab",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-15T16:24:17Z",
       "side": 1,
       "message": "did you run checkpatch on this?  Blank line after variable definitions.",
+      "range": {
+        "startLine": 3027,
+        "startChar": 0,
+        "endLine": 3027,
+        "endChar": 9
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "597b5725_343a1144",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3027,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-18T11:17:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e18a0f4_56ee35ab",
       "range": {
         "startLine": 3027,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33f820c_f1491cfa",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3032,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-18T11:17:20Z",
+      "side": 1,
+      "message": "I think it is actually cleaner here and more appropriate for the given context. Creating wrappers in header file will create unnecessary clutter and increase the friction with upstream code. I think it makes more sense to have this compacted in one place.",
+      "parentUuid": "e75f3762_d1487681",
+      "range": {
+        "startLine": 3032,
+        "startChar": 0,
+        "endLine": 3032,
+        "endChar": 5
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "660f471a_eec2a665",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-08-15T16:24:17Z",
       "side": 1,
       "message": "why is this even a valid option if the config option is not allowing it?\n\nYou will fail to parse it, but userspace will never know about it, right?  Are you sure this is safe/wise?",
+      "range": {
+        "startLine": 3042,
+        "startChar": 0,
+        "endLine": 3042,
+        "endChar": 88
+      },
+      "revId": "c861a398d9a13e1258754906fe70e986d99547f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0186cecd_2b9bbf43",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3042,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2023-08-18T11:17:20Z",
+      "side": 1,
+      "message": "Yes, you\u0027re right. Better guard the whole parameter with CONFIG_RCU_LAZY. Done.\n\nI\u0027ll have to keep `static bool android_enable_rcu_lazy` out of the guard though to avoid sprinkling more ifdefs elsewhere in the code.\n\nThanks for the review!",
+      "parentUuid": "660f471a_eec2a665",
       "range": {
         "startLine": 3042,
         "startChar": 0,
