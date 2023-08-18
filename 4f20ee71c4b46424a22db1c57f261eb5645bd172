@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50120390_a4803cb8",
+        "filename": "include/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-18T22:17:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d50175e4_10395429",
+      "range": {
+        "startLine": 86,
+        "startChar": 18,
+        "endLine": 86,
+        "endChar": 22
+      },
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff64ddc6_b9edbe20",
@@ -58,6 +82,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "654e0666_93aca7a0",
+        "filename": "include/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-18T22:17:58Z",
+      "side": 1,
+      "message": "Didn\u0027t I promise a hack? 😊 Done.",
+      "parentUuid": "ff64ddc6_b9edbe20",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7cf6e16_29c8c54a",
@@ -71,6 +113,30 @@
       "writtenOn": "2023-08-18T21:18:58Z",
       "side": 1,
       "message": "technically this could just be accept_ra_min_lft and return *u8",
+      "range": {
+        "startLine": 96,
+        "startChar": 19,
+        "endLine": 96,
+        "endChar": 40
+      },
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70c2e2de_fb213a9d",
+        "filename": "include/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-18T22:17:58Z",
+      "side": 1,
+      "message": "or a macro! (so it can be used in the sysctl registration).",
+      "parentUuid": "a7cf6e16_29c8c54a",
       "range": {
         "startLine": 96,
         "startChar": 19,
@@ -144,6 +210,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f9a387_7e37bd76",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-18T22:17:58Z",
+      "side": 1,
+      "message": "if i want to use it in addrconf_init (preferably before in6_dev even exists) and in the sysctl registration then it cannot, unfortunately.",
+      "parentUuid": "2922b7da_30424c0c",
+      "range": {
+        "startLine": 2751,
+        "startChar": 57,
+        "endLine": 2751,
+        "endChar": 70
+      },
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d59c653_1b4d1482",
@@ -163,6 +253,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "87200595_900425de",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6818,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-18T22:17:58Z",
+      "side": 1,
+      "message": "If present, it will be set to 255 by IpClient before IPv6 gets enabled (probably in here: https://source.corp.google.com/h/android/platform/superproject/main/+/main:packages/modules/NetworkStack/src/android/net/ip/IpClient.java;l\u003d2122;drc\u003dc3221f106c2aa2d6db686702e49e89bee1f834cb).",
+      "parentUuid": "1d59c653_1b4d1482",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8536c69c_9fa3d400",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 4
@@ -174,6 +282,30 @@
       "writtenOn": "2023-08-18T21:18:58Z",
       "side": 1,
       "message": "you shouldn\u0027t actually need this, since memory is 0 inited,\nthen you probably wouldn\u0027t need the setter at all",
+      "range": {
+        "startLine": 7322,
+        "startChar": 0,
+        "endLine": 7325,
+        "endChar": 0
+      },
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "841c0d1b_cc0f4379",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7325,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-18T22:17:58Z",
+      "side": 1,
+      "message": "per chat: this is probably true, but the C standard does not enforce it (and it doesn\u0027t hurt to be explicit).",
+      "parentUuid": "8536c69c_9fa3d400",
       "range": {
         "startLine": 7322,
         "startChar": 0,
