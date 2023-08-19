@@ -110,7 +110,6 @@ static struct iommu_device *kvm_arm_smmu_probe_device(struct device *dev)
 	int ret;
 	struct arm_smmu_device *smmu;
 	struct kvm_arm_smmu_master *master;
-	struct host_arm_smmu_device *host_smmu;
 	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
 
 	if (!fwspec || fwspec->ops != &kvm_arm_smmu_ops)
@@ -137,16 +136,6 @@ static struct iommu_device *kvm_arm_smmu_probe_device(struct device *dev)
 		ret = -ENOLINK;
 		goto err_free;
 	}
-
-	/*
-	 * If the SMMU has just been initialized by the hypervisor, release the
-	 * extra PM reference taken by kvm_arm_smmu_probe().  Not sure yet how
-	 * to improve this. Maybe have KVM call us back when it finished
-	 * initializing?
-	 */
-	host_smmu = smmu_to_host(smmu);
-	if (atomic_add_unless(&host_smmu->initialized, 1, 1))
-		pm_runtime_put_noidle(smmu->dev);
 
 	return &smmu->iommu;
 
@@ -785,6 +774,12 @@ static void kvm_arm_smmu_array_free(void)
 	free_pages((unsigned long)kvm_arm_smmu_array, order);
 }
 
+int smmu_put_device(struct device *dev, void *data)
+{
+	pm_runtime_put_noidle(dev);
+	return 0;
+}
+
 /**
  * kvm_arm_smmu_v3_init() - Reserve the SMMUv3 for KVM
  * Return 0 if all present SMMUv3 were probed successfully, or an error.
@@ -821,8 +816,11 @@ static int kvm_arm_smmu_v3_init(void)
 	kvm_hyp_arm_smmu_v3_smmus = kern_hyp_va(kvm_arm_smmu_array);
 	kvm_hyp_arm_smmu_v3_count = kvm_arm_smmu_count;
 
-	return kvm_iommu_init_hyp(kern_hyp_va(lm_alias(&kvm_nvhe_sym(smmu_ops))), 0);
+	ret = kvm_iommu_init_hyp(kern_hyp_va(lm_alias(&kvm_nvhe_sym(smmu_ops))), 0);
 
+	WARN_ON(driver_for_each_device(&kvm_arm_smmu_driver.driver, NULL,
+				       NULL, smmu_put_device));
+	return ret;
 err_free:
 	kvm_arm_smmu_array_free();
 	return ret;
