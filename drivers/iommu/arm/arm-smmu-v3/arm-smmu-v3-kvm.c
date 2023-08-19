@@ -1003,9 +1003,18 @@ static void kvm_arm_smmu_v3_remove_drv(void)
 	platform_driver_unregister(&kvm_arm_smmu_driver);
 }
 
+static pkvm_handle_t kvm_arm_smmu_v3_id(struct device *dev)
+{
+	struct arm_smmu_device *smmu = dev_get_drvdata(dev);
+	struct host_arm_smmu_device *host_smmu = smmu_to_host(smmu);
+
+	return host_smmu->id;
+}
+
 struct kvm_iommu_driver kvm_smmu_v3_ops = {
 	.init_driver = kvm_arm_smmu_v3_init_drv,
 	.remove_driver = kvm_arm_smmu_v3_remove_drv,
+	.get_iommu_id = kvm_arm_smmu_v3_id,
 };
 
 static int kvm_arm_smmu_v3_register(void)
