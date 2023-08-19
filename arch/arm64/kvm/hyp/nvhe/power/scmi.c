@@ -56,8 +56,6 @@ static struct {
 	void __iomem			*shmem;
 } scmi_channel;
 
-#define MAX_POWER_DOMAINS		16
-
 struct scmi_power_domain {
 	struct kvm_power_domain			*pd;
 	const struct kvm_power_domain_ops	*ops;
