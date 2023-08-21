@@ -7,9 +7,9 @@
 #include <linux/io-pgtable.h>
 #ifdef __KVM_NVHE_HYPERVISOR__
 #include <nvhe/spinlock.h>
-#else
-#include "hyp_constants.h"
 #endif
+
+#define HYP_SPINLOCK_SIZE	4
 
 /*
  * Domain ID for identity mapped domain that the host can attach
