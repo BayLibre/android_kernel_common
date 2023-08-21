@@ -70,6 +70,24 @@
       "parentUuid": "2b81269e_fffe508d",
       "revId": "1d01dd6e493aa9cd0a006f8f07edb670bf19f479",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "438b6651_b99d4b59",
+        "filename": "arch/arm64/geniezone/gzvm_arch_common.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2023-08-21T03:04:14Z",
+      "side": 1,
+      "message": "The functionality of this patch(CL:2626012) would be moved from driver into the hypervisor itself(GenieZone hypervisor) due to duplication of implementations already exists in the hypervisor, and thus this patch shall be abandoned in no time. The pseudo code here is for your reference in response to the issue being talked about.",
+      "parentUuid": "7f2d1e7a_0ada587f",
+      "revId": "1d01dd6e493aa9cd0a006f8f07edb670bf19f479",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
