@@ -546,6 +546,8 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
 	int ret;
 	bool identity_used;
 
+	BUILD_BUG_ON(sizeof(hyp_spinlock_t) != HYP_SPINLOCK_SIZE);
+
 	if (WARN_ON(!ops->get_iommu_by_id ||
 		    !ops->alloc_domain ||
 		    !ops->free_domain ||
