@@ -189,6 +189,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4127ed9_f477b684",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-21T21:04:55Z",
+      "side": 1,
+      "message": "I am not sure it could? The vendor module will still use the old value of DEVCONF_MAX and won\u0027t know about DEVCONF_ACCEPT_RA_MIN_LFT. Any ideas, @maze@google.com?",
+      "parentUuid": "571e8bdd_15db968c",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2922b7da_30424c0c",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 4
@@ -265,6 +283,24 @@
       "side": 1,
       "message": "If present, it will be set to 255 by IpClient before IPv6 gets enabled (probably in here: https://source.corp.google.com/h/android/platform/superproject/main/+/main:packages/modules/NetworkStack/src/android/net/ip/IpClient.java;l\u003d2122;drc\u003dc3221f106c2aa2d6db686702e49e89bee1f834cb).",
       "parentUuid": "1d59c653_1b4d1482",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d54ae0_e8d62e0c",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6818,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-21T21:04:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87200595_900425de",
       "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
