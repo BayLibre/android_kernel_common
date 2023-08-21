@@ -16,6 +16,40 @@
       "message": "+Viktor and Saravana for owners +1",
       "revId": "837dd5d8b4f49c50ce962ef7b73dd4bf5b909154",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c8c4c02_85df6f0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2023-08-21T23:29:45Z",
+      "side": 1,
+      "message": "Please explain the different ordering between vendor-hook calls in percpu_up_read and percpu_down_read_trylock. One case has the .._starttime call first, and the other function in the other order",
+      "revId": "837dd5d8b4f49c50ce962ef7b73dd4bf5b909154",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07e683cf_b2fe3920",
+        "filename": "include/linux/percpu-rwsem.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1959117
+      },
+      "writtenOn": "2023-08-21T23:29:45Z",
+      "side": 1,
+      "message": "I would like to see the ..._time_early and ..._starttime calls have the same order in these two cases unless there is a specific reason to avoid this. I.e. swap line 133 and 134 in percpu_up_read.",
+      "revId": "837dd5d8b4f49c50ce962ef7b73dd4bf5b909154",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
