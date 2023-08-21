@@ -69,6 +69,24 @@
       "parentUuid": "4d7ac74b_c9352121",
       "revId": "74a47b95e8799623a3bed78cc400be452d173add",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b51244_648ef11a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-21T20:16:58Z",
+      "side": 1,
+      "message": "Again, this should only be used by the driver core, not by any individual drivers, sorry.  If missing IRQF_NO_SUSPEND is needed, that should be added to the core code here so that it will work for all drivers that have this problem, right?",
+      "parentUuid": "edbef94d_297aae55",
+      "revId": "74a47b95e8799623a3bed78cc400be452d173add",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
