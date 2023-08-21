@@ -87,6 +87,23 @@
       "message": "Needs a respin request and the corresponding patch needs to land in `android12-5.10`",
       "revId": "acf4ca02702348583549397f53020933d7079d35",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a311b822_625b4537",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-08-21T12:39:52Z",
+      "side": 1,
+      "message": "Hello!\n\nPlease note the following about the change:\n \nThis change requests a symbol list update, which is perfectly fine and the corresponding change on the base branch android12-5.10 landed already (aosp/2709796, Change-Id I14bad6ff43c9a43a9bd1f854302d833d828996e5).\n\nAll symbols added to the list are already contained in other symbol lists. As such this effectively does not add any new symbols to the ABI and hence a respin with just this patch will not yield in a different binary. \n\nHaving said that, if you need this change on this branch, we will be happy to process it, but we require the respin request (form) filled as we do for all changes on release branches.\n\nAdditionally, this change is uploaded with a different Change-Id and hence not a cleanly done cherry pick. This is something that needs to be corrected as well. The easiest way to achieve that is to abandon this change and to cherry-pick the change from the release branch directly. That will preserve all relevant information. All that is needed then is to add the respin request bug id.\n\nI hope that helps.\n\nCheers,\nMatthias",
+      "revId": "acf4ca02702348583549397f53020933d7079d35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
