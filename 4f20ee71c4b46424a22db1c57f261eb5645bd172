@@ -241,6 +241,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea49291f_7f82a527",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-08-22T06:14:29Z",
+      "side": 1,
+      "message": "This constant - like most (all?) _MAX constants like this at the end of an enum - is not considered immutable user API, and are regularly bumped as needed with kernel updates.\n\n(The other constants are immutable)\n\nRather this is the size of the array one needs to allocate to be able to handle all the other constants that are defined by the set of uapi headers you are using.  However you still need to validate input as being \u003c MAX - since a newer kernel may have more, and you simply cannot guaranteed that the uapi headers you built at precisely match the kernel.\n\nThere is more of an issue with kernel code building against the headers.  Here the answer is that modules should either never use _MAX constants, or be *very* careful with their use (like userspace).  Because again, they may be built with the wrong version of the headers.\n\nThere\u0027s nothing new here.",
+      "parentUuid": "381e0a55_c3884d35",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2922b7da_30424c0c",
