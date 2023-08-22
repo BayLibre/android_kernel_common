@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000051677020",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2719471?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "2beb2ca1_a8995537",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-08-22T09:33:09Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 558781920 android-build.ayeaye-python-dispatcher_20230821.05_p0",
+      "revId": "c82ee610255dc9e9d970a508ee0675fd66993778",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000051677020",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2719471?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "347067ba_f04c79c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-08-22T09:33:09Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2691892](https://r.android.com/c/2691892) on branch android14-5.15.\n\n```\n    - ## android/abi_gki_aarch64_mtktv ##\n    + ## android/abi_gki_aarch64_mtktv (new) ##\n     @@\n    - [abi_symbol_list]\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (ab62e8 ANDROID: fuse-bpf: Add partial flock support)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++[abi_symbol_list]\n     +  __traceiter_android_vh_oom_check_panic\n     +  __tracepoint_android_vh_oom_check_panic\n     +  irqchip_fwnode_ops\n    @@ android/abi_gki_aarch64_mtktv\n     +  trace_array_get_by_name\n     +  trace_array_init_printk\n     +  trace_array_printk\n    -   clk_bulk_put_all\n    -   clk_register_divider_table\n    -   console_verbose\n    ++  clk_bulk_put_all\n    ++  clk_register_divider_table\n    ++  console_verbose\n    ++  cpufreq_dbs_governor_exit\n    ++  cpufreq_dbs_governor_init\n    ++  cpufreq_dbs_governor_limits\n    ++  cpufreq_dbs_governor_start\n    ++  cpufreq_dbs_governor_stop\n    ++  cpufreq_update_policy\n    ++  d_add_ci\n    ++  dbs_update\n    ++  dev_get_tstats64\n    ++  device_match_of_node\n    ++  device_node_to_regmap\n    ++  devm_devfreq_remove_device\n    ++  devm_extcon_register_notifier\n    ++  devm_gpiod_get_index_optional\n    ++  devm_hwspin_lock_unregister\n    ++  devm_mdiobus_alloc_size\n    ++  drm_atomic_state_default_clear\n    ++  drm_display_mode_from_videomode\n    ++  end_page_writeback\n    ++  eth_platform_get_mac_address\n    ++  ftrace_dump\n    ++  gen_pool_dma_alloc\n    ++  gen_pool_get\n    ++  generic_error_remove_page\n    ++  gov_update_cpu_data\n    ++  gpiochip_find\n    ++  gpiod_is_active_low\n    ++  idr_alloc_u32\n    ++  idr_get_next_ul\n    ++  net_selftest\n    ++  net_selftest_get_count\n    ++  net_selftest_get_strings\n    ++  of_cpufreq_cooling_register\n    ++  path_put\n    ++  perf_event_sysfs_show\n    ++  phy_connect\n    ++  phy_disconnect\n    ++  phy_do_ioctl_running\n    ++  phy_ethtool_get_link_ksettings\n    ++  phy_ethtool_nway_reset\n    ++  phy_ethtool_set_link_ksettings\n    ++  phy_start\n    ++  phy_stop\n    ++  phy_suspend\n    ++  pid_vnr\n    ++  pinconf_generic_dump_config\n    ++  pinctrl_count_index_with_args\n    ++  pinctrl_generic_add_group\n    ++  pinctrl_generic_get_group_count\n    ++  pinctrl_generic_get_group_name\n    ++  pinctrl_generic_get_group_pins\n    ++  pinctrl_generic_remove_group\n    ++  pinctrl_parse_index_with_args\n    ++  pinctrl_register_and_init\n    ++  pinmux_generic_add_function\n    ++  pinmux_generic_get_function\n    ++  pinmux_generic_get_function_count\n    ++  pinmux_generic_get_function_groups\n    ++  pinmux_generic_get_function_name\n    ++  pinmux_generic_remove_function\n    ++  proc_set_user\n    ++  regulator_set_mode\n    ++  regulator_set_voltage_time\n    ++  sb_min_blocksize\n    ++  schedule_hrtimeout\n    ++  pwm_free\n    ++  pwm_request\n    ++  serial8250_do_pm\n    ++  serial8250_do_set_termios\n    ++  serial8250_do_shutdown\n    ++  serial8250_do_startup\n    ++  serial8250_get_port\n    ++  serial8250_modem_status\n    ++  serial8250_register_8250_port\n    ++  serial8250_resume_port\n    ++  serial8250_rpm_get\n    ++  serial8250_rpm_put\n    ++  serial8250_rpm_put_tx\n    ++  serial8250_rx_chars\n    ++  serial8250_suspend_port\n    ++  serial8250_tx_chars\n    ++  serial8250_unregister_port\n    ++  sk_capable\n    ++  snd_compress_new\n    ++  snd_ctl_find_id\n    ++  snd_pcm_format_big_endian\n    ++  snd_pcm_format_name\n    ++  usb_altnum_to_altsetting\n    ++  usb_anchor_empty\n    ++  usb_control_msg_recv\n    ++  usb_control_msg_send\n    ++  usb_deregister_dev\n    ++  usb_driver_set_configuration\n    ++  usb_enable_lpm\n    ++  usb_find_interface\n    ++  usb_get_urb\n    ++  usb_lock_device_for_reset\n    ++  usb_register_dev\n    ++  usb_reset_configuration\n    ++  usb_reset_endpoint\n    ++  usb_string\n    ++  usb_unlink_anchored_urbs\n    ++  v4l2_ctrl_request_complete\n    ++  v4l2_ctrl_request_setup\n    ++  v4l2_event_pending\n    ++  v4l2_event_queue\n    ++  v4l2_fh_is_singular\n    ++  v4l2_m2m_buf_copy_metadata\n    ++  v4l2_m2m_ioctl_prepare_buf\n    ++  v4l2_m2m_ioctl_qbuf\n    ++  v4l2_m2m_querybuf\n    ++  v4l2_m2m_register_media_controller\n    ++  v4l2_m2m_request_queue\n    ++  v4l2_m2m_unregister_media_controller\n    ++  vb2_core_dqbuf\n    ++  vb2_core_expbuf\n    ++  vb2_core_poll\n    ++  vb2_core_qbuf\n    ++  vb2_core_querybuf\n    ++  vb2_core_queue_init\n    ++  vb2_core_queue_release\n    ++  vb2_core_reqbufs\n    ++  vb2_core_streamoff\n    ++  vb2_core_streamon\n    ++  vb2_request_validate\n    ++  videomode_from_timing\n    ++  walk_iomem_res_desc\n    ++  work_on_cpu_safe\n    ++  xhci_add_endpoint\n    ++  xhci_check_bandwidth\n    ++  xhci_drop_endpoint\n    ++  xhci_get_ep_ctx\n    ++  xhci_reset_bandwidth\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (7d47dd ANDROID: GKI: Add mtktv ABI symbol list, media, trace and re)\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 558781920 android-build.ayeaye-python-dispatcher_20230821.05_p0",
+      "revId": "c82ee610255dc9e9d970a508ee0675fd66993778",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
