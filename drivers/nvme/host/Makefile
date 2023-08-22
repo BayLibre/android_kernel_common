@@ -10,7 +10,11 @@ obj-$(CONFIG_NVME_FC)			+= nvme-fc.o
 obj-$(CONFIG_NVME_TCP)			+= nvme-tcp.o
 obj-$(CONFIG_NVME_APPLE)		+= nvme-apple.o
 
+<<<<<<< HEAD   (cd4ca8 ANDROID: Prefer DTC from PATH.)
 nvme-core-y				+= core.o ioctl.o sysfs.o
+=======
+nvme-core-y				+= core.o ioctl.o pr.o
+>>>>>>> BRANCH (3c9b49 scsi: ufs: ufs-mediatek: Set UFSHCD_QUIRK_MCQ_BROKEN_RTC qui)
 nvme-core-$(CONFIG_NVME_VERBOSE_ERRORS)	+= constants.o
 nvme-core-$(CONFIG_TRACING)		+= trace.o
 nvme-core-$(CONFIG_NVME_MULTIPATH)	+= multipath.o
