@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b90f4c_8c3fb0ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-22T07:34:38Z",
+      "side": 1,
+      "message": "Getting better!",
+      "revId": "53d177ff0c085b967f10c6c49066ad2ca54772de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b763087_6aa4612b",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 31
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-22T07:34:38Z",
+      "side": 1,
+      "message": "when submitting this upstream, you will need a bit more info here 😊",
+      "range": {
+        "startLine": 109,
+        "startChar": 1,
+        "endLine": 109,
+        "endChar": 71
+      },
+      "revId": "53d177ff0c085b967f10c6c49066ad2ca54772de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9f03797_79a9a31d",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 31
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-22T07:34:38Z",
+      "side": 1,
+      "message": "you leaked the new_node and task memory here.  How about rewriting the error path to have a goto at the end of the function to unwind things in one place properly?",
+      "range": {
+        "startLine": 129,
+        "startChar": 2,
+        "endLine": 129,
+        "endChar": 17
+      },
+      "revId": "53d177ff0c085b967f10c6c49066ad2ca54772de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbddca77_775dc0b0",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 31
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-22T07:34:38Z",
+      "side": 1,
+      "message": "\"ret\" is fine.",
+      "range": {
+        "startLine": 256,
+        "startChar": 5,
+        "endLine": 256,
+        "endChar": 26
+      },
+      "revId": "53d177ff0c085b967f10c6c49066ad2ca54772de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c7db0a3_24d1504c",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 31
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-22T07:34:38Z",
+      "side": 1,
+      "message": "indent properly please, checkpatch should have complained about this.",
+      "revId": "53d177ff0c085b967f10c6c49066ad2ca54772de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17386b8_2a9b3b42",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 31
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-08-22T07:34:38Z",
+      "side": 1,
+      "message": "do all of this in a goto at the end of the function to handle all of the error handling in one place so you don\u0027t duplicate it in multiple places please.",
+      "range": {
+        "startLine": 284,
+        "startChar": 2,
+        "endLine": 284,
+        "endChar": 47
+      },
+      "revId": "53d177ff0c085b967f10c6c49066ad2ca54772de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
