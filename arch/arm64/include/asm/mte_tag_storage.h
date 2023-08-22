@@ -5,11 +5,19 @@
 #ifndef __ASM_MTE_TAG_STORAGE_H
 #define __ASM_MTE_TAG_STORAGE_H
 
+#include <linux/mm_types.h>
+
 #ifdef CONFIG_ARM64_MTE_TAG_STORAGE
 void mte_tag_storage_init(void);
+bool page_tag_storage_reserved(struct page *page);
 #else
 static inline void mte_tag_storage_init(void)
 {
 }
+static inline bool page_tag_storage_reserved(struct page *page)
+{
+	return true;
+}
 #endif /* CONFIG_ARM64_MTE_TAG_STORAGE */
+
 #endif /* __ASM_MTE_TAG_STORAGE_H  */
