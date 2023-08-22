@@ -225,6 +225,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "381e0a55_c3884d35",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1594463
+      },
+      "writtenOn": "2023-08-22T03:35:15Z",
+      "side": 1,
+      "message": "Yeah, but the core code never actually reads from the array, right? The only way this is used is when rtnl_fill_ifinfo calls fill_link_af. nla_reserve allocates the buffer in the skb that is later filled in ipv6_store_devconf. Am I missing something?",
+      "parentUuid": "2076dcbb_8d3c2492",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2922b7da_30424c0c",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 4
