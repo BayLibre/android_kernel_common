@@ -50,6 +50,24 @@
       "message": "I would like to see the ..._time_early and ..._starttime calls have the same order in these two cases unless there is a specific reason to avoid this. I.e. swap line 133 and 134 in percpu_up_read.",
       "revId": "837dd5d8b4f49c50ce962ef7b73dd4bf5b909154",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457451ec_b0976ab3",
+        "filename": "include/linux/percpu-rwsem.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-08-22T02:34:14Z",
+      "side": 1,
+      "message": "Looks like this was done in the latest version.",
+      "parentUuid": "07e683cf_b2fe3920",
+      "revId": "837dd5d8b4f49c50ce962ef7b73dd4bf5b909154",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
