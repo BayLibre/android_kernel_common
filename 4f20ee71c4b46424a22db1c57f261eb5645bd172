@@ -207,6 +207,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2076dcbb_8d3c2492",
+        "filename": "include/uapi/linux/ipv6.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2023-08-22T02:12:17Z",
+      "side": 1,
+      "message": "Well, so this change is definitely visible to userspace, because any time the IPv6 attributes of an interface are passed to userspace via inet6_fill_ifla6_attrs, the resulting array will be DEVCONF_MAX ingegers long.\n\nThe last of these will always be zero since __nla_reserve zeros out the memory it reserves (that\u0027s good because otherwise it might leak uninitialized kernel memory).\n\nI suppose what Todd is saying is that if a module is allocating an array that is DEVCONF_MAX integers long, and passing that to core code, the core code could \"fall off the end\" of the array and read uninitialized memory because the module only allocated something that was 4 bytes too small? Not sure if this is a practical concern though.\n\nDo we need to define DEVCONF_ACCEPT_RA_MIN_LFT in this patch? If not, it might be safer just to remove it.",
+      "parentUuid": "a4127ed9_f477b684",
+      "revId": "4f20ee71c4b46424a22db1c57f261eb5645bd172",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2922b7da_30424c0c",
         "filename": "net/ipv6/addrconf.c",
         "patchSetId": 4
