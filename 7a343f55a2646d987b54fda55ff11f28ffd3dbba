@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b03abf0_26fc1b1e",
+        "filename": "Documentation/networking/ip-sysctl.rst",
+        "patchSetId": 12
+      },
+      "lineNbr": 2157,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2023-08-22T07:08:30Z",
+      "side": 1,
+      "message": "65535",
+      "range": {
+        "startLine": 2157,
+        "startChar": 20,
+        "endLine": 2157,
+        "endChar": 23
+      },
+      "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0273406b_f9fa31f9",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 1000835
+      },
+      "writtenOn": "2023-08-22T07:08:30Z",
+      "side": 1,
+      "message": "Does APF look at only valid lifetimes, or preferred lifetimes as well? I suspect that right now it looks at both, in which case we either modify the kernel code again, or change APF to look at only valid lifetimes.",
+      "range": {
+        "startLine": 2751,
+        "startChar": 23,
+        "endLine": 2751,
+        "endChar": 32
+      },
+      "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
