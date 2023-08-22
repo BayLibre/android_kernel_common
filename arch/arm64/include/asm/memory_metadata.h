@@ -20,11 +20,25 @@ static inline bool alloc_can_use_metadata_pages(gfp_t gfp_mask)
 	return !(gfp_mask & __GFP_TAGGED);
 }
 
+static inline bool alloc_requires_metadata(gfp_t gfp_mask)
+{
+	return gfp_mask & __GFP_TAGGED;
+}
+
 #define page_has_metadata(page)			page_mte_tagged(page)
 
 static inline bool folio_has_metadata(struct folio *folio)
 {
 	return page_has_metadata(&folio->page);
+}
+
+static inline int reserve_metadata_storage(struct page *page, int order, gfp_t gfp_mask)
+{
+	return 0;
+}
+
+static inline void free_metadata_storage(struct page *page, int order)
+{
 }
 #endif /* CONFIG_MEMORY_METADATA */
 

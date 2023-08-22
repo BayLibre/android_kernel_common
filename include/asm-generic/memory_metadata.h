@@ -16,6 +16,17 @@ static inline bool alloc_can_use_metadata_pages(gfp_t gfp_mask)
 {
 	return false;
 }
+static inline bool alloc_requires_metadata(gfp_t gfp_mask)
+{
+	return false;
+}
+static inline int reserve_metadata_storage(struct page *page, int order, gfp_t gfp_mask)
+{
+	return 0;
+}
+static inline void free_metadata_storage(struct page *page, int order)
+{
+}
 static inline bool page_has_metadata(struct page *page)
 {
 	return false;
