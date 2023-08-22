@@ -62,11 +62,29 @@
 #include <trace/hooks/audio_usboffload.h>
 #include <trace/hooks/typec.h>
 #include <trace/hooks/user.h>
+<<<<<<< HEAD   (9fd41a ANDROID: Delete build.config.gki.aarch64.16k.)
 #include <trace/hooks/signal.h>
 #include <trace/hooks/psci.h>
 #include <trace/hooks/psi.h>
 #include <trace/hooks/bl_hib.h>
 #include <trace/hooks/regmap.h>
+=======
+#include <trace/hooks/cpuidle_psci.h>
+#include <trace/hooks/fips140.h>
+#include <trace/hooks/remoteproc.h>
+#include <trace/hooks/shmem_fs.h>
+#include <trace/hooks/net.h>
+#include <trace/hooks/syscall_check.h>
+#include <trace/hooks/usb.h>
+#include <trace/hooks/ipv6.h>
+#include <trace/hooks/sound.h>
+#include <trace/hooks/snd_compr.h>
+#include <trace/hooks/gup.h>
+#include <trace/hooks/pci.h>
+#include <trace/hooks/suspend.h>
+#include <trace/hooks/dmabuf.h>
+#include <trace/hooks/cpuinfo.h>
+>>>>>>> CHANGE (0a7671 ANDROID: cpuinfo: Add vendor hook for cpuinfo)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -297,6 +315,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_thermal_power_cap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_power_throttle);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_reclaim_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_failure_bypass);
+<<<<<<< HEAD   (9fd41a ANDROID: Delete build.config.gki.aarch64.16k.)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_swap_entry);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_swapin_walk_pmd_entry);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_end);
@@ -320,3 +339,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_look_around_migrate_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_test_clear_look_around_ref);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebuild_root_domains_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpuinfo_get_hwinfo);
+>>>>>>> CHANGE (0a7671 ANDROID: cpuinfo: Add vendor hook for cpuinfo)
