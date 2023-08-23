@@ -8,7 +8,11 @@ menu "Processor type and features"
 
 config IA64
 	bool
+<<<<<<< HEAD   (895a7d Merge 5.15.124 into android13-5.15-lts)
 	select ARCH_BINFMT_ELF_EXTRA_PHDRS
+=======
+	select ARCH_HAS_CPU_FINALIZE_INIT
+>>>>>>> BRANCH (c275ea Linux 5.15.125)
 	select ARCH_HAS_DMA_MARK_CLEAN
 	select ARCH_HAS_STRNCPY_FROM_USER
 	select ARCH_HAS_STRNLEN_USER
