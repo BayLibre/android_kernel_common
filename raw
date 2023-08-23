@@ -1,0 +1,152 @@
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <linux-riscv-bounces+linux-riscv=archiver.kernel.org@lists.infradead.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1922EE4996
+	for <linux-riscv@archiver.kernel.org>; Tue, 22 Aug 2023 16:49:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
+	List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=mpO8gUvGfavo8qABFR5BwlC6EsWKLEG9IrQ22DEjURA=; b=Vi92UWonJ/5bP1
+	EHaBf0aOCbGR3MJ0h+BXy+ad1LNllWg7+ctd4q+LIDuw94y+vbUP7Bbgsj+0OgTPlnh9h2SvgVlr6
+	AOzpmeTm6uQYsN+zdQfW2DDU72ikdAu1vdKmEyMemlFELgglGwrPFRv7doumQwh7JRLTvb7v6htBF
+	/7BbTkPUtSRxaWQvcBfsL63V550klgRd5Onu1k7w4S56L5RAXa11FHTSvJGNePCpaPhJSS8VklIFo
+	+Dixpdr+jxloukLGl7GiebIDytg6aCymSBC4Fw5R9rPBSOfAYp7NKcl7Cqff/moYmex8hIXlI2Ayf
+	x3NGXaj3waHum3Nc3EhA==;
+Received: from localhost ([::1] helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
+	id 1qYUZL-00GX43-2B;
+	Tue, 22 Aug 2023 16:49:27 +0000
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1qYUZJ-00GX3Z-2Z
+	for linux-riscv@lists.infradead.org;
+	Tue, 22 Aug 2023 16:49:27 +0000
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-68a3236a414so2597633b3a.0
+        for <linux-riscv@lists.infradead.org>; Tue, 22 Aug 2023 09:49:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1692722962; x=1693327762;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WySCllEOjlllhEh6xpPppujLEVNlu5DuIh4VWoW+CAA=;
+        b=D8IBVkNBlxeuOrJkfGqjazrWgBXyujSoaH7VS0H52w9BkHgWod/VRAgUOexNoohHZb
+         wOeEj9dZkHJyEv0b3UnBu/JDNNCGzkswAEFGgOuaZJljSufK8sYvxw6B/vuQnRK4fADO
+         8K1tfTqP8lZicqb42Wcy827UXtgEVObDlEWSqp//L17XacVmpxLcFqablHWh98UqDzmM
+         WUmNXskHz8GA3M+GzHeb3tDyOe1sRHnliplNqX/a3TLvhkn9Z1CyLFml9LMjRKJg3rnv
+         6Hm+hb365tOISwDBcuOjMY+R15ikJn1xsB7erO4xssOkAbwcmnHKCrqV2GO8Ll46+RPU
+         ML3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692722962; x=1693327762;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WySCllEOjlllhEh6xpPppujLEVNlu5DuIh4VWoW+CAA=;
+        b=jU8utSOx6eyHu+JIjdkY0WWRgF1cE/2kXvEYuECNY7Fy0xppyRpuM/JXyvH13pQcJ6
+         c23I8SqKyFpubm2B8fBRCcLXX+GC8TV3lrHhH5n98uNwbFp1g48Y+v7fiiSrkY7ShSJr
+         cphKD9lBRwVCxnDwtxmeE459pEav4fGUUphoxdXQNb/JmYKATCCOFx0AYszTVIMDh2Sp
+         OV5N0q8lV2/NjRxnaKF8T4HZDgHm3toCPcfmODS80K5otXXq4U10mHKcdDNpA8N6rd6I
+         oczIzUqhoaX6jb7GbPN0AQdJj6Oj08QHfwmXoAtDHGjFzJsQw4C42Df4QBZZXNhzUddE
+         byWA==
+X-Gm-Message-State: AOJu0YyPcGdC2OfkXTbG5IAlaWC5hTDFJIuSoNvCLl1BTSUHO9vosDEw
+	qT1/yorbsNtMlZr6dW1v6DwChlvZK2SWTFwktt1RQw9v2lGmriNyTDfOwR610wSKqVry/qyVDFO
+	vbqLnJgn805R4NC2RIzCZfPIOJ7y11/GfMAB4kiyfVjT2PLoRLiTehPl+7KZnAL8++W5qOxmnoN
+	BYaApcMpzw0zEI
+X-Google-Smtp-Source: AGHT+IFma2nRGIWLkzdsGpSnOU5aBDgfDVtuScy3NmOSHvGkhwWOWKU4rwA5nLEB3XRJtVbaBwRsdA==
+X-Received: by 2002:a05:6a21:33a6:b0:13d:b318:5c70 with SMTP id yy38-20020a056a2133a600b0013db3185c70mr14019068pzb.19.1692722961861;
+        Tue, 22 Aug 2023 09:49:21 -0700 (PDT)
+Received: from hsinchu26.internal.sifive.com (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+        by smtp.gmail.com with ESMTPSA id v24-20020aa78098000000b006877a17b578sm8044932pff.40.2023.08.22.09.49.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 09:49:20 -0700 (PDT)
+From: Andy Chiu <andy.chiu@sifive.com>
+To: linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com
+Cc: greentime.hu@sifive.com,
+	guoren@linux.alibaba.com,
+	bjorn@kernel.org,
+	prashanthsw@google.com,
+	Andy Chiu <andy.chiu@sifive.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Vincent Chen <vincent.chen@sifive.com>,
+	Mathis Salmen <mathis.salmen@matsal.de>,
+	Guo Ren <guoren@kernel.org>,
+	Andrew Bresticker <abrestic@rivosinc.com>,
+	Vineet Gupta <vineetg@rivosinc.com>
+Subject: [PATCH] riscv: signal: fix sigaltstack frame size checking
+Date: Tue, 22 Aug 2023 16:49:03 +0000
+Message-Id: <20230822164904.21660-1-andy.chiu@sifive.com>
+X-Mailer: git-send-email 2.17.1
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20230822_094925_852454_7EB0A1D6 
+X-CRM114-Status: GOOD (  11.71  )
+X-BeenThere: linux-riscv@lists.infradead.org
+X-Mailman-Version: 2.1.34
+Precedence: list
+List-Id: <linux-riscv.lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-riscv>,
+ <mailto:linux-riscv-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-riscv/>
+List-Post: <mailto:linux-riscv@lists.infradead.org>
+List-Help: <mailto:linux-riscv-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-riscv>,
+ <mailto:linux-riscv-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
+Errors-To: linux-riscv-bounces+linux-riscv=archiver.kernel.org@lists.infradead.org
+
+The alternative stack checking in get_sigframe introduced by the Vector
+support is not needed and has a problem. It is not needed as we have
+already validate it at the beginning of the function if we are already
+on an altstack. If not, the size of an altstack is always validated at
+its allocation stage with sigaltstack_size_valid().
+
+Besides, we must only regard the size of an altstack if the handler of a
+signal is registered with SA_ONSTACK. So, blindly checking overflow of
+an altstack if sas_ss_size not equals to zero will check against wrong
+signal handlers if only a subset of signals are registered with
+SA_ONSTACK.
+
+Fixes: 8ee0b41898fa ("riscv: signal: Add sigcontext save/restore for vector")
+Reported-by: Prashanth Swaminathan <prashanthsw@google.com>
+Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+---
+ arch/riscv/kernel/signal.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/arch/riscv/kernel/signal.c b/arch/riscv/kernel/signal.c
+index 180d951d3624..21a4d0e111bc 100644
+--- a/arch/riscv/kernel/signal.c
++++ b/arch/riscv/kernel/signal.c
+@@ -311,13 +311,6 @@ static inline void __user *get_sigframe(struct ksignal *ksig,
+ 	/* Align the stack frame. */
+ 	sp &= ~0xfUL;
+ 
+-	/*
+-	 * Fail if the size of the altstack is not large enough for the
+-	 * sigframe construction.
+-	 */
+-	if (current->sas_ss_size && sp < current->sas_ss_sp)
+-		return (void __user __force *)-1UL;
+-
+ 	return (void __user *)sp;
+ }
+ 
+-- 
+2.17.1
+
+
+_______________________________________________
+linux-riscv mailing list
+linux-riscv@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-riscv
+
