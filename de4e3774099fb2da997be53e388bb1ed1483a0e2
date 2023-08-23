@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0495ef8_a27b0887",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-23T22:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f376a029_3ffb28b2",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 16
+      },
+      "revId": "de4e3774099fb2da997be53e388bb1ed1483a0e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8839221_429a78aa",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-08-23T06:34:32Z",
       "side": 1,
       "message": "again, tiny nit, you can use ret here, there\u0027s no need for this variable at all.\n\nthat saves you setting ret to it below in the error handling.",
+      "range": {
+        "startLine": 135,
+        "startChar": 1,
+        "endLine": 135,
+        "endChar": 27
+      },
+      "revId": "de4e3774099fb2da997be53e388bb1ed1483a0e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46883090_accbe65b",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-23T22:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8839221_429a78aa",
       "range": {
         "startLine": 135,
         "startChar": 1,
@@ -87,6 +135,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f1cf933_e62b8608",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-23T22:07:12Z",
+      "side": 1,
+      "message": "I adjusted the message to log the PID.\n\nIf we want to output the process name from here we would have to fetch the task struct (like we do [here](https://android-review.git.corp.google.com/c/kernel/common/+/2453392/33/drivers/android/memhealth.c#111)).",
+      "parentUuid": "3f7dca60_e618ff23",
+      "range": {
+        "startLine": 180,
+        "startChar": 2,
+        "endLine": 180,
+        "endChar": 8
+      },
+      "revId": "de4e3774099fb2da997be53e388bb1ed1483a0e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb9770e5_4d0b12b7",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-08-23T06:34:32Z",
       "side": 1,
       "message": "should be on the same line as the `pr_err(` statement above.",
+      "range": {
+        "startLine": 275,
+        "startChar": 4,
+        "endLine": 275,
+        "endChar": 13
+      },
+      "revId": "de4e3774099fb2da997be53e388bb1ed1483a0e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae14cd2a_ea3e3b7c",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-23T22:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb9770e5_4d0b12b7",
       "range": {
         "startLine": 275,
         "startChar": 4,
