@@ -45,6 +45,30 @@
       },
       "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe44618_8fc363c7",
+        "filename": "net/ipv6/addrconf.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 1758351
+      },
+      "writtenOn": "2023-08-23T07:23:12Z",
+      "side": 1,
+      "message": "APF look at both: https://cs.android.com/android/platform/superproject/main/+/main:packages/modules/NetworkStack/src/android/net/apf/ApfFilter.java;l\u003d875?ss\u003dandroid\u0026q\u003drepo:platform%2Fsuperproject%2Fmain%20ApfFilter.java\n\nMaybe the kernel should also check both lifetime?",
+      "parentUuid": "0273406b_f9fa31f9",
+      "range": {
+        "startLine": 2751,
+        "startChar": 23,
+        "endLine": 2751,
+        "endChar": 32
+      },
+      "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
