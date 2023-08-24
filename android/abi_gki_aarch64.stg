@@ -364033,6 +364033,15 @@ elf_symbol {
   full_name: "percpu_counter_add_batch"
 }
 elf_symbol {
+  id: 0x7efbd192
+  name: "percpu_counter_batch"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x05240ee7
+  type_id: 0x6720d32f
+  full_name: "percpu_counter_batch"
+}
+elf_symbol {
   id: 0x22f7748e
   name: "percpu_down_write"
   is_defined: true
@@ -389734,6 +389743,7 @@ interface {
   symbol_id: 0x123cd197
   symbol_id: 0xe57e5e73
   symbol_id: 0x8ba9d028
+  symbol_id: 0x7efbd192
   symbol_id: 0x22f7748e
   symbol_id: 0x12951e5c
   symbol_id: 0xe4bc7703
