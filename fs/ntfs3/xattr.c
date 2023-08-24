@@ -212,9 +212,12 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
 	for (ret = 0, off = 0; off < size; off += ea_size) {
 		ea = Add2Ptr(ea_all, off);
 		ea_size = unpacked_ea_size(ea);
+<<<<<<< HEAD   (72b471 Merge 5.15.122 into android14-5.15-lts)
 
 		if (!ea->name_len)
 			break;
+=======
+>>>>>>> BRANCH (95e030 BACKPORT: blk-crypto: dynamically allocate fallback profile)
 
 		if (buffer) {
 			if (ret + ea->name_len + 1 > bytes_per_buffer) {

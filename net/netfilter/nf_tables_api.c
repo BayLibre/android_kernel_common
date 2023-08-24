@@ -203,6 +203,7 @@ static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
 	}
 }
 
+<<<<<<< HEAD   (72b471 Merge 5.15.122 into android14-5.15-lts)
 static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
 {
 	return __nft_set_trans_bind(ctx, set, true);
@@ -265,6 +266,48 @@ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
 void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
 {
 	__nft_chain_trans_bind(ctx, chain, false);
+=======
+static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *chain)
+{
+	struct nftables_pernet *nft_net;
+	struct net *net = ctx->net;
+	struct nft_trans *trans;
+
+	if (!nft_chain_binding(chain))
+		return;
+
+	nft_net = nft_pernet(net);
+	list_for_each_entry_reverse(trans, &nft_net->commit_list, list) {
+		switch (trans->msg_type) {
+		case NFT_MSG_NEWCHAIN:
+			if (nft_trans_chain(trans) == chain)
+				nft_trans_chain_bound(trans) = true;
+			break;
+		case NFT_MSG_NEWRULE:
+			if (trans->ctx.chain == chain)
+				nft_trans_rule_bound(trans) = true;
+			break;
+		}
+	}
+}
+
+int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
+{
+	if (!nft_chain_binding(chain))
+		return 0;
+
+	if (nft_chain_binding(ctx->chain))
+		return -EOPNOTSUPP;
+
+	if (chain->bound)
+		return -EBUSY;
+
+	chain->bound = true;
+	chain->use++;
+	nft_chain_trans_bind(ctx, chain);
+
+	return 0;
+>>>>>>> BRANCH (95e030 BACKPORT: blk-crypto: dynamically allocate fallback profile)
 }
 
 static int nft_netdev_register_hooks(struct net *net,
@@ -3529,8 +3572,6 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN]);
 			return PTR_ERR(chain);
 		}
-		if (nft_chain_is_bound(chain))
-			return -EOPNOTSUPP;
 
 	} else if (nla[NFTA_RULE_CHAIN_ID]) {
 		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
@@ -3542,6 +3583,9 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
 	} else {
 		return -EINVAL;
 	}
+
+	if (nft_chain_is_bound(chain))
+		return -EOPNOTSUPP;
 
 	if (nla[NFTA_RULE_HANDLE]) {
 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
@@ -3706,7 +3750,11 @@ err_destroy_flow_rule:
 	if (flow)
 		nft_flow_rule_destroy(flow);
 err_release_rule:
+<<<<<<< HEAD   (72b471 Merge 5.15.122 into android14-5.15-lts)
 	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+=======
+	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
+>>>>>>> BRANCH (95e030 BACKPORT: blk-crypto: dynamically allocate fallback profile)
 	nf_tables_rule_destroy(&ctx, rule);
 err_release_expr:
 	for (i = 0; i < n; i++) {
@@ -3794,6 +3842,8 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
 	} else {
 		list_for_each_entry(chain, &table->chains, list) {
 			if (!nft_is_active_next(net, chain))
+				continue;
+			if (nft_chain_is_bound(chain))
 				continue;
 
 			ctx.chain = chain;
