@@ -534,6 +534,7 @@ int kvm_pgtable_hyp_init(struct kvm_pgtable *pgt, u32 va_bits,
 	pgt->mm_ops		= mm_ops;
 	pgt->mmu		= NULL;
 	pgt->pte_ops		= NULL;
+	pgt->lazy		= true;
 
 	return 0;
 }
@@ -877,6 +878,51 @@ static bool stage2_pte_executable(kvm_pte_t pte)
 	return kvm_pte_valid(pte) && xn != KVM_PTE_LEAF_ATTR_HI_S2_XN_XN;
 }
 
+static bool stage2_block_needs_table(const struct kvm_pgtable_visit_ctx *ctx,
+				     struct kvm_pgtable *pgt)
+{
+	u64 level_size = kvm_granule_size(ctx->level);
+	u64 addr = ALIGN_DOWN(ctx->addr, level_size);
+	/*
+	 * We can unmap the entire block entry and rely on the remaining
+	 * portions being faulted back lazily.
+	 */
+	if (pgt->lazy)
+		return false;
+
+	if (ctx->level == (KVM_PGTABLE_MAX_LEVELS - 1))
+		return false;
+
+	if (!kvm_pte_valid(ctx->old))
+		return false;
+
+	if (kvm_pte_table(ctx->old, ctx->level))
+		return false;
+
+	return addr < ctx->addr ||
+	       ctx->end < (addr + level_size);
+}
+
+static void stage2_block_to_table(const struct kvm_pgtable_visit_ctx *ctx,
+				  kvm_pte_t *table)
+{
+	struct kvm_pgtable_pte_ops *pte_ops = ctx->pte_ops;
+	u64 pa = kvm_pte_to_phys(ctx->old);
+	int idx;
+
+	for (idx = 0; idx < PTRS_PER_PTE; ++idx) {
+		kvm_pte_t leaf = kvm_init_valid_leaf_pte(pa, ctx->old,
+							 ctx->level + 1);
+
+		if (pte_ops->pte_is_counted_cb(ctx->old, ctx->level))
+			ctx->mm_ops->get_page(table);
+
+		WRITE_ONCE(table[idx], leaf);
+
+		pa += kvm_granule_size(ctx->level + 1);
+	}
+}
+
 static u64 stage2_map_walker_phys_addr(const struct kvm_pgtable_visit_ctx *ctx,
 				       const struct stage2_map_data *data)
 {
@@ -1053,9 +1099,12 @@ static int stage2_map_walk_leaf(const struct kvm_pgtable_visit_ctx *ctx,
 
 	/*
 	 * If we've run into an existing block mapping then replace it with
-	 * a table. Accesses beyond 'end' that fall within the new table
-	 * will be mapped lazily.
+	 * a table. Accesses beyond 'end' that fall within the new table might
+	 * need handling if the pgtable doesn't support lazy mapping.
 	 */
+	if (stage2_block_needs_table(ctx, pgt))
+		stage2_block_to_table(ctx, childp);
+
 	new = kvm_init_table_pte(childp, mm_ops);
 	stage2_make_pte(ctx, new, data->mmu);
 	return 0;
@@ -1182,11 +1231,12 @@ int kvm_pgtable_stage2_annotate(struct kvm_pgtable *pgt, u64 addr, u64 size,
 static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
 			       enum kvm_pgtable_walk_flags visit)
 {
-	struct kvm_pgtable *pgt = ctx->arg;
-	struct kvm_s2_mmu *mmu = pgt->mmu;
+	struct stage2_map_data *data = ctx->arg;
+	struct kvm_s2_mmu *mmu = data->mmu;
+	struct kvm_pgtable *pgt = mmu->pgt;
 	struct kvm_pgtable_pte_ops *pte_ops = ctx->pte_ops;
 	struct kvm_pgtable_mm_ops *mm_ops = ctx->mm_ops;
-	kvm_pte_t *childp = NULL;
+	kvm_pte_t *table = NULL, *childp = NULL;
 	bool need_flush = false;
 
 	if (!kvm_pte_valid(ctx->old)) {
@@ -1206,15 +1256,18 @@ static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
 		need_flush = !stage2_has_fwb(pgt);
 	}
 
-	/*
-	 * This is similar to the map() path in that we unmap the entire
-	 * block entry and rely on the remaining portions being faulted
-	 * back lazily.
-	 */
-	if (pte_ops->pte_is_counted_cb(ctx->old, ctx->level))
-		stage2_unmap_put_pte(ctx, mmu, mm_ops);
-	else
-		stage2_unmap_clear_pte(ctx, mmu);
+	if (stage2_block_needs_table(ctx, pgt)) {
+		if (!data->memcache)
+			return -EINVAL;
+
+		table = mm_ops->zalloc_page(data->memcache);
+		if (!table)
+			return -ENOMEM;
+
+		stage2_block_to_table(ctx, table);
+	}
+
+	stage2_unmap_put_pte(ctx, mmu, mm_ops);
 
 	if (need_flush && mm_ops->dcache_clean_inval_poc)
 		mm_ops->dcache_clean_inval_poc(kvm_pte_follow(ctx->old, mm_ops),
@@ -1223,17 +1276,37 @@ static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
 	if (childp)
 		mm_ops->put_page(childp);
 
+	if (table) {
+		if (stage2_try_set_pte(ctx, KVM_INVALID_PTE_LOCKED)) {
+			mm_ops->free_pages_exact(table, PAGE_SIZE);
+			return -EAGAIN;
+		}
+
+		stage2_make_pte(ctx, kvm_init_table_pte(table, mm_ops), mmu);
+	}
+
 	return 0;
 }
 
-int kvm_pgtable_stage2_unmap(struct kvm_pgtable *pgt, u64 addr, u64 size)
+int __kvm_pgtable_stage2_unmap(struct kvm_pgtable *pgt, u64 addr, u64 size,
+			       void *mc)
 {
 	int ret;
+	struct stage2_map_data data = {
+		.mmu		= pgt->mmu,
+		.memcache	= mc,
+	};
 	struct kvm_pgtable_walker walker = {
 		.cb	= stage2_unmap_walker,
-		.arg	= pgt,
+		.arg	= &data,
 		.flags	= KVM_PGTABLE_WALK_LEAF | KVM_PGTABLE_WALK_TABLE_POST,
 	};
+
+	/*
+	 * Pgtable which don't support lazy mapping might break block mappings
+	 * into a page and will require memory for that.
+	 */
+	WARN_ON(!mc && !pgt->lazy);
 
 	ret = kvm_pgtable_walk(pgt, addr, size, &walker);
 	if (stage2_unmap_defer_tlb_flush(pgt))
@@ -1650,6 +1723,7 @@ int __kvm_pgtable_stage2_init(struct kvm_pgtable *pgt, struct kvm_s2_mmu *mmu,
 	pgt->mmu		= mmu;
 	pgt->flags		= flags;
 	pgt->pte_ops		= pte_ops;
+	pgt->lazy		= true;
 
 	/* Ensure zeroed PGD pages are visible to the hardware walker */
 	dsb(ishst);
