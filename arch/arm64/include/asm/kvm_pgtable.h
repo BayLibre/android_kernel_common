@@ -444,6 +444,7 @@ static inline bool kvm_pgtable_walk_lock_held(void)
  * @mmu:		Stage-2 KVM MMU struct. Unused for stage-1 page-tables.
  * @flags:		Stage-2 page-table flags.
  * @pte_ops:		PTE callbacks.
+ * @lazy		Stage-2 table use lazy mapping.
  */
 struct kvm_pgtable {
 	u32					ia_bits;
@@ -455,6 +456,7 @@ struct kvm_pgtable {
 	struct kvm_s2_mmu			*mmu;
 	enum kvm_pgtable_stage2_flags		flags;
 	struct kvm_pgtable_pte_ops		*pte_ops;
+	bool					lazy;
 };
 
 /**
@@ -666,6 +668,9 @@ int kvm_pgtable_stage2_map(struct kvm_pgtable *pgt, u64 addr, u64 size,
 int kvm_pgtable_stage2_annotate(struct kvm_pgtable *pgt, u64 addr, u64 size,
 				void *mc, kvm_pte_t annotation);
 
+int __kvm_pgtable_stage2_unmap(struct kvm_pgtable *pgt, u64 addr, u64 size,
+			       void *mc);
+
 /**
  * kvm_pgtable_stage2_unmap() - Remove a mapping from a guest stage-2 page-table.
  * @pgt:	Page-table structure initialised by kvm_pgtable_stage2_init*().
@@ -683,7 +688,11 @@ int kvm_pgtable_stage2_annotate(struct kvm_pgtable *pgt, u64 addr, u64 size,
  *
  * Return: 0 on success, negative error code on failure.
  */
-int kvm_pgtable_stage2_unmap(struct kvm_pgtable *pgt, u64 addr, u64 size);
+static inline int
+kvm_pgtable_stage2_unmap(struct kvm_pgtable *pgt, u64 addr, u64 size)
+{
+	return __kvm_pgtable_stage2_unmap(pgt, addr, size, NULL);
+}
 
 /**
  * kvm_pgtable_stage2_reclaim_leaves() - Attempt to reclaim leaf page-table

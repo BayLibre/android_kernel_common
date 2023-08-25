@@ -203,7 +203,7 @@ int kvm_host_prepare_stage2(void *pgt_pool_base)
 static bool guest_stage2_force_pte_cb(u64 addr, u64 end,
 				      enum kvm_pgtable_prot prot)
 {
-	return true;
+	return false;
 }
 
 static bool guest_stage2_pte_is_counted(kvm_pte_t pte, u32 level)
@@ -311,6 +311,7 @@ int kvm_guest_prepare_stage2(struct pkvm_hyp_vm *vm, void *pgd)
 		return ret;
 
 	vm->kvm.arch.mmu.pgd_phys = __hyp_pa(vm->pgt.pgd);
+	mmu->pgt->lazy = false;
 
 	return 0;
 }
@@ -375,7 +376,9 @@ int __pkvm_guest_relinquish_to_host(struct pkvm_hyp_vcpu *vcpu,
 	/* Zap the guest stage2 pte and return ownership to the host */
 	if (!ret && data.pa) {
 		WARN_ON(host_stage2_set_owner_locked(data.pa, PAGE_SIZE, PKVM_ID_HOST));
-		WARN_ON(kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE));
+		WARN_ON(__kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE,
+						   &vcpu->vcpu.arch.pkvm_memcache));
+		/* TODO: Go back to the host to fetch memory instead of a WARN ! */
 	}
 
 	guest_unlock_component(vm);
@@ -2293,6 +2296,7 @@ void drain_hyp_pool(struct pkvm_hyp_vm *vm, struct kvm_hyp_memcache *mc)
 
 int __pkvm_host_reclaim_page(struct pkvm_hyp_vm *vm, u64 pfn, u64 ipa)
 {
+	struct kvm_hyp_memcache mc = { .nr_pages = 0 };
 	phys_addr_t phys = hyp_pfn_to_phys(pfn);
 	kvm_pte_t pte;
 	int ret;
@@ -2313,7 +2317,7 @@ int __pkvm_host_reclaim_page(struct pkvm_hyp_vm *vm, u64 pfn, u64 ipa)
 	}
 
 	/* We could avoid TLB inval, it is done per VMID on the finalize path */
-	WARN_ON(kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE));
+	WARN_ON(__kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE, &mc));
 
 	switch(guest_get_page_state(pte, ipa)) {
 	case PKVM_PAGE_OWNED:
@@ -2436,8 +2440,8 @@ int __pkvm_remove_ioguard_page(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa,
 	WARN_ON(data.ipa_start != ipa);
 	WARN_ON(data.size > size);
 
-	ret = kvm_pgtable_stage2_unmap(&vm->pgt, data.ipa_start, data.size);
-
+	ret = __kvm_pgtable_stage2_unmap(&vm->pgt, data.ipa_start, data.size,
+					 &hyp_vcpu->vcpu.arch.stage2_mc);
 	guest_unlock_component(vm);
 
 	if (nr_unguarded)
