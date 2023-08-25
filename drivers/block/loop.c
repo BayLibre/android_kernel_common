@@ -2110,7 +2110,11 @@ static int loop_add(struct loop_device **l, int i)
 	lo->tag_set.numa_node = NUMA_NO_NODE;
 	lo->tag_set.cmd_size = sizeof(struct loop_cmd);
 	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_STACKING |
+<<<<<<< HEAD   (f50fa8 Merge 5.10.189 into android12-5.10-lts)
 		BLK_MQ_F_NO_SCHED_BY_DEFAULT;
+=======
+		BLK_MQ_F_NO_SCHED;
+>>>>>>> BRANCH (ec5857 Linux 5.10.190)
 	lo->tag_set.driver_data = lo;
 
 	err = blk_mq_alloc_tag_set(&lo->tag_set);
