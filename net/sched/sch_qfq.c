@@ -433,12 +433,15 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
 	} else {
 		/* MTU size is user controlled */
 		lmax = psched_mtu(qdisc_dev(sch));
+<<<<<<< HEAD   (72b471 Merge 5.15.122 into android14-5.15-lts)
 		if (lmax < QFQ_MIN_LMAX || lmax > QFQ_MAX_LMAX) {
 			NL_SET_ERR_MSG_MOD(extack,
 					   "MTU size out of bounds for qfq");
 			return -EINVAL;
 		}
 	}
+=======
+>>>>>>> BRANCH (95e030 BACKPORT: blk-crypto: dynamically allocate fallback profile)
 
 	inv_w = ONE_FP / weight;
 	weight = ONE_FP / inv_w;

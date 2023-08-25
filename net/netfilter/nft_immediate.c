@@ -150,9 +150,12 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
 				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
 
 			switch (phase) {
+<<<<<<< HEAD   (72b471 Merge 5.15.122 into android14-5.15-lts)
 			case NFT_TRANS_PREPARE_ERROR:
 				nf_tables_unbind_chain(ctx, chain);
 				fallthrough;
+=======
+>>>>>>> BRANCH (95e030 BACKPORT: blk-crypto: dynamically allocate fallback profile)
 			case NFT_TRANS_PREPARE:
 				nft_deactivate_next(ctx->net, chain);
 				break;
