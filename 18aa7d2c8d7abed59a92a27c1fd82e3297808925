@@ -52,6 +52,42 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9b23ad5_fa0195fe",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 34
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-29T20:01:42Z",
+      "side": 1,
+      "message": "Done. Went ahead and addded `EXPORT_TRACEPOINT_SYMBOL_GPL(mark_victim)` in `mm/oom_kill.c`",
+      "parentUuid": "38ad8e75_54368c6e",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98038e3b_7b64dab5",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 34
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-29T20:01:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcb7193f_cd52f984",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c89544f0_930e1ed7",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-08-29T03:39:50Z",
       "side": 1,
       "message": "```\nWARNING: Possible unnecessary \u0027out of memory\u0027 message\n#233: FILE: drivers/android/memhealth.c:100:\n+\tif (!new_node) {\n+\t\tpr_err(\"memhealth failed to allocate memory for OOM victim node\\n\");\n```",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe56063f_978e31a8",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-29T20:01:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c89544f0_930e1ed7",
       "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -86,6 +140,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d055fd7_fe81368f",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-29T20:01:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c40a5e9_65a52b72",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97adcbf8_954e6cfc",
@@ -99,6 +171,24 @@
       "writtenOn": "2023-08-29T03:39:50Z",
       "side": 1,
       "message": "```\nWARNING: braces {} are not necessary for single statement blocks\n#353: FILE: drivers/android/memhealth.c:220:\n+\tif (!capable(CAP_SYS_PTRACE)) {\n+\t\treturn -EPERM;\n+\t}\n```",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4168c4dd_7abff021",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1956645
+      },
+      "writtenOn": "2023-08-29T20:01:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97adcbf8_954e6cfc",
       "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
