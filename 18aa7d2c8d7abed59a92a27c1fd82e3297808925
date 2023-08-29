@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81a686fb_021791c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 34
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T03:39:50Z",
+      "side": 1,
+      "message": "b",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ad8e75_54368c6e",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 34
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T03:39:50Z",
+      "side": 1,
+      "message": "With `tristate` - `allmodconfig` will build this as a module;\nhence `ERROR: modpost: \"__tracepoint_mark_victim\" [drivers/android/memhealth.ko] undefined!` To solve, you need to have `EXPORT_TRACEPOINT_SYMBOL_GPL(mark_victim)` or similar at right place (maybe `mm/oom_kill.c`) as it\u0027s not exported currenlty.\n\nOR\n\nChange `tristate` to `bool`. However, this will make this driver not buildable as module which is probably not what we want.",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcb7193f_cd52f984",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 34
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T03:39:50Z",
+      "side": 1,
+      "message": "This needs to depend on `TRACEPOINTS` and probably `MMU`, too.\n\nAdd this: `depends on MMU \u0026\u0026 TRACEPOINTS`",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c89544f0_930e1ed7",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T03:39:50Z",
+      "side": 1,
+      "message": "```\nWARNING: Possible unnecessary \u0027out of memory\u0027 message\n#233: FILE: drivers/android/memhealth.c:100:\n+\tif (!new_node) {\n+\t\tpr_err(\"memhealth failed to allocate memory for OOM victim node\\n\");\n```",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c40a5e9_65a52b72",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T03:39:50Z",
+      "side": 1,
+      "message": "```\nWARNING: Integer promotion: Using \u0027h\u0027 in \u0027%hi\u0027 is unnecessary\n#333: FILE: drivers/android/memhealth.c:200:\n+\tseq_printf(s, \"%llu %d %d %hi %s\\n\",\n+\t\tktime_to_ms(entry-\u003etimestamp), entry-\u003epid,\n+\t\tentry-\u003euid, entry-\u003eoom_score_adj, entry-\u003eprocess_name\n+\t);\n```",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97adcbf8_954e6cfc",
+        "filename": "drivers/android/memhealth.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T03:39:50Z",
+      "side": 1,
+      "message": "```\nWARNING: braces {} are not necessary for single statement blocks\n#353: FILE: drivers/android/memhealth.c:220:\n+\tif (!capable(CAP_SYS_PTRACE)) {\n+\t\treturn -EPERM;\n+\t}\n```",
+      "revId": "18aa7d2c8d7abed59a92a27c1fd82e3297808925",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
