@@ -59,6 +59,14 @@ pub_no_prefix!(
 pub(crate) const FLAT_BINDER_FLAG_ACCEPTS_FDS: u32 = kernel::bindings::FLAT_BINDER_FLAG_ACCEPTS_FDS;
 pub(crate) const FLAT_BINDER_FLAG_TXN_SECURITY_CTX: u32 =
     kernel::bindings::FLAT_BINDER_FLAG_TXN_SECURITY_CTX;
+pub(crate) const FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT: u32 =
+    kernel::bindings::FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT;
+pub(crate) const FLAT_BINDER_FLAG_SCHED_POLICY_MASK: u32 =
+    kernel::bindings::FLAT_BINDER_FLAG_SCHED_POLICY_MASK;
+pub(crate) const FLAT_BINDER_FLAG_PRIORITY_MASK: u32 =
+    kernel::bindings::FLAT_BINDER_FLAG_PRIORITY_MASK;
+pub(crate) const FLAT_BINDER_FLAG_INHERIT_RT: u32 = kernel::bindings::FLAT_BINDER_FLAG_INHERIT_RT;
+
 pub_no_prefix!(
     transaction_flags_,
     TF_ONE_WAY,
