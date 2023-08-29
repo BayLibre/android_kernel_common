@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7b38ce1_1a65ac5a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1948495
+      },
+      "writtenOn": "2023-08-29T08:11:27Z",
+      "side": 1,
+      "message": "Discussed link:\nhttps://lore.kernel.org/all/20230613043308.GA1027@KORCO045595.samsungds.net/\n\nThey don\u0027t think this is not important performance issue.",
+      "parentUuid": "ac19d5a0_094e4d4a",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 67
+      },
+      "revId": "f0d8fa78cc19e6734d9fb2e66093b1a1aed8e258",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "549f0fa4_0af7192c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-29T08:00:11Z",
       "side": 1,
       "message": "there are no ABI issues for the `android-mainline` branch.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 66
+      },
+      "revId": "f0d8fa78cc19e6734d9fb2e66093b1a1aed8e258",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aa08bd3_b995f899",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1948495
+      },
+      "writtenOn": "2023-08-29T08:11:27Z",
+      "side": 1,
+      "message": "Revert patch is not acceptible, so revert it only in our kernel branch.\nBecause of this, android-mainline vs our kernel has ABI difference.\nI hope to add vendor data for avoid this situation.",
+      "parentUuid": "549f0fa4_0af7192c",
       "range": {
         "startLine": 13,
         "startChar": 0,
