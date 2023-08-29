@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab95c244_37b6e062",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 35
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T20:21:35Z",
+      "side": 1,
+      "message": "Just FYI, as not required for `android-mainline` branch:\n\nIf you cherry pick this CL on any `androidXX-*` branch; there are additional steps to update the protected module list and list of protected exports as this should be a protected GKI module.\n\nInstructions are here: go/gki-modules-conversion",
+      "revId": "b4a4cbca189f56a97988f8cdef17f8476615f27c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4d014ef_135c44c8",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-29T20:21:35Z",
+      "side": 1,
+      "message": "Add comment with `ANDROID:` tag with a reason why this is being added.",
+      "revId": "b4a4cbca189f56a97988f8cdef17f8476615f27c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
