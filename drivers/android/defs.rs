@@ -56,9 +56,14 @@ pub_no_prefix!(
     BC_DEAD_BINDER_DONE
 );
 
+pub_no_prefix!(flat_binder_object_shifts_, FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT);
+
 pub_no_prefix!(
     flat_binder_object_flags_,
     FLAT_BINDER_FLAG_ACCEPTS_FDS,
+    FLAT_BINDER_FLAG_INHERIT_RT,
+    FLAT_BINDER_FLAG_PRIORITY_MASK,
+    FLAT_BINDER_FLAG_SCHED_POLICY_MASK,
     FLAT_BINDER_FLAG_TXN_SECURITY_CTX
 );
 
