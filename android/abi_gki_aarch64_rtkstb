@@ -786,6 +786,7 @@
   soc_device_unregister
 
 # required by rtk_cma_accelerator.ko
+  fsync_bdev
   __traceiter_android_vh_calc_alloc_flags
   __traceiter_android_vh_cma_alloc_busy_info
   __traceiter_android_vh_cma_alloc_finish
@@ -807,6 +808,7 @@
   component_del
   component_master_del
   component_unbind_all
+  devm_extcon_dev_free
   devm_gpio_request_one
   dma_buf_begin_cpu_access
   dma_buf_end_cpu_access
