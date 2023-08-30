@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88f2a731_edb79bda",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-30T18:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eef7f963_1e8cace2",
+      "range": {
+        "startLine": 13,
+        "startChar": 3,
+        "endLine": 13,
+        "endChar": 10
+      },
+      "revId": "ef47827c58ff2e5abceb5a8f7e23c46c2ba8d835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d541356_bcc59d40",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-30T10:55:51Z",
       "side": 1,
       "message": "Do you need to add a new file for `arm` too?",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 1
+      },
+      "revId": "ef47827c58ff2e5abceb5a8f7e23c46c2ba8d835",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db0b799d_2afaa348",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-08-30T18:29:51Z",
+      "side": 1,
+      "message": "No. Because the only consumer for this is `virtual_device_arm` and it doesn\u0027t have `system_dlkm` and stuffs all it\u0027s modules in the vendor ramdisk. Since arm is not GKI supported target, not expecting any more consumer for this in future either and if we have one then it will just because it is trying to piggy back on ACK and will not have a system_dlkm partition and image build.\n\nThat was the reason I intentionally did not add this as it keeps `BUILD.bazel` clean and specific to ACK builds only.",
+      "parentUuid": "7d541356_bcc59d40",
       "range": {
         "startLine": 69,
         "startChar": 0,
