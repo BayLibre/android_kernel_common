@@ -1008,6 +1008,7 @@ int binder_alloc_shrinker_init(void)
 	return ret;
 }
 
+<<<<<<< HEAD   (c39924 Merge "Merge 4.14.323 into android-4.14-stable" into android)
 /**
  * check_buffer() - verify that buffer/offset is safe to access
  * @alloc: binder_alloc for this proc
@@ -1177,3 +1178,10 @@ void binder_alloc_copy_from_buffer(struct binder_alloc *alloc,
 				    dest, bytes);
 }
 
+=======
+void binder_alloc_shrinker_exit(void)
+{
+	unregister_shrinker(&binder_shrinker);
+	list_lru_destroy(&binder_alloc_lru);
+}
+>>>>>>> BRANCH (836d42 Linux 4.14.324)
