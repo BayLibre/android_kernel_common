@@ -1832,6 +1832,7 @@ extern int cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpu
 extern int task_can_attach(struct task_struct *p);
 extern int dl_bw_alloc(int cpu, u64 dl_bw);
 extern void dl_bw_free(int cpu, u64 dl_bw);
+<<<<<<< HEAD   (2a4d1f Merge 5.15.128 into android13-5.15-lts)
 
 #ifdef CONFIG_RT_SOFTINT_OPTIMIZATION
 extern bool cpupri_check_rt(void);
@@ -1842,6 +1843,8 @@ static inline bool cpupri_check_rt(void)
 }
 #endif
 
+=======
+>>>>>>> BRANCH (9e4336 Linux 5.15.129)
 #ifdef CONFIG_SMP
 extern void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask);
 extern int set_cpus_allowed_ptr(struct task_struct *p, const struct cpumask *new_mask);

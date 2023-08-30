@@ -477,8 +477,12 @@ static void guarantee_online_mems(struct cpuset *cs, nodemask_t *pmask)
 /*
  * update task's spread flag if cpuset's page/slab spread flag is set
  *
+<<<<<<< HEAD   (2a4d1f Merge 5.15.128 into android13-5.15-lts)
  * Call with callback_lock or cpuset_mutex held. The check can be skipped
  * if on default hierarchy.
+=======
+ * Call with callback_lock or cpuset_mutex held.
+>>>>>>> BRANCH (9e4336 Linux 5.15.129)
  */
 static void cpuset_update_task_spread_flag(struct cpuset *cs,
 					struct task_struct *tsk)
