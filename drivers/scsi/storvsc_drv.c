@@ -1730,11 +1730,15 @@ static int storvsc_host_reset_handler(struct scsi_cmnd *scmnd)
  */
 static enum scsi_timeout_action storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
 {
+<<<<<<< HEAD   (19d2b2 Merge 5.15.126 into android14-5.15-lts)
 #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
 	if (scmnd->device->host->transportt == fc_transport_template)
 		return fc_eh_timed_out(scmnd);
 #endif
 	return SCSI_EH_RESET_TIMER;
+=======
+	return BLK_EH_RESET_TIMER;
+>>>>>>> BRANCH (f6f792 Linux 5.15.127)
 }
 
 static bool storvsc_scsi_cmd_ok(struct scsi_cmnd *scmnd)
