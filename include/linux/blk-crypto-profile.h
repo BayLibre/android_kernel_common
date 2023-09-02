@@ -131,9 +131,13 @@ struct blk_crypto_profile {
 	 * keyslots while ensuring that they can't be changed concurrently.
 	 */
 	struct rw_semaphore lock;
+<<<<<<< HEAD   (b43552 Merge 6.1.39 into android14-6.1-lts)
 #ifdef CONFIG_LOCKDEP
 	struct lock_class_key lockdep_key;
 #endif
+=======
+	struct lock_class_key lockdep_key;
+>>>>>>> BRANCH (753891 Linux 6.1.40)
 
 	/* List of idle slots, with least recently used slot at front */
 	wait_queue_head_t idle_slots_wait_queue;
