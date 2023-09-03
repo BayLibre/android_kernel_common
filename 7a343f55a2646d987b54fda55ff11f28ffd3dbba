@@ -54,6 +54,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e38186ca_a71d98d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-09-03T17:14:15Z",
+      "side": 1,
+      "message": "In general there\u0027s changes in the merged 5.15 version that should be carried over,\nlike the ACCEPT_RA_MIN_LFT capitalization - the 65535, and I think the extra assert.",
+      "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b03abf0_26fc1b1e",
@@ -73,6 +90,40 @@
         "endLine": 2157,
         "endChar": 23
       },
+      "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acbeb66d_e396c6a0",
+        "filename": "include/linux/ipv6.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-09-03T17:14:15Z",
+      "side": 1,
+      "message": "static_assert((offsetof(struct ipv6_devconf, ndisc_evict_nocarrier) + 1) \u0026 1 \u003d\u003d 0)",
+      "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ac08b8f_70adba60",
+        "filename": "include/linux/ipv6.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-09-03T17:14:15Z",
+      "side": 1,
+      "message": "or perhaps better to\n\nstatic_assert(\n(long)accept_ra_min_lft(*(struct ipv6_devconf *)0) \u0026 (sizeof(__u16) - 1) \u003d\u003d 0\n);",
       "revId": "7a343f55a2646d987b54fda55ff11f28ffd3dbba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
