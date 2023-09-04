@@ -383444,6 +383444,15 @@ elf_symbol {
   full_name: "vhost_dev_cleanup"
 }
 elf_symbol {
+  id: 0x14bde45c
+  name: "vhost_dev_flush"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xdb5a9875
+  type_id: 0x1eca8a34
+  full_name: "vhost_dev_flush"
+}
+elf_symbol {
   id: 0x429eeda3
   name: "vhost_dev_init"
   is_defined: true
@@ -392379,6 +392388,7 @@ interface {
   symbol_id: 0xf33dadbd
   symbol_id: 0x743ba358
   symbol_id: 0x9f33c2c6
+  symbol_id: 0x14bde45c
   symbol_id: 0x429eeda3
   symbol_id: 0x67d81c4b
   symbol_id: 0x5b1b7953
