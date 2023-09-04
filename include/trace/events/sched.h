@@ -9,6 +9,7 @@
 #include <linux/sched/numa_balancing.h>
 #include <linux/tracepoint.h>
 #include <linux/binfmts.h>
+#include <linux/kallsyms.h>
 
 /*
  * Tracepoint for calling kthread_stop, performed to end a kthread:
@@ -497,18 +498,21 @@ TRACE_EVENT(sched_blocked_reason,
 	TP_ARGS(tsk),
 
 	TP_STRUCT__entry(
-		__field( pid_t,	pid	)
-		__field( void*, caller	)
-		__field( bool, io_wait	)
+		__field( pid_t,	pid			)
+		__array( char,	caller,	KSYM_NAME_LEN	)
+		__field( bool,	io_wait			)
 	),
 
 	TP_fast_assign(
 		__entry->pid	= tsk->pid;
-		__entry->caller = (void *)__get_wchan(tsk);
+		snprintf(__entry->caller, KSYM_NAME_LEN, "%pS",
+				(void *)__get_wchan(tsk));
+		__entry->caller[KSYM_NAME_LEN - 1] = '\0';
 		__entry->io_wait = tsk->in_iowait;
 	),
 
-	TP_printk("pid=%d iowait=%d caller=%pS", __entry->pid, __entry->io_wait, __entry->caller)
+	TP_printk("pid=%d iowait=%d caller=%s", __entry->pid, __entry->io_wait,
+			__entry->caller)
 );
 
 /*
