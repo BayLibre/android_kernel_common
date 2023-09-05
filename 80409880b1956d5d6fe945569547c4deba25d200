@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "624465d1_9e3bb320",
+        "filename": "kernel/rcu/tree.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 3031,
+      "author": {
+        "id": 1124848
+      },
+      "writtenOn": "2023-09-05T13:42:16Z",
+      "side": 1,
+      "message": "This comment should be updated (sorry I missed it during review before):\nrcu_barrier() makes sure any in-flight RCU callbacks are completed. This might be less than a grace period worth of waiting. So:\n\"Make sure all in-flight RCU callbacks are processed after flipping the switch.\"\n\nBasically, we want to make sure about that after param_set_rcu_lazy() returns, any new users will be guaranteed to only use the non-Lazy version.\nThanks!",
+      "revId": "80409880b1956d5d6fe945569547c4deba25d200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
