@@ -285,7 +285,11 @@ struct inode *ovl_i_path_real(struct inode *inode, struct path *path)
 		path->mnt = ovl_upper_mnt(OVL_FS(inode->i_sb));
 	}
 
+<<<<<<< HEAD   (bd041b ANDROID: GKI: Fix block/genhd.c exports from having their CR)
 	return  path->dentry ? d_inode(path->dentry) : NULL;
+=======
+	return path->dentry ? d_inode_rcu(path->dentry) : NULL;
+>>>>>>> BRANCH (753891 Linux 6.1.40)
 }
 
 struct inode *ovl_inode_upper(struct inode *inode)
