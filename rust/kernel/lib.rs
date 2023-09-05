@@ -43,6 +43,7 @@ pub mod kunit;
 pub mod list;
 pub mod mm;
 pub mod page;
+pub mod page_range;
 pub mod prelude;
 pub mod print;
 pub mod rbtree;
