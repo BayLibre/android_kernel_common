@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7117516_69b2c740",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-09-05T08:57:12Z",
+      "side": 1,
+      "message": "This change affects the stable KMI and cannot be merged in its current form.\n\n```\nfunction symbol \u0027struct block_device* I_BDEV(struct inode*)\u0027 changed\n  CRC changed from 0xc8597fa to 0x6437790\n\nfunction symbol \u0027struct gendisk* __blk_alloc_disk(int, struct lock_class_key*)\u0027 changed\n  CRC changed from 0x1ce70c88 to 0x9de47965\n\nfunction symbol \u0027struct gendisk* __blk_mq_alloc_disk(struct blk_mq_tag_set*, void*, struct lock_class_key*)\u0027 changed\n  CRC changed from 0x353b81ea to 0xdb55f6eb\n\n... 236 omitted; 239 symbols have only CRC changes\n\ntype \u0027struct blk_mq_tags\u0027 changed\n  member changed from \u0027atomic_t active_queues\u0027 to \u0027unsigned int active_queues\u0027\n    type changed from \u0027atomic_t\u0027 \u003d \u0027struct { int counter; }\u0027 to \u0027unsigned int\u0027\n      resolved type changed from \u0027struct { int counter; }\u0027 to \u0027unsigned int\u0027\n```",
+      "revId": "81e4d1238fc82670d842b12e95af805a91c7715b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
