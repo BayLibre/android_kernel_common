@@ -468,11 +468,14 @@ void f2fs_balance_fs_bg(struct f2fs_sb_info *sbi, bool from_bg)
 	if (!f2fs_available_free_memory(sbi, READ_EXTENT_CACHE))
 		f2fs_shrink_read_extent_tree(sbi,
 				READ_EXTENT_CACHE_SHRINK_NUMBER);
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 
 	/* try to shrink age extent cache when there is no enough memory */
 	if (!f2fs_available_free_memory(sbi, AGE_EXTENT_CACHE))
 		f2fs_shrink_age_extent_tree(sbi,
 				AGE_EXTENT_CACHE_SHRINK_NUMBER);
+=======
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 
 	/* check the # of cached NAT entries */
 	if (!f2fs_available_free_memory(sbi, NAT_ENTRIES))
@@ -1640,7 +1643,12 @@ retry:
 		if (list_empty(pend_list))
 			goto next;
 		if (unlikely(dcc->rbtree_check))
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 			f2fs_bug_on(sbi, !f2fs_check_discard_tree(sbi));
+=======
+			f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+							&dcc->root));
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 		blk_start_plug(&plug);
 		list_for_each_entry_safe(dc, tmp, pend_list, list) {
 			f2fs_bug_on(sbi, dc->state != D_PREP);
@@ -3156,7 +3164,12 @@ next:
 
 	mutex_lock(&dcc->cmd_lock);
 	if (unlikely(dcc->rbtree_check))
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 		f2fs_bug_on(sbi, !f2fs_check_discard_tree(sbi));
+=======
+		f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+							&dcc->root));
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 
 	dc = __lookup_discard_cmd_ret(&dcc->root, start,
 				&prev_dc, &next_dc, &insert_p, &insert_parent);

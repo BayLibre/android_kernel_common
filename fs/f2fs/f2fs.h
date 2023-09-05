@@ -80,6 +80,7 @@ extern const char *f2fs_fault_name[FAULT_MAX];
 /*
  * For mount options
  */
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 #define F2FS_MOUNT_DISABLE_ROLL_FORWARD	0x00000001
 #define F2FS_MOUNT_DISCARD		0x00000002
 #define F2FS_MOUNT_NOHEAP		0x00000004
@@ -108,6 +109,35 @@ extern const char *f2fs_fault_name[FAULT_MAX];
 #define	F2FS_MOUNT_GC_MERGE		0x02000000
 #define F2FS_MOUNT_COMPRESS_CACHE	0x04000000
 #define F2FS_MOUNT_AGE_EXTENT_CACHE	0x08000000
+=======
+#define F2FS_MOUNT_DISABLE_ROLL_FORWARD	0x00000002
+#define F2FS_MOUNT_DISCARD		0x00000004
+#define F2FS_MOUNT_NOHEAP		0x00000008
+#define F2FS_MOUNT_XATTR_USER		0x00000010
+#define F2FS_MOUNT_POSIX_ACL		0x00000020
+#define F2FS_MOUNT_DISABLE_EXT_IDENTIFY	0x00000040
+#define F2FS_MOUNT_INLINE_XATTR		0x00000080
+#define F2FS_MOUNT_INLINE_DATA		0x00000100
+#define F2FS_MOUNT_INLINE_DENTRY	0x00000200
+#define F2FS_MOUNT_FLUSH_MERGE		0x00000400
+#define F2FS_MOUNT_NOBARRIER		0x00000800
+#define F2FS_MOUNT_FASTBOOT		0x00001000
+#define F2FS_MOUNT_READ_EXTENT_CACHE	0x00002000
+#define F2FS_MOUNT_DATA_FLUSH		0x00008000
+#define F2FS_MOUNT_FAULT_INJECTION	0x00010000
+#define F2FS_MOUNT_USRQUOTA		0x00080000
+#define F2FS_MOUNT_GRPQUOTA		0x00100000
+#define F2FS_MOUNT_PRJQUOTA		0x00200000
+#define F2FS_MOUNT_QUOTA		0x00400000
+#define F2FS_MOUNT_INLINE_XATTR_SIZE	0x00800000
+#define F2FS_MOUNT_RESERVE_ROOT		0x01000000
+#define F2FS_MOUNT_DISABLE_CHECKPOINT	0x02000000
+#define F2FS_MOUNT_NORECOVERY		0x04000000
+#define F2FS_MOUNT_ATGC			0x08000000
+#define F2FS_MOUNT_MERGE_CHECKPOINT	0x10000000
+#define	F2FS_MOUNT_GC_MERGE		0x20000000
+#define F2FS_MOUNT_COMPRESS_CACHE	0x40000000
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 
 #define F2FS_OPTION(sbi)	((sbi)->mount_opt)
 #define clear_opt(sbi, option)	(F2FS_OPTION(sbi).opt &= ~F2FS_MOUNT_##option)
@@ -602,6 +632,7 @@ enum {
 /* number of extent info in extent cache we try to shrink */
 #define READ_EXTENT_CACHE_SHRINK_NUMBER	128
 
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 /* number of age extent info in extent cache we try to shrink */
 #define AGE_EXTENT_CACHE_SHRINK_NUMBER	128
 #define LAST_AGE_WEIGHT			30
@@ -619,6 +650,18 @@ enum extent_type {
 	EX_READ,
 	EX_BLOCK_AGE,
 	NR_EXTENT_CACHES,
+=======
+/* extent cache type */
+enum extent_type {
+	EX_READ,
+	NR_EXTENT_CACHES,
+};
+
+struct rb_entry {
+	struct rb_node rb_node;		/* rb node located in rb-tree */
+	unsigned int ofs;		/* start offset of the entry */
+	unsigned int len;		/* length of the entry */
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 };
 
 struct extent_info {
@@ -634,6 +677,7 @@ struct extent_info {
 			unsigned int c_len;
 #endif
 		};
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 		/* block age extent_cache */
 		struct {
 			/* block age of the extent */
@@ -641,6 +685,8 @@ struct extent_info {
 			/* last total blocks allocated */
 			unsigned long long last_blocks;
 		};
+=======
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 	};
 };
 
@@ -1593,12 +1639,15 @@ struct f2fs_sb_info {
 
 	/* for extent tree cache */
 	struct extent_tree_info extent_tree[NR_EXTENT_CACHES];
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 	atomic64_t allocated_data_blocks;	/* for block age extent_cache */
 
 	/* The threshold used for hot and warm data seperation*/
 	unsigned int hot_data_age_threshold;
 	unsigned int warm_data_age_threshold;
 	unsigned int last_age_weight;
+=======
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 
 	/* basic filesystem units */
 	unsigned int log_sectors_per_block;	/* log2 sectors per block */
@@ -3891,8 +3940,11 @@ struct f2fs_stat_info {
 	unsigned long long ext_mem[NR_EXTENT_CACHES];
 	/* for read extent cache */
 	unsigned long long hit_largest;
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 	/* for block age extent cache */
 	unsigned long long allocated_data_blocks;
+=======
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 	int ndirty_node, ndirty_dent, ndirty_meta, ndirty_imeta;
 	int ndirty_data, ndirty_qdata;
 	unsigned int ndirty_dirs, ndirty_files, nquota_files, ndirty_all;
@@ -4165,6 +4217,22 @@ void f2fs_leave_shrinker(struct f2fs_sb_info *sbi);
  * extent_cache.c
  */
 bool sanity_check_extent_cache(struct inode *inode);
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
+=======
+struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
+				struct rb_entry *cached_re, unsigned int ofs);
+struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+				struct rb_root_cached *root,
+				struct rb_node **parent,
+				unsigned int ofs, bool *leftmost);
+struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
+		struct rb_entry *cached_re, unsigned int ofs,
+		struct rb_entry **prev_entry, struct rb_entry **next_entry,
+		struct rb_node ***insert_p, struct rb_node **insert_parent,
+		bool force, bool *leftmost);
+bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+				struct rb_root_cached *root);
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 void f2fs_init_extent_tree(struct inode *inode);
 void f2fs_drop_extent_tree(struct inode *inode);
 void f2fs_destroy_extent_node(struct inode *inode);
@@ -4177,6 +4245,7 @@ void f2fs_destroy_extent_cache(void);
 void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage);
 bool f2fs_lookup_read_extent_cache(struct inode *inode, pgoff_t pgofs,
 			struct extent_info *ei);
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 bool f2fs_lookup_read_extent_cache_block(struct inode *inode, pgoff_t index,
 			block_t *blkaddr);
 void f2fs_update_read_extent_cache(struct dnode_of_data *dn);
@@ -4193,6 +4262,12 @@ void f2fs_update_age_extent_cache(struct dnode_of_data *dn);
 void f2fs_update_age_extent_cache_range(struct dnode_of_data *dn,
 			pgoff_t fofs, unsigned int len);
 unsigned int f2fs_shrink_age_extent_tree(struct f2fs_sb_info *sbi,
+=======
+void f2fs_update_read_extent_cache(struct dnode_of_data *dn);
+void f2fs_update_read_extent_cache_range(struct dnode_of_data *dn,
+			pgoff_t fofs, block_t blkaddr, unsigned int len);
+unsigned int f2fs_shrink_read_extent_tree(struct f2fs_sb_info *sbi,
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 			int nr_shrink);
 
 /*

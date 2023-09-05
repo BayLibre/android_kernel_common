@@ -2152,6 +2152,10 @@ static void default_options(struct f2fs_sb_info *sbi, bool remount)
 	set_opt(sbi, INLINE_XATTR);
 	set_opt(sbi, INLINE_DATA);
 	set_opt(sbi, INLINE_DENTRY);
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
+=======
+	set_opt(sbi, READ_EXTENT_CACHE);
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 	set_opt(sbi, NOHEAP);
 	set_opt(sbi, MERGE_CHECKPOINT);
 	F2FS_OPTION(sbi).unusable_cap = 0;
@@ -2290,7 +2294,10 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 	bool need_restart_flush = false, need_stop_flush = false;
 	bool need_restart_discard = false, need_stop_discard = false;
 	bool no_read_extent_cache = !test_opt(sbi, READ_EXTENT_CACHE);
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 	bool no_age_extent_cache = !test_opt(sbi, AGE_EXTENT_CACHE);
+=======
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 	bool enable_checkpoint = !test_opt(sbi, DISABLE_CHECKPOINT);
 	bool no_io_align = !F2FS_IO_ALIGNED(sbi);
 	bool no_atgc = !test_opt(sbi, ATGC);

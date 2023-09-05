@@ -333,6 +333,7 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
 		return false;
 	}
 
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 	if (!f2fs_sb_has_extra_attr(sbi)) {
 		if (f2fs_sb_has_project_quota(sbi)) {
 			f2fs_warn(sbi, "%s: corrupted inode ino=%lx, wrong feature flag: %u, run fsck to fix.",
@@ -359,6 +360,35 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
 				  __func__, inode->i_ino, F2FS_FEATURE_COMPRESSION);
 			return false;
 		}
+=======
+	if (f2fs_has_extra_attr(inode) &&
+			!f2fs_sb_has_extra_attr(sbi)) {
+		set_sbi_flag(sbi, SBI_NEED_FSCK);
+		f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
+			  __func__, inode->i_ino);
+		return false;
+	}
+
+	if (fi->i_extra_isize > F2FS_TOTAL_EXTRA_ATTR_SIZE ||
+			fi->i_extra_isize % sizeof(__le32)) {
+		set_sbi_flag(sbi, SBI_NEED_FSCK);
+		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_extra_isize: %d, max: %zu",
+			  __func__, inode->i_ino, fi->i_extra_isize,
+			  F2FS_TOTAL_EXTRA_ATTR_SIZE);
+		return false;
+	}
+
+	if (f2fs_has_extra_attr(inode) &&
+		f2fs_sb_has_flexible_inline_xattr(sbi) &&
+		f2fs_has_inline_xattr(inode) &&
+		(!fi->i_inline_xattr_size ||
+		fi->i_inline_xattr_size > MAX_INLINE_XATTR_SIZE)) {
+		set_sbi_flag(sbi, SBI_NEED_FSCK);
+		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_inline_xattr_size: %d, max: %zu",
+			  __func__, inode->i_ino, fi->i_inline_xattr_size,
+			  MAX_INLINE_XATTR_SIZE);
+		return false;
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 	}
 
 	if (f2fs_sanity_check_inline_data(inode)) {
@@ -459,6 +489,7 @@ static int do_read_inode(struct inode *inode)
 		fi->i_inline_xattr_size = 0;
 	}
 
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 	if (!sanity_check_inode(inode, node_page)) {
 		f2fs_put_page(node_page, 1);
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
@@ -466,6 +497,8 @@ static int do_read_inode(struct inode *inode)
 		return -EFSCORRUPTED;
 	}
 
+=======
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 	/* check data exist */
 	if (f2fs_has_inline_data(inode) && !f2fs_exist_data(inode))
 		__recover_inline_status(inode, node_page);
@@ -533,7 +566,16 @@ static int do_read_inode(struct inode *inode)
 
 	/* Need all the flag bits */
 	f2fs_init_read_extent_tree(inode, node_page);
+<<<<<<< HEAD   (0d9d4b Merge 6.1.28 into android15-6.1)
 	f2fs_init_age_extent_tree(inode);
+=======
+
+	if (!sanity_check_inode(inode, node_page)) {
+		f2fs_put_page(node_page, 1);
+		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
+		return -EFSCORRUPTED;
+	}
+>>>>>>> BRANCH (fa7464 Linux 6.1.29)
 
 	if (!sanity_check_extent_cache(inode)) {
 		f2fs_put_page(node_page, 1);
