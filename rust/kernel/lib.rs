@@ -45,6 +45,7 @@ pub mod io_buffer;
 pub mod iov_iter;
 pub mod miscdev;
 pub mod mm;
+pub mod page_range;
 pub mod pages;
 pub mod prelude;
 pub mod print;
