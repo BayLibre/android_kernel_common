@@ -45,6 +45,29 @@
       },
       "revId": "37b71f541038fc8fdbc0c1582c1dd0d021420627",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03dcc697_4f6aaa32",
+        "filename": "drivers/usb/typec/bus.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2023-09-06T21:23:32Z",
+      "side": 1,
+      "message": "We could workaround the ABI breakage by not changing the return type of the function and instead adding a dev_warn in 163.",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 17
+      },
+      "revId": "37b71f541038fc8fdbc0c1582c1dd0d021420627",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
