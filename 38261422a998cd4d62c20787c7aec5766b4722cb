@@ -16,6 +16,24 @@
       "message": "This introduces some compilation issues.\n\nblock/mq-deadline.c: In function ‘dd_finish_request’:\nblock/mq-deadline.c:823:21: error: ‘per_prio’ undeclared (first use in this function); did you mean ‘dd_per_prio’?\n  823 |         atomic_inc(\u0026per_prio-\u003estats.completed);\n      |                     ^~~~~~~~\n      |                     dd_per_prio\nblock/mq-deadline.c:823:21: note: each undeclared identifier is reported only once for each function it appears in\nblock/mq-deadline.c:813:28: error: unused variable ‘prio’ [-Werror\u003dunused-variable]\n  813 |         const enum dd_prio prio \u003d ioprio_class_to_prio[ioprio_class];\n      |                            ^~~~\ncc1: all warnings being treated as errors",
       "revId": "38261422a998cd4d62c20787c7aec5766b4722cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2760a6f_a4dc4486",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-09-06T22:58:57Z",
+      "side": 1,
+      "message": "Seems that there\u0027s a difference in the patch stack between versions at some point where \"struct dd_per_prio *per_prio \u003d \u0026dd-\u003eper_prio[prio];\" was removed in one, but not the other in \"block: mq-deadline: Fix dd_finish_request() for zoned devices\"",
+      "parentUuid": "2ea808da_53cabcb7",
+      "revId": "38261422a998cd4d62c20787c7aec5766b4722cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
