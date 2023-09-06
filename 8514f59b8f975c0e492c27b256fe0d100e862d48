@@ -16,6 +16,24 @@
       "message": "This appears to break UML boot",
       "revId": "8514f59b8f975c0e492c27b256fe0d100e862d48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a68809_2fe2f309",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2023-09-06T07:48:30Z",
+      "side": 1,
+      "message": "Hmm appears to actually be some sort of non-clean build related issue.\ngit clean -fdx fixed things.\n\nProbably related to .config generation...",
+      "parentUuid": "10b62327_44ad3278",
+      "revId": "8514f59b8f975c0e492c27b256fe0d100e862d48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
