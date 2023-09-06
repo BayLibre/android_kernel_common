@@ -3,6 +3,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e63e3dab_c638ba3b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2011105
+      },
+      "writtenOn": "2023-09-06T02:38:16Z",
+      "side": 1,
+      "message": "\u003e [Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\n\u003e Checked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/4a18419f71cdf9155d2d2a6c79546f720978b990) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d4a18419f71cdf9155d2d2a6c79546f720978b990)\n\u003e \n\u003e ```\n\u003e       ## fs/exec.c ##\n\u003e      @@ fs/exec.c: int setup_arg_pages(struct linux_binprm *bprm,\n\u003e     @@ mm/huge_memory.c: bool move_huge_pmd(struct vm_area_struct *vma, unsigned long o\n\u003e      -int change_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,\n\u003e      -\t\tunsigned long addr, pgprot_t newprot, unsigned long cp_flags)\n\u003e      +int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,\n\u003e     -+\t\t    pmd_t *pmd, unsigned long addr, pgprot_t newprot,\n\u003e     -+\t\t    unsigned long cp_flags)\n\u003e     ++\t\tpmd_t *pmd, unsigned long addr, pgprot_t newprot,\n\u003e     ++\t\tunsigned long cp_flags)\n\u003e       {\n\u003e       \tstruct mm_struct *mm \u003d vma-\u003evm_mm;\n\u003e       \tspinlock_t *ptl;\n\u003e     @@ mm/mempolicy.c: unlock:\n\u003e      +\t\t\t\t       MM_CP_PROT_NUMA);\n\u003e       \tif (nr_updated)\n\u003e       \t\tcount_vm_numa_events(NUMA_PTE_UPDATES, nr_updated);\n\u003e     - \n\u003e      +\ttlb_finish_mmu(\u0026tlb);\n\u003e     -+\n\u003e     + \n\u003e       \treturn nr_updated;\n\u003e       }\n\u003e     - #else\n\u003e      \n\u003e       ## mm/mprotect.c ##\n\u003e      @@\n\u003e     @@ mm/mprotect.c: static inline unsigned long change_pmd_range(struct vm_area_struc\n\u003e      -\t\tthis_pages \u003d change_pte_range(vma, pmd, addr, next, newprot,\n\u003e      -\t\t\t\t\t      cp_flags);\n\u003e      +\t\tthis_pages \u003d change_pte_range(tlb, vma, pmd, addr, next,\n\u003e     -+\t\t\t\t\t      newprot, cp_flags);\n\u003e     ++\t\t\t\tnewprot, cp_flags);\n\u003e       \t\tpages +\u003d this_pages;\n\u003e       next:\n\u003e       \t\tcond_resched();\n\u003e     @@ mm/mprotect.c: static int do_mprotect_pkey(unsigned long start, size_t len,\n\u003e       \tstart \u003d untagged_addr(start);\n\u003e       \n\u003e      @@ mm/mprotect.c: static int do_mprotect_pkey(unsigned long start, size_t len,\n\u003e     - \telse\n\u003e     - \t\tprev \u003d vma-\u003evm_prev;\n\u003e     + \tif (start \u003e vma-\u003evm_start)\n\u003e     + \t\tprev \u003d vma;\n\u003e       \n\u003e      +\ttlb_gather_mmu(\u0026tlb, current-\u003emm);\n\u003e       \tfor (nstart \u003d start ; ; ) {\n\u003e ```\n\u003e \n\u003e Please refer to the contribution guidelines for details:\n\u003e https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\u003e AyeAye - CL 561648837 android-build.ayeaye-python-dispatcher_20230831.05_p0\n\nPlease fix.",
+      "parentUuid": "293075b6_c7c48bde",
+      "revId": "c4d04096ca3bed9ceb0c5860ec6d2457c15bd319",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "34cfc351_bf1628fd",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -14,6 +32,30 @@
       "writtenOn": "2023-09-05T14:32:42Z",
       "side": 1,
       "message": "Since the original was modified when backporting, please mark it as BACKPORT instead of UPSTREAM. That should resolve the Lint problem.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "c4d04096ca3bed9ceb0c5860ec6d2457c15bd319",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae2f744_ef213f2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 2011105
+      },
+      "writtenOn": "2023-09-06T02:38:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34cfc351_bf1628fd",
       "range": {
         "startLine": 7,
         "startChar": 0,
