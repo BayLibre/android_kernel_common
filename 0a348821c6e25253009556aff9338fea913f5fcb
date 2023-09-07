@@ -22,6 +22,30 @@
       },
       "revId": "0a348821c6e25253009556aff9338fea913f5fcb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8427272_79fa4c8c",
+        "filename": "drivers/usb/typec/bus.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1960732
+      },
+      "writtenOn": "2023-09-07T22:06:46Z",
+      "side": 1,
+      "message": "2. For the entire if block, we silently drop an Attention message that would have otherwise been sent to a partner altmode that doesn\u0027t exist/was deleted. In the latter case, it allows the device to renegotiate the Alt Mode instead of ramdumping, and normal operation can continue.\n\n1. USB team is interested in knowing what hubs exhibit the abnormal behavior in the first place. In addition, if a hub won\u0027t renegotiate the Alt Mode and the use case is cut off, the log will help initial triage of the issue.",
+      "parentUuid": "b23d87e6_aa74335f",
+      "range": {
+        "startLine": 164,
+        "startChar": 3,
+        "endLine": 164,
+        "endChar": 57
+      },
+      "revId": "0a348821c6e25253009556aff9338fea913f5fcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
