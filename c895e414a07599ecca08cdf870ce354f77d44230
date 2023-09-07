@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd2b0d9b_227e7068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1827690
+      },
+      "writtenOn": "2023-09-07T05:19:44Z",
+      "side": 1,
+      "message": "Help to confirm if this modification is appropriate. The original patch changed atomic_t to unsigned int and used the existing spinlock for protection. However, to avoid ABI breakage, I directly used the int counter field from atomic_t.",
+      "revId": "c895e414a07599ecca08cdf870ce354f77d44230",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
