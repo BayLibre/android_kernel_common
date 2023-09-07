@@ -246,6 +246,10 @@ struct zs_pool {
 	struct work_struct free_work;
 #endif
 	spinlock_t lock;
+};
+
+struct zs_pool_ext {
+	struct zs_pool pool;
 	atomic_t compaction_in_progress;
 };
 
@@ -2100,6 +2104,7 @@ unsigned long zs_compact(struct zs_pool *pool)
 	int i;
 	struct size_class *class;
 	unsigned long pages_freed = 0;
+	struct zs_pool_ext *pool_ext = container_of(pool, struct zs_pool_ext, pool);
 
 	/*
 	 * Pool compaction is performed under pool->lock so it is basically
@@ -2107,7 +2112,7 @@ unsigned long zs_compact(struct zs_pool *pool)
 	 * will increase pool->lock contention, which will impact other
 	 * zsmalloc operations that need pool->lock.
 	 */
-	if (atomic_xchg(&pool->compaction_in_progress, 1))
+	if (atomic_xchg(&pool_ext->compaction_in_progress, 1))
 		return 0;
 
 	for (i = ZS_SIZE_CLASSES - 1; i >= 0; i--) {
@@ -2117,7 +2122,7 @@ unsigned long zs_compact(struct zs_pool *pool)
 		pages_freed += __zs_compact(pool, class);
 	}
 	atomic_long_add(pages_freed, &pool->stats.pages_compacted);
-	atomic_set(&pool->compaction_in_progress, 0);
+	atomic_set(&pool_ext->compaction_in_progress, 0);
 
 	return pages_freed;
 }
@@ -2195,16 +2200,18 @@ static int zs_register_shrinker(struct zs_pool *pool)
 struct zs_pool *zs_create_pool(const char *name)
 {
 	int i;
+	struct zs_pool_ext *pool_ext;
 	struct zs_pool *pool;
 	struct size_class *prev_class = NULL;
 
-	pool = kzalloc(sizeof(*pool), GFP_KERNEL);
-	if (!pool)
+	pool_ext = kzalloc(sizeof(*pool_ext), GFP_KERNEL);
+	if (!pool_ext)
 		return NULL;
 
+	pool = &pool_ext->pool;
 	init_deferred_free(pool);
 	spin_lock_init(&pool->lock);
-	atomic_set(&pool->compaction_in_progress, 0);
+	atomic_set(&pool_ext->compaction_in_progress, 0);
 
 	pool->name = kstrdup(name, GFP_KERNEL);
 	if (!pool->name)
@@ -2304,6 +2311,7 @@ EXPORT_SYMBOL_GPL(zs_create_pool);
 
 void zs_destroy_pool(struct zs_pool *pool)
 {
+	struct zs_pool_ext *pool_ext = container_of(pool, struct zs_pool_ext, pool);
 	int i;
 
 	zs_unregister_shrinker(pool);
@@ -2331,7 +2339,7 @@ void zs_destroy_pool(struct zs_pool *pool)
 
 	destroy_cache(pool);
 	kfree(pool->name);
-	kfree(pool);
+	kfree(pool_ext);
 }
 EXPORT_SYMBOL_GPL(zs_destroy_pool);
 
