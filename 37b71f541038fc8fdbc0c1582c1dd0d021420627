@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "716d9c51_b16ddd03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1960732
+      },
+      "writtenOn": "2023-09-07T18:26:23Z",
+      "side": 1,
+      "message": "I\u0027m going off of https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md, wouldn\u0027t UPSTREAM only apply if the patch were already in mainline? The change is currently in usb-linus last time I checked.",
+      "parentUuid": "996926c6_f14ffd7a",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "37b71f541038fc8fdbc0c1582c1dd0d021420627",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9484544d_eb6942d2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-06T20:51:49Z",
       "side": 1,
       "message": "you can not break the ABI, sorry.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 44
+      },
+      "revId": "37b71f541038fc8fdbc0c1582c1dd0d021420627",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "992997c9_cbcee8cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1960732
+      },
+      "writtenOn": "2023-09-07T18:26:23Z",
+      "side": 1,
+      "message": "Thanks for the heads up, turning into backport for compatibility.",
+      "parentUuid": "9484544d_eb6942d2",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -60,6 +108,30 @@
       "writtenOn": "2023-09-06T21:23:32Z",
       "side": 1,
       "message": "We could workaround the ABI breakage by not changing the return type of the function and instead adding a dev_warn in 163.",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 17
+      },
+      "revId": "37b71f541038fc8fdbc0c1582c1dd0d021420627",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3d33276_2ee863b0",
+        "filename": "drivers/usb/typec/bus.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1960732
+      },
+      "writtenOn": "2023-09-07T18:26:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03dcc697_4f6aaa32",
       "range": {
         "startLine": 157,
         "startChar": 0,
