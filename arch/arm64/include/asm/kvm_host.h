@@ -138,6 +138,7 @@ static inline void __free_hyp_memcache(struct kvm_hyp_memcache *mc,
 }
 
 #define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)
+#define HYP_MEMCACHE_ACCOUNT_STAGE2 BIT(2)
 
 void free_hyp_memcache(struct kvm_hyp_memcache *mc);
 int topup_hyp_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages);
@@ -152,7 +153,8 @@ int topup_hyp_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages);
 (struct kvm_hyp_memcache) { 				\
 	.head		= 0,				\
 	.nr_pages	= 0,				\
-	.flags		= HYP_MEMCACHE_ACCOUNT_KMEMCG,	\
+	.flags		= HYP_MEMCACHE_ACCOUNT_KMEMCG |	\
+			  HYP_MEMCACHE_ACCOUNT_STAGE2,	\
 }
 
 struct kvm_vmid {
