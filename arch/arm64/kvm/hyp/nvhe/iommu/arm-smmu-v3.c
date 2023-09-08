@@ -11,6 +11,7 @@
 #include <nvhe/alloc.h>
 #include <nvhe/mm.h>
 #include <nvhe/pkvm.h>
+#include <nvhe/trap_handler.h>
 
 #define ARM_SMMU_POLL_TIMEOUT_US	1000000 /* 1s! */
 
@@ -820,6 +821,63 @@ int smmu_free_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_i
 	return 0;
 }
 
+bool smmu_dabt_device(struct hyp_arm_smmu_v3_device *smmu,
+		      struct kvm_cpu_context *host_ctxt, u64 esr, u32 off)
+{
+	bool is_write = esr & ESR_ELx_WNR;
+	unsigned int len = BIT((esr & ESR_ELx_SAS) >> ESR_ELx_SAS_SHIFT);
+	int rd = (esr & ESR_ELx_SRT_MASK) >> ESR_ELx_SRT_SHIFT;
+	const u32 no_access  = 0;
+	const u32 read_write = (u32)(-1);
+	const u32 read_only = is_write ? no_access : read_write;
+	u32 mask = no_access;
+
+	/*
+	 * Only handle MMIO access with u32 size and alignment.
+	 * We don't need to change 64-bit registers for now.
+	 */
+	if ((len != sizeof(u32)) || (off & (sizeof(u32) - 1)))
+		return false;
+
+	switch (off) {
+	case ARM_SMMU_EVTQ_PROD + SZ_64K:
+		mask = read_write;
+		break;
+	case ARM_SMMU_EVTQ_CONS + SZ_64K:
+		mask = read_write;
+		break;
+	case ARM_SMMU_GERROR:
+		mask = read_only;
+		break;
+	case ARM_SMMU_GERRORN:
+		mask = read_write;
+		break;
+	};
+
+	if (!mask)
+		return false;
+	if (is_write)
+		writel_relaxed(cpu_reg(host_ctxt, rd) & mask, smmu->base + off);
+	else
+		cpu_reg(host_ctxt, rd) = readl_relaxed(smmu->base + off);
+
+	return true;
+}
+
+bool smmu_dabt_handler(struct kvm_cpu_context *host_ctxt, u64 esr, u64 addr)
+{
+	int i;
+	struct hyp_arm_smmu_v3_device *smmu;
+
+	for (i =  0; i < kvm_hyp_arm_smmu_v3_count; ++i) {
+		smmu = &kvm_hyp_arm_smmu_v3_smmus[i];
+		if (addr < smmu->mmio_addr || addr >= smmu->mmio_addr + smmu->mmio_size)
+			continue;
+		return smmu_dabt_device(smmu, host_ctxt, esr, addr - smmu->mmio_addr);
+	}
+	return false;
+}
+
 int smmu_suspend(struct kvm_hyp_iommu *iommu)
 {
 	struct hyp_arm_smmu_v3_device *smmu = to_smmu(iommu);
@@ -854,6 +912,7 @@ struct kvm_iommu_ops smmu_ops = {
 	.attach_dev			= smmu_attach_dev,
 	.detach_dev			= smmu_detach_dev,
 	.alloc_domain			= smmu_alloc_domain,
+	.dabt_handler			= smmu_dabt_handler,
 	.suspend			= smmu_suspend,
 	.resume				= smmu_resume,
 };
