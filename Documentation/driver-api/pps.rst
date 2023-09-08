@@ -167,6 +167,23 @@ sequence number. Other files are:
  * path: reports the PPS source's device path, that is the device the
    PPS source is connected to (if it exists).
 
+Android: Calculate the monotonic clock from the timespec clock
+
+   Calculate the monotonic clock from the timespec clock to generate PPS elapsed
+   real-time event value and stores the result into /sys/class/pps/pps0/assert_elapsed.
+
+   Because we have requirements to make sure the delta between standard time,
+   say the GPS Time, and elapsedRealtime < 1 millisecond, regular linux clock timestamp
+   is not enough for our use case.
+   The pin PPS will generate elapsedRealtime event at 1 sec boundary which is an exact
+   value of the monotonic clock from the kernel PPS driver
+   (/sys/class/pps/pps0/assert_elapsed).
+
+   Whenever AP receives this pulse, kernel's pps driver timestamp this elapsedRealtime
+   event and let this time available via sysfs node (/sys/class/pps/pps0/assert_elapsed)
+   or the IOCTL call.
+
+   Bug: 258364350
 
 Testing the PPS support
 -----------------------
