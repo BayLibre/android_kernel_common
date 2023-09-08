@@ -868,13 +868,14 @@ static int check_page_state_range(struct kvm_pgtable *pgt, u64 addr, u64 size,
 	return kvm_pgtable_walk(pgt, addr, size, &walker);
 }
 
-static enum pkvm_page_state host_get_page_state(kvm_pte_t pte, u64 addr)
+static enum pkvm_page_state __host_get_page_state(kvm_pte_t pte, u64 addr, bool is_dma)
 {
 	bool is_memory = addr_is_memory(addr);
 	enum pkvm_page_state state = 0;
 	enum kvm_pgtable_prot prot;
 
-	if (is_memory && !addr_is_allowed_memory(addr))
+	/* Allow DMA to be mapped in all memory. */
+	if (is_memory && !addr_is_allowed_memory(addr) && !is_dma)
 		return PKVM_NOPAGE;
 
 	if (is_memory && hyp_phys_to_page(addr)->flags & MODULE_OWNED_PAGE)
@@ -890,6 +891,11 @@ static enum pkvm_page_state host_get_page_state(kvm_pte_t pte, u64 addr)
 	}
 
 	return state | pkvm_getstate(prot);
+}
+
+static enum pkvm_page_state host_get_page_state(kvm_pte_t pte, u64 addr)
+{
+	return __host_get_page_state(pte, addr, false);
 }
 
 static int __host_check_page_state_range(u64 addr, u64 size,
@@ -2104,7 +2110,7 @@ static int __pkvm_host_use_dma_page(phys_addr_t phys_addr, bool is_ram)
 	if (ret)
 		return ret;
 
-	state = host_get_page_state(pte, phys_addr);
+	state = __host_get_page_state(pte, phys_addr, /* is_dma */true);
 
 	if (state == PKVM_NOPAGE)
 		return -EPERM;
