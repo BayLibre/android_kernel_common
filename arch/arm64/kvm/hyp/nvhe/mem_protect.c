@@ -789,11 +789,16 @@ static int handle_host_perm_fault(struct kvm_cpu_context *host_ctxt, u64 esr, u6
 	return cb ? cb(&host_ctxt->regs, esr, addr) : -EPERM;
 }
 
+static bool is_dabt(u64 esr)
+{
+	return ESR_ELx_EC(esr) == ESR_ELx_EC_DABT_LOW;
+}
+
 void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 {
 	struct kvm_vcpu_fault_info fault;
 	u64 esr, addr;
-	int ret = 0;
+	int ret = -EPERM;
 
 	esr = read_sysreg_el2(SYS_ESR);
 	if (!__get_fault_info(esr, &fault)) {
@@ -806,7 +811,14 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	}
 
 	addr = (fault.hpfar_el2 & HPFAR_MASK) << 8;
-	ret = host_stage2_idmap(addr);
+
+	if (is_dabt(esr) && !addr_is_memory(addr) &&
+	    kvm_iommu_host_dabt_handler(host_ctxt, esr, addr))
+		ret = 0;
+
+	/* If not handled, attempt to map the page. */
+	if (ret == -EPERM)
+		ret = host_stage2_idmap(addr);
 
 	if ((esr & ESR_ELx_FSC_TYPE) == ESR_ELx_FSC_PERM)
 		ret = handle_host_perm_fault(host_ctxt, esr, addr);
