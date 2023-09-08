@@ -1205,8 +1205,12 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
 
 		rcu_read_lock();
 		psock = sk_psock(sk);
+<<<<<<< HEAD   (42c3ce Merge 6.1.31 into android15-6.1)
 		if (psock)
 			psock->saved_data_ready(sk);
+=======
+		psock->saved_data_ready(sk);
+>>>>>>> BRANCH (76ba31 Linux 6.1.32)
 		rcu_read_unlock();
 	}
 }
