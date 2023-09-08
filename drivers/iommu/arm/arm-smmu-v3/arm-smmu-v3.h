@@ -417,6 +417,18 @@ static void __maybe_unused queue_sync_cons_out(struct arm_smmu_queue *q)
 	writel_relaxed(q->llq.cons, q->cons_reg);
 }
 
+static void __maybe_unused queue_sync_cons_ovf(struct arm_smmu_queue *q)
+{
+       struct arm_smmu_ll_queue *llq = &q->llq;
+
+       if (likely(Q_OVF(llq->prod) == Q_OVF(llq->cons)))
+               return;
+
+       llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
+                     Q_IDX(llq, llq->cons);
+       queue_sync_cons_out(q);
+}
+
 static void __maybe_unused queue_inc_cons(struct arm_smmu_ll_queue *q)
 {
 	u32 cons = (Q_WRP(q, q->cons) | Q_IDX(q, q->cons)) + 1;

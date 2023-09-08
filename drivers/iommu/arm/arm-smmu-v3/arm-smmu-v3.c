@@ -43,18 +43,6 @@ DEFINE_MUTEX(arm_smmu_asid_lock);
  */
 struct arm_smmu_ctx_desc quiet_cd = { 0 };
 
-static void queue_sync_cons_ovf(struct arm_smmu_queue *q)
-{
-       struct arm_smmu_ll_queue *llq = &q->llq;
-
-       if (likely(Q_OVF(llq->prod) == Q_OVF(llq->cons)))
-               return;
-
-       llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
-                     Q_IDX(llq, llq->cons);
-       queue_sync_cons_out(q);
-}
-
 /* High-level queue accessors */
 static int arm_smmu_cmdq_build_cmd(u64 *cmd, struct arm_smmu_cmdq_ent *ent)
 {
