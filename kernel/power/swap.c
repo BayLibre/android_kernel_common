@@ -592,7 +592,6 @@ static int save_image(struct swap_map_handle *handle,
 	if (!ret)
 		pr_info("Image saving done\n");
 	swsusp_show_speed(start, stop, nr_to_write, "Wrote");
-	trace_android_vh_post_image_save(root_swap);
 	return ret;
 }
 
@@ -875,6 +874,7 @@ static int save_compressed_image(struct swap_map_handle *handle,
 			     off += PAGE_SIZE) {
 				memcpy(page, data[thr].cmp + off, PAGE_SIZE);
 
+				trace_android_vh_encrypt_page(page);
 				ret = swap_write_page(handle, page, &hb);
 				if (ret)
 					goto out_finish;
@@ -993,6 +993,9 @@ int swsusp_write(unsigned int flags)
 		error = (flags & SF_NOCOMPRESS_MODE) ?
 			save_image(&handle, &snapshot, pages - 1) :
 			save_compressed_image(&handle, &snapshot, pages - 1);
+
+		if (!error)
+			trace_android_vh_post_image_save(root_swap);
 	}
 out_finish:
 	error = swap_writer_finish(&handle, flags, error);
