@@ -3647,6 +3647,7 @@
       <elf-symbol name='mmc_select_timing' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xdf721daa'/>
       <elf-symbol name='mmc_send_status' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2ec60b84'/>
       <elf-symbol name='mmc_send_tuning' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6b9e0402'/>
+      <elf-symbol name='mmc_set_blocklen' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xc0d922f'/>
       <elf-symbol name='mmc_set_clock' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xa99f2303'/>
       <elf-symbol name='mmc_set_data_timeout' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2d4e8591'/>
       <elf-symbol name='mmc_set_initial_state' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4d8084f3'/>
@@ -3762,6 +3763,7 @@
       <elf-symbol name='nonseekable_open' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x82885f25'/>
       <elf-symbol name='noop_llseek' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9f5afe9b'/>
       <elf-symbol name='notify_change' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcbe83eee'/>
+      <elf-symbol name='nr_free_buffer_pages' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x27fa66e1'/>
       <elf-symbol name='nr_ipi_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x215054f8'/>
       <elf-symbol name='ns_capable' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xf3adccc5'/>
       <elf-symbol name='ns_to_kernel_old_timeval' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6b853d06'/>
@@ -136585,6 +136587,11 @@
         <parameter type-id='7292109c' name='cmd_error' filepath='drivers/mmc/core/mmc_ops.c' line='640' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='mmc_set_blocklen' mangled-name='mmc_set_blocklen' filepath='drivers/mmc/core/core.c' line='2062' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mmc_set_blocklen'>
+        <parameter type-id='13d38dcb' name='card' filepath='drivers/mmc/core/core.c' line='2062' column='1'/>
+        <parameter type-id='f0981eeb' name='blocklen' filepath='drivers/mmc/core/core.c' line='2062' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='mmc_set_clock' mangled-name='mmc_set_clock' filepath='drivers/mmc/core/core.c' line='910' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mmc_set_clock'>
         <parameter type-id='dd575c43' name='host' filepath='drivers/mmc/core/core.c' line='910' column='1'/>
         <parameter type-id='f0981eeb' name='hz' filepath='drivers/mmc/core/core.c' line='910' column='1'/>
@@ -137179,6 +137186,9 @@
         <return type-id='95e97e5e'/>
       </function-decl>
       <var-decl name='nr_cpu_ids' type-id='f0981eeb' mangled-name='nr_cpu_ids' visibility='default' filepath='kernel/smp.c' line='796' column='1' elf-symbol-id='nr_cpu_ids'/>
+      <function-decl name='nr_free_buffer_pages' mangled-name='nr_free_buffer_pages' filepath='mm/page_alloc.c' line='5542' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='nr_free_buffer_pages'>
+        <return type-id='7359adad'/>
+      </function-decl>
       <function-decl name='nr_ipi_get' mangled-name='nr_ipi_get' filepath='arch/arm64/kernel/smp.c' line='1147' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='nr_ipi_get'>
         <return type-id='95e97e5e'/>
       </function-decl>
