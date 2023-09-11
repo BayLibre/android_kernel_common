@@ -53,6 +53,7 @@
   ufshcd_query_flag_retry
   ufshcd_update_evt_hist
   wait_for_completion_io_timeout
+<<<<<<< HEAD   (d0dee1 FROMGIT: pstore: Revert pmsg_lock back to a normal mutex)
   __scsi_add_device
   __scsi_execute
   blk_mq_free_tag_set
@@ -62,6 +63,16 @@
   mempool_resize
   mempool_alloc_pages
   mempool_free_pages
+=======
+  nr_free_buffer_pages
+  mmc_set_blocklen
+
+#required by mq-deadline module
+  blk_mq_debugfs_rq_show
+  seq_list_start
+  seq_list_next
+  __blk_mq_debugfs_rq_show
+>>>>>>> CHANGE (88525f ANDROID: GKI update xiaomi symbols list)
 
 #required by cs35l41 module
   regmap_raw_write_async
