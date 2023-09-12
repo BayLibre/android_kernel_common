@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000053437153",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2747975?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "0909ce5f_4b7b11c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-09-12T13:02:49Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/a808925075fb750804a60ff0710614466c396db4) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003da808925075fb750804a60ff0710614466c396db4)\n\n```\n      ## drivers/usb/host/xhci.c ##\n     @@ drivers/usb/host/xhci.c: static int xhci_init(struct usb_hcd *hcd)\n      \n    @@ drivers/usb/host/xhci.c: static int xhci_init(struct usb_hcd *hcd)\n     +\t\tspin_unlock_irqrestore(\u0026xhci-\u003elock, flags);\n      \t\treturn -ENODEV;\n      \t}\n    -+\n    - \txhci-\u003ecmd_ring_state \u003d CMD_RING_STATE_RUNNING;\n    - \n    - \tif (xhci-\u003equirks \u0026 XHCI_NEC_HOST)\n    - \t\txhci_ring_cmd_db(xhci);\n    + \txhci-\u003eshared_hcd-\u003estate \u003d HC_STATE_RUNNING;\n    +@@ drivers/usb/host/xhci.c: static int xhci_run_finished(struct xhci_hcd *xhci)\n      \n    -+\tspin_unlock_irqrestore(\u0026xhci-\u003elock, flags);\n    + \txhci_dbg_trace(xhci, trace_xhci_dbg_init,\n    + \t\t\t\"Finished xhci_run for USB3 roothub\");\n     +\n    ++\tspin_unlock_irqrestore(\u0026xhci-\u003elock, flags);\n      \treturn 0;\n      }\n      \n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 564355295 android-build.ayeaye-python-dispatcher_20230911.04_p0",
+      "revId": "52c8530f2db22d0847c63a5bca33364a6398e870",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
