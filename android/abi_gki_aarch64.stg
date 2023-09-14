@@ -323988,6 +323988,13 @@ function {
   parameter_id: 0xf1a6dfed
 }
 function {
+  id: 0xaa27b09c
+  return_type_id: 0x0e211675
+  parameter_id: 0x0258f96e
+  parameter_id: 0x3e10b518
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0xaa55ab2e
   return_type_id: 0x31b5a66f
   parameter_id: 0x2668e644
@@ -346486,6 +346493,51 @@ elf_symbol {
   full_name: "devfreq_cooling_unregister"
 }
 elf_symbol {
+  id: 0x349b4e0a
+  name: "devfreq_event_disable_edev"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf7add401
+  type_id: 0x9e08a6b2
+  full_name: "devfreq_event_disable_edev"
+}
+elf_symbol {
+  id: 0x11f117af
+  name: "devfreq_event_enable_edev"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1a88e996
+  type_id: 0x9e08a6b2
+  full_name: "devfreq_event_enable_edev"
+}
+elf_symbol {
+  id: 0x781fabb2
+  name: "devfreq_event_get_edev_by_phandle"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x37666b78
+  type_id: 0xaa27b09c
+  full_name: "devfreq_event_get_edev_by_phandle"
+}
+elf_symbol {
+  id: 0xe2544e4d
+  name: "devfreq_event_get_edev_count"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2e31dce9
+  type_id: 0x9dee9fa0
+  full_name: "devfreq_event_get_edev_count"
+}
+elf_symbol {
+  id: 0xdd8da0cf
+  name: "devfreq_event_get_event"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9719d881
+  type_id: 0x9eb7f57a
+  full_name: "devfreq_event_get_event"
+}
+elf_symbol {
   id: 0x19e74e36
   name: "devfreq_get_devfreq_by_node"
   is_defined: true
@@ -347447,6 +347499,15 @@ elf_symbol {
   crc: 0xde16c4ef
   type_id: 0x9d8c8e95
   full_name: "devm_devfreq_register_notifier"
+}
+elf_symbol {
+  id: 0x6415475c
+  name: "devm_devfreq_register_opp_notifier"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x7d3273ad
+  type_id: 0x9d8b7529
+  full_name: "devm_devfreq_register_opp_notifier"
 }
 elf_symbol {
   id: 0x2bf23b7c
@@ -394252,6 +394313,11 @@ interface {
   symbol_id: 0x04c32c7c
   symbol_id: 0x15eb01e7
   symbol_id: 0x647c0881
+  symbol_id: 0x349b4e0a
+  symbol_id: 0x11f117af
+  symbol_id: 0x781fabb2
+  symbol_id: 0xe2544e4d
+  symbol_id: 0xdd8da0cf
   symbol_id: 0x19e74e36
   symbol_id: 0xdb9d4783
   symbol_id: 0x4c5f0ec2
@@ -394359,6 +394425,7 @@ interface {
   symbol_id: 0x88d6fe86
   symbol_id: 0xa4692a70
   symbol_id: 0x3afde7ec
+  symbol_id: 0x6415475c
   symbol_id: 0x2bf23b7c
   symbol_id: 0x97301de5
   symbol_id: 0x8ed64fa4
