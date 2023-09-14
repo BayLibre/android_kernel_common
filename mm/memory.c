@@ -3741,7 +3741,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	swapcache = page;
 
 	if (!page) {
-		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+		bool skip_swapcache = false;
+		trace_android_vh_skip_swapcache(si, swp_offset(entry), &skip_swapcache);
+		if ((data_race(si->flags & SWP_SYNCHRONOUS_IO) || skip_swapcache) &&
 		    __swap_count(entry) == 1) {
 			/* skip swapcache */
 			gfp_t flags = GFP_HIGHUSER_MOVABLE | __GFP_CMA;
