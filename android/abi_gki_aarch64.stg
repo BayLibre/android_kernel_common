@@ -284880,6 +284880,13 @@ function {
   parameter_id: 0x24d65b62
 }
 function {
+  id: 0x04a35d6c
+  return_type_id: 0x914dbfdc
+  parameter_id: 0x126add1c
+  parameter_id: 0x4585663f
+  parameter_id: 0x13580d6c
+}
+function {
   id: 0x04ce0b6f
   return_type_id: 0x914dbfdc
   parameter_id: 0x11e6864c
@@ -289919,6 +289926,14 @@ function {
   id: 0x1655e07b
   return_type_id: 0x48b5725f
   parameter_id: 0x1b36c7a2
+}
+function {
+  id: 0x1656fc12
+  return_type_id: 0x48b5725f
+  parameter_id: 0x126add1c
+  parameter_id: 0x914dbfdc
+  parameter_id: 0x4585663f
+  parameter_id: 0x13580d6c
 }
 function {
   id: 0x1658716c
@@ -377357,6 +377372,15 @@ elf_symbol {
   full_name: "sdhci_add_host"
 }
 elf_symbol {
+  id: 0xf399cd48
+  name: "sdhci_adma_write_desc"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x01560eef
+  type_id: 0x1ecc6a5d
+  full_name: "sdhci_adma_write_desc"
+}
+elf_symbol {
   id: 0x05840f35
   name: "sdhci_cleanup_host"
   is_defined: true
@@ -377438,6 +377462,15 @@ elf_symbol {
   full_name: "sdhci_get_property"
 }
 elf_symbol {
+  id: 0x15f1b772
+  name: "sdhci_pltfm_clk_get_max_clock"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x91fe6c0a
+  type_id: 0xc0843ed1
+  full_name: "sdhci_pltfm_clk_get_max_clock"
+}
+elf_symbol {
   id: 0x38940a34
   name: "sdhci_pltfm_free"
   is_defined: true
@@ -377454,6 +377487,15 @@ elf_symbol {
   crc: 0xa6e40a77
   type_id: 0xb019e307
   full_name: "sdhci_pltfm_init"
+}
+elf_symbol {
+  id: 0x9f8a16f0
+  name: "sdhci_pltfm_unregister"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xca4fab1b
+  type_id: 0x924d155a
+  full_name: "sdhci_pltfm_unregister"
 }
 elf_symbol {
   id: 0xad3b5931
@@ -377528,6 +377570,24 @@ elf_symbol {
   full_name: "sdhci_set_bus_width"
 }
 elf_symbol {
+  id: 0x92732196
+  name: "sdhci_set_clock"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xefd8b1a4
+  type_id: 0x1fd10421
+  full_name: "sdhci_set_clock"
+}
+elf_symbol {
+  id: 0xd29660d9
+  name: "sdhci_set_power_and_bus_voltage"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3726c8e5
+  type_id: 0x1f835b6f
+  full_name: "sdhci_set_power_and_bus_voltage"
+}
+elf_symbol {
   id: 0xa6c906b5
   name: "sdhci_set_power_noreg"
   is_defined: true
@@ -377535,6 +377595,15 @@ elf_symbol {
   crc: 0xe918e046
   type_id: 0x1f835b6f
   full_name: "sdhci_set_power_noreg"
+}
+elf_symbol {
+  id: 0x77dba918
+  name: "sdhci_set_uhs_signaling"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x30232005
+  type_id: 0x1fd10421
+  full_name: "sdhci_set_uhs_signaling"
 }
 elf_symbol {
   id: 0x5cc4535c
@@ -377663,6 +377732,15 @@ elf_symbol {
   full_name: "sdio_readsb"
 }
 elf_symbol {
+  id: 0xe1092bbd
+  name: "sdio_readw"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf956e25f
+  type_id: 0x04a35d6c
+  full_name: "sdio_readw"
+}
+elf_symbol {
   id: 0x3003f174
   name: "sdio_register_driver"
   is_defined: true
@@ -377760,6 +377838,15 @@ elf_symbol {
   crc: 0xf9e684dc
   type_id: 0x980bf22a
   full_name: "sdio_writesb"
+}
+elf_symbol {
+  id: 0xb3b8cbe2
+  name: "sdio_writew"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc72a8a38
+  type_id: 0x1656fc12
+  full_name: "sdio_writew"
 }
 elf_symbol {
   id: 0xec171799
@@ -397740,6 +397827,7 @@ interface {
   symbol_id: 0x9c54c873
   symbol_id: 0x771aea1d
   symbol_id: 0x8d3c4841
+  symbol_id: 0xf399cd48
   symbol_id: 0x05840f35
   symbol_id: 0xa6141872
   symbol_id: 0x56b779c5
@@ -397749,8 +397837,10 @@ interface {
   symbol_id: 0x5ab300fb
   symbol_id: 0x33d40ef0
   symbol_id: 0xeb6692c0
+  symbol_id: 0x15f1b772
   symbol_id: 0x38940a34
   symbol_id: 0x322ca1cc
+  symbol_id: 0x9f8a16f0
   symbol_id: 0xad3b5931
   symbol_id: 0xdc85b8be
   symbol_id: 0xd1dc3f24
@@ -397759,7 +397849,10 @@ interface {
   symbol_id: 0x4e595f64
   symbol_id: 0xd94e8fae
   symbol_id: 0xd2399e18
+  symbol_id: 0x92732196
+  symbol_id: 0xd29660d9
   symbol_id: 0xa6c906b5
+  symbol_id: 0x77dba918
   symbol_id: 0x5cc4535c
   symbol_id: 0x7d2c4acc
   symbol_id: 0x1f593233
@@ -397774,6 +397867,7 @@ interface {
   symbol_id: 0xbd7218cd
   symbol_id: 0x8ef4fedc
   symbol_id: 0x4f956c89
+  symbol_id: 0xe1092bbd
   symbol_id: 0x3003f174
   symbol_id: 0xf85ae22f
   symbol_id: 0xcca4d1a0
@@ -397785,6 +397879,7 @@ interface {
   symbol_id: 0xbf0b0a4c
   symbol_id: 0x4a4e8bee
   symbol_id: 0x5b060b7d
+  symbol_id: 0xb3b8cbe2
   symbol_id: 0xec171799
   symbol_id: 0xb7265b03
   symbol_id: 0x24b9d7ed
