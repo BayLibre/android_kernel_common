@@ -1924,6 +1924,7 @@ config RUST
 	depends on !GCC_PLUGINS
 	depends on !RANDSTRUCT
 	depends on !DEBUG_INFO_BTF
+	depends on !CFI_CLANG || $(cc-option,-fsanitize=kcfi,-fsanitize-cfi-icall-experimental-normalize-integers)
 	select CONSTRUCTORS
 	help
 	  Enables Rust support in the kernel.
