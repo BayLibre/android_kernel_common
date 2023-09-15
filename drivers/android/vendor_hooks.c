@@ -439,7 +439,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_offline);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_online);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_alloc);
+<<<<<<< HEAD   (75c057 ANDROID: GKI: Update symbol list for mtk)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_subpage_dma_contig_alloc);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_adjust_alloc_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_slab);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+>>>>>>> CHANGE (d6c24c ANDROID: vendor_hooks: Add hooks for adjusting alloc_flags)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_state_registered);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_thread_read);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_free_proc);

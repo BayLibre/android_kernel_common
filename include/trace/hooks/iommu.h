@@ -43,6 +43,12 @@ DECLARE_HOOK(android_vh_iommu_iovad_free_iova,
 	TP_PROTO(struct iova_domain *iovad, dma_addr_t iova, size_t size),
 	TP_ARGS(iovad, iova, size));
 
+<<<<<<< HEAD   (75c057 ANDROID: GKI: Update symbol list for mtk)
+=======
+DECLARE_HOOK(android_vh_adjust_alloc_flags,
+	TP_PROTO(unsigned int order, gfp_t *alloc_flags),
+	TP_ARGS(order, alloc_flags));
+>>>>>>> CHANGE (d6c24c ANDROID: vendor_hooks: Add hooks for adjusting alloc_flags)
 
 #endif /* _TRACE_HOOK_IOMMU_H */
 
