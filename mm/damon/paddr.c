@@ -165,7 +165,8 @@ out:
 	return result.accessed;
 }
 
-static void __damon_pa_check_access(struct damon_region *r)
+static void __damon_pa_check_access(struct damon_region *r,
+		struct damon_attrs *attrs)
 {
 	static unsigned long last_addr;
 	static unsigned long last_page_sz = PAGE_SIZE;
@@ -179,7 +180,7 @@ static void __damon_pa_check_access(struct damon_region *r)
 	}
 
 	last_accessed = damon_pa_young(r->sampling_addr, &last_page_sz);
-	damon_update_region_access_rate(r, last_accessed);
+	damon_update_region_access_rate(r, last_accessed, attrs);
 
 	last_addr = r->sampling_addr;
 }
@@ -192,7 +193,7 @@ static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
 
 	damon_for_each_target(t, ctx) {
 		damon_for_each_region(r, t) {
-			__damon_pa_check_access(r);
+			__damon_pa_check_access(r, &ctx->attrs);
 			max_nr_accesses = max(r->nr_accesses, max_nr_accesses);
 		}
 	}

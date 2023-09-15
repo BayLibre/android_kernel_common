@@ -546,14 +546,15 @@ static bool damon_va_young(struct mm_struct *mm, unsigned long addr,
  * r	the region to be checked
  */
 static void __damon_va_check_access(struct mm_struct *mm,
-				struct damon_region *r, bool same_target)
+				struct damon_region *r, bool same_target,
+				struct damon_attrs *attrs)
 {
 	static unsigned long last_addr;
 	static unsigned long last_page_sz = PAGE_SIZE;
 	static bool last_accessed;
 
 	if (!mm) {
-		damon_update_region_access_rate(r, false);
+		damon_update_region_access_rate(r, false, attrs);
 		return;
 	}
 
@@ -565,7 +566,7 @@ static void __damon_va_check_access(struct mm_struct *mm,
 	}
 
 	last_accessed = damon_va_young(mm, r->sampling_addr, &last_page_sz);
-	damon_update_region_access_rate(r, last_accessed);
+	damon_update_region_access_rate(r, last_accessed, attrs);
 
 	last_addr = r->sampling_addr;
 }
@@ -582,7 +583,8 @@ static unsigned int damon_va_check_accesses(struct damon_ctx *ctx)
 		mm = damon_get_mm(t);
 		same_target = false;
 		damon_for_each_region(r, t) {
-			__damon_va_check_access(mm, r, same_target);
+			__damon_va_check_access(mm, r, same_target,
+					&ctx->attrs);
 			max_nr_accesses = max(r->nr_accesses, max_nr_accesses);
 			same_target = true;
 		}
