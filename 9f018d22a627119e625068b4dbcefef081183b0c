@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85ba5615_fac38b00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2023-09-18T19:59:18Z",
+      "side": 1,
+      "message": "If possible, we would like this patch set broken up into two separate changes- in case there are problems with the shadow-copy we can easily revert just that change.\n\n1. The global lock split and switch from rt-mutex to spinlock\n2. The shadow copy optimization and rename of update_io_stats_uid_locked().\n\nFor the shadow-copy change, please consolidate the code path for both debug and non-debug.",
+      "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e72bf6c_546f72af",
+        "filename": "drivers/misc/uid_sys_stats.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2023-09-18T19:59:18Z",
+      "side": 1,
+      "message": "This should be renamed as it is not always called in the locked state.",
+      "range": {
+        "startLine": 561,
+        "startChar": 12,
+        "endLine": 561,
+        "endChar": 38
+      },
+      "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721600b0_68a6a15e",
+        "filename": "drivers/misc/uid_sys_stats.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2023-09-18T19:59:18Z",
+      "side": 1,
+      "message": "Why is this shadow copy only in effect for non-debug cases? I would like to see the same code path for both- please consolidate.",
+      "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
