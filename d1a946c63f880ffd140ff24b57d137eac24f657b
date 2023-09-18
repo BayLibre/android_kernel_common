@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a32f2bd2_6f4208c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-09-18T13:50:35Z",
+      "side": 1,
+      "message": "This fails the arm32 build:\n\n```\ncommon/kernel/panic.c:696:3: error: implicit declaration of function \u0027warn_rcu_exit\u0027 [-Werror,-Wimplicit-function-declaration]\nwarn_rcu_exit(rcu);\n^\ncommon/kernel/panic.c:696:17: error: use of undeclared identifier \u0027rcu\u0027\nwarn_rcu_exit(rcu);\n^\n2 errors generated.\n```",
+      "revId": "d1a946c63f880ffd140ff24b57d137eac24f657b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
