@@ -247,8 +247,17 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, bool tree,
 	if (mem_cgroup_disabled())
 		return;
 
+<<<<<<< HEAD   (ea5868 Merge 5.15.131 into android13-5.15-lts)
 	trace_android_vh_vmpressure(memcg, &bypass);
 	if (bypass)
+=======
+	/*
+	 * The in-kernel users only care about the reclaim efficiency
+	 * for this @memcg rather than the whole subtree, and there
+	 * isn't and won't be any in-kernel user in a legacy cgroup.
+	 */
+	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
+>>>>>>> BRANCH (35ecaa Linux 5.15.132)
 		return;
 
 	vmpr = memcg_to_vmpressure(memcg);
