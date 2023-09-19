@@ -70,6 +70,24 @@
       "parentUuid": "c8d61df9_1bb7a747",
       "revId": "a299adb2e7291700606cdbc3b275c70af6258be0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "748baedf_195fe068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2023-09-19T00:28:11Z",
+      "side": 1,
+      "message": "Hi Greg,\nI don\u0027t understand why if we don\u0027t need this, wow should I build rockchip platform if there is no fragment and config for rockchip?  I\u0027m using command:\ntools/bazel run //common:rockchip_abi_dist\ntools/bazel run //common:rockchip_abi_update_symbol_list\nI\u0027m sure different soc vendor has different peripheral devices, so each one should have a bazel target like virtual device as a sample.\nI can maintain it out of tree, but I think we still need it.",
+      "parentUuid": "4ebdc7ee_fb7f9a25",
+      "revId": "a299adb2e7291700606cdbc3b275c70af6258be0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
