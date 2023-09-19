@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1cf4a56_8f58d04d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-09-19T09:44:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3690c3df_20a1002c",
+      "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e72bf6c_546f72af",
@@ -83,6 +101,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a560b2_917afc98",
+        "filename": "drivers/misc/uid_sys_stats.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-09-19T09:44:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61a5e990_bbfcfcb7",
+      "range": {
+        "startLine": 561,
+        "startChar": 12,
+        "endLine": 561,
+        "endChar": 38
+      },
+      "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "721600b0_68a6a15e",
@@ -114,6 +156,24 @@
       "side": 1,
       "message": "There are three reasons to skip shadow copy for debug cases:\n1. For debug cases, the function would register new task_entry to uid_entry so that it is necessary to hold the lock:\nupdate_io_stats_uid_locked()-\u003eadd_uid_io_stats()-\u003efind_or_register_task()\n\n2. Computing the data of task_entries, which it needs to alloc memory for all the task_entry and memcpy the data. It would fail to do the  above operation since kmalloc(*, GFP_ATOMIC).\nupdate_io_stats_uid_locked()-\u003ecompute_io_uid_tasks()\n\n3.On the other hand it would result in high-cpuload of memcpy.\n\nFor the above reasons, only shadow copy in non-debug cases.",
       "parentUuid": "721600b0_68a6a15e",
+      "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3d35513_0b07f8b6",
+        "filename": "drivers/misc/uid_sys_stats.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-09-19T09:44:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c131476e_77c76af5",
       "revId": "9f018d22a627119e625068b4dbcefef081183b0c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
