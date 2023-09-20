@@ -16,6 +16,24 @@
       "message": "Build break for many builds. Example output:\n```\n+ make O\u003d/buildbot/src/android/common-android13-5.15/out/android13-5.15/common LLVM\u003d1 DEPMOD\u003ddepmod DTC\u003d/buildbot/src/android/common-android13-5.15/build/kernel/build-tools/path/linux-x86/dtc -j80 Image modules\nusr/include/linux/fuse.h:944: found __[us]{8,16,32,64} type without #include \u003clinux/types.h\u003e\n/buildbot/src/android/common-android13-5.15/common/drivers/misc/uid_sys_stats.c:704:2: error: implicit declaration of function \u0027update_io_stats_uid_locked\u0027 [-Werror,-Wimplicit-function-declaration]\nupdate_io_stats_uid_locked(uid_entry);\n^\n/buildbot/src/android/common-android13-5.15/common/drivers/misc/uid_sys_stats.c:704:2: note: did you mean \u0027update_io_stats_uid\u0027?\n/buildbot/src/android/common-android13-5.15/common/drivers/misc/uid_sys_stats.c:564:13: note: \u0027update_io_stats_uid\u0027 declared here\nstatic void update_io_stats_uid(struct uid_entry *uid_entry)\n^\n1 error generated.\n```",
       "revId": "547c77188437a377c263d4870c8104a026fb19b2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86ba389b_30528428",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943715
+      },
+      "writtenOn": "2023-09-20T01:44:38Z",
+      "side": 1,
+      "message": "update the patch, done.",
+      "parentUuid": "27df3457_201e6693",
+      "revId": "547c77188437a377c263d4870c8104a026fb19b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
