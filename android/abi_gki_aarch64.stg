@@ -349345,6 +349345,33 @@ elf_symbol {
   full_name: "hid_destroy_device"
 }
 elf_symbol {
+  id: 0x8717f26f
+  name: "hid_hw_close"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xffa28586
+  type_id: 0x13e1603f
+  full_name: "hid_hw_close"
+}
+elf_symbol {
+  id: 0x361004c8
+  name: "hid_hw_open"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x83abbb03
+  type_id: 0x9ef9d283
+  full_name: "hid_hw_open"
+}
+elf_symbol {
+  id: 0xcf5ea9a2
+  name: "hid_hw_output_report"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8f5731d2
+  type_id: 0x9e5d7885
+  full_name: "hid_hw_output_report"
+}
+elf_symbol {
   id: 0x6c303862
   name: "hid_hw_raw_request"
   is_defined: true
@@ -384360,6 +384387,9 @@ interface {
   symbol_id: 0xccc593d6
   symbol_id: 0x97a02af0
   symbol_id: 0x2ffc7c7e
+  symbol_id: 0x8717f26f
+  symbol_id: 0x361004c8
+  symbol_id: 0xcf5ea9a2
   symbol_id: 0x6c303862
   symbol_id: 0xfba34655
   symbol_id: 0x52d444b1
