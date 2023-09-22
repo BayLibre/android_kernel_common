@@ -6,6 +6,11 @@
 #include <linux/types.h>
 #include <linux/mem_encrypt.h>
 
+/* 16k PAGE defines */
+#define PAGE_SHIFT_16K		14
+#define PAGE_SIZE_16K		(_AC(1,UL) << PAGE_SHIFT_16K)
+#define PAGE_MASK_16K		(~(PAGE_SIZE_16K-1))
+
 /* PAGE_SHIFT determines the page size */
 #define PAGE_SHIFT		12
 #define PAGE_SIZE		(_AC(1,UL) << PAGE_SHIFT)
