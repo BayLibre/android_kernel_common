@@ -236,6 +236,14 @@ int overcommit_policy_handler(struct ctl_table *, int, void *, size_t *,
 /* test whether an address (unsigned long or pointer) is aligned to PAGE_SIZE */
 #define PAGE_ALIGNED(addr)	IS_ALIGNED((unsigned long)(addr), PAGE_SIZE)
 
+/* 16k page align define */
+/* to align the pointer to the (next) page boundary */
+#define PAGE_ALIGN_16K(addr) ALIGN(addr, PAGE_SIZE_16K)
+/* to align the pointer to the (prev) page boundary */
+#define PAGE_ALIGN_DOWN_16K(addr) ALIGN_DOWN(addr, PAGE_SIZE_16K)
+/* test whether an address (unsigned long or pointer) is aligned to PAGE_SIZE */
+#define PAGE_ALIGNED_16K(addr)	IS_ALIGNED((unsigned long)(addr), PAGE_SIZE_16K)
+
 #define lru_to_page(head) (list_entry((head)->prev, struct page, lru))
 static inline struct folio *lru_to_folio(struct list_head *head)
 {
