@@ -148,7 +148,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
 	info.length = len;
 	info.low_limit = begin;
 	info.high_limit = end;
-	info.align_mask = 0;
+	info.align_mask = get_align_mask();
 	info.align_offset = pgoff << PAGE_SHIFT;
 	if (filp) {
 		info.align_mask = get_align_mask();
@@ -206,14 +206,14 @@ get_unmapped_area:
 	if (addr > DEFAULT_MAP_WINDOW && !in_32bit_syscall())
 		info.high_limit += TASK_SIZE_MAX - DEFAULT_MAP_WINDOW;
 
-	info.align_mask = 0;
+	info.align_mask = get_align_mask();
 	info.align_offset = pgoff << PAGE_SHIFT;
 	if (filp) {
 		info.align_mask = get_align_mask();
 		info.align_offset += get_align_bits();
 	}
 	addr = vm_unmapped_area(&info);
-	if (!(addr & ~PAGE_MASK))
+	if (!(addr & ~PAGE_MASK_16K))
 		return addr;
 	VM_BUG_ON(addr != -ENOMEM);
 
