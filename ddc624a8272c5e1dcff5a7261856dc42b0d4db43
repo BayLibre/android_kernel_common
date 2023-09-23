@@ -70,6 +70,57 @@
       "parentUuid": "4ce3cfaf_4cf6630c",
       "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed9f8cce_65a828ce",
+        "filename": "drivers/mmc/host/cqhci-core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-09-23T18:18:33Z",
+      "side": 1,
+      "message": "why is this needed? Are you seeing build error? These are both handled in the hook/trace header files.",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50e6e09f_9ccfcd1a",
+        "filename": "drivers/mmc/host/cqhci-core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-09-23T18:18:33Z",
+      "side": 1,
+      "message": "This changes the default behavior since bypass is false if no hander attaches to  the hook. Not allowed.",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2afd57e5_bd74941b",
+        "filename": "include/trace/hooks/mmc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-09-23T18:18:33Z",
+      "side": 1,
+      "message": "does mmc_data need to be declared at line 16?",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
