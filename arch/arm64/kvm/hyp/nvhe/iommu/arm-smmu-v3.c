@@ -572,10 +572,16 @@ int smmu_domain_finalise(struct hyp_arm_smmu_v3_device *smmu,
 			 struct kvm_hyp_iommu_domain *domain)
 {
 	int ret;
+	struct arm_lpae_io_pgtable *data;
 
 	domain->pgtable = kvm_arm_io_pgtable_alloc(&smmu->pgtable_cfg,
 						   domain, &ret);
+	if (ret)
+		return ret;
 
+	data = io_pgtable_to_data(domain->pgtable);
+	if (domain->domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID)
+		data->idmapped = true;
 	return ret;
 }
 
