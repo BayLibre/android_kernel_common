@@ -59,11 +59,8 @@
 #include <trace/hooks/gzvm.h>
 #include <trace/hooks/signal.h>
 #include <trace/hooks/logbuf.h>
-<<<<<<< HEAD
 #include <trace/hooks/dmabuf.h>
-=======
 #include <trace/hooks/compaction.h>
->>>>>>> 43b0298a1691... ANDROID: mm: Add vendor hook for compact pages work.
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -255,3 +252,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_try_to_compact_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_enter);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_may_oom_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vmscan_kswapd_done);
