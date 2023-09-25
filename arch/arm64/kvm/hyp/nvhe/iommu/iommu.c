@@ -25,6 +25,30 @@ static struct hyp_pool iommu_idmap_pool;
 
 DECLARE_PER_CPU(struct kvm_hyp_req, host_hyp_reqs);
 
+static atomic_t kvm_iommu_idmap_initialized;
+
+static int snapshot_host_stage2(void);
+
+static void host_lock_component(void)
+{
+	hyp_spin_lock(&host_mmu.lock);
+}
+
+static void host_unlock_component(void)
+{
+	hyp_spin_unlock(&host_mmu.lock);
+}
+
+static inline void kvm_iommu_idmap_init_done(void)
+{
+	atomic_set_release(&kvm_iommu_idmap_initialized, 1);
+}
+
+static inline bool kvm_iommu_is_ready(void)
+{
+	return atomic_read(&kvm_iommu_idmap_initialized) == 1;
+}
+
 void *kvm_iommu_donate_pages(u8 order, bool request)
 {
 	void *p;
@@ -248,6 +272,13 @@ int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (ret)
 		goto err_put_domain;
 
+	/* Protected against parallel attach with iommu_domains_lock*/
+	if (domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID) {
+		host_lock_component();
+		snapshot_host_stage2();
+		host_unlock_component();
+		kvm_iommu_idmap_init_done();
+	}
 	hyp_spin_unlock(&iommu_domains_lock);
 	return 0;
 
@@ -535,7 +566,79 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
 	return ret;
 }
 
+void __kvm_iommu_host_stage2_idmap(phys_addr_t start, phys_addr_t end,
+				   enum kvm_pgtable_prot prot)
+{
+	int pgcount = (end - start) >> PAGE_SHIFT;
+	size_t mapped, unmapped;
+	int ret;
+	struct io_pgtable iopt;
+	struct kvm_hyp_iommu_domain *domain;
+
+	domain = handle_to_domain(KVM_IOMMU_DOMAIN_IDMAP_ID);
+	iopt = domain_to_iopt(domain, KVM_IOMMU_DOMAIN_IDMAP_ID);
+	if (prot) {
+		while (pgcount) {
+			mapped = 0;
+			ret = iopt_map_pages(&iopt, start, start, PAGE_SIZE, pgcount, prot,
+					     0, &mapped);
+			pgcount -= mapped / PAGE_SIZE;
+			start += mapped;
+			if (!mapped || ret)
+				return;
+		}
+	} else {
+		while (pgcount) {
+			unmapped = iopt_unmap_pages(&iopt, start, PAGE_SIZE, pgcount, NULL);
+			pgcount -= unmapped / PAGE_SIZE;
+			start += unmapped;
+			if (!unmapped)
+				return;
+		}
+	}
+}
+
 void kvm_iommu_host_stage2_idmap(phys_addr_t start, phys_addr_t end,
 				 enum kvm_pgtable_prot prot)
 {
+	if (!kvm_iommu_is_ready())
+		return;
+	__kvm_iommu_host_stage2_idmap(start, end, prot);
+}
+
+static int __snapshot_host_stage2(const struct kvm_pgtable_visit_ctx *ctx,
+				  enum kvm_pgtable_walk_flags visit)
+{
+	u64 start = ctx->addr;
+	kvm_pte_t pte = *ctx->ptep;
+	u32 level = ctx->level;
+	u64 end = start + kvm_granule_size(level);
+	enum kvm_pgtable_prot prot;
+
+	if ((!pte || kvm_pte_valid(pte)) && addr_is_memory(start)) {
+		prot = PKVM_HOST_MEM_PROT;
+		__kvm_iommu_host_stage2_idmap(start, end, prot);
+	}
+
+	return 0;
+}
+
+static int snapshot_host_stage2(void)
+{
+	struct kvm_pgtable_walker walker = {
+		.cb	= __snapshot_host_stage2,
+		.flags	= KVM_PGTABLE_WALK_LEAF,
+	};
+	struct kvm_pgtable *pgt = &host_mmu.pgt;
+
+	/*
+	 * We only snapshot memory now, as the MMIO regions are unknown to
+	 * the hypervisor.
+	 * Unmap all MMIO, so they are faulted again and then we can map them in
+	 * the host page table.
+	 * This is not opimal but should work for now.
+	 */
+	host_stage2_unmap_unmoveable_regs();
+
+	return kvm_pgtable_walk(pgt, 0, BIT(pgt->ia_bits), &walker);
 }

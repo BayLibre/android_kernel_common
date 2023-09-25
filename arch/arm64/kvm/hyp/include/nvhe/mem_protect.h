@@ -121,6 +121,8 @@ void pkvm_unmap_donated_memory(void *va, size_t size);
 void pkvm_teardown_donated_memory(struct kvm_hyp_memcache *mc, void *addr,
 				  size_t dirty_size);
 
+int host_stage2_unmap_unmoveable_regs(void);
+
 static __always_inline void __load_host_stage2(void)
 {
 	if (static_branch_likely(&kvm_protected_mode_initialized))
