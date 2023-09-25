@@ -459,3 +459,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_alloc_pages_reclaim_cycle_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bd_link_disk_holder);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_new_ref);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_del_ref);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_try_to_compact_exit);
