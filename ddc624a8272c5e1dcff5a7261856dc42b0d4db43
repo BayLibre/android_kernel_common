@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "381ad9a4_aaafa038",
+        "filename": "drivers/mmc/host/cqhci-core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-09-25T16:11:12Z",
+      "side": 1,
+      "message": "why? hooks are already removed if those configs are not defined. Please remove line 522.",
+      "parentUuid": "6c927717_1a7086f2",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50e6e09f_9ccfcd1a",
         "filename": "drivers/mmc/host/cqhci-core.c",
         "patchSetId": 3
@@ -120,6 +138,24 @@
       "writtenOn": "2023-09-23T18:18:33Z",
       "side": 1,
       "message": "This changes the default behavior since bypass is false if no hander attaches to  the hook. Not allowed.",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6493f824_a5c49686",
+        "filename": "drivers/mmc/host/cqhci-core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-09-25T16:11:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50e6e09f_9ccfcd1a",
       "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -155,6 +191,24 @@
       "side": 1,
       "message": "Thanks for your advice, we added it at line 14 and pushed the patch again.",
       "parentUuid": "2afd57e5_bd74941b",
+      "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76cb708b_7a227bda",
+        "filename": "include/trace/hooks/mmc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-09-25T16:11:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90bff8d4_060a0057",
       "revId": "ddc624a8272c5e1dcff5a7261856dc42b0d4db43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
