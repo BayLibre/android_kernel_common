@@ -11,6 +11,7 @@
 typedef void (*dyn_hcall_t)(struct user_pt_regs *);
 struct kvm_hyp_iommu;
 struct iommu_iotlb_gather;
+struct kvm_hyp_iommu_domain;
 
 #ifdef CONFIG_MODULES
 enum pkvm_psci_notification {
@@ -200,6 +201,7 @@ struct pkvm_module_ops {
 					    unsigned long iova, size_t size);
 	void * (*iommu_donate_pages_idmap)(u8 order);
 	void (*iommu_reclaim_pages_idmap)(void *p, u8 order);
+	int (*iommu_snapshot_host_stage2)(struct kvm_hyp_iommu_domain *domain);
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
