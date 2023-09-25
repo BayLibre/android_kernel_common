@@ -131,6 +131,7 @@ const struct pkvm_module_ops module_ops = {
 	.iommu_iotlb_gather_add_page = kvm_iommu_iotlb_gather_add_page,
 	.iommu_donate_pages_idmap = kvm_iommu_donate_pages_idmap,
 	.iommu_reclaim_pages_idmap = kvm_iommu_reclaim_pages_idmap,
+	.iommu_snapshot_host_stage2 = kvm_iommu_snapshot_host_stage2,
 };
 
 int __pkvm_init_module(void *module_init)
