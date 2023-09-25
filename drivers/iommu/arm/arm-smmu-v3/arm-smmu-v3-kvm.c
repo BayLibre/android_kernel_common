@@ -31,6 +31,7 @@ struct kvm_arm_smmu_master {
 	struct arm_smmu_device		*smmu;
 	struct device			*dev;
 	struct kvm_arm_smmu_domain	*domain;
+	bool				idmapped; /* Stage-2 is transparently identity mapped*/
 };
 
 struct kvm_arm_smmu_domain {
@@ -128,6 +129,7 @@ static struct iommu_device *kvm_arm_smmu_probe_device(struct device *dev)
 
 	master->dev = dev;
 	master->smmu = smmu;
+	master->idmapped = device_property_read_bool(dev, "iommu-idmapped");
 	dev_iommu_priv_set(dev, master);
 
 	if (!device_link_add(dev, smmu->dev,
@@ -158,13 +160,12 @@ static struct iommu_domain *kvm_arm_smmu_domain_alloc(unsigned type)
 
 	/*
 	 * We don't support
-	 * - IOMMU_DOMAIN_IDENTITY because we rely on the host telling the
-	 *   hypervisor which pages are used for DMA.
 	 * - IOMMU_DOMAIN_DMA_FQ because lazy unmap would clash with memory
 	 *   donation to guests.
 	 */
 	if (type != IOMMU_DOMAIN_DMA &&
-	    type != IOMMU_DOMAIN_UNMANAGED)
+	    type != IOMMU_DOMAIN_UNMANAGED &&
+	    type != IOMMU_DOMAIN_IDENTITY)
 		return NULL;
 
 	kvm_smmu_domain = kzalloc(sizeof(*kvm_smmu_domain), GFP_KERNEL);
@@ -188,6 +189,17 @@ static int kvm_arm_smmu_domain_finalize(struct kvm_arm_smmu_domain *kvm_smmu_dom
 		return 0;
 	}
 
+	kvm_smmu_domain->domain.pgsize_bitmap = smmu->pgsize_bitmap;
+	kvm_smmu_domain->domain.geometry.aperture_end = (1UL << smmu->ias) - 1;
+	kvm_smmu_domain->domain.geometry.force_aperture = true;
+	kvm_smmu_domain->smmu = smmu;
+
+	if (kvm_smmu_domain->domain.type == IOMMU_DOMAIN_IDENTITY) {
+		kvm_smmu_domain->id = KVM_IOMMU_DOMAIN_IDMAP_ID;
+		/* Nothing to do. */
+		return 0;
+	}
+
 	/* 0 reserved for KVM_IOMMU_DOMAIN_IDMAP_ID. */
 	ret = ida_alloc_range(&kvm_arm_smmu_domain_ida, KVM_IOMMU_DOMAIN_NR_START,
 			      KVM_IOMMU_MAX_DOMAINS, GFP_KERNEL);
@@ -197,15 +209,7 @@ static int kvm_arm_smmu_domain_finalize(struct kvm_arm_smmu_domain *kvm_smmu_dom
 
 	ret = kvm_call_hyp_nvhe_mc(smmu, __pkvm_host_iommu_alloc_domain,
 				   kvm_smmu_domain->id);
-	if (ret)
-		return ret;
-
-	kvm_smmu_domain->domain.pgsize_bitmap = smmu->pgsize_bitmap;
-	kvm_smmu_domain->domain.geometry.aperture_end = (1UL << smmu->ias) - 1;
-	kvm_smmu_domain->domain.geometry.force_aperture = true;
-	kvm_smmu_domain->smmu = smmu;
-
-	return 0;
+	return ret;
 }
 
 static void kvm_arm_smmu_domain_free(struct iommu_domain *domain)
@@ -214,7 +218,7 @@ static void kvm_arm_smmu_domain_free(struct iommu_domain *domain)
 	struct kvm_arm_smmu_domain *kvm_smmu_domain = to_kvm_smmu_domain(domain);
 	struct arm_smmu_device *smmu = kvm_smmu_domain->smmu;
 
-	if (smmu) {
+	if (smmu && (kvm_smmu_domain->domain.type != IOMMU_DOMAIN_IDENTITY)) {
 		ret = kvm_call_hyp_nvhe(__pkvm_host_iommu_free_domain, kvm_smmu_domain->id);
 		ida_free(&kvm_arm_smmu_domain_ida, kvm_smmu_domain->id);
 	}
@@ -365,6 +369,15 @@ static phys_addr_t kvm_arm_smmu_iova_to_phys(struct iommu_domain *domain,
 	return kvm_call_hyp_nvhe(__pkvm_host_iommu_iova_to_phys, kvm_smmu_domain->id, iova);
 }
 
+static int kvm_arm_smmu_def_domain_type(struct device *dev)
+{
+	struct kvm_arm_smmu_master *master = dev_iommu_priv_get(dev);
+
+	if (master->idmapped)
+		return IOMMU_DOMAIN_IDENTITY;
+	return 0;
+}
+
 static struct iommu_ops kvm_arm_smmu_ops = {
 	.capable		= arm_smmu_capable,
 	.device_group		= arm_smmu_device_group,
@@ -374,6 +387,7 @@ static struct iommu_ops kvm_arm_smmu_ops = {
 	.domain_alloc		= kvm_arm_smmu_domain_alloc,
 	.pgsize_bitmap		= -1UL,
 	.owner			= THIS_MODULE,
+	.def_domain_type	= kvm_arm_smmu_def_domain_type,
 	.default_domain_ops = &(const struct iommu_domain_ops) {
 		.attach_dev	= kvm_arm_smmu_attach_dev,
 		.free		= kvm_arm_smmu_domain_free,
