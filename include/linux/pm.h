@@ -712,6 +712,7 @@ extern void dev_pm_put_subsys_data(struct device *dev);
  * @activate: Called before executing probe routines for bus types and drivers.
  * @sync: Called after successful driver probe.
  * @dismiss: Called after unsuccessful driver probe and after driver removal.
+ * @set_performance_state: Called to request a new performance state.
  *
  * Power domains provide callbacks that are executed during system suspend,
  * hibernation, system resume and during runtime PM transitions instead of
@@ -725,7 +726,7 @@ struct dev_pm_domain {
 	void (*sync)(struct device *dev);
 	void (*dismiss)(struct device *dev);
 
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE(1, int (*set_performance_state)(struct device *dev, unsigned int state));
 };
 
 /*
