@@ -58,7 +58,15 @@
 #include <trace/hooks/power.h>
 #include <trace/hooks/gzvm.h>
 #include <trace/hooks/signal.h>
+<<<<<<< HEAD   (a7e37f ANDROID: 16K: Remove unescessary err log in randomize_page())
 
+=======
+#include <trace/hooks/psci.h>
+#include <trace/hooks/psi.h>
+#include <trace/hooks/bl_hib.h>
+#include <trace/hooks/regmap.h>
+#include <trace/hooks/compaction.h>
+>>>>>>> CHANGE (5c2855 ANDROID: mm: Add vendor hook for compact pages work.)
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
@@ -211,4 +219,16 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
+<<<<<<< HEAD   (a7e37f ANDROID: 16K: Remove unescessary err log in randomize_page())
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_percpu_rwsem_wq_add);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_amu_fie);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scan_abort_check_wmarks);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_oem_binder_struct);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_transaction_received);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_oem_binder_struct);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_special_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_free_buf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_try_to_compact_pages_exit);
+>>>>>>> CHANGE (5c2855 ANDROID: mm: Add vendor hook for compact pages work.)
