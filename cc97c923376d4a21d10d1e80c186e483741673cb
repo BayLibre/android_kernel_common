@@ -22,6 +22,30 @@
       },
       "revId": "cc97c923376d4a21d10d1e80c186e483741673cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32866dbf_b6fc9186",
+        "filename": "include/linux/sched.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-09-26T06:14:21Z",
+      "side": 1,
+      "message": "And when you do this, you will need to update the symbol tables as you will get an ABI error from the build system otherwise.  Please do that in the follow-on patch for this one.",
+      "parentUuid": "102040a7_a0ecbe48",
+      "range": {
+        "startLine": 1551,
+        "startChar": 34,
+        "endLine": 1551,
+        "endChar": 53
+      },
+      "revId": "cc97c923376d4a21d10d1e80c186e483741673cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
