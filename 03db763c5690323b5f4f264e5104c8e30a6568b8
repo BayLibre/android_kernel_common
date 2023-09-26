@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000054639710",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2763125?revision\u003d5",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8f568565_e4d030b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-09-26T08:22:51Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/7b086755fb8cdbb6b3e45a1bbddc00e7f9b1dc03) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d7b086755fb8cdbb6b3e45a1bbddc00e7f9b1dc03)\n\n```\n      ## mm/page_alloc.c ##\n     @@ mm/page_alloc.c: void free_unref_page(struct page *page, unsigned int order)\n      \tstruct per_cpu_pages *pcp;\n    @@ mm/page_alloc.c: void free_unref_page(struct page *page, unsigned int order)\n      \tunsigned long pfn \u003d page_to_pfn(page);\n     -\tint migratetype;\n     +\tint migratetype, pcpmigratetype;\n    + \tbool pcp_skip_cma_pages \u003d false;\n    + \tbool skip_free_unref_page \u003d false;\n      \n    - \tif (!free_unref_page_prepare(page, pfn, order))\n    - \t\treturn;\n     @@ mm/page_alloc.c: void free_unref_page(struct page *page, unsigned int order)\n      \t/*\n    - \t * We only track unmovable, reclaimable and movable on pcp lists.\n    + \t * We only track unmovable, reclaimable movable, and CMA on pcp lists.\n      \t * Place ISOLATE pages on the isolated list because they are being\n     -\t * offlined but treat HIGHATOMIC as movable pages so we can get those\n     -\t * areas back if necessary. Otherwise, we may have to free\n    @@ mm/page_alloc.c: void free_unref_page(struct page *page, unsigned int order)\n     -\tmigratetype \u003d get_pcppage_migratetype(page);\n     +\tmigratetype \u003d pcpmigratetype \u003d get_pcppage_migratetype(page);\n      \tif (unlikely(migratetype \u003e\u003d MIGRATE_PCPTYPES)) {\n    - \t\tif (unlikely(is_migrate_isolate(migratetype))) {\n    + \t\ttrace_android_vh_pcplist_add_cma_pages_bypass(migratetype,\n    + \t\t\t\u0026pcp_skip_cma_pages);\n    +@@ mm/page_alloc.c: void free_unref_page(struct page *page, unsigned int order)\n      \t\t\tfree_one_page(page_zone(page), page, pfn, order, migratetype, FPI_NONE);\n      \t\t\treturn;\n      \t\t}\n    @@ mm/page_alloc.c: void free_unref_page(struct page *page, unsigned int order)\n      \n      \tzone \u003d page_zone(page);\n      \tpcp_trylock_prepare(UP_flags);\n    - \tpcp \u003d pcp_spin_trylock(zone-\u003eper_cpu_pageset);\n    + \tpcp \u003d pcp_spin_trylock_irqsave(zone_per_cpu_pageset(zone), flags);\n      \tif (pcp) {\n    --\t\tfree_unref_page_commit(zone, pcp, page, migratetype, order);\n    -+\t\tfree_unref_page_commit(zone, pcp, page, pcpmigratetype, order);\n    - \t\tpcp_spin_unlock(pcp);\n    +-\t\tfree_unref_page_commit(zone, pcp, page, pfn, migratetype, order);\n    ++\t\tfree_unref_page_commit(zone, pcp, page, pfn, pcpmigratetype, order);\n    + \t\tpcp_spin_unlock_irqrestore(pcp, flags);\n      \t} else {\n      \t\tfree_one_page(zone, page, pfn, order, migratetype, FPI_NONE);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 568192728 android-build.ayeaye-python-dispatcher_20230925.04_p0",
+      "revId": "03db763c5690323b5f4f264e5104c8e30a6568b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
