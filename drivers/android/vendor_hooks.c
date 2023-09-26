@@ -52,6 +52,7 @@
 #include <trace/hooks/bug.h>
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/regmap.h>
+#include <trace/hooks/mm.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -188,3 +189,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calc_alloc_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_folio_alloced);
