@@ -428,10 +428,20 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
 	else
 		weight = 1;
 
-	if (tb[TCA_QFQ_LMAX])
+	if (tb[TCA_QFQ_LMAX]) {
 		lmax = nla_get_u32(tb[TCA_QFQ_LMAX]);
-	else
+	} else {
+		/* MTU size is user controlled */
 		lmax = psched_mtu(qdisc_dev(sch));
+<<<<<<< HEAD   (785004 ANDROID: ABI: Update oplus symbol list)
+=======
+		if (lmax < QFQ_MIN_LMAX || lmax > QFQ_MAX_LMAX) {
+			NL_SET_ERR_MSG_MOD(extack,
+					   "MTU size out of bounds for qfq");
+			return -EINVAL;
+		}
+	}
+>>>>>>> BRANCH (f50fa8 Merge 5.10.189 into android12-5.10-lts)
 
 	inv_w = ONE_FP / weight;
 	weight = ONE_FP / inv_w;
