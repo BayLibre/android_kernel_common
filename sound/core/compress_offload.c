@@ -51,6 +51,10 @@ static DEFINE_MUTEX(device_mutex);
 
 struct snd_compr_file {
 	unsigned long caps;
+#ifndef CONFIG_AUDIO_QGKI
+	bool use_pause_in_draining;
+	bool pause_in_draining;
+#endif
 	struct snd_compr_stream stream;
 };
 
@@ -115,6 +119,9 @@ static int snd_compr_open(struct inode *inode, struct file *f)
 
 	INIT_DELAYED_WORK(&data->stream.error_work, error_delayed_work);
 
+#ifndef CONFIG_AUDIO_QGKI
+	data->pause_in_draining = false;
+#endif
 	data->stream.ops = compr->ops;
 	data->stream.direction = dirn;
 	data->stream.private_data = compr->private_data;
@@ -662,27 +669,76 @@ snd_compr_tstamp(struct snd_compr_stream *stream, unsigned long arg)
 	return ret;
 }
 
+/**
+ * snd_compr_use_pause_in_draining - Allow pause and resume in draining state
+ * @stream: compress substream to set
+ *
+ * Allow pause and resume in draining state.
+ * Only HW driver supports this transition can call this API.
+ */
+#ifndef CONFIG_AUDIO_QGKI
+void snd_compr_use_pause_in_draining(struct snd_compr_stream *stream)
+{
+	struct snd_compr_file *scf = container_of(stream, struct snd_compr_file, stream);
+
+	scf->use_pause_in_draining = true;
+	pr_err("%s:: enable pause in draining for %p\n", __func__, scf);
+}
+EXPORT_SYMBOL_GPL(snd_compr_use_pause_in_draining);
+#endif
+
 static int snd_compr_pause(struct snd_compr_stream *stream)
 {
 	int retval;
+#ifndef CONFIG_AUDIO_QGKI
+	struct snd_compr_file *scf = container_of(stream, struct snd_compr_file, stream);
+#endif
+	switch (stream->runtime->state) {
+	case SNDRV_PCM_STATE_RUNNING:
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_PUSH);
+		if (!retval)
+			stream->runtime->state = SNDRV_PCM_STATE_PAUSED;
+		break;
+#ifndef CONFIG_AUDIO_QGKI
+	case SNDRV_PCM_STATE_DRAINING:
+		if (!scf->use_pause_in_draining)
+			return -EPERM;
 
-	if (stream->runtime->state != SNDRV_PCM_STATE_RUNNING)
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_PUSH);
+		if (!retval)
+			scf->pause_in_draining = true;
+		break;
+#endif
+	default:
 		return -EPERM;
-	retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_PUSH);
-	if (!retval)
-		stream->runtime->state = SNDRV_PCM_STATE_PAUSED;
+	}
 	return retval;
 }
 
 static int snd_compr_resume(struct snd_compr_stream *stream)
 {
 	int retval;
-
-	if (stream->runtime->state != SNDRV_PCM_STATE_PAUSED)
+#ifndef CONFIG_AUDIO_QGKI
+	struct snd_compr_file *scf = container_of(stream, struct snd_compr_file, stream);
+#endif
+	switch (stream->runtime->state) {
+	case SNDRV_PCM_STATE_PAUSED:
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_RELEASE);
+		if (!retval)
+			stream->runtime->state = SNDRV_PCM_STATE_RUNNING;
+		break;
+#ifndef CONFIG_AUDIO_QGKI
+	case SNDRV_PCM_STATE_DRAINING:
+		if (!scf->pause_in_draining)
+			return -EPERM;
+		retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_RELEASE);
+		if (!retval)
+			scf->pause_in_draining = false;
+		break;
+#endif
+	default:
 		return -EPERM;
-	retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_PAUSE_RELEASE);
-	if (!retval)
-		stream->runtime->state = SNDRV_PCM_STATE_RUNNING;
+	}
 	return retval;
 }
 
@@ -710,6 +766,9 @@ static int snd_compr_start(struct snd_compr_stream *stream)
 static int snd_compr_stop(struct snd_compr_stream *stream)
 {
 	int retval;
+#ifndef CONFIG_AUDIO_QGKI
+	struct snd_compr_file *scf = container_of(stream, struct snd_compr_file, stream);
+#endif
 
 	switch (stream->runtime->state) {
 	case SNDRV_PCM_STATE_OPEN:
@@ -722,6 +781,9 @@ static int snd_compr_stop(struct snd_compr_stream *stream)
 
 	retval = stream->ops->trigger(stream, SNDRV_PCM_TRIGGER_STOP);
 	if (!retval) {
+#ifndef CONFIG_AUDIO_QGKI
+		scf->pause_in_draining = false;
+#endif
 		snd_compr_drain_notify(stream);
 		stream->runtime->total_bytes_available = 0;
 		stream->runtime->total_bytes_transferred = 0;
