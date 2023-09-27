@@ -34,6 +34,24 @@
       "parentUuid": "d6f3f1d5_2f0e4397",
       "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77ffa5d2_ff76febd",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1554,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2023-09-27T09:57:24Z",
+      "side": 0,
+      "message": "Example call stack:\n\nThread1: \nandroid_setup\n  -\u003e got cdev\n    -\u003e got gi by container_of\n      -\u003e pause due to spin_lock_irqsave\n        -\u003e cdev become null \n\nThread2:\nconfigfs_composite_bind\n  -\u003e hold spin_lock_irqsave\n    -\u003e set_gadget_data(gadget, NULL);\n      -\u003e spin_unlock_irqrestore",
+      "parentUuid": "2198204a_580bc04d",
+      "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
