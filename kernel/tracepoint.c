@@ -2,6 +2,7 @@
 /*
  * Copyright (C) 2008-2014 Mathieu Desnoyers
  */
+#include <linux/debugfs.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/types.h>
@@ -27,6 +28,10 @@ extern tracepoint_ptr_t __stop___tracepoints_ptrs[];
 
 DEFINE_SRCU(tracepoint_srcu);
 EXPORT_SYMBOL_GPL(tracepoint_srcu);
+
+#ifdef CONFIG_ANDROID_VENDOR_HOOKS
+static struct dentry *tracepoint_debugfs_dir;
+#endif
 
 enum tp_transition_sync {
 	TP_TRANSITION_SYNC_1_0_1,
@@ -885,4 +890,46 @@ int android_rvh_probe_register(struct tracepoint *tp, void *probe, void *data)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(android_rvh_probe_register);
+
+static void dump_active_tracehook(struct tracepoint *tp, void *priv)
+{
+	struct seq_file *s = priv;
+	struct tracepoint_func *funcs;
+	unsigned int i = 0;
+
+	if (static_key_enabled(&tp->key)) {
+		seq_printf(s, "==============================================================\n");
+		seq_printf(s, "Tracepoint name: %s\n", tp->name);
+		seq_printf(s, "Hooks:\n");
+
+		funcs = rcu_dereference(tp->funcs);
+		while (funcs[i].func) {
+			seq_printf(s, "Hook %d function: %pS\n", i, funcs[i].func);
+			i++;
+		}
+	}
+}
+
+static int enabled_tracehooks_show(struct seq_file *s, void *data)
+{
+	mutex_lock(&tracepoints_mutex);
+
+	for_each_kernel_tracepoint(dump_active_tracehook, s);
+
+	mutex_unlock(&tracepoints_mutex);
+
+	return 0;
+}
+DEFINE_SHOW_ATTRIBUTE(enabled_tracehooks);
+
+static int __init tracepoint_debugfs_init(void)
+{
+	tracepoint_debugfs_dir = debugfs_create_dir("tracepoints", NULL);
+
+	debugfs_create_file("enabled_tracehooks", 0444, tracepoint_debugfs_dir, NULL,
+			    &enabled_tracehooks_fops);
+
+	return 0;
+}
+fs_initcall(tracepoint_debugfs_init);
 #endif
