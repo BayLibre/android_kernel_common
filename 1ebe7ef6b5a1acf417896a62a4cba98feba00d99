@@ -22,6 +22,30 @@
       },
       "revId": "1ebe7ef6b5a1acf417896a62a4cba98feba00d99",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57895ab1_a65e3b5d",
+        "filename": "drivers/usb/typec/bus.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1960732
+      },
+      "writtenOn": "2023-09-27T17:28:11Z",
+      "side": 1,
+      "message": "checkpatch didn\u0027t catch the return at the end, but it did catch this:\n```\n\tif (!partner) {\n\t\treturn;\n\t}\n\n```\nlesson learned regardless :(",
+      "parentUuid": "fd961c61_52c56765",
+      "range": {
+        "startLine": 178,
+        "startChar": 1,
+        "endLine": 178,
+        "endChar": 7
+      },
+      "revId": "1ebe7ef6b5a1acf417896a62a4cba98feba00d99",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
