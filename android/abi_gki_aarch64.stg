@@ -277950,6 +277950,36 @@ enumeration {
   }
 }
 enumeration {
+  id: 0x0d164218
+  name: "lru_list"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "LRU_INACTIVE_ANON"
+    }
+    enumerator {
+      name: "LRU_ACTIVE_ANON"
+      value: 1
+    }
+    enumerator {
+      name: "LRU_INACTIVE_FILE"
+      value: 2
+    }
+    enumerator {
+      name: "LRU_ACTIVE_FILE"
+      value: 3
+    }
+    enumerator {
+      name: "LRU_UNEVICTABLE"
+      value: 4
+    }
+    enumerator {
+      name: "NR_LRU_LISTS"
+      value: 5
+    }
+  }
+}
+enumeration {
   id: 0x0b05beb9
   name: "macsec_offload"
   definition {
@@ -287170,6 +287200,13 @@ function {
   parameter_id: 0x3e10b518
 }
 function {
+  id: 0x11584934
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0a63398f
+  parameter_id: 0xd9f550d1
+  parameter_id: 0xfc0e1dbd
+}
+function {
   id: 0x115a73a0
   return_type_id: 0x48b5725f
   parameter_id: 0x06835e9c
@@ -295722,6 +295759,13 @@ function {
   parameter_id: 0x3ba261b0
 }
 function {
+  id: 0x1e768676
+  return_type_id: 0x48b5725f
+  parameter_id: 0x39182992
+  parameter_id: 0x2c456d6d
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x1e7a9dc2
   return_type_id: 0x48b5725f
   parameter_id: 0x38bc670e
@@ -296150,6 +296194,14 @@ function {
   id: 0x1ef16b9c
   return_type_id: 0x48b5725f
   parameter_id: 0x39a4e83f
+}
+function {
+  id: 0x1ef25648
+  return_type_id: 0x48b5725f
+  parameter_id: 0x39182992
+  parameter_id: 0x0d164218
+  parameter_id: 0x6720d32f
+  parameter_id: 0x6720d32f
 }
 function {
   id: 0x1ef27e10
@@ -300699,6 +300751,11 @@ function {
   return_type_id: 0x2c8e1aaa
   parameter_id: 0x21003da7
   parameter_id: 0x31b5a66f
+}
+function {
+  id: 0x637004ab
+  return_type_id: 0x1582ab06
+  parameter_id: 0x2170d06d
 }
 function {
   id: 0x6408a046
@@ -308163,6 +308220,14 @@ function {
   return_type_id: 0x6720d32f
   parameter_id: 0x234c60dd
   parameter_id: 0x4585663f
+}
+function {
+  id: 0x94471ba6
+  return_type_id: 0x6720d32f
+  parameter_id: 0x2170d06d
+  parameter_id: 0x6720d32f
+  parameter_id: 0x1d5bae2a
+  parameter_id: 0x064d6086
 }
 function {
   id: 0x944726c2
@@ -331173,6 +331238,24 @@ elf_symbol {
   crc: 0x428651f5
   type_id: 0x1655e07b
   full_name: "__mmdrop"
+}
+elf_symbol {
+  id: 0x68d1b187
+  name: "__mod_lruvec_state"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0ab46d8d
+  type_id: 0x1e768676
+  full_name: "__mod_lruvec_state"
+}
+elf_symbol {
+  id: 0x9de4c040
+  name: "__mod_zone_page_state"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0683f992
+  type_id: 0x11584934
+  full_name: "__mod_zone_page_state"
 }
 elf_symbol {
   id: 0x89d01efd
@@ -356472,6 +356555,33 @@ elf_symbol {
   full_name: "flush_work"
 }
 elf_symbol {
+  id: 0x06c58be7
+  name: "folio_add_lru"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x42a88286
+  type_id: 0x18c46588
+  full_name: "folio_add_lru"
+}
+elf_symbol {
+  id: 0x159a69a3
+  name: "folio_mapping"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xad0ae85f
+  type_id: 0x637004ab
+  full_name: "folio_mapping"
+}
+elf_symbol {
+  id: 0x39840ab2
+  name: "folio_referenced"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6114128f
+  type_id: 0x94471ba6
+  full_name: "folio_referenced"
+}
+elf_symbol {
   id: 0x3dca9a13
   name: "folio_wait_bit"
   is_defined: true
@@ -366043,6 +366153,15 @@ elf_symbol {
   full_name: "mem_cgroup_from_id"
 }
 elf_symbol {
+  id: 0x6da682ae
+  name: "mem_cgroup_update_lru_size"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x351f9cbb
+  type_id: 0x1ef25648
+  full_name: "mem_cgroup_update_lru_size"
+}
+elf_symbol {
   id: 0x7f797603
   name: "mem_dump_obj"
   is_defined: true
@@ -374592,6 +374711,15 @@ elf_symbol {
   full_name: "put_iova_domain"
 }
 elf_symbol {
+  id: 0xb9bfc7b9
+  name: "put_pages_list"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf0009fee
+  type_id: 0x1f00dfeb
+  full_name: "put_pages_list"
+}
+elf_symbol {
   id: 0x1744651d
   name: "put_pid"
   is_defined: true
@@ -377110,6 +377238,15 @@ elf_symbol {
   crc: 0xfc5c2426
   type_id: 0x100e6fc8
   full_name: "root_device_unregister"
+}
+elf_symbol {
+  id: 0xbd83c333
+  name: "root_mem_cgroup"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x9ab36151
+  type_id: 0x1d5bae2a
+  full_name: "root_mem_cgroup"
 }
 elf_symbol {
   id: 0x7d858174
@@ -394055,6 +394192,8 @@ interface {
   symbol_id: 0x0ba13d85
   symbol_id: 0x479db511
   symbol_id: 0x603dcc7d
+  symbol_id: 0x68d1b187
+  symbol_id: 0x9de4c040
   symbol_id: 0x89d01efd
   symbol_id: 0xf680e61c
   symbol_id: 0x4cfc63ca
@@ -396865,6 +397004,9 @@ interface {
   symbol_id: 0xb290a148
   symbol_id: 0x09d08108
   symbol_id: 0x3c7c2553
+  symbol_id: 0x06c58be7
+  symbol_id: 0x159a69a3
+  symbol_id: 0x39840ab2
   symbol_id: 0x3dca9a13
   symbol_id: 0x07508208
   symbol_id: 0xcb14b5cc
@@ -397928,6 +398070,7 @@ interface {
   symbol_id: 0xa848deda
   symbol_id: 0x8eadb5fd
   symbol_id: 0x140f40dd
+  symbol_id: 0x6da682ae
   symbol_id: 0x7f797603
   symbol_id: 0x01e78001
   symbol_id: 0x746374fa
@@ -398878,6 +399021,7 @@ interface {
   symbol_id: 0x435b99c6
   symbol_id: 0x5db8ecdc
   symbol_id: 0x01768311
+  symbol_id: 0xb9bfc7b9
   symbol_id: 0x1744651d
   symbol_id: 0x9103dd70
   symbol_id: 0xffdd03be
@@ -399158,6 +399302,7 @@ interface {
   symbol_id: 0x6af2dc93
   symbol_id: 0x56f4af9c
   symbol_id: 0x93ee7a0f
+  symbol_id: 0xbd83c333
   symbol_id: 0x7d858174
   symbol_id: 0x0e66eaf7
   symbol_id: 0x81bce56b
