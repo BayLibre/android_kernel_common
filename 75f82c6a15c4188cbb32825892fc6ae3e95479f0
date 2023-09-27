@@ -16,6 +16,24 @@
       "message": "how do you handle the case that unbind ran completed after the line 1552?",
       "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2198204a_580bc04d",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1554,
+      "author": {
+        "id": 2037920
+      },
+      "writtenOn": "2023-09-27T09:44:46Z",
+      "side": 0,
+      "message": "This cdev is derived from the struct gadget_info, so will not be freed by the set_gadget_data(gadget, NULL)。\n\"struct usb_composite_dev        *cdev \u003d \u0026gi-\u003ecdev;\"\nwe can do not use the spinlock of gadget item to preventthe condition.",
+      "parentUuid": "d6f3f1d5_2f0e4397",
+      "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
