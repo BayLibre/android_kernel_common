@@ -1449,6 +1449,11 @@ pointer_reference {
   pointee_type_id: 0x3c952c30
 }
 pointer_reference {
+  id: 0x05bba228
+  kind: POINTER
+  pointee_type_id: 0x3cae6e3d
+}
+pointer_reference {
   id: 0x05c2a3ca
   kind: POINTER
   pointee_type_id: 0x3d4a69b5
@@ -202151,6 +202156,11 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x3cae6e3d
+  kind: STRUCT
+  name: "cqhci_host"
+}
+struct_union {
   id: 0xdf149691
   kind: STRUCT
   name: "cred"
@@ -290631,6 +290641,15 @@ function {
   parameter_id: 0x191de370
 }
 function {
+  id: 0x9bc7c911
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x1a41d386
+  parameter_id: 0x05bba228
+  parameter_id: 0x00c72527
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x9bc8ded8
   return_type_id: 0x6720d32f
   parameter_id: 0x1a1051a0
@@ -306092,6 +306111,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_mm_compaction_end"
 }
 elf_symbol {
+  id: 0xde6ca4fd
+  name: "__traceiter_android_vh_mmc_cqhci_setup_tran_desc"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xcd64a2a2
+  type_id: 0x9bc7c911
+  full_name: "__traceiter_android_vh_mmc_cqhci_setup_tran_desc"
+}
+elf_symbol {
   id: 0xab76d6cc
   name: "__traceiter_android_vh_mmc_sdio_pm_flag_set"
   is_defined: true
@@ -309033,6 +309061,15 @@ elf_symbol {
   crc: 0x1066ddcb
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_mm_compaction_end"
+}
+elf_symbol {
+  id: 0x1a77c7fb
+  name: "__tracepoint_android_vh_mmc_cqhci_setup_tran_desc"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xecf36fce
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_mmc_cqhci_setup_tran_desc"
 }
 elf_symbol {
   id: 0x0403b7c6
@@ -360949,6 +360986,7 @@ interface {
   symbol_id: 0xea8ce2b0
   symbol_id: 0x22de652b
   symbol_id: 0xf928bf8a
+  symbol_id: 0xde6ca4fd
   symbol_id: 0xab76d6cc
   symbol_id: 0x306a6019
   symbol_id: 0xb1c564a3
@@ -361276,6 +361314,7 @@ interface {
   symbol_id: 0xa5b4e5b2
   symbol_id: 0xa3d5f70d
   symbol_id: 0x72c79d80
+  symbol_id: 0x1a77c7fb
   symbol_id: 0x0403b7c6
   symbol_id: 0x65023f2f
   symbol_id: 0xd5097f8d
