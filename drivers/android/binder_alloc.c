@@ -775,11 +775,12 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
 	}
 
 	buffer->user_data = alloc->buffer;
+	mutex_lock(&alloc->mutex);
 	list_add(&buffer->entry, &alloc->buffers);
 	buffer->free = 1;
 	binder_insert_free_buffer(alloc, buffer);
 	alloc->free_async_space = alloc->buffer_size / 2;
-
+	mutex_unlock(&alloc->mutex);
 	/* Signal binder_alloc is fully initialized */
 	binder_alloc_set_vma(alloc, vma);
 
@@ -856,9 +857,11 @@ void binder_alloc_deferred_release(struct binder_alloc *alloc)
 				     __func__, alloc->pid, i, page_addr,
 				     on_lru ? "on lru" : "active");
 			__free_page(alloc->pages[i].page_ptr);
+			alloc->pages[i].page_ptr = NULL;
 			page_count++;
 		}
 		kfree(alloc->pages);
+		alloc->pages = NULL;
 	}
 	mutex_unlock(&alloc->mutex);
 	if (alloc->mm)
