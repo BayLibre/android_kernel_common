@@ -16,6 +16,24 @@
       "message": "Riscv config?",
       "revId": "45fe413fdfdbcb6b206cb880fe0b10bfd72afbb4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b68e1a4_6185eded",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2023-09-28T20:00:38Z",
+      "side": 1,
+      "message": "Apparently the RISC-V config is a soft link to the ARM config on this branch?\n\n$ ls -ld arch/*/configs/gki_defconfig\n-rw-r----- 1 bvanassche primarygroup 18977 Sep 28 11:25 arch/arm64/configs/gki_defconfig\nlrwxrwxrwx 1 bvanassche primarygroup    33 Sep 27 14:24 arch/riscv/configs/gki_defconfig -\u003e ../../arm64/configs/gki_defconfig\n-rw-r----- 1 bvanassche primarygroup 16997 Sep 28 11:25 arch/x86/configs/gki_defconfig",
+      "parentUuid": "d43ff042_2980058e",
+      "revId": "45fe413fdfdbcb6b206cb880fe0b10bfd72afbb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
