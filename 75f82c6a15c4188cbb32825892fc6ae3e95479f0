@@ -70,6 +70,24 @@
       "parentUuid": "77ffa5d2_ff76febd",
       "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23cba283_f5adee12",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1554,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2023-09-28T07:34:34Z",
+      "side": 0,
+      "message": "Sorry for the mistake. \n\nI mean cdev would be NULL by calling get_gadget_data again in the comment above. After your change, cdev is valid, but get_gadget_data(gadget) could be NULL if another thread calls set_gadget_data(gadget, NULL). Therefore, if you don\u0027t include the if statement check, the kernel will panic in composite_setup(), where cdev is accessed by calling get_gadget_data(gadget) again.\n\nTherefore, I suggest to keep these to avoid kernel panic.",
+      "parentUuid": "7b889c38_ef0a929f",
+      "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
