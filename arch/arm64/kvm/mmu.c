@@ -346,7 +346,7 @@ static void unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 si
 static void pkvm_stage2_flush(struct kvm *kvm)
 {
 	struct kvm_pinned_page *ppage;
-	struct rb_node *node;
+	unsigned long index = 0;
 
 	/*
 	 * Contrary to stage2_apply_range(), we don't need to check
@@ -354,8 +354,7 @@ static void pkvm_stage2_flush(struct kvm *kvm)
 	 * from a vcpu thread, and the list is only ever freed on VM
 	 * destroy (which only occurs when all vcpu are gone).
 	 */
-	for (node = rb_first(&kvm->arch.pkvm.pinned_pages); node; node = rb_next(node)) {
-		ppage = rb_entry(node, struct kvm_pinned_page, node);
+	mt_for_each(&kvm->arch.pkvm.pinned_pages, ppage, index, ULONG_MAX) {
 		__clean_dcache_guest_page(page_address(ppage->page), PAGE_SIZE);
 		cond_resched_rwlock_write(&kvm->mmu_lock);
 	}
@@ -933,7 +932,7 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
 	mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
 	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
 	kvm->arch.vtcr = kvm_get_vtcr(mmfr0, mmfr1, phys_shift);
-	kvm->arch.pkvm.pinned_pages = RB_ROOT;
+	mt_init(&kvm->arch.pkvm.pinned_pages);
 	mmu->arch = &kvm->arch;
 
 	if (is_protected_kvm_enabled())
@@ -1474,58 +1473,26 @@ static int pkvm_host_map_guest(u64 pfn, u64 gfn, u64 nr_pages)
 	return (ret == -EPERM) ? -EAGAIN : ret;
 }
 
-#define node_ppage(__node) \
-	(container_of(__node, struct kvm_pinned_page, node))
-
-static int cmp_ppage(const void *key, const struct rb_node *node)
-{
-	struct kvm_pinned_page *ppage = node_ppage(node);
-	phys_addr_t ipa = (phys_addr_t)key;
-
-	if (ppage->ipa < ipa)
-		return 1;
-	else if (ppage->ipa > ipa)
-		return -1;
-
-	return 0;
-}
-
-static int cmp_ppages(struct rb_node *node, const struct rb_node *parent)
-{
-	return cmp_ppage((void *)(node_ppage(node))->ipa, parent);
-}
-
 static inline struct kvm_pinned_page *
 find_ppage_or_above(struct kvm *kvm, phys_addr_t ipa)
 {
-	struct rb_node *node = kvm->arch.pkvm.pinned_pages.rb_node;
+	unsigned long index = ipa;
+	void *entry;
 
-	while (node) {
-		int ret = cmp_ppage((void *)ipa, node);
+	mt_for_each(&kvm->arch.pkvm.pinned_pages, entry, index, ULONG_MAX)
+		return entry;
 
-		if (!ret) {
-			break;
-		} else if (ret > 0) {
-			node = node->rb_right;
-		} else if (ret < 0) {
-			if (!node->rb_left)
-				break;
-			node = node->rb_left;
-		}
-	}
-
-	if (!node)
-		return NULL;
-
-	return node_ppage(node);
+	return NULL;
 }
 
 static int insert_ppage(struct kvm *kvm, struct kvm_pinned_page *ppage)
 {
-	if (rb_find_add(&ppage->node, &kvm->arch.pkvm.pinned_pages, cmp_ppages))
-		return -EEXIST;
+	size_t size = PAGE_SIZE << ppage->order;
+	unsigned long start = ppage->ipa;
+	unsigned long end = start + size - 1;
 
-	return 0;
+	return mtree_insert_range(&kvm->arch.pkvm.pinned_pages, start, end,
+				  ppage, GFP_KERNEL);
 }
 
 static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
@@ -1597,6 +1564,8 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
 
 	ppage->page = page;
 	ppage->ipa = fault_ipa;
+	ppage->order = 0;
+	ppage->pins = 1 << ppage->order;
 	WARN_ON(insert_ppage(kvm, ppage));
 	write_unlock(&kvm->mmu_lock);
 
@@ -1634,7 +1603,8 @@ int pkvm_mem_abort_range(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t si
 
 	while (size) {
 		if (ppage && ppage->ipa == fault_ipa) {
-			ppage = node_ppage(rb_next(&ppage->node));
+			ppage = mt_next(&vcpu->kvm->arch.pkvm.pinned_pages,
+					ppage->ipa, ULONG_MAX);
 		} else {
 			gfn_t gfn = gpa_to_gfn(fault_ipa);
 			struct kvm_memory_slot *memslot;
