@@ -2324,21 +2324,24 @@ void drain_hyp_pool(struct pkvm_hyp_vm *vm, struct kvm_hyp_memcache *mc)
 	}
 }
 
-int __pkvm_host_reclaim_page(struct pkvm_hyp_vm *vm, u64 pfn, u64 ipa)
+int __pkvm_host_reclaim_page(struct pkvm_hyp_vm *vm, u64 pfn, u64 ipa, u8 order)
 {
 	struct kvm_hyp_memcache mc = { .nr_pages = 0 };
 	phys_addr_t phys = hyp_pfn_to_phys(pfn);
+	size_t page_size = PAGE_SIZE << order;
 	kvm_pte_t pte;
-	int ret;
+	int ret = 0;
+	u32 level;
 
 	host_lock_component();
 	guest_lock_component(vm);
 
-	ret = kvm_pgtable_get_leaf(&vm->pgt, ipa, &pte, NULL);
-	if (ret)
-		goto unlock;
+	WARN_ON(kvm_pgtable_get_leaf(&vm->pgt, ipa, &pte, &level));
 
-	if (!kvm_pte_valid(pte)) {
+	if (kvm_granule_size(level) != page_size) {
+		ret = -E2BIG;
+		goto unlock;
+	} else if (!kvm_pte_valid(pte)) {
 		ret = -EINVAL;
 		goto unlock;
 	} else if (phys != kvm_pte_to_phys(pte)) {
@@ -2347,25 +2350,25 @@ int __pkvm_host_reclaim_page(struct pkvm_hyp_vm *vm, u64 pfn, u64 ipa)
 	}
 
 	/* We could avoid TLB inval, it is done per VMID on the finalize path */
-	WARN_ON(__kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE, &mc));
+	WARN_ON(__kvm_pgtable_stage2_unmap(&vm->pgt, ipa, page_size, &mc));
 
 	switch(guest_get_page_state(pte, ipa)) {
 	case PKVM_PAGE_OWNED:
-		WARN_ON(__host_check_page_state_range(phys, PAGE_SIZE, PKVM_NOPAGE));
+		WARN_ON(__host_check_page_state_range(phys, page_size, PKVM_NOPAGE));
 		hyp_poison_page(phys);
-		psci_mem_protect_dec(1);
+		psci_mem_protect_dec(order);
 		break;
 	case PKVM_PAGE_SHARED_BORROWED:
-		WARN_ON(__host_check_page_state_range(phys, PAGE_SIZE, PKVM_PAGE_SHARED_OWNED));
+		WARN_ON(__host_check_page_state_range(phys, page_size, PKVM_PAGE_SHARED_OWNED));
 		break;
 	case PKVM_PAGE_SHARED_OWNED:
-		WARN_ON(__host_check_page_state_range(phys, PAGE_SIZE, PKVM_PAGE_SHARED_BORROWED));
+		WARN_ON(__host_check_page_state_range(phys, page_size, PKVM_PAGE_SHARED_BORROWED));
 		break;
 	default:
 		BUG_ON(1);
 	}
 
-	WARN_ON(host_stage2_set_owner_locked(phys, PAGE_SIZE, PKVM_ID_HOST));
+	WARN_ON(host_stage2_set_owner_locked(phys, page_size, PKVM_ID_HOST));
 
 unlock:
 	guest_unlock_component(vm);

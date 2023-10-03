@@ -237,6 +237,71 @@ static void __pkvm_vcpu_hyp_created(struct kvm_vcpu *vcpu)
 		vcpu->arch.sve_state = NULL;
 }
 
+/*
+ * Handle broken down huge pages which have not been reported to the
+ * kvm_pinned_page.
+ */
+static int pkvm_reclaim_dying_guest_page(struct kvm *host_kvm,
+					 struct kvm_pinned_page *ppage)
+{
+	size_t page_size, size = PAGE_SIZE << ppage->order;
+	u64 pfn = page_to_pfn(ppage->page);
+	u8 order = ppage->order;
+	u64 ipa = ppage->ipa;
+
+	/* We already know this huge-page has been broken down in the stage-2 */
+	if (ppage->pins < (1 << order))
+		order = 0;
+
+	while (size) {
+		int err = kvm_call_hyp_nvhe(__pkvm_reclaim_dying_guest_page,
+					    host_kvm->arch.pkvm.handle,
+					    pfn, ipa, order);
+		switch (err) {
+		/* The stage-2 huge page has been broken down */
+		case -E2BIG:
+			if (order)
+				order = 0;
+			else
+				/* Something is really wrong ... */
+				return -EINVAL;
+			break;
+		/* This has been unmapped already */
+		case -EINVAL:
+			/*
+			 * We are not supposed to lose track of PAGE_SIZE pinned
+			 * page.
+			 */
+			if (!ppage->order)
+				return -EINVAL;
+
+			fallthrough;
+		case 0:
+			page_size = PAGE_SIZE << order;
+			ipa += page_size;
+			pfn += 1 << order;
+
+			if (!err)
+				ppage->pins -= 1 << order;
+
+			if (!ppage->pins) {
+				WARN_ON(size);
+				return 0;
+			}
+
+			if (page_size > size)
+				return -EINVAL;
+
+			size -= page_size;
+			break;
+		default:
+			return err;
+		}
+	}
+
+	return 0;
+}
+
 static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 {
 	struct mm_struct *mm = current->mm;
@@ -250,10 +315,7 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
 
 	mt_for_each(&host_kvm->arch.pkvm.pinned_pages, ppage, ipa, ULONG_MAX) {
-		WARN_ON(kvm_call_hyp_nvhe(__pkvm_reclaim_dying_guest_page,
-					  host_kvm->arch.pkvm.handle,
-					  page_to_pfn(ppage->page),
-					  ppage->ipa));
+		WARN_ON(pkvm_reclaim_dying_guest_page(host_kvm, ppage));
 		cond_resched();
 
 		account_locked_vm(mm, 1, false);
