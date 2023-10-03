@@ -421,7 +421,6 @@ static inline size_t pkvm_host_fp_state_size(void)
 }
 
 int __pkvm_topup_hyp_alloc(unsigned long nr_pages);
-unsigned long __pkvm_reclaim_hyp_alloc(unsigned long nr_pages);
 
 #define refill_hyp_alloc(__func, __nr_pages)			\
 ({								\

@@ -5,6 +5,7 @@
  */
 
 #include <nvhe/alloc.h>
+#include <nvhe/alloc_mgt.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
 #include <nvhe/spinlock.h>
@@ -830,3 +831,9 @@ u8 hyp_alloc_missing_donations(void)
 {
 	return hyp_allocator_missing_donations(&hyp_allocator);
 }
+
+struct hyp_mgt_allocator_ops hyp_alloc_ops = (struct hyp_mgt_allocator_ops) {
+	.refill = hyp_alloc_refill,
+	.reclaim = hyp_alloc_reclaim,
+	.reclaimable = hyp_alloc_reclaimable,
+};
