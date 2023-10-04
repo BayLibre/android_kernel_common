@@ -28,12 +28,14 @@ void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg)
 
 void __arm_lpae_free_pages(void *addr, size_t size, struct io_pgtable_cfg *cfg)
 {
-	BUG_ON(size != PAGE_SIZE);
+	u8 order = get_order(size);
+
+	BUG_ON(size != (1 << order) * PAGE_SIZE);
 
 	if (!cfg->coherent_walk)
 		kvm_flush_dcache_to_poc(addr, size);
 
-	kvm_iommu_reclaim_pages(addr, 0);
+	kvm_iommu_reclaim_pages(addr, order);
 }
 
 void __arm_lpae_sync_pte(arm_lpae_iopte *ptep, int num_entries,
@@ -69,9 +71,7 @@ int kvm_arm_io_pgtable_alloc(struct io_pgtable *iopt, unsigned long pgd_hva)
 	if (!IS_ALIGNED(pgd_hva, alignment))
 		return -EINVAL;
 
-	iopt->pgd = pkvm_map_donated_memory(pgd_hva, pgd_size);
-	if (!iopt->pgd)
-		return -ENOMEM;
+	iopt->pgd = (void *)pgd_hva;
 
 	if (!data->iop.cfg.coherent_walk)
 		kvm_flush_dcache_to_poc(iopt->pgd, pgd_size);
@@ -90,9 +90,7 @@ int kvm_arm_io_pgtable_free(struct io_pgtable *iopt)
 	if (!data->iop.cfg.coherent_walk)
 		kvm_flush_dcache_to_poc(iopt->pgd, pgd_size);
 
-	/* Free all tables but the pgd */
-	__arm_lpae_free_pgtable(data, data->start_level, iopt->pgd, true);
-	pkvm_unmap_donated_memory(iopt->pgd, pgd_size);
+	__arm_lpae_free_pgtable(data, data->start_level, iopt->pgd);
 	return 0;
 }
 

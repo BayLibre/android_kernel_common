@@ -20,7 +20,6 @@ struct hyp_arm_smmu_v3_device __ro_after_init *kvm_hyp_arm_smmu_v3_smmus;
 struct hyp_arm_smmu_v3_domain {
 	struct kvm_hyp_iommu_domain	*domain;
 	struct kvm_hyp_iommu		*iommu;
-	unsigned long			pgd_size;
 };
 
 #define for_each_smmu(smmu) \
@@ -553,19 +552,21 @@ int smmu_domain_finalise(struct kvm_hyp_iommu_domain *domain,
 	domain->pgtable = &smmu->pgtable.iop;
 
 	iopt = domain_to_iopt(domain, domain_id);
+	pgd_size = kvm_arm_io_pgtable_size(&iopt);
+
+	if (!domain->pgd)
+		domain->pgd = kvm_iommu_donate_pages(get_order(pgd_size));
+
+	if (!domain->pgd) {
+		domain->pgtable = NULL;
+		return -ENOMEM;
+	}
+
 	ret = kvm_arm_io_pgtable_alloc(&iopt, (unsigned long)domain->pgd);
 	if (ret) {
 		domain->pgtable = NULL;
 		return ret;
 	}
-
-	pgd_size = kvm_arm_io_pgtable_size(&iopt);
-	/*
-	 * The pgd size sent in alloc domain is smaller than what
-	 * we need for this device
-	 */
-	if (pgd_size < smmu_domain->pgd_size)
-		return -EINVAL;
 
 	domain->pgd = iopt.pgd;
 	return 0;
@@ -674,8 +675,7 @@ out_unlock:
 	return ret;
 }
 
-int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_id,
-		      unsigned long pgd_hva, unsigned long pgd_size)
+int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_id)
 {
 	struct hyp_arm_smmu_v3_domain *smmu_domain;
 
@@ -684,8 +684,6 @@ int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_
 		return hyp_alloc_errno();
 
 	smmu_domain->domain = domain;
-	domain->pgd = (void *)pgd_hva;
-	smmu_domain->pgd_size = pgd_size;
 
 	domain->priv = (void *)smmu_domain;
 
