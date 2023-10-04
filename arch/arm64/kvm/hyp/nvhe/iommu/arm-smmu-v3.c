@@ -190,7 +190,7 @@ static int smmu_alloc_l2_strtab(struct hyp_arm_smmu_v3_device *smmu, u32 idx)
 	if (WARN_ON(span < 1 || span > 11))
 		return -EINVAL;
 
-	table = kvm_iommu_donate_page();
+	table = kvm_iommu_donate_pages(0);
 	if (!table)
 		return -ENOMEM;
 
@@ -202,7 +202,7 @@ static int smmu_alloc_l2_strtab(struct hyp_arm_smmu_v3_device *smmu, u32 idx)
 	wmb();
 
 	if ((cmpxchg64_relaxed(&smmu->strtab_base[idx], 0, l2ptr | span) != 0))
-		kvm_iommu_reclaim_page(table);
+		kvm_iommu_reclaim_pages(table, 0);
 
 	return 0;
 }
