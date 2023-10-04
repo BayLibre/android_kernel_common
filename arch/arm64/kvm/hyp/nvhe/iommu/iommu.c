@@ -63,13 +63,20 @@ int kvm_iommu_refill(struct kvm_hyp_memcache *host_mc)
 
 void kvm_iommu_reclaim(struct kvm_hyp_memcache *host_mc, int target)
 {
-	/* TODO */
+	void *p;
+
+	while (target--) {
+		p = hyp_alloc_pages(&iommu_host_pool, 0);
+		if (!p)
+			return;
+		push_hyp_memcache(host_mc, p, hyp_virt_to_phys, 0);
+		WARN_ON(__pkvm_hyp_donate_host(hyp_virt_to_pfn(p), 1));
+	}
 }
 
 int kvm_iommu_reclaimable(void)
 {
-	/* TODO */
-	return 0;
+	return hyp_pool_free_pages(&iommu_host_pool);
 }
 
 struct hyp_mgt_allocator_ops kvm_iommu_allocator_ops = {
