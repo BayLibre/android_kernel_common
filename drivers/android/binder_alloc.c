@@ -403,12 +403,12 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
 				size_t size,
 				int is_async)
 {
-	struct rb_node *n = alloc->free_buffers.rb_node;
-	struct binder_buffer *buffer;
-	size_t buffer_size;
-	struct rb_node *best_fit = NULL;
+	struct binder_buffer *buffer, *new_buffer = NULL;
 	unsigned long has_page_addr;
 	unsigned long end_page_addr;
+	struct rb_node *best_fit;
+	size_t buffer_size;
+	struct rb_node *n;
 	int ret;
 
 	if (is_async &&
@@ -419,6 +419,9 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
 		return ERR_PTR(-ENOSPC);
 	}
 
+retry:
+	best_fit = NULL;
+	n = alloc->free_buffers.rb_node;
 	while (n) {
 		buffer = rb_entry(n, struct binder_buffer, rb_node);
 		BUG_ON(!buffer->free);
@@ -444,6 +447,20 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
 	}
 
 	if (n == NULL) {
+		/* We found an oversized buffer (best_fit) and needs to be
+		 * split. If we don't have a new_buffer for it yet, allocate
+		 * one outside of locks and retry.
+		 */
+		if (!new_buffer) {
+			mutex_unlock(&alloc->mutex);
+			new_buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
+			mutex_lock(&alloc->mutex);
+			if (!new_buffer)
+				return ERR_PTR(-ENOMEM);
+			goto retry;
+		}
+
+		/* rewind to best_fit values */
 		buffer = rb_entry(best_fit, struct binder_buffer, rb_node);
 		buffer_size = binder_alloc_buffer_size(alloc, buffer);
 	}
@@ -459,22 +476,17 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
 		end_page_addr = has_page_addr;
 	ret = binder_allocate_page_range(alloc, PAGE_ALIGN(buffer->user_data),
 					 end_page_addr);
-	if (ret)
-		return ERR_PTR(ret);
+	if (ret) {
+		buffer = ERR_PTR(ret);
+		goto out;
+	}
 
 	if (buffer_size != size) {
-		struct binder_buffer *new_buffer;
-
-		new_buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
-		if (!new_buffer) {
-			pr_err("%s: %d failed to alloc new buffer struct\n",
-			       __func__, alloc->pid);
-			goto err_alloc_buf_struct_failed;
-		}
 		new_buffer->user_data = buffer->user_data + size;
 		list_add(&new_buffer->entry, &buffer->entry);
 		new_buffer->free = 1;
 		binder_insert_free_buffer(alloc, new_buffer);
+		new_buffer = NULL;
 	}
 
 	rb_erase(best_fit, &alloc->free_buffers);
@@ -495,12 +507,10 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
 			buffer->oneway_spam_suspect = true;
 	}
 
+out:
+	/* discard possibly unused new_buffer */
+	kfree(new_buffer);
 	return buffer;
-
-err_alloc_buf_struct_failed:
-	binder_free_page_range(alloc, PAGE_ALIGN(buffer->user_data),
-			       end_page_addr);
-	return ERR_PTR(-ENOMEM);
 }
 
 /**
