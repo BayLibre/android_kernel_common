@@ -142,8 +142,7 @@ static void domain_put(struct kvm_hyp_iommu_domain *domain)
 	BUG_ON(!atomic_dec_return_release(&domain->refs));
 }
 
-int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, unsigned long pgd_hva,
-			   unsigned long pgd_size)
+int kvm_iommu_alloc_domain(pkvm_handle_t domain_id)
 {
 	int ret = -EINVAL;
 	struct kvm_hyp_iommu_domain *domain;
@@ -156,7 +155,7 @@ int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, unsigned long pgd_hva,
 	if (atomic_read(&domain->refs))
 		goto out_unlock;
 
-	ret = kvm_iommu_ops->alloc_domain(domain, domain_id, pgd_hva, pgd_size);
+	ret = kvm_iommu_ops->alloc_domain(domain, domain_id);
 	if (ret)
 		goto out_unlock;
 	atomic_set_release(&domain->refs, 1);
