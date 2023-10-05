@@ -123,7 +123,9 @@ static void fuse_free_inode(struct inode *inode)
 
 static void fuse_evict_inode(struct inode *inode)
 {
-	struct fuse_inode *fi = get_fuse_inode(inode);
+	struct fuse_inode *fi;
+
+	fi = get_fuse_inode(inode);
 
 	/* Will write inode on close/munmap and in all other dirtiers */
 	WARN_ON(inode->i_state & I_DIRTY_INODE);
