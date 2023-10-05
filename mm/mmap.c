@@ -1282,6 +1282,33 @@ static inline bool file_mmap_ok(struct file *file, struct inode *inode,
 }
 
 /*
+ * Returns the new length if last page extends past the file size, else 0.
+ *
+ * The new length ensures that we are not hitting invalid file backed faults
+ * past the end of the file.
+ *
+ * Original Length - New Length gives the size of the anon VMA that must be placed
+ * at Addr + New Length to prevent invalid faults.
+ */
+static inline unsigned long file_mmap_partial_page(struct inode *inode,
+								unsigned long pgoff, unsigned long len)
+{
+	// Round up here - we need page count not index in order to
+	// calculate the new length.
+	pgoff_t max_idx = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
+	pgoff_t index = pgoff + (len >> PAGE_SHIFT);
+	unsigned long new_len = 0;
+
+	if (unlikely(index >= max_idx)) {
+		new_len = (max_idx - pgoff)  << PAGE_SHIFT;
+		// pr_err("DEBUG: file_mmap_partial_page: old len = %016lx", len);
+		// pr_err("DEBUG: file_mmap_partial_page: new len = %016lx", new_len);
+	}
+
+	return new_len;
+}
+
+/*
  * The caller must write-lock current->mm->mmap_lock.
  */
 static unsigned long __do_mmap(struct file *file, unsigned long addr,
@@ -1304,7 +1331,6 @@ static unsigned long do_mmap_aligned(struct file *file, unsigned long addr,
 /*
  * The caller must write-lock current->mm->mmap_lock.
  */
-/*
 static unsigned long do_mmap_unaligned(struct file *file, unsigned long addr,
 			unsigned long len, unsigned long prot,
 			unsigned long flags, unsigned long pgoff,
@@ -1312,7 +1338,6 @@ static unsigned long do_mmap_unaligned(struct file *file, unsigned long addr,
 {
 	return __do_mmap(file, addr, len, prot, flags, pgoff, populate, uf, false);
 }
-*/
 
 /*
  * The caller must write-lock current->mm->mmap_lock.
@@ -1323,12 +1348,14 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 			unsigned long *populate, struct list_head *uf,
 			bool is_16k)
 {
+	unsigned long new_len = 0, anon_vma_len = 0, anon_vma_addr = 0;
 	struct mm_struct *mm = current->mm;
 	vm_flags_t vm_flags;
 	int pkey = 0;
 
 	validate_mm(mm);
-	*populate = 0;
+	if (populate)
+		*populate = 0;
 
 	if (!len)
 		return -EINVAL;
@@ -1406,6 +1433,16 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 
 		if (!file_mmap_ok(file, inode, pgoff, len))
 			return -EOVERFLOW;
+
+		if (is_16k) {
+			new_len = file_mmap_partial_page(inode, pgoff, len);
+			if (new_len) {
+				// pr_err("DEBUG: do_mmap: About to mmap past the extent of a file");
+				anon_vma_len = len - new_len;
+				anon_vma_addr = addr + new_len;
+				len = new_len;
+			}
+		}
 
 		flags_mask = LEGACY_MAP_MASK | file->f_op->mmap_supported_flags;
 
@@ -1499,7 +1536,20 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 	if (!IS_ERR_VALUE(addr) &&
 	    ((vm_flags & VM_LOCKED) ||
 	     (flags & (MAP_POPULATE | MAP_NONBLOCK)) == MAP_POPULATE))
-		*populate = len;
+		if (populate)
+			*populate = len;
+
+	if (!anon_vma_addr)
+		return addr;
+
+	// Before we return fix up 16k file map.
+	anon_vma_addr = do_mmap_unaligned(NULL, anon_vma_addr, anon_vma_len, prot,
+								   MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED, 0,
+								   NULL, NULL);
+
+	// if (IS_ERR_VALUE(anon_vma_addr))
+	// 	pr_err("DEBUG: do_mmap: Failed to mmap anon vma to cover file map partial");
+
 	return addr;
 }
 
@@ -3075,6 +3125,12 @@ EXPORT_SYMBOL(vm_munmap);
 SYSCALL_DEFINE2(munmap, unsigned long, addr, size_t, len)
 {
 	addr = untagged_addr(addr);
+	if (addr & ~PAGE_MASK_16K) {
+		pr_err("DEBUG: mumap: addr is not 16KB aligned");
+		return -EINVAL;
+	}
+	// Round up the length
+	len = PAGE_ALIGN_16K(len);
 	profile_munmap(addr);
 	return __vm_munmap(addr, len, true);
 }
