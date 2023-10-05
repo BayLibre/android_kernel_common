@@ -16,6 +16,29 @@
       "message": "Why is this needed at all?\n\nAnd always run checkpatch.pl on your changes please.",
       "revId": "bf9456cb490a3206d84674c24222eff8e0ff5f3f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90dc013f_2dcee816",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-10-05T14:44:36Z",
+      "side": 1,
+      "message": "why this hard-coding of the pci bus type?  Are you sure this is going to be correct for all systems?  If so, why aren\u0027t the needed changes merged upstream properly instead?",
+      "range": {
+        "startLine": 245,
+        "startChar": 3,
+        "endLine": 245,
+        "endChar": 39
+      },
+      "revId": "bf9456cb490a3206d84674c24222eff8e0ff5f3f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
