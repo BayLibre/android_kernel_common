@@ -4,6 +4,7 @@
  * Author: Quentin Perret <qperret@google.com>
  */
 
+#include <linux/debugfs.h>
 #include <linux/init.h>
 #include <linux/initrd.h>
 #include <linux/io.h>
@@ -363,6 +364,30 @@ out_free:
 	}
 }
 
+static int stage2_dump_open(struct inode *inode, struct file *f)
+{
+	f->private_data = inode->i_private;
+
+	return 0;
+}
+
+static ssize_t stage2_dump_write(struct file *f, const char __user *buf,
+			   size_t size, loff_t *pos)
+{
+	pkvm_handle_t handle = (pkvm_handle_t)(unsigned long)f->private_data;
+
+	kvm_call_hyp_nvhe(__pkvm_dump_stage2, handle);
+
+	return size;
+}
+
+static const struct file_operations stage2_dump_fops = {
+	.open = stage2_dump_open,
+	.read = NULL,
+	.write = stage2_dump_write,
+	.llseek = default_llseek,
+};
+
 /*
  * Allocates and donates memory for hypervisor VM structs at EL2.
  *
@@ -381,6 +406,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	size_t pgd_sz;
 	void *pgd;
 	int ret;
+	char str[128];
 
 	if (host_kvm->created_vcpus < 1)
 		return -EINVAL;
@@ -407,6 +433,10 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	handle = ret;
 
 	host_kvm->arch.pkvm.handle = handle;
+	snprintf(str, 127, "pkvm_stage2_dump_%d", handle);
+	host_kvm->arch.pkvm.dump_dentry =
+		debugfs_create_file(str, 0200, NULL, (void *)(unsigned long)handle,
+							 &stage2_dump_fops);
 
 	/* Donate memory for the vcpus at hyp and initialize it. */
 	kvm_for_each_vcpu(idx, host_vcpu, host_kvm) {
@@ -447,6 +477,7 @@ void pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 {
 	mutex_lock(&host_kvm->arch.config_lock);
 	__pkvm_destroy_hyp_vm(host_kvm);
+	debugfs_remove(host_kvm->arch.pkvm.dump_dentry);
 	mutex_unlock(&host_kvm->arch.config_lock);
 }
 
@@ -1064,3 +1095,12 @@ unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages)
 
 	return reclaimed;
 }
+
+static int __init pkvm_host_stage2_dump(void)
+{
+	debugfs_create_file("pkvm_host_stage2", 0200, NULL, NULL,
+			    &stage2_dump_fops);
+
+	return 0;
+}
+late_initcall(pkvm_host_stage2_dump);

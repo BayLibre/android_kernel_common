@@ -23,6 +23,8 @@
 #include <nvhe/modules.h>
 #include <nvhe/pkvm.h>
 
+#include <asm/kvm_hypevents.h>
+
 #define KVM_HOST_S2_FLAGS (KVM_PGTABLE_S2_NOFWB | KVM_PGTABLE_S2_IDMAP)
 
 struct host_mmu host_mmu;
@@ -3006,3 +3008,85 @@ int __pkvm_host_stage2_snapshot(struct kvm_pgtable_snapshot *snap)
 	return ret;
 }
 #endif /* CONFIG_NVHE_EL2_DEBUG */
+
+struct dump_stage2_data {
+	u64 start;
+	u64 nr_ptes;
+	u8 level;
+	u64 attr;
+	bool valid;
+};
+
+static int __dump_stage2_walker(const struct kvm_pgtable_visit_ctx *ctx,
+				enum kvm_pgtable_walk_flags visit)
+{
+	struct dump_stage2_data *data = (struct dump_stage2_data *)ctx->arg;
+	kvm_pte_t pte = *ctx->ptep;
+	u64 start = ctx->addr;
+	u64 attr = pte == KVM_INVALID_PTE_MMIO_NOTE ? pte :
+				      pte & (KVM_PTE_LEAF_ATTR_HI | KVM_PTE_LEAF_ATTR_LO);
+	bool valid = kvm_pte_valid(pte);
+
+	if (!data->nr_ptes)
+		goto new_fragment;
+
+	if (ctx->level != data->level)
+		goto print_fragment;
+
+	if (valid != data->valid)
+		goto print_fragment;
+
+	if (attr != data->attr)
+		goto print_fragment;
+
+	data->nr_ptes++;
+
+	return 0;
+
+print_fragment:
+	trace_stage2_dump(data->start, kvm_granule_size(data->level) * data->nr_ptes,
+			  data->level, data->attr, data->valid);
+new_fragment:
+	data->start = start;
+	data->level = ctx->level;
+	data->nr_ptes = 1;
+	data->attr = attr;
+	data->valid = valid;
+
+	return 0;
+}
+
+static void __pkvm_dump_stage2(struct kvm_pgtable *pgt)
+{
+	struct dump_stage2_data data = {
+		.nr_ptes	= 0,
+	};
+	struct kvm_pgtable_walker walker = {
+		.cb     = __dump_stage2_walker,
+		.flags  = KVM_PGTABLE_WALK_LEAF,
+		.arg    = (void *)&data,
+	};
+
+	kvm_pgtable_walk(pgt, 0, BIT(pgt->ia_bits) - 1, &walker);
+
+	trace_stage2_dump(data.start, kvm_granule_size(data.level) * data.nr_ptes,
+			  data.level, data.attr, data.valid);
+}
+
+void __pkvm_dump_host_stage2(void)
+{
+	host_lock_component();
+	__pkvm_dump_stage2(&host_mmu.pgt);
+	host_unlock_component();
+}
+
+void ___pkvm_dump_guest_stage2(struct pkvm_hyp_vm *hyp_vm)
+{
+	 struct kvm_s2_mmu *mmu;
+
+	 mmu = &hyp_vm->kvm.arch.mmu;
+
+	 guest_lock_component(hyp_vm);
+	 __pkvm_dump_stage2(mmu->pgt);
+	 guest_unlock_component(hyp_vm);
+}

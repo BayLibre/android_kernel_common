@@ -11,6 +11,82 @@
 
 static const char *hyp_printk_fmt_from_id(u8 fmt_id);
 
+enum pkvm_page_state {
+	/* Meta-states which aren't encoded directly in the PTE's SW bits */
+	PKVM_NOPAGE			= BIT(0),
+};
+
+static char __maybe_unused __state[][16] = {
+	{ "OWNED" },
+	{ "SHARED_OWNED" },
+	{ "SHARED_BORROWED" },
+	{ "" },
+};
+
+static char __levels[][4] = {
+	{ "PGD" },
+	{ "PUD" },
+	{ "PMD" },
+	{ "PTE" },
+};
+
+static char __maybe_unused __owner[][16] = {
+	{ "HOST_OWNED" },
+	{ "HYP_OWNED" },
+	{ "FFA_OWNED" },
+	{ "GUEST_OWNED" },
+	{ "MMIO" },
+};
+
+static char __hyp_stage2_str[128];
+
+#define KVM_INVALID_PTE_OWNER_MASK      GENMASK(9, 2)
+#define KVM_SW_BITS			GENMASK(58, 55)
+#define KVM_PTE_LEAF_ATTR_HI_S2_XN      GENMASK(54, 53)
+#define KVM_INVALID_PTE_MMIO_NOTE	BIT(11)
+
+static const char *hyp_stage2_str(u64 start, u64 size, u8 level, u64 attr, bool valid)
+{
+	int cnt = snprintf(__hyp_stage2_str, 127, "0x%016llx-0x%016llx    ", start, start + size);
+	static const char units[] = "KMG";
+	const char *unit = &units[0];
+	char *owner_str = "";
+	unsigned long state;
+	bool contig = false;
+
+	size >>= 10;
+
+	while ((!(size & 1023)) && unit[1]) {
+		size >>= 10;
+		unit++;
+	}
+
+	if (!valid) {
+		int owner_id;
+
+		if (attr == KVM_INVALID_PTE_MMIO_NOTE)
+			owner_id = 4;
+		else
+			owner_id = (attr & KVM_INVALID_PTE_OWNER_MASK) >> 2;
+
+		owner_str = __owner[owner_id];
+		state = 3;
+	} else {
+		state = (attr & KVM_SW_BITS) >> 55;
+		contig = attr & BIT(52);
+	}
+
+	snprintf(__hyp_stage2_str + cnt, 127 - cnt, "\t%llu%c\t%s%s%c%c%c %s\t\t%s",
+		 size, *unit, __levels[level], contig ? " CONT " : "      ",
+		 (valid && attr & BIT(6)) ? 'R' : ' ',
+		 (valid && attr & BIT(7)) ? 'W' : ' ',
+		 (!valid || attr & KVM_PTE_LEAF_ATTR_HI_S2_XN) ? ' ' : 'X',
+		 __state[state],
+		 owner_str);
+
+	return __hyp_stage2_str;
+}
+
 #include <asm/kvm_define_hypevents.h>
 
 extern char __hyp_printk_fmts_start[];

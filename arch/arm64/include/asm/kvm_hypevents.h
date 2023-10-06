@@ -72,6 +72,30 @@ HYP_EVENT(host_mem_abort,
 		  __entry->esr, __entry->addr)
 );
 
+HYP_EVENT(stage2_dump,
+	 HE_PROTO(u64 start, u64 size, u8 level, u64 attr, bool valid),
+	 HE_STRUCT(
+		he_field(u64, start)
+		he_field(u64, size)
+		he_field(u8, level)
+		he_field(u64, attr)
+		he_field(bool, valid)
+	),
+	HE_ASSIGN(
+		__entry->start = start;
+		__entry->size = size;
+		__entry->level = level;
+		__entry->attr = attr;
+		__entry->valid = valid;
+	),
+	HE_PRINTK("%s", hyp_stage2_str(__entry->start,
+					   __entry->size,
+					   __entry->level,
+					   __entry->attr,
+					   __entry->valid)
+	)
+);
+
 HYP_EVENT(__hyp_printk,
 	HE_PROTO(const char *fmt, u64 a, u64 b, u64 c, u64 d),
 	HE_STRUCT(

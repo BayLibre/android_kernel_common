@@ -1883,3 +1883,17 @@ int pkvm_stage2_snapshot_by_handle(struct kvm_pgtable_snapshot *snap_hva,
 	return ret;
 }
 #endif /* CONFIG_NVHE_EL2_DEBUG */
+
+void ___pkvm_dump_guest_stage2(struct pkvm_hyp_vm *hyp_vm);
+
+void __pkvm_dump_guest_stage2(pkvm_handle_t handle)
+{
+	struct pkvm_hyp_vm *hyp_vm;
+
+	hyp_read_lock(&vm_table_lock);
+	hyp_vm = get_vm_by_handle(handle);
+	hyp_read_unlock(&vm_table_lock);
+
+	if (hyp_vm)
+		___pkvm_dump_guest_stage2(hyp_vm);
+}
