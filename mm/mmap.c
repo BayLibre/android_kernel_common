@@ -1349,6 +1349,7 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 			bool is_16k)
 {
 	unsigned long new_len = 0, anon_vma_len = 0, anon_vma_addr = 0;
+	struct anon_vma_name *anon_name = NULL;
 	struct mm_struct *mm = current->mm;
 	vm_flags_t vm_flags;
 	int pkey = 0;
@@ -1547,7 +1548,13 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 								   MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED, 0,
 								   NULL, NULL);
 
-	// if (IS_ERR_VALUE(anon_vma_addr))
+	if (!IS_ERR_VALUE(anon_vma_addr)) {
+		anon_name = anon_vma_name_alloc("filemap_fixup_16k");
+		if (!anon_name)
+			return -ENOMEM;
+
+		madvise_set_anon_name(mm, anon_vma_addr, anon_vma_len, anon_name);
+	}
 	// 	pr_err("DEBUG: do_mmap: Failed to mmap anon vma to cover file map partial");
 
 	return addr;
