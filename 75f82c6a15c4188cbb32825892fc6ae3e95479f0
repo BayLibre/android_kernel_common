@@ -88,6 +88,24 @@
       "parentUuid": "7b889c38_ef0a929f",
       "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ccd2ca_95028d52",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1554,
+      "author": {
+        "id": 2037920
+      },
+      "writtenOn": "2023-10-07T01:43:00Z",
+      "side": 0,
+      "message": "The cdev (cdev \u003d get_gadget_data(gadget)) could be NULL if another thread calls set_gadget_data(gadget, NULL).  However, if cdev is NULL, we will return it with the following code：\nif (!cdev)\n    return 0;\nAfter the 1551 line of \"return 0\", we  didn\u0027t get the cdev again through the get_gadget_data(gadget), therefore the cdev will not be changed to NULL.",
+      "parentUuid": "23cba283_f5adee12",
+      "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
