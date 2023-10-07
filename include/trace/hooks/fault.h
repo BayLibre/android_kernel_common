@@ -30,6 +30,10 @@ DECLARE_HOOK(android_vh_handle_tlb_conf,
 	TP_PROTO(unsigned long addr, unsigned int esr, int *ret),
 	TP_ARGS(addr, esr, ret));
 
+DECLARE_HOOK(android_vh_show_reg,
+	TP_PROTO(struct pt_regs *regs),
+	TP_ARGS(regs));
+
 #endif /* _TRACE_HOOK_FAULT_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>

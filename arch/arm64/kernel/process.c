@@ -43,6 +43,7 @@
 #include <linux/stacktrace.h>
 #include <trace/hooks/fpsimd.h>
 #include <trace/hooks/mpam.h>
+#include <trace/hooks/fault.h>
 
 #include <asm/alternative.h>
 #include <asm/compat.h>
@@ -241,6 +242,8 @@ void __show_regs(struct pt_regs *regs)
 
 		pr_cont("\n");
 	}
+
+	trace_android_vh_show_reg(regs);
 }
 
 void show_regs(struct pt_regs *regs)
