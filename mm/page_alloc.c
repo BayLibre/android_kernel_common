@@ -79,6 +79,7 @@
 #include <asm/sections.h>
 #include <asm/tlbflush.h>
 #include <asm/div64.h>
+#include <trace/hooks/mm.h>
 #include "internal.h"
 #include "shuffle.h"
 #include "page_reporting.h"
@@ -1783,6 +1784,7 @@ static void __free_pages_ok(struct page *page, unsigned int order,
 	spin_unlock_irqrestore(&zone->lock, flags);
 
 	__count_vm_events(PGFREE, 1 << order);
+	trace_android_vh_free_pages_ok(page, order);
 }
 
 void __free_pages_core(struct page *page, unsigned int order)
@@ -3533,6 +3535,7 @@ static bool free_unref_page_prepare(struct page *page, unsigned long pfn,
 
 	migratetype = get_pfnblock_migratetype(page, pfn);
 	set_pcppage_migratetype(page, migratetype);
+	trace_android_vh_free_unref_page_prepare(page, order);
 	return true;
 }
 
