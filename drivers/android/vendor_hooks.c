@@ -460,6 +460,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_page_migrating);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_urb_suitable_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_mmio_read_entry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_mmio_read_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_mmio_write_entry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_mmio_write_exit);
 /*
  * For type visibility
  */
