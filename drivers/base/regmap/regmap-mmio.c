@@ -10,6 +10,7 @@
 #include <linux/module.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
+#include <trace/hooks/regmap.h>
 
 #include "internal.h"
 
@@ -145,6 +146,7 @@ static int regmap_mmio_write(void *context, unsigned int reg, unsigned int val)
 {
 	struct regmap_mmio_context *ctx = context;
 	int ret;
+	unsigned long flag;
 
 	if (!IS_ERR(ctx->clk)) {
 		ret = clk_enable(ctx->clk);
@@ -152,7 +154,9 @@ static int regmap_mmio_write(void *context, unsigned int reg, unsigned int val)
 			return ret;
 	}
 
+	trace_android_vh_regmap_mmio_write_entry(ctx, reg, val, &flag);
 	ctx->reg_write(ctx, reg, val);
+	trace_android_vh_regmap_mmio_write_exit(ctx, reg, val, &flag);
 
 	if (!IS_ERR(ctx->clk))
 		clk_disable(ctx->clk);
@@ -226,6 +230,7 @@ static int regmap_mmio_read(void *context, unsigned int reg, unsigned int *val)
 {
 	struct regmap_mmio_context *ctx = context;
 	int ret;
+	unsigned long flag;
 
 	if (!IS_ERR(ctx->clk)) {
 		ret = clk_enable(ctx->clk);
@@ -233,7 +238,9 @@ static int regmap_mmio_read(void *context, unsigned int reg, unsigned int *val)
 			return ret;
 	}
 
+	trace_android_vh_regmap_mmio_read_entry(ctx, reg, *val, &flag);
 	*val = ctx->reg_read(ctx, reg);
+	trace_android_vh_regmap_mmio_read_exit(ctx, reg, *val,  &flag);
 
 	if (!IS_ERR(ctx->clk))
 		clk_disable(ctx->clk);
