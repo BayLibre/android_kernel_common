@@ -29,6 +29,7 @@ extmod_suffix := $(shell echo "${KBUILD_EXTMOD}" | md5sum | cut -d " " -f 1)
 modules += $(dst)/modules.order.$(extmod_suffix)
 endif
 
+
 __modinst: $(modules)
 	@:
 
@@ -39,7 +40,7 @@ quiet_cmd_none =
 # Installation
 #
 quiet_cmd_install = INSTALL $@
-      cmd_install = mkdir -p $(dir $@); cp $< $@
+      cmd_install = mkdir -p $(dir $@); cp $< $@;
 
 # Strip
 #
@@ -85,6 +86,10 @@ $(dst)/%.ko: $(extmod_prefix)%.ko FORCE
 	$(call cmd,install)
 	$(call cmd,strip)
 	$(call cmd,sign)
+
+$(dst)/%.gb: $(extmod_prefix)%.gb FORCE
+	$(Q)mkdir -p $(dir $@)
+	$(Q)cp $< $@
 
 ifneq ($(KBUILD_EXTMOD),)
 $(dst)/modules.order.$(extmod_suffix): $(MODORDER) FORCE
