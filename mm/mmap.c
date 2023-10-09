@@ -1225,10 +1225,10 @@ struct anon_vma *find_mergeable_anon_vma(struct vm_area_struct *vma)
  */
 static inline unsigned long round_hint_to_min(unsigned long hint)
 {
-	hint &= PAGE_MASK;
+	hint &= PAGE_MASK_16K;
 	if (((void *)hint != NULL) &&
 	    (hint < mmap_min_addr))
-		return PAGE_ALIGN(mmap_min_addr);
+		return PAGE_ALIGN_16K(mmap_min_addr);
 	return hint;
 }
 
@@ -1402,6 +1402,8 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 	addr = get_unmapped_area(file, addr, len, pgoff, flags);
 	if (IS_ERR_VALUE(addr))
 		return addr;
+
+	BUG_ON(is_16k && !PAGE_ALIGNED_16K(addr));
 
 	if (flags & MAP_FIXED_NOREPLACE) {
 		if (find_vma_intersection(mm, addr, addr + len))
@@ -3132,10 +3134,8 @@ EXPORT_SYMBOL(vm_munmap);
 SYSCALL_DEFINE2(munmap, unsigned long, addr, size_t, len)
 {
 	addr = untagged_addr(addr);
-	if (addr & ~PAGE_MASK_16K) {
-		pr_err("DEBUG: mumap: addr is not 16KB aligned");
-		return -EINVAL;
-	}
+	BUG_ON(!PAGE_ALIGNED_16K(addr));
+
 	// Round up the length
 	len = PAGE_ALIGN_16K(len);
 	profile_munmap(addr);
