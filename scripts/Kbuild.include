@@ -75,6 +75,12 @@ endef
 build := -f $(srctree)/scripts/Makefile.build obj
 
 ###
+# Shorthand for $(Q)$(MAKE) -f scripts/Makefile.cbmc obj=
+# Usage:
+# $(Q)$(MAKE) $(cbmc-build)=dir
+cbmc-build := -f $(srctree)/scripts/Makefile.cbmc obj
+
+###
 # Shorthand for $(Q)$(MAKE) -f scripts/Makefile.dtbinst obj=
 # Usage:
 # $(Q)$(MAKE) $(dtbinst)=dir
