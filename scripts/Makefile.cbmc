@@ -1,0 +1,80 @@
+src := $(obj)
+
+PHONY := __build
+__build:
+
+obj-y :=
+obj-m :=
+lib-y :=
+lib-m :=
+always :=
+always-y :=
+always-m :=
+targets :=
+subdir-y :=
+subdir-m :=
+EXTRA_AFLAGS   :=
+EXTRA_CFLAGS   :=
+EXTRA_CPPFLAGS :=
+EXTRA_LDFLAGS  :=
+asflags-y  :=
+ccflags-y  :=
+cppflags-y :=
+ldflags-y  :=
+
+subdir-asflags-y :=
+subdir-ccflags-y :=
+
+include scripts/Kbuild.include
+
+# The filename Kbuild has precedence over Makefile
+kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild),$(kbuild-dir)/Kbuild,$(kbuild-dir)/Makefile)
+
+CONFIG_CBMC :=m
+include $(kbuild-file)
+
+include scripts/Makefile.lib
+
+obj-gb := $(patsubst %.o,%.gb,$(obj-m))
+multi-obj-gb := $(patsubst %.o,%.gb,$(multi-obj-ym))
+
+PHONY += FORCE
+FORCE:
+
+c_flags := $(subst -ftrivial-auto-var-init=zero,,$(c_flags))
+c_flags := $(filter-out -Werror%,$(c_flags))
+%.gb: %.c
+	$(Q)mkdir -p $(dir $@)
+	$(GOTOCC) --native-compiler $(CC) $(c_flags) -DCONFIG_CBMC=1 -c -o $@ $<
+
+# Useful for describing the dependency of composite objects. From Makefile.lib
+# Usage:
+#   $(call multi_depend_gb, multi_used_targets, suffix_to_remove, suffix_to_add)
+define multi_depend_gb
+$(foreach m, $(notdir $1), \
+$(eval $(obj)/$m: $(addprefix $(obj)/, $(patsubst %.o,%.gb,$(foreach s, $3, $($(m:%$(strip $2)=%$(s)))))))
+)
+endef
+$(call multi_depend_gb, $(multi-obj-gb), .gb, -objs -y -m)
+multi-obj-gb-target := $(addprefix $(obj)/,$(multi-obj-gb))
+$(multi-obj-gb-target):
+	$(Q)$(GOTOCC) -o $@ $^
+
+$(subdir-ym): FORCE
+	$(Q)$(MAKE) $(cbmc-build)=$@
+
+$(obj)/modules.order: $(obj-gb) FORCE
+	@for module in $^; do \
+		if [ "$$module" != "FORCE" ]; then \
+			echo $$module; \
+		fi; \
+	done | sort | uniq >> $@.temp
+	@cat $@ >> $@.temp
+	@sort $@.temp | uniq > $@
+	@rm $@.temp
+
+
+__build: $(obj-gb) $(subdir-ym) $(obj)/modules.order
+
+.PHONY: $(PHONY)

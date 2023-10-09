@@ -469,6 +469,7 @@ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
 
 # Make variables (CC, etc...)
 CPP		= $(CC) -E
+GOTOCC  = /usr/bin/goto-cc
 ifneq ($(LLVM),)
 CC		= clang
 LD		= ld.lld
@@ -553,7 +554,7 @@ KBUILD_LDFLAGS :=
 CLANG_FLAGS :=
 
 export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
-export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL GOTOCC
 export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
 export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
 export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
@@ -1865,12 +1866,16 @@ endif # KBUILD_EXTMOD
 # ---------------------------------------------------------------------------
 # Modules
 
-PHONY += modules modules_install
+PHONY += modules modules_install cbmc
 
 ifdef CONFIG_MODULES
 
 modules: modules_check
 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modpost
+
+cbmc: FORCE
+	$(Q)$(MAKE) $(cbmc-build)=$(KBUILD_EXTMOD)
+
 
 PHONY += modules_check
 modules_check: $(MODORDER)
