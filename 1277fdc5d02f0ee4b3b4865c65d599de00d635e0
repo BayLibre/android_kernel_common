@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e768522_185af916",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-10-09T18:18:51Z",
+      "side": 1,
+      "message": "If this is just for debugging, why is it needed in the GKI kernel? You can build your own custom kernel for debugging.\n\nPlease add more about how this is used and explain why it is needed in production kernels.",
+      "revId": "1277fdc5d02f0ee4b3b4865c65d599de00d635e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c53a710_1fabd0f2",
+        "filename": "drivers/base/regmap/regmap-mmio.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-10-09T18:18:51Z",
+      "side": 1,
+      "message": "why is this called \"flag\"? Seems like it should be a bool if it is a single flag.",
+      "revId": "1277fdc5d02f0ee4b3b4865c65d599de00d635e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
