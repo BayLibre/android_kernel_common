@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42318e1b_12c4640c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-10-09T22:52:33Z",
+      "side": 1,
+      "message": "This needs a proper commit message for folks to better evaluate it.\n\nTry to answer:\n1) What is lacking with the state of the current kernel and current static analysis tools (sparse)\n2) What benefits does CBMC bring to the kernel. \n3) Simple example of how to use it",
+      "revId": "5814f02505199ae618cb9866541493f9a37066a3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "561077d6_84c7584c",
         "filename": "Makefile",
         "patchSetId": 1
@@ -14,6 +31,23 @@
       "writtenOn": "2023-10-09T22:51:26Z",
       "side": 1,
       "message": "Indentation seems inconsistent",
+      "revId": "5814f02505199ae618cb9866541493f9a37066a3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da79cbf8_b63ac7a4",
+        "filename": "Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-10-09T22:52:33Z",
+      "side": 1,
+      "message": "Apologies, I\u0027m not familiar with goto-cc. \n\nIs this a common tool one can easily find in existing distros (fedora, debian, etc)?\n\nUpstream can sometimes be hesitant to add new build dependencies, so do be sure things degrade gracefully (not breaking normal builds) if that tool is missing.",
       "revId": "5814f02505199ae618cb9866541493f9a37066a3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
