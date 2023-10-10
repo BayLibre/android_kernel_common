@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f56ed0d4_1963294c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-10T15:10:01Z",
+      "side": 1,
+      "message": "https://lore.kernel.org/linux-iommu/cover.1696253096.git.robin.murphy@arm.com/#t series adds support for SMMUv2 and SMMUv3 (any IOMMUS infact) co-existence. However, backporting (FROMLIST) those patches to GKI frozen is a nightmare. Happy to be proven wrong :-)\n\nSo, we thought of going with a vendor hook for now in 6.1 kernel. We monitor this series and if it merges in linus, we will backport it to next android kernel (6.6?) so that this vendor hook is not needed anymore.",
+      "parentUuid": "74f29ce6_d8e00f9f",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63b428a4_061f00a7",
         "filename": "drivers/iommu/iommu.c",
         "patchSetId": 6
