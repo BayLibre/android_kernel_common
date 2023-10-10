@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4e2ee0d_1454752a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-10-10T08:46:34Z",
+      "side": 1,
+      "message": "Please break this up into smaller patches, and provide proper documentation for why all of these hooks are needed and where your upstream patches are proposed so that you will not need the hooks in the future.",
+      "revId": "62b2fe6635e77109f634a9ec4968c8f3d8e2f464",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4ddf253_2dd5d1a1",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-10-10T08:46:34Z",
+      "side": 1,
+      "message": "I do not think hooks in an inline function will work properly, have you tested this?",
+      "range": {
+        "startLine": 324,
+        "startChar": 1,
+        "endLine": 324,
+        "endChar": 37
+      },
+      "revId": "62b2fe6635e77109f634a9ec4968c8f3d8e2f464",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
