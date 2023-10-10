@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b428a4_061f00a7",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1180085
+      },
+      "writtenOn": "2023-10-10T12:21:18Z",
+      "side": 1,
+      "message": "Does it need to be this complex?\n\nshould not the below be sufficient. The vendor side, we can implement the iommu device and bus type compatibility check.\n\ndiff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c\nindex fc7286d801db..a4da6d111586 100644\n--- a/drivers/iommu/iommu.c\n+++ b/drivers/iommu/iommu.c\n@@ -235,6 +235,11 @@ int iommu_device_register(struct iommu_device *iommu,\n        spin_unlock(\u0026iommu_device_lock);\n\n        for (int i \u003d 0; i \u003c ARRAY_SIZE(iommu_buses) \u0026\u0026 !err; i++) {\n+               bool skip \u003d false;\n+\n+               trace_android_vh_bus_iommu_probe(iommu, iommu_buses[i], \u0026skip);\n+               if (skip)\n+                       continue;\n                iommu_buses[i]-\u003eiommu_ops \u003d ops;\n                err \u003d bus_iommu_probe(iommu_buses[i]);\n        }",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
