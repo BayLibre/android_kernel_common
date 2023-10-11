@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000055867777",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2784147?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "d8e2c3e2_7243525b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-10-11T09:19:00Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/9af8bb2afea3705b58fe930f97a39322f46e5b8b) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d9af8bb2afea3705b58fe930f97a39322f46e5b8b)\n\n```\n      ## net/netfilter/nf_tables_api.c ##\n     @@ net/netfilter/nf_tables_api.c: static int nft_flush_table(struct nft_ctx *ctx)\n    @@ net/netfilter/nf_tables_api.c: static int nf_tables_delrule(struct sk_buff *skb,\n      \t\t\t\tcontinue;\n      \n      \t\t\tctx.chain \u003d chain;\n    -@@ net/netfilter/nf_tables_api.c: static void __nft_release_table(struct net *net, struct nft_table *table)\n    - \tctx.family \u003d table-\u003efamily;\n    - \tctx.table \u003d table;\n    - \tlist_for_each_entry(chain, \u0026table-\u003echains, list) {\n    --\t\tif (nft_chain_is_bound(chain))\n    -+\t\tif (nft_chain_binding(chain))\n    - \t\t\tcontinue;\n    - \n    - \t\tctx.chain \u003d chain;\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 572220614 android-build.ayeaye-python-dispatcher_20231010.04_p0",
+      "revId": "0973d792be448addac3988320065be4d039e13d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
