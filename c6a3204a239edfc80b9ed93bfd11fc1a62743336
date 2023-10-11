@@ -52,6 +52,41 @@
       "parentUuid": "d15935fc_9d66c6e1",
       "revId": "c6a3204a239edfc80b9ed93bfd11fc1a62743336",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41f8da23_10088a19",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-10-11T16:02:01Z",
+      "side": 1,
+      "message": "See comments on aosp/2781348. When you cherry-pick, you need to make sure the Change-Id matches the original patch (which it would if \"git cherry-pick\" were used. \n\nAlso, please abandon this patch and any others that are obsolete now that you are cherry-picking patches from other branches.",
+      "parentUuid": "855b11cb_4cc47bfd",
+      "revId": "c6a3204a239edfc80b9ed93bfd11fc1a62743336",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29fc4986_1b9e42ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-10-11T16:02:01Z",
+      "side": 1,
+      "message": "Abandon? Being replaced by another cherry-pick?",
+      "revId": "c6a3204a239edfc80b9ed93bfd11fc1a62743336",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
