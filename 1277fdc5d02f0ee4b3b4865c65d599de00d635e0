@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abff20e1_faef02a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2054259
+      },
+      "writtenOn": "2023-10-11T06:11:44Z",
+      "side": 1,
+      "message": "Many times the bus hang due to accessing registers of peripherals that clk, power, etc. may not be configured correctly or are not allowed to be accessed. Therefore, we need to log entry and exit of register accesses to solve such problems.\n\nWe would like to support this functionality while following the GKI guidelines.",
+      "parentUuid": "8e768522_185af916",
+      "revId": "1277fdc5d02f0ee4b3b4865c65d599de00d635e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c53a710_1fabd0f2",
         "filename": "drivers/base/regmap/regmap-mmio.c",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-09T18:18:51Z",
       "side": 1,
       "message": "why is this called \"flag\"? Seems like it should be a bool if it is a single flag.",
+      "revId": "1277fdc5d02f0ee4b3b4865c65d599de00d635e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2692e243_1059f8ef",
+        "filename": "drivers/base/regmap/regmap-mmio.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 2054259
+      },
+      "writtenOn": "2023-10-11T06:11:44Z",
+      "side": 1,
+      "message": "This is a temporary data, we need to save a temporary data on entry to use on exit.",
+      "parentUuid": "4c53a710_1fabd0f2",
       "revId": "1277fdc5d02f0ee4b3b4865c65d599de00d635e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
