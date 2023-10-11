@@ -1729,7 +1729,7 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
 	MA_STATE(mas, &current->mm->mm_mt, 0, 0);
 
 	/* Adjust search length to account for worst case alignment overhead */
-	length = info->length + info->align_mask;
+	length = info->length + info->align_mask + (3 << PAGE_SHIFT);
 	if (length < info->length)
 		return -ENOMEM;
 
@@ -1756,7 +1756,7 @@ retry:
 		}
 	}
 
-	return gap;
+	return PAGE_ALIGN_16K(gap);
 }
 
 /**
@@ -1776,7 +1776,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
 
 	MA_STATE(mas, &current->mm->mm_mt, 0, 0);
 	/* Adjust search length to account for worst case alignment overhead */
-	length = info->length + info->align_mask;
+	length = info->length + info->align_mask + (3 << PAGE_SHIFT);
 	if (length < info->length)
 		return -ENOMEM;
 
@@ -1805,7 +1805,7 @@ retry:
 		}
 	}
 
-	return gap;
+	return PAGE_ALIGN_16K(gap);
 }
 
 /*
