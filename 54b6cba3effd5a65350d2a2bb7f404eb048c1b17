@@ -38,6 +38,91 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89759f64_cfe58db9",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-11T01:13:30Z",
+      "side": 1,
+      "message": "All this code is duplicated from iommu_device_register(). do you want to fix that?",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "937cea32_6a54149c",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-11T01:13:30Z",
+      "side": 1,
+      "message": "why are we allocating the whole bus structure here and freeing it at all?",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997a0e00_decf1064",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-11T01:13:30Z",
+      "side": 1,
+      "message": "This vendor hook essentially needs to give bus name as output? why not simply do\nchar bus_name[32] and pass it to vendor hook. The strncmp len argument should be 32 in that case.",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0664122c_b8de24ce",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-11T01:13:30Z",
+      "side": 1,
+      "message": "so there is just one bus one can opt in? what if there is a driver that needs more than 1 bus? I know this is what we want in which case it needs to go in vendor side logic, IMO",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "015072ab_0c3435cb",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-11T01:13:30Z",
+      "side": 1,
+      "message": "what happens when the first IOMMU  (in our case SMMU v2) calls iommu_device_register() without registering vendor hook. We attach this IOMMU to PCI bus as well. Then we end up calling bus_iommu_probe() and iterating over all PCI devices. \n\nThen when 2nd IOMMU (SMMU v3) registers now we override the PCI bus ops to 2nd IOMMU and iterate over all devices. \n\nI understand that it works. But that may break later. IMO, we should PCI bus_iommu_probe() it self from SMMU v2",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63b428a4_061f00a7",
         "filename": "drivers/iommu/iommu.c",
         "patchSetId": 6
@@ -67,6 +152,24 @@
       "side": 1,
       "message": "sorry, I have replied from my personal account before. copy/pasting the same comment here with my corp account.\n\nIn vendor code, we can implement the compatibility check\n\n```\ndiff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c\nindex fc7286d801db..a4da6d111586 100644\n--- a/drivers/iommu/iommu.c\n+++ b/drivers/iommu/iommu.c\n@@ -235,6 +235,11 @@ int iommu_device_register(struct iommu_device *iommu,\n        spin_unlock(\u0026iommu_device_lock);\n\n        for (int i \u003d 0; i \u003c ARRAY_SIZE(iommu_buses) \u0026\u0026 !err; i++) {\n+               bool skip \u003d false;\n+\n+               trace_android_vh_bus_iommu_probe(iommu, iommu_buses[i], \u0026skip);\n+               if (skip)\n+                       continue;\n                iommu_buses[i]-\u003eiommu_ops \u003d ops;\n                err \u003d bus_iommu_probe(iommu_buses[i]);\n        }\n```",
       "parentUuid": "63b428a4_061f00a7",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac8d7e8_5f4c5820",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1851199
+      },
+      "writtenOn": "2023-10-11T01:13:30Z",
+      "side": 1,
+      "message": "you would also need this to skip the EBUSY check.\n\n```\ndiff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c\nindex fc7286d801db..0e119e91ae57 100644\n--- a/drivers/iommu/iommu.c\n+++ b/drivers/iommu/iommu.c\n@@ -222,8 +222,12 @@ int iommu_device_register(struct iommu_device *iommu,\n         * Temporarily enforce global restriction to a single driver. This was\n         * already the de-facto behaviour, since any possible combination of\n         * existing drivers would compete for at least the PCI or platform bus.\n+        *\n+        * Don\u0027t enforce this restriction when vendor driver register a hook\n+        * to specify which IOMMU is compatible with which bus.\n         */\n-       if (iommu_buses[0]-\u003eiommu_ops \u0026\u0026 iommu_buses[0]-\u003eiommu_ops !\u003d ops)\n+       if (iommu_buses[0]-\u003eiommu_ops \u0026\u0026 iommu_buses[0]-\u003eiommu_ops !\u003d ops \u0026\u0026\n+                       !trace_android_vh_bus_iommu_probe_enabled())\n                return -EBUSY;\n\n        iommu-\u003eops \u003d ops;\n```",
+      "parentUuid": "3f2d804a_cbab36c3",
       "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
