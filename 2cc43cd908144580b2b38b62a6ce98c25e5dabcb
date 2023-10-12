@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29c64bcd_d7286def",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-10-12T17:28:08Z",
+      "side": 1,
+      "message": "Can\u0027t you use the existing TRACE_MMIO_ACCESS mechanism which is already in all the GKI kernels? See the series at aosp/1890078. This mechanism defines tracepoints at a lower level than `ctx-\u003ereg_write()`, but you can still attach to the tracepoints and achieve the same thing.",
+      "revId": "2cc43cd908144580b2b38b62a6ce98c25e5dabcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
