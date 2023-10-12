@@ -33,6 +33,24 @@
       "message": "Please fix the driver which is asking for the allocation with those flags, that should be easier than attempting to hook all allocations and slowing down the path for all users.",
       "revId": "fb88c44fb0a6613af86a1dceee17e57c1eb15e20",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aef74684_52a3a801",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2023-10-12T11:40:41Z",
+      "side": 1,
+      "message": "hi, sir\nlet me explain why.\n\n1 the user only pass parameter size and gfp_flags once. if we mask the __GFP_RECLAIM, we can\u0027t distinguish high-order and low-order, they all will not rise reclaim behavior, it\u0027s wrong.\n\n2 in __iommu_dma_alloc_pages，there is a loop to try to alloc pages from high-order to low-order fallback, and we add hook to only change the high-order( \u003e costly order) alloc behavior(which will result more overhead than benifit). \nwhich allow low order alloc to do reclaim behavior still, otherwise may end up with alloc fail.\n\n3 in android ION(drivers/dma-buf/heaps/system_heap.c )\nthere is same logic, high-order alloc will not do reclaim behavior.\n#define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO | __GFP_COMP)\n#define MID_ORDER_GFP (LOW_ORDER_GFP | __GFP_NOWARN)\n#define HIGH_ORDER_GFP  (((GFP_HIGHUSER | __GFP_ZERO | __GFP_NOWARN \\\n \t\t\t\t| __GFP_NORETRY) \u0026 ~__GFP_RECLAIM) \\\n\t\t\t\t| __GFP_COMP)\nstatic gfp_t order_flags[] \u003d {HIGH_ORDER_GFP, MID_ORDER_GFP, LOW_ORDER_GFP};\n\n\nanyway, if you have a better solution, let we discuss, thanks.",
+      "parentUuid": "2280c456_01cf2335",
+      "revId": "fb88c44fb0a6613af86a1dceee17e57c1eb15e20",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
