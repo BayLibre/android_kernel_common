@@ -124,6 +124,24 @@
       "parentUuid": "22ccd2ca_95028d52",
       "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df17a684_ec0c7e8d",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1554,
+      "author": {
+        "id": 1590325
+      },
+      "writtenOn": "2023-10-12T06:04:01Z",
+      "side": 0,
+      "message": "The cdev is not null here but (cdev \u003d get_gadget_data(gadget)) in composite_setup() will be NULL.",
+      "parentUuid": "435da84e_32fdc7e3",
+      "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
