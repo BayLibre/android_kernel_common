@@ -186,14 +186,12 @@ static bool backing_data_changed(struct fuse_inode *fi, struct dentry *entry,
 	int err;
 	bool ret = true;
 
-	if (!entry) {
+	if (!entry || !fi->backing_inode) {
 		ret = false;
 		goto put_backing_file;
 	}
 
 	get_fuse_backing_path(entry, &new_backing_path);
-	new_backing_inode = fi->backing_inode;
-	ihold(new_backing_inode);
 
 	err = fuse_handle_backing(bpf_arg, &new_backing_inode, &new_backing_path);
 
