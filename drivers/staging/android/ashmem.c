@@ -390,7 +390,7 @@ static int ashmem_mmap(struct file *file, struct vm_area_struct *vma)
 	}
 
 	/* requested mapping size larger than object size */
-	if (vma->vm_end - vma->vm_start > PAGE_ALIGN(asma->size)) {
+	if (vma->vm_end - vma->vm_start > PAGE_ALIGN_16K(asma->size)) {
 		ret = -EINVAL;
 		goto out;
 	}

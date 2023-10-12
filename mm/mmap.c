@@ -1281,6 +1281,8 @@ static inline bool file_mmap_ok(struct file *file, struct inode *inode,
 	return true;
 }
 
+extern int is_ashmem_file(struct file *file);
+
 /*
  * Returns the new length if last page extends past the file size, else 0.
  *
@@ -1290,20 +1292,24 @@ static inline bool file_mmap_ok(struct file *file, struct inode *inode,
  * Original Length - New Length gives the size of the anon VMA that must be placed
  * at Addr + New Length to prevent invalid faults.
  */
-static inline unsigned long file_mmap_partial_page(struct inode *inode,
+static inline unsigned long file_mmap_partial_page(struct file *file, struct inode *inode,
 								unsigned long pgoff, unsigned long len)
 {
 	// Round up here - we need page count not index in order to
 	// calculate the new length.
+	unsigned long file_size = (unsigned long) i_size_read(inode);
 	pgoff_t max_idx = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
 	pgoff_t index = pgoff + (len >> PAGE_SHIFT);
 	unsigned long new_len = 0;
 
-	if (unlikely(index >= max_idx)) {
+	/*
+	 * This is a special file, we can't handle it, fault back to default behavior or die.
+	 */
+	if (is_ashmem_file(file) || shmem_file(file) || file_size == 0)
+		return new_len;
+
+	if (unlikely(index >= max_idx))
 		new_len = (max_idx - pgoff)  << PAGE_SHIFT;
-		// pr_err("DEBUG: file_mmap_partial_page: old len = %016lx", len);
-		// pr_err("DEBUG: file_mmap_partial_page: new len = %016lx", new_len);
-	}
 
 	return new_len;
 }
@@ -1353,6 +1359,7 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 	struct mm_struct *mm = current->mm;
 	vm_flags_t vm_flags;
 	int pkey = 0;
+	struct vm_area_struct *vma = NULL;
 
 	validate_mm(mm);
 	if (populate)
@@ -1438,9 +1445,8 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 			return -EOVERFLOW;
 
 		if (is_16k) {
-			new_len = file_mmap_partial_page(inode, pgoff, len);
+			new_len = file_mmap_partial_page(file, inode, pgoff, len);
 			if (new_len) {
-				// pr_err("DEBUG: do_mmap: About to mmap past the extent of a file");
 				anon_vma_len = len - new_len;
 				anon_vma_addr = addr + new_len;
 				len = new_len;
@@ -1545,6 +1551,13 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 	if (!anon_vma_addr)
 		return addr;
 
+	vma = find_vma(mm, addr);
+
+	BUG_ON(!vma);
+
+	if (vma->vm_ops->fault != filemap_fault)
+		return addr;
+
 	// Before we return fix up 16k file map.
 	anon_vma_addr = do_mmap_unaligned(NULL, anon_vma_addr, anon_vma_len, prot,
 								   MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED, 0,
@@ -1557,7 +1570,6 @@ static unsigned long __do_mmap(struct file *file, unsigned long addr,
 
 		madvise_set_anon_name(mm, anon_vma_addr, anon_vma_len, anon_name);
 	}
-	// 	pr_err("DEBUG: do_mmap: Failed to mmap anon vma to cover file map partial");
 
 	return addr;
 }
