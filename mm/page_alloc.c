@@ -406,9 +406,11 @@ compound_page_dtor * const compound_page_dtors[NR_COMPOUND_DTORS] = {
 };
 
 int min_free_kbytes = 1024;
+EXPORT_SYMBOL_GPL(min_free_kbytes);
 int user_min_free_kbytes = -1;
 int watermark_boost_factor __read_mostly = 15000;
 int watermark_scale_factor = 10;
+EXPORT_SYMBOL_GPL(watermark_scale_factor);
 
 static unsigned long nr_kernel_pages __initdata;
 static unsigned long nr_all_pages __initdata;
@@ -8952,6 +8954,7 @@ void setup_per_zone_wmarks(void)
 	for_each_zone(zone)
 		zone_pcp_update(zone, 0);
 }
+EXPORT_SYMBOL_GPL(setup_per_zone_wmarks);
 
 /*
  * Initialise min_free_kbytes.
