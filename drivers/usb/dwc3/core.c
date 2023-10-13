@@ -741,6 +741,7 @@ static void dwc3_core_exit(struct dwc3 *dwc)
 
 	usb_phy_shutdown(dwc->usb2_phy);
 	usb_phy_shutdown(dwc->usb3_phy);
+	pr_err("[Ray] %s(%d): USB phy exit\n", __func__, __LINE__);
 	phy_exit(dwc->usb2_generic_phy);
 	phy_exit(dwc->usb3_generic_phy);
 
@@ -1021,6 +1022,7 @@ static int dwc3_core_init(struct dwc3 *dwc)
 
 	usb_phy_init(dwc->usb2_phy);
 	usb_phy_init(dwc->usb3_phy);
+	pr_err("[Ray] %s: USB phy init\n", __func__);
 	ret = phy_init(dwc->usb2_generic_phy);
 	if (ret < 0)
 		goto err0a;
@@ -1211,6 +1213,7 @@ err2:
 err1:
 	usb_phy_shutdown(dwc->usb2_phy);
 	usb_phy_shutdown(dwc->usb3_phy);
+	pr_err("[Ray] %s(%d): USB phy exit\n", __func__, __LINE__);
 	phy_exit(dwc->usb2_generic_phy);
 	phy_exit(dwc->usb3_generic_phy);
 
@@ -1758,6 +1761,7 @@ err5:
 
 	usb_phy_shutdown(dwc->usb2_phy);
 	usb_phy_shutdown(dwc->usb3_phy);
+	pr_err("[Ray] %s(%d): USB phy exit\n", __func__, __LINE__);
 	phy_exit(dwc->usb2_generic_phy);
 	phy_exit(dwc->usb3_generic_phy);
 
@@ -1817,6 +1821,7 @@ static int dwc3_core_init_for_resume(struct dwc3 *dwc)
 {
 	int ret;
 
+	pr_err("[Ray] %s: ++\n", __func__);
 	ret = reset_control_deassert(dwc->reset);
 	if (ret)
 		return ret;
@@ -1829,6 +1834,7 @@ static int dwc3_core_init_for_resume(struct dwc3 *dwc)
 	if (ret)
 		goto disable_clks;
 
+	pr_err("[Ray] %s: --\n", __func__);
 	return 0;
 
 disable_clks:
@@ -1846,6 +1852,7 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
 
 	switch (dwc->current_dr_role) {
 	case DWC3_GCTL_PRTCAP_DEVICE:
+		pr_err("[Ray] %s: device suspend ++\n", __func__);
 		if (pm_runtime_suspended(dwc->dev))
 			break;
 		spin_lock_irqsave(&dwc->lock, flags);
@@ -1853,10 +1860,12 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
 		spin_unlock_irqrestore(&dwc->lock, flags);
 		synchronize_irq(dwc->irq_gadget);
 		dwc3_core_exit(dwc);
+		pr_err("[Ray] %s: device suspend --\n", __func__);
 		break;
 	case DWC3_GCTL_PRTCAP_HOST:
 		if (!PMSG_IS_AUTO(msg)) {
 			dwc3_core_exit(dwc);
+			pr_err("[Ray] %s: host suspend --\n", __func__);
 			break;
 		}
 
@@ -1889,8 +1898,10 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
 
 		dwc3_otg_exit(dwc);
 		dwc3_core_exit(dwc);
+		pr_err("[Ray] %s: otg suspend --\n", __func__);
 		break;
 	default:
+		pr_err("[Ray] %s: default!!\n", __func__);
 		/* do nothing */
 		break;
 	}
@@ -2052,10 +2063,12 @@ static int dwc3_suspend(struct device *dev)
 	struct dwc3	*dwc = dev_get_drvdata(dev);
 	int		ret;
 
+	pr_err("[Ray] %s ++\n", __func__);
 	ret = dwc3_suspend_common(dwc, PMSG_SUSPEND);
 	if (ret)
 		return ret;
 
+	pr_err("[Ray] %s --\n", __func__);
 	pinctrl_pm_select_sleep_state(dev);
 
 	return 0;
@@ -2068,6 +2081,7 @@ static int dwc3_resume(struct device *dev)
 
 	pinctrl_pm_select_default_state(dev);
 
+	pr_err("[Ray] %s ++\n", __func__);
 	ret = dwc3_resume_common(dwc, PMSG_RESUME);
 	if (ret)
 		return ret;
@@ -2076,6 +2090,7 @@ static int dwc3_resume(struct device *dev)
 	pm_runtime_set_active(dev);
 	pm_runtime_enable(dev);
 
+	pr_err("[Ray] %s --\n", __func__);
 	return 0;
 }
 
