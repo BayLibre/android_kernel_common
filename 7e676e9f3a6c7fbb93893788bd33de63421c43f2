@@ -1,0 +1,51 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000056151104",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2786276?revision\u003d6",
+      "fixSuggestions": [
+        {
+          "fixId": "3fb762eb_b355f187",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 641,
+                "startChar": 0,
+                "endLine": 641,
+                "endChar": 0
+              },
+              "replacement": "    kmi_symbol_list \u003d \"android/abi_gki_aarch64_kunit\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 643,
+                "startChar": 0,
+                "endLine": 644,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "03a51a68_86a9aa57",
+        "filename": "BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-10-13T21:35:45Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "revId": "7e676e9f3a6c7fbb93893788bd33de63421c43f2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
