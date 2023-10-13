@@ -142,6 +142,24 @@
       "parentUuid": "435da84e_32fdc7e3",
       "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9eb52a0_f25c3112",
+        "filename": "drivers/usb/gadget/configfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1554,
+      "author": {
+        "id": 2037920
+      },
+      "writtenOn": "2023-10-13T07:24:37Z",
+      "side": 0,
+      "message": "Sorry, I didn\u0027t notice that composite_setup was going to get cdev again.\nIf we get the cdev again after the spin_lock_irqsave?\nWe think this modification should be risk-free.",
+      "parentUuid": "df17a684_ec0c7e8d",
+      "revId": "75f82c6a15c4188cbb32825892fc6ae3e95479f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
