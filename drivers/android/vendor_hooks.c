@@ -68,6 +68,7 @@
 #include <trace/hooks/bl_hib.h>
 #include <trace/hooks/regmap.h>
 #include <trace/hooks/compaction.h>
+#include <trace/hooks/suspend.h>
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
@@ -346,4 +347,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bus_iommu_probe);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rmqueue);
+<<<<<<< PATCH SET (0641d1 ANDROID: power: Add vendor hook for suspend)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_get_folio);
+>>>>>>> BASE      (09641c ANDROID: GKI: Update oplus symbol list update oplus symbol l)
