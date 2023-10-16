@@ -440,6 +440,7 @@ struct core_thread {
 };
 
 struct core_state {
+  int dummy;
 	atomic_t nr_threads;
 	struct core_thread dumper;
 	struct completion startup;
