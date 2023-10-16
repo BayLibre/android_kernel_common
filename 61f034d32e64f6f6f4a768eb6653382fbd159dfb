@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000056218977",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2787718?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "26ab3c53_dc42ebaf",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/net/macvlan.ko\",\n    \"drivers/net/macvtap.ko\",\n"
+            },
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 27,
+                "startChar": 0,
+                "endLine": 27,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/net/tap.ko\",\n"
+            },
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 37,
+                "startChar": 0,
+                "endLine": 40,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "cc323a66_42f881bd",
+        "filename": "modules.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-10-16T06:52:44Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier modules.bzl` to format the file, or apply the suggested fix.",
+      "revId": "61f034d32e64f6f6f4a768eb6653382fbd159dfb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
