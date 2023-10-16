@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c7194a_f9a526ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f56ed0d4_1963294c",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89759f64_cfe58db9",
@@ -49,6 +67,24 @@
       "writtenOn": "2023-10-11T01:13:30Z",
       "side": 1,
       "message": "All this code is duplicated from iommu_device_register(). do you want to fix that?",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2027070_4616f0f1",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89759f64_cfe58db9",
       "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -70,6 +106,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b59aa3f9_83193654",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "937cea32_6a54149c",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "997a0e00_decf1064",
@@ -83,6 +137,24 @@
       "writtenOn": "2023-10-11T01:13:30Z",
       "side": 1,
       "message": "This vendor hook essentially needs to give bus name as output? why not simply do\nchar bus_name[32] and pass it to vendor hook. The strncmp len argument should be 32 in that case.",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d867ad3a_99758fbb",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "997a0e00_decf1064",
       "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -104,6 +176,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b89d019_b56a65b3",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0664122c_b8de24ce",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "015072ab_0c3435cb",
@@ -117,6 +207,24 @@
       "writtenOn": "2023-10-11T01:13:30Z",
       "side": 1,
       "message": "what happens when the first IOMMU  (in our case SMMU v2) calls iommu_device_register() without registering vendor hook. We attach this IOMMU to PCI bus as well. Then we end up calling bus_iommu_probe() and iterating over all PCI devices. \n\nThen when 2nd IOMMU (SMMU v3) registers now we override the PCI bus ops to 2nd IOMMU and iterate over all devices. \n\nI understand that it works. But that may break later. IMO, we should PCI bus_iommu_probe() it self from SMMU v2",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a169e4e_8d73918c",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "015072ab_0c3435cb",
       "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -170,6 +278,24 @@
       "side": 1,
       "message": "you would also need this to skip the EBUSY check.\n\n```\ndiff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c\nindex fc7286d801db..0e119e91ae57 100644\n--- a/drivers/iommu/iommu.c\n+++ b/drivers/iommu/iommu.c\n@@ -222,8 +222,12 @@ int iommu_device_register(struct iommu_device *iommu,\n         * Temporarily enforce global restriction to a single driver. This was\n         * already the de-facto behaviour, since any possible combination of\n         * existing drivers would compete for at least the PCI or platform bus.\n+        *\n+        * Don\u0027t enforce this restriction when vendor driver register a hook\n+        * to specify which IOMMU is compatible with which bus.\n         */\n-       if (iommu_buses[0]-\u003eiommu_ops \u0026\u0026 iommu_buses[0]-\u003eiommu_ops !\u003d ops)\n+       if (iommu_buses[0]-\u003eiommu_ops \u0026\u0026 iommu_buses[0]-\u003eiommu_ops !\u003d ops \u0026\u0026\n+                       !trace_android_vh_bus_iommu_probe_enabled())\n                return -EBUSY;\n\n        iommu-\u003eops \u003d ops;\n```",
       "parentUuid": "3f2d804a_cbab36c3",
+      "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d03a4f42_329a1048",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1965775
+      },
+      "writtenOn": "2023-10-16T10:47:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cac8d7e8_5f4c5820",
       "revId": "54b6cba3effd5a65350d2a2bb7f404eb048c1b17",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
