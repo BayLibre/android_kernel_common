@@ -7,11 +7,11 @@
 
 #include <asm/kvm_hyp.h>
 #include <kvm/iommu.h>
+#include <nvhe/alloc_mgt.h>
 #include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
 
-struct kvm_hyp_iommu_memcache *kvm_hyp_iommu_memcaches;
 void **kvm_hyp_iommu_domains;
 /*
  * This lock protect domain operations, that can't be done using the atomic refcount
@@ -20,39 +20,63 @@ void **kvm_hyp_iommu_domains;
  */
 static DEFINE_HYP_SPINLOCK(iommu_domains_lock);
 
+static struct hyp_pool iommu_host_pool;
+
 DECLARE_PER_CPU(struct kvm_hyp_req, host_hyp_reqs);
 
 void *kvm_iommu_donate_page(void)
 {
 	void *p;
-	int cpu = hyp_smp_processor_id();
-	struct kvm_hyp_memcache tmp = kvm_hyp_iommu_memcaches[cpu].pages;
 	struct kvm_hyp_req *req = this_cpu_ptr(&host_hyp_reqs);
 
-	if (!tmp.nr_pages) {
-		req->type = KVM_HYP_REQ_MEM;
-		req->mem.dest = REQ_MEM_IOMMU;
-		req->mem.sz_alloc = PAGE_SIZE;
-		req->mem.nr_pages = 1;
-		return NULL;
-	}
+	p = hyp_alloc_pages(&iommu_host_pool, 0);
+	if (p)
+		return p;
 
-	p = pkvm_admit_host_page(&tmp, 0);
-	if (!p)
-		return NULL;
-
-	kvm_hyp_iommu_memcaches[cpu].pages = tmp;
-	memset(p, 0, PAGE_SIZE);
-	return p;
+	req->type = KVM_HYP_REQ_MEM;
+	req->mem.dest = REQ_MEM_IOMMU;
+	req->mem.sz_alloc = PAGE_SIZE;
+	req->mem.nr_pages = 1;
+	return NULL;
 }
 
 void kvm_iommu_reclaim_page(void *p)
 {
-	int cpu = hyp_smp_processor_id();
-
-	pkvm_teardown_donated_memory(&kvm_hyp_iommu_memcaches[cpu].pages, p,
-				     PAGE_SIZE);
+	hyp_put_page(&iommu_host_pool, p);
 }
+
+int kvm_iommu_refill(struct kvm_hyp_memcache *host_mc)
+{
+	void *p;
+	unsigned long order;
+
+	while (host_mc->nr_pages) {
+		order = host_mc->head & (PAGE_SIZE - 1);
+		p = pkvm_admit_host_page(host_mc, order);
+		hyp_virt_to_page(p)->order = order;
+		hyp_set_page_refcounted(hyp_virt_to_page(p));
+		hyp_put_page(&iommu_host_pool, p);
+	}
+
+	return 0;
+}
+
+void kvm_iommu_reclaim(struct kvm_hyp_memcache *host_mc, int target)
+{
+	/* TODO */
+}
+
+int kvm_iommu_reclaimable(void)
+{
+	/* TODO */
+	return 0;
+}
+
+struct hyp_mgt_allocator_ops kvm_iommu_allocator_ops = {
+	.refill = kvm_iommu_refill,
+	.reclaim = kvm_iommu_reclaim,
+	.reclaimable = kvm_iommu_reclaimable,
+};
 
 static struct kvm_hyp_iommu_domain *
 handle_to_domain(pkvm_handle_t domain_id)
@@ -385,10 +409,8 @@ int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu)
 	return pkvm_init_power_domain(&iommu->power_domain, &iommu_power_ops);
 }
 
-int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_iommu_memcache *mc,
-		   unsigned long init_arg)
+int kvm_iommu_init(struct kvm_iommu_ops *ops, unsigned long init_arg)
 {
-	enum kvm_pgtable_prot prot;
 	int ret;
 
 	if (WARN_ON(!ops->get_iommu_by_id ||
@@ -407,13 +429,8 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_iommu_memcache *mc,
 	if (ret)
 		return ret;
 
-	/* The memcache is shared with the host */
-	prot = pkvm_mkstate(PAGE_HYP, PKVM_PAGE_SHARED_OWNED);
-	ret = pkvm_create_mappings(mc, mc + NR_CPUS, prot);
-	if (ret)
-		return ret;
+	ret = hyp_pool_init(&iommu_host_pool, 0, 64 /* order = 6*/, 0, true);
 
 	kvm_iommu_ops = ops;
-	kvm_hyp_iommu_memcaches = mc;
-	return 0;
+	return ret;
 }
