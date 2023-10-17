@@ -1355,6 +1355,30 @@ static bool smmu_dabt_handler(struct kvm_cpu_context *host_ctxt, u64 esr, u64 ad
 	return false;
 }
 
+int smmu_suspend(struct kvm_hyp_iommu *iommu)
+{
+	struct hyp_arm_smmu_v3_device *smmu = to_smmu(iommu);
+
+	/*
+	 * Disable translation, GBPA is validated at probe to be set, so all translation
+	 * would be aborted when SMMU is disabled.
+	 */
+	if (iommu->power_domain.type == KVM_POWER_DOMAIN_HOST_HVC)
+		return smmu_write_cr0(smmu, 0);
+	return 0;
+}
+
+int smmu_resume(struct kvm_hyp_iommu *iommu)
+{
+	struct hyp_arm_smmu_v3_device *smmu = to_smmu(iommu);
+
+	/*
+	 * Re-enable and clean all caches.
+	 */
+	if (iommu->power_domain.type == KVM_POWER_DOMAIN_HOST_HVC)
+		return smmu_reset_device(smmu);
+	return 0;
+}
 
 #ifdef MODULE
 int smmu_init_hyp_module(const struct pkvm_module_ops *ops)
@@ -1380,4 +1404,6 @@ struct kvm_iommu_ops smmu_ops = {
 	.unmap_pages			= smmu_unmap_pages,
 	.iova_to_phys			= smmu_iova_to_phys,
 	.dabt_handler			= smmu_dabt_handler,
+	.suspend			= smmu_suspend,
+	.resume				= smmu_resume,
 };
