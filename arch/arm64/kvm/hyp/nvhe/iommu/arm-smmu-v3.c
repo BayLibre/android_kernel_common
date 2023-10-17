@@ -722,6 +722,33 @@ int smmu_free_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_i
 	return 0;
 }
 
+int smmu_suspend(struct kvm_hyp_iommu *iommu)
+{
+	struct hyp_arm_smmu_v3_device *smmu = to_smmu(iommu);
+
+	/*
+	 * Disable translation, GBPA is validated at probe to be set, so all transaltion
+	 * would be aborted when SMMU is disabled.
+	 * TODO: Implement save/restore.
+	 */
+	if (iommu->power_domain.type == KVM_POWER_DOMAIN_HOST_HVC)
+		return smmu_write_cr0(smmu, 0);
+	return 0;
+}
+
+int smmu_resume(struct kvm_hyp_iommu *iommu)
+{
+	struct hyp_arm_smmu_v3_device *smmu = to_smmu(iommu);
+
+	/*
+	 * Re-enable and clean all caches.
+	 * TODO: Implement save/restore.
+	 */
+	if (iommu->power_domain.type == KVM_POWER_DOMAIN_HOST_HVC)
+		return smmu_reset_device(smmu);
+	return 0;
+}
+
 struct kvm_iommu_ops smmu_ops = {
 	.init				= smmu_init,
 	.get_iommu_by_id		= smmu_id_to_iommu,
@@ -729,5 +756,7 @@ struct kvm_iommu_ops smmu_ops = {
 	.attach_dev			= smmu_attach_dev,
 	.detach_dev			= smmu_detach_dev,
 	.alloc_domain			= smmu_alloc_domain,
+	.suspend			= smmu_suspend,
+	.resume				= smmu_resume,
 };
 
