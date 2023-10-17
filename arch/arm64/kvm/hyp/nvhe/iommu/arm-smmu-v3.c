@@ -189,7 +189,7 @@ static int smmu_alloc_l2_strtab(struct hyp_arm_smmu_v3_device *smmu, u32 idx)
 	if (WARN_ON(span < 1 || span > 11))
 		return -EINVAL;
 
-	table = kvm_iommu_donate_pages(0);
+	table = kvm_iommu_donate_pages(0, true);
 	if (!table)
 		return -ENOMEM;
 
@@ -555,7 +555,7 @@ int smmu_domain_finalise(struct kvm_hyp_iommu_domain *domain,
 	pgd_size = kvm_arm_io_pgtable_size(&iopt);
 
 	if (!domain->pgd)
-		domain->pgd = kvm_iommu_donate_pages(get_order(pgd_size));
+		domain->pgd = kvm_iommu_donate_pages(get_order(pgd_size), true);
 
 	if (!domain->pgd) {
 		domain->pgtable = NULL;
