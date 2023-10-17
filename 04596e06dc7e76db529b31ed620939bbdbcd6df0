@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000056352240",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2747975?revision\u003d4",
+      "fixSuggestions": [
+        {
+          "fixId": "7bb3ed9c_441accc6",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 36,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Hongyu Xie \u003cxy521521@gmail.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "b1bedb64_e0bea1f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-10-17T11:35:54Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Hongyu Xie \u003cxy521521@gmail.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 573794017 android-build.ayeaye-python-dispatcher_20231016.04_p0",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "04596e06dc7e76db529b31ed620939bbdbcd6df0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
