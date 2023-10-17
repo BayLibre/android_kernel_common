@@ -33,6 +33,24 @@
       "message": "This is not necessary for 6.1. As far as I know the lock granuality was improved on and these problems should not be encountered now.\n\nSuren, Minchan?",
       "revId": "4b8c1f6c893812eb6d68321a8af714bfaa8b30df",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6087aa14_d881fdf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2023-10-17T15:31:06Z",
+      "side": 1,
+      "message": "Unfortunately, the access_remote_vm stills hold entire mmap_sem of remote process with read-side so the remote process will be stuck if it\u0027s doing sys_mmap or sys_mprotect.",
+      "parentUuid": "78747e0c_fd88098f",
+      "revId": "4b8c1f6c893812eb6d68321a8af714bfaa8b30df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
