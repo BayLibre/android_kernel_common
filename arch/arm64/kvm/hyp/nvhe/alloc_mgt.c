@@ -7,6 +7,7 @@
 
 #include <nvhe/alloc.h>
 #include <nvhe/alloc_mgt.h>
+#include <nvhe/iommu.h>
 
 static struct hyp_mgt_allocator_ops *registered_allocators[HYP_ALLOC_MGT_MAX_ALLOC];
 
@@ -55,4 +56,5 @@ void hyp_alloc_mgt_init(void)
 {
 	BUILD_BUG_ON(HYP_ALLOC_MGT_MAX_ALLOC <= HYP_ALLOC_MGT_END);
 	registered_allocators[HYP_ALLOC_MGT_HEAP_ID] = &hyp_alloc_ops;
+	registered_allocators[HYP_ALLOC_MGT_IOMMU_ID] = &kvm_iommu_allocator_ops;
 }
