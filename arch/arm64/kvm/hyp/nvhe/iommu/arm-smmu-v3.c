@@ -189,7 +189,7 @@ static int smmu_alloc_l2_strtab(struct hyp_arm_smmu_v3_device *smmu, u32 idx)
 	if (WARN_ON(span < 1 || span > 11))
 		return -EINVAL;
 
-	table = kvm_iommu_donate_pages(0);
+	table = kvm_iommu_donate_pages(0, true);
 	if (!table)
 		return -ENOMEM;
 
