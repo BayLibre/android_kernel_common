@@ -21,7 +21,7 @@ void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg)
 
 	BUG_ON(!PAGE_ALIGNED(size));
 
-	addr = kvm_iommu_donate_pages(get_order(size));
+	addr = kvm_iommu_donate_pages(get_order(size), true);
 	if (addr && !cfg->coherent_walk)
 		kvm_flush_dcache_to_poc(addr, size);
 
