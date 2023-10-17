@@ -16,7 +16,7 @@ bool __ro_after_init selftest_running;
 
 void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg)
 {
-	void *addr = kvm_iommu_donate_pages(0);
+	void *addr = kvm_iommu_donate_pages(0, true);
 
 	BUG_ON(size != PAGE_SIZE);
 
