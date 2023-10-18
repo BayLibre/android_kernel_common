@@ -72,6 +72,7 @@
 #include <trace/hooks/fsnotify.h>
 #include <trace/hooks/fuse.h>
 #include <trace/hooks/ogki_honor.h>
+#include <trace/hooks/suspend.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -545,8 +546,15 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);
+<<<<<<< PATCH SET (93caea ANDROID: power: Add vendor hook for suspend)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
+||||||| BASE
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shmem_swapin_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_wp_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_swap_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_anonymous_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uprobes_replace_page);
+>>>>>>> BASE      (56ad02 ANDROID: KVM: arm64: Disallow #include trace.h for pKVM.)
