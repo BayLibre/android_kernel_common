@@ -18,6 +18,7 @@ int kvm_arm_io_pgtable_free(struct io_pgtable *iop);
 
 #if IS_ENABLED(CONFIG_KVM_IOMMU)
 int kvm_iommu_init(struct kvm_iommu_ops *ops,
+		   struct kvm_hyp_memcache *idmap_mc,
 		   unsigned long init_arg);
 int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu);
 void *kvm_iommu_donate_pages(u8 order, bool request);
@@ -86,6 +87,7 @@ static inline phys_addr_t kvm_iommu_iova_to_phys(pkvm_handle_t domain_id,
 }
 
 static inline int kvm_iommu_init(struct kvm_iommu_ops *ops,
+				 struct kvm_hyp_memcache *idmap_mc,
 				 unsigned long init_arg)
 {
 	return -ENODEV;

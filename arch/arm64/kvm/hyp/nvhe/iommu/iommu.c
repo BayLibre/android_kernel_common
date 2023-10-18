@@ -31,6 +31,7 @@ static DEFINE_HYP_SPINLOCK(iommu_domains_lock);
 void **kvm_hyp_iommu_domains;
 
 static struct hyp_pool iommu_host_pool;
+static struct hyp_pool iommu_idmap_pool;
 
 DECLARE_PER_CPU(struct kvm_hyp_req, host_hyp_reqs);
 
@@ -480,7 +481,33 @@ int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu)
 	return pkvm_init_power_domain(&iommu->power_domain, &iommu_power_ops);
 }
 
-int kvm_iommu_init(struct kvm_iommu_ops *ops, unsigned long init_arg)
+static int kvm_iommu_init_idmap_pool(struct kvm_hyp_memcache *idmap_mc)
+{
+	int ret;
+	u8 order;
+	void *p;
+
+	/* idmapped domains are optional. */
+	if (!idmap_mc->head)
+		return 0;
+	ret = hyp_pool_init(&iommu_idmap_pool, 0,
+			    64 /* order = 6*/, 0, true);
+	if (ret)
+		return ret;
+
+	while (idmap_mc->nr_pages) {
+		order = idmap_mc->head & (PAGE_SIZE - 1);
+		p = pkvm_admit_host_page(idmap_mc, order);
+		hyp_set_page_refcounted(hyp_virt_to_page(p));
+		hyp_virt_to_page(p)->order = order;
+		hyp_put_page(&iommu_idmap_pool, p);
+	}
+
+	return ret;
+}
+
+int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
+		   unsigned long init_arg)
 {
 	int ret;
 
@@ -502,7 +529,12 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, unsigned long init_arg)
 
 	ret = hyp_pool_init(&iommu_host_pool, 0, 64 /* order = 6*/, 0, true);
 
+	ret = kvm_iommu_init_idmap_pool(idmap_mc);
+	if (ret)
+		return ret;
+
 	kvm_iommu_ops = ops;
+
 	return ret;
 }
 
