@@ -1325,6 +1325,7 @@ int pkvm_iommu_resume(struct device *dev);
 struct kvm_iommu_ops;
 
 int kvm_iommu_init_hyp(struct kvm_iommu_ops *hyp_ops,
+		       struct kvm_hyp_memcache *idmap_mc,
 		       unsigned long init_arg);
 
 int kvm_iommu_register_driver(struct kvm_iommu_driver *kern_ops);
