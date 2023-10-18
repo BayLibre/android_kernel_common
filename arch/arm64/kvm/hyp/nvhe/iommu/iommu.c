@@ -21,6 +21,7 @@ void **kvm_hyp_iommu_domains;
 static DEFINE_HYP_SPINLOCK(iommu_domains_lock);
 
 static struct hyp_pool iommu_host_pool;
+static struct hyp_pool iommu_idmap_pool;
 
 DECLARE_PER_CPU(struct kvm_hyp_req, host_hyp_reqs);
 
@@ -181,6 +182,9 @@ int kvm_iommu_free_domain(pkvm_handle_t domain_id)
 	int ret = -EINVAL;
 	struct kvm_hyp_iommu_domain *domain;
 
+	if (domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID)
+		return -EINVAL;
+
 	hyp_spin_lock(&iommu_domains_lock);
 	domain = handle_to_domain(domain_id);
 	if (!domain)
@@ -271,6 +275,9 @@ size_t kvm_iommu_map_pages(pkvm_handle_t domain_id, unsigned long iova,
 	if (!kvm_iommu_ops)
 		return 0;
 
+	if (domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID)
+		return 0;
+
 	if (prot & ~IOMMU_PROT_MASK)
 		return 0;
 
@@ -341,6 +348,9 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 	if (!kvm_iommu_ops)
 		return 0;
 
+	if (domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID)
+		return 0;
+
 	if (!pgsize || !pgcount)
 		return 0;
 
@@ -386,6 +396,9 @@ phys_addr_t kvm_iommu_iova_to_phys(pkvm_handle_t domain_id, unsigned long iova)
 	phys_addr_t phys = 0;
 	struct io_pgtable iopt;
 	struct kvm_hyp_iommu_domain *domain;
+
+	if (domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID)
+		return iova;
 
 	domain = handle_to_domain(domain_id);
 	if (!domain || domain_get(domain))
@@ -443,9 +456,12 @@ int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu)
 	return pkvm_init_power_domain(&iommu->power_domain, &iommu_power_ops);
 }
 
-int kvm_iommu_init(struct kvm_iommu_ops *ops, unsigned long init_arg)
+int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
+		   unsigned long init_arg)
 {
 	int ret;
+	void *p;
+	u8 order;
 
 	if (WARN_ON(!ops->get_iommu_by_id ||
 		    !ops->free_domain ||
@@ -465,7 +481,28 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, unsigned long init_arg)
 
 	ret = hyp_pool_init(&iommu_host_pool, 0, 64 /* order = 6*/, 0, true);
 
-	kvm_iommu_ops = ops;
+	/* Driver want's to opt in for idmapped devices. */
+	if (idmap_mc->head) {
+		ret = hyp_pool_init(&iommu_idmap_pool, 0,
+				    64 /* order = 6*/, 0, true);
+		if (ret)
+			return ret;
+		while (idmap_mc->nr_pages) {
+			order = idmap_mc->head & (PAGE_SIZE - 1);
+			p = pkvm_admit_host_page(idmap_mc, order);
+			hyp_set_page_refcounted(hyp_virt_to_page(p));
+			hyp_virt_to_page(p)->order = order;
+			hyp_put_page(&iommu_idmap_pool, p);
+		}
+
+		/* A bit hacky way to populate first domain to be used immediately. */
+		kvm_hyp_iommu_domains[0] = hyp_alloc_pages(&iommu_idmap_pool, 0);
+		kvm_iommu_ops = ops;
+		ret = kvm_iommu_alloc_domain(KVM_IOMMU_DOMAIN_IDMAP_ID);
+	}
+
+	if (ret)
+		kvm_iommu_ops = NULL;
 	return ret;
 }
 
