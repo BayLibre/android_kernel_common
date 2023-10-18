@@ -188,8 +188,9 @@ static int kvm_arm_smmu_domain_finalize(struct kvm_arm_smmu_domain *kvm_smmu_dom
 		return 0;
 	}
 
-	ret = ida_alloc_range(&kvm_arm_smmu_domain_ida, 0, KVM_IOMMU_MAX_DOMAINS,
-			      GFP_KERNEL);
+	/* 0 reserved for KVM_IOMMU_DOMAIN_IDMAP_ID. */
+	ret = ida_alloc_range(&kvm_arm_smmu_domain_ida, KVM_IOMMU_DOMAIN_NR_START,
+			      KVM_IOMMU_MAX_DOMAINS, GFP_KERNEL);
 	if (ret < 0)
 		return ret;
 	kvm_smmu_domain->id = ret;
@@ -780,6 +781,31 @@ int smmu_put_device(struct device *dev, void *data)
 	return 0;
 }
 
+static int smmu_alloc_idmap_mc(struct kvm_hyp_memcache *idmap_mc)
+{
+	u64 i, total = 0;
+	phys_addr_t start, end;
+	int ret;
+
+	for_each_mem_range(i, &start, &end) {
+		total += __hyp_pgtable_max_pages((end - start) >> PAGE_SHIFT);
+	}
+	/* We don't know how much for MMIO we need, 1GB is very generous. */
+	total += __hyp_pgtable_max_pages(SZ_1G >> PAGE_SHIFT);
+	/* For PGD*/
+	ret = topup_hyp_memcache(idmap_mc, 1, 0, 3);
+	if (ret)
+		return ret;
+	ret = topup_hyp_memcache(idmap_mc, total, 0, 0);
+
+	pr_info("smmuv3: Allocated %lld MiB for idmapped domains\n",
+		((total + (1 << 3)) * PAGE_SIZE) >> 20);
+	/* Topup hyp alloc so IOMMU driver can allocate domains. */
+	__pkvm_topup_hyp_alloc(1);
+
+	return ret;
+}
+
 /**
  * kvm_arm_smmu_v3_init() - Reserve the SMMUv3 for KVM
  * Return 0 if all present SMMUv3 were probed successfully, or an error.
@@ -788,6 +814,7 @@ int smmu_put_device(struct device *dev, void *data)
 static int kvm_arm_smmu_v3_init(void)
 {
 	int ret;
+	struct kvm_hyp_memcache idmap_mc;
 
 	/*
 	 * Check whether any device owned by the host is behind an SMMU.
@@ -816,7 +843,12 @@ static int kvm_arm_smmu_v3_init(void)
 	kvm_hyp_arm_smmu_v3_smmus = kern_hyp_va(kvm_arm_smmu_array);
 	kvm_hyp_arm_smmu_v3_count = kvm_arm_smmu_count;
 
-	ret = kvm_iommu_init_hyp(kern_hyp_va(lm_alias(&kvm_nvhe_sym(smmu_ops))), 0);
+	/*
+	 * We assume for now would need this, maybe in the future we can rely on a module
+	 * param to avoid allocating this pool if not needed.
+	 */
+	ret = smmu_alloc_idmap_mc(&idmap_mc);
+	ret = kvm_iommu_init_hyp(kern_hyp_va(lm_alias(&kvm_nvhe_sym(smmu_ops))), &idmap_mc, 0);
 
 	WARN_ON(driver_for_each_device(&kvm_arm_smmu_driver.driver, NULL,
 				       NULL, smmu_put_device));
