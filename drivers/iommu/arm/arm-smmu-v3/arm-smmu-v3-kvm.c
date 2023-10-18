@@ -7,6 +7,7 @@
 #include <asm/kvm_pkvm.h>
 #include <asm/kvm_mmu.h>
 #include <linux/local_lock.h>
+#include <linux/moduleparam.h>
 #include <linux/of_address.h>
 #include <linux/of_platform.h>
 #include <linux/pm_runtime.h>
@@ -62,6 +63,9 @@ static DEFINE_IDA(kvm_arm_smmu_domain_ida);
 
 int kvm_nvhe_sym(smmu_init_hyp_module)(const struct pkvm_module_ops *ops);
 extern struct kvm_iommu_ops kvm_nvhe_sym(smmu_ops);
+
+static int idmap_pages;
+module_param(idmap_pages, int, 0);
 
 static int kvm_arm_smmu_topup_memcache(struct arm_smmu_device *smmu,
 				       struct arm_smccc_res *res)
@@ -928,6 +932,43 @@ int smmu_put_device(struct device *dev, void *data)
 	return 0;
 }
 
+static int smmu_alloc_idmap_mc(struct kvm_hyp_memcache *idmap_mc)
+{
+	u64 total = 0;
+	int ret;
+#ifndef MODULE
+	u64 i;
+	phys_addr_t start, end;
+
+	/*
+	 * Allocate pages to cover mapping with PAGE_SIZE for all memory
+	 * Then allocate extra for 1GB of MMIO.
+	 * Add 10 extra pages as we map the rest with first level blocks
+	 * for PAGE_SIZE = 4KB, that should cover 5TB of address space.
+	 */
+	for_each_mem_range(i, &start, &end) {
+		total += __hyp_pgtable_max_pages((end - start) >> PAGE_SHIFT);
+	}
+
+	total += __hyp_pgtable_max_pages(SZ_1G >> PAGE_SHIFT) + 10;
+#else
+
+	total = idmap_pages;
+#endif
+	/* For PGD*/
+	ret = topup_hyp_memcache(idmap_mc, 1, 3);
+	if (ret)
+		return ret;
+	ret = topup_hyp_memcache(idmap_mc, total, 0);
+
+	pr_info("smmuv3: Allocated %lld MiB for idmapped domains\n",
+		((total + (1 << 3)) * PAGE_SIZE) >> 20);
+	/* Topup hyp alloc so IOMMU driver can allocate domains. */
+	__pkvm_topup_hyp_alloc(1);
+
+	return ret;
+}
+
 /**
  * kvm_arm_smmu_v3_init() - Reserve the SMMUv3 for KVM
  * Return 0 if all present SMMUv3 were probed successfully, or an error.
@@ -936,6 +977,7 @@ int smmu_put_device(struct device *dev, void *data)
 static int kvm_arm_smmu_v3_init(void)
 {
 	int ret;
+	struct kvm_hyp_memcache idmap_mc;
 
 	/*
 	 * Check whether any device owned by the host is behind an SMMU.
@@ -973,7 +1015,11 @@ static int kvm_arm_smmu_v3_init(void)
 	kvm_hyp_arm_smmu_v3_smmus = kvm_arm_smmu_array;
 	kvm_hyp_arm_smmu_v3_count = kvm_arm_smmu_count;
 
-	ret = kvm_iommu_init_hyp(ksym_ref_addr_nvhe(smmu_ops), 0);
+	ret = smmu_alloc_idmap_mc(&idmap_mc);
+	if (ret)
+		goto err_free;
+
+	ret = kvm_iommu_init_hyp(ksym_ref_addr_nvhe(smmu_ops), &idmap_mc, 0);
 
 	WARN_ON(driver_for_each_device(&kvm_arm_smmu_driver.driver, NULL,
 				       NULL, smmu_put_device));
