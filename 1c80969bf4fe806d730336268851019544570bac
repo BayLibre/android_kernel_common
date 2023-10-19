@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c4f569f_aeb5f830",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-10-19T18:19:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15f0f4d3_814f8c9a",
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55f78452_4addf2cc",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-19T10:05:14Z",
       "side": 1,
       "message": "I think you need to update `stackinfo_get_hyp_kern_va()`, since that uses `PAGE_SIZE` to compute the upper bound of the stack area.",
+      "range": {
+        "startLine": 130,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 28
+      },
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f657968f_1ae058b4",
+        "filename": "arch/arm64/include/asm/memory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-10-19T18:19:35Z",
+      "side": 1,
+      "message": "Good catch. I missed the unwind paths. Updated now.",
+      "parentUuid": "55f78452_4addf2cc",
       "range": {
         "startLine": 130,
         "startChar": 8,
@@ -64,6 +106,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c34fe0d_d0fb7299",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-10-19T18:19:35Z",
+      "side": 1,
+      "message": "Renamed them as \u0027stack_base\u0027",
+      "parentUuid": "493035c8_fa32dc72",
+      "range": {
+        "startLine": 2171,
+        "startChar": 16,
+        "endLine": 2171,
+        "endChar": 26
+      },
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1638f575_5d65657c",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-10-19T10:05:14Z",
       "side": 1,
       "message": "It\u0027s a pity that we burn the extra page of VA space, but I don\u0027t see a nicer way.",
+      "range": {
+        "startLine": 2263,
+        "startChar": 34,
+        "endLine": 2263,
+        "endChar": 54
+      },
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36a36f5f_3bc0ed1d",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2263,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2023-10-19T18:19:35Z",
+      "side": 1,
+      "message": "Unfortunately we need it for the overflow detection.",
+      "parentUuid": "1638f575_5d65657c",
       "range": {
         "startLine": 2263,
         "startChar": 34,
