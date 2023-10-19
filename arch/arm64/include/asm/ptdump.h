@@ -19,10 +19,17 @@ struct ptdump_info {
 	struct mm_struct		*mm;
 	const struct addr_marker	*markers;
 	unsigned long			base_addr;
-	void (*ptdump_walk)(struct seq_file *s, struct ptdump_info *info);
+	int (*ptdump_prepare_walk)(void *file_priv);
+	void (*ptdump_walk)(struct seq_file *s, void *file_priv);
+	void (*ptdump_end_walk)(void *file_priv);
 };
 
-void ptdump_walk(struct seq_file *s, struct ptdump_info *info);
+struct ptdump_info_file_priv {
+	struct ptdump_info	*info;
+	void			*file_priv;
+};
+
+void ptdump_walk(struct seq_file *s, void *f_priv);
 #ifdef CONFIG_PTDUMP_DEBUGFS
 void __init ptdump_debugfs_register(struct ptdump_info *info, const char *name);
 #else

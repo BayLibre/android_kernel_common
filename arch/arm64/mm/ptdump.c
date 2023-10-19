@@ -24,6 +24,7 @@
 #include <asm/memory.h>
 #include <asm/pgtable-hwdef.h>
 #include <asm/ptdump.h>
+#include <asm/kvm_pkvm.h>
 #include <asm/kvm_pgtable.h>
 
 
@@ -388,8 +389,10 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 
 }
 
-void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
+void ptdump_walk(struct seq_file *s, void *file_priv)
 {
+	struct ptdump_info_file_priv *f_priv = file_priv;
+	struct ptdump_info *info = f_priv->info;
 	unsigned long end = ~0UL;
 	struct pg_state st;
 
