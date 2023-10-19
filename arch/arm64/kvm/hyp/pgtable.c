@@ -1311,3 +1311,74 @@ void kvm_pgtable_stage2_destroy(struct kvm_pgtable *pgt)
 	pgt->mm_ops->free_pages_exact(pgt->pgd, pgd_sz);
 	pgt->pgd = NULL;
 }
+
+#ifdef CONFIG_NVHE_EL2_DEBUG
+struct stage2_copy_visit_ctx {
+	struct kvm_pgtable_mm_ops       *mm_ops;
+	void				*memcache;
+	struct kvm_s2_mmu		*mmu;
+};
+
+static int stage2_copy_walker(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
+			      enum kvm_pgtable_walk_flags flag, void * const arg)
+{
+	struct stage2_copy_visit_ctx *copy_ctx = arg;
+	struct kvm_pgtable *pgt = copy_ctx->mmu->pgt;
+	struct kvm_pgtable_mm_ops *mm_ops = copy_ctx->mm_ops;
+	struct kvm_pgtable_pte_ops *pte_ops = pgt->pte_ops;
+	void *copy_table, *original_addr;
+	kvm_pte_t old = *ptep;
+
+	if (!pte_ops->pte_is_counted_cb(old, level))
+		return 0;
+
+	if (kvm_pte_table(old, level)) {
+		copy_table = mm_ops->zalloc_page(copy_ctx->memcache);
+		if (!copy_table)
+			return -ENOMEM;
+
+		original_addr = kvm_pte_follow(old, mm_ops);
+
+		memcpy(copy_table, original_addr, PAGE_SIZE);
+
+		kvm_clear_pte(ptep);
+		kvm_set_table_pte(ptep, copy_table, mm_ops);
+	}
+
+	return 0;
+}
+
+int kvm_pgtable_stage2_copy(struct kvm_pgtable *to_pgt,
+			    const struct kvm_pgtable *from_pgt,
+			    void *mc)
+{
+	int ret;
+	size_t pgd_sz;
+	struct kvm_pgtable_mm_ops *mm_ops = to_pgt->mm_ops;
+	struct stage2_copy_visit_ctx visit_data = {
+		.mm_ops		= to_pgt->mm_ops,
+		.memcache	= mc,
+		.mmu		= from_pgt->mmu,
+	};
+
+	struct kvm_pgtable_walker walker = {
+		.cb	= stage2_copy_walker,
+		.flags	= KVM_PGTABLE_WALK_LEAF |
+			  KVM_PGTABLE_WALK_TABLE_PRE,
+		.arg = &visit_data
+	};
+
+	pgd_sz = kvm_pgd_pages(to_pgt->ia_bits, to_pgt->start_level) *
+		PAGE_SIZE;
+	to_pgt->pgd = (kvm_pte_t *)mm_ops->zalloc_pages_exact(pgd_sz);
+	if (!to_pgt->pgd)
+		return -ENOMEM;
+
+	memcpy(to_pgt->pgd, from_pgt->pgd, pgd_sz);
+
+	ret = kvm_pgtable_walk(to_pgt, 0, BIT(to_pgt->ia_bits), &walker);
+	mm_ops->free_pages_exact(to_pgt->pgd, pgd_sz);
+
+	return ret;
+}
+#endif /* CONFIG_NVHE_EL2_DEBUG */

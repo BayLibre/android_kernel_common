@@ -1272,6 +1272,25 @@ static void handle___pkvm_host_set_stage2_memattr(struct kvm_cpu_context *host_c
 }
 #endif
 
+static void handle___pkvm_copy_host_stage2(struct kvm_cpu_context *host_ctxt)
+{
+#ifdef CONFIG_NVHE_EL2_DEBUG
+	int ret = -EPERM;
+	DECLARE_REG(struct kvm_pgtable_snapshot *, snapshot, host_ctxt, 1);
+	kvm_pte_t *pgd;
+
+	snapshot = kern_hyp_va(snapshot);
+	ret = __pkvm_host_stage2_prepare_copy(snapshot);
+	if (!ret) {
+		pgd = snapshot->pgtable.pgd;
+		snapshot->pgtable.pgd = (kvm_pte_t *)__hyp_pa(pgd);
+	}
+	cpu_reg(host_ctxt, 1) = ret;
+#else
+	cpu_reg(host_ctxt, 0) = SMCCC_RET_NOT_SUPPORTED;
+#endif
+}
+
 typedef void (*hcall_t)(struct kvm_cpu_context *);
 
 #define HANDLE_FUNC(x)	[__KVM_HOST_SMCCC_FUNC_##x] = (hcall_t)handle_##x
@@ -1325,6 +1344,7 @@ static const hcall_t host_hcall[] = {
 #ifdef CONFIG_ANDROID_ARM64_WORKAROUND_DMA_BEYOND_POC
 	HANDLE_FUNC(__pkvm_host_set_stage2_memattr),
 #endif
+	HANDLE_FUNC(__pkvm_copy_host_stage2),
 };
 
 static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)
