@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f0f4d3_814f8c9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-10-19T10:05:14Z",
+      "side": 1,
+      "message": "Please also cherry-pick to android14-5.15",
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55f78452_4addf2cc",
+        "filename": "arch/arm64/include/asm/memory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-10-19T10:05:14Z",
+      "side": 1,
+      "message": "I think you need to update `stackinfo_get_hyp_kern_va()`, since that uses `PAGE_SIZE` to compute the upper bound of the stack area.",
+      "range": {
+        "startLine": 130,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 28
+      },
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "493035c8_fa32dc72",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-10-19T10:05:14Z",
+      "side": 1,
+      "message": "This is now a misnomer! Same with `kvm_arm_hyp_stack_page` and other singular \u0027page\u0027 variables.",
+      "range": {
+        "startLine": 2171,
+        "startChar": 16,
+        "endLine": 2171,
+        "endChar": 26
+      },
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1638f575_5d65657c",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2263,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-10-19T10:05:14Z",
+      "side": 1,
+      "message": "It\u0027s a pity that we burn the extra page of VA space, but I don\u0027t see a nicer way.",
+      "range": {
+        "startLine": 2263,
+        "startChar": 34,
+        "endLine": 2263,
+        "endChar": 54
+      },
+      "revId": "1c80969bf4fe806d730336268851019544570bac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
