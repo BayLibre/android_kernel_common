@@ -86,6 +86,7 @@ struct pg_state {
 	bool check_wx;
 	unsigned long wx_pages;
 	unsigned long uxn_pages;
+	struct ptdump_info_file_priv *f_priv;
 };
 
 struct prot_bits {
@@ -387,7 +388,6 @@ static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 		st->marker++;
 		pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
 	}
-
 }
 
 void ptdump_walk(struct seq_file *s, void *file_priv)
@@ -481,6 +481,11 @@ static void *ptdump_host_va(phys_addr_t phys)
 {
 	return __va(phys);
 }
+
+static struct kvm_pgtable_mm_ops host_mmops = {
+	.phys_to_virt	=	ptdump_host_va,
+	.virt_to_phys	=	ptdump_host_pa,
+};
 
 static size_t stage2_get_pgd_len(void)
 {
@@ -616,6 +621,65 @@ static void stage2_ptdump_end_walk(void *file_priv)
 	f_priv->file_priv = NULL;
 }
 
+static int stage2_ptdump_visitor(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
+				 enum kvm_pgtable_walk_flags flag,
+				 void * const arg)
+{
+	struct pg_state *st = arg;
+	struct ptdump_state *pt_st = &st->ptdump;
+
+	pt_st->note_page(pt_st, addr, level, *ptep);
+
+	return 0;
+}
+
+static void stage2_ptdump_walk(struct seq_file *s, void *file_priv)
+{
+	struct ptdump_info_file_priv *f_priv = file_priv;
+	struct kvm_pgtable_snapshot *snapshot = f_priv->file_priv;
+	struct pg_state st;
+	struct kvm_pgtable *pgtable;
+	u64 start_ipa = 0, end_ipa;
+	struct addr_marker ipa_address_markers[3];
+	struct kvm_pgtable_walker walker = (struct kvm_pgtable_walker) {
+		.cb	= stage2_ptdump_visitor,
+		.arg	= &st,
+		.flags	= KVM_PGTABLE_WALK_LEAF,
+	};
+
+	if (snapshot == NULL || !snapshot->pgtable.pgd)
+		return;
+
+	pgtable = &snapshot->pgtable;
+	pgtable->mm_ops = &host_mmops;
+	end_ipa = BIT(pgtable->ia_bits) - 1;
+
+	memset(&ipa_address_markers[0], 0, sizeof(ipa_address_markers));
+
+	ipa_address_markers[0].start_address = start_ipa;
+	ipa_address_markers[0].name = "IPA start";
+
+	ipa_address_markers[1].start_address = end_ipa;
+	ipa_address_markers[1].name = "IPA end";
+
+	st = (struct pg_state) {
+		.seq		= s,
+		.marker		= &ipa_address_markers[0],
+		.level		= pgtable->start_level - 1,
+		.pg_level	= &stage2_pg_level[0],
+		.f_priv		= f_priv,
+		.ptdump		= {
+			.note_page	= note_page,
+			.range		= (struct ptdump_range[]) {
+				{start_ipa,	end_ipa},
+				{0,		0},
+			},
+		},
+	};
+
+	kvm_pgtable_walk(pgtable, start_ipa, end_ipa, &walker);
+}
+
 void ptdump_register_host_stage2(void)
 {
 	if (!is_protected_kvm_enabled())
@@ -625,6 +689,7 @@ void ptdump_register_host_stage2(void)
 		.mc_len			= host_s2_pgtable_pages(),
 		.ptdump_prepare_walk	= stage2_ptdump_prepare_walk,
 		.ptdump_end_walk	= stage2_ptdump_end_walk,
+		.ptdump_walk		= stage2_ptdump_walk,
 	};
 
 	ptdump_debugfs_kvm_register(&stage2_kernel_ptdump_info,
