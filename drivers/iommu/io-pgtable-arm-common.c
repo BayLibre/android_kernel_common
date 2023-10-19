@@ -176,13 +176,13 @@ int __arm_lpae_map(struct io_pgtable *iop, struct arm_lpae_io_pgtable *data,
 	/* Grab a pointer to the next level */
 	pte = READ_ONCE(*ptep);
 	if (!pte) {
-		cptep = __arm_lpae_alloc_pages(tblsz, gfp, cfg);
+		cptep = __arm_lpae_alloc_pages(tblsz, gfp, cfg, iop);
 		if (!cptep)
 			return -ENOMEM;
 
 		pte = arm_lpae_install_table(cptep, ptep, 0, data);
 		if (pte)
-			__arm_lpae_free_pages(cptep, tblsz, cfg);
+			__arm_lpae_free_pages(cptep, tblsz, cfg, iop);
 	} else if (!cfg->coherent_walk && !(pte & ARM_LPAE_PTE_SW_SYNC)) {
 		__arm_lpae_sync_pte(ptep, 1, cfg);
 	}
@@ -300,7 +300,7 @@ int arm_lpae_map_pages(struct io_pgtable *iop, unsigned long iova,
 }
 
 void __arm_lpae_free_pgtable(struct arm_lpae_io_pgtable *data, int lvl,
-			     arm_lpae_iopte *ptep)
+			     arm_lpae_iopte *ptep, struct io_pgtable *iop)
 {
 	arm_lpae_iopte *start, *end;
 	unsigned long table_size;
@@ -324,10 +324,10 @@ void __arm_lpae_free_pgtable(struct arm_lpae_io_pgtable *data, int lvl,
 		if (!pte || iopte_leaf(pte, lvl, data->iop.cfg.fmt))
 			continue;
 
-		__arm_lpae_free_pgtable(data, lvl + 1, iopte_deref(pte, data));
+		__arm_lpae_free_pgtable(data, lvl + 1, iopte_deref(pte, data), iop);
 	}
 
-	__arm_lpae_free_pages(start, table_size, &data->iop.cfg);
+	__arm_lpae_free_pages(start, table_size, &data->iop.cfg, iop);
 }
 
 static size_t arm_lpae_split_blk_unmap(struct io_pgtable *iop,
@@ -349,7 +349,7 @@ static size_t arm_lpae_split_blk_unmap(struct io_pgtable *iop,
 	if (WARN_ON(lvl == ARM_LPAE_MAX_LEVELS))
 		return 0;
 
-	tablep = __arm_lpae_alloc_pages(tablesz, GFP_ATOMIC, cfg);
+	tablep = __arm_lpae_alloc_pages(tablesz, GFP_ATOMIC, cfg, iop);
 	if (!tablep)
 		return 0; /* Bytes unmapped */
 
@@ -375,7 +375,7 @@ static size_t arm_lpae_split_blk_unmap(struct io_pgtable *iop,
 
 	pte = arm_lpae_install_table(tablep, ptep, blk_pte, data);
 	if (pte != blk_pte) {
-		__arm_lpae_free_pages(tablep, tablesz, cfg);
+		__arm_lpae_free_pages(tablep, tablesz, cfg, iop);
 		/*
 		 * We may race against someone unmapping another part of this
 		 * block, but anything else is invalid. We can't misinterpret
@@ -440,7 +440,7 @@ static size_t __arm_lpae_unmap(struct io_pgtable *iop,
 				/* Also flush any partial walks */
 				io_pgtable_tlb_flush_walk(cfg, iop, iova + i * size, size,
 							  ARM_LPAE_GRANULE(data));
-				__arm_lpae_free_pgtable(data, lvl + 1, iopte_deref(pte, data));
+				__arm_lpae_free_pgtable(data, lvl + 1, iopte_deref(pte, data), iop);
 			} else if (!iommu_iotlb_gather_queued(gather)) {
 				io_pgtable_tlb_add_page(cfg, iop, gather,
 							iova + i * size, size);

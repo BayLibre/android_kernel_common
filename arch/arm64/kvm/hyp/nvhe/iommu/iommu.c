@@ -43,7 +43,7 @@ void *kvm_iommu_donate_pages(u8 order, bool request)
 	return NULL;
 }
 
-void kvm_iommu_reclaim_pages(void *p, u8 order)
+static void __kvm_iommu_reclaim_pages(struct hyp_pool *pool, void *p, u8 order)
 {
 	/*
 	 * Order MUST be same allocated page, however the buddy allocator
@@ -51,7 +51,30 @@ void kvm_iommu_reclaim_pages(void *p, u8 order)
 	 */
 	BUG_ON(order > hyp_virt_to_page(p)->order);
 
-	hyp_put_page(&iommu_host_pool, p);
+	hyp_put_page(pool, p);
+}
+
+void kvm_iommu_reclaim_pages(void *p, u8 order)
+{
+	__kvm_iommu_reclaim_pages(&iommu_host_pool, p, order);
+}
+
+void *kvm_iommu_donate_pages_iopt(u8 order, bool request, void *cookie)
+{
+	if (cookie && ((struct kvm_iommu_tlb_cookie *)cookie)->domain_id ==
+	    KVM_IOMMU_DOMAIN_IDMAP_ID) {
+		return hyp_alloc_pages(&iommu_idmap_pool, order);
+	}
+	return kvm_iommu_donate_pages(order, request);
+}
+
+void kvm_iommu_reclaim_pages_iopt(void *p, u8 order, void *cookie)
+{
+	if (cookie && ((struct kvm_iommu_tlb_cookie *)cookie)->domain_id ==
+	    KVM_IOMMU_DOMAIN_IDMAP_ID) {
+		__kvm_iommu_reclaim_pages(&iommu_idmap_pool, p, order);
+	}
+	kvm_iommu_reclaim_pages(p, order);
 }
 
 /* Request to hypervisor. */
