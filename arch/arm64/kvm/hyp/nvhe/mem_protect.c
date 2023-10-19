@@ -691,7 +691,6 @@ int host_stage2_idmap_locked(phys_addr_t addr, u64 size,
 	return host_stage2_try(__host_stage2_idmap, addr, addr + size, prot, update_iommu);
 }
 
-#define KVM_INVALID_PTE_OWNER_MASK	GENMASK(9, 2)
 static kvm_pte_t kvm_init_invalid_leaf_owner(enum pkvm_component_id owner_id)
 {
 	return FIELD_PREP(KVM_INVALID_PTE_OWNER_MASK, owner_id);

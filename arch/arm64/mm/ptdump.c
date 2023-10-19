@@ -69,6 +69,10 @@ static struct addr_marker address_markers[] = {
 		seq_printf(m, fmt);	\
 })
 
+#define FIELD_PREP_OWNER(_value)	\
+	(((_value) << __bf_shf(KVM_INVALID_PTE_OWNER_MASK)) &\
+	 KVM_INVALID_PTE_OWNER_MASK)\
+
 /*
  * The page dumper groups page table entries of the same type into a single
  * description. It uses pg_state to track the range information while
@@ -273,6 +277,22 @@ static const struct prot_bits stage2_pte_bits[] = {
 		.val	= PTE_S2_MEMATTR(MT_S2_FWB_NORMAL) | PTE_VALID,
 		.set	= "MEM/NORMAL FWB",
 		.feature_on	= is_fwb_enabled,
+	}, {
+		.mask	= KVM_INVALID_PTE_OWNER_MASK | PTE_VALID,
+		.val	= FIELD_PREP_OWNER(PKVM_ID_HYP),
+		.set	= "HYP",
+	}, {
+		.mask	= KVM_INVALID_PTE_OWNER_MASK | PTE_VALID,
+		.val	= FIELD_PREP_OWNER(PKVM_ID_FFA),
+		.set	= "FF-A",
+	}, {
+		.mask	= KVM_INVALID_PTE_OWNER_MASK | PTE_VALID,
+		.val	= FIELD_PREP_OWNER(PKVM_ID_GUEST),
+		.set	= "GUEST",
+	}, {
+		.mask	= KVM_INVALID_PTE_OWNER_MASK | PTE_VALID,
+		.val	= FIELD_PREP_OWNER(PKVM_ID_PROTECTED),
+		.set	= "PROTECTED",
 	}, {
 		.mask	= KVM_PGTABLE_PROT_SW0,
 		.val	= KVM_PGTABLE_PROT_SW0,
