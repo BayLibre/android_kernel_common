@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34fe2132_80f0f158",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1967749
+      },
+      "writtenOn": "2023-10-19T07:03:00Z",
+      "side": 1,
+      "message": "A new patch is uploaded (aosp/2797124). Please review again,thanks.",
+      "parentUuid": "3d923242_e5f8b9ad",
+      "revId": "0a37608dfab7043d77e51d8a82f5214b8935e745",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85d2f4ea_5c8cb0e2",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-18T15:57:16Z",
       "side": 1,
       "message": "Let\u0027s change the vendor hook name aligned with function name\n\ntrace_android_vh_filemap_get_folio \n\nwith struct folio param instead of struct page",
+      "range": {
+        "startLine": 1937,
+        "startChar": 18,
+        "endLine": 1937,
+        "endChar": 36
+      },
+      "revId": "0a37608dfab7043d77e51d8a82f5214b8935e745",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f968eb97_ecd616b3",
+        "filename": "mm/filemap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1937,
+      "author": {
+        "id": 1967749
+      },
+      "writtenOn": "2023-10-19T07:03:00Z",
+      "side": 1,
+      "message": "I have rename the vendor hook and use the new folio to replace page. Please review again, thanks.",
+      "parentUuid": "85d2f4ea_5c8cb0e2",
       "range": {
         "startLine": 1937,
         "startChar": 18,
