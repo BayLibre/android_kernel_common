@@ -5,6 +5,8 @@
 #ifndef __ASM_PTDUMP_H
 #define __ASM_PTDUMP_H
 
+#include <asm/kvm_pgtable.h>
+
 #ifdef CONFIG_PTDUMP_CORE
 
 #include <linux/mm_types.h>
@@ -47,8 +49,12 @@ void ptdump_check_wx(void);
 
 #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
 void ptdump_register_host_stage2(void);
+int ptdump_register_guest_stage2(struct kvm *kvm);
+void ptdump_unregister_guest_stage2(struct kvm_pgtable *pgt);
 #else
 static inline void ptdump_register_host_stage2(void) { }
+static inline int ptdump_register_guest_stage2(struct kvm *kvm) { return 0; }
+static inline void ptdump_unregister_guest_stage2(struct kvm_pgtable *pgt) { }
 #endif /* CONFIG_PTDUMP_STAGE2_DEBUGFS */
 
 #ifdef CONFIG_DEBUG_WX
