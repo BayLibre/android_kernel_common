@@ -28,7 +28,8 @@ static dma_addr_t __arm_lpae_dma_addr(void *pages)
 	return (dma_addr_t)virt_to_phys(pages);
 }
 
-void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg)
+void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg,
+			     struct io_pgtable *iop)
 {
 	struct device *dev = cfg->iommu_dev;
 	int order = get_order(size);
@@ -65,7 +66,8 @@ out_free:
 	return NULL;
 }
 
-void __arm_lpae_free_pages(void *pages, size_t size, struct io_pgtable_cfg *cfg)
+void __arm_lpae_free_pages(void *pages, size_t size, struct io_pgtable_cfg *cfg,
+			   struct io_pgtable *iop)
 {
 	if (!cfg->coherent_walk)
 		dma_unmap_single(cfg->iommu_dev, __arm_lpae_dma_addr(pages),
@@ -84,7 +86,7 @@ static void arm_lpae_free_pgtable(struct io_pgtable *iop)
 {
 	struct arm_lpae_io_pgtable *data = io_pgtable_ops_to_data(iop->ops);
 
-	__arm_lpae_free_pgtable(data, data->start_level, iop->pgd);
+	__arm_lpae_free_pgtable(data, data->start_level, iop->pgd, iop);
 	kfree(data);
 }
 
@@ -102,7 +104,7 @@ int arm_64_lpae_alloc_pgtable_s1(struct io_pgtable *iop,
 
 	/* Looking good; allocate a pgd */
 	iop->pgd = __arm_lpae_alloc_pages(ARM_LPAE_PGD_SIZE(data),
-					  GFP_KERNEL, cfg);
+					  GFP_KERNEL, cfg, iop);
 	if (!iop->pgd)
 		goto out_free_data;
 
@@ -144,7 +146,7 @@ int arm_64_lpae_alloc_pgtable_s2(struct io_pgtable *iop,
 
 	/* Allocate pgd pages */
 	iop->pgd = __arm_lpae_alloc_pages(ARM_LPAE_PGD_SIZE(data),
-					  GFP_KERNEL, cfg);
+					  GFP_KERNEL, cfg, iop);
 	if (!iop->pgd)
 		goto out_free_data;
 
@@ -235,7 +237,7 @@ int arm_mali_lpae_alloc_pgtable(struct io_pgtable *iop,
 		 << ARM_LPAE_MAIR_ATTR_SHIFT(ARM_LPAE_MAIR_ATTR_IDX_DEV));
 
 	iop->pgd = __arm_lpae_alloc_pages(ARM_LPAE_PGD_SIZE(data), GFP_KERNEL,
-					  cfg);
+					  cfg, iop);
 	if (!iop->pgd)
 		goto out_free_data;
 
