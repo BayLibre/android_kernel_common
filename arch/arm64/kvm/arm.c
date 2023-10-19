@@ -41,6 +41,7 @@
 #include <asm/kvm_pkvm.h>
 #include <asm/kvm_emulate.h>
 #include <asm/sections.h>
+#include <asm/ptdump.h>
 
 #include <kvm/arm_hypercalls.h>
 #include <kvm/arm_pmu.h>
@@ -2455,6 +2456,8 @@ int kvm_arch_init(void *opaque)
 	err = init_subsystems();
 	if (err)
 		goto out_hyp;
+
+	ptdump_register_host_stage2();
 
 	if (!in_hyp_mode) {
 		err = init_hyp_tracefs();

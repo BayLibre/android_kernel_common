@@ -5914,6 +5914,8 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
 	int r;
 	int cpu;
 
+	kvm_init_debug();
+
 	r = kvm_arch_init(opaque);
 	if (r)
 		goto out_fail;
@@ -5985,8 +5987,6 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
 
 	kvm_preempt_ops.sched_in = kvm_sched_in;
 	kvm_preempt_ops.sched_out = kvm_sched_out;
-
-	kvm_init_debug();
 
 	r = kvm_vfio_ops_init();
 	if (WARN_ON_ONCE(r))
