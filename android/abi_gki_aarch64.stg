@@ -308382,6 +308382,15 @@ elf_symbol {
   full_name: "__traceiter_rwmmio_post_read"
 }
 elf_symbol {
+  id: 0xe71ca6fa
+  name: "__traceiter_rwmmio_post_write"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x93e0083a
+  type_id: 0x9b46488b
+  full_name: "__traceiter_rwmmio_post_write"
+}
+elf_symbol {
   id: 0x45e62871
   name: "__traceiter_rwmmio_read"
   is_defined: true
@@ -311377,6 +311386,15 @@ elf_symbol {
   crc: 0x19ebf04e
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_rwmmio_post_read"
+}
+elf_symbol {
+  id: 0xb46bae90
+  name: "__tracepoint_rwmmio_post_write"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xae80a2dc
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_rwmmio_post_write"
 }
 elf_symbol {
   id: 0x02473ce7
@@ -362795,6 +362813,7 @@ interface {
   symbol_id: 0x3e69b303
   symbol_id: 0x7f1a363f
   symbol_id: 0x2c11fea4
+  symbol_id: 0xe71ca6fa
   symbol_id: 0x45e62871
   symbol_id: 0x85a11e58
   symbol_id: 0x1e8ffa55
@@ -363128,6 +363147,7 @@ interface {
   symbol_id: 0xf3cb5921
   symbol_id: 0xcb194ec9
   symbol_id: 0x009c40ce
+  symbol_id: 0xb46bae90
   symbol_id: 0x02473ce7
   symbol_id: 0x65f99dde
   symbol_id: 0x191846a3
