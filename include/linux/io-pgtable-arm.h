@@ -172,7 +172,7 @@ static inline bool iopte_leaf(arm_lpae_iopte pte, int lvl,
 
 /* Generic functions */
 void __arm_lpae_free_pgtable(struct arm_lpae_io_pgtable *data, int lvl,
-			     arm_lpae_iopte *ptep);
+			     arm_lpae_iopte *ptep, struct io_pgtable *iop);
 
 int arm_lpae_init_pgtable(struct io_pgtable_cfg *cfg,
 			  struct arm_lpae_io_pgtable *data);
@@ -182,8 +182,10 @@ int arm_lpae_init_pgtable_s2(struct io_pgtable_cfg *cfg,
 			     struct arm_lpae_io_pgtable *data);
 
 /* Host/hyp-specific functions */
-void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg);
-void __arm_lpae_free_pages(void *pages, size_t size, struct io_pgtable_cfg *cfg);
+void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp,
+			     struct io_pgtable_cfg *cfg, struct io_pgtable *iop);
+void __arm_lpae_free_pages(void *pages, size_t size,
+			   struct io_pgtable_cfg *cfg, struct io_pgtable *iop);
 void __arm_lpae_sync_pte(arm_lpae_iopte *ptep, int num_entries,
 			 struct io_pgtable_cfg *cfg);
 
