@@ -14,9 +14,10 @@
 
 bool __ro_after_init selftest_running;
 
-void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg)
+void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp,
+			     struct io_pgtable_cfg *cfg, struct io_pgtable *iopt)
 {
-	void *addr = kvm_iommu_donate_pages(0, true);
+	void *addr = kvm_iommu_donate_pages_iopt(0, true, iopt->cookie);
 
 	BUG_ON(size != PAGE_SIZE);
 
@@ -26,7 +27,8 @@ void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg)
 	return addr;
 }
 
-void __arm_lpae_free_pages(void *addr, size_t size, struct io_pgtable_cfg *cfg)
+void __arm_lpae_free_pages(void *addr, size_t size,
+			   struct io_pgtable_cfg *cfg, struct io_pgtable *iopt)
 {
 	u8 order = get_order(size);
 
@@ -35,7 +37,7 @@ void __arm_lpae_free_pages(void *addr, size_t size, struct io_pgtable_cfg *cfg)
 	if (!cfg->coherent_walk)
 		kvm_flush_dcache_to_poc(addr, size);
 
-	kvm_iommu_reclaim_pages(addr, order);
+	kvm_iommu_reclaim_pages_iopt(addr, order, iopt->cookie);
 }
 
 void __arm_lpae_sync_pte(arm_lpae_iopte *ptep, int num_entries,
@@ -90,7 +92,7 @@ int kvm_arm_io_pgtable_free(struct io_pgtable *iopt)
 	if (!data->iop.cfg.coherent_walk)
 		kvm_flush_dcache_to_poc(iopt->pgd, pgd_size);
 
-	__arm_lpae_free_pgtable(data, data->start_level, iopt->pgd);
+	__arm_lpae_free_pgtable(data, data->start_level, iopt->pgd, iopt);
 	return 0;
 }
 

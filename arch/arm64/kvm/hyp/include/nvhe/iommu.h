@@ -24,6 +24,8 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops,
 int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu);
 void *kvm_iommu_donate_pages(u8 order, bool request);
 void kvm_iommu_reclaim_pages(void *p, u8 order);
+void *kvm_iommu_donate_pages_iopt(u8 order, bool request, void *cookie);
+void kvm_iommu_reclaim_pages_iopt(void *p, u8 order, void *cookie);
 int kvm_iommu_request(struct kvm_hyp_req *req);
 
 /* Hypercall handlers */
