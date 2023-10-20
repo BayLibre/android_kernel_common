@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000056675990",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2795733?revision\u003d7",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "6d6ee747_c85861a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-10-20T04:58:52Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/a608dc1c06397dc50ab773498433432fb5938f92) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003da608dc1c06397dc50ab773498433432fb5938f92)\n\n```\n      ## drivers/hid/.kunitconfig ##\n     @@\n      CONFIG_KUNIT\u003dy\n    @@ drivers/hid/hid-input.c: static int hidinput_get_battery_property(struct power_s\n      \t\t\tval-\u003eintval \u003d POWER_SUPPLY_STATUS_UNKNOWN;\n      \t\telse\n     -\t\t\tval-\u003eintval \u003d POWER_SUPPLY_STATUS_DISCHARGING;\n    -+\t\t\tval-\u003eintval \u003d dev-\u003ebattery_charge_status;\n    ++\t\t\tval-\u003eintval \u003d (int)((dev-\u003ell_open_count \u0026 HID_BAT_CHARGING_MASK)\u003e\u003e30);\n      \t\tbreak;\n      \n      \tcase POWER_SUPPLY_PROP_SCOPE:\n    @@ drivers/hid/hid-input.c: static void hidinput_update_battery(struct hid_device *\n     +{\n     +\tswitch (usage) {\n     +\tcase HID_BAT_CHARGING:\n    -+\t\tdev-\u003ebattery_charge_status \u003d value ?\n    ++\t\tdev-\u003ell_open_count \u0026\u003d ~HID_BAT_CHARGING_MASK；\n    ++\t\tdev-\u003ell_open_count |\u003d ((value ?\n     +\t\t\t\t\t     POWER_SUPPLY_STATUS_CHARGING :\n    -+\t\t\t\t\t     POWER_SUPPLY_STATUS_DISCHARGING;\n    ++\t\t\t\t\t     POWER_SUPPLY_STATUS_DISCHARGING)\u003c\u003c30);\n     +\t\treturn true;\n     +\t}\n     +\n    @@ drivers/hid/hid-input.c: static void hidinput_configure_usage(struct hid_input *\n     +\t\t\treturn;\n      \t\t}\n      \t\tgoto unknown;\n    - \n    + \tcase HID_UP_CAMERA:\n     @@ drivers/hid/hid-input.c: void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct\n      \t\treturn;\n      \n    @@ include/linux/hid.h: struct hid_item {\n      \n      #define HID_BAT_ABSOLUTESTATEOFCHARGE\t0x00850065\n     +#define HID_BAT_CHARGING\t\t0x00850044\n    ++\n    ++#define HID_BAT_CHARGING_MASK\t\t0xc0000000\n    ++#define HID_LL_OPEN_COUNT_MASK\t\t0x3fffffff\n      \n      #define HID_VD_ASUS_CUSTOM_MEDIA_KEYS\t0xff310076\n      \n    -@@ include/linux/hid.h: struct hid_device {\t\t\t\t\t\t\t/* device report descriptor */\n    - \t__s32 battery_max;\n    - \t__s32 battery_report_type;\n    - \t__s32 battery_report_id;\n    -+\t__s32 battery_charge_status;\n    - \tenum hid_battery_status battery_status;\n    - \tbool battery_avoid_query;\n    - \tktime_t battery_ratelimit_time;\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 574844081 android-build.ayeaye-python-dispatcher_20231019.04_p0",
+      "revId": "db4e2cd6e31714cc152dbb751d9844b110882a19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
