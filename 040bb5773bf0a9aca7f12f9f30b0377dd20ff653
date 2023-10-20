@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1a15cdf_3604bd87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-10-20T20:04:27Z",
+      "side": 1,
+      "message": "Wait, although this patch was merged upstream, it was then undone by upstream merge 946c6b59c56dc6e7d8364a8959cb36bf6d10bc37. See comment in that patch saying:\n```\nThe merge undoes the disabling of the CONFIG_PER_VMA_LOCK feature, since\nit was all hopefully fixed in mainline.\n```\nThe issues that we found upstream were fixed and I backported the fixes to our 6.1 branch.",
+      "revId": "040bb5773bf0a9aca7f12f9f30b0377dd20ff653",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
