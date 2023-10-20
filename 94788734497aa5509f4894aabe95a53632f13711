@@ -50,6 +50,24 @@
       "message": "Is there a missing chunk in the cherry-pick? In particular the change in `drivers/base/regmap/regmap-spi-avmm.c`\n\n```\n    - ## drivers/base/regmap/regmap-spi-avmm.c ##\n    -@@ drivers/base/regmap/regmap-spi-avmm.c: static const struct regmap_bus regmap_spi_avmm_bus \u003d {\n    -     .reg_format_endian_default \u003d REGMAP_ENDIAN_NATIVE,\n    -     .val_format_endian_default \u003d REGMAP_ENDIAN_NATIVE,\n    -     .max_raw_read \u003d SPI_AVMM_VAL_SIZE * MAX_READ_CNT,\n    --    .max_raw_write \u003d SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,\n    -+    .max_raw_write \u003d SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,\n    -     .free_context \u003d spi_avmm_bridge_ctx_free,\n    - };\n    - \n    +    (cherry picked from commit d70cd8813c04958af53efda1f78d845177823f53)\n\n      ## drivers/base/regmap/regmap.c ##\n     @@ drivers/base/regmap/regmap.c: int _regmap_raw_write(struct regmap *map, unsigned int reg,\n```",
       "revId": "94788734497aa5509f4894aabe95a53632f13711",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a80950b_48deccb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-10-20T15:13:56Z",
+      "side": 1,
+      "message": "The corresponding LTS change `8b3dd8d23fa0 (\"regmap: Drop initial version of maximum transfer length fixes\")` has that hunk",
+      "parentUuid": "c1d09369_a8a139de",
+      "revId": "94788734497aa5509f4894aabe95a53632f13711",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
