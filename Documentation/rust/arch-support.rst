@@ -15,5 +15,6 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
 ============  ================  ==============================================
 Architecture  Level of support  Constraints
 ============  ================  ==============================================
+``arm64``     Maintained        Little Endian only.
 ``x86``       Maintained        ``x86_64`` only.
 ============  ================  ==============================================
