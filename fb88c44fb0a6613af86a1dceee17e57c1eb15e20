@@ -141,6 +141,24 @@
       "parentUuid": "d2ae9824_1d32fdb6",
       "revId": "fb88c44fb0a6613af86a1dceee17e57c1eb15e20",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd10983b_aecac597",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-10-20T16:09:05Z",
+      "side": 1,
+      "message": "Greg, https://b.corp.google.com/issues/300857012#comment2 explains why this hook is needed. I don\u0027t think that logic is upstreamable and the right solution IMO would be to use vmalloc, except vendor has no control over the 3rd party app in this case, so can\u0027t change the way they request this allocation.",
+      "parentUuid": "a4d7759b_cbabaada",
+      "revId": "fb88c44fb0a6613af86a1dceee17e57c1eb15e20",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
