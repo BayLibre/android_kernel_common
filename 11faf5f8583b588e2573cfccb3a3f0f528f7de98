@@ -33,6 +33,24 @@
       "message": "This appears to consistently break `android.os.storage.cts.StorageManagerTest#testGetStorageVolumeUSB`.\n\n```\njava.lang.AssertionError: The USB storage volume mounted on the main user is not present in /sdcard\n\tat org.junit.Assert.fail(Assert.java:89)\n\tat org.junit.Assert.assertTrue(Assert.java:42)\n\tat android.os.storage.cts.StorageManagerTest.testGetStorageVolumeUSB(StorageManagerTest.java:347)\n```\n\nIt looks related, but I can\u0027t tell.",
       "revId": "11faf5f8583b588e2573cfccb3a3f0f528f7de98",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b38dfd_e498072b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2037920
+      },
+      "writtenOn": "2023-10-23T14:08:40Z",
+      "side": 1,
+      "message": "Hi Matthias,\nThe android.os.storage.cts.StorageManagerTest failures are not caused by this commit. We found that as long as the USB storage connected to the test device,the test will fail even without this commit.",
+      "parentUuid": "5376988d_29f298b0",
+      "revId": "11faf5f8583b588e2573cfccb3a3f0f528f7de98",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
