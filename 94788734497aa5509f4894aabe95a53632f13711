@@ -104,6 +104,24 @@
       "parentUuid": "b815bc3e_bd192d32",
       "revId": "94788734497aa5509f4894aabe95a53632f13711",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f00a643b_b5c3083b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2023-10-23T09:05:19Z",
+      "side": 1,
+      "message": "This is really weird, because on android12-5.10 as well as on android13-5.15, the original patch contains the hunk, see `8b3dd8d23fa0 (\"regmap: Drop initial version of maximum transfer length fixes\")`, the branch contains the patch:\n\n```\n$ git branch --remote --contains 8b3dd8d23fa0cf790699244dad126591254793f2 aosp/android12-5.10\n  aosp/android12-5.10\n```\n\nBut the branch log `git log aosp/android12-5.10 drivers/base/regmap/regmap-spi-avmm.c` for that file only reveals the initial commit `7f9fb67358a2 (\"regmap: add Intel SPI Slave to AVMM Bus Bridge support\")`.\n\nBlame pretends never ever happened there.\n\nI will approve on the base that the hunk is actually applied.",
+      "parentUuid": "7ee4c50f_b651694c",
+      "revId": "94788734497aa5509f4894aabe95a53632f13711",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
