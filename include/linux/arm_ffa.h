@@ -209,6 +209,8 @@ bool ffa_device_is_valid(struct ffa_device *ffa_dev) { return false; }
 #define module_ffa_driver(__ffa_driver)	\
 	module_driver(__ffa_driver, ffa_register, ffa_unregister)
 
+extern struct bus_type ffa_bus_type;
+
 /* The FF-A 1.0 partition structure lacks the uuid[4] */
 #define FFA_1_0_PARTITON_INFO_SZ	(8)
 
