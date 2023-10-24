@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6f5d0eb_cd8db71c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-10-24T17:49:17Z",
+      "side": 1,
+      "message": "yes, but that breaks backwards compatibility. Also, such change (require setting srcs) will need to be done in kernel_build.bzl, not here.",
+      "parentUuid": "31b0a281_8ed2f614",
+      "revId": "f77c812631bb8da412dcb6b35c941a1c3d09b200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b234972a_85718928",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-24T12:21:40Z",
       "side": 1,
       "message": "is that not something \"provided\" by the `base_kernel` ?",
+      "range": {
+        "startLine": 304,
+        "startChar": 14,
+        "endLine": 304,
+        "endChar": 33
+      },
+      "revId": "f77c812631bb8da412dcb6b35c941a1c3d09b200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c5b7ee9_8db3b85d",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-10-24T17:49:17Z",
+      "side": 1,
+      "message": "This is not provided by the base_kernel because the base kernel may be built with a different tree than the device kernel. E.g. for Pixel / cuttlefish\u0027s case, the device kernel_build only needs to depend on srcs in their own tree.",
+      "parentUuid": "b234972a_85718928",
       "range": {
         "startLine": 304,
         "startChar": 14,
