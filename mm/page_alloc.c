@@ -9552,7 +9552,8 @@ int alloc_contig_range(unsigned long start, unsigned long end,
 	if (ret)
 		goto done;
 
-	drain_all_pages(cc.zone);
+	if (!is_migrate_metadata(migratetype))
+		drain_all_pages(cc.zone);
 
 	/*
 	 * In case of -EBUSY, we'd like to know which page causes problem.
