@@ -633,6 +633,8 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
 		flags &= ~__GFP_NOFAIL;
 	}
 
+	trace_android_vh_adjust_kvmalloc_flags(get_order(size), &flags);
+
 	return flags;
 }
 
@@ -661,6 +663,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node)
 	trace_android_vh_kvmalloc_node_use_vmalloc(size, &flags, &use_vmalloc);
 	if (use_vmalloc)
 		goto use_vmalloc_node;
+
 	/*
 	 * It doesn't really make sense to fallback to vmalloc for sub page
 	 * requests
