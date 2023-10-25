@@ -227,6 +227,9 @@ struct fuse_file {
 		/* Version of cache we are reading */
 		u64 version;
 
+		/* For background readdir. */
+		bool is_bg_readdir_called;
+
 	} readdir;
 
 	/** Container for data related to the passthrough functionality */
@@ -1356,5 +1359,6 @@ void fuse_passthrough_release(struct fuse_passthrough *passthrough);
 ssize_t fuse_passthrough_read_iter(struct kiocb *iocb, struct iov_iter *to);
 ssize_t fuse_passthrough_write_iter(struct kiocb *iocb, struct iov_iter *from);
 ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
+int fuse_passthrough_readdir(struct file *file, struct dir_context *ctx);
 
 #endif /* _FS_FUSE_I_H */

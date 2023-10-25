@@ -217,14 +217,26 @@ int fuse_passthrough_open(struct fuse_dev *fud, u32 lower_fd)
 		return -EBADF;
 	}
 
-	if (!passthrough_filp->f_op->read_iter ||
-	    !passthrough_filp->f_op->write_iter) {
-		pr_err("FUSE: passthrough file misses file operations.\n");
-		res = -EBADF;
-		goto err_free_file;
+	passthrough_inode = file_inode(passthrough_filp);
+
+	switch (passthrough_inode->i_mode & S_IFMT) {
+	case S_IFDIR:
+		if (!passthrough_filp->f_op->iterate_shared) {
+			pr_err("FUSE: passthrough dir misses file operations.\n");
+			res = -EBADF;
+			goto err_free_file;
+		}
+		break;
+	default:
+		if (!passthrough_filp->f_op->read_iter ||
+		    !passthrough_filp->f_op->write_iter) {
+			pr_err("FUSE: passthrough file misses file operations.\n");
+			res = -EBADF;
+			goto err_free_file;
+		}
+		break;
 	}
 
-	passthrough_inode = file_inode(passthrough_filp);
 	passthrough_sb = passthrough_inode->i_sb;
 	if (passthrough_sb->s_stack_depth >= FILESYSTEM_MAX_STACK_DEPTH) {
 		pr_err("FUSE: fs stacking depth exceeded for passthrough\n");
@@ -295,4 +307,135 @@ void fuse_passthrough_release(struct fuse_passthrough *passthrough)
 		put_cred(passthrough->cred);
 		passthrough->cred = NULL;
 	}
+}
+
+struct fuse_passthrough_dir_context {
+	struct dir_context ctx;
+	struct dir_context *orig_ctx;
+};
+
+static bool fuse_passthrough_filldir(struct dir_context *ctx, const char *name,
+				      int namlen, loff_t offset, u64 ino,
+				      unsigned int d_type)
+{
+	struct fuse_passthrough_dir_context *fctx =
+		container_of(ctx, struct fuse_passthrough_dir_context, ctx);
+
+	// NOTE: This is for compatibility with aosp FUSE daemon.
+	if ((strncmp(name, ".", sizeof(".")) == 0) ||
+	    (strncmp(name, "..", sizeof("..")) == 0)) {
+		return 0;
+	}
+
+	return fctx->orig_ctx->actor(fctx->orig_ctx, name, namlen, offset, ino,
+				     d_type);
+}
+
+struct fuse_bg_dir_context {
+	struct dir_context ctx;
+	int read_count;
+};
+
+static bool fuse_bg_filldir(struct dir_context *ctx, const char *name,
+			   int namlen, loff_t offset, u64 ino, unsigned int d_type)
+{
+	struct fuse_bg_dir_context *bctx =
+		container_of(ctx, struct fuse_bg_dir_context, ctx);
+
+	bctx->read_count += 1;
+	return 0;
+}
+
+struct fuse_bg_readdir_struct {
+	struct work_struct work;
+	struct path path;
+	unsigned int file_flags;
+};
+
+static void do_fuse_bg_readdir(struct work_struct *work)
+{
+	struct fuse_bg_readdir_struct *bg_struct =
+		container_of(work, struct fuse_bg_readdir_struct, work);
+	struct file *file;
+	struct fuse_bg_dir_context buf = {
+		.ctx.actor = fuse_bg_filldir,
+	};
+	int err;
+
+	file = dentry_open(&bg_struct->path, bg_struct->file_flags,
+			   current->cred);
+	if (IS_ERR(file)) {
+		pr_err("FUSE: failed to open file in bg\n");
+		goto put_path;
+	}
+
+	do {
+		buf.read_count = 0;
+
+		err = iterate_dir(file, &buf.ctx);
+		if (err) {
+			pr_err("FUSE: failed to iterate dir in bg\n");
+			break;
+		}
+	} while (buf.read_count != 0);
+
+	fput(file);
+put_path:
+	path_put(&bg_struct->path);
+	kvfree(bg_struct);
+}
+
+static void fuse_bg_readdir(struct file *file)
+{
+	struct fuse_file *ff = file->private_data;
+	struct fuse_bg_readdir_struct *bg_struct;
+	bool res;
+
+	bg_struct = kzalloc(sizeof(struct fuse_bg_readdir_struct), GFP_KERNEL);
+	if (bg_struct == NULL)
+		goto out;
+
+	path_get(&file->f_path);
+
+	bg_struct->path = file->f_path;
+	bg_struct->file_flags = file->f_flags;
+	INIT_WORK(&bg_struct->work, do_fuse_bg_readdir);
+
+	res = schedule_work(&bg_struct->work);
+	if (res == false) {
+		pr_err("FUSE: failed to schedule bg work\n");
+		goto put_path;
+	}
+
+	ff->readdir.is_bg_readdir_called = true;
+	return;
+
+put_path:
+	path_put(&file->f_path);
+	kvfree(bg_struct);
+out:
+	return;
+}
+
+int fuse_passthrough_readdir(struct file *file, struct dir_context *ctx)
+{
+	int ret;
+	const struct cred *old_cred;
+	struct fuse_file *ff = file->private_data;
+	struct file *passthrough_filp = ff->passthrough.filp;
+	struct fuse_passthrough_dir_context fctx;
+
+	fctx.ctx.actor = fuse_passthrough_filldir;
+	fctx.orig_ctx = ctx;
+
+	if (!ff->readdir.is_bg_readdir_called)
+		fuse_bg_readdir(file);
+
+	old_cred = override_creds(ff->passthrough.cred);
+	ret = iterate_dir(passthrough_filp, &fctx.ctx);
+	revert_creds(old_cred);
+
+	fctx.orig_ctx->pos = fctx.ctx.pos;
+
+	return ret;
 }

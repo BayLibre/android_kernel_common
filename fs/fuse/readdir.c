@@ -584,12 +584,19 @@ int fuse_readdir(struct file *file, struct dir_context *ctx)
 
 	mutex_lock(&ff->readdir.lock);
 
+
+	if (ff->passthrough.filp != NULL) {
+		err = fuse_passthrough_readdir(file, ctx);
+		goto out;
+	}
+
 	err = UNCACHED;
 	if (ff->open_flags & FOPEN_CACHE_DIR)
 		err = fuse_readdir_cached(file, ctx);
 	if (err == UNCACHED)
 		err = fuse_readdir_uncached(file, ctx);
 
+out:
 	mutex_unlock(&ff->readdir.lock);
 
 	return err;
