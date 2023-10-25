@@ -313999,6 +313999,13 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0x9a0f5098
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x6720d32f
+  parameter_id: 0xf1a6dfed
+}
+function {
   id: 0x9a10c524
   return_type_id: 0x6720d32f
   parameter_id: 0x1ce51dde
@@ -316512,6 +316519,12 @@ function {
   id: 0x9b618705
   return_type_id: 0x6720d32f
   parameter_id: 0x1b8590a8
+}
+function {
+  id: 0x9b626ff1
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x33756485
 }
 function {
   id: 0x9b63bb96
@@ -336777,6 +336790,24 @@ elf_symbol {
   full_name: "__traceiter_kfree_skb"
 }
 elf_symbol {
+  id: 0xbcec3880
+  name: "__traceiter_mm_vmscan_direct_reclaim_begin"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x803bf202
+  type_id: 0x9a0f5098
+  full_name: "__traceiter_mm_vmscan_direct_reclaim_begin"
+}
+elf_symbol {
+  id: 0xa34c49b3
+  name: "__traceiter_mm_vmscan_direct_reclaim_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf2520b8a
+  type_id: 0x9b626ff1
+  full_name: "__traceiter_mm_vmscan_direct_reclaim_end"
+}
+elf_symbol {
   id: 0x5c33446d
   name: "__traceiter_mmap_lock_acquire_returned"
   is_defined: true
@@ -340528,6 +340559,24 @@ elf_symbol {
   crc: 0x72edf918
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_kfree_skb"
+}
+elf_symbol {
+  id: 0xa7ceb432
+  name: "__tracepoint_mm_vmscan_direct_reclaim_begin"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x000c8744
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_mm_vmscan_direct_reclaim_begin"
+}
+elf_symbol {
+  id: 0x32564229
+  name: "__tracepoint_mm_vmscan_direct_reclaim_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xe1130765
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_mm_vmscan_direct_reclaim_end"
 }
 elf_symbol {
   id: 0x88a08d67
@@ -396639,6 +396688,8 @@ interface {
   symbol_id: 0x32248e2a
   symbol_id: 0xe873a0cb
   symbol_id: 0x101ec6c5
+  symbol_id: 0xbcec3880
+  symbol_id: 0xa34c49b3
   symbol_id: 0x5c33446d
   symbol_id: 0x423dad0f
   symbol_id: 0xc630c439
@@ -397056,6 +397107,8 @@ interface {
   symbol_id: 0x0713b56c
   symbol_id: 0x83005ddd
   symbol_id: 0x5c535ca7
+  symbol_id: 0xa7ceb432
+  symbol_id: 0x32564229
   symbol_id: 0x88a08d67
   symbol_id: 0xe2682879
   symbol_id: 0xdffbb8bf
