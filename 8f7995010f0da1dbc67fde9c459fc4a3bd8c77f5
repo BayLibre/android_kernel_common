@@ -34,6 +34,47 @@
       "parentUuid": "eb2b5802_fbbf01f8",
       "revId": "8f7995010f0da1dbc67fde9c459fc4a3bd8c77f5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4056acea_45a5af4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-10-25T06:57:37Z",
+      "side": 1,
+      "message": "Again, please submit your needed changes upstream, there should not be any need for hooks in this code.",
+      "parentUuid": "c21a0142_0b853637",
+      "revId": "8f7995010f0da1dbc67fde9c459fc4a3bd8c77f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a46e49f_11b46fdd",
+        "filename": "drivers/usb/dwc3/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-10-25T06:57:37Z",
+      "side": 1,
+      "message": "not needed, you only need one variable here if you were to do this, `ret` to determine if it should be skipped or not",
+      "range": {
+        "startLine": 278,
+        "startChar": 45,
+        "endLine": 278,
+        "endChar": 51
+      },
+      "revId": "8f7995010f0da1dbc67fde9c459fc4a3bd8c77f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
