@@ -2289,6 +2289,7 @@ static unsigned long isolate_lru_folios(unsigned long nr_to_scan,
 		move_to = dst;
 move:
 		list_move(&folio->lru, move_to);
+		trace_android_vh_del_page_from_lrulist(folio, false, lru);
 	}
 
 	/*
