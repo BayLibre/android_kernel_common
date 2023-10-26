@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e88862_e3d81175",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2006626
+      },
+      "writtenOn": "2023-10-26T02:47:13Z",
+      "side": 1,
+      "message": "we need #include \u003ctrace/hooks/mm.h\u003e in mm_inline.h\nthe same path build ok in kernel 5.15\nbut always report error in kernel 6.1 \nbuild error show below,do you know why? @Suren Baghdasaryan\n/work/oppo_80389617/code/map_protect_tijiao_1026/out/bazel/output_user_root/7bfcd1372020a68474db4d794cccb7b8/sandbox/linux-sandbox/25/execroot/__main__/common/include/trace/hooks/mm.h:14:9: error: \u0027TRACE_INCLUDE_PATH\u0027 macro redefined [-Werror,-Wmacro-redefined]\n#define TRACE_INCLUDE_PATH trace/hooks\n        ^\n/work/oppo_80389617/code/map_protect_tijiao_1026/out/bazel/output_user_root/7bfcd1372020a68474db4d794cccb7b8/sandbox/linux-sandbox/25/execroot/__main__/common/include/trace/hooks/restore_incpath.h:27:10: note: previous definition is here\n# define TRACE_INCLUDE_PATH STORED_TRACE_INCLUDE_PATH\n         ^\n1 error generated.\nmake[3]: *** [/work/oppo_80389617/code/map_protect_tijiao_1026/out/bazel/output_user_root/7bfcd1372020a68474db4d794cccb7b8/sandbox/linux-sandbox/25/execroot/__main__/common/scripts/Makefile.build:250: mm/page_alloc.o] Error 1\nmake[3]: *** Waiting for unfinished jobs....\nmake[2]: *** [/work/oppo_80389617/code/map_protect_tijiao_1026/out/bazel/output_user_root/7bfcd1372020a68474db4d794cccb7b8/sandbox/linux-sandbox/25/execroot/__main__/common/scripts/Makefile.build:500: mm] Error 2\nmake[2]: *** Waiting for unfinished jobs....\nmake[1]: *** [/work/oppo_80389617/code/map_protect_tijiao_1026/out/bazel/output_user_root/7bfcd1372020a68474db4d794cccb7b8/sandbox/linux-sandbox/25/execroot/__main__/common/Makefile:2055: .] Error 2\nmake: *** [Makefile:256: __sub-make] Error 2\nTarget //common:kernel_aarch64_abi_update failed to build\nUse --verbose_failures to see the command lines of failed build steps.\nERROR: /work/oppo_80389617/code/map_protect_tijiao_1026/common/BUILD.bazel:124:22 Extracting protected exports @//common:kernel_aarch64_abi_protected_exports failed: (Exit 2): bash failed: error executing KernelBuild command (from target //common:kernel_aarch64) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nINFO: Elapsed time: 256.309s, Critical Path: 222.78s\nINFO: 662 processes: 638 internal, 23 linux-sandbox, 1 local.\nERROR: Build did NOT complete successfully\nERROR: Build failed. Not running target",
+      "revId": "9a2fef61cfcea959bdbaad6f1bdd015ab5d5a41f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
