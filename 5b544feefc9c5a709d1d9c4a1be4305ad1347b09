@@ -22,6 +22,30 @@
       },
       "revId": "5b544feefc9c5a709d1d9c4a1be4305ad1347b09",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7558372_997240f8",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-10-26T17:05:19Z",
+      "side": 1,
+      "message": "\u003e Is this depending on an implementation detail of the common_kernels macro?\n\nYes, but eventually we need to unroll define_common_kernels().\n\nEventually. 😞",
+      "parentUuid": "7ac0ae1f_89030b67",
+      "range": {
+        "startLine": 304,
+        "startChar": 13,
+        "endLine": 304,
+        "endChar": 36
+      },
+      "revId": "5b544feefc9c5a709d1d9c4a1be4305ad1347b09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
