@@ -418,20 +418,16 @@ void do_bti(struct pt_regs *regs)
 }
 NOKPROBE_SYMBOL(do_bti);
 
-void do_el0_fpac(struct pt_regs *regs, unsigned long esr)
-{
-	force_signal_inject(SIGILL, ILL_ILLOPN, regs->pc, esr);
-}
-
-void do_el1_fpac(struct pt_regs *regs, unsigned long esr)
+void do_ptrauth_fault(struct pt_regs *regs, unsigned int esr)
 {
 	/*
-	 * Unexpected FPAC exception in the kernel: kill the task before it
-	 * does any more harm.
+	 * Unexpected FPAC exception or pointer authentication failure in
+	 * the kernel: kill the task before it does any more harm.
 	 */
-	die("Oops - FPAC", regs, esr);
+	BUG_ON(!user_mode(regs));
+	force_signal_inject(SIGILL, ILL_ILLOPN, regs->pc, esr);
 }
-NOKPROBE_SYMBOL(do_el1_fpac);
+NOKPROBE_SYMBOL(do_ptrauth_fault);
 
 #define __user_cache_maint(insn, address, res)			\
 	if (address >= user_addr_max()) {			\
