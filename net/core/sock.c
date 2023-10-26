@@ -135,6 +135,7 @@
 #include <net/bpf_sk_storage.h>
 
 #include <trace/events/sock.h>
+#include <trace/hooks/sched.h>
 
 #include <net/tcp.h>
 #include <net/busy_poll.h>
@@ -1616,6 +1617,13 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
 		v.val = sk->sk_bound_dev_if;
 		break;
 
+	case SO_NETNS_COOKIE:
+		lv = sizeof(u64);
+		if (len != lv)
+			return -EINVAL;
+		v.val64 = atomic64_read(&sock_net(sk)->net_cookie);
+		break;
+
 	default:
 		/* We implement the SO_SNDLOWAT etc to not be settable
 		 * (1003.1g 7).
@@ -2919,9 +2927,19 @@ void sock_def_readable(struct sock *sk)
 
 	rcu_read_lock();
 	wq = rcu_dereference(sk->sk_wq);
-	if (skwq_has_sleeper(wq))
+
+	if (skwq_has_sleeper(wq)) {
+		int done = 0;
+
+		trace_android_vh_do_wake_up_sync(&wq->wait, &done);
+		if (done)
+			goto out;
+
 		wake_up_interruptible_sync_poll(&wq->wait, EPOLLIN | EPOLLPRI |
 						EPOLLRDNORM | EPOLLRDBAND);
+	}
+
+out:
 	sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
 	rcu_read_unlock();
 }
