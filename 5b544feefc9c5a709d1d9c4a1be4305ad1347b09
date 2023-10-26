@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac0ae1f_89030b67",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2023-10-26T09:34:24Z",
+      "side": 1,
+      "message": "Is this depending on an implementation detail of the common_kernels macro? I guess this is OK here, as this is a mixed build so the targets are anyway in use for the base kernel, but I IMHO a cleaner way would be to explicitly define the filegroup in the BUILD file.\n\nFeel free to ignore this in favor of the performance benefit.",
+      "range": {
+        "startLine": 304,
+        "startChar": 13,
+        "endLine": 304,
+        "endChar": 36
+      },
+      "revId": "5b544feefc9c5a709d1d9c4a1be4305ad1347b09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
