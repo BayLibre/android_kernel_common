@@ -118436,6 +118436,12 @@ member {
   offset: 256
 }
 member {
+  id: 0x49ff89e0
+  name: "msg_control"
+  type_id: 0x18bd6530
+  offset: 384
+}
+member {
   id: 0xd7b46612
   name: "msg_control_is_user"
   type_id: 0x6d7f5ff6
@@ -151433,6 +151439,12 @@ member {
   name: "resize_wait"
   type_id: 0x03913382
   offset: 64
+}
+member {
+  id: 0x9a2ccf59
+  name: "resizing"
+  type_id: 0x74d29cf1
+  offset: 96
 }
 member {
   id: 0x7f319b20
@@ -215731,7 +215743,7 @@ struct_union {
   kind: STRUCT
   name: "io_sr_msg"
   definition {
-    bytesize: 48
+    bytesize: 56
     member_id: 0xbf9f3e0b
     member_id: 0x3be4492a
     member_id: 0xc33d06ca
@@ -215739,6 +215751,7 @@ struct_union {
     member_id: 0xb8f1e8f7
     member_id: 0x6ede3259
     member_id: 0x9b799482
+    member_id: 0x49ff89e0
   }
 }
 struct_union {
@@ -238394,6 +238407,7 @@ struct_union {
     member_id: 0x2d2d0138
     member_id: 0xe7102ce7
     member_id: 0x9fc7d460
+    member_id: 0x9a2ccf59
     member_id: 0x3dac837e
     member_id: 0xaa1570ba
     member_id: 0xad8983a9

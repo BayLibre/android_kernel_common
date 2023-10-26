@@ -1703,11 +1703,19 @@ call_ad(struct net *net, struct sock *ctnl, struct sk_buff *skb,
 
 	do {
 		if (retried) {
+<<<<<<< HEAD   (c02575 ANDROID: GKI: Update symbol list for Amlogic)
 			__ip_set_get_netlink(set);
 			nfnl_unlock(NFNL_SUBSYS_IPSET);
 			cond_resched();
 			nfnl_lock(NFNL_SUBSYS_IPSET);
 			__ip_set_put_netlink(set);
+=======
+			__ip_set_get(set);
+			nfnl_unlock(NFNL_SUBSYS_IPSET);
+			cond_resched();
+			nfnl_lock(NFNL_SUBSYS_IPSET);
+			__ip_set_put(set);
+>>>>>>> BRANCH (b92c49 Merge 5.15.131 into android14-5.15-lts)
 		}
 
 		ip_set_lock(set);
