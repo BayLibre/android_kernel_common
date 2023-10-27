@@ -16,6 +16,24 @@
       "message": "That does not look like a typical merge resolution, but rather additional patches being mixed in. Can you clarify (in the commit message)?",
       "revId": "e04ba5f57fb9edabfd77a6100e5e94a43f4b9433",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cbaec85_a5bfd993",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-10-27T14:01:26Z",
+      "side": 1,
+      "message": "I did, scroll way down to the bottom of the changlog text, it says:\n`NOTE, this reverts the following commits in order to apply things\ncleanly and avoid ABI breakage.  Due to the complexity involved,\nindividual reverts would not work properly:\n        fc778e9d7995 xhci: track port suspend state correctly in unsuccessful resume cases\n        1c034c6e224d xhci: decouple usb2 port resume and get_port_status request handling\n        92088dd88627 xhci: clear usb2 resume related variables in one place.\n        e7abc4b18d1a xhci: rename resume_done to resume_timestamp\n        d44c9285ce35 xhci: move port specific items such as state completions to port structure\n        e2b4de13e5f9 xhci: cleanup xhci_hub_control port references\n        489818719a88 arm64: armv8_deprecated: fix unused-function error\n        da7603cedb7d arm64: armv8_deprecated: rework deprected instruction handling\n        45a26d2a5394 arm64: armv8_deprecated: move aarch32 helper earlier\n        0b6a7a9f6d94 arm64: armv8_deprecated move emulation functions\n        2202536144bc arm64: armv8_deprecated: fold ops into insn_emulation\n        5aa232345e4d arm64: rework EL0 MRS emulation\n        15e964971ff7 arm64: factor insn read out of call_undef_hook()\n        0edde7fd1c3b arm64: factor out EL1 SSBS emulation hook\n        7a76df1ae1b3 arm64: split EL0/EL1 UNDEF handlers\n        8a8d4cc303ef arm64: allow kprobes on EL0 handlers\n        793ed958b62a arm64: rework BTI exception handling\n        9113333d7c7c arm64: rework FPAC exception handling\n        a8d7c8484ff7 arm64: consistently pass ESR_ELx to die()\n        004bdab6edc7 arm64: die(): pass \u0027err\u0027 as long\n        835cb1f78d74 arm64: report EL1 UNDEFs better`",
+      "parentUuid": "6c0bada1_3ee080a2",
+      "revId": "e04ba5f57fb9edabfd77a6100e5e94a43f4b9433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
