@@ -16,6 +16,23 @@
       "message": "checkpatch can be ignored for a revert of an upstream commit.",
       "revId": "974cdc3417177c55ed62880414ce48d8c75018d3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c148ee57_587aa552",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-10-27T17:13:30Z",
+      "side": 1,
+      "message": "The only failure was a checkpatch nit:\n```\nCHECK:COMPARISON_TO_NULL: Comparison to NULL could be written \"!ih\"\n#79: FILE: net/netfilter/nf_conntrack_proto_sctp.c:483:\n+\t\t\tif (ih \u003d\u003d NULL)\n```",
+      "revId": "974cdc3417177c55ed62880414ce48d8c75018d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
