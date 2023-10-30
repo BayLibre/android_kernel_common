@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0afb4af2_ec48ef96",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1741939
+      },
+      "writtenOn": "2023-10-30T06:13:33Z",
+      "side": 1,
+      "message": "Link changed, thanks.\nLink: https://lore.kernel.org/linux-arm-kernel/a16dc8ba-ca3b-4dd6-a8b5-dbb3ac7a49a5@acm.org/T/",
+      "parentUuid": "87948d40_38fff4b6",
+      "range": {
+        "startLine": 0,
+        "startChar": 0,
+        "endLine": 0,
+        "endChar": 0
+      },
+      "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "65c36a64_16371500",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2023-10-27T20:56:28Z",
       "side": 1,
       "message": "Why is this code only selected for MediaTek UFSHCI controllers instead of all UFSHCI controllers?",
+      "range": {
+        "startLine": 450,
+        "startChar": 3,
+        "endLine": 450,
+        "endChar": 37
+      },
+      "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be2b79db_dc1696cc",
+        "filename": "drivers/ufs/core/ufs-mcq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1741939
+      },
+      "writtenOn": "2023-10-30T06:13:33Z",
+      "side": 1,
+      "message": "I think UFSHCI 4.0 spec \"When the head and tail doorbells are equal,the queue is empty. *Nothe that this definition means there will alwaysbe one empty queue entry\" means that \"UFSHCI controller\" should always keep one empty queue entry.\nOne of our host does not follow the spec, therefore, this host will treat CQ full(head \u003d tail) as CQ empty (head \u003d tail). That\u0027s why we propose this quirk to expand one queue slot for hosts have such issue.\nIt will make CQ full(head !\u003d tail)[keep one empty queue entry] not equal to CQ empty(head \u003d tail).\nhwq-\u003emax_entries will be used to set SQ\u0026CQ size in SQ\u0026CQ Configuration\nRegisters, we think it should only apply to specific hosts need this quirk not all.\n\nThanks,\nChun-Hung",
+      "parentUuid": "ed929470_545da07f",
       "range": {
         "startLine": 450,
         "startChar": 3,
