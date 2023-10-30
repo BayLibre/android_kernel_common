@@ -134,6 +134,30 @@
       },
       "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9f49062_0c9b2890",
+        "filename": "drivers/ufs/core/ufs-mcq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2023-10-30T15:05:54Z",
+      "side": 1,
+      "message": "I do not agree. The UFSHCI driver controls the maximum number of CQ entries. The UFS host controller has no impact on how many entries end up in a CQ.",
+      "parentUuid": "edb1479d_bd4e2a08",
+      "range": {
+        "startLine": 450,
+        "startChar": 3,
+        "endLine": 450,
+        "endChar": 37
+      },
+      "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
