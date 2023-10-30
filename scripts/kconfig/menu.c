@@ -96,8 +96,11 @@ static struct expr *rewrite_m(struct expr *e)
 		break;
 	case E_SYMBOL:
 		/* change 'm' into 'm' && MODULES */
-		if (e->left.sym == &symbol_mod)
-			return expr_alloc_and(e, expr_alloc_symbol(modules_sym));
+		if (e->left.sym == &symbol_mod) {
+			if (sym_depends_rust(e->left.sym))
+				e = expr_alloc_and(e, expr_alloc_symbol(modules_rust_sym));
+			e = expr_alloc_and(e, expr_alloc_symbol(modules_sym));
+		}
 		break;
 	default:
 		break;
@@ -443,7 +446,7 @@ void menu_finalize(struct menu *parent)
 			if (!expr_contains_symbol(dep, sym))
 				/* No dependency, quit */
 				break;
-			if (expr_depends_symbol(dep, sym))
+			if (expr_depends_symbol(dep, sym, false))
 				/* Absolute dependency, put in submenu */
 				goto next;
 
