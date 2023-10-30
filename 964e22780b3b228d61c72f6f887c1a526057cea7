@@ -33,6 +33,29 @@
       "message": "hi, Suren\n\nPlease help to review. thanks.",
       "revId": "964e22780b3b228d61c72f6f887c1a526057cea7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e2c33bd_aa5cc4eb",
+        "filename": "mm/util.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-10-30T19:11:24Z",
+      "side": 1,
+      "message": "You are using this vendor hook also in __iommu_dma_alloc_pages(). How would you differentiate between them? I think you need a separate hook here, something like `trace_android_vh_adjust_kmalloc_flags`",
+      "range": {
+        "startLine": 585,
+        "startChar": 1,
+        "endLine": 585,
+        "endChar": 36
+      },
+      "revId": "964e22780b3b228d61c72f6f887c1a526057cea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
