@@ -33,6 +33,24 @@
       "message": "please help merge this change",
       "revId": "704bd4f574ef13cf0f6a2aefb5455b9685cdf937",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0b6872e_4969fecd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-10-30T09:28:26Z",
+      "side": 1,
+      "message": "Presubmit is failing with:\n\n```\nAnother app is currently holding the xtables lock. Perhaps you want to use the -w option?\n```\n\nI have no idea whether this is safe to bypass, but it\u0027s definitely not obvious.",
+      "parentUuid": "7e4be71c_5d6178d1",
+      "revId": "704bd4f574ef13cf0f6a2aefb5455b9685cdf937",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
