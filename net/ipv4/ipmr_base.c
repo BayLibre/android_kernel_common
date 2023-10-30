@@ -97,7 +97,7 @@ void *mr_mfc_find_any(struct mr_table *mrt, int vifi, void *hasharg)
 
 	list = rhltable_lookup(&mrt->mfc_hash, hasharg, *mrt->ops.rht_params);
 	rhl_for_each_entry_rcu(c, tmp, list, mnode) {
-		if (c->mfc_un.res.ttls[vifi] < 255)
+		if (c->mfc_parent == vifi && c->mfc_un.res.ttls[vifi] < 255)
 			return c;
 
 		/* It's ok if the vifi is part of the static tree */
