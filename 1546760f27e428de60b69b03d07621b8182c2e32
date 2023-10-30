@@ -50,6 +50,24 @@
       "message": "without a cherry-pick of aosp/2796347 on top of this change, this can\u0027t land as it breaks KMI.\n\n```\nfunction symbol \u0027int hid_add_device(struct hid_device*)\u0027 changed\n  CRC changed from 0xa110d252 to 0x3cdff984\n\nfunction symbol \u0027struct hid_device* hid_allocate_device()\u0027 changed\n  CRC changed from 0x88125dd8 to 0x5fc03091\n\nfunction symbol \u0027void hid_destroy_device(struct hid_device*)\u0027 changed\n  CRC changed from 0xa3b9a474 to 0xdefebae7\n\n... 4 omitted; 7 symbols have only CRC changes\n\ntype \u0027struct hid_device\u0027 changed\n  member \u0027__s32 battery_charge_status\u0027 was added\n  2 members (\u0027enum hid_battery_status battery_status\u0027 .. \u0027bool battery_avoid_query\u0027) changed\n    offset changed by 32\n```",
       "revId": "1546760f27e428de60b69b03d07621b8182c2e32",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f9ced60_916dad4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1933031
+      },
+      "writtenOn": "2023-10-30T06:41:23Z",
+      "side": 1,
+      "message": "Dear,google\n\n2803553 has been rebase with this change",
+      "parentUuid": "55c1fbed_aea3a217",
+      "revId": "1546760f27e428de60b69b03d07621b8182c2e32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
