@@ -56,6 +56,30 @@
       },
       "revId": "964e22780b3b228d61c72f6f887c1a526057cea7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "779b3738_2d66d2ae",
+        "filename": "mm/util.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2023-10-31T00:27:58Z",
+      "side": 1,
+      "message": "yes, I\u0027m reusing this vendor hook here. since the turnning reclaim behavior base on order is the same logic. no need to differentiate between the two callsite.\n\nhowever, if you think better to use a separate hook, i will change as your suggest.",
+      "parentUuid": "6e2c33bd_aa5cc4eb",
+      "range": {
+        "startLine": 585,
+        "startChar": 1,
+        "endLine": 585,
+        "endChar": 36
+      },
+      "revId": "964e22780b3b228d61c72f6f887c1a526057cea7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
