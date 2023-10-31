@@ -87,8 +87,10 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
 		unsigned long, prot, unsigned long, flags,
 		unsigned long, fd, unsigned long, off)
 {
-	if (off & ~PAGE_MASK)
+	if (off & ~PAGE_MASK_16K) {
+		pr_err("DEBUG: 16K: mmap offset is not page aligned: off = 0x%016lx", off);
 		return -EINVAL;
+	}
 
 	return ksys_mmap_pgoff(addr, len, prot, flags, fd, off >> PAGE_SHIFT);
 }
