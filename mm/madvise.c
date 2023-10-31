@@ -1431,9 +1431,11 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	if (!madvise_behavior_valid(behavior))
 		return -EINVAL;
 
-	if (!PAGE_ALIGNED(start))
+	if (!PAGE_ALIGNED_16K(start)) {
+		pr_err("DEBUG: 16K: madvise: start is not page aligned: start = 0x%016lx", start);
 		return -EINVAL;
-	len = PAGE_ALIGN(len_in);
+	}
+	len = PAGE_ALIGN_16K(len_in);
 
 	/* Check to see whether len was rounded up from small -ve to zero */
 	if (len_in && !len)
