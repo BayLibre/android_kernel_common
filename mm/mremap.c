@@ -790,8 +790,10 @@ static unsigned long mremap_to(unsigned long addr, unsigned long old_len,
 	unsigned long ret = -EINVAL;
 	unsigned long map_flags = 0;
 
-	if (offset_in_page(new_addr))
+	if (offset_in_page_16k(new_addr)) {
+		pr_err("DEBUG: 16K: mremap: new_addr is not page aligned: new_addr = 0x%016lx", new_addr);
 		goto out;
+	}
 
 	if (new_len > TASK_SIZE || new_addr > TASK_SIZE - new_len)
 		goto out;
@@ -927,11 +929,13 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 		return ret;
 
 
-	if (offset_in_page(addr))
+	if (offset_in_page_16k(addr)) {
+		pr_err("DEBUG: 16K: mremap src addr is not page aligned");
 		return ret;
+	}
 
-	old_len = PAGE_ALIGN(old_len);
-	new_len = PAGE_ALIGN(new_len);
+	old_len = PAGE_ALIGN_16K(old_len);
+	new_len = PAGE_ALIGN_16K(new_len);
 
 	/*
 	 * We allow a zero old-len as a special case
