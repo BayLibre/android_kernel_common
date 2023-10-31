@@ -688,11 +688,13 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
 	if (grows == (PROT_GROWSDOWN|PROT_GROWSUP)) /* can't be both */
 		return -EINVAL;
 
-	if (start & ~PAGE_MASK)
+	if (start & ~PAGE_MASK_16K) {
+		pr_err("DEBUG: 16K: mprotect: addr is not page aligned: addr = 0x%016lx", start);
 		return -EINVAL;
+	}
 	if (!len)
 		return 0;
-	len = PAGE_ALIGN(len);
+	len = PAGE_ALIGN_16K(len);
 	end = start + len;
 	if (end <= start)
 		return -ENOMEM;
