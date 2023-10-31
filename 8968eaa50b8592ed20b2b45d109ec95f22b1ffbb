@@ -158,6 +158,30 @@
       },
       "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6e9e43c_732814dc",
+        "filename": "drivers/ufs/core/ufs-mcq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1741939
+      },
+      "writtenOn": "2023-10-31T03:48:45Z",
+      "side": 1,
+      "message": "Check CQ full is design specific and could be done by SW or HW.\nIf it is handled by SW, the code below could apply to all ufshci4.0 controllers.\nIt will help to make HQ QD \u003d Device QD + 1 and keep always one empty queue entry.\n\"hwq-\u003emax_entries \u003d hba-\u003enutrs + 1;\"\n\nBut this means the quirk is not necessary any more, any suggestion?",
+      "parentUuid": "a9f49062_0c9b2890",
+      "range": {
+        "startLine": 450,
+        "startChar": 3,
+        "endLine": 450,
+        "endChar": 37
+      },
+      "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
