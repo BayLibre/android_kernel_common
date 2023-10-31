@@ -182,6 +182,30 @@
       },
       "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66e292e1_86ed78bc",
+        "filename": "drivers/ufs/core/ufs-mcq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2023-10-31T17:26:13Z",
+      "side": 1,
+      "message": "I\u0027m fine with \"hwq-\u003emax_entries \u003d hba-\u003enutrs + 1;\" for all host controllers and with removing the new quirk flag.",
+      "parentUuid": "f6e9e43c_732814dc",
+      "range": {
+        "startLine": 450,
+        "startChar": 3,
+        "endLine": 450,
+        "endChar": 37
+      },
+      "revId": "8968eaa50b8592ed20b2b45d109ec95f22b1ffbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
