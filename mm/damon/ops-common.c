@@ -35,7 +35,7 @@ struct page *damon_get_page(unsigned long pfn)
 
 void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr)
 {
-	struct page *page = damon_get_page(pte_pfn(*pte));
+	struct page *page = damon_get_page(pte_pfn(ptep_get(pte)));
 
 	if (!page)
 		return;
