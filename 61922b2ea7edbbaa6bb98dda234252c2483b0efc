@@ -33,6 +33,24 @@
       "message": "Why not submit upstream first to the FUSE developers and maintainer?",
       "revId": "61922b2ea7edbbaa6bb98dda234252c2483b0efc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fe2068d_e234b75d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1902065
+      },
+      "writtenOn": "2023-11-01T11:26:34Z",
+      "side": 1,
+      "message": "I have checked the ACK contribution guidelines. However I have one confusing point.\n\n1. The \u0027fuse passthrough read/write\u0027 is currently only present in ACK and not in linux.\n2. I extended the \u0027fuse passthrough\u0027 feature to the readdir.\n\n\u003d\u003e In this context, I thought that this patch should be pushed to ACK.\n\n3. The current fuse passthrough contribution is in progress.\n\nThen, should I leave a review or use another method for that contribution?\nI would appreciate it if you could provide your opinion.",
+      "parentUuid": "d4400aed_0d7d3a87",
+      "revId": "61922b2ea7edbbaa6bb98dda234252c2483b0efc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
