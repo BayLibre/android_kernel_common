@@ -207,6 +207,8 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
 	bool broadcast;
 	ktime_t time_start, time_end;
 
+	unsigned long predicted_sleep_length_ns;
+
 	/*
 	 * The vendor hook may modify index, which means target_state and
 	 * broadcast must be assigned after the vendor hook.
@@ -242,6 +244,9 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
 
 	trace_cpu_idle(index, dev->cpu);
 	time_start = ns_to_ktime(local_clock());
+
+	predicted_sleep_length_ns = teo_cpu_get_predicted_sleep_length(dev->cpu);
+	trace_cpu_idle_predicted_sleep_length(dev->cpu, index, predicted_sleep_length_ns);
 
 	stop_critical_timings();
 	if (!(target_state->flags & CPUIDLE_FLAG_RCU_IDLE))
