@@ -16,6 +16,29 @@
       "message": "Why is this not upstream yet?  We can\u0027t keep taking this for forever, please work to get this upstream first.",
       "revId": "68a884983b145209730c7f884ad58ff1617213a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be61f79b_fb585468",
+        "filename": "include/linux/gfp.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-11-01T08:37:25Z",
+      "side": 1,
+      "message": "did you run checkpatch on this?  It should be using `BIT()`, right?",
+      "range": {
+        "startLine": 355,
+        "startChar": 24,
+        "endLine": 355,
+        "endChar": 32
+      },
+      "revId": "68a884983b145209730c7f884ad58ff1617213a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
