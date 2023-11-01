@@ -16,6 +16,23 @@
       "message": "this series breaks the allmodconfig builds:\n\n```\ncommon/mm/damon/vaddr.c:388:15: error: use of undeclared identifier \u0027PGWALK_RDLOCK\u0027\n        .walk_lock \u003d PGWALK_RDLOCK,\n                     ^\ncommon/mm/damon/vaddr.c:530:15: error: use of undeclared identifier \u0027PGWALK_RDLOCK\u0027\n        .walk_lock \u003d PGWALK_RDLOCK,\n                     ^\n2 errors generated.\n```",
       "revId": "c89ba92198bcf853945f77d0754a4b721b65eb27",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5baffda6_e5cd8609",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-11-01T17:33:07Z",
+      "side": 1,
+      "message": "Why is this API needed in 5.15 kernel? It\u0027s not part of damon changes.",
+      "revId": "c89ba92198bcf853945f77d0754a4b721b65eb27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
