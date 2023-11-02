@@ -34,6 +34,24 @@
       "parentUuid": "b5fda157_b5f57e3c",
       "revId": "699da6b03fde2aa6cdeb20c01d7b8012859e7d94",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6e9a3e0_48e4d3fc",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T16:27:03Z",
+      "side": 1,
+      "message": "Yes. My best guess is the old code would do so to reuse `page_addr` otherwise it would complicate the code even more when trying to determine when to end the loop. e.g. it could be when `i \u003d\u003d end` or it can be `i \u003d\u003d page_addr - PAGE_SIZE` depending on the scenario. It was way too clever for such a simple problem.",
+      "parentUuid": "c0e69a6f_c644cf25",
+      "revId": "699da6b03fde2aa6cdeb20c01d7b8012859e7d94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

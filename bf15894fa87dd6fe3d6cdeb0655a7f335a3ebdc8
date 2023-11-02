@@ -16,6 +16,24 @@
       "message": "what can cause list_lru_add to fail?",
       "revId": "bf15894fa87dd6fe3d6cdeb0655a7f335a3ebdc8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f8ce33_d0327806",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T16:27:03Z",
+      "side": 1,
+      "message": "The `lru_page-\u003elru` is supposed to be an exclusive item. If a page gets added twice then something has gone terribly wrong (e.g. corruption, race). So this is a sanity check that we are only adding/removing pages in an exclusive way.\n\nI would personally prefer a non-exclusive solution with an atomic user counter or similar. However, I\u0027m much too scared of changing that.",
+      "parentUuid": "408ee75c_2e60b189",
+      "revId": "bf15894fa87dd6fe3d6cdeb0655a7f335a3ebdc8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
