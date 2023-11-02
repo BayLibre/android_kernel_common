@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d18ccfc5_eaf5acf4",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T17:21:01Z",
+      "side": 1,
+      "message": "Sounds good, I\u0027ll switch. I only kept the `to_free` to piggy back on the local definition above in `binder_delete_free_buffer()`.",
+      "parentUuid": "1789d7bf_101b0ee2",
+      "range": {
+        "startLine": 648,
+        "startChar": 12,
+        "endLine": 648,
+        "endChar": 19
+      },
+      "revId": "a763032ea157a626a4196d4fe3c633453ad2140c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "458360ba_924f6004",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-02T16:48:12Z",
       "side": 1,
       "message": "Maybe it would be even better to use an enum so it is explicit at the call site what this means. Something like:\n```\nenum {\n  NO_FREE_PAGES \u003d 0,\n  FREE_PAGES \u003d 1\n};\n```",
+      "range": {
+        "startLine": 727,
+        "startChar": 39,
+        "endLine": 727,
+        "endChar": 43
+      },
+      "revId": "a763032ea157a626a4196d4fe3c633453ad2140c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a8f55e_e0e62bab",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T17:21:01Z",
+      "side": 1,
+      "message": "I personally prefer your suggestion about renaming the param to `bool free_page_range` above and passing `true` / \u0027false\u0027. It seems more concise than creating a 0/1 enum just for this. wdyt?",
+      "parentUuid": "458360ba_924f6004",
       "range": {
         "startLine": 727,
         "startChar": 39,
