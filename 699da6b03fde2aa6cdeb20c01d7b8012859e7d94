@@ -16,6 +16,24 @@
       "message": "Just fyi. Not sure whether it matters, but you\u0027re changing the order in which you add pages to the lru list. The old code adds them in reverse order.",
       "revId": "699da6b03fde2aa6cdeb20c01d7b8012859e7d94",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0e69a6f_c644cf25",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-02T16:21:01Z",
+      "side": 1,
+      "message": "I don\u0027t think there was any rationale for the reverse order other than to allow the error handling from alloc to `goto` a label in the middle of the free loop. Getting rid of that is definitely worthwhile.",
+      "parentUuid": "b5fda157_b5f57e3c",
+      "revId": "699da6b03fde2aa6cdeb20c01d7b8012859e7d94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
