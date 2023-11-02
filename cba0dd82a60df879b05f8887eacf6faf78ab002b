@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c614ec1e_0cb5ccdb",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-02T20:22:29Z",
+      "side": 1,
+      "message": "can this be moved out from under mmap_write_lock()? Don\u0027t we need to protect lru_page with the mutex?",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b14bfb6_0906da13",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-02T20:22:29Z",
+      "side": 1,
+      "message": "some more comments are needed here. where is the acquire that relies on these semantics?",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1510ad7d_e04db0d1",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-02T20:22:29Z",
+      "side": 1,
+      "message": "what if the shrinker sets page_ptr to NULL after this check? Doesn\u0027t binder_lru_page need to be protected?",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
