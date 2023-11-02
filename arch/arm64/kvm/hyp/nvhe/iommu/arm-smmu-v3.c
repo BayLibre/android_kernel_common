@@ -55,6 +55,26 @@ struct hyp_arm_smmu_v3_domain {
 	smmu_wait(_cond);					\
 })
 
+/* Request non-device memory */
+static void *smmu_alloc(size_t size)
+{
+	void *p;
+	struct kvm_hyp_req req;
+
+	p = hyp_alloc(size);
+	/* We can't handle any other errors. */
+	if (!p) {
+		BUG_ON(hyp_alloc_errno() != -ENOMEM);
+		req.type = KVM_HYP_REQ_MEM;
+		req.mem.dest = REQ_MEM_HYP_ALLOC;
+		req.mem.nr_pages = hyp_alloc_missing_donations();
+		req.mem.sz_alloc = PAGE_SIZE;
+		kvm_iommu_request(&req);
+	}
+
+	return p;
+}
+
 static int smmu_write_cr0(struct hyp_arm_smmu_v3_device *smmu, u32 val)
 {
 	writel_relaxed(val, smmu->base + ARM_SMMU_CR0);
@@ -679,9 +699,9 @@ int smmu_alloc_domain(struct kvm_hyp_iommu_domain *domain, pkvm_handle_t domain_
 {
 	struct hyp_arm_smmu_v3_domain *smmu_domain;
 
-	smmu_domain = hyp_alloc(sizeof(struct hyp_arm_smmu_v3_domain));
+	smmu_domain = smmu_alloc(sizeof(struct hyp_arm_smmu_v3_domain));
 	if (!smmu_domain)
-		return hyp_alloc_errno();
+		return -ENOMEM;
 
 	smmu_domain->domain = domain;
 
