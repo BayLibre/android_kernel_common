@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7b8073a_8575713f",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-02T16:25:43Z",
+      "side": 1,
+      "message": "You checked the vma above, but what prevents the VMA from being deallocated between line 538 and here?",
+      "revId": "3abf81a70dfdc4d4f001173b06fd30e1c1a963ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
