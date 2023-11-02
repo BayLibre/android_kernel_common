@@ -22,6 +22,30 @@
       },
       "revId": "8e0c1564ca26a41d5974a7f52c3c747dd2a515eb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c7b704b_fd41037d",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T17:31:49Z",
+      "side": 1,
+      "message": "oh, the idea was to sort of reference the `get_user_pages_remote()` api from `mm/gup.c`. It basically means that the `mm !\u003d current-\u003emm`, or that you are inserting pages in a _remote_ task.\n\nThe functionality is more-or-less the same so the idea is to _possibly_ replace it some day with an actual `get_user_pages_remote()` plus the `-\u003efault()` implementation. I tested this and it works fine. However, there is no advantage that I could see.\n\nI\u0027m touch on this exact point at LPC and hopefully get some feedback.",
+      "parentUuid": "6bc2eb0d_e385a80f",
+      "range": {
+        "startLine": 206,
+        "startChar": 31,
+        "endLine": 206,
+        "endChar": 38
+      },
+      "revId": "8e0c1564ca26a41d5974a7f52c3c747dd2a515eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
