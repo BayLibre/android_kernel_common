@@ -16,6 +16,24 @@
       "message": "You checked the vma above, but what prevents the VMA from being deallocated between line 538 and here?",
       "revId": "3abf81a70dfdc4d4f001173b06fd30e1c1a963ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22e933ac_fef9377a",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T16:33:16Z",
+      "side": 1,
+      "message": "A race with a `-\u003emunmap()` which can happen at any time. This can only be serialized with the mmap_lock in write mode. Alternately, you can also do a mmap_lock in read more plus a vma lookup.\n\nThe check above only determines if the alloc has been fully initialized and the alloc-\u003e* space is safe to access.",
+      "parentUuid": "c7b8073a_8575713f",
+      "revId": "3abf81a70dfdc4d4f001173b06fd30e1c1a963ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
