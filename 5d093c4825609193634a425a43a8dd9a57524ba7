@@ -22,6 +22,30 @@
       },
       "revId": "5d093c4825609193634a425a43a8dd9a57524ba7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "738e6e88_998cc0a7",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T17:12:25Z",
+      "side": 1,
+      "message": "Good point. I\u0027ve added the following comment to my local patchset:\n```\n+/* Callers preallocate @new_buffer, it is freed by this function if unused */\n static struct binder_buffer *binder_alloc_new_buf_locked(\n                                struct binder_alloc *alloc,\n                                struct binder_buffer *new_buffer,\n```",
+      "parentUuid": "a793847a_46cf877e",
+      "range": {
+        "startLine": 405,
+        "startChar": 4,
+        "endLine": 405,
+        "endChar": 37
+      },
+      "revId": "5d093c4825609193634a425a43a8dd9a57524ba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
