@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "309d00b5_0d32561f",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T23:23:42Z",
+      "side": 1,
+      "message": "There is a lock-less check with `smp_load_acquire(\u0026page-\u003epage_ptr)` below in `get_page_range()`. This iterates over the \"inclusive\" range of pages that the buffer will use (including pages shared with other buffers). This will determine what pages are missing and need to be allocated/inserted into the vma by calling `binder_get_user_page_remote()`.\n\nHowever, since these pages are shared we may race with other requests and this is where the `mmap_write_lock()` helps to serialize these requests.\n\nI should probably explain this along with the release/acquire pair further in detail.",
+      "parentUuid": "c614ec1e_0cb5ccdb",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b14bfb6_0906da13",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6344bd76_cf0e4c2e",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T23:23:42Z",
+      "side": 1,
+      "message": "Fair point, I should have commented a bit more on this section. I\u0027ll include this in v2 since this has been sent upstream now.",
+      "parentUuid": "6b14bfb6_0906da13",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1510ad7d_e04db0d1",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -48,6 +84,24 @@
       "writtenOn": "2023-11-02T20:22:29Z",
       "side": 1,
       "message": "what if the shrinker sets page_ptr to NULL after this check? Doesn\u0027t binder_lru_page need to be protected?",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be50765_7e6898c4",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T23:23:42Z",
+      "side": 1,
+      "message": "At this stage the whole set of pages used by this buffer are guaranteed to have been removed from the LRU list. The shrinker won\u0027t see this page until the last user calls `binder_alloc_free_buf()`.\n\nNote this is the same guarantee we provide when using `pages[i]-\u003epage_ptr` in `binder_alloc_copy_{to/from}_buffer()` calls without a lock.",
+      "parentUuid": "1510ad7d_e04db0d1",
       "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
