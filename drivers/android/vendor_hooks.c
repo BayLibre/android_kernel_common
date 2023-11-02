@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0-only
+o// SPDX-License-Identifier: GPL-2.0-only
 /* vendor_hook.c
  *
  * Android Vendor Hook Support
@@ -415,6 +415,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pin_user_pages);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dmabuf_heap_flags_validation);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_sum);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
