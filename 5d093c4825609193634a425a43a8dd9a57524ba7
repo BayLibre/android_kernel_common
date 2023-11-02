@@ -63,6 +63,24 @@
       "message": "You could also do something like this to avoid some needless kzallocs:\n```\n   buffer \u003d binder_alloc_new_buf_locked(alloc, NULL, size, is_async);\n   if (PTR_ERR(buffer) \u003d\u003d -ENOMEM) {\n     next \u003d kzalloc(...);\n     if (!next)\n       return ERR_PTR(-ENOMEM);\n    buffer \u003d binder_alloc_new_buf_locked(alloc, next, size, is_async);\n```\ninstead of proactive allocation at line 549.\n\nThis would mean bailing out of `binder_alloc_new_buffer_locked()` as soon as you see `size \u003c buffer_size`.\n\nPerhaps this is overkill given the new buffer is actually used 98% of the time, so feel free to ignore - which I guess makes sense since we tend to coalesce with adjacent buffers when we free.",
       "revId": "5d093c4825609193634a425a43a8dd9a57524ba7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "effafff1_84707f5d",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-02T18:05:05Z",
+      "side": 1,
+      "message": "Yes, I actually had a \"retry\" strategy which would internally release the lock, do the allocation and `goto retry`. This can be seen here: https://user.git.corp.google.com/cmllamas/linux/kernel/+/34fb6e6b2235f6a4eb92a05833ae18e01689198f%5E%21/#F0\n\nHowever, after measuring that 98%+ of the time we split oversized buffers it makes more sense to me to assume we\u0027ll need to preallocate.",
+      "parentUuid": "53c039ee_100b9d31",
+      "revId": "5d093c4825609193634a425a43a8dd9a57524ba7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
