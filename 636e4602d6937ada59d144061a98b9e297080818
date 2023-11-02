@@ -110,6 +110,24 @@
       "message": "Why not just properly fix the callers of this?  You control those drivers, and fixing that code is easier than trying to guess at who is calling this hook.",
       "revId": "636e4602d6937ada59d144061a98b9e297080818",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f973a4e_8acb4b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2023-11-02T07:05:13Z",
+      "side": 1,
+      "message": "hi, sir\n\nwe can\u0027t change all the caller(some is vendor driver, some is commom kernel, some is oem driver)\n\nwe only want to mask the really high-order allocation\u0027s reclaim flags(again for some performace\u0026\u0026power tuning purpose, the mask policy may change with different product.)\n\nI think add a vendor hook in kvmalloc_node give us the ability to adjust as needed(easier to change).",
+      "parentUuid": "6ad6be73_07f8321a",
+      "revId": "636e4602d6937ada59d144061a98b9e297080818",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
