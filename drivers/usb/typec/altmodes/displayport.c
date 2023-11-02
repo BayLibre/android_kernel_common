@@ -303,6 +303,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
 			dp->data.status = 0;
 			dp->data.conf = 0;
 			if (dp->hpd) {
+<<<<<<< HEAD   (d58a22 Merge 6.1.58 into android14-6.1-lts)
+=======
+				drm_connector_oob_hotplug_event(dp->connector_fwnode);
+>>>>>>> BRANCH (7d2440 Linux 6.1.59)
 				dp->hpd = false;
 				sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
 			}
