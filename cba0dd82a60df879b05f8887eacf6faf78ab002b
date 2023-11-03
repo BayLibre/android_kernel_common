@@ -162,6 +162,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43084555_fa0b5e5c",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T17:13:24Z",
+      "side": 1,
+      "message": "\u003e Yes, they are actually page aligned.\n\nIf buffers are page-aligned at head and tail, then why would there be any page sharing? I understand that we are forcing alignment to find all of the pages - but the point is that sharing occurs only because the buffers themselves are not page aligned (since that would mean that a 1-byte payload would require a whole page which would be wasteful)",
+      "parentUuid": "99ab0856_64ffc969",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1510ad7d_e04db0d1",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -250,6 +268,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae8206aa_6b120607",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T17:13:24Z",
+      "side": 1,
+      "message": "I think you should drop the terminology \"pages shared with other transactions\" unless you are clear that this is the misaligned head/tail that causes this sharing. There is zero sharing of the actual buffer memory.\n\n\u003e We still need the acq/rel semantics\nMakes sense... make this clear in comments.",
+      "parentUuid": "e6a9c129_ceb8ac2f",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b7ae70c_d4d8770a",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -279,6 +315,24 @@
       "side": 1,
       "message": "Same as above, this range is also PAGE_ALIGED(). However, this expects an _exclusive_ range. So _no_ pages shared with other buffers. In most cases (since transactions are typically less-than a page size) this means that `end \u003d\u003d start` so we don\u0027t even enter the loop most of the time.\n\nI can add more comments to explain all these concepts.",
       "parentUuid": "1b7ae70c_d4d8770a",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffbd0ec0_4d4413be",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T17:13:24Z",
+      "side": 1,
+      "message": "This is really confusing because you are talking about the range traversed by this function, but you don\u0027t explain how these ranges relate to the actual buffer. \"pages shared with other buffers\" is totally confusing unless you are very clear about what causes the sharing. These inclusive/exclusive ranges are different from each other _because_ the actual buffer is _not page aligned_ either at the head or the tail. Focus the comments on the actual buffer.",
+      "parentUuid": "f2a95378_becbba34",
       "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
