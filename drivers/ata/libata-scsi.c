@@ -1086,7 +1086,18 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
 		}
 	} else {
 		sdev->sector_size = ata_id_logical_sector_size(dev->id);
+<<<<<<< HEAD   (788e35 Merge 6.1.60 into android14-6.1-lts)
 		sdev->manage_start_stop = 1;
+=======
+
+		/*
+		 * Ask the sd driver to issue START STOP UNIT on runtime suspend
+		 * and resume and shutdown only. For system level suspend/resume,
+		 * devices power state is handled directly by libata EH.
+		 */
+		sdev->manage_runtime_start_stop = true;
+		sdev->manage_shutdown = true;
+>>>>>>> BRANCH (4a6183 Linux 6.1.61)
 	}
 
 	/*
