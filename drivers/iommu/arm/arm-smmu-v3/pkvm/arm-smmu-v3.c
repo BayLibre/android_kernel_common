@@ -798,10 +798,17 @@ static bool smmu_domain_compat(struct hyp_arm_smmu_v3_device *smmu,
 		return true;
 
 	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2 ||
-	    smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS)
+	    smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS) {
+		if (!(smmu->features & ARM_SMMU_FEAT_TRANS_S2))
+			return false;
+
 		cfg1 = &smmu->pgtable_cfg_s2;
-	else
+	}
+	else {
+		if (!(smmu->features & ARM_SMMU_FEAT_TRANS_S1))
+			return false;
 		cfg1 = &smmu->pgtable_cfg_s1;
+	}
 
 	cfg2 = &smmu_domain->domain->pgtable->cfg;
 
