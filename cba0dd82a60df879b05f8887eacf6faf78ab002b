@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f1c33c5_3b907aa7",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T04:37:52Z",
+      "side": 1,
+      "message": "Exactly.",
+      "parentUuid": "e9bd546d_a91e06a4",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b14bfb6_0906da13",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -120,6 +138,24 @@
       "writtenOn": "2023-11-03T01:11:31Z",
       "side": 1,
       "message": "\"pages shared with other buffers\" is the head and tail of the buffer which are likely not page aligned, correct? It would be clearer if this comment explains how/why there are shared pages",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ab0856_64ffc969",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T04:37:52Z",
+      "side": 1,
+      "message": "Yes, they _are_ actually page aligned. The range marks the beginning of the first and last pages used by the buffer. As it is seen by the call in line 587:\n```\nret \u003d binder_get_page_range(alloc, buffer-\u003euser_data \u0026 PAGE_MASK,\n\t\t\t    PAGE_ALIGN(buffer-\u003euser_data + size));\n```\n\nThis is not so terrible as it\u0027s easy to calculate the inclusive range. It is the exclusive calculation of the final page in `has_page_addr` that took me a long time to figure out.\n\nI can also work on making this easier to digest for future readers.",
+      "parentUuid": "aaf6da74_aba8a61a",
       "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -196,6 +232,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6a9c129_ceb8ac2f",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T04:37:52Z",
+      "side": 1,
+      "message": "\u003e Is the race only possible for the head/tail pages ?\n\nYes the race is only for pages shared with other transactions.\n\n\u003e Do I understand this correctly? \n\nYour thoughts about optimization and avoiding the race are the exact intention here. So you do understand this correctly.\n\nWe still need the acq/rel semantics because of highly unlikely compiler optimization: e.g. the `vm_insert_page()` needs to be guaranteed to be called before setting `page-\u003epage_ptr` so we use the memory barrier to avoid reordering.",
+      "parentUuid": "3485c5ae_510e5a04",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b7ae70c_d4d8770a",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -207,6 +261,24 @@
       "writtenOn": "2023-11-03T01:11:31Z",
       "side": 1,
       "message": "\"...should include page misaligned head and tail pages that might be shared with other buffers\"",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2a95378_becbba34",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T04:37:52Z",
+      "side": 1,
+      "message": "Same as above, this range is also PAGE_ALIGED(). However, this expects an _exclusive_ range. So _no_ pages shared with other buffers. In most cases (since transactions are typically less-than a page size) this means that `end \u003d\u003d start` so we don\u0027t even enter the loop most of the time.\n\nI can add more comments to explain all these concepts.",
+      "parentUuid": "1b7ae70c_d4d8770a",
       "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
