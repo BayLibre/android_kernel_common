@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9bd546d_a91e06a4",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T01:11:31Z",
+      "side": 1,
+      "message": "Ok, I understand this now - the mmap_write_lock is actually very important here to avoid multiple allocations for a page.",
+      "parentUuid": "4e1450a6_d53cdf63",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b14bfb6_0906da13",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -91,6 +109,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aaf6da74_aba8a61a",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T01:11:31Z",
+      "side": 1,
+      "message": "\"pages shared with other buffers\" is the head and tail of the buffer which are likely not page aligned, correct? It would be clearer if this comment explains how/why there are shared pages",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1510ad7d_e04db0d1",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -120,6 +155,58 @@
       "side": 1,
       "message": "At this stage the whole set of pages used by this buffer are guaranteed to have been removed from the LRU list. The shrinker won\u0027t see this page until the last user calls `binder_alloc_free_buf()`.\n\nNote this is the same guarantee we provide when using `pages[i]-\u003epage_ptr` in `binder_alloc_copy_{to/from}_buffer()` calls without a lock.",
       "parentUuid": "1510ad7d_e04db0d1",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bbfc2bf_3b255abc",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T01:11:31Z",
+      "side": 1,
+      "message": "Ok, yes, the cobwebs are clearing.",
+      "parentUuid": "2be50765_7e6898c4",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3485c5ae_510e5a04",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T01:11:31Z",
+      "side": 1,
+      "message": "binder_get_user_page_remote() is where we actually insert the page and do the smb_store_release() that is checked at line 272. Since the insertion of the page is guaranteed to occur after line 272, Is the race only possible for the head/tail pages which might be shared with another transaction? So the load.acq is used from Thread A in case Thread B is in the middle of setting up that page (finished with store.rel)?\n\nIt looks like we can lose that race and load.acq returns NULL at line 272, but  Thread B might do the store.rel before we get to this line. In this case the check at line 220 prevents us from allocating again - and it holds the lock so it gets a non-racy answer. The benefit of the check at line 272 is really an optimization to avoid acquiring mmap_write_lock when no alloc is needed.\n\nGiven this optimization is racy anyway, do we really need the acq/rel semantics? Does it make a difference? We don\u0027t have to worry about page going from a valid pointer to NULL.\n\nDo I understand this correctly? Add lots of comments about this (especially if I still don\u0027t understand it ;-).",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b7ae70c_d4d8770a",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-03T01:11:31Z",
+      "side": 1,
+      "message": "\"...should include page misaligned head and tail pages that might be shared with other buffers\"",
       "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
