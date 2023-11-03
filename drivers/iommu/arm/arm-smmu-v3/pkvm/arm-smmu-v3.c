@@ -597,6 +597,39 @@ static struct kvm_hyp_iommu *smmu_id_to_iommu(pkvm_handle_t smmu_id)
 	return &kvm_hyp_arm_smmu_v3_smmus[smmu_id].iommu;
 }
 
+int smmu_domain_config_s2(struct kvm_hyp_iommu_domain *domain,
+			  pkvm_handle_t domain_id, u64 *ent)
+{
+	struct io_pgtable_cfg *cfg;
+	u64 ts, sl, ic, oc, sh, tg, ps;
+
+	cfg = &domain->pgtable->cfg;
+	ps = cfg->arm_lpae_s2_cfg.vtcr.ps;
+	tg = cfg->arm_lpae_s2_cfg.vtcr.tg;
+	sh = cfg->arm_lpae_s2_cfg.vtcr.sh;
+	oc = cfg->arm_lpae_s2_cfg.vtcr.orgn;
+	ic = cfg->arm_lpae_s2_cfg.vtcr.irgn;
+	sl = cfg->arm_lpae_s2_cfg.vtcr.sl;
+	ts = cfg->arm_lpae_s2_cfg.vtcr.tsz;
+
+	ent[0] = STRTAB_STE_0_V |
+		 FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_S2_TRANS);
+	ent[1] = FIELD_PREP(STRTAB_STE_1_SHCFG, STRTAB_STE_1_SHCFG_INCOMING);
+	ent[2] = FIELD_PREP(STRTAB_STE_2_VTCR,
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2PS, ps) |
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2TG, tg) |
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2SH0, sh) |
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2OR0, oc) |
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2IR0, ic) |
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2SL0, sl) |
+			    FIELD_PREP(STRTAB_STE_2_VTCR_S2T0SZ, ts)) |
+		 FIELD_PREP(STRTAB_STE_2_S2VMID, domain_id) |
+		 STRTAB_STE_2_S2AA64;
+	ent[3] = hyp_virt_to_phys(domain->pgd) & STRTAB_STE_3_S2TTB_MASK;
+
+	return 0;
+}
+
 int smmu_domain_finalise(struct hyp_arm_smmu_v3_device *smmu,
 			 struct kvm_hyp_iommu_domain *domain,
 			 pkvm_handle_t domain_id)
@@ -701,8 +734,6 @@ static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
 	int i;
 	int ret = -EINVAL;
 	u64 *dst;
-	struct io_pgtable_cfg *cfg;
-	u64 ts, sl, ic, oc, sh, tg, ps;
 	u64 ent[STRTAB_STE_DWORDS] = {};
 	struct hyp_arm_smmu_v3_device *smmu = to_smmu(iommu);
 	struct hyp_arm_smmu_v3_domain *smmu_domain = domain->priv;
@@ -710,7 +741,7 @@ static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
 
 	hyp_spin_lock(&iommu->lock);
 	dst = smmu_get_ste_ptr(smmu, sid);
-	if (!dst || dst[0])
+	if (!dst)
 		goto out_unlock;
 
 	if (!smmu_existing_in_domain(smmu, smmu_domain)) {
@@ -741,30 +772,21 @@ static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, pkvm_handle_t domain_id,
 			goto out_unlock;
 	}
 
-	cfg = &domain->pgtable->cfg;
-	ps = cfg->arm_lpae_s2_cfg.vtcr.ps;
-	tg = cfg->arm_lpae_s2_cfg.vtcr.tg;
-	sh = cfg->arm_lpae_s2_cfg.vtcr.sh;
-	oc = cfg->arm_lpae_s2_cfg.vtcr.orgn;
-	ic = cfg->arm_lpae_s2_cfg.vtcr.irgn;
-	sl = cfg->arm_lpae_s2_cfg.vtcr.sl;
-	ts = cfg->arm_lpae_s2_cfg.vtcr.tsz;
-
-	ent[0] = STRTAB_STE_0_V |
-		 FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_S2_TRANS);
-	ent[1] = FIELD_PREP(STRTAB_STE_1_SHCFG, STRTAB_STE_1_SHCFG_INCOMING);
-	ent[2] = FIELD_PREP(STRTAB_STE_2_VTCR,
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2PS, ps) |
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2TG, tg) |
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2SH0, sh) |
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2OR0, oc) |
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2IR0, ic) |
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2SL0, sl) |
-			FIELD_PREP(STRTAB_STE_2_VTCR_S2T0SZ, ts)) |
-		 FIELD_PREP(STRTAB_STE_2_S2VMID, domain_id) |
-		 STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2R;
-	ent[3] = hyp_virt_to_phys(domain->pgd) & STRTAB_STE_3_S2TTB_MASK;
-
+	/* Use stage-2 for bypass. */
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2 ||
+	    smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS) {
+		/* Device already attached or pasid for s2. */
+		if (dst[0]  || pasid) {
+			ret = -EBUSY;
+			goto out_unlock;
+		}
+		ret = smmu_domain_config_s2(domain, domain_id, ent);
+	} else {
+		ret = -ENODEV;
+		goto out_unlock;
+	}
+	if (ret)
+		goto out_unlock;
 	/*
 	 * The SMMU may cache a disabled STE.
 	 * Initialize all fields, sync, then enable it.
