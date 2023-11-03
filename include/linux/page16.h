@@ -52,6 +52,8 @@
 #define __VM_SPECIAL	0x00000800	/* VMA is exempt from emulated page align requirements */
 #define __MAP_SPECIAL   0x8000		/* VMA is exempt from emulated page align requirements */
 
+#define __MMAP_RND_BITS(x)      (x - (__PAGE_SHIFT - PAGE_SHIFT))
+
 #ifdef CONFIG_EMULATE_16K_PAGE_SIZE
 /*
  * Combine the mmap "flags" argument into "vm_flags" add translation
