@@ -180,6 +180,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d225698_9d2977d3",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T17:38:14Z",
+      "side": 1,
+      "message": "Yes that is correct. The buffers aren\u0027t page-aligned only the arguments to this function.",
+      "parentUuid": "43084555_fa0b5e5c",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1510ad7d_e04db0d1",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -286,6 +304,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dcef4fe7_d6b6a4e8",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T17:38:14Z",
+      "side": 1,
+      "message": "Yes, it is the misaligned head/tail that causes the shared pages.",
+      "parentUuid": "ae8206aa_6b120607",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b7ae70c_d4d8770a",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 5
@@ -333,6 +369,24 @@
       "side": 1,
       "message": "This is really confusing because you are talking about the range traversed by this function, but you don\u0027t explain how these ranges relate to the actual buffer. \"pages shared with other buffers\" is totally confusing unless you are very clear about what causes the sharing. These inclusive/exclusive ranges are different from each other _because_ the actual buffer is _not page aligned_ either at the head or the tail. Focus the comments on the actual buffer.",
       "parentUuid": "f2a95378_becbba34",
+      "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4162323f_1764dfa8",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-11-03T17:38:14Z",
+      "side": 1,
+      "message": "Right I can definitely be more explicit about these concepts. There isn\u0027t anything particularly _new_ introduced by this patchset but it was (and still is) very confusing for me when first reading this code. So I can take this opportunity to document these complicated concepts.\n\nThe way that page boundaries are calculated to operate on them (alloc/free) is quite obfuscated. This is where (IMO) a `page-\u003enr_users` would make things much more simple. I would also like to rename a bunch of these variables e.g. `alloc-\u003ebuffer` to `alloc-\u003evm_start`. But one thing at a time so I\u0027ll start with the comments.",
+      "parentUuid": "ffbd0ec0_4d4413be",
       "revId": "cba0dd82a60df879b05f8887eacf6faf78ab002b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
