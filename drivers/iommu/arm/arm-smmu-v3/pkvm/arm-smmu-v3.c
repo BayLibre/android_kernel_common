@@ -773,8 +773,7 @@ int smmu_domain_finalise(struct hyp_arm_smmu_v3_device *smmu,
 	struct io_pgtable_cfg *cfg;
 	struct hyp_arm_smmu_v3_domain *smmu_domain = domain->priv;
 
-	if ((smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2) ||
-	   (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS))
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2)
 		cfg = &smmu->pgtable_cfg_s2;
 	else
 		cfg = &smmu->pgtable_cfg_s1;
@@ -798,8 +797,7 @@ static bool smmu_domain_compat(struct hyp_arm_smmu_v3_device *smmu,
 	if (!smmu_domain->domain->pgtable)
 		return true;
 
-	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2 ||
-	    smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS) {
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2) {
 		if (!(smmu->features & ARM_SMMU_FEAT_TRANS_S2))
 			return false;
 
@@ -884,6 +882,25 @@ static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_dom
 	if (!dst)
 		goto out_unlock;
 
+	/*
+	 * First smmu attaching to bypassed domain chooses the stage
+	 * with default to stage-2, this is not optimal in some scenarios
+	 * we can have a mix of nested and stage-1 devices.
+	 * Also if 2 devices where each one has different stage they can't attach
+	 * to the IDMAPPED domain, to solve this we would require to generalize the concept
+	 * of IDMAPPED and allow the kernel allocate them at run time.
+	 * This shouldn't be complicated, it would require either to register the
+	 * IDMAPPED domains to the hypervisor IOMMU or just delegate the idmap calls
+	 * to the driver.
+	 */
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS) {
+		if (smmu->features & ARM_SMMU_FEAT_TRANS_S2) {
+			smmu_domain->type = KVM_ARM_SMMU_DOMAIN_S2;
+		} else {
+			smmu_domain->type = KVM_ARM_SMMU_DOMAIN_S1;
+		}
+	}
+
 	if (!smmu_existing_in_domain(smmu, smmu_domain)) {
 		if (!smmu_domain_compat(smmu, smmu_domain)) {
 			ret = -EBUSY;
@@ -913,8 +930,7 @@ static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_dom
 	}
 
 	/* Use stage-2 for bypass. */
-	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2 ||
-	    smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BYPASS) {
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_S2) {
 		/* Device already attached or pasid for s2. */
 		if (dst[0]  || pasid) {
 			ret = -EBUSY;
