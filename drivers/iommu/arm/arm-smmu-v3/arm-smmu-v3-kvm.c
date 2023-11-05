@@ -7,6 +7,7 @@
 #include <asm/kvm_pkvm.h>
 #include <asm/kvm_mmu.h>
 #include <linux/local_lock.h>
+#include <linux/moduleparam.h>
 #include <linux/of_address.h>
 #include <linux/of_platform.h>
 #include <linux/pm_runtime.h>
@@ -59,6 +60,9 @@ static DEFINE_IDA(kvm_arm_smmu_domain_ida);
 
 int kvm_nvhe_sym(smmu_init_hyp_module)(const struct pkvm_module_ops *ops);
 extern struct kvm_iommu_ops kvm_nvhe_sym(smmu_ops);
+
+static int idmap_pages;
+module_param(idmap_pages, int, 0);
 
 static int kvm_arm_smmu_topup_memcache(struct arm_smmu_device *smmu,
 				       struct arm_smccc_res *res)
@@ -880,15 +884,20 @@ int smmu_put_device(struct device *dev, void *data)
 
 static int smmu_alloc_idmap_mc(struct kvm_hyp_memcache *idmap_mc)
 {
-	u64 i, total = 0;
-	phys_addr_t start, end;
+	u64 total = 0;
 	int ret;
+#ifndef MODULE
+	u64 i;
+	phys_addr_t start, end;
 
 	for_each_mem_range(i, &start, &end) {
 		total += __hyp_pgtable_max_pages((end - start) >> PAGE_SHIFT);
 	}
 	/* We don't know how much for MMIO we need, 1GB is very generous. */
 	total += __hyp_pgtable_max_pages(SZ_1G >> PAGE_SHIFT);
+#else
+	total = idmap_pages;
+#endif
 	/* For PGD*/
 	ret = topup_hyp_memcache(idmap_mc, 1, 3);
 	if (ret)
