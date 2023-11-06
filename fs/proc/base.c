@@ -425,6 +425,46 @@ static void unlock_trace(struct task_struct *task)
 
 #define MAX_STACK_TRACE_DEPTH	64
 
+static __always_inline int proc_pid_stack_blocked(struct seq_file *m,
+								struct pid_namespace *ns, struct pid *pid,
+								struct task_struct *task)
+{
+	unsigned int state;
+	unsigned int i, nr_entries;
+	unsigned long *entries;
+	int ret = 0;
+
+	/* Only get stack if task is blocked and we can keep it that way. */
+	raw_spin_lock_irq(&task->pi_lock);
+	state = READ_ONCE(task->__state);
+	smp_rmb();
+
+	if (state == TASK_RUNNING || state == TASK_WAKING || task->on_rq) {
+		ret = -EACCES;
+		goto out;
+	}
+
+	entries = kmalloc_array(MAX_STACK_TRACE_DEPTH, sizeof(*entries),
+				GFP_KERNEL);
+	if (!entries) {
+		ret = -ENOMEM;
+		goto free;
+	}
+
+	nr_entries = stack_trace_save_tsk(task, entries,
+					  MAX_STACK_TRACE_DEPTH, 0);
+
+	for (i = 0; i < nr_entries; i++) {
+		seq_printf(m, "[<0>] %pB\n", (void *)entries[i]);
+	}
+
+free:
+	kfree(entries);
+out:
+	raw_spin_unlock_irq(&task->pi_lock);
+	return ret;
+}
+
 static int proc_pid_stack(struct seq_file *m, struct pid_namespace *ns,
 			  struct pid *pid, struct task_struct *task)
 {
@@ -443,7 +483,7 @@ static int proc_pid_stack(struct seq_file *m, struct pid_namespace *ns,
 	 * Therefore, this interface is restricted to root.
 	 */
 	if (!file_ns_capable(m->file, &init_user_ns, CAP_SYS_ADMIN))
-		return -EACCES;
+		return proc_pid_stack_blocked(m, ns, pid, task); /* Fallback to unwinding only blocked tasks */
 
 	entries = kmalloc_array(MAX_STACK_TRACE_DEPTH, sizeof(*entries),
 				GFP_KERNEL);
