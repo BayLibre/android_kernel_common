@@ -87,7 +87,9 @@ static int arm_lpae_init_pte(struct io_pgtable *iop,
 	for (i = 0; i < num_entries; i++)
 		if (iopte_leaf(ptep[i], lvl, data->iop.cfg.fmt)) {
 			/* We require an unmap first */
+#ifndef __KVM_NVHE_HYPERVISOR__
 			WARN_ON(!selftest_running);
+#endif
 			return -EEXIST;
 		} else if (iopte_type(ptep[i]) == ARM_LPAE_PTE_TYPE_TABLE) {
 			/*
