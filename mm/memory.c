@@ -3950,6 +3950,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 
 	cgroup_throttle_swaprate(page, GFP_KERNEL);
 
+	ret = arch_swap_prepare_to_restore(entry, folio);
+	if (ret)
+		goto out_page;
+
 	/*
 	 * Back out if somebody else already faulted in this pte.
 	 */
