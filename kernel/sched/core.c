@@ -3928,9 +3928,7 @@ static void activate_blocked_ents(struct rq *target_rq,
 		pp->sleeping_owner = NULL;
 		raw_spin_unlock(&owner->blocked_lock);
 
-		/* Nested as ttwu holds the owner's pi_lock */
-		/* XXX But how do we enforce ordering to avoid ABBA? */
-		raw_spin_lock_irqsave_nested(&pp->pi_lock, flags, SINGLE_DEPTH_NESTING);
+		raw_spin_lock_irqsave(&pp->pi_lock, flags);
 		smp_rmb();
 		state = READ_ONCE(pp->__state);
 		/* Avoid racing with ttwu */
