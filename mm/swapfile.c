@@ -1767,6 +1767,7 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
 	struct page *swapcache;
 	spinlock_t *ptl;
 	pte_t *pte, new_pte;
+	vm_fault_t err;
 	int ret = 1;
 
 	swapcache = page;
@@ -1788,6 +1789,12 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
 		set_pte_at(vma->vm_mm, addr, pte, pteval);
 		swap_free(entry);
 		ret = 0;
+		goto out;
+	}
+
+	err = arch_swap_prepare_to_restore(entry, page_folio(page));
+	if (err) {
+		ret = -EINVAL;
 		goto out;
 	}
 
