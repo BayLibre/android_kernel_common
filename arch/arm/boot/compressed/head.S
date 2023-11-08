@@ -114,6 +114,7 @@
 #endif
 		.endm
 
+<<<<<<< HEAD   (c666f1 Reapply "perf: Disallow mis-matched inherited group reads")
 		.macro	be32tocpu, val, tmp
 #ifndef __ARMEB__
 		/* convert to little endian */
@@ -122,6 +123,9 @@
 		.endm
 
 		.section ".start", #alloc, #execinstr
+=======
+		.section ".start", "ax"
+>>>>>>> BRANCH (aa8663 Linux 4.19.298)
 /*
  * sort out different calling conventions
  */
