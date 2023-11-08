@@ -1086,8 +1086,13 @@ next_step:
 
 		if (phase == 3) {
 			inode = f2fs_iget(sb, dni.ino);
+<<<<<<< HEAD   (4934e8 Revert "perf: Disallow mis-matched inherited group reads")
 			if (IS_ERR(inode) || is_bad_inode(inode)) {
 				set_sbi_flag(sbi, SBI_NEED_FSCK);
+=======
+			if (IS_ERR(inode) || is_bad_inode(inode) ||
+					special_file(inode->i_mode))
+>>>>>>> BRANCH (87e8e7 Linux 5.4.260)
 				continue;
 			}
 
