@@ -3624,7 +3624,17 @@ int task_is_pushable(struct rq *rq, struct task_struct *p, int cpu)
 
 	return 0;
 }
-#endif
+
+#ifdef CONFIG_SCHED_PROXY_EXEC
+struct task_struct *find_exec_ctx(struct rq *rq, struct task_struct *p);
+#else /* !CONFIG_SCHED_PROXY_EXEC */
+static inline
+struct task_struct *find_exec_ctx(struct rq *rq, struct task_struct *p)
+{
+	return p;
+}
+#endif /* CONFIG_SCHED_PROXY_EXEC */
+#endif /* CONFIG_SMP */
 
 #ifdef CONFIG_RT_SOFTIRQ_AWARE_SCHED
 extern bool cpu_busy_with_softirqs(int cpu);
