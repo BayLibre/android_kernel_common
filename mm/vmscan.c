@@ -5287,50 +5287,41 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, bool 
 	return try_to_inc_max_seq(lruvec, max_seq, sc, can_swap, false) ? -1 : 0;
 }
 
-static unsigned long get_nr_to_reclaim(struct scan_control *sc)
+/*
+ * Returns true for reclaim on the root cgroup. This is true for direct
+ * allocator reclaim and reclaim through cgroup interfaces on the root cgroup.
+ */
+static bool root_reclaim(struct scan_control *sc)
 {
-	/* don't abort memcg reclaim to ensure fairness */
-	if (!global_reclaim(sc))
-		return -1;
-
-	return max(sc->nr_to_reclaim, compact_gap(sc->order));
+	return !IS_ENABLED(CONFIG_MEMCG) || !sc->target_mem_cgroup ||
+				mem_cgroup_is_root(sc->target_mem_cgroup);
 }
 
 static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
 {
-	unsigned long nr_to_reclaim = get_nr_to_reclaim(sc);
-	bool check_wmarks = false;
 	int i;
+	enum zone_watermarks mark;
 
-	if (sc->nr_reclaimed >= nr_to_reclaim)
-		return true;
-
-	trace_android_vh_scan_abort_check_wmarks(&check_wmarks);
-
-	if (!check_wmarks)
+	/* don't abort memcg reclaim to ensure fairness */
+	if (!root_reclaim(sc))
 		return false;
 
+	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
+		return true;
+
+	/* kswapd should abort if all eligible zones are safe */
 	if (!current_is_kswapd())
 		return false;
 
+	mark = sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
+	       WMARK_PROMO : WMARK_HIGH;
+
 	for (i = 0; i <= sc->reclaim_idx; i++) {
-		unsigned long wmark;
 		struct zone *zone = lruvec_pgdat(lruvec)->node_zones + i;
+		unsigned long size = wmark_pages(zone, mark);
 
-		if (!managed_zone(zone))
-			continue;
-
-		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-			wmark = wmark_pages(zone, WMARK_PROMO);
-		else
-			wmark = high_wmark_pages(zone);
-
-		/*
-		 * Abort scan once the target number of order zero pages are met.
-		 * Reclaim MIN_LRU_BATCH << 2 to facilitate immediate kswapd sleep.
-		 */
-		wmark += MIN_LRU_BATCH << 2;
-		if (!zone_watermark_ok_safe(zone, 0, wmark, sc->reclaim_idx))
+		if (managed_zone(zone) &&
+		    !zone_watermark_ok(zone, sc->order, size, sc->reclaim_idx, 0))
 			return false;
 	}
 
@@ -5467,7 +5458,7 @@ restart:
 
 	mem_cgroup_put(memcg);
 
-	if (lruvec && should_abort_scan(lruvec, sc))
+	if (!is_a_nulls(pos))
 		return;
 
 	/* restart if raced with lru_gen_rotate_memcg() */
