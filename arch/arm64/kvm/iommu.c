@@ -116,3 +116,11 @@ int kvm_iommu_unshare_hyp_sg(struct kvm_iommu_sg *sg, unsigned int nents)
 	return 0;
 }
 EXPORT_SYMBOL(kvm_iommu_unshare_hyp_sg);
+
+pkvm_handle_t kvm_get_iommu_id_by_of(struct device_node *np)
+{
+	if (!iommu_driver)
+		return 0;
+
+	return iommu_driver->get_iommu_id_by_of(np);
+}
