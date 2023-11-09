@@ -1390,6 +1390,13 @@ fallback:
 	return VM_FAULT_FALLBACK;
 }
 
+bool can_change_pmd_writable(struct vm_area_struct *vma,
+				    unsigned long addr, pmd_t pmd)
+{
+	/* TODO(pcc): Remove associated code, this feature does not exist in 6.1 */
+	return false;
+}
+
 /* FOLL_FORCE can write to even unwritable PMDs in COW mappings. */
 static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
 					struct vm_area_struct *vma,
