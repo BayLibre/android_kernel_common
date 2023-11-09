@@ -41,6 +41,8 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 		    unsigned long cp_flags);
 vm_fault_t vmf_insert_pfn_pmd_prot(struct vm_fault *vmf, pfn_t pfn,
 				   pgprot_t pgprot, bool write);
+bool can_change_pmd_writable(struct vm_area_struct *vma, unsigned long addr,
+			     pmd_t pmd);
 
 /**
  * vmf_insert_pfn_pmd - insert a pmd size pfn
