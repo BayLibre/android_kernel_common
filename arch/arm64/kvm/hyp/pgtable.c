@@ -125,15 +125,21 @@ static inline int __kvm_pgtable_visit(struct kvm_pgtable_walk_data *data,
 	kvm_pte_t *childp, pte = *ptep;
 	bool table = kvm_pte_table(pte, level);
 	enum kvm_pgtable_walk_flags flags = data->walker->flags;
+	bool reload = false;
 
 	if (table && (flags & KVM_PGTABLE_WALK_TABLE_PRE)) {
 		ret = kvm_pgtable_visitor_cb(data, addr, level, ptep,
 					     KVM_PGTABLE_WALK_TABLE_PRE);
+		reload = true;
 	}
 
 	if (!table && (flags & KVM_PGTABLE_WALK_LEAF)) {
 		ret = kvm_pgtable_visitor_cb(data, addr, level, ptep,
 					     KVM_PGTABLE_WALK_LEAF);
+		reload = true;
+	}
+
+	if (reload) {
 		pte = *ptep;
 		table = kvm_pte_table(pte, level);
 	}
