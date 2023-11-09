@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bcfffa6_b45170a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-11-09T23:57:31Z",
+      "side": 1,
+      "message": "This patch is in Linus\u0027 tree now. So update to `UPSTREAM:`\n\n```\ncommit e4e7e3af73694380f0d9a742d13b80598a3393e9\nAuthor: Vinayak Yadawad \u003cvinayak.yadawad@broadcom.com\u003e\nDate:   Tue Sep 26 16:02:22 2023 +0530\n\n    wifi: cfg80211: Allow AP/P2PGO to indicate port authorization to peer STA/P2PClient\n    \n    In 4way handshake offload, cfg80211_port_authorized enables driver\n    to indicate successful 4way handshake to cfg80211 layer. Currently\n    this path of port authorization is restricted to interface type\n    NL80211_IFTYPE_STATION and NL80211_IFTYPE_P2P_CLIENT. This patch\n    extends the support for NL80211_IFTYPE_AP and NL80211_IFTYPE_P2P_GO\n    interfaces to authorize peer STA/P2P_CLIENT, whenever authentication\n    is offloaded on the AP/P2P_GO interface.\n    \n    Signed-off-by: Vinayak Yadawad \u003cvinayak.yadawad@broadcom.com\u003e\n    Link: https://lore.kernel.org/r/dee3b0a2b4f617e932c90bff4504a89389273632.1695721435.git.vinayak.yadawad@broadcom.com\n    Signed-off-by: Johannes Berg \u003cjohannes.berg@intel.com\u003e\n```",
+      "parentUuid": "137a319c_746c0cee",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 54
+      },
+      "revId": "32aa5c29b6605d99f78abd8a872fb680e79bd034",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5fb02048_9fc67c16",
