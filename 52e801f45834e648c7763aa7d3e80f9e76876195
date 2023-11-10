@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f59643c_63c27a3c",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-11-10T21:42:54Z",
+      "side": 1,
+      "message": "Since the ask from upstream was to remove driver specific data, it didn\u0027t make sense to just use the get/put on the cpufreq_policy only to get the max freq. cpufreq_get_hw_max_freq already encapsulates this.",
+      "parentUuid": "020fa71d_a5ee49bf",
+      "range": {
+        "startLine": 26,
+        "startChar": 21,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29e9b2f5_be93477e",
         "filename": "drivers/cpufreq/virtual-cpufreq.c",
         "patchSetId": 27
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-10T20:24:17Z",
       "side": 1,
       "message": "People will likely nack for unlikely(). Also, it\u0027s clearer/easier to read if you do:\n\nscale \u003d min (scale, SCHED_CAPACITY_SCALE);",
+      "range": {
+        "startLine": 36,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e292dd1d_a84a2aa4",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-11-10T21:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29e9b2f5_be93477e",
       "range": {
         "startLine": 36,
         "startChar": 1,
@@ -60,6 +108,30 @@
       "writtenOn": "2023-11-10T20:24:17Z",
       "side": 1,
       "message": "line break before \"base\" instead of how you are doing it. I\u0027m assuming that\u0027ll make it fit.",
+      "range": {
+        "startLine": 49,
+        "startChar": 44,
+        "endLine": 49,
+        "endChar": 48
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46393417_f23360ef",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-11-10T21:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bae921d3_85e143f8",
       "range": {
         "startLine": 49,
         "startChar": 44,
@@ -116,6 +188,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56f34ee7_ecc3c8ef",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-11-10T21:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "347bc634_fe937020",
+      "range": {
+        "startLine": 98,
+        "startChar": 29,
+        "endLine": 99,
+        "endChar": 20
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "834bef6c_0f204520",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-11-10T21:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6475ee07_b0c6f8ee",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 10
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1171bab_17f83519",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-11-10T20:24:17Z",
       "side": 1,
       "message": "Replace with \"or other inputs to the physical CPU frequency selection.\"",
+      "range": {
+        "startLine": 109,
+        "startChar": 62,
+        "endLine": 110,
+        "endChar": 44
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5df51649_86798001",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2023-11-10T21:42:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1171bab_17f83519",
       "range": {
         "startLine": 109,
         "startChar": 62,
