@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "020fa71d_a5ee49bf",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-11-10T20:24:17Z",
+      "side": 1,
+      "message": "Why this change since patchset 24? I assume patchset 24 is v3? I don\u0027t remember anyone in upstream asking to do this.",
+      "range": {
+        "startLine": 26,
+        "startChar": 21,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29e9b2f5_be93477e",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-11-10T20:24:17Z",
+      "side": 1,
+      "message": "People will likely nack for unlikely(). Also, it\u0027s clearer/easier to read if you do:\n\nscale \u003d min (scale, SCHED_CAPACITY_SCALE);",
+      "range": {
+        "startLine": 36,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae921d3_85e143f8",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-11-10T20:24:17Z",
+      "side": 1,
+      "message": "line break before \"base\" instead of how you are doing it. I\u0027m assuming that\u0027ll make it fit.",
+      "range": {
+        "startLine": 49,
+        "startChar": 44,
+        "endLine": 49,
+        "endChar": 48
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "347bc634_fe937020",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-11-10T20:24:17Z",
+      "side": 1,
+      "message": "being set with -\u003e whose performance constraints need to be updated.",
+      "range": {
+        "startLine": 98,
+        "startChar": 29,
+        "endLine": 99,
+        "endChar": 20
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6475ee07_b0c6f8ee",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-11-10T20:24:17Z",
+      "side": 1,
+      "message": "use uclamp all lowercase",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 10
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1171bab_17f83519",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 27
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2023-11-10T20:24:17Z",
+      "side": 1,
+      "message": "Replace with \"or other inputs to the physical CPU frequency selection.\"",
+      "range": {
+        "startLine": 109,
+        "startChar": 62,
+        "endLine": 110,
+        "endChar": 44
+      },
+      "revId": "52e801f45834e648c7763aa7d3e80f9e76876195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
