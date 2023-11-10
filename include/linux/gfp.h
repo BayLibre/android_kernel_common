@@ -5,6 +5,7 @@
 #include <linux/gfp_types.h>
 
 #include <linux/mmzone.h>
+#include <linux/pgtable.h>
 #include <linux/topology.h>
 
 struct vm_area_struct;
@@ -273,8 +274,12 @@ static inline struct folio *folio_alloc(gfp_t gfp, unsigned int order)
 {
 	return __folio_alloc_node(gfp, order, numa_node_id());
 }
-#define vma_alloc_folio(gfp, order, vma, addr, hugepage)		\
-	folio_alloc(gfp, order)
+static inline struct folio *vma_alloc_folio(gfp_t gfp, int order,
+					    struct vm_area_struct *vma,
+					    unsigned long addr, bool hugepage)
+{
+	return folio_alloc(gfp | arch_calc_vma_gfp(vma, gfp), order);
+}
 #endif
 #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
 static inline struct page *alloc_page_vma(gfp_t gfp,
