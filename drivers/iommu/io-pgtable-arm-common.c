@@ -414,7 +414,11 @@ static size_t __arm_lpae_unmap(struct arm_lpae_io_pgtable *data,
 	unmap_idx_start = ARM_LPAE_LVL_IDX(iova, lvl, data);
 	ptep += unmap_idx_start;
 	pte = READ_ONCE(*ptep);
-	if (WARN_ON(!pte))
+
+#ifndef __KVM_NVHE_HYPERVISOR__
+	WARN_ON(!pte);
+#endif
+	if(!pte)
 		return 0;
 
 	/* If the size matches this level, we're in the right place */
