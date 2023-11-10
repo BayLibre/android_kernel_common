@@ -1222,12 +1222,17 @@ static struct page *new_page(struct page *page, unsigned long start)
 			break;
 	}
 
+	/*
+	 * TODO(pcc): alloc_huge_page_vma also needs to use
+	 * arch_migration_target_gfp for its gfp flags.
+	 */
 	if (folio_test_hugetlb(src))
 		return alloc_huge_page_vma(page_hstate(&src->page),
 				vma, address);
 
 	if (folio_test_large(src))
 		gfp = GFP_TRANSHUGE;
+	gfp |= arch_migration_target_gfp(src, gfp);
 
 	/*
 	 * if !vma, vma_alloc_folio() will use task or system default policy
