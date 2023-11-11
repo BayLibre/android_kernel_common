@@ -142,6 +142,8 @@ struct scan_control {
 	/* Always discard instead of demoting to lower tier memory */
 	unsigned int no_demotion:1;
 
+	unsigned int swapcache_only:1;
+
 	/* Allocation order */
 	s8 order;
 
@@ -3234,21 +3236,29 @@ static struct lruvec *get_lruvec(struct mem_cgroup *memcg, int nid)
 
 static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
 {
-	int swappiness;
 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+	int swappiness = mem_cgroup_swappiness(memcg);
 
-	if (!sc->may_swap)
+	sc->swapcache_only = 0;
+
+	if (!sc->may_swap || !swappiness)
 		return 0;
 
-	if (!can_demote(pgdat->node_id, sc) &&
-		mem_cgroup_get_nr_swap_pages(memcg) <= 0)
-		return 0;
+	if (can_demote(pgdat->node_id, sc))
+		return swappiness;
 
-	swappiness = mem_cgroup_swappiness(memcg);
-	trace_android_vh_tune_swappiness(&swappiness);
+	if ((sc->gfp_mask & __GFP_IO) &&
+	    mem_cgroup_get_nr_swap_pages(memcg) >= MIN_LRU_BATCH)
+		return swappiness;
 
-	return swappiness;
+#ifdef CONFIG_SWAP
+	if (lruvec_page_state_local(lruvec, NR_SWAPCACHE) >=
+	    lruvec_page_state_local(lruvec, NR_INACTIVE_ANON))
+		sc->swapcache_only = 1;
+#endif
+	/* see the comment in isolate_folios() */
+	return sc->swapcache_only;
 }
 
 static int get_nr_gens(struct lruvec *lruvec, int type)
@@ -4897,6 +4907,15 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
 		return true;
 	}
 
+	/* swap constrained */
+	if (type == LRU_GEN_ANON && sc->swapcache_only &&
+	    (!folio_test_swapcache(folio) ||
+	     (folio_test_dirty(folio) && !(sc->gfp_mask & __GFP_IO)))) {
+		gen = folio_inc_gen(lruvec, folio, false);
+		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+		return true;
+	}
+
 	/* waiting for writeback */
 	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
 	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
@@ -4911,12 +4930,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
 static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc)
 {
 	bool success;
-
-	/* swapping inhibited */
-	if (!(sc->gfp_mask & __GFP_IO) &&
-	    (folio_test_dirty(folio) ||
-	     (folio_test_anon(folio) && !folio_test_swapcache(folio))))
-		return false;
 
 	/* raced with release_pages() */
 	if (!folio_try_get(folio))
@@ -5334,10 +5347,6 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 	unsigned long scanned = 0;
 	int swappiness = get_swappiness(lruvec, sc);
 
-	/* clean file folios are more likely to exist */
-	if (swappiness && !(sc->gfp_mask & __GFP_IO))
-		swappiness = 1;
-
 	while (true) {
 		int delta;
 
@@ -5510,7 +5519,6 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control 
 {
 	int priority;
 	unsigned long reclaimable;
-	struct lruvec *lruvec = mem_cgroup_lruvec(NULL, pgdat);
 
 	if (sc->priority != DEF_PRIORITY || sc->nr_to_reclaim < MIN_LRU_BATCH)
 		return;
@@ -5520,7 +5528,7 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control 
 	 * estimated reclaimed_to_scanned_ratio = inactive / total.
 	 */
 	reclaimable = node_page_state(pgdat, NR_INACTIVE_FILE);
-	if (get_swappiness(lruvec, sc))
+	if (can_reclaim_anon_pages(NULL, pgdat->node_id, sc))
 		reclaimable += node_page_state(pgdat, NR_INACTIVE_ANON);
 
 	reclaimable /= MEMCG_NR_GENS;
