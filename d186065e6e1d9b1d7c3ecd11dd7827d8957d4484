@@ -34,6 +34,24 @@
       "parentUuid": "b35122b5_b6dd9ec8",
       "revId": "d186065e6e1d9b1d7c3ecd11dd7827d8957d4484",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed8c653_950e4cf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-11-13T15:38:23Z",
+      "side": 1,
+      "message": "Please update the description to explain this like this:\n\n```\n(cherry picked from commit 7780d04046a2288ab85d88bedacc60fa4fad9971)\n[cuiyangpei: did not backport changes in mm/mlock.c because mlock_pte_range does\nnot exist in 5.15]\n\nBug: 300502883\n```",
+      "parentUuid": "f56ba90b_461ece52",
+      "revId": "d186065e6e1d9b1d7c3ecd11dd7827d8957d4484",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
