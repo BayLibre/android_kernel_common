@@ -61,8 +61,8 @@ static struct mm_struct *damon_get_mm(struct damon_target *t)
  *
  * Returns 0 on success, or negative error code otherwise.
  */
-static int damon_va_evenly_split_region(struct damon_target *t,
-		struct damon_region *r, unsigned int nr_pieces)
+static int damon_va_evenly_split_region(struct damon_ctx *ctx,
+		struct damon_target *t, struct damon_region *r, unsigned int nr_pieces)
 {
 	unsigned long sz_orig, sz_piece, orig_end;
 	struct damon_region *n = NULL, *next;
@@ -73,7 +73,7 @@ static int damon_va_evenly_split_region(struct damon_target *t,
 
 	orig_end = r->ar.end;
 	sz_orig = damon_sz_region(r);
-	sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);
+	sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, ctx->attrs.min_region_size);
 
 	if (!sz_piece)
 		return -EINVAL;
@@ -113,8 +113,8 @@ static unsigned long sz_range(struct damon_addr_range *r)
  *
  * Returns 0 if success, or negative error code otherwise.
  */
-static int __damon_va_three_regions(struct vm_area_struct *vma,
-				       struct damon_addr_range regions[3])
+static int __damon_va_three_regions(struct damon_ctx *ctx,
+				struct vm_area_struct *vma, struct damon_addr_range regions[3])
 {
 	struct damon_addr_range gap = {0}, first_gap = {0}, second_gap = {0};
 	struct vm_area_struct *last_vma = NULL;
@@ -154,12 +154,12 @@ next:
 		swap(first_gap, second_gap);
 
 	/* Store the result */
-	regions[0].start = ALIGN(start, DAMON_MIN_REGION);
-	regions[0].end = ALIGN(first_gap.start, DAMON_MIN_REGION);
-	regions[1].start = ALIGN(first_gap.end, DAMON_MIN_REGION);
-	regions[1].end = ALIGN(second_gap.start, DAMON_MIN_REGION);
-	regions[2].start = ALIGN(second_gap.end, DAMON_MIN_REGION);
-	regions[2].end = ALIGN(last_vma->vm_end, DAMON_MIN_REGION);
+	regions[0].start = ALIGN(start, ctx->attrs.min_region_size);
+	regions[0].end = ALIGN(first_gap.start, ctx->attrs.min_region_size);
+	regions[1].start = ALIGN(first_gap.end, ctx->attrs.min_region_size);
+	regions[1].end = ALIGN(second_gap.start, ctx->attrs.min_region_size);
+	regions[2].start = ALIGN(second_gap.end, ctx->attrs.min_region_size);
+	regions[2].end = ALIGN(last_vma->vm_end, ctx->attrs.min_region_size);
 
 	return 0;
 }
@@ -169,8 +169,8 @@ next:
  *
  * Returns 0 on success, negative error code otherwise.
  */
-static int damon_va_three_regions(struct damon_target *t,
-				struct damon_addr_range regions[3])
+static int damon_va_three_regions(struct damon_ctx *ctx,
+				struct damon_target *t, struct damon_addr_range regions[3])
 {
 	struct mm_struct *mm;
 	int rc;
@@ -180,7 +180,7 @@ static int damon_va_three_regions(struct damon_target *t,
 		return -EINVAL;
 
 	mmap_read_lock(mm);
-	rc = __damon_va_three_regions(mm->mmap, regions);
+	rc = __damon_va_three_regions(ctx, mm->mmap, regions);
 	mmap_read_unlock(mm);
 
 	mmput(mm);
@@ -238,7 +238,7 @@ static void __damon_va_init_regions(struct damon_ctx *ctx,
 	unsigned long sz = 0, nr_pieces;
 	int i, tidx = 0;
 
-	if (damon_va_three_regions(t, regions)) {
+	if (damon_va_three_regions(ctx, t, regions)) {
 		damon_for_each_target(ti, ctx) {
 			if (ti == t)
 				break;
@@ -252,8 +252,8 @@ static void __damon_va_init_regions(struct damon_ctx *ctx,
 		sz += regions[i].end - regions[i].start;
 	if (ctx->attrs.min_nr_regions)
 		sz /= ctx->attrs.min_nr_regions;
-	if (sz < DAMON_MIN_REGION)
-		sz = DAMON_MIN_REGION;
+	if (sz < ctx->attrs.min_region_size)
+		sz = ctx->attrs.min_region_size;
 
 	/* Set the initial three regions of the target */
 	for (i = 0; i < 3; i++) {
@@ -265,7 +265,7 @@ static void __damon_va_init_regions(struct damon_ctx *ctx,
 		damon_add_region(r, t);
 
 		nr_pieces = (regions[i].end - regions[i].start) / sz;
-		damon_va_evenly_split_region(t, r, nr_pieces);
+		damon_va_evenly_split_region(ctx, t, r, nr_pieces);
 	}
 }
 
@@ -290,9 +290,9 @@ static void damon_va_update(struct damon_ctx *ctx)
 	struct damon_target *t;
 
 	damon_for_each_target(t, ctx) {
-		if (damon_va_three_regions(t, three_regions))
+		if (damon_va_three_regions(ctx, t, three_regions))
 			continue;
-		damon_set_regions(t, three_regions, 3);
+		damon_set_regions(ctx, t, three_regions, 3);
 	}
 }
 

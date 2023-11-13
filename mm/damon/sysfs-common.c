@@ -27,6 +27,7 @@ struct damon_sysfs_ul_range *damon_sysfs_ul_range_alloc(
 	range->kobj = (struct kobject){};
 	range->min = min;
 	range->max = max;
+	range->min_region_size = DAMON_MIN_REGION;
 
 	return range;
 }
@@ -81,6 +82,31 @@ static ssize_t max_store(struct kobject *kobj, struct kobj_attribute *attr,
 	return count;
 }
 
+static ssize_t min_region_size_show(struct kobject *kobj, struct kobj_attribute *attr,
+		char *buf)
+{
+	struct damon_sysfs_ul_range *range = container_of(kobj,
+			struct damon_sysfs_ul_range, kobj);
+
+	return sysfs_emit(buf, "%lu\n", range->min_region_size);
+}
+
+static ssize_t min_region_size_store(struct kobject *kobj, struct kobj_attribute *attr,
+		const char *buf, size_t count)
+{
+	struct damon_sysfs_ul_range *range = container_of(kobj,
+			struct damon_sysfs_ul_range, kobj);
+	unsigned long min_region_size;
+	int err;
+
+	err = kstrtoul(buf, 0, &min_region_size);
+	if (err)
+		return err;
+
+	range->min_region_size = ALIGN(min_region_size, DAMON_MIN_REGION);
+	return count;
+}
+
 void damon_sysfs_ul_range_release(struct kobject *kobj)
 {
 	kfree(container_of(kobj, struct damon_sysfs_ul_range, kobj));
@@ -92,9 +118,13 @@ static struct kobj_attribute damon_sysfs_ul_range_min_attr =
 static struct kobj_attribute damon_sysfs_ul_range_max_attr =
 		__ATTR_RW_MODE(max, 0600);
 
+static struct kobj_attribute damon_sysfs_ul_range_min_region_size_attr =
+		__ATTR_RW_MODE(min_region_size, 0600);
+
 static struct attribute *damon_sysfs_ul_range_attrs[] = {
 	&damon_sysfs_ul_range_min_attr.attr,
 	&damon_sysfs_ul_range_max_attr.attr,
+	&damon_sysfs_ul_range_min_region_size_attr.attr,
 	NULL,
 };
 ATTRIBUTE_GROUPS(damon_sysfs_ul_range);
