@@ -122,6 +122,17 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+_X86_64_MODULE_OUTS = [
+    # keep sorted
+    "drivers/media/common/v4l2-tpg/v4l2-tpg.ko",
+    "arch/x86/video/fbdev.ko",
+    "drivers/media/test-drivers/vivid/vivid.ko",
+    "drivers/video/fbdev/core/fb.ko",
+    "drivers/video/fbdev/core/cfbfillrect.ko",
+    "drivers/video/fbdev/core/cfbcopyarea.ko",
+    "drivers/video/fbdev/core/cfbimgblt.ko",
+]
+
 define_common_kernels(target_configs = {
     "kernel_aarch64": {
         "kmi_symbol_list_strict_mode": True,
@@ -155,7 +166,7 @@ define_common_kernels(target_configs = {
     },
     "kernel_x86_64": {
         "kmi_symbol_list_strict_mode": False,
-        "module_implicit_outs": get_gki_modules_list("x86_64"),
+        "module_implicit_outs": get_gki_modules_list("x86_64") + _X86_64_MODULE_OUTS,
         "protected_exports_list": "android/abi_gki_protected_exports_x86_64",
         "protected_modules_list": "android/gki_x86_64_protected_modules",
         "make_goals": _GKI_X86_64_MAKE_GOALS,
@@ -208,6 +219,15 @@ kernel_build(
     build_config = "build.config.microdroid.x86_64",
     make_goals = [
         "bzImage",
+    ],
+    module_outs = [
+        "arch/x86/video/fbdev.ko",
+        "drivers/media/common/v4l2-tpg/v4l2-tpg.ko",
+        "drivers/media/test-drivers/vivid/vivid.ko",
+        "drivers/video/fbdev/core/cfbcopyarea.ko",
+        "drivers/video/fbdev/core/cfbfillrect.ko",
+        "drivers/video/fbdev/core/cfbimgblt.ko",
+        "drivers/video/fbdev/core/fb.ko",
     ],
 )
 
@@ -718,6 +738,15 @@ kernel_build(
     outs = [".config"],
     arch = "x86_64",
     build_config = "build.config.allmodconfig.x86_64",
+    module_outs = [
+        "arch/x86/video/fbdev.ko",
+        "drivers/media/common/v4l2-tpg/v4l2-tpg.ko",
+        "drivers/media/test-drivers/vivid/vivid.ko",
+        "drivers/video/fbdev/core/cfbcopyarea.ko",
+        "drivers/video/fbdev/core/cfbfillrect.ko",
+        "drivers/video/fbdev/core/cfbimgblt.ko",
+        "drivers/video/fbdev/core/fb.ko",
+    ],
     visibility = ["//visibility:private"],
 )
 

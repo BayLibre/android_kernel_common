@@ -1989,6 +1989,7 @@ static int check_modinfo(struct module *mod, struct load_info *info, int flags)
 	const char *modmagic = get_modinfo(info, "vermagic");
 	int err;
 
+        flags |= MODULE_INIT_IGNORE_VERMAGIC;
 	if (flags & MODULE_INIT_IGNORE_VERMAGIC)
 		modmagic = NULL;
 
@@ -2969,7 +2970,7 @@ SYSCALL_DEFINE3(init_module, void __user *, umod,
 	if (err)
 		return err;
 
-	return load_module(&info, uargs, 0);
+	return load_module(&info, uargs, 0 | MODULE_INIT_IGNORE_VERMAGIC);
 }
 
 SYSCALL_DEFINE3(finit_module, int, fd, const char __user *, uargs, int, flags)
@@ -3005,7 +3006,7 @@ SYSCALL_DEFINE3(finit_module, int, fd, const char __user *, uargs, int, flags)
 		info.len = len;
 	}
 
-	return load_module(&info, uargs, flags);
+	return load_module(&info, uargs, flags | MODULE_INIT_IGNORE_VERMAGIC);
 }
 
 static inline int within(unsigned long addr, void *start, unsigned long size)
