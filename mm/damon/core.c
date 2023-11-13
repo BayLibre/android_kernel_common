@@ -196,6 +196,7 @@ static int damon_fill_regions_holes(struct damon_region *first,
 
 /*
  * damon_set_regions() - Set regions of a target for given address ranges.
+ * @ctx:	monitoring context to use the operations.
  * @t:		the given target.
  * @ranges:	array of new monitoring target ranges.
  * @nr_ranges:	length of @ranges.
@@ -205,8 +206,8 @@ static int damon_fill_regions_holes(struct damon_region *first,
  *
  * Return: 0 if success, or negative error code otherwise.
  */
-int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
-		unsigned int nr_ranges)
+int damon_set_regions(struct damon_ctx *ctx, struct damon_target *t,
+				struct damon_addr_range *ranges, unsigned int nr_ranges)
 {
 	struct damon_region *r, *next;
 	unsigned int i;
@@ -243,16 +244,16 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
 			/* no region intersects with this range */
 			newr = damon_new_region(
 					ALIGN_DOWN(range->start,
-						DAMON_MIN_REGION),
-					ALIGN(range->end, DAMON_MIN_REGION));
+						ctx->attrs.min_region_size),
+					ALIGN(range->end, ctx->attrs.min_region_size));
 			if (!newr)
 				return -ENOMEM;
 			damon_insert_region(newr, damon_prev_region(r), r, t);
 		} else {
 			/* resize intersecting regions to fit in this range */
 			first->ar.start = ALIGN_DOWN(range->start,
-					DAMON_MIN_REGION);
-			last->ar.end = ALIGN(range->end, DAMON_MIN_REGION);
+					ctx->attrs.min_region_size);
+			last->ar.end = ALIGN(range->end, ctx->attrs.min_region_size);
 
 			/* fill possible holes in the range */
 			err = damon_fill_regions_holes(first, last, t);
@@ -434,6 +435,7 @@ struct damon_ctx *damon_new_ctx(void)
 
 	ctx->attrs.min_nr_regions = 10;
 	ctx->attrs.max_nr_regions = 1000;
+	ctx->attrs.min_region_size = DAMON_MIN_REGION;
 
 	INIT_LIST_HEAD(&ctx->adaptive_targets);
 	INIT_LIST_HEAD(&ctx->schemes);
@@ -552,6 +554,8 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
 		return -EINVAL;
 	if (attrs->min_nr_regions > attrs->max_nr_regions)
 		return -EINVAL;
+	if (attrs->min_region_size < DAMON_MIN_REGION)
+		return -EINVAL;
 	if (attrs->sample_interval > attrs->aggr_interval)
 		return -EINVAL;
 
@@ -609,8 +613,8 @@ static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
 
 	if (ctx->attrs.min_nr_regions)
 		sz /= ctx->attrs.min_nr_regions;
-	if (sz < DAMON_MIN_REGION)
-		sz = DAMON_MIN_REGION;
+	if (sz < ctx->attrs.min_region_size)
+		sz = ctx->attrs.min_region_size;
 
 	return sz;
 }
@@ -819,6 +823,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
 /*
  * damos_skip_charged_region() - Check if the given region or starting part of
  * it is already charged for the DAMOS quota.
+ * @c:	monitoring context to use the operations.
  * @t:	The target of the region.
  * @rp:	The pointer to the region.
  * @s:	The scheme to be applied.
@@ -838,8 +843,8 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
  *
  * Return: true if the region should be entirely skipped, false otherwise.
  */
-static bool damos_skip_charged_region(struct damon_target *t,
-		struct damon_region **rp, struct damos *s)
+static bool damos_skip_charged_region(struct damon_ctx *c,
+			struct damon_target *t, struct damon_region **rp, struct damos *s)
 {
 	struct damon_region *r = *rp;
 	struct damos_quota *quota = &s->quota;
@@ -861,11 +866,11 @@ static bool damos_skip_charged_region(struct damon_target *t,
 		if (quota->charge_addr_from && r->ar.start <
 				quota->charge_addr_from) {
 			sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
-					r->ar.start, DAMON_MIN_REGION);
+					r->ar.start, c->attrs.min_region_size);
 			if (!sz_to_skip) {
-				if (damon_sz_region(r) <= DAMON_MIN_REGION)
+				if (damon_sz_region(r) <= c->attrs.min_region_size)
 					return true;
-				sz_to_skip = DAMON_MIN_REGION;
+				sz_to_skip = c->attrs.min_region_size;
 			}
 			damon_split_region_at(t, r, sz_to_skip);
 			r = damon_next_region(r);
@@ -899,7 +904,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
 	if (c->ops.apply_scheme) {
 		if (quota->esz && quota->charged_sz + sz > quota->esz) {
 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
-					DAMON_MIN_REGION);
+					c->attrs.min_region_size);
 			if (!sz)
 				goto update_stat;
 			damon_split_region_at(t, r, sz);
@@ -941,7 +946,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
 		if (quota->esz && quota->charged_sz >= quota->esz)
 			continue;
 
-		if (damos_skip_charged_region(t, &r, s))
+		if (damos_skip_charged_region(c, t, &r, s))
 			continue;
 
 		if (!damos_valid_target(c, t, r, s))
@@ -1126,7 +1131,8 @@ static void damon_split_region_at(struct damon_target *t,
 }
 
 /* Split every region in the given target into 'nr_subs' regions */
-static void damon_split_regions_of(struct damon_target *t, int nr_subs)
+static void damon_split_regions_of(struct damon_ctx *ctx,
+					struct damon_target *t, int nr_subs)
 {
 	struct damon_region *r, *next;
 	unsigned long sz_region, sz_sub = 0;
@@ -1136,13 +1142,13 @@ static void damon_split_regions_of(struct damon_target *t, int nr_subs)
 		sz_region = damon_sz_region(r);
 
 		for (i = 0; i < nr_subs - 1 &&
-				sz_region > 2 * DAMON_MIN_REGION; i++) {
+				sz_region > 2 * ctx->attrs.min_region_size; i++) {
 			/*
 			 * Randomly select size of left sub-region to be at
 			 * least 10 percent and at most 90% of original region
 			 */
 			sz_sub = ALIGN_DOWN(damon_rand(1, 10) *
-					sz_region / 10, DAMON_MIN_REGION);
+					sz_region / 10, ctx->attrs.min_region_size);
 			/* Do not allow blank region */
 			if (sz_sub == 0 || sz_sub >= sz_region)
 				continue;
@@ -1182,7 +1188,7 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
 		nr_subregions = 3;
 
 	damon_for_each_target(t, ctx)
-		damon_split_regions_of(t, nr_subregions);
+		damon_split_regions_of(ctx, t, nr_subregions);
 
 	last_nr_regions = nr_regions;
 }
@@ -1426,6 +1432,7 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
 /**
  * damon_set_region_biggest_system_ram_default() - Set the region of the given
  * monitoring target as requested, or biggest 'System RAM'.
+ * @ctx:	monitoring context to use the operations.
  * @t:		The monitoring target to set the region.
  * @start:	The pointer to the start address of the region.
  * @end:	The pointer to the end address of the region.
@@ -1438,8 +1445,8 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
  *
  * Return: 0 on success, negative error code otherwise.
  */
-int damon_set_region_biggest_system_ram_default(struct damon_target *t,
-			unsigned long *start, unsigned long *end)
+int damon_set_region_biggest_system_ram_default(struct damon_ctx *ctx,
+			struct damon_target *t, unsigned long *start, unsigned long *end)
 {
 	struct damon_addr_range addr_range;
 
@@ -1452,7 +1459,7 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
 
 	addr_range.start = *start;
 	addr_range.end = *end;
-	return damon_set_regions(t, &addr_range, 1);
+	return damon_set_regions(ctx, t, &addr_range, 1);
 }
 
 static int __init damon_init(void)

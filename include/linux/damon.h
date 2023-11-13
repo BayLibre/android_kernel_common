@@ -465,6 +465,7 @@ struct damon_callback {
  *				regions.
  * @max_nr_regions:		The maximum number of adaptive monitoring
  *				regions.
+ * @min_region_size:		The minimum size of each monitoring region.
  *
  * For each @sample_interval, DAMON checks whether each region is accessed or
  * not.  It aggregates and keeps the access information (number of accesses to
@@ -481,6 +482,7 @@ struct damon_attrs {
 	unsigned long ops_update_interval;
 	unsigned long min_nr_regions;
 	unsigned long max_nr_regions;
+	unsigned long min_region_size;
 };
 
 /**
@@ -601,8 +603,8 @@ static inline void damon_insert_region(struct damon_region *r,
 
 void damon_add_region(struct damon_region *r, struct damon_target *t);
 void damon_destroy_region(struct damon_region *r, struct damon_target *t);
-int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
-		unsigned int nr_ranges);
+int damon_set_regions(struct damon_ctx *ctx, struct damon_target *t,
+		struct damon_addr_range *ranges, unsigned int nr_ranges);
 
 struct damos_filter *damos_new_filter(enum damos_filter_type type,
 		bool matching);
@@ -641,8 +643,8 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
 int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
 int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
 
-int damon_set_region_biggest_system_ram_default(struct damon_target *t,
-				unsigned long *start, unsigned long *end);
+int damon_set_region_biggest_system_ram_default(struct damon_ctx *ctx,
+		struct damon_target *t, unsigned long *start, unsigned long *end);
 
 #endif	/* CONFIG_DAMON */
 

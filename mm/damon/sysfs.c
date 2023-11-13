@@ -1074,6 +1074,7 @@ static int damon_sysfs_set_attrs(struct damon_ctx *ctx,
 		.ops_update_interval = sys_intervals->update_us,
 		.min_nr_regions = sys_nr_regions->min,
 		.max_nr_regions = sys_nr_regions->max,
+		.min_region_size = sys_nr_regions->min_region_size,
 	};
 	return damon_set_attrs(ctx, &attrs);
 }
@@ -1090,8 +1091,8 @@ static void damon_sysfs_destroy_targets(struct damon_ctx *ctx)
 	}
 }
 
-static int damon_sysfs_set_regions(struct damon_target *t,
-		struct damon_sysfs_regions *sysfs_regions)
+static int damon_sysfs_set_regions(struct damon_ctx *ctx,
+		struct damon_target *t, struct damon_sysfs_regions *sysfs_regions)
 {
 	struct damon_addr_range *ranges = kmalloc_array(sysfs_regions->nr,
 			sizeof(*ranges), GFP_KERNEL | __GFP_NOWARN);
@@ -1113,7 +1114,7 @@ static int damon_sysfs_set_regions(struct damon_target *t,
 		if (ranges[i - 1].end > ranges[i].start)
 			goto out;
 	}
-	err = damon_set_regions(t, ranges, sysfs_regions->nr);
+	err = damon_set_regions(ctx, t, ranges, sysfs_regions->nr);
 out:
 	kfree(ranges);
 	return err;
@@ -1134,7 +1135,7 @@ static int damon_sysfs_add_target(struct damon_sysfs_target *sys_target,
 		if (!t->pid)
 			goto destroy_targets_out;
 	}
-	err = damon_sysfs_set_regions(t, sys_target->regions);
+	err = damon_sysfs_set_regions(ctx, t, sys_target->regions);
 	if (err)
 		goto destroy_targets_out;
 	return 0;
@@ -1195,7 +1196,7 @@ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
 		if (!t)
 			err = damon_sysfs_add_target(st, ctx);
 		else
-			err = damon_sysfs_set_regions(t, st->regions);
+			err = damon_sysfs_set_regions(ctx, t, st->regions);
 		if (err)
 			return err;
 	}

@@ -15,6 +15,8 @@
 	module_param_named(min_nr_regions, attrs.min_nr_regions, ulong,	\
 			0600);						\
 	module_param_named(max_nr_regions, attrs.max_nr_regions, ulong,	\
+			0600);						\
+	module_param_named(min_region_size, attrs.min_region_size, ulong,\
 			0600);
 
 #define DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(quota)			\

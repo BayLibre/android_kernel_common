@@ -14,6 +14,7 @@ struct damon_sysfs_ul_range {
 	struct kobject kobj;
 	unsigned long min;
 	unsigned long max;
+	unsigned long min_region_size;
 };
 
 struct damon_sysfs_ul_range *damon_sysfs_ul_range_alloc(
