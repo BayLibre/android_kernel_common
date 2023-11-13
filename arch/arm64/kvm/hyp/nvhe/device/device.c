@@ -227,3 +227,56 @@ void pkvm_devices_teardown(struct pkvm_hyp_vm *vm)
 	}
 	hyp_spin_unlock(&device_spinlock);
 }
+
+static struct pkvm_device *pkvm_get_device_by_iommu(u64 id, u64 endpoint)
+{
+	struct pkvm_device *dev = NULL;
+	struct pkvm_dev_iommu *iommu;
+	int i, j;
+
+	for (i = 0 ; i < registered_devices_nr ; ++i) {
+		dev = &registered_devices[i];
+		for (j = 0 ; j < dev->nr_iommus; ++j) {
+			iommu = &dev->iommus[j];
+			if ((id == iommu->id) && (endpoint == iommu->endpoint))
+				return dev;
+		}
+	}
+
+	return NULL;
+}
+
+/*
+ * Check if a VM or host(NULL) is allowed to access this IOMMU.
+ * We should prevent VMs attaching to each other devices, and host
+ * attaching to pVM, while allow host attaching to non protected
+ * VMs.
+ * dev->ctxt is only set for protected VMs.
+ */
+bool pkvm_devices_iommu_vcpu_allowed(u64 id, u64 endpoint, struct pkvm_hyp_vcpu *vcpu)
+{
+	struct pkvm_device *dev;
+	struct pkvm_hyp_vm *vm = NULL;
+	bool ret;
+
+	dev = pkvm_get_device_by_iommu(id, endpoint);
+
+	/* Not assignable device, only allowed to host */
+	if (!dev)
+		return !vcpu;
+
+	/*
+	 * We treat non protected vcpus as the host, as they don't go through the
+	 * device assignment flow and the host controls the VM view of the physical
+	 * IOMMUs so it can prevent it from attaching to any device.
+	 */
+	if (vcpu && pkvm_hyp_vcpu_is_protected(vcpu))
+		vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+
+
+	hyp_spin_lock(&device_spinlock);
+	ret = (dev->ctxt == vm);
+	hyp_spin_unlock(&device_spinlock);
+
+	return ret;
+}

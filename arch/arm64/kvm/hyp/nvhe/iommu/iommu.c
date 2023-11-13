@@ -11,6 +11,7 @@
 #include <hyp/adjust_pc.h>
 
 #include <kvm/iommu.h>
+#include <kvm/device.h>
 #include <nvhe/alloc_mgt.h>
 #include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
@@ -260,6 +261,13 @@ int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	if (!iommu)
 		return -EINVAL;
 
+	/*
+	 * At the moment the IOMMU in EL2 is not aware of guests and pvIOMMU
+	 * doesn't exist yet, so all attaches come from host, this should change soon.
+	 */
+	if (!pkvm_devices_iommu_vcpu_allowed(iommu_id, endpoint_id, NULL))
+		return -EPERM;
+
 	domain = handle_to_domain(domain_id);
 	if (!domain || domain_get(domain))
 		return -EINVAL;
@@ -280,6 +288,10 @@ int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
 	if (!iommu)
 		return -EINVAL;
+
+	/* See kvm_iommu_attach_dev(). */
+	if (!pkvm_devices_iommu_vcpu_allowed(iommu_id, endpoint_id, NULL))
+		return -EPERM;
 
 	domain = handle_to_domain(domain_id);
 	if (!domain || atomic_read(&domain->refs) <= 1)

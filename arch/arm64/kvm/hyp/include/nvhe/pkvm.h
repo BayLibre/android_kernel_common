@@ -184,6 +184,7 @@ int pkvm_host_hvc_pd(u64 device_id, u64 on);
 
 bool pkvm_device_request_mmio(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code);
 void pkvm_devices_teardown(struct pkvm_hyp_vm *vm);
+bool pkvm_devices_iommu_vcpu_allowed(u64 id, u64 endpoint, struct pkvm_hyp_vcpu *vcpu);
 
 /*
  * Register a power domain. When the hypervisor catches power requests from the
