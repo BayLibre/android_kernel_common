@@ -62,10 +62,11 @@ static ssize_t dbgfs_attrs_read(struct file *file,
 	int ret;
 
 	mutex_lock(&ctx->kdamond_lock);
-	ret = scnprintf(kbuf, ARRAY_SIZE(kbuf), "%lu %lu %lu %lu %lu\n",
+	ret = scnprintf(kbuf, ARRAY_SIZE(kbuf), "%lu %lu %lu %lu %lu %lu\n",
 			ctx->attrs.sample_interval, ctx->attrs.aggr_interval,
 			ctx->attrs.ops_update_interval,
-			ctx->attrs.min_nr_regions, ctx->attrs.max_nr_regions);
+			ctx->attrs.min_nr_regions, ctx->attrs.max_nr_regions,
+			ctx->attrs.min_region_size);
 	mutex_unlock(&ctx->kdamond_lock);
 
 	return simple_read_from_buffer(buf, count, ppos, kbuf, ret);
@@ -83,11 +84,12 @@ static ssize_t dbgfs_attrs_write(struct file *file,
 	if (IS_ERR(kbuf))
 		return PTR_ERR(kbuf);
 
-	if (sscanf(kbuf, "%lu %lu %lu %lu %lu",
+	if (sscanf(kbuf, "%lu %lu %lu %lu %lu %lu",
 				&attrs.sample_interval, &attrs.aggr_interval,
 				&attrs.ops_update_interval,
 				&attrs.min_nr_regions,
-				&attrs.max_nr_regions) != 5) {
+				&attrs.max_nr_regions,
+				&attrs.min_region_size) != 6) {
 		ret = -EINVAL;
 		goto out;
 	}

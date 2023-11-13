@@ -77,6 +77,7 @@ static struct damon_attrs damon_reclaim_mon_attrs = {
 	.ops_update_interval = 0,
 	.min_nr_regions = 10,
 	.max_nr_regions = 1000,
+	.min_region_size = DAMON_MIN_REGION,
 };
 DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_reclaim_mon_attrs);
 
@@ -173,7 +174,7 @@ static int damon_reclaim_apply_parameters(void)
 	}
 	damon_set_schemes(ctx, &scheme, 1);
 
-	return damon_set_region_biggest_system_ram_default(target,
+	return damon_set_region_biggest_system_ram_default(ctx, target,
 					&monitor_region_start,
 					&monitor_region_end);
 }
