@@ -443,6 +443,43 @@ DECLARE_HOOK(android_vh_task_cmdline_prio_restore,
 	TP_PROTO(int saved_prio),
 	TP_ARGS(saved_prio));
 
+<<<<<<< HEAD   (9c8fb18c9387eb441d9b34f0d4e1f8c94d801e0b ANDROID: GKI: Update symbols list for exynos)
+||||||| BASE   (401be11d939eb8aa2769be3c7948e022f60aea5b ANDROID: sched: Add trace_android_rvh_set_user_nice_locked)
+DECLARE_RESTRICTED_HOOK(android_rvh_update_rt_rq_load_avg,
+	TP_PROTO(u64 now, struct rq *rq, struct task_struct *tsk, int running),
+	TP_ARGS(now, rq, tsk, running), 1);
+
+struct sched_attr;
+
+DECLARE_HOOK(android_vh_set_sugov_sched_attr,
+	TP_PROTO(struct sched_attr *attr),
+	TP_ARGS(attr));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_set_iowait,
+	TP_PROTO(struct task_struct *p, struct rq *rq, int *should_iowait_boost),
+	TP_ARGS(p, rq, should_iowait_boost), 1);
+
+=======
+DECLARE_RESTRICTED_HOOK(android_rvh_update_rt_rq_load_avg,
+	TP_PROTO(u64 now, struct rq *rq, struct task_struct *tsk, int running),
+	TP_ARGS(now, rq, tsk, running), 1);
+
+struct sched_attr;
+
+DECLARE_HOOK(android_vh_set_sugov_sched_attr,
+	TP_PROTO(struct sched_attr *attr),
+	TP_ARGS(attr));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_set_iowait,
+	TP_PROTO(struct task_struct *p, struct rq *rq, int *should_iowait_boost),
+	TP_ARGS(p, rq, should_iowait_boost), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_util_fits_cpu,
+	TP_PROTO(unsigned long util, unsigned long uclamp_min, unsigned long uclamp_max,
+		 int cpu, bool *fits, bool *done),
+	TP_ARGS(util, uclamp_min, uclamp_max, cpu, fits, done), 1);
+
+>>>>>>> CHANGE (5b56ab949aab438682f136ea827c46b6829da3af ANDROID: sched: Add vendor hook for util_fits_cpu)
 /* macro versions of hooks are no longer required */
 #endif /* _TRACE_HOOK_SCHED_H */
 /* This part must be outside protection */

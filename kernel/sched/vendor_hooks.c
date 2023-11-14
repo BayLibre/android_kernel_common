@@ -112,8 +112,28 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_inherit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_restore);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+<<<<<<< HEAD   (9c8fb18c9387eb441d9b34f0d4e1f8c94d801e0b ANDROID: GKI: Update symbols list for exynos)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
+||||||| BASE   (401be11d939eb8aa2769be3c7948e022f60aea5b ANDROID: sched: Add trace_android_rvh_set_user_nice_locked)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
+
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_fits_cpu);
+
+
+>>>>>>> CHANGE (5b56ab949aab438682f136ea827c46b6829da3af ANDROID: sched: Add vendor hook for util_fits_cpu)
