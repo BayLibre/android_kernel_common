@@ -1119,6 +1119,60 @@ int topup_hyp_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages,
 	return __topup_hyp_memcache(mc, min_pages, hyp_mc_alloc_fn,
 				    kvm_host_pa, (void *)flags);
 }
+//	=======
+//	unsigned long prev_nr_pages;
+//
+//	if (!is_protected_kvm_enabled())
+//		return;
+//
+//	prev_nr_pages = mc->nr_pages;
+//	__free_hyp_memcache(mc, hyp_mc_free_fn, kvm_host_va,
+//			    (void *)account_stage2);
+//	account_hyp_memcache(mc, prev_nr_pages, kvm);
+//	if (account_stage2)
+//		atomic64_sub(prev_nr_pages << PAGE_SHIFT,
+//			     &kvm->stat.protected_pgtable_mem);
+//}
+//
+//void free_hyp_memcache(struct kvm_hyp_memcache *mc, struct kvm *kvm)
+//{
+//	__free_account_hyp_memcache(mc, kvm, false);
+//}
+//
+///*
+// * All pages donated to the hypervisor through kvm_hyp_memcache are for the
+// * stage-2 page table. However, kvm_hyp_memcache is also a vehicule to retrieve
+// * meta-data from the hypervisor, hence the need for a stage2 specific free
+// * function.
+// */
+//void free_hyp_stage2_memcache(struct kvm_hyp_memcache *mc, struct kvm *kvm)
+//{
+//	__free_account_hyp_memcache(mc, kvm, true);
+//}
+//
+//int topup_hyp_memcache(struct kvm_vcpu *vcpu)
+//{
+//	struct kvm_hyp_memcache *mc = &vcpu->arch.pkvm_memcache;
+//	unsigned long prev_nr_pages;
+//	int err;
+//
+//	if (!is_protected_kvm_enabled())
+//		return 0;
+//
+//	prev_nr_pages = mc->nr_pages;
+//
+//	err = __topup_hyp_memcache(mc, kvm_mmu_cache_min_pages(vcpu->kvm),
+//				   hyp_mc_alloc_fn,
+//				   kvm_host_pa, NULL);
+//	if (!err) {
+//		account_hyp_memcache(mc, prev_nr_pages, vcpu->kvm);
+//		atomic64_add((mc->nr_pages - prev_nr_pages) << PAGE_SHIFT,
+//			     &vcpu->kvm->stat.protected_pgtable_mem);
+//	}
+//
+//	return err;
+//>>>>>>> fcadfbfeee97 (KVM: arm64: Add memory accounting for the VM pagetable memory)
+//}
 
 /**
  * kvm_phys_addr_ioremap - map a device range to guest IPA
@@ -1512,6 +1566,7 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
 
 	nr_pages = hyp_memcache->nr_pages - nr_pages;
 	atomic64_add(nr_pages << PAGE_SHIFT, &kvm->stat.protected_hyp_mem);
+	atomic64_add(nr_pages << PAGE_SHIFT, &kvm->stat.protected_pgtable_mem);
 
 	ppage = kmalloc(sizeof(*ppage), GFP_KERNEL_ACCOUNT);
 	if (!ppage)

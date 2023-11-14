@@ -248,6 +248,8 @@ out_free:
 
 	atomic64_sub(host_kvm->arch.pkvm.teardown_mc.nr_pages << PAGE_SHIFT,
 		     &host_kvm->stat.protected_hyp_mem);
+	atomic64_sub(host_kvm->arch.pkvm.teardown_mc.nr_pages << PAGE_SHIFT,
+		     &host_kvm->stat.protected_pgtable_mem);
 	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc,
 			  HYP_MEMCACHE_ACCOUNT_STAGE2);
 }
@@ -303,6 +305,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 		__pkvm_vcpu_hyp_created(host_vcpu);
 	}
 
+	atomic64_set(&host_kvm->stat.protected_pgtable_mem, pgd_sz);
 	kvm_account_pgtable_pages(pgd, pgd_sz >> PAGE_SHIFT);
 
 	return 0;
