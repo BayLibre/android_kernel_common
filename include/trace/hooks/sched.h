@@ -345,6 +345,11 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_cpus_allowed_ptr,
 	TP_PROTO(struct task_struct *p, struct affinity_context *ctx, bool *skip_user_ptr),
 	TP_ARGS(p, ctx, skip_user_ptr), 1);
 
+DECLARE_RESTRICTED_HOOK(android_rvh_util_fits_cpu,
+	TP_PROTO(unsigned long util, unsigned long uclamp_min, unsigned long uclamp_max,
+		 int cpu, bool *fits, bool *done),
+	TP_ARGS(util, uclamp_min, uclamp_max, cpu, fits, done), 1);
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
