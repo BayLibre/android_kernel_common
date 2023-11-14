@@ -33,6 +33,74 @@
       "message": "breaks the kernel abi 😞",
       "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "125a56ef_46544a3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-14T18:50:44Z",
+      "side": 1,
+      "message": "Comments below suggest a way to work around the KMI break. I don\u0027t know enough about SND to be confident, but take a look.",
+      "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abdcf501_d8a58829",
+        "filename": "include/sound/compress_driver.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-14T18:50:44Z",
+      "side": 1,
+      "message": "It looks like `and_cmmpr_stream` is only instantiated as a field in `snd_compr_file` which is not in the KMI. So to avoid the KMI break, you can do something like:\n\n```\nstruct snd_compr_file {\n  unsigned long caps;\n  struct snd_compr_stream stream;\n  bool pause_in_draining;\n};\n```\nThen when you need to read or set `pause_in_draining`:\n\n```\n  struct snd_compr_file *scf \u003d container_of(stream, struct snd_compr_file, stream);\n  // access as scf-\u003epause_in_draining\n```",
+      "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a930a0df_6eb2c74d",
+        "filename": "include/sound/compress_driver.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-14T18:50:44Z",
+      "side": 1,
+      "message": "Since there is a 1:1 correspondence between `snd_compr_stream` and `snd_compr` (`stream-\u003edevice`), could `use_pause_in_draining` also be moved to `snd_compr_file`?",
+      "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83e67eed_fa447a9c",
+        "filename": "include/sound/compress_driver.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-14T18:50:44Z",
+      "side": 1,
+      "message": "if `use_pause_in_draining` can be moved to `struct snd_compr_file` as suggested above, then the flag would be accessed via container_of(substream,...) as described above.",
+      "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
