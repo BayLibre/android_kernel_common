@@ -285,6 +285,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	}
 
 	atomic64_set(&host_kvm->stat.protected_hyp_mem, total_sz);
+	atomic64_set(&host_kvm->stat.protected_pgtable_mem, pgd_sz);
 	kvm_account_pgtable_pages(pgd, pgd_sz >> PAGE_SHIFT);
 
 	return 0;

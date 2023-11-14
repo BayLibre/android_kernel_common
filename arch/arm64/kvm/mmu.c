@@ -951,6 +951,9 @@ static void __free_account_hyp_memcache(struct kvm_hyp_memcache *mc,
 	__free_hyp_memcache(mc, hyp_mc_free_fn, kvm_host_va,
 			    (void *)account_stage2);
 	account_hyp_memcache(mc, prev_nr_pages, kvm);
+	if (account_stage2)
+		atomic64_sub(prev_nr_pages << PAGE_SHIFT,
+			     &kvm->stat.protected_pgtable_mem);
 }
 
 void free_hyp_memcache(struct kvm_hyp_memcache *mc, struct kvm *kvm)
@@ -983,8 +986,11 @@ int topup_hyp_memcache(struct kvm_vcpu *vcpu)
 	err = __topup_hyp_memcache(mc, kvm_mmu_cache_min_pages(vcpu->kvm),
 				   hyp_mc_alloc_fn,
 				   kvm_host_pa, NULL);
-	if (!err)
+	if (!err) {
 		account_hyp_memcache(mc, prev_nr_pages, vcpu->kvm);
+		atomic64_add((mc->nr_pages - prev_nr_pages) << PAGE_SHIFT,
+			     &vcpu->kvm->stat.protected_pgtable_mem);
+	}
 
 	return err;
 }
