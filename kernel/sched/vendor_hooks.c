@@ -89,4 +89,37 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg_se);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg_cfs_rq);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg_internal);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dump_dl_server);
+<<<<<<< HEAD   (2373ff6885024237d999ecd6764b75bf4dd62c2e Merge ac20755937e0 ("Merge tag 'sysctl-6.19-rc1' of git://gi)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_ptr);
+||||||| BASE   (9c8fb18c9387eb441d9b34f0d4e1f8c94d801e0b ANDROID: GKI: Update symbols list for exynos)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_move_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc_early);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_free);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_inherit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_restore);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_move_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc_early);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_free);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_pelt_multiplier);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_inherit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_cmdline_prio_restore);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_fits_cpu);
+>>>>>>> CHANGE (2a8a5f99a75b3942e6b1021841c2925d60856680 ANDROID: sched: Add vendor hook for util_fits_cpu)
