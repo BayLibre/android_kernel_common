@@ -561,6 +561,7 @@ struct ptdump_registered_guest {
 	struct ptdump_info		info;
 	struct kvm_pgtable_snapshot	snapshot;
 	rwlock_t			*lock;
+	struct kvm			*kvm;
 };
 
 static LIST_HEAD(ptdump_guest_list);
@@ -601,6 +602,15 @@ static int stage2_ptdump_prepare_walk(void *file_priv)
 	int ret, pgd_index, mc_index, pgd_pages_sz;
 	void *page_hva;
 	phys_addr_t pgd;
+	bool is_guest = info == &stage2_kernel_ptdump_info ? false : true;
+	struct ptdump_registered_guest *guest;
+
+	if (is_guest) {
+		guest = container_of(info, struct ptdump_registered_guest,
+				     info);
+		info->mc_len = atomic64_read(&guest->kvm->stat.
+					     protected_pgtable_mem) >> PAGE_SHIFT;
+	}
 
 	snapshot = alloc_pages_exact(PAGE_SIZE, GFP_KERNEL_ACCOUNT);
 	if (!snapshot)
@@ -645,9 +655,16 @@ static int stage2_ptdump_prepare_walk(void *file_priv)
 		}
 	}
 
-	ret = kvm_call_hyp_nvhe(__pkvm_copy_host_stage2, snapshot);
-	if (ret)
-		goto free_memcache_pages;
+	if (is_guest) {
+		ret = kvm_call_hyp_nvhe(__pkvm_copy_guest_stage2, snapshot,
+					guest->kvm->arch.pkvm.handle);
+		if (ret)
+			goto free_memcache_pages;
+	} else {
+		ret = kvm_call_hyp_nvhe(__pkvm_copy_host_stage2, snapshot);
+		if (ret)
+			goto free_memcache_pages;
+	}
 
 	pgd = (phys_addr_t)snapshot->pgtable.pgd;
 	snapshot->pgtable.pgd = phys_to_virt(pgd);
@@ -782,7 +799,9 @@ static void guest_stage2_ptdump_walk(struct seq_file *s,
 	struct ptdump_registered_guest *guest;
 
 	guest = container_of(info, struct ptdump_registered_guest, info);
-	f_priv->file_priv = &guest->snapshot;
+	if (!is_protected_kvm_enabled() && !f_priv->file_priv) {
+		f_priv->file_priv = &guest->snapshot;
+	}
 
 	read_lock(guest->lock);
 	stage2_ptdump_walk(s, file_priv);
@@ -794,20 +813,27 @@ int ptdump_register_guest_stage2(struct kvm *kvm)
 	struct ptdump_registered_guest *guest;
 	struct kvm_s2_mmu *mmu = &kvm->arch.mmu;
 	struct kvm_pgtable *pgt = mmu->pgt;
-
-	/* When pKVM is enabled the pagetables are managed by the hypervisor */
-	if (is_protected_kvm_enabled()) {
-		pr_warn("ptdump: not supported guest stage-2 under pKVM\n");
-		return 0;
-	}
+	int (*prepare_walk_cb)(void *file_priv) = NULL;
+	void (*end_walk_cb)(void *file_priv) = NULL;
 
 	guest = kzalloc(sizeof(struct ptdump_registered_guest), GFP_KERNEL);
 	if (!guest)
 		return -ENOMEM;
 
-	memcpy(&guest->snapshot.pgtable, pgt, sizeof(struct kvm_pgtable));
+	/* When pKVM is enabled the pagetables are managed by the hypervisor */
+	if (is_protected_kvm_enabled()) {
+		prepare_walk_cb	= stage2_ptdump_prepare_walk;
+		end_walk_cb	= stage2_ptdump_end_walk;
+		guest->kvm	= kvm;
+	} else {
+		memcpy(&guest->snapshot.pgtable, pgt,
+		       sizeof(struct kvm_pgtable));
+	}
+
 	guest->info = (struct ptdump_info) {
 		.ptdump_walk		= guest_stage2_ptdump_walk,
+		.ptdump_prepare_walk	= prepare_walk_cb,
+		.ptdump_end_walk	= end_walk_cb,
 	};
 
 	guest->lock = &kvm->mmu_lock;

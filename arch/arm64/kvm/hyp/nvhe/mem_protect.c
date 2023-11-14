@@ -415,6 +415,49 @@ int __pkvm_host_stage2_prepare_copy(struct kvm_pgtable_snapshot *snapshot)
 
 	return ret;
 }
+
+int __pkvm_guest_stage2_prepare_copy(struct kvm_pgtable_snapshot *snapshot,
+				     struct pkvm_hyp_vm *vm)
+{
+	size_t required_pgd_len;
+	struct kvm_pgtable_mm_ops mm_ops = {0};
+	struct kvm_hyp_memcache *memcache = &snapshot->mc;
+	struct kvm_pgtable *to_pgt, *from_pgt = &vm->pgt;
+	int ret;
+	void *pgd;
+
+	required_pgd_len = kvm_pgtable_stage2_pgd_size(vm->kvm.arch.vtcr);
+	if (snapshot->pgd_len < required_pgd_len)
+		return -ENOMEM;
+
+	to_pgt = &snapshot->pgtable;
+	pgd = kern_hyp_va(snapshot->pgd_hva);
+
+	hyp_spin_lock(&snapshot_pool_lock);
+	hyp_pool_init(&snapshot_pool, hyp_virt_to_pfn(pgd),
+		      required_pgd_len / PAGE_SIZE, 0);
+
+	mm_ops.zalloc_pages_exact	= snapshot_zalloc_pages_exact;
+	mm_ops.zalloc_page		= snapshot_zalloc_page;
+	mm_ops.free_pages_exact		= snapshot_s2_free_pages_exact;
+	mm_ops.get_page			= snapshot_get_page;
+	mm_ops.phys_to_virt		= hyp_phys_to_virt;
+	mm_ops.virt_to_phys		= hyp_virt_to_phys;
+	mm_ops.page_count		= hyp_page_count;
+
+	to_pgt->ia_bits		= from_pgt->ia_bits;
+	to_pgt->start_level	= from_pgt->start_level;
+	to_pgt->flags		= from_pgt->flags;
+	to_pgt->mm_ops		= &mm_ops;
+
+	guest_lock_component(vm);
+	ret = kvm_pgtable_stage2_copy(to_pgt, from_pgt, memcache);
+	guest_unlock_component(vm);
+
+	hyp_spin_unlock(&snapshot_pool_lock);
+
+	return ret;
+}
 #endif /* CONFIG_NVHE_EL2_DEBUG */
 
 static int relinquish_walker(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,

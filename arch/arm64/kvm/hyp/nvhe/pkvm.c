@@ -1470,6 +1470,25 @@ static bool pkvm_forward_trng(struct kvm_vcpu *vcpu)
 	return true;
 }
 
+#ifdef CONFIG_NVHE_EL2_DEBUG
+int pkvm_guest_stage2_copy(struct kvm_pgtable_snapshot *snapshot,
+			   pkvm_handle_t handle)
+{
+	int ret = -EINVAL;
+	struct pkvm_hyp_vm *vm;
+
+	hyp_spin_lock(&vm_table_lock);
+	vm = get_vm_by_handle(handle);
+	if (!vm)
+		goto unlock;
+
+	ret = __pkvm_guest_stage2_prepare_copy(snapshot, vm);
+unlock:
+	hyp_spin_unlock(&vm_table_lock);
+	return ret;
+}
+#endif
+
 /*
  * Handler for protected VM HVC calls.
  *

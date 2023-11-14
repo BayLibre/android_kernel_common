@@ -102,6 +102,7 @@ enum __kvm_host_smccc_func {
 #endif
 	__KVM_HOST_SMCCC_FUNC___pkvm_teardown_vm,
 	__KVM_HOST_SMCCC_FUNC___pkvm_copy_host_stage2,
+	__KVM_HOST_SMCCC_FUNC___pkvm_copy_guest_stage2,
 
 	/*
 	 * Start of the dynamically registered hypercalls. Start a bit
