@@ -1,0 +1,51 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000059139429",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2831754?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "d160cf4c_2db4e757",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "modules.bzl",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 21,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/hwtracing/coresight/coresight-replicator.ko\",\n    \"drivers/hwtracing/coresight/coresight-tmc.ko\",\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "4ed7ae07_adcb28dc",
+        "filename": "modules.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-11-15T12:58:22Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier modules.bzl` to format the file, or apply the suggested fix.",
+      "revId": "3fa7a8ae6c0dd9ba19eff2d4727e3288044a47ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
