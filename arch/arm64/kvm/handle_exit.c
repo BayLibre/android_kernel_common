@@ -379,6 +379,9 @@ static int handle_hyp_req_mem(struct kvm_vcpu *vcpu,
 	case REQ_MEM_DEST_VCPU_MEMCACHE:
 		return topup_hyp_memcache(&vcpu->arch.stage2_mc,
 					  req->mem.nr_pages, 0);
+	case REQ_MEM_DEST_HYP_IOMMU:
+		return kvm_iommu_guest_alloc_mc(&vcpu->arch.iommu_mc,
+						req->mem.sz_alloc, req->mem.nr_pages);
 	};
 
 	pr_warn("Unknown kvm_hyp_req mem dest: %d\n", req->mem.dest);
