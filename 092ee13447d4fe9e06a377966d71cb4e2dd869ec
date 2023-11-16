@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000059220943",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2834170?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "7cfd22ed_8c429f90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-11-16T02:32:46Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/7c4cce5700b9f3c2adb8340fae36fba36d3ca1d5) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d7c4cce5700b9f3c2adb8340fae36fba36d3ca1d5)\n\n```\n      ## arch/arm64/lib/strncmp.S ##\n     @@\n    @@ arch/arm64/lib/strncmp.S: L(page_end_loop):\n     +\t   The \"|\" separates data that is loaded at one time.\n     +\t   src1     | a a a a a a a a | b b b c c c c c | . . .\n     +\t   src2     | x x x x x a a a   a a a a a b b b | c c c c c . . .\n    -+\n    + \n     +\t   After shifting in each step, the data looks like this:\n     +\t                STEP_A              STEP_B              STEP_C\n     +\t   data1    a a a a a a a a     b b b c c c c c     b b b c c c c c\n     +\t   data2    a a a a a a a a     b b b 0 0 0 0 0     0 0 0 c c c c c\n    - \n     +\t   The bytes with \"0\" are eliminated from the syndrome via mask.\n     +\n     +\t   Align SRC2 down to 16 bytes. This way we can read 16 bytes at a\n    @@ arch/arm64/lib/strncmp.S: L(page_end_loop):\n      \n      L(ret0):\n      \tmov\tresult, #0\n    - \tret\n    --\n    - SYM_FUNC_END_PI(strncmp)\n    - EXPORT_SYMBOL_NOHWKASAN(strncmp)\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 582652840 android-build.ayeaye-python-dispatcher_20231115.04_p0",
+      "revId": "092ee13447d4fe9e06a377966d71cb4e2dd869ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
