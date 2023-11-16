@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58e7bcbd_dc837068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2023-11-16T14:07:19Z",
+      "side": 1,
+      "message": "Please explain how `avenrun` symbol is used in the commit message.\n\nAlso this change requires `android14-5.15` to export symbol `psi_system`.\n\nTo have this exported add `EXPORT_SYMBOL_GPL(psi_system)` as a parent change with explanation on how this symbol will be used.",
+      "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
