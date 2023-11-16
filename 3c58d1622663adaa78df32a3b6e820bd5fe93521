@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52bf9b38_511ef200",
+        "filename": "BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2023-11-16T20:05:44Z",
+      "side": 1,
+      "message": "Unrelated to this change, but please replace this with (in a separate CL):\n\nhttps://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/bazel_common_rules/platforms/os_arch/BUILD.bazel\n\nHere, you are testing if `--platforms` is set to `//build/kernel/kleaf/impl:android_arm64`. However, if there\u0027s another platform() with the exact same definition, it should technically be included as well. Hence, you shouldn\u0027t test the value of the `--platform` command line flag, but the actual constraint values of the platform.",
+      "range": {
+        "startLine": 861,
+        "startChar": 0,
+        "endLine": 871,
+        "endChar": 1
+      },
+      "revId": "3c58d1622663adaa78df32a3b6e820bd5fe93521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
