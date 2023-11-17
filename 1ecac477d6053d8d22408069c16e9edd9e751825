@@ -34,6 +34,24 @@
       "parentUuid": "58e7bcbd_dc837068",
       "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "625dbaad_74b0d46d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2023-11-17T16:33:32Z",
+      "side": 1,
+      "message": "Thank you for the explanation.\n\n\u003e I\u0027ll update patch for EXPORT_SYMBOL_GPL(psi_system) later.\n\nWe can\u0027t have unexported symbol in a symbol list. So you have to either upload patch with an export in the series, or remove `psi_system` from this change.",
+      "parentUuid": "b6a84e00_73e305c6",
+      "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
