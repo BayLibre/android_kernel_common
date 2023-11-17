@@ -25,6 +25,7 @@
 #include <linux/uaccess.h>
 #include <linux/userfaultfd_k.h>
 #include <linux/mempolicy.h>
+#include <linux/page_size_compat.h>
 
 #include <asm/cacheflush.h>
 #include <asm/tlb.h>
@@ -927,11 +928,11 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 		return ret;
 
 
-	if (offset_in_page(addr))
+	if (__offset_in_page(addr))
 		return ret;
 
-	old_len = PAGE_ALIGN(old_len);
-	new_len = PAGE_ALIGN(new_len);
+	old_len = __PAGE_ALIGN(old_len);
+	new_len = __PAGE_ALIGN(new_len);
 
 	/*
 	 * We allow a zero old-len as a special case
