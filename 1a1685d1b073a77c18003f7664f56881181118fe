@@ -16,6 +16,23 @@
       "message": "Please enable in the x86 gki_defconfig to increase test coverage",
       "revId": "1a1685d1b073a77c18003f7664f56881181118fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e866de7_2ca3d231",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-17T21:46:10Z",
+      "side": 1,
+      "message": "This results in a build-break. Please build with this change before submitting! In this case, the result of savedefconfig does not match gki_defconfig\n```\n...\n@@ -97,7 +96,6 @@\nCONFIG_BLK_INLINE_ENCRYPTION\u003dy\nCONFIG_BLK_INLINE_ENCRYPTION_FALLBACK\u003dy\nCONFIG_IOSCHED_BFQ\u003dy\n-CONFIG_IDLE_INJECT\u003dy\nCONFIG_BFQ_GROUP_IOSCHED\u003dy\nCONFIG_GKI_HACKS_TO_FIX\u003dy\n# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set\n@@ -427,6 +425,7 @@\nCONFIG_THERMAL_GOV_USER_SPACE\u003dy\nCONFIG_THERMAL_GOV_POWER_ALLOCATOR\u003dy\nCONFIG_CPU_THERMAL\u003dy\n+CONFIG_CPU_IDLE_THERMAL\u003dy\nCONFIG_DEVFREQ_THERMAL\u003dy\nCONFIG_THERMAL_EMULATION\u003dy\nCONFIG_WATCHDOG\u003dy\n@@ -566,6 +565,7 @@\nCONFIG_PWM\u003dy\nCONFIG_GENERIC_PHY\u003dy\nCONFIG_POWERCAP\u003dy\n+CONFIG_IDLE_INJECT\u003dy\nCONFIG_ANDROID_BINDER_IPC\u003dy\nCONFIG_ANDROID_BINDERFS\u003dy\nCONFIG_ANDROID_DEBUG_SYMBOLS\u003dy\nERROR: savedefconfig does not match common/arch/arm64/configs/gki_defconfig\nUse --verbose_failures to see the command lines of failed build steps.\nINFO: Elapsed time: 31.365s, Critical Path: 13.42s\nINFO: 670 processes: 649 internal, 20 linux-sandbox, 1 local.\nERROR: Build did NOT complete successfully\n```",
+      "revId": "1a1685d1b073a77c18003f7664f56881181118fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
