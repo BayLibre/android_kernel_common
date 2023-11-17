@@ -16,6 +16,24 @@
       "message": "Please explain how `avenrun` symbol is used in the commit message.\n\nAlso this change requires `android14-5.15` to export symbol `psi_system`.\n\nTo have this exported add `EXPORT_SYMBOL_GPL(psi_system)` as a parent change with explanation on how this symbol will be used.",
       "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a84e00_73e305c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2023-11-17T07:06:58Z",
+      "side": 1,
+      "message": "1，Avenrun and PSI can provide us with some useful information about Loadavg, CPU/IO/memory. For example, we can use this information to determine whether to write back cold page from ZRAM to the backend storage. If the current resources are scarce, then we won\u0027t do this.\n\n2，Thank you for your reminder. I\u0027ll update patch for EXPORT_SYMBOL_GPL(psi_system)  later.",
+      "parentUuid": "58e7bcbd_dc837068",
+      "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
