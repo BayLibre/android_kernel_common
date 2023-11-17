@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8175fb3e_5beb9427",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1991675
+      },
+      "writtenOn": "2023-11-17T06:56:57Z",
+      "side": 1,
+      "message": "In the case of pa \u003d\u003d addr at the if statement of 800 line below, it does not write pte, so it could be block_pte is invalid when 4KB mapping with 2MB align is received.",
+      "range": {
+        "startLine": 792,
+        "startChar": 1,
+        "endLine": 792,
+        "endChar": 31
+      },
+      "revId": "7d8184264a122a46a2da36e58be9a22d65a23e83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
