@@ -70,6 +70,24 @@
       "parentUuid": "625dbaad_74b0d46d",
       "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1609bb91_0c739063",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2023-11-20T03:00:10Z",
+      "side": 1,
+      "message": "\u003e We can\u0027t have unexported symbol in a symbol list. So you have to either upload \n\u003e patch with an export in the series, or remove psi_system from this change.\n\nouch, I made the mistake. I am going to remove ·psi_system· this patch first.\n\nTo add `psi_system` in a symbol list, Are the following steps correct? Thanks very much. \nStep 1: Submit a new patch to export `psi_system`.\nStep 2: Submit another new patch to add `psi_system` to a symbol list.",
+      "parentUuid": "3265ded5_bec9da1a",
+      "revId": "1ecac477d6053d8d22408069c16e9edd9e751825",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
