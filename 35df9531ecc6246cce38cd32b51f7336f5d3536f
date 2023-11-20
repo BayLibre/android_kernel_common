@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecfb5f40_127f77f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-11-20T20:45:34Z",
+      "side": 1,
+      "message": "I see. So, ffe4a1ba1a82c416a6b3a09d46594f6a885ae141 was a partial backport of upstream patch into android13-5.15 and this patch adds missing pieces. In such situations it\u0027s preferable to revert the original partial backport (ffe4a1ba1a82c416a6b3a09d46594f6a885ae141) and then add a complete one, marking it UPSTREAM (if nothing else changed). Please try that and if no problems that would make things simpler.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 62
+      },
+      "revId": "35df9531ecc6246cce38cd32b51f7336f5d3536f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
