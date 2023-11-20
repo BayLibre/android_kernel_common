@@ -101,6 +101,24 @@
       "message": "if `use_pause_in_draining` can be moved to `struct snd_compr_file` as suggested above, then the flag would be accessed via container_of(substream,...) as described above.",
       "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b29b72d5_cee6894e",
+        "filename": "include/sound/compress_driver.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1951391
+      },
+      "writtenOn": "2023-11-20T13:09:23Z",
+      "side": 1,
+      "message": "Thanks for your suggestion , we have ported patch",
+      "parentUuid": "83e67eed_fa447a9c",
+      "revId": "f327354c48a23114b1c454ce6411ca4ab373e4e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
