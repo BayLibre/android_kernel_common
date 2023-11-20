@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7964b9fe_264d1247",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-11-20T16:47:51Z",
+      "side": 1,
+      "message": "Nit: the whole alloc_module_va/map_module_page combo can actually be useful in other valid use-cases, so maybe relax this wording a bit to suggest that?",
+      "range": {
+        "startLine": 26,
+        "startChar": 21,
+        "endLine": 28,
+        "endChar": 32
+      },
+      "revId": "2601ea9bf116b846eb085da86b58ee6766c55968",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "705d1ec0_2a8d3d6b",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-11-20T16:47:51Z",
+      "side": 1,
+      "message": "Actually for any permission fault, we\u0027d get into an infinite exception loop if there are no handlers registered (the abort path returns to EL1 if it find any valid mapping regardless of the permission), so yeah, not good",
+      "range": {
+        "startLine": 65,
+        "startChar": 6,
+        "endLine": 65,
+        "endChar": 37
+      },
+      "revId": "2601ea9bf116b846eb085da86b58ee6766c55968",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
