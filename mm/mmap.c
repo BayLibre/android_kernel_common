@@ -216,8 +216,8 @@ SYSCALL_DEFINE1(brk, unsigned long, brk)
 			      mm->end_data, mm->start_data))
 		goto out;
 
-	newbrk = PAGE_ALIGN(brk);
-	oldbrk = PAGE_ALIGN(mm->brk);
+	newbrk = __PAGE_ALIGN(brk);
+	oldbrk = __PAGE_ALIGN(mm->brk);
 	if (oldbrk == newbrk) {
 		mm->brk = brk;
 		goto success;
@@ -260,10 +260,10 @@ SYSCALL_DEFINE1(brk, unsigned long, brk)
 	 * expansion area
 	 */
 	mas_set(&mas, oldbrk);
-	next = mas_find(&mas, newbrk - 1 + PAGE_SIZE + stack_guard_gap);
+	next = mas_find(&mas, newbrk - 1 + __PAGE_SIZE + stack_guard_gap);
 	if (next) {
 		vma_start_write(next);
-		if (newbrk + PAGE_SIZE > vm_start_gap(next))
+		if (newbrk + __PAGE_SIZE > vm_start_gap(next))
 			goto out;
 	}
 
