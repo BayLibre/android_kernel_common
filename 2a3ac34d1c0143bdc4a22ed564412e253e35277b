@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "528d5a42_403e0e04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-11-20T19:17:39Z",
+      "side": 1,
+      "message": "Looks ok. Just a minor nit.",
+      "revId": "2a3ac34d1c0143bdc4a22ed564412e253e35277b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a1f630e_fd9b50be",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2023-11-20T19:17:39Z",
+      "side": 1,
+      "message": "Might be worth avoiding spurious whitespace (even when its aesthetically nice) as it can causes extra merge collisions from upstream.",
+      "revId": "2a3ac34d1c0143bdc4a22ed564412e253e35277b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
