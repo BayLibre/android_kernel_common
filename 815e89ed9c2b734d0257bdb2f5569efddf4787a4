@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b53bc780_9043ceb4",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e335968_1d84d2f2",
+      "range": {
+        "startLine": 26,
+        "startChar": 47,
+        "endLine": 26,
+        "endChar": 50
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d9b2341_4286c0c5",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "What happens if it\u0027s not registered?",
+      "range": {
+        "startLine": 38,
+        "startChar": 36,
+        "endLine": 38,
+        "endChar": 49
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d055e85_8923f20e",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d9b2341_4286c0c5",
       "range": {
         "startLine": 38,
         "startChar": 36,
@@ -87,6 +135,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fc336fd_808a4676",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13d08786_18f9f073",
+      "range": {
+        "startLine": 41,
+        "startChar": 9,
+        "endLine": 41,
+        "endChar": 13
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a404894_162f4f00",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "is intended\n\nMaybe worth commenting on the fact that you can only have one page mapped at a time, and what the behaviour is if you call this without unmapping the previous mapping?",
+      "range": {
+        "startLine": 43,
+        "startChar": 11,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f96b796_fda509fb",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a404894_162f4f00",
       "range": {
         "startLine": 43,
         "startChar": 11,
@@ -133,6 +229,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd9504f1_bca54f6c",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6424bc05_80841d0f",
+      "range": {
+        "startLine": 47,
+        "startChar": 39,
+        "endLine": 47,
+        "endChar": 46
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d2157cf_f43d3482",
@@ -146,6 +266,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "I think this is a bit confusing, as it makes it sound like this is giving modules permission to do cache maintenance. Maybe just say \"clean the data cache to the point of coherency for the specified address range\" or something?",
+      "range": {
+        "startLine": 51,
+        "startChar": 25,
+        "endLine": 51,
+        "endChar": 54
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da59f2da_4e031aef",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d2157cf_f43d3482",
       "range": {
         "startLine": 51,
         "startChar": 25,
@@ -179,6 +323,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2962da38_8e04c4bc",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Yes, any bit can be modified.",
+      "parentUuid": "65fe3181_0f908818",
+      "range": {
+        "startLine": 54,
+        "startChar": 49,
+        "endLine": 54,
+        "endChar": 59
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58b3afc5_11b9103d",
@@ -192,6 +360,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "Then use the same text as for hcr_el2, but with the new register name",
+      "range": {
+        "startLine": 57,
+        "startChar": 24,
+        "endLine": 57,
+        "endChar": 69
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caa7f05a_4df3d433",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58b3afc5_11b9103d",
       "range": {
         "startLine": 57,
         "startChar": 24,
@@ -225,6 +417,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "888e350f_f5f6aec0",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "986ab4a9_9cb3e9fe",
+      "range": {
+        "startLine": 61,
+        "startChar": 30,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be6adcef_dc6b3fb0",
@@ -238,6 +454,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "useful",
+      "range": {
+        "startLine": 62,
+        "startChar": 21,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d46c70b_f349d305",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be6adcef_dc6b3fb0",
       "range": {
         "startLine": 62,
         "startChar": 21,
@@ -271,6 +511,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f8925dd_76766570",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09d72169_a78ed88c",
+      "range": {
+        "startLine": 66,
+        "startChar": 40,
+        "endLine": 67,
+        "endChar": 17
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27064f66_a305ea2e",
@@ -284,6 +548,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "I\u0027d just remove this sentence.",
+      "range": {
+        "startLine": 86,
+        "startChar": 6,
+        "endLine": 87,
+        "endChar": 21
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b4d6066_f994662d",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27064f66_a305ea2e",
       "range": {
         "startLine": 86,
         "startChar": 6,
@@ -317,6 +605,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c453ee7f_4c0f8345",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35d71334_352306d3",
+      "range": {
+        "startLine": 89,
+        "startChar": 20,
+        "endLine": 92,
+        "endChar": 13
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d154159_cadd44c8",
@@ -330,6 +642,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "Remove this sentence.",
+      "range": {
+        "startLine": 94,
+        "startChar": 47,
+        "endLine": 95,
+        "endChar": 44
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "481fa2eb_ebe61c72",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d154159_cadd44c8",
       "range": {
         "startLine": 94,
         "startChar": 47,
@@ -363,6 +699,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f70d3c58_7dd4bd6c",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca4008e5_7026f361",
+      "range": {
+        "startLine": 99,
+        "startChar": 30,
+        "endLine": 99,
+        "endChar": 37
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb29a903_87752f1b",
@@ -376,6 +736,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "I think you got bored by this point ;p\n\nPinning definitely deserves some commentary, as it\u0027s quite subtle.",
+      "range": {
+        "startLine": 103,
+        "startChar": 21,
+        "endLine": 103,
+        "endChar": 41
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cd7321f_bf5f608d",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb29a903_87752f1b",
       "range": {
         "startLine": 103,
         "startChar": 21,
@@ -409,6 +793,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "326fa425_6e9df757",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c5970f0_429ec548",
+      "range": {
+        "startLine": 105,
+        "startChar": 14,
+        "endLine": 107,
+        "endChar": 0
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a931aec_de744ec0",
@@ -422,6 +830,30 @@
       "writtenOn": "2023-11-21T10:13:41Z",
       "side": 1,
       "message": "Return the physical address for a hypervisor virtual address in the linear range.",
+      "range": {
+        "startLine": 107,
+        "startChar": 14,
+        "endLine": 109,
+        "endChar": 24
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d602071e_4f6a0370",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2023-11-21T15:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a931aec_de744ec0",
       "range": {
         "startLine": 107,
         "startChar": 14,
