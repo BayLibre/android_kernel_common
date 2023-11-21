@@ -16,6 +16,420 @@
       "message": "Thanks for having a look at that doc!",
       "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e335968_1d84d2f2",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "that",
+      "range": {
+        "startLine": 26,
+        "startChar": 47,
+        "endLine": 26,
+        "endChar": 50
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d9b2341_4286c0c5",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "What happens if it\u0027s not registered?",
+      "range": {
+        "startLine": 38,
+        "startChar": 36,
+        "endLine": 38,
+        "endChar": 49
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13d08786_18f9f073",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "bit",
+      "range": {
+        "startLine": 41,
+        "startChar": 9,
+        "endLine": 41,
+        "endChar": 13
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a404894_162f4f00",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "is intended\n\nMaybe worth commenting on the fact that you can only have one page mapped at a time, and what the behaviour is if you call this without unmapping the previous mapping?",
+      "range": {
+        "startLine": 43,
+        "startChar": 11,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6424bc05_80841d0f",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "is intended",
+      "range": {
+        "startLine": 47,
+        "startChar": 39,
+        "endLine": 47,
+        "endChar": 46
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d2157cf_f43d3482",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "I think this is a bit confusing, as it makes it sound like this is giving modules permission to do cache maintenance. Maybe just say \"clean the data cache to the point of coherency for the specified address range\" or something?",
+      "range": {
+        "startLine": 51,
+        "startChar": 25,
+        "endLine": 51,
+        "endChar": 54
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65fe3181_0f908818",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "Do we allow arbitrary bits to be modified in the register? If so, maybe just keep it simple and say:\n\n\"Modify the running value of HCR_EL2. pKVM will save/restore the new value across power management transitions.\"",
+      "range": {
+        "startLine": 54,
+        "startChar": 49,
+        "endLine": 54,
+        "endChar": 59
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58b3afc5_11b9103d",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "Then use the same text as for hcr_el2, but with the new register name",
+      "range": {
+        "startLine": 57,
+        "startChar": 24,
+        "endLine": 57,
+        "endChar": 69
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "986ab4a9_9cb3e9fe",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "lets",
+      "range": {
+        "startLine": 61,
+        "startChar": 30,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6adcef_dc6b3fb0",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "useful",
+      "range": {
+        "startLine": 62,
+        "startChar": 21,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09d72169_a78ed88c",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "to be registered, otherwise",
+      "range": {
+        "startLine": 66,
+        "startChar": 40,
+        "endLine": 67,
+        "endChar": 17
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27064f66_a305ea2e",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "I\u0027d just remove this sentence.",
+      "range": {
+        "startLine": 86,
+        "startChar": 6,
+        "endLine": 87,
+        "endChar": 21
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35d71334_352306d3",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "to notify the module of a pending hypervisor panic. On return from @cb, the panic will occur.",
+      "range": {
+        "startLine": 89,
+        "startChar": 20,
+        "endLine": 92,
+        "endChar": 13
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d154159_cadd44c8",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "Remove this sentence.",
+      "range": {
+        "startLine": 94,
+        "startChar": 47,
+        "endLine": 95,
+        "endChar": 44
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca4008e5_7026f361",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "Confusing use of \"protect\". Pinning just ensures that the pages remain shared.",
+      "range": {
+        "startLine": 99,
+        "startChar": 30,
+        "endLine": 99,
+        "endChar": 37
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb29a903_87752f1b",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "I think you got bored by this point ;p\n\nPinning definitely deserves some commentary, as it\u0027s quite subtle.",
+      "range": {
+        "startLine": 103,
+        "startChar": 21,
+        "endLine": 103,
+        "endChar": 41
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c5970f0_429ec548",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "nit: these operate on hypervisor VAs so they\u0027re slightly different to the kernel routines.",
+      "range": {
+        "startLine": 105,
+        "startChar": 14,
+        "endLine": 107,
+        "endChar": 0
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a931aec_de744ec0",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-11-21T10:13:41Z",
+      "side": 1,
+      "message": "Return the physical address for a hypervisor virtual address in the linear range.",
+      "range": {
+        "startLine": 107,
+        "startChar": 14,
+        "endLine": 109,
+        "endChar": 24
+      },
+      "revId": "815e89ed9c2b734d0257bdb2f5569efddf4787a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
