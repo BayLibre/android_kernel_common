@@ -11,5 +11,6 @@
 #define PVIOMMU_REQUEST_FEATURE_PGSZ_BITMAP	0x1
 
 bool kvm_handle_pviommu_hvc(struct kvm_vcpu *vcpu, u64 *exit_code);
+int kvm_iommu_teardown_guest_domains(struct pkvm_hyp_vm *hyp_vm);
 
 #endif /* __ARM64_KVM_NVHE_PVIOMMU_H__ */
