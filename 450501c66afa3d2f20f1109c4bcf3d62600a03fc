@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ad8749_72fef774",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-22T00:48:41Z",
+      "side": 1,
+      "message": "All of the CONFIG_AUDIO_QGKI #ifdefs have to go. It is not defined in the tree and just pollutes the code. This can obviously be in your QKI kernel, but the ACK one.",
+      "revId": "450501c66afa3d2f20f1109c4bcf3d62600a03fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4791f765_15632b8d",
+        "filename": "include/sound/compress_driver.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-22T00:48:41Z",
+      "side": 1,
+      "message": "please remove this config which doesn\u0027t exist in the `android11-5.4` tree",
+      "revId": "450501c66afa3d2f20f1109c4bcf3d62600a03fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e26c2f12_cc6ebc28",
+        "filename": "sound/core/compress_offload.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-22T00:48:41Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "450501c66afa3d2f20f1109c4bcf3d62600a03fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "331464db_4fba84db",
+        "filename": "sound/core/compress_offload.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-22T00:48:41Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "450501c66afa3d2f20f1109c4bcf3d62600a03fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "132a169d_c4d9faf7",
+        "filename": "sound/core/compress_offload.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-22T00:48:41Z",
+      "side": 1,
+      "message": "I won\u0027t comment on any more, but they all have to go.",
+      "revId": "450501c66afa3d2f20f1109c4bcf3d62600a03fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
