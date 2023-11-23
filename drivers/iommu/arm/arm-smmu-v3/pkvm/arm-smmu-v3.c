@@ -1020,6 +1020,37 @@ int smmu_fix_up_domains(struct hyp_arm_smmu_v3_device *smmu,
 
 	return 0;
 }
+
+bool is_device_blocked(struct hyp_arm_smmu_v3_device *smmu, u32 sid, u32 pasid)
+{
+	u64 *dst;
+	u64 val;
+	u64 ste_trans, cd_table;
+
+	dst = smmu_get_ste_ptr(smmu, sid);
+	if (!dst)
+		return true;
+
+	val = le64_to_cpu(dst[0]);
+	ste_trans = FIELD_GET(STRTAB_STE_0_CFG, val);
+	cd_table = (FIELD_GET(STRTAB_STE_0_S1CTXPTR_MASK, val) << 6);
+
+	switch (ste_trans) {
+	/* S2 is either fully populated or zero. */
+	case STRTAB_STE_0_CFG_S2_TRANS:
+	case STRTAB_STE_0_CFG_BYPASS:
+		return false;
+	case STRTAB_STE_0_CFG_ABORT:
+		return true;
+	default: /* STRTAB_STE_0_CFG_S1_TRANS */
+		/* S1 is either fully populated or zero. */
+		return !!cd_table;
+	}
+
+	/* unreachable. */
+	return false;
+}
+
 static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_domain *domain,
 			   u32 sid, u32 pasid, u32 pasid_bits)
 {
@@ -1057,6 +1088,18 @@ static int smmu_attach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_dom
 		iommu_node->ref = 1;
 	} else {
 		smmu_get_ref_domain(smmu, smmu_domain);
+	}
+
+	/*
+	 * We expect the host to attach blocking domain when the device is
+	 * already not attached anywhere, however we don't need any STE or
+	 * CD for this device.
+	 */
+	if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BLOCKED) {
+		ret = 0;
+		if (!is_device_blocked(smmu, sid, pasid))
+			ret = -EBUSY;
+		goto out_unlock;
 	}
 
 	/*
@@ -1165,6 +1208,10 @@ static int smmu_detach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_dom
 		cd[2] = 0;
 		cd[3] = 0;
 		ret = smmu_sync_cd(smmu, cd, sid, pasid);
+	} else if (smmu_domain->type == KVM_ARM_SMMU_DOMAIN_BLOCKED) {
+		/* Nothing to do here. */
+		ret = 0;
+		goto out_unlock;
 	} else {
 		/* Don't clear CD ptr, as it would leak memory. */
 		dst[0] &= STRTAB_STE_0_S1CTXPTR_MASK;

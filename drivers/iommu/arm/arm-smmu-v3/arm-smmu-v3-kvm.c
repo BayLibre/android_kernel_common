@@ -189,7 +189,8 @@ static struct iommu_domain *kvm_arm_smmu_domain_alloc(unsigned type)
 	 */
 	if (type != IOMMU_DOMAIN_DMA &&
 	    type != IOMMU_DOMAIN_UNMANAGED &&
-	    type != IOMMU_DOMAIN_IDENTITY)
+	    type != IOMMU_DOMAIN_IDENTITY &&
+	    type != IOMMU_DOMAIN_BLOCKED)
 		return NULL;
 
 	kvm_smmu_domain = kzalloc(sizeof(*kvm_smmu_domain), GFP_KERNEL);
@@ -233,7 +234,10 @@ static int kvm_arm_smmu_domain_finalize(struct kvm_arm_smmu_domain *kvm_smmu_dom
 	kvm_smmu_domain->id = ret;
 
 	/* Default to stage-1. */
-	if (smmu->features & ARM_SMMU_FEAT_TRANS_S1) {
+	if (kvm_smmu_domain->domain.type == IOMMU_DOMAIN_BLOCKED) {
+		kvm_smmu_domain->type = KVM_ARM_SMMU_DOMAIN_BLOCKED;
+		max_domains = KVM_IOMMU_MAX_DOMAINS;
+	} else if (smmu->features & ARM_SMMU_FEAT_TRANS_S1) {
 		kvm_smmu_domain->type = KVM_ARM_SMMU_DOMAIN_S1;
 		kvm_smmu_domain->domain.pgsize_bitmap = host_smmu->cfg_s1.pgsize_bitmap;
 		kvm_smmu_domain->domain.geometry.aperture_end = (1UL << host_smmu->cfg_s1.ias) - 1;
