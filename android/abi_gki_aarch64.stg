@@ -307477,6 +307477,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_gic_set_affinity"
 }
 elf_symbol {
+  id: 0x88586647
+  name: "__traceiter_android_vh_gic_v3_suspend"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf2bd7425
+  type_id: 0x9b8dca6a
+  full_name: "__traceiter_android_vh_gic_v3_suspend"
+}
+elf_symbol {
   id: 0x6c59e5ca
   name: "__traceiter_android_vh_handle_tlb_conf"
   is_defined: true
@@ -310607,6 +310616,15 @@ elf_symbol {
   crc: 0x2b46dd56
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_gic_set_affinity"
+}
+elf_symbol {
+  id: 0xf18e312d
+  name: "__tracepoint_android_vh_gic_v3_suspend"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x81031745
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_gic_v3_suspend"
 }
 elf_symbol {
   id: 0xd9320b2c
@@ -330191,6 +330209,33 @@ elf_symbol {
   crc: 0x4b0a3f52
   type_id: 0x8e47c273
   full_name: "gic_nonsecure_priorities"
+}
+elf_symbol {
+  id: 0x596931c4
+  name: "gic_v3_cpu_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe8208812
+  type_id: 0x10985193
+  full_name: "gic_v3_cpu_init"
+}
+elf_symbol {
+  id: 0x390427e4
+  name: "gic_v3_dist_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xedec844c
+  type_id: 0x10985193
+  full_name: "gic_v3_dist_init"
+}
+elf_symbol {
+  id: 0x53ba530f
+  name: "gic_v3_dist_wait_for_rwp"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa5c47ee7
+  type_id: 0x10985193
+  full_name: "gic_v3_dist_wait_for_rwp"
 }
 elf_symbol {
   id: 0x365c2930
@@ -363171,6 +363216,7 @@ interface {
   symbol_id: 0x9fe60f0c
   symbol_id: 0xa8feef02
   symbol_id: 0xdbe4202a
+  symbol_id: 0x88586647
   symbol_id: 0x6c59e5ca
   symbol_id: 0x3684a257
   symbol_id: 0x7ee652cd
@@ -363519,6 +363565,7 @@ interface {
   symbol_id: 0x828646be
   symbol_id: 0x9a7fc340
   symbol_id: 0x60a121b4
+  symbol_id: 0xf18e312d
   symbol_id: 0xd9320b2c
   symbol_id: 0xdb161c79
   symbol_id: 0x1d442b97
@@ -365693,6 +365740,9 @@ interface {
   symbol_id: 0xe87161bc
   symbol_id: 0x112db471
   symbol_id: 0x5a582da8
+  symbol_id: 0x596931c4
+  symbol_id: 0x390427e4
+  symbol_id: 0x53ba530f
   symbol_id: 0x365c2930
   symbol_id: 0x64b49555
   symbol_id: 0xbfc46f3e
