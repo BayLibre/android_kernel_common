@@ -16,6 +16,24 @@
       "message": "Why not wait for this to be accepted upstream and come in through the stable trees?",
       "revId": "fbb5e7828c48b78355921619cd97288aab5ed3f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4349b862_520e3a7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1941595
+      },
+      "writtenOn": "2023-11-23T04:46:20Z",
+      "side": 1,
+      "message": "We used to see this issue sporadically earlier as well, but it was very rare scenario. Now, on a new chipset, that is using this  android14-6.1 kernel branch, we were seeing this problem consistently/quite often. We are about to make a customer release in a few days, and we know, there are a lot of automation scripts that depend on the name of SSR coredump file that is collected, which is not coming properly without this change. Upstream -\u003e LTS -\u003e QC may take a lot of time, hence the urgency. Thanks.",
+      "parentUuid": "9e7ac794_441814c2",
+      "revId": "fbb5e7828c48b78355921619cd97288aab5ed3f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
