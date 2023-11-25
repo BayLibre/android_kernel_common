@@ -1,4 +1,3 @@
-<<<<<<< HEAD   (4f5e88 Merge 4.19.298 into android-4.19-stable)
 /*
  * Copyright (C) 2005 Marc Kleine-Budde, Pengutronix
  * Copyright (C) 2006 Andrey Volkov, Varma Electronics
@@ -564,7 +563,8 @@ static void can_restart(struct net_device *dev)
 	struct can_frame *cf;
 	int err;
 
-	BUG_ON(netif_carrier_ok(dev));
+	if (netif_carrier_ok(dev))
+		netdev_err(dev, "Attempt to restart for bus-off recovery, but carrier is OK?\n");
 
 	/*
 	 * No synchronization needed because the device is bus-off and
@@ -590,11 +590,12 @@ restart:
 	priv->can_stats.restarts++;
 
 	/* Now restart the device */
-	err = priv->do_set_mode(dev, CAN_MODE_START);
-
 	netif_carrier_on(dev);
-	if (err)
+	err = priv->do_set_mode(dev, CAN_MODE_START);
+	if (err) {
 		netdev_err(dev, "Error %d during restart", err);
+		netif_carrier_off(dev);
+	}
 }
 
 static void can_restart_work(struct work_struct *work)
@@ -1236,6 +1237,7 @@ static void can_dellink(struct net_device *dev, struct list_head *head)
 
 static struct rtnl_link_ops can_link_ops __read_mostly = {
 	.kind		= "can",
+	.netns_refund	= true,
 	.maxtype	= IFLA_CAN_MAX,
 	.policy		= can_policy,
 	.setup		= can_setup,
@@ -1322,5 +1324,3 @@ static __exit void can_dev_exit(void)
 module_exit(can_dev_exit);
 
 MODULE_ALIAS_RTNL_LINK("can");
-=======
->>>>>>> BRANCH (8dd1c3 Linux 4.19.299)
