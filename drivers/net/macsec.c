@@ -3645,8 +3645,14 @@ static void macsec_get_stats64(struct net_device *dev,
 
 	dev_fetch_sw_netstats(s, dev->tstats);
 
+<<<<<<< HEAD   (fb4f52 Merge 5.10.200 into android13-5.10-lts)
 	s->rx_dropped = dev->stats.rx_dropped;
 	s->tx_dropped = dev->stats.tx_dropped;
+=======
+	s->rx_dropped = DEV_STATS_READ(dev, rx_dropped);
+	s->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
+	s->rx_errors = DEV_STATS_READ(dev, rx_errors);
+>>>>>>> BRANCH (6db6ca Linux 5.10.201)
 }
 
 static int macsec_get_iflink(const struct net_device *dev)
