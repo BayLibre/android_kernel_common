@@ -12821,6 +12821,11 @@ static int inherit_group(struct perf_event *parent_event,
 		    !perf_get_aux_event(child_ctr, leader))
 			return -EINVAL;
 	}
+<<<<<<< HEAD   (d30b99 Merge branch 'android13-5.10' into branch `android13-5.10-lt)
+=======
+	if (leader)
+		leader->group_generation = parent_event->group_generation;
+>>>>>>> BRANCH (3e5558 Linux 5.10.200)
 	return 0;
 }
 

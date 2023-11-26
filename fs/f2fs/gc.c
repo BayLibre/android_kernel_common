@@ -1538,7 +1538,12 @@ next_step:
 
 			inode = f2fs_iget(sb, dni.ino);
 			if (IS_ERR(inode) || is_bad_inode(inode) ||
+<<<<<<< HEAD   (d30b99 Merge branch 'android13-5.10' into branch `android13-5.10-lt)
 					special_file(inode->i_mode))
+=======
+					special_file(inode->i_mode)) {
+				set_sbi_flag(sbi, SBI_NEED_FSCK);
+>>>>>>> BRANCH (3e5558 Linux 5.10.200)
 				continue;
 
 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
