@@ -173,6 +173,10 @@ static int dp_altmode_configured(struct dp_altmode *dp)
 	 * configuration is complete to signal HPD.
 	 */
 	if (dp->pending_hpd) {
+<<<<<<< HEAD   (d2c0f4 FROMLIST: devcoredump: Send uevent once devcd is ready)
+=======
+		drm_connector_oob_hotplug_event(dp->connector_fwnode);
+>>>>>>> BRANCH (d0be54 ANDROID: mm/mempolicy.c fix up conversion to queue_folios_pt)
 		sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
 		dp->pending_hpd = false;
 	}
