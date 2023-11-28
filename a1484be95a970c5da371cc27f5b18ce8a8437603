@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68af6d0d_44bf7f01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2064605
+      },
+      "writtenOn": "2023-11-28T23:39:07Z",
+      "side": 1,
+      "message": "LGTM for Unsafe Rust",
+      "revId": "a1484be95a970c5da371cc27f5b18ce8a8437603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f8145fd_df30c237",
+        "filename": "rust/kernel/file.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 2064605
+      },
+      "writtenOn": "2023-11-28T23:39:07Z",
+      "side": 1,
+      "message": "nit: since this object can only ever be used once, it might be preferable to merge this code into one function, removing the ``DeferredFdCloser``, which would allow skipping the unnecessary allocation in the case where `file.is_null()`. Of course, this would also mean that the allocation needs to happen in the same context as the `close_fd` call, which may or may not be what you want.",
+      "revId": "a1484be95a970c5da371cc27f5b18ce8a8437603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2a349f1_1fc4df5d",
+        "filename": "rust/kernel/file.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 2064605
+      },
+      "writtenOn": "2023-11-28T23:39:07Z",
+      "side": 1,
+      "message": "nit: this isn\u0027t needed, and will happen automatically. This function might be clearer with an `if file.is_null() { return; }` at the top.",
+      "revId": "a1484be95a970c5da371cc27f5b18ce8a8437603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a3527c_ad6ad7ef",
+        "filename": "rust/kernel/file.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 2064605
+      },
+      "writtenOn": "2023-11-28T23:39:07Z",
+      "side": 1,
+      "message": "Unsafe Rust: this function should document what it requires in order to be called soundly.",
+      "revId": "a1484be95a970c5da371cc27f5b18ce8a8437603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "086cc75c_217639a5",
+        "filename": "rust/kernel/file.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 2064605
+      },
+      "writtenOn": "2023-11-28T23:39:07Z",
+      "side": 1,
+      "message": "nit: I personally found this confusing due the shadowing above-- it seemed like it was dropping the pointer. Consider using different names for the pointer and `Box` values.",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 318,
+        "endChar": 20
+      },
+      "revId": "a1484be95a970c5da371cc27f5b18ce8a8437603",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
