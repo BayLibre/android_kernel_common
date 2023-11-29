@@ -78,7 +78,6 @@ enum ufs_event_type {
 	UFS_EVT_DEV_RESET,
 	UFS_EVT_HOST_RESET,
 	UFS_EVT_ABORT,
-
 	UFS_EVT_CNT,
 };
 
