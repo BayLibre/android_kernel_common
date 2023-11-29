@@ -31,6 +31,7 @@
 #include <linux/stddef.h>
 #include <linux/string.h>
 #include <linux/thread_info.h>
+#include <linux/android_vendor.h>
 
 #include <vdso/processor.h>
 
@@ -159,6 +160,8 @@ struct thread_struct {
 	} uw;
 
 	enum fp_type		fp_type;	/* registers FPSIMD or SVE? */
+	ANDROID_VENDOR_DATA(1);
+
 	unsigned int		fpsimd_cpu;
 	void			*sve_state;	/* SVE registers, if any */
 	void			*sme_state;	/* ZA and ZT state, if any */
