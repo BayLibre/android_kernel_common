@@ -299,11 +299,12 @@ static inline void ufshcd_wb_config(struct ufs_hba *hba)
 		ufshcd_wb_toggle_flush(hba, true);
 }
 
-static void ufshcd_scsi_unblock_requests(struct ufs_hba *hba)
+void ufshcd_scsi_unblock_requests(struct ufs_hba *hba)
 {
 	if (atomic_dec_and_test(&hba->scsi_block_reqs_cnt))
 		scsi_unblock_requests(hba->host);
 }
+EXPORT_SYMBOL_GPL(ufshcd_scsi_unblock_requests);
 
 static void ufshcd_scsi_block_requests(struct ufs_hba *hba)
 {
@@ -5246,6 +5247,9 @@ static void __ufshcd_transfer_req_compl(struct ufs_hba *hba,
 			if (unlikely(ufshcd_should_inform_monitor(hba, lrbp)))
 				ufshcd_update_monitor(hba, lrbp);
 			trace_android_vh_ufs_compl_command(hba, lrbp);
+			if(cmd->result)
+				return;
+
 			ufshcd_add_command_trace(hba, index, "complete");
 			cmd->result = ufshcd_transfer_rsp_status(hba, lrbp);
 			ufshcd_release_scsi_cmd(hba, lrbp);
@@ -5812,11 +5816,13 @@ out:
 }
 
 /* Complete requests that have door-bell cleared */
-static void ufshcd_complete_requests(struct ufs_hba *hba)
+void ufshcd_complete_requests(struct ufs_hba *hba)
 {
 	ufshcd_trc_handler(hba, false);
 	ufshcd_tmc_handler(hba);
 }
+EXPORT_SYMBOL_GPL(ufshcd_complete_requests);
+
 
 /**
  * ufshcd_quirk_dl_nac_errors - This function checks if error handling is
@@ -6046,9 +6052,15 @@ static void ufshcd_err_handler(struct work_struct *work)
 	bool err_tm = false;
 	int err = 0, pmc_err;
 	int tag;
+	bool err_handled = false;
 	bool needs_reset = false, needs_restore = false;
 
 	hba = container_of(work, struct ufs_hba, eh_work);
+
+	trace_android_vh_ufs_err_handler(hba, &err_handled);
+
+	if(err_handled == true)
+		return;
 
 	down(&hba->host_sem);
 	spin_lock_irqsave(hba->host->host_lock, flags);
@@ -6359,10 +6371,10 @@ static irqreturn_t ufshcd_check_errors(struct ufs_hba *hba, u32 intr_status)
 		hba->saved_uic_err |= hba->uic_error;
 
 		/* dump controller state before resetting */
-		if ((hba->saved_err &
+		if (!hba->silence_err_logs &&((hba->saved_err &
 		     (INT_FATAL_ERRORS | UFSHCD_UIC_HIBERN8_MASK)) ||
 		    (hba->saved_uic_err &&
-		     (hba->saved_uic_err != UFSHCD_UIC_PA_GENERIC_ERROR))) {
+		     (hba->saved_uic_err != UFSHCD_UIC_PA_GENERIC_ERROR)))) {
 			dev_err(hba->dev, "%s: saved_err 0x%x saved_uic_err 0x%x\n",
 					__func__, hba->saved_err,
 					hba->saved_uic_err);
@@ -6439,6 +6451,9 @@ static irqreturn_t ufshcd_sl_intr(struct ufs_hba *hba, u32 intr_status)
 
 	if (intr_status & UTP_TRANSFER_REQ_COMPL)
 		retval |= ufshcd_trc_handler(hba, ufshcd_has_utrlcnr(hba));
+
+	if(hba->errors & INT_FATAL_ERRORS)
+		ufshcd_check_errors(hba, hba->errors);
 
 	return retval;
 }

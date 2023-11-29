@@ -761,6 +761,349 @@ static void ufs_mtk_trace_vh_send_command_post_change(void *data, struct ufs_hba
 	    host->ufs_mtk_qcmd_r_cmd_cnt)
 		udelay(1);
 }
+static inline int ufshcd_get_tr_ocs(struct ufshcd_lrb *lrbp)
+{
+	return le32_to_cpu(lrbp->utr_descriptor_ptr->header.dword_2) & MASK_OCS;
+}
+
+
+static int ufshcd_is_resp_upiu_valid(struct ufs_hba *hba,
+				      struct ufshcd_lrb *lrbp, int index)
+{
+	u32 word;
+	u8 val;
+	bool err = false;
+
+	if (hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL)
+		return 0;
+
+	word = be32_to_cpu(lrbp->ucd_rsp_ptr->header.dword_0);
+
+	/* Check tag anyway */
+	val = word & 0xff;
+	if (val != lrbp->task_tag || val != index) {
+		dev_info(hba->dev, "inv. tag, upiu: 0x%x, lrbp: 0x%x, outstanding: 0x%x, cmd: 0x%x\n",
+			 val, lrbp->task_tag, index, lrbp->cmd->cmnd[0]);
+		err = true;
+		goto fatal;
+	}
+
+	if (!err) {
+		val = lrbp->cmd->cmnd[0];
+		if (val != READ_10 && val != WRITE_10 &&
+		    val != SYNCHRONIZE_CACHE)
+			return 0;
+	}
+
+	val = (word & 0x00ff0000) >> 16;
+	if (val) {
+		dev_info(hba->dev, "inv. flag: 0x%x\n", val);
+		err = true;
+		goto fatal;
+	}
+
+	val = (word & 0x0000ff00) >> 8;
+	if (val != lrbp->lun) {
+		dev_info(hba->dev, "inv. lun: upiu: 0x%x, lrbp: 0x%x\n",
+			 val, lrbp->lun);
+		err = true;
+		goto fatal;
+	}
+
+	if (lrbp->ucd_rsp_ptr->sr.residual_transfer_count) {
+		dev_info(hba->dev, "inv. rtc: 0x%x\n",
+			 lrbp->ucd_rsp_ptr->sr.residual_transfer_count);
+		err = true;
+		goto fatal;
+	}
+
+	if (lrbp->ucd_rsp_ptr->sr.reserved[0]) {
+		dev_info(hba->dev, "inv. reserved[0]: 0x%x\n",
+			 lrbp->ucd_rsp_ptr->sr.reserved[0]);
+		err = true;
+	}
+
+fatal:
+	if (err)
+		return (DID_ERROR << 16);
+
+	return 0;
+}
+
+static int ufshcd_wait_for_doorbell_clr(struct ufs_hba *hba,
+					u64 wait_timeout_usint, int tr_allowed,
+					int tm_allowed)
+{
+	unsigned long flags;
+	int ret = 0;
+	u32 tm_doorbell;
+	u32 tr_doorbell;
+	bool timeout = false, do_last_check = false;
+	ktime_t start;
+
+	ufshcd_hold(hba, false);
+	spin_lock_irqsave(hba->host->host_lock, flags);
+	/*
+	 * Wait for all the outstanding tasks/transfer requests.
+	 * Verify by checking the doorbell registers are clear.
+	 */
+	start = ktime_get();
+	do {
+
+		tm_doorbell = ufshcd_readl(hba, REG_UTP_TASK_REQ_DOOR_BELL);
+		tr_doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
+		if ((hweight_long(tr_doorbell) <= tr_allowed) &&
+			(hweight_long(tm_doorbell) <= tm_allowed)) {
+			timeout = false;
+			break;
+		} else if (do_last_check) {
+			break;
+		}
+
+		spin_unlock_irqrestore(hba->host->host_lock, flags);
+		schedule();
+		if (ktime_to_us(ktime_sub(ktime_get(), start)) >
+		    wait_timeout_usint) {
+			timeout = true;
+			/*
+			 * We might have scheduled out for long time so make
+			 * sure to check if doorbells are cleared by this time
+			 * or not.
+			 */
+			do_last_check = true;
+		}
+		spin_lock_irqsave(hba->host->host_lock, flags);
+	} while (tm_doorbell || tr_doorbell);
+
+	if (timeout) {
+		dev_err(hba->dev,
+			"%s: timedout waiting for doorbell to clear (tm=0x%x, tr=0x%x)\n",
+			__func__, tm_doorbell, tr_doorbell);
+		ret = -EBUSY;
+	}
+
+	spin_unlock_irqrestore(hba->host->host_lock, flags);
+	ufshcd_release(hba);
+	return ret;
+}
+
+
+void ufs_mtk_pltfrm_host_sw_rst(struct ufs_hba *hba, u32 target)
+{
+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
+
+	dev_dbg(hba->dev, "ufs_mtk_host_sw_rst: 0x%x\n", target);
+
+	if (target & SW_RST_TARGET_UFSHCI)
+		reset_control_assert(host->hci_reset);
+
+	if (target & SW_RST_TARGET_UFSCPT)
+		reset_control_assert(host->crypto_reset);
+
+	if (target & SW_RST_TARGET_UNIPRO)
+		reset_control_assert(host->unipro_reset);
+
+	usleep_range(100, 110);
+
+	if (target & SW_RST_TARGET_UFSHCI)
+		reset_control_deassert(host->unipro_reset);
+
+	if (target & SW_RST_TARGET_UFSCPT)
+		reset_control_deassert(host->crypto_reset);
+
+	if (target & SW_RST_TARGET_UNIPRO)
+		reset_control_deassert(host->hci_reset);
+
+	usleep_range(100, 110);
+}
+
+#define ufshcd_set_eh_in_progress(h) \
+	((h)->eh_flags |= UFSHCD_EH_IN_PROGRESS)
+#define ufshcd_eh_in_progress(h) \
+	((h)->eh_flags & UFSHCD_EH_IN_PROGRESS)
+#define ufshcd_clear_eh_in_progress(h) \
+	((h)->eh_flags &= ~UFSHCD_EH_IN_PROGRESS)
+
+extern void ufshcd_complete_requests(struct ufs_hba *hba);
+extern void ufshcd_scsi_unblock_requests(struct ufs_hba *hba);
+
+static void ufs_mtk_trace_vh_err_handler(void *data, struct ufs_hba *hba, bool *err_handled)
+{
+	unsigned long reqs_pre, reqs_post, flags;
+	int ret;
+
+	*err_handled = false;
+
+	if (!ufs_mtk_has_ufshci_perf_heuristic(hba) || hba->saved_err != INT_FATAL_ERRORS)
+		return;
+
+	down(&hba->host_sem);
+
+	pm_runtime_get_sync(hba->dev);
+	ufshcd_hold(hba, false);
+
+	spin_lock_irqsave(hba->host->host_lock, flags);
+
+	reqs_pre = hba->outstanding_reqs;
+	hba->ufshcd_state = 0; //0 == UFSHCD_STATE_RESET;
+	ufshcd_set_eh_in_progress(hba);
+	spin_unlock_irqrestore(hba->host->host_lock, flags);
+
+	ufshcd_wait_for_doorbell_clr(hba, DOORBELL_CLR_TOUT_US,
+					 2, 0);
+	ufshcd_wait_for_doorbell_clr(hba, 10000, 1, 0);
+	usleep_range(5000, 5100);
+	ret = ufshcd_dme_set(hba,
+		UIC_ARG_MIB_SEL(VS_UNIPROPOWERDOWNCONTROL, 0), 1);
+	if (ret)
+		dev_info(hba->dev, "ir_hdlr: failed to set unipro pdn ctrl\n");
+
+	ufshcd_hba_stop(hba);
+
+	spin_lock_irqsave(hba->host->host_lock, flags);
+	ufshcd_complete_requests(hba);
+	spin_unlock_irqrestore(hba->host->host_lock, flags);
+
+	ufs_mtk_pltfrm_host_sw_rst(hba, SW_RST_TARGET_UFSHCI);
+	ufshcd_hba_enable(hba);
+	ret = ufshcd_dme_set(hba,
+		UIC_ARG_MIB_SEL(VS_UNIPROPOWERDOWNCONTROL, 0), 0);
+	if (ret)
+		dev_info(hba->dev, "ir_hdlr: failed to clr unipro pdn ctrl\n");
+	ufshcd_set_link_active(hba);
+	ufshcd_make_hba_operational(hba);
+
+	spin_lock_irqsave(hba->host->host_lock, flags);
+	hba->ufshcd_state = UFSHCD_STATE_OPERATIONAL;
+	ufshcd_clear_eh_in_progress(hba);
+
+	hba->silence_err_logs = false;
+	hba->saved_err = 0;
+	hba->saved_uic_err = 0;
+	reqs_post = hba->outstanding_reqs;
+	spin_unlock_irqrestore(hba->host->host_lock, flags);
+
+	WARN_ON((reqs_post & 0x7FFFFFFF) != 0);
+
+#if 0
+	dev_info(hba->dev, "ir_hdlr: reqs: 0x%x -> 0x%x, rcmd %d, wcmd %d\n",
+		reqs_pre, reqs_post,
+		hba->ufs_mtk_qcmd_r_cmd_cnt,
+		hba->ufs_mtk_qcmd_w_cmd_cnt);
+#endif
+	ufshcd_scsi_unblock_requests(hba);
+
+	ufshcd_release(hba);
+	pm_runtime_put_sync(hba->dev);
+	up(&hba->host_sem);
+	*err_handled = true;
+}
+
+/**
+ * ufshcd_get_req_rsp - returns the TR response transaction type
+ * @ucd_rsp_ptr: pointer to response UPIU
+ */
+static inline int
+ufshcd_get_req_rsp(struct utp_upiu_rsp *ucd_rsp_ptr)
+{
+	return be32_to_cpu(ucd_rsp_ptr->header.dword_0) >> 24;
+}
+
+
+int ufs_mtk_check_upiu_error(struct ufs_hba *hba, struct ufshcd_lrb *lrbp, int index)
+{
+
+	int result = 0;
+	//int scsi_status;
+	int ocs;
+	u32 ocs_err_status;
+
+	if (!ufs_mtk_has_ufshci_perf_heuristic(hba))
+		return result;
+
+	ocs_err_status = ufshcd_readl(hba, REG_UFS_MTK_OCS_ERR_STATUS);
+	if (ocs_err_status & 0xC0000000) {
+		result = (DID_ERROR << 16);
+		dev_info(hba->dev, "inv. ocs: 0x%x, reqs: 0x%x\n",
+			 ocs_err_status, hba->outstanding_reqs);
+		goto out;
+	}
+
+	/* overall command status of utrd */
+	ocs = ufshcd_get_tr_ocs(lrbp);
+
+	switch (ocs) {
+	case OCS_SUCCESS:
+		result = ufshcd_get_req_rsp(lrbp->ucd_rsp_ptr);
+
+		switch (result) {
+		case UPIU_TRANSACTION_RESPONSE:
+			result = ufshcd_is_resp_upiu_valid(hba, lrbp, index);
+
+			break;
+		case UPIU_TRANSACTION_REJECT_UPIU:
+			/* TODO: handle Reject UPIU Response */
+			//result = DID_ERROR << 16;
+			dev_err(hba->dev,
+				"Reject UPIU not fully implemented\n");
+			break;
+		default:
+			dev_err(hba->dev,
+				"Unexpected request response code = %x\n",
+				result);
+			//result = DID_ERROR << 16;
+			break;
+		}
+	}
+out:
+	if (result){
+		hba->errors = INT_FATAL_ERRORS;
+		lrbp->cmd->result = 1; //no need to process it further by upstream code
+		hba->silence_err_logs = true;
+		//schedule_work(&hba->eh_work);
+		//	return result;
+	}
+	return result;
+}
+
+static void ufs_mtk_trace_vh_compl_command(void *data, struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
+{
+	struct scsi_cmnd *cmd = lrbp->cmd;
+	int tag = lrbp->task_tag;
+	unsigned long req_mask;
+	unsigned long outstanding_reqs;
+	unsigned long outstanding_tasks;
+	unsigned long flags;
+#if defined(CONFIG_UFSFEATURE)
+	struct ufsf_feature *ufsf;
+#endif
+
+	if (!cmd)
+		return;
+
+	ufs_mtk_perf_heurisic_req_done(hba, cmd);
+
+	ufs_mtk_check_upiu_error(hba, lrbp, tag);
+
+	spin_lock_irqsave(hba->host->host_lock, flags);
+	outstanding_reqs = hba->outstanding_reqs;
+	outstanding_tasks = hba->outstanding_tasks;
+	spin_unlock_irqrestore(hba->host->host_lock, flags);
+
+	if (ufs_mtk_is_data_cmd(cmd, false)) {
+		req_mask = outstanding_reqs & ~(1 << tag);
+		ufs_mtk_biolog_transfer_req_compl(tag, req_mask);
+		ufs_mtk_biolog_check(req_mask);
+	}
+
+#if defined(CONFIG_UFSFEATURE)
+	ufsf = ufs_mtk_get_ufsf(hba);
+
+	if (ufsf->hba)
+		ufs_mtk_trace_vh_compl_command_vend_ss(hba, lrbp,
+			outstanding_reqs, outstanding_tasks);
+#endif
+}
 static struct tracepoints_table interests[] = {
 	{
 		.name = "android_vh_ufs_send_command",
