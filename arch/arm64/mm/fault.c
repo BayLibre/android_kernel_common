@@ -1000,31 +1000,28 @@ static void migrate_tag_storage_page(struct page *page)
 		.nid = NUMA_NO_NODE,
 		.gfp_mask = GFP_HIGHUSER_MOVABLE | __GFP_TAGGED,
 	};
-	unsigned long i, nr_pages = compound_nr(page);
 	LIST_HEAD(pagelist);
 	int ret, tries;
 
 	lru_cache_disable();
 
-	for (i = 0; i < nr_pages; i++) {
-		if (isolate_lru_page(page + i)) {
-			ret = -EAGAIN;
-			goto out;
-		}
-		/* Isolate just grabbed another reference, drop ours. */
-		put_page(page + i);
-		list_add_tail(&(page + i)->lru, &pagelist);
+	if (isolate_lru_page(page)) {
+		put_page(page);
+		return;
 	}
+
+	/* isolate_lru_page() grabbed another reference, drop ours. */
+	put_page(page);
+	list_add_tail(&page->lru, &pagelist);
 
 	tries = 5;
 	while (tries--) {
 		ret = migrate_pages(&pagelist, alloc_migration_target, NULL, (unsigned long)&mtc,
 				    MIGRATE_SYNC, MR_TAGGED_TAG_STORAGE, NULL);
-		if (ret == 0 || ret != -EBUSY)
+		if (ret != -EBUSY)
 			break;
 	}
 
-out:
 	if (ret != 0)
 		putback_movable_pages(&pagelist);
 
