@@ -34,6 +34,24 @@
       "parentUuid": "3b0351eb_04399df5",
       "revId": "53992a9a5d98886607b3984b71140c631618bc61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a04084b8_bf3bc111",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-11-29T23:15:49Z",
+      "side": 1,
+      "message": "For pre-GKI kernels (4.14, 4.19, 5.4) there is no way to ensure that any patch in ACK actually makes it to any device. Adding this to 4.19 is very unlikely to result in a device runnning 4.19 to ever get this patch. Think of android-4.19-stable as a reference kernel that partners can use to cherry-pick patches from.\n\nSo, what will happen when a device upgrades to Android 14 and doesn\u0027t have this patch? What will break?",
+      "parentUuid": "30d39313_105f4211",
+      "revId": "53992a9a5d98886607b3984b71140c631618bc61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
