@@ -16,6 +16,24 @@
       "message": "Why only for arm64 and not the other supported architectures?",
       "revId": "95140ef44d17cd67138277e3ed012db627c6d959",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "868bec8c_f68330cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1996751
+      },
+      "writtenOn": "2023-11-29T11:28:47Z",
+      "side": 1,
+      "message": "Our mobile phone only supports the ARM architecture. GKI (Generic Kernel Image) is for 64-bit, there are no GKI restrictions for 32-bit, we can enable it ourselves",
+      "parentUuid": "3903b423_f5f3b9e5",
+      "revId": "95140ef44d17cd67138277e3ed012db627c6d959",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
