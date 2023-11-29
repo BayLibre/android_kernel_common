@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8111152_5fbfe898",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-11-29T13:08:52Z",
+      "side": 1,
+      "message": "Maybe clarify as \"Host access permissions are unaffected\" or something along those lines? That would cover the case where create_private_mapping() is used to map hyp-owned pages where \"stays accessible from the host\" is otherwise confusing.",
+      "range": {
+        "startLine": 23,
+        "startChar": 48,
+        "endLine": 24,
+        "endChar": 44
+      },
+      "revId": "dcb78da3ff44c2adb770fa611bbbf7a743e2bdea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50384da8_543659d9",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2023-11-29T13:08:52Z",
+      "side": 1,
+      "message": "Query _the host\u0027s stage-2_ page-table entry... ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 32,
+        "endLine": 75,
+        "endChar": 34
+      },
+      "revId": "dcb78da3ff44c2adb770fa611bbbf7a743e2bdea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
