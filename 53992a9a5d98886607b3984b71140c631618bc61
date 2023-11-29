@@ -52,6 +52,24 @@
       "parentUuid": "30d39313_105f4211",
       "revId": "53992a9a5d98886607b3984b71140c631618bc61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c5d2e4e_b3a9e0ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1776761
+      },
+      "writtenOn": "2023-11-29T23:20:48Z",
+      "side": 1,
+      "message": "If a device doesn\u0027t have the kernel patch, then the input events injected into the framework would have timestamp equal to the time of injection, i.e., the custom timestamp won\u0027t be applied. Since no 1p/3p product is actively using this API (AFAIK), there won\u0027t be any major breakage in any existing product. Can you please point me to the lowest kernel version that we should backport this change into? We want to have CTS tests verifying this change (we can\u0027t do this currently because not all devices running CTS have this patch).",
+      "parentUuid": "a04084b8_bf3bc111",
+      "revId": "53992a9a5d98886607b3984b71140c631618bc61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
