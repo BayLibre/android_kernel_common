@@ -7816,6 +7816,7 @@ kswapd_try_sleep:
 	return 0;
 }
 EXPORT_SYMBOL_GPL(kswapd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_kswapd_wake);
 
 /*
  * A zone is low on free memory or too fragmented for high-order memory.  If
