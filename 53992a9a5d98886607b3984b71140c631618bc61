@@ -16,6 +16,24 @@
       "message": "Why are new features being added to old kernels like this one?",
       "revId": "53992a9a5d98886607b3984b71140c631618bc61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30d39313_105f4211",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1776761
+      },
+      "writtenOn": "2023-11-29T23:09:36Z",
+      "side": 1,
+      "message": "Hi, we had added some API\u0027s in Android 14 to inject input events into the framework with custom timestamps ([ag/22235862](https://googleplex-android-review.git.corp.google.com/c/platform/frameworks/base/+/22235862)). Those API\u0027s require [this change](https://lore.kernel.org/all/20230427000152.1407471-1-biswarupp@google.com/) in the linux kernel to work (and the change had already been submitted into the mainline kernel). IIUC, according to this [compatibility matrix](https://source.android.com/docs/core/architecture/kernel/android-common#compatibility-matrix), Android 14 can run on devices with kernel versions as low as `android-4.14-stable`. Hence we are backporting the patch to these older kernels.",
+      "parentUuid": "3b0351eb_04399df5",
+      "revId": "53992a9a5d98886607b3984b71140c631618bc61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
