@@ -15,6 +15,11 @@
 #define REG_UFS_REFCLK_CTRL         0x144
 #define REG_UFS_EXTREG              0x2100
 #define REG_UFS_MPHYCTRL            0x2200
+#define REG_UFS_AXI_W_ULTRA_THR     0x220C
+
+#define REG_UFS_MTK_HW_VER          0x2240
+#define REG_UFS_MTK_OCS_ERR_STATUS  0x2244
+
 #define REG_UFS_REJECT_MON          0x22AC
 #define REG_UFS_DEBUG_SEL           0x22C0
 #define REG_UFS_PROBE               0x22C8
@@ -98,6 +103,7 @@ enum ufs_mtk_host_caps {
 	UFS_MTK_CAP_VA09_PWR_CTRL              = 1 << 1,
 	UFS_MTK_CAP_DISABLE_AH8                = 1 << 2,
 	UFS_MTK_CAP_BROKEN_VCC                 = 1 << 3,
+	UFS_MTK_CAP_UFSHCI_PERF_HURISTIC       = 1 << 4,
 };
 
 struct ufs_mtk_crypt_cfg {
@@ -129,6 +135,8 @@ struct ufs_mtk_host {
 	bool ref_clk_enabled;
 	u16 ref_clk_ungating_wait_us;
 	u16 ref_clk_gating_wait_us;
+	u32 ufs_mtk_qcmd_r_cmd_cnt;
+	u32 ufs_mtk_qcmd_w_cmd_cnt;
 };
 
 #endif /* !_UFS_MEDIATEK_H */
