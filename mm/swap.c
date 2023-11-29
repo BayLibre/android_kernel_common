@@ -935,6 +935,7 @@ void lru_cache_disable(void)
 	atomic_inc(&lru_disable_count);
 }
 EXPORT_SYMBOL_GPL(lru_cache_disable);
+<<<<<<< HEAD   (bb19fb ANDROID: ABI: update symbol list for honor)
 
 /**
  * folios_put_refs - Reduce the reference count on a batch of folios.
@@ -1007,6 +1008,9 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 	free_unref_folios(folios);
 }
 EXPORT_SYMBOL(folios_put_refs);
+||||||| BASE
+=======
+>>>>>>> CHANGE (a026cc ANDROID: mm: lru_cache_disable skips lru cache drainnig)
 
 /**
  * release_pages - batched put_page()
