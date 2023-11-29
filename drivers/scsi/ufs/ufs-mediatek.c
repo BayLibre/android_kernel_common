@@ -164,6 +164,14 @@ static void ufs_mtk_init_reset(struct ufs_hba *hba)
 				   "crypto_rst");
 }
 
+static bool ufs_mtk_has_ufshci_perf_heuristic(struct ufs_hba *hba) {
+
+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
+
+	return (host && host->caps & UFS_MTK_CAP_UFSHCI_PERF_HURISTIC);
+}
+
+
 static int ufs_mtk_hce_enable_notify(struct ufs_hba *hba,
 				     enum ufs_notify_change_status status)
 {
@@ -190,6 +198,11 @@ static int ufs_mtk_hce_enable_notify(struct ufs_hba *hba,
 
 			hba->capabilities &= ~MASK_AUTO_HIBERN8_SUPPORT;
 			hba->ahit = 0;
+	}else if(status == POST_CHANGE) {
+		if (ufs_mtk_has_ufshci_perf_heuristic(hba)) {
+			/* [31:16] PRE_ULTRA, [15:0] ULTRA */
+			ufshcd_writel(hba, 0x00400080,
+				REG_UFS_AXI_W_ULTRA_THR);
 		}
 	}
 
@@ -524,6 +537,10 @@ static void ufs_mtk_init_host_caps(struct ufs_hba *hba)
 	if (of_property_read_bool(np, "mediatek,ufs-broken-vcc"))
 		host->caps |= UFS_MTK_CAP_BROKEN_VCC;
 
+	if (of_property_read_bool(np, "mediatek,ufs-perf-huristic")) {
+		host->caps |= UFS_MTK_CAP_UFSHCI_PERF_HURISTIC;
+		dev_info(hba->dev, "PERF HURISTIC enabled caps=0x%x", host->caps);
+	}
 	dev_info(hba->dev, "caps: 0x%x", host->caps);
 }
 
@@ -577,10 +594,192 @@ static int ufs_mtk_setup_clocks(struct ufs_hba *hba, bool on,
 		phy_power_on(host->mphy);
 		ufs_mtk_setup_ref_clk(hba, on);
 		ufs_mtk_boost_crypt(hba, on);
+		if(ufs_mtk_has_ufshci_perf_heuristic(hba)) {
+			if (!hba->outstanding_reqs) {
+				host->ufs_mtk_qcmd_w_cmd_cnt = 0;
+				host->ufs_mtk_qcmd_r_cmd_cnt = 0;
+			}
+		}
 	}
 
 	return ret;
 }
+
+static bool ufs_mtk_is_data_cmd(struct scsi_cmnd *cmd, bool isolation)
+{
+	char cmd_op = cmd->cmnd[0];
+
+	if (cmd_op == WRITE_10 || cmd_op == READ_10 ||
+	    cmd_op == WRITE_16 || cmd_op == READ_16 ||
+	    cmd_op == WRITE_6 || cmd_op == READ_6)
+		return true;
+
+	if (isolation) {
+		if ((cmd->sc_data_direction == DMA_FROM_DEVICE) ||
+			(cmd->sc_data_direction == DMA_TO_DEVICE))
+			return true;
+	}
+
+	return false;
+}
+static bool ufs_mtk_is_data_write_cmd(struct scsi_cmnd *cmd, bool isolation)
+{
+	char cmd_op = cmd->cmnd[0];
+
+	if (cmd_op == WRITE_10 || cmd_op == WRITE_16 || cmd_op == WRITE_6)
+		return true;
+
+	if (isolation) {
+		if (cmd->sc_data_direction == DMA_TO_DEVICE)
+			return true;
+		}
+
+	return false;
+}
+
+
+
+bool ufs_mtk_perf_heurisic_if_allow_cmd(struct ufs_hba *hba, struct scsi_cmnd *cmd)
+{
+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
+
+	if (!ufs_mtk_has_ufshci_perf_heuristic(hba))
+		return true;	/* Check rw commands only and allow all other commands. */
+
+	if (ufs_mtk_is_data_cmd(cmd, true)) {
+		if (!host->ufs_mtk_qcmd_r_cmd_cnt && !host->ufs_mtk_qcmd_w_cmd_cnt) {
+			/* Case: no on-going r or w commands. */
+			if (ufs_mtk_is_data_write_cmd(cmd, true))
+				host->ufs_mtk_qcmd_w_cmd_cnt++;
+			else
+				host->ufs_mtk_qcmd_r_cmd_cnt++;
+		}
+		else {
+			if (ufs_mtk_is_data_write_cmd(cmd, true)) {
+				if (host->ufs_mtk_qcmd_r_cmd_cnt){
+					return false;
+
+				}
+				host->ufs_mtk_qcmd_w_cmd_cnt++;
+			} else {
+				if (host->ufs_mtk_qcmd_w_cmd_cnt) {
+					return false;
+				}
+				host->ufs_mtk_qcmd_r_cmd_cnt++;
+			}
+		}
+	}
+	return true;
+}
+
+
+void ufs_mtk_perf_heurisic_req_done(struct ufs_hba *hba, struct scsi_cmnd *cmd)
+{
+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
+
+	if (!ufs_mtk_has_ufshci_perf_heuristic(hba))
+		return;
+	if (ufs_mtk_is_data_cmd(cmd, true)) {
+		if (ufs_mtk_is_data_write_cmd(cmd, true))
+			host->ufs_mtk_qcmd_w_cmd_cnt--;
+		else
+			host->ufs_mtk_qcmd_r_cmd_cnt--;
+	}
+}
+void ufs_mtk_trace_vh_perf_huristic_ctrl(void *data, struct ufs_hba *hba,
+		struct ufshcd_lrb *lrbp, int *err)
+{
+	struct scsi_cmnd *cmd = lrbp->cmd;
+
+	if(!ufs_mtk_perf_heurisic_if_allow_cmd(hba, cmd))
+		*err = -EAGAIN;
+
+	return;
+}
+struct tracepoints_table {
+	const char *name;
+	void *func;
+	struct tracepoint *tp;
+	bool init;
+	unsigned int vend;
+};
+static void ufs_mtk_trace_vh_send_command(void *data, struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
+{
+	struct scsi_cmnd *cmd = lrbp->cmd;
+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
+
+	if (!cmd)
+		return;
+
+	if (ufs_mtk_is_data_cmd(cmd, false)) {
+		ufs_mtk_biolog_send_command(lrbp->task_tag, cmd);
+		ufs_mtk_biolog_check(1);
+	}
+
+	if (ufs_mtk_has_ufshci_perf_heuristic(hba)
+		&& host->ufs_mtk_qcmd_r_cmd_cnt) {
+			bool timeout = false;
+			ktime_t start;
+			u32 val;
+
+			start = ktime_get();
+			ufshcd_writel(hba, 0xA2, REG_UFS_DEBUG_SEL);
+
+			do {
+				val = ufshcd_readl(hba, REG_UFS_PROBE);
+				val = (val >> 10) & 0x3F;
+
+				/* DATA IN = 0x22 */
+				if (val != 0x22) {
+					timeout = false;
+					break;
+				}
+
+				if (timeout)
+					break;
+
+				if (ktime_to_us(ktime_sub(ktime_get(), start)) >
+					10000)
+					timeout = true;
+			} while (1);
+			if (timeout)
+				dev_info(hba->dev, "%s: wait DATAIN timeout\n",
+				 __func__);
+		}
+
+}
+
+static void ufs_mtk_trace_vh_send_command_post_change(void *data, struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
+{
+	struct scsi_cmnd *cmd = lrbp->cmd;
+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
+
+	if (!cmd)
+		return;
+
+	if (ufs_mtk_has_ufshci_perf_heuristic(hba) &&
+	    host->ufs_mtk_qcmd_r_cmd_cnt)
+		udelay(1);
+}
+static struct tracepoints_table interests[] = {
+	{
+		.name = "android_vh_ufs_send_command",
+		.func = ufs_mtk_trace_vh_send_command
+	},
+	{
+		.name = "android_vh_ufs_compl_command",
+		.func = ufs_mtk_trace_vh_compl_command
+	},
+	{
+		.name = "android_vh_ufs_perf_huristic_ctrl",
+		.func = ufs_mtk_trace_vh_perf_huristic_ctrl
+	},
+	{
+		.name = "android_vh_ufs_send_command_post_change",
+		.func = ufs_mtk_trace_vh_send_command_post_change
+	},
+
+};
 
 static void ufs_mtk_get_controller_version(struct ufs_hba *hba)
 {
