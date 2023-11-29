@@ -74,6 +74,13 @@
 #undef CREATE_TRACE_POINTS
 #include <trace/hooks/vmscan.h>
 
+<<<<<<< HEAD   (ff3ecc ANDROID: ABI: Update oplus symbol list)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_direct_reclaim_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_direct_reclaim_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_kswapd_wake);
+
+>>>>>>> CHANGE (0ad2a3 ANDROID: vendor_hooks: export tracepoint symbol trace_mm_vms)
 struct scan_control {
 	/* How many pages shrink_list() should reclaim */
 	unsigned long nr_to_reclaim;
