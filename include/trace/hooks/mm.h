@@ -164,6 +164,7 @@ DECLARE_HOOK(android_vh_mem_cgroup_css_online,
 DECLARE_HOOK(android_vh_mem_cgroup_css_offline,
 	TP_PROTO(struct cgroup_subsys_state *css, struct mem_cgroup *memcg),
 	TP_ARGS(css, memcg));
+<<<<<<< HEAD   (45113f ANDROID: fuse-bpf: Ignore readaheads unless they go to the d)
 DECLARE_HOOK(android_vh_alloc_pages_reclaim_bypass,
 	TP_PROTO(gfp_t gfp_mask, int order, int alloc_flags,
 	int migratetype, struct page **page),
@@ -174,6 +175,25 @@ DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
 	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
 /* macro versions of hooks are no longer required */
 
+=======
+DECLARE_HOOK(android_vh_si_meminfo,
+	TP_PROTO(struct sysinfo *val),
+	TP_ARGS(val));
+DECLARE_HOOK(android_vh_cma_alloc_bypass,
+	TP_PROTO(struct cma *cma, unsigned long count, unsigned int align,
+		gfp_t gfp_mask, struct page **page, bool *bypass),
+	TP_ARGS(cma, count, align, gfp_mask, page, bypass));
+DECLARE_HOOK(android_vh_alloc_pages_entry,
+	TP_PROTO(gfp_t *gfp, unsigned int order, int preferred_nid,
+		nodemask_t *nodemask),
+	TP_ARGS(gfp, order, preferred_nid, nodemask));
+DECLARE_HOOK(android_vh_isolate_freepages,
+	TP_PROTO(struct compact_control *cc, struct page *page, bool *bypass),
+	TP_ARGS(cc, page, bypass));
+DECLARE_HOOK(android_vh_ptep_clear_flush_young,
+	TP_PROTO(bool *skip),
+	TP_ARGS(skip));
+>>>>>>> CHANGE (46f8b2 ANDROID: GKI: add a vendor hook in ptep_clear_flush_young())
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

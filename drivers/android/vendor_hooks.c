@@ -376,6 +376,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scmi_timeout_sync);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_find_new_ilb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+<<<<<<< HEAD   (45113f ANDROID: fuse-bpf: Ignore readaheads unless they go to the d)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_add_request);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_update_request);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_remove_request);
@@ -431,3 +432,16 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_reclaim_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_failure_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebuild_root_domains_bypass);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_urb_suitable_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_entry);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_oem_binder_struct);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_transaction_received);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_oem_binder_struct);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_special_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_free_buf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_isolate_freepages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_thermal_stats);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ptep_clear_flush_young);
+>>>>>>> CHANGE (46f8b2 ANDROID: GKI: add a vendor hook in ptep_clear_flush_young())
