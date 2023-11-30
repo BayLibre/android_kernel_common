@@ -1117,9 +1117,8 @@ out_map:
 
 out_retry:
 	put_page(page);
-	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
-		vma_end_read(vma);
 	if (fault_flag_allow_retry_first(vmf->flags)) {
+		release_fault_lock(vmf);
 		err = VM_FAULT_RETRY;
 	} else {
 		/* Replay the fault. */
@@ -1199,9 +1198,8 @@ out_map:
 
 out_retry:
 	put_page(page);
-	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
-		vma_end_read(vma);
 	if (fault_flag_allow_retry_first(vmf->flags)) {
+		release_fault_lock(vmf);
 		err = VM_FAULT_RETRY;
 	} else {
 		/* Replay the fault. */
