@@ -2311,25 +2311,9 @@ long get_user_pages(unsigned long start, unsigned long nr_pages,
 }
 EXPORT_SYMBOL(get_user_pages);
 
-/*
- * get_user_pages_unlocked() is suitable to replace the form:
- *
- *      mmap_read_lock(mm);
- *      get_user_pages(mm, ..., pages, NULL);
- *      mmap_read_unlock(mm);
- *
- *  with:
- *
- *      get_user_pages_unlocked(mm, ..., pages);
- *
- * It is functionally equivalent to get_user_pages_fast so
- * get_user_pages_fast should be used instead if specific gup_flags
- * (e.g. FOLL_FORCE) are not required.
- */
-long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
-			     struct page **pages, unsigned int gup_flags)
+static long __get_user_pages_unlocked(struct mm_struct *mm, unsigned long start, unsigned long nr_pages,
+			       struct page **pages, unsigned int gup_flags)
 {
-	struct mm_struct *mm = current->mm;
 	int locked = 1;
 	long ret;
 
@@ -2348,6 +2332,27 @@ long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
 	if (locked)
 		mmap_read_unlock(mm);
 	return ret;
+}
+
+/*
+ * get_user_pages_unlocked() is suitable to replace the form:
+ *
+ *      mmap_read_lock(mm);
+ *      get_user_pages(mm, ..., pages, NULL);
+ *      mmap_read_unlock(mm);
+ *
+ *  with:
+ *
+ *      get_user_pages_unlocked(mm, ..., pages);
+ *
+ * It is functionally equivalent to get_user_pages_fast so
+ * get_user_pages_fast should be used instead if specific gup_flags
+ * (e.g. FOLL_FORCE) are not required.
+ */
+long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+			     struct page **pages, unsigned int gup_flags)
+{
+	return __get_user_pages_unlocked(current->mm, start, nr_pages, pages, gup_flags);
 }
 EXPORT_SYMBOL(get_user_pages_unlocked);
 
@@ -2938,7 +2943,7 @@ static bool gup_fast_permitted(unsigned long start, unsigned long end)
 }
 #endif
 
-static int __gup_longterm_unlocked(unsigned long start, int nr_pages,
+static int __gup_longterm_unlocked(struct mm_struct *mm, unsigned long start, int nr_pages,
 				   unsigned int gup_flags, struct page **pages)
 {
 	int ret;
@@ -2948,20 +2953,21 @@ static int __gup_longterm_unlocked(unsigned long start, int nr_pages,
 	 * get_user_pages_unlocked() (see comments in that function)
 	 */
 	if (gup_flags & FOLL_LONGTERM) {
-		mmap_read_lock(current->mm);
-		ret = __gup_longterm_locked(current->mm,
+		mmap_read_lock(mm);
+		ret = __gup_longterm_locked(mm,
 					    start, nr_pages,
 					    pages, NULL, gup_flags);
-		mmap_read_unlock(current->mm);
+		mmap_read_unlock(mm);
 	} else {
-		ret = get_user_pages_unlocked(start, nr_pages,
-					      pages, gup_flags);
+		ret = __get_user_pages_unlocked(mm, start, nr_pages,
+						pages, gup_flags);
 	}
 
 	return ret;
 }
 
-static unsigned long lockless_pages_from_mm(unsigned long start,
+static unsigned long lockless_pages_from_mm(struct mm_struct *mm,
+					    unsigned long start,
 					    unsigned long end,
 					    unsigned int gup_flags,
 					    struct page **pages)
@@ -2975,7 +2981,7 @@ static unsigned long lockless_pages_from_mm(unsigned long start,
 		return 0;
 
 	if (gup_flags & FOLL_PIN) {
-		seq = raw_read_seqcount(&current->mm->write_protect_seq);
+		seq = raw_read_seqcount(&mm->write_protect_seq);
 		if (seq & 1)
 			return 0;
 	}
@@ -3000,7 +3006,7 @@ static unsigned long lockless_pages_from_mm(unsigned long start,
 	 * from fork() via copy_page_range(), in this case always fail fast GUP.
 	 */
 	if (gup_flags & FOLL_PIN) {
-		if (read_seqcount_retry(&current->mm->write_protect_seq, seq)) {
+		if (read_seqcount_retry(&mm->write_protect_seq, seq)) {
 			unpin_user_pages_lockless(pages, nr_pinned);
 			return 0;
 		} else {
@@ -3010,7 +3016,8 @@ static unsigned long lockless_pages_from_mm(unsigned long start,
 	return nr_pinned;
 }
 
-static int internal_get_user_pages_fast(unsigned long start,
+static int internal_get_user_pages_fast(struct mm_struct *mm,
+					unsigned long start,
 					unsigned long nr_pages,
 					unsigned int gup_flags,
 					struct page **pages)
@@ -3025,10 +3032,10 @@ static int internal_get_user_pages_fast(unsigned long start,
 		return -EINVAL;
 
 	if (gup_flags & FOLL_PIN)
-		mm_set_has_pinned_flag(&current->mm->flags);
+		mm_set_has_pinned_flag(&mm->flags);
 
 	if (!(gup_flags & FOLL_FAST_ONLY))
-		might_lock_read(&current->mm->mmap_lock);
+		might_lock_read(&mm->mmap_lock);
 
 	start = untagged_addr(start) & PAGE_MASK;
 	len = nr_pages << PAGE_SHIFT;
@@ -3037,14 +3044,14 @@ static int internal_get_user_pages_fast(unsigned long start,
 	if (unlikely(!access_ok((void __user *)start, len)))
 		return -EFAULT;
 
-	nr_pinned = lockless_pages_from_mm(start, end, gup_flags, pages);
+	nr_pinned = lockless_pages_from_mm(mm, start, end, gup_flags, pages);
 	if (nr_pinned == nr_pages || gup_flags & FOLL_FAST_ONLY)
 		return nr_pinned;
 
 	/* Slow path: try to get the remaining pages with get_user_pages */
 	start += nr_pinned << PAGE_SHIFT;
 	pages += nr_pinned;
-	ret = __gup_longterm_unlocked(start, nr_pages - nr_pinned, gup_flags,
+	ret = __gup_longterm_unlocked(mm, start, nr_pages - nr_pinned, gup_flags,
 				      pages);
 	if (ret < 0) {
 		/*
@@ -3059,7 +3066,8 @@ static int internal_get_user_pages_fast(unsigned long start,
 }
 
 /**
- * get_user_pages_fast_only() - pin user pages in memory
+ * get_user_pages_fast_only_remote() - pin user pages in memory
+ * @mm:		mm_struct of target mm
  * @start:      starting user address
  * @nr_pages:   number of pages from start to pin
  * @gup_flags:  flags modifying pin behaviour
@@ -3078,8 +3086,8 @@ static int internal_get_user_pages_fast(unsigned long start,
  * access can get ambiguous page results. If you call this function without
  * 'write' set, you'd better be sure that you're ok with that ambiguity.
  */
-int get_user_pages_fast_only(unsigned long start, int nr_pages,
-			     unsigned int gup_flags, struct page **pages)
+int get_user_pages_fast_only_remote(struct mm_struct *mm, unsigned long start, int nr_pages,
+				    unsigned int gup_flags, struct page **pages)
 {
 	int nr_pinned;
 	/*
@@ -3091,7 +3099,7 @@ int get_user_pages_fast_only(unsigned long start, int nr_pages,
 	 */
 	gup_flags |= FOLL_GET | FOLL_FAST_ONLY;
 
-	nr_pinned = internal_get_user_pages_fast(start, nr_pages, gup_flags,
+	nr_pinned = internal_get_user_pages_fast(mm, start, nr_pages, gup_flags,
 						 pages);
 
 	/*
@@ -3104,6 +3112,12 @@ int get_user_pages_fast_only(unsigned long start, int nr_pages,
 		nr_pinned = 0;
 
 	return nr_pinned;
+}
+
+int get_user_pages_fast_only(unsigned long start, int nr_pages,
+			     unsigned int gup_flags, struct page **pages)
+{
+	return get_user_pages_fast_only_remote(current->mm, start, nr_pages, gup_flags, pages);
 }
 EXPORT_SYMBOL_GPL(get_user_pages_fast_only);
 
@@ -3136,7 +3150,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
 	 * request.
 	 */
 	gup_flags |= FOLL_GET;
-	return internal_get_user_pages_fast(start, nr_pages, gup_flags, pages);
+	return internal_get_user_pages_fast(current->mm, start, nr_pages, gup_flags, pages);
 }
 EXPORT_SYMBOL_GPL(get_user_pages_fast);
 
@@ -3167,7 +3181,7 @@ int pin_user_pages_fast(unsigned long start, int nr_pages,
 		return -EINVAL;
 
 	gup_flags |= FOLL_PIN;
-	return internal_get_user_pages_fast(start, nr_pages, gup_flags, pages);
+	return internal_get_user_pages_fast(current->mm, start, nr_pages, gup_flags, pages);
 }
 EXPORT_SYMBOL_GPL(pin_user_pages_fast);
 
@@ -3196,7 +3210,7 @@ int pin_user_pages_fast_only(unsigned long start, int nr_pages,
 	 * this routine: no fall back to regular ("slow") GUP.
 	 */
 	gup_flags |= (FOLL_PIN | FOLL_FAST_ONLY);
-	nr_pinned = internal_get_user_pages_fast(start, nr_pages, gup_flags,
+	nr_pinned = internal_get_user_pages_fast(current->mm, start, nr_pages, gup_flags,
 						 pages);
 	/*
 	 * This routine is not allowed to return negative values. However,
