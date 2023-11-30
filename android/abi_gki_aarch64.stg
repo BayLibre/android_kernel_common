@@ -388021,6 +388021,15 @@ elf_symbol {
   full_name: "tracepoint_srcu"
 }
 elf_symbol {
+  id: 0x3778b821
+  name: "tracing_is_on"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x74baf17a
+  type_id: 0x9d80e32f
+  full_name: "tracing_is_on"
+}
+elf_symbol {
   id: 0x54bbaa46
   name: "tracing_off"
   is_defined: true
@@ -402981,6 +402990,7 @@ interface {
   symbol_id: 0xed8ca0be
   symbol_id: 0x3df2f359
   symbol_id: 0x33172d21
+  symbol_id: 0x3778b821
   symbol_id: 0x54bbaa46
   symbol_id: 0x3f07269b
   symbol_id: 0x3c7c6ce9
