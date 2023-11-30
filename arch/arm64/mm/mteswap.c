@@ -50,6 +50,7 @@ bool mte_save_tags_for_pfn(void *tags, unsigned long pfn)
 	tags_by_pfn_lock();
 
 	if (page_tag_storage_reserved(pfn_to_page(pfn))) {
+		xa_release(&tags_by_pfn, pfn);
 		tags_by_pfn_unlock();
 		return false;
 	}
