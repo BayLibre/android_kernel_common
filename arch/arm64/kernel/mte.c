@@ -433,6 +433,13 @@ static int __access_remote_tags(struct mm_struct *mm, unsigned long addr,
 			put_page(page);
 			break;
 		}
+
+		if (tag_storage_enabled() && !page_tag_storage_reserved(page)) {
+			ret = -EFAULT;
+			put_page(page);
+			break;
+		}
+
 		WARN_ON_ONCE(!page_mte_tagged(page));
 
 		/* limit access to the end of the page */
@@ -458,7 +465,10 @@ static int __access_remote_tags(struct mm_struct *mm, unsigned long addr,
 	}
 	mmap_read_unlock(mm);
 
-	/* return an error if no tags copied */
+	/*
+	 * return an error if no tags copied. Overwrites error codes from the
+	 * loop.
+	 */
 	kiov->iov_len = buf - kiov->iov_base;
 	if (!kiov->iov_len) {
 		/* check for error accessing the tracee's address space */
