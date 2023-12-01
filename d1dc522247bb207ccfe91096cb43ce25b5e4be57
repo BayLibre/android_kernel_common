@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4436e3e_d08f563f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2058565
+      },
+      "writtenOn": "2023-12-01T15:09:22Z",
+      "side": 1,
+      "message": "Hi，Greg! Hi,Todd!\nIn the patch I submitted last time, I have now discovered a problem, that is, the charging status in the HID driver cannot be reported to the upper layer of Android. This patch may not be a problem for the Linux kernel, but it will be a problem if it is placed on our Android system, because in the Android system, this charging status is meaningful only if it is reported to the upper layer and can be used by upper layer applications. We are now encountering this problem in actual applications, so we need to submit this patch. Please help review it. Thank you!",
+      "revId": "d1dc522247bb207ccfe91096cb43ce25b5e4be57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
