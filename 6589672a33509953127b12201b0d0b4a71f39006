@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "800d821a_99d89f93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-01T23:39:00Z",
+      "side": 1,
+      "message": "A few minor comments. The main issue is that we need to find a different way to communicate UFS_EVT_ABORT_SUCCESS since adding this enum breaks the KMI. See comments/questions. No major issues with these 2 patches other than that.",
+      "revId": "6589672a33509953127b12201b0d0b4a71f39006",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee6f31d8_cacf42bf",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2779,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-01T23:39:00Z",
+      "side": 1,
+      "message": "All of this stuff can be done from the hook handler, so this reduces to:\n```\ntrace_android_vh_ufs_perf_huristic_ctrl(hba, lrbp, \u0026err);\nif (err)\n   goto out;\n```",
+      "range": {
+        "startLine": 2776,
+        "startChar": 2,
+        "endLine": 2779,
+        "endChar": 22
+      },
+      "revId": "6589672a33509953127b12201b0d0b4a71f39006",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51d779d5_12030691",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7062,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-01T23:39:00Z",
+      "side": 1,
+      "message": "use a vendor hook here. You can call `ufshcd_update_evt_hist()` from the hook handler",
+      "revId": "6589672a33509953127b12201b0d0b4a71f39006",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b4beb5_ac6a2fef",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7063,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-01T23:39:00Z",
+      "side": 1,
+      "message": "since you can\u0027t create UFS_EVT_ABORT_SUCCESS due to KMI freeze, this needs to be communicated some other way. I\u0027m not sure how this event notification works, but could the fact that this is _ABORT_SUCCESS_ be communicated through a field in `struct ufs_hba`? Does the consumer of the event have access to the hba?",
+      "range": {
+        "startLine": 7063,
+        "startChar": 3,
+        "endLine": 7063,
+        "endChar": 24
+      },
+      "revId": "6589672a33509953127b12201b0d0b4a71f39006",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f283f71a_24d06c5d",
+        "filename": "drivers/scsi/ufs/ufshcd.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-01T23:39:00Z",
+      "side": 1,
+      "message": "This breaks the KMI since UFS_EVT_CNT is used to size an array. Can\u0027t do this.",
+      "revId": "6589672a33509953127b12201b0d0b4a71f39006",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
