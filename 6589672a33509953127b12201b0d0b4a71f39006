@@ -83,6 +83,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9e7a82d_fcf938a1",
+        "filename": "drivers/scsi/ufs/ufshcd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7063,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-01T23:54:45Z",
+      "side": 1,
+      "message": "If you do this from a hook, could you implement the hook handler in ufs-mediatek.c and call a variant of `ufs_mtk_evt_notify()` that knows it is an _ABORT_SUCCESS_? - eg `ufs_mtk_evt_abort_success_notify()`",
+      "parentUuid": "73b4beb5_ac6a2fef",
+      "range": {
+        "startLine": 7063,
+        "startChar": 3,
+        "endLine": 7063,
+        "endChar": 24
+      },
+      "revId": "6589672a33509953127b12201b0d0b4a71f39006",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f283f71a_24d06c5d",
         "filename": "drivers/scsi/ufs/ufshcd.h",
         "patchSetId": 3
