@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3cf0d3b_614829d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-12-01T19:47:05Z",
+      "side": 1,
+      "message": "This introduces `rpmsg_register_device_override` and makes it so that `qcom_glink.ko` (used by db845c) now requires it. Otherwise, db845c will be unable to boot since `rpmsg_register_device_override` is not part of the ABI and is therefore unexported at build time.\n\nCan you please add a patch to add `rpmsg_register_device_override` to the ABI?",
+      "revId": "ee3817893b004db13a8297b9f7563b902eb5c624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
