@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc87277e_9ca65dfe",
+        "filename": "arch/arm64/mm/pageattr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2023-12-01T12:06:39Z",
+      "side": 1,
+      "message": "Sadly, I don\u0027t think this is as straight forward as you\u0027ve done here.\n\nUpstream, `can_set_direct_map()` has a check for `IS_ENABLED(CONFIG_KFENCE)` which got removed by this patch, but in `android14-5.15` I don\u0027t that is open-coded at the callsite instead (see e.g. `if (can_set_direct_map() ||IS_ENABLED(CONFIG_KFENCE))` in `map_mem()`)",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 23
+      },
+      "revId": "3d939a2058a2e612422fc4b7e93143342e9724de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
