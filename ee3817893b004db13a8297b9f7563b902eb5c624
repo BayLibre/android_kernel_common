@@ -16,6 +16,23 @@
       "message": "This introduces `rpmsg_register_device_override` and makes it so that `qcom_glink.ko` (used by db845c) now requires it. Otherwise, db845c will be unable to boot since `rpmsg_register_device_override` is not part of the ABI and is therefore unexported at build time.\n\nCan you please add a patch to add `rpmsg_register_device_override` to the ABI?",
       "revId": "ee3817893b004db13a8297b9f7563b902eb5c624",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7cd1f22_980a420e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2023-12-02T02:39:39Z",
+      "side": 1,
+      "message": "Perhaps cherry-picking the `android14-5.15-lts` CL might help https://android-review.googlesource.com/c/kernel/common/+/2852354",
+      "revId": "ee3817893b004db13a8297b9f7563b902eb5c624",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
