@@ -46,6 +46,30 @@
       },
       "revId": "701db7bdb8adceacf1d13fbbb63749c3ebde13ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbac2d47_ef5945ba",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7819,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2023-12-04T20:59:07Z",
+      "side": 1,
+      "message": "Sorry, it should be moved to line 78 to look like this:\n```\n...\n#include \u003ctrace/hooks/vmscan.h\u003e\n\nEXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_direct_reclaim_begin);\nEXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_direct_reclaim_end);\nEXPORT_TRACEPOINT_SYMBOL_GPL(mm_vmscan_kswapd_wake);\n\nstruct scan_control {\n...\n```",
+      "parentUuid": "370d8576_ebb8f6c8",
+      "range": {
+        "startLine": 7819,
+        "startChar": 1,
+        "endLine": 7819,
+        "endChar": 52
+      },
+      "revId": "701db7bdb8adceacf1d13fbbb63749c3ebde13ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
