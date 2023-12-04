@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000060762154",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2856885?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "6987081d_3cc6a4aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2023-12-04T23:11:17Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/971237b900c38f50e7865289a2aecb77dc7f09f3) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d971237b900c38f50e7865289a2aecb77dc7f09f3)\n\n```\n    - ## drivers/ufs/core/ufshcd.c ##\n    -@@ drivers/ufs/core/ufshcd.c: static int ufshcd_eh_host_reset_handler(struct scsi_cmnd *cmd)\n    + ## drivers/scsi/ufs/ufshcd.c ##\n    +@@ drivers/scsi/ufs/ufshcd.c: static int ufshcd_eh_host_reset_handler(struct scsi_cmnd *cmd)\n      \n      \thba \u003d shost_priv(cmd-\u003edevice-\u003ehost);\n      \n     +\t/*\n    -+\t * If runtime PM sent SSU and got a timeout, scsi_error_handler is\n    -+\t * stuck in this function waiting for flush_work(\u0026hba-\u003eeh_work). And\n    -+\t * ufshcd_err_handler(eh_work) is stuck waiting for runtime PM. Do\n    -+\t * ufshcd_link_recovery instead of eh_work to prevent deadlock.\n    ++\t * If runtime pm send SSU and got timeout, scsi_error_handler\n    ++\t * stuck at this function to wait for flush_work(\u0026hba-\u003eeh_work).\n    ++\t * And ufshcd_err_handler(eh_work) stuck at wait for runtime pm active.\n    ++\t * Do ufshcd_link_recovery instead schedule eh_work can prevent\n    ++\t * dead lock to happen.\n     +\t */\n     +\tif (hba-\u003epm_op_in_progress) {\n     +\t\tif (ufshcd_link_recovery(hba))\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 587701610 android-build.ayeaye-python-dispatcher_20231204.04_p0",
+      "revId": "469a933a87af27e581be81caaa3134849fef4f57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
