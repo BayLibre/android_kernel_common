@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43aaef8a_5847f6f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-05T23:27:53Z",
+      "side": 1,
+      "message": "Please move the symbol update and XML changes to a separate patch on top of this one.\n\nThere are checkpatch errors:\n```\nERROR:CODE_INDENT: code indent should use tabs where possible\n#261: FILE: include/trace/hooks/delayacct.h:52:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#263: FILE: include/trace/hooks/delayacct.h:54:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#264: FILE: include/trace/hooks/delayacct.h:55:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#266: FILE: include/trace/hooks/delayacct.h:57:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#267: FILE: include/trace/hooks/delayacct.h:58:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#269: FILE: include/trace/hooks/delayacct.h:60:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#270: FILE: include/trace/hooks/delayacct.h:61:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#272: FILE: include/trace/hooks/delayacct.h:63:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#273: FILE: include/trace/hooks/delayacct.h:64:\n\n```",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad9268c_51b6a659",
+        "filename": "include/trace/hooks/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-05T23:27:53Z",
+      "side": 1,
+      "message": "Please remove all 3 of these needless inclusions. If a type is needed, please forward declare them as was done at lines 21-22.",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
