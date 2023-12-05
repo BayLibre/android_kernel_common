@@ -22,6 +22,30 @@
       },
       "revId": "7d8184264a122a46a2da36e58be9a22d65a23e83",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "875c128e_15de3dab",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2023-12-05T11:20:57Z",
+      "side": 1,
+      "message": "We probably don\u0027t want to prefault in this case as the block pte will be almost immediately replaced with a table, and we can avoid TLBI.",
+      "parentUuid": "8175fb3e_5beb9427",
+      "range": {
+        "startLine": 792,
+        "startChar": 1,
+        "endLine": 792,
+        "endChar": 31
+      },
+      "revId": "7d8184264a122a46a2da36e58be9a22d65a23e83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
