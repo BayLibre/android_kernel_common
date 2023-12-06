@@ -34,6 +34,24 @@
       "parentUuid": "83615e16_df6d8f03",
       "revId": "cc4258d608fe1586e618ea74269cf9d82a034fac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7de663e_e31313df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T21:05:26Z",
+      "side": 1,
+      "message": "It\u0027s reasonable to have the patchset be upstream+adjustments, so I don\u0027t really mind this approach, but is this patch a full reversion of the previous one (in which case, it should be a revert), or is it a partial reversion (in which case this patch is probably right). Either way, adding some rationale in the commit message makes sense.",
+      "parentUuid": "6007de51_76ed0a7f",
+      "revId": "cc4258d608fe1586e618ea74269cf9d82a034fac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
