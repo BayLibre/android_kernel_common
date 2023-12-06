@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fe601a7_08af1cef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T00:21:15Z",
+      "side": 1,
+      "message": "Since this patch doesn\u0027t enable CONFIG_TASK_DELAY_ACCT, perhaps reword to something like:\n```\nCONFIG_TASK_DELAY_ACCT cannot be enabled since `struct task_struct`\nis KMI frozen. Instead, use vendor hooks to allow delay accounting\nto be implemented in a vendor module.\n```",
+      "range": {
+        "startLine": 9,
+        "startChar": 56,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "460e2a9d_62efcf21",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T00:21:15Z",
+      "side": 1,
+      "message": "This patch isn\u0027t really doing (a). Instead it is redirecting all delay accounting calls to your vendor module.",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 72
+      },
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c71f75a_9f1fe7ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T00:21:15Z",
+      "side": 1,
+      "message": "This patch is not strictly about low ram, so no need to cite that discussion or the doc. You cite the bug already below, so you can remove this section.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f004a67c_a170968f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T00:21:15Z",
+      "side": 1,
+      "message": "move the symbol part of the commit message to a new patch that adds the symbols (separate the functionality patch from the symbol patch).",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 0
+      },
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43aaef8a_5847f6f2",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -14,6 +106,29 @@
       "writtenOn": "2023-12-05T23:27:53Z",
       "side": 1,
       "message": "Please move the symbol update and XML changes to a separate patch on top of this one.\n\nThere are checkpatch errors:\n```\nERROR:CODE_INDENT: code indent should use tabs where possible\n#261: FILE: include/trace/hooks/delayacct.h:52:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#263: FILE: include/trace/hooks/delayacct.h:54:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#264: FILE: include/trace/hooks/delayacct.h:55:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#266: FILE: include/trace/hooks/delayacct.h:57:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#267: FILE: include/trace/hooks/delayacct.h:58:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#269: FILE: include/trace/hooks/delayacct.h:60:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#270: FILE: include/trace/hooks/delayacct.h:61:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#272: FILE: include/trace/hooks/delayacct.h:63:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#273: FILE: include/trace/hooks/delayacct.h:64:\n\n```",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08693fef_394773a7",
+        "filename": "include/linux/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T00:21:15Z",
+      "side": 1,
+      "message": "why is this needed?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 6
+      },
       "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
