@@ -273,6 +273,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fc65856_7ad336c4",
+        "filename": "include/linux/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T17:30:05Z",
+      "side": 1,
+      "message": "See comment below for how to fix this.",
+      "parentUuid": "e1217e9d_3a45a774",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 6
+      },
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11274405_43246397",
+        "filename": "include/linux/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T17:30:05Z",
+      "side": 1,
+      "message": "To clean up the build issues, these stubs should be changed to something like:\n```\nif (trace_android_vh_delayacct_set_flag_enabled())\n  _trace_android_vh_delayacct_set_flag(p, flag);\n```\nwhere `_trace_android_vh_delayacct_set_flag()` is a function stub in a C file:\n```\nvoid _trace_android_vh_delayacct_set_flag(struct task_struct *p, int flag)\n{\n  trace_android_vh_delayacct_set_flag(struct task_struct *p, int flag);\n}\n```",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ad9268c_51b6a659",
         "filename": "include/trace/hooks/delayacct.h",
         "patchSetId": 1
@@ -302,6 +343,24 @@
       "side": 1,
       "message": "hi,Deleting lines 5-7 on top of the patch set 1 will cause the compilation to fail. Please review it, Thanks.\ndiff：\n\n\n\tindex 1c5fe16b0f92..575896abe8a8 100644\n\t--- a/include/trace/hooks/delayacct.h\n\t+++ b/include/trace/hooks/delayacct.h\n\t@@ -2,10 +2,6 @@\n\t #ifdef PROTECT_TRACE_INCLUDE_PATH\n\t #undef PROTECT_TRACE_INCLUDE_PATH\n\t-#include \u003ctrace/hooks/save_incpath.h\u003e\n\t-#include \u003ctrace/hooks/delayacct.h\u003e\n\t-#include \u003ctrace/hooks/restore_incpath.h\u003e\n\t-\n\t #else /* PROTECT_TRACE_INCLUDE_PATH */\nThen compile failed：\n\n\n\t/home/kernel5.15/include/linux/delayacct.h:178:2: error: implicit declaration of function \u0027trace_android_vh_delayacct_set_flag\u0027 [-Werror,-Wimplicit-function-declaration]\n\t\ttrace_android_vh_delayacct_set_flag(p, flag);\n\t\t^\n\tCC      arch/arm64/kernel/cpu_errata.o\n\tCC      security/selinux/selinuxfs.o\n\t/home/kernel5.15/include/linux/delayacct.h:182:2: error: implicit declaration of function \u0027trace_android_vh_delayacct_clear_flag\u0027 [-Werror,-Wimplicit-function-declaration]\n\t\ttrace_android_vh_delayacct_clear_flag(p, flag);\n\t\t^\n\tHDRTEST usr/include/rdma/rdma_netlink.h\n\tCC      arch/arm64/kernel/cpufeature.o\n\tCC      block/bdev.o\n\tCC      block/partitions/core.o\n\t/home/kernel5.15/include/linux/delayacct.h:187:2: error: implicit declaration of function \u0027trace_android_rvh_delayacct_init\u0027 [-Werror,-Wimplicit-function-declaration]\n\t\ttrace_android_rvh_delayacct_init(NULL);\n\t\t^\n\tCC      block/fops.o\n\tCC      kernel/locking/spinlock.o\n\tHDRTEST usr/include/rdma/qedr-abi.h\n\t...\n\tand so on",
       "parentUuid": "2ad9268c_51b6a659",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2562a58b_9173e456",
+        "filename": "include/trace/hooks/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2023-12-06T17:30:05Z",
+      "side": 1,
+      "message": "The C files need to include whatever files are needed. The issue is that you are invoking these hooks from a header file that is included by many C files.\n\nSee new comment on include/linux/delayacct.h",
+      "parentUuid": "075976a9_f49d2445",
       "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
