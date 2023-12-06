@@ -39,9 +39,6 @@ static inline bool try_transfer_saved_tags(struct page *from, struct page *to)
 		return saved;
 	}
 
-	if (likely(!page_is_tag_storage(from)))
-		return false;
-
 	tags_by_pfn_lock();
 	tags = mte_erase_tags_for_pfn(page_to_pfn(from));
 	tags_by_pfn_unlock();
