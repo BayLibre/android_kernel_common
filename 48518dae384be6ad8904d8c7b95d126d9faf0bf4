@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f53878_86856ab4",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-12-07T23:46:58Z",
+      "side": 1,
+      "message": "If the intent is to report errors, I don\u0027t think this would do anything. err here can only be 0 since we already returned if there had been an error.",
+      "range": {
+        "startLine": 1022,
+        "startChar": 1,
+        "endLine": 1022,
+        "endChar": 43
+      },
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
