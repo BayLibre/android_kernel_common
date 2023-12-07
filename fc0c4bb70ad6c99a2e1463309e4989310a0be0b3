@@ -39,6 +39,30 @@
       },
       "revId": "fc0c4bb70ad6c99a2e1463309e4989310a0be0b3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5967bbb_f6d82d67",
+        "filename": "drivers/android/context.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2023-12-07T10:59:27Z",
+      "side": 1,
+      "message": "You are correct, that\u0027s what I should do. But for now I\u0027ll keep `lock` safe since this is a temporary workaround, and once mutexes in statics are working in the Kernel, `lock` will become safe. I don\u0027t think there\u0027s much risk in this particular case.",
+      "parentUuid": "53dc4be2_a3aa11ea",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 101
+      },
+      "revId": "fc0c4bb70ad6c99a2e1463309e4989310a0be0b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
