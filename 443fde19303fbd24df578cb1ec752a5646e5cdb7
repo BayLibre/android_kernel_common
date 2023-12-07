@@ -33,6 +33,24 @@
       "message": "@umendez@google.com, @elsk@google.com, are we ready to have those rather trivial build.configs omitted? After all, they only specify a defconfig and nothing else.",
       "revId": "443fde19303fbd24df578cb1ec752a5646e5cdb7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353881d7_03b32d45",
+        "filename": "build.config.crashdump",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2023-12-07T11:31:08Z",
+      "side": 1,
+      "message": "There is `kernel_build.defconfig_fragments`[0] option, which should fit in this case. \n\n[0] https://android.googlesource.com/kernel/build/+/refs/heads/main/kleaf/docs/kernel_config.md#defconfig-fragments",
+      "parentUuid": "eee5d79b_ec60f69e",
+      "revId": "443fde19303fbd24df578cb1ec752a5646e5cdb7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
