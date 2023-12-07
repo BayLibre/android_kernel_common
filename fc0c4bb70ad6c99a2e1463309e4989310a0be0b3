@@ -63,6 +63,30 @@
       },
       "revId": "fc0c4bb70ad6c99a2e1463309e4989310a0be0b3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68472b2d_b32d2a84",
+        "filename": "drivers/android/context.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 2064605
+      },
+      "writtenOn": "2023-12-07T18:00:29Z",
+      "side": 1,
+      "message": "I don\u0027t think this code should introduce known unsoundness. Since these are only `pub(crate)`, it should straightforward to mark them `unsafe` now and remove it in the future.",
+      "parentUuid": "d5967bbb_f6d82d67",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 101
+      },
+      "revId": "fc0c4bb70ad6c99a2e1463309e4989310a0be0b3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
