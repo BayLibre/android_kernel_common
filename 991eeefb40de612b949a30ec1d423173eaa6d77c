@@ -51,6 +51,24 @@
       "parentUuid": "3ab6ea21_6d024967",
       "revId": "991eeefb40de612b949a30ec1d423173eaa6d77c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2a36630_83d57fe8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2023-12-07T19:46:24Z",
+      "side": 1,
+      "message": "Thanks Matthias. Ideally, these can be vendor modules as they are not enabled in the `gki_defconfig` but because code it enables is already built-in may be we should just enable these as built-in modules.\n\nIf we go with the the `\u003dm` like you said those files need to be updated and that will make them as unprotected modules i.e. vendors will be able to override it but since only modules we have on these branch are unprotected modules, it\u0027s fine.\n\nI am fine either way.",
+      "parentUuid": "351c1f7d_8e0c4e82",
+      "revId": "991eeefb40de612b949a30ec1d423173eaa6d77c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
