@@ -295,6 +295,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7732a83_a26ab3a4",
+        "filename": "include/linux/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2023-12-07T12:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fc65856_7ad336c4",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 6
+      },
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11274405_43246397",
@@ -308,6 +332,24 @@
       "writtenOn": "2023-12-06T17:30:05Z",
       "side": 1,
       "message": "To clean up the build issues, these stubs should be changed to something like:\n```\nif (trace_android_vh_delayacct_set_flag_enabled())\n  _trace_android_vh_delayacct_set_flag(p, flag);\n```\nwhere `_trace_android_vh_delayacct_set_flag()` is a function stub in a C file:\n```\nvoid _trace_android_vh_delayacct_set_flag(struct task_struct *p, int flag)\n{\n  trace_android_vh_delayacct_set_flag(struct task_struct *p, int flag);\n}\n```",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c86745e4_2672bdaf",
+        "filename": "include/linux/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2023-12-07T12:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11274405_43246397",
       "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -361,6 +403,24 @@
       "side": 1,
       "message": "The C files need to include whatever files are needed. The issue is that you are invoking these hooks from a header file that is included by many C files.\n\nSee new comment on include/linux/delayacct.h",
       "parentUuid": "075976a9_f49d2445",
+      "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b77c24cd_6f00b41d",
+        "filename": "include/trace/hooks/delayacct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2023-12-07T12:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2562a58b_9173e456",
       "revId": "1f1da3f24d5a49c9acf84df817c7c1f8efbb24ff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
