@@ -625,10 +625,18 @@ struct hid_device {							/* device report descriptor */
 	struct list_head debug_list;
 	spinlock_t  debug_list_lock;
 	wait_queue_head_t debug_wait;
+<<<<<<< HEAD   (5a9145 Merge 5.10.202 into android13-5.10-lts)
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
+=======
+	struct kref			ref;
+
+	unsigned int id;						/* system unique id */
+>>>>>>> BRANCH (d330ef Linux 5.10.203)
 };
+
+void hiddev_free(struct kref *ref);
 
 #define to_hid_device(pdev) \
 	container_of(pdev, struct hid_device, dev)
