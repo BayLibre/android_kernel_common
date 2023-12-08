@@ -2076,6 +2076,14 @@ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
 	 * linear map which has the Tagged attribute.
 	 */
 	if (!page_mte_tagged(ZERO_PAGE(0))) {
+		pte_t *page_ptep = virt_to_kpte((unsigned long)lm_alias(empty_zero_page));
+		pte_t page_pte = *page_ptep;
+
+		page_pte.pte &= ~PTE_ATTRINDX_MASK;
+		page_pte.pte |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
+		set_pte(page_ptep, page_pte);
+		__flush_tlb_kernel_pgtable((unsigned long)lm_alias(empty_zero_page));
+
 		mte_clear_page_tags(lm_alias(empty_zero_page));
 		set_page_mte_tagged(ZERO_PAGE(0));
 	}
