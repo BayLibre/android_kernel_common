@@ -542,8 +542,10 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 	unsigned long block;
 	unsigned long flags;
 	unsigned int tries;
+	unsigned long page_va;
 	bool success;
 	int ret = 0;
+	int i;
 
 	VM_WARN_ON_ONCE(!preemptible());
 
@@ -637,6 +639,21 @@ success_next:
 	}
 
 	page_set_tag_storage_reserved(page, order);
+
+	page_va = (unsigned long)page_to_virt(page);
+	for (i = 0; i < (1 << order); i++) {
+		pte_t *page_ptep;
+		pte_t page_pte;
+
+		page_ptep = virt_to_kpte(page_va + i * PAGE_SIZE);
+		page_pte = *page_ptep;
+
+		page_pte.pte &= ~PTE_ATTRINDX_MASK;
+		page_pte.pte |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
+		set_pte(page_ptep, page_pte);
+		__flush_tlb_kernel_pgtable(page_va + i * PAGE_SIZE);
+	}
+
 	mutex_unlock(&tag_blocks_lock);
 
 	mte_restore_tags_for_pfn(page_to_pfn(page), order);
@@ -675,6 +692,19 @@ void free_tag_storage(struct page *page, int order)
 		return;
 
 	page_va = (unsigned long)page_to_virt(page);
+	for (i = 0; i < (1 << order); i++) {
+		pte_t *page_ptep;
+		pte_t page_pte;
+
+		page_ptep = virt_to_kpte(page_va + i * PAGE_SIZE);
+		page_pte = *page_ptep;
+
+		page_pte.pte &= ~PTE_ATTRINDX_MASK;
+		page_pte.pte |= PTE_ATTRINDX(MT_NORMAL);
+		set_pte(page_ptep, page_pte);
+		__flush_tlb_kernel_pgtable(page_va + i * PAGE_SIZE);
+	}
+
 	/* Avoid writeback of dirty tag cache lines corrupting data. */
 	dcache_inval_tags_poc(page_va, page_va + (PAGE_SIZE << order));
 
