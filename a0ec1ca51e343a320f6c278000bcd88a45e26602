@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef1fe26a_0e628432",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-08T08:24:42Z",
+      "side": 1,
+      "message": "These devices should be supported by the built-in usb-acm driver UNLESS you want to support them with the usb-serial driver instead, which is odd.\n\nWhy is usb-serial support required here, what is wrong with the usb-acm control instead?",
+      "revId": "a0ec1ca51e343a320f6c278000bcd88a45e26602",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
