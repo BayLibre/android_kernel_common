@@ -3,6 +3,7 @@
  * Copyright (c) 2014, The Linux Foundation. All rights reserved.
  */
 #include <linux/kernel.h>
+#include <linux/memblock.h>
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/sched.h>
@@ -161,6 +162,57 @@ int set_memory_valid(unsigned long addr, int numpages, int enable)
 		return __change_memory_common(addr, PAGE_SIZE * numpages,
 					__pgprot(0),
 					__pgprot(PTE_VALID));
+}
+
+
+int set_memory_tagged(unsigned long addr, int order, bool enable)
+{
+	if (!WARN_ON_ONCE(can_set_direct_map()))
+		return 0;
+
+	if (enable)
+		return __change_memory_common(
+			addr, PAGE_SIZE << order,
+			__pgprot(PTE_ATTRINDX(MT_NORMAL_TAGGED)),
+			__pgprot(PTE_ATTRINDX_MASK));
+	else
+		return __change_memory_common(addr, PAGE_SIZE << order,
+					      __pgprot(PTE_ATTRINDX(MT_NORMAL)),
+					      __pgprot(PTE_ATTRINDX_MASK));
+}
+
+int set_direct_map_normal(void)
+{
+	struct memblock_region *region;
+	int ret;
+	phys_addr_t init_begin = virt_to_phys(__init_begin);
+	phys_addr_t init_end = virt_to_phys(__init_end);
+
+  	for_each_mem_region(region) {
+    		if (region->flags & MEMBLOCK_NOMAP)
+      			continue;
+
+		/*
+		 * Skip the kernel mapping which may use PMDs that
+		 * __change_memory_common can't handle.
+		 * Remap the reclaimed init section below.
+		 */
+		if (region->base <= init_begin &&
+		    init_end <= region->base + region->size)
+			continue;
+
+		ret = __change_memory_common(
+			(unsigned long)phys_to_virt(region->base), region->size,
+			__pgprot(PTE_ATTRINDX(MT_NORMAL)),
+			__pgprot(PTE_ATTRINDX_MASK));
+		if (ret != 0)
+			return ret;
+	}
+
+	return __change_memory_common((unsigned long)phys_to_virt(init_begin),
+				      init_end - init_begin,
+				      __pgprot(PTE_ATTRINDX(MT_NORMAL)),
+				      __pgprot(PTE_ATTRINDX_MASK));
 }
 
 /*

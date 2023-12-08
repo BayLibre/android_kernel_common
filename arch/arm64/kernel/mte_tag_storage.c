@@ -21,6 +21,7 @@
 
 #include <asm/cacheflush.h>
 #include <asm/mte_tag_storage.h>
+#include <asm/set_memory.h>
 #include <trace/hooks/mm.h>
 
 __ro_after_init DEFINE_STATIC_KEY_FALSE(tag_storage_enabled_key);
@@ -395,6 +396,7 @@ static int __init mte_tag_storage_activate_regions(void)
 	}
 
 	reserve_tag_storage(ZERO_PAGE(0), 0, GFP_HIGHUSER_MOVABLE);
+	set_direct_map_normal();
 
 	static_branch_enable(&tag_storage_enabled_key);
 	pr_info("MTE tag storage region management enabled");
@@ -636,6 +638,8 @@ success_next:
 		count_vm_events(CMA_ALLOC_SUCCESS, region->block_size);
 	}
 
+	set_memory_tagged((unsigned long)page_to_virt(page), order, true);
+
 	mte_restore_tags_for_pfn(page_to_pfn(page), order);
 
 	page_set_tag_storage_reserved(page, order);
@@ -676,6 +680,8 @@ void free_tag_storage(struct page *page, int order)
 		return;
 
 	page_va = (unsigned long)page_to_virt(page);
+	set_memory_tagged(page_va, order, false);
+
 	/* Avoid writeback of dirty tag cache lines corrupting data. */
 	dcache_inval_tags_poc(page_va, page_va + (PAGE_SIZE << order));
 

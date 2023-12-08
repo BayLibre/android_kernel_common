@@ -85,6 +85,7 @@
 #include <asm/mmu_context.h>
 #include <asm/mte.h>
 #include <asm/processor.h>
+#include <asm/set_memory.h>
 #include <asm/smp.h>
 #include <asm/sysreg.h>
 #include <asm/traps.h>
