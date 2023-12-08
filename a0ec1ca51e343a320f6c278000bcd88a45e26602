@@ -16,6 +16,24 @@
       "message": "These devices should be supported by the built-in usb-acm driver UNLESS you want to support them with the usb-serial driver instead, which is odd.\n\nWhy is usb-serial support required here, what is wrong with the usb-acm control instead?",
       "revId": "a0ec1ca51e343a320f6c278000bcd88a45e26602",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a97bbbc7_f7feba2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083383
+      },
+      "writtenOn": "2023-12-08T08:55:53Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nXR21V141X cannot use normal usb acm driver and has its owner driver.\nIf CONFIG_USB_SERIAL_XR was not enabled in gki_defconfig,\nthe XR21V141X device will be configured as a cdc_acm device (ttyACM0), which is not working. (XR21V141X uses ttyXRUSB0.)\n\nPlease refer to https://www.spinics.net/lists/linux-usb/msg195926.html\n\n\"The RTS/CTS line discipline for this device doesn\u0027t follow\nthe standard. So, in order to properly support TX, a separate\ndriver is needed.\n\nEnsure that cdc_acm will ignore it during probe time, if the\nKernel is built with support for it.\"\n\nThanks.",
+      "parentUuid": "ef1fe26a_0e628432",
+      "revId": "a0ec1ca51e343a320f6c278000bcd88a45e26602",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
