@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf7e215_e4b65a7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-12-08T01:51:21Z",
+      "side": 1,
+      "message": "Is there a bug filed for this? At least in the functions that are hooked, it looks like there are several error paths that aren\u0027t covered. It would be easier for me to know if those should\u0027ve been included if there\u0027s more of a description of the use cases in a bug.",
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f53878_86856ab4",
@@ -19,6 +36,29 @@
         "startChar": 1,
         "endLine": 1022,
         "endChar": 43
+      },
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c53ac9_343ef625",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2023-12-08T01:51:21Z",
+      "side": 1,
+      "message": "Is this error path important?",
+      "range": {
+        "startLine": 1825,
+        "startChar": 1,
+        "endLine": 1826,
+        "endChar": 13
       },
       "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
