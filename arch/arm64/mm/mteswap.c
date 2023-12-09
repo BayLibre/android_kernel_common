@@ -77,9 +77,6 @@ void mte_restore_tags_for_pfn(unsigned long start_pfn, int order)
 	tags_by_pfn_lock();
 
 	for (pfn = start_pfn; pfn < start_pfn + (1 << order); pfn++, page++) {
-		if (WARN_ON_ONCE(!page_tag_storage_reserved(page)))
-			continue;
-
 		tags = mte_erase_tags_for_pfn(pfn);
 		if (unlikely(tags)) {
 			/*

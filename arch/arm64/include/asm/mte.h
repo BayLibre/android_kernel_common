@@ -51,11 +51,6 @@ extern bool page_tag_storage_reserved(struct page *page);
 
 static inline void set_page_mte_tagged(struct page *page)
 {
-#ifdef CONFIG_ARM64_MTE_TAG_STORAGE
-	/* Open code mte_tag_storage_enabled() */
-	WARN_ON_ONCE(static_branch_likely(&tag_storage_enabled_key) &&
-		     !page_tag_storage_reserved(page));
-#endif
 	/*
 	 * Ensure that the tags written prior to this function are visible
 	 * before the page flags update.
