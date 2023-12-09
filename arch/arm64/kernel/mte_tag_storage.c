@@ -638,8 +638,6 @@ success_next:
 		count_vm_events(CMA_ALLOC_SUCCESS, region->block_size);
 	}
 
-	page_set_tag_storage_reserved(page, order);
-
 	page_va = (unsigned long)page_to_virt(page);
 	for (i = 0; i < (1 << order); i++) {
 		pte_t *page_ptep;
@@ -654,9 +652,11 @@ success_next:
 		__flush_tlb_kernel_pgtable(page_va + i * PAGE_SIZE);
 	}
 
-	mutex_unlock(&tag_blocks_lock);
-
 	mte_restore_tags_for_pfn(page_to_pfn(page), order);
+
+	page_set_tag_storage_reserved(page, order);
+
+	mutex_unlock(&tag_blocks_lock);
 
 	return 0;
 
