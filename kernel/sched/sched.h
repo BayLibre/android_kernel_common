@@ -972,6 +972,10 @@ struct balance_callback {
 	void (*func)(struct rq *rq);
 };
 
+typedef enum misfit_reason {
+	MISFIT_PERF,		/* Requires moving to a more performant CPU */
+} misfit_reason_t;
+
 /*
  * This is the main, per-CPU runqueue data structure.
  *
@@ -1612,6 +1616,10 @@ struct rq_flags {
 	 * restored in rq_repin_lock().
 	 */
 	unsigned int clock_update_flags;
+#endif
+
+#ifdef CONFIG_SMP
+	misfit_reason_t		misfit_reason;
 #endif
 };
 
