@@ -636,10 +636,11 @@ success_next:
 		count_vm_events(CMA_ALLOC_SUCCESS, region->block_size);
 	}
 
-	page_set_tag_storage_reserved(page, order);
-	mutex_unlock(&tag_blocks_lock);
-
 	mte_restore_tags_for_pfn(page_to_pfn(page), order);
+
+	page_set_tag_storage_reserved(page, order);
+
+	mutex_unlock(&tag_blocks_lock);
 
 	return 0;
 
