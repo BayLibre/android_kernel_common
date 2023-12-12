@@ -100,6 +100,9 @@ write_file(
 
 define_common_kernels(target_configs = {
     "kernel_aarch64": {
+        "kmi_symbol_list_strict_mode": False,
+        "kmi_symbol_list": "android/abi_gki_aarch64",
+        "additional_kmi_symbol_lists": [":aarch64_additional_kmi_symbol_lists"],
         "module_implicit_outs": get_gki_modules_list("arm64"),
         "make_goals": _GKI_AARCH64_MAKE_GOALS,
     },
