@@ -921,7 +921,7 @@ static int acc_release(struct inode *ip, struct file *fp)
 	dev->disconnected = 1;
 
 	fp->private_data = NULL;
-	WARN_ON(!atomic_xchg(&dev->open_excl, 0));
+	atomic_xchg(&dev->open_excl, 0);
 	put_acc_dev(dev);
 	return 0;
 }
@@ -1444,6 +1444,9 @@ void acc_disconnect(void)
 
 	if (!dev)
 		return;
+
+	/* release device file lock on accessory disconnection */
+	atomic_set(&dev->open_excl, 0);
 
 	/* unregister all HID devices if USB is disconnected */
 	kill_all_hid_devices(dev);
