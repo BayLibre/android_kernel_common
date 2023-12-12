@@ -1458,7 +1458,12 @@ cc_binary_with_abi(
     path_prefix = _KSELFTEST_DIR,
     target_compatible_with = ["@platforms//os:android"],
     visibility = ["//visibility:private"],
-    deps = [":kselftest_headers_lib"],
+    deps = [
+        ":kselftest_headers_lib",
+        ":kselftest_timers_inconsistency_check",
+        ":kselftest_timers_nanosleep",
+        ":kselftest_timers_tests_raw_skew",
+    ],
 )
 
 cc_binary_with_abi(
@@ -1471,7 +1476,11 @@ cc_binary_with_abi(
     path_prefix = _KSELFTEST_DIR,
     target_compatible_with = ["@platforms//os:android"],
     visibility = ["//visibility:private"],
-    deps = [":kselftest_headers_lib"],
+    deps = [
+        ":kselftest_headers_lib",
+        ":kselftest_timers_inconsistency_check",
+        ":kselftest_timers_nanosleep",
+    ],
 )
 
 cc_binary_with_abi(
@@ -1490,7 +1499,6 @@ cc_binary_with_abi(
 cc_binary_with_abi(
     name = "kselftest_timers_inconsistency_check",
     srcs = ["tools/testing/selftests/timers/inconsistency-check.c"],
-    # Called by set-2038, skew_consistency, change_skew, clocksource-switch
     out = "inconsistency-check",
     copts = [
         "-O3",
@@ -1531,7 +1539,6 @@ cc_binary_with_abi(
 cc_binary_with_abi(
     name = "kselftest_timers_nanosleep",
     srcs = ["tools/testing/selftests/timers/nanosleep.c"],
-    # Called by clocksource-switch, change_skew, set-2038
     out = "nanosleep",
     copts = [
         "-O3",
@@ -1546,6 +1553,7 @@ cc_binary_with_abi(
 cc_binary_with_abi(
     name = "kselftest_timers_nsleep_lat",
     srcs = ["tools/testing/selftests/timers/nsleep-lat.c"],
+    out = "nsleep-lat",
     copts = [
         "-O3",
         "-DKTEST",
@@ -1572,7 +1580,6 @@ cc_binary_with_abi(
 cc_binary_with_abi(
     name = "kselftest_timers_tests_raw_skew",
     srcs = ["tools/testing/selftests/timers/raw_skew.c"],
-    # Called by change_skew
     out = "raw_skew",
     copts = [
         "-O3",
@@ -1594,7 +1601,12 @@ cc_binary_with_abi(
     path_prefix = _KSELFTEST_DIR,
     target_compatible_with = ["@platforms//os:android"],
     visibility = ["//visibility:private"],
-    deps = [":kselftest_headers_lib"],
+    deps = [
+        ":kselftest_headers_lib",
+        ":kselftest_timers_inconsistency_check",
+        ":kselftest_timers_nanosleep",
+        ":kselftest_timers_nsleep_lat",
+    ],
 )
 
 cc_binary_with_abi(
@@ -1646,7 +1658,10 @@ cc_binary_with_abi(
     path_prefix = _KSELFTEST_DIR,
     target_compatible_with = ["@platforms//os:android"],
     visibility = ["//visibility:private"],
-    deps = [":kselftest_headers_lib"],
+    deps = [
+        ":kselftest_headers_lib",
+        ":kselftest_timers_inconsistency_check",
+    ],
 )
 
 cc_binary_with_abi(
