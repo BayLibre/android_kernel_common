@@ -49,6 +49,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "752cd4bd_78aa21b5",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-12T18:50:41Z",
+      "side": 1,
+      "message": "hint, this will never work, this is the root cause here, please don\u0027t have the kernel attempt to mediate the userspace opens of a device, it will always fail (hint, think of how dup() works.)",
+      "range": {
+        "startLine": 901,
+        "startChar": 0,
+        "endLine": 901,
+        "endChar": 39
+      },
+      "revId": "f770eed8218f149fcd61f638ed0f455a8c03170b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48589205_aa278b15",
+        "filename": "drivers/usb/gadget/function/f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-12T18:50:41Z",
+      "side": 1,
+      "message": "why is the kernel attempting to mediate file access like this?  You are modifying the open count when the device is disconnected, but that has nothing to do with the open count (two different reference counts.)\n\nPerhaps proper reference counting should be implemented here to resolve this correctly?",
+      "range": {
+        "startLine": 1448,
+        "startChar": 12,
+        "endLine": 1448,
+        "endChar": 28
+      },
+      "revId": "f770eed8218f149fcd61f638ed0f455a8c03170b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5cb17186_97a6e1f3",
         "filename": "drivers/usb/gadget/function/f_accessory.c",
         "patchSetId": 1
