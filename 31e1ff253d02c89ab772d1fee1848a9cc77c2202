@@ -34,6 +34,24 @@
       "parentUuid": "89c7ebfa_c89d6086",
       "revId": "31e1ff253d02c89ab772d1fee1848a9cc77c2202",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "049e8fe3_38f9fabb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-13T15:06:09Z",
+      "side": 1,
+      "message": "Caused by cherry-picking a subset of the netfilter changes into `android14-6.1` and then merging that into here, the LTS merge went \"backwards\" and dropped a needed fix.  Added back as a child commit of this one now.",
+      "parentUuid": "4c9fe618_baf73445",
+      "revId": "31e1ff253d02c89ab772d1fee1848a9cc77c2202",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
