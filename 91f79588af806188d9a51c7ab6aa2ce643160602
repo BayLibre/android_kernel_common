@@ -34,6 +34,24 @@
       "parentUuid": "af68cf0d_40ff1068",
       "revId": "91f79588af806188d9a51c7ab6aa2ce643160602",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7232c746_7f32eec9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2023-12-13T14:57:30Z",
+      "side": 1,
+      "message": "Oh, I see. The problem is that `struct binder_thread` has a `struct binder_stats` member. This changes the size/offset of the members of `struct binder_thread` which is part of the ABI. In aosp/2329307 the KABI was not frozen yet.",
+      "parentUuid": "73184f93_8c388afa",
+      "revId": "91f79588af806188d9a51c7ab6aa2ce643160602",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
