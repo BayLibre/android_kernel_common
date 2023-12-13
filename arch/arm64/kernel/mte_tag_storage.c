@@ -591,6 +591,7 @@ int reserve_tag_storage(struct page *page, int order, gfp_t gfp)
 		if (region->block_size == 1 && is_free_buddy_page(pfn_to_page(block))) {
 			success = take_page_off_buddy(pfn_to_page(block), false);
 			if (success) {
+				count_vm_event(CMA_FASTPATH_SUCCESS);
 				ret = tag_storage_reserve_block(block, region, order);
 				if (ret) {
 					put_page_back_buddy(pfn_to_page(block), false);

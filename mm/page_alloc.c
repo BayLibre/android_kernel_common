@@ -3568,7 +3568,8 @@ void free_unref_page(struct page *page, unsigned int order)
 	 */
 	migratetype = get_pcppage_migratetype(page);
 	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
-		if (unlikely(is_migrate_isolate(migratetype))) {
+		if (unlikely(is_migrate_isolate(migratetype)) ||
+		    is_migrate_cma(migratetype)) {
 			free_one_page(page_zone(page), page, pfn, order, migratetype, FPI_NONE);
 			return;
 		}
@@ -3612,7 +3613,8 @@ void free_unref_page_list(struct list_head *list)
 		 * comment in free_unref_page.
 		 */
 		migratetype = get_pcppage_migratetype(page);
-		if (unlikely(is_migrate_isolate(migratetype))) {
+		if (unlikely(is_migrate_isolate(migratetype)) ||
+		    is_migrate_cma(migratetype)) {
 			list_del(&page->lru);
 			free_one_page(page_zone(page), page, pfn, 0, migratetype, FPI_NONE);
 			continue;
@@ -3837,10 +3839,10 @@ struct page *__rmqueue_pcplist(struct zone *zone, unsigned int order,
 				batch = max(batch >> order, 2);
 			if (migratetype == MIGRATE_MOVABLE && alloc_flags & ALLOC_CMA)
 				alloced = rmqueue_bulk(zone, order, batch, list,
-						       get_cma_migrate_type(), alloc_flags);
+						       get_cma_migrate_type(), alloc_flags & ~ALLOC_CMA);
 			if (unlikely(list_empty(list)))
 				alloced = rmqueue_bulk(zone, order, batch, list, migratetype,
-						       alloc_flags);
+						       alloc_flags & ~ALLOC_CMA);
 
 			pcp->count += alloced << order;
 			if (unlikely(list_empty(list)))
