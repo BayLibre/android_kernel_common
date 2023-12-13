@@ -83,6 +83,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
 #ifdef CONFIG_CMA
 		CMA_ALLOC_SUCCESS,
 		CMA_ALLOC_FAIL,
+		CMA_FASTPATH_SUCCESS,
 #endif
 		UNEVICTABLE_PGCULLED,	/* culled to noreclaim list */
 		UNEVICTABLE_PGSCANNED,	/* scanned for reclaimability */
