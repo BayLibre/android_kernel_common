@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99379545_27922827",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1612467
+      },
+      "writtenOn": "2023-12-14T00:54:05Z",
+      "side": 1,
+      "message": "Should we just remove this kernel version reference?",
+      "revId": "d488c0a8675b71c5ef42b705c8891c75817dfaad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dce4dbb4_a5b2e3b3",
+        "filename": "arch/arm64/mm/init.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1612467
+      },
+      "writtenOn": "2023-12-14T00:54:05Z",
+      "side": 1,
+      "message": "These lines seem to form the only delta from the android14-6.1 version of the patch and it LGTM, both when disable_dma32 \u003d\u003d 1 and disable_dma32 \u003d\u003d 0",
+      "revId": "d488c0a8675b71c5ef42b705c8891c75817dfaad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
