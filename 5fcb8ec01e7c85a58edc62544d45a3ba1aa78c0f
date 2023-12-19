@@ -52,6 +52,24 @@
       "parentUuid": "c3f4489b_3ddf20b1",
       "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab973713_41d4f31d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-12-19T00:40:37Z",
+      "side": 1,
+      "message": "Good question. Based on https://r.android.com/1270721, I would say yes; however, I\u0027m not entirely sure the same logic applies after https://lore.kernel.org/all/20230811151847.1594958-4-elver@google.com/. Was the original thinking that we need `DEBUG_LIST` to enable `BUG_ON_DATA_CORRUPTION`? If so, do we still need `DEBUG_LIST` now that `BUG_ON_DATA_CORRUPTION` doesn\u0027t require/select it?\n\nThoughts @gregkh@google.com?",
+      "parentUuid": "285ac235_b985a274",
+      "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
