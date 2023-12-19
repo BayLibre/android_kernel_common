@@ -16,6 +16,24 @@
       "message": "do we know if there is measurable performance impact to this additional instrumentation?",
       "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f4489b_3ddf20b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2023-12-19T00:24:11Z",
+      "side": 1,
+      "message": "I don\u0027t know the impact. I\u0027m blindly adding it as it\u0027s included in previous GKI kernels and expected by our vintf checks:\n\nhttps://cs.android.com/android/platform/superproject/main/+/main:kernel/configs/v/android-6.6/android-base.config;l\u003d55?q\u003dv%2Fandroid-6.6%2Fandroid-base.config\n\nIt got removed from android-mainline implicitly which is what v6.6 was based off of. The options are either add it back to the gki_defconfig or remove it from the vintf config.",
+      "parentUuid": "9eb8b4d7_da611f8d",
+      "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
