@@ -52,6 +52,24 @@
       "parentUuid": "729c7afc_5ebc491f",
       "revId": "aa46131d646628ea2dad9d7a4a4ca92cddb27c6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51576155_fbecc74a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2023-12-19T23:33:17Z",
+      "side": 1,
+      "message": "hi Matthias,\n\nupdated the proper changes.  in order to avoid some major ABI breakage, had to backport these changes to remove minor updates made upstream to how the bus resume timing was being tracked.  it looked as if it was just more for clean up, rather than addressing an actual issue.  anyway, the goal of improving the resume timing should not be dependent on those changes in the end.",
+      "parentUuid": "632bc98a_0f61f8c6",
+      "revId": "aa46131d646628ea2dad9d7a4a4ca92cddb27c6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
