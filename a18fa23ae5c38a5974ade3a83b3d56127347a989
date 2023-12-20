@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8f34a82_38f527ba",
+        "filename": "tools/testing/selftests/vm/userfaultfd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1042828
+      },
+      "writtenOn": "2023-12-20T22:06:06Z",
+      "side": 1,
+      "message": "In standard C this should be atomic_bool to avoid UB. In Linux kernel C, you probably still technically need some from of acquire/release ordering here.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 36
+      },
+      "revId": "a18fa23ae5c38a5974ade3a83b3d56127347a989",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
