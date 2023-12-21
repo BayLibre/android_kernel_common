@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a66994b_a27d154b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T03:08:18Z",
+      "side": 1,
+      "message": "\u003e Commit needs to contain a properly formatted Bug: or Fixes: line.\n\u003e \n\u003e Please refer to the contribution guidelines for details:\n\u003e https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\u003e AyeAye - CL 588039696 android-build.ayeaye-python-dispatcher_20231205.04_p0\n\nPlease fix.",
+      "parentUuid": "788e9cd6_cce45c3d",
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "acf7e215_e4b65a7a",
@@ -14,6 +32,24 @@
       "writtenOn": "2023-12-08T01:51:21Z",
       "side": 1,
       "message": "Is there a bug filed for this? At least in the functions that are hooked, it looks like there are several error paths that aren\u0027t covered. It would be easier for me to know if those should\u0027ve been included if there\u0027s more of a description of the use cases in a bug.",
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c463c41_92466084",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T03:08:18Z",
+      "side": 1,
+      "message": "I\u0027m waiting for new issuetracker account.\nOnce I get the account, I\u0027ll update the BUG ID.",
+      "parentUuid": "acf7e215_e4b65a7a",
       "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -43,6 +79,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a425c99_b1bb3ef0",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T03:08:18Z",
+      "side": 1,
+      "message": "I agree with you. Thank you for your review! I\u0027ll update this as below.\n\nstatic int mmc_blk_reset(struct mmc_blk_data *md, struct mmc_host *host,\n                         int type)\n{\n\u003csnip\u003e\n        err \u003d mmc_hw_reset(host-\u003ecard);\n+        trace_android_vh_mmc_blk_reset(host, err);\n\n\nI\u0027ve modified it.\n-\u003e git add .\n-\u003e git commit --amend\n-\u003e git push\n\nTo https://android.googlesource.com/kernel/common\n ! [remote rejected]           android14-6.1 -\u003e android14-6.1 (prohibited by Gerrit: not permitted: update)\nerror: failed to push some refs to \u0027https://android.googlesource.com/kernel/common\u0027\n\nCould you help me resolve this?",
+      "parentUuid": "e2f53878_86856ab4",
+      "range": {
+        "startLine": 1022,
+        "startChar": 1,
+        "endLine": 1022,
+        "endChar": 43
+      },
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22c53ac9_343ef625",
         "filename": "drivers/mmc/core/sd.c",
         "patchSetId": 1
@@ -54,6 +114,30 @@
       "writtenOn": "2023-12-08T01:51:21Z",
       "side": 1,
       "message": "Is this error path important?",
+      "range": {
+        "startLine": 1825,
+        "startChar": 1,
+        "endLine": 1826,
+        "endChar": 13
+      },
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f78002c_83649f19",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T03:08:18Z",
+      "side": 1,
+      "message": "Thank you for your precise review!!\nI missed it. I\u0027ll update this as below.\n\n        err \u003d mmc_send_app_op_cond(host, 0, \u0026ocr);                               \n        if (err) {                                                               \n+                trace_android_vh_mmc_attach_sd(host, ocr, err);                  \n                return err;                                                      \n        }\n\nThere are two error return case in the mmc_send_app_op_cond().\nOne is for no SD cards, another is for busy stuck.\nThe first case can be distinguish with gpio_status,\nUpper modification helps us figure out busy stuck.",
+      "parentUuid": "22c53ac9_343ef625",
       "range": {
         "startLine": 1825,
         "startChar": 1,
