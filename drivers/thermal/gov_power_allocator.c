@@ -13,6 +13,8 @@
 
 #define CREATE_TRACE_POINTS
 #include "thermal_trace_ipa.h"
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/thermal.h>
 
 #include "thermal_core.h"
 
@@ -698,6 +700,7 @@ static int power_allocator_throttle(struct thermal_zone_device *tz, int trip_id)
 	struct thermal_trip trip;
 	int ret;
 	bool update;
+	bool enable = true;
 
 	lockdep_assert_held(&tz->lock);
 
@@ -708,8 +711,10 @@ static int power_allocator_throttle(struct thermal_zone_device *tz, int trip_id)
 	if (trip_id != params->trip_max_desired_temperature)
 		return 0;
 
+	trace_android_vh_enable_thermal_power_throttle(&enable);
+
 	ret = __thermal_zone_get_trip(tz, params->trip_switch_on, &trip);
-	if (!ret && (tz->temperature < trip.temperature)) {
+	if ((!ret && (tz->temperature < trip.temperature)) || !enable) {
 		update = (tz->last_temperature >= trip.temperature);
 		tz->passive = 0;
 		reset_pid_controller(params);
