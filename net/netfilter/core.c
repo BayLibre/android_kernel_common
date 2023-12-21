@@ -39,12 +39,6 @@ struct static_key nf_hooks_needed[NFPROTO_NUMPROTO][NF_MAX_HOOKS];
 EXPORT_SYMBOL(nf_hooks_needed);
 #endif
 
-#ifdef CONFIG_NETFILTER_FAMILY_BRIDGE
-struct nf_hook_entries __rcu init_nf_hooks_bridge[NF_INET_NUMHOOKS];
-struct nf_hook_entries __rcu *init_nf_hooks_bridgep = &init_nf_hooks_bridge[0];
-EXPORT_SYMBOL_GPL(init_nf_hooks_bridgep);
-#endif
-
 static DEFINE_MUTEX(nf_hook_mutex);
 
 /* max hooks per family/hooknum */
@@ -284,9 +278,9 @@ nf_hook_entry_head(struct net *net, int pf, unsigned int hooknum,
 #endif
 #ifdef CONFIG_NETFILTER_FAMILY_BRIDGE
 	case NFPROTO_BRIDGE:
-		if (WARN_ON_ONCE(hooknum >= NF_INET_NUMHOOKS))
+		if (WARN_ON_ONCE(ARRAY_SIZE(net->nf.hooks_bridge) <= hooknum))
 			return NULL;
-		return get_nf_hooks_bridge(net) + hooknum;
+		return net->nf.hooks_bridge + hooknum;
 #endif
 #ifdef CONFIG_NETFILTER_INGRESS
 	case NFPROTO_INET:
@@ -723,7 +717,7 @@ static int __net_init netfilter_net_init(struct net *net)
 	__netfilter_net_init(net->nf.hooks_arp, ARRAY_SIZE(net->nf.hooks_arp));
 #endif
 #ifdef CONFIG_NETFILTER_FAMILY_BRIDGE
-	__netfilter_net_init(get_nf_hooks_bridge(net), NF_INET_NUMHOOKS);
+	__netfilter_net_init(net->nf.hooks_bridge, ARRAY_SIZE(net->nf.hooks_bridge));
 #endif
 #ifdef CONFIG_PROC_FS
 	net->nf.proc_netfilter = proc_net_mkdir(net, "netfilter",
