@@ -1508,10 +1508,14 @@ static void usb_gadget_remove_driver(struct usb_udc *udc)
 	dev_dbg(&udc->dev, "unregistering UDC driver [%s]\n",
 			udc->driver->function);
 
+<<<<<<< HEAD   (f74b38 Merge 5.15.143 into android14-5.15-lts)
 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
 
 	mutex_lock(&connect_lock);
 	usb_gadget_disconnect_locked(udc->gadget);
+=======
+	usb_gadget_disconnect(udc->gadget);
+>>>>>>> BRANCH (1d146b Linux 5.15.144)
 	usb_gadget_disable_async_callbacks(udc);
 	if (udc->gadget->irq)
 		synchronize_irq(udc->gadget->irq);
@@ -1525,6 +1529,8 @@ static void usb_gadget_remove_driver(struct usb_udc *udc)
 
 	udc->driver = NULL;
 	udc->gadget->dev.driver = NULL;
+
+	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
 }
 
 /**
