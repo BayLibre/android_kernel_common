@@ -87,3 +87,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_thermal_zone_device);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_modify_thermal_request_freq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_modify_thermal_target_freq);
