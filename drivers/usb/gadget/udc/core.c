@@ -1483,11 +1483,15 @@ static void usb_gadget_remove_driver(struct usb_udc *udc)
 	dev_dbg(&udc->dev, "unregistering UDC driver [%s]\n",
 			udc->driver->function);
 
+<<<<<<< HEAD   (f79774 Revert "psample: Require 'CAP_NET_ADMIN' when joining "packe)
 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
 
 	mutex_lock(&connect_lock);
 	usb_gadget_disconnect_locked(udc->gadget);
 	usb_gadget_disable_async_callbacks(udc);
+=======
+	usb_gadget_disconnect(udc->gadget);
+>>>>>>> BRANCH (ca4427 Linux 5.10.205)
 	if (udc->gadget->irq)
 		synchronize_irq(udc->gadget->irq);
 	mutex_unlock(&connect_lock);
@@ -1500,6 +1504,8 @@ static void usb_gadget_remove_driver(struct usb_udc *udc)
 
 	udc->driver = NULL;
 	udc->gadget->dev.driver = NULL;
+
+	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
 }
 
 /**
