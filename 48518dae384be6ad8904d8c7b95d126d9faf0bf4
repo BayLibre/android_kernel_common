@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76febddb_452a610b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T06:10:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c463c41_92466084",
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f53878_86856ab4",
@@ -101,6 +119,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a20026a_e41fdcb8",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T06:10:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a425c99_b1bb3ef0",
+      "range": {
+        "startLine": 1022,
+        "startChar": 1,
+        "endLine": 1022,
+        "endChar": 43
+      },
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22c53ac9_343ef625",
@@ -138,6 +180,30 @@
       "side": 1,
       "message": "Thank you for your precise review!!\nI missed it. I\u0027ll update this as below.\n\n        err \u003d mmc_send_app_op_cond(host, 0, \u0026ocr);                               \n        if (err) {                                                               \n+                trace_android_vh_mmc_attach_sd(host, ocr, err);                  \n                return err;                                                      \n        }\n\nThere are two error return case in the mmc_send_app_op_cond().\nOne is for no SD cards, another is for busy stuck.\nThe first case can be distinguish with gpio_status,\nUpper modification helps us figure out busy stuck.",
       "parentUuid": "22c53ac9_343ef625",
+      "range": {
+        "startLine": 1825,
+        "startChar": 1,
+        "endLine": 1826,
+        "endChar": 13
+      },
+      "revId": "48518dae384be6ad8904d8c7b95d126d9faf0bf4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31485bd0_d22b1678",
+        "filename": "drivers/mmc/core/sd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-21T06:10:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f78002c_83649f19",
       "range": {
         "startLine": 1825,
         "startChar": 1,
