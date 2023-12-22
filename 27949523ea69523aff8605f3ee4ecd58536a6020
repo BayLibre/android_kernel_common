@@ -88,6 +88,24 @@
       "parentUuid": "8a9b3f65_170b0c18",
       "revId": "27949523ea69523aff8605f3ee4ecd58536a6020",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4155b9db_3bac5e1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-22T08:18:38Z",
+      "side": 1,
+      "message": "As I commented in the bug, I do not understand why the code can not be upstreamed, please be specific as to why not.\n\nAnd we do NOT always copy vendor hooks to newer kernels, that has never been something that we have guaranteed, in fact, each vendor hook needs to be justified again for each new kernel release going forward, it has always been that way.  Just because a hook was accepted into an older release does not mean that it will be accepted into newer ones, in fact, it\u0027s harder to get them into newer ones as you need to show why the work that the hook is needed for was not done in the past year since the old hook was accepted.\n\nHooks are there as a stop-gap while vendors work to get their code changes upstream, they are not there to provide features that are never submitted for proper inclusion.",
+      "parentUuid": "3cb97898_46cd0fae",
+      "revId": "27949523ea69523aff8605f3ee4ecd58536a6020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
