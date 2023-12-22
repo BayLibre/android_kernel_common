@@ -70,6 +70,24 @@
       "parentUuid": "9640a16e_f0d5f738",
       "revId": "27949523ea69523aff8605f3ee4ecd58536a6020",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cb97898_46cd0fae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-22T00:28:04Z",
+      "side": 1,
+      "message": "We don\u0027t know why you\u0027re blocking the reflection of vhs in android14-5.15.\nVH is necessary for vendor-specific work that cannot be upstreamed, and it is not code that can be upstreamed.(Bug: 317281245) To support backward compatibility, please reflect the existing vh in android14-5.15.\nAnd even when upgrading the kernel version, please keep the existing vh.",
+      "parentUuid": "8a9b3f65_170b0c18",
+      "revId": "27949523ea69523aff8605f3ee4ecd58536a6020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
