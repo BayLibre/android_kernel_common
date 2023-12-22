@@ -16,6 +16,46 @@
       "message": "Dear All,\n\nI\u0027ve registered Bug: 317281245.\nPlease refer to it. I\u0027m waiting for any response.\nThank you.",
       "revId": "95abeb6128be29df9835b489908f4a9298f456c3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af949d4_ecceb7e5",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-22T08:20:06Z",
+      "side": 1,
+      "message": "why add this line?",
+      "revId": "95abeb6128be29df9835b489908f4a9298f456c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01b43067_7c5efd07",
+        "filename": "include/trace/hooks/mmc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2023-12-22T08:20:06Z",
+      "side": 1,
+      "message": "why is this not down below with the other hooks?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "95abeb6128be29df9835b489908f4a9298f456c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
