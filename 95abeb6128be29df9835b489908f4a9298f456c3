@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "477c15fa_2abe4bd8",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-22T09:29:22Z",
+      "side": 1,
+      "message": "It\u0027s duplicated defined here.",
+      "revId": "95abeb6128be29df9835b489908f4a9298f456c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8af949d4_ecceb7e5",
         "filename": "drivers/mmc/core/block.c",
         "patchSetId": 5
@@ -37,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43958a6a_761cc0b4",
+        "filename": "drivers/mmc/core/block.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-22T09:29:22Z",
+      "side": 1,
+      "message": "It is for the vendor to use the SD card recovery success or not.",
+      "parentUuid": "8af949d4_ecceb7e5",
+      "revId": "95abeb6128be29df9835b489908f4a9298f456c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01b43067_7c5efd07",
         "filename": "include/trace/hooks/mmc.h",
         "patchSetId": 5
@@ -48,6 +83,30 @@
       "writtenOn": "2023-12-22T08:20:06Z",
       "side": 1,
       "message": "why is this not down below with the other hooks?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "95abeb6128be29df9835b489908f4a9298f456c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d04a2a58_66b7d8ff",
+        "filename": "include/trace/hooks/mmc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1977326
+      },
+      "writtenOn": "2023-12-22T09:29:22Z",
+      "side": 1,
+      "message": "https://android-review.googlesource.com/c/kernel/common/+/2070567/46/include/trace/hooks/mmc.h#19\n\nI\u0027ve just refered upper link file.\nIt\u0027s not special meaning. If it\u0027s not correct, I\u0027ll modify it.",
+      "parentUuid": "01b43067_7c5efd07",
       "range": {
         "startLine": 21,
         "startChar": 0,
