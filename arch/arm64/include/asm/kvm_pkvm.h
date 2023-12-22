@@ -27,6 +27,7 @@ bool pkvm_is_hyp_created(struct kvm *kvm);
 int pkvm_create_hyp_vcpu(struct kvm_vcpu *vcpu);
 void pkvm_host_reclaim_page(struct kvm *host_kvm, phys_addr_t ipa);
 int pvkm_enable_smc_forwarding(struct file *kvm_file);
+int pkvm_lookup_hyp_vm_partid(struct kvm *host_kvm);
 /*
  * This functions as an allow-list of protected VM capabilities.
  * Features not explicitly allowed by this function are denied.
