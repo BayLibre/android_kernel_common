@@ -1976,6 +1976,13 @@ static void handle___pkvm_host_get_ffa_version(struct kvm_cpu_context *host_ctxt
 	cpu_reg(host_ctxt, 1) = ffa_get_hypervisor_version();
 }
 
+static void handle___pkvm_lookup_vm_partid(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(pkvm_handle_t, handle, host_ctxt, 1);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_lookup_vm_partid(handle);
+}
+
 typedef void (*hcall_t)(struct kvm_cpu_context *);
 
 #define HANDLE_FUNC(x)	[__KVM_HOST_SMCCC_FUNC_##x] = (hcall_t)handle_##x
@@ -2065,6 +2072,7 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_pviommu_attach),
 	HANDLE_FUNC(__pkvm_pviommu_add_vsid),
 	HANDLE_FUNC(__pkvm_host_get_ffa_version),
+	HANDLE_FUNC(__pkvm_lookup_vm_partid),
 };
 
 static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)
