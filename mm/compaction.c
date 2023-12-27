@@ -1473,7 +1473,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
 	unsigned long distance;
 	struct page *page = NULL;
 	bool scan_start = false;
-	int order;
+	int order, num;
 
 	/* Full compaction passes in a negative order */
 	if (cc->order <= 0)
@@ -1504,93 +1504,94 @@ static void fast_isolate_freepages(struct compact_control *cc)
 	 * order to search after a previous failure
 	 */
 	cc->search_order = min_t(unsigned int, cc->order - 1, cc->search_order);
+	for_each_free_area(num) {
+		for (order = cc->search_order;
+		     !page && order >= 0;
+		     order = next_search_order(cc, order)) {
+			struct free_area *area = &cc->zone->free_area[num][order];
+			struct list_head *freelist;
+			struct page *freepage;
+			unsigned long flags;
+			unsigned int order_scanned = 0;
+			unsigned long high_pfn = 0;
 
-	for (order = cc->search_order;
-	     !page && order >= 0;
-	     order = next_search_order(cc, order)) {
-		struct free_area *area = &cc->zone->free_area[order];
-		struct list_head *freelist;
-		struct page *freepage;
-		unsigned long flags;
-		unsigned int order_scanned = 0;
-		unsigned long high_pfn = 0;
+			if (!area->nr_free)
+				continue;
 
-		if (!area->nr_free)
-			continue;
+			spin_lock_irqsave(&cc->zone->lock, flags);
+			freelist = &area->free_list[MIGRATE_MOVABLE];
+			list_for_each_entry_reverse(freepage, freelist, buddy_list) {
+				unsigned long pfn;
 
-		spin_lock_irqsave(&cc->zone->lock, flags);
-		freelist = &area->free_list[MIGRATE_MOVABLE];
-		list_for_each_entry_reverse(freepage, freelist, buddy_list) {
-			unsigned long pfn;
+				order_scanned++;
+				nr_scanned++;
+				pfn = page_to_pfn(freepage);
 
-			order_scanned++;
-			nr_scanned++;
-			pfn = page_to_pfn(freepage);
+				if (pfn >= highest)
+					highest = max(pageblock_start_pfn(pfn),
+						      cc->zone->zone_start_pfn);
 
-			if (pfn >= highest)
-				highest = max(pageblock_start_pfn(pfn),
-					      cc->zone->zone_start_pfn);
+				if (pfn >= low_pfn) {
+					cc->fast_search_fail = 0;
+					cc->search_order = order;
+					page = freepage;
+					break;
+				}
 
-			if (pfn >= low_pfn) {
-				cc->fast_search_fail = 0;
-				cc->search_order = order;
-				page = freepage;
-				break;
+				if (pfn >= min_pfn && pfn > high_pfn) {
+					high_pfn = pfn;
+
+					/* Shorten the scan if a candidate is found */
+					limit >>= 1;
+				}
+
+				if (order_scanned >= limit)
+					break;
 			}
 
-			if (pfn >= min_pfn && pfn > high_pfn) {
-				high_pfn = pfn;
+			/* Use a minimum pfn if a preferred one was not found */
+			if (!page && high_pfn) {
+				page = pfn_to_page(high_pfn);
 
-				/* Shorten the scan if a candidate is found */
-				limit >>= 1;
+				/* Update freepage for the list reorder below */
+				freepage = page;
 			}
 
+			/* Reorder to so a future search skips recent pages */
+			move_freelist_head(freelist, freepage);
+
+			/* Isolate the page if available */
+			if (page) {
+				if (__isolate_free_page(page, order)) {
+					set_page_private(page, order);
+					nr_isolated = 1 << order;
+					nr_scanned += nr_isolated - 1;
+					total_isolated += nr_isolated;
+					cc->nr_freepages += nr_isolated;
+					list_add_tail(&page->lru, &cc->freepages);
+					count_compact_events(COMPACTISOLATED, nr_isolated);
+				} else {
+					/* If isolation fails, abort the search */
+					order = cc->search_order + 1;
+					page = NULL;
+				}
+			}
+			spin_unlock_irqrestore(&cc->zone->lock, flags);
+
+			/* Skip fast search if enough freepages isolated */
+			if (cc->nr_freepages >= cc->nr_migratepages)
+				goto enough_freepages;
+
+			/*
+			 * Smaller scan on next order so the total scan is related
+			 * to freelist_scan_limit.
+			 */
 			if (order_scanned >= limit)
-				break;
+				limit = max(1U, limit >> 1);
 		}
-
-		/* Use a maximum candidate pfn if a preferred one was not found */
-		if (!page && high_pfn) {
-			page = pfn_to_page(high_pfn);
-
-			/* Update freepage for the list reorder below */
-			freepage = page;
-		}
-
-		/* Reorder to so a future search skips recent pages */
-		move_freelist_head(freelist, freepage);
-
-		/* Isolate the page if available */
-		if (page) {
-			if (__isolate_free_page(page, order)) {
-				set_page_private(page, order);
-				nr_isolated = 1 << order;
-				nr_scanned += nr_isolated - 1;
-				total_isolated += nr_isolated;
-				cc->nr_freepages += nr_isolated;
-				list_add_tail(&page->lru, &cc->freepages);
-				count_compact_events(COMPACTISOLATED, nr_isolated);
-			} else {
-				/* If isolation fails, abort the search */
-				order = cc->search_order + 1;
-				page = NULL;
-			}
-		}
-
-		spin_unlock_irqrestore(&cc->zone->lock, flags);
-
-		/* Skip fast search if enough freepages isolated */
-		if (cc->nr_freepages >= cc->nr_migratepages)
-			break;
-
-		/*
-		 * Smaller scan on next order so the total scan is related
-		 * to freelist_scan_limit.
-		 */
-		if (order_scanned >= limit)
-			limit = max(1U, limit >> 1);
 	}
 
+enough_freepages:
 	trace_mm_compaction_fast_isolate_freepages(min_pfn, cc->free_pfn,
 						   nr_scanned, total_isolated);
 
@@ -1599,7 +1600,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
 		if (scan_start) {
 			/*
 			 * Use the highest PFN found above min. If one was
-			 * not found, be pessimistic for direct compaction
+			 * not f、und, be pessimistic for direct compaction
 			 * and use the min mark.
 			 */
 			if (highest >= min_pfn) {
@@ -1848,7 +1849,7 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
 	unsigned long distance;
 	unsigned long pfn = cc->migrate_pfn;
 	unsigned long high_pfn;
-	int order;
+	int order, num;
 	bool found_block = false;
 
 	/* Skip hints are relied on to avoid repeats on the fast search */
@@ -1898,53 +1899,54 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
 		distance >>= 2;
 	high_pfn = pageblock_start_pfn(cc->migrate_pfn + distance);
 
-	for (order = cc->order - 1;
-	     order >= PAGE_ALLOC_COSTLY_ORDER && !found_block && nr_scanned < limit;
-	     order--) {
-		struct free_area *area = &cc->zone->free_area[order];
-		struct list_head *freelist;
-		unsigned long flags;
-		struct page *freepage;
+	for_each_free_area(num) {
+		for (order = cc->order - 1;
+		     order >= PAGE_ALLOC_COSTLY_ORDER && !found_block && nr_scanned < limit;
+		     order--) {
+			struct free_area *area = &cc->zone->free_area[num][order];
+			struct list_head *freelist;
+			unsigned long flags;
+			struct page *freepage;
 
-		if (!area->nr_free)
-			continue;
+			if (!area->nr_free)
+				continue;
 
-		spin_lock_irqsave(&cc->zone->lock, flags);
-		freelist = &area->free_list[MIGRATE_MOVABLE];
-		list_for_each_entry(freepage, freelist, buddy_list) {
-			unsigned long free_pfn;
+			spin_lock_irqsave(&cc->zone->lock, flags);
+			freelist = &area->free_list[MIGRATE_MOVABLE];
+			list_for_each_entry(freepage, freelist, buddy_list) {
+				unsigned long free_pfn;
 
-			if (nr_scanned++ >= limit) {
-				move_freelist_tail(freelist, freepage);
-				break;
+				if (nr_scanned++ >= limit) {
+					move_freelist_tail(freelist, freepage);
+					break;
+				}
+
+				free_pfn = page_to_pfn(freepage);
+				if (free_pfn < high_pfn) {
+					/*
+					 * Avoid if skipped recently. Ideally it would
+					 * move to the tail but even safe iteration of
+					 * the list assumes an entry is deleted, not
+					 * reordered.
+					 */
+					if (get_pageblock_skip(freepage))
+						continue;
+
+					/* Reorder to so a future search skips recent pages */
+					move_freelist_tail(freelist, freepage);
+
+					update_fast_start_pfn(cc, free_pfn);
+					pfn = pageblock_start_pfn(free_pfn);
+					if (pfn < cc->zone->zone_start_pfn)
+						pfn = cc->zone->zone_start_pfn;
+					cc->fast_search_fail = 0;
+					found_block = true;
+					break;
+				}
 			}
-
-			free_pfn = page_to_pfn(freepage);
-			if (free_pfn < high_pfn) {
-				/*
-				 * Avoid if skipped recently. Ideally it would
-				 * move to the tail but even safe iteration of
-				 * the list assumes an entry is deleted, not
-				 * reordered.
-				 */
-				if (get_pageblock_skip(freepage))
-					continue;
-
-				/* Reorder to so a future search skips recent pages */
-				move_freelist_tail(freelist, freepage);
-
-				update_fast_start_pfn(cc, free_pfn);
-				pfn = pageblock_start_pfn(free_pfn);
-				if (pfn < cc->zone->zone_start_pfn)
-					pfn = cc->zone->zone_start_pfn;
-				cc->fast_search_fail = 0;
-				found_block = true;
-				break;
-			}
+			spin_unlock_irqrestore(&cc->zone->lock, flags);
 		}
-		spin_unlock_irqrestore(&cc->zone->lock, flags);
 	}
-
 	cc->total_migrate_scanned += nr_scanned;
 
 	/*
@@ -2169,7 +2171,7 @@ static bool should_proactive_compact_node(pg_data_t *pgdat)
 
 static enum compact_result __compact_finished(struct compact_control *cc)
 {
-	unsigned int order;
+	unsigned int order, num;
 	const int migratetype = cc->migratetype;
 	int ret;
 
@@ -2226,35 +2228,36 @@ static enum compact_result __compact_finished(struct compact_control *cc)
 
 	/* Direct compactor: Is a suitable page free? */
 	ret = COMPACT_NO_SUITABLE_PAGE;
-	for (order = cc->order; order <= MAX_ORDER; order++) {
-		struct free_area *area = &cc->zone->free_area[order];
-		bool can_steal;
+	for_each_free_area(num) {
+		for (order = cc->order; order <= MAX_ORDER; order++) {
+			struct free_area *area = &cc->zone->free_area[num][order];
+			bool can_steal;
 
-		/* Job done if page is free of the right migratetype */
-		if (!free_area_empty(area, migratetype))
-			return COMPACT_SUCCESS;
-
+			/* Job done if page is free of the right migratetype */
+			if (!free_area_empty(area, migratetype))
+				return COMPACT_SUCCESS;
 #ifdef CONFIG_CMA
-		/* MIGRATE_MOVABLE can fallback on MIGRATE_CMA */
-		if (migratetype == MIGRATE_MOVABLE &&
-			!free_area_empty(area, MIGRATE_CMA))
-			return COMPACT_SUCCESS;
+			/* MIGRATE_MOVABLE can fallback on MIGRATE_CMA */
+			if (migratetype == MIGRATE_MOVABLE &&
+				!free_area_empty(area, MIGRATE_CMA))
+				return COMPACT_SUCCESS;
 #endif
-		/*
-		 * Job done if allocation would steal freepages from
-		 * other migratetype buddy lists.
-		 */
-		if (find_suitable_fallback(area, order, migratetype,
-						true, &can_steal) != -1)
 			/*
-			 * Movable pages are OK in any pageblock. If we are
-			 * stealing for a non-movable allocation, make sure
-			 * we finish compacting the current pageblock first
-			 * (which is assured by the above migrate_pfn align
-			 * check) so it is as free as possible and we won't
-			 * have to steal another one soon.
+			 * Job done if allocation would steal freepages from
+			 * other migratetype buddy lists.
 			 */
-			return COMPACT_SUCCESS;
+			if (find_suitable_fallback(area, order, migratetype,
+							true, &can_steal) != -1)
+				/*
+				 * Movable pages are OK in any pageblock. If we are
+				 * stealing for a non-movable allocation, make sure
+				 * we finish compacting the current pageblock first
+				 * (which is assured by the above migrate_pfn align
+				 * check) so it is as free as possible and we won't
+				 * have to steal another one soon.
+				 */
+				return COMPACT_SUCCESS;
+		}
 	}
 
 out:

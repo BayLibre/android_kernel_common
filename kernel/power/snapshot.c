@@ -1247,7 +1247,7 @@ static void mark_free_pages(struct zone *zone)
 {
 	unsigned long pfn, max_zone_pfn, page_count = WD_PAGE_COUNT;
 	unsigned long flags;
-	unsigned int order, t;
+	unsigned int order, t, num;
 	struct page *page;
 
 	if (zone_is_empty(zone))
@@ -1271,19 +1271,20 @@ static void mark_free_pages(struct zone *zone)
 			if (!swsusp_page_is_forbidden(page))
 				swsusp_unset_page_free(page);
 		}
+	for_each_free_area(num) {
+		for_each_migratetype_order(order, t) {
+			list_for_each_entry(page,
+					&zone->free_area[num][order].free_list[t], buddy_list) {
+				unsigned long i;
 
-	for_each_migratetype_order(order, t) {
-		list_for_each_entry(page,
-				&zone->free_area[order].free_list[t], buddy_list) {
-			unsigned long i;
-
-			pfn = page_to_pfn(page);
-			for (i = 0; i < (1UL << order); i++) {
-				if (!--page_count) {
-					touch_nmi_watchdog();
-					page_count = WD_PAGE_COUNT;
+				pfn = page_to_pfn(page);
+				for (i = 0; i < (1UL << order); i++) {
+					if (!--page_count) {
+						touch_nmi_watchdog();
+						page_count = WD_PAGE_COUNT;
+					}
+					swsusp_set_page_free(pfn_to_page(pfn + i));
 				}
-				swsusp_set_page_free(pfn_to_page(pfn + i));
 			}
 		}
 	}

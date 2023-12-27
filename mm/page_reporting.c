@@ -147,111 +147,115 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
 		     unsigned int order, unsigned int mt,
 		     struct scatterlist *sgl, unsigned int *offset)
 {
-	struct free_area *area = &zone->free_area[order];
-	struct list_head *list = &area->free_list[mt];
+	struct free_area *area;
+	struct list_head *list;
 	unsigned int page_len = PAGE_SIZE << order;
 	struct page *page, *next;
 	long budget;
-	int err = 0;
+	int err = 0, num = 0;
 
-	/*
-	 * Perform early check, if free area is empty there is
-	 * nothing to process so we can skip this free_list.
-	 */
-	if (list_empty(list))
-		return err;
-
-	spin_lock_irq(&zone->lock);
-
-	/*
-	 * Limit how many calls we will be making to the page reporting
-	 * device for this list. By doing this we avoid processing any
-	 * given list for too long.
-	 *
-	 * The current value used allows us enough calls to process over a
-	 * sixteenth of the current list plus one additional call to handle
-	 * any pages that may have already been present from the previous
-	 * list processed. This should result in us reporting all pages on
-	 * an idle system in about 30 seconds.
-	 *
-	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
-	 * should always be a power of 2.
-	 */
-	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
-
-	/* loop through free list adding unreported pages to sg list */
-	list_for_each_entry_safe(page, next, list, lru) {
-		/* We are going to skip over the reported pages. */
-		if (PageReported(page))
+	for_each_free_area(num) {
+		area = &zone->free_area[num][order];
+		list = &area->free_list[mt];
+		/*
+		 * Perform early check, if free area is empty there is
+		 * nothing to process so we can skip this free_list.
+		 */
+		if (list_empty(list))
 			continue;
 
-		/*
-		 * If we fully consumed our budget then update our
-		 * state to indicate that we are requesting additional
-		 * processing and exit this list.
-		 */
-		if (budget < 0) {
-			atomic_set(&prdev->state, PAGE_REPORTING_REQUESTED);
-			next = page;
-			break;
-		}
+		spin_lock_irq(&zone->lock);
 
-		/* Attempt to pull page from list and place in scatterlist */
-		if (*offset) {
-			if (!__isolate_free_page(page, order)) {
+		/*
+		 * Limit how many calls we will be making to the page reporting
+		 * device for this list. By doing this we avoid processing any
+		 * given list for too long.
+		 *
+		 * The current value used allows us enough calls to process over a
+		 * sixteenth of the current list plus one additional call to handle
+		 * any pages that may have already been present from the previous
+		 * list processed. This should result in us reporting all pages on
+		 * an idle system in about 30 seconds.
+		 *
+		 * The division here should be cheap since PAGE_REPORTING_CAPACITY
+		 * should always be a power of 2.
+		 */
+		budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
+
+		/* loop through free list adding unreported pages to sg list */
+		list_for_each_entry_safe(page, next, list, lru) {
+			/* We are going to skip over the reported pages. */
+			if (PageReported(page))
+				continue;
+
+			/*
+			 * If we fully consumed our budget then update our
+			 * state to indicate that we are requesting additional
+			 * processing and exit this list.
+			 */
+			if (budget < 0) {
+				atomic_set(&prdev->state, PAGE_REPORTING_REQUESTED);
 				next = page;
 				break;
 			}
 
-			/* Add page to scatter list */
-			--(*offset);
-			sg_set_page(&sgl[*offset], page, page_len, 0);
+			/* Attempt to pull page from list and place in scatterlist */
+			if (*offset) {
+				if (!__isolate_free_page(page, order)) {
+					next = page;
+					break;
+				}
 
-			continue;
+				/* Add page to scatter list */
+				--(*offset);
+				sg_set_page(&sgl[*offset], page, page_len, 0);
+
+				continue;
+			}
+
+			/*
+			 * Make the first non-reported page in the free list
+			 * the new head of the free list before we release the
+			 * zone lock.
+			 */
+			if (!list_is_first(&page->lru, list))
+				list_rotate_to_front(&page->lru, list);
+
+			/* release lock before waiting on report processing */
+			spin_unlock_irq(&zone->lock);
+
+			/* begin processing pages in local list */
+			err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
+
+			/* reset offset since the full list was reported */
+			*offset = PAGE_REPORTING_CAPACITY;
+
+			/* update budget to reflect call to report function */
+			budget--;
+
+			/* reacquire zone lock and resume processing */
+			spin_lock_irq(&zone->lock);
+
+			/* flush reported pages from the sg list */
+			page_reporting_drain(prdev, sgl, PAGE_REPORTING_CAPACITY, !err);
+
+			/*
+			 * Reset next to first entry, the old next isn't valid
+			 * since we dropped the lock to report the pages
+			 */
+			next = list_first_entry(list, struct page, lru);
+
+			/* exit on error */
+			if (err)
+				break;
 		}
 
-		/*
-		 * Make the first non-reported page in the free list
-		 * the new head of the free list before we release the
-		 * zone lock.
-		 */
-		if (!list_is_first(&page->lru, list))
-			list_rotate_to_front(&page->lru, list);
+		/* Rotate any leftover pages to the head of the freelist */
+		if (!list_entry_is_head(next, list, lru) && !list_is_first(&next->lru, list))
+			list_rotate_to_front(&next->lru, list);
 
-		/* release lock before waiting on report processing */
 		spin_unlock_irq(&zone->lock);
-
-		/* begin processing pages in local list */
-		err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
-
-		/* reset offset since the full list was reported */
-		*offset = PAGE_REPORTING_CAPACITY;
-
-		/* update budget to reflect call to report function */
-		budget--;
-
-		/* reacquire zone lock and resume processing */
-		spin_lock_irq(&zone->lock);
-
-		/* flush reported pages from the sg list */
-		page_reporting_drain(prdev, sgl, PAGE_REPORTING_CAPACITY, !err);
-
-		/*
-		 * Reset next to first entry, the old next isn't valid
-		 * since we dropped the lock to report the pages
-		 */
-		next = list_first_entry(list, struct page, lru);
-
-		/* exit on error */
-		if (err)
-			break;
 	}
-
-	/* Rotate any leftover pages to the head of the freelist */
-	if (!list_entry_is_head(next, list, lru) && !list_is_first(&next->lru, list))
-		list_rotate_to_front(&next->lru, list);
-
-	spin_unlock_irq(&zone->lock);
 
 	return err;
 }

@@ -1230,6 +1230,20 @@ config PTE_MARKER_UFFD_WP
 	  file-backed memory types like shmem and hugetlbfs.
 endif # USERFAULTFD
 
+config MULTI_FREE_AREA_NUM
+	int "multi free_area numbers"
+	default 4
+	range 1 64
+	depends on !MEMORY_HOTPLUG
+	help
+	  multi_frea is to reduce fragmentation by selecting  pages with PFN closer
+	  to each other to stay in buddy. Pages in zone would be divided into
+	  CONFIG_MULTI_FREE_AREA_NUM free_area by PFN, and the pages in the front
+	  free_area would be allocated priority to users. So the left page are more
+	  likely to be merged since their PFN would be closer.
+
+
+
 # multi-gen LRU {
 config LRU_GEN
 	bool "Multi-Gen LRU"

@@ -1053,31 +1053,33 @@ static void fill_contig_page_info(struct zone *zone,
 				unsigned int suitable_order,
 				struct contig_page_info *info)
 {
-	unsigned int order;
+	unsigned int order, num;
 
 	info->free_pages = 0;
 	info->free_blocks_total = 0;
 	info->free_blocks_suitable = 0;
 
-	for (order = 0; order <= MAX_ORDER; order++) {
-		unsigned long blocks;
+	for_each_free_area(num) {
+		for (order = 0; order <= MAX_ORDER; order++) {
+			unsigned long blocks;
 
-		/*
-		 * Count number of free blocks.
-		 *
-		 * Access to nr_free is lockless as nr_free is used only for
-		 * diagnostic purposes. Use data_race to avoid KCSAN warning.
-		 */
-		blocks = data_race(zone->free_area[order].nr_free);
-		info->free_blocks_total += blocks;
+			/*
+			 * Count number of free blocks.
+			 *
+			 * Access to nr_free is lockless as nr_free is used only for
+			 * diagnostic purposes. Use data_race to avoid KCSAN warning.
+			 */
+			blocks = data_race(zone->free_area[num][order].nr_free);
+			info->free_blocks_total += blocks;
 
-		/* Count free base pages */
-		info->free_pages += blocks << order;
+			/* Count free base pages */
+			info->free_pages += blocks << order;
 
-		/* Count the suitable free blocks */
-		if (order >= suitable_order)
-			info->free_blocks_suitable += blocks <<
-						(order - suitable_order);
+			/* Count the suitable free blocks */
+			if (order >= suitable_order)
+				info->free_blocks_suitable += blocks <<
+							(order - suitable_order);
+		}
 	}
 }
 
@@ -1470,15 +1472,20 @@ static void walk_zones_in_node(struct seq_file *m, pg_data_t *pgdat,
 static void frag_show_print(struct seq_file *m, pg_data_t *pgdat,
 						struct zone *zone)
 {
-	int order;
+	int order, num;
 
 	seq_printf(m, "Node %d, zone %8s ", pgdat->node_id, zone->name);
-	for (order = 0; order <= MAX_ORDER; ++order)
+	for (order = 0; order <= MAX_ORDER; ++order) {
+		unsigned long nr_free = 0;
+
+		for_each_free_area(num)
+			nr_free += zone->free_area[num][order].nr_free;
 		/*
 		 * Access to nr_free is lockless as nr_free is used only for
 		 * printing purposes. Use data_race to avoid KCSAN warning.
 		 */
-		seq_printf(m, "%6lu ", data_race(zone->free_area[order].nr_free));
+		seq_printf(m, "%6lu ", nr_free);
+	}
 	seq_putc(m, '\n');
 }
 
@@ -1495,7 +1502,7 @@ static int frag_show(struct seq_file *m, void *arg)
 static void pagetypeinfo_showfree_print(struct seq_file *m,
 					pg_data_t *pgdat, struct zone *zone)
 {
-	int order, mtype;
+	int order, mtype, num;
 
 	for (mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
 		seq_printf(m, "Node %4d, zone %8s, type %12s ",
@@ -1508,23 +1515,26 @@ static void pagetypeinfo_showfree_print(struct seq_file *m,
 			struct list_head *curr;
 			bool overflow = false;
 
-			area = &(zone->free_area[order]);
+			for_each_free_area(num) {
+				area = &(zone->free_area[num][order]);
 
-			list_for_each(curr, &area->free_list[mtype]) {
-				/*
-				 * Cap the free_list iteration because it might
-				 * be really large and we are under a spinlock
-				 * so a long time spent here could trigger a
-				 * hard lockup detector. Anyway this is a
-				 * debugging tool so knowing there is a handful
-				 * of pages of this order should be more than
-				 * sufficient.
-				 */
-				if (++freecount >= 100000) {
-					overflow = true;
-					break;
+				list_for_each(curr, &area->free_list[mtype]) {
+					/*
+					 * Cap the free_list iteration because it might
+					 * be really large and we are under a spinlock
+					 * so a long time spent here could trigger a
+					 * hard lockup detector. Anyway this is a
+					 * debugging tool so knowing there is a handful
+					 * of pages of this order should be more than
+					 * sufficient.
+					 */
+					if (++freecount >= 100000) {
+						overflow = true;
+						goto overflow;
+					}
 				}
 			}
+overflow:
 			seq_printf(m, "%s%6lu ", overflow ? ">" : "", freecount);
 			spin_unlock_irq(&zone->lock);
 			cond_resched();

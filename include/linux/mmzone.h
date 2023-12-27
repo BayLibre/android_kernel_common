@@ -82,6 +82,14 @@ static inline bool is_migrate_movable(int mt)
 {
 	return is_migrate_cma(mt) || mt == MIGRATE_MOVABLE;
 }
+#ifdef CONFIG_MULTI_FREE_AREA_NUM
+#define FREE_AREA_NUM (CONFIG_MULTI_FREE_AREA_NUM)
+#else
+#define FREE_AREA_NUM (1)
+#endif
+
+#define for_each_free_area(num) \
+	for (num = 0; num < FREE_AREA_NUM; num++)
 
 /*
  * Check whether a migratetype can be merged with another migratetype.
@@ -825,7 +833,6 @@ enum zone_type {
 #ifndef __GENERATING_BOUNDS_H
 
 #define ASYNC_AND_SYNC 2
-
 struct zone {
 	/* Read-mostly fields */
 
@@ -945,7 +952,8 @@ struct zone {
 	CACHELINE_PADDING(_pad1_);
 
 	/* free areas of different sizes */
-	struct free_area	free_area[MAX_ORDER + 1];
+	struct free_area	free_area[FREE_AREA_NUM][MAX_ORDER + 1];
+	unsigned long free_area_pfn_bound[FREE_AREA_NUM];
 
 #ifdef CONFIG_UNACCEPTED_MEMORY
 	/* Pages to be accepted. All pages on the list are MAX_ORDER */

@@ -1245,18 +1245,93 @@ static void __init reset_memoryless_node_totalpages(struct pglist_data *pgdat)
 	struct zone *z;
 
 	for (z = pgdat->node_zones; z < pgdat->node_zones + MAX_NR_ZONES; z++) {
+		unsigned int num;
+
 		z->zone_start_pfn = 0;
 		z->spanned_pages = 0;
 		z->present_pages = 0;
 #if defined(CONFIG_MEMORY_HOTPLUG)
 		z->present_early_pages = 0;
 #endif
+		for_each_free_area(num)
+			z->free_area_pfn_bound[num] = 0;
 	}
 
 	pgdat->node_spanned_pages = 0;
 	pgdat->node_present_pages = 0;
 	pr_debug("On node %d totalpages: 0\n", pgdat->node_id);
 }
+
+static void __init __calculate_free_area_pfn_bound(int nid, struct zone *zone,
+					unsigned long zone_type,
+					unsigned long node_start_pfn,
+					unsigned long node_end_pfn)
+{
+	unsigned long zone_low = arch_zone_lowest_possible_pfn[zone_type];
+	unsigned long zone_high = arch_zone_highest_possible_pfn[zone_type];
+	unsigned long zone_start_pfn, zone_end_pfn;
+	unsigned long start_pfn, end_pfn, free_area_size, num = 0, tmp_mem_size = 0;
+	long mem_size = 0;
+	int i;
+
+	zone_start_pfn = clamp(node_start_pfn, zone_low, zone_high);
+	zone_end_pfn = clamp(node_end_pfn, zone_low, zone_high);
+
+	free_area_size = zone->present_pages / FREE_AREA_NUM;
+
+	adjust_zone_range_for_zone_movable(nid, zone_type,
+			node_end_pfn, &zone_start_pfn, &zone_end_pfn);
+
+	for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
+		start_pfn = clamp(start_pfn, zone_start_pfn, zone_end_pfn);
+		end_pfn = clamp(end_pfn, zone_start_pfn, zone_end_pfn);
+		mem_size += end_pfn - start_pfn;
+
+		tmp_mem_size += end_pfn - start_pfn;
+
+calc_next_bound:
+		if ((mem_size >= free_area_size) && (num < FREE_AREA_NUM)) {
+			zone->free_area_pfn_bound[num] = end_pfn - (mem_size - free_area_size);
+			mem_size -= free_area_size;
+			num++;
+
+			if (mem_size >= free_area_size)
+				goto calc_next_bound;
+		}
+	}
+}
+
+
+static void __init calculate_free_area_pfn_bound(struct pglist_data *pgdat,
+						unsigned long node_start_pfn,
+						unsigned long node_end_pfn)
+{
+	enum zone_type i;
+	int f;
+
+	/* When hotadd a new node from cpu_up(), the node should be empty */
+	if (!node_start_pfn && !node_end_pfn)
+		return;
+
+	for (i = 0; i < MAX_NR_ZONES; i++) {
+		struct zone *zone = pgdat->node_zones + i;
+
+		memset(zone->free_area_pfn_bound, 0, sizeof(unsigned long)* FREE_AREA_NUM);
+
+		if (!zone->present_pages)
+			continue;
+
+		__calculate_free_area_pfn_bound(pgdat->node_id, zone, i,
+						   node_start_pfn,
+						   node_end_pfn);
+		pr_info("On node %d zone[%s] free_area_pfn_bounds:\n",
+					pgdat->node_id, zone_names[i]);
+		for (f = 0; f < FREE_AREA_NUM; f++)
+			pr_info("free_area[%d][*]: bound_end_pfn %lu\n",
+					f, zone->free_area_pfn_bound[f]);
+	}
+}
+
 
 static void __init calculate_node_totalpages(struct pglist_data *pgdat,
 						unsigned long node_start_pfn,
@@ -1377,10 +1452,13 @@ static void __meminit zone_init_internals(struct zone *zone, enum zone_type idx,
 
 static void __meminit zone_init_free_lists(struct zone *zone)
 {
-	unsigned int order, t;
-	for_each_migratetype_order(order, t) {
-		INIT_LIST_HEAD(&zone->free_area[order].free_list[t]);
-		zone->free_area[order].nr_free = 0;
+	unsigned int order, t, num;
+
+	for_each_free_area(num) {
+		for_each_migratetype_order(order, t) {
+			INIT_LIST_HEAD(&zone->free_area[num][order].free_list[t]);
+			zone->free_area[num][order].nr_free = 0;
+		}
 	}
 
 #ifdef CONFIG_UNACCEPTED_MEMORY
@@ -1724,6 +1802,7 @@ static void __init free_area_init_node(int nid)
 			end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
 
 		calculate_node_totalpages(pgdat, start_pfn, end_pfn);
+		calculate_free_area_pfn_bound(pgdat, start_pfn, end_pfn);
 	} else {
 		pr_info("Initmem setup node %d as memoryless\n", nid);
 

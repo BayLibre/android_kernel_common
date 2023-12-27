@@ -351,8 +351,8 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
 	}
 
 	for_each_populated_zone(zone) {
-		unsigned int order;
-		unsigned long nr[MAX_ORDER + 1], flags, total = 0;
+		unsigned int order, num;
+		unsigned long nr[MAX_ORDER + 1] = {0}, flags, total = 0;
 		unsigned char types[MAX_ORDER + 1];
 
 		if (zone_idx(zone) > max_zone_idx)
@@ -363,17 +363,19 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
 		printk(KERN_CONT "%s: ", zone->name);
 
 		spin_lock_irqsave(&zone->lock, flags);
-		for (order = 0; order <= MAX_ORDER; order++) {
-			struct free_area *area = &zone->free_area[order];
-			int type;
+		for_each_free_area(num) {
+			for (order = 0; order <= MAX_ORDER; order++) {
+				struct free_area *area = &zone->free_area[num][order];
+				int type;
 
-			nr[order] = area->nr_free;
-			total += nr[order] << order;
+				nr[order] += area->nr_free;
+				total += nr[order] << order;
 
-			types[order] = 0;
-			for (type = 0; type < MIGRATE_TYPES; type++) {
-				if (!free_area_empty(area, type))
-					types[order] |= 1 << type;
+				types[order] = 0;
+				for (type = 0; type < MIGRATE_TYPES; type++) {
+					if (!free_area_empty(area, type))
+						types[order] |= 1 << type;
+				}
 			}
 		}
 		spin_unlock_irqrestore(&zone->lock, flags);
