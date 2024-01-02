@@ -12,8 +12,10 @@
 #include <linux/mm.h>
 #include <linux/namei.h>
 #include <linux/pagemap.h>
+#include <linux/sched/mm.h>
 #include <linux/slab.h>
 #include <linux/types.h>
+#include <linux/vmalloc.h>
 #include <linux/workqueue.h>
 
 #include "data_mgmt.h"
@@ -98,6 +100,8 @@ int incfs_realloc_mount_info(struct mount_info *mi,
 	void *new_buffer = NULL;
 	void *old_buffer;
 	size_t new_buffer_size = 0;
+	int err = 0;
+	unsigned int flags = memalloc_nofs_save();
 
 	if (options->read_log_pages != mi->mi_options.read_log_pages) {
 		struct read_log_state log_state;
@@ -110,9 +114,19 @@ int incfs_realloc_mount_info(struct mount_info *mi,
 		 */
 		if (options->read_log_pages > 0) {
 			new_buffer_size = PAGE_SIZE * options->read_log_pages;
-			new_buffer = kzalloc(new_buffer_size, GFP_NOFS);
-			if (!new_buffer)
-				return -ENOMEM;
+
+			/*
+			 * Use vzalloc because this is a large allocation and
+			 * kzalloc can fail on low-end devices.
+			 *
+			 * Note that we should probably use vzalloc everywhere,
+			 * this is simply the first to be moved over.
+			 */
+			new_buffer = vzalloc(new_buffer_size);
+			if (!new_buffer) {
+				err = -ENOMEM;
+				goto err;
+			}
 		}
 
 		spin_lock(&mi->mi_log.rl_lock);
@@ -126,7 +140,7 @@ int incfs_realloc_mount_info(struct mount_info *mi,
 		mi->mi_log.rl_tail = log_state;
 		spin_unlock(&mi->mi_log.rl_lock);
 
-		kfree(old_buffer);
+		vfree(old_buffer);
 	}
 
 	if (options->sysfs_name && !mi->mi_sysfs_node)
@@ -144,14 +158,15 @@ int incfs_realloc_mount_info(struct mount_info *mi,
 	}
 
 	if (IS_ERR(mi->mi_sysfs_node)) {
-		int err = PTR_ERR(mi->mi_sysfs_node);
-
+		err = PTR_ERR(mi->mi_sysfs_node);
 		mi->mi_sysfs_node = NULL;
-		return err;
+		goto err;
 	}
 
 	mi->mi_options = *options;
-	return 0;
+err:
+	memalloc_nofs_restore(flags);
+	return err;
 }
 
 void incfs_free_mount_info(struct mount_info *mi)
@@ -169,7 +184,7 @@ void incfs_free_mount_info(struct mount_info *mi)
 	mutex_destroy(&mi->mi_dir_struct_mutex);
 	mutex_destroy(&mi->mi_zstd_workspace_mutex);
 	put_cred(mi->mi_owner);
-	kfree(mi->mi_log.rl_ring_buf);
+	vfree(mi->mi_log.rl_ring_buf);
 	for (i = 0; i < ARRAY_SIZE(mi->pseudo_file_xattr); ++i)
 		kfree(mi->pseudo_file_xattr[i].data);
 	kfree(mi->mi_per_uid_read_timeouts);
