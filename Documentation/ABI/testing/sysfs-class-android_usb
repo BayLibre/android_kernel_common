@@ -1,0 +1,8 @@
+What:		/sys/class/android_usb/android0/state
+Date:		Jan 2024
+KernelVersion:	6.1
+Contact:	Ashish Kumar Gupta <kumarashishg@google.com>
+Description:
+		This attribute can be used by userspace to get the gadget
+	  	state. The gadget can be in any of the following
+	 	three states: "CONNECTED/DISCONNECTED/CONFIGURED"
