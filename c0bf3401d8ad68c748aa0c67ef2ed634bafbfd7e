@@ -73,6 +73,40 @@
       "message": "If this is for the debug_id in the C version of the code, then I think it should not be here. The debug_id is shared between object types to make it easier to read the debug information. Transactions, nodes and refs share the same debug id space so nodes and refs will have ids near the transaction that created them.",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0abb748_f6f096da",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-03T02:16:25Z",
+      "side": 1,
+      "message": "Why do you store the key to refs.by_handle in refs.by_global_id instead of the NodeRef itself? I don\u0027t think there are any cases where we only need this intermediate result, so this makes refs.by_global_id always require two tree searches instead of one.",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84669a02_fcb864e8",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-03T02:16:25Z",
+      "side": 1,
+      "message": "Why are these two separate extra allocations? We always need to insert the NodeRef (or a way to get to the NodeRef) into both trees and the C version does this without any extra allocation. For the linked list the rust version also seems to avoid allocating extra objects. Could we use a similar solution for the rbtrees?",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
