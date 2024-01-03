@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000063888508",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2895181?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "10708ce1_184324c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-03T11:03:16Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2690154](https://r.android.com/c/2690154) on branch android14-6.1.\n\n```\n      ## fs/fuse/backing.c ##\n     @@ fs/fuse/backing.c: int fuse_lookup_backing(struct fuse_bpf_args *fa, struct inode *dir,\n    @@ tools/testing/selftests/filesystems/fuse/fuse_test.c: out:\n      \treturn result;\n      }\n      \n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (ab9285 FROMLIST: iommu: Avoid more races around device probe)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++static int bpf_test_readahead(const char *mount_dir)\n    ++{\n    ++\tconst char *file_name \u003d \"file\";\n    ++\n    ++\tint result \u003d TEST_FAILURE;\n    ++\tint file_fd \u003d -1;\n    ++\tint src_fd \u003d -1;\n    ++\tint fuse_dev \u003d -1;\n    ++\n    ++\tTEST(file_fd \u003d s_creat(s_path(s(ft_src), s(file_name)), 0777),\n    ++\t     file_fd !\u003d -1);\n    ++\tTESTSYSCALL(fallocate(file_fd, 0, 0, 4096));\n    ++\tTESTSYSCALL(close(file_fd));\n    ++\tfile_fd \u003d -1;\n    ++\n    ++\tTEST(src_fd \u003d open(ft_src, O_DIRECTORY | O_RDONLY | O_CLOEXEC),\n    ++\t     src_fd !\u003d -1);\n    ++\tTEST(fuse_dev \u003d open(\"/dev/fuse\", O_RDWR | O_CLOEXEC), fuse_dev !\u003d -1);\n    ++\tTESTEQUAL(mount_fuse(mount_dir, -1, src_fd, \u0026fuse_dev), 0);\n    ++\n    ++\tTEST(file_fd \u003d s_open(s_path(s(mount_dir), s(file_name)), O_RDONLY),\n    ++\t     file_fd !\u003d -1);\n    ++\tTESTSYSCALL(posix_fadvise(file_fd, 0, 4096, POSIX_FADV_WILLNEED));\n    ++\tusleep(1000);\n    ++\tTESTSYSCALL(close(file_fd));\n    ++\tfile_fd \u003d -1;\n    ++\tresult \u003d TEST_SUCCESS;\n    ++out:\n    ++\tumount(mount_dir);\n    ++\tclose(fuse_dev);\n    ++\tclose(src_fd);\n    ++\tclose(file_fd);\n    ++\treturn result;\n    ++}\n    ++\n     +/**\n     + * Test that fuse passthrough correctly traverses a mount point on the lower fs\n     + */\n    @@ tools/testing/selftests/filesystems/fuse/fuse_test.c: out:\n     +\treturn result;\n     +}\n     +\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (613d83 ANDROID: fuse-bpf: Follow mounts in lookups)\n      static void parse_range(const char *ranges, bool *run_test, size_t tests)\n      {\n      \tsize_t i;\n     @@ tools/testing/selftests/filesystems/fuse/fuse_test.c: int main(int argc, char *argv[])\n    + \t\tMAKE_TEST(flock_test),\n      \t\tMAKE_TEST(bpf_test_create_and_remove_bpf),\n      \t\tMAKE_TEST(bpf_test_mkdir_and_remove_bpf),\n    - \t\tMAKE_TEST(bpf_test_readahead),\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (ab9285 FROMLIST: iommu: Avoid more races around device probe)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++\t\tMAKE_TEST(bpf_test_readahead),\n     +\t\tMAKE_TEST(bpf_test_follow_mounts),\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (613d83 ANDROID: fuse-bpf: Follow mounts in lookups)\n      \t};\n      #undef MAKE_TEST\n      \n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 595099560 android-build.ayeaye-python-dispatcher_20240102.04_p0",
+      "revId": "c16061fa4c09dad03b1fb3421e57edb48cb9e679",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000063888508",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2895181?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "1ce731f3_4d7e1581",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-03T11:03:16Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 595099560 android-build.ayeaye-python-dispatcher_20240102.04_p0",
+      "revId": "c16061fa4c09dad03b1fb3421e57edb48cb9e679",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
