@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0def1c1b_35cfd0c7",
+        "filename": "rust/kernel/pages.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-03T21:21:31Z",
+      "side": 1,
+      "message": "The c kmap and kmap_local_page apis are not identical so it is confusing to use the name of a different (and somewhat deprecated) c api for this rust wrapper.",
+      "revId": "58dbcd557f06e8f3f594d2c93a2905fc610bd4fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
