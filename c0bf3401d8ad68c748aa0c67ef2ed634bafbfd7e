@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc00b76d_4b2bd861",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-03T00:59:48Z",
+      "side": 1,
+      "message": "What do you mean by consecutively? These ids are consecutive if no references are dropped but there can be gaps after references are gone and new references created after that will re-use the old ids. This was needed in the past, and might still be needed, to avoid excessive memory use in user-space that dynamically allocated arrays where these ids were used as the array index.",
+      "range": {
+        "startLine": 28,
+        "startChar": 50,
+        "endLine": 28,
+        "endChar": 63
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "72766925_4c3442ad",
@@ -14,6 +37,40 @@
       "writtenOn": "2023-12-08T18:16:25Z",
       "side": 1,
       "message": "LGTM for unsafe rust.",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a622b57c_dcf3e42b",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-03T00:59:48Z",
+      "side": 1,
+      "message": "Is this the debug_id from the C version. If so I would use the same name as it should not be used for any functional checks.\n\n(edit) I see that you refs_by_node tree in the C version by refs.by_global_id in this version. Is that needed? The node pointer allocated from the kernel heap is a guaranteed unique value that can never change for a live object. Can it not be used as the key in rust as well?",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2721210f_24b3156f",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-03T00:59:48Z",
+      "side": 1,
+      "message": "If this is for the debug_id in the C version of the code, then I think it should not be here. The debug_id is shared between object types to make it easier to read the debug information. Transactions, nodes and refs share the same debug id space so nodes and refs will have ids near the transaction that created them.",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
