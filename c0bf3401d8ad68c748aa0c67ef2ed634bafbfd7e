@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "22aa73c2_b78bb02d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:11:41Z",
+      "side": 1,
+      "message": "Currently I just mirror the behavior of C for choosing IDs. I can reword to this?\n\n\u003e The 32-bit ids are local to each process, so the same node can have a different 32-bit id in each external process that has a reference to it.\n\nBy the way, if this is still needed, then you should comment on b/298520209.",
+      "parentUuid": "bc00b76d_4b2bd861",
+      "range": {
+        "startLine": 28,
+        "startChar": 50,
+        "endLine": 28,
+        "endChar": 63
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "72766925_4c3442ad",
@@ -60,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4638266f_d34e0cce",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:11:41Z",
+      "side": 1,
+      "message": "Sure, using the address would also work. I\u0027m happy to make that change.",
+      "parentUuid": "a622b57c_dcf3e42b",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2721210f_24b3156f",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -71,6 +113,24 @@
       "writtenOn": "2024-01-03T00:59:48Z",
       "side": 1,
       "message": "If this is for the debug_id in the C version of the code, then I think it should not be here. The debug_id is shared between object types to make it easier to read the debug information. Transactions, nodes and refs share the same debug id space so nodes and refs will have ids near the transaction that created them.",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a433847a_599c688d",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:11:41Z",
+      "side": 1,
+      "message": "Ah, that makes sense. I\u0027ll rename it to `debug_id` and make it share the id space with other objects. (Or I might remove it, and add it back when I finish the binderfs debugging files.)",
+      "parentUuid": "2721210f_24b3156f",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -94,6 +154,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4185d5c_8c29fe7b",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:11:41Z",
+      "side": 1,
+      "message": "With the current API of the red/black tree abstractions, the NodeRef must either be reference counted, or only stored in one tree. Making it reference counted introduces a third allocation, and also raises other challenges because then the type system no longer promises that we have an exclusive reference to the `NodeRef` when we look it up.\n\nBecause of that, I think this is the best solution until the red/black tree becomes more powerful.",
+      "parentUuid": "c0abb748_f6f096da",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84669a02_fcb864e8",
         "filename": "drivers/android/process.rs",
         "patchSetId": 3
@@ -105,6 +183,24 @@
       "writtenOn": "2024-01-03T02:16:25Z",
       "side": 1,
       "message": "Why are these two separate extra allocations? We always need to insert the NodeRef (or a way to get to the NodeRef) into both trees and the C version does this without any extra allocation. For the linked list the rust version also seems to avoid allocating extra objects. Could we use a similar solution for the rbtrees?",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5be67875_473a0420",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:11:41Z",
+      "side": 1,
+      "message": "Yes, but this feature has not been implemented in the rbtree abstractions yet.",
+      "parentUuid": "84669a02_fcb864e8",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
