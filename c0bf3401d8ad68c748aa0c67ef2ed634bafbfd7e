@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "78994a5e_eee4cea3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-04T21:17:26Z",
+      "side": 1,
+      "message": "\u003e Currently I just mirror the behavior of C for choosing IDs. I can reword to this?\nYes, or you can drop this level of detail here and put it in a comment next to the code that selects the IDs instead\n\u003e \n\u003e \u003e The 32-bit ids are local to each process, so the same node can have a different 32-bit id in each external process that has a reference to it.\n\u003e \n\u003e By the way, if this is still needed, then you should comment on b/298520209.\n\nDone.",
+      "parentUuid": "22aa73c2_b78bb02d",
+      "range": {
+        "startLine": 28,
+        "startChar": 50,
+        "endLine": 28,
+        "endChar": 63
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "72766925_4c3442ad",
@@ -131,6 +155,24 @@
       "side": 1,
       "message": "Ah, that makes sense. I\u0027ll rename it to `debug_id` and make it share the id space with other objects. (Or I might remove it, and add it back when I finish the binderfs debugging files.)",
       "parentUuid": "2721210f_24b3156f",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de5fc0f5_3858a3b7",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-04T21:17:26Z",
+      "side": 1,
+      "message": "The debug_id is used in debug printfs as well as the debug files. If you don\u0027t have either of those, you can leave it out until you need it.",
+      "parentUuid": "a433847a_599c688d",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
