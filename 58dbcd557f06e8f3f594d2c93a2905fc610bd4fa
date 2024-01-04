@@ -16,6 +16,24 @@
       "message": "The c kmap and kmap_local_page apis are not identical so it is confusing to use the name of a different (and somewhat deprecated) c api for this rust wrapper.",
       "revId": "58dbcd557f06e8f3f594d2c93a2905fc610bd4fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca93e40e_aee6b824",
+        "filename": "rust/kernel/pages.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T10:37:16Z",
+      "side": 1,
+      "message": "Yeah, I agree. This patch along with the one before and after it, will probably be changed quite a lot when I send it upstream as a binder dependency patchset (similar to the [condvar](https://lore.kernel.org/all/20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com/) and [file](https://lore.kernel.org/all/20231206-alice-file-v2-0-af617c0d9d94@google.com/) patchsets). Among other things, I will make sure to change this.",
+      "parentUuid": "0def1c1b_35cfd0c7",
+      "revId": "58dbcd557f06e8f3f594d2c93a2905fc610bd4fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
