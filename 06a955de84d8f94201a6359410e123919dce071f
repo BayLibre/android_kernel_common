@@ -46,6 +46,30 @@
       },
       "revId": "06a955de84d8f94201a6359410e123919dce071f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5979ee52_5cb48e34",
+        "filename": "drivers/dma-buf/dma-buf-sysfs-stats.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-01-04T22:22:15Z",
+      "side": 1,
+      "message": "I see. So, existing `kfree(dmabuf-\u003esysfs_entry)` calls are the ones which free this. Ok, thanks!",
+      "parentUuid": "c4721e3d_f5c0f20f",
+      "range": {
+        "startLine": 230,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 11
+      },
+      "revId": "06a955de84d8f94201a6359410e123919dce071f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
