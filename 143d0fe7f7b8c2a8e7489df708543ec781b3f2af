@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2db4e2d5_0acc4169",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:17:18Z",
+      "side": 1,
+      "message": "Ah, good point. I\u0027ve only used them for debugging the driver, but it makes sense that they would be useful for deubgging userspace.",
+      "parentUuid": "240fb005_77abd606",
+      "revId": "143d0fe7f7b8c2a8e7489df708543ec781b3f2af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14967a98_e070b1aa",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2024-01-03T21:46:53Z",
       "side": 1,
       "message": "This seems to print less information than the C version.",
+      "revId": "143d0fe7f7b8c2a8e7489df708543ec781b3f2af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ebde59f_5e7fcafe",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-04T11:17:18Z",
+      "side": 1,
+      "message": "Yes ... the debugging files are still WIP. What it has right now is what I needed to debug a bug in the driver.\n\nI\u0027ll make the files match the C driver when I finish these files.",
+      "parentUuid": "14967a98_e070b1aa",
       "revId": "143d0fe7f7b8c2a8e7489df708543ec781b3f2af",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
