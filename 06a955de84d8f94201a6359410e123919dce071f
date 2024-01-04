@@ -22,6 +22,30 @@
       },
       "revId": "06a955de84d8f94201a6359410e123919dce071f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4721e3d_f5c0f20f",
+        "filename": "drivers/dma-buf/dma-buf-sysfs-stats.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-01-04T18:16:36Z",
+      "side": 1,
+      "message": "Note that `dma_buf_create_sysfs_work_entry` is a union, and `dmabuf-\u003esysfs_entry` points at this allocation (after line 234).\n\nThere are two ways this could be freed:\n1) `file_count(dmabuf-\u003efile) \u003d\u003d 1` in `sysfs_add_workfn` in which case `kfree(dmabuf-\u003esysfs_entry)` frees the whole allocation.\n\n2) The non-error path during the destruction of `struct dmabuf` calls `dma_buf_stats_teardown` which does `kobject_put` on `dmabuf-\u003esysfs_entry-\u003ekobj`. That invokes `dma_buf_sysfs_release` which also does a `kfree` on the allocation.",
+      "parentUuid": "4e265db0_91cb52c5",
+      "range": {
+        "startLine": 230,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 11
+      },
+      "revId": "06a955de84d8f94201a6359410e123919dce071f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
