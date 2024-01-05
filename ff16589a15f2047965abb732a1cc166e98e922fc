@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000064101459",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2898330?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "3a96955e_528531cd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-05T06:00:05Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/1e35f074399dece73d5df11847d4a0d7a6f49434) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d1e35f074399dece73d5df11847d4a0d7a6f49434)\n\n```\n      ## drivers/usb/typec/tcpm/tcpm.c ##\n     @@ drivers/usb/typec/tcpm/tcpm.c: static void run_state_machine(struct tcpm_port *port)\n      \t\tbreak;\n    @@ drivers/usb/typec/tcpm/tcpm.c: static void run_state_machine(struct tcpm_port *p\n      \t\ttcpm_reset_port(port);\n     -\t\ttcpm_set_cc(port, TYPEC_CC_OPEN);\n     +\t\ttcpm_set_cc(port, tcpm_default_state(port) \u003d\u003d SNK_UNATTACHED ?\n    -+\t\t\t    TYPEC_CC_RD : tcpm_rp_cc(port));\n    ++\t\t\t\tTYPEC_CC_RD : tcpm_rp_cc(port));\n      \t\ttcpm_set_state(port, PORT_RESET_WAIT_OFF,\n      \t\t\t       PD_T_ERROR_RECOVERY);\n      \t\tbreak;\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 595687226 android-build.ayeaye-python-dispatcher_20240104.04_p0",
+      "revId": "ff16589a15f2047965abb732a1cc166e98e922fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
