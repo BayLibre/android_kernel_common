@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df9f9e82_6e15c487",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-06T10:43:39Z",
+      "side": 1,
+      "message": "Hmm, it\u0027s been a while since I last looked at this. I looked over the C driver, and as far as I can tell, with one exception, all uses of local/internal refs just consider the sum of local and internal refs, so most of the time, it doesn\u0027t matter which kind of reference you use. The one exception is [this check](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/drivers/android/binder.c;l\u003d991-999;drc\u003df955e6e98c348b65772fdc1db2a9eeac3a4c3fc8). It returns an error if a remote process tries to create a strong refcount, if there are no remote processes with a strong refcount (unless its the context manager). We already have a similar check in `NodeRef::clone` and `NodeRef::update`.\n\nInterestingly,  The driver uses local references in these two cases:\n\n* Refcounts held by transactions to the target process. (Both the target node, but also nodes embedded in the transaction.)\n* Pending BR_INCREFS and BR_ACQUIRE operations.\n\nIf you change the first category of references from local to internal references, then the two drivers actually store the same information, because the number of local references is now `active_inc_refs` field.\n\nThoughts?",
+      "parentUuid": "c8ee6931_c3e5d074",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -154,6 +172,24 @@
       "writtenOn": "2024-01-06T00:12:46Z",
       "side": 1,
       "message": "What is the size of usize. This should match binder_uintptr_t (which since aosp/718270 is always 64 bit) not uintptr_t.",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e038df28_03a807f1",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-06T10:43:39Z",
+      "side": 1,
+      "message": "Good catch! This should use u64 instead. (Or a type alias thereof.)",
+      "parentUuid": "d9b8f59b_7c207934",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
