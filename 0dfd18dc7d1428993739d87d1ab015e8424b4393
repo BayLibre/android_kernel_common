@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e54ce43d_2f4542fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-06T00:13:48Z",
+      "side": 1,
+      "message": "Not done looking at this. Posting a couple of comments that I have so far.",
+      "revId": "0dfd18dc7d1428993739d87d1ab015e8424b4393",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2870629d_156b9a46",
+        "filename": "drivers/android/thread.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-06T00:13:48Z",
+      "side": 1,
+      "message": "Why is this a search operation. Popping a transaction from the transaction stack should always pop the top of the stack. If the current thread is not the target thread for the transaction at the top of the stack user-space is doing something illegal and should get an error back already from line 160",
+      "revId": "0dfd18dc7d1428993739d87d1ab015e8424b4393",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18fe0d75_0d9c485a",
+        "filename": "drivers/android/thread.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-06T00:13:48Z",
+      "side": 1,
+      "message": "Why is this not a `Result`? It seems easier to remember which variant to use if normal transaction replies are mapped to `Result::Ok` than to `Either::Left` and error code replies are mapped to `Result::Err` than to `Either::Right`.",
+      "range": {
+        "startLine": 480,
+        "startChar": 15,
+        "endLine": 480,
+        "endChar": 21
+      },
+      "revId": "0dfd18dc7d1428993739d87d1ab015e8424b4393",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
