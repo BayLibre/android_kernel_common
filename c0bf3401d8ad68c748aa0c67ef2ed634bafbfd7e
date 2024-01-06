@@ -91,6 +91,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8ee6931_c3e5d074",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-06T00:12:46Z",
+      "side": 1,
+      "message": "I don\u0027t see the same tracking of references here as in the C version. The c version separates the (driver) internal and local (owning process) references. I don\u0027t see where this version handles all the edge cases that the C version handles without the same state information.",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -120,6 +137,23 @@
       "side": 1,
       "message": "Sure, using the address would also work. I\u0027m happy to make that change.",
       "parentUuid": "a622b57c_dcf3e42b",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9b8f59b_7c207934",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-06T00:12:46Z",
+      "side": 1,
+      "message": "What is the size of usize. This should match binder_uintptr_t (which since aosp/718270 is always 64 bit) not uintptr_t.",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
