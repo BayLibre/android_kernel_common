@@ -301881,6 +301881,14 @@ function {
   parameter_id: 0x0379c823
 }
 function {
+  id: 0x5776682f
+  return_type_id: 0x18bd6530
+  parameter_id: 0x0258f96e
+  parameter_id: 0x548dee2a
+  parameter_id: 0x92cb2337
+  parameter_id: 0x18bd6530
+}
+function {
   id: 0x578fa618
   return_type_id: 0x295c7202
   parameter_id: 0x11e6864c
@@ -331219,6 +331227,11 @@ function {
   parameter_id: 0x10193e4a
 }
 function {
+  id: 0xfab4e970
+  return_type_id: 0x6d7f5ff6
+  parameter_id: 0x1042c9d1
+}
+function {
   id: 0xfabc5175
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x106029c6
@@ -353747,6 +353760,15 @@ elf_symbol {
   full_name: "devres_destroy"
 }
 elf_symbol {
+  id: 0xfe668bbf
+  name: "devres_find"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6cb8013f
+  type_id: 0x5776682f
+  full_name: "devres_find"
+}
+elf_symbol {
   id: 0xe41962a4
   name: "devres_free"
   is_defined: true
@@ -365765,6 +365787,15 @@ elf_symbol {
   crc: 0x3c6d2f73
   type_id: 0x15912855
   full_name: "input_copy_abs"
+}
+elf_symbol {
+  id: 0x5a86c89e
+  name: "input_device_enabled"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4e243813
+  type_id: 0xfab4e970
+  full_name: "input_device_enabled"
 }
 elf_symbol {
   id: 0x1cfb5d03
@@ -401208,6 +401239,7 @@ interface {
   symbol_id: 0xd155689b
   symbol_id: 0xf4be3f1a
   symbol_id: 0x2f22f242
+  symbol_id: 0xfe668bbf
   symbol_id: 0xe41962a4
   symbol_id: 0xfb540e8c
   symbol_id: 0xabe60a33
@@ -402541,6 +402573,7 @@ interface {
   symbol_id: 0xbc652525
   symbol_id: 0x2336c16f
   symbol_id: 0x5b69d05f
+  symbol_id: 0x5a86c89e
   symbol_id: 0x1cfb5d03
   symbol_id: 0x60efc3a4
   symbol_id: 0xc802de31
