@@ -484,20 +484,6 @@ cleanup:
 	return ERR_PTR(-ENOMEM);
 }
 
-#ifdef CONFIG_BLK_SUB_PAGE_SEGMENTS
-/* Number of DMA segments required to transfer @bytes data. */
-unsigned int blk_segments(const struct queue_limits *limits, unsigned int bytes)
-{
-	const unsigned int mss = limits->max_segment_size;
-
-	if (bytes <= mss)
-		return 1;
-	if (is_power_of_2(mss))
-		return round_up(bytes, mss) >> ilog2(mss);
-	return (bytes + mss - 1) / mss;
-}
-#endif
-
 /*
  * Append a bio to a passthrough request.  Only works if the bio can be merged
  * into the request based on the driver constraints.

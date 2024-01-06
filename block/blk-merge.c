@@ -340,9 +340,8 @@ void __blk_queue_split(struct bio **bio, unsigned int *nr_segs)
 		 */
 		if (!q->limits.chunk_sectors &&
 		    (*bio)->bi_vcnt == 1 &&
-#ifdef CONFIG_BLK_SUB_PAGE_SEGMENTS
-		    (*bio)->bi_io_vec->bv_len <= q->limits.max_segment_size &&
-#endif
+			(!blk_queue_sub_page_limits(&q->limits) ||
+		     (*bio)->bi_io_vec->bv_len <= q->limits.max_segment_size) &&
 		    ((*bio)->bi_io_vec[0].bv_len +
 		     (*bio)->bi_io_vec[0].bv_offset) <= PAGE_SIZE) {
 			*nr_segs = blk_segments(&q->limits,
@@ -522,7 +521,9 @@ static int __blk_bios_map_sg(struct request_queue *q, struct bio *bio,
 				goto next_bvec;
 
 			if (bvec.bv_offset + bvec.bv_len <= PAGE_SIZE &&
-			    bvec.bv_len <= q->limits.max_segment_size)
+				    (!blk_queue_sub_page_limits(&q->limits) ||
+				     bvec.bv_len <= q->limits.max_segment_size))
+					/* single-segment bvec optimization */
 				nsegs += __blk_bvec_map_sg(bvec, sglist, sg);
 			else
 				nsegs += blk_bvec_map_sg(q, &bvec, sglist, sg);
