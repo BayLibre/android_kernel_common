@@ -22,6 +22,30 @@
       },
       "revId": "fc9bfce5d016432500bcbf376ef3fecc19f22664",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00b25f6a_4ca0e16b",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5145,
+      "author": {
+        "id": 1827690
+      },
+      "writtenOn": "2024-01-08T06:54:34Z",
+      "side": 1,
+      "message": "I found that you have added the vops for slave configure on Linux. I will upload a new patch for backport. Thank you.",
+      "parentUuid": "484231bb_e5276ed0",
+      "range": {
+        "startLine": 5145,
+        "startChar": 1,
+        "endLine": 5145,
+        "endChar": 40
+      },
+      "revId": "fc9bfce5d016432500bcbf376ef3fecc19f22664",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
