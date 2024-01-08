@@ -46,6 +46,30 @@
       },
       "revId": "87fdf6db19b05c1df3cc7044d9425a1f7ed591eb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc67fd78_15a1fe73",
+        "filename": "block/blk-settings.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-01-08T21:50:38Z",
+      "side": 1,
+      "message": "The condition `if (max_hw_sectors \u003c min_max_hw_sectors) {` was originally being used, however the subpage limits were not enabled and the UFS host controller failed.",
+      "parentUuid": "1f57c7f4_7beb7dae",
+      "range": {
+        "startLine": 182,
+        "startChar": 1,
+        "endLine": 182,
+        "endChar": 43
+      },
+      "revId": "87fdf6db19b05c1df3cc7044d9425a1f7ed591eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
