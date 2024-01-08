@@ -22,6 +22,30 @@
       },
       "revId": "87fdf6db19b05c1df3cc7044d9425a1f7ed591eb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f57c7f4_7beb7dae",
+        "filename": "block/blk-settings.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-01-08T21:48:00Z",
+      "side": 1,
+      "message": "I think that this change is wrong. Sub-page limits should only be enabled if `max_hw_sectors \u003c min_max_hw_sectors`. The above condition doesn\u0027t enable sub-page limits if these should be enabled and reduces performance for block devices that do not need sub-page limits.",
+      "parentUuid": "29c0729d_e6c7f38b",
+      "range": {
+        "startLine": 182,
+        "startChar": 1,
+        "endLine": 182,
+        "endChar": 43
+      },
+      "revId": "87fdf6db19b05c1df3cc7044d9425a1f7ed591eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
