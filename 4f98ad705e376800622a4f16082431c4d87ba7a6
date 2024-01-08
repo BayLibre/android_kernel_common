@@ -16,6 +16,24 @@
       "message": "We have additional safeguards in place to prevent insecure apps from executing.\n\nHave you demonstrated this vulnerability on an Android device?",
       "revId": "4f98ad705e376800622a4f16082431c4d87ba7a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc93e95f_987eea9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2024-01-08T14:30:41Z",
+      "side": 1,
+      "message": "+1. It\u0027s intentional that this is disabled in Android:\n\n1. As Lee said, we prevent unprivileged bpf program loading in other ways - with selinux.\n2. If this is enabled, then we either have to manually disable it at runtime (defeating the purpose), or grant bpfloader the CAP_SYS_ADMIN privilege, which would be a significant increase in privilege since CAP_SYS_ADMIN gates a great deal of privileged functionality.\n\ni.e. with the current configuration we get the same benefits while keeping the system overall lower privileged\n\nHere\u0027s a more in-depth public description: https://twitter.com/jeffvanderstoep/status/1422771606309335043",
+      "parentUuid": "d1b002f6_d999330f",
+      "revId": "4f98ad705e376800622a4f16082431c4d87ba7a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
