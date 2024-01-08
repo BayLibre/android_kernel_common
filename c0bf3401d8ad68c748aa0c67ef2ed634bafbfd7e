@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c632633_24a69c68",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-08T17:58:58Z",
+      "side": 1,
+      "message": "The most important difference between local and internal refs are that local refs are cleared (since they are no longer needed) when the process dies. Without that you will likely have a leak unless you have come up with a different solution to this than the C driver.",
+      "parentUuid": "df9f9e82_6e15c487",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
