@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000064267150",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2900569?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "c43fff6d_5b7d3b7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-08T11:46:24Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/d1abd69534bec16c43c633313e8e937af1354a7a) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd1abd69534bec16c43c633313e8e937af1354a7a)\n\n```\n      ## drivers/phy/qualcomm/Kconfig ##\n     @@ drivers/phy/qualcomm/Kconfig: config PHY_QCOM_PCIE2\n    @@ drivers/phy/qualcomm/Kconfig: config PHY_QCOM_PCIE2\n     +config PHY_QCOM_QMP_COMBO\n     +\ttristate \"Qualcomm QMP Combo PHY Driver\"\n     +\tdefault PHY_QCOM_QMP\n    - \tselect GENERIC_PHY\n    - \tselect MFD_SYSCON\n    - \thelp\n    --\t  Enable this to support the QMP PHY transceiver that is used\n    --\t  with controllers such as PCIe, UFS, and USB on Qualcomm chips.\n    ++\tselect GENERIC_PHY\n    ++\thelp\n     +\t  Enable this to support the QMP Combo PHY transceiver that is used\n     +\t  with USB3 and DisplayPort controllers on Qualcomm chips.\n     +\n    @@ drivers/phy/qualcomm/Kconfig: config PHY_QCOM_PCIE2\n     +config PHY_QCOM_QMP_PCIE_8996\n     +\ttristate \"Qualcomm QMP PCIe 8996 PHY Driver\"\n     +\tdepends on PCI || COMPILE_TEST\n    -+\tselect GENERIC_PHY\n    + \tselect GENERIC_PHY\n     +\tdefault PHY_QCOM_QMP\n    -+\thelp\n    + \thelp\n    +-\t  Enable this to support the QMP PHY transceiver that is used\n    +-\t  with controllers such as PCIe, UFS, and USB on Qualcomm chips.\n     +\t  Enable this to support the QMP PCIe PHY transceiver that is used\n     +\t  with PCIe controllers on Qualcomm msm8996 chips.\n     +\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 595687226 android-build.ayeaye-python-dispatcher_20240104.04_p0",
+      "revId": "f5b5ae55e614fd935691e7dbda1ab1d727ecdf42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
