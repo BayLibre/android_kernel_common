@@ -144,6 +144,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "399980f3_b6c1af82",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-09T09:45:34Z",
+      "side": 1,
+      "message": "Ultimately, the numbers tracked in the node don\u0027t control the lifetime of the node at all. That\u0027s tracked by the `Arc` pointer type that the node is wrapped in, and once all `Arc\u003cNode\u003e` references have gone out of scope, the node is deallocated even if the numbers in `NodeInner` are non-zero.\n\nIf we have a leak somewhere, then it\u0027s almost certainly due to a cycle of reference counted objects that keep each other alive. However, I\u0027ve tried to analyze the code for those in the past, and I have a piece of paper somewhere with all of the structs and arrows for the references, and I didn\u0027t find any cycles last time I did it. (Other than the cycles that `Process::deferred_release` will break, that is.)",
+      "parentUuid": "5c632633_24a69c68",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -231,6 +249,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2119c221_4af3a5c0",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-09T09:45:34Z",
+      "side": 1,
+      "message": "I\u0027ve debated with myself several times whether I should take the time to remove this discrepancy. Currently, Rust uses these locks:\n\n* A mutex on process. Used only to protect the collection of nodes.\n* A spinlock on process. This also protects nodes owned by the process.\n* A spinlock on thread. This is separate from the process.\n\nI believe this exists due to a historical accident: the `LockedBy` utility needed for having a struct be protected by a lock in a different struct was probably not implemented yet when locks were added to threads.",
+      "parentUuid": "b10b8add_0b99ddfc",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2721210f_24b3156f",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -295,6 +331,30 @@
       "writtenOn": "2024-01-09T00:52:54Z",
       "side": 1,
       "message": "This seems to replace the `outer_lock` in `struct binder_proc` from the C version. That lock is a spinlock though. The pre-fine-grained locking version of the driver used a mutex for it\u0027s global lock, but this was abandoned since a low priority thread holding that lock while it got preempted would cause glitches in high priority threads trying to get the same lock. Unless the linux mutex/rt_mutex implementation has improved since then, using a mutex here could cause a performance regression.",
+      "range": {
+        "startLine": 242,
+        "startChar": 15,
+        "endLine": 242,
+        "endChar": 20
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9ba62c6_830e23bc",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-09T09:45:34Z",
+      "side": 1,
+      "message": "The driver used to allocate memory while holding this mutex. Not sure if that\u0027s still the case.",
+      "parentUuid": "7d0bd4ee_54a32b11",
       "range": {
         "startLine": 242,
         "startChar": 15,
