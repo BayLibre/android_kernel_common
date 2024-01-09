@@ -1,6 +1,167 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8cfce54_069a08e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "How about \"Add the following new vendor hooks to drivers/android/binder.c:\"",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 23
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61746dbe_c5b2cd13",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "Since you enumerate these below, this doesn\u0027t add anything and can be removed",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 48
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2bb7f2a_d37ce12d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "after looking at the code, this is clearly about forcing a thread to be spawned and skipping the normal conditions required to spawn a thread. Explain that here.",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 42
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e3d57ec_d8e24fdf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "fix typo. Should be \"special\". Fix several more cases of this below.",
+      "range": {
+        "startLine": 20,
+        "startChar": 20,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd3f2973_8a87a88f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "I don\u0027t understand \"work for some key works\". Please rephrase (both here and other cases below).",
+      "range": {
+        "startLine": 20,
+        "startChar": 40,
+        "endLine": 20,
+        "endChar": 63
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2451c5c9_6de33437",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "I don\u0027t understand any of this. Please clearly describe the actions that must be handled by this hook.",
+      "range": {
+        "startLine": 23,
+        "startChar": 1,
+        "endLine": 26,
+        "endChar": 30
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1fa5548_d8456ada",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "I don\u0027t understand this description or why this hook is needed. What will your handler do in this looper exit case?",
+      "range": {
+        "startLine": 28,
+        "startChar": 1,
+        "endLine": 29,
+        "endChar": 54
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8c8c2a99_f5e82888",
@@ -14,6 +175,80 @@
       "writtenOn": "2024-01-08T11:39:56Z",
       "side": 1,
       "message": "@gregkh@google.com @all members\n\nLet me describe the basic logic of our feature:\n\nbasic logic:\nin func: binder_ioctl:\nin cmd: BINDER_SET_MAX_THREADS\n1, set the proc if it can save the last thread as vip thread.\n\nin binder_thread_write\nin cmd: BC_REGISTER_LOOPER/BC_EXIT_LOOPER\n1, Set/unset the binder thread (the last thread in binder proc) as vip thread with vip flag\n\nin cmd: BC_TRANSACTION\n2, Binder client thread send a BC_TRANSACTION with vip flag. \n\tin binder_proc_transaction(), \n\tvip work will choose normal or vip thread\n\tnormal work just choose normal thread\n3, binder_thread_read\n   case: normal thread\n\t\tit is same to the origin binder logic\n   case: vip thread\n\t\tthe thread just choose vip work in thread todo list or proc todo list.",
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dfe0caa_cec73e6a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "This isn\u0027t needed. You can use `trace_android_vh_binder_has_work_ilocked()` which is called from `binder_has_work_ilocked()`",
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "047a42d6_49c47422",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4284,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "is this needed? If you need this, can\u0027t you check for `(thread-\u003elooper \u0026 BINDER_LOOPER_STATE_EXITED)` in your handler for `trace_android_vh_binder_ioctl_end()`?",
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a36e4f69_49e94a94",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4691,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "Please no. Can\u0027t you manipulate the list above in your handler for `trace_android_vh_binder_select_worklist_ilocked()` at line 4666 instead?",
+      "range": {
+        "startLine": 4690,
+        "startChar": 0,
+        "endLine": 4691,
+        "endChar": 16
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e607fa1e_6654bf19",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4998,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T23:35:12Z",
+      "side": 1,
+      "message": "please get rid of this goto. I\u0027d prefer to call the variable `force_spawn` and add it to the conditional at line 4999.",
       "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
