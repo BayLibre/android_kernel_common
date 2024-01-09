@@ -85,6 +85,49 @@
       },
       "revId": "fb59c7293b05691081b888217b737cc4b4b2a24f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000064352612",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2874638?revision\u003d2",
+      "fixSuggestions": [
+        {
+          "fixId": "7ebabaae_30afff7c",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 15,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Bart Van Assche \u003cbvanassche@acm.org\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "5b8dab46_fd06b9d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-09T03:54:16Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Bart Van Assche \u003cbvanassche@acm.org\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 596573510 android-build.ayeaye-python-dispatcher_20240108.04_p0",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "fb59c7293b05691081b888217b737cc4b4b2a24f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
