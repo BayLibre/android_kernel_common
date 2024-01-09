@@ -16,6 +16,24 @@
       "message": "Hmm... are OEMs allowed to launch with kernel as old? or is it for upgrading devices?",
       "revId": "2ceb6758141c9f8fd01ed8fe5d508f73c69be784",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccfcbeda_8b0e53f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2024-01-09T20:28:02Z",
+      "side": 1,
+      "message": "According to https://source.android.com/docs/core/architecture/kernel/android-common#feature-and-launch-kernels, the only Android version on which a device using an android-4.14-stable kernel can launch is Android 11.\n\nI don\u0027t think it matters for the purpose of backporting this commit.  This is just a fix that went to the LTS kernels, but missed android-4.14-stable and android-4.19-stable because the commit that it\u0027s fixing was backported to there.",
+      "parentUuid": "4bd7c277_29ece0d6",
+      "revId": "2ceb6758141c9f8fd01ed8fe5d508f73c69be784",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
