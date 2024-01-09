@@ -16,6 +16,23 @@
       "message": "Please add it to the riscv gki_defconfig too.",
       "revId": "8ba7abfd7fae47e01e878f52d637c01c58fa6bb5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64aa74c7_8cf799b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-09T18:42:40Z",
+      "side": 1,
+      "message": "Breaks the build. Make sure the resulting gki_defconfig matches the version generated with savedefconfig.\n```\n--- common/arch/x86/configs/gki_defconfig\t2024-01-09 17:33:59.467085268 +0000\n+++ /mnt/disks/build-disk/src/android/common-android15-6.1/out/bazel/output_user_root/d0aa1836e64f00f82c787c21eeee0779/sandbox/linux-sandbox/9/execroot/__main__/out/android15-6.1/common/defconfig\t2024-01-09 17:34:34.986386528 +0000\n@@ -10,8 +10,8 @@\n CONFIG_PREEMPT\u003dy\n # CONFIG_PREEMPT_DYNAMIC is not set\n CONFIG_IRQ_TIME_ACCOUNTING\u003dy\n-CONFIG_TASK_DELAY_ACCT\u003dy\n CONFIG_TASKSTATS\u003dy\n+CONFIG_TASK_DELAY_ACCT\u003dy\n CONFIG_TASK_XACCT\u003dy\n CONFIG_TASK_IO_ACCOUNTING\u003dy\n CONFIG_PSI\u003dy\nERROR: savedefconfig does not match common/arch/x86/configs/gki_defconfig\nTarget //common:kernel_x86_64_dist failed to build\n```",
+      "revId": "8ba7abfd7fae47e01e878f52d637c01c58fa6bb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
