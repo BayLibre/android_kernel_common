@@ -314,6 +314,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
 	struct rb_node *node, *next, *parent, **p, *first = NULL;
 	struct nft_rbtree *priv = nft_set_priv(set);
+	u8 cur_genmask = nft_genmask_cur(net);
 	u8 genmask = nft_genmask_next(net);
 	int d, err;
 
@@ -359,8 +360,16 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
 		if (!nft_set_elem_active(&rbe->ext, genmask))
 			continue;
 
+<<<<<<< HEAD   (70db01 UPSTREAM: ipv4: igmp: fix refcnt uaf issue when receiving ig)
 		/* perform garbage collection to avoid bogus overlap reports. */
 		if (nft_set_elem_expired(&rbe->ext)) {
+=======
+		/* perform garbage collection to avoid bogus overlap reports
+		 * but skip new elements in this transaction.
+		 */
+		if (nft_set_elem_expired(&rbe->ext) &&
+		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
+>>>>>>> BRANCH (e2be51 ANDROID: GKI: fix crc issue in include/net/addrconf.h)
 			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
 			if (err < 0)
 				return err;
@@ -614,13 +623,22 @@ static void nft_rbtree_gc(struct work_struct *work)
 	net  = read_pnet(&set->net);
 	nft_net = net_generic(net, nf_tables_net_id);
 	gc_seq  = READ_ONCE(nft_net->gc_seq);
+<<<<<<< HEAD   (70db01 UPSTREAM: ipv4: igmp: fix refcnt uaf issue when receiving ig)
+
+	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+	if (!gc)
+		goto done;
+=======
+>>>>>>> BRANCH (e2be51 ANDROID: GKI: fix crc issue in include/net/addrconf.h)
+
+	if (nft_set_gc_is_pending(set))
+		goto done;
 
 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
 	if (!gc)
 		goto done;
 
-	write_lock_bh(&priv->lock);
-	write_seqcount_begin(&priv->count);
+	read_lock_bh(&priv->lock);
 	for (node = rb_first(&priv->root); node != NULL; node = rb_next(node)) {
 
 		/* Ruleset has been updated, try later. */
@@ -667,11 +685,20 @@ dead_elem:
 
 		nft_trans_gc_elem_add(gc, rbe);
 	}
+<<<<<<< HEAD   (70db01 UPSTREAM: ipv4: igmp: fix refcnt uaf issue when receiving ig)
 
 try_later:
 	write_seqcount_end(&priv->count);
 	write_unlock_bh(&priv->lock);
+=======
+>>>>>>> BRANCH (e2be51 ANDROID: GKI: fix crc issue in include/net/addrconf.h)
 
+<<<<<<< HEAD   (70db01 UPSTREAM: ipv4: igmp: fix refcnt uaf issue when receiving ig)
+=======
+try_later:
+	read_unlock_bh(&priv->lock);
+
+>>>>>>> BRANCH (e2be51 ANDROID: GKI: fix crc issue in include/net/addrconf.h)
 	if (gc)
 		nft_trans_gc_queue_async_done(gc);
 done:
