@@ -94,6 +94,30 @@
       },
       "revId": "87fdf6db19b05c1df3cc7044d9425a1f7ed591eb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1647a18_2d70d721",
+        "filename": "block/blk-settings.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-01-09T00:55:36Z",
+      "side": 1,
+      "message": "These the error that was found:\n\n```\n967741][  T114] S2MPG14_LDO8: disabling\n[   31.967992][  T114] S2MPG14_LDO9: disabling\n[   31.968282][  T114] S2MPG14_LDO14: disabling\n[   31.968581][  T114] S2MPG14_LDO19: disabling\n[   31.968825][  T114] S2MPG14_LDO22: disabling\n[   31.969297][  T114] S2MPG15_LDO5: disabling\n[   31.970948][  T114] S2MPG15_LDO7: disabling\n[   46.315557][  T124] exynos-ufs 13200000.ufs: ufshcd_abort: Device abort task at tag 15\n[   46.315904][  T124] scsi 0:0:0:2: tag#15 CDB: opcode\u003d0x12 12 01 00 00 ff 00\n[   46.316234][  T124] host_regs: 00000000: 1383ff1f 00000000 00000300 00000000\n[   46.316486][  T124] host_regs: 00000010: 00000106 000001ce 00000000 00000000\n[   46.322261][  T124] host_regs: 00000020: 00000000 00070ef5 00000000 00000000\n[   46.329287][  T124] host_regs: 00000030: 0000010f 00000001 00000000 00000000\n[   46.337900][  T124] host_regs: 00000040: 00000000 00000000 00000000 00000000\n[   46.343422][  T124] host_regs: 00000050: 8c594000 00000000 00029000 00000000\n[   46.350412][  T124] host_regs: 00000060: 00000001 800ff080 00000000 00000000\n[   46.359061][  T124] host_regs: 00000070: 8c64c000 00000000 00000000 00000000\n[   46.364502][  T124] host_regs: 00000080: 00000001 00000000 00000000 00000000\n[   46.371526][  T124] host_regs: 00000090: 00000002 15710000 00000000 00000000\n```",
+      "parentUuid": "228ecaa6_2a98fa14",
+      "range": {
+        "startLine": 182,
+        "startChar": 1,
+        "endLine": 182,
+        "endChar": 43
+      },
+      "revId": "87fdf6db19b05c1df3cc7044d9425a1f7ed591eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
