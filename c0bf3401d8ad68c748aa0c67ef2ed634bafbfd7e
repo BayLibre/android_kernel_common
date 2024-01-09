@@ -214,6 +214,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b10b8add_0b99ddfc",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-09T01:03:06Z",
+      "side": 1,
+      "message": "Can you explain the locking scheme used here? It looks like you have eliminated the node lock that the C version used and instead use the inner lock of the process that `owner` points to.",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2721210f_24b3156f",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
