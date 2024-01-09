@@ -267,6 +267,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d0bd4ee_54a32b11",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-09T00:52:54Z",
+      "side": 1,
+      "message": "This seems to replace the `outer_lock` in `struct binder_proc` from the C version. That lock is a spinlock though. The pre-fine-grained locking version of the driver used a mutex for it\u0027s global lock, but this was abandoned since a low priority thread holding that lock while it got preempted would cause glitches in high priority threads trying to get the same lock. Unless the linux mutex/rt_mutex implementation has improved since then, using a mutex here could cause a performance regression.",
+      "range": {
+        "startLine": 242,
+        "startChar": 15,
+        "endLine": 242,
+        "endChar": 20
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0abb748_f6f096da",
         "filename": "drivers/android/process.rs",
         "patchSetId": 3
