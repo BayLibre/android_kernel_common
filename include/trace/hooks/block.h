@@ -22,6 +22,9 @@ struct blk_mq_tag_set;
 /* struct blk_mq_tag_set */
 #include <linux/blk-mq.h>
 #endif /* __GENKSYMS__ */
+struct bio;
+struct bio_vec;
+struct page;
 
 DECLARE_HOOK(android_vh_blk_alloc_rqs,
 	TP_PROTO(size_t *rq_size, struct blk_mq_tag_set *set,
@@ -32,6 +35,24 @@ DECLARE_HOOK(android_vh_blk_rq_ctx_init,
 	TP_PROTO(struct request *rq, struct blk_mq_tags *tags,
 		struct blk_mq_alloc_data *data, u64 alloc_time_ns),
 	TP_ARGS(rq, tags, data, alloc_time_ns));
+
+DECLARE_HOOK(android_vh_bio_free,
+	TP_PROTO(struct bio *bio),
+	TP_ARGS(bio));
+
+DECLARE_HOOK(android_vh_bio_clone_fast,
+	TP_PROTO(struct bio *bio_src, struct bio *bio_dst),
+	TP_ARGS(bio_src, bio_dst));
+
+DECLARE_HOOK(android_vh_bio_try_merge_page,
+	TP_PROTO(bool *status, struct bio *bio, struct bio_vec *bv,
+		 struct page *page, unsigned int len, unsigned int off,
+		 bool *same_page),
+	TP_ARGS(status, bio, bv, page, len, off, same_page));
+
+DECLARE_HOOK(android_vh_bio_endio,
+	TP_PROTO(struct bio *bio),
+	TP_ARGS(bio));
 
 #endif /* _TRACE_HOOK_BLOCK_H */
 
