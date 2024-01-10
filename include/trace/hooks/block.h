@@ -206,6 +206,11 @@ DECLARE_HOOK(android_vh_blk_mq_queue_tag_busy_iter,
 		 void *priv),
 	TP_ARGS(skip, hctx, fn, priv));
 
+DECLARE_HOOK(android_vh_blk_queue_split,
+	TP_PROTO(struct request_queue *q, struct bio **bio,
+		 struct bio *split, unsigned int *nr_segs),
+	TP_ARGS(q, bio, split, nr_segs));
+
 #endif /* _TRACE_HOOK_BLOCK_H */
 
 /* This part must be outside protection */
