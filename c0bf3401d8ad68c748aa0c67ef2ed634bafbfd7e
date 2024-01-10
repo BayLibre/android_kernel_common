@@ -180,6 +180,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d55319b_8ddda737",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-10T10:08:03Z",
+      "side": 1,
+      "message": "The logic for this is mostly in `allocation.rs`. The target node is kept alive by the `NodeRef` in `AllocationInfo` (which in turn has an `Arc\u003cNode\u003e`).\n\nAs for other nodes embedded in the transaction, those are currently kept alive by just incrementing the process\u0027s refcount to the node in its `ProcessNodeRefs` collection. When the `Allocation` object is dropped, it reads the translated buffer data to figure out which `NodeRef` objects to adjust in `ProcessNodeRefs`. However, I intend to change this logic to have the allocation store a `NodeRef` for each embedded node, because the current way of doing it is what lead to aosp/2849924.\n\nAlso, as I write this, I realize that the current design allows the driver to drop refcounts to nodes owned by transactions with `BC_RELEASE`. This could cause errors to get emitted when cleaning up transactions due to it adjusting refcounts of nodes that the process no longer have a reference to.\n\nChanging it to just store a `NodeRef` for each embedded node would also solve this issue, because the transaction\u0027s refcount would be entirely separate from those that the process has. (I can allocate an array to store all of them, so I don\u0027t need separate allocations for each.)",
+      "parentUuid": "3c8a66e2_6cff75db",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
