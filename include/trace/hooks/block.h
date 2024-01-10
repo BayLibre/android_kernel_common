@@ -7,6 +7,8 @@
 #if !defined(_TRACE_HOOK_BLOCK_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _TRACE_HOOK_BLOCK_H
 
+#include <linux/sbitmap.h>
+#include <linux/blk-mq.h>
 #include <linux/tracepoint.h>
 #include <trace/hooks/vendor_hooks.h>
 
@@ -28,6 +30,8 @@ struct bio_vec;
 struct page;
 struct request_queue;
 struct request;
+struct blk_plug;
+struct task_struct;
 
 DECLARE_HOOK(android_vh_blk_alloc_rqs,
 	TP_PROTO(size_t *rq_size, struct blk_mq_tag_set *set,
@@ -155,6 +159,30 @@ DECLARE_HOOK(android_vh_blk_mq_alloc_tag_set,
 DECLARE_HOOK(android_vh_blk_mq_update_nr_requests,
 	TP_PROTO(bool *skip, struct request_queue *q),
 	TP_ARGS(skip, q));
+
+DECLARE_HOOK(android_vh_blk_cleanup_queue,
+	TP_PROTO(struct request_queue *q),
+	TP_ARGS(q));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_blk_allocated_queue_init,
+	TP_PROTO(bool *skip, struct request_queue *q),
+	TP_ARGS(skip, q), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_submit_bio_noacct,
+	TP_PROTO(bool *skip, struct bio *bio),
+	TP_ARGS(skip, bio), 1);
+
+DECLARE_HOOK(android_vh_blk_update_request,
+	TP_PROTO(struct request *rq, blk_status_t error, unsigned int nr_bytes),
+	TP_ARGS(rq, error, nr_bytes));
+
+DECLARE_HOOK(android_vh_blk_start_plug,
+	TP_PROTO(struct task_struct *tsk, struct blk_plug *plug),
+	TP_ARGS(tsk, plug));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_blk_flush_plug_list,
+	TP_PROTO(struct blk_plug *plug, bool from_schedule),
+	TP_ARGS(plug, from_schedule), 1);
 
 #endif /* _TRACE_HOOK_BLOCK_H */
 
