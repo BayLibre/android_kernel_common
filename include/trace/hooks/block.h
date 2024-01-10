@@ -58,6 +58,10 @@ DECLARE_HOOK(android_vh_bio_endio,
 	TP_PROTO(struct bio *bio),
 	TP_ARGS(bio));
 
+DECLARE_HOOK(android_vh_blk_bounce_clone_bio,
+	TP_PROTO(struct bio *bio, struct bio *bio_src),
+	TP_ARGS(bio, bio_src));
+
 #endif /* _TRACE_HOOK_BLOCK_H */
 
 /* This part must be outside protection */
