@@ -16,6 +16,7 @@ struct ufshcd_lrb;
 struct uic_command;
 struct request;
 struct scsi_device;
+struct scsi_cmnd;
 #else
 /* struct ufs_hba, struct ufshcd_lrb, struct uic_command */
 #include <../drivers/scsi/ufs/ufshcd.h>
@@ -23,6 +24,8 @@ struct scsi_device;
 #include <linux/blkdev.h>
 /* struct scsi_device */
 #include <scsi/scsi_device.h>
+/* struct scsi_cmnd */
+#include <scsi/scsi_cmnd.h>
 #endif /* __GENKSYMS__ */
 
 DECLARE_HOOK(android_vh_ufs_fill_prdt,
@@ -109,6 +112,71 @@ DECLARE_HOOK(android_vh_ufs_err_check_ctrl,
 	TP_PROTO(struct ufs_hba *hba,
 		 bool *err_check),
 	TP_ARGS(hba, err_check));
+
+DECLARE_HOOK(android_vh_ufshcd_any_tag_in_use,
+	TP_PROTO(bool *skip, int *busy, struct ufs_hba *hba),
+	TP_ARGS(skip, busy, hba));
+
+DECLARE_HOOK(android_vh_ufshcd_release,
+	TP_PROTO(bool *skip, struct ufs_hba *hba),
+	TP_ARGS(skip, hba));
+
+DECLARE_HOOK(android_vh_ufshcd_prepare_req_desc_hdr,
+	TP_PROTO(struct ufshcd_lrb *lrbp, u8 *upiu_flags),
+	TP_ARGS(lrbp, upiu_flags));
+
+DECLARE_HOOK(android_vh_ufshcd_queuecommand_first,
+	TP_PROTO(bool *skip, int *tag, struct ufs_hba *hba, struct scsi_cmnd *cmd),
+	TP_ARGS(skip, tag, hba, cmd));
+
+DECLARE_HOOK(android_vh_ufshcd_queuecommand_second,
+	TP_PROTO(struct ufs_hba *hba, int tag),
+	TP_ARGS(hba, tag));
+
+DECLARE_HOOK(android_vh_ufshcd_queuecommand_third,
+	TP_PROTO(bool *skip, struct ufs_hba *hba),
+	TP_ARGS(skip, hba));
+
+DECLARE_HOOK(android_vh_ufshcd_queuecommand_fourth,
+	TP_PROTO(struct ufs_hba *hba, int tag),
+	TP_ARGS(hba, tag));
+
+DECLARE_HOOK(android_vh_ufshcd_set_queue_depth,
+	TP_PROTO(struct scsi_device *sdev, u8 *lun_qdepth),
+	TP_ARGS(sdev, lun_qdepth));
+
+DECLARE_HOOK(android_vh_ufshcd_change_queue_depth,
+	TP_PROTO(bool *skip, struct scsi_device *sdev, int *depth),
+	TP_ARGS(skip, sdev, depth));
+
+DECLARE_HOOK(android_vh_ufshcd_compl_command_second,
+	TP_PROTO(struct ufs_hba *hba, int index),
+	TP_ARGS(hba, index));
+
+DECLARE_HOOK(android_vh_ufshcd_abort_first,
+	TP_PROTO(bool *skip, unsigned int *tag, struct scsi_cmnd *cmd),
+	TP_ARGS(skip, tag, cmd));
+
+DECLARE_HOOK(android_vh_ufshcd_abort_second,
+	TP_PROTO(struct ufs_hba *hba, int tag),
+	TP_ARGS(hba, tag));
+
+DECLARE_HOOK(android_vh_ufshcd_init,
+	TP_PROTO(struct ufs_hba *hba, struct Scsi_Host *host),
+	TP_ARGS(hba, host));
+
+DECLARE_HOOK(android_vh_ufshcd_memory_alloc,
+	TP_PROTO(size_t *ucdl_size, struct ufs_hba *hba),
+	TP_ARGS(ucdl_size, hba));
+
+DECLARE_HOOK(android_vh_ufshcd_host_memory_configure,
+	TP_PROTO(int *cmd_desc_size, struct ufs_hba *hba),
+	TP_ARGS(cmd_desc_size, hba));
+
+DECLARE_HOOK(android_vh_ufshcd_init_lrb,
+	TP_PROTO(struct ufs_hba *hba, struct utp_transfer_cmd_desc **cmd_descp,
+		 dma_addr_t *cmd_desc_element_addr, int i),
+	TP_ARGS(hba, cmd_descp, cmd_desc_element_addr, i));
 #endif /* _TRACE_HOOK_UFSHCD_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
