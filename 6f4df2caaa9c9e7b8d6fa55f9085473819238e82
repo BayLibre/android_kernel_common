@@ -16,6 +16,24 @@
       "message": "Do you really need this change? Is the spinlock being used in the hot path or does it have lock contention? Why not try and upstream this?",
       "revId": "6f4df2caaa9c9e7b8d6fa55f9085473819238e82",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb99e3f_22ef3100",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1947722
+      },
+      "writtenOn": "2024-01-10T01:55:29Z",
+      "side": 1,
+      "message": "Yes, we need this change. This is a mechanism for setting or clearing registers on our SOC, which can reduce spinlock usage. Specifically, each register will have a \"set address\" and a \"clear address\". When writing on “set address”， only certain bits of the register will be set to 1； and when writing on “clear address”， only certain bits of the register will be set to 0.",
+      "parentUuid": "680c686e_378c2da5",
+      "revId": "6f4df2caaa9c9e7b8d6fa55f9085473819238e82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
