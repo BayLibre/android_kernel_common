@@ -17,6 +17,7 @@ struct blk_mq_tags;
 struct blk_mq_alloc_data;
 struct blk_mq_tag_set;
 struct blk_mq_hw_ctx;
+struct blk_flush_queue;
 #else
 /* struct blk_mq_tags */
 #include <../block/blk-mq-tag.h>
@@ -24,6 +25,8 @@ struct blk_mq_hw_ctx;
 #include <../block/blk-mq.h>
 /* struct blk_mq_tag_set struct blk_mq_hw_ctx*/
 #include <linux/blk-mq.h>
+/* struct blk_flush_queue */
+#include <../block/blk.h>
 #endif /* __GENKSYMS__ */
 struct bio;
 struct request_queue;
@@ -108,6 +111,11 @@ DECLARE_RESTRICTED_HOOK(android_rvh_blk_allocated_queue_init,
 DECLARE_RESTRICTED_HOOK(android_rvh_blk_flush_plug_list,
 	TP_PROTO(struct blk_plug *plug, bool from_schedule),
 	TP_ARGS(plug, from_schedule), 1);
+
+DECLARE_HOOK(android_vh_blk_alloc_flush_queue,
+	TP_PROTO(bool *skip, int cmd_size, int flags, int node,
+		 struct blk_flush_queue *fq),
+	TP_ARGS(skip, cmd_size, flags, node, fq));
 
 #endif /* _TRACE_HOOK_BLOCK_H */
 
