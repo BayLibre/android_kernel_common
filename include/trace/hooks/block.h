@@ -118,6 +118,20 @@ DECLARE_HOOK(android_vh_blk_alloc_flush_queue,
 		 struct blk_flush_queue *fq),
 	TP_ARGS(skip, cmd_size, flags, node, fq));
 
+DECLARE_HOOK(android_vh_blk_mq_all_tag_iter,
+	TP_PROTO(bool *skip, struct blk_mq_tags *tags, busy_tag_iter_fn *fn,
+		 void *priv),
+	TP_ARGS(skip, tags, fn, priv));
+
+DECLARE_HOOK(android_vh_blk_mq_queue_tag_busy_iter,
+	TP_PROTO(bool *skip, struct blk_mq_hw_ctx *hctx, busy_iter_fn * fn,
+		 void *priv),
+	TP_ARGS(skip, hctx, fn, priv));
+
+DECLARE_HOOK(android_vh_blk_mq_free_tags,
+	TP_PROTO(bool *skip, struct blk_mq_tags *tags),
+	TP_ARGS(skip, tags));
+
 #endif /* _TRACE_HOOK_BLOCK_H */
 
 /* This part must be outside protection */
