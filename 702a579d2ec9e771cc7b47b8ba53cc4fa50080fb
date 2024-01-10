@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73307c74_e74a6de4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-01-10T09:31:18Z",
+      "side": 1,
+      "message": "@ndesaulniers@google.com\n\nThe `x86_64` failures are due to `static_call` resulting in an unused variable. This could be a failure of `__attribute__((__used__))` via `__used` via `__ADDRESSABLE`, or something else.",
+      "revId": "702a579d2ec9e771cc7b47b8ba53cc4fa50080fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
