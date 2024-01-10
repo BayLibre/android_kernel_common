@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "722b3802_cf3b2829",
+        "filename": "android/abi_gki_aarch64_amlogic",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-10T18:21:48Z",
+      "side": 1,
+      "message": "what is __bh_read used for? This has not been needed in previous kernels. Is this a filesystem?",
+      "revId": "370e7aa4161252b741d51981f0a632a2cabead0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6887a1e_50337131",
+        "filename": "android/abi_gki_aarch64_amlogic",
+        "patchSetId": 3
+      },
+      "lineNbr": 1013,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-10T18:21:48Z",
+      "side": 1,
+      "message": "CONFIG_PROVE_LOCKING has been disabled since this list was generated. Please update your kernel tree and generate this list again to clear out these lock debugging symbols",
+      "range": {
+        "startLine": 1009,
+        "startChar": 2,
+        "endLine": 1013,
+        "endChar": 22
+      },
+      "revId": "370e7aa4161252b741d51981f0a632a2cabead0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f51f4f4_279a37cf",
+        "filename": "android/abi_gki_aarch64_amlogic",
+        "patchSetId": 3
+      },
+      "lineNbr": 1952,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-10T18:21:48Z",
+      "side": 1,
+      "message": "what is write_cache_pages used for? filesystem?",
+      "revId": "370e7aa4161252b741d51981f0a632a2cabead0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
