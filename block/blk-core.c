@@ -66,6 +66,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(block_rq_merge);
 EXPORT_TRACEPOINT_SYMBOL_GPL(block_rq_requeue);
 EXPORT_TRACEPOINT_SYMBOL_GPL(block_rq_complete);
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/block.h>
+
 DEFINE_IDA(blk_queue_ida);
 
 /*
@@ -420,6 +423,7 @@ void blk_cleanup_queue(struct request_queue *q)
 		blk_mq_sched_free_requests(q);
 	mutex_unlock(&q->sysfs_lock);
 
+	trace_android_vh_blk_cleanup_queue(q);
 	/* @q is and will stay empty, shutdown and put */
 	blk_put_queue(q);
 }
@@ -522,6 +526,7 @@ struct request_queue *blk_alloc_queue(int node_id)
 {
 	struct request_queue *q;
 	int ret;
+	bool skip = false;
 
 	q = kmem_cache_alloc_node(blk_requestq_cachep,
 				GFP_KERNEL | __GFP_ZERO, node_id);
@@ -584,6 +589,10 @@ struct request_queue *blk_alloc_queue(int node_id)
 	blk_queue_dma_alignment(q, 511);
 	blk_set_default_limits(&q->limits);
 	q->nr_requests = BLKDEV_MAX_RQ;
+
+	trace_android_rvh_blk_allocated_queue_init(&skip, q);
+	if (skip)
+		goto fail_ref;
 
 	return q;
 
@@ -1041,6 +1050,12 @@ static blk_qc_t __submit_bio_noacct_mq(struct bio *bio)
  */
 blk_qc_t submit_bio_noacct(struct bio *bio)
 {
+	bool skip = false;
+
+	trace_android_rvh_submit_bio_noacct(&skip, bio);
+	if (skip)
+		return BLK_QC_T_NONE;
+
 	if (!submit_bio_checks(bio))
 		return BLK_QC_T_NONE;
 
@@ -1437,6 +1452,7 @@ bool blk_update_request(struct request *req, blk_status_t error,
 {
 	int total_bytes;
 
+	trace_android_vh_blk_update_request(req, error, nr_bytes);
 	trace_block_rq_complete(req, blk_status_to_errno(error), nr_bytes);
 
 	if (!req->bio)
@@ -1709,6 +1725,8 @@ void blk_start_plug(struct blk_plug *plug)
 	plug->multiple_queues = false;
 	plug->nowait = false;
 
+	trace_android_vh_blk_start_plug(tsk, plug);
+
 	/*
 	 * Store ordering should not be needed here, since a potential
 	 * preempt will imply a full memory barrier
@@ -1761,6 +1779,7 @@ EXPORT_SYMBOL(blk_check_plugged);
 
 void blk_flush_plug_list(struct blk_plug *plug, bool from_schedule)
 {
+	trace_android_rvh_blk_flush_plug_list(plug, from_schedule);
 	flush_plug_callbacks(plug, from_schedule);
 
 	if (!list_empty(&plug->mq_list))
