@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "680c686e_378c2da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2024-01-10T00:52:54Z",
+      "side": 1,
+      "message": "Do you really need this change? Is the spinlock being used in the hot path or does it have lock contention? Why not try and upstream this?",
+      "revId": "6f4df2caaa9c9e7b8d6fa55f9085473819238e82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
