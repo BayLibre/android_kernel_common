@@ -70,6 +70,7 @@
 #include <linux/gfp.h>
 #include <linux/blk-mq.h>
 #include <linux/lockdep.h>
+#include <trace/hooks/block.h>
 
 #include "blk.h"
 #include "blk-mq.h"
@@ -472,6 +473,7 @@ struct blk_flush_queue *blk_alloc_flush_queue(int node, int cmd_size,
 {
 	struct blk_flush_queue *fq;
 	int rq_sz = sizeof(struct request);
+	bool skip = false;
 
 	fq = kzalloc_node(sizeof(*fq), flags, node);
 	if (!fq)
@@ -479,8 +481,12 @@ struct blk_flush_queue *blk_alloc_flush_queue(int node, int cmd_size,
 
 	spin_lock_init(&fq->mq_flush_lock);
 
-	rq_sz = round_up(rq_sz + cmd_size, cache_line_size());
-	fq->flush_rq = kzalloc_node(rq_sz, flags, node);
+	trace_android_vh_blk_alloc_flush_queue(&skip, cmd_size, flags, node,
+					       fq);
+	if (!skip) {
+		rq_sz = round_up(rq_sz + cmd_size, cache_line_size());
+		fq->flush_rq = kzalloc_node(rq_sz, flags, node);
+	}
 	if (!fq->flush_rq)
 		goto fail_rq;
 
