@@ -2901,6 +2901,11 @@ static int arm_smmu_def_domain_type(struct device *dev)
 			return IOMMU_DOMAIN_IDENTITY;
 	}
 
+	if (device_property_read_bool(dev, "iommu-idmapped")) {
+		dev_info(dev, "IOMMU bypass\n");
+		return IOMMU_DOMAIN_IDENTITY;
+	}
+
 	return 0;
 }
 
