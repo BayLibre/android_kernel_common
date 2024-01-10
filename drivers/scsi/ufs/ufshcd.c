@@ -1342,7 +1342,11 @@ static bool ufshcd_any_tag_in_use(struct ufs_hba *hba)
 {
 	struct request_queue *q = hba->cmd_queue;
 	int busy = 0;
+	bool skip = false;
 
+	trace_android_vh_ufshcd_any_tag_in_use(&skip, &busy, hba);
+	if (skip)
+		return busy;
 	blk_mq_tagset_busy_iter(q->tag_set, ufshcd_is_busy, &busy);
 	return busy;
 }
@@ -1795,10 +1799,15 @@ out:
 /* host lock must be held before calling this variant */
 static void __ufshcd_release(struct ufs_hba *hba)
 {
+	int busy = 0;
+
 	if (!ufshcd_is_clkgating_allowed(hba))
 		return;
 
 	hba->clk_gating.active_reqs--;
+	trace_android_vh_ufshcd_any_tag_in_use(&busy, hba);
+	if (busy)
+		return;
 
 	if (hba->clk_gating.active_reqs || hba->clk_gating.is_suspended ||
 	    hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL ||
@@ -2452,6 +2461,7 @@ static void ufshcd_prepare_req_desc_hdr(struct ufshcd_lrb *lrbp,
 		*upiu_flags = UPIU_CMD_FLAGS_NONE;
 	}
 
+	trace_android_vh_ufshcd_prepare_req_desc_hdr(lrbp, upiu_flags);
 	dword_0 = data_direction | (lrbp->command_type
 				<< UPIU_COMMAND_TYPE_OFFSET);
 	if (lrbp->intr_cmd)
@@ -3592,6 +3602,7 @@ static int ufshcd_memory_alloc(struct ufs_hba *hba)
 
 	/* Allocate memory for UTP command descriptors */
 	ucdl_size = (sizeof_utp_transfer_cmd_desc(hba) * hba->nutrs);
+
 	hba->ucdl_base_addr = dmam_alloc_coherent(hba->dev,
 						  ucdl_size,
 						  &hba->ucdl_dma_addr,
@@ -5240,6 +5251,7 @@ static void __ufshcd_transfer_req_compl(struct ufs_hba *hba,
 			ufshcd_add_command_trace(hba, index, "complete");
 			cmd->result = ufshcd_transfer_rsp_status(hba, lrbp);
 			ufshcd_release_scsi_cmd(hba, lrbp);
+			android_vh_ufshcd_release_tag(hba, index);
 			/* Do not touch lrbp after scsi done */
 			cmd->scsi_done(cmd);
 		} else if (lrbp->command_type == UTP_CMD_TYPE_DEV_MANAGE ||
@@ -6978,6 +6990,7 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
 	host = cmd->device->host;
 	hba = shost_priv(host);
 	tag = cmd->request->tag;
+
 	lrbp = &hba->lrb[tag];
 	if (!ufshcd_valid_tag(hba, tag)) {
 		dev_err(hba->dev,
@@ -7071,6 +7084,7 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
 		trace_android_vh_ufs_abort_success_ctrl(hba, lrbp);
 	}
 
+	trace_android_vh_ufshcd_release_tag(hba, tag);
 	err = SUCCESS;
 
 release:
@@ -9370,6 +9384,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	ufshcd_host_memory_configure(hba);
 
 	host->can_queue = hba->nutrs - UFSHCD_NUM_RESERVED;
+
+	trace_android_vh_ufshcd_init(hba, host);
+
 	host->cmd_per_lun = hba->nutrs - UFSHCD_NUM_RESERVED;
 	host->max_id = UFSHCD_MAX_ID;
 	host->max_lun = UFS_MAX_LUNS;

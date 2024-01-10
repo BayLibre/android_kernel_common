@@ -560,6 +560,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_blk_needs_flush_plug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sd_probe);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scsi_host_alloc);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scsi_mq_setup_tags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufshcd_any_tag_in_use);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufshcd_prepare_req_desc_hdr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufshcd_release_tag);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufshcd_init);
 
 /*
  * For type visibility
