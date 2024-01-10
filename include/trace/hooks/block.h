@@ -131,6 +131,10 @@ DECLARE_HOOK(android_vh_blk_mq_free_tags,
 	TP_PROTO(bool *skip, struct blk_mq_tags *tags),
 	TP_ARGS(skip, tags));
 
+DECLARE_HOOK(android_vh_blk_mq_sched_insert_request,
+	TP_PROTO(bool *skip, struct request *rq),
+	TP_ARGS(skip, rq));
+
 #endif /* _TRACE_HOOK_BLOCK_H */
 
 /* This part must be outside protection */
