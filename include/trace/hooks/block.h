@@ -18,6 +18,7 @@ struct blk_mq_alloc_data;
 struct blk_mq_tag_set;
 struct blk_mq_hw_ctx;
 struct blk_flush_queue;
+struct gendisk;
 #else
 /* struct blk_mq_tags */
 #include <../block/blk-mq-tag.h>
@@ -27,6 +28,8 @@ struct blk_flush_queue;
 #include <linux/blk-mq.h>
 /* struct blk_flush_queue */
 #include <../block/blk.h>
+/* struct gendisk */
+#include <linux/genhd.h>
 #endif /* __GENKSYMS__ */
 struct bio;
 struct bio_vec;
@@ -218,6 +221,10 @@ DECLARE_HOOK(android_vh_elv_iosched_show,
 DECLARE_HOOK(android_vh_blk_mq_sched_insert_request,
 	TP_PROTO(bool *skip, struct request *rq),
 	TP_ARGS(skip, rq));
+
+DECLARE_HOOK(android_vh_blk_register_queue,
+	TP_PROTO(struct request_queue *q, struct gendisk *disk),
+	TP_ARGS(q, disk));
 
 #endif /* _TRACE_HOOK_BLOCK_H */
 
