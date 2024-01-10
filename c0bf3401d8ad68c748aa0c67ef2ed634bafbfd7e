@@ -162,6 +162,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c8a66e2_6cff75db",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-10T01:56:07Z",
+      "side": 1,
+      "message": "In this scheme, if you send a one-way transaction that contains a node that you then drop all other references to, how do you keep that node alive until the transaction is delivered? Do you allocate separate objects to store `Arc\u003cNode\u003e` references for all the nodes in a transaction (I did not see this, but I have not looked at every patch in detail yet).",
+      "parentUuid": "399980f3_b6c1af82",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
