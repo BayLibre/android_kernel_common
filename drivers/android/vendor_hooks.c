@@ -45,6 +45,7 @@
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/ufshcd.h>
 #include <trace/hooks/block.h>
+#include <trace/hooks/sd.h>
 #include <trace/hooks/cgroup.h>
 #include <trace/hooks/sys.h>
 #include <trace/hooks/traps.h>
@@ -565,6 +566,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_mq_sched_insert_request);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_register_queue);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_blk_needs_flush_plug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_add_partitions);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sd_probe);
 
 /*
  * For type visibility
