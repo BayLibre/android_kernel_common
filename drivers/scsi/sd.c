@@ -73,6 +73,8 @@
 #include "scsi_priv.h"
 #include "scsi_logging.h"
 
+#include <trace/hooks/sd.h>
+
 MODULE_AUTHOR("Eric Youngdale");
 MODULE_DESCRIPTION("SCSI disk (sd) driver");
 MODULE_LICENSE("GPL");
@@ -3460,6 +3462,7 @@ static int sd_probe(struct device *dev)
 	gd->first_minor = ((index & 0xf) << 4) | (index & 0xfff00);
 
 	gd->fops = &sd_fops;
+	trace_android_vh_sd_probe(gd, sdp);
 	gd->private_data = &sdkp->driver;
 	gd->queue = sdkp->device->request_queue;
 
