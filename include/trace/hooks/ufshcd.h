@@ -24,6 +24,7 @@ struct scsi_device;
 /* struct scsi_device */
 #include <scsi/scsi_device.h>
 #endif /* __GENKSYMS__ */
+struct Scsi_Host;
 
 DECLARE_HOOK(android_vh_ufs_fill_prdt,
 	TP_PROTO(struct ufs_hba *hba, struct ufshcd_lrb *lrbp,
@@ -109,6 +110,18 @@ DECLARE_HOOK(android_vh_ufs_err_check_ctrl,
 	TP_PROTO(struct ufs_hba *hba,
 		 bool *err_check),
 	TP_ARGS(hba, err_check));
+
+DECLARE_HOOK(android_vh_ufshcd_any_tag_in_use,
+	TP_PROTO(int *busy, struct ufs_hba *hba),
+	TP_ARGS(busy, hba));
+
+DECLARE_HOOK(android_vh_ufshcd_release_tag,
+	TP_PROTO(struct ufs_hba *hba, int index),
+	TP_ARGS(hba, index));
+
+DECLARE_HOOK(android_vh_ufshcd_init,
+	TP_PROTO(struct ufs_hba *hba, struct Scsi_Host *host),
+	TP_ARGS(hba, host));
 #endif /* _TRACE_HOOK_UFSHCD_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
