@@ -88,6 +88,24 @@
       "parentUuid": "ab973713_41d4f31d",
       "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "005c4c8a_5e24df86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082649
+      },
+      "writtenOn": "2024-01-11T16:29:27Z",
+      "side": 1,
+      "message": "We definitely want `DEBUG_LIST` enabled -- this trivially catches list corruption issues that would otherwise allow for some classic exploitation primitives. I haven\u0027t done a performance analysis in a long time, but when I last looked at it, it was totally in the noise (there just aren\u0027t a lot of heavy list manipulation hot paths).\n\nThe question about `BUG_ON_DATA_CORRUPTION` is more about the policy on handling kernel issues. If we set `panic_on_warn`, then we don\u0027t need it (same result). If we don\u0027t, then it\u0027s a question of \"do we want the device to keep running in the face of a detected memory corruption?\" With my paranoid hat on, I think we should panic, but I can see there might be other opinions. 😊\n\nPerhaps @jeffv@google.com can answer the policy question?",
+      "parentUuid": "f2e9af81_3dc3c624",
+      "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
