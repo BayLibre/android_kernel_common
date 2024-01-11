@@ -106,6 +106,24 @@
       "parentUuid": "f2e9af81_3dc3c624",
       "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b017c82_f3380a00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-01-11T17:17:48Z",
+      "side": 1,
+      "message": "With regards to `DEBUG_LIST`, do we still need it for v6.6 now that `LIST_HARDENED` has been introduced and doesn\u0027t depend on `DEBUG_LIST`? Refer to https://lore.kernel.org/all/20230811151847.1594958-3-elver@google.com/ which seems to indicate that we can get a throughput perf improvement of ~7%.\n\nRegarding `BUG_ON_DATA_CORRUPTION`, since that config has been enabled for some time now, I\u0027ll keep it set.",
+      "parentUuid": "005c4c8a_5e24df86",
+      "revId": "5fcb8ec01e7c85a58edc62544d45a3ba1aa78c0f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
