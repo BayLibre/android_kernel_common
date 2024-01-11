@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11be963c_e8011c48",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-11T09:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bd1fa21_d57576f2",
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48bd66a6_00d41a80",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf667339_832a3475",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-11T09:44:28Z",
+      "side": 1,
+      "message": "Not only are they local to the driver; they are local to the `Process` struct. Other structs can have methods of the same name without a conflict.\n\nI\u0027ve renamed this method.",
+      "parentUuid": "48bd66a6_00d41a80",
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "150efb0c_2c7418d1",
@@ -48,6 +84,30 @@
       "writtenOn": "2024-01-11T01:03:33Z",
       "side": 1,
       "message": "If this name refers to _IOWR I think it is also poorly named for two reasons.  1. it is not obvious that it refers to an ioctl wich is distinct from read and write operations on files. 2. The W and R in _IOWR refers to an ioctl where the data in the following arg is first used for a \"write\" operation, then the same pointer is used for a \"read\" operation (thread.write_read does something similar nested one level deeper, although it uses separate pointers instead of the same one)",
+      "range": {
+        "startLine": 681,
+        "startChar": 7,
+        "endLine": 681,
+        "endChar": 17
+      },
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "700ed82d_7d586cf3",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-11T09:44:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "150efb0c_2c7418d1",
       "range": {
         "startLine": 681,
         "startChar": 7,
