@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd1fa21_d57576f2",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-11T01:03:33Z",
+      "side": 1,
+      "message": "Renaming that map to by_node seems clearer to me as we are either using the map to check if we already have a ref and handle for a node, or we have a handle and need to get the ref and node for it.",
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48bd66a6_00d41a80",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-11T01:03:33Z",
+      "side": 1,
+      "message": "Why is this called write? Is it referring to ioctl opcodes using the _IOW macro? If so how do you avoid collisions with the write operation in drivers that also need to implement the write operation in file_operations.\n\n(edit) It looks like these names are local to this driver, but I still think they should be renamed to avoid unnecessary confusion",
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "150efb0c_2c7418d1",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-11T01:03:33Z",
+      "side": 1,
+      "message": "If this name refers to _IOWR I think it is also poorly named for two reasons.  1. it is not obvious that it refers to an ioctl wich is distinct from read and write operations on files. 2. The W and R in _IOWR refers to an ioctl where the data in the following arg is first used for a \"write\" operation, then the same pointer is used for a \"read\" operation (thread.write_read does something similar nested one level deeper, although it uses separate pointers instead of the same one)",
+      "range": {
+        "startLine": 681,
+        "startChar": 7,
+        "endLine": 681,
+        "endChar": 17
+      },
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
