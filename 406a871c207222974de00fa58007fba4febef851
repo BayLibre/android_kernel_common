@@ -70,6 +70,30 @@
       },
       "revId": "406a871c207222974de00fa58007fba4febef851",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3acd02d8_6408bda1",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1466604
+      },
+      "writtenOn": "2024-01-12T15:38:31Z",
+      "side": 1,
+      "message": "It can\u0027t - Paul Lawrence would like to avoid exposing these symbols to vendors so the alternatives are making it a GKI module or building it in. Paul and I elected for the former since its not that much code.\n\nAdditionally this module was originally built in until I removed it in August and added those symbols to the KMI - which brought about Paul\u0027s concerns.",
+      "parentUuid": "2df74fb9_93b533f1",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 18
+      },
+      "revId": "406a871c207222974de00fa58007fba4febef851",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
