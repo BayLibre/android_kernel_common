@@ -51,6 +51,24 @@
       "parentUuid": "64aa74c7_8cf799b1",
       "revId": "8ba7abfd7fae47e01e878f52d637c01c58fa6bb5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20e03bef_a574aeaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2024-01-12T07:52:35Z",
+      "side": 1,
+      "message": "Currently, it seems that the robot has compiled successfully. When I re-verified locally using the commands tools/bazel build //common:kernel_x86_64 and tools/bazel build //common:kernel_aarch64, the compilation passed. I don\u0027t know where the error is. Please check the compile log file build.txt, I have uploaded it to the issue tracker. Could you please check again? Thank you.",
+      "parentUuid": "4700d70a_4ad02054",
+      "revId": "8ba7abfd7fae47e01e878f52d637c01c58fa6bb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
