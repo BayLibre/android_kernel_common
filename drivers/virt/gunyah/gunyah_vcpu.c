@@ -329,7 +329,6 @@ static bool gh_vcpu_populate(struct gh_vm_resource_ticket *ticket, struct gh_res
 	}
 
 	vcpu->rsc = ghrsc;
-	init_completion(&vcpu->ready);
 
 	ret = request_irq(vcpu->rsc->irq, gh_vcpu_irq_handler, IRQF_TRIGGER_RISING, "gh_vcpu",
 			vcpu);
@@ -377,6 +376,7 @@ static long gh_vcpu_bind(struct gh_vm_function_instance *f)
 	f->data = vcpu;
 	mutex_init(&vcpu->run_lock);
 	kref_init(&vcpu->kref);
+	init_completion(&vcpu->ready);
 
 	page = alloc_page(GFP_KERNEL | __GFP_ZERO);
 	if (!page) {
