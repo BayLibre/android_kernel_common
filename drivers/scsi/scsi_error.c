@@ -1104,7 +1104,12 @@ retry:
 	shost->eh_action = &done;
 
 	scsi_log_send(scmd);
+<<<<<<< HEAD   (ea2937 Merge 5.15.145 into android13-5.15-lts)
 	scmd->scsi_done = scsi_eh_done;
+=======
+	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
+	scmd->flags |= SCMD_LAST;
+>>>>>>> BRANCH (26c690 Linux 5.15.146)
 
 	/*
 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
@@ -2401,7 +2406,12 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
 	scsi_init_command(dev, scmd);
 	scmd->cmnd = scsi_req(rq)->cmd;
 
+<<<<<<< HEAD   (ea2937 Merge 5.15.145 into android13-5.15-lts)
 	scmd->scsi_done		= scsi_reset_provider_done_command;
+=======
+	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
+	scmd->flags |= SCMD_LAST;
+>>>>>>> BRANCH (26c690 Linux 5.15.146)
 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
 
 	scmd->cmd_len			= 0;

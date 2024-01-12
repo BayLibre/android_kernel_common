@@ -277,26 +277,46 @@ static void dwapb_irq_enable(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct dwapb_gpio *gpio = to_dwapb_gpio(gc);
+	irq_hw_number_t hwirq = irqd_to_hwirq(d);
 	unsigned long flags;
 	u32 val;
 
+<<<<<<< HEAD   (ea2937 Merge 5.15.145 into android13-5.15-lts)
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 	val = dwapb_read(gpio, GPIO_INTEN);
 	val |= BIT(irqd_to_hwirq(d));
+=======
+	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+	val = dwapb_read(gpio, GPIO_INTEN) | BIT(hwirq);
+>>>>>>> BRANCH (26c690 Linux 5.15.146)
 	dwapb_write(gpio, GPIO_INTEN, val);
+<<<<<<< HEAD   (ea2937 Merge 5.15.145 into android13-5.15-lts)
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+=======
+	val = dwapb_read(gpio, GPIO_INTMASK) & ~BIT(hwirq);
+	dwapb_write(gpio, GPIO_INTMASK, val);
+	raw_spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+>>>>>>> BRANCH (26c690 Linux 5.15.146)
 }
 
 static void dwapb_irq_disable(struct irq_data *d)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct dwapb_gpio *gpio = to_dwapb_gpio(gc);
+	irq_hw_number_t hwirq = irqd_to_hwirq(d);
 	unsigned long flags;
 	u32 val;
 
+<<<<<<< HEAD   (ea2937 Merge 5.15.145 into android13-5.15-lts)
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 	val = dwapb_read(gpio, GPIO_INTEN);
 	val &= ~BIT(irqd_to_hwirq(d));
+=======
+	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+	val = dwapb_read(gpio, GPIO_INTMASK) | BIT(hwirq);
+	dwapb_write(gpio, GPIO_INTMASK, val);
+	val = dwapb_read(gpio, GPIO_INTEN) & ~BIT(hwirq);
+>>>>>>> BRANCH (26c690 Linux 5.15.146)
 	dwapb_write(gpio, GPIO_INTEN, val);
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
 }
