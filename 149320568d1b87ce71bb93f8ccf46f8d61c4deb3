@@ -16,6 +16,24 @@
       "message": "Please fix the drivers instead.",
       "revId": "149320568d1b87ce71bb93f8ccf46f8d61c4deb3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "149cf19d_db7bb221",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2038973
+      },
+      "writtenOn": "2024-01-12T11:13:07Z",
+      "side": 1,
+      "message": "Hi Will,\n\nwe have already fixed the driver from 14-6.1 kernel onwards, but here our vendor driver are used from 13-5.15 based kernel only and which is already frozen.\n\nPlease provide an exception for this particular branch only.",
+      "parentUuid": "598de9dc_45bb8fd1",
+      "revId": "149320568d1b87ce71bb93f8ccf46f8d61c4deb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
