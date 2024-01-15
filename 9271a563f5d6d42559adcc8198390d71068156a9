@@ -620,6 +620,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdcd1a6e_afb73d43",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4691,
+      "author": {
+        "id": 1829853
+      },
+      "writtenOn": "2024-01-15T01:32:15Z",
+      "side": 1,
+      "message": "I add:\ntrace_android_vh_binder_select_special_worklist\nI has skip param, if skip is true, it will skip normal binder work selec workflow.\nplease help check again. \nIf this hook is applied, I think if next version about vendor hook freeze, trace_android_vh_binder_select_worklist_ilocked, can be removed.",
+      "parentUuid": "53966b44_bd4515cd",
+      "range": {
+        "startLine": 4690,
+        "startChar": 0,
+        "endLine": 4691,
+        "endChar": 16
+      },
+      "revId": "9271a563f5d6d42559adcc8198390d71068156a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e607fa1e_6654bf19",
