@@ -19,6 +19,26 @@
       "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/44c7b80bffc3a657a36857098d5d9c49d94e652b) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d44c7b80bffc3a657a36857098d5d9c49d94e652b)\n\n```\n      ## kernel/sched/fair.c ##\n     @@ kernel/sched/fair.c: static unsigned long scale_rt_capacity(int cpu)\n    @@ kernel/sched/sched.h: struct rq {\n      \tunsigned long\t\tcpu_capacity_orig;\n     +\tunsigned long\t\tcpu_capacity_inverted;\n      \n    - \tstruct balance_callback *balance_callback;\n    + \tstruct callback_head\t*balance_callback;\n      \n     @@ kernel/sched/sched.h: static inline unsigned long capacity_orig_of(int cpu)\n    - \treturn cpu_rq(cpu)-\u003ecpu_capacity_orig;\n      }\n    + #endif\n      \n     +/*\n     + * Returns inverted capacity if the CPU is in capacity inversion state.\n    @@ kernel/sched/sched.h: static inline unsigned long capacity_orig_of(int cpu)\n     +{\n     +\treturn cpu_rq(cpu)-\u003ecpu_capacity_inverted;\n     +}\n    ++\n     +\n      /**\n    -  * enum cpu_util_type - CPU utilization type\n    +  * enum schedutil_type - CPU utilization type\n       * @FREQUENCY_UTIL:\tUtilization used to select frequency\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 557820322 android-build.ayeaye-python-dispatcher_20230817.05_p0",
       "revId": "e950851ec3b44cca2e811146e2467ce255da951a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000051532797",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2477482?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "ea1143d1_3799da04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-15T16:09:07Z",
+      "side": 1,
+      "message": "[Experimental] Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/44c7b80bffc3a657a36857098d5d9c49d94e652b) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d44c7b80bffc3a657a36857098d5d9c49d94e652b)\n\n```\n      ## kernel/sched/fair.c ##\n     @@ kernel/sched/fair.c: static unsigned long scale_rt_capacity(int cpu)\n    @@ kernel/sched/sched.h: struct rq {\n      \tunsigned long\t\tcpu_capacity_orig;\n     +\tunsigned long\t\tcpu_capacity_inverted;\n      \n    - \tstruct balance_callback *balance_callback;\n    + \tstruct callback_head\t*balance_callback;\n      \n     @@ kernel/sched/sched.h: static inline unsigned long capacity_orig_of(int cpu)\n    - \treturn cpu_rq(cpu)-\u003ecpu_capacity_orig;\n      }\n    + #endif\n      \n     +/*\n     + * Returns inverted capacity if the CPU is in capacity inversion state.\n    @@ kernel/sched/sched.h: static inline unsigned long capacity_orig_of(int cpu)\n     +{\n     +\treturn cpu_rq(cpu)-\u003ecpu_capacity_inverted;\n     +}\n    ++\n     +\n      /**\n    -  * enum cpu_util_type - CPU utilization type\n    +  * enum schedutil_type - CPU utilization type\n       * @FREQUENCY_UTIL:\tUtilization used to select frequency\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 557820322 android-build.ayeaye-python-dispatcher_20230817.05_p0",
+      "revId": "e950851ec3b44cca2e811146e2467ce255da951a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
