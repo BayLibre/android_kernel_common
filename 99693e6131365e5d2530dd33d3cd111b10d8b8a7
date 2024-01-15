@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af41aa6f_f4c3820a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2024-01-15T16:29:15Z",
+      "side": 1,
+      "message": "Hi, Maciej, Greg\n\nThis change causes the db845c build failed to load the libphy.ko file, for the details please check the issue#320175813[1]. When I updated the ABI symbols as before, which is submitted as #2908986 [2], it still failed with error \"libphy: exports duplicate symbol __genphy_config_aneg (owned by kernel)\"\n\nNot sure if you have any idea about it, and give some suggestions?\n\nBTW,I am not able to comment on the issue#320175813[1], not sure if you could help update my permission there.\n\n[1]: https://issuetracker.google.com/issues/320175813\n[2]: https://android-review.googlesource.com/c/kernel/common/+/2908986",
+      "revId": "99693e6131365e5d2530dd33d3cd111b10d8b8a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
