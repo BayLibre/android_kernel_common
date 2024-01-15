@@ -16,6 +16,24 @@
       "message": "Hi, Maciej, Greg\n\nThis change causes the db845c build failed to load the libphy.ko file, for the details please check the issue#320175813[1]. When I updated the ABI symbols as before, which is submitted as #2908986 [2], it still failed with error \"libphy: exports duplicate symbol __genphy_config_aneg (owned by kernel)\"\n\nNot sure if you have any idea about it, and give some suggestions?\n\nBTW,I am not able to comment on the issue#320175813[1], not sure if you could help update my permission there.\n\n[1]: https://issuetracker.google.com/issues/320175813\n[2]: https://android-review.googlesource.com/c/kernel/common/+/2908986",
       "revId": "99693e6131365e5d2530dd33d3cd111b10d8b8a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a50f86_b1f0dc38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2024-01-15T17:19:52Z",
+      "side": 1,
+      "message": "oh, I guess this is a device which previously had this already enabled\nin some device specific configuration...\n(I vaguely recall hearing about that in some - possibly this - case before...)\nmaybe that just needs to be disabled?\n\nOn Mon, Jan 15, 2024 at 8:29 AM Yongqin Liu (Gerrit)\n\u003cnoreply-gerritcodereview-CPxWE-zha6UvL9sGiySvYA\u003d\u003d@google.com\u003e wrote:",
+      "tag": "mailMessageId\u003d\u003cCANP3RGckd3UXLFqcuXUg\u003d66_wA4E69XsiuKn-UAgAjtMJjecBQ@mail.gmail.com\u003e",
+      "revId": "99693e6131365e5d2530dd33d3cd111b10d8b8a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
