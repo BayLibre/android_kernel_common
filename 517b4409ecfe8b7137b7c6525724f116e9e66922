@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e99c055_483b8083",
+        "filename": "include/trace/hooks/futex.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2024-01-15T13:43:58Z",
+      "side": 1,
+      "message": "This should be fine, but I wonder if it would become a problem if vendor_hooks.h will start using these names or include trace/define_trace.h.\nI would have put these at the end of the file, just above `#include \u003ctrace/define_trace.h\u003e`",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 38
+      },
+      "revId": "517b4409ecfe8b7137b7c6525724f116e9e66922",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
