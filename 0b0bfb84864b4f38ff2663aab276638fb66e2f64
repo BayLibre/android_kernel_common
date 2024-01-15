@@ -16,6 +16,40 @@
       "message": "@tkjos@google.com \nI have updated one new patchset, help to check again\n\nThanks a lots.",
       "revId": "0b0bfb84864b4f38ff2663aab276638fb66e2f64",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa161e8b_277d6ee9",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4612,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-15T19:16:50Z",
+      "side": 1,
+      "message": "rename. Confusing to have the same name for the variable and the label (`if (skip) goto skip`). How about \"nothing_to_do\"?",
+      "revId": "0b0bfb84864b4f38ff2663aab276638fb66e2f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5c4d52_3888af7f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4672,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-15T19:16:50Z",
+      "side": 1,
+      "message": "move this up before line 4669 so it looks like this:\n```\ntrace_android_vh_binder_select_worklist_ilocked(\u0026list, thread,\n\t\t\t\t\t\tproc, wait_for_proc_work);\ntrace_android_vh_binder_select_special_worklist(\u0026list, thread,\n\t\t\t\t\t\tproc, wait_for_proc_work, \u0026nothing_to_do);\nif (list)\n  goto skip;\nelse if (nothing_to_do)\n  goto no_work;\n```",
+      "revId": "0b0bfb84864b4f38ff2663aab276638fb66e2f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
