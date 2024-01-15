@@ -1,0 +1,41 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000064955093",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2909877?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "0a598da9_bf7f8749",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 140,
+                "startChar": 0,
+                "endLine": 141,
+                "endChar": 0
+              },
+              "replacement": "        \"make_goals\": [\"deb-pkg\"],\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "c627fc2e_31963bcd",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-15T04:25:36Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "revId": "87d2ec4d70846654da7cca8d764c729e1c110858",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
