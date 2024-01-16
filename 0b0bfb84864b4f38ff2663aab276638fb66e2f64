@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e6c72a_da7f269e",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4612,
+      "author": {
+        "id": 1829853
+      },
+      "writtenOn": "2024-01-16T01:01:25Z",
+      "side": 1,
+      "message": "Ok, I will applied in next patch",
+      "parentUuid": "aa161e8b_277d6ee9",
+      "revId": "0b0bfb84864b4f38ff2663aab276638fb66e2f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c5c4d52_3888af7f",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-01-15T19:16:50Z",
       "side": 1,
       "message": "move this up before line 4669 so it looks like this:\n```\ntrace_android_vh_binder_select_worklist_ilocked(\u0026list, thread,\n\t\t\t\t\t\tproc, wait_for_proc_work);\ntrace_android_vh_binder_select_special_worklist(\u0026list, thread,\n\t\t\t\t\t\tproc, wait_for_proc_work, \u0026nothing_to_do);\nif (list)\n  goto skip;\nelse if (nothing_to_do)\n  goto no_work;\n```",
+      "revId": "0b0bfb84864b4f38ff2663aab276638fb66e2f64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54461e64_739d1a25",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4672,
+      "author": {
+        "id": 1829853
+      },
+      "writtenOn": "2024-01-16T01:01:25Z",
+      "side": 1,
+      "message": "Thanks. I will apply it.",
+      "parentUuid": "3c5c4d52_3888af7f",
       "revId": "0b0bfb84864b4f38ff2663aab276638fb66e2f64",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
