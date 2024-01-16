@@ -3387,8 +3387,11 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
 
 	if (userfaultfd_pte_wp(vma, *vmf->pte)) {
 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+<<<<<<< HEAD   (57bec5 ANDROID: binder: fix KMI-break due to alloc->lock)
 		if (vmf->flags & FAULT_FLAG_SPECULATIVE)
 			return VM_FAULT_RETRY;
+=======
+>>>>>>> CHANGE (d161fd ANDROID: userfaultfd: Let SPF bailout be decided in handle_u)
 		return handle_userfault(vmf, VM_UFFD_WP);
 	}
 
@@ -3957,7 +3960,12 @@ skip_pmd_checks:
 	if (!(vmf->flags & FAULT_FLAG_SPECULATIVE) &&
 				userfaultfd_missing(vma)) {
 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+<<<<<<< HEAD   (57bec5 ANDROID: binder: fix KMI-break due to alloc->lock)
 		put_page(page);
+=======
+		if (page)
+			put_page(page);
+>>>>>>> CHANGE (d161fd ANDROID: userfaultfd: Let SPF bailout be decided in handle_u)
 		return handle_userfault(vmf, VM_UFFD_MISSING);
 	}
 
