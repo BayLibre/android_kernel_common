@@ -571,7 +571,11 @@ EXPORT_SYMBOL(mmc_remove_host);
  */
 void mmc_free_host(struct mmc_host *host)
 {
+<<<<<<< HEAD   (0d5ac7 Merge 5.4.266 into android11-5.4-lts)
 	mmc_crypto_free_host(host);
+=======
+	cancel_delayed_work_sync(&host->detect);
+>>>>>>> BRANCH (9153fc Linux 5.4.267)
 	mmc_pwrseq_free(host);
 	put_device(&host->class_dev);
 }
