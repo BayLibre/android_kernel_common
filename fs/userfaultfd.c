@@ -476,6 +476,9 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
 	ret = VM_FAULT_RETRY;
 	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
 		goto out;
+	// Bail out if this fault is speculative.
+	if (vmf->flags & FAULT_FLAG_SPECULATIVE)
+		goto out;
 
 	/* take the reference before dropping the mmap_lock */
 	userfaultfd_ctx_get(ctx);
