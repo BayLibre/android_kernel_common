@@ -46,6 +46,30 @@
       },
       "revId": "517b4409ecfe8b7137b7c6525724f116e9e66922",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb8032f6_cb3a4108",
+        "filename": "include/trace/hooks/futex.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1409599
+      },
+      "writtenOn": "2024-01-16T12:05:57Z",
+      "side": 1,
+      "message": "Ah, I didn\u0027t notice. OK then, let\u0027s leave this as is.\nI guess if vendor_hooks.h will start changing macros with the same names, we\u0027ll need to take care of that for all the vendor hooks.",
+      "parentUuid": "52e9555c_3efb9dbe",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 38
+      },
+      "revId": "517b4409ecfe8b7137b7c6525724f116e9e66922",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
