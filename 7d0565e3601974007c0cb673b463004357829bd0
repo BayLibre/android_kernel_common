@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96845d51_e74f778b",
+        "filename": "fs/proc/meminfo.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-01-17T09:54:55Z",
+      "side": 1,
+      "message": "you are modifying a user/kernel API here, how is that allowed?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 39
+      },
+      "revId": "7d0565e3601974007c0cb673b463004357829bd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42cf75e7_bdbb95d0",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3916,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-01-17T09:54:55Z",
+      "side": 1,
+      "message": "why?",
+      "range": {
+        "startLine": 3916,
+        "startChar": 29,
+        "endLine": 3916,
+        "endChar": 36
+      },
+      "revId": "7d0565e3601974007c0cb673b463004357829bd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc062966_831f8eef",
+        "filename": "mm/show_mem.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-01-17T09:54:55Z",
+      "side": 1,
+      "message": "why put a hook on a dmesg path?  What is going to use this?",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 430,
+        "endChar": 45
+      },
+      "revId": "7d0565e3601974007c0cb673b463004357829bd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4cfb73e_2c5dd2fc",
+        "filename": "mm/slab_common.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-01-17T09:54:55Z",
+      "side": 1,
+      "message": "this is a user/kernel api, how are you allowed to change it?",
+      "range": {
+        "startLine": 1273,
+        "startChar": 0,
+        "endLine": 1273,
+        "endChar": 43
+      },
+      "revId": "7d0565e3601974007c0cb673b463004357829bd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce613c1_03b11d75",
+        "filename": "mm/slab_common.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-01-17T09:54:55Z",
+      "side": 1,
+      "message": "same here, this is a api, how can you change it?",
+      "range": {
+        "startLine": 1309,
+        "startChar": 1,
+        "endLine": 1309,
+        "endChar": 28
+      },
+      "revId": "7d0565e3601974007c0cb673b463004357829bd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
