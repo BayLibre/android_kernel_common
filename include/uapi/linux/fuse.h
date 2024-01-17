@@ -526,6 +526,7 @@ enum fuse_opcode {
 	FUSE_SETUPMAPPING	= 48,
 	FUSE_REMOVEMAPPING	= 49,
 	FUSE_SYNCFS		= 50,
+	FUSE_CHROMEOS_TMPFILE   = 4294967295,
 	FUSE_CANONICAL_PATH	= 2016,
 
 	/* CUSE specific operations */
@@ -648,6 +649,11 @@ struct fuse_create_in {
 	uint32_t	mode;
 	uint32_t	umask;
 	uint32_t	open_flags;	/* FUSE_OPEN_... */
+};
+
+struct fuse_tmpfile_in {
+	uint32_t mode;
+	uint32_t umask;
 };
 
 struct fuse_open_out {
