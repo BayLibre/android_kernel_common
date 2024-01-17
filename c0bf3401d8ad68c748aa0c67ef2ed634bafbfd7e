@@ -240,6 +240,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd582f08_2e7dd253",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-17T11:45:34Z",
+      "side": 1,
+      "message": "\u003e Rejecting transactions with overlapping offsets is needed regardless of how you keep track of the references. There was a bug on on this many years ago where a sender could crash or exploit libbinder in the receiving process by overwriting the pointer that it expected the driver to have validated.\n\nYeah. This is the part of the codebase that I\u0027m the most worried about vulnerability-wise.\n\n\u003e You don\u0027t know how many NodeRefs you need until you have looped through the offset array though.\n\nWe can use a `Vec` and resize the allocation to fit exactly at the end. I imagine that the memory footprint at-rest is more important than temporary allocations used during translation.\n\nA solution that can store a small number of nodes inline before it needs to allocate could also be considered.\n\n\u003e Also note that the C version has internal and local reference counts only for the strong references. The internal weak references are kept track of with a list, not a count.\n\nYes. It doesn\u0027t look like it changes that much, though? Or maybe I\u0027m missing something.",
+      "parentUuid": "a64810af_022678ea",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -399,6 +417,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "935b226d_b045ba8e",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-17T11:45:34Z",
+      "side": 1,
+      "message": "I mean the collection on NodeRefs.",
+      "parentUuid": "67d1c658_d1ef829e",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2721210f_24b3156f",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -541,6 +577,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98113cb6_6fb44cb4",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-17T11:45:34Z",
+      "side": 1,
+      "message": "Yes, I\u0027ve already run those tests and I got similar performance on them. I haven\u0027t measured the memory footprint yet, but it is on my todo list.",
+      "parentUuid": "b0063cce_aae5015f",
+      "range": {
+        "startLine": 242,
+        "startChar": 15,
+        "endLine": 242,
+        "endChar": 20
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0abb748_f6f096da",
         "filename": "drivers/android/process.rs",
         "patchSetId": 3
@@ -588,6 +648,24 @@
       "side": 1,
       "message": "Can you add this to a comment. If the current rbtree api requires two extra allocations and another tree search when looking up a NodeRef from a node pointer, then I think a TODO comment to optimize this then the rbtree api is improved would be a useful reminder.",
       "parentUuid": "d4185d5c_8c29fe7b",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db1cb5c_e00fc0c0",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-17T11:45:34Z",
+      "side": 1,
+      "message": "Done. Added a TODO to the declaration of the `ProcessNodeRefs` struct.",
+      "parentUuid": "c1d0bafc_73ad6b69",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
