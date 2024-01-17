@@ -222,6 +222,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a64810af_022678ea",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-17T02:26:09Z",
+      "side": 1,
+      "message": "\u003e The logic for this is mostly in `allocation.rs`. The target node is kept alive by the `NodeRef` in `AllocationInfo` (which in turn has an `Arc\u003cNode\u003e`).\n\u003e \n\u003e As for other nodes embedded in the transaction, those are currently kept alive by just incrementing the process\u0027s refcount to the node in its `ProcessNodeRefs` collection. When the `Allocation` object is dropped, it reads the translated buffer data to figure out which `NodeRef` objects to adjust in `ProcessNodeRefs`. However, I intend to change this logic to have the allocation store a `NodeRef` for each embedded node, because the current way of doing it is what lead to aosp/2849924.\n\u003e \nRejecting transactions with overlapping offsets is needed regardless of how you keep track of the references. There was a bug on on this many years ago where a sender could crash or exploit libbinder in the receiving process by overwriting the pointer that it expected the driver to have validated.\n\n\u003e Also, as I write this, I realize that the current design allows the driver to drop refcounts to nodes owned by transactions with `BC_RELEASE`. This could cause errors to get emitted when cleaning up transactions due to it adjusting refcounts of nodes that the process no longer have a reference to.\n\u003e \n\u003e Changing it to just store a `NodeRef` for each embedded node would also solve this issue, because the transaction\u0027s refcount would be entirely separate from those that the process has. (I can allocate an array to store all of them, so I don\u0027t need separate allocations for each.)\n\nYou don\u0027t know how many NodeRefs you need until you have looped through the offset array though. Also note that the C version has internal and local reference counts only for the strong references. The internal weak references are kept track of with a list, not a count.",
+      "parentUuid": "5d55319b_8ddda737",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a622b57c_dcf3e42b",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -363,6 +381,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67d1c658_d1ef829e",
+        "filename": "drivers/android/node.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-17T02:26:09Z",
+      "side": 1,
+      "message": "\u003e * A mutex on process. Used only to protect the collection of nodes.\n\nDo you mean the collection of NodeRefs or is there another mutex on the process?",
+      "parentUuid": "2119c221_4af3a5c0",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2721210f_24b3156f",
         "filename": "drivers/android/node.rs",
         "patchSetId": 3
@@ -481,6 +517,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0063cce_aae5015f",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-17T02:26:09Z",
+      "side": 1,
+      "message": "I don\u0027t know either, but all the added allocations in the rust driver compared to the C version has me concerned. Are you running the same tests that @tkjos@google.com used to evaluate the original changes that removed the global binder mutex that the devices used to use. Also, are you measuring the memory footprint of the rust version vs the C version?",
+      "parentUuid": "a9ba62c6_830e23bc",
+      "range": {
+        "startLine": 242,
+        "startChar": 15,
+        "endLine": 242,
+        "endChar": 20
+      },
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0abb748_f6f096da",
         "filename": "drivers/android/process.rs",
         "patchSetId": 3
@@ -510,6 +570,24 @@
       "side": 1,
       "message": "With the current API of the red/black tree abstractions, the NodeRef must either be reference counted, or only stored in one tree. Making it reference counted introduces a third allocation, and also raises other challenges because then the type system no longer promises that we have an exclusive reference to the `NodeRef` when we look it up.\n\nBecause of that, I think this is the best solution until the red/black tree becomes more powerful.",
       "parentUuid": "c0abb748_f6f096da",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1d0bafc_73ad6b69",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-17T02:26:09Z",
+      "side": 1,
+      "message": "Can you add this to a comment. If the current rbtree api requires two extra allocations and another tree search when looking up a NodeRef from a node pointer, then I think a TODO comment to optimize this then the rbtree api is improved would be a useful reminder.",
+      "parentUuid": "d4185d5c_8c29fe7b",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },

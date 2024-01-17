@@ -116,6 +116,30 @@
       },
       "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15259e90_f6c3d88a",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-17T02:26:09Z",
+      "side": 1,
+      "message": "The new name, ioctl_read_write, addresses 1. not 2. I think ioctl_write_read, or even just ioctl_iowr (if you want to avoid confusion with BINDER_WRITE_READ), would be better.",
+      "parentUuid": "700ed82d_7d586cf3",
+      "range": {
+        "startLine": 681,
+        "startChar": 7,
+        "endLine": 681,
+        "endChar": 17
+      },
+      "revId": "8cb9ad5d5cf5cd989d82dff8e0112dbeb0976532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
