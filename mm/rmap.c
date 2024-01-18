@@ -1217,6 +1217,20 @@ void page_add_anon_rmap(struct page *page, struct vm_area_struct *vma,
 			nr = atomic_inc_return_relaxed(mapped);
 			nr = (nr < COMPOUND_MAPPED);
 		}
+	} else if (!folio_test_pmd_mappable(folio)) {
+		int i;
+
+		nr = folio_nr_pages(folio);
+		first = atomic_inc_and_test(&page->_mapcount);
+
+		for (i = 1; i < nr; i++) {
+			struct page *page = folio_page(folio, i);
+
+			atomic_inc(&page->_mapcount);
+		}
+		atomic_add(nr, mapped);
+
+		nr = first ? nr : 0;
 	} else if (folio_test_pmd_mappable(folio)) {
 		/* That test is redundant: it's for safety or to optimize out */
 
