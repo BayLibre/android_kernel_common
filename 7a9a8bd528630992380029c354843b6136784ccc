@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e4b386a_264cc846",
+        "filename": "Documentation/devicetree/bindings/cpufreq/qemu,cpufreq-virtual.yaml",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2024-01-18T23:04:05Z",
+      "side": 1,
+      "message": "I think we should make it clearer that the preferred approach is to use normalized values. How about replacing the highlighted sentence with something like this:\n\nThis device also needs the CPUs to list their OPPs using operating-points-v2 tables. The OPP tables for the CPUs should use normalized \"frequency\" values where the OPP with the highest performance among all the vCPUs is listed as 1024 KHz. The rest of the frequencies of all the vCPUs should be normalized based on their performance relative to that 1024 KHz OPP. This makes it much easier to migrate the VM across systems which might have different pCPU OPPs.",
+      "range": {
+        "startLine": 30,
+        "startChar": 41,
+        "endLine": 32,
+        "endChar": 30
+      },
+      "revId": "7a9a8bd528630992380029c354843b6136784ccc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab7654b3_0fd70132",
+        "filename": "Documentation/devicetree/bindings/cpufreq/qemu,cpufreq-virtual.yaml",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2024-01-18T23:04:05Z",
+      "side": 1,
+      "message": "Is this really needed? If not, keep it simple and drop this.",
+      "range": {
+        "startLine": 65,
+        "startChar": 6,
+        "endLine": 65,
+        "endChar": 17
+      },
+      "revId": "7a9a8bd528630992380029c354843b6136784ccc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "639853de_e7aa48d5",
+        "filename": "Documentation/devicetree/bindings/cpufreq/qemu,cpufreq-virtual.yaml",
+        "patchSetId": 13
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2024-01-18T23:04:05Z",
+      "side": 1,
+      "message": "Writing this as\n```\nopp512000 { opp-hz \u003d /bits/ 64 \u003c512000\u003e; };\nopp1024000 { opp-hz \u003d/bits/ 64 \u003c1024000\u003e; };\n```\n\nMight be nicer/easier to read. Assuming it passed DT yaml check.",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 8
+      },
+      "revId": "7a9a8bd528630992380029c354843b6136784ccc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
