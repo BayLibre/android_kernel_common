@@ -52,6 +52,24 @@
       "parentUuid": "7761d0e1_9642122b",
       "revId": "3521564a047a9c5da76606de718f1f96018d41af",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c7f629b_fe9c236e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-18T21:15:37Z",
+      "side": 1,
+      "message": "Which proper API are you referring to? kthread_set_per_cpu is the only api I found that guarantees that a thread will only run on the specified CPU. This patch was not sent upstream because it only adds an export and there are no in-tree modules that need the export. I was told that upstream would not be interested in it for that reason. If that is not accurate, we can send this patch upstream.\n\nThe code that needs it will not be ready for upstream in a while. The trusty driver needs to be updated to use the upstream ff-a driver first. It is not yet clear if the code that needs to call kthread_set_per_cpu will be part of the trusty driver in the end though or if the ff-a driver itself will support scheduling the secure os with all the requirements we have for that.",
+      "parentUuid": "9dfa84e1_7e02daf8",
+      "revId": "3521564a047a9c5da76606de718f1f96018d41af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
