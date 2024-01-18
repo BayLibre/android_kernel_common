@@ -341,6 +341,42 @@ static inline pmd_t pmdp_get(pmd_t *pmdp)
 }
 #endif
 
+#ifndef pte_range_cont_mapped
+static inline bool pte_range_cont_mapped(unsigned long start_pfn,
+					 pte_t *start_pte,
+					 unsigned long start_addr,
+					 int nr)
+{
+	int i;
+	pte_t pte_val;
+
+	for (i = 0; i < nr; i++) {
+		pte_val = ptep_get(start_pte + i);
+
+		if (pte_none(pte_val))
+			return false;
+
+		if (pte_pfn(pte_val) != (start_pfn + i))
+			return false;
+	}
+
+	return true;
+}
+#endif
+
+#ifndef pte_range_young
+static inline bool pte_range_young(pte_t *start_pte, int nr)
+{
+	int i;
+
+	for (i = 0; i < nr; i++)
+		if (pte_young(ptep_get(start_pte + i)))
+			return true;
+
+	return false;
+}
+#endif
+
 #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
 					    unsigned long address,
@@ -600,6 +636,25 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
 	return ptep_get_and_clear(mm, address, ptep);
 }
 #endif
+
+#define __HAVE_ARCH_PTEP_GET_AND_CLEAR_RANGE_FULL
+static inline pte_t ptep_get_and_clear_range_full(struct mm_struct *mm,
+						  unsigned long start_addr,
+						  pte_t *start_pte,
+						  int nr, int full)
+{
+	int i;
+	pte_t pte;
+
+	pte = ptep_get_and_clear_full(mm, start_addr, start_pte, full);
+
+	for (i = 1; i < nr; i++)
+		ptep_get_and_clear_full(mm, start_addr + i * PAGE_SIZE,
+					start_pte + i, full);
+
+	return pte;
+}
+
 
 #ifndef clear_ptes
 struct mm_struct;
@@ -1086,6 +1141,13 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
 #ifndef pmd_addr_end
 #define pmd_addr_end(addr, end)						\
 ({	unsigned long __boundary = ((addr) + PMD_SIZE) & PMD_MASK;	\
+	(__boundary - 1 < (end) - 1)? __boundary: (end);		\
+})
+#endif
+
+#ifndef pte_nr_addr_end
+#define pte_nr_addr_end(addr, size, end)				\
+({	unsigned long __boundary = ((addr) + size) & (~(size - 1));	\
 	(__boundary - 1 < (end) - 1)? __boundary: (end);		\
 })
 #endif

@@ -459,6 +459,54 @@ regular_folio:
 		if (folio_test_large(folio)) {
 			int err;
 
+			if (!folio_test_pmd_mappable(folio)) {
+				int nr_pages = folio_nr_pages(folio);
+				unsigned long folio_size = PAGE_SIZE * nr_pages;
+				unsigned long start_addr = ALIGN_DOWN(addr, nr_pages * PAGE_SIZE);;
+				unsigned long start_pfn = page_to_pfn(folio_page(folio, 0));
+				pte_t *start_pte = pte - (addr - start_addr) / PAGE_SIZE;
+				unsigned long next = pte_nr_addr_end(addr, folio_size, end);
+
+				if (!pte_range_cont_mapped(start_pfn, start_pte, start_addr, nr_pages))
+					goto split;
+
+				if (next - addr != folio_size) {
+					goto split;
+				} else {
+					/* Do not interfere with other mappings of this page */
+					if (folio_estimated_sharers(folio) != 1)
+						goto skip;
+
+					VM_BUG_ON(addr != start_addr || pte != start_pte);
+
+					if (pte_range_young(start_pte, nr_pages)) {
+						ptent = ptep_get_and_clear_range_full(mm, start_addr, start_pte,
+										      nr_pages, tlb->fullmm);
+						ptent = pte_mkold(ptent);
+
+						set_ptes(mm, start_addr, start_pte, ptent, nr_pages);
+						tlb_remove_nr_tlb_entry(tlb, start_pte, start_addr, nr_pages);
+					}
+
+					folio_clear_referenced(folio);
+					folio_test_clear_young(folio);
+					if (pageout) {
+						if (folio_isolate_lru(folio)) {
+							if (folio_test_unevictable(folio))
+								folio_putback_lru(folio);
+							else
+								list_add(&folio->lru, &folio_list);
+						}
+					} else
+						folio_deactivate(folio);
+				}
+skip:
+				pte += (next - PAGE_SIZE - (addr & PAGE_MASK))/PAGE_SIZE;
+				addr = next - PAGE_SIZE;
+				continue;
+
+			}
+split:
 			if (folio_estimated_sharers(folio) != 1)
 				break;
 			if (pageout_anon_only_filter && !folio_test_anon(folio))

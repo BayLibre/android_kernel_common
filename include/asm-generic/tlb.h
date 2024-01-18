@@ -619,6 +619,16 @@ static inline void tlb_flush_p4d_range(struct mmu_gather *tlb,
 		__tlb_remove_tlb_entry(tlb, ptep, address);	\
 	} while (0)
 
+#define tlb_remove_nr_tlb_entry(tlb, ptep, address, nr)			\
+	do {                                                    	\
+		int i;							\
+		tlb_flush_pte_range(tlb, address,			\
+				PAGE_SIZE * nr);			\
+		for (i = 0; i < nr; i++)				\
+			__tlb_remove_tlb_entry(tlb, ptep + i,		\
+					address + i * PAGE_SIZE);	\
+	} while (0)
+
 #define tlb_remove_huge_tlb_entry(h, tlb, ptep, address)	\
 	do {							\
 		unsigned long _sz = huge_page_size(h);		\
