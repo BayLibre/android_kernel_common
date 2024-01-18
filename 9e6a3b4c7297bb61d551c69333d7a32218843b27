@@ -16,6 +16,24 @@
       "message": "I thought this caused a performance decrease for previous attempts at enabling this.  What has changed since then?",
       "revId": "9e6a3b4c7297bb61d551c69333d7a32218843b27",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eaf57c0_7b9de28a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2063993
+      },
+      "writtenOn": "2024-01-18T02:03:44Z",
+      "side": 1,
+      "message": "Yes, it does. But since enable CONFIG_TASK_DELAY_ACCT does not yet activate the functionality, the delayacct option needs to be added to the boot option. If other vendors don\u0027t need this feature, then there\u0027s no need to add delayacct to the boot option.",
+      "parentUuid": "8fe66390_71ee8db8",
+      "revId": "9e6a3b4c7297bb61d551c69333d7a32218843b27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
