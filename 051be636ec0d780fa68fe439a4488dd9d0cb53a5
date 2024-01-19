@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000065463868",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2898203?revision\u003d3",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8c35d6dd_1069000b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-19T06:39:36Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/e95fa7404716f6e25021e66067271a4ad8eb1486) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003de95fa7404716f6e25021e66067271a4ad8eb1486)\n\n```\n      ## drivers/thermal/gov_power_allocator.c ##\n    -@@ drivers/thermal/gov_power_allocator.c: static int power_allocator_throttle(struct thermal_zone_device *tz,\n    +@@ drivers/thermal/gov_power_allocator.c: static int power_allocator_throttle(struct thermal_zone_device *tz, int trip_id)\n      \n    - \ttrip \u003d params-\u003etrip_switch_on;\n    - \tif (trip \u0026\u0026 tz-\u003etemperature \u003c trip-\u003etemperature) {\n    --\t\tupdate \u003d tz-\u003elast_temperature \u003e\u003d trip-\u003etemperature;\n    + \tret \u003d __thermal_zone_get_trip(tz, params-\u003etrip_switch_on, \u0026trip);\n    + \tif (!ret \u0026\u0026 (tz-\u003etemperature \u003c trip.temperature)) {\n    +-\t\tupdate \u003d (tz-\u003elast_temperature \u003e\u003d trip.temperature);\n     +\t\tupdate \u003d tz-\u003epassive;\n      \t\ttz-\u003epassive \u003d 0;\n      \t\treset_pid_controller(params);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\nAyeAye - CL 599484338 android-build.ayeaye-python-dispatcher_20240118.04_p0",
+      "revId": "051be636ec0d780fa68fe439a4488dd9d0cb53a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
