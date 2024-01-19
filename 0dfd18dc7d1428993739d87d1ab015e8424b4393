@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b69ee1c_f926f58b",
+        "filename": "drivers/android/thread.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-01-19T02:41:22Z",
+      "side": 1,
+      "message": "An example if it helps. Transactions are from thread on left to thread on right of the transaction line.\n```\nCurrent transaction:\n A               i    j  k        m  n        p\n B                i  j    k  l            o  p\n C                            l  m\n D                                    n  o\nThread:        A   B   A   B   C   A   D   B   A\nTransaction:     i   j   k   l   m   n   o   p\n from_parent:    -   i   j   k   l   m   n   o\n to_parent:      -   i   j   -   k   -   l   n\n```\nThere could be mistakes here, but you can see that from_parent looks like the transaction stack itself, while to_parent has gaps. To loop over all the transactions a single thread is involved in you alternate between to_parent and from_parent.",
+      "parentUuid": "a780b557_8396e020",
+      "revId": "0dfd18dc7d1428993739d87d1ab015e8424b4393",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18fe0d75_0d9c485a",
         "filename": "drivers/android/thread.rs",
         "patchSetId": 3
