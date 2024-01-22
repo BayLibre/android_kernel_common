@@ -12,6 +12,7 @@ struct hypervisor_ops {
 #ifdef CONFIG_MEMORY_RELINQUISH
 	bool (*page_relinquish_disallowed)(void);
 	void (*page_relinquish)(struct page *page);
+	void (*post_page_relinquish_tlb_inv)(void);
 #endif
 };
 
