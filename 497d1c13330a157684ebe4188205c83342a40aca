@@ -22,6 +22,30 @@
       },
       "revId": "497d1c13330a157684ebe4188205c83342a40aca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d6203d_a1a1c266",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2024-01-22T19:34:50Z",
+      "side": 1,
+      "message": "As discussed, cpufreq framework mandates having .target_index or .target defined and .target_index is favored due to book keeping done in the framework as opposed to .target which requires the driver to implement its own.",
+      "parentUuid": "28ffe57c_f2e9c430",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 46
+      },
+      "revId": "497d1c13330a157684ebe4188205c83342a40aca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
