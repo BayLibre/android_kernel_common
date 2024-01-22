@@ -201,44 +201,22 @@ enum {
 
 /**
  * struct gzvm_vcpu_run: Same purpose as kvm_run, this struct is
- *			shared between userspace, kernel and
- *			GenieZone hypervisor
+ *			 shared between userspace, kernel and
+ *			 GenieZone hypervisor
  * @exit_reason: The reason why gzvm_vcpu_run has stopped running the vCPU
  * @immediate_exit: Polled when the vcpu is scheduled.
  *                  If set, immediately returns -EINTR
  * @padding1: Reserved for future-proof and must be zero filled
  * @mmio: The nested struct in anonymous union. Handle mmio in host side
- * @phys_addr: The address guest tries to access
- * @data: The value to be written (is_write is 1) or
- *        be filled by user for reads (is_write is 0)
- * @size: The size of written data.
- *        Only the first `size` bytes of `data` are handled
- * @reg_nr: The register number where the data is stored
- * @is_write: 1 for VM to perform a write or 0 for VM to perform a read
  * @fail_entry: The nested struct in anonymous union.
  *              Handle invalid entry address at the first run
- * @hardware_entry_failure_reason: The reason codes about hardware entry failure
- * @cpu: The current processor number via smp_processor_id()
  * @exception: The nested struct in anonymous union.
  *             Handle exception occurred in VM
- * @exception: Which exception vector
- * @error_code: Exception error codes
- * @fault_gpa: Fault GPA (guest physical address or IPA in ARM)
- * @reserved: Future-proof reservation and reset to zero in hypervisor.
- *            Fill up to the union size, 256 bytes.
  * @hypercall: The nested struct in anonymous union.
  *             Some hypercalls issued from VM must be handled
- * @args: The hypercall's arguments
  * @internal: The nested struct in anonymous union. The errors from hypervisor
- * @suberror: The errors codes about GZVM_EXIT_INTERNAL_ERROR
- * @ndata: The number of elements used in data[]
- * @data: Keep the detailed information about GZVM_EXIT_INTERNAL_ERROR
  * @system_event: The nested struct in anonymous union.
  *                VM's PSCI must be handled by host
- * @type: System event type.
- *        Ex. GZVM_SYSTEM_EVENT_SHUTDOWN or GZVM_SYSTEM_EVENT_RESET...etc.
- * @ndata: The number of elements used in data[]
- * @data: Keep the detailed information about GZVM_EXIT_SYSTEM_EVENT
  * @padding: Fix it to a reasonable size future-proof for keeping the same
  *           struct size when adding new variables in the union is needed
  *
@@ -253,36 +231,57 @@ struct gzvm_vcpu_run {
 	union {
 		/* GZVM_EXIT_MMIO */
 		struct {
-			/* from FAR_EL2 */
+			/* From FAR_EL2 */
+			/* The address guest tries to access */
 			__u64 phys_addr;
+			/* The value to be written (is_write is 1) or
+			 * be filled by user for reads (is_write is 0)
+			 */
 			__u8 data[8];
-			/* from ESR_EL2 as */
+			/* From ESR_EL2 as */
+			/* The size of written data.
+			 * Only the first `size` bytes of `data` are handled
+			 */
 			__u64 size;
-			/* from ESR_EL2 */
+			/* From ESR_EL2 */
+			/* The register number where the data is stored */
 			__u32 reg_nr;
-			/* from ESR_EL2 */
+			/* From ESR_EL2 */
+			/* 1 for VM to perform a write or 0 for VM to perform a read */
 			__u8 is_write;
 		} mmio;
 		/* GZVM_EXIT_FAIL_ENTRY */
 		struct {
+			/* The reason codes about hardware entry failure */
 			__u64 hardware_entry_failure_reason;
+			/* The current processor number via smp_processor_id() */
 			__u32 cpu;
 		} fail_entry;
 		/* GZVM_EXIT_EXCEPTION */
 		struct {
+			/* Which exception vector */
 			__u32 exception;
+			/* Exception error codes */
 			__u32 error_code;
+			/* Fault GPA (guest physical address or IPA in ARM) */
 			__u64 fault_gpa;
+			/* Future-proof reservation and reset to zero in hypervisor.
+			 * Fill up to the union size, 256 bytes.
+			 */
 			__u64 reserved[30];
 		} exception;
 		/* GZVM_EXIT_HYPERCALL */
 		struct {
+			/* The hypercall's arguments */
 			__u64 args[8];	/* in-out */
 		} hypercall;
 		/* GZVM_EXIT_INTERNAL_ERROR */
 		struct {
+			/* The errors codes about GZVM_EXIT_INTERNAL_ERROR */
 			__u32 suberror;
+			/* The number of elements used in data[] */
 			__u32 ndata;
+			/* Keep the detailed information about GZVM_EXIT_SYSTEM_EVENT */
 			__u64 data[16];
 		} internal;
 		/* GZVM_EXIT_SYSTEM_EVENT */
@@ -294,8 +293,13 @@ struct gzvm_vcpu_run {
 #define GZVM_SYSTEM_EVENT_SUSPEND        5
 #define GZVM_SYSTEM_EVENT_SEV_TERM       6
 #define GZVM_SYSTEM_EVENT_S2IDLE         7
+			/* System event type.
+			 * Ex. GZVM_SYSTEM_EVENT_SHUTDOWN or GZVM_SYSTEM_EVENT_RESET...etc.
+			 */
 			__u32 type;
+			/* The number of elements used in data[] */
 			__u32 ndata;
+			/* Keep the detailed information about GZVM_EXIT_SYSTEM_EVENT */
 			__u64 data[16];
 		} system_event;
 		char padding[256];
