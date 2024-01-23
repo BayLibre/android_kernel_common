@@ -16,6 +16,24 @@
       "message": "Do we also need this on a15-6.1?",
       "revId": "22b220c2bc76759388d762f0ef47f273598cb60e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ba0f27b_987096be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-01-23T16:57:36Z",
+      "side": 1,
+      "message": "It seems it has the same issue (it doesn\u0027t respect the imposed locking order and it is also missing the LOCKDEP patches that detect it):\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android15-6.1/arch/arm64/kvm/pkvm.c#228",
+      "parentUuid": "d166f64c_7e65f5ed",
+      "revId": "22b220c2bc76759388d762f0ef47f273598cb60e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
