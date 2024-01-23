@@ -39,6 +39,23 @@
       "message": "Why is upstream not affected by this?",
       "revId": "18d7cc48202743175af50e7184ce1b94bb7a603d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9878eeb2_92df3af0",
+        "filename": "arch/arm64/kernel/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2024-01-23T10:37:04Z",
+      "side": 1,
+      "message": "If we need to disable LTO for this compilation unit anyway in order to work around the full LTO behavior, should we perhaps use -mbranch-protection\u003dnone rather than -fno-unwind-tables?",
+      "revId": "18d7cc48202743175af50e7184ce1b94bb7a603d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
