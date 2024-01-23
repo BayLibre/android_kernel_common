@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000065751449",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2923008?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "707f6dd3_1879aea2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-23T01:02:58Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/41bdc6decda074afc4d8f8ba44c69b08d0e9aff6) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d41bdc6decda074afc4d8f8ba44c69b08d0e9aff6)\n\n```\n      ## rust/macros/module.rs ##\n     @@ rust/macros/module.rs: pub(crate) fn module(ts: TokenStream) -\u003e TokenStream {\n    @@ rust/macros/module.rs: pub(crate) fn module(ts: TokenStream) -\u003e TokenStream {\n      ## scripts/Makefile.modfinal ##\n     @@ scripts/Makefile.modfinal: quiet_cmd_btf_ko \u003d BTF [M] $@\n            cmd_btf_ko \u003d \t\t\t\t\t\t\t\\\n    - \tif [ ! -f vmlinux ]; then\t\t\t\t\t\\\n    - \t\tprintf \"Skipping BTF generation for %s due to unavailability of vmlinux\\n\" $@ 1\u003e\u00262; \\\n    + \tif [ ! -f $(mixed-build-prefix)vmlinux ]; then\t\t\t\t\t\\\n    + \t\tprintf \"Skipping BTF generation for %s due to unavailability of $(mixed-build-prefix)vmlinux\\n\" $@ 1\u003e\u00262; \\\n     -\telif [ -n \"$(CONFIG_RUST)\" ] \u0026\u0026 $(srctree)/scripts/is_rust_module.sh $@; then \t\t\\\n     -\t\tprintf \"Skipping BTF generation for %s because it\u0027s a Rust module\\n\" $@ 1\u003e\u00262; \\\n      \telse\t\t\t\t\t\t\t\t\\\n    - \t\tLLVM_OBJCOPY\u003d\"$(OBJCOPY)\" $(PAHOLE) -J $(PAHOLE_FLAGS) --btf_base vmlinux $@; \\\n    - \t\t$(RESOLVE_BTFIDS) -b vmlinux $@; \t\t\t\\\n    + \t\tLLVM_OBJCOPY\u003d\"$(OBJCOPY)\" $(PAHOLE) -J $(PAHOLE_FLAGS) --btf_base $(mixed-build-prefix)vmlinux $@; \\\n    + \t\t$(RESOLVE_BTFIDS) -b $(mixed-build-prefix)vmlinux $@; \t\t\t\\\n     \n      ## scripts/is_rust_module.sh (deleted) ##\n     @@\n    @@ scripts/is_rust_module.sh (deleted)\n     -#\n     -# In the future, checking for the `.comment` section may be another\n     -# option, see https://github.com/rust-lang/rust/pull/97550.\n    --${NM} \"$*\" | grep -qE \u0027^[0-9a-fA-F]+ [Rr] _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$\u0027\n    +-${NM} \"$*\" | grep -qE \u0027^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$\u0027\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "0538cf835d36ea3d361017b4372d7729432a8cbe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
