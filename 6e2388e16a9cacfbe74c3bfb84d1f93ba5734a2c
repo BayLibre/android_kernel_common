@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000065752843",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2922890?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "d1ac982a_fe78e506",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-23T01:03:12Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/b13c9880f909ca5e406d9b3d061359fd8fb0c514) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003db13c9880f909ca5e406d9b3d061359fd8fb0c514)\n\n```\n      ## rust/macros/helpers.rs ##\n     @@ rust/macros/helpers.rs: pub(crate) fn try_literal(it: \u0026mut token_stream::IntoIter) -\u003e Option\u003cString\u003e {\n    @@ samples/rust/rust_minimal.rs: use kernel::prelude::*;\n      }\n      \n      struct RustMinimal {\n    -\n    - ## samples/rust/rust_print.rs ##\n    -@@ samples/rust/rust_print.rs: use kernel::prelude::*;\n    - \n    - module! {\n    -     type: RustPrint,\n    --    name: b\"rust_print\",\n    --    author: b\"Rust for Linux Contributors\",\n    --    description: b\"Rust printing macros sample\",\n    --    license: b\"GPL\",\n    -+    name: \"rust_print\",\n    -+    author: \"Rust for Linux Contributors\",\n    -+    description: \"Rust printing macros sample\",\n    -+    license: \"GPL\",\n    - }\n    - \n    - struct RustPrint;\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "6e2388e16a9cacfbe74c3bfb84d1f93ba5734a2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
