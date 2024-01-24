@@ -16,6 +16,24 @@
       "message": "This patch breaks the KMI which is currently frozen for this branch. If needed it would need to be modified in a KMI-friendly way (if viable).",
       "revId": "926513cf117bf2e5310e608acc30b86246ab5c44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73840be1_c1320c1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1741425
+      },
+      "writtenOn": "2024-01-24T17:36:32Z",
+      "side": 1,
+      "message": "Thanks for the input!\n\nI don\u0027t understand why this would break KMI. The change is in binder_internal.h which is not exposed to user space at all. Is this a bug in KMI monitoring logic?",
+      "parentUuid": "bfed8714_75688e45",
+      "revId": "926513cf117bf2e5310e608acc30b86246ab5c44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
