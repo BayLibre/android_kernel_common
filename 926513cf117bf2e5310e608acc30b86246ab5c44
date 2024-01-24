@@ -34,6 +34,24 @@
       "parentUuid": "bfed8714_75688e45",
       "revId": "926513cf117bf2e5310e608acc30b86246ab5c44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb5ba4ee_5d50e178",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-01-24T19:57:05Z",
+      "side": 1,
+      "message": "The KMI is different from the UAPI. Binder definitions such as `struct binder_thread` need to remain constant after the KMI freeze because vendor modules might use them via vendor hooks. This is a main idea behind GKI.\n\nThis particular patch changes the size of `binder_thread-\u003estats` which then throws off the struct\u0027s size definition and members offset.",
+      "parentUuid": "73840be1_c1320c1e",
+      "revId": "926513cf117bf2e5310e608acc30b86246ab5c44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
