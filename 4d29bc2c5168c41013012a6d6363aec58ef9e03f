@@ -19,6 +19,26 @@
       "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/35e7fca2ff59d9d8f036aba3dcf5c34beb79fdb8) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d35e7fca2ff59d9d8f036aba3dcf5c34beb79fdb8)\n\n```\n      ## rust/kernel/init.rs ##\n     @@ rust/kernel/init.rs: macro_rules! stack_try_pin_init {\n    @@ rust/kernel/init.rs: macro_rules! stack_try_pin_init {\n      /// For instance:\n      ///\n      /// ```rust\n    - /// # use kernel::pin_init;\n    --/// # use macros::pin_data;\n    +-/// # use kernel::{macros::pin_data, pin_init};\n    ++/// # use kernel::pin_init;\n     +/// # use macros::{Zeroable, pin_data};\n      /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};\n      /// #[pin_data]\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
       "revId": "4d29bc2c5168c41013012a6d6363aec58ef9e03f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000065752580",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2923018?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "c3507b93_42aa9b56",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-24T01:49:09Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/35e7fca2ff59d9d8f036aba3dcf5c34beb79fdb8) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d35e7fca2ff59d9d8f036aba3dcf5c34beb79fdb8)\n\n```\n      ## rust/kernel/init.rs ##\n     @@ rust/kernel/init.rs: macro_rules! stack_try_pin_init {\n    @@ rust/kernel/init.rs: macro_rules! stack_try_pin_init {\n      /// For instance:\n      ///\n      /// ```rust\n    - /// # use kernel::pin_init;\n    --/// # use macros::pin_data;\n    +-/// # use kernel::{macros::pin_data, pin_init};\n    ++/// # use kernel::pin_init;\n     +/// # use macros::{Zeroable, pin_data};\n      /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};\n      /// #[pin_data]\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "4d29bc2c5168c41013012a6d6363aec58ef9e03f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
