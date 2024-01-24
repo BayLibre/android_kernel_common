@@ -19,6 +19,26 @@
       "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/49a9ef76740206d52e7393f6fe25fc764de8df32) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d49a9ef76740206d52e7393f6fe25fc764de8df32)\n\n```\n      ## Makefile ##\n     @@ Makefile: rustfmt:\n    @@ Makefile: rustfmt:\n      # ---------------------------------------------------------------------------\n      \n     @@ Makefile: help:\n    - \t@echo  \u0027  modules         - default target, build the module(s)\u0027\n    - \t@echo  \u0027  modules_install - install the module\u0027\n    + \t@echo  \u0027  headers_install - Install sanitised kernel headers to INSTALL_HDR_PATH\u0027\n    + \t@echo  \u0027                    (default: $(abspath $(INSTALL_HDR_PATH)))\u0027\n      \t@echo  \u0027  clean           - remove generated files in module directory only\u0027\n     +\t@echo  \u0027  rust-analyzer\t  - generate rust-project.json rust-analyzer support file\u0027\n      \t@echo  \u0027\u0027\n      \n    - __external_modules_error:\n    + endif # KBUILD_EXTMOD\n     @@ Makefile: quiet_cmd_tags \u003d GEN     $@\n      tags TAGS cscope gtags: FORCE\n      \t$(call cmd,tags)\n    @@ scripts/generate_rust_analyzer.py: def generate_crates(srctree, objtree, sysroot\n                  name \u003d path.name.replace(\".rs\", \"\")\n      \n                  # Skip those that are not crate roots.\n    --            try:\n    --                if f\"{name}.o\" not in open(path.parent / \"Makefile\").read():\n    --                    continue\n    --            except FileNotFoundError:\n    +-            if f\"{name}.o\" not in open(path.parent / \"Makefile\").read():\n     +            if not is_root_crate(path.parent / \"Makefile\", name) and \\\n     +               not is_root_crate(path.parent / \"Kbuild\", name):\n                      continue\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
       "revId": "920a7b78bb53fbcbb97a9b8e82c153f9a7e5ddd4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000065752619",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2923003?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "1068ff0d_caa80ee5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-24T01:51:46Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/49a9ef76740206d52e7393f6fe25fc764de8df32) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d49a9ef76740206d52e7393f6fe25fc764de8df32)\n\n```\n      ## Makefile ##\n     @@ Makefile: rustfmt:\n    @@ Makefile: rustfmt:\n      # ---------------------------------------------------------------------------\n      \n     @@ Makefile: help:\n    - \t@echo  \u0027  modules         - default target, build the module(s)\u0027\n    - \t@echo  \u0027  modules_install - install the module\u0027\n    + \t@echo  \u0027  headers_install - Install sanitised kernel headers to INSTALL_HDR_PATH\u0027\n    + \t@echo  \u0027                    (default: $(abspath $(INSTALL_HDR_PATH)))\u0027\n      \t@echo  \u0027  clean           - remove generated files in module directory only\u0027\n     +\t@echo  \u0027  rust-analyzer\t  - generate rust-project.json rust-analyzer support file\u0027\n      \t@echo  \u0027\u0027\n      \n    - __external_modules_error:\n    + endif # KBUILD_EXTMOD\n     @@ Makefile: quiet_cmd_tags \u003d GEN     $@\n      tags TAGS cscope gtags: FORCE\n      \t$(call cmd,tags)\n    @@ scripts/generate_rust_analyzer.py: def generate_crates(srctree, objtree, sysroot\n                  name \u003d path.name.replace(\".rs\", \"\")\n      \n                  # Skip those that are not crate roots.\n    --            try:\n    --                if f\"{name}.o\" not in open(path.parent / \"Makefile\").read():\n    --                    continue\n    --            except FileNotFoundError:\n    +-            if f\"{name}.o\" not in open(path.parent / \"Makefile\").read():\n     +            if not is_root_crate(path.parent / \"Makefile\", name) and \\\n     +               not is_root_crate(path.parent / \"Kbuild\", name):\n                      continue\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "920a7b78bb53fbcbb97a9b8e82c153f9a7e5ddd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
