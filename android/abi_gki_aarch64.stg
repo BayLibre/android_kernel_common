@@ -313045,6 +313045,11 @@ function {
   parameter_id: 0x2e8ad82b
 }
 function {
+  id: 0x962258fc
+  return_type_id: 0x6720d32f
+  parameter_id: 0x2e8aef4d
+}
+function {
   id: 0x9625cb57
   return_type_id: 0x6720d32f
   parameter_id: 0x2e94a1e1
@@ -371685,6 +371690,15 @@ elf_symbol {
   full_name: "match_token"
 }
 elf_symbol {
+  id: 0xfe698851
+  name: "max_load_balance_interval"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xae14740f
+  type_id: 0x33756485
+  full_name: "max_load_balance_interval"
+}
+elf_symbol {
   id: 0x588e0fe2
   name: "mbox_chan_received_data"
   is_defined: true
@@ -390153,6 +390167,15 @@ elf_symbol {
   full_name: "start_poll_synchronize_srcu"
 }
 elf_symbol {
+  id: 0x03273441
+  name: "static_key_count"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x389b64a2
+  type_id: 0x962258fc
+  full_name: "static_key_count"
+}
+elf_symbol {
   id: 0xc24d49e4
   name: "static_key_disable"
   is_defined: true
@@ -405365,6 +405388,7 @@ interface {
   symbol_id: 0xcc9bd833
   symbol_id: 0x97e555df
   symbol_id: 0x61c53930
+  symbol_id: 0xfe698851
   symbol_id: 0x588e0fe2
   symbol_id: 0xdaf86712
   symbol_id: 0xd8f7e87d
@@ -407417,6 +407441,7 @@ interface {
   symbol_id: 0xbd07e567
   symbol_id: 0xf304733e
   symbol_id: 0x153d2098
+  symbol_id: 0x03273441
   symbol_id: 0xc24d49e4
   symbol_id: 0x8ac195eb
   symbol_id: 0xd09568e0
