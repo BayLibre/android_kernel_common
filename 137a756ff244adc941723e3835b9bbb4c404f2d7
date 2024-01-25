@@ -52,6 +52,24 @@
       "parentUuid": "ffaa0019_b58859e6",
       "revId": "137a756ff244adc941723e3835b9bbb4c404f2d7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d4e566a_bb77d0d8",
+        "filename": "block/blk-settings.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-01-25T21:09:09Z",
+      "side": 1,
+      "message": "The  blk_enable_sub_page_limits function is called in these 2 places:\n\n- blk_queue_max_hw_sectors()\n- blk_queue_max_segment_size()\n\nand these functions are called by the block device drivers during initialization. As part of the initialization, the drivers create their own struct queue_limits that will be set in the struct gendisk so there shouldn\u0027t be a concurrent issue here.",
+      "parentUuid": "ffaa0019_b58859e6",
+      "revId": "137a756ff244adc941723e3835b9bbb4c404f2d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
