@@ -16,6 +16,24 @@
       "message": "Would it make sense to acquire the `blk_sub_page_limit_lock` mutex here?\n\nI wonder if there is a potential race condition. Let\u0027s say you have 2 threads calling into these APIs, and both Thread 1 and 2 pass the early check in `blk_enable_sub_page_limits`, `blk_nr_sub_page_limit_queues` will be then equal to 2.\n\nNow, if Thread 1 calls into `blk_disable_sub_page_limits()`, `lim-\u003esub_page_limits` will be set to false and `blk_nr_sub_page_limit_queues` will be equal to 1. If a second thread then calls into `blk_disable_sub_page_limits()`, it would not pass the early check and `blk_nr_sub_page_limit_queues` would never be equal to 0 (and thus `blk_sub_page_limits` would not be unset). \n\nWdyt?",
       "revId": "137a756ff244adc941723e3835b9bbb4c404f2d7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffaa0019_b58859e6",
+        "filename": "block/blk-settings.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-01-25T20:59:06Z",
+      "side": 1,
+      "message": "Can you please provide a scenario that cause such concurrent calls? In every block driver I know all request queue configuration calls are serialized.\n\nAdditionally, blk_sub_page_limit_lock is a global mutex and hence probably should not be used to protect a member of a data structure that is per request queue.",
+      "parentUuid": "d78ccb57_ce9d339b",
+      "revId": "137a756ff244adc941723e3835b9bbb4c404f2d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
