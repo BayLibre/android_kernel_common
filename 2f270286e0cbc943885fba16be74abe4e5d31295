@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b975b3_c93c0bde",
+        "filename": "mm/mremap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-01-26T01:10:05Z",
+      "side": 1,
+      "message": "Don\u0027t you need to use acquire fence here and release fence fence in unlock function below to ensure that entire fast mremap operation is within the critical section? Or there is any other operation that already guarantees that?",
+      "range": {
+        "startLine": 229,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 22
+      },
+      "revId": "2f270286e0cbc943885fba16be74abe4e5d31295",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9244356_884b0cee",
+        "filename": "mm/mremap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-01-26T01:10:05Z",
+      "side": 1,
+      "message": "Since nobody could be modifying `file_ref_count` once it is set to -1 in `trylock_vma_ref_count`, I suggest using `int ret \u003d atomic_xchg(\u0026vma-\u003efile_ref_count, 0)`",
+      "range": {
+        "startLine": 237,
+        "startChar": 11,
+        "endLine": 237,
+        "endChar": 25
+      },
+      "revId": "2f270286e0cbc943885fba16be74abe4e5d31295",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
