@@ -25,7 +25,11 @@
 #include <linux/vmalloc.h>
 #include <linux/crash_dump.h>
 #include <linux/dma-direct.h>
+<<<<<<< HEAD   (0e6932 Merge branch 'android14-5.15' into branch 'android14-5.15-lt)
 #include <trace/hooks/iommu.h>
+=======
+#include <trace/events/swiotlb.h>
+>>>>>>> BRANCH (6139f2 Linux 5.15.148)
 
 struct iommu_dma_msi_page {
 	struct list_head	list;
@@ -843,6 +847,8 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
 	if (dev_use_swiotlb(dev) && iova_offset(iovad, phys | size)) {
 		void *padding_start;
 		size_t padding_size, aligned_size;
+
+		trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
 
 		aligned_size = iova_align(iovad, size);
 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,

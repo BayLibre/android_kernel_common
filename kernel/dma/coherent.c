@@ -133,8 +133,15 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
 
 void dma_release_coherent_memory(struct device *dev)
 {
+<<<<<<< HEAD   (0e6932 Merge branch 'android14-5.15' into branch 'android14-5.15-lt)
 	if (dev)
 		_dma_release_coherent_memory(dev->dma_mem);
+=======
+	if (dev) {
+		_dma_release_coherent_memory(dev->dma_mem);
+		dev->dma_mem = NULL;
+	}
+>>>>>>> BRANCH (6139f2 Linux 5.15.148)
 }
 
 static void *__dma_alloc_from_coherent(struct device *dev,
