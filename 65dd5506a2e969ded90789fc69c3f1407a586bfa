@@ -1,0 +1,181 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d973407_6d723347",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "If your patch works, then it is pretty easy to convert to using vendor hooks as described in comments here. The actual implementation would be in your vendor module that has handlers for the hooks.\n\nSince there is no FUSE_TMPFILE in this kernel and it is defined upstream, the easy thing would be to add it to the UAPI for this implementation assuming it is semantically similar to the point that userspace code that works here would continue to work with the \"real\" implementation in 6.1 and later kernels. Would it?",
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb389a4f_78276f57",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "all of this can move to a handler for a vendor hook:\n```\nandroid_vh_tmpfile_args(args, security_ctxlen, security_ctx));\n```",
+      "range": {
+        "startLine": 929,
+        "startChar": 0,
+        "endLine": 934,
+        "endChar": 21
+      },
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dca5211_3b4eb993",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "use vendor hook to handle FUSE_TMPFILE flag:\n```\nint err \u003d 0;\n...\nandroid_vh_check_tmpfile(args, inode, \u0026err);\nif (err) {\n  fuse_queue_forget(fm-\u003efc, forget, outarg.nodeid, 1);\n  return err;\n}\n```",
+      "range": {
+        "startLine": 955,
+        "startChar": 0,
+        "endLine": 959,
+        "endChar": 0
+      },
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b59f500c_aa3f2250",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "use vendor hook:\n```\n  int skip_splice \u003d false;\n  ...\n  bool skip_splice \u003d false;\n  android_vh_create_tmpfile(args, \u0026d, entry, inode, \u0026skip_splice);\n  if (!skip_splice)\n    d \u003d d_splice_alias(inode, entry);\n```",
+      "range": {
+        "startLine": 962,
+        "startChar": 0,
+        "endLine": 975,
+        "endChar": 2
+      },
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf766f51_58319bf2",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "replace with hook:\n```\n   int ret \u003d 0; // set appropriate default return value\n   \n   android_vh_handle_tmpfile(dir, entry, \u0026ret);\n   return ret;\n```",
+      "range": {
+        "startLine": 1069,
+        "startChar": 0,
+        "endLine": 1084,
+        "endChar": 57
+      },
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a9df6c_726450ca",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2280,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "this is fine. Set the default return for `fuse_tmpfile()` to be whatever would be returned if this was not initialized.",
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9532ac4b_d30f01bf",
+        "filename": "fs/fuse/file.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "Add a vendor hook here to add O_TMPFILE\n```\nandroid_vh_fuse_send_open(\u0026inarg.flags);\n```",
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d60be2_09bc14f5",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "remove. No UAPI changes allowed that aren\u0027t upstream, but the good news is that FUSE_TMPILE\u003d51 is defined upstream. What are the semantic differences between this NONATOMIC variant and FUSE_TMPFILE?",
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72eb19af_c01a90f6",
+        "filename": "include/uapi/linux/fuse.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T01:05:43Z",
+      "side": 1,
+      "message": "is this needed?",
+      "revId": "65dd5506a2e969ded90789fc69c3f1407a586bfa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
