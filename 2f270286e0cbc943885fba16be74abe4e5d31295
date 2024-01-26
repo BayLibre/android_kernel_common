@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9904502c_119fe3d4",
+        "filename": "mm/mremap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-01-26T01:50:30Z",
+      "side": 1,
+      "message": "I used the acquire release and change the unlock to xchg since -1 locks the refcount.",
+      "parentUuid": "de570f3f_4c1461be",
+      "range": {
+        "startLine": 229,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 22
+      },
+      "revId": "2f270286e0cbc943885fba16be74abe4e5d31295",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9244356_884b0cee",
@@ -85,6 +109,30 @@
       "writtenOn": "2024-01-26T01:10:05Z",
       "side": 1,
       "message": "Since nobody could be modifying `file_ref_count` once it is set to -1 in `trylock_vma_ref_count`, I suggest using `int ret \u003d atomic_xchg(\u0026vma-\u003efile_ref_count, 0)`",
+      "range": {
+        "startLine": 237,
+        "startChar": 11,
+        "endLine": 237,
+        "endChar": 25
+      },
+      "revId": "2f270286e0cbc943885fba16be74abe4e5d31295",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a3242d7_df3618f0",
+        "filename": "mm/mremap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-01-26T01:50:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9244356_884b0cee",
       "range": {
         "startLine": 237,
         "startChar": 11,
