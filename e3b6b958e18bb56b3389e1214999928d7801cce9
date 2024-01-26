@@ -22,6 +22,30 @@
       },
       "revId": "e3b6b958e18bb56b3389e1214999928d7801cce9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f52649f2_63382c92",
+        "filename": "mm/mremap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-01-26T17:10:03Z",
+      "side": 1,
+      "message": "I don\u0027t think so. The comment explains the check below it. IOW, this check will trigger a bug if unlock_vma_ref_count() was called without prior trylock_vma_ref_count().",
+      "parentUuid": "3dc0be56_b92a3319",
+      "range": {
+        "startLine": 230,
+        "startChar": 1,
+        "endLine": 233,
+        "endChar": 4
+      },
+      "revId": "e3b6b958e18bb56b3389e1214999928d7801cce9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
