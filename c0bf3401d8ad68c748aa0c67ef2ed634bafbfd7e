@@ -703,6 +703,24 @@
       "parentUuid": "84669a02_fcb864e8",
       "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dd442fe_1a7725a0",
+        "filename": "drivers/android/process.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-01-26T13:46:40Z",
+      "side": 1,
+      "message": "It seems like there is another consequence here. Currently, the nodes don\u0027t keep a list of the processes that have a reference to it, but we need such a list to replicate the data provided by binder_logs. Adding it here would introduce a third allocation, because you can no longer store the binder_ref inside one of the RBTree nodes.",
+      "parentUuid": "5be67875_473a0420",
+      "revId": "c0bf3401d8ad68c748aa0c67ef2ed634bafbfd7e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
