@@ -70,6 +70,24 @@
       "parentUuid": "9dfa84e1_7e02daf8",
       "revId": "3521564a047a9c5da76606de718f1f96018d41af",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a12443_1c58d9c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-26T19:46:46Z",
+      "side": 1,
+      "message": "Do you really need this patch in android-mainline right now if it is \"not yet clear if the code that needs to call kthread_set_per_cpu will be part of the trusty driver\"? android-mainline is for the long-term. The short-term would be in the android14 / android15 kernels. What drives the need for this in android-mainline?",
+      "parentUuid": "3c7f629b_fe9c236e",
+      "revId": "3521564a047a9c5da76606de718f1f96018d41af",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
