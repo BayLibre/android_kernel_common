@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de570f3f_4c1461be",
+        "filename": "mm/mremap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-01-26T01:28:37Z",
+      "side": 1,
+      "message": "I just checked that the pmd/pud spinlock unlock is already guaranteeing the ordering during the operation. So modifications to file_ref_count can be `relaxed`.",
+      "parentUuid": "ef001aac_fcecc591",
+      "range": {
+        "startLine": 229,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 22
+      },
+      "revId": "2f270286e0cbc943885fba16be74abe4e5d31295",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9244356_884b0cee",
         "filename": "mm/mremap.c",
         "patchSetId": 5
