@@ -16,6 +16,24 @@
       "message": "This looks like a fix for an upstream issue and should be sent upstream. If it is no longer relevant to Linux mainline, it should be sent to the stable branches where the issue exists. Please do that or explain why it shouldn\u0027t be done.",
       "revId": "4a2b268973e3f27a09ed938e9fd2276eed98ffa7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7bb59fb_2937fda6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3232272
+      },
+      "writtenOn": "2024-01-26T18:06:34Z",
+      "side": 1,
+      "message": "Agreed Todd, as this is upstream issue and should be sent upstream. \n\nActually UFS HPB feature has been integrated in Linux stable branch from linux-5.15. So it is not there in Linux-5.10.y stable branch and recently from Linux-6.6, this HPB feature removed from the mainline.\n\nBut it is there in Android12-5.10 and got integrated with the below commit\nhttps://android-review.googlesource.com/c/kernel/common/+/1628781\n\nAs our projects migrated from K4.19 to K5.10 and got HPB error with some UFS storage device, i.e. submitted this issue here first.\n\nPlease help suggest further.",
+      "parentUuid": "6797ab1f_a2b2cc3f",
+      "revId": "4a2b268973e3f27a09ed938e9fd2276eed98ffa7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
