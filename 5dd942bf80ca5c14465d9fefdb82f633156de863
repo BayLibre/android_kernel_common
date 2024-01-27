@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000066319432",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2930690?revision\u003d3",
+      "fixSuggestions": [
+        {
+          "fixId": "46da4d2f_a3cf7ebf",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 41,
+                "startChar": 0,
+                "endLine": 41,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Juan Yescas \u003cjyescas@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "903ee389_7ae1d43b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-01-27T02:33:07Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Juan Yescas \u003cjyescas@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "5dd942bf80ca5c14465d9fefdb82f633156de863",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
