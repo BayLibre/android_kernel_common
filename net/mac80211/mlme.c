@@ -5700,18 +5700,9 @@ static bool ieee80211_config_puncturing(struct ieee80211_link_data *link,
 					const struct ieee80211_eht_operation *eht_oper,
 					u64 *changed)
 {
-	u16 bitmap = 0, extracted;
+	u16 bitmap, extracted;
 
-	if ((eht_oper->params & IEEE80211_EHT_OPER_INFO_PRESENT) &&
-	    (eht_oper->params &
-	     IEEE80211_EHT_OPER_DISABLED_SUBCHANNEL_BITMAP_PRESENT)) {
-		const struct ieee80211_eht_operation_info *info =
-			(void *)eht_oper->optional;
-		const u8 *disable_subchannel_bitmap = info->optional;
-
-		bitmap = get_unaligned_le16(disable_subchannel_bitmap);
-	}
-
+	bitmap = ieee80211_eht_oper_dis_subchan_bitmap(eht_oper);
 	extracted = ieee80211_extract_dis_subch_bmap(eht_oper,
 						     &link->conf->chandef,
 						     bitmap);
