@@ -4140,6 +4140,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 		goto release;
 	}
 
+	//only for test!
 	ret = check_stable_address_space(vma->vm_mm);
 	if (ret)
 		goto release;
