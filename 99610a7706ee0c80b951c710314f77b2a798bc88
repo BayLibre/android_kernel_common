@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ddcb7b8_55315efc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-29T21:49:53Z",
+      "side": 1,
+      "message": "Point out in the commit message that this is an android-only fix because the corresponding code has been removed upstream.",
+      "revId": "99610a7706ee0c80b951c710314f77b2a798bc88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0baf4919_cd0d9255",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-29T21:49:53Z",
+      "side": 1,
+      "message": "checkpatch reported a warning:\n```\nWARNING:BAD_FIXES_TAG: Please use correct Fixes: style \u0027Fixes: \u003c12 chars of sha1\u003e (\"\u003ctitle line\u003e\")\u0027 - ie: \u0027Fixes: 756ecd96f649 (\"FROMLIST: scsi: ufs: Add HPB 2.0 support\")\u0027\n#24: \n```\n(you have 13 chars in sha1 - should be 12)",
+      "revId": "99610a7706ee0c80b951c710314f77b2a798bc88",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
