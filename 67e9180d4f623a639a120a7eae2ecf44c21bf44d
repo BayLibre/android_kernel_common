@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "583f56cf_49233221",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-30T20:49:37Z",
+      "side": 1,
+      "message": "Can you give some rationale for why vendors would want to artificially decrease the async space?",
+      "revId": "67e9180d4f623a639a120a7eae2ecf44c21bf44d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aba1b9f6_566129fb",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-30T20:49:37Z",
+      "side": 1,
+      "message": "This breaks the KMI. You cannot add parameters to a frozen interface.",
+      "revId": "67e9180d4f623a639a120a7eae2ecf44c21bf44d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
