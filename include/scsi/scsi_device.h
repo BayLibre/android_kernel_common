@@ -288,6 +288,13 @@ struct scsi_device {
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
 
+#ifndef __GENKSYMS__
+	/*
+	 * Insertion of this data member breaks support for out-of-tree SCSI
+	 * drivers that use the sdev_data[] member.
+	 */
+	struct scsi_vpd __rcu *vpd_pgb7;
+#endif
 	unsigned long		sdev_data[];
 } __attribute__((aligned(sizeof(unsigned long))));
 

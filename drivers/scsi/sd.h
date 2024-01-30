@@ -151,6 +151,9 @@ struct scsi_disk {
 	unsigned	urswrz : 1;
 	unsigned	security : 1;
 	unsigned	ignore_medium_access_errors : 1;
+#ifndef __GENKSYMS__
+	unsigned	rscs : 1; /* reduced stream control support */
+#endif
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
