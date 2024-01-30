@@ -50,6 +50,24 @@
       "message": "Almost none of these symbols are allowed, sorry, this is a lot of vfs symbols that drivers should not be touching at all.",
       "revId": "4ed8d80d95aa884c5b62f914d85d016ffe4f9fdc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d54ab07d_f41338bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1975505
+      },
+      "writtenOn": "2024-01-30T15:18:16Z",
+      "side": 1,
+      "message": "We have tried to make sdcardfs into a loadable kernel module based on GKI, as Google won\u0027t port sdcardfs into common kernel source tree.\n\nAnd sdcardfs is not a dirver.",
+      "parentUuid": "756225b2_de34edfd",
+      "revId": "4ed8d80d95aa884c5b62f914d85d016ffe4f9fdc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
