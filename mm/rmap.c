@@ -80,6 +80,11 @@
 
 #include "internal.h"
 
+#define CREATE_TRACE_POINTS
+#include <trace/events/rmap.h>
+
+#undef CREATE_TRACE_POINTS
+
 static struct kmem_cache *anon_vma_cachep;
 static struct kmem_cache *anon_vma_chain_cachep;
 
@@ -865,7 +870,7 @@ static bool invalid_page_referenced_vma(struct vm_area_struct *vma, void *arg)
  * Return: The number of mappings which referenced the page. Return -1 if
  * the function bailed out due to rmap lock contention.
  */
-int page_referenced(struct page *page,
+int do_page_referenced(struct page *page,
 		    int is_locked,
 		    struct mem_cgroup *memcg,
 		    unsigned long *vm_flags)
@@ -911,6 +916,31 @@ int page_referenced(struct page *page,
 		unlock_page(page);
 
 	return rwc.contended ? -1 : pra.referenced;
+}
+
+
+ktime_t g_page_referenced_nsecs = 0;
+int64_t g_num_pages_scanned = 0;
+DEFINE_SPINLOCK(g_page_referenced_lock);
+
+int page_referenced(struct page *page,
+		int is_locked,
+		struct mem_cgroup *memcg,
+		unsigned long *vm_flags)
+{
+	ktime_t start, elapsed;
+	int r;
+	start = ktime_get();
+	r = do_page_referenced(page, is_locked, memcg, vm_flags);
+	elapsed = ktime_get() - start;
+
+	spin_lock(&g_page_referenced_lock);
+	g_page_referenced_nsecs += elapsed;
+	g_num_pages_scanned++;
+
+	trace_mm_rmap_page_referenced(g_page_referenced_nsecs, g_num_pages_scanned);
+	spin_unlock(&g_page_referenced_lock);
+	return r;
 }
 
 static bool page_mkclean_one(struct page *page, struct vm_area_struct *vma,
