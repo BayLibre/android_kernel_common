@@ -283,7 +283,7 @@ struct scsi_device {
 	enum scsi_device_state sdev_state;
 	struct task_struct	*quiesced_by;
 
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE(1, struct scsi_vpd __rcu *vpd_pgb7);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);

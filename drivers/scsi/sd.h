@@ -152,7 +152,7 @@ struct scsi_disk {
 	unsigned	security : 1;
 	unsigned	ignore_medium_access_errors : 1;
 
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE(1, u16 permanent_stream_count; unsigned rscs : 1;);
 	ANDROID_KABI_RESERVE(2);
 };
 #define to_scsi_disk(obj) container_of(obj, struct scsi_disk, disk_dev)
