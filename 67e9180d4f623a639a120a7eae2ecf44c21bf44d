@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27617443_35f5e789",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1553428
+      },
+      "writtenOn": "2024-01-31T08:24:55Z",
+      "side": 1,
+      "message": "if a bad app contantly send async binder transaction faster than system_server handle it, then the async binder transaction will be piling up and pending. this app will use up most of the binder buffer of system_server, which will lead to other process normal binder async transaction to system_server fail due to no binder async space left and crash due to deadsystemexception. \n\nso we are not decreasing the async space, we are asking vendor should be giving the options whether or not a new alloc buffer should go on or fail if this app is already consuming most of the binder buffer.\n\ni will upload a new commit using a new vendor hook",
+      "parentUuid": "583f56cf_49233221",
+      "revId": "67e9180d4f623a639a120a7eae2ecf44c21bf44d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aba1b9f6_566129fb",
         "filename": "drivers/android/binder_alloc.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-01-30T20:49:37Z",
       "side": 1,
       "message": "This breaks the KMI. You cannot add parameters to a frozen interface.",
+      "revId": "67e9180d4f623a639a120a7eae2ecf44c21bf44d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05ff0ebc_142f938a",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1553428
+      },
+      "writtenOn": "2024-01-31T08:24:55Z",
+      "side": 1,
+      "message": "we will try to add another new vendor hook rather using the existing one",
+      "parentUuid": "aba1b9f6_566129fb",
       "revId": "67e9180d4f623a639a120a7eae2ecf44c21bf44d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
