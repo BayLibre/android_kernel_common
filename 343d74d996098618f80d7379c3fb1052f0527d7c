@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "416651f0_d2c1b16f",
+        "filename": "arch/arm64/kernel/vmlinux.lds.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-01-31T14:08:44Z",
+      "side": 1,
+      "message": "IRC, I wrote this more as a general question than a TODO.\n\nAs we won\u0027t commit any trace_hyp_printk, do we want to enable the feature only when we have NVHE_DEBUG? This is currently not the case.",
+      "parentUuid": "46c35cd2_88eed68a",
+      "range": {
+        "startLine": 23,
+        "startChar": 3,
+        "endLine": 23,
+        "endChar": 7
+      },
+      "revId": "343d74d996098618f80d7379c3fb1052f0527d7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a621eab0_831db296",
         "filename": "arch/arm64/kvm/hyp_events.c",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-31T12:34:23Z",
       "side": 1,
       "message": "So, if I\u0027m not mistaken, id \u003d\u003d (fmt - __hyp_printk_fmts_start)?\n\nIf so that might allow a few simplification. Perhaps we could drop the hyp version of the fmt table entirely and just push the fmts to a host-only visible table. And hyp_printk_fmt_to_id() gets replaced by the calculation above, which can entirely be done w/o dereferencing the actual fmt struct -- it all just becomes pointer arithmetic that should just work by the magic of relocations, I _think_. That way you also save the strcpy. Thoughts?",
+      "range": {
+        "startLine": 56,
+        "startChar": 2,
+        "endLine": 56,
+        "endChar": 27
+      },
+      "revId": "343d74d996098618f80d7379c3fb1052f0527d7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f8ccec_ae7433c5",
+        "filename": "arch/arm64/kvm/hyp_events.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-01-31T14:08:44Z",
+      "side": 1,
+      "message": "Gotha...\n\n1. No need to write the id anywhere if it is just an increment.\n2. The hyp doesn\u0027t need the id as it can just compute that offset with a delta between the format address and the start of the ELF section.\n\nI will try something like that.",
+      "parentUuid": "a621eab0_831db296",
       "range": {
         "startLine": 56,
         "startChar": 2,
