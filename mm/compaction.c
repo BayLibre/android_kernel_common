@@ -2855,6 +2855,9 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
 					ac->highest_zoneidx, ac->nodemask) {
 		enum compact_result status;
 
+		if (!zone_can_frag(zone))
+			continue;
+
 		if (cpusets_enabled() &&
 			(alloc_flags & ALLOC_CPUSET) &&
 			!__cpuset_zone_allowed(zone, gfp_mask))
@@ -2925,6 +2928,9 @@ void compact_node_async(int nid)
 		if (!populated_zone(zone))
 			continue;
 
+		if (!zone_can_frag(zone))
+			continue;
+
 		if (fatal_signal_pending(current))
 			break;
 
@@ -2962,6 +2968,9 @@ static int compact_node(pg_data_t *pgdat, bool proactive)
 	for (zoneid = 0; zoneid < MAX_NR_ZONES; zoneid++) {
 		zone = &pgdat->node_zones[zoneid];
 		if (!populated_zone(zone))
+			continue;
+
+		if (!zone_can_frag(zone))
 			continue;
 
 		if (fatal_signal_pending(current))
@@ -3093,6 +3102,9 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
 		zone = &pgdat->node_zones[zoneid];
 
 		if (!populated_zone(zone))
+			continue;
+
+		if (!zone_can_frag(zone))
 			continue;
 
 		ret = compaction_suit_allocation_order(zone,
