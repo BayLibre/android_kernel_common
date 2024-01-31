@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6c76474_92c3e362",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-31T17:09:16Z",
+      "side": 1,
+      "message": "You are effectively reducing the async space since when your hook rejects the request the reported error is \"no async space left\". I think it would be better to have a different error so someone diagnosing an issue can distinguish this from the normal out of space case.\n\nHow about putting this new hook after this conditional and return -EPERM, -EACCESS or something else. Then the new code is:\n```\ntrace_android_vh_binder_detect_low_async_space_locked(is_async, \u0026alloc-\u003efree_async_space, pid, \u0026should_fail);\nif (should_fail)\n  return ERR_PTR(-EPERM);\n```\nor if you might have multiple reasons for rejecting it, have the hook return the appropriate error:\n```\nint err \u003d 0;\ntrace_android_vh_binder_detect_low_async_space_locked(is_async, \u0026alloc-\u003efree_async_space, pid, \u0026err);\nif (err)\n  return ERR_PTR(err);\n```",
+      "revId": "0519c61a85e2edc13fc6b65ee3baa4e339728c36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf18b5ba_981d90d1",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-01-31T17:09:16Z",
+      "side": 1,
+      "message": "given this is a new hook instead of an addition of an arg, do you still need all the other args? (pid?)",
+      "revId": "0519c61a85e2edc13fc6b65ee3baa4e339728c36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
