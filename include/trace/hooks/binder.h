@@ -21,6 +21,10 @@ DECLARE_HOOK(android_vh_binder_set_priority,
 DECLARE_HOOK(android_vh_binder_restore_priority,
 	TP_PROTO(struct binder_transaction *t, struct task_struct *task),
 	TP_ARGS(t, task));
+
+DECLARE_HOOK(android_vh_binder_detect_low_async_space_locked,
+	TP_PROTO(int is_async, size_t *free_async_space, int pid, bool *should_fail),
+	TP_ARGS(is_async, free_async_space, pid, should_fail));
 #endif /* _TRACE_HOOK_BINDER_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
