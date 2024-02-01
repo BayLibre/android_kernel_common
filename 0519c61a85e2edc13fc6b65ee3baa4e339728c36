@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "114afcf6_29863432",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1553428
+      },
+      "writtenOn": "2024-02-01T02:14:54Z",
+      "side": 1,
+      "message": "OK, I would change the ERR indication if vendor decide to reject the binder alloc request",
+      "parentUuid": "c6c76474_92c3e362",
+      "revId": "0519c61a85e2edc13fc6b65ee3baa4e339728c36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf18b5ba_981d90d1",
         "filename": "include/trace/hooks/binder.h",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2024-01-31T17:09:16Z",
       "side": 1,
       "message": "given this is a new hook instead of an addition of an arg, do you still need all the other args? (pid?)",
+      "revId": "0519c61a85e2edc13fc6b65ee3baa4e339728c36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f5c8ab8_cf5bd6a5",
+        "filename": "include/trace/hooks/binder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1553428
+      },
+      "writtenOn": "2024-02-01T02:14:54Z",
+      "side": 1,
+      "message": "I need this pid to identify who is spamming async binder transaction",
+      "parentUuid": "bf18b5ba_981d90d1",
       "revId": "0519c61a85e2edc13fc6b65ee3baa4e339728c36",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
