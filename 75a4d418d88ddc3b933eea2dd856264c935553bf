@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000066905467",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2943485?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "99ba5729_c3a5b606",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-02-01T09:40:16Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "75a4d418d88ddc3b933eea2dd856264c935553bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000066905467",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2943485?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "4e49c001_a07e84b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-02-01T09:40:16Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against [change 2813979](https://r.android.com/c/2813979) on branch android14-6.1.\n\n```\n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_alloc_pages_retry);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_unreserve_highatomic_bypass);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rmqueue_bulk_bypass);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ra_tuning_max_page);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_show_max_freq);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dm_bufio_shrink_scan_bypass);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cleanup_old_buffers_bypass);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_mmap_readaround);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_insert);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_delete);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);\n     \n      ## include/trace/hooks/mm.h ##\n    -@@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_rmqueue_bulk_bypass,\n    - DECLARE_HOOK(android_vh_ra_tuning_max_page,\n    - \tTP_PROTO(struct readahead_control *ractl, unsigned long *max_page),\n    - \tTP_ARGS(ractl, max_page));\n    +@@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_mm_compaction_begin,\n    + DECLARE_HOOK(android_vh_mm_compaction_end,\n    + \tTP_PROTO(struct compact_control *cc, long vendor_ret),\n    + \tTP_ARGS(cc, vendor_ret));\n     +DECLARE_HOOK(android_vh_tune_mmap_readaround,\n     +\tTP_PROTO(unsigned int ra_pages, pgoff_t pgoff,\n     +\t\tpgoff_t *start, unsigned int *size, unsigned int *async_size),\n    @@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_rmqueue_bulk_bypass,\n      \tTP_PROTO(struct mem_cgroup *memcg),\n     \n      ## mm/filemap.c ##\n    +@@\n    + #define CREATE_TRACE_POINTS\n    + #include \u003ctrace/events/filemap.h\u003e\n    + \n    ++#undef CREATE_TRACE_POINTS\n    ++#include \u003ctrace/hooks/mm.h\u003e\n    ++\n    + /*\n    +  * FIXME: remove all knowledge of the buffer layer from the core VM\n    +  */\n     @@ mm/filemap.c: static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)\n      \tra-\u003estart \u003d max_t(long, 0, vmf-\u003epgoff - ra-\u003era_pages / 2);\n      \tra-\u003esize \u003d ra-\u003era_pages;\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "75a4d418d88ddc3b933eea2dd856264c935553bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
