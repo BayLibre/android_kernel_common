@@ -76,6 +76,26 @@
 
 static const char hcd_name[] = "xhci_hcd";
 
+static const struct xhci_driver_data reneses_data = {
+	.quirks  = XHCI_RENESAS_FW_QUIRK,
+	.firmware = "renesas_usb_fw.mem",
+};
+
+/* PCI driver selection metadata; PCI hotplugging uses this */
+static const struct pci_device_id pci_ids[] = {
+	{ PCI_DEVICE(0x1912, 0x0014),
+		.driver_data =  (unsigned long)&reneses_data,
+	},
+	{ PCI_DEVICE(0x1912, 0x0015),
+		.driver_data =  (unsigned long)&reneses_data,
+	},
+	/* handle any USB 3.0 xHCI controller */
+	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_XHCI, ~0),
+	},
+	{ /* end: all zeroes */ }
+};
+MODULE_DEVICE_TABLE(pci, pci_ids);
+
 static struct hc_driver __read_mostly xhci_pci_hc_driver;
 
 static int xhci_pci_setup(struct usb_hcd *hcd);
@@ -641,6 +661,9 @@ static int xhci_pci_resume(struct usb_hcd *hcd, bool hibernated)
 	if (xhci->quirks & XHCI_PME_STUCK_QUIRK)
 		xhci_pme_quirk(hcd);
 
+	if (pdev->vendor == PCI_VENDOR_ID_RENESAS && pdev->device == 0x0014)
+		renesas_xhci_check_request_fw(pdev, pci_ids);
+
 	retval = xhci_resume(xhci, hibernated);
 	return retval;
 }
@@ -659,26 +682,6 @@ static void xhci_pci_shutdown(struct usb_hcd *hcd)
 #endif /* CONFIG_PM */
 
 /*-------------------------------------------------------------------------*/
-
-static const struct xhci_driver_data reneses_data = {
-	.quirks  = XHCI_RENESAS_FW_QUIRK,
-	.firmware = "renesas_usb_fw.mem",
-};
-
-/* PCI driver selection metadata; PCI hotplugging uses this */
-static const struct pci_device_id pci_ids[] = {
-	{ PCI_DEVICE(0x1912, 0x0014),
-		.driver_data =  (unsigned long)&reneses_data,
-	},
-	{ PCI_DEVICE(0x1912, 0x0015),
-		.driver_data =  (unsigned long)&reneses_data,
-	},
-	/* handle any USB 3.0 xHCI controller */
-	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_XHCI, ~0),
-	},
-	{ /* end: all zeroes */ }
-};
-MODULE_DEVICE_TABLE(pci, pci_ids);
 
 /*
  * Without CONFIG_USB_XHCI_PCI_RENESAS renesas_xhci_check_request_fw() won't
