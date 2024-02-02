@@ -8918,6 +8918,7 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
 
 out:
 	pm_runtime_put_sync(hba->dev);
+<<<<<<< HEAD   (c3a1a1 Merge branch 'android14-6.1' into branch 'android14-6.1-lts')
 
 	if (ret)
 		dev_err(hba->dev, "%s failed: %d\n", __func__, ret);
@@ -8943,6 +8944,14 @@ static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
 		 __func__, hba->outstanding_tasks);
 
 	return hba->outstanding_reqs ? SCSI_EH_RESET_TIMER : SCSI_EH_DONE;
+=======
+	/*
+	 * If we failed to initialize the device or the device is not
+	 * present, turn off the power/clocks etc.
+	 */
+	if (ret)
+		ufshcd_hba_exit(hba);
+>>>>>>> BRANCH (883d1a Linux 6.1.75)
 }
 
 static const struct attribute_group *ufshcd_driver_groups[] = {

@@ -159,12 +159,38 @@ int unix_dgram_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool re
 
 int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
 {
+<<<<<<< HEAD   (c3a1a1 Merge branch 'android14-6.1' into branch 'android14-6.1-lts')
+=======
+	struct sock *sk_pair;
+
+	/* Restore does not decrement the sk_pair reference yet because we must
+	 * keep the a reference to the socket until after an RCU grace period
+	 * and any pending sends have completed.
+	 */
+>>>>>>> BRANCH (883d1a Linux 6.1.75)
 	if (restore) {
 		sk->sk_write_space = psock->saved_write_space;
 		sock_replace_proto(sk, psock->sk_proto);
 		return 0;
 	}
 
+<<<<<<< HEAD   (c3a1a1 Merge branch 'android14-6.1' into branch 'android14-6.1-lts')
+=======
+	/* psock_update_sk_prot can be called multiple times if psock is
+	 * added to multiple maps and/or slots in the same map. There is
+	 * also an edge case where replacing a psock with itself can trigger
+	 * an extra psock_update_sk_prot during the insert process. So it
+	 * must be safe to do multiple calls. Here we need to ensure we don't
+	 * increment the refcnt through sock_hold many times. There will only
+	 * be a single matching destroy operation.
+	 */
+	if (!psock->sk_pair) {
+		sk_pair = unix_peer(sk);
+		sock_hold(sk_pair);
+		psock->sk_pair = sk_pair;
+	}
+
+>>>>>>> BRANCH (883d1a Linux 6.1.75)
 	unix_stream_bpf_check_needs_rebuild(psock->sk_proto);
 	sock_replace_proto(sk, &unix_stream_bpf_prot);
 	return 0;
