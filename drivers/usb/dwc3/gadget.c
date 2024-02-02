@@ -3884,6 +3884,16 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
 
 	dwc3_ep0_reset_state(dwc);
+<<<<<<< HEAD   (98fc36 Merge 6.1.75 into android14-6.1-lts)
+=======
+
+	/*
+	 * Request PM idle to address condition where usage count is
+	 * already decremented to zero, but waiting for the disconnect
+	 * interrupt to set dwc->connected to FALSE.
+	 */
+	pm_request_idle(dwc->dev);
+>>>>>>> BRANCH (e5c3b9 Linux 6.1.76)
 }
 
 static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
