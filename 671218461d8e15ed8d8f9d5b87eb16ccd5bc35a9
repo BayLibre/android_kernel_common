@@ -16,6 +16,24 @@
       "message": "are you sending this upstream?",
       "revId": "671218461d8e15ed8d8f9d5b87eb16ccd5bc35a9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d664985c_2ec339cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-02-02T00:06:08Z",
+      "side": 1,
+      "message": "No, upstream has alloc-\u003ebuffer defined as an integer type now. I switched it back to the original pointer type in ACK to avoid a KMI break.",
+      "parentUuid": "3e88dd8d_e317ecc9",
+      "revId": "671218461d8e15ed8d8f9d5b87eb16ccd5bc35a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
