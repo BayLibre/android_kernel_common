@@ -229,7 +229,7 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
 	spin_lock(&si->lock);
 	/* Only sinple page folio can be backed by zswap */
 	if (nr_pages == 1)
-		zswap_invalidate(si->type, offset);
+		zswap_invalidate(entry);
 	swap_entry_range_free(si, entry, nr_pages);
 	spin_unlock(&si->lock);
 	ret = nr_pages;
@@ -794,7 +794,6 @@ static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
 		swap_slot_free_notify = NULL;
 	while (offset <= end) {
 		arch_swap_invalidate_page(si->type, offset);
-		zswap_invalidate(si->type, offset);
 		if (swap_slot_free_notify)
 			swap_slot_free_notify(si->bdev, offset);
 		offset++;
