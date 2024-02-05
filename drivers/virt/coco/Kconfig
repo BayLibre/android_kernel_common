@@ -3,6 +3,9 @@
 # Confidential computing related collateral
 #
 
+config GENERIC_GUEST_OPS
+	bool
+
 config TSM_REPORTS
 	select CONFIGFS_FS
 	tristate
