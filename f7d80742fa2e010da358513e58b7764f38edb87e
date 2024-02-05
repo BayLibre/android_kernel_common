@@ -16,6 +16,24 @@
       "message": "@cmllamas@google.com can you verify I resolved the merge conflicts correctly? When I do a diff of `drivers/android/binder_alloc.c` between the merge commit and android13-5.10 ToT, there\u0027s no delta, but I\u0027m not sure if that\u0027s expected (not sure if anything should be coming in from upstream LTS).",
       "revId": "f7d80742fa2e010da358513e58b7764f38edb87e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dbd4cb8_df8fe2b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-02-05T19:07:50Z",
+      "side": 1,
+      "message": "Yes, the merge is correct. Everything recently coming from upstream LTS has been backported manually so the delta should be zero in this file.",
+      "parentUuid": "ee66071d_f4c35397",
+      "revId": "f7d80742fa2e010da358513e58b7764f38edb87e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
