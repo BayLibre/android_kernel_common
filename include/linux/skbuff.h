@@ -1065,6 +1065,7 @@ struct sk_buff {
 	/* only useable after checking ->active_extensions != 0 */
 	struct skb_ext		*extensions;
 #endif
+	unsigned char		giblet;
 };
 
 /* if you move pkt_type around you also must adapt those constants */
