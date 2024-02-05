@@ -467,16 +467,16 @@ regular_folio:
 				pte_t *start_pte = pte - (addr - start_addr) / PAGE_SIZE;
 				unsigned long next = pte_nr_addr_end(addr, folio_size, end);
 
+				/* another thread might be reclaiming */
 				if (!pte_range_cont_mapped(start_pfn, start_pte, start_addr, nr_pages))
-					goto split;
+					goto skip;
+				/* Do not interfere with other mappings of this page */
+				if (folio_mapcount(folio) != nr_pages)
+					goto skip;
 
 				if (next - addr != folio_size) {
 					goto split;
 				} else {
-					/* Do not interfere with other mappings of this page */
-					if (folio_estimated_sharers(folio) != 1)
-						goto skip;
-
 					VM_BUG_ON(addr != start_addr || pte != start_pte);
 
 					if (pte_range_young(start_pte, nr_pages)) {
