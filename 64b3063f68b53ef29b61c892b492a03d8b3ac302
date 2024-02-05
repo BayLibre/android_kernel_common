@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65d022fe_f9fac4dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2024-02-05T07:53:08Z",
+      "side": 1,
+      "message": "another thing is for the following issue as CONFIG_SERIAL_8250_DWLIB is not enabled in the gki kernel, but for case the vendor build requires it when CONFIG_SERIAL_8250_DW\u003dm\n```\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n Comparing the KMI and the symbol lists:\n+ /data/android13/lkft/build/abi/compare_to_symbol_list /data/android13/lkft/out/lkft-gki-android12-5.4/gki-kernel/common/Module.symvers /data/android13/lkft/out/lkft-gki-android12-5.4/gki-kernel/common/abi_symbollist.raw\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n - dw8250_setup_port\nSymbols missing from symbol list:\n```",
+      "revId": "64b3063f68b53ef29b61c892b492a03d8b3ac302",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
