@@ -53,9 +53,11 @@
 #include <asm/efi.h>
 #include <asm/xen/hypervisor.h>
 #include <asm/mmu_context.h>
+#include <asm/hypervisor.h>
 
 static int num_standard_resources;
 static struct resource *standard_resources;
+struct hypervisor_ops hyp_ops;
 
 phys_addr_t __fdt_pointer __initdata;
 u64 mmu_enabled_at_boot __initdata;

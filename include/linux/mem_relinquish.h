@@ -7,6 +7,8 @@
 #ifndef __MEM_RELINQUISH_H__
 #define __MEM_RELINQUISH_H__
 
+#include <linux/types.h>
+
 struct page;
 
 #ifdef CONFIG_MEMORY_RELINQUISH
