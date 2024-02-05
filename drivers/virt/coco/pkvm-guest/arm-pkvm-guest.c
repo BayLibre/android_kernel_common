@@ -129,13 +129,12 @@ static int mmio_guard_ioremap_hook(phys_addr_t phys, size_t size,
 
 static bool mem_relinquish_available;
 
-bool page_relinquish_disallowed(void)
+static bool kvm_page_relinquish_disallowed(void)
 {
 	return mem_relinquish_available && (pkvm_granule > PAGE_SIZE);
 }
-EXPORT_SYMBOL_GPL(page_relinquish_disallowed);
 
-void page_relinquish(struct page *page)
+static void kvm_page_relinquish(struct page *page)
 {
 	phys_addr_t phys, end;
 	u32 func_id = ARM_SMCCC_VENDOR_HYP_KVM_MEM_RELINQUISH_FUNC_ID;
@@ -155,7 +154,6 @@ void page_relinquish(struct page *page)
 		phys += pkvm_granule;
 	}
 }
-EXPORT_SYMBOL_GPL(page_relinquish);
 
 #endif
 
@@ -209,7 +207,10 @@ void pkvm_init_hyp_services(void)
 		arm64_ioremap_prot_hook_register(&mmio_guard_ioremap_hook);
 
 #ifdef CONFIG_MEMORY_RELINQUISH
-	if (kvm_arm_hyp_service_available(ARM_SMCCC_KVM_FUNC_MEM_RELINQUISH))
+	if (kvm_arm_hyp_service_available(ARM_SMCCC_KVM_FUNC_MEM_RELINQUISH)) {
 		mem_relinquish_available = true;
+		hyp_ops.page_relinquish = kvm_page_relinquish;
+		hyp_ops.page_relinquish_disallowed = kvm_page_relinquish_disallowed;
+	}
 #endif
 }
