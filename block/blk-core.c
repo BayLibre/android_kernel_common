@@ -1784,7 +1784,7 @@ int __init blk_dev_init(void)
 		panic("Failed to create kblockd\n");
 
 	blk_requestq_cachep = kmem_cache_create("request_queue",
-		sizeof(struct internal_request_queue), 0, SLAB_PANIC, NULL);
+		sizeof(struct internal_request_queue_ext), 0, SLAB_PANIC, NULL);
 
 	blk_debugfs_root = debugfs_create_dir("block", NULL);
 	blk_mq_debugfs_init();
