@@ -39,6 +39,30 @@
       },
       "revId": "1a38c2c1c609fb273bd61cdfea612a05fb790ed7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd36ca79_810edd4d",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-02-06T19:18:35Z",
+      "side": 1,
+      "message": "I gave Chris this suggestion.\n\nI wanted to minimize other symbols that need to be exported (`__fixup_exception`), since it\u0027s a decently internal arm64 function. Also we want to be open about what we\u0027re doing inside `do_sea`. We could create a vendor hook that would behave like a static key, but then why not just use a static key? Let me know your thoughts behind the rationale here.",
+      "parentUuid": "fe4d8a39_98bb1de0",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 43
+      },
+      "revId": "1a38c2c1c609fb273bd61cdfea612a05fb790ed7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
