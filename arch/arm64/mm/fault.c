@@ -47,6 +47,9 @@
 
 #include <trace/hooks/fault.h>
 
+DEFINE_STATIC_KEY_FALSE(sea_try_fixup_exception);
+EXPORT_SYMBOL_GPL(sea_try_fixup_exception);
+
 struct fault_info {
 	int	(*fn)(unsigned long far, unsigned long esr,
 		      struct pt_regs *regs);
@@ -748,6 +751,9 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
 	unsigned long siaddr;
 
 	inf = esr_to_fault_info(esr);
+
+        if (static_branch_unlikely(&sea_try_fixup_exception) && fixup_exception(regs))
+		return 0;
 
 	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
 		/*
