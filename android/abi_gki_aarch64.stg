@@ -363932,6 +363932,24 @@ elf_symbol {
   full_name: "genphy_c37_read_status"
 }
 elf_symbol {
+  id: 0xd1e108fe
+  name: "genphy_c45_an_config_aneg"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1cb65abd
+  type_id: 0x91dd4b0e
+  full_name: "genphy_c45_an_config_aneg"
+}
+elf_symbol {
+  id: 0x084b19b7
+  name: "genphy_c45_check_and_restart_aneg"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x219cff56
+  type_id: 0x9068b671
+  full_name: "genphy_c45_check_and_restart_aneg"
+}
+elf_symbol {
   id: 0x607c937c
   name: "genphy_c45_fast_retrain"
   is_defined: true
@@ -363948,6 +363966,15 @@ elf_symbol {
   crc: 0x62814a87
   type_id: 0x91dd4b0e
   full_name: "genphy_c45_pma_setup_forced"
+}
+elf_symbol {
+  id: 0xa3a0e5a9
+  name: "genphy_c45_read_status"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x152eb861
+  type_id: 0x91dd4b0e
+  full_name: "genphy_c45_read_status"
 }
 elf_symbol {
   id: 0x618539bc
@@ -405105,8 +405132,11 @@ interface {
   symbol_id: 0x343a2d56
   symbol_id: 0xa0c0d25f
   symbol_id: 0xb87c5ff6
+  symbol_id: 0xd1e108fe
+  symbol_id: 0x084b19b7
   symbol_id: 0x607c937c
   symbol_id: 0xd99708c7
+  symbol_id: 0xa3a0e5a9
   symbol_id: 0x618539bc
   symbol_id: 0xe00705b3
   symbol_id: 0xcaf802e6
