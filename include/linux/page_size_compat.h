@@ -20,6 +20,7 @@
 
 #include <linux/align.h>
 #include <linux/jump_label.h>
+#include <linux/mman.h>
 #include <linux/printk.h>
 #include <linux/sched.h>
 
@@ -86,5 +87,15 @@ static __always_inline bool __page_aligned_log(unsigned long addr)
  */
 #define __PAGE_SIZE_ROUND_UP_ADJ(size) \
 	((size) + (((1 << (__PAGE_SHIFT - PAGE_SHIFT)) - 1) << PAGE_SHIFT))
+
+/* VMA is exempt from emulated page align requirements */
+#define __VM_NO_COMPAT      0x1000000000000000ULL
+#define __MAP_NO_COMPAT     0x1000000000000000ULL
+
+/* Combine the mmap "flags" argument into "vm_flags" add translation of the no-compat flag. */
+static inline unsigned long __calc_vm_flag_bits(unsigned long flags)
+{
+    return calc_vm_flag_bits(flags) | _calc_vm_trans(flags, __MAP_NO_COMPAT,  __VM_NO_COMPAT );
+}
 
 #endif /* __LINUX_PAGE_SIZE_COMPAT_H */
