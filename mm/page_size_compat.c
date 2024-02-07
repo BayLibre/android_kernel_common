@@ -9,6 +9,7 @@
 #include <linux/init.h>
 #include <linux/jump_label.h>
 #include <linux/kstrtox.h>
+#include <linux/mm.h>
 #include <linux/page_size_compat.h>
 
 DEFINE_STATIC_KEY_FALSE(page_shift_compat_enabled);
@@ -51,3 +52,25 @@ bool __log_alignment(const char* func, unsigned long addr, bool is_aligned)
 
 	return false;
 }
+
+#define __MMAP_RND_BITS(x)      (x - (__PAGE_SHIFT - PAGE_SHIFT))
+
+static int __init init_mmap_rnd_bits(void)
+{
+	if (!static_branch_unlikely(&page_shift_compat_enabled))
+		return 0;
+
+#ifdef CONFIG_HAVE_ARCH_MMAP_RND_BITS
+	mmap_rnd_bits_min = __MMAP_RND_BITS(CONFIG_ARCH_MMAP_RND_BITS_MIN);
+	mmap_rnd_bits_max = __MMAP_RND_BITS(CONFIG_ARCH_MMAP_RND_BITS_MAX);
+	mmap_rnd_bits = __MMAP_RND_BITS(CONFIG_ARCH_MMAP_RND_BITS);
+#endif
+#ifdef CONFIG_HAVE_ARCH_MMAP_RND_COMPAT_BITS
+	mmap_rnd_compat_bits_min = __MMAP_RND_BITS(CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MIN);
+	mmap_rnd_compat_bits_max = __MMAP_RND_BITS(CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MAX);
+	mmap_rnd_compat_bits = __MMAP_RND_BITS(CONFIG_ARCH_MMAP_RND_COMPAT_BITS);
+#endif
+
+	return 0;
+}
+core_initcall(init_mmap_rnd_bits);
