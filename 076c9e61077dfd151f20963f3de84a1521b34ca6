@@ -22,6 +22,30 @@
       },
       "revId": "076c9e61077dfd151f20963f3de84a1521b34ca6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b90961c_d11d13b6",
+        "filename": "block/blk.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-02-07T21:39:02Z",
+      "side": 1,
+      "message": "As per your comment, I added the new filed to internal_request_queue.\n\nAfter this change, the ABI still breaks due to CRC changes. We\u0027ll try adding the sub_page_limits field in a gap in the queue_limits struct.",
+      "parentUuid": "543ccf64_8e6744e1",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 35
+      },
+      "revId": "076c9e61077dfd151f20963f3de84a1521b34ca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
