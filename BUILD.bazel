@@ -2104,12 +2104,7 @@ cc_binary_with_abi(
 
 copy_file(
     name = "kselftest_gen_config",
-    src = select({
-        ":x86_64": "tools/testing/selftests/android/config_x86_64.xml",
-        ":i386": "tools/testing/selftests/android/config_x86.xml",
-        ":arm64": "tools/testing/selftests/android/config_arm64.xml",
-        ":arm": "tools/testing/selftests/android/config_arm.xml",
-    }),
+    src = "tools/testing/selftests/android/config.xml",
     out = _KSELFTEST_DIR + "/selftests.config",
     visibility = ["//visibility:private"],
 )
@@ -2130,7 +2125,6 @@ android_filegroup(
         ":kselftest_futex_futex_wait_uninitialized_heap_x86_64",
         ":kselftest_futex_futex_wait_wouldblock_x86_64",
         ":kselftest_futex_futex_wait_x86_64",
-        ":kselftest_gen_config",
         ":kselftest_kcmp_kcmp_test_x86_64",
         ":kselftest_mm_compaction_test_x86_64",
         ":kselftest_mm_hugepage_mmap_x86_64",
@@ -2334,7 +2328,6 @@ android_filegroup(
         ":kselftest_futex_futex_wait_timeout_arm64",
         ":kselftest_futex_futex_wait_uninitialized_heap_arm64",
         ":kselftest_futex_futex_wait_wouldblock_arm64",
-        ":kselftest_gen_config",
         ":kselftest_kcmp_kcmp_test_arm64",
         ":kselftest_mm_compaction_test_arm64",
         ":kselftest_mm_hugepage_mmap_arm64",
@@ -2388,6 +2381,7 @@ pkg_files(
     srcs = [
         ":kselftest_tests_x86",
         ":kselftest_tests_x86_64",
+        ":kselftest_gen_config",
     ],
     strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//visibility:private"],
@@ -2398,6 +2392,7 @@ pkg_files(
     srcs = [
         ":kselftest_tests_arm",
         ":kselftest_tests_arm64",
+        ":kselftest_gen_config",
     ],
     strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//visibility:private"],
