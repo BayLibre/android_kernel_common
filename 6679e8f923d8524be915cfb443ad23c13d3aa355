@@ -66,6 +66,73 @@
       "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
       "revId": "6679e8f923d8524be915cfb443ad23c13d3aa355",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000067783132",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2955256?revision\u003d1",
+      "fixSuggestions": [
+        {
+          "fixId": "c9e7633a_c745bc4f",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 2382,
+                "startChar": 0,
+                "endLine": 2382,
+                "endChar": 0
+              },
+              "replacement": "        \":kselftest_gen_config\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 2384,
+                "startChar": 0,
+                "endLine": 2385,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 2393,
+                "startChar": 0,
+                "endLine": 2393,
+                "endChar": 0
+              },
+              "replacement": "        \":kselftest_gen_config\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 2395,
+                "startChar": 0,
+                "endLine": 2396,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "key": {
+        "uuid": "b7cfd0a2_880e9b07",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-02-08T21:22:59Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "revId": "6679e8f923d8524be915cfb443ad23c13d3aa355",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
