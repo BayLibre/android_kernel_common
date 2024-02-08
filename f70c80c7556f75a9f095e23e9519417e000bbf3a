@@ -33,6 +33,24 @@
       "message": "Should this be applied on top of change 2948897? It seems you are squashing several commits in this?",
       "revId": "f70c80c7556f75a9f095e23e9519417e000bbf3a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "566a075e_a91c2171",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1928805
+      },
+      "writtenOn": "2024-02-08T21:27:58Z",
+      "side": 1,
+      "message": "This change was originally uploaded by Liujie Xie, xieliujie@oppo.com But it is needed by Qualcomm as well for implementing WALT and its various features via vendor modules. I created a bug to track the merge of this change. AFAICT, it is not a squash of several commits but is actually a revert of https://android-review.googlesource.com/c/kernel/common/+/2694557\nAs for https://android-review.googlesource.com/#/c/2948897, I\u0027m the owner. Would you like me to rebase this, aka Liujie\u0027s change on top of my change?",
+      "parentUuid": "022e53c4_750e8d48",
+      "revId": "f70c80c7556f75a9f095e23e9519417e000bbf3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
