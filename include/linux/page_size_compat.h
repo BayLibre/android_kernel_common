@@ -20,6 +20,11 @@
 
 #include <linux/align.h>
 #include <linux/jump_label.h>
+#include <linux/printk.h>
+#include <linux/sched.h>
+
+#define pgcompat_err(fmt, ...) \
+	pr_err("pgcompat [%i (%s)]: " fmt, task_pid_nr(current), current->comm, ## __VA_ARGS__)
 
 DECLARE_STATIC_KEY_FALSE(page_shift_compat_enabled);
 extern int page_shift_compat;
@@ -37,7 +42,22 @@ static __always_inline unsigned __page_shift(void)
 #define __PAGE_MASK 			(~(__PAGE_SIZE-1))
 #define __PAGE_ALIGN(addr) 		ALIGN(addr, __PAGE_SIZE)
 #define __PAGE_ALIGN_DOWN(addr)	ALIGN_DOWN(addr, __PAGE_SIZE)
-#define __PAGE_ALIGNED(addr)	IS_ALIGNED((unsigned long)(addr), __PAGE_SIZE)
+#define ___PAGE_ALIGNED(addr)	IS_ALIGNED((unsigned long)(addr), __PAGE_SIZE)
+
+static __always_inline bool __page_aligned_log(unsigned long addr)
+{
+	if (___PAGE_ALIGNED(addr))
+		return true;
+
+	if (!static_branch_unlikely(&page_shift_compat_enabled))
+		return false;
+
+	pgcompat_err("%s: addr (0x%08lx) not page aligned", __func__, addr);
+
+	return false;
+}
+
+#define __PAGE_ALIGNED(addr)    __page_aligned_log(addr)
 #define __offset_in_page(p)		((unsigned long)(p) & ~__PAGE_MASK)
 
 #endif /* __LINUX_PAGE_SIZE_COMPAT_H */
