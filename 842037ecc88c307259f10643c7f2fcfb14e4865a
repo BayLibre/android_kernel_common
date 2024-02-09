@@ -16,6 +16,108 @@
       "message": "Please add any reviewers that you think would be appropriate! Thank you!",
       "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae1d91a1_bf9f39ff",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-09T04:12:19Z",
+      "side": 1,
+      "message": "Are these 4 new inclusions really needed? Presumably needed so the KMI types are fully defined, can you list the reason for each? (seems some would already be included indirectly via one of the others...like ../fs/fuse/fuse_i.h already includes linux/fs.h and linux/fs.h already includes dcache.h. Please reduce this to the minimum.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6b6c439_4228b844",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-09T04:12:19Z",
+      "side": 1,
+      "message": "skip_ctxargset is only used in this context. How about moving the decl from line 911 to line 928 and initialize it there.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04886771_21fcffa0",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-09T04:12:19Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this BUG_ON() be before the conditional? Your hook should not violate this assertion.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5944ce17_1dcfb2e6",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 963,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-09T04:12:19Z",
+      "side": 1,
+      "message": "This changes the default behavior. You should just leave it as -EIO as set at line 950.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c065daf3_71d1bc2d",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-09T04:12:19Z",
+      "side": 1,
+      "message": "This is a problem since err should be -EIO here.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7512a5c_f6052074",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-09T04:12:19Z",
+      "side": 1,
+      "message": "how about initializing this on declaration at line 912?",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
