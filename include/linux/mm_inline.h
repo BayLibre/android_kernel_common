@@ -253,6 +253,25 @@ static inline unsigned long lru_gen_folio_seq(struct lruvec *lruvec, struct foli
 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
 }
 
+static inline bool lru_gen_add_dst(struct lruvec *lruvec, struct folio *dst)
+{
+	int gen = folio_lru_gen(dst);
+	int type = folio_is_file_lru(dst);
+	int zone = folio_zonenum(dst);
+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+
+	if (gen < 0)
+		return false;
+
+	lockdep_assert_held(&lruvec->lru_lock);
+	VM_WARN_ON_ONCE_FOLIO(folio_lruvec(dst) != lruvec, dst);
+
+	list_add_tail(&dst->lru, &lrugen->folios[gen][type][zone]);
+	lru_gen_update_size(lruvec, dst, -1, gen);
+
+	return true;
+}
+
 static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
 {
 	unsigned long seq;
@@ -319,6 +338,11 @@ static inline bool lru_gen_enabled(void)
 }
 
 static inline bool lru_gen_in_fault(void)
+{
+	return false;
+}
+
+static inline bool lru_gen_add_dst(struct lruvec *lruvec, struct folio *dst)
 {
 	return false;
 }

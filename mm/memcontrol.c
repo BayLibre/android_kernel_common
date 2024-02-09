@@ -3108,6 +3108,48 @@ void split_page_memcg(struct page *head, int old_order, int new_order)
 		css_get_many(&folio_memcg(folio)->css, old_nr / new_nr - 1);
 }
 
+void folio_copy_memcg(struct folio *src)
+{
+	int i;
+	unsigned int delta = 0;
+	int nr_pages = folio_nr_pages(src);
+	struct mem_cgroup *memcg = folio_memcg(src);
+
+	if (folio_can_split(src))
+		return;
+
+	if (WARN_ON_ONCE(!src->_dst_pp))
+		return;
+
+	if (mem_cgroup_disabled())
+		return;
+
+	if (WARN_ON_ONCE(!memcg))
+		return;
+
+	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(src), src);
+	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(src), src);
+
+	for (i = 0; i < nr_pages; i++) {
+		struct page *dst = folio_dst_page(src, i);
+
+		if (!dst)
+			continue;
+
+		commit_charge(page_folio(dst), memcg);
+		delta++;
+	}
+
+	if (!mem_cgroup_is_root(memcg)) {
+		page_counter_charge(&memcg->memory, delta);
+		if (do_memsw_account())
+			page_counter_charge(&memcg->memsw, delta);
+	}
+
+	css_get_many(&memcg->css, delta);
+	memcg1_charge_batch(memcg, delta, folio_nid(src));
+}
+
 unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
 {
 	unsigned long val;

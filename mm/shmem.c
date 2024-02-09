@@ -723,7 +723,7 @@ next:
 		folio_put(folio);
 
 		/* If split failed move the inode on the list back to shrinklist */
-		if (ret)
+		if (ret < 0)
 			goto move_back;
 
 		freed += next - end;

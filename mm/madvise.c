@@ -416,7 +416,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
 			err = split_folio(folio);
 			folio_unlock(folio);
 			folio_put(folio);
-			if (!err)
+			if (err >= 0)
 				goto regular_folio;
 			return 0;
 		}
@@ -530,7 +530,7 @@ restart:
 				if (!start_pte)
 					break;
 				arch_enter_lazy_mmu_mode();
-				if (!err)
+				if (err >= 0)
 					nr = 0;
 				continue;
 			}
@@ -779,7 +779,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
 				if (!start_pte)
 					break;
 				arch_enter_lazy_mmu_mode();
-				if (!err)
+				if (err >= 0)
 					nr = 0;
 				continue;
 			}
