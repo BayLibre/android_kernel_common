@@ -63,6 +63,30 @@
       },
       "revId": "1a38c2c1c609fb273bd61cdfea612a05fb790ed7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85eb4277_3d8bfc56",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-02-09T17:12:46Z",
+      "side": 1,
+      "message": "I think this standard static key makes sense if the logic driving it is actually visible in the Gunyah driver in ACK. But if that goes in a vendor module, I think this is no different from other android-specific tweaks we\u0027re doing to the core kernel, and making this a vendor hook makes that very obvious. Note that if the concern is around performance of the extra indirect branch caused by the hook, you might be able to guard the fixup_exception() call with a android_vh_foobar_enabled(), which in fact expands to a static key. So, this should result in a very comparable code generation, but at least uses the canonical way of extending GKI from vendor code.",
+      "parentUuid": "fd36ca79_810edd4d",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 43
+      },
+      "revId": "1a38c2c1c609fb273bd61cdfea612a05fb790ed7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
