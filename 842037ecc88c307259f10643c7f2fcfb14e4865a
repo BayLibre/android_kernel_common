@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f68e18d_91b61873",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2024-02-09T22:51:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae1d91a1_bf9f39ff",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6b6c439_4228b844",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-02-09T04:12:19Z",
       "side": 1,
       "message": "skip_ctxargset is only used in this context. How about moving the decl from line 911 to line 928 and initialize it there.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dc0fef1_cdf4d77a",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2024-02-09T22:51:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6b6c439_4228b844",
       "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -71,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90f02694_82e8947f",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2024-02-09T22:51:42Z",
+      "side": 1,
+      "message": "The hook implements the same functionality as what has been moved into the block. Normally `arg[1]` holds the file name and length, but since tempfiles are anonymous, there is no `arg[1]` here. Thus, we always BUG on `in_args !\u003d 2` because `in_args` will always be 1. The main purpose for this `BUG_ON` seems to be to prevent the `in_numargs` and `in_args` from getting set incorrectly below, but since the vendor hook sets these values (and the FUSE server on the host parses 2 args instead of 3 for tmpfiles). This seemed like a reasonable way to have the correct functionality without affecting the standard code path, but maybe we can find a better solution.",
+      "parentUuid": "04886771_21fcffa0",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5944ce17_1dcfb2e6",
         "filename": "fs/fuse/dir.c",
         "patchSetId": 1
@@ -82,6 +136,24 @@
       "writtenOn": "2024-02-09T04:12:19Z",
       "side": 1,
       "message": "This changes the default behavior. You should just leave it as -EIO as set at line 950.",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c2f1297_beb576a4",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 963,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2024-02-09T22:51:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5944ce17_1dcfb2e6",
       "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -103,6 +175,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28431163_90c27500",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2024-02-09T22:51:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c065daf3_71d1bc2d",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7512a5c_f6052074",
@@ -116,6 +206,24 @@
       "writtenOn": "2024-02-09T04:12:19Z",
       "side": 1,
       "message": "how about initializing this on declaration at line 912?",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e05586b_a6d2dd34",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2024-02-09T22:51:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7512a5c_f6052074",
       "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
