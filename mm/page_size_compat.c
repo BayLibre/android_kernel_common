@@ -38,3 +38,16 @@ unsigned __page_shift(void)
 	else
 		return PAGE_SHIFT;
 }
+
+bool __log_alignment(const char* func, unsigned long addr, bool is_aligned)
+{
+	if (is_aligned)
+		return true;
+
+	if (!static_branch_unlikely(&page_shift_compat_enabled))
+		return false;
+
+	pgcompat_err("%s: addr (0x%08lx) not page aligned", func, addr);
+
+	return false;
+}
