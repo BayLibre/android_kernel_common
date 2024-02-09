@@ -19,6 +19,12 @@
 #include <asm/page.h>
 
 #include <linux/align.h>
+#include <linux/printk.h>
+
+#define pgcompat_err(fmt, ...) \
+	pr_err("pgcompat [%i (%s)]: " fmt, task_pid_nr(current), current->comm, ## __VA_ARGS__)
+
+extern bool __log_alignment(const char* func, unsigned long addr, bool is_aligned);
 
 extern unsigned __page_shift(void);
 #define __PAGE_SHIFT 			__page_shift()
@@ -26,7 +32,8 @@ extern unsigned __page_shift(void);
 #define __PAGE_MASK 			(~(__PAGE_SIZE-1))
 #define __PAGE_ALIGN(addr) 		ALIGN(addr, __PAGE_SIZE)
 #define __PAGE_ALIGN_DOWN(addr)	ALIGN_DOWN(addr, __PAGE_SIZE)
-#define __PAGE_ALIGNED(addr)	IS_ALIGNED((unsigned long)(addr), __PAGE_SIZE)
+#define ___PAGE_ALIGNED(addr)	IS_ALIGNED((unsigned long)(addr), __PAGE_SIZE)
+#define __PAGE_ALIGNED(addr)    __log_alignment(__func__, addr, ___PAGE_ALIGNED(addr))
 #define __offset_in_page(p)		((unsigned long)(p) & ~__PAGE_MASK)
 
 #endif /* __LINUX_PAGE_SIZE_COMPAT_H */
