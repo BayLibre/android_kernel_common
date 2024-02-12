@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3e35866_b257648d",
+        "filename": "fs/fuse/dir.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-12T17:52:52Z",
+      "side": 1,
+      "message": "Vendor hooks must not violate this assertion. Your vendor hook makes sure that `in_args` is 1 so it would be totally safe to put the `BUG_ON` outside the conditional in case someone else\u0027s implementation does violate this assertion.\n\nPut the `BUG_ON` at line 935 (after the hook). This will also get rid of the checkpatch warning about \"crashing the kernel\" since you will no longer be adding a `BUG_ON`.",
+      "parentUuid": "90f02694_82e8947f",
+      "revId": "842037ecc88c307259f10643c7f2fcfb14e4865a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5944ce17_1dcfb2e6",
         "filename": "fs/fuse/dir.c",
         "patchSetId": 1
