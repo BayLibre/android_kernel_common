@@ -76,6 +76,7 @@ unsigned int stack_trace_save_regs(struct pt_regs *regs, unsigned long *store,
 				   unsigned int size, unsigned int skipnr);
 unsigned int stack_trace_save_user(unsigned long *store, unsigned int size);
 unsigned int filter_irq_stacks(unsigned long *entries, unsigned int nr_entries);
+void dump_user_stack(char* tag);
 
 #ifndef CONFIG_ARCH_STACKWALK
 /* Internal interfaces. Do not use in generic code */
