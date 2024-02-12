@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fecec97c_9e7a0c44",
+        "filename": "include/uapi/linux/nl80211.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 6387,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-12T17:27:10Z",
+      "side": 1,
+      "message": "Doesn\u0027t this change `struct wiphy` in include/net/cfg80211.h?\n```\nstruct wiphy {\n    ...\n    u8 ext_features[DIV_ROUND_UP(NUM_NL80211_EXT_FEATURES, 8)];\n    ...\n}\n```\n`struct wiphy` does appear to be in the KMI.",
+      "revId": "1bbef275768f1289bba69758c3cbf18a3199e0e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
