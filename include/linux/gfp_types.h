@@ -58,6 +58,9 @@ enum {
 #ifdef CONFIG_SLAB_OBJ_EXT
 	___GFP_NO_OBJ_EXT_BIT,
 #endif
+#ifdef CONFIG_CMA
+	___GFP_CMA_BIT,
+#endif
 	___GFP_LAST_BIT
 };
 
@@ -93,6 +96,7 @@ enum {
 #define ___GFP_SKIP_ZERO	0
 #define ___GFP_SKIP_KASAN	0
 #endif
+
 #ifdef CONFIG_LOCKDEP
 #define ___GFP_NOLOCKDEP	BIT(___GFP_NOLOCKDEP_BIT)
 #else
@@ -102,6 +106,12 @@ enum {
 #define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
 #else
 #define ___GFP_NO_OBJ_EXT       0
+#endif
+
+#ifdef CONFIG_CMA
+#define ___GFP_CMA		BIT(___GFP_CMA_BIT)
+#else
+#define ___GFP_CMA		0
 #endif
 
 /*
@@ -115,6 +125,7 @@ enum {
 #define __GFP_HIGHMEM	((__force gfp_t)___GFP_HIGHMEM)
 #define __GFP_DMA32	((__force gfp_t)___GFP_DMA32)
 #define __GFP_MOVABLE	((__force gfp_t)___GFP_MOVABLE)  /* ZONE_MOVABLE allowed */
+#define __GFP_CMA	((__force gfp_t)___GFP_CMA)
 #define GFP_ZONEMASK	(__GFP_DMA|__GFP_HIGHMEM|__GFP_DMA32|__GFP_MOVABLE)
 
 /**
