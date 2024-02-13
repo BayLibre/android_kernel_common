@@ -22,6 +22,30 @@
       },
       "revId": "2016fbc64dd58e271c88f0ffa29897610dcc0497",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1332b694_27d818a2",
+        "filename": "block/blk-core.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-02-13T21:55:56Z",
+      "side": 1,
+      "message": "Without #ifndef __GENKSYMS__, we\u0027ll see the CRC changes.\n\nI verified that with the command below:\n\n```\ntools/bazel run //aosp:kernel_aarch64_abi_update\n```",
+      "parentUuid": "69c5a659_afef0427",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 6
+      },
+      "revId": "2016fbc64dd58e271c88f0ffa29897610dcc0497",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
