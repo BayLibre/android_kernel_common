@@ -120,7 +120,6 @@
 #define compat_elf_read_implies_exec(ex, stk)	(stk == EXSTACK_DEFAULT)
 
 #define CORE_DUMP_USE_REGSET
-#define ELF_EXEC_PAGESIZE	PAGE_SIZE
 
 /*
  * This is the base location for PIE (ET_DYN with INTERP) loads. On
@@ -139,8 +138,11 @@
 #include <linux/bug.h>
 #include <linux/errno.h>
 #include <linux/fs.h>
+#include <linux/page_size_compat.h>
 #include <linux/types.h>
 #include <asm/processor.h> /* for signal_minsigstksz, used by ARCH_DLINFO */
+
+#define ELF_EXEC_PAGESIZE	__PAGE_SIZE
 
 typedef unsigned long elf_greg_t;
 
