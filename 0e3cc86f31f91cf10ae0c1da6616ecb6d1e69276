@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf969c5_fea6e340",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "What is the rational about this?",
+      "range": {
+        "startLine": 385,
+        "startChar": 4,
+        "endLine": 385,
+        "endChar": 73
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57636320_49e5a053",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "Why is the new chunk involved, don\u0027t we just need `chunk_size(size)`?",
+      "range": {
+        "startLine": 423,
+        "startChar": 2,
+        "endLine": 423,
+        "endChar": 18
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c1bcc4_f0e93497",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "Is that polarity correct, I thought we don\u0027t destroy last chunk?",
+      "range": {
+        "startLine": 458,
+        "startChar": 6,
+        "endLine": 458,
+        "endChar": 53
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56ddc4c4_607c537e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "So just for understanding, here we split the last chunk, and we don\u0027t try that for any other chunk from `get_free_chunk` as `chunk_recycle` eagerly splits chunks?",
+      "range": {
+        "startLine": 563,
+        "startChar": 1,
+        "endLine": 563,
+        "endChar": 85
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df8b6ab_6a2a990f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "I don\u0027t understand this check, so if chunk is not the only one?(last \u0026\u0026 first) we can\u0027t destroy it?",
+      "range": {
+        "startLine": 629,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 0
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ac180e0_cbfec02e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "I don\u0027t understand this also, why the previous chunk matters?",
+      "range": {
+        "startLine": 636,
+        "startChar": 8,
+        "endLine": 636,
+        "endChar": 55
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff9643d5_64f02b26",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "nit: This might break the check for `size \u003e U32_MAX`, som either set align size from the beginning or check with `PAGE_ALIGN`",
+      "range": {
+        "startLine": 762,
+        "startChar": 1,
+        "endLine": 762,
+        "endChar": 36
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

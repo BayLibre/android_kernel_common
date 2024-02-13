@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ecf9aa1_c283162a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "It might be worth noting that it is quite useful for sub-page allocations, instead of each one invent their own thing.",
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1736d51_2661e183",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/alloc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "It would  be useful, if there are comments here with description, and usage.",
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13d66b4_8b43a1cc",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "Maybe `chunk_hdr_sz` is more descriptive and also to disambiguate with the struct.",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 17
+      },
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "950923c1_608d1afa",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "nit: `chunk` as it reused in the macro without brackets, same for others.",
+      "range": {
+        "startLine": 81,
+        "startChar": 15,
+        "endLine": 81,
+        "endChar": 20
+      },
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91853da7_bb8a575a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "We can harden this checks for overflow",
+      "range": {
+        "startLine": 174,
+        "startChar": 6,
+        "endLine": 174,
+        "endChar": 18
+      },
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e970573f_bc7b9aeb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-13T12:50:38Z",
+      "side": 1,
+      "message": "This sounds more like a split?\n\nNew chunk takes the mapped part of the other chunk",
+      "range": {
+        "startLine": 204,
+        "startChar": 11,
+        "endLine": 204,
+        "endChar": 24
+      },
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
