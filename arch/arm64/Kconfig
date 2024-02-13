@@ -2316,6 +2316,20 @@ config ARCH_SUSPEND_POSSIBLE
 
 endmenu # "Power management options"
 
+config PAGE_SHIFT_COMPAT
+	int "Compat page-size as a power of 2"
+	range 12 16 if ARM64_4K_PAGES
+	default 12 if ARM64_4K_PAGES
+	range 14 16 if ARM64_16K_PAGES
+	default 14 if ARM64_16K_PAGES
+	range 16 17 if ARM64_64K_PAGES
+	default 16 if ARM64_64K_PAGES
+
+	help
+	  This option specifies the compat page-size presented to userspace
+	  as a power of 2. This value must be at least as large as PAGE_SHIFT.
+	  A PAGE_SHIFT_COMPAT == PAGE_SHIFT effectively disables the feature.
+
 menu "CPU Power Management"
 
 source "drivers/cpuidle/Kconfig"
