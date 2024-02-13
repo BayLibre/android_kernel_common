@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43657243_fe678242",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-13T16:28:33Z",
+      "side": 1,
+      "message": "Yeah, not necessary!",
+      "parentUuid": "4832ea50_a12f3a35",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "77e39c43d8cd54bce9dd88942e0044270161a7c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1dec493_2eab910f",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-02-12T19:46:13Z",
       "side": 1,
       "message": "Hmm, calling module code in guest context sounds like it\u0027s going to lead to problems, especially as the module doesn\u0027t really know the context. Do you think we could limit these calls to entry from/exit to the host only?",
+      "range": {
+        "startLine": 362,
+        "startChar": 2,
+        "endLine": 362,
+        "endChar": 12
+      },
+      "revId": "77e39c43d8cd54bce9dd88942e0044270161a7c0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ce9cd1_a74b89ed",
+        "filename": "arch/arm64/kvm/hyp/nvhe/switch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-13T16:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1dec493_2eab910f",
       "range": {
         "startLine": 362,
         "startChar": 2,
