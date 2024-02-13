@@ -2753,6 +2753,12 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
 		return;
 	}
 
+<<<<<<< HEAD   (fa7914 UPSTREAM: bpf: Fix re-attachment branch in bpf_tracing_prog_)
+=======
+	if (valid_lft != 0 && valid_lft < in6_dev->cnf.accept_ra_min_lft)
+		goto put;
+
+>>>>>>> CHANGE (20131b Reapply "net: release reference to inet6_dev pointer")
 	/*
 	 *	Two things going on here:
 	 *	1) Add routes for on-link prefixes
