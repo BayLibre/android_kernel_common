@@ -94,6 +94,30 @@
       },
       "revId": "2016fbc64dd58e271c88f0ffa29897610dcc0497",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d42ee838_e970a7b7",
+        "filename": "block/blk-core.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-02-14T17:43:09Z",
+      "side": 1,
+      "message": "I followed with ABI team in b/324152549#comment17.\n\nMatthias explained why this might be happening:\n\n\nAn include can cause CRC changes due to type visibility. E.g.\n\n\n```\n# inc.h\n\nstruct ABC {\n   int a;\n   int b;\n};\n```\n\n\n```\n# source.c\n\n#include \"inc.h\"\n\nstruct ABC;\n\nvoid func(struct ABC* abc) {}\n```\n\nThe `#include` makes additional type information available that the CRC computation is able to expand. Something like\n\n```\nvoid func(struct UNKNOWN*) {}\n```\n\nvs.\n\n```\nvoid func(struct {int;int;}*) {}\n```\n\nand that yields in different CRC values for the symbols. The `#ifdef` hides it from the CRC calculation and keeps the value stable.",
+      "parentUuid": "6692cba8_9080ab1e",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 6
+      },
+      "revId": "2016fbc64dd58e271c88f0ffa29897610dcc0497",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
