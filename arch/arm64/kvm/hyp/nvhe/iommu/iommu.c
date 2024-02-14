@@ -531,6 +531,11 @@ int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu)
 	return pkvm_init_power_domain(&iommu->power_domain, &iommu_power_ops);
 }
 
+int kvm_iommu_register_device(unsigned long id, void *data)
+{
+	return kvm_iommu_ops->register_device(id, data);
+}
+
 int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
 		   unsigned long init_arg)
 {
@@ -544,7 +549,8 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *idmap_mc,
 		    !ops->free_domain ||
 		    !ops->alloc_domain ||
 		    !ops->attach_dev ||
-		    !ops->detach_dev))
+		    !ops->detach_dev ||
+		    !ops->register_device))
 		return -ENODEV;
 
 	ret = ops->init ? ops->init(init_arg) : 0;
