@@ -1,0 +1,47 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000068356199",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2958546?revision\u003d2",
+      "key": {
+        "uuid": "88107d70_57dd25e8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-02-14T21:15:56Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Mostafa Saleh \u003csmostafa@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "24e923c6_45d19697",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 15,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Mostafa Saleh \u003csmostafa@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0eee3c00b985905c5f142ef401d7d6a372880e20",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
