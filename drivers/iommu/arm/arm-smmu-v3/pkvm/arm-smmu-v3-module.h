@@ -13,6 +13,7 @@ extern const struct pkvm_module_ops		*mod_ops;
 #undef memset
 #undef memcpy
 #undef kvm_flush_dcache_to_poc
+#undef kern_hyp_va
 
 /* Needs alternatives which is not supported at the moment. */
 #undef cmpxchg64_relaxed
@@ -39,6 +40,8 @@ extern const struct pkvm_module_ops		*mod_ops;
 #define kvm_iommu_iotlb_gather_add_page(x, y, z, w) \
 						CALL_FROM_OPS(iommu_iotlb_gather_add_page, x, y, z, w)
 #define __pkvm_host_donate_hyp(x, y)		___pkvm_host_donate_hyp(x, y, false)
+#define hyp_fixmap_map(x)			CALL_FROM_OPS(fixmap_map, x)
+#define hyp_fixmap_unmap()			CALL_FROM_OPS(fixmap_unmap)
 #endif
 
 #endif /* __ARM_SMMU_V3_MODULE__ */
