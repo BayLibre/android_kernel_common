@@ -35,6 +35,7 @@ extern const struct pkvm_module_ops		*mod_ops;
 #define pkvm_udelay(x)				CALL_FROM_OPS(udelay, x)
 #define kvm_flush_dcache_to_poc(x, y)		CALL_FROM_OPS(flush_dcache_to_poc, x, y)
 #define hyp_alloc_missing_donations()		CALL_FROM_OPS(hyp_alloc_missing_donations)
+#define __pkvm_host_donate_hyp(x, y)		CALL_FROM_OPS(host_donate_hyp, x, y)
 #endif
 
 #endif /* __ARM_SMMU_V3_MODULE__ */
