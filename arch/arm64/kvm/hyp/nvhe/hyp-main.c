@@ -1485,6 +1485,11 @@ static void handle___pkvm_iommu_register(struct kvm_cpu_context *host_ctxt)
 	cpu_reg(host_ctxt, 1) = kvm_iommu_register_device(id, data);
 }
 
+static void handle___pkvm_iommu_finalise(struct kvm_cpu_context *host_ctxt)
+{
+	cpu_reg(host_ctxt, 1) = kvm_iommu_finalise();
+}
+
 static void handle___pkvm_host_hvc_pd(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(u64, device_id, host_ctxt, 1);
@@ -1552,6 +1557,7 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_host_iommu_unmap_pages),
 	HANDLE_FUNC(__pkvm_host_iommu_iova_to_phys),
 	HANDLE_FUNC(__pkvm_iommu_register),
+	HANDLE_FUNC(__pkvm_iommu_finalise),
 	HANDLE_FUNC(__pkvm_host_hvc_pd),
 };
 
