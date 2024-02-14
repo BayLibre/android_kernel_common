@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db2d08a8_9d9baa29",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-14T14:30:51Z",
+      "side": 1,
+      "message": "When @unmask or @mask return true, the hypervisor will unmask or mask SErrors respectively at EL2. Although the hypervisor cannot recover from an SError (and will panic if one occurs), they can be useful for debugging in some situations.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 0
+      },
+      "revId": "61e5f0bba6e27d35825d5e93c7e139d67e5fd00d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff99ad0_96a065c9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-14T14:30:51Z",
+      "side": 1,
+      "message": "You can combine these into `if (!unmask_serror || !unmask_serror())`.\nSimilarly on the mask path.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 0
+      },
+      "revId": "61e5f0bba6e27d35825d5e93c7e139d67e5fd00d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee017c3d_7487c9c0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-14T14:30:51Z",
+      "side": 1,
+      "message": "I think you need an `isb` after this to ensure that the change has taken effect. Similarly on the unmask path.\n\nOnce you have the ISBs, I don\u0027t think you need the `smp_rmb()` in unmask() either.",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 39
+      },
+      "revId": "61e5f0bba6e27d35825d5e93c7e139d67e5fd00d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
