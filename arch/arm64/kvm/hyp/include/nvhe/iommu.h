@@ -26,6 +26,7 @@ void kvm_iommu_reclaim_pages(void *p, u8 order);
 void *kvm_iommu_donate_pages_iopt(u8 order, bool request, void *cookie);
 void kvm_iommu_reclaim_pages_iopt(void *p, u8 order, void *cookie);
 int kvm_iommu_request(struct kvm_hyp_req *req);
+int kvm_iommu_finalise(void);
 
 /* Hypercall handlers */
 int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, u32 type);
