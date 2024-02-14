@@ -23,6 +23,7 @@ int kvm_iommu_init_device(struct kvm_hyp_iommu *iommu);
 void *kvm_iommu_donate_pages(u8 order, bool request);
 void kvm_iommu_reclaim_pages(void *p, u8 order);
 int kvm_iommu_request(struct kvm_hyp_req *req);
+int kvm_iommu_finalise(void);
 
 /* alloc/free from idmap pool. */
 void *kvm_iommu_donate_pages_idmap(u8 order);
