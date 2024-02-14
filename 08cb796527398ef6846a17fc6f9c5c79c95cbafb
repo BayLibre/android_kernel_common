@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0759e6f_7c0b9ab9",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-14T16:04:40Z",
+      "side": 1,
+      "message": "Are you sure you don\u0027t want something like the `esr` passed in here so that you can do some triage before walking the exception handler list? I\u0027d have thought there were some simple things you could rule out, such as parity errors on translation table walks.",
+      "range": {
+        "startLine": 25,
+        "startChar": 14,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "08cb796527398ef6846a17fc6f9c5c79c95cbafb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
