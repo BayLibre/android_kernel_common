@@ -10,6 +10,7 @@
 #include <asm/kvm_hyp.h>
 #include <nvhe/iommu.h>
 #include <nvhe/alloc.h>
+#include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
 #include <nvhe/pkvm.h>
 #include <nvhe/trap_handler.h>
@@ -383,15 +384,13 @@ static int smmu_init_registers(struct hyp_arm_smmu_v3_device *smmu)
 }
 
 /* Transfer ownership of structures from host to hyp */
-static void *smmu_take_pages(u64 base, size_t size)
+static void *smmu_take_pages(u64 phys, size_t size)
 {
-	void *hyp_ptr;
-
-	hyp_ptr = hyp_phys_to_virt(base);
-	if (pkvm_create_mappings(hyp_ptr, hyp_ptr + size, PAGE_HYP))
+	WARN_ON(!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(size));
+	if (__pkvm_host_donate_hyp(phys >> PAGE_SHIFT, size >> PAGE_SHIFT))
 		return NULL;
 
-	return hyp_ptr;
+	return hyp_phys_to_virt(phys);
 }
 
 static int smmu_init_cmdq(struct hyp_arm_smmu_v3_device *smmu)
@@ -654,23 +653,26 @@ static int smmu_init_device(struct hyp_arm_smmu_v3_device *smmu)
 
 static int smmu_init(unsigned long init_arg)
 {
-	int ret;
-	struct hyp_arm_smmu_v3_device *smmu;
+	int nr_pages = PAGE_ALIGN(sizeof(*kvm_hyp_arm_smmu_v3_smmus) * kvm_hyp_arm_smmu_v3_count);
 
-	ret = pkvm_create_mappings(kvm_hyp_arm_smmu_v3_smmus,
-				   kvm_hyp_arm_smmu_v3_smmus +
-				   kvm_hyp_arm_smmu_v3_count,
-				   PAGE_HYP);
-	if (ret)
-		return ret;
-
-	for_each_smmu(smmu) {
-		ret = smmu_init_device(smmu);
-		if (ret)
-			return ret;
-	}
+	WARN_ON(!smmu_take_pages(hyp_virt_to_phys(kvm_hyp_arm_smmu_v3_smmus), nr_pages));
 
 	return 0;
+}
+
+static int smmu_register_device(unsigned long id, void *data)
+{
+	struct hyp_arm_smmu_v3_device *smmu;
+	int ret;
+
+	if (id >= kvm_hyp_arm_smmu_v3_count)
+		return -ENODEV;
+
+	smmu = &kvm_hyp_arm_smmu_v3_smmus[id];
+	hyp_spin_lock(&smmu->iommu.lock);
+	ret = smmu_init_device(smmu);
+	hyp_spin_unlock(&smmu->iommu.lock);
+	return ret;
 }
 
 static struct kvm_hyp_iommu *smmu_id_to_iommu(pkvm_handle_t smmu_id)
@@ -1201,6 +1203,7 @@ int smmu_init_hyp_module(const struct pkvm_module_ops *ops)
 
 struct kvm_iommu_ops smmu_ops = {
 	.init				= smmu_init,
+	.register_device		= smmu_register_device,
 	.get_iommu_by_id		= smmu_id_to_iommu,
 	.free_domain			= smmu_free_domain,
 	.attach_dev			= smmu_attach_dev,
