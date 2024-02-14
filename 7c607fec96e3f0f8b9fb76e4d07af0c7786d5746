@@ -18,6 +18,25 @@
       "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/b4060db9251f919506e4d672737c6b8ab9a84701) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003db4060db9251f919506e4d672737c6b8ab9a84701)\n\n```\n      ## drivers/base/power/runtime.c ##\n     @@ drivers/base/power/runtime.c: EXPORT_SYMBOL_GPL(pm_runtime_enable);\n    @@ drivers/base/power/runtime.c: EXPORT_SYMBOL_GPL(pm_runtime_enable);\n     \n      ## include/linux/pm_runtime.h ##\n     @@ include/linux/pm_runtime.h: static inline void pm_runtime_disable(struct device *dev)\n    -  * Allow the runtime PM autosuspend mechanism to be used for @dev whenever\n    -  * requested (or \"autosuspend\" will be handled as direct runtime-suspend for\n    -  * it).\n    -+ *\n    + \t__pm_runtime_disable(dev, true);\n    + }\n    + \n    ++/**\n     + * NOTE: It\u0027s important to undo this with pm_runtime_dont_use_autosuspend()\n     + * at driver exit time unless your driver initially enabled pm_runtime\n     + * with devm_pm_runtime_enable() (which handles it for you).\n    -  */\n    ++ */\n      static inline void pm_runtime_use_autosuspend(struct device *dev)\n      {\n    + \t__pm_runtime_use_autosuspend(dev, true);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
       "revId": "7c607fec96e3f0f8b9fb76e4d07af0c7786d5746",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000068283795",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2963444?revision\u003d1",
+      "key": {
+        "uuid": "91caab7d_1835e09f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-02-14T13:39:29Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. These are the differences between the original change and this cherry-pick:\nChecked against UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/b4060db9251f919506e4d672737c6b8ab9a84701) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003db4060db9251f919506e4d672737c6b8ab9a84701)\n\n```\n      ## drivers/base/power/runtime.c ##\n     @@ drivers/base/power/runtime.c: EXPORT_SYMBOL_GPL(pm_runtime_enable);\n    @@ drivers/base/power/runtime.c: EXPORT_SYMBOL_GPL(pm_runtime_enable);\n     \n      ## include/linux/pm_runtime.h ##\n     @@ include/linux/pm_runtime.h: static inline void pm_runtime_disable(struct device *dev)\n    -  * Allow the runtime PM autosuspend mechanism to be used for @dev whenever\n    -  * requested (or \"autosuspend\" will be handled as direct runtime-suspend for\n    -  * it).\n    -+ *\n    + \t__pm_runtime_disable(dev, true);\n    + }\n    + \n    ++/**\n     + * NOTE: It\u0027s important to undo this with pm_runtime_dont_use_autosuspend()\n     + * at driver exit time unless your driver initially enabled pm_runtime\n     + * with devm_pm_runtime_enable() (which handles it for you).\n    -  */\n    ++ */\n      static inline void pm_runtime_use_autosuspend(struct device *dev)\n      {\n    + \t__pm_runtime_use_autosuspend(dev, true);\n```\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "7c607fec96e3f0f8b9fb76e4d07af0c7786d5746",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
