@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd56dd40_e077565f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9da0e326_f97466d0",
+      "range": {
+        "startLine": 385,
+        "startChar": 4,
+        "endLine": 385,
+        "endChar": 73
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57636320_49e5a053",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Because we want also to install a new chunk, so we want (chunk_size(size) + enough space to install the new chunk)\n\nThat space corresponds to the delta between the end of the new chunk header and the end of the current chunk header.",
       "parentUuid": "57636320_49e5a053",
+      "range": {
+        "startLine": 423,
+        "startChar": 2,
+        "endLine": 423,
+        "endChar": 18
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1233c0d9_484846af",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bb58da1_9cff71d8",
       "range": {
         "startLine": 423,
         "startChar": 2,
@@ -142,6 +190,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3258486f_9ff99e66",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17822761_781bdc31",
+      "range": {
+        "startLine": 458,
+        "startChar": 6,
+        "endLine": 458,
+        "endChar": 53
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56ddc4c4_607c537e",
@@ -179,6 +251,30 @@
       "side": 1,
       "message": "Yes, if we failed to reuse any existing chunk, we have no other choice than putting the new allocation on top of the heap.",
       "parentUuid": "56ddc4c4_607c537e",
+      "range": {
+        "startLine": 563,
+        "startChar": 1,
+        "endLine": 563,
+        "endChar": 85
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65f80c97_8e408e7d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b3ec2e4_d2fb0ca4",
       "range": {
         "startLine": 563,
         "startChar": 1,
@@ -236,6 +332,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a94fb169_2d71df54",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c2c7c26_df2eb846",
+      "range": {
+        "startLine": 629,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 0
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ac180e0_cbfec02e",
@@ -283,6 +403,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd5793dc_209db31b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14a0c214_b46861e1",
+      "range": {
+        "startLine": 636,
+        "startChar": 8,
+        "endLine": 636,
+        "endChar": 55
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff9643d5_64f02b26",
@@ -320,6 +464,30 @@
       "side": 1,
       "message": "Excellent point!",
       "parentUuid": "ff9643d5_64f02b26",
+      "range": {
+        "startLine": 762,
+        "startChar": 1,
+        "endLine": 762,
+        "endChar": 36
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "055cecbd_0d1a31af",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T19:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5acc500c_94a24ea0",
       "range": {
         "startLine": 762,
         "startChar": 1,
