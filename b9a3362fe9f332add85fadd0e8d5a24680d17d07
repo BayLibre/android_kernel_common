@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b75c01_1b2e80de",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T11:30:19Z",
+      "side": 1,
+      "message": "perhaps the mask part should be \"void\" so there\u0027s no way to prevent unset AMO when returning to the host?",
+      "range": {
+        "startLine": 152,
+        "startChar": 53,
+        "endLine": 152,
+        "endChar": 71
+      },
+      "revId": "b9a3362fe9f332add85fadd0e8d5a24680d17d07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
