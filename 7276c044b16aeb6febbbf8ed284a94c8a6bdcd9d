@@ -22,6 +22,30 @@
       },
       "revId": "7276c044b16aeb6febbbf8ed284a94c8a6bdcd9d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f7fc9d_09d62d84",
+        "filename": "arch/arm64/include/asm/kvm_mmu.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T15:24:02Z",
+      "side": 1,
+      "message": "You would like to warn() if we try to kern_hyp_va() an address which is already a kernel one?\n\nThis is something that can happen (see the kvm_vcpu example), so we would panic whenever we start a protected VM",
+      "parentUuid": "6f78a935_af067d91",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 11
+      },
+      "revId": "7276c044b16aeb6febbbf8ed284a94c8a6bdcd9d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
