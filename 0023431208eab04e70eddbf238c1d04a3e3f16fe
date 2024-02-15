@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e11647bd_a379d2a5",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/alloc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "Good point, I\u0027ll add kerneldoc for those three.",
+      "parentUuid": "c1736d51_2661e183",
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c13d66b4_8b43a1cc",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
@@ -48,6 +66,30 @@
       "writtenOn": "2024-02-13T12:50:38Z",
       "side": 1,
       "message": "Maybe `chunk_hdr_sz` is more descriptive and also to disambiguate with the struct.",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 17
+      },
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad29d9c5_6ada7f99",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "Yep, good idea!",
+      "parentUuid": "c13d66b4_8b43a1cc",
       "range": {
         "startLine": 70,
         "startChar": 8,
@@ -94,6 +136,30 @@
       "writtenOn": "2024-02-13T12:50:38Z",
       "side": 1,
       "message": "We can harden this checks for overflow",
+      "range": {
+        "startLine": 174,
+        "startChar": 6,
+        "endLine": 174,
+        "endChar": 18
+      },
+      "revId": "0023431208eab04e70eddbf238c1d04a3e3f16fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1fd80df_52dc50e2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "91853da7_bb8a575a",
       "range": {
         "startLine": 174,
         "startChar": 6,

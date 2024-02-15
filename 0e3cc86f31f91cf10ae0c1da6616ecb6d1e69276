@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9da0e326_f97466d0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "This is because we _always_ have the following stack order\n\n```\n...\nchunk_hdr\n\nunmaped_region\nmapped_region\nallocated_region\nchunk_hdr\n```\n\nOne chunk can _not_ have a stack of mapped_region/unmapped_region/mapped_region.\n\nSo to be able to reclaim pages in the middle of the heap, a chunk must be installed in the following page not reclaimed. \n\nKeeping enough space at the start of a page make sure we can install that chunk.",
+      "parentUuid": "dbf969c5_fea6e340",
+      "range": {
+        "startLine": 385,
+        "startChar": 4,
+        "endLine": 385,
+        "endChar": 73
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "57636320_49e5a053",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-13T12:50:38Z",
       "side": 1,
       "message": "Why is the new chunk involved, don\u0027t we just need `chunk_size(size)`?",
+      "range": {
+        "startLine": 423,
+        "startChar": 2,
+        "endLine": 423,
+        "endChar": 18
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb58da1_9cff71d8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "Because we want also to install a new chunk, so we want (chunk_size(size) + enough space to install the new chunk)\n\nThat space corresponds to the delta between the end of the new chunk header and the end of the current chunk header.",
+      "parentUuid": "57636320_49e5a053",
       "range": {
         "startLine": 423,
         "startChar": 2,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17822761_781bdc31",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "You can destroy the last chunk this way the last page can be easily be reclaimed.\n\nsetup_first_chunk() handles the case where none is found.",
+      "parentUuid": "b3c1bcc4_f0e93497",
+      "range": {
+        "startLine": 458,
+        "startChar": 6,
+        "endLine": 458,
+        "endChar": 53
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56ddc4c4_607c537e",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 2
@@ -83,6 +155,30 @@
       "writtenOn": "2024-02-13T12:50:38Z",
       "side": 1,
       "message": "So just for understanding, here we split the last chunk, and we don\u0027t try that for any other chunk from `get_free_chunk` as `chunk_recycle` eagerly splits chunks?",
+      "range": {
+        "startLine": 563,
+        "startChar": 1,
+        "endLine": 563,
+        "endChar": 85
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b3ec2e4_d2fb0ca4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "Yes, if we failed to reuse any existing chunk, we have no other choice than putting the new allocation on top of the heap.",
+      "parentUuid": "56ddc4c4_607c537e",
       "range": {
         "startLine": 563,
         "startChar": 1,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c2c7c26_df2eb846",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "If the chunk you consider is at the bottom of the heap (and is not the last chunk in the heap) you can\u0027t reclaim it.\n\nIf we would destroy it, we wouldn\u0027t have anything to track that VA space (which is now unmapped)\n\nAnother approach would be to have the first chunk being \"static\" and not part of any allocation. I would just be not super keen on making that change now. But happy to discuss this possibility for Android-next (or any upstreaming attempt).",
+      "parentUuid": "5df8b6ab_6a2a990f",
+      "range": {
+        "startLine": 629,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 0
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ac180e0_cbfec02e",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 2
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14a0c214_b46861e1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "This is a mirror of the logic in chunk_try_destroy()\n\nIf we destroy this page-aligned chunk, while the previous one is still allocate, we would have an entire page (or more) worth of VA space, free which is not tracked in the free list.",
+      "parentUuid": "8ac180e0_cbfec02e",
+      "range": {
+        "startLine": 636,
+        "startChar": 8,
+        "endLine": 636,
+        "endChar": 55
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff9643d5_64f02b26",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 2
@@ -152,6 +296,30 @@
       "writtenOn": "2024-02-13T12:50:38Z",
       "side": 1,
       "message": "nit: This might break the check for `size \u003e U32_MAX`, som either set align size from the beginning or check with `PAGE_ALIGN`",
+      "range": {
+        "startLine": 762,
+        "startChar": 1,
+        "endLine": 762,
+        "endChar": 36
+      },
+      "revId": "0e3cc86f31f91cf10ae0c1da6616ecb6d1e69276",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5acc500c_94a24ea0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-15T17:37:11Z",
+      "side": 1,
+      "message": "Excellent point!",
+      "parentUuid": "ff9643d5_64f02b26",
       "range": {
         "startLine": 762,
         "startChar": 1,
