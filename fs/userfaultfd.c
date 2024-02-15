@@ -1941,6 +1941,7 @@ static int userfaultfd_move(struct userfaultfd_ctx *ctx,
 		return -EINVAL;
 
 	if (mmget_not_zero(mm)) {
+<<<<<<< HEAD   (9ce9b9 BACKPORT: mm: add vma_assert_locked() for !CONFIG_PER_VMA_LO)
 		mmap_read_lock(mm);
 
 		/* Re-check after taking mmap_lock */
@@ -1951,6 +1952,10 @@ static int userfaultfd_move(struct userfaultfd_ctx *ctx,
 			ret = -EINVAL;
 
 		mmap_read_unlock(mm);
+=======
+		ret = move_pages(ctx, uffdio_move.dst, uffdio_move.src,
+				 uffdio_move.len, uffdio_move.mode);
+>>>>>>> CHANGE (ce2896 BACKPORT: userfaultfd: use per-vma locks in userfaultfd oper)
 		mmput(mm);
 	} else {
 		return -ESRCH;
