@@ -437,8 +437,9 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 		 * The IOVA range provided may not be physically contiguous, and
 		 * @pgsize may be larger than the one used when mapping.
 		 */
-		unmapped = iopt_unmap_leaf(&iopt, iova, pgsize, &paddr);
-		if (!unmapped || !paddr)
+		paddr = iopt_iova_to_phys(&iopt, iova);
+		unmapped = iopt_unmap_pages(&iopt, iova, pgsize, 1, NULL);
+		if (!unmapped)
 			goto out_put_domain;
 
 		ret = __pkvm_host_unuse_dma(paddr, unmapped);
