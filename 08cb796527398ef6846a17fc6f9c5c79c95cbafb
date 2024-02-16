@@ -46,6 +46,30 @@
       },
       "revId": "08cb796527398ef6846a17fc6f9c5c79c95cbafb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "784eb8ae_cd842703",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2024-02-16T05:28:39Z",
+      "side": 1,
+      "message": "Extended the hook case we find in the future that fixup_exceptions() has a bug that is vendor specific. I have no reason to think that can happen, it would just be the only other scenario I have in mind that would make this hook useful IMO.",
+      "parentUuid": "f8f510a3_3a6e0c4d",
+      "range": {
+        "startLine": 25,
+        "startChar": 14,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "08cb796527398ef6846a17fc6f9c5c79c95cbafb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
