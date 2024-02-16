@@ -2729,7 +2729,7 @@ out:
 	return ret;
 }
 
-static bool pte_map_lock(struct vm_fault *vmf)
+bool pte_map_lock(struct vm_fault *vmf)
 {
 	if (!(vmf->flags & FAULT_FLAG_SPECULATIVE)) {
 		vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
@@ -2812,7 +2812,7 @@ static inline bool pte_spinlock(struct vm_fault *vmf)
 	return true;
 }
 
-static inline bool pte_map_lock(struct vm_fault *vmf)
+bool pte_map_lock(struct vm_fault *vmf)
 {
 	vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
 				       vmf->address, &vmf->ptl);

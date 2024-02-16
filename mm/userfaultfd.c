@@ -54,21 +54,18 @@ struct vm_area_struct *find_dst_vma(struct mm_struct *dst_mm,
  * This function handles both MCOPY_ATOMIC_NORMAL and _CONTINUE for both shmem
  * and anon, and for both shared and private VMAs.
  */
-int mfill_atomic_install_pte(struct mm_struct *dst_mm, pmd_t *dst_pmd,
-			     struct vm_area_struct *dst_vma,
-			     unsigned long dst_addr, struct page *page,
-			     bool newly_allocated, bool wp_copy)
+static int __mfill_atomic_install_pte(struct vm_fault *vmf, struct page *page,
+				      bool newly_allocated, bool wp_copy)
 {
 	int ret;
-	pte_t _dst_pte, *dst_pte;
-	bool writable = dst_vma->vm_flags & VM_WRITE;
-	bool vm_shared = dst_vma->vm_flags & VM_SHARED;
+	pte_t _dst_pte;
+	bool writable = vmf->vma->vm_flags & VM_WRITE;
+	bool vm_shared = vmf->vma->vm_flags & VM_SHARED;
 	bool page_in_cache = page_mapping(page);
-	spinlock_t *ptl;
 	struct inode *inode;
 	pgoff_t offset, max_off;
 
-	_dst_pte = mk_pte(page, dst_vma->vm_page_prot);
+	_dst_pte = mk_pte(page, vmf->vma->vm_page_prot);
 	if (page_in_cache && !vm_shared)
 		writable = false;
 	if (writable || !page_in_cache)
@@ -80,12 +77,13 @@ int mfill_atomic_install_pte(struct mm_struct *dst_mm, pmd_t *dst_pmd,
 			_dst_pte = pte_mkwrite(_dst_pte);
 	}
 
-	dst_pte = pte_offset_map_lock(dst_mm, dst_pmd, dst_addr, &ptl);
+	if (!pte_map_lock(vmf))
+		BUG();
 
-	if (vma_is_shmem(dst_vma)) {
+	if (vma_is_shmem(vmf->vma)) {
 		/* serialize against truncate with the page table lock */
-		inode = dst_vma->vm_file->f_inode;
-		offset = linear_page_index(dst_vma, dst_addr);
+		inode = vmf->vma->vm_file->f_inode;
+		offset = linear_page_index(vmf->vma, vmf->address);
 		max_off = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
 		ret = -EFAULT;
 		if (unlikely(offset >= max_off))
@@ -93,48 +91,59 @@ int mfill_atomic_install_pte(struct mm_struct *dst_mm, pmd_t *dst_pmd,
 	}
 
 	ret = -EEXIST;
-	if (!pte_none(*dst_pte))
+	if (!pte_none(*vmf->pte))
 		goto out_unlock;
 
 	if (page_in_cache)
 		page_add_file_rmap(page, false);
 	else
-		page_add_new_anon_rmap(page, dst_vma, dst_addr, false);
+		page_add_new_anon_rmap(page, vmf->vma, vmf->address, false);
 
 	/*
 	 * Must happen after rmap, as mm_counter() checks mapping (via
 	 * PageAnon()), which is set by __page_set_anon_rmap().
 	 */
-	inc_mm_counter(dst_mm, mm_counter(page));
+	inc_mm_counter(vmf->vma->vm_mm, mm_counter(page));
 
 	if (newly_allocated)
-		lru_cache_add_inactive_or_unevictable(page, dst_vma);
+		lru_cache_add_inactive_or_unevictable(page, vmf->vma);
 
-	set_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
+	set_pte_at(vmf->vma->vm_mm, vmf->address, vmf->pte, _dst_pte);
 
 	/* No need to invalidate - it was non-present before */
-	update_mmu_cache(dst_vma, dst_addr, dst_pte);
+	update_mmu_cache(vmf->vma, vmf->address, vmf->pte);
 	ret = 0;
 out_unlock:
-	pte_unmap_unlock(dst_pte, ptl);
+	pte_unmap_unlock(vmf->pte, vmf->ptl);
 	return ret;
 }
 
-static int mcopy_atomic_pte(struct mm_struct *dst_mm,
-			    pmd_t *dst_pmd,
-			    struct vm_area_struct *dst_vma,
-			    unsigned long dst_addr,
+int mfill_atomic_install_pte(struct mm_struct *dst_mm, pmd_t *dst_pmd,
+			     struct vm_area_struct *dst_vma,
+			     unsigned long dst_addr, struct page *page,
+			     bool newly_allocated, bool wp_copy)
+{
+	struct vm_fault vmf = {
+		.address = dst_addr,
+		.vma = dst_vma,
+		.flags = 0,
+		.pmd = dst_pmd,
+	};
+	return __mfill_atomic_install_pte(&vmf, page, newly_allocated, wp_copy);
+}
+
+static int mcopy_atomic_pte(struct vm_fault *vmf,
 			    unsigned long src_addr,
-			    struct page **pagep,
 			    bool wp_copy)
 {
 	void *page_kaddr;
 	int ret;
 	struct page *page;
 
-	if (!*pagep) {
+	if (!vmf->page) {
 		ret = -ENOMEM;
-		page = alloc_page_vma(GFP_HIGHUSER_MOVABLE, dst_vma, dst_addr);
+		page = alloc_page_vma(GFP_HIGHUSER_MOVABLE,
+				      vmf->vma, vmf->address);
 		if (!page)
 			goto out;
 
@@ -147,15 +156,15 @@ static int mcopy_atomic_pte(struct mm_struct *dst_mm,
 		/* fallback to copy_from_user outside mmap_lock */
 		if (unlikely(ret)) {
 			ret = -ENOENT;
-			*pagep = page;
+			vmf->page = page;
 			/* don't free the page */
 			goto out;
 		}
 
 		flush_dcache_page(page);
 	} else {
-		page = *pagep;
-		*pagep = NULL;
+		page = vmf->page;
+		vmf->page = NULL;
 	}
 
 	/*
@@ -166,11 +175,10 @@ static int mcopy_atomic_pte(struct mm_struct *dst_mm,
 	__SetPageUptodate(page);
 
 	ret = -ENOMEM;
-	if (mem_cgroup_charge(page, dst_mm, GFP_KERNEL))
+	if (mem_cgroup_charge(page, vmf->vma->vm_mm, GFP_KERNEL))
 		goto out_release;
 
-	ret = mfill_atomic_install_pte(dst_mm, dst_pmd, dst_vma, dst_addr,
-				       page, true, wp_copy);
+	ret = __mfill_atomic_install_pte(vmf, page, true, wp_copy);
 	if (ret)
 		goto out_release;
 out:
@@ -180,50 +188,44 @@ out_release:
 	goto out;
 }
 
-static int mfill_zeropage_pte(struct mm_struct *dst_mm,
-			      pmd_t *dst_pmd,
-			      struct vm_area_struct *dst_vma,
-			      unsigned long dst_addr)
+static int mfill_zeropage_pte(struct vm_fault *vmf)
 {
-	pte_t _dst_pte, *dst_pte;
-	spinlock_t *ptl;
+	pte_t _dst_pte;
 	int ret;
 	pgoff_t offset, max_off;
 	struct inode *inode;
 
-	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
-					 dst_vma->vm_page_prot));
-	dst_pte = pte_offset_map_lock(dst_mm, dst_pmd, dst_addr, &ptl);
-	if (dst_vma->vm_file) {
+	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(vmf->address),
+					 vmf->vma->vm_page_prot));
+	if (!pte_map_lock(vmf))
+		BUG();
+
+	if (vmf->vma->vm_file) {
 		/* the shmem MAP_PRIVATE case requires checking the i_size */
-		inode = dst_vma->vm_file->f_inode;
-		offset = linear_page_index(dst_vma, dst_addr);
+		inode = vmf->vma->vm_file->f_inode;
+		offset = linear_page_index(vmf->vma, vmf->address);
 		max_off = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
 		ret = -EFAULT;
 		if (unlikely(offset >= max_off))
 			goto out_unlock;
 	}
 	ret = -EEXIST;
-	if (!pte_none(*dst_pte))
+	if (!pte_none(*vmf->pte))
 		goto out_unlock;
-	set_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
+	set_pte_at(vmf->vma->vm_mm, vmf->address, vmf->pte, _dst_pte);
 	/* No need to invalidate - it was non-present before */
-	update_mmu_cache(dst_vma, dst_addr, dst_pte);
+	update_mmu_cache(vmf->vma, vmf->address, vmf->pte);
 	ret = 0;
 out_unlock:
-	pte_unmap_unlock(dst_pte, ptl);
+	pte_unmap_unlock(vmf->pte, vmf->ptl);
 	return ret;
 }
 
 /* Handles UFFDIO_CONTINUE for all shmem VMAs (shared or private). */
-static int mcontinue_atomic_pte(struct mm_struct *dst_mm,
-				pmd_t *dst_pmd,
-				struct vm_area_struct *dst_vma,
-				unsigned long dst_addr,
-				bool wp_copy)
+static int mcontinue_atomic_pte(struct vm_fault *vmf, bool wp_copy)
 {
-	struct inode *inode = file_inode(dst_vma->vm_file);
-	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
+	struct inode *inode = file_inode(vmf->vma->vm_file);
+	pgoff_t pgoff = linear_page_index(vmf->vma, vmf->address);
 	struct page *page;
 	int ret;
 
@@ -235,8 +237,7 @@ static int mcontinue_atomic_pte(struct mm_struct *dst_mm,
 		goto out;
 	}
 
-	ret = mfill_atomic_install_pte(dst_mm, dst_pmd, dst_vma, dst_addr,
-				       page, false, wp_copy);
+	ret = __mfill_atomic_install_pte(vmf, page, false, wp_copy);
 	if (ret)
 		goto out_release;
 
@@ -483,20 +484,15 @@ extern ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
 				      enum mcopy_atomic_mode mode);
 #endif /* CONFIG_HUGETLB_PAGE */
 
-static __always_inline ssize_t mfill_atomic_pte(struct mm_struct *dst_mm,
-						pmd_t *dst_pmd,
-						struct vm_area_struct *dst_vma,
-						unsigned long dst_addr,
+static __always_inline ssize_t mfill_atomic_pte(struct vm_fault *vmf,
 						unsigned long src_addr,
-						struct page **page,
 						enum mcopy_atomic_mode mode,
 						bool wp_copy)
 {
 	ssize_t err;
 
 	if (mode == MCOPY_ATOMIC_CONTINUE) {
-		return mcontinue_atomic_pte(dst_mm, dst_pmd, dst_vma, dst_addr,
-					    wp_copy);
+		return mcontinue_atomic_pte(vmf, wp_copy);
 	}
 
 	/*
@@ -509,20 +505,17 @@ static __always_inline ssize_t mfill_atomic_pte(struct mm_struct *dst_mm,
 	 * only happens in the pagetable (to verify it's still none)
 	 * and not in the radix tree.
 	 */
-	if (!(dst_vma->vm_flags & VM_SHARED)) {
+	if (!(vmf->vma->vm_flags & VM_SHARED)) {
 		if (mode == MCOPY_ATOMIC_NORMAL)
-			err = mcopy_atomic_pte(dst_mm, dst_pmd, dst_vma,
-					       dst_addr, src_addr, page,
-					       wp_copy);
+			err = mcopy_atomic_pte(vmf, src_addr, wp_copy);
 		else
-			err = mfill_zeropage_pte(dst_mm, dst_pmd,
-						 dst_vma, dst_addr);
+			err = mfill_zeropage_pte(vmf);
 	} else {
 		VM_WARN_ON_ONCE(wp_copy);
-		err = shmem_mfill_atomic_pte(dst_mm, dst_pmd, dst_vma,
-					     dst_addr, src_addr,
+		err = shmem_mfill_atomic_pte(vmf->vma->vm_mm, vmf->pmd, vmf->vma,
+					     vmf->address, src_addr,
 					     mode != MCOPY_ATOMIC_NORMAL,
-					     page);
+					     &vmf->page);
 	}
 
 	return err;
@@ -538,7 +531,6 @@ static __always_inline ssize_t __mcopy_atomic(struct mm_struct *dst_mm,
 {
 	struct vm_area_struct *dst_vma;
 	ssize_t err;
-	pmd_t *dst_pmd;
 	unsigned long src_addr, dst_addr;
 	long copied;
 	struct page *page;
@@ -619,17 +611,23 @@ retry:
 		goto out_unlock;
 
 	while (src_addr < src_start + len) {
+		struct vm_fault vmf = {
+			.vma = dst_vma,
+			.address = dst_addr,
+			.page = page,
+			.flags = 0,
+		};
 		pmd_t dst_pmdval;
 
-		BUG_ON(dst_addr >= dst_start + len);
+		BUG_ON(vmf.address >= dst_start + len);
 
-		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
-		if (unlikely(!dst_pmd)) {
+		vmf.pmd = mm_alloc_pmd(dst_mm, vmf.address);
+		if (unlikely(!vmf.pmd)) {
 			err = -ENOMEM;
 			break;
 		}
 
-		dst_pmdval = pmd_read_atomic(dst_pmd);
+		dst_pmdval = pmd_read_atomic(vmf.pmd);
 		/*
 		 * If the dst_pmd is mapped as THP don't
 		 * override it and just be strict.
@@ -639,21 +637,21 @@ retry:
 			break;
 		}
 		if (unlikely(pmd_none(dst_pmdval)) &&
-		    unlikely(__pte_alloc(dst_mm, dst_pmd))) {
+		    unlikely(__pte_alloc(dst_mm, vmf.pmd))) {
 			err = -ENOMEM;
 			break;
 		}
 		/* If an huge pmd materialized from under us fail */
-		if (unlikely(pmd_trans_huge(*dst_pmd))) {
+		if (unlikely(pmd_trans_huge(*vmf.pmd))) {
 			err = -EFAULT;
 			break;
 		}
 
-		BUG_ON(pmd_none(*dst_pmd));
-		BUG_ON(pmd_trans_huge(*dst_pmd));
+		BUG_ON(pmd_none(*vmf.pmd));
+		BUG_ON(pmd_trans_huge(*vmf.pmd));
 
-		err = mfill_atomic_pte(dst_mm, dst_pmd, dst_vma, dst_addr,
-				       src_addr, &page, mcopy_mode, wp_copy);
+		err = mfill_atomic_pte(&vmf, src_addr, mcopy_mode, wp_copy);
+		page = vmf.page;
 		cond_resched();
 
 		if (unlikely(err == -ENOENT)) {
@@ -673,8 +671,9 @@ retry:
 			}
 			flush_dcache_page(page);
 			goto retry;
-		} else
+		} else {
 			BUG_ON(page);
+		}
 
 		if (!err) {
 			dst_addr += PAGE_SIZE;
