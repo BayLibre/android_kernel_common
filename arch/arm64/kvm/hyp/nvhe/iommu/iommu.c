@@ -31,6 +31,14 @@ DECLARE_PER_CPU(struct kvm_hyp_req, host_hyp_reqs);
 
 static atomic_t kvm_iommu_idmap_initialized;
 
+#define KVM_IOMMU_PADDR_CACHE_MAX		((size_t)511)
+struct kvm_iommu_paddr_cache {
+	unsigned short	ptr;
+	u64		paddr[KVM_IOMMU_PADDR_CACHE_MAX];
+};
+
+static DEFINE_PER_CPU(struct kvm_iommu_paddr_cache , kvm_iommu_unmap_cache);
+
 static int snapshot_host_stage2(void);
 
 static void host_lock_component(void)
@@ -396,17 +404,35 @@ out_put_domain:
 	return total_mapped;
 }
 
+static void kvm_iommu_unmap_walker(struct io_pgtable_ctxt *ctxt)
+{
+	struct kvm_iommu_paddr_cache *cache = (struct kvm_iommu_paddr_cache *)ctxt->arg;
+
+	cache->paddr[cache->ptr++] = ctxt->addr;
+}
+
+static void kvm_iommu_flush_unmap_cache(struct kvm_iommu_paddr_cache *cache)
+{
+	while(cache->ptr) {
+		WARN_ON(__pkvm_host_unuse_dma(cache->paddr[--cache->ptr], PAGE_SIZE));
+	}
+}
+
 size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 			     unsigned long iova, size_t pgsize, size_t pgcount)
 {
-	int ret;
 	size_t size;
 	size_t granule;
 	size_t unmapped;
-	phys_addr_t paddr = 0;
 	struct io_pgtable iopt;
 	size_t total_unmapped = 0;
 	struct kvm_hyp_iommu_domain *domain;
+	size_t max_pgcount;
+	struct kvm_iommu_paddr_cache *cache = this_cpu_ptr(&kvm_iommu_unmap_cache);
+	struct io_pgtable_walker walker = {
+		.cb = kvm_iommu_unmap_walker,
+		.arg = cache,
+	};
 
 	if (!kvm_iommu_ops)
 		return 0;
@@ -437,17 +463,15 @@ size_t kvm_iommu_unmap_pages(pkvm_handle_t domain_id,
 		 * The IOVA range provided may not be physically contiguous, and
 		 * @pgsize may be larger than the one used when mapping.
 		 */
-		paddr = iopt_iova_to_phys(&iopt, iova);
-		unmapped = iopt_unmap_pages(&iopt, iova, pgsize, 1, NULL);
+		max_pgcount = min_t(size_t, pgcount, KVM_IOMMU_PADDR_CACHE_MAX);
+		unmapped = iopt_unmap_pages_walk(&iopt, iova, pgsize, max_pgcount, NULL, &walker);
 		if (!unmapped)
 			goto out_put_domain;
 
-		ret = __pkvm_host_unuse_dma(paddr, unmapped);
-		if (WARN_ON(ret))
-			goto out_put_domain;
-
+		kvm_iommu_flush_unmap_cache(cache);
 		iova += unmapped;
 		total_unmapped += unmapped;
+		pgcount -= unmapped / pgsize;
 	}
 
 out_put_domain:
