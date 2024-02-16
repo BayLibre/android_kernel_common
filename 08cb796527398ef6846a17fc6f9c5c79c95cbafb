@@ -22,6 +22,30 @@
       },
       "revId": "08cb796527398ef6846a17fc6f9c5c79c95cbafb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8f510a3_3a6e0c4d",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2024-02-16T04:47:57Z",
+      "side": 1,
+      "message": "Hmm, given that the abort is synchronous, I\u0027m not concerned about loosing key debug state on account of wasting time in fixup_exception() before we eventually panic.\n\nSeparately, I should add a check for !is_el1_instruction_abort() as is done in __do_kernel_fault().",
+      "parentUuid": "c0759e6f_7c0b9ab9",
+      "range": {
+        "startLine": 25,
+        "startChar": 14,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "08cb796527398ef6846a17fc6f9c5c79c95cbafb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
