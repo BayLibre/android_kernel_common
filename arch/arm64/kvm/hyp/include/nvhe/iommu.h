@@ -45,6 +45,11 @@ void kvm_iommu_host_stage2_idmap(phys_addr_t start, phys_addr_t end,
 				 enum kvm_pgtable_prot prot);
 bool kvm_iommu_host_dabt_handler(struct kvm_cpu_context *host_ctxt, u64 esr, u64 addr);
 
+void kvm_iommu_iotlb_gather_add_page(void *cookie,
+				     struct iommu_iotlb_gather *gather,
+				     unsigned long iova,
+				     size_t size);
+
 struct kvm_iommu_tlb_cookie {
 	pkvm_handle_t		domain_id;
 	struct kvm_hyp_iommu_domain *domain;
@@ -64,6 +69,8 @@ struct kvm_iommu_ops {
 	bool (*dabt_handler)(struct kvm_cpu_context *host_ctxt, u64 esr, u64 addr);
 	int (*suspend)(struct kvm_hyp_iommu *iommu);
 	int (*resume)(struct kvm_hyp_iommu *iommu);
+	void (*iotlb_sync)(void *cookie,
+			   struct iommu_iotlb_gather *gather);
 };
 
 extern struct kvm_iommu_ops *kvm_iommu_ops;
