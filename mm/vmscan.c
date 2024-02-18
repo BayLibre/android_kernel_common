@@ -1967,6 +1967,16 @@ retry:
 
 			if (folio_test_pmd_mappable(folio))
 				flags |= TTU_SPLIT_HUGE_PMD;
+			/*
+			 * make try_to_unmap_one hold ptl from the very first
+			 * beginning if we are reclaiming a folio with multi-
+			 * ptes. otherwise, we may only reclaim a part of the
+			 * folio from the middle.
+			 * for example, a parallel thread might temporarily
+			 * set pte to none for various purposes.
+			 */
+			else if (folio_test_large(folio))
+				flags |= TTU_SYNC;
 
 			try_to_unmap(folio, flags);
 			if (folio_mapped(folio)) {

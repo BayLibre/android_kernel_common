@@ -3786,7 +3786,7 @@ static bool pte_range_swap(pte_t *pte, int nr_pages)
 	unsigned type;
 	pgoff_t start_offset;
 
-	entry = pte_to_swp_entry(ptep_get_lockless(pte));
+	entry = pte_to_swp_entry(ptep_get(pte));
 	if (non_swap_entry(entry))
 		return false;
 	start_offset = swp_offset(entry);
@@ -3795,7 +3795,7 @@ static bool pte_range_swap(pte_t *pte, int nr_pages)
 
 	type = swp_type(entry);
 	for (i = 1; i < nr_pages; i++) {
-		entry = pte_to_swp_entry(ptep_get_lockless(pte + i));
+		entry = pte_to_swp_entry(ptep_get(pte + i));
 		if (non_swap_entry(entry))
 			return false;
 		if (swp_offset(entry) != start_offset + i)
@@ -4250,6 +4250,7 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf,
 	struct folio *folio;
 	unsigned long addr;
 	pte_t *pte;
+	spinlock_t *ptl;
 	gfp_t gfp;
 	int order;
 
@@ -4272,7 +4273,16 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf,
 	if (!orders)
 		goto fallback;
 
-	pte = pte_offset_map(vmf->pmd, vmf->address & PMD_MASK);
+	/*
+	 * for swap-in, we need to hold ptl as try_to_unmap_one is reclaiming
+	 * ptes within a folio one by one. reading intermediate stats will
+	 * make us incorrectly fallback to base page for swap-in
+	 */
+	if (pte_range_check == pte_range_swap)
+		pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+				vmf->address & PMD_MASK, &ptl);
+	else
+		pte = pte_offset_map(vmf->pmd, vmf->address & PMD_MASK);
 	if (!pte)
 		return ERR_PTR(-EAGAIN);
 
@@ -4289,7 +4299,10 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf,
 		order = next_order(&orders, order);
 	}
 
-	pte_unmap(pte);
+	if (pte_range_check == pte_range_swap)
+		pte_unmap_unlock(pte, ptl);
+	else
+		pte_unmap(pte);
 
 	/* Try allocating the highest of the remaining orders. */
 	gfp = vma_thp_gfp_mask(vma);
