@@ -8921,6 +8921,7 @@ out:
 
 	if (ret)
 		dev_err(hba->dev, "%s failed: %d\n", __func__, ret);
+<<<<<<< HEAD   (c520be ANDROID: Fix CRC error with iommu_* functions)
 }
 
 static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
@@ -8943,6 +8944,8 @@ static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
 		 __func__, hba->outstanding_tasks);
 
 	return hba->outstanding_reqs ? SCSI_EH_RESET_TIMER : SCSI_EH_DONE;
+=======
+>>>>>>> BRANCH (e5c3b9 Linux 6.1.76)
 }
 
 static const struct attribute_group *ufshcd_driver_groups[] = {
