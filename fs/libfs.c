@@ -23,6 +23,7 @@
 #include <linux/fsnotify.h>
 #include <linux/unicode.h>
 #include <linux/fscrypt.h>
+#include <linux/pidfs.h>
 
 #include <linux/uaccess.h>
 
@@ -2002,6 +2003,7 @@ static inline struct dentry *get_stashed_dentry(struct dentry *stashed)
 static struct dentry *stash_dentry(struct dentry **stashed, unsigned long ino,
 				   struct super_block *sb,
 				   const struct file_operations *fops,
+				   const struct inode_operations *iops,
 				   void *data)
 {
 	struct dentry *dentry;
@@ -2019,8 +2021,13 @@ static struct dentry *stash_dentry(struct dentry **stashed, unsigned long ino,
 
 	inode->i_ino = ino;
 	inode->i_flags |= S_IMMUTABLE;
+	if (is_pidfs_sb(sb))
+		inode->i_flags |= S_PRIVATE;
 	inode->i_mode = S_IFREG | S_IRUGO;
-	inode->i_fop = fops;
+	if (iops)
+		inode->i_op = iops;
+	if (fops)
+		inode->i_fop = fops;
 	inode->i_private = data;
 	simple_inode_init_ts(inode);
 
@@ -2042,6 +2049,7 @@ static struct dentry *stash_dentry(struct dentry **stashed, unsigned long ino,
  * @stashed:    where to retrieve or stash dentry
  * @ino:        inode number to use
  * @mnt:        mnt of the filesystems to use
+ * @iops:       inode operations to use
  * @fops:       file operations to use
  * @data:       data to store in inode->i_private
  * @path:       path to create
@@ -2060,7 +2068,8 @@ static struct dentry *stash_dentry(struct dentry **stashed, unsigned long ino,
  */
 int path_from_stashed(struct dentry **stashed, unsigned long ino,
 		      struct vfsmount *mnt, const struct file_operations *fops,
-		      void *data, struct path *path)
+		      const struct inode_operations *iops, void *data,
+		      struct path *path)
 {
 	struct dentry *dentry;
 	int ret = 0;
@@ -2069,7 +2078,7 @@ int path_from_stashed(struct dentry **stashed, unsigned long ino,
 	if (dentry)
 		goto out_path;
 
-	dentry = stash_dentry(stashed, ino, mnt->mnt_sb, fops, data);
+	dentry = stash_dentry(stashed, ino, mnt->mnt_sb, fops, iops, data);
 	if (IS_ERR(dentry))
 		return PTR_ERR(dentry);
 	ret = 1;
