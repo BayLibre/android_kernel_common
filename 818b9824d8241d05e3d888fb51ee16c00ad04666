@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb11a516_e669dc7d",
+        "filename": "android/abi_gki_aarch64_nothing",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-02-19T09:21:39Z",
+      "side": 1,
+      "message": "Note, your symbol list should contain _all_ the symbols that your modules are using. It looks like you are only adding what is missing for you.\n\n*All core kernel symbols used by modules [...] should be included in the symbol list.*\n\nhttps://source.android.com/docs/core/architecture/kernel/howto-symbol-lists#update-list",
+      "revId": "818b9824d8241d05e3d888fb51ee16c00ad04666",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
