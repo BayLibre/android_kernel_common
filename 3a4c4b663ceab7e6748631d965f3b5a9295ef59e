@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bf608f7b_282e9aaa",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-19T15:02:12Z",
+      "side": 1,
+      "message": "It is declared in a struct? Not sure how it must be supported then as per_cpu are going into a specific ELF section?",
+      "parentUuid": "7e7d4f5d_3f2c5596",
+      "range": {
+        "startLine": 19,
+        "startChar": 1,
+        "endLine": 19,
+        "endChar": 37
+      },
+      "revId": "3a4c4b663ceab7e6748631d965f3b5a9295ef59e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0265f425_7c0d0bbb",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 4
