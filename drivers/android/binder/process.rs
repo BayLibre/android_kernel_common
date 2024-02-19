@@ -16,11 +16,13 @@ use kernel::{
     bindings,
     cred::Credential,
     file::{self, File},
+    init::PinInit,
     list::{HasListLinks, List, ListArc, ListArcField, ListArcSafe, ListItem, ListLinks},
     mm,
     page_range::ShrinkablePageRange,
     prelude::*,
     rbtree::{self, RBTree},
+    xarray::{flags, XArray},
     seq_file::SeqFile,
     seq_print,
     sync::poll::PollTable,
@@ -66,7 +68,6 @@ const PROC_DEFER_RELEASE: u8 = 2;
 pub(crate) struct ProcessInner {
     is_manager: bool,
     pub(crate) is_dead: bool,
-    threads: RBTree<i32, Arc<Thread>>,
     /// INVARIANT: Threads pushed to this list must be owned by this process.
     ready_threads: List<Thread>,
     nodes: RBTree<u64, DArc<Node>>,
@@ -102,7 +103,6 @@ impl ProcessInner {
         Self {
             is_manager: false,
             is_dead: false,
-            threads: RBTree::new(),
             ready_threads: List::new(),
             mapping: None,
             nodes: RBTree::new(),
@@ -390,6 +390,9 @@ pub(crate) struct Process {
     pub(crate) cred: ARef<Credential>,
 
     #[pin]
+    pub(crate) threads: XArray<Arc<Thread>>,
+
+    #[pin]
     pub(crate) inner: SpinLock<ProcessInner>,
 
     pub(crate) default_priority: BinderPriority,
@@ -459,6 +462,7 @@ impl Process {
             ctx,
             cred,
             default_priority: prio::get_default_prio_from_task(current),
+            threads <- XArray::<Arc<Thread>>::new(flags::ALLOC1),
             inner <- kernel::new_spinlock!(ProcessInner::new(), "Process::inner"),
             pages <- ShrinkablePageRange::new(&super::BINDER_SHRINKER),
             node_refs <- kernel::new_mutex!(ProcessNodeRefs::new(), "Process::node_refs"),
