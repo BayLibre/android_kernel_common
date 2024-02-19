@@ -16,6 +16,52 @@
       "message": "Neglected to run checkpatch on the prior patch version, I\u0027m assuming that is why pre-submit failed.",
       "revId": "43955540e305bddf5de6cd76110fef467c352e71",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8fb4b5e_2b283aae",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-02-19T09:33:11Z",
+      "side": 1,
+      "message": "Given that you call the actual vendor hook below, there is not a lot of value in guarding all this with the _enabled() variant of the hook here anymore. `trace_android_rvh_try_fixup_sea()` itself will expand to a static key check + an indirect function call, so you should probably just call it here directly. And the user_mode() and is_el1_instruction_abort() logic can go in the vendor code.\n\nWdyt of something simple like below:\n\n```\nbool can_fixup \u003d false;\n...\ntrace_android_rvh_try_fixup_sea(far, esr, regs, \u0026can_fixup);\nif (can_fixup \u0026\u0026 fixup_exception(regs))\n        return 0;\n```\n\nThat means open-coding `is_el1_instruction_abort()` in your module, but it\u0027s simple enough for not being too much of a hassle.",
+      "range": {
+        "startLine": 752,
+        "startChar": 5,
+        "endLine": 752,
+        "endChar": 46
+      },
+      "revId": "43955540e305bddf5de6cd76110fef467c352e71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2460759e_48642781",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-02-19T09:33:11Z",
+      "side": 1,
+      "message": "Any particular reason for making the hook restricted?",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "43955540e305bddf5de6cd76110fef467c352e71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
