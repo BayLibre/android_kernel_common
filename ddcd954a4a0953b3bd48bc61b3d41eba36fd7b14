@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6f32daf_4dd8a6d8",
+        "filename": "arch/arm64/kvm/reset.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-02-19T20:03:53Z",
+      "side": 1,
+      "message": "Can we change this to just a check if sve_state isn\u0027t null, with a BUG(kvm_vm_is_protected(vcpu-\u003ekvm)? If there\u0027s an sve_state it should always be freed, and the bug would ensure that this never happens in the case of protected, as well as document this expectation.",
+      "revId": "ddcd954a4a0953b3bd48bc61b3d41eba36fd7b14",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
