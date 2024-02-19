@@ -70,6 +70,30 @@
       },
       "revId": "b5174b15d364ef693c4875f5c8a8751e6abaa5bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6b19fc4_1a49a42c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-19T14:23:16Z",
+      "side": 0,
+      "message": "Hum, not sure about the collision with `hyp_allocator_map`... maybe after all, \n\nsince hyp_allocator_map would call the `__` version",
+      "parentUuid": "74518f52_e0b8b15b",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 6
+      },
+      "revId": "b5174b15d364ef693c4875f5c8a8751e6abaa5bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
