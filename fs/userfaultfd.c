@@ -71,6 +71,12 @@ struct userfaultfd_ctx {
 	bool mmap_changing;
 	/* mm with one ore more vmas attached to this userfaultfd_ctx */
 	struct mm_struct *mm;
+	/*
+	 * Setting 'mmap_changing' and unregistering memory ranges are done
+	 * with the lock held in write-mode. Whereas, when userfaultfd
+	 * operations are done speculatively, this lock held in read-mode.
+	 */
+	struct rw_semaphore spf_lock;
 	struct rcu_head rcu_head;
 };
 
@@ -707,10 +713,13 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
 		ctx->released = false;
 		ctx->mmap_changing = false;
 		ctx->mm = vma->vm_mm;
+		init_rwsem(&ctx->spf_lock);
 		mmgrab(ctx->mm);
 
 		userfaultfd_ctx_get(octx);
+		down_write(&octx->spf_lock);
 		WRITE_ONCE(octx->mmap_changing, true);
+		up_write(&octx->spf_lock);
 		fctx->orig = octx;
 		fctx->new = ctx;
 		list_add_tail(&fctx->list, fcs);
@@ -758,7 +767,9 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
 	if (ctx->features & UFFD_FEATURE_EVENT_REMAP) {
 		vm_ctx->ctx = ctx;
 		userfaultfd_ctx_get(ctx);
+		down_write(&ctx->spf_lock);
 		WRITE_ONCE(ctx->mmap_changing, true);
+		up_write(&ctx->spf_lock);
 	} else {
 		/* Drop uffd context if remap feature not enabled */
 		rcu_assign_pointer(vma->vm_userfaultfd_ctx.ctx, NULL);
@@ -804,7 +815,9 @@ bool userfaultfd_remove(struct vm_area_struct *vma,
 		return true;
 
 	userfaultfd_ctx_get(ctx);
+	down_write(&ctx->spf_lock);
 	WRITE_ONCE(ctx->mmap_changing, true);
+	down_write(&ctx->spf_lock);
 	mmap_read_unlock(mm);
 
 	msg_init(&ewq.msg);
@@ -850,7 +863,9 @@ int userfaultfd_unmap_prep(struct vm_area_struct *vma,
 			return -ENOMEM;
 
 		userfaultfd_ctx_get(ctx);
+		down_write(&ctx->spf_lock);
 		WRITE_ONCE(ctx->mmap_changing, true);
+		up_write(&ctx->spf_lock);
 		unmap_ctx->ctx = ctx;
 		unmap_ctx->start = start;
 		unmap_ctx->end = end;
@@ -1552,6 +1567,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 {
 	struct mm_struct *mm = ctx->mm;
 	struct vm_area_struct *vma, *prev, *cur;
+	struct userfaultfd_ctx *cur_uffd_ctx;
 	int ret;
 	struct uffdio_range uffdio_unregister;
 	unsigned long new_flags;
@@ -1626,9 +1642,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 
 	ret = 0;
 	do {
-		struct userfaultfd_ctx *cur_uffd_ctx =
-				rcu_dereference_protected(vma->vm_userfaultfd_ctx.ctx,
-							  lockdep_is_held(&mm->mmap_lock));
+		cur_uffd_ctx = rcu_dereference_protected(vma->vm_userfaultfd_ctx.ctx,
+							 lockdep_is_held(&mm->mmap_lock));
 		cond_resched();
 
 		BUG_ON(!vma_can_userfault(vma, vma->vm_flags));
@@ -1645,6 +1660,14 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 		if (vma->vm_start > start)
 			start = vma->vm_start;
 		vma_end = min(end, vma->vm_end);
+
+		/*
+		 * This is to ensure that we don't unregister the address that
+		 * another thread is speculatively filling (mcopy_atomic()) and
+		 * is past acquiring ptl spin-lock (where we check the last time
+		 * that the VMA is unchanged) but has not set the pte yet.
+		 */
+		down_write(&cur_uffd_ctx->spf_lock);
 
 		if (userfaultfd_missing(vma)) {
 			/*
@@ -1688,12 +1711,15 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
 		WRITE_ONCE(vma->vm_flags, new_flags);
 		rcu_assign_pointer(vma->vm_userfaultfd_ctx.ctx, NULL);
 		vm_write_end(vma);
-
+		up_write(&cur_uffd_ctx->spf_lock);
 	skip:
 		prev = vma;
 		start = vma->vm_end;
 		vma = vma->vm_next;
 	} while (vma && vma->vm_start < end);
+
+	if (ret)
+		up_write(&cur_uffd_ctx->spf_lock);
 out_unlock:
 	mmap_write_unlock(mm);
 	mmput(mm);
@@ -1773,7 +1799,7 @@ static int userfaultfd_copy(struct userfaultfd_ctx *ctx,
 	if (mmget_not_zero(ctx->mm)) {
 		ret = mcopy_atomic(ctx->mm, uffdio_copy.dst, uffdio_copy.src,
 				   uffdio_copy.len, &ctx->mmap_changing,
-				   uffdio_copy.mode);
+				   uffdio_copy.mode, &ctx->spf_lock);
 		mmput(ctx->mm);
 	} else {
 		return -ESRCH;
@@ -1825,7 +1851,7 @@ static int userfaultfd_zeropage(struct userfaultfd_ctx *ctx,
 	if (mmget_not_zero(ctx->mm)) {
 		ret = mfill_zeropage(ctx->mm, uffdio_zeropage.range.start,
 				     uffdio_zeropage.range.len,
-				     &ctx->mmap_changing);
+				     &ctx->mmap_changing, &ctx->spf_lock);
 		mmput(ctx->mm);
 	} else {
 		return -ESRCH;
@@ -1935,7 +1961,7 @@ static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
 	if (mmget_not_zero(ctx->mm)) {
 		ret = mcopy_continue(ctx->mm, uffdio_continue.range.start,
 				     uffdio_continue.range.len,
-				     &ctx->mmap_changing);
+				     &ctx->mmap_changing, &ctx->spf_lock);
 		mmput(ctx->mm);
 	} else {
 		return -ESRCH;
@@ -2142,6 +2168,7 @@ SYSCALL_DEFINE1(userfaultfd, int, flags)
 	ctx->released = false;
 	ctx->mmap_changing = false;
 	ctx->mm = current->mm;
+	init_rwsem(&ctx->spf_lock);
 	/* prevent the mm struct to be freed */
 	mmgrab(ctx->mm);
 
