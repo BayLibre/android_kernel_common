@@ -22,6 +22,30 @@
       },
       "revId": "e28a8b865379622327621b297ad4a69715da874d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f4a5d1_7664b6a2",
+        "filename": "rust/bindings/lib.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-02-19T13:37:02Z",
+      "side": 1,
+      "message": "I\u0027ll follow up on this once I figure out which form we want this patch to take upstream. For now, I\u0027ve changed it so that the Rust implementations can only be used by `Arc`.\n\nNote that the orderings and so on used here not only matches the C implementation exactly, but they also match what the Rust standard library uses for Arc exactly (except for the overflow case, where the Rust Arc calls `abort`).",
+      "parentUuid": "0064cafa_d24748f0",
+      "range": {
+        "startLine": 100,
+        "startChar": 12,
+        "endLine": 100,
+        "endChar": 15
+      },
+      "revId": "e28a8b865379622327621b297ad4a69715da874d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
