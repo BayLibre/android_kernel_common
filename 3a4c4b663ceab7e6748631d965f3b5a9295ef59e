@@ -22,6 +22,30 @@
       },
       "revId": "3a4c4b663ceab7e6748631d965f3b5a9295ef59e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbd48259_36eb8e5e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-19T11:57:51Z",
+      "side": 1,
+      "message": "My idea was to keep a generic interface where you can give the allocator you want. And have one where you get directly the \"common\" one.\n\nIt\u0027s really just preemptively modularizing it.",
+      "parentUuid": "0265f425_7c0d0bbb",
+      "range": {
+        "startLine": 775,
+        "startChar": 20,
+        "endLine": 775,
+        "endChar": 34
+      },
+      "revId": "3a4c4b663ceab7e6748631d965f3b5a9295ef59e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
