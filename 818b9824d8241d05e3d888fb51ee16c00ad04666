@@ -16,6 +16,24 @@
       "message": "Note, your symbol list should contain _all_ the symbols that your modules are using. It looks like you are only adding what is missing for you.\n\n*All core kernel symbols used by modules [...] should be included in the symbol list.*\n\nhttps://source.android.com/docs/core/architecture/kernel/howto-symbol-lists#update-list",
       "revId": "818b9824d8241d05e3d888fb51ee16c00ad04666",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc9f21e9_ff7d8708",
+        "filename": "android/abi_gki_aarch64_nothing",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1969160
+      },
+      "writtenOn": "2024-02-20T03:50:33Z",
+      "side": 1,
+      "message": "Hey Matthias,\n\nI tried following your shared link but it always failed.\n\nI checked the source code, android13 kernel does not have \"kmi_symbol_list\u003d\"//common:android/abi_gki_aarch64_virtual_device\",\" in common-modules\\virtual-device\\BUILD.bazel\nBut the reference link has this code.\nI think the link sample is the android14 method but our core version is android13\nSo I can\u0027t refer to that link.",
+      "parentUuid": "bb11a516_e669dc7d",
+      "revId": "818b9824d8241d05e3d888fb51ee16c00ad04666",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
