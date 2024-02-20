@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41cbd88e_db417dd7",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-02-20T10:04:53Z",
+      "side": 1,
+      "message": "Sorry I should have been more explicit, but the point of having a helper in here is to apply safety checks so we don\u0027t break some of the VA space invariants that we rely on in pKVM (e.g. anything in the linear map range must be mapped at a fixed offset from physical memory, or the trampoline page is idmapped). The enforcement of those invariants is all done in this file so it\u0027s nice to have all that logic in one place. And by being very permissive, __hyp_allocator_map() could easily be mis-used and break that logic. (Arguably pkvm_remove_mappings() should probably have stayed static as well, but it\u0027s less of a concern from a security angle I think).\n\nIn practice that means we should ideally check that `va` is in the allocator\u0027s range before we proceed to map things, which implies the allocation of the va space for the allocator should probably be done in here as well. Let\u0027s not bother with this for now, we can add a patch later to improve that.",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 1
+      },
+      "revId": "0720ced88cd8e67acb3590a1c27750b51143dd6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
