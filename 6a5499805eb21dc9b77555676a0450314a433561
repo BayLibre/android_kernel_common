@@ -16,6 +16,24 @@
       "message": "are all the above constants the same as they were before so no changes needed in crosvm or other userspace?",
       "revId": "6a5499805eb21dc9b77555676a0450314a433561",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7571e62c_56ce3af0",
+        "filename": "include/uapi/linux/gzvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2024-02-20T03:45:03Z",
+      "side": 1,
+      "message": "We have incorporated the `FIELD_PREP` and `GENMASK_ULL` macros based on the feedback from LKML reviewers [1]. However, these modifications have not been applied to the crosvm upstream yet. As a result, we plan to revert these macros back to their previous versions and resubmit the changes in the future. This will temporarily cause some code differences from LKML for the file `gzvm.h`. Thank you for the reminder.\n\n[1] https://lore.kernel.org/all/20240104175253.GK31813@kernel.org/",
+      "parentUuid": "c90a8c7c_93576ced",
+      "revId": "6a5499805eb21dc9b77555676a0450314a433561",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
