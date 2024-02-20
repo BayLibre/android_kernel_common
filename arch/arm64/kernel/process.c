@@ -17,6 +17,7 @@
 #include <linux/kernel.h>
 #include <linux/mman.h>
 #include <linux/mm.h>
+#include <linux/page_size_compat.h>
 #include <linux/nospec.h>
 #include <linux/stddef.h>
 #include <linux/sysctl.h>
@@ -605,7 +606,7 @@ unsigned long __get_wchan(struct task_struct *p)
 unsigned long arch_align_stack(unsigned long sp)
 {
 	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
-		sp -= get_random_u32_below(PAGE_SIZE);
+		sp -= get_random_u32_below(__PAGE_SIZE << 1);
 	return sp & ~0xf;
 }
 
