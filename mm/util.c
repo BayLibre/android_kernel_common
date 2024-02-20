@@ -393,7 +393,7 @@ unsigned long arch_mmap_rnd(void)
 #endif /* CONFIG_HAVE_ARCH_MMAP_RND_COMPAT_BITS */
 		rnd = get_random_long() & ((1UL << mmap_rnd_bits) - 1);
 
-	return rnd << PAGE_SHIFT;
+	return rnd << __PAGE_SHIFT;
 }
 
 static int mmap_is_legacy(struct rlimit *rlim_stack)
