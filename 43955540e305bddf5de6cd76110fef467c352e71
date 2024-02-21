@@ -110,6 +110,30 @@
       },
       "revId": "43955540e305bddf5de6cd76110fef467c352e71",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b82fcaaa_7560a1c8",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-02-21T09:17:01Z",
+      "side": 1,
+      "message": "\u003e I had just duplicated what SS had done in their original patch: https://android-review.googlesource.com/c/kernel/common/+/2006760 . Is there any additional cost to using a restricted hook other than loosing the ability to unload the module implementing the hook?\n\nI don\u0027t think there is a real performance impact of using restricted or non-restricted hooks -- restricted hooks are supposed to be used in special cases where e.g. the callback needs to be called in preemptible context (which can\u0027t be done with \u0027normal\u0027 hooks as the callback table is protected by RCU to allow detaching). The general policy is to try and use non-restricted hooks first where possible because they\u0027re just standard tracepoints, and resort to the android-specific implementation of restricted hooks if necessary. Note that I absolutely don\u0027t mind making that hook restricted if necessary, just wondering if that\u0027s needed.\n\n\u003e Separately, given an old comment from Greg here https://partnerissuetracker.corp.google.com/issues/158645321#comment30 , does the desire to keep a hook fixed for the lifetime of the device justify using an RVH?\n\nThings have changed a bit since that comment, restricted hooks have now gained support for having more than 1 callback function (aosp/1658565), so it\u0027s not really applicable any more.",
+      "parentUuid": "2f688038_e2cdc5e2",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "43955540e305bddf5de6cd76110fef467c352e71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
