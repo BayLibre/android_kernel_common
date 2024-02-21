@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3001e3_c1c6b4d4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-21T17:14:16Z",
+      "side": 1,
+      "message": "Why could this not be a module owned page?",
+      "range": {
+        "startLine": 587,
+        "startChar": 72,
+        "endLine": 587,
+        "endChar": 83
+      },
+      "revId": "dea0c2f0f006f49dd9ef5534d3ea44cd9d9a5043",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e6a116_c2536a74",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-21T17:14:16Z",
+      "side": 1,
+      "message": "Assuming this is for eliding pointless pgtable updates, should this be `PKVM_PAGE_META_STATES_MASK` instead? i.e. if we\u0027re only updating the vmemmap, then don\u0027t bother with the pgtable.",
+      "range": {
+        "startLine": 914,
+        "startChar": 42,
+        "endLine": 914,
+        "endChar": 53
+      },
+      "revId": "dea0c2f0f006f49dd9ef5534d3ea44cd9d9a5043",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
