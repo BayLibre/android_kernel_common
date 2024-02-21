@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59e17594_335c75b0",
+        "filename": "arch/arm64/mm/fault.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2024-02-21T03:24:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8fb4b5e_2b283aae",
+      "range": {
+        "startLine": 752,
+        "startChar": 5,
+        "endLine": 752,
+        "endChar": 46
+      },
+      "revId": "43955540e305bddf5de6cd76110fef467c352e71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2460759e_48642781",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-02-19T09:33:11Z",
       "side": 1,
       "message": "Any particular reason for making the hook restricted?",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "43955540e305bddf5de6cd76110fef467c352e71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f688038_e2cdc5e2",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2024-02-21T03:24:53Z",
+      "side": 1,
+      "message": "I had just duplicated what SS had done in their original patch: https://android-review.googlesource.com/c/kernel/common/+/2006760 . Is there any additional cost to using a restricted hook other than loosing the ability to unload the module implementing the hook? Separately, given an old comment from Greg here https://partnerissuetracker.corp.google.com/issues/158645321#comment30 , does the desire to keep a hook fixed for the lifetime of the device justify using an RVH?",
+      "parentUuid": "2460759e_48642781",
       "range": {
         "startLine": 24,
         "startChar": 8,
