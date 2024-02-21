@@ -1731,3 +1731,56 @@ void kvm_pgtable_stage2_free_unlinked(struct kvm_pgtable_mm_ops *mm_ops,
 	WARN_ON(mm_ops->page_count(pgtable) != 1);
 	mm_ops->put_page(pgtable);
 }
+
+#ifdef CONFIG_NVHE_EL2_DEBUG
+struct snapshot_data {
+	struct kvm_pgtable *pgt;
+	void *mc;
+};
+
+static int snapshot_walker(const struct kvm_pgtable_visit_ctx *ctx,
+			   enum kvm_pgtable_walk_flags visit)
+{
+	struct kvm_pgtable_mm_ops *mm_ops = ctx->mm_ops;
+	void *copy_table, *original_addr;
+	kvm_pte_t new = ctx->old;
+	struct snapshot_data *data = ctx->arg;
+
+	if (kvm_pte_table(ctx->old, ctx->level)) {
+		copy_table = mm_ops->zalloc_page(data->mc);
+		if (!copy_table)
+			return -ENOMEM;
+
+		original_addr = kvm_pte_follow(ctx->old, mm_ops);
+		WARN_ON(!PAGE_ALIGNED(original_addr));
+
+		memcpy(copy_table, original_addr, PAGE_SIZE);
+		new = kvm_init_table_pte(copy_table, mm_ops);
+	}
+
+	*ctx->ptep = new;
+
+	return 0;
+}
+
+int kvm_pgtable_stage2_snapshot(struct kvm_pgtable *to_pgt,
+				void *mc)
+{
+	struct snapshot_data data = {
+		.pgt = to_pgt,
+		.mc = mc,
+	};
+
+	struct kvm_pgtable_walker walker = {
+		.cb	= snapshot_walker,
+		.flags	= KVM_PGTABLE_WALK_LEAF |
+			  KVM_PGTABLE_WALK_TABLE_PRE,
+		.arg	= &data
+	};
+
+	if (!to_pgt->pgd)
+		return -EINVAL;
+
+	return kvm_pgtable_walk(to_pgt, 0, BIT(to_pgt->ia_bits), &walker);
+}
+#endif /* CONFIG_NVHE_EL2_DEBUG */

@@ -903,4 +903,20 @@ enum kvm_pgtable_prot kvm_pgtable_hyp_pte_prot(kvm_pte_t pte);
  */
 void kvm_tlb_flush_vmid_range(struct kvm_s2_mmu *mmu,
 				phys_addr_t addr, size_t size);
+
+#ifdef CONFIG_NVHE_EL2_DEBUG
+/**
+ * kvm_pgtable_stage2_snapshot() - Snapshot the pagetable
+ *
+ * @to_pgt:	Destination pagetable
+ * @mc:		The memcache where we allocate the destination pagetables from
+ */
+int kvm_pgtable_stage2_snapshot(struct kvm_pgtable *to_pgt, void *mc);
+#else
+static inline int kvm_pgtable_stage2_snapshot(struct kvm_pgtable *to_pgt,
+					      void *mc)
+{
+	return -EPERM;
+}
+#endif	/* CONFIG_NVHE_EL2_DEBUG */
 #endif	/* __ARM64_KVM_PGTABLE_H__ */
