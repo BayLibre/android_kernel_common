@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50e6c1e2_a76c7f60",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-21T19:50:28Z",
+      "side": 1,
+      "message": "I don\u0027t see any specific reason, I think we can just add after the loop.\n```\nif (leaf_paddr)\n\t*leaf_paddr \u003d blk_paddr - split_sz * (ptes_per_table - unmap_idx_start);\n``` \n\nThe loop only works because `arm_lpae_unmap_leaf` passes `pgcount \u003d 1`.\n\n\n(also this patch is reverted later as unmapping leaf by leaf showed to by not optimal in some scenarops.",
+      "parentUuid": "6e0f1180_f7f27ff3",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 28
+      },
+      "revId": "9a0f459eb7f1ddb9572962d7c95ed4b76f7d0b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44a72293_d283d1db",
         "filename": "drivers/iommu/io-pgtable-arm-common.c",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-21T18:44:26Z",
       "side": 1,
       "message": "What is the significant of the size argument to `unmap_leaf()`? We\u0027re basically ignoring it afaict, by virtue of descending to the leaf level. Can we drop it entirely?",
+      "range": {
+        "startLine": 428,
+        "startChar": 6,
+        "endLine": 428,
+        "endChar": 18
+      },
+      "revId": "9a0f459eb7f1ddb9572962d7c95ed4b76f7d0b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57804296_9659d69b",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-21T19:50:28Z",
+      "side": 1,
+      "message": "If the caller request to map a `pgsize` smaller than the current block we unmap the whole block if we don\u0027t know the size.\n\nBut with knowing the size, now `size_matches` is false and we have to split the block.",
+      "parentUuid": "44a72293_d283d1db",
       "range": {
         "startLine": 428,
         "startChar": 6,
