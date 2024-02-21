@@ -134,6 +134,30 @@
       },
       "revId": "43955540e305bddf5de6cd76110fef467c352e71",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a36364a_de2c263e",
+        "filename": "include/trace/hooks/fault.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1871253
+      },
+      "writtenOn": "2024-02-21T18:04:46Z",
+      "side": 1,
+      "message": "Since we\u0027re just checking stack variables and won\u0027t be blocking in the hook, let\u0027s go with the regular hook.",
+      "parentUuid": "b82fcaaa_7560a1c8",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "43955540e305bddf5de6cd76110fef467c352e71",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
