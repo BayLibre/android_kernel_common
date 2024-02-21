@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad2bc3d2_c2238e8e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-21T19:13:13Z",
+      "side": 1,
+      "message": "We can just add `map_donated_memory()` with the `memset(0)` in there, like we have for `unmap_donated_memory()`",
+      "range": {
+        "startLine": 341,
+        "startChar": 12,
+        "endLine": 341,
+        "endChar": 38
+      },
+      "revId": "606c2221e8130e59e4476ee7c5eba1b0490e6511",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
