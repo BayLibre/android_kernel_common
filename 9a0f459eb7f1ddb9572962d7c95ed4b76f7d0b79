@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e0f1180_f7f27ff3",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-21T18:44:26Z",
+      "side": 1,
+      "message": "Why are we setting this inside the loop?",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 28
+      },
+      "revId": "9a0f459eb7f1ddb9572962d7c95ed4b76f7d0b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a72293_d283d1db",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-21T18:44:26Z",
+      "side": 1,
+      "message": "What is the significant of the size argument to `unmap_leaf()`? We\u0027re basically ignoring it afaict, by virtue of descending to the leaf level. Can we drop it entirely?",
+      "range": {
+        "startLine": 428,
+        "startChar": 6,
+        "endLine": 428,
+        "endChar": 18
+      },
+      "revId": "9a0f459eb7f1ddb9572962d7c95ed4b76f7d0b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
