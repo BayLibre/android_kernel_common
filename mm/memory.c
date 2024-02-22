@@ -4985,6 +4985,84 @@ static void lru_gen_exit_fault(void);
 /* This is required by vm_normal_page() */
 #error "Speculative page fault handler requires CONFIG_ARCH_HAS_PTE_SPECIAL"
 #endif
+
+bool do_speculative_page_walk(struct mm_struct *mm, struct vm_fault *vmf)
+{
+	pgd_t *pgd, pgdval;
+	p4d_t *p4d, p4dval;
+	pud_t pudval;
+	bool ret = false;
+
+	local_irq_disable();
+	pgd = pgd_offset(mm, vmf->address);
+	pgdval = READ_ONCE(*pgd);
+	if (pgd_none(pgdval) || unlikely(pgd_bad(pgdval)))
+		goto out_walk;
+
+	p4d = p4d_offset(pgd, vmf->address);
+	if (pgd_val(READ_ONCE(*pgd)) != pgd_val(pgdval))
+		goto out_walk;
+	p4dval = READ_ONCE(*p4d);
+	if (p4d_none(p4dval) || unlikely(p4d_bad(p4dval)))
+		goto out_walk;
+
+	vmf->pud = pud_offset(p4d, vmf->address);
+	if (p4d_val(READ_ONCE(*p4d)) != p4d_val(p4dval))
+		goto out_walk;
+	pudval = READ_ONCE(*vmf->pud);
+	if (pud_none(pudval) || unlikely(pud_bad(pudval)))
+		goto out_walk;
+
+	/* Huge pages at PUD level are not supported. */
+	if (unlikely(pud_trans_huge(pudval)))
+		goto out_walk;
+
+	vmf->pmd = pmd_offset(vmf->pud, vmf->address);
+	if (pud_val(READ_ONCE(*vmf->pud)) != pud_val(pudval))
+		goto out_walk;
+	vmf->orig_pmd = READ_ONCE(*vmf->pmd);
+	/*
+	 * pmd_none could mean that a hugepage collapse is in progress
+	 * in our back as collapse_huge_page() mark it before
+	 * invalidating the pte (which is done once the IPI is catched
+	 * by all CPU and we have interrupt disabled).
+	 * For this reason we cannot handle THP in a speculative way since we
+	 * can't safely indentify an in progress collapse operation done in our
+	 * back on that PMD.
+	 * Regarding the order of the following checks, see comment in
+	 * pmd_devmap_trans_unstable()
+	 */
+	if (unlikely(pmd_devmap(vmf->orig_pmd) ||
+		     pmd_none(vmf->orig_pmd) || pmd_trans_huge(vmf->orig_pmd) ||
+		     is_swap_pmd(vmf->orig_pmd)))
+		goto out_walk;
+
+	/*
+	 * The above does not allocate/instantiate page-tables because doing so
+	 * would lead to the possibility of instantiating page-tables after
+	 * free_pgtables() -- and consequently leaking them.
+	 *
+	 * The result is that we take at least one !speculative fault per PMD
+	 * in order to instantiate it.
+	 */
+
+	vmf->pte = pte_offset_map(vmf->pmd, vmf->address);
+	if (pmd_val(READ_ONCE(*vmf->pmd)) != pmd_val(vmf->orig_pmd)) {
+		pte_unmap(vmf->pte);
+		vmf->pte = NULL;
+		goto out_walk;
+	}
+	vmf->orig_pte = READ_ONCE(*vmf->pte);
+	barrier(); /* See comment in handle_pte_fault() */
+	if (pte_none(vmf->orig_pte)) {
+		pte_unmap(vmf->pte);
+		vmf->pte = NULL;
+	}
+	ret = true;
+out_walk:
+	local_irq_enable();
+	return ret;
+}
 /*
  * vm_normal_page() adds some processing which should be done while
  * hodling the mmap_sem.
@@ -5013,9 +5091,6 @@ static vm_fault_t ___handle_speculative_fault(struct mm_struct *mm,
 #ifdef CONFIG_NUMA
 	struct mempolicy *pol;
 #endif
-	pgd_t *pgd, pgdval;
-	p4d_t *p4d, p4dval;
-	pud_t pudval;
 	int seq;
 	vm_fault_t ret;
 	bool support_spf_in_uffd = false;
@@ -5106,76 +5181,18 @@ static vm_fault_t ___handle_speculative_fault(struct mm_struct *mm,
 	/*
 	 * Do a speculative lookup of the PTE entry.
 	 */
-	local_irq_disable();
-	pgd = pgd_offset(mm, address);
-	pgdval = READ_ONCE(*pgd);
-	if (pgd_none(pgdval) || unlikely(pgd_bad(pgdval)))
-		goto out_walk;
-
-	p4d = p4d_offset(pgd, address);
-	if (pgd_val(READ_ONCE(*pgd)) != pgd_val(pgdval))
-		goto out_walk;
-	p4dval = READ_ONCE(*p4d);
-	if (p4d_none(p4dval) || unlikely(p4d_bad(p4dval)))
-		goto out_walk;
-
-	vmf.pud = pud_offset(p4d, address);
-	if (p4d_val(READ_ONCE(*p4d)) != p4d_val(p4dval))
-		goto out_walk;
-	pudval = READ_ONCE(*vmf.pud);
-	if (pud_none(pudval) || unlikely(pud_bad(pudval)))
-		goto out_walk;
-
-	/* Huge pages at PUD level are not supported. */
-	if (unlikely(pud_trans_huge(pudval)))
-		goto out_walk;
-
-	vmf.pmd = pmd_offset(vmf.pud, address);
-	if (pud_val(READ_ONCE(*vmf.pud)) != pud_val(pudval))
-		goto out_walk;
-	vmf.orig_pmd = READ_ONCE(*vmf.pmd);
-	/*
-	 * pmd_none could mean that a hugepage collapse is in progress
-	 * in our back as collapse_huge_page() mark it before
-	 * invalidating the pte (which is done once the IPI is catched
-	 * by all CPU and we have interrupt disabled).
-	 * For this reason we cannot handle THP in a speculative way since we
-	 * can't safely indentify an in progress collapse operation done in our
-	 * back on that PMD.
-	 * Regarding the order of the following checks, see comment in
-	 * pmd_devmap_trans_unstable()
-	 */
-	if (unlikely(pmd_devmap(vmf.orig_pmd) ||
-		     pmd_none(vmf.orig_pmd) || pmd_trans_huge(vmf.orig_pmd) ||
-		     is_swap_pmd(vmf.orig_pmd)))
-		goto out_walk;
-
-	/*
-	 * The above does not allocate/instantiate page-tables because doing so
-	 * would lead to the possibility of instantiating page-tables after
-	 * free_pgtables() -- and consequently leaking them.
-	 *
-	 * The result is that we take at least one !speculative fault per PMD
-	 * in order to instantiate it.
-	 */
-
-	vmf.pte = pte_offset_map(vmf.pmd, address);
-	if (pmd_val(READ_ONCE(*vmf.pmd)) != pmd_val(vmf.orig_pmd)) {
-		pte_unmap(vmf.pte);
-		vmf.pte = NULL;
-		goto out_walk;
-	}
-	vmf.orig_pte = READ_ONCE(*vmf.pte);
-	barrier(); /* See comment in handle_pte_fault() */
-	if (pte_none(vmf.orig_pte)) {
-		pte_unmap(vmf.pte);
-		vmf.pte = NULL;
+	if (!do_speculative_page_walk(mm, &vmf)) {
+		trace_spf_vma_notsup(_RET_IP_, vmf.vma, address);
+		/*
+		 * Failing page-table walk is similar to page-missing so give an
+		 * opportunity to SIGBUS+MISSING userfault to handle it before
+		 * retrying with mmap_lock
+		 */
+		goto out_uffd;
 	}
 
 	vmf.sequence = seq;
 	vmf.flags = flags;
-
-	local_irq_enable();
 
 	if (!vmf.pte && support_spf_in_uffd)
 		return VM_FAULT_SIGBUS;
@@ -5212,19 +5229,10 @@ static vm_fault_t ___handle_speculative_fault(struct mm_struct *mm,
 		mem_cgroup_oom_synchronize(false);
 	return ret;
 
-out_walk:
-	trace_spf_vma_notsup(_RET_IP_, vmf.vma, address);
-	local_irq_enable();
-	/*
-	 * Failing page-table walk is similar to page-missing so give an
-	 * opportunity to SIGBUS+MISSING userfault to handle it before retrying
-	 * with mmap_lock
-	 */
 out_uffd:
 	if (support_spf_in_uffd)
 		return VM_FAULT_SIGBUS;
 	return VM_FAULT_RETRY;
-
 out_segv:
 	trace_spf_vma_access(_RET_IP_, vmf.vma, address);
 	return VM_FAULT_SIGSEGV;

@@ -1803,6 +1803,8 @@ extern int fixup_user_fault(struct mm_struct *mm,
 			    bool *unlocked);
 
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+extern bool do_speculative_page_walk(struct mm_struct *mm,
+				     struct vm_fault *vmf);
 extern vm_fault_t __handle_speculative_fault(struct mm_struct *mm,
 					     unsigned long address,
 					     unsigned int flags,
@@ -1826,6 +1828,11 @@ static inline vm_fault_t handle_speculative_fault(struct mm_struct *mm,
 extern bool can_reuse_spf_vma(struct vm_area_struct *vma,
 			      unsigned long address);
 #else
+static inline bool do_speculative_page_walk(struct mm_struct *mm,
+					    struct vm_fault *vmf)
+{
+	return false;
+}
 static inline vm_fault_t handle_speculative_fault(struct mm_struct *mm,
 						  unsigned long address,
 						  unsigned int flags,
