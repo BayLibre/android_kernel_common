@@ -1,7 +1,11 @@
 . ${ROOT_DIR}/${KERNEL_DIR}/build.config.constants
 
+<<<<<<< HEAD   (279c85 ANDROID: CONFIG_MODPROBE_PATH to toolbox's modprobe)
 KMI_GENERATION=0
 
+=======
+BRANCH=android-mainline
+>>>>>>> CHANGE (cc274c ANDROID: Move BRANCH back to build.config.common.)
 LLVM=1
 DEPMOD=depmod
 CLANG_PREBUILT_BIN=prebuilts/clang/host/linux-x86/clang-${CLANG_VERSION}/bin
