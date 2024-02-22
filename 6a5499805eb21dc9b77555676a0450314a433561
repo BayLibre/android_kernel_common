@@ -52,6 +52,24 @@
       "parentUuid": "7571e62c_56ce3af0",
       "revId": "6a5499805eb21dc9b77555676a0450314a433561",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe1bbd6_f90ce2cd",
+        "filename": "include/uapi/linux/gzvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2024-02-22T08:03:53Z",
+      "side": 1,
+      "message": "Just to clarify a few points:\n1. The crosvm api/compatibility has not been broken, only some of the macros have been modified according to the LKML reviewer\u0027s comment.\n2. If there are corresponding changes in Crosvm\u0027s bindings, we will submit another patch.\n3. In the current situation, can we close this issue by reverting to the previous(PatchSet 1) version?",
+      "parentUuid": "dcda2250_817e31c9",
+      "revId": "6a5499805eb21dc9b77555676a0450314a433561",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
