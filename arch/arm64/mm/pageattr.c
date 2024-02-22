@@ -32,6 +32,7 @@ bool can_set_direct_map(void)
 	return rodata_full || debug_pagealloc_enabled() ||
 	       arm64_kfence_can_set_direct_map();
 }
+EXPORT_SYMBOL_GPL(can_set_direct_map);
 
 static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
 {
@@ -176,6 +177,7 @@ int set_direct_map_invalid_noflush(struct page *page)
 				   (unsigned long)page_address(page),
 				   PAGE_SIZE, change_page_range, &data);
 }
+EXPORT_SYMBOL_GPL(set_direct_map_invalid_noflush);
 
 int set_direct_map_default_noflush(struct page *page)
 {
@@ -191,6 +193,7 @@ int set_direct_map_default_noflush(struct page *page)
 				   (unsigned long)page_address(page),
 				   PAGE_SIZE, change_page_range, &data);
 }
+EXPORT_SYMBOL_GPL(set_direct_map_default_noflush);
 
 #ifdef CONFIG_DEBUG_PAGEALLOC
 void __kernel_map_pages(struct page *page, int numpages, int enable)
