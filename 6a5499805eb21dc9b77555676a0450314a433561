@@ -34,6 +34,24 @@
       "parentUuid": "c90a8c7c_93576ced",
       "revId": "6a5499805eb21dc9b77555676a0450314a433561",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcda2250_817e31c9",
+        "filename": "include/uapi/linux/gzvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-22T04:33:52Z",
+      "side": 1,
+      "message": "I\u0027m fine with this alignment, but why break crossvm compatibility now when you are planning submit another patch that restores compatibility? How about adding that patch on top of this one so compatibility is not broken?",
+      "parentUuid": "7571e62c_56ce3af0",
+      "revId": "6a5499805eb21dc9b77555676a0450314a433561",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
