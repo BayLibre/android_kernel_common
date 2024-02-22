@@ -2354,6 +2354,10 @@ static void *pkvm_setup_snapshot(struct kvm_pgtable_snapshot *snap_hva)
 	if (__pkvm_host_donate_hyp(hyp_virt_to_pfn(snap), 1))
 		return NULL;
 
+	if (snap->pgd_pages == 0 || snap->num_used_pages == 0) {
+		return snap;
+	}
+
 	pgd = kern_hyp_va(snap->pgd_hva);
 	if (!PAGE_ALIGNED(pgd))
 		goto error_with_snapshot;
@@ -2401,6 +2405,10 @@ static void pkvm_teardown_snapshot(struct kvm_pgtable_snapshot *snap)
 	u64 *used_pg = kern_hyp_va(snap->used_pages_hva);
 	void *pgd = kern_hyp_va(snap->pgd_hva);
 
+	if (snap->pgd_pages == 0 || snap->num_used_pages == 0) {
+		goto no_snapshot;
+	}
+
 	for (i = 0; i < snap->used_pages_indx; i++) {
 		mc_page = used_pg[i];
 		WARN_ON(__pkvm_hyp_donate_host(hyp_phys_to_pfn(mc_page), 1));
@@ -2418,6 +2426,7 @@ static void pkvm_teardown_snapshot(struct kvm_pgtable_snapshot *snap)
 
 	snap->pgtable.mm_ops = NULL;
 	WARN_ON(__pkvm_hyp_donate_host(hyp_virt_to_pfn(pgd), snap->pgd_pages));
+no_snapshot:
 	WARN_ON(__pkvm_hyp_donate_host(hyp_virt_to_pfn(snap), 1));
 }
 
@@ -2438,6 +2447,7 @@ static void pkvm_stage2_initialize_snapshot(const struct kvm_pgtable *from_pgt,
 	dest_pgt->start_level	= from_pgt->start_level;
 	dest_pgt->flags		= from_pgt->flags;
 	dest_pgt->pte_ops	= from_pgt->pte_ops;
+	dest_pgt->pgd		= NULL;
 }
 
 int __pkvm_guest_stage2_snapshot(struct kvm_pgtable_snapshot *snap,
@@ -2452,15 +2462,19 @@ int __pkvm_guest_stage2_snapshot(struct kvm_pgtable_snapshot *snap,
 	if (snap->used_pages_indx != 0)
 		return -EINVAL;
 
+	from_pgt = &vm->pgt;
+	to_pgt = &snap->pgtable;
+
+	pkvm_stage2_initialize_snapshot(from_pgt, to_pgt, &mm_ops);
+
+	if (snap->pgd_pages == 0 || snap->num_used_pages == 0)
+		return 0;
+
 	required_pgd_len = kvm_pgtable_stage2_pgd_size(vm->kvm.arch.vtcr);
 	if (snap->pgd_pages < (required_pgd_len >> PAGE_SHIFT))
 		return -ENOMEM;
 
-	from_pgt = &vm->pgt;
-	to_pgt = &snap->pgtable;
 	pgd = kern_hyp_va(snap->pgd_hva);
-
-	pkvm_stage2_initialize_snapshot(from_pgt, to_pgt, &mm_ops);
 
 	guest_lock_component(vm);
 
@@ -2485,7 +2499,7 @@ int __pkvm_stage2_snapshot(struct kvm_pgtable_snapshot *snap_hva,
 		return -EPERM;
 
 	ret = pkvm_stage2_snapshot_by_handle(snap, handle);
-	if (!ret) {
+	if (!ret && snap->pgtable.pgd) {
 		pgd = snap->pgtable.pgd;
 		snap->pgtable.pgd = (kvm_pte_t *)__hyp_pa(pgd);
 	}
