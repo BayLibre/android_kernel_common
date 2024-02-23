@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03680577_5248b965",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-02-23T10:10:00Z",
+      "side": 1,
+      "message": "Right so they needed `{ -1, NULL }` because they need to print a separator in between different stage-1 address ranges: [kernel linear map], [modules start, modules end] [vmalloc] and so on. In our case we don\u0027t need it.",
+      "parentUuid": "ae9c2da7_1497700c",
+      "revId": "c7f24860e89cba8f74286264fe3676f30204234d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "027e4f0b_73859fb8",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-23T09:11:12Z",
       "side": 1,
       "message": "You probably could remove this `free_with_kvm_ref` by simply checking for ret \u003d\u003d 0:\n\n\n```suggestion\n\tret \u003d single_open(file, kvm_ptdump_guest_show, st);\n\tif (!ret)\n\t    return 0;\n\n\tkvm_put_kvm(kvm)\n```",
+      "revId": "c7f24860e89cba8f74286264fe3676f30204234d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10a6cbe3_331d2337",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-02-23T10:10:00Z",
+      "side": 1,
+      "message": "Yes, we can do that, I will update it because is cleaner. Thanks !",
+      "parentUuid": "027e4f0b_73859fb8",
       "revId": "c7f24860e89cba8f74286264fe3676f30204234d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
