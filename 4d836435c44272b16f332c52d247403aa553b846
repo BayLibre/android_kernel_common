@@ -16,6 +16,24 @@
       "message": "Please fix the header include errors. See https://source.android.com/docs/core/architecture/kernel/kernel-code#defining-vendor-hooks on how to avoid including kernel headers in `include/trace/hooks/block.h`. Forward declare the types here which are needed for your hooks and include the file(s) in `vendor_hooks.c` to avoid CRC changes.",
       "revId": "4d836435c44272b16f332c52d247403aa553b846",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "533567ff_12076774",
+        "filename": "include/trace/hooks/block.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2068679
+      },
+      "writtenOn": "2024-02-23T12:04:43Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "321860f6_d525ed5b",
+      "revId": "4d836435c44272b16f332c52d247403aa553b846",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
