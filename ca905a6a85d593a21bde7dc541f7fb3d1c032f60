@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18091ccf_17133a05",
+        "filename": "arch/arm64/include/asm/kvm_pgtable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-02-23T10:25:41Z",
+      "side": 1,
+      "message": "I think that referring to pages in the context of the pgd makes more sense. I would like to keep it in this way.",
+      "parentUuid": "ae4006c4_3ca0dd53",
+      "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5293d61_31369b50",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e700aa34_7b6b3a88",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2321,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-02-23T10:25:41Z",
+      "side": 1,
+      "message": "I would like to keep checking it here because here we are manipulating the index. Also, all the allocated memory is accounted on behalf of the process that accesses the debugfs entry and changing to `hyp_alloc` might loose this info.",
+      "parentUuid": "e5293d61_31369b50",
+      "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4117367e_addc42f0",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-23T09:58:06Z",
       "side": 1,
       "message": "We are storing more and more things in the vmemmap (see Quentin\u0027s series)\n\nThis is probably not a good idea of just erasing the entire entry. Beside, as we\u0027ve just admitted this page, everything should be alright?\n\nIs it for the refcount you set the whole thing to 0?",
+      "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e349dc6_357ac697",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2330,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-02-23T10:25:41Z",
+      "side": 1,
+      "message": "Reading this again I don\u0027t think it makes sense. The refcount should be zero otherwise we have a problem. I will discard this vmemmap entry clear.",
+      "parentUuid": "4117367e_addc42f0",
       "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
