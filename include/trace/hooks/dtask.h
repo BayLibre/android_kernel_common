@@ -66,6 +66,9 @@ DECLARE_HOOK(android_vh_rwsem_can_spin_on_owner,
 DECLARE_HOOK(android_vh_sched_show_task,
 	TP_PROTO(struct task_struct *task),
 	TP_ARGS(task));
+DECLARE_HOOK(android_vh_percpu_rwsem_wq_add,
+	TP_PROTO(struct percpu_rw_semaphore *sem, bool reader),
+	TP_ARGS(sem, reader));
 
 struct mutex_waiter;
 DECLARE_HOOK(android_vh_alter_mutex_list_add,
