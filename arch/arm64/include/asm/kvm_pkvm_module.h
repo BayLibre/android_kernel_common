@@ -198,6 +198,8 @@ struct pkvm_module_ops {
 #endif
 	void (*iommu_iotlb_gather_add_page)(void *cookie, struct iommu_iotlb_gather *gather,
 					    unsigned long iova, size_t size);
+	void * (*iommu_donate_pages_idmap)(u8 order);
+	void (*iommu_reclaim_pages_idmap)(void *p, u8 order);
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
