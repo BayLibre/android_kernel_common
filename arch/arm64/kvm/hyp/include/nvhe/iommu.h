@@ -25,6 +25,10 @@ void *kvm_iommu_donate_pages(u8 order, bool request);
 void kvm_iommu_reclaim_pages(void *p, u8 order);
 int kvm_iommu_request(struct kvm_hyp_req *req);
 
+/* alloc/free from idmap pool. */
+void *kvm_iommu_donate_pages_idmap(u8 order);
+void kvm_iommu_reclaim_pages_idmap(void *p, u8 order);
+
 /* Hypercall handlers */
 int kvm_iommu_alloc_domain(pkvm_handle_t domain_id);
 int kvm_iommu_free_domain(pkvm_handle_t domain_id);
