@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e081f41_67c9c5d1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2067,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T15:11:32Z",
+      "side": 1,
+      "message": "Why could it not be shared with a guest or FFA? I\u0027m worried that this function will return false positives for those cases.",
+      "range": {
+        "startLine": 2067,
+        "startChar": 45,
+        "endLine": 2067,
+        "endChar": 51
+      },
+      "revId": "9f5085cba50b14f050dd645f22965973ba105108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ae28a73_186740a9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2108,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T15:11:32Z",
+      "side": 1,
+      "message": "I don\u0027t see the benefit of this flag if it\u0027s host-controlled. Why can\u0027t we just check `addr_is_memory()` every time?",
+      "range": {
+        "startLine": 2108,
+        "startChar": 6,
+        "endLine": 2108,
+        "endChar": 12
+      },
+      "revId": "9f5085cba50b14f050dd645f22965973ba105108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "217396de_0bc76565",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2115,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T15:11:32Z",
+      "side": 1,
+      "message": "These can\u0027t happen, as the earlier patch didn\u0027t add a saturating refcount (and I\u0027m not sure we should add that if we just BUG_ON here anyway).",
+      "range": {
+        "startLine": 2112,
+        "startChar": 0,
+        "endLine": 2115,
+        "endChar": 0
+      },
+      "revId": "9f5085cba50b14f050dd645f22965973ba105108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "481ac4df_ab2f65c6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2151,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T15:11:32Z",
+      "side": 1,
+      "message": "I don\u0027t understand this part. If the page has been shared with the IOMMU multiple times, shouldn\u0027t we only update the page-table when the refcount hits 0?",
+      "range": {
+        "startLine": 2151,
+        "startChar": 8,
+        "endLine": 2151,
+        "endChar": 18
+      },
+      "revId": "9f5085cba50b14f050dd645f22965973ba105108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d768e0f_d1d90fb2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2169,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T15:11:32Z",
+      "side": 1,
+      "message": "Take a pfn and nr_pages instead of phys_addr/size? That avoids the need to pointless alignment checks.",
+      "range": {
+        "startLine": 2169,
+        "startChar": 0,
+        "endLine": 2169,
+        "endChar": 74
+      },
+      "revId": "9f5085cba50b14f050dd645f22965973ba105108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4259f99a_7d644923",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2182,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T15:11:32Z",
+      "side": 1,
+      "message": "Do we have to do this with so many table walks? We avoid this in e.g. `___pkvm_host_donate_hyp()`. Same for the unshare function.",
+      "range": {
+        "startLine": 2182,
+        "startChar": 8,
+        "endLine": 2182,
+        "endChar": 34
+      },
+      "revId": "9f5085cba50b14f050dd645f22965973ba105108",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
