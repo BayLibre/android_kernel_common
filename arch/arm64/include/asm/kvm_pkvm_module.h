@@ -8,6 +8,7 @@
 
 typedef void (*dyn_hcall_t)(struct user_pt_regs *);
 struct kvm_hyp_iommu;
+struct iommu_iotlb_gather;
 
 #ifdef CONFIG_MODULES
 enum pkvm_psci_notification {
@@ -138,6 +139,7 @@ enum pkvm_psci_notification {
 				Missing donations if allocator returns NULL
  * @__list_add_valid:		Needed if the code uses linked lists.
  * @__list_del_entry_valid:	Needed if the code uses linked lists.
+ * @iommu_iotlb_gather_add_page:Add a page to the iotlb_gather druing unmap for the IOMMU.
  */
 struct pkvm_module_ops {
 	int (*create_private_mapping)(phys_addr_t phys, size_t size,
@@ -189,6 +191,8 @@ struct pkvm_module_ops {
 	bool (*list_add_valid)(struct list_head *new, struct list_head *prev,
 				 struct list_head *next);
 	bool (*list_del_entry_valid)(struct list_head *entry);
+	void (*iommu_iotlb_gather_add_page)(void *cookie, struct iommu_iotlb_gather *gather,
+					    unsigned long iova, size_t size);
 };
 
 int __pkvm_load_el2_module(struct module *this, unsigned long *token);
