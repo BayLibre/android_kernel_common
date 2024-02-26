@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84465bad_1efcde70",
+        "filename": "drivers/usb/gadget/function/Makefile",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "no different config option for this?",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 48
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53d12481_6c321bef",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "where is the documentation for this sysfs file?",
+      "range": {
+        "startLine": 31,
+        "startChar": 15,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25a89aab_abae6b24",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "sysfs is \"one value per file\", why are you asking userspace to parse this?",
+      "range": {
+        "startLine": 41,
+        "startChar": 26,
+        "endLine": 41,
+        "endChar": 30
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26d0901_74fb760e",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "why are you not incrementing the reference count of a pointer you are storing?",
+      "range": {
+        "startLine": 73,
+        "startChar": 13,
+        "endLine": 73,
+        "endChar": 16
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb0e2aa7_1b57d464",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "you raced with userspace and lost, please use default groups instead.",
+      "range": {
+        "startLine": 75,
+        "startChar": 7,
+        "endLine": 75,
+        "endChar": 24
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32df7dbd_d98b0f3a",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "Google rules requires a copyright line too, right?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 39
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22229f4e_2738462d",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "\"options\"?",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8929a6a_38e5332d",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "why `int`?  perhaps `u32`?  Why must it be signed?",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 4
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ec70899_d446b02b",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "`u32`?",
+      "range": {
+        "startLine": 12,
+        "startChar": 1,
+        "endLine": 12,
+        "endChar": 13
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "267d7dcc_84f9e007",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "what does this protect?  Documenting the structure fields will be nice.",
+      "range": {
+        "startLine": 14,
+        "startChar": 12,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d137bbc7_8dcff8c5",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "spellcheck 😊",
+      "range": {
+        "startLine": 40,
+        "startChar": 27,
+        "endLine": 40,
+        "endChar": 35
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d1d6ff8_177e0817",
+        "filename": "drivers/usb/gadget/function/f_midi.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1294,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-26T16:28:56Z",
+      "side": 1,
+      "message": "Please return the error given to you by the call that just failed.",
+      "range": {
+        "startLine": 1294,
+        "startChar": 0,
+        "endLine": 1294,
+        "endChar": 26
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
