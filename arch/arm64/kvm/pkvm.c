@@ -200,6 +200,8 @@ static int __pkvm_create_hyp_vcpu(struct kvm *host_kvm, struct kvm_vcpu *host_vc
 {
 	pkvm_handle_t handle = host_kvm->arch.pkvm.handle;
 
+	host_vcpu->arch.stage2_mc = init_hyp_stage2_memcache();
+
 	/* Indexing of the vcpus to be sequential starting at 0. */
 	if (WARN_ON(host_vcpu->vcpu_idx != idx))
 		return -EINVAL;
@@ -245,7 +247,7 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 
 out_free:
 	host_kvm->arch.pkvm.handle = 0;
-	free_hyp_memcache(&host_kvm->arch.pkvm.stage2_teardown_mc, 0);
+	free_hyp_memcache(&host_kvm->arch.pkvm.stage2_teardown_mc);
 }
 
 /*
@@ -280,6 +282,8 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	pgd = alloc_pages_exact(pgd_sz, GFP_KERNEL_ACCOUNT);
 	if (!pgd)
 		return -ENOMEM;
+
+	host_kvm->arch.pkvm.stage2_teardown_mc = init_hyp_stage2_memcache();
 
 	/* Donate the VM memory to hyp and let hyp initialize it. */
 	ret = kvm_call_refill_hyp_nvhe(__pkvm_init_vm, host_kvm, pgd);
@@ -829,19 +833,16 @@ EXPORT_SYMBOL(__pkvm_register_el2_call);
 
 int __pkvm_topup_hyp_alloc(unsigned long nr_pages)
 {
-	struct kvm_hyp_memcache mc = {
-		.head		= 0,
-		.nr_pages	= 0,
-	};
+	struct kvm_hyp_memcache mc = init_hyp_memcache();
 	int ret;
 
-	ret = topup_hyp_memcache(&mc, nr_pages, 0);
+	ret = topup_hyp_memcache(&mc, nr_pages);
 	if (ret)
 		return ret;
 
 	ret = kvm_call_hyp_nvhe(__pkvm_hyp_alloc_refill, mc.head, mc.nr_pages);
 	if (ret)
-		free_hyp_memcache(&mc, 0);
+		free_hyp_memcache(&mc);
 
 	return ret;
 }
@@ -850,7 +851,7 @@ EXPORT_SYMBOL(__pkvm_topup_hyp_alloc);
 unsigned long __pkvm_reclaim_hyp_alloc(unsigned long nr_pages)
 {
 	unsigned long ratelimit, last_reclaim, reclaimed = 0;
-	struct kvm_hyp_memcache mc;
+	struct kvm_hyp_memcache mc = init_hyp_memcache();
 	struct arm_smccc_res res;
 
 	do {
@@ -865,7 +866,7 @@ unsigned long __pkvm_reclaim_hyp_alloc(unsigned long nr_pages)
 		mc.head = res.a1;
 		last_reclaim = mc.nr_pages = res.a2;
 
-		free_hyp_memcache(&mc, 0);
+		free_hyp_memcache(&mc);
 		reclaimed += last_reclaim;
 
 	} while (last_reclaim && (reclaimed < nr_pages));
