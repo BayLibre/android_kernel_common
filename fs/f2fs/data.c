@@ -28,6 +28,7 @@
 #include "segment.h"
 #include "iostat.h"
 #include <trace/events/f2fs.h>
+#include <trace/hooks/ioprio.h>
 
 #define NUM_PREALLOC_POST_READ_CTXS	128
 
@@ -513,7 +514,34 @@ void f2fs_submit_read_bio(struct f2fs_sb_info *sbi, struct bio *bio,
 	trace_f2fs_submit_read_bio(sbi->sb, type, bio);
 
 	iostat_update_submit_ctx(bio, type);
+	trace_android_vh_bio_set_ioprio_iter(bio);
 	submit_bio(bio);
+}
+
+static void f2fs_align_write_bio(struct f2fs_sb_info *sbi, struct bio *bio)
+{
+	unsigned int start =
+		(bio->bi_iter.bi_size >> F2FS_BLKSIZE_BITS) % F2FS_IO_SIZE(sbi);
+
+	if (start == 0)
+		return;
+
+	/* fill dummy pages */
+	for (; start < F2FS_IO_SIZE(sbi); start++) {
+		struct page *page =
+			mempool_alloc(sbi->write_io_dummy,
+				      GFP_NOIO | __GFP_NOFAIL);
+		f2fs_bug_on(sbi, !page);
+
+		lock_page(page);
+
+		zero_user_segment(page, 0, PAGE_SIZE);
+		set_page_private_dummy(page);
+
+		if (bio_add_page(bio, page, PAGE_SIZE, 0) < PAGE_SIZE)
+			f2fs_bug_on(sbi, 1);
+		trace_android_vh_bio_set_ioprio(bio, page);
+	}
 }
 
 static void f2fs_submit_write_bio(struct f2fs_sb_info *sbi, struct bio *bio,
@@ -526,6 +554,7 @@ static void f2fs_submit_write_bio(struct f2fs_sb_info *sbi, struct bio *bio,
 
 	trace_f2fs_submit_write_bio(sbi->sb, type, bio);
 	iostat_update_submit_ctx(bio, type);
+	trace_android_vh_bio_set_ioprio_iter(bio);
 	submit_bio(bio);
 }
 
@@ -711,6 +740,7 @@ int f2fs_submit_page_bio(struct f2fs_io_info *fio)
 		return -EFAULT;
 	}
 
+	trace_android_vh_bio_set_ioprio(bio, page);
 	if (fio->io_wbc && !is_read_io(fio->op))
 		wbc_account_cgroup_owner(fio->io_wbc, fio->page, PAGE_SIZE);
 
@@ -767,6 +797,7 @@ static void add_bio_entry(struct f2fs_sb_info *sbi, struct bio *bio,
 	if (bio_add_page(bio, page, PAGE_SIZE, 0) != PAGE_SIZE)
 		f2fs_bug_on(sbi, 1);
 
+	trace_android_vh_bio_set_ioprio(bio, page);
 	f2fs_down_write(&io->bio_list_lock);
 	list_add_tail(&be->list, &io->bio_list);
 	f2fs_up_write(&io->bio_list_lock);
@@ -806,6 +837,7 @@ static int add_ipu_page(struct f2fs_io_info *fio, struct bio **bio,
 					fio->page->index, fio) &&
 			    bio_add_page(*bio, page, PAGE_SIZE, 0) ==
 					PAGE_SIZE) {
+				trace_android_vh_bio_set_ioprio_ipu(*bio, page);
 				ret = 0;
 				break;
 			}
@@ -1009,6 +1041,7 @@ alloc_new:
 		goto alloc_new;
 	}
 
+	trace_android_vh_bio_set_ioprio(io->bio, bio_page);
 	if (fio->io_wbc)
 		wbc_account_cgroup_owner(fio->io_wbc, fio->page, PAGE_SIZE);
 
@@ -1107,6 +1140,7 @@ static int f2fs_submit_page_read(struct inode *inode, struct page *page,
 		bio_put(bio);
 		return -EFAULT;
 	}
+	trace_android_vh_bio_set_ioprio(bio, page);
 	inc_page_count(sbi, F2FS_RD_DATA);
 	f2fs_update_iostat(sbi, NULL, FS_DATA_READ_IO, F2FS_BLKSIZE);
 	f2fs_submit_read_bio(sbi, bio, DATA);
@@ -2151,6 +2185,7 @@ submit_and_realloc:
 	if (bio_add_page(bio, page, blocksize, 0) < blocksize)
 		goto submit_and_realloc;
 
+	trace_android_vh_bio_set_ioprio(bio, page);
 	inc_page_count(F2FS_I_SB(inode), F2FS_RD_DATA);
 	f2fs_update_iostat(F2FS_I_SB(inode), NULL, FS_DATA_READ_IO,
 							F2FS_BLKSIZE);
@@ -2307,6 +2342,7 @@ submit_and_realloc:
 		if (bio_add_page(bio, page, blocksize, 0) < blocksize)
 			goto submit_and_realloc;
 
+		trace_android_vh_bio_set_ioprio(bio, page);
 		ctx = get_post_read_ctx(bio);
 		ctx->enabled_steps |= STEP_DECOMPRESS;
 		refcount_inc(&dic->refcnt);
