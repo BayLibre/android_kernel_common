@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7483229_bef85679",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T16:13:55Z",
+      "side": 1,
+      "message": "1UL ?",
+      "range": {
+        "startLine": 221,
+        "startChar": 11,
+        "endLine": 221,
+        "endChar": 12
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0849b399_86d72245",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T16:13:55Z",
+      "side": 1,
+      "message": "Again, we could just require this in the interface rather than taking full-fat addresses as arguments.",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 49
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcee2c52_9da0c7ad",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T16:13:55Z",
+      "side": 1,
+      "message": "What if we have physical memory at 0x0? Maybe we\u0027re better off using e.g. `KVM_PHYS_INVALID` instead? Then again, it\u0027s possible that the host code has the same issue.",
+      "range": {
+        "startLine": 316,
+        "startChar": 20,
+        "endLine": 316,
+        "endChar": 21
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
