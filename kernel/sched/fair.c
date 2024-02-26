@@ -924,7 +924,7 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 	struct rb_node *node = cfs_rq->tasks_timeline.rb_root.rb_node;
 	struct sched_entity *se = __pick_first_entity(cfs_rq);
 	struct sched_entity *curr = cfs_rq->curr;
-	struct sched_entity *best = NULL;
+	struct sched_entity *best = NULL, *leftmost;
 
 	/*
 	 * We can safely skip eligibility check if there is only one entity
@@ -948,6 +948,8 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 		best = se;
 		goto found;
 	}
+
+	leftmost = se;
 
 	/* Heap search for the EEVD entity */
 	while (node) {
@@ -980,6 +982,15 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 found:
 	if (!best || (curr && entity_before(curr, best)))
 		best = curr;
+
+	/*
+	 * entity_eligible() could bring false negative due to
+	 * multiply overflow, which reports no eligible entity.
+	 * Return leftmost entity as a backup(it is guaranteed
+	 * the tree is not NULL.
+	 */
+	if (!best)
+		best = leftmost;
 
 	return best;
 }
