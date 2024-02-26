@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb56170_83708cae",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/arm-smmu-v3.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-26T16:52:08Z",
+      "side": 1,
+      "message": "Dodgy if the stream table is in non-cacheable memory? Why don\u0027t we just take a lock in the case that we have to allocate?\n\nHaving said that, how do we handle non-coherent SMMUs?",
+      "range": {
+        "startLine": 191,
+        "startChar": 6,
+        "endLine": 191,
+        "endChar": 23
+      },
+      "revId": "9180c5697a1878d36c291cd86bfec5c3152d2362",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
