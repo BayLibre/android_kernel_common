@@ -371740,6 +371740,15 @@ elf_symbol {
   full_name: "ktime_get_coarse_real_ts64"
 }
 elf_symbol {
+  id: 0xdd9c72d1
+  name: "ktime_get_coarse_ts64"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf5e7ea40
+  type_id: 0x11a59ba3
+  full_name: "ktime_get_coarse_ts64"
+}
+elf_symbol {
   id: 0xba76946d
   name: "ktime_get_coarse_with_offset"
   is_defined: true
@@ -406600,6 +406609,7 @@ interface {
   symbol_id: 0x25143c30
   symbol_id: 0x7b453e0a
   symbol_id: 0xb80124fb
+  symbol_id: 0xdd9c72d1
   symbol_id: 0xba76946d
   symbol_id: 0x012f568e
   symbol_id: 0x6a40dcf7
