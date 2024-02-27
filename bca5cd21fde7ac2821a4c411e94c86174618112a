@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "568598f9_a0c9b1b2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-27T12:26:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7483229_bef85679",
+      "range": {
+        "startLine": 221,
+        "startChar": 11,
+        "endLine": 221,
+        "endChar": 12
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0849b399_86d72245",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6c65b5e_4bcdb913",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-27T12:26:52Z",
+      "side": 1,
+      "message": "We can. but this just follows the Linux IOMMU and API, and this is hyp-host interface I think it\u0027s easier to have it close to the Linux API.",
+      "parentUuid": "0849b399_86d72245",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 49
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcee2c52_9da0c7ad",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 5
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-26T16:13:55Z",
       "side": 1,
       "message": "What if we have physical memory at 0x0? Maybe we\u0027re better off using e.g. `KVM_PHYS_INVALID` instead? Then again, it\u0027s possible that the host code has the same issue.",
+      "range": {
+        "startLine": 316,
+        "startChar": 20,
+        "endLine": 316,
+        "endChar": 21
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49405564_af6f27b4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-27T12:26:52Z",
+      "side": 1,
+      "message": "The Linux IOMMU code and many drivers return 0 in case of failure, we can return `KVM_PHYS_INVALID`, but the host driver will return 0 any way.\n\nI think this is a problem in `iova_to_phys` signature, may be it assumes the caller know what they do.",
+      "parentUuid": "dcee2c52_9da0c7ad",
       "range": {
         "startLine": 316,
         "startChar": 20,
