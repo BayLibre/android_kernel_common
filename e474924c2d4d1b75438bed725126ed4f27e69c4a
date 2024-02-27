@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35e54d4e_73986be3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-27T13:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f233c4f3_5add1f42",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "e474924c2d4d1b75438bed725126ed4f27e69c4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44ab17f6_0630433d",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-26T14:12:36Z",
       "side": 1,
       "message": "This doesn\u0027t seem to do anything useful?",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 9
+      },
+      "revId": "e474924c2d4d1b75438bed725126ed4f27e69c4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd97da74_6938d793",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/memory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-27T13:11:01Z",
+      "side": 1,
+      "message": "Yes, I don\u0027t think that\u0027s something new. ref count is very generous for map count.",
+      "parentUuid": "44ab17f6_0630433d",
       "range": {
         "startLine": 64,
         "startChar": 4,
