@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7785ffaa_87bda919",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-27T17:55:18Z",
+      "side": 1,
+      "message": "Won\u0027t that cause the map to fail prematurely though, as soon as it hits the existing mapping?",
+      "range": {
+        "startLine": 16,
+        "startChar": 28,
+        "endLine": 16,
+        "endChar": 59
+      },
+      "revId": "779a2595070b805f0db66161b6f2a5d49084011d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d622b4d7_1939ee4e",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-27T17:55:18Z",
+      "side": 1,
+      "message": "This is a little ugly. Could we instead do something like:\n\n```\nreturn arm_lpae_mapping_exists(...);\n```\nand have EL1 and EL2 provide different implementations of that? We could even verify that it\u0027s an idmap if we passed the right arguments.",
+      "range": {
+        "startLine": 88,
+        "startChar": 8,
+        "endLine": 88,
+        "endChar": 31
+      },
+      "revId": "779a2595070b805f0db66161b6f2a5d49084011d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
