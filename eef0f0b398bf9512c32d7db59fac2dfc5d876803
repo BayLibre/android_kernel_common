@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "093293b2_c1b819c9",
+        "filename": "arch/arm64/include/asm/arm-smmu-v3-regs.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-27T14:09:31Z",
+      "side": 0,
+      "message": "I\u0027d much rather we preserve the existing driver behaviour for the EL1 driver, and allow pKVM to configure a split of 6, 8 or 10 depending upon the page-size. We should be able to figure this out at compile time and define the constant accordingly...",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 24
+      },
+      "revId": "eef0f0b398bf9512c32d7db59fac2dfc5d876803",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
