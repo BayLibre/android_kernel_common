@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "403de0dd_015249ed",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-02-27T21:12:09Z",
+      "side": 1,
+      "message": "It appears old is set at line 486 to sysctl_sched_pelt_multiplier, so why does this hook have both if this is the only place its used?",
+      "revId": "f7fc3e80fd5bc161c2344d4cea80fa2d36620b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
