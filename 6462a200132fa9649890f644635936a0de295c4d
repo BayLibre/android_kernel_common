@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9b57506_27b2682a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-27T15:16:37Z",
+      "side": 1,
+      "message": "Is this used on a hot path? Otherwise, an rwlock would be easier to reason about.",
+      "range": {
+        "startLine": 236,
+        "startChar": 4,
+        "endLine": 236,
+        "endChar": 23
+      },
+      "revId": "6462a200132fa9649890f644635936a0de295c4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
