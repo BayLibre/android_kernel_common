@@ -366,3 +366,12 @@
 # required by iowait.ko
   __traceiter_sched_stat_iowait
   __tracepoint_sched_stat_iowait
+
+#required by ioprio.ko
+  __traceiter_android_vh_bio_set_ioprio
+  __traceiter_android_vh_bio_set_ioprio_ipu
+  __traceiter_android_vh_bio_set_ioprio_iter
+  __tracepoint_android_vh_bio_set_ioprio
+  __tracepoint_android_vh_bio_set_ioprio_ipu
+  __tracepoint_android_vh_bio_set_ioprio_iter
+
