@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a521f0e8_7d9972ed",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-27T18:58:15Z",
+      "side": 1,
+      "message": "Similar to the previous patch, it would be much cleaner to have EL1/EL2 hooks here instead of the #ifdef",
+      "range": {
+        "startLine": 418,
+        "startChar": 8,
+        "endLine": 418,
+        "endChar": 31
+      },
+      "revId": "1393bd0b289120e1cb0d791160b3511bf37715e4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
