@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70be80e5_ee8c6868",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ee98470_7aa6dfd0",
+      "range": {
+        "startLine": 10,
+        "startChar": 37,
+        "endLine": 10,
+        "endChar": 45
+      },
+      "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "436f8834_9f8ef6d3",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-02-27T16:08:20Z",
       "side": 1,
       "message": "Are you talking about the EL2 part of the pKVM driver? \n\nIf yes, is that because we don\u0027t have access to per_cpu variables? Maybe we could find a way around that. Care to share an example?",
+      "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04613906_687adc30",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:04:28Z",
+      "side": 1,
+      "message": "This EL2 iommu specific, and is improved later, basically IOMMU ops has one return which is ENOMEM, next I add a function to add requests to SMCCC return.",
+      "parentUuid": "436f8834_9f8ef6d3",
       "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -94,6 +136,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98f9fcad_cfe3191c",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:04:28Z",
+      "side": 1,
+      "message": "No ,map function return mapped size, so we solely rely on requests in that case.",
+      "parentUuid": "2028416e_e60f4467",
+      "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3343c4a9_c260c666",
         "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
         "patchSetId": 7
@@ -105,6 +165,24 @@
       "writtenOn": "2024-02-27T16:08:20Z",
       "side": 1,
       "message": "isn\u0027t it `ret` here ? feels like we would write",
+      "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d7e54e3_d23f96c3",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:04:28Z",
+      "side": 1,
+      "message": "Same as map",
+      "parentUuid": "3343c4a9_c260c666",
       "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
