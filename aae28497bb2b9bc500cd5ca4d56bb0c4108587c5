@@ -22,6 +22,30 @@
       },
       "revId": "aae28497bb2b9bc500cd5ca4d56bb0c4108587c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4e50b04_8d1eacbf",
+        "filename": "arch/arm64/include/asm/arm-smmu-v3-regs.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:01:36Z",
+      "side": 1,
+      "message": "Yes, it does, for 4K pages it will be 2 bit less, not sure if that is an issue, but later high order allocation is comming to the hypervisor and this can  be improved.",
+      "parentUuid": "6b0f4eed_238c5aea",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 26
+      },
+      "revId": "aae28497bb2b9bc500cd5ca4d56bb0c4108587c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
