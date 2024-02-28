@@ -22,6 +22,29 @@
       },
       "revId": "d2953d193059b7ca7ea620b35ce71e1ee5b82035",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f03fb5_88718572",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-02-28T20:38:21Z",
+      "side": 1,
+      "message": "can we make a static inline function inside the header? Since everything else uses it, this code I would assume to be quite hot.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 1
+      },
+      "revId": "d2953d193059b7ca7ea620b35ce71e1ee5b82035",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
