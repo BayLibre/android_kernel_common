@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29dd6967_4e68a2bb",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-02-28T12:43:26Z",
+      "side": 1,
+      "message": "nit: !! isn\u0027t necessary since the variable is bool",
+      "revId": "d12620a2164993c5aba50c95c1bf06eea10013a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c2fd74_b93bd909",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-02-28T12:43:26Z",
+      "side": 1,
+      "message": "only if you think it makes more sense, can you use the size_* helpers for the size calculations here?",
+      "revId": "d12620a2164993c5aba50c95c1bf06eea10013a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6aa5cdb_6965336f",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-02-28T12:43:26Z",
+      "side": 1,
+      "message": "nr_done or somehting? done sounds like a boolean.",
+      "revId": "d12620a2164993c5aba50c95c1bf06eea10013a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
