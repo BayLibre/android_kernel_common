@@ -22,6 +22,30 @@
       },
       "revId": "e2a7cf1580a02afc720b08ac9b9fe90337cc0217",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad54266_62bec8d1",
+        "filename": "drivers/usb/gadget/function/android_f_midi_info.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-02-28T21:57:55Z",
+      "side": 1,
+      "message": "Too late for V. The USB team has promised a proper userspace implementation for W and agrees that we don\u0027t need to support these kernel patches in android16 and later kernels. That team was assembled too late to be able to land it in time for V. It will likely land in trunk-stable well ahead of 24Q3 so it will be ready when android16-6.x is created.",
+      "parentUuid": "ad29c898_15c1b2df",
+      "range": {
+        "startLine": 43,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 65
+      },
+      "revId": "e2a7cf1580a02afc720b08ac9b9fe90337cc0217",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
