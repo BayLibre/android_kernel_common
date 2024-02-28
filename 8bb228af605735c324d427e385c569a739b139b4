@@ -16,6 +16,24 @@
       "message": "nit: size_mul()\n\nand ditto for the instances below...",
       "revId": "8bb228af605735c324d427e385c569a739b139b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e10a4337_b77fbb77",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-28T16:21:49Z",
+      "side": 1,
+      "message": "Discussed offline: The pgtable checks would simplify fail in case of an overflow. Then it seems this check would be unnecessary.",
+      "parentUuid": "3d50e2ea_fbc33da4",
+      "revId": "8bb228af605735c324d427e385c569a739b139b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
