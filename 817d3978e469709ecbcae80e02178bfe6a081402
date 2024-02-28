@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d4791f5_dac7c773",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:06:56Z",
+      "side": 1,
+      "message": "Added a wrapper for request \u003d true",
+      "parentUuid": "822c5fc2_62dd7a0c",
+      "range": {
+        "startLine": 21,
+        "startChar": 44,
+        "endLine": 21,
+        "endChar": 51
+      },
+      "revId": "817d3978e469709ecbcae80e02178bfe6a081402",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaf50ea5_e4211fa4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-27T15:36:13Z",
       "side": 1,
       "message": "Can we wrap this please? Maybe something like `kvm_iommu_request_page_donation()`?",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 41
+      },
+      "revId": "817d3978e469709ecbcae80e02178bfe6a081402",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f5a34c_b098411e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/arm-smmu-v3.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T18:06:56Z",
+      "side": 1,
+      "message": "Done, I kept donation for the original function, and `kvm_iommu_donate_pages_request` for the large orders",
+      "parentUuid": "eaf50ea5_e4211fa4",
       "range": {
         "startLine": 192,
         "startChar": 0,
