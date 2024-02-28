@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5001ea6_f674296f",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T10:59:27Z",
+      "side": 1,
+      "message": "No, this function is common, that\u0027s why we pass it, but return an error if bypass is required.",
+      "parentUuid": "57fe9ebb_852dbb1a",
+      "range": {
+        "startLine": 50,
+        "startChar": 38,
+        "endLine": 50,
+        "endChar": 44
+      },
+      "revId": "f43ff2f6c1869055d72e4adfef8d1ce659a820a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "407e4da2_f55609ad",
         "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-27T14:24:53Z",
       "side": 1,
       "message": "`alloc_pages_exact()` is a better interface for this?",
+      "range": {
+        "startLine": 113,
+        "startChar": 30,
+        "endLine": 113,
+        "endChar": 46
+      },
+      "revId": "f43ff2f6c1869055d72e4adfef8d1ce659a820a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dab4d7c8_92d42c71",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T10:59:27Z",
+      "side": 1,
+      "message": "I am not sure how to track that, but if the kernel is donating it later, may be we need to be explicit?",
+      "parentUuid": "407e4da2_f55609ad",
       "range": {
         "startLine": 113,
         "startChar": 30,
