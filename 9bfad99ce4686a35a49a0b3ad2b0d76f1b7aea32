@@ -16,6 +16,24 @@
       "message": "Wait, why is the scsi operations being replaced?  That feels very wrong and risky.",
       "revId": "9bfad99ce4686a35a49a0b3ad2b0d76f1b7aea32",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8bacb73_722be86b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2068679
+      },
+      "writtenOn": "2024-02-28T01:22:13Z",
+      "side": 1,
+      "message": "The submit_bio function pointer is not implemented by default in SCSI operations, and our scheduler relies on the designated submit_bio to handle rq distribution and scheduling. This hook function adds the implementation of submit_bio. We will refactor to avoid the use of hook functions in subsequent versions of Android,",
+      "parentUuid": "4838f5de_dae42a41",
+      "revId": "9bfad99ce4686a35a49a0b3ad2b0d76f1b7aea32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
