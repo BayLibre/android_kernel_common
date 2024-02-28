@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e66701da_fb933071",
+        "filename": "fs/binfmt_elf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-02-28T18:52:31Z",
+      "side": 0,
+      "message": "Per patch description `ELF_EXEC_PAGESIZE is\nalways the same as PAGE_SIZE on Android supported architectures.`, why bother changing this code then if ELF_EXEC_PAGESIZE \u003d\u003d PAGE_SIZE?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 6
+      },
+      "revId": "966cdcc37c0d99dec557a2dc3de9fc7886fcc200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54314abf_77f73e6e",
+        "filename": "fs/binfmt_elf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-02-28T18:52:31Z",
+      "side": 0,
+      "message": "ditto",
+      "range": {
+        "startLine": 107,
+        "startChar": 1,
+        "endLine": 107,
+        "endChar": 35
+      },
+      "revId": "966cdcc37c0d99dec557a2dc3de9fc7886fcc200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
