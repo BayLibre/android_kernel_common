@@ -22,6 +22,30 @@
       },
       "revId": "6462a200132fa9649890f644635936a0de295c4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2543d86c_be66459b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T13:27:22Z",
+      "side": 1,
+      "message": "No it is not, we can use the already existing lock for the allocator `pool-\u003elock`, but I did\u0027t see an issue with avoiding that.",
+      "parentUuid": "d9b57506_27b2682a",
+      "range": {
+        "startLine": 236,
+        "startChar": 4,
+        "endLine": 236,
+        "endChar": 23
+      },
+      "revId": "6462a200132fa9649890f644635936a0de295c4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
