@@ -22,6 +22,30 @@
       },
       "revId": "9180c5697a1878d36c291cd86bfec5c3152d2362",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77aa0385_8a0c9b04",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/arm-smmu-v3.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:46:11Z",
+      "side": 1,
+      "message": "Actually this function is only called with lock held, updated it to avoid cmpxchg64",
+      "parentUuid": "eeb56170_83708cae",
+      "range": {
+        "startLine": 191,
+        "startChar": 6,
+        "endLine": 191,
+        "endChar": 23
+      },
+      "revId": "9180c5697a1878d36c291cd86bfec5c3152d2362",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
