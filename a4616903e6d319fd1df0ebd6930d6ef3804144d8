@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddd0678e_5c276d00",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26059c2a_17815ee5",
+      "range": {
+        "startLine": 514,
+        "startChar": 54,
+        "endLine": 514,
+        "endChar": 58
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1bcfaf0_9866f455",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-27T13:42:03Z",
       "side": 1,
       "message": "This is the same on each iteration round the loop?",
+      "range": {
+        "startLine": 522,
+        "startChar": 23,
+        "endLine": 522,
+        "endChar": 27
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8acd2cef_f649746d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "Agh, thanks for spotting it.",
+      "parentUuid": "c1bcfaf0_9866f455",
       "range": {
         "startLine": 522,
         "startChar": 23,
@@ -95,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da754a72_7033f923",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1114,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "That doesn\u0027t sound right for the hyp code?, we only check first page.",
+      "parentUuid": "70eb9e32_4d81909a",
+      "range": {
+        "startLine": 1114,
+        "startChar": 41,
+        "endLine": 1114,
+        "endChar": 55
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52f1dbd3_ca3e7fcf",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 7
@@ -106,6 +178,30 @@
       "writtenOn": "2024-02-27T13:42:03Z",
       "side": 1,
       "message": "Why isn\u0027t this racy given that you already decremented the refcount without the lock held?",
+      "range": {
+        "startLine": 2134,
+        "startChar": 2,
+        "endLine": 2134,
+        "endChar": 21
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60c4cdc1_919fa36d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "It\u0027s, it is just simpler to remove this check was it meant for debugging.",
+      "parentUuid": "52f1dbd3_ca3e7fcf",
       "range": {
         "startLine": 2134,
         "startChar": 2,
@@ -129,6 +225,30 @@
       "writtenOn": "2024-02-27T13:42:03Z",
       "side": 1,
       "message": "That doesn\u0027t seem to happen?",
+      "range": {
+        "startLine": 2149,
+        "startChar": 0,
+        "endLine": 2149,
+        "endChar": 52
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed6df4d3_b1e7b897",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2149,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "Old comment updated.",
+      "parentUuid": "ce93033d_9586cd4c",
       "range": {
         "startLine": 2149,
         "startChar": 0,
@@ -164,6 +284,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dec480a_1ac246a6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2162,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "I am not sure about this, it seems to be related to implementation detail.\nIOMMU deals with different page sizes, and I as this constraint comes from the vmemmap maybe it should be part of this function. but no strong opinion.",
+      "parentUuid": "90054c46_cd5501de",
+      "range": {
+        "startLine": 2162,
+        "startChar": 0,
+        "endLine": 2162,
+        "endChar": 46
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91d2ab68_23aa14e8",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 7
@@ -175,6 +319,30 @@
       "writtenOn": "2024-02-27T13:42:03Z",
       "side": 1,
       "message": "Used uninitialised if size is 0?",
+      "range": {
+        "startLine": 2174,
+        "startChar": 5,
+        "endLine": 2174,
+        "endChar": 8
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6e1f60_03032568",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2174,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "Yes, fixed.",
+      "parentUuid": "91d2ab68_23aa14e8",
       "range": {
         "startLine": 2174,
         "startChar": 5,
@@ -210,6 +378,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b87a613c_d18163c6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2185,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "`use_dma` will check that the page is owned by the host, then it increment the refcount. so lock is needed.\n\nWhile `unuse_dma` is only called on successful unmap which means the page allowed in the first place and refcounted, so we just decrement it.",
+      "parentUuid": "4bf02e17_27452bb5",
+      "range": {
+        "startLine": 2185,
+        "startChar": 4,
+        "endLine": 2185,
+        "endChar": 25
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c7decfa_83a3704c",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 7
@@ -221,6 +413,30 @@
       "writtenOn": "2024-02-27T13:42:03Z",
       "side": 1,
       "message": "Same sort of thing here. Just initialise it to zero.",
+      "range": {
+        "startLine": 2188,
+        "startChar": 5,
+        "endLine": 2188,
+        "endChar": 8
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e3127ef_e8088a03",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2188,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-02-28T17:25:42Z",
+      "side": 1,
+      "message": "Agh, fixed",
+      "parentUuid": "7c7decfa_83a3704c",
       "range": {
         "startLine": 2188,
         "startChar": 5,
