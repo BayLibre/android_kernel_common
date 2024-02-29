@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7e0d5ef_47f17cbf",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1114,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-29T14:15:49Z",
+      "side": 1,
+      "message": "In which case, can we just delete the check here?",
+      "parentUuid": "da754a72_7033f923",
+      "range": {
+        "startLine": 1114,
+        "startChar": 41,
+        "endLine": 1114,
+        "endChar": 55
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52f1dbd3_ca3e7fcf",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 7
@@ -330,6 +354,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77872c8d_fc54374e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2162,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-29T14:15:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0dec480a_1ac246a6",
+      "range": {
+        "startLine": 2162,
+        "startChar": 0,
+        "endLine": 2162,
+        "endChar": 46
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91d2ab68_23aa14e8",
@@ -414,6 +462,30 @@
       "side": 1,
       "message": "`use_dma` will check that the page is owned by the host, then it increment the refcount. so lock is needed.\n\nWhile `unuse_dma` is only called on successful unmap which means the page allowed in the first place and refcounted, so we just decrement it.",
       "parentUuid": "4bf02e17_27452bb5",
+      "range": {
+        "startLine": 2185,
+        "startChar": 4,
+        "endLine": 2185,
+        "endChar": 25
+      },
+      "revId": "a4616903e6d319fd1df0ebd6930d6ef3804144d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "539292fa_0a072954",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2185,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-29T14:15:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b87a613c_d18163c6",
       "range": {
         "startLine": 2185,
         "startChar": 4,
