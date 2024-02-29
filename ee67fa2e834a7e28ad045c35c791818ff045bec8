@@ -22,6 +22,30 @@
       },
       "revId": "ee67fa2e834a7e28ad045c35c791818ff045bec8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0933e06_d18b7269",
+        "filename": "include/linux/page_size_compat.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-02-29T07:16:53Z",
+      "side": 1,
+      "message": "No. it\u0027s only ever set from the kernel to handle the special case where we do need to allow a sub-__PAGE_SIZEed VMA. (Added documentation comment in later patch)",
+      "parentUuid": "96c0f7a7_ef0ca40d",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 23
+      },
+      "revId": "ee67fa2e834a7e28ad045c35c791818ff045bec8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
