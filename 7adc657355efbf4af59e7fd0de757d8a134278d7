@@ -142,6 +142,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb8d4f1f_6b070bff",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-29T06:45:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50406f22_7d7f9ff5",
+      "range": {
+        "startLine": 41,
+        "startChar": 26,
+        "endLine": 41,
+        "endChar": 30
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d26d0901_74fb760e",
@@ -367,6 +391,30 @@
       "side": 1,
       "message": "card_number stores the value of struct snd_card.number as defined in include/sound/core.h, which is an int. Likely could be a u32, but I don\u0027t want to assume the meaning of this value could not change, and therefore create the potential to misrepresent data if we convert to unsigned.",
       "parentUuid": "c8929a6a_38e5332d",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 4
+      },
+      "revId": "7adc657355efbf4af59e7fd0de757d8a134278d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca81a602_366447a6",
+        "filename": "drivers/usb/gadget/function/android_f_midi_uevent.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-02-29T06:45:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9dd758cf_37e33e88",
       "range": {
         "startLine": 11,
         "startChar": 1,
