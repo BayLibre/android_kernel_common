@@ -95,6 +95,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df2970c1_f18c8bb5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-29T14:22:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b6c65b5e_4bcdb913",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 49
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcee2c52_9da0c7ad",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "The Linux IOMMU code and many drivers return 0 in case of failure, we can return `KVM_PHYS_INVALID`, but the host driver will return 0 any way.\n\nI think this is a problem in `iova_to_phys` signature, may be it assumes the caller know what they do.",
       "parentUuid": "dcee2c52_9da0c7ad",
+      "range": {
+        "startLine": 316,
+        "startChar": 20,
+        "endLine": 316,
+        "endChar": 21
+      },
+      "revId": "bca5cd21fde7ac2821a4c411e94c86174618112a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbbc67e9_d5903e4b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-02-29T14:22:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49405564_af6f27b4",
       "range": {
         "startLine": 316,
         "startChar": 20,
