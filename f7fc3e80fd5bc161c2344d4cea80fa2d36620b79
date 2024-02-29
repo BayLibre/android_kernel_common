@@ -34,6 +34,24 @@
       "parentUuid": "403de0dd_015249ed",
       "revId": "f7fc3e80fd5bc161c2344d4cea80fa2d36620b79",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19bc0ebd_6257ce92",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-02-29T03:45:34Z",
+      "side": 1,
+      "message": "Ah. Apologies, I hadn\u0027t dug into the sysctrl logic there, and it wasn\u0027t obvious it has such indirect side-effects. :P Can\u0027t say I like it, but that\u0027s not a problem with your patch. :) \n\nI appreciate the explanation!",
+      "parentUuid": "90989de0_cf0dce4e",
+      "revId": "f7fc3e80fd5bc161c2344d4cea80fa2d36620b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
