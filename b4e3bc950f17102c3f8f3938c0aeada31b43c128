@@ -100,6 +100,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05949c72_1aba2e2e",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T14:40:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d01cd72b_6f1be653",
+      "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f4339bd_c0473304",
@@ -113,6 +131,24 @@
       "writtenOn": "2024-02-27T16:08:20Z",
       "side": 1,
       "message": "It\u0027d be probably easier to grasp, using a `kvm_call_hyp_nvhe_mc` type macro.\n\nSo the topup doesn\u0027t happen lower down and also so a function called \"topup_memcache\" doesn\u0027t have to handle an smccc return, which sounds a bit weird.\n\nEven better would be to reuse `kvm_call_refill_hyp_nvhe` so everything share that serdes, but you have \"special\" requests here, so I can understand a custom version is unavoidable.",
+      "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c57c8c44_95a86bb9",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T14:40:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f4339bd_c0473304",
       "revId": "b4e3bc950f17102c3f8f3938c0aeada31b43c128",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
