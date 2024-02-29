@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b512ed2d_8fa22f35",
+        "filename": "fs/binfmt_elf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-02-29T18:59:39Z",
+      "side": 0,
+      "message": "In arm64 and mips ELF_EXEC_PAGESIZE \u003d\u003d PAGE_SIZE\n\nhttps://elixir.bootlin.com/linux/v6.6.18/source/arch/arm64/include/asm/elf.h#L123\nhttps://elixir.bootlin.com/linux/v6.6.18/source/arch/mips/include/asm/elf.h#L414\n\nIn x86 and arm archs ELF_EXEC_PAGESIZE is always 4096, so we have PAGE_SIZE \u003e\u003d ELF_EXEC_PAGESIZE.\n\nhttps://elixir.bootlin.com/linux/v6.6.18/source/arch/x86/include/asm/elf.h#L230\nhttps://elixir.bootlin.com/linux/v6.6.18/source/arch/arm/include/asm/elf.h#L123\n\nWill architectures with ELF_EXEC_PAGESIZE \u003e PAGE_SIZE be supported after this change?",
+      "parentUuid": "1f65f770_7a0b6b71",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 6
+      },
+      "revId": "966cdcc37c0d99dec557a2dc3de9fc7886fcc200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54314abf_77f73e6e",
         "filename": "fs/binfmt_elf.c",
         "patchSetId": 3
