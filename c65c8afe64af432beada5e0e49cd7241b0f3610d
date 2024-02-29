@@ -22,6 +22,30 @@
       },
       "revId": "c65c8afe64af432beada5e0e49cd7241b0f3610d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebb587fa_5306bd63",
+        "filename": "mm/msync.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-02-29T07:20:49Z",
+      "side": 0,
+      "message": "In this case we intentionally want to use !__PAGE_ALIGNED() since it added error logging (aosp/2967710).\n\nWe could add such logging to __offset_in_page() but there are valid uses of it where it is not used to check page alignment (not used as a boolean), in those cases we don\u0027t want to log any errors.",
+      "parentUuid": "89d90c54_7a833ecd",
+      "range": {
+        "startLine": 44,
+        "startChar": 5,
+        "endLine": 44,
+        "endChar": 26
+      },
+      "revId": "c65c8afe64af432beada5e0e49cd7241b0f3610d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
