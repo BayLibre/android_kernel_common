@@ -22,6 +22,30 @@
       },
       "revId": "738bd1d13b264f0311466de573dbff7a14189152",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d29d7283_cdc8840b",
+        "filename": "drivers/virt/geniezone/gzvm_mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1999082
+      },
+      "writtenOn": "2024-02-29T03:40:48Z",
+      "side": 1,
+      "message": "We consider the return of -EEXIST under this context from `gzvm_insert_ppage` to be an expected behavior.\n \nThis situation occurs when two or more VCPUs are concurrently engaged in demand paging handling. The initial VCPU has already allocated and pinned a page, while the subsequent VCPU attempts to pin the same page again. As a result, we prompt the unpinning and release of the allocated structure, followed by a return value of 0.",
+      "parentUuid": "df243535_7008eeb5",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 10
+      },
+      "revId": "738bd1d13b264f0311466de573dbff7a14189152",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
